@@ -96,7 +96,8 @@
 #if defined(SK_HISTOGRAM_ENUMERATION)  || \
     defined(SK_HISTOGRAM_BOOLEAN)      || \
     defined(SK_HISTOGRAM_EXACT_LINEAR) || \
-    defined(SK_HISTOGRAM_MEMORY_KB)
+    defined(SK_HISTOGRAM_MEMORY_KB)    || \
+    defined(SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES)
 #  define SK_HISTOGRAMS_ENABLED 1
 #else
 #  define SK_HISTOGRAMS_ENABLED 0

@@ -43,7 +43,8 @@ public:
                                            MtlResourceProvider*,
                                            const RuntimeEffectDictionary*,
                                            const GraphicsPipelineDesc&,
-                                           const RenderPassDesc&);
+                                           const RenderPassDesc&,
+                                           bool fromPrecompile);
 
     static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(const MtlSharedContext*,
                                                            MtlResourceProvider*,
@@ -60,7 +61,8 @@ private:
                         const PipelineInfo& pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
-                        uint32_t refValue);
+                        uint32_t refValue,
+                        bool fromPrecompile);
 
     using MSLFunction = std::pair<id<MTLLibrary>, std::string>;
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
@@ -73,7 +75,8 @@ private:
                                            sk_cfp<id<MTLDepthStencilState>>,
                                            uint32_t stencilRefValue,
                                            const BlendInfo& blendInfo,
-                                           const RenderPassDesc&);
+                                           const RenderPassDesc&,
+                                           bool fromPrecompile);
 
     void freeGpuData() override;
 

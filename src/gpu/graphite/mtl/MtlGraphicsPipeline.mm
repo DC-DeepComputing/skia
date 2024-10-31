@@ -268,7 +268,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                                                      MtlResourceProvider* resourceProvider,
                                                      const RuntimeEffectDictionary* runtimeDict,
                                                      const GraphicsPipelineDesc& pipelineDesc,
-                                                     const RenderPassDesc& renderPassDesc) {
+                                                     const RenderPassDesc& renderPassDesc,
+                                                     bool fromPrecompile) {
     std::string vsMSL, fsMSL;
     SkSL::Program::Interface vsInterface, fsInterface;
 
@@ -341,7 +342,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                 std::move(dss),
                 step->depthStencilSettings().fStencilReferenceValue,
                 blendInfo,
-                renderPassDesc);
+                renderPassDesc,
+                fromPrecompile);
 }
 
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
@@ -396,7 +398,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
                 std::move(ignoreDS),
                 /*stencilRefValue=*/0,
                 noBlend,
-                renderPassDesc);
+                renderPassDesc,
+                /* fromPrecompile= */ false);
 }
 
 sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sharedContext,
@@ -409,7 +412,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                                                      sk_cfp<id<MTLDepthStencilState>> dss,
                                                      uint32_t stencilRefValue,
                                                      const BlendInfo& blendInfo,
-                                                     const RenderPassDesc& renderPassDesc) {
+                                                     const RenderPassDesc& renderPassDesc,
+                                                     bool fromPrecompile) {
     id<MTLLibrary> vsLibrary = std::get<0>(vertexMain);
     id<MTLLibrary> fsLibrary = std::get<0>(fragmentMain);
     if (!vsLibrary || !fsLibrary) {
@@ -463,15 +467,17 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                                                               pipelineInfo,
                                                               std::move(pso),
                                                               std::move(dss),
-                                                              stencilRefValue));
+                                                              stencilRefValue,
+                                                              fromPrecompile));
 }
 
 MtlGraphicsPipeline::MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                                          const PipelineInfo& pipelineInfo,
                                          sk_cfp<id<MTLRenderPipelineState>> pso,
                                          sk_cfp<id<MTLDepthStencilState>> dss,
-                                         uint32_t refValue)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+                                         uint32_t refValue,
+                                         bool fromPrecompile)
+        : GraphicsPipeline(sharedContext, pipelineInfo, fromPrecompile)
         , fPipelineState(std::move(pso))
         , fDepthStencilState(std::move(dss))
         , fStencilReferenceValue(refValue) {}

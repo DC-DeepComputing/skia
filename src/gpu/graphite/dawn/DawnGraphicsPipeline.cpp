@@ -32,6 +32,15 @@
 
 #include <vector>
 
+void foo(const char* name, int64_t sampleUS,
+         unsigned minUS, unsigned maxUS, size_t bucketCount) {
+    SkDebugf("%s %lld %d %d %zu\n", name, sampleUS, minUS, maxUS, bucketCount);
+}
+
+void foo2(const char* name, int sample, int enumSize) {
+    SkDebugf("%s %d %d\n", name, sample, enumSize);
+}
+
 namespace skgpu::graphite {
 
 namespace {
@@ -248,7 +257,33 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 struct AsyncPipelineCreationBase {
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+#if SK_HISTOGRAMS_ENABLED
+    std::chrono::steady_clock::time_point fStartTime1;
+    bool fFromPrecompile;
+#endif
 };
+
+#if SK_HISTOGRAMS_ENABLED
+int64_t us_since(std::chrono::steady_clock::time_point start) {
+    std::chrono::steady_clock::duration elapsed = std::chrono::steady_clock::now() - start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+}
+
+// A null fRenderPipeline means Pipeline creation failed
+void log_pipeline_creation(const char* name, const AsyncPipelineCreationBase* apcb) {
+    static constexpr int kBucketCount = 100;
+    static constexpr unsigned kOneSecInUS = 1000000;
+
+    SkASSERT(apcb->fFinished);
+
+    SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+        name,
+        us_since(apcb->fStartTime1),
+        /* minUSec= */ 1,
+        /* maxUSec= */ kOneSecInUS,
+        kBucketCount);
+}
+#endif
 
 } // anonymous namespace
 
@@ -598,6 +633,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     descriptor.multisample.alphaToCoverageEnabled = false;
 
     auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+#if SK_HISTOGRAMS_ENABLED
+    asyncCreation->fStartTime1 = std::chrono::steady_clock::now();
+    asyncCreation->fFromPrecompile = SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
+#endif
 
     if (caps.useAsyncPipelineCreation() &&
         !(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous)) {
@@ -623,19 +662,29 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     }
 
                     asyncCreationPtr->fFinished = true;
+
+#if SK_HISTOGRAMS_ENABLED
+                    log_pipeline_creation("Graphite.Dawn.PipelineCreation.Asynchronous",
+                                          asyncCreationPtr);
+#endif
                 });
 #endif
     } else {
         std::optional<DawnErrorChecker> errorChecker;
-        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
-        }
+//        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
+//            errorChecker.emplace(sharedContext);
+//        }
+
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
 
         if (errorChecker.has_value() && errorChecker->popErrorScopes() != DawnErrorType::kNoError) {
             asyncCreation->fRenderPipeline = nullptr;
         }
+
+#if SK_HISTOGRAMS_ENABLED
+        log_pipeline_creation("Graphite.Dawn.PipelineCreation.Synchronous", asyncCreation.get());
+#endif
     }
 
     PipelineInfo pipelineInfo{*shaderInfo};
@@ -661,7 +710,7 @@ DawnGraphicsPipeline::DawnGraphicsPipeline(
         PrimitiveType primitiveType,
         uint32_t refValue,
         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers)
-    : GraphicsPipeline(sharedContext, pipelineInfo)
+    : GraphicsPipeline(sharedContext, pipelineInfo, asyncCreationInfo->fFromPrecompile)
     , fAsyncPipelineCreation(std::move(asyncCreationInfo))
     , fGroupLayouts(std::move(groupLayouts))
     , fPrimitiveType(primitiveType)

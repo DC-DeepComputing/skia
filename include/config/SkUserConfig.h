@@ -90,9 +90,20 @@
    integrate with their histogram collection backend.
 */
 //#define SK_HISTOGRAM_BOOLEAN(name, sample)
-//#define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
+void foo2(const char* name, int sample, int enumSize);
+#define `SK_HISTOGRAM_ENUMERATION(name, sample, enumSize) \
+    foo2(name, sample, enumSize);
 //#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
 //#define SK_HISTOGRAM_MEMORY_KB(name, sample)
+
+#include <cstddef>
+#include <chrono>
+
+void foo(const char* name, std::chrono::steady_clock::duration sample,
+         unsigned minUSec, unsigned maxUSec, size_t bucketCount);
+
+#define SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(name, sampleUSec, minUSec, maxUSec, bucketCount) \
+    foo(name, sampleUSec, minUSec, maxUSec, bucketCount);
 
 // To use smaller but slower mipmap builder
 //#define SK_USE_DRAWING_MIPMAP_DOWNSAMPLER

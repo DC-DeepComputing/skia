@@ -78,11 +78,14 @@ public:
     }
 #endif
 
+    bool fromPrecompile() const { return fFromPrecompile; }
+
 protected:
-    GraphicsPipeline(const SharedContext*, const PipelineInfo&);
+    GraphicsPipeline(const SharedContext*, const PipelineInfo&, bool fromPrecompile);
 
 private:
     PipelineInfo fPipelineInfo;
+    bool fFromPrecompile;
 };
 
 }  // namespace skgpu::graphite
