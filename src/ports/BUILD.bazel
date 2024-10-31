@@ -332,8 +332,10 @@ skia_cc_library(
     name = "fontmgr_fontconfig_freetype",
     srcs = [
         "SkFontMgr_fontconfig.cpp",
+        "SkTypeface_proxy.cpp",
     ],
     hdrs = [
+        "SkTypeface_proxy.h",
         "//include/ports:fontconfig_fontmgr_hdrs",
     ],
     defines = ["SK_FONTMGR_FONTCONFIG_AVAILABLE"],
