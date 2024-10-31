@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e95e7b3_7072499c",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb7c62b3_b48b7088",
+      "range": {
+        "startLine": 158,
+        "startChar": 56,
+        "endLine": 158,
+        "endChar": 62
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "691f88ba_a9932ba5",
@@ -105,6 +129,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db2780b4_23d3a0a2",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0dc4a620_bbb99fc7",
+      "range": {
+        "startLine": 163,
+        "startChar": 33,
+        "endLine": 163,
+        "endChar": 52
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2485b648_4526b608",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "691f88ba_a9932ba5",
+      "range": {
+        "startLine": 163,
+        "startChar": 28,
+        "endLine": 163,
+        "endChar": 32
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3cde37e_bda0c408",
@@ -118,6 +190,30 @@
       "writtenOn": "2024-10-30T13:38:50Z",
       "side": 1,
       "message": "`UniformDataBlock` is effectively a `std::span`, which is recommended to pass by value so we should do that here as well.",
+      "range": {
+        "startLine": 172,
+        "startChar": 24,
+        "endLine": 172,
+        "endChar": 47
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b744521_08f63502",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3cde37e_bda0c408",
       "range": {
         "startLine": 172,
         "startChar": 24,
@@ -145,6 +241,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "004328b1_322342af",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Tried 16 on my device, and it worked.",
+      "parentUuid": "4bd76e83_0299713f",
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32cbc85c_23c7249e",
@@ -168,6 +282,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ea4144_3ba48648",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 282,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "You\u0027re right. It\u0027s unnecessary here!",
+      "parentUuid": "32cbc85c_23c7249e",
+      "range": {
+        "startLine": 280,
+        "startChar": 0,
+        "endLine": 282,
+        "endChar": 22
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54e204be_dfdeaf8e",
@@ -181,6 +319,30 @@
       "writtenOn": "2024-10-30T13:38:50Z",
       "side": 1,
       "message": "This shouldn\u0027t be reset to 0 until after the `if (!dawnBuffer)` or we could get into a weird state where one `findOrCreateDawnBuffer` fails and then subsequent `add()` calls see we still have the old `fCurrentBuffer` but a slots used count of 0 and overwrite prior slots accidentally.",
+      "range": {
+        "startLine": 293,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 23
+      },
+      "revId": "deda355caabbd8abf0d0a19a111e96c0f984f5e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34d0c06b_294e7b2a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 9218
+      },
+      "writtenOn": "2024-10-31T05:45:53Z",
+      "side": 1,
+      "message": "Good catch, thanks!",
+      "parentUuid": "54e204be_dfdeaf8e",
       "range": {
         "startLine": 293,
         "startChar": 0,
