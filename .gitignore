@@ -4,6 +4,7 @@
 *.perfetto-trace
 .DS_Store
 .android_config
+.cache
 .gclient*
 .gradle
 .idea

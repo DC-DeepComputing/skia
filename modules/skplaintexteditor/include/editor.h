@@ -24,7 +24,7 @@ class SkShaper;
 namespace SkPlainTextEditor {
 
 class Editor {
-    struct TextLine;
+    struct TextParagraph;
 public:
     // total height in canvas display units.
     int getHeight() const { return fHeight; }
@@ -39,9 +39,9 @@ public:
     void setFontMgr(sk_sp<SkFontMgr> fontMgr);
 
     struct Text {
-        const std::vector<TextLine>& fLines;
+        const std::vector<TextParagraph>& fLines;
         struct Iterator {
-            std::vector<TextLine>::const_iterator fPtr;
+            std::vector<TextParagraph>::const_iterator fPtr;
             StringView operator*() { return fPtr->fText.view(); }
             void operator++() { ++fPtr; }
             bool operator!=(const Iterator& other) const { return fPtr != other.fPtr; }
@@ -54,10 +54,10 @@ public:
     //     for (SkPlainTextEditor::StringView str : editor.text()) {
     //         std::cout.write(str.data, str.size) << '\n';
     //     }
-    Text text() const { return Text{fLines}; }
+    Text text() const { return Text{fParas}; }
 
     // get size of line in canvas display units.
-    int lineHeight(size_t index) const { return fLines[index].fHeight; }
+    int lineHeight(size_t index) const { return fParas[index].fHeight; }
 
     struct TextPosition {
         size_t fTextByteIndex = SIZE_MAX;   // index into UTF-8 representation of line.
@@ -85,9 +85,9 @@ public:
     // If dst is nullptr, returns size of given selection.
     // Otherwise, fill dst with a copy of the selection, and return the amount copied.
     size_t copy(TextPosition pos1, TextPosition pos2, char* dst = nullptr) const;
-    size_t lineCount() const { return fLines.size(); }
+    size_t lineCount() const { return fParas.size(); }
     StringView line(size_t i) const {
-        return i < fLines.size() ? fLines[i].fText.view() : StringView{nullptr, 0};
+        return i < fParas.size() ? fParas[i].fText.view() : StringView{nullptr, 0};
     }
 
     struct PaintOpts {
@@ -103,8 +103,7 @@ public:
     void paint(SkCanvas* canvas, PaintOpts);
 
 private:
-    // TODO: rename this to TextParagraph. fLines to fParas.
-    struct TextLine {
+    struct TextParagraph {
         StringSlice fText;
         sk_sp<const SkTextBlob> fBlob;
         std::vector<SkRect> fCursorPos;
@@ -114,10 +113,10 @@ private:
         int fHeight = 0;
         bool fShaped = false;
 
-        TextLine(StringSlice t) : fText(std::move(t)) {}
-        TextLine() {}
+        TextParagraph(StringSlice t) : fText(std::move(t)) {}
+        TextParagraph() {}
     };
-    std::vector<TextLine> fLines;
+    std::vector<TextParagraph> fParas;
     int fWidth = 0;
     int fHeight = 0;
     SkFont fFont;
@@ -125,7 +124,7 @@ private:
     bool fNeedsReshape = false;
     const char* fLocale = "en";  // TODO: make this setable
 
-    void markDirty(TextLine*);
+    void markDirty(TextParagraph*);
     void reshapeAll();
 };
 }  // namespace SkPlainTextEditor

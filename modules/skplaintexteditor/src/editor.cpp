@@ -45,7 +45,7 @@ static StringSlice remove_newline(const char* str, size_t len) {
            StringSlice(str, (len > 0 && str[len - 1] == '\n') ? len - 1 : len);
 }
 
-void Editor::markDirty(TextLine* line) {
+void Editor::markDirty(TextParagraph* line) {
     line->fBlob = nullptr;
     line->fShaped = false;
     line->fWordBoundaries = std::vector<bool>();
@@ -55,21 +55,21 @@ void Editor::setFont(SkFont font) {
     if (font != fFont) {
         fFont = std::move(font);
         fNeedsReshape = true;
-        for (auto& l : fLines) { this->markDirty(&l); }
+        for (auto& l : fParas) { this->markDirty(&l); }
     }
 }
 
 void Editor::setFontMgr(sk_sp<SkFontMgr> fontMgr) {
     fFontMgr = fontMgr;
     fNeedsReshape = true;
-    for (auto& l : fLines) { this->markDirty(&l); }
+    for (auto& l : fParas) { this->markDirty(&l); }
 }
 
 void Editor::setWidth(int w) {
     if (fWidth != w) {
         fWidth = w;
         fNeedsReshape = true;
-        for (auto& l : fLines) { this->markDirty(&l); }
+        for (auto& l : fParas) { this->markDirty(&l); }
     }
 }
 static SkPoint to_point(SkIPoint p) { return {(float)p.x(), (float)p.y()}; }
@@ -77,12 +77,12 @@ static SkPoint to_point(SkIPoint p) { return {(float)p.x(), (float)p.y()}; }
 Editor::TextPosition Editor::getPosition(SkIPoint xy) {
     Editor::TextPosition approximatePosition;
     this->reshapeAll();
-    for (size_t j = 0; j < fLines.size(); ++j) {
-        const TextLine& line = fLines[j];
+    for (size_t j = 0; j < fParas.size(); ++j) {
+        const TextParagraph& line = fParas[j];
         SkIRect lineRect = {0,
                             line.fOrigin.y(),
                             fWidth,
-                            j + 1 < fLines.size() ? fLines[j + 1].fOrigin.y() : INT_MAX};
+                            j + 1 < fParas.size() ? fParas[j + 1].fOrigin.y() : INT_MAX};
         if (const SkTextBlob* b = line.fBlob.get()) {
             SkIRect r = b->bounds().roundOut();
             r.offset(line.fOrigin);
@@ -131,8 +131,8 @@ static const char* prev_utf8(const char* p, const char* begin) {
 SkRect Editor::getLocation(Editor::TextPosition cursor) {
     this->reshapeAll();
     cursor = this->move(Editor::Movement::kNowhere, cursor);
-    if (fLines.size() > 0) {
-        const TextLine& cLine = fLines[cursor.fParagraphIndex];
+    if (fParas.size() > 0) {
+        const TextParagraph& cLine = fParas[cursor.fParagraphIndex];
         SkRect pos = {0, 0, 0, 0};
         if (cursor.fTextByteIndex < cLine.fCursorPos.size()) {
             pos = cLine.fCursorPos[cursor.fTextByteIndex];
@@ -156,21 +156,21 @@ Editor::TextPosition Editor::insert(TextPosition pos, const char* utf8Text, size
     }
     pos = this->move(Editor::Movement::kNowhere, pos);
     fNeedsReshape = true;
-    if (pos.fParagraphIndex < fLines.size()) {
-        fLines[pos.fParagraphIndex].fText.insert(pos.fTextByteIndex, utf8Text, byteLen);
-        this->markDirty(&fLines[pos.fParagraphIndex]);
+    if (pos.fParagraphIndex < fParas.size()) {
+        fParas[pos.fParagraphIndex].fText.insert(pos.fTextByteIndex, utf8Text, byteLen);
+        this->markDirty(&fParas[pos.fParagraphIndex]);
     } else {
-        SkASSERT(pos.fParagraphIndex == fLines.size());
+        SkASSERT(pos.fParagraphIndex == fParas.size());
         SkASSERT(pos.fTextByteIndex == 0);
-        fLines.push_back(Editor::TextLine(StringSlice(utf8Text, byteLen)));
+        fParas.push_back(Editor::TextParagraph(StringSlice(utf8Text, byteLen)));
     }
     pos = Editor::TextPosition{pos.fTextByteIndex + byteLen, pos.fParagraphIndex};
-    size_t newlinecount = count_char(fLines[pos.fParagraphIndex].fText, '\n');
+    size_t newlinecount = count_char(fParas[pos.fParagraphIndex].fText, '\n');
     if (newlinecount > 0) {
-        StringSlice src = std::move(fLines[pos.fParagraphIndex].fText);
-        std::vector<TextLine>::const_iterator next = fLines.begin() + pos.fParagraphIndex + 1;
-        fLines.insert(next, newlinecount, TextLine());
-        TextLine* line = &fLines[pos.fParagraphIndex];
+        StringSlice src = std::move(fParas[pos.fParagraphIndex].fText);
+        std::vector<TextParagraph>::const_iterator next = fParas.begin() + pos.fParagraphIndex + 1;
+        fParas.insert(next, newlinecount, TextParagraph());
+        TextParagraph* line = &fParas[pos.fParagraphIndex];
         readlines(src.begin(), src.size(), [&line](const char* str, size_t l) {
             (line++)->fText = remove_newline(str, l);
         });
@@ -184,26 +184,26 @@ Editor::TextPosition Editor::remove(TextPosition pos1, TextPosition pos2) {
     auto cmp = [](const Editor::TextPosition& u, const Editor::TextPosition& v) { return u < v; };
     Editor::TextPosition start = std::min(pos1, pos2, cmp);
     Editor::TextPosition end = std::max(pos1, pos2, cmp);
-    if (start == end || start.fParagraphIndex == fLines.size()) {
+    if (start == end || start.fParagraphIndex == fParas.size()) {
         return start;
     }
     fNeedsReshape = true;
     if (start.fParagraphIndex == end.fParagraphIndex) {
         SkASSERT(end.fTextByteIndex > start.fTextByteIndex);
-        fLines[start.fParagraphIndex].fText.remove(
+        fParas[start.fParagraphIndex].fText.remove(
                 start.fTextByteIndex, end.fTextByteIndex - start.fTextByteIndex);
-        this->markDirty(&fLines[start.fParagraphIndex]);
+        this->markDirty(&fParas[start.fParagraphIndex]);
     } else {
-        SkASSERT(end.fParagraphIndex < fLines.size());
-        auto& line = fLines[start.fParagraphIndex];
+        SkASSERT(end.fParagraphIndex < fParas.size());
+        auto& line = fParas[start.fParagraphIndex];
         line.fText.remove(start.fTextByteIndex,
                           line.fText.size() - start.fTextByteIndex);
         line.fText.insert(start.fTextByteIndex,
-                          fLines[end.fParagraphIndex].fText.begin() + end.fTextByteIndex,
-                          fLines[end.fParagraphIndex].fText.size() - end.fTextByteIndex);
+                          fParas[end.fParagraphIndex].fText.begin() + end.fTextByteIndex,
+                          fParas[end.fParagraphIndex].fText.size() - end.fTextByteIndex);
         this->markDirty(&line);
-        fLines.erase(fLines.begin() + start.fParagraphIndex + 1,
-                     fLines.begin() + end.fParagraphIndex + 1);
+        fParas.erase(fParas.begin() + start.fParagraphIndex + 1,
+                     fParas.begin() + end.fParagraphIndex + 1);
     }
     return start;
 }
@@ -223,19 +223,19 @@ size_t Editor::copy(TextPosition pos1, TextPosition pos2, char* dst) const {
     auto cmp = [](const Editor::TextPosition& u, const Editor::TextPosition& v) { return u < v; };
     Editor::TextPosition start = std::min(pos1, pos2, cmp);
     Editor::TextPosition end = std::max(pos1, pos2, cmp);
-    if (start == end || start.fParagraphIndex == fLines.size()) {
+    if (start == end || start.fParagraphIndex == fParas.size()) {
         return size;
     }
     if (start.fParagraphIndex == end.fParagraphIndex) {
         SkASSERT(end.fTextByteIndex > start.fTextByteIndex);
-        auto& str = fLines[start.fParagraphIndex].fText;
+        auto& str = fParas[start.fParagraphIndex].fText;
         append(&dst, &size, str.begin() + start.fTextByteIndex,
                end.fTextByteIndex - start.fTextByteIndex);
         return size;
     }
-    SkASSERT(end.fParagraphIndex < fLines.size());
-    const std::vector<TextLine>::const_iterator firstP = fLines.begin() + start.fParagraphIndex;
-    const std::vector<TextLine>::const_iterator lastP  = fLines.begin() + end.fParagraphIndex;
+    SkASSERT(end.fParagraphIndex < fParas.size());
+    const std::vector<TextParagraph>::const_iterator firstP = fParas.begin() + start.fParagraphIndex;
+    const std::vector<TextParagraph>::const_iterator lastP  = fParas.begin() + end.fParagraphIndex;
     const auto& first = firstP->fText;
     const auto& last  = lastP->fText;
 
@@ -285,22 +285,22 @@ static size_t find_closest_x(const std::vector<SkRect>& bounds, float x, size_t 
 }
 
 Editor::TextPosition Editor::move(Editor::Movement move, Editor::TextPosition pos) const {
-    if (fLines.empty()) {
+    if (fParas.empty()) {
         return {0, 0};
     }
     // First thing: fix possible bad input values.
-    if (pos.fParagraphIndex >= fLines.size()) {
-        pos.fParagraphIndex = fLines.size() - 1;
-        pos.fTextByteIndex = fLines[pos.fParagraphIndex].fText.size();
+    if (pos.fParagraphIndex >= fParas.size()) {
+        pos.fParagraphIndex = fParas.size() - 1;
+        pos.fTextByteIndex = fParas[pos.fParagraphIndex].fText.size();
     } else {
-        pos.fTextByteIndex = align_column(fLines[pos.fParagraphIndex].fText, pos.fTextByteIndex);
+        pos.fTextByteIndex = align_column(fParas[pos.fParagraphIndex].fText, pos.fTextByteIndex);
     }
 
-    SkASSERT(pos.fParagraphIndex < fLines.size());
-    SkASSERT(pos.fTextByteIndex <= fLines[pos.fParagraphIndex].fText.size());
+    SkASSERT(pos.fParagraphIndex < fParas.size());
+    SkASSERT(pos.fTextByteIndex <= fParas[pos.fParagraphIndex].fText.size());
 
-    SkASSERT(pos.fTextByteIndex == fLines[pos.fParagraphIndex].fText.size() ||
-             !is_utf8_continuation(fLines[pos.fParagraphIndex].fText.begin()[pos.fTextByteIndex]));
+    SkASSERT(pos.fTextByteIndex == fParas[pos.fParagraphIndex].fText.size() ||
+             !is_utf8_continuation(fParas[pos.fParagraphIndex].fText.begin()[pos.fTextByteIndex]));
 
     switch (move) {
         case Editor::Movement::kNowhere:
@@ -309,59 +309,59 @@ Editor::TextPosition Editor::move(Editor::Movement move, Editor::TextPosition po
             if (0 == pos.fTextByteIndex) {
                 if (pos.fParagraphIndex > 0) {
                     --pos.fParagraphIndex;
-                    pos.fTextByteIndex = fLines[pos.fParagraphIndex].fText.size();
+                    pos.fTextByteIndex = fParas[pos.fParagraphIndex].fText.size();
                 }
             } else {
-                const auto& str = fLines[pos.fParagraphIndex].fText;
+                const auto& str = fParas[pos.fParagraphIndex].fText;
                 pos.fTextByteIndex =
                     prev_utf8(begin(str) + pos.fTextByteIndex, begin(str)) - begin(str);
             }
             break;
         case Editor::Movement::kRight:
-            if (fLines[pos.fParagraphIndex].fText.size() == pos.fTextByteIndex) {
-                if (pos.fParagraphIndex + 1 < fLines.size()) {
+            if (fParas[pos.fParagraphIndex].fText.size() == pos.fTextByteIndex) {
+                if (pos.fParagraphIndex + 1 < fParas.size()) {
                     ++pos.fParagraphIndex;
                     pos.fTextByteIndex = 0;
                 }
             } else {
-                const auto& str = fLines[pos.fParagraphIndex].fText;
+                const auto& str = fParas[pos.fParagraphIndex].fText;
                 pos.fTextByteIndex =
                     next_utf8(begin(str) + pos.fTextByteIndex, end(str)) - begin(str);
             }
             break;
         case Editor::Movement::kHome:
             {
-                const std::vector<size_t>& list = fLines[pos.fParagraphIndex].fLineEndOffsets;
+                const std::vector<size_t>& list = fParas[pos.fParagraphIndex].fLineEndOffsets;
                 size_t f = find_first_larger(list, pos.fTextByteIndex);
                 pos.fTextByteIndex = f > 0 ? list[f - 1] : 0;
             }
             break;
         case Editor::Movement::kEnd:
             {
-                const std::vector<size_t>& list = fLines[pos.fParagraphIndex].fLineEndOffsets;
+                const std::vector<size_t>& list = fParas[pos.fParagraphIndex].fLineEndOffsets;
                 size_t f = find_first_larger(list, pos.fTextByteIndex);
                 if (f < list.size()) {
                     pos.fTextByteIndex = list[f] > 0 ? list[f] - 1 : 0;
                 } else {
-                    pos.fTextByteIndex = fLines[pos.fParagraphIndex].fText.size();
+                    pos.fTextByteIndex = fParas[pos.fParagraphIndex].fText.size();
                 }
             }
             break;
         case Editor::Movement::kUp:
             {
-                SkASSERT(pos.fTextByteIndex < fLines[pos.fParagraphIndex].fCursorPos.size());
-                float x = fLines[pos.fParagraphIndex].fCursorPos[pos.fTextByteIndex].left();
-                const std::vector<size_t>& list = fLines[pos.fParagraphIndex].fLineEndOffsets;
+                SkASSERT(pos.fTextByteIndex < fParas[pos.fParagraphIndex].fCursorPos.size());
+                float x = fParas[pos.fParagraphIndex].fCursorPos[pos.fTextByteIndex].left();
+                const std::vector<size_t>& list = fParas[pos.fParagraphIndex].fLineEndOffsets;
                 size_t f = find_first_larger(list, pos.fTextByteIndex);
                 // list[f] > value.  value > list[f-1]
                 if (f > 0) {
                     // not the first line in paragraph.
-                    pos.fTextByteIndex = find_closest_x(fLines[pos.fParagraphIndex].fCursorPos, x,
+                    pos.fTextByteIndex = find_closest_x(fParas[pos.fParagraphIndex].fCursorPos, x,
                                                         (f == 1) ? 0 : list[f - 2],
                                                         list[f - 1]);
                 } else if (pos.fParagraphIndex > 0) {
                     --pos.fParagraphIndex;
-                    const auto& newLine = fLines[pos.fParagraphIndex];
+                    const auto& newLine = fParas[pos.fParagraphIndex];
                     size_t r = newLine.fLineEndOffsets.size();
                     if (r > 0) {
                         pos.fTextByteIndex = find_closest_x(newLine.fCursorPos, x,
@@ -373,31 +373,31 @@ Editor::TextPosition Editor::move(Editor::Movement move, Editor::TextPosition po
                     }
                 }
                 pos.fTextByteIndex =
-                    align_column(fLines[pos.fParagraphIndex].fText, pos.fTextByteIndex);
+                    align_column(fParas[pos.fParagraphIndex].fText, pos.fTextByteIndex);
             }
             break;
         case Editor::Movement::kDown:
             {
-                const std::vector<size_t>& list = fLines[pos.fParagraphIndex].fLineEndOffsets;
-                float x = fLines[pos.fParagraphIndex].fCursorPos[pos.fTextByteIndex].left();
+                const std::vector<size_t>& list = fParas[pos.fParagraphIndex].fLineEndOffsets;
+                float x = fParas[pos.fParagraphIndex].fCursorPos[pos.fTextByteIndex].left();
 
                 size_t f = find_first_larger(list, pos.fTextByteIndex);
                 if (f < list.size()) {
-                    const auto& bounds = fLines[pos.fParagraphIndex].fCursorPos;
+                    const auto& bounds = fParas[pos.fParagraphIndex].fCursorPos;
                     pos.fTextByteIndex = find_closest_x(bounds, x, list[f],
                                                         f + 1 < list.size() ? list[f + 1]
                                                                             : bounds.size());
-                } else if (pos.fParagraphIndex + 1 < fLines.size()) {
+                } else if (pos.fParagraphIndex + 1 < fParas.size()) {
                     ++pos.fParagraphIndex;
-                    const auto& bounds = fLines[pos.fParagraphIndex].fCursorPos;
-                    const std::vector<size_t>& l2 = fLines[pos.fParagraphIndex].fLineEndOffsets;
+                    const auto& bounds = fParas[pos.fParagraphIndex].fCursorPos;
+                    const std::vector<size_t>& l2 = fParas[pos.fParagraphIndex].fLineEndOffsets;
                     pos.fTextByteIndex = find_closest_x(bounds, x, 0,
                                                         l2.size() > 0 ? l2[0] : bounds.size());
                 } else {
-                    pos.fTextByteIndex = fLines[pos.fParagraphIndex].fText.size();
+                    pos.fTextByteIndex = fParas[pos.fParagraphIndex].fText.size();
                 }
                 pos.fTextByteIndex =
-                    align_column(fLines[pos.fParagraphIndex].fText, pos.fTextByteIndex);
+                    align_column(fParas[pos.fParagraphIndex].fText, pos.fTextByteIndex);
             }
             break;
         case Editor::Movement::kWordLeft:
@@ -406,8 +406,8 @@ Editor::TextPosition Editor::move(Editor::Movement move, Editor::TextPosition po
                     pos = this->move(Editor::Movement::kLeft, pos);
                     break;
                 }
-                const std::vector<bool>& words = fLines[pos.fParagraphIndex].fWordBoundaries;
-                SkASSERT(words.size() == fLines[pos.fParagraphIndex].fText.size());
+                const std::vector<bool>& words = fParas[pos.fParagraphIndex].fWordBoundaries;
+                SkASSERT(words.size() == fParas[pos.fParagraphIndex].fText.size());
                 do {
                     --pos.fTextByteIndex;
                 } while (pos.fTextByteIndex > 0 && !words[pos.fTextByteIndex]);
@@ -415,12 +415,12 @@ Editor::TextPosition Editor::move(Editor::Movement move, Editor::TextPosition po
             break;
         case Editor::Movement::kWordRight:
             {
-                const StringSlice& text = fLines[pos.fParagraphIndex].fText;
+                const StringSlice& text = fParas[pos.fParagraphIndex].fText;
                 if (pos.fTextByteIndex == text.size()) {
                     pos = this->move(Editor::Movement::kRight, pos);
                     break;
                 }
-                const std::vector<bool>& words = fLines[pos.fParagraphIndex].fWordBoundaries;
+                const std::vector<bool>& words = fParas[pos.fParagraphIndex].fWordBoundaries;
                 SkASSERT(words.size() == text.size());
                 do {
                     ++pos.fTextByteIndex;
@@ -447,17 +447,17 @@ void Editor::paint(SkCanvas* c, PaintOpts options) {
          pos < end;
          pos = this->move(Editor::Movement::kRight, pos))
     {
-        SkASSERT(pos.fParagraphIndex < fLines.size());
-        const TextLine& l = fLines[pos.fParagraphIndex];
+        SkASSERT(pos.fParagraphIndex < fParas.size());
+        const TextParagraph& l = fParas[pos.fParagraphIndex];
         c->drawRect(offset(l.fCursorPos[pos.fTextByteIndex], l.fOrigin), selection);
     }
 
-    if (fLines.size() > 0) {
+    if (fParas.size() > 0) {
         c->drawRect(Editor::getLocation(options.fCursor), SkPaint(options.fCursorColor));
     }
 
     SkPaint foreground = SkPaint(options.fForegroundColor);
-    for (const TextLine& line : fLines) {
+    for (const TextParagraph& line : fParas) {
         if (line.fBlob) {
             c->drawTextBlob(line.fBlob.get(), line.fOrigin.x(), line.fOrigin.y(), foreground);
         }
@@ -466,8 +466,8 @@ void Editor::paint(SkCanvas* c, PaintOpts options) {
 
 void Editor::reshapeAll() {
     if (fNeedsReshape) {
-        if (fLines.empty()) {
-            fLines.push_back(TextLine());
+        if (fParas.empty()) {
+            fParas.push_back(TextParagraph());
         }
         float shape_width = (float)(fWidth);
         #ifdef SK_EDITOR_GO_FAST
@@ -492,7 +492,7 @@ void Editor::reshapeAll() {
         }
         while (jobCount-- > 0) { semaphore.wait(); }
         #else
-        for (TextLine& line : fLines) {
+        for (TextParagraph& line : fParas) {
             if (!line.fShaped) {
                 ShapeResult result = Shape(line.fText.begin(), line.fText.size(),
                                            fFont, fFontMgr, fLocale, shape_width);
@@ -506,7 +506,7 @@ void Editor::reshapeAll() {
         }
         #endif
         int y = 0;
-        for (TextLine& line : fLines) {
+        for (TextParagraph& line : fParas) {
             line.fOrigin = {0, y};
             y += line.fHeight;
         }
