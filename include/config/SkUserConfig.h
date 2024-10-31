@@ -89,10 +89,33 @@
    Skia consumers can provide their own definitions of these macros to
    integrate with their histogram collection backend.
 */
-//#define SK_HISTOGRAM_BOOLEAN(name, sample)
-//#define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
-//#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
-//#define SK_HISTOGRAM_MEMORY_KB(name, sample)
+
+#include <cstddef>
+#include <chrono>
+void SkHistogramBoolean(const char* name, bool sample);
+void SkHistogramEnumeration(const char* name, int sample, int enumSize);
+void SkHistogramExactLinear(const char* name, int sample, int valueMax);
+void SkHistogramMemoryKB(const char* name, int sample);
+void SkHistogramCustomMicrosecondsTimes(const char* name,
+                                        std::chrono::steady_clock::duration sample,
+                                        unsigned minUSec,
+                                        unsigned maxUSec,
+                                        size_t bucketCount);
+
+#define SK_HISTOGRAM_BOOLEAN(name, sample) \
+    SkHistogramBoolean(name, sample);
+
+#define SK_HISTOGRAM_ENUMERATION(name, sample, enumSize) \
+    SkHistogramEnumeration(name, sample, enumSize);
+
+#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, valueMax) \
+    SkHistogramExactLinear(name, sample, valueMax);
+
+#define SK_HISTOGRAM_MEMORY_KB(name, sample) \
+    SkHistogramMemoryKB(name, sample);
+
+#define SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(name, sampleUSec, minUSec, maxUSec, bucketCount) \
+    SkHistogramCustomMicrosecondsTimes(name, sampleUSec, minUSec, maxUSec, bucketCount);
 
 // To use smaller but slower mipmap builder
 //#define SK_USE_DRAWING_MIPMAP_DOWNSAMPLER
