@@ -96,7 +96,7 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
     layoutCreateInfo.pNext = nullptr;
     layoutCreateInfo.flags = 0;
     layoutCreateInfo.bindingCount = bindingLayouts.size();
-    layoutCreateInfo.pBindings = &bindingLayouts.front();
+    layoutCreateInfo.pBindings = bindingLayouts.empty() ? VK_NULL_HANDLE : &bindingLayouts.front();
 
     VkResult result;
     VULKAN_CALL_RESULT(
