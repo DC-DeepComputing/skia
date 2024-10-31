@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32d39908_7579f378",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T15:56:36Z",
+      "side": 1,
+      "message": "We need to update VulkanCommandBuffer too",
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93e8ca60_0255a797",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T15:56:36Z",
+      "side": 1,
+      "message": "This is the same as `fReplayClip \u003d clip.makeOffset(translation);`",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4047e354_ecd337e8",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-10-31T15:56:36Z",
+      "side": 1,
+      "message": "This should say it\u0027s in the final target space since it\u0027s already been adjusted by the replay translation and not in the local space.",
+      "range": {
+        "startLine": 140,
+        "startChar": 6,
+        "endLine": 140,
+        "endChar": 77
+      },
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
