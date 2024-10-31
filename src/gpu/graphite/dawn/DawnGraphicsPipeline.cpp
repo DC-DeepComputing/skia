@@ -32,6 +32,27 @@
 
 #include <vector>
 
+void SkHistogramBoolean(const char* name, bool sample) {
+    SkDebugf("%s %s\n", name, sample ? "true" : "false");
+}
+
+void SkHistogramEnumeration(const char* name, int sample, int enumSize) {
+    SkDebugf("%s %d %d\n", name, sample, enumSize);
+}
+
+void SkHistogramExactLinear(const char* name, int sample, int valueMax) {
+    SkDebugf("%s %d %d\n", name, sample, valueMax);
+}
+
+void SkHistogramMemoryKB(const char* name, int sample) {
+    SkDebugf("%s %d\n", name, sample);
+}
+
+void SkHistogramCustomMicrosecondsTimes(const char* name, int64_t sampleUS,
+                                        unsigned minUS, unsigned maxUS, size_t bucketCount) {
+    SkDebugf("%s %lld %d %d %zu\n", name, sampleUS, minUS, maxUS, bucketCount);
+}
+
 namespace skgpu::graphite {
 
 namespace {
@@ -248,7 +269,33 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 struct AsyncPipelineCreationBase {
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+#if SK_HISTOGRAMS_ENABLED
+    // We need this to compute the creation duration for the histograms
+    std::chrono::steady_clock::time_point fStartTime;
+#endif
 };
+
+#if SK_HISTOGRAMS_ENABLED
+int64_t us_since(std::chrono::steady_clock::time_point start) {
+    std::chrono::steady_clock::duration elapsed = std::chrono::steady_clock::now() - start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+}
+
+// A null fRenderPipeline means Pipeline creation failed
+void log_pipeline_creation(const char* name, const AsyncPipelineCreationBase* apcb) {
+    static constexpr int kBucketCount = 100;
+    static constexpr unsigned kOneSecInUS = 1000000;
+
+    SkASSERT(apcb->fFinished);
+
+    SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+        name,
+        us_since(apcb->fStartTime),
+        /* minUSec= */ 1,
+        /* maxUSec= */ kOneSecInUS,
+        kBucketCount);
+}
+#endif
 
 } // anonymous namespace
 
@@ -597,10 +644,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+    const bool forceSynchronous =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
 
-    if (caps.useAsyncPipelineCreation() &&
-        !(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous)) {
+    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+#if defined(SK_HISTOGRAMS_ENABLED)
+    asyncCreation->fStartTime = std::chrono::steady_clock::now();
+#endif
+
+    if (caps.useAsyncPipelineCreation() && !forceSynchronous) {
 #if defined(__EMSCRIPTEN__)
         // We shouldn't use CreateRenderPipelineAsync in wasm.
         SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
@@ -623,19 +675,29 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     }
 
                     asyncCreationPtr->fFinished = true;
+
+#if defined(SK_HISTOGRAMS_ENABLED)
+                    log_pipeline_creation("Graphite.Dawn.PipelineCreation.Asynchronous",
+                                          asyncCreationPtr);
+#endif
                 });
 #endif
     } else {
         std::optional<DawnErrorChecker> errorChecker;
-        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
-        }
+//        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
+//            errorChecker.emplace(sharedContext);
+//        }
+
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
 
         if (errorChecker.has_value() && errorChecker->popErrorScopes() != DawnErrorType::kNoError) {
             asyncCreation->fRenderPipeline = nullptr;
         }
+
+#if defined(SK_HISTOGRAMS_ENABLED)
+        log_pipeline_creation("Graphite.Dawn.PipelineCreation.Synchronous", asyncCreation.get());
+#endif
     }
 
     PipelineInfo pipelineInfo{*shaderInfo};
@@ -643,6 +705,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     pipelineInfo.fNativeVertexShader = std::move(vsCode);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode);
 #endif
+#if defined(SK_HISTOGRAMS_ENABLED)
+    pipelineInfo.fFromPrecompile = forceSynchronous;
+#endif
+
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfo,
