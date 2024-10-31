@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9abf45d3_86e0130b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-10-31T16:04:34Z",
+      "side": 1,
+      "message": "This was already happening anyway really, since we\u0027re building with XCode 16 and it looks like it wasn\u0027t tested to support targets less than macOS 11 (though you can force it down to 10.13 and it may \"work\").",
+      "revId": "19326f9f5225823044018e88ce622872e80e6592",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
