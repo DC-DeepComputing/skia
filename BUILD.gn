@@ -371,6 +371,14 @@ optional("fontmgr_custom_empty") {
   sources = skia_ports_fontmgr_empty_sources
 }
 
+optional("typeface_proxy") {
+  enabled = skia_enable_fontmgr_fontconfig # for now
+  sources = [
+    "src/ports/SkTypeface_proxy.cpp",
+    "src/ports/SkTypeface_proxy.h",
+  ]
+}
+
 optional("fontmgr_fontconfig") {
   enabled = skia_enable_fontmgr_fontconfig
   public_defines = [ "SK_FONTMGR_FONTCONFIG_AVAILABLE" ]
@@ -378,7 +386,10 @@ optional("fontmgr_fontconfig") {
   # The public header includes fontconfig.h and uses FcConfig*
   public_deps = [ "//third_party:fontconfig" ]
   public = skia_ports_fontmgr_fontconfig_public
-  deps = [ ":typeface_freetype" ]
+  deps = [
+    ":typeface_freetype",
+    ":typeface_proxy",
+  ]
   sources = skia_ports_fontmgr_fontconfig_sources
   sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
 }
