@@ -118,8 +118,7 @@ void Precompile(Context* context, const PaintOptions& options, DrawTypeFlags dra
     std::unique_ptr<ResourceProvider> tmpResourceProvider = sharedContext->makeResourceProvider(
             &singleOwner,
             SK_InvalidGenID,
-            kDefaultBudgetInBytes,
-            /* avoidBufferAlloc= */ true);
+            kDefaultBudgetInBytes);
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
         // TODO: Allow the client to pass in mipmapping and protection too?
