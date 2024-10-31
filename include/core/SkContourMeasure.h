@@ -11,13 +11,16 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkAPI.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTDArray.h"
 
 #include <memory>
 
 class SkMatrix;
 class SkPath;
+enum class SkPathVerb;
 
 class SK_API SkContourMeasure : public SkRefCnt {
 public:
@@ -56,6 +59,78 @@ public:
     /** Return true if the contour is closed()
      */
     bool isClosed() const { return fIsClosed; }
+
+    /** Measurement data for individual verbs.
+     */
+    struct VerbMeasure {
+        SkScalar              fDistance; // Cumulative distance along the current contour.
+        SkPathVerb            fVerb;     // Verb type.
+        SkSpan<const SkPoint> fPts;      // Verb points.
+    };
+
+private:
+    struct Segment;
+
+public:
+    /** Utility for iterating over the current contour verbs:
+     *
+     *   for (const auto verb_measure : contour_measure) {
+     *     ...
+     *   }
+     */
+    class VerbIterator final {
+    public:
+        VerbIterator(SkSpan<const Segment> segs, SkSpan<const SkPoint> pts)
+            : fSegments(LastSegForCurrentVerb(segs))
+            , fPts(pts) {}
+
+        VerbMeasure operator*() const;
+
+        VerbIterator& operator++() {
+            SkASSERT(!fSegments.empty());
+
+            fSegments = LastSegForCurrentVerb(fSegments.subspan(1));
+
+            return *this;
+        }
+
+        bool operator==(const VerbIterator& other) {
+            SkASSERT(fSegments.data() != other.fSegments.data() ||
+                     fSegments.size() == other.fSegments.size());
+            return fSegments.data() == other.fSegments.data();
+        }
+
+        bool operator!=(const VerbIterator& other) {
+            return !((*this) == other);
+        }
+
+    private:
+        static SkSpan<const Segment> LastSegForCurrentVerb(const SkSpan<const Segment>& segs) {
+            size_t i = 1;
+            while (i < segs.size() && segs[0].fPtIndex == segs[i].fPtIndex) {
+                ++i;
+            }
+
+            return segs.subspan(i - 1);
+        }
+
+        // Remaining segments for forward iteration. The first segment in the span is
+        // adjusted to always point to the last segment of the current verb, such that its distance
+        // corresponds to the verb distance.
+        SkSpan<const Segment> fSegments;
+
+        // All path points (indexed in segments).
+        SkSpan<const SkPoint> fPts;
+    };
+
+    VerbIterator begin() const {
+        return VerbIterator(SkSpan(fSegments.begin(), fSegments.size()),
+                            SkSpan(fPts.data(), fPts.size()));
+    }
+    VerbIterator end() const {
+        return VerbIterator(SkSpan(fSegments.end(), 0),
+                            SkSpan(fPts.data(), fPts.size()));
+    }
 
 private:
     struct Segment {
