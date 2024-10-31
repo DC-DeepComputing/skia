@@ -424,7 +424,7 @@ private:
     std::unique_ptr<SkAdvancedTypefaceMetrics> getAdvancedMetrics() const;
     friend class SkRandomTypeface;   // getAdvancedMetrics
     friend class SkPDFFont;          // getAdvancedMetrics
-    friend class SkTypeface_fontconfig;
+    friend class SkTypeface_proxy;
 
     friend class SkFontPriv;         // getGlyphToUnicodeMap
 
