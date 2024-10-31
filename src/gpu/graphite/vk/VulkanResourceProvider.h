@@ -42,15 +42,9 @@ public:
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
                            uint32_t recorderID,
-                           size_t resourceBudget,
-                           sk_sp<Buffer> intrinsicConstantUniformBuffer,
-                           sk_sp<Buffer> loadMSAAVertexBuffer);
+                           size_t resourceBudget);
 
     ~VulkanResourceProvider() override;
-
-    sk_sp<Buffer> refIntrinsicConstantBuffer() const;
-
-    const Buffer* loadMSAAVertexBuffer() const;
 
     sk_sp<VulkanYcbcrConversion> findOrCreateCompatibleYcbcrConversion(
             const VulkanYcbcrConversionInfo& ycbcrInfo) const;
@@ -109,15 +103,6 @@ private:
     friend class VulkanCommandBuffer;
     friend class VulkanGraphicsPipeline;
     VkPipelineCache fPipelineCache = VK_NULL_HANDLE;
-
-    // Each render pass will need buffer space to record rtAdjust information. To minimize costly
-    // allocation calls and searching of the resource cache, we find & store a uniform buffer upon
-    // resource provider creation. This way, render passes across all command buffers can simply
-    // update the value within this buffer as needed.
-    sk_sp<Buffer> fIntrinsicUniformBuffer;
-    // Similary, use a shared buffer b/w all renderpasses to store vertices for loading MSAA from
-    // resolve.
-    sk_sp<Buffer> fLoadMSAAVertexBuffer;
 
     // The first value of the pair is a renderpass key. Graphics pipeline keys contain extra
     // information that we do not need for identifying unique pipelines.
