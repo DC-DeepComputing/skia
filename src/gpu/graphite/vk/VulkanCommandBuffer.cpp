@@ -1224,7 +1224,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     // Populate the descriptor set with texture/sampler descriptors
     TArray<VkWriteDescriptorSet> writeDescriptorSets(numTexSamplers);
     TArray<VkDescriptorImageInfo> descriptorImageInfos(numTexSamplers);
-    auto appendTextureSampler = [&](const VulkanTexture* texture, const VulkanSampler* sampler) {
+    auto appendTextureSampler = [&](const VulkanTexture* texture,
+                                    const VulkanSampler* sampler) {
         if (!texture || !sampler) {
             // TODO(b/294198324): Investigate the root cause for null texture or samplers on
             // Ubuntu QuadP400 GPU
@@ -1238,9 +1239,9 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
         textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
-        textureInfo.imageView =
+        textureInfo.imageView = //kAttachment?
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
-        textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        textureInfo.imageLayout = texture->currentLayout();
 
         VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
         memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -1263,7 +1264,18 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             auto texture = static_cast<const VulkanTexture*>(
                     drawPass->getTexture(command->fTextureIndices[i]));
             auto sampler = static_cast<const VulkanSampler*>(
-                    drawPass->getSampler(command->fSamplerIndices[i]));
+                    drawPass->getSampler(command->fSamplerIndices[i])); // handle here instead?
+
+            // Before binding, make sure the shader can actually read the texture by enforcing
+            // that the image's layout is VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+            if (texture->currentLayout() != VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL) {
+                texture->setImageLayout(this,
+                                        VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
+                                        VK_ACCESS_SHADER_READ_BIT,
+                                        VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                                        /*byRegion=*/false);
+                this->submitPipelineBarriers();
+            }
             if (!appendTextureSampler(texture, sampler)) {
                 return;
             }
@@ -1271,7 +1283,19 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     }
     if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
         auto texture = static_cast<const VulkanTexture*>(fDstCopy.first);
-        auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+        auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second); // handle here instead?
+
+        // Before binding, make sure the shader can actually copy to the texture by enforcing
+        // that the image's layout is VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL.
+        if (texture->currentLayout() != VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL) {
+            texture->setImageLayout(this,
+                                    VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                                    VK_ACCESS_TRANSFER_WRITE_BIT,
+                                    VK_PIPELINE_STAGE_TRANSFER_BIT,
+                                    /*byRegion=*/false);
+            this->submitPipelineBarriers();
+        }
+        // make sure texture is the proper format
         if (!appendTextureSampler(texture, sampler)) {
             return;
         }
@@ -1530,11 +1554,12 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     }
 
     // Enable editing of the destination texture so we can change its layout so it can be copied to.
-    const_cast<VulkanTexture*>(dstTexture)->setImageLayout(this,
-                                                           VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                                                           VK_ACCESS_TRANSFER_WRITE_BIT,
-                                                           VK_PIPELINE_STAGE_TRANSFER_BIT,
-                                                           false);
+    // VkImageLayout originalDstLayout = dstTexture->currentLayout();
+    dstTexture->setImageLayout(this,
+                               VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                               VK_ACCESS_TRANSFER_WRITE_BIT,
+                               VK_PIPELINE_STAGE_TRANSFER_BIT,
+                               /*byRegion=*/false);
 
     this->submitPipelineBarriers();
 
@@ -1545,6 +1570,18 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
                                  VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                                  regions.size(),
                                  regions.begin()));
+
+    // // Restore original dst texture layout; access. TODO: Just make shader-readable?
+    // if (originalDstLayout != VK_IMAGE_LAYOUT_UNDEFINED) {
+    //     dstTexture->setImageLayout(
+    //             this,
+    //             originalDstLayout,
+    //             VulkanTexture::LayoutToSrcAccessMask(originalDstLayout),
+    //             VulkanTexture::LayoutToPipelineSrcStageFlags(originalDstLayout),
+    //             /*byRegion=*/false);
+    //     this->submitPipelineBarriers();
+    // }
+
     return true;
 }
 
@@ -1565,17 +1602,20 @@ bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
     copyRegion.extent = { (uint32_t)srcRect.width(), (uint32_t)srcRect.height(), 1 };
 
     // Enable editing of the src texture so we can change its layout so it can be copied from.
-    const_cast<VulkanTexture*>(srcTexture)->setImageLayout(this,
-                                                           VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
-                                                           VK_ACCESS_TRANSFER_READ_BIT,
-                                                           VK_PIPELINE_STAGE_TRANSFER_BIT,
-                                                           false);
+    srcTexture->setImageLayout(this,
+                               VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                               VK_ACCESS_TRANSFER_READ_BIT,
+                               VK_PIPELINE_STAGE_TRANSFER_BIT,
+                               /*byRegion=*/false);
+
     // Enable editing of the destination texture so we can change its layout so it can be copied to.
-    const_cast<VulkanTexture*>(dstTexture)->setImageLayout(this,
-                                                           VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
-                                                           VK_ACCESS_TRANSFER_WRITE_BIT,
-                                                           VK_PIPELINE_STAGE_TRANSFER_BIT,
-                                                           false);
+    // Store its original image layout such that it can be restored after the copy operation.
+    // VkImageLayout originalDstLayout = dstTexture->currentLayout();
+    dstTexture->setImageLayout(this,
+                               VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
+                               VK_ACCESS_TRANSFER_WRITE_BIT,
+                               VK_PIPELINE_STAGE_TRANSFER_BIT,
+                               /*byRegion=*/false);
 
     this->submitPipelineBarriers();
 
@@ -1587,6 +1627,17 @@ bool VulkanCommandBuffer::onCopyTextureToTexture(const Texture* src,
                              VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL,
                              /*regionCount=*/1,
                              &copyRegion));
+
+    // Restore original dst texture layout; access. TODO: source texture as well?
+    // if (originalDstLayout != VK_IMAGE_LAYOUT_UNDEFINED) {
+    //     dstTexture->setImageLayout(
+    //             this,
+    //             originalDstLayout,
+    //             VulkanTexture::LayoutToSrcAccessMask(originalDstLayout),
+    //             VulkanTexture::LayoutToPipelineSrcStageFlags(originalDstLayout),
+    //             /*byRegion=*/false);
+    //     this->submitPipelineBarriers();
+    // }
 
     return true;
 }
