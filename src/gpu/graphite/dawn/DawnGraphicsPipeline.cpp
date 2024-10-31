@@ -32,6 +32,27 @@
 
 #include <vector>
 
+void SkHistogramBoolean(const char* name, bool sample) {
+    SkDebugf("%s %s\n", name, sample ? "true" : "false");
+}
+
+void SkHistogramEnumeration(const char* name, int sample, int enumSize) {
+    SkDebugf("%s %d %d\n", name, sample, enumSize);
+}
+
+void SkHistogramExactLinear(const char* name, int sample, int valueMax) {
+    SkDebugf("%s %d %d\n", name, sample, valueMax);
+}
+
+void SkHistogramMemoryKB(const char* name, int sample) {
+    SkDebugf("%s %d\n", name, sample);
+}
+
+void SkHistogramCustomMicrosecondsTimes(const char* name, int64_t sampleUS,
+                                        unsigned minUS, unsigned maxUS, size_t bucketCount) {
+    SkDebugf("%s %lld %d %d %zu\n", name, sampleUS, minUS, maxUS, bucketCount);
+}
+
 namespace skgpu::graphite {
 
 namespace {
@@ -248,7 +269,57 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 struct AsyncPipelineCreationBase {
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+#if SK_HISTOGRAMS_ENABLED
+    // We need these three for the Graphite.PipelineCreationTimes.* histograms (cf.
+    // log_pipeline_creation)
+    std::chrono::steady_clock::time_point fStartTime;
+    bool fFromPrecompile;
+    bool fAsynchronous = false;
+#endif
 };
+
+#if SK_HISTOGRAMS_ENABLED
+int64_t us_since(std::chrono::steady_clock::time_point start) {
+    std::chrono::steady_clock::duration elapsed = std::chrono::steady_clock::now() - start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+}
+
+void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) {
+    static constexpr int kBucketCount = 100;
+    static constexpr unsigned kOneSecInUS = 1000000;
+
+    SkASSERT(apcb->fFinished);
+
+    if (!apcb->fRenderPipeline) {
+        // A null fRenderPipeline means Pipeline creation failed
+        return; // log failures separately
+    }
+
+    if (apcb->fFromPrecompile) {
+        SkASSERT(!apcb->fAsynchronous);     // precompile is done synchronously on a thread
+        SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+        "Graphite.PipelineCreationTimes.Precompile",
+        us_since(apcb->fStartTime),
+        /* minUSec= */ 1,
+        /* maxUSec= */ kOneSecInUS,
+        kBucketCount);
+    } else if (apcb->fAsynchronous) {
+        SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+            "Graphite.PipelineCreationTimes.Asynchronous",
+            us_since(apcb->fStartTime),
+            /* minUSec= */ 1,
+            /* maxUSec= */ kOneSecInUS,
+            kBucketCount);
+    } else {
+        SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
+            "Graphite.PipelineCreationTimes.Synchronous",
+            us_since(apcb->fStartTime),
+            /* minUSec= */ 1,
+            /* maxUSec= */ kOneSecInUS,
+            kBucketCount);
+    }
+}
+#endif
 
 } // anonymous namespace
 
@@ -597,14 +668,25 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     descriptor.multisample.mask = 0xFFFFFFFF;
     descriptor.multisample.alphaToCoverageEnabled = false;
 
-    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+    const bool forceSynchronous =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
 
-    if (caps.useAsyncPipelineCreation() &&
-        !(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous)) {
+    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+#if defined(SK_HISTOGRAMS_ENABLED)
+    asyncCreation->fStartTime = std::chrono::steady_clock::now();
+    asyncCreation->fFromPrecompile = forceSynchronous;
+#endif
+
+    if (caps.useAsyncPipelineCreation() && !forceSynchronous) {
 #if defined(__EMSCRIPTEN__)
         // We shouldn't use CreateRenderPipelineAsync in wasm.
         SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+
+#if defined(SK_HISTOGRAMS_ENABLED)
+        asyncCreation->fAsynchronous = true;
+#endif
+
         asyncCreation->fFuture = device.CreateRenderPipelineAsync(
                 &descriptor,
                 wgpu::CallbackMode::WaitAnyOnly,
@@ -623,19 +705,28 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                     }
 
                     asyncCreationPtr->fFinished = true;
+
+#if defined(SK_HISTOGRAMS_ENABLED)
+                    log_pipeline_creation(asyncCreationPtr);
+#endif
                 });
 #endif
     } else {
         std::optional<DawnErrorChecker> errorChecker;
-        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
-        }
+//        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
+//            errorChecker.emplace(sharedContext);
+//        }
+
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
 
         if (errorChecker.has_value() && errorChecker->popErrorScopes() != DawnErrorType::kNoError) {
             asyncCreation->fRenderPipeline = nullptr;
         }
+
+#if defined(SK_HISTOGRAMS_ENABLED)
+        log_pipeline_creation(asyncCreation.get());
+#endif
     }
 
     PipelineInfo pipelineInfo{*shaderInfo};
@@ -643,6 +734,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     pipelineInfo.fNativeVertexShader = std::move(vsCode);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode);
 #endif
+#if defined(SK_HISTOGRAMS_ENABLED)
+    pipelineInfo.fFromPrecompile = forceSynchronous;
+#endif
+
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfo,
@@ -690,6 +785,10 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     // We shouldn't use CreateRenderPipelineAsync in wasm.
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+
+    //$$ stalling!
+    //fAsyncPipelineCreation->fStallStart;
+
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fAsyncPipelineCreation->fFuture;
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext())
