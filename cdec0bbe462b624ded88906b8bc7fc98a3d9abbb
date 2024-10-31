@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "096d0d47_b9458e62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T20:08:17Z",
+      "side": 1,
+      "message": "Alright, went ahead and updated VulkanCommandBuffer to use the replay translation and clip.",
+      "parentUuid": "948b3353_f12b8aa8",
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93e8ca60_0255a797",
