@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5957c6bb_8ca67272",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-10-31T19:06:19Z",
+      "side": 1,
+      "message": "Is this just meant as a general remark? In that case, I hear you. I would like to see a more automatic way of doing that as well. Here, we could also change the signature of the FontScanner to just take SkData\u0027s, couldn\u0027t we? But that could be a separate change. \n\nIn case you wanted me to change something in response to this comment, let me know.",
+      "parentUuid": "967e5b67_ee8af0d2",
+      "revId": "774c61a83c7b9b623a516a979cba7a71bfd782df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "277d4859_b789bd4c",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-10-31T18:26:39Z",
       "side": 1,
       "message": "Before doing this we want to check `SkStream::getData()` which can be even less expensive.",
+      "revId": "774c61a83c7b9b623a516a979cba7a71bfd782df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de218e6e_871f56ec",
+        "filename": "src/ports/SkFontScanner_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-10-31T19:06:19Z",
+      "side": 1,
+      "message": "Done this as a separate stage before this now.",
+      "parentUuid": "277d4859_b789bd4c",
       "revId": "774c61a83c7b9b623a516a979cba7a71bfd782df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
