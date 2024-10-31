@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad178cf8_cfa6c7a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T18:37:44Z",
+      "side": 1,
+      "message": "The Vulkan currently doesn\u0027t support any of the replay options. I would say we should add support there separately, either adding support for translation in a CL submitted before this one, or support for translation + clip in a CL after this one.",
+      "parentUuid": "32d39908_7579f378",
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93e8ca60_0255a797",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1b36961_0e35bc9b",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T18:37:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93e8ca60_0255a797",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 125,
+        "endChar": 40
+      },
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4047e354_ecd337e8",
@@ -54,6 +96,30 @@
       "writtenOn": "2024-10-31T15:56:36Z",
       "side": 1,
       "message": "This should say it\u0027s in the final target space since it\u0027s already been adjusted by the replay translation and not in the local space.",
+      "range": {
+        "startLine": 140,
+        "startChar": 6,
+        "endLine": 140,
+        "endChar": 77
+      },
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e66f6528_600d37f2",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T18:37:44Z",
+      "side": 1,
+      "message": "Whoops! Good catch",
+      "parentUuid": "4047e354_ecd337e8",
       "range": {
         "startLine": 140,
         "startChar": 6,
