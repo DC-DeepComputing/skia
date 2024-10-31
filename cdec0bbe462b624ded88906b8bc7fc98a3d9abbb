@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "948b3353_f12b8aa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-10-31T19:30:32Z",
+      "side": 1,
+      "message": "(Well not quite -- the existing tests were only testing clear \u0026 writePixels, which are not platform-specific in applying the replay transform.)",
+      "parentUuid": "7b5e8ecd_082b0f05",
+      "revId": "cdec0bbe462b624ded88906b8bc7fc98a3d9abbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93e8ca60_0255a797",
