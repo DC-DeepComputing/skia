@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61d4bd9b_e4d561a2",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-01T13:57:41Z",
+      "side": 1,
+      "message": "It seems like basically all the backends are doing this exact same code. Is it worth virtualizing setScissor and have a base class do it? I know in the original design of CommandBuffer we tried to make all the calls inside of addRenderPass be non-virtual in the hope of maybe getting slight perf wins? But I\u0027m not sure how much is truly gained by that.",
+      "range": {
+        "startLine": 816,
+        "startChar": 0,
+        "endLine": 821,
+        "endChar": 5
+      },
+      "revId": "79d0fb89f5279156906074c4f9bf015c744ec411",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
