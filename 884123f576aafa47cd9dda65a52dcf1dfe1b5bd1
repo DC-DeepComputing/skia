@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "321558b3_e4f87034",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-01T16:49:08Z",
+      "side": 1,
+      "message": "Tried it out and I like the animations, I look forward to seeing how it looks with gradients!",
+      "revId": "884123f576aafa47cd9dda65a52dcf1dfe1b5bd1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
