@@ -16,6 +16,29 @@
       "message": "Adding a second google reviewer, but lgtm",
       "revId": "c121ecaddcdc51f882c11213a06bec0bec91568c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0fb9bfc_c135b18f",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-01T13:40:17Z",
+      "side": 1,
+      "message": "Since we are expecting every subclass who overrides this to call back the base class, we usually don\u0027t make this call virtual. Our normal model is to add a 2nd private virtual onFoo call. Then the base class foo() can call onFoo and we don\u0027t need to remember to add the call to parent::foo() in every subclass.",
+      "range": {
+        "startLine": 99,
+        "startChar": 4,
+        "endLine": 99,
+        "endChar": 11
+      },
+      "revId": "c121ecaddcdc51f882c11213a06bec0bec91568c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
