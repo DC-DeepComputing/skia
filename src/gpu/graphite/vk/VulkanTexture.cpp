@@ -210,10 +210,10 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                                 VkPipelineStageFlags dstStageMask,
                                                 bool byRegion,
                                                 uint32_t newQueueFamilyIndex) const {
-
     SkASSERT(newLayout == this->currentLayout() ||
              (VK_IMAGE_LAYOUT_UNDEFINED != newLayout &&
               VK_IMAGE_LAYOUT_PREINITIALIZED != newLayout));
+
     VkImageLayout currentLayout = this->currentLayout();
     uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
 
