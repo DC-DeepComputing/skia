@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6957421f_c30811b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-01T13:56:17Z",
+      "side": 1,
+      "message": "Looks like the Chromium Canary actually passed, `win_optional_gpu_tests_rel` just took so long to get going that a Skia into Chromium roll happened before it got started so it merge conflicted.",
+      "revId": "e83612a3db6e9987a51856383a4871cc7a82d87e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
