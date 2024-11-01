@@ -16,6 +16,23 @@
       "message": "Related: https://skia-review.googlesource.com/c/buildbot/+/915616",
       "revId": "4ca3ebb9b92089c126042ae24c3c5700f14237c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b5ecbf_50de5061",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-01T20:52:28Z",
+      "side": 1,
+      "message": "Can you call this patch_linux_amd64? I\u0027d like to get in the habit of including the architecture and os in our utilities especially if we might ever have to support more than one OS.",
+      "revId": "4ca3ebb9b92089c126042ae24c3c5700f14237c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
