@@ -96,8 +96,8 @@ public:
         fResourceCache->dumpMemoryStatistics(traceMemoryDump);
     }
 
-    void freeGpuResources();
-    void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
+    virtual void freeGpuResources();
+    virtual void purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime);
 
 #if defined(GPU_TEST_UTILS)
     ResourceCache* resourceCache() { return fResourceCache.get(); }
