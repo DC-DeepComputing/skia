@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72cd234f_73bff3fe",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-01T16:10:33Z",
+      "side": 0,
+      "message": "I don\u0027t believe there is any good reason to be submitting the barriers one a time here. We still make sure all barriers are submitting right before we start the render pass.",
+      "range": {
+        "startLine": 493,
+        "startChar": 12,
+        "endLine": 493,
+        "endChar": 43
+      },
+      "revId": "6a270b7dbcedfdcb1c5149289f761964d042aac4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
