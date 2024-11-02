@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "775f46ae_5a4a2419",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-02T00:15:24Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?\n\n/cc @fmalita as FYI",
+      "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47939a45_24c84fec",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-02T00:15:24Z",
+      "side": 1,
+      "message": "This assert would have failed without product code changes.\n\nI\u0027ve actually found this issue via an existing Blink test:\n\n```\n$ out/dbg/blink_platform_unittests --gtest_filter\u003dRustEnabled/AnimatedPNGTests.VerifySuccessfulFirstFrameDecodeAfterLaterFrame/0 --single_process\n...\n[ RUN      ] RustEnabled/AnimatedPNGTests.VerifySuccessfulFirstFrameDecodeAfterLaterFrame/0\n../../third_party/blink/renderer/platform/image-decoders/png/png_image_decoder_test.cc:1118: Failure\nExpected equality of these values:\n  kNotFound\n    Which is: 4294967295\n  frame1-\u003eRequiredPreviousFrameIndex()\n    Which is: 0\n...\n```",
+      "range": {
+        "startLine": 471,
+        "startChar": 4,
+        "endLine": 471,
+        "endChar": 64
+      },
+      "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
