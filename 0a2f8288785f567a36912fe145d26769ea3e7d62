@@ -39,6 +39,30 @@
       },
       "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a14048a5_295ad67a",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-04T19:25:30Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "47939a45_24c84fec",
+      "range": {
+        "startLine": 471,
+        "startChar": 4,
+        "endLine": 471,
+        "endChar": 64
+      },
+      "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
