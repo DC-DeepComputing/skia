@@ -274,6 +274,17 @@ public:
 
 private:
     void updateMesh(size_t new_count) {
+        static constexpr struct {
+            SkPoint   fUv;
+            SkColor4f fColor;
+        } gFixedVertices[] = {
+            {{ .25f, .25f}, {1, 0, 0, 1}},
+            {{ .75f, .75f}, {0, 1, 0, 1}},
+            {{ .75f, .25f}, {0, 0, 1, 1}},
+            {{ .25f, .75f}, {1, 1, 0, 1}},
+            {{ .50f, .50f}, {0, 1, 1, 1}},
+        };
+
         SkASSERT(fVertUVs.size() == fVertPos.size());
         SkASSERT(fVertUVs.size() == fVertColors.size());
         const size_t current_count = fVertUVs.size();
@@ -283,15 +294,24 @@ private:
         fVertColors.resize(new_count);
 
         for (size_t i = current_count; i < new_count; ++i) {
-            fVertUVs[i] = fVertPos[i] = { fRNG.nextF(), fRNG.nextF() };
-            fVertColors[i] = { fRNG.nextF(), fRNG.nextF(), fRNG.nextF(), 1.f };
+            const SkPoint uv = i < std::size(gFixedVertices)
+                ? gFixedVertices[i].fUv
+                : SkPoint{ fRNG.nextF(), fRNG.nextF() };
+            const SkColor4f color = i < std::size(gFixedVertices)
+                ? gFixedVertices[i].fColor
+                : SkColor4f{ fRNG.nextF(), fRNG.nextF(), fRNG.nextF(), 1.f };
+
+            fVertUVs   [i] = uv;
+            fVertColors[i] = color;
         }
 
         if (new_count < current_count) {
             // Reset the RNG state
             fRNG.setSeed(0);
             static constexpr size_t kRandsPerVertex = 5;
-            for (size_t i = 0; i < new_count * kRandsPerVertex; ++i) { fRNG.nextF(); }
+            const size_t rand_vertex_count =
+                std::max(new_count, std::size(gFixedVertices)) - std::size(gFixedVertices);
+            for (size_t i = 0; i < rand_vertex_count * kRandsPerVertex; ++i) { fRNG.nextF(); }
         }
     }
 
