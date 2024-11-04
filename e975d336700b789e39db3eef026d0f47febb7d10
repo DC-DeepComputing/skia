@@ -45,6 +45,30 @@
       },
       "revId": "e975d336700b789e39db3eef026d0f47febb7d10",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4f04bd3_6975cb68",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1003,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-04T14:05:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4f33ec16_3b5a6178",
+      "range": {
+        "startLine": 1003,
+        "startChar": 34,
+        "endLine": 1003,
+        "endChar": 50
+      },
+      "revId": "e975d336700b789e39db3eef026d0f47febb7d10",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
