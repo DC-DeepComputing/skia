@@ -16,6 +16,24 @@
       "message": "Is there a plan to use this? At the moment it seems to be written to but never read from? Should `validate` check to ensure that nothing `fRemoved` is in the cache?",
       "revId": "45b1dea0b6fe089866c6bc6a68cf36c43467cb0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c51af3b1_aac3eeba",
+        "filename": "src/text/gpu/StrikeCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-04T19:09:05Z",
+      "side": 1,
+      "message": "It\u0027s used in SkStrike::updateMemoryUsage to avoid updating the SkStrikeCache\u0027s memory usage if it\u0027s been removed. I was going to add that code as a second pass -- right now the memory tracking isn\u0027t all that useful as it doesn\u0027t include the Glyph data. I can pull it for now.",
+      "parentUuid": "e4edd6e4_9b4918d5",
+      "revId": "45b1dea0b6fe089866c6bc6a68cf36c43467cb0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
