@@ -890,7 +890,7 @@ private:
 
     bool fOOMed = false;
 
-#if SK_HISTOGRAMS_ENABLED
+#if defined(SK_HISTOGRAMS_ENABLED)
     int fCurrentSubmitRenderPassCount = 0;
 #endif
 
