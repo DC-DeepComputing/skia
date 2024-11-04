@@ -34,6 +34,24 @@
       "parentUuid": "e4edd6e4_9b4918d5",
       "revId": "45b1dea0b6fe089866c6bc6a68cf36c43467cb0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "093755a1_994a7677",
+        "filename": "src/text/gpu/StrikeCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-04T19:15:45Z",
+      "side": 1,
+      "message": "That\u0027s fine, just wanted to be sure it wasn\u0027t just left over.",
+      "parentUuid": "c51af3b1_aac3eeba",
+      "revId": "45b1dea0b6fe089866c6bc6a68cf36c43467cb0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
