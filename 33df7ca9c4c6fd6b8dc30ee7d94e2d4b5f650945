@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e1124a4_73953c3e",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-04T21:28:40Z",
+      "side": 1,
+      "message": "Can this be external to SkPath?  I would like us to land it, but keep it as a separate utility for now, and not expose in the public SkPath API.\n\nSomething like\n\n`SkPath general_interpolate(const SkPath\u0026 p1, const SkPath\u0026 p2, float weight)`\n\nI think all the data we need should be accessible with verb iterators, etc.",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 32
+      },
+      "revId": "33df7ca9c4c6fd6b8dc30ee7d94e2d4b5f650945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
