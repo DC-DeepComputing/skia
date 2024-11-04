@@ -22,6 +22,30 @@
       },
       "revId": "79d0fb89f5279156906074c4f9bf015c744ec411",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a28ebf1_d1021acb",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-11-04T14:48:12Z",
+      "side": 1,
+      "message": "I think this could be done with a helper method in CommandBuffer, without making anything virtual, but anyways I\u0027d rather make those changes in a follow-up CL.",
+      "parentUuid": "61d4bd9b_e4d561a2",
+      "range": {
+        "startLine": 816,
+        "startChar": 0,
+        "endLine": 821,
+        "endChar": 5
+      },
+      "revId": "79d0fb89f5279156906074c4f9bf015c744ec411",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
