@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4edd6e4_9b4918d5",
+        "filename": "src/text/gpu/StrikeCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-04T18:58:30Z",
+      "side": 1,
+      "message": "Is there a plan to use this? At the moment it seems to be written to but never read from? Should `validate` check to ensure that nothing `fRemoved` is in the cache?",
+      "revId": "45b1dea0b6fe089866c6bc6a68cf36c43467cb0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
