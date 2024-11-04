@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03724e29_0c980d11",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-04T18:40:03Z",
+      "side": 1,
+      "message": "PTAL. Not sure what\u0027s up with the Android canary -- it\u0027s behaving oddly.",
+      "revId": "1f5315ad5c5934b7fb54242100f94b8ca5ad6e17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
