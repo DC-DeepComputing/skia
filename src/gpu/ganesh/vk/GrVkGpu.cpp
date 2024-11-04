@@ -2237,7 +2237,7 @@ void GrVkGpu::finishOutstandingGpuWork() {
 }
 
 void GrVkGpu::onReportSubmitHistograms() {
-#if SK_HISTOGRAMS_ENABLED
+#if defined(SK_HISTOGRAMS_ENABLED)
     uint64_t allocatedMemory = 0, usedMemory = 0;
     std::tie(allocatedMemory, usedMemory) = fMemoryAllocator->totalAllocatedAndUsedMemory();
     SkASSERT(usedMemory <= allocatedMemory);

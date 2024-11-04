@@ -738,7 +738,7 @@ GrOpsRenderPass* GrGpu::getOpsRenderPass(
         const GrOpsRenderPass::StencilLoadAndStoreInfo& stencilInfo,
         const TArray<GrSurfaceProxy*, true>& sampledProxies,
         GrXferBarrierFlags renderPassXferBarriers) {
-#if SK_HISTOGRAMS_ENABLED
+#if defined(SK_HISTOGRAMS_ENABLED)
     fCurrentSubmitRenderPassCount++;
 #endif
     fStats.incRenderPasses();
@@ -767,7 +767,7 @@ bool GrGpu::submitToGpu(const GrSubmitInfo& info) {
 }
 
 void GrGpu::reportSubmitHistograms() {
-#if SK_HISTOGRAMS_ENABLED
+#if defined(SK_HISTOGRAMS_ENABLED)
     // The max allowed value for SK_HISTOGRAM_EXACT_LINEAR is 100. If we want to support higher
     // values we can add SK_HISTOGRAM_CUSTOM_COUNTS but this has a number of buckets that is less
     // than the number of actual values
@@ -776,7 +776,7 @@ void GrGpu::reportSubmitHistograms() {
                               std::min(fCurrentSubmitRenderPassCount, kMaxRenderPassBucketValue),
                               kMaxRenderPassBucketValue);
     fCurrentSubmitRenderPassCount = 0;
-#endif
+#endif   // SK_HISTOGRAMS_ENABLED
 
     this->onReportSubmitHistograms();
 }

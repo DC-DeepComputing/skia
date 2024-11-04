@@ -57,14 +57,29 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         ++fStats.fGraphicsCacheAdditions;
 #endif
         entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
-    }
+    } else {
 #if defined(GPU_TEST_UTILS)
-    else {
         // else there was a race creating the same pipeline and this thread lost, so return
         // the winner
         ++fStats.fGraphicsRaces;
-    }
 #endif
+#if defined(SK_HISTOGRAMS_ENABLED)
+        enum class PipelineCreationRace {
+            kNormalOverPre    = 0,
+            kNormalOverNormal = 1,
+            kPreOverPre       = 2,
+            kPreOverNormal    = 3,
+
+            kMaxValue = kPreOverNormal,
+        };
+
+        PipelineCreationRace race =
+                static_cast<PipelineCreationRace>((*entry)->fromPrecompile() * 2 +
+                                                  pipeline->fromPrecompile());
+        SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace", race,
+                                 PipelineCreationRace::kMaxValue);
+#endif
+    }
     return *entry;
 }
 
