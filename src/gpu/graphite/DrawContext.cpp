@@ -218,7 +218,8 @@ void DrawContext::flush(Recorder* recorder) {
         fComputePathAtlas->reset();
     } // else platform doesn't support compute or atlas was never initialized.
 
-    if (fPendingDraws->renderStepCount() == 0 && fPendingLoadOp != LoadOp::kClear) {
+    const auto renderStepCount = fPendingDraws->renderStepCount();
+    if (renderStepCount == 0 && fPendingLoadOp != LoadOp::kClear) {
         // Nothing will be rasterized to the target that warrants a RenderPassTask, but we preserve
         // any added uploads or compute tasks since those could also affect the target w/o
         // rasterizing anything directly.
@@ -276,9 +277,13 @@ void DrawContext::flush(Recorder* recorder) {
         auto [loadOp, storeOp] = pass->ops();
         auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
                                                   fTarget->textureInfo());
-
+        // If there's only one render step and it's a depth-only pass, we can skip the depth test.
+        auto dsFlags = pass->depthStencilFlags();
+        if (renderStepCount == 1 && dsFlags == DepthStencilFlags::kDepth) {
+            dsFlags = DepthStencilFlags::kNone;
+        }
         RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
-                                                   pass->depthStencilFlags(),
+                                                   dsFlags,
                                                    pass->clearColor(),
                                                    pass->requiresMSAA(),
                                                    writeSwizzle);
