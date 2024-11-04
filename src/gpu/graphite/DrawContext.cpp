@@ -248,9 +248,16 @@ void DrawContext::flush(Recorder* recorder) {
         SkASSERT(fTarget.get() == pass->target());
 
         sk_sp<TextureProxy> dstCopy;
+        auto dstCopyPixelBoundsPOT = dstCopyPixelBounds;
         if (!dstCopyPixelBounds.isEmpty()) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
+            // Make the texture size of 'dstCopy' a power of two, which is generally more performant
+            // than NPOT.
+            dstCopyPixelBoundsPOT = SkIRect::MakeXYWH(dstCopyPixelBounds.x(),
+                                                      dstCopyPixelBounds.y(),
+                                                      SkNextPow2(dstCopyPixelBounds.width()),
+                                                      SkNextPow2(dstCopyPixelBounds.height()));
 
             // TODO: Right now this assert is ensuring that the dstCopy will be texturable since it
             // uses the same texture info as fTarget. Ideally, if fTarget were not texturable but
@@ -261,7 +268,7 @@ void DrawContext::flush(Recorder* recorder) {
             SkASSERT(recorder->priv().caps()->isTexturable(fTarget->textureInfo()));
             dstCopy = TextureProxy::Make(recorder->priv().caps(),
                                          recorder->priv().resourceProvider(),
-                                         dstCopyPixelBounds.size(),
+                                         dstCopyPixelBoundsPOT.size(),
                                          fTarget->textureInfo(),
                                          "DstCopyTexture",
                                          skgpu::Budgeted::kYes);
@@ -286,7 +293,7 @@ void DrawContext::flush(Recorder* recorder) {
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
         fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes), desc, fTarget,
-                                                       std::move(dstCopy), dstCopyPixelBounds));
+                                                       std::move(dstCopy), dstCopyPixelBoundsPOT));
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other
