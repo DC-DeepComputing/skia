@@ -44,6 +44,22 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) 
     return entry ? *entry : nullptr;
 }
 
+#if SK_HISTOGRAMS_ENABLED
+// These values are persisted to logs. Entries should not be renumbered and
+// numeric values should never be reused.
+//
+// LINT.IfChange(PipelineCreationRace)
+enum class PipelineCreationRace {
+    kNormalOverPre    = 0,
+    kNormalOverNormal = 1,
+    kPreOverPre       = 2,
+    kPreOverNormal    = 3,
+
+    kMaxValue = kPreOverNormal,
+};
+// LINT.ThenChange(//tools/metrics/histograms/enums.xml:SkiaPipelineCreationRace)
+#endif // SK_HISTOGRAMS_ENABLED
+
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
@@ -57,14 +73,20 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         ++fStats.fGraphicsCacheAdditions;
 #endif
         entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
-    }
+    } else {
 #if defined(GPU_TEST_UTILS)
-    else {
         // else there was a race creating the same pipeline and this thread lost, so return
         // the winner
         ++fStats.fGraphicsRaces;
-    }
 #endif
+#if SK_HISTOGRAMS_ENABLED
+        PipelineCreationRace race =
+                static_cast<PipelineCreationRace>((*entry)->fromPrecompile() * 2 +
+                                                  pipeline->fromPrecompile());
+        SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace", race,
+                                 PipelineCreationRace::kMaxValue);
+#endif
+    }
     return *entry;
 }
 
