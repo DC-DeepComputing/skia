@@ -46,6 +46,30 @@
       },
       "revId": "33df7ca9c4c6fd6b8dc30ee7d94e2d4b5f650945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "530115f8_2a0086b3",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-05T14:57:26Z",
+      "side": 1,
+      "message": "Agreed, something like \"arc length percentage\" would be more descriptive.\n\nStandard lib is fine, especially in viewer/samples code.",
+      "parentUuid": "6a1462eb_d7cfcbed",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 32
+      },
+      "revId": "33df7ca9c4c6fd6b8dc30ee7d94e2d4b5f650945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
