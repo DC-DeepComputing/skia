@@ -1,0 +1,131 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34816be2_0763d979",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-05T21:51:22Z",
+      "side": 1,
+      "message": "Thanks so much!",
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2059d7c_dd554c5d",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-05T21:51:22Z",
+      "side": 1,
+      "message": "nit: `/*hasBackdropFilter\u003d*/false`",
+      "range": {
+        "startLine": 290,
+        "startChar": 74,
+        "endLine": 290,
+        "endChar": 79
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacb80f1_d99ca18e",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-05T21:51:22Z",
+      "side": 1,
+      "message": "nit: line length. And with adding the parameter name comment to the other two cases I suspect they will be over 100 as well, so they should all just be formatted like regular functions instead of these 1-liners.",
+      "range": {
+        "startLine": 291,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 101
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b77d3b67_a5a3707b",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-05T21:51:22Z",
+      "side": 1,
+      "message": "nit: for Skia\u0027s line length and style this should be:\n\n    sb.bounds \u003d (hasBackdropFilter || PaintMayAffectTransparentBlack(paint)) ?\n            fCullRect : Bounds::MakeEmpty();",
+      "range": {
+        "startLine": 326,
+        "startChar": 9,
+        "endLine": 327,
+        "endChar": 107
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbdb2b39_7f53108a",
+        "filename": "tests/RecordDrawTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-05T21:51:22Z",
+      "side": 1,
+      "message": "nit: Line the `SkTileMode` up with the the `(` after `SaveLayerRec`.",
+      "range": {
+        "startLine": 213,
+        "startChar": 44,
+        "endLine": 213,
+        "endChar": 77
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "939e3ae3_c531827e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/RecordDrawTest.cpp",
+              "range": {
+                "startLine": 213,
+                "startChar": 0,
+                "endLine": 214,
+                "endChar": 0
+              },
+              "replacement": "                                                   SkTileMode::kDecal, nullptr, 0));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
