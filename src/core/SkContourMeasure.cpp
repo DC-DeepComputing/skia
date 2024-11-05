@@ -22,6 +22,7 @@
 #include <array>
 #include <cstddef>
 #include <utility>
+#include <vector>
 
 #define kMaxTValue  0x3FFFFFFF
 
