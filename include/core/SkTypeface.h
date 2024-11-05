@@ -425,6 +425,7 @@ private:
     friend class SkRandomTypeface;   // getAdvancedMetrics
     friend class SkPDFFont;          // getAdvancedMetrics
     friend class SkTypeface_proxy;
+    friend class SkTypeface_fontconfig_proxy;
 
     friend class SkFontPriv;         // getGlyphToUnicodeMap
 
