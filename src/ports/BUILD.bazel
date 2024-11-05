@@ -483,6 +483,7 @@ skia_cc_library(
 skia_filegroup(
     name = "windows_fonts_srcs",
     srcs = [
+        "SkNativeFontCollection_win_dw.cpp",
         "SkFontMgr_win_dw.cpp",
         "SkScalerContext_win_dw.cpp",
         "SkScalerContext_win_dw.h",
