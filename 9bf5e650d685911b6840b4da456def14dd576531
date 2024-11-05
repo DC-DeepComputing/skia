@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0973cd50_0b4a5707",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-05T18:30:40Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be done once per renderpass and not once per bindPipeline call (i.e. once per draw)? Like why couldn\u0027t we just reuse the previous updateIntrinsicUniform call and change the internals to set pushContants instead of buffers?",
+      "range": {
+        "startLine": 853,
+        "startChar": 15,
+        "endLine": 874,
+        "endChar": 56
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae336460_78aabdd5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-05T18:30:40Z",
+      "side": 1,
+      "message": "Curious, was there something that triggered the need to add the caching for this? I can\u0027t imagine setting the viewport N times where N is the number of render passes would have much of a perf impact.",
+      "range": {
+        "startLine": 234,
+        "startChar": 4,
+        "endLine": 234,
+        "endChar": 29
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b1518b7a_8c67ff94",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 35
