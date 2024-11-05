@@ -426,6 +426,7 @@ private:
     friend class SkPDFFont;          // getAdvancedMetrics
     friend class SkTypeface_proxy;
     friend class SkTypeface_fontconfig_proxy;
+    friend class SkTypeface_AndroidSystem_proxy;
 
     friend class SkFontPriv;         // getGlyphToUnicodeMap
 

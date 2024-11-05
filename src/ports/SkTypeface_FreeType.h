@@ -29,6 +29,7 @@ typedef struct FT_StreamRec_* FT_Stream;
 typedef signed long FT_Pos;
 typedef struct FT_BBox_ FT_BBox;
 
+class SkFontScanner_FreeType;
 class SkTypeface_FreeType : public SkTypeface {
 public:
     /** Fetch units/EM from "head" table if needed (ie for bitmap fonts) */
@@ -41,6 +42,7 @@ public:
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f','r','e','e');
     static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromStream(SkFontScanner_FreeType* scanner, std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
 
 protected:
     SkTypeface_FreeType(const SkFontStyle& style, bool isFixedPitch);

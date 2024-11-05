@@ -105,6 +105,8 @@ public:
     int onGetTableTags(SkFontTableTag tags[]) const override;
 
     size_t onGetTableData(SkFontTableTag tag, size_t offset, size_t length, void* data) const override;
+
+    virtual std::unique_ptr<SkFontData> onMakeFontData() const { SkDEBUGFAIL("Not supported"); }
 protected:
     sk_sp<SkTypeface> fProxy;
 };

@@ -470,14 +470,14 @@ public:
     }
 
     std::unique_ptr<SkAdvancedTypefaceMetrics> onGetAdvancedMetrics() const override {
-            std::unique_ptr<SkAdvancedTypefaceMetrics> info = fProxy->onGetAdvancedMetrics();
-    // Simulated fonts shouldn't be considered to be of the type of their data.
-    if (get_matrix(fPattern, FC_MATRIX) ||
-        get_bool(fPattern, FC_EMBOLDEN)) {
-        info->fType = SkAdvancedTypefaceMetrics::kOther_Font;
+        std::unique_ptr<SkAdvancedTypefaceMetrics> info = fProxy->onGetAdvancedMetrics();
+        // Simulated fonts shouldn't be considered to be of the type of their data.
+        if (get_matrix(fPattern, FC_MATRIX) ||
+            get_bool(fPattern, FC_EMBOLDEN)) {
+            info->fType = SkAdvancedTypefaceMetrics::kOther_Font;
+        }
+        return info;
     }
-    return info;
-}
 
     ~SkTypeface_fontconfig_proxy() override {
         // Hold the lock while unrefing the pattern.
