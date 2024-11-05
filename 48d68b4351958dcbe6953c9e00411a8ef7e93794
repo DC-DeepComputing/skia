@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43dc9cdb_9c4b916b",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-05T16:08:17Z",
+      "side": 1,
+      "message": "This is a weird case and I don\u0027t think its what we want.",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 274,
+        "endChar": 86
+      },
+      "revId": "48d68b4351958dcbe6953c9e00411a8ef7e93794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
