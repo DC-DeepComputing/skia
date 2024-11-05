@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "de63c084_e0f545e4",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-05T16:44:28Z",
+      "side": 1,
+      "message": "```\n../SRC/skia/tools/viewer/PathLerpSlide.cpp:55:13: error: variable length array \u0027split_pts\u0027 is used [-Werror\u003dvla]\n   55 |     SkPoint split_pts[dst_size];\n      |             ^~~~~~~~~\n```\n\nSome compilers don\u0027t like variable size arrays (non-standard C++), let\u0027s just use a `std::vector\u003cSkPoint\u003e split_pts(dst_size)`.",
+      "revId": "48d68b4351958dcbe6953c9e00411a8ef7e93794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "43dc9cdb_9c4b916b",
