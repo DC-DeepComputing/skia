@@ -22,6 +22,30 @@
       },
       "revId": "33df7ca9c4c6fd6b8dc30ee7d94e2d4b5f650945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a1462eb_d7cfcbed",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-05T14:43:35Z",
+      "side": 1,
+      "message": "Done, right now this still uses standard library data structures which we may want to change. Also we may want to change the verbiage as we don\u0027t use actual t values just proportions along the length of the path (which aren\u0027t equal I don\u0027t think), along with finishing the implementation.",
+      "parentUuid": "7e1124a4_73953c3e",
+      "range": {
+        "startLine": 135,
+        "startChar": 5,
+        "endLine": 135,
+        "endChar": 32
+      },
+      "revId": "33df7ca9c4c6fd6b8dc30ee7d94e2d4b5f650945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
