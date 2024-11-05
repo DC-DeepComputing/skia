@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c449395_5921398e",
+        "filename": "tools/viewer/PathLerpSlide.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-05T15:28:05Z",
+      "side": 1,
+      "message": "This isn\u0027t currently correct from when I was refactoring, fixing now",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 0
+      },
+      "revId": "90d9a0590a472224664a06b8d6c47b97950344d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
