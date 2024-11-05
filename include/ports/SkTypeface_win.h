@@ -50,7 +50,12 @@ SK_API void SkTypeface_SetEnsureLOGFONTAccessibleProc(void (*)(const LOGFONT&));
 class SkFontMgr;
 struct IDWriteFactory;
 struct IDWriteFontCollection;
+struct IDWriteFont;
+struct IDWriteFontFace;
 struct IDWriteFontFallback;
+struct IDWriteFontFamily;
+using WCHAR = wchar_t;
+using UINT32 = unsigned int;
 
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_GDI();
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory = nullptr,
@@ -58,6 +63,45 @@ SK_API sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory = null
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_DirectWrite(IDWriteFactory* factory,
                                                   IDWriteFontCollection* collection,
                                                   IDWriteFontFallback* fallback);
+
+class SkNativeFontCollection_DirectWrite : public SkRefCnt {
+public:
+    SK_API static sk_sp<SkNativeFontCollection_DirectWrite> Make(IDWriteFactory* factory,
+                                                                 IDWriteFontCollection* collection,
+                                                                 IDWriteFontFallback* fallback);
+
+    virtual int countFamilies() const = 0;
+    virtual void getFamilyName(int index, SkString* familyName) const = 0;
+    virtual IDWriteFontFamily* createStyleSet(int index) const = 0;
+    virtual IDWriteFontFamily* matchFamily(const char familyName[]) const = 0;
+
+    struct Match {
+        Match(std::nullptr_t) {}
+        Match(IDWriteFontFamily* family, IDWriteFont* font, IDWriteFontFace* face)
+                : fFamily(family), fFont(font), fFace(face) {}
+        Match(const Match&) = delete;
+        Match& operator=(const Match&) = delete;
+        Match(Match&& that);
+        Match& operator=(Match&& that);
+        ~Match(); // Will Release pointers if non-nullptr
+
+        explicit operator bool() { return fFamily && fFont && fFace; }
+
+        // These are classic COM owning bare pointers.
+        IDWriteFontFamily* fFamily = nullptr;
+        IDWriteFont* fFont = nullptr;
+        IDWriteFontFace* fFace = nullptr;
+    };
+    virtual Match matchFamilyStyle(IDWriteFontFamily*,
+                                   const SkFontStyle& fontstyle) const = 0;
+    virtual Match matchFamilyStyleCharacter(const char familyName[], const SkFontStyle&,
+                                            const char* bcp47[], int bcp47Count,
+                                            const WCHAR* str, UINT32 strLen) const = 0;
+    virtual Match legacyMakeTypeface(const char familyName[], SkFontStyle) const = 0;
+
+    virtual IDWriteFactory* factory() const = 0;
+    virtual WCHAR* locale() const = 0;
+};
 
 #endif  // SK_BUILD_FOR_WIN
 #endif  // SkTypeface_win_DEFINED
