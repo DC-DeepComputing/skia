@@ -90,7 +90,7 @@
    integrate with their histogram collection backend.
 */
 //#define SK_HISTOGRAM_BOOLEAN(name, sample)
-//#define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
+#define SK_HISTOGRAM_ENUMERATION(name, sample, enum_size)
 //#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, value_max)
 //#define SK_HISTOGRAM_MEMORY_KB(name, sample)
 
