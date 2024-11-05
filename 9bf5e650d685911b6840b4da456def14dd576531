@@ -68,6 +68,29 @@
       },
       "revId": "9bf5e650d685911b6840b4da456def14dd576531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "346fa5be_f0719f90",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-05T20:56:40Z",
+      "side": 1,
+      "message": "Does this actually get used by graphite when compiling spirv? What does it mean if so?",
+      "range": {
+        "startLine": 647,
+        "startChar": 4,
+        "endLine": 647,
+        "endChar": 44
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
