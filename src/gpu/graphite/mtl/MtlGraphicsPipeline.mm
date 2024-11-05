@@ -264,11 +264,13 @@ static MTLRenderPipelineColorAttachmentDescriptor* create_color_attachment(
 
 } // anonymous namespace
 
-sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sharedContext,
-                                                     MtlResourceProvider* resourceProvider,
-                                                     const RuntimeEffectDictionary* runtimeDict,
-                                                     const GraphicsPipelineDesc& pipelineDesc,
-                                                     const RenderPassDesc& renderPassDesc) {
+sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
+        const MtlSharedContext* sharedContext,
+        MtlResourceProvider* resourceProvider,
+        const RuntimeEffectDictionary* runtimeDict,
+        const GraphicsPipelineDesc& pipelineDesc,
+        const RenderPassDesc& renderPassDesc,
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
     std::string vsMSL, fsMSL;
     SkSL::Program::Interface vsInterface, fsInterface;
 
@@ -324,11 +326,18 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
     sk_cfp<id<MTLDepthStencilState>> dss =
             resourceProvider->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
+    const bool forceSynchronous =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
+
     PipelineInfo pipelineInfo{*shaderInfo};
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL);
 #endif
+#if SK_HISTOGRAMS_ENABLED
+    pipelineInfo.fFromPrecompile = forceSynchronous;
+#endif
+
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
     return Make(sharedContext,
@@ -385,6 +394,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
 
     PipelineInfo pipelineInfo;
     pipelineInfo.fNumFragTexturesAndSamplers = 1;
+
     // This is an internal shader, leave off filling out the test-utils shader code
     return Make(sharedContext,
                 pipelineLabel,

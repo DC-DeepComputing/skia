@@ -776,7 +776,7 @@ void GrGpu::reportSubmitHistograms() {
                               std::min(fCurrentSubmitRenderPassCount, kMaxRenderPassBucketValue),
                               kMaxRenderPassBucketValue);
     fCurrentSubmitRenderPassCount = 0;
-#endif
+#endif   // SK_HISTOGRAMS_ENABLED
 
     this->onReportSubmitHistograms();
 }
