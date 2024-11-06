@@ -641,14 +641,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         }
     }
 
-    PipelineInfo pipelineInfo{*shaderInfo};
+    PipelineInfo pipelineInfo{*shaderInfo, pipelineCreationFlags};
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode);
 #endif
-#if SK_HISTOGRAMS_ENABLED
-    pipelineInfo.fFromPrecompile = forPrecompilation;
-#endif
+
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfo,
