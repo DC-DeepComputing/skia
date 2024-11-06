@@ -80,6 +80,30 @@
       },
       "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a227416e_96be6513",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T19:50:59Z",
+      "side": 1,
+      "message": "Hmm, that is a complication I hadn\u0027t thought of. It maybe doesn\u0027t matter right now because every RenderPassTask is meant to call setReplayClipAndTranslation or clearReplayClip before it adds its render passes so we would be able to have store things in `fReplayClip` and recover the original value on the next added render pass.\n\nI don\u0027t know the full implications, but we could maybe change `fColorAttachmentSize` to just be `fRenderPassBounds` and have start out as the full color attachment and then get intersected with the replay clip and even possibly the draw pass\u0027s bounds so we have tight bounds sent to the backends?",
+      "parentUuid": "c83e6640_e4048f24",
+      "range": {
+        "startLine": 284,
+        "startChar": 23,
+        "endLine": 284,
+        "endChar": 39
+      },
+      "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
