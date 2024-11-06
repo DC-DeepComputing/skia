@@ -1540,9 +1540,7 @@ $pure half4 per_edge_aa_quad_coverage_fn(float4 coords,
                                          float4 edgeDistances) {
     // This represents a filled rectangle or quadrilateral, where the distances have already
     // been converted to device space.
-    float2 outerDist = min(edgeDistances.xy, edgeDistances.zw);
-    float c = min(outerDist.x, outerDist.y) * coords.w;
-    return half4(saturate(c));
+    return half4(1.0);
 }
 
 $pure half4 circular_arc_coverage_fn(float4 circleEdge,

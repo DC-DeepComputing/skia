@@ -143,7 +143,7 @@ struct Vertex {
 // vertex should be snapped to the center instead of its regular calculation.
 static constexpr int kCornerVertexCount = 4; // sk_VertexID is divided by this in SkSL
 static constexpr int kVertexCount = 4 * kCornerVertexCount;
-static constexpr int kIndexCount = 29;
+static constexpr int kIndexCount = 4;
 
 static void write_index_buffer(VertexWriter writer) {
     static constexpr uint16_t kTL = 0 * kCornerVertexCount;
@@ -152,12 +152,6 @@ static void write_index_buffer(VertexWriter writer) {
     static constexpr uint16_t kBL = 3 * kCornerVertexCount;
 
     static const uint16_t kIndices[kIndexCount] = {
-        // Exterior AA ramp outset
-        kTL+1,kTL+2,kTL+3,kTR+0,kTR+3,kTR+1,
-        kTR+1,kTR+2,kTR+3,kBR+0,kBR+3,kBR+1,
-        kBR+1,kBR+2,kBR+3,kBL+0,kBL+3,kBL+1,
-        kBL+1,kBL+2,kBL+3,kTL+0,kTL+3,kTL+1,
-        kTL+3,
         // Fill triangles
         kTL+3,kTR+3,kBL+3,kBR+3
     };
