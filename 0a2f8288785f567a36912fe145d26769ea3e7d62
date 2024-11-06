@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00dd8309_28f2b301",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-06T03:27:38Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL at the CQ state associated with this CL?  It seems that the CQ has trouble finishing Test-Win10-MSVC-Golo-GPU-QuadroP400-x86_64-Release-All-Direct3D pass.  I noticed that the job at https://task-scheduler.skia.org/job/1kgJkQRlM6JxWGk1cE67 links to a bot list at https://chromium-swarm.appspot.com/botlist?f\u003dgpu%3A10de%3A1cb3-31.0.15.5222\u0026f\u003dos%3AWindows-10-19045\u0026f\u003dpool%3ASkia and that bot list says that all the bots are \"Dead. Last seen 2d ago\".",
+      "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47939a45_24c84fec",
