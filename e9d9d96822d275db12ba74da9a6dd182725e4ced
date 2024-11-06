@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "05893e6b_183bd6fb",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T18:00:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2059d7c_dd554c5d",
+      "range": {
+        "startLine": 290,
+        "startChar": 74,
+        "endLine": 290,
+        "endChar": 79
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dacb80f1_d99ca18e",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2b5582b_214da960",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T18:00:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dacb80f1_d99ca18e",
+      "range": {
+        "startLine": 291,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 101
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b77d3b67_a5a3707b",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-11-05T21:51:22Z",
       "side": 1,
       "message": "nit: for Skia\u0027s line length and style this should be:\n\n    sb.bounds \u003d (hasBackdropFilter || PaintMayAffectTransparentBlack(paint)) ?\n            fCullRect : Bounds::MakeEmpty();",
+      "range": {
+        "startLine": 326,
+        "startChar": 9,
+        "endLine": 327,
+        "endChar": 107
+      },
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17ddee45_893638ed",
+        "filename": "src/core/SkRecordDraw.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T18:00:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b77d3b67_a5a3707b",
       "range": {
         "startLine": 326,
         "startChar": 9,
@@ -124,6 +196,30 @@
           ]
         }
       ],
+      "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd5244c_e275a7b5",
+        "filename": "tests/RecordDrawTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T18:00:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dbdb2b39_7f53108a",
+      "range": {
+        "startLine": 213,
+        "startChar": 44,
+        "endLine": 213,
+        "endChar": 77
+      },
       "revId": "e9d9d96822d275db12ba74da9a6dd182725e4ced",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
