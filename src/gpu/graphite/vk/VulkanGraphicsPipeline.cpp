@@ -855,10 +855,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     pipelineInfo.fNativeFragmentShader = "SPIR-V disassmebly not available";
 #endif
 #if SK_HISTOGRAMS_ENABLED
-    const bool forceSynchronous =
-            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
+    const bool forPrecompilation =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecomilation);
 
-    pipelineInfo.fFromPrecompile = forceSynchronous;
+    pipelineInfo.fFromPrecompile = forPrecompilation;
 #endif
 
     return sk_sp<VulkanGraphicsPipeline>(
