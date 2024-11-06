@@ -138,6 +138,9 @@ protected:
     SkIVector fReplayTranslation;
     // This is in target texture space, having been transformed by the replay translation.
     SkIRect fReplayClip;
+    // This is the replay clip intersected with the current render pass attachment bounds, or equal
+    // the bounds if the original replay clip was empty.
+    SkIRect fRenderPassReplayClip;
 
     // The texture to use for implementing DstReadRequirement::kTextureCopy for the current render
     // pass. This is a bare pointer since the CopyTask that initializes the texture's contents

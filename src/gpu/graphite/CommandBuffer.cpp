@@ -92,6 +92,13 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     fColorAttachmentSize = colorTexture->dimensions();
     SkIRect colorAttachmentBounds = SkIRect::MakeSize(fColorAttachmentSize);
 
+    if (fReplayClip.isEmpty()) {
+        fRenderPassReplayClip = colorAttachmentBounds;
+    } else {
+        fRenderPassReplayClip = fReplayClip;
+        fRenderPassReplayClip.intersect(colorAttachmentBounds);
+    }
+
     SkIRect renderPassBounds;
     for (const auto& drawPass : drawPasses) {
         renderPassBounds.join(drawPass->bounds());
