@@ -16,6 +16,46 @@
       "message": "Following up on comments from http://review.skia.org/914896",
       "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "714e16d4_be2bc661",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T16:33:37Z",
+      "side": 1,
+      "message": "Thanks for following up, as-is this is definitely a better spot than what we had been doing, but I wrote up an alternative that avoids the risk of forgetting to call `transformScissor`, wdyt?",
+      "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0de556_0a138032",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T16:33:37Z",
+      "side": 1,
+      "message": "Greg and I were discussing the trade offs of this as a non-virtual call, vs. a virtual call and we do want to keep all of the command handling functions non-virtual but it would be nice to avoid the risk of having an implementer forget to call `transformScissor`.\n\nOne way we came up with that would address this is if we added a `Scissor` struct to `DrawTypes.h` (or maybe `CommandTypes.h`) that stored the scissor rect privately and had a getter function that took in the replay translation and replay clip. The big switch would just forward `fReplayTranslation` and `fReplayClip` into the accessor.\n\nFor convenience I think it makes sense to have the `setScissor()` functions on the command buffers take an `SkIRect`.\n\nWe can also handle `fColorAttachmentSize` and `fReplayClip` automatically by intersecting the replay clip with the color attachment size, or set the replay clip to the color attachment bounds if the replay clip comes in as empty.",
+      "range": {
+        "startLine": 284,
+        "startChar": 23,
+        "endLine": 284,
+        "endChar": 39
+      },
+      "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
