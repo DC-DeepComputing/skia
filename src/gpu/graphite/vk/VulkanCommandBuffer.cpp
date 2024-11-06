@@ -1374,13 +1374,7 @@ void VulkanCommandBuffer::bindTextureSamplers() {
 
 void VulkanCommandBuffer::setScissor(unsigned int left, unsigned int top, unsigned int width,
                                      unsigned int height) {
-    SkIRect scissor = SkIRect::MakeXYWH(
-            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
-    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
-        (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip))) {
-        scissor.setEmpty();
-    }
-
+    SkIRect scissor = this->transformScissor(left, top, width, height);
     VkRect2D vkScissor = {{scissor.x(), scissor.y()},
                           {static_cast<unsigned int>(scissor.width()),
                            static_cast<unsigned int>(scissor.height())}};

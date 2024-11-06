@@ -133,6 +133,13 @@ public:
 protected:
     CommandBuffer(Protected);
 
+    // Transform a scissor rectangle by the current replay translation, then intersect with the
+    // replay clip and color attachment bounds.
+    SkIRect transformScissor(unsigned int left,
+                             unsigned int top,
+                             unsigned int width,
+                             unsigned int height);
+
     SkISize fColorAttachmentSize;
     // This is also the origin of the logical viewport relative to the target texture's (0,0) pixel
     SkIVector fReplayTranslation;

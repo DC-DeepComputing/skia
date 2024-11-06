@@ -735,12 +735,7 @@ void DawnCommandBuffer::setScissor(unsigned int left,
                                    unsigned int width,
                                    unsigned int height) {
     SkASSERT(fActiveRenderPassEncoder);
-    SkIRect scissor = SkIRect::MakeXYWH(
-            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
-    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
-        (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip))) {
-        scissor.setEmpty();
-    }
+    SkIRect scissor = this->transformScissor(left, top, width, height);
     fActiveRenderPassEncoder.SetScissorRect(
             scissor.x(), scissor.y(), scissor.width(), scissor.height());
 }

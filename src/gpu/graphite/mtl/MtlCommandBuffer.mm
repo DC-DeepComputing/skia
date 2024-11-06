@@ -586,13 +586,9 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
 void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
                                   unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
-    SkIRect scissor = SkIRect::MakeXYWH(
-            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
-    fDrawIsOffscreen = !scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
-                       (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip));
-    if (fDrawIsOffscreen) {
-        scissor.setEmpty();
-    }
+
+    SkIRect scissor = this->transformScissor(left, top, width, height);
+    fDrawIsOffscreen = scissor.isEmpty();
 
     fActiveRenderCommandEncoder->setScissorRect({
             static_cast<unsigned int>(scissor.x()),

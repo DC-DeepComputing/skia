@@ -281,4 +281,17 @@ bool CommandBuffer::clearBuffer(const Buffer* buffer, size_t offset, size_t size
     return true;
 }
 
+SkIRect CommandBuffer::transformScissor(unsigned int left,
+                                        unsigned int top,
+                                        unsigned int width,
+                                        unsigned int height) {
+    SkIRect scissor = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
+        (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip))) {
+        scissor.setEmpty();
+    }
+    return scissor;
+}
+
 } // namespace skgpu::graphite
