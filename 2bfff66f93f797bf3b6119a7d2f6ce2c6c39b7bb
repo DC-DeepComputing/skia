@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc4056c7_62d4f4f3",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T16:43:47Z",
+      "side": 1,
+      "message": "If we just had the #if `SK_HISTOGRAMS_ENABLED` guard inside this function, we can always call it and reduce the amount of pound defines elsewhere.",
+      "range": {
+        "startLine": 266,
+        "startChar": 12,
+        "endLine": 266,
+        "endChar": 13
+      },
+      "revId": "2bfff66f93f797bf3b6119a7d2f6ce2c6c39b7bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c90a20e7_bfc8f80e",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-06T16:43:47Z",
+      "side": 1,
+      "message": "wdyt about having another bool below `forceSynchronous` that is `useAsync \u003d caps.useAsync() \u0026\u0026 !forceSynchronous`.  Then we can have one guard that assigns all the histogram state in `asyncCreation` and use that same bool in the above if check.",
+      "range": {
+        "startLine": 666,
+        "startChar": 8,
+        "endLine": 666,
+        "endChar": 44
+      },
+      "revId": "2bfff66f93f797bf3b6119a7d2f6ce2c6c39b7bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
