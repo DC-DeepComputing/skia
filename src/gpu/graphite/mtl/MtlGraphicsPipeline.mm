@@ -332,10 +332,10 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL);
 #endif
 #if SK_HISTOGRAMS_ENABLED
-    const bool forceSynchronous =
-            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForceSynchronous);
+    const bool forPrecomilation =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
-    pipelineInfo.fFromPrecompile = forceSynchronous;
+    pipelineInfo.fFromPrecompile = forPrecomilation;
 #endif
 
     std::string pipelineLabel =
