@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb90b3ef_ce6a72d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-06T12:44:36Z",
+      "side": 1,
+      "message": "We are having some infrastructure issues. I would say it\u0027s safe to bypass the CQ as a result.",
+      "revId": "0a2f8288785f567a36912fe145d26769ea3e7d62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47939a45_24c84fec",
