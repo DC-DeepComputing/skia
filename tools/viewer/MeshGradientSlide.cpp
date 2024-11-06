@@ -8,10 +8,13 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkCubicMap.h"
+#include "include/core/SkPicture.h"
+#include "include/core/SkPictureRecorder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
+#include "include/core/SkVertices.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/base/SkDebug.h"
 #include "src/base/SkRandom.h"
@@ -23,8 +26,66 @@
 #include <vector>
 
 #include "imgui.h"
+#include "delaunator.hpp"
 
 namespace {
+
+sk_sp<SkVertices> triangulate_pts(int n, SkPoint* pts, const std::vector<SkColor>& colors) {
+    // put points in the format delaunator wants
+    std::vector<double> coords;
+    for (int i = 0; i < n; ++i) {
+        coords.push_back(pts[i].x());
+        coords.push_back(pts[i].y());
+    }
+
+    // triangulation happens here
+    delaunator::Delaunator d(coords);
+
+    // SkVertices parameters
+    std::vector<SkPoint> vertices;
+    std::vector<uint16_t> indices;
+
+    // populate vertices & colors
+    for(std::size_t i = 0; i < d.coords.size(); i+=2) {
+        vertices.push_back(SkPoint::Make(d.coords[i], d.coords[i+1]));
+    }
+
+    // populate triangle indices
+    for(std::size_t i = 0; i < d.triangles.size(); i+=3) {
+        indices.push_back(d.triangles[i]);
+        indices.push_back(d.triangles[i+1]);
+        indices.push_back(d.triangles[i+2]);
+    }
+
+    return SkVertices::MakeCopy(SkVertices::kTriangles_VertexMode, vertices.size(), vertices.data(), nullptr, colors.data(), indices.size(), indices.data());
+}
+
+sk_sp<SkShader> makeGradientShader(int w, int h, std::vector<SkPoint>& vertices, std::vector<SkColor>& colors) {
+    vertices.push_back(SkPoint::Make(0.f, 0.f));
+    vertices.push_back(SkPoint::Make(w, 0.f));
+    vertices.push_back(SkPoint::Make(0.f, h));
+    vertices.push_back(SkPoint::Make(w, h));
+
+    colors.push_back(SK_ColorTRANSPARENT);
+    colors.push_back(SK_ColorTRANSPARENT);
+    colors.push_back(SK_ColorTRANSPARENT);
+    colors.push_back(SK_ColorTRANSPARENT);
+
+    sk_sp<SkVertices> sk_vertices = triangulate_pts(vertices.size(), vertices.data(), colors);
+
+    // record with a picture
+    SkRect tile = SkRect::MakeWH(w, h);
+    SkPictureRecorder recorder;
+    SkCanvas* c = recorder.beginRecording(tile);
+
+    SkPaint p;
+    p.setAntiAlias(true);
+    p.setColor(SK_ColorWHITE);
+    c->drawVertices(sk_vertices, SkBlendMode::kModulate, p);
+    sk_sp<SkPicture> picture(recorder.finishRecordingAsPicture());
+
+    return picture->makeShader(SkTileMode::kDecal, SkTileMode::kDecal, SkFilterMode::kNearest);
+}
 
 class GradientRenderer : public SkRefCnt {
 public:
@@ -36,7 +97,7 @@ public:
                                 SkSpan<const SkColor4f> vert_colors) = 0;
 };
 
-class AEGradientRenderer final : public GradientRenderer {
+class SkSlRenderer : public GradientRenderer {
 public:
     void draw(SkCanvas* canvas) const override {
         SkPaint paint;
@@ -68,8 +129,18 @@ public:
         fShader = builder.makeShader();
     }
 
-private:
-    void buildEffect(size_t vert_count) {
+    virtual void buildEffect(size_t vert_count) = 0;
+
+protected:
+    sk_sp<SkRuntimeEffect> fEffect;
+    sk_sp<SkShader>        fShader;
+
+    size_t                 fCachedCount = 0;
+};
+
+class AEGradientRenderer final : public SkSlRenderer {
+public:
+    void buildEffect(size_t vert_count) override {
         static constexpr char gAEGradientSkSL[] = R"(
             uniform half4  u_vertcolors[%zu];
             uniform float2 u_vertpos[%zu];
@@ -100,11 +171,181 @@ private:
 
         SkASSERT(fEffect);
     }
+};
 
-    sk_sp<SkRuntimeEffect> fEffect;
-    sk_sp<SkShader>        fShader;
+class LinearGradientRenderer final : public SkSlRenderer {
+public:
+    void buildEffect(size_t vert_count) override {
+        static constexpr char gAEGradientSkSL[] = R"(
+            uniform half4  u_vertcolors[%zu];
+            uniform float2 u_vertpos[%zu];
 
-    size_t                 fCachedCount = 0;
+            half4 main(float2 xy) {
+
+                float v[%zu];
+                for (int i = 0; i < %zu; i++) {
+                    v[i] = 1.;
+                }
+
+                for (int i = 0; i < %zu; ++i) {
+
+                    for (int j = 0; j < %zu; ++j) {
+
+                        vec2 delta;
+                        delta.x = u_vertpos[j].x - u_vertpos[i].x;
+                        delta.y = u_vertpos[j].y - u_vertpos[i].y;
+
+                        mat3 m = mat3 (
+                            delta.x, delta.y, 0.,  // 1st column
+                            -delta.y, delta.x, 0., // 2nd column
+                            u_vertpos[i].x, u_vertpos[i].y, 1.   // 3rd column
+                        );
+                        mat3 m_inv = inverse(m);
+
+                        vec3 p_h = vec3(xy.x, xy.y, 1.);
+                        vec3 u = m_inv*p_h;
+                        float t = u.x;
+
+                        if (t < 0) {
+                            //v[j] = 1.-min(abs(t), 1.);
+                            v[j] = 0;
+                        } else if (t > 1) {
+                            //v[i] = 1.-min(t-1., 1.);
+                            v[i] = 0;
+                        } else {
+                            v[i] *= 1-t;
+                            v[j] *= t;
+                        }
+                    }
+                }
+
+                half4 c = half4(0);
+                float w_acc = 0;
+                for (int i = 0; i < %zu; i++) {
+                    c += u_vertcolors[i] * v[i];
+                    w_acc += v[i];
+                }
+
+                return c / w_acc;
+            }
+        )";
+
+        const auto res = SkRuntimeEffect::MakeForShader(
+                            SkStringPrintf(gAEGradientSkSL, vert_count, vert_count, vert_count, vert_count, vert_count, vert_count, vert_count));
+        if (!res.effect) {
+            SkDEBUGF("%s\n", res.errorText.c_str());
+        }
+
+        fEffect = res.effect;
+
+        SkASSERT(fEffect);
+    }
+};
+
+class IllGradientRenderer final : public SkSlRenderer {
+public:
+    void buildEffect(size_t vert_count) override {
+        static constexpr char gAEGradientSkSL[] = R"(
+            uniform half4  u_vertcolors[%zu];
+            uniform float2 u_vertpos[%zu];
+
+            half4 main(float2 xy) {
+
+                float d[%zu];
+                for (int i = 0; i < %zu; i++) {
+                    d[i] = 0.;
+                }
+
+                for (int i = 0; i < %zu; ++i) {
+
+                    for (int j = 0; j < %zu; ++j) {
+
+                        vec2 delta;
+                        delta.x = u_vertpos[j].x - u_vertpos[i].x;
+                        delta.y = u_vertpos[j].y - u_vertpos[i].y;
+
+                        mat3 m = mat3 (
+                            delta.x, delta.y, 0.,  // 1st column
+                            -delta.y, delta.x, 0., // 2nd column
+                            u_vertpos[i].x, u_vertpos[i].y, 1.   // 3rd column
+                        );
+                        mat3 m_inv = inverse(m);
+
+                        vec3 p_h = vec3(xy.x, xy.y, 1.);
+                        vec3 u = m_inv*p_h;
+                        float t = u.x;
+
+                        float s = length(delta);
+                        if (t < 0) {
+                            d[i] += s*abs(u.y);
+                            d[j] += s*distance(vec2(u.x, u.y), vec2(1., 0.));
+                        } else if (t > 1) {
+                            d[j] += s*abs(u.y);
+                            d[i] += s*distance(vec2(u.x, u.y), vec2(0., 0.));
+                        } else {
+                            d[i] += s*distance(vec2(u.x, u.y), vec2(0., 0.));
+                            d[j] += s*distance(vec2(u.x, u.y), vec2(1., 0.));
+                        }
+                    }
+                }
+
+                half4 c = half4(0);
+                float w_acc = 0;
+                for (int i = 0; i < %zu; i++) {
+                    float w = 1 / (d[i] * d[i]);
+                    c += u_vertcolors[i] * w;
+                    w_acc += w;
+                }
+
+                return c / w_acc;
+            }
+        )";
+
+        const auto res = SkRuntimeEffect::MakeForShader(
+                            SkStringPrintf(gAEGradientSkSL, vert_count, vert_count, vert_count, vert_count, vert_count, vert_count, vert_count));
+        if (!res.effect) {
+            SkDEBUGF("%s\n", res.errorText.c_str());
+        }
+
+        fEffect = res.effect;
+
+        SkASSERT(fEffect);
+    }
+};
+
+class TriangulatedGradientRenderer final : public GradientRenderer {
+public:
+    void draw(SkCanvas* canvas) const override {
+        SkPaint paint;
+        paint.setShader(fShader);
+        canvas->drawRect(SkRect::MakeWH(1, 1), paint);
+    }
+
+    sk_sp<SkShader> asShader() const override { return fShader; }
+
+    void updateVertices(SkSpan<const SkPoint> vert_pos,
+                        SkSpan<const SkColor4f> vert_colors) override {
+        SkASSERT(vert_pos.size() == vert_colors.size());
+        const auto vert_count = vert_pos.size();
+
+        if (!vert_count) {
+            return;
+        }
+
+        std::vector<SkPoint> pos;
+        for (auto& p : vert_pos) {
+            pos.push_back(p);
+        }
+        std::vector<SkColor> colors;
+        for (auto& c : vert_colors) {
+            colors.push_back(c.toSkColor());
+        }
+
+        fShader = makeGradientShader(1, 1, pos, colors);
+    }
+
+private:
+    sk_sp<SkShader> fShader;
 };
 
 static constexpr struct RendererChoice {
@@ -115,6 +356,18 @@ static constexpr struct RendererChoice {
         "AfterEffects Gradient",
         []() -> sk_sp<GradientRenderer> { return sk_make_sp<AEGradientRenderer>(); }
     },
+    {
+        "n-Linear gradient",
+        []() -> sk_sp<GradientRenderer> { return sk_make_sp<LinearGradientRenderer>(); }
+    },
+    {
+        "Illustrator (attempt) gradient",
+        []() -> sk_sp<GradientRenderer> { return sk_make_sp<IllGradientRenderer>(); }
+    },
+    {
+        "Triangulated gradient",
+        []() -> sk_sp<GradientRenderer> { return sk_make_sp<TriangulatedGradientRenderer>(); }
+    }
 };
 
 float lerp(float a, float b, float t) {
@@ -268,8 +521,6 @@ public:
             fCurrentAnimator->fAanimate(fVertUVs, fVertPos, fTimeMapper.computeYFromX(t));
 
             fCurrentRenderer->updateVertices(fVertPos, fVertColors);
-
-            // TODO: mesh triangulation
         }
 
         return true;
