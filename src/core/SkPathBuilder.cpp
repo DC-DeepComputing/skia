@@ -817,6 +817,47 @@ SkPathBuilder& SkPathBuilder::addPath(const SkPath& src) {
     return *this;
 }
 
+// ignore the last point of the 1st contour
+SkPathBuilder& SkPathBuilder::reversePathTo(const SkPathBuilder& other) {
+    if (other.empty()) {
+        return *this;
+    }
+
+    const uint8_t* verbs = other.fVerbs.end();
+    const uint8_t* verbsBegin = other.fVerbs.begin();
+    SkASSERT(verbsBegin[0] == SkPath::kMove_Verb);
+    const SkPoint*  pts = other.fPts.end() - 1;
+    const SkScalar* conicWeights = other.fConicWeights.end();
+
+    while (verbs > verbsBegin) {
+        uint8_t v = *--verbs;
+        pts -= SkPathPriv::PtsInVerb(v);
+        switch (v) {
+            case SkPath::kMove_Verb:
+                // if the path has multiple contours, stop after reversing the last
+                return *this;
+            case SkPath::kLine_Verb:
+                this->lineTo(pts[0]);
+                break;
+            case SkPath::kQuad_Verb:
+                this->quadTo(pts[1], pts[0]);
+                break;
+            case SkPath::kConic_Verb:
+                this->conicTo(pts[1], pts[0], *--conicWeights);
+                break;
+            case SkPath::kCubic_Verb:
+                this->cubicTo(pts[2], pts[1], pts[0]);
+                break;
+            case SkPath::kClose_Verb:
+                break;
+            default:
+                SkDEBUGFAIL("bad verb");
+                break;
+        }
+    }
+    return *this;
+}
+
 SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
 
     const uint8_t* verbsBegin = src.fPathRef->verbsBegin();
