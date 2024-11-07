@@ -1521,14 +1521,16 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if (runs == 0 && FLAGS_ms < 1000) {
-                // Run the first bench for 1000ms to warm up the nanobench if FLAGS_ms < 1000.
-                // Otherwise, the first few benches' measurements will be inaccurate.
-                auto stop = now_ms() + 1000;
-                do {
-                    time(loops, bench.get(), target);
-                    pool.drain();
-                } while (now_ms() < stop);
+            if (kAutoTuneLoops == FLAGS_loops) {
+                if (runs == 0 && FLAGS_ms < 1000) {
+                    // Run the first bench for 1000ms to warm up the nanobench if FLAGS_ms < 1000.
+                    // Otherwise, the first few benches' measurements will be inaccurate.
+                    auto stop = now_ms() + 1000;
+                    do {
+                        time(loops, bench.get(), target);
+                        pool.drain();
+                    } while (now_ms() < stop);
+                }
             }
 
             if (FLAGS_ms) {
