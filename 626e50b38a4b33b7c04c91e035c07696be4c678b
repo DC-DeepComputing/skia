@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e0a99ac_a8f8046a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T15:36:32Z",
+      "side": 1,
+      "message": "I\u0027ve seen some local bazel failures where it treats the delaunator warnings as errors.  Let\u0027s see what the bots say, we may need to address those.",
+      "revId": "626e50b38a4b33b7c04c91e035c07696be4c678b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd39cd3_2713a797",
+        "filename": "tools/viewer/delaunator.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T15:36:32Z",
+      "side": 1,
+      "message": "nit: move after the license (my comment was anchored in the wrong spot :)",
+      "revId": "626e50b38a4b33b7c04c91e035c07696be4c678b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
