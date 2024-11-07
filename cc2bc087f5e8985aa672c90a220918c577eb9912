@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f6919a4_db899fd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T14:14:05Z",
+      "side": 1,
+      "message": "We also need to add `delaunator.hpp` to `BUILD.bazel` `srcs`: https://github.com/google/skia/blob/e9a7546ef3d95b26e5c6aa6a29a733789f53f570/tools/viewer/BUILD.bazel#L12\n\n(`gn` is fine with using undeclared headers, but `bazel` is more strict)",
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5c419d73_ba8df8f8",
         "filename": "tools/viewer/MeshGradientSlide.cpp",
         "patchSetId": 4
