@@ -8,6 +8,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
 #include "include/core/SkCubicMap.h"
+#include "include/core/SkFont.h"
 #include "include/core/SkPicture.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkPoint.h"
@@ -18,6 +19,7 @@
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/base/SkDebug.h"
 #include "src/base/SkRandom.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/Slide.h"
 
 #include <cmath>
@@ -463,6 +465,7 @@ class MeshGradientSlide final : public Slide {
 public:
     MeshGradientSlide()
         : fCurrentRenderer(gGradientRenderers[0].fFactory())
+        , fFont(ToolUtils::DefaultPortableTypeface(), .75f)
         , fTimeMapper({0.5f, 0}, {0.5f, 1})
         , fVertedCountTimeMapper({0, 0.5f}, {0.5f, 1})
     {
@@ -478,10 +481,6 @@ public:
     void draw(SkCanvas* canvas) override {
         SkAutoCanvasRestore acr(canvas, true);
 
-        SkPaint p;
-        p.setAntiAlias(true);
-        p.setColor(SK_ColorWHITE);
-
         static constexpr float kMeshViewFract = 0.85f;
         const float mesh_size = std::min(fSize.fWidth, fSize.fHeight) * kMeshViewFract;
 
@@ -489,7 +488,14 @@ public:
                           (fSize.fHeight - mesh_size) * 0.5f);
         canvas->scale(mesh_size, mesh_size);
 
-        fCurrentRenderer->draw(canvas);
+        if (fShaderFill) {
+            SkPaint paint;
+            paint.setAntiAlias(true);
+            paint.setShader(fCurrentRenderer->asShader());
+            canvas->drawString("SK", 0, 0.75f, fFont, paint);
+        } else {
+            fCurrentRenderer->draw(canvas);
+        }
 
         this->drawControls();
     }
@@ -609,6 +615,8 @@ private:
 
         ImGui::SliderFloat("Speed", &fAnimationSpeed, 0.25, 4, "%.2f");
 
+        ImGui::Checkbox("Shader Fill", &fShaderFill);
+
         ImGui::End();
     }
 
@@ -620,6 +628,8 @@ private:
     SkRandom                fRNG;
 
     sk_sp<GradientRenderer> fCurrentRenderer;
+
+    const SkFont            fFont;
 
     // Animation state
     const SkCubicMap        fTimeMapper,
@@ -633,6 +643,7 @@ private:
     const RendererChoice*   fCurrentRendererChoice  = &gGradientRenderers[0];
     const VertexAnimator*   fCurrentAnimator        = &gVertexAnimators[0];
     float                   fAnimationSpeed         = 1.f;
+    bool                    fShaderFill             = false;
 };
 
 }  // anonymous namespace
