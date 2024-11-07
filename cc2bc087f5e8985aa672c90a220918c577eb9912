@@ -16,6 +16,81 @@
       "message": "I\u0027m guessing we don\u0027t want to submit this, since it requires a third party lib (which I\u0027ve just thrown in the viewer directory)",
       "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c419d73_ba8df8f8",
+        "filename": "tools/viewer/MeshGradientSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T13:57:20Z",
+      "side": 1,
+      "message": "This can be `const std::vector\u003cSkPoint\u003e\u0026`, right?",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 53
+      },
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5a452d_90d0e3a6",
+        "filename": "tools/viewer/MeshGradientSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T13:57:20Z",
+      "side": 1,
+      "message": "`drawVertices` ignores the AA flag, and always draws the triangles without AA, to avoid visible edge seams.",
+      "fixSuggestions": [
+        {
+          "fixId": "436fb2fb_60d1926a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/viewer/MeshGradientSlide.cpp",
+              "range": {
+                "startLine": 82,
+                "startChar": 0,
+                "endLine": 83,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25aea294_91315650",
+        "filename": "tools/viewer/delaunator.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-07T13:57:20Z",
+      "side": 1,
+      "message": "Let\u0027s include https://github.com/delfrrr/delaunator-cpp/blob/master/LICENSE here.",
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
