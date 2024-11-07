@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dfaff3f_ff1c7242",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-07T14:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f6919a4_db899fd3",
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c419d73_ba8df8f8",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-11-07T13:57:20Z",
       "side": 1,
       "message": "This can be `const std::vector\u003cSkPoint\u003e\u0026`, right?",
+      "range": {
+        "startLine": 33,
+        "startChar": 34,
+        "endLine": 33,
+        "endChar": 53
+      },
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af894690_712c7dd5",
+        "filename": "tools/viewer/MeshGradientSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-07T14:40:31Z",
+      "side": 1,
+      "message": "Yes, sorry some of this was extra \"hacky\" code. I was previously using this function with non vectors. Fixed now.",
+      "parentUuid": "5c419d73_ba8df8f8",
       "range": {
         "startLine": 33,
         "startChar": 34,
@@ -93,6 +135,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dafc2d18_28880020",
+        "filename": "tools/viewer/MeshGradientSlide.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-07T14:40:31Z",
+      "side": 1,
+      "message": "Good to know. Fixed.",
+      "parentUuid": "5d5a452d_90d0e3a6",
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25aea294_91315650",
@@ -106,6 +166,24 @@
       "writtenOn": "2024-11-07T13:57:20Z",
       "side": 1,
       "message": "Let\u0027s include https://github.com/delfrrr/delaunator-cpp/blob/master/LICENSE here.",
+      "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "180cdabd_df67d66f",
+        "filename": "tools/viewer/delaunator.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-07T14:40:31Z",
+      "side": 1,
+      "message": "I\u0027ve copied it into the file.",
+      "parentUuid": "25aea294_91315650",
       "revId": "cc2bc087f5e8985aa672c90a220918c577eb9912",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
