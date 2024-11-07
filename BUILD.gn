@@ -3119,6 +3119,7 @@ if (skia_enable_tools) {
         "tools/viewer/TouchGesture.h",
         "tools/viewer/TypefaceSlide.cpp",
         "tools/viewer/VariableWidthStrokerSlide.cpp",
+        "tools/viewer/VariableWidthStrokerSlide2.cpp",
         "tools/viewer/Viewer.cpp",
         "tools/viewer/Viewer.h",
         "tools/viewer/XferSlide.cpp",

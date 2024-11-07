@@ -418,6 +418,10 @@ public:
         (void)path.isConvex();
     }
 
+    static void ReversePathTo(SkPathBuilder* builder, const SkPathBuilder& reverseMe) {
+        builder->reversePathTo(reverseMe);
+    }
+
     static void ReverseAddPath(SkPathBuilder* builder, const SkPath& reverseMe) {
         builder->privateReverseAddPath(reverseMe);
     }

@@ -227,6 +227,17 @@ public:
         return *this;
     }
 
+    SkPoint getLastPt() const {
+        if (fPts.empty()) {
+            return SkPoint();
+        }
+        return fPts[fPts.size() - 1];
+    }
+
+    bool empty() const {
+        return fPts.empty();
+    }
+
 private:
     SkPathRef::PointsArray fPts;
     SkPathRef::VerbsArray fVerbs;
@@ -263,6 +274,7 @@ private:
     SkPath make(sk_sp<SkPathRef>) const;
 
     SkPathBuilder& privateReverseAddPath(const SkPath&);
+    SkPathBuilder& reversePathTo(const SkPathBuilder&);
 
     friend class SkPathPriv;
 };

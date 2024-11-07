@@ -1021,9 +1021,9 @@ SkPoint SkVarWidthStroker::unitNormal(const PathSegment& seg, float t, SkPoint* 
 
 //////////////////////////////////////////////////////////////////////////////
 
-class VariableWidthStrokerSlide : public ClickHandlerSlide {
+class EBVariableWidthStrokerSlide : public ClickHandlerSlide {
 public:
-    VariableWidthStrokerSlide()
+    EBVariableWidthStrokerSlide()
             : fShowHidden(true)
             , fShowSkeleton(true)
             , fShowStrokePoints(false)
@@ -1055,7 +1055,7 @@ public:
         fSkeletonPaint.setStyle(SkPaint::kStroke_Style);
         fSkeletonPaint.setColor(SK_ColorRED);
 
-        fName = "VariableWidthStroker";
+        fName = "EBVariableWidthStroker";
     }
 
     void load(SkScalar w, SkScalar h) override { fWinSize = {w, h}; }
@@ -1389,4 +1389,4 @@ private:
     std::vector<DistFncMenuItem> fDistFncsInner = fDefaultsDistFncs;
 };
 
-DEF_SLIDE(return new VariableWidthStrokerSlide;)
+DEF_SLIDE(return new EBVariableWidthStrokerSlide;)
