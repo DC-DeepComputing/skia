@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e286df2e_eb14423c",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-08T15:29:25Z",
+      "side": 1,
+      "message": "This is true, and in the future Skia will probably want to move PDF and XPS to checking the type and doing the downcast. However, this is something of a heavy change to do here for PDF, as the `GradientInfo` is being used as (part of) a cache key and all the information used here must be in that key.",
+      "revId": "15c79f02e52e82035b958739e97ea84b359f3fe4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
