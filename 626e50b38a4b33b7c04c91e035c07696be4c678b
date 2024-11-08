@@ -33,6 +33,24 @@
       "message": "nit: move after the license (my comment was anchored in the wrong spot :)",
       "revId": "626e50b38a4b33b7c04c91e035c07696be4c678b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e609f51_7acc5d9c",
+        "filename": "tools/viewer/delaunator.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2024-11-08T14:41:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3bd39cd3_2713a797",
+      "revId": "626e50b38a4b33b7c04c91e035c07696be4c678b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
