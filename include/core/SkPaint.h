@@ -409,7 +409,8 @@ public:
     /** Sets optional colors used when filling a path, such as a gradient.
 
         Sets SkShader to shader, decreasing SkRefCnt of the previous SkShader.
-        Increments shader SkRefCnt by one.
+        Increments shader SkRefCnt by one. Note that the shader should return
+        color that is premultiplied.
 
         @param shader  how geometry is filled with color; if nullptr, color is used instead
 
