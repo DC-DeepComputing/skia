@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6ad1314_1f633ef9",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1707,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-11-08T13:45:41Z",
+      "side": 1,
+      "message": "I guess I would have this up on line 1704",
+      "revId": "7c47f3347b013dfa8e8149a2c83f973938b75b0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
