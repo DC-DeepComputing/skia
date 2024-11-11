@@ -22,6 +22,30 @@
       },
       "revId": "b47c3ab1e43537835f8a938beb39dbbfdc1d6cf4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77caed78_25d1ebc4",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 0,
+      "message": "I suspect CLion but cannot prove it.",
+      "parentUuid": "636cb91e_43f64d27",
+      "range": {
+        "startLine": 543,
+        "startChar": 8,
+        "endLine": 543,
+        "endChar": 12
+      },
+      "revId": "b47c3ab1e43537835f8a938beb39dbbfdc1d6cf4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

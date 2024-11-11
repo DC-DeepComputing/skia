@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56735055_2f42aa97",
+        "filename": "gn/ports.gni",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e58b0028_f41df7e9",
+      "range": {
+        "startLine": 102,
+        "startChar": 15,
+        "endLine": 102,
+        "endChar": 29
+      },
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17e41b26_bc689f5f",
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9438717_c2bf2745",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 1,
+      "message": "This is what I get without:\n../../src/ports/SkFontMgr_fontconfig.cpp:433:17: error: \u0027onGetFontDescriptor\u0027 is a protected member of \u0027SkTypeface\u0027\n        fProxy-\u003eonGetFontDescriptor(desc, serialize);\n                ^\n../../include/core/SkTypeface.h:387:18: note: can only access this member on an object of type \u0027SkTypeface_fontconfig_proxy\u0027\n    virtual void onGetFontDescriptor(SkFontDescriptor*, bool* isLocal) const \u003d 0;\n                 ^\n../../src/ports/SkFontMgr_fontconfig.cpp:473:71: error: \u0027onGetAdvancedMetrics\u0027 is a protected member of \u0027SkTypeface\u0027\n            std::unique_ptr\u003cSkAdvancedTypefaceMetrics\u003e info \u003d fProxy-\u003eonGetAdvancedMetrics();\n                                                                      ^\n../../include/core/SkTypeface.h:363:56: note: can only access this member on an object of type \u0027SkTypeface_fontconfig_proxy\u0027\n    virtual std::unique_ptr\u003cSkAdvancedTypefaceMetrics\u003e onGetAdvancedMetrics() const \u003d 0;",
+      "parentUuid": "17e41b26_bc689f5f",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f0b4ce1_e1a83246",
         "filename": "src/ports/SkFontMgr_fontconfig.cpp",
         "patchSetId": 8
@@ -54,6 +96,24 @@
       "writtenOn": "2024-11-11T16:14:08Z",
       "side": 1,
       "message": "Undo all these rather bad intent \"fixes\" as they aren\u0027t related.",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf11511f_a6a6e757",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2f0b4ce1_e1a83246",
       "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -81,6 +141,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b92cf7e_73688fd8",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 1,
+      "message": "Do you know any language that does it better?",
+      "parentUuid": "9032cf07_e1da8cbb",
+      "range": {
+        "startLine": 414,
+        "startChar": 27,
+        "endLine": 414,
+        "endChar": 33
+      },
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07ceebb3_a6b584a5",
@@ -94,6 +178,24 @@
       "writtenOn": "2024-11-11T16:14:08Z",
       "side": 1,
       "message": "This comment needs to go back on `SkTypeface_fontconfig`.",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35e3ef70_7deda93a",
+        "filename": "src/ports/SkFontMgr_proxy.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-11T18:56:45Z",
+      "side": 1,
+      "message": "Right. It will have this method just to keep the comment (not that I object).",
+      "parentUuid": "07ceebb3_a6b584a5",
       "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
