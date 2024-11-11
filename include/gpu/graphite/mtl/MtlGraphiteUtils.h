@@ -19,7 +19,7 @@ struct ContextOptions;
 struct MtlBackendContext;
 
 namespace ContextFactory {
-SK_API std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&);
+SK_API std::unique_ptr<Context> MakeMetal(const MtlBackendContext&, const ContextOptions&, bool);
 } // namespace ContextFactory
 
 } // namespace skgpu::graphite

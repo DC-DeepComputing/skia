@@ -76,7 +76,7 @@ Context::ContextID Context::ContextID::Next() {
 //--------------------------------------------------------------------------------------------------
 Context::Context(sk_sp<SharedContext> sharedContext,
                  std::unique_ptr<QueueManager> queueManager,
-                 const ContextOptions& options)
+                 const ContextOptions& options, bool)
         : fSharedContext(std::move(sharedContext))
         , fQueueManager(std::move(queueManager))
         , fContextID(ContextID::Next()) {
@@ -920,10 +920,11 @@ bool ContextPriv::supportsPathRendererStrategy(PathRendererStrategy strategy) {
 std::unique_ptr<Context> ContextCtorAccessor::MakeContext(
         sk_sp<SharedContext> sharedContext,
         std::unique_ptr<QueueManager> queueManager,
-        const ContextOptions& options) {
+        const ContextOptions& options,
+        bool) {
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
-                                                        options));
+                                                        options, true));
     if (context && context->finishInitialization()) {
         return context;
     } else {

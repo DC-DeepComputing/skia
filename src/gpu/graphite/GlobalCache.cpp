@@ -34,12 +34,23 @@ void GlobalCache::deleteResources() {
     fStaticResource.clear();
 }
 
-sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) {
+sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key,
+                                                          bool forPrecompile) {
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
 #if defined(GPU_TEST_UTILS)
-    if (entry) { ++fStats.fGraphicsCacheHits; } else { ++fStats.fGraphicsCacheMisses; }
+    if (entry) {
+        ++fStats.fGraphicsCacheHits;
+        ++fStats.fBar[(*entry)->fromPrecompile()][forPrecompile];
+
+        (*entry)->addEvent(GraphicsPipeline::EventType::kCacheHit, forPrecompile);
+    } else {
+        ++fStats.fGraphicsCacheMisses;
+        ++fStats.fBaz[forPrecompile];
+
+//        entry->addEvent(kCacheMiss, forPrecompile);
+    }
 #endif
     return entry ? *entry : nullptr;
 }
@@ -77,12 +88,16 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsCacheAdditions;
 #endif
+        bool fromPrecompile = pipeline->fromPrecompile();
         entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+        (*entry)->addEvent(GraphicsPipeline::EventType::kAdded, fromPrecompile);
     } else {
 #if defined(GPU_TEST_UTILS)
         // else there was a race creating the same pipeline and this thread lost, so return
         // the winner
-        ++fStats.fGraphicsRaces;
+        ++fStats.fTotalGraphicsRaces;
+        ++fStats.fFoo[(*entry)->fromPrecompile()][pipeline->fromPrecompile()];
+        (*entry)->addEvent(GraphicsPipeline::EventType::kWonRace, pipeline->fromPrecompile());
 #endif
 #if SK_HISTOGRAMS_ENABLED
         [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();

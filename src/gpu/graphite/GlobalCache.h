@@ -42,7 +42,7 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&, bool forPrecompile) SK_EXCLUDES(fSpinLock);
 
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
@@ -61,7 +61,10 @@ public:
         int fGraphicsCacheHits = 0;
         int fGraphicsCacheMisses = 0;
         int fGraphicsCacheAdditions = 0;
-        int fGraphicsRaces = 0;
+        int fTotalGraphicsRaces = 0;
+        int fFoo[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBar[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBaz[2] = { 0, 0 };
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
