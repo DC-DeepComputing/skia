@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8835df0_355b10fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-11T20:21:59Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  /cc @danieldilan as FYI\n\nIf needed, we can continue the API design discussion in https://crbug.com/359350061.  My latest comment in that bug explains why I didn\u0027t pursue the initial idea we\u0027ve discussed (`getBitsPerComponent`).\n\nFWIW this CL seems sufficient to unblock/fix all PNG/high-bit-related tests from Blink (after 3 small additional Chromium CLs: https://crrev.com/c/6013129, https://crrev.com/c/6013131 which depends on the new API from this Skia CL, https://crrev.com/c/6003810).",
+      "revId": "bee17cf38bb84ad899ac6cc10c5ab4582b8d3c5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
