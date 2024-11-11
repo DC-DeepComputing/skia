@@ -1728,26 +1728,6 @@
         "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-Release-All-SkottieTracing"
       ]
     },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All-SkottieTracing": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All-SkottieTracing"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-ASAN": {
-      "tasks": [
-        "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-ASAN"
-      ]
-    },
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "tasks": [
         "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan"
@@ -2679,6 +2659,11 @@
         "Test-Debian10-EMCC-GCE-GPU-AVX2-wasm-Release-All-CanvasKit"
       ]
     },
+    "Test-Debian11-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All": {
+      "tasks": [
+        "Test-Debian11-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All"
+      ]
+    },
     "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All": {
       "tasks": [
         "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All"
@@ -2707,56 +2692,6 @@
     "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan": {
       "tasks": [
         "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Vulkan"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1_Vulkan": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL1_Vulkan"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_TSAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-DDL3_TSAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-FailFlushTimeCallbacks_ASAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-FailFlushTimeCallbacks_ASAN"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All"
-      ]
-    },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-TSAN": {
-      "tasks": [
-        "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Release-All-TSAN"
       ]
     },
     "Test-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan": {
@@ -34487,6 +34422,7 @@
         "perf"
       ]
     },
+<<<<<<< HEAD   (3c6445 Update mac_toolchain)
     "Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -34865,6 +34801,8 @@
         "perf"
       ]
     },
+=======
+>>>>>>> CHANGE (3a6b1c [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
@@ -39299,7 +39237,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -39391,7 +39329,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -51839,6 +51777,105 @@
       ],
       "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+    "Test-Debian11-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All": {
+      "caches": [
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        }
+      ],
+      "casSpec": "test",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/linux-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.11.9.chromium.35"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:e02b085286a3baf3ab1194941cdb6c196c4c0802"
+        },
+        {
+          "name": "skia/bots/gsutil",
+          "path": "gsutil",
+          "version": "version:0"
+        },
+        {
+          "name": "skia/bots/skimage",
+          "path": "skimage",
+          "version": "version:47"
+        },
+        {
+          "name": "skia/bots/skp",
+          "path": "skp",
+          "version": "version:463"
+        },
+        {
+          "name": "skia/bots/svg",
+          "path": "svg",
+          "version": "version:14"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "test",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildbucket_build_id\":\"<(BUILDBUCKET_BUILD_ID)\",\"buildername\":\"Test-Debian11-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All\",\"dm_flags\":\"[\\\"dm\\\",\\\"--nameByHash\\\",\\\"--key\\\",\\\"arch\\\",\\\"x86_64\\\",\\\"compiler\\\",\\\"Clang\\\",\\\"configuration\\\",\\\"Release\\\",\\\"cpu_or_gpu\\\",\\\"CPU\\\",\\\"cpu_or_gpu_value\\\",\\\"AVX2\\\",\\\"model\\\",\\\"NUC11TZi5\\\",\\\"os\\\",\\\"Debian11\\\",\\\"style\\\",\\\"default\\\",\\\"--randomProcessorTest\\\",\\\"--nogpu\\\",\\\"--config\\\",\\\"8888\\\",\\\"--src\\\",\\\"tests\\\",\\\"gm\\\",\\\"image\\\",\\\"colorImage\\\",\\\"--skip\\\",\\\"_\\\",\\\"image\\\",\\\"gen_platf\\\",\\\"error\\\",\\\"--nonativeFonts\\\",\\\"--verbose\\\"]\",\"dm_properties\":\"{\\\"buildbucket_build_id\\\":\\\"<(BUILDBUCKET_BUILD_ID)\\\",\\\"builder\\\":\\\"Test-Debian11-Clang-NUC11TZi5-CPU-AVX2-x86_64-Release-All\\\",\\\"gitHash\\\":\\\"<(REVISION)\\\",\\\"issue\\\":\\\"<(ISSUE)\\\",\\\"patch_storage\\\":\\\"<(PATCH_STORAGE)\\\",\\\"patchset\\\":\\\"<(PATCHSET)\\\",\\\"swarming_bot_id\\\":\\\"${SWARMING_BOT_ID}\\\",\\\"swarming_task_id\\\":\\\"${SWARMING_TASK_ID}\\\",\\\"task_id\\\":\\\"<(TASK_ID)\\\"}\",\"do_upload\":\"true\",\"gold_hashes_url\":\"https://gold.skia.org/json/v1/hashes\",\"gs_bucket\":\"skia-infra-gm\",\"images\":\"true\",\"patch_issue\":\"<(ISSUE_INT)\",\"patch_ref\":\"<(PATCH_REF)\",\"patch_repo\":\"<(PATCH_REPO)\",\"patch_set\":\"<(PATCHSET_INT)\",\"patch_storage\":\"<(PATCH_STORAGE)\",\"repository\":\"<(REPO)\",\"resources\":\"true\",\"revision\":\"<(REVISION)\",\"skps\":\"true\",\"svgs\":\"true\",\"swarm_out_dir\":\"test\",\"task_id\":\"<(TASK_ID)\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Build-Debian11-Clang-x86_64-Release",
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cpu:x86-64-i5-1135G7",
+        "os:Debian-11.5",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "gsutil/gsutil",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin",
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 14400000000000,
+      "expiration_ns": 72000000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "io_timeout_ns": 14400000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "test"
+      ],
+      "service_account": "skia-external-gm-uploader@skia-swarming-bots.iam.gserviceaccount.com"
+    },
     "Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Debug-All": {
       "caches": [
         {
@@ -52480,6 +52517,7 @@
         "test"
       ]
     },
+<<<<<<< HEAD   (3c6445 Update mac_toolchain)
     "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All": {
       "caches": [
         {
@@ -53465,6 +53503,8 @@
         "test"
       ]
     },
+=======
+>>>>>>> CHANGE (3a6b1c [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Test-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Debug-All-Vulkan": {
       "caches": [
         {
@@ -64868,7 +64908,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -64960,7 +65000,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -65052,7 +65092,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -65144,7 +65184,7 @@
         "Housekeeper-PerCommit-BundleRecipes"
       ],
       "dimensions": [
-        "gpu:10de:2489-31.0.15.3699",
+        "gpu:10de:2489-32.0.15.6094",
         "os:Windows-10-19045",
         "pool:Skia"
       ],
@@ -75698,6 +75738,7 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (3c6445 Update mac_toolchain)
     "Upload-Perf-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -75944,6 +75985,8 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (3a6b1c [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
@@ -89420,7 +89463,6 @@
         "modules/canvaskit/.*"
       ]
     },
-    "Test-Debian11-Clang-NUC9i7QN-GPU-RTX3060-x86_64-Debug-All-ASAN": {},
     "Test-Mac10.15.7-Clang-MacBookPro11.5-GPU-RadeonHD8870M-x86_64-Debug-All-Graphite_Native_Metal": {
       "location_regexes": [
         "(tests|src/gpu)/graphite/.*",
