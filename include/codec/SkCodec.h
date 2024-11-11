@@ -240,6 +240,13 @@ public:
     }
 
     /**
+     * Whether the encoded input uses 16 or more bits per component.
+     */
+    bool wasEncodedWith16bitsOrMorePerComponent() const {
+        return this->onWasEncodedWith16bitsOrMorePerComponent();
+    }
+
+    /**
      *  Returns the image orientation stored in the EXIF data.
      *  If there is no EXIF data, or if we cannot read the EXIF data, returns kTopLeft.
      */
@@ -822,6 +829,12 @@ protected:
     }
 
     virtual SkEncodedImageFormat onGetEncodedFormat() const = 0;
+
+    // Codec-overrideable implementation of the
+    // `wasEncodedWith16bitsOrMorePerComponent` method.
+    virtual bool onWasEncodedWith16bitsOrMorePerComponent() const {
+        return this->getEncodedInfo().bitsPerComponent() >= 16;
+    }
 
     /**
      * @param rowsDecoded When the encoded image stream is incomplete, this function
