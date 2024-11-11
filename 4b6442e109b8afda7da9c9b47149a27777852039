@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a342e02e_53a33c21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-11-11T15:35:08Z",
+      "side": 1,
+      "message": "Alternatively this could be a one-line change:\n```\nString[] splitArgs \u003d args !\u003d null ? args.split(\"\\\\s+\") : new String[0];\n```",
+      "revId": "4b6442e109b8afda7da9c9b47149a27777852039",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
