@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e58b0028_f41df7e9",
+        "filename": "gn/ports.gni",
+        "patchSetId": 8
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:14:08Z",
+      "side": 1,
+      "message": "This name is incorrect. This doesn\u0027t have anything to do with SkFontMgr. This is about SkTypeface.",
+      "range": {
+        "startLine": 102,
+        "startChar": 15,
+        "endLine": 102,
+        "endChar": 29
+      },
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17e41b26_bc689f5f",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:14:08Z",
+      "side": 1,
+      "message": "Part of the reason to do this is so that this doesn\u0027t need to be a friend. Is this really still needed?",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0b4ce1_e1a83246",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:14:08Z",
+      "side": 1,
+      "message": "Undo all these rather bad intent \"fixes\" as they aren\u0027t related.",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9032cf07_e1da8cbb",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:14:08Z",
+      "side": 1,
+      "message": "I wouldn\u0027t add \"_proxy\" to this name. That this typeface does most of its work by proxy is an implementation detail. In fact if we could write this such that this publicly implement `SkTypeface` but privately inherit `SkTypeface_proxy` that would be quite nice, but C++ makes that rather awkward to state.",
+      "range": {
+        "startLine": 414,
+        "startChar": 27,
+        "endLine": 414,
+        "endChar": 33
+      },
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07ceebb3_a6b584a5",
+        "filename": "src/ports/SkFontMgr_proxy.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:14:08Z",
+      "side": 1,
+      "message": "This comment needs to go back on `SkTypeface_fontconfig`.",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
