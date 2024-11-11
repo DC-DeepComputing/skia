@@ -70,7 +70,7 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
         bool fFromPrecompile = false;
 #endif
     };
@@ -80,15 +80,37 @@ public:
         return fPipelineInfo;
     }
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
     bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
 #endif
+
+    enum class EventType1 {
+        kCacheHit,
+        kCacheMiss,
+        kWonRace,
+        kAdded,
+    };
+
+    void addEvent1(EventType1 type, bool forPrecompile);
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+public:
+    static const char* Name(EventType1 type) {
+        switch (type) {
+            case EventType1::kCacheHit:  return "hit ";
+            case EventType1::kCacheMiss: return "miss";
+            case EventType1::kWonRace:   return "race";
+            case EventType1::kAdded:     return "added";
+        }
+
+        return "unkw";
+    }
+    struct { EventType1 fType1; int64_t fTime; bool fForPrecompile; } fEvents[10];
+    int fCurEvent = 0;
 };
 
 }  // namespace skgpu::graphite
