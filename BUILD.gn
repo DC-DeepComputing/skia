@@ -1598,6 +1598,7 @@ skia_component("skia") {
     ":ndk_images",
     ":png_decode",
     ":raw",
+    ":rust_png",
     ":skx",
     ":typeface_fontations",
     ":vello",
