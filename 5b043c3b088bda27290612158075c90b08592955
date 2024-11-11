@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a30f8beb_95ab671e",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-11T14:47:05Z",
+      "side": 1,
+      "message": "Up to you, this one feels a little out of place since the API is more about attaching shaders to paints, and less about what shaders are/do.",
+      "range": {
+        "startLine": 412,
+        "startChar": 43,
+        "endLine": 413,
+        "endChar": 36
+      },
+      "revId": "5b043c3b088bda27290612158075c90b08592955",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
