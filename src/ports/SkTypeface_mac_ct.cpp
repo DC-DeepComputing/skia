@@ -70,14 +70,16 @@ using namespace skia_private;
 // These attributes to set the palette not publically exported as of macOS 14.5.
 // However, they appear to be available and functional back to at least macOS 10.15.7.
 static CFStringRef getCTFontPaletteAttribute() {
-    static CFStringRef* kCTFontPaletteAttributePtr =
-        static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteAttribute"));
-    return *kCTFontPaletteAttributePtr;
+    return nullptr;
+    //static CFStringRef* kCTFontPaletteAttributePtr =
+    //    static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteAttribute"));
+    //return *kCTFontPaletteAttributePtr;
 }
 static CFStringRef getCTFontPaletteColorsAttribute() {
-    static CFStringRef* kCTFontPaletteColorsAttributePtr =
-        static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteColorsAttribute"));
-    return *kCTFontPaletteColorsAttributePtr;
+    return nullptr;
+    //static CFStringRef* kCTFontPaletteColorsAttributePtr =
+    //    static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteColorsAttribute"));
+    //return *kCTFontPaletteColorsAttributePtr;
 }
 
 /** Assumes src and dst are not nullptr. */
@@ -1275,14 +1277,14 @@ static CGColorRef CGColorForSkColor(CGColorSpaceRef rgbcs, SkColor color) {
 static bool apply_palette(CFMutableDictionaryRef attributes,
                           const SkFontArguments::Palette& palette) {
     bool changedAttributes = false;
-    if (palette.index != 0 || palette.overrideCount) {
+    if ((palette.index != 0 || palette.overrideCount) && getCTFontPaletteAttribute()) {
         SkUniqueCFRef<CFNumberRef> paletteIndex(
                 CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &palette.index));
         CFDictionarySetValue(attributes, getCTFontPaletteAttribute(), paletteIndex.get());
         changedAttributes = true;
     }
 
-    if (palette.overrideCount) {
+    if (palette.overrideCount && getCTFontPaletteColorsAttribute()) {
         SkUniqueCFRef<CFMutableDictionaryRef> overrides(
                 CFDictionaryCreateMutable(kCFAllocatorDefault, 0,
                                           &kCFTypeDictionaryKeyCallBacks,
