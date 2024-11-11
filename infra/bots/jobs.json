@@ -557,6 +557,7 @@
   {"name": "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Debug-All-Android_Vulkan"},
   {"name": "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Release-All-Android"},
   {"name": "Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Release-All-Android_Vulkan"},
+  {"name": "Test-Android-Clang-Pixel3XL-GPU-Adreno615-arm64-Release-All-Android"},
   {"name": "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Debug-All-Android_API30"},
   {"name": "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Debug-All-Android_Vulkan"},
   {"name": "Test-Android-Clang-Pixel4-GPU-Adreno640-arm64-Release-All-Android_API30"},
