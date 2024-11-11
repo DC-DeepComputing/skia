@@ -16,6 +16,24 @@
       "message": "Alternatively this could be a one-line change:\n```\nString[] splitArgs \u003d args !\u003d null ? args.split(\"\\\\s+\") : new String[0];\n```",
       "revId": "4b6442e109b8afda7da9c9b47149a27777852039",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5f21e6_300a8989",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-11T16:01:39Z",
+      "side": 1,
+      "message": "How about\n```\nfinal ByteBuffer[] byteBufferArgs;\nIntent intent \u003d viewerActivity.getIntent();\nString args \u003d intent.getStringExtra(\"args\");\nif (args \u003d\u003d null) {\n    byteBufferArgs \u003d new ByteBuffer[0];\n} else {\n    ...\n}\n```\nSeems slightly clearer on intent (if no `args` then no `byteBufferArgs`) as well as definite single assignment.",
+      "parentUuid": "a342e02e_53a33c21",
+      "revId": "4b6442e109b8afda7da9c9b47149a27777852039",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
