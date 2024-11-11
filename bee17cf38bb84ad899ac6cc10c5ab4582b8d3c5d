@@ -16,6 +16,52 @@
       "message": "@fmalita, can you PTAL?  /cc @danieldilan as FYI\n\nIf needed, we can continue the API design discussion in https://crbug.com/359350061.  My latest comment in that bug explains why I didn\u0027t pursue the initial idea we\u0027ve discussed (`getBitsPerComponent`).\n\nFWIW this CL seems sufficient to unblock/fix all PNG/high-bit-related tests from Blink (after 3 small additional Chromium CLs: https://crrev.com/c/6013129, https://crrev.com/c/6013131 which depends on the new API from this Skia CL, https://crrev.com/c/6003810).",
       "revId": "bee17cf38bb84ad899ac6cc10c5ab4582b8d3c5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34657868_43ec3ffa",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-11T22:22:07Z",
+      "side": 1,
+      "message": "naming nit: the name sticks out a bit as oddly specific - WDYT about something slightly more general, maybe `hasHighBitDepthEncodedData` (to resemble Blink) + relying on comments for the details?",
+      "range": {
+        "startLine": 245,
+        "startChar": 9,
+        "endLine": 245,
+        "endChar": 47
+      },
+      "revId": "bee17cf38bb84ad899ac6cc10c5ab4582b8d3c5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6a3b975_c6b316c4",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 835,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-11-11T22:22:07Z",
+      "side": 1,
+      "message": "I assume this will be overridden in Blink.  Can you share some details on how that will work?\n\n(I thought the base heuristic below would be sufficient).",
+      "range": {
+        "startLine": 835,
+        "startChar": 4,
+        "endLine": 835,
+        "endChar": 11
+      },
+      "revId": "bee17cf38bb84ad899ac6cc10c5ab4582b8d3c5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
