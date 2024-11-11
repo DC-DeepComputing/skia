@@ -11,10 +11,12 @@
 
 #include "experimental/rust_png/impl/SkPngRustCodec.h"
 #include "include/core/SkStream.h"
+#include "include/private/base/SkAssert.h"
 
 namespace SkPngRustDecoder {
 
-std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream, SkCodec::Result* result) {
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream, SkCodec::Result* result, SkCodecs::DecodeContext decodeContext) {
+    SkASSERT(decodeContext == nullptr);
     return SkPngRustCodec::MakeFromStream(std::move(stream), result);
 }
 
