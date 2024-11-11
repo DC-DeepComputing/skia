@@ -14,6 +14,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
+#include "include/core/SkTiledImageUtils.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkRandom.h"
@@ -91,10 +92,10 @@ protected:
             SkIRect subRect = SkIRect::MakeLTRB(0, startItem * itemHeight,
                                                bmp.width(), bmp.height());
             SkRect dstRect = SkRect::MakeWH(SkIntToScalar(bmp.width()), 10.f * itemHeight);
-            canvas->drawImageRect(ToolUtils::MakeTextureImage(canvas, bmp.asImage()),
-                                  SkRect::Make(subRect), dstRect,
-                                  SkSamplingOptions(SkFilterMode::kLinear), nullptr,
-                                  SkCanvas::kStrict_SrcRectConstraint);
+            SkTiledImageUtils::DrawImageRect(canvas, bmp.asImage(),
+                                             SkRect::Make(subRect), dstRect,
+                                             SkSamplingOptions(SkFilterMode::kLinear), nullptr,
+                                             SkCanvas::kStrict_SrcRectConstraint);
             canvas->translate(SkIntToScalar(bmp.width() + 10), 0);
         }
     }
