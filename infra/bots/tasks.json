@@ -16284,7 +16284,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -16380,7 +16380,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -16476,7 +16476,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -16595,7 +16595,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -16691,7 +16691,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -16893,7 +16893,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17012,7 +17012,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17131,7 +17131,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17254,7 +17254,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -17355,7 +17355,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17451,7 +17451,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17547,7 +17547,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17670,7 +17670,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -17771,7 +17771,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17867,7 +17867,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -17963,7 +17963,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18064,7 +18064,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18165,7 +18165,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18203,9 +18203,217 @@
       "env_prefixes": {
         "PATH": [
           "cipd_bin_packages/cpython3",
+<<<<<<< HEAD   (28cfd0 [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
           "cipd_bin_packages/cpython3/bin",
+=======
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Mac-Clang-arm64-Debug-iOS_iOS12": {
+      "caches": [
+        {
+          "name": "ccache",
+          "path": "cache/ccache"
+        },
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        },
+        {
+          "name": "xcode",
+          "path": "cache/Xcode.app"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.11.9.chromium.35"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/mac_toolchain/${platform}",
+          "path": "mac_toolchain",
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
+        },
+        {
+          "name": "skia/bots/ccache_mac",
+          "path": "ccache_mac",
+          "version": "version:1"
+        },
+        {
+          "name": "skia/bots/provisioning_profile_ios",
+          "path": "provisioning_profile_ios",
+          "version": "version:11"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Mac-Clang-arm64-Debug-iOS_iOS12\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cores:12",
+        "cpu:x86-64",
+        "os:Mac-14.5",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+>>>>>>> CHANGE (5f6ea5 Update Xcode 15.4 to 16.0)
           "cipd_bin_packages",
+<<<<<<< HEAD   (28cfd0 [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
           "cipd_bin_packages/bin"
+=======
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Mac-Clang-arm64-Debug-iOS_iOS12_Metal": {
+      "caches": [
+        {
+          "name": "ccache",
+          "path": "cache/ccache"
+        },
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        },
+        {
+          "name": "xcode",
+          "path": "cache/Xcode.app"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.11.9.chromium.35"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/mac_toolchain/${platform}",
+          "path": "mac_toolchain",
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
+        },
+        {
+          "name": "skia/bots/ccache_mac",
+          "path": "ccache_mac",
+          "version": "version:1"
+        },
+        {
+          "name": "skia/bots/provisioning_profile_ios",
+          "path": "provisioning_profile_ios",
+          "version": "version:11"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Mac-Clang-arm64-Debug-iOS_iOS12_Metal\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cores:12",
+        "cpu:x86-64",
+        "os:Mac-14.5",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+>>>>>>> CHANGE (5f6ea5 Update Xcode 15.4 to 16.0)
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -18266,7 +18474,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18362,7 +18570,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18481,7 +18689,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18577,7 +18785,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18673,7 +18881,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18769,7 +18977,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18870,7 +19078,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -18971,7 +19179,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19009,9 +19217,217 @@
       "env_prefixes": {
         "PATH": [
           "cipd_bin_packages/cpython3",
+<<<<<<< HEAD   (28cfd0 [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
           "cipd_bin_packages/cpython3/bin",
+=======
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Mac-Clang-arm64-Release-iOS_iOS12": {
+      "caches": [
+        {
+          "name": "ccache",
+          "path": "cache/ccache"
+        },
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        },
+        {
+          "name": "xcode",
+          "path": "cache/Xcode.app"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.11.9.chromium.35"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/mac_toolchain/${platform}",
+          "path": "mac_toolchain",
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
+        },
+        {
+          "name": "skia/bots/ccache_mac",
+          "path": "ccache_mac",
+          "version": "version:1"
+        },
+        {
+          "name": "skia/bots/provisioning_profile_ios",
+          "path": "provisioning_profile_ios",
+          "version": "version:11"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Mac-Clang-arm64-Release-iOS_iOS12\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cores:12",
+        "cpu:x86-64",
+        "os:Mac-14.5",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+>>>>>>> CHANGE (5f6ea5 Update Xcode 15.4 to 16.0)
           "cipd_bin_packages",
+<<<<<<< HEAD   (28cfd0 [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
           "cipd_bin_packages/bin"
+=======
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+        ],
+        "VPYTHON_DEFAULT_SPEC": [
+          "skia/.vpython3"
+        ],
+        "VPYTHON_VIRTUALENV_ROOT": [
+          "cache/vpython3"
+        ]
+      },
+      "execution_timeout_ns": 3600000000000,
+      "extra_tags": {
+        "log_location": "logdog://logs.chromium.org/skia/${SWARMING_TASK_ID}/+/annotations"
+      },
+      "idempotent": true,
+      "io_timeout_ns": 3600000000000,
+      "max_attempts": 2,
+      "outputs": [
+        "build"
+      ],
+      "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
+    },
+    "Build-Mac-Clang-arm64-Release-iOS_iOS12_Metal": {
+      "caches": [
+        {
+          "name": "ccache",
+          "path": "cache/ccache"
+        },
+        {
+          "name": "vpython3",
+          "path": "cache/vpython3"
+        },
+        {
+          "name": "xcode",
+          "path": "cache/Xcode.app"
+        }
+      ],
+      "casSpec": "compile",
+      "cipd_packages": [
+        {
+          "name": "infra/3pp/tools/cpython3/mac-amd64",
+          "path": "cipd_bin_packages/cpython3",
+          "version": "version:3@3.11.9.chromium.35"
+        },
+        {
+          "name": "infra/tools/luci-auth/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/kitchen/${platform}",
+          "path": ".",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/luci/vpython3/${platform}",
+          "path": "cipd_bin_packages",
+          "version": "git_revision:f395cad73f6f75b2298697b5da01d7505e3116e9"
+        },
+        {
+          "name": "infra/tools/mac_toolchain/${platform}",
+          "path": "mac_toolchain",
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
+        },
+        {
+          "name": "skia/bots/ccache_mac",
+          "path": "ccache_mac",
+          "version": "version:1"
+        },
+        {
+          "name": "skia/bots/provisioning_profile_ios",
+          "path": "provisioning_profile_ios",
+          "version": "version:11"
+        }
+      ],
+      "command": [
+        "cipd_bin_packages/vpython3${EXECUTABLE_SUFFIX}",
+        "-u",
+        "skia/infra/bots/run_recipe.py",
+        "${ISOLATED_OUTDIR}",
+        "compile",
+        "{\"$kitchen\":{\"devshell\":true,\"git_auth\":true},\"buildername\":\"Build-Mac-Clang-arm64-Release-iOS_iOS12_Metal\",\"swarm_out_dir\":\"build\"}",
+        "skia"
+      ],
+      "dependencies": [
+        "Housekeeper-PerCommit-BundleRecipes"
+      ],
+      "dimensions": [
+        "cores:12",
+        "cpu:x86-64",
+        "os:Mac-14.5",
+        "pool:Skia"
+      ],
+      "environment": {
+        "RECIPES_USE_PY3": "true",
+        "VPYTHON_LOG_TRACE": "1"
+      },
+      "env_prefixes": {
+        "PATH": [
+          "cipd_bin_packages",
+          "cipd_bin_packages/bin",
+          "cipd_bin_packages/cpython3",
+          "cipd_bin_packages/cpython3/bin"
+>>>>>>> CHANGE (5f6ea5 Update Xcode 15.4 to 16.0)
         ],
         "VPYTHON_DEFAULT_SPEC": [
           "skia/.vpython3"
@@ -19072,7 +19488,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19173,7 +19589,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19269,7 +19685,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19365,7 +19781,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19461,7 +19877,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19584,7 +20000,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -19708,7 +20124,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -19831,7 +20247,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -19932,7 +20348,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20055,7 +20471,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -20156,7 +20572,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20252,7 +20668,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20348,7 +20764,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20467,7 +20883,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20590,7 +21006,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -20691,7 +21107,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -20814,7 +21230,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/bazelisk_mac_amd64",
@@ -20915,7 +21331,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -21011,7 +21427,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
@@ -21107,7 +21523,7 @@
         {
           "name": "infra/tools/mac_toolchain/${platform}",
           "path": "mac_toolchain",
-          "version": "git_revision:e018acef6f136ec8bbf378a026a910b40ba3a7a9"
+          "version": "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd"
         },
         {
           "name": "skia/bots/ccache_mac",
