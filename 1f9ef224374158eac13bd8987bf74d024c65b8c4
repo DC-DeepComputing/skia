@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47fa7137_926fa10a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-11-11T18:09:01Z",
+      "side": 1,
+      "message": "Please see discussion in Flutter chat room",
+      "revId": "1f9ef224374158eac13bd8987bf74d024c65b8c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
