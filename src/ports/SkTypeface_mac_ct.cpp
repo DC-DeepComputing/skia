@@ -69,14 +69,15 @@ using namespace skia_private;
 
 // These attributes to set the palette not publically exported as of macOS 14.5.
 // However, they appear to be available and functional back to at least macOS 10.15.7.
+// https://issues.skia.org/issues/378509669
 static CFStringRef getCTFontPaletteAttribute() {
-    static CFStringRef* kCTFontPaletteAttributePtr =
-        static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteAttribute"));
+    static CFStringRef* kCTFontPaletteAttributePtr = nullptr;
+        //static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteAttribute"));
     return *kCTFontPaletteAttributePtr;
 }
 static CFStringRef getCTFontPaletteColorsAttribute() {
-    static CFStringRef* kCTFontPaletteColorsAttributePtr =
-        static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteColorsAttribute"));
+    static CFStringRef* kCTFontPaletteColorsAttributePtr = nullptr;
+        //static_cast<CFStringRef*>(dlsym(RTLD_DEFAULT, "kCTFontPaletteColorsAttribute"));
     return *kCTFontPaletteColorsAttributePtr;
 }
 
