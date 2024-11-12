@@ -102,12 +102,6 @@ Task::Status RenderPassTask::addCommands(Context* context,
     SkASSERT(fTarget && fTarget->isInstantiated());
     SkASSERT(!fDstCopy || fDstCopy->isInstantiated());
 
-    if (fTarget->texture() == replayData.fTarget) {
-        commandBuffer->setReplayTranslationAndClip(replayData.fTranslation, replayData.fClip);
-    } else {
-        commandBuffer->clearReplayTranslationAndClip();
-    }
-
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
     // the discardable attachments from the Context.
     ResourceProvider* resourceProvider = context->priv().resourceProvider();
@@ -139,6 +133,27 @@ Task::Status RenderPassTask::addCommands(Context* context,
             SKGPU_LOG_W("Could not get DepthStencil attachment for RenderPassTask");
             return Status::kFail;
         }
+    }
+
+    // Set any replay translation and clip, as needed.
+    // The clip set here will intersect with any scissor set during this render pass.
+    const SkIRect colorAttachmentBounds = SkIRect::MakeSize(colorAttachment->dimensions());
+    if (fTarget->texture() == replayData.fTarget) {
+        // We're drawing to the final replay target, so apply replay translation and clip.
+        if (replayData.fClip.isEmpty()) {
+            // If no replay clip is defined, default to the color attachment bounds.
+            commandBuffer->setReplayTranslationAndClip(replayData.fTranslation,
+                                                       colorAttachmentBounds);
+        } else {
+            // If a replay clip is defined, intersect it with the color attachment bounds.
+            SkIRect replayClip = replayData.fClip;
+            replayClip.intersect(colorAttachmentBounds);
+            commandBuffer->setReplayTranslationAndClip(replayData.fTranslation, replayClip);
+        }
+    } else {
+        // We're not drawing to the final replay target, so don't apply replay translation or clip.
+        // In this case as well, the clip we set defaults to the color attachment bounds.
+        commandBuffer->setReplayTranslationAndClip({0, 0}, colorAttachmentBounds);
     }
 
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.
