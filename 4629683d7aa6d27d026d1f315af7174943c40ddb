@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "804cf671_6ad7b373",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T20:06:27Z",
+      "side": 1,
+      "message": "This is the code that Chromium needs to copy, greatly simplify (half of this is code to support old versions of DirectWrite Chromium doesn\u0027t support anymore) and then customize some more for its use case. This is only being attempted here because Chromium doesn\u0027t have anyone to maintain such a thing. However, the issue is that for the current use case, Chromium will then also need to get the collection index, variation position, palette index, etc itself from the IDWrite types (since it will no longer have an SkTypeface which it isn\u0027t really interested in using as an SkTypeface). But there is reluctance to add even this amount of code Chromium side at the moment. Additionally adding even more sidecar to this interface to expose SkTypeface like function is way too much cruft to have Skia side (it would be zero cruft Chromium side) so I\u0027m not sure this approach is sustainable.",
+      "revId": "4629683d7aa6d27d026d1f315af7174943c40ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
