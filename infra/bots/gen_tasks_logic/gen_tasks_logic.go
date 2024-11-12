@@ -841,12 +841,14 @@ var androidDeviceInfos = map[string][]string{
 	"Pixel2XL":        {"taimen", "PPR1.180610.009"},
 	"Pixel3":          {"blueline", "PQ1A.190105.004"},
 	"Pixel3a":         {"sargo", "QP1A.190711.020"},
+	"Pixel3XL":        {"crosshatch", "PQ3A.190801.002"},  // Temporary proof of concept for Fleet-owned devices.
 	"Pixel4":          {"flame", "RPB2.200611.009"},       // R Preview
 	"Pixel4a":         {"sunfish", "AOSP.MASTER_7819821"}, // Pixel4a flashed with an Android HWASan build.
 	"Pixel4XL":        {"coral", "QD1A.190821.011.C4"},
 	"Pixel5":          {"redfin", "RD1A.200810.022.A4"},
 	"Pixel6":          {"oriole", "SD1A.210817.037"},
 	"Pixel7":          {"cheetah", "TD1A.221105.002"},
+	"Pixel8":          {"shiba", "AP1A.240405.002"}, // Temporary proof of concept for Fleet-owned devices.
 	"Pixel9":          {"tokay", "AD1A.240905.004"},
 	"TecnoSpark3Pro":  {"TECNO-KB8", "PPR1.180610.011"},
 	"Wembley":         {"wembley", "SP2A.220505.008"},
@@ -1114,6 +1116,12 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			d["cores"] = "12"
 			delete(d, "gpu")
 		}
+	}
+
+	if b.model("Pixel3XL") {
+		d["pool"] = "chromium.tests"
+	} else if b.model("Pixel8") {
+		d["pool"] = "chromium.tests.gpu"
 	}
 
 	dims := make([]string, 0, len(d))
