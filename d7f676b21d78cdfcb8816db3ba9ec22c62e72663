@@ -16,6 +16,23 @@
       "message": "Looks like this fixes the problem, the failing and missing try jobs are caused by other issues which need more cherry-picks to fix.",
       "revId": "d7f676b21d78cdfcb8816db3ba9ec22c62e72663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97a5e43d_6194d3a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T15:21:04Z",
+      "side": 1,
+      "message": "With https://skia-review.googlesource.com/c/skia/+/918840 it looks like we\u0027ve removed 128 support.",
+      "revId": "d7f676b21d78cdfcb8816db3ba9ec22c62e72663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
