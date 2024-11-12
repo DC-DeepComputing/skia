@@ -71,10 +71,13 @@ protected:
     virtual std::optional<SkSpan<const PaletteColorEntry>> onTryGetPlteChunk() = 0;
     virtual std::optional<SkSpan<const uint8_t>> onTryGetTrnsChunk() = 0;
 
+protected:
+    // SkCodec overrides:
+    SkSampler* getSampler(bool createIfNecessary) override;
+
 private:
     // SkCodec overrides:
     SkEncodedImageFormat onGetEncodedFormat() const final;
-    SkSampler* getSampler(bool createIfNecessary) final;
 
     void allocateStorage(const SkImageInfo& dstInfo);
     Result initializeSwizzler(const SkImageInfo& dstInfo,
