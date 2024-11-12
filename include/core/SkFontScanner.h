@@ -14,6 +14,8 @@
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTArray.h"
+#include <functional>
+
 class SkFontStyle;
 class SkStreamAsset;
 class SkString;
@@ -29,6 +31,7 @@ public:
         SkScalar fMaximum;
     };
     typedef skia_private::STArray<4, AxisDefinition, true> AxisDefinitions;
+    using StyleUpdater = std::function<void(SkFontStyle* style)>;
 
     virtual bool scanFile(SkStreamAsset* stream, int* numFaces) const = 0;
     virtual bool scanFace(SkStreamAsset* stream, int faceIndex, int* numInstances) const = 0;
@@ -41,7 +44,8 @@ public:
                               bool* isFixedPitch,
                               AxisDefinitions* axes) const = 0;
     virtual sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
-                                             const SkFontArguments& args) const = 0;
+                                             const SkFontArguments& args,
+                                             StyleUpdater updater = nullptr) const = 0;
     virtual SkFourByteTag getFactoryId() const = 0;
 };
 

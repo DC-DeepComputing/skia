@@ -9,6 +9,7 @@
 #define SkTypeface_Fontations_priv_DEFINED
 
 #include "include/core/SkFontParameters.h"
+#include "include/core/SkFontScanner.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
@@ -205,8 +206,14 @@ public:
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f', 'n', 't', 'a');
 
-    static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData, const SkFontArguments&);
-    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData,
+                                          const SkFontArguments&,
+                                          SkFontScanner::StyleUpdater updater);
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>,
+                                            const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>,
+                                            const SkFontArguments&,
+                                            SkFontScanner::StyleUpdater updater);
 
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
