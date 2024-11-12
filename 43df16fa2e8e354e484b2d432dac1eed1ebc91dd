@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e387d09_df801596",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0f8a86e_924a9684",
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26e013f4_09d44194",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-11-12T16:05:58Z",
       "side": 1,
       "message": "It looks like this can return just `sk_sp\u003cSkTypeface\u003e` now. It makes sense to return either `sk_sp\u003cSkTypeface\u003e` or` sk_sp\u003cSkTypeface_fontconfig\u003e` but it doesn\u0027t make a lot of sense to return `sk_sp\u003cSkTypeface_proxy\u003e`.",
+      "range": {
+        "startLine": 416,
+        "startChar": 16,
+        "endLine": 416,
+        "endChar": 33
+      },
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0901c16_c58e4f00",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26e013f4_09d44194",
       "range": {
         "startLine": 416,
         "startChar": 16,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e076a46_d31b8f7d",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "491b0070_94bf2738",
+      "range": {
+        "startLine": 419,
+        "startChar": 20,
+        "endLine": 419,
+        "endChar": 38
+      },
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f6ad2e14_4df37056",
@@ -77,6 +143,30 @@
       "writtenOn": "2024-11-12T16:05:58Z",
       "side": 1,
       "message": "Indent this to line up.",
+      "range": {
+        "startLine": 33,
+        "startChar": 30,
+        "endLine": 33,
+        "endChar": 35
+      },
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27aec4c4_b0d0eca7",
+        "filename": "src/ports/SkTypeface_proxy.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6ad2e14_4df37056",
       "range": {
         "startLine": 33,
         "startChar": 30,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "965601ad_25a7efa8",
+        "filename": "src/ports/SkTypeface_proxy.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a339a1e7_41408352",
+      "range": {
+        "startLine": 58,
+        "startChar": 67,
+        "endLine": 58,
+        "endChar": 72
+      },
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fd4a6c9a_d58efd56",
@@ -123,6 +237,30 @@
       "writtenOn": "2024-11-12T16:05:58Z",
       "side": 1,
       "message": "Can remove this \" tag\" to make this fit on one line without overflow.",
+      "range": {
+        "startLine": 83,
+        "startChar": 40,
+        "endLine": 83,
+        "endChar": 44
+      },
+      "revId": "43df16fa2e8e354e484b2d432dac1eed1ebc91dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27cf537a_429d45fd",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T18:11:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd4a6c9a_d58efd56",
       "range": {
         "startLine": 83,
         "startChar": 40,
