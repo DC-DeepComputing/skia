@@ -65,6 +65,7 @@
         "BazelBuild-viewer-release-linux_x64"
       ]
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
         "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11"
@@ -80,6 +81,8 @@
         "BazelTest-canvaskit_gold-modules_canvaskit_js_tests-ck_full_webgl2_release_chrome-linux_x64"
       ]
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
       "tasks": [
         "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64"
@@ -150,6 +153,7 @@
         "BazelTest-external_client-write_to_pdf-default-linux_x64"
       ]
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "tasks": [
         "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11"
@@ -170,6 +174,8 @@
         "BazelTest-precompiled_test-android_math_test-for_android_arm64_release-on_rpi-Pixel5_Android12"
       ]
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Build-Debian10-Clang-arm-Debug-Android": {
       "tasks": [
         "Build-Debian10-Clang-arm-Debug-Android"
@@ -1703,44 +1709,9 @@
         "Upload-Perf-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-Vulkan"
       ]
     },
-    "Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All-SkottieTracing": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All-SkottieTracing"
-      ]
-    },
-    "Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-Release-All-SkottieTracing": {
-      "tasks": [
-        "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-Release-All-SkottieTracing"
-      ]
-    },
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "tasks": [
         "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan"
-      ]
-    },
-    "Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_CanvasPerf": {
-      "tasks": [
-        "Upload-Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_CanvasPerf"
-      ]
-    },
-    "Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_RenderSKP": {
-      "tasks": [
-        "Upload-Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_RenderSKP"
-      ]
-    },
-    "Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_SkottieFrames": {
-      "tasks": [
-        "Upload-Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_SkottieFrames"
-      ]
-    },
-    "Perf-Debian11-none-NUC9i7QN-CPU-AVX2-x86_64-Release-All-LottieWeb": {
-      "tasks": [
-        "Upload-Perf-Debian11-none-NUC9i7QN-CPU-AVX2-x86_64-Release-All-LottieWeb"
       ]
     },
     "Perf-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All": {
@@ -4146,6 +4117,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -4290,6 +4262,8 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "BazelTest-cpu_tests-all_go_tests-linux_rbe-linux_x64": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -5158,6 +5132,7 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {
       "casSpec": "bazel",
       "cipd_packages": [
@@ -5302,6 +5277,8 @@
       "max_attempts": 1,
       "service_account": "skia-external-compile-tasks@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Build-Debian10-Clang-arm-Debug-Android": {
       "caches": [
         {
@@ -33360,6 +33337,7 @@
         "perf"
       ]
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -33646,6 +33624,8 @@
         "perf"
       ]
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
@@ -33743,6 +33723,7 @@
         "perf"
       ]
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_CanvasPerf": {
       "casSpec": "puppeteer",
       "cipd_packages": [
@@ -34055,6 +34036,8 @@
         "perf"
       ]
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Perf-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All": {
       "caches": [
         {
@@ -72535,6 +72518,7 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Upload-Perf-Debian11-Clang-NUC9i7QN-CPU-AVX2-x86_64-OptimizeForSize-All": {
       "caches": [
         {
@@ -72781,6 +72765,8 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Upload-Perf-Debian11-Clang-RUBYR5-GPU-RadeonVega6-x86_64-Release-All-Vulkan": {
       "caches": [
         {
@@ -72863,6 +72849,7 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "Upload-Perf-Debian11-EMCC-NUC9i7QN-CPU-AVX2-wasm-Release-All-Puppeteer_CanvasPerf": {
       "caches": [
         {
@@ -73191,6 +73178,8 @@
       "max_attempts": 2,
       "service_account": "skia-external-nano-uploader@skia-swarming-bots.iam.gserviceaccount.com"
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Upload-Perf-Mac10.15.1-Clang-MacBookAir7.2-GPU-IntelHD6000-x86_64-Release-All": {
       "caches": [
         {
@@ -85958,6 +85947,7 @@
     "BazelBuild-modules_canvaskit-ck_full_webgl2_debug-linux_x64": {},
     "BazelBuild-skottie_tool_gpu-enforce_iwyu-linux_x64": {},
     "BazelBuild-viewer-debug-linux_x64": {},
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-benchmark-cpu_8888_benchmark_test-linux_rbe-linux_x64-NUC9i7QN_Debian11": {
       "experimental": true
     },
@@ -85971,10 +85961,13 @@
         "modules/canvaskit/.*"
       ]
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "BazelTest-cpu_tests-all_tests-cpu_only_debug_rbe-linux_x64": {
       "experimental": true
     },
     "BazelTest-external_client-use_graphite_native_vulkan-default-linux_x64": {},
+<<<<<<< HEAD   (a3795e [infra] Remove Debian11 RTX3060 jobs, fix dimension for Win )
     "BazelTest-gm-cpu_gms-cpu_only_debug_rbe-linux_x64-NUC9i7QN_Debian11": {},
     "BazelTest-precompiled_benchmark-cpu_8888_benchmark_android_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
       "experimental": true
@@ -85985,6 +85978,8 @@
     "BazelTest-precompiled_test-android_math_test-for_android_arm64_release-on_rpi-Pixel5_Android12": {
       "experimental": true
     },
+=======
+>>>>>>> CHANGE (ac0ee7 [infra] Remove Linux NUC9i7QN tasks)
     "Build-Debian10-Clang-arm-Debug-Android": {},
     "Build-Debian10-Clang-arm-Release-Android_API26": {},
     "Build-Debian10-Clang-arm64-Debug-Android": {},
