@@ -920,7 +920,8 @@ bool ContextPriv::supportsPathRendererStrategy(PathRendererStrategy strategy) {
 std::unique_ptr<Context> ContextCtorAccessor::MakeContext(
         sk_sp<SharedContext> sharedContext,
         std::unique_ptr<QueueManager> queueManager,
-        const ContextOptions& options) {
+        const ContextOptions& options,
+        bool) {
     auto context = std::unique_ptr<Context>(new Context(std::move(sharedContext),
                                                         std::move(queueManager),
                                                         options));

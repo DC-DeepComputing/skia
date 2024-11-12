@@ -19,7 +19,8 @@ namespace skgpu::graphite {
 
 namespace ContextFactory {
 std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
-                                  const ContextOptions& options) {
+                                  const ContextOptions& options,
+                                  bool foo) {
     sk_sp<SharedContext> sharedContext = DawnSharedContext::Make(backendContext, options);
     if (!sharedContext) {
         return nullptr;
@@ -33,7 +34,8 @@ std::unique_ptr<Context> MakeDawn(const DawnBackendContext& backendContext,
 
     auto context = ContextCtorAccessor::MakeContext(std::move(sharedContext),
                                                     std::move(queueManager),
-                                                    options);
+                                                    options,
+                                                    foo);
     SkASSERT(context);
     return context;
 }

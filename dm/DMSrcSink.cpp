@@ -2324,7 +2324,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
             if(std::find(recreatedKeys.begin(), recreatedKeys.end(), origKey) ==
                          recreatedKeys.end()) {
                 sk_sp<GraphicsPipeline> pipeline =
-                        context->priv().globalCache()->findGraphicsPipeline(origKey);
+                        context->priv().globalCache()->findGraphicsPipeline(origKey, false);
                 SkASSERT(!pipeline);
 
 #ifdef SK_DEBUG

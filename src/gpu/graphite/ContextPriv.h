@@ -100,7 +100,7 @@ class ContextCtorAccessor {
 public:
     static std::unique_ptr<Context> MakeContext(sk_sp<SharedContext>,
                                                 std::unique_ptr<QueueManager>,
-                                                const ContextOptions&);
+                                                const ContextOptions&, bool);
 };
 
 } // namespace skgpu::graphite
