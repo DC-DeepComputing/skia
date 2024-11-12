@@ -2032,6 +2032,12 @@ void SkTypeface_FreeTypeStream::onGetFontDescriptor(SkFontDescriptor* desc, bool
 
 sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                       const SkFontArguments& args) {
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args, nullptr);
+};
+
+sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                                      const SkFontArguments& args,
+                                                      SkFontScanner::StyleUpdater updater) {
     static SkFontScanner_FreeType scanner;
     bool isFixedPitch;
     SkFontStyle style;
@@ -2045,11 +2051,15 @@ sk_sp<SkTypeface> SkTypeface_FreeType::MakeFromStream(std::unique_ptr<SkStreamAs
     const SkFontArguments::VariationPosition position = args.getVariationDesignPosition();
     AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
     SkFontScanner_FreeType::computeAxisValues(axisDefinitions, position, axisValues, name, &style);
+    if (updater != nullptr) {
+        updater(&style);
+    }
 
     auto data = std::make_unique<SkFontData>(
         std::move(stream), args.getCollectionIndex(), args.getPalette().index,
         axisValues.get(), axisDefinitions.size(),
         args.getPalette().overrides, args.getPalette().overrideCount);
+
     return sk_make_sp<SkTypeface_FreeTypeStream>(std::move(data), name, style, isFixedPitch);
 }
 
@@ -2285,8 +2295,9 @@ bool SkFontScanner_FreeType::scanInstance(SkStreamAsset* stream,
 }
 
 sk_sp<SkTypeface> SkFontScanner_FreeType::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
-                                                         const SkFontArguments& args) const {
-    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args);
+                                                         const SkFontArguments& args,
+                                                         StyleUpdater updater) const {
+    return SkTypeface_FreeType::MakeFromStream(std::move(stream), args, updater);
 }
 
 SkTypeface::FactoryId SkFontScanner_FreeType::getFactoryId() const {

@@ -28,7 +28,8 @@ public:
                       bool* isFixedPitch,
                       AxisDefinitions* axes) const override;
     sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
-                                     const SkFontArguments& args) const override;
+                                     const SkFontArguments& args,
+                                     StyleUpdater updater) const override;
     SkTypeface::FactoryId getFactoryId() const override;
     static void computeAxisValues(
             AxisDefinitions axisDefinitions,
