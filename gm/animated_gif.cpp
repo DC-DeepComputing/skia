@@ -10,6 +10,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
+#include "include/core/SkFont.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -21,15 +22,16 @@
 #include "tools/Resources.h"
 #include "tools/ToolUtils.h"
 #include "tools/flags/CommandLineFlags.h"
+#include "tools/fonts/FontToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 
 #include <memory>
 #include <utility>
 #include <vector>
 
-#if defined(SK_ENABLE_SKOTTIE)
+// #if defined(SK_ENABLE_SKOTTIE)
 
-static DEFINE_string(animatedGif, "images/test640x479.gif", "Animated gif in resources folder");
+static DEFINE_string(animatedGif, "images/fb19ed.webp", "Animated gif in resources folder");
 
 class AnimatedGifGM : public skiagm::GM {
 private:
@@ -47,7 +49,12 @@ private:
         }
         SkBitmap& bm = fFrames[frameIndex];
         if (!bm.getPixels()) {
-            const SkImageInfo info = fCodec->getInfo().makeColorType(kN32_SkColorType);
+            float scale = 0.75f;
+            const auto unscaledSize = fCodec->getInfo().dimensions();
+            SkISize scaledSize = { SkScalarFloorToInt(unscaledSize.width()  * scale) ,
+                                               SkScalarFloorToInt(unscaledSize.height() * scale) };
+            const SkImageInfo info = fCodec->getInfo().makeColorType(kN32_SkColorType).makeDimensions(scaledSize);
+
             bm.allocPixels(info);
 
             SkCodec::Options opts;
@@ -63,10 +70,12 @@ private:
                     opts.fPriorFrame = requiredFrame;
                 }
             }
-
-            if (SkCodec::kSuccess != fCodec->getPixels(info, bm.getPixels(),
-                                                       bm.rowBytes(), &opts)) {
+            SkCodec::Result res = fCodec->getPixels(info, bm.getPixels(),
+                                                       bm.rowBytes(), &opts);
+            if (SkCodec::kSuccess != res) {
                 SkDebugf("Could not getPixels for frame %i: %s", frameIndex, FLAGS_animatedGif[0]);
+                SkDebugf("result: %d\n", res);
+
                 return;
             }
         }
@@ -127,9 +136,23 @@ private:
         }
 
         canvas->save();
+        int x = 0;
+        int y = 0;
+        canvas->translate(0, SkIntToScalar(fCodec->getInfo().height()));
         for (int frameIndex = 0; frameIndex < fTotalFrames; frameIndex++) {
             this->drawFrame(canvas, frameIndex);
             canvas->translate(SkIntToScalar(fCodec->getInfo().width()), 0);
+
+            x += SkIntToScalar(fCodec->getInfo().width());
+            canvas->save();
+           SkFont font(ToolUtils::DefaultPortableTypeface(), 100);
+            SkPaint paint;
+            paint.setStroke(true);
+            paint.setColor(SK_ColorBLACK);
+            SkString text;
+            text.printf("%d", frameIndex);
+            canvas->drawString(text, x, y, font, paint);
+            canvas->restore();
         }
         canvas->restore();
 
@@ -248,4 +271,4 @@ DEF_GM(return new AnimCodecPlayerExifGM("images/required.webp");)
 DEF_GM(return new AnimCodecPlayerExifGM("images/required.gif");)
 DEF_GM(return new AnimCodecPlayerExifGM("images/stoplight_h.webp");)
 
-#endif
+// #endif
