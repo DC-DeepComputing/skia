@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkAssert.h"
@@ -96,6 +97,29 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
     // instead of `libpng`.
+
+    // Considering the `cICP` chunk first, because the spec at
+    // https://www.w3.org/TR/png-3/#cICP-chunk says: "This chunk, if understood
+    // by the decoder, is the highest-precedence color chunk."
+    uint8_t cicpPrimariesId = 0;
+    uint8_t cicpTransferId = 0;
+    uint8_t cicpMatrixId = 0;
+    bool cicpIsFullRange = false;
+    constexpr bool kPreferSrgbTransferFn = true;
+    if (reader.try_get_cicp_chunk(cicpPrimariesId, cicpTransferId, cicpMatrixId, cicpIsFullRange)) {
+        sk_sp<SkColorSpace> colorSpace =
+                SkColorSpace::MakeCICP(cicpPrimariesId,
+                                       cicpTransferId,
+                                       cicpMatrixId,
+                                       static_cast<uint8_t>(cicpIsFullRange),
+                                       kPreferSrgbTransferFn);
+        if (colorSpace) {
+            skcms_ICCProfile colorProfile;
+            skcms_Init(&colorProfile);
+            colorSpace->toProfile(&colorProfile);
+            return SkEncodedInfo::ICCProfile::Make(colorProfile);
+        }
+    }
 
     if (reader.has_iccp_chunk()) {
         // `SkData::MakeWithCopy` is resilient against 0-sized inputs, so
