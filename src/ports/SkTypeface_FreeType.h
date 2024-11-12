@@ -40,7 +40,11 @@ public:
     FaceRec* getFaceRec() const;
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f','r','e','e');
-    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>,
+                                            const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>,
+                                            const SkFontArguments&,
+                                            SkFontScanner::UpdateStyle);
 
 protected:
     SkTypeface_FreeType(const SkFontStyle& style, bool isFixedPitch);
