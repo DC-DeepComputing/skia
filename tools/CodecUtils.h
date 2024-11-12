@@ -36,6 +36,10 @@
 #include "include/codec/SkJpegxlDecoder.h"
 #endif
 
+#if defined(SK_USE_RUST_PNG)
+#include "experimental/rust_png/SkPngRustDecoder.h"
+#endif
+
 #if defined(SK_CODEC_DECODES_PNG)
 #include "include/codec/SkPngDecoder.h"
 #endif
@@ -79,7 +83,9 @@ inline void RegisterAllAvailable() {
 #if defined(SK_CODEC_DECODES_JPEGXL)
     SkCodecs::Register(SkJpegxlDecoder::Decoder());
 #endif
-#if defined(SK_CODEC_DECODES_PNG)
+#if defined(SK_USE_RUST_PNG)
+    SkCodecs::Register(SkPngRustDecoder::Decoder());
+#elif defined(SK_CODEC_DECODES_PNG)
     SkCodecs::Register(SkPngDecoder::Decoder());
 #endif
 #if defined(SK_CODEC_DECODES_RAW)
