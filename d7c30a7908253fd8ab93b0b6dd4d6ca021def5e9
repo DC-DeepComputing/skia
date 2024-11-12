@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af8e42b0_9cc8b6d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-11-12T17:07:20Z",
+      "side": 1,
+      "message": "Author: Michael Hoisie \u003choisie@google.com\u003e",
+      "revId": "d7c30a7908253fd8ab93b0b6dd4d6ca021def5e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
