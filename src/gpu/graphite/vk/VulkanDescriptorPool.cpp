@@ -16,9 +16,7 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
                                                        SkSpan<DescriptorData> requestedDescCounts,
                                                        VkDescriptorSetLayout layout) {
 
-    if (requestedDescCounts.empty()) {
-        return nullptr;
-    }
+    // requestedDescCounts is allowed to be empty if we need a dummy "filler" descriptor set.
 
     // For each requested descriptor type and count, create a VkDescriptorPoolSize struct which
     // specifies the descriptor type and quantity for pool creation. Multiple pool size structures
@@ -52,7 +50,7 @@ sk_sp<VulkanDescriptorPool> VulkanDescriptorPool::Make(const VulkanSharedContext
     createInfo.flags = 0;
     createInfo.maxSets = kMaxNumSets;
     createInfo.poolSizeCount = requestedDescCounts.size();
-    createInfo.pPoolSizes = &poolSizes.front();
+    createInfo.pPoolSizes = requestedDescCounts.empty() ? nullptr : &poolSizes.front();
 
     VkDescriptorPool pool;
     VkResult result;
