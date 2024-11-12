@@ -104,6 +104,30 @@
       },
       "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd165fd3_eaf2778a",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-11-12T21:07:03Z",
+      "side": 1,
+      "message": "I updated where we set the replay translation and clip and now we intersect the replay clip with the color attachment bounds at that moment. So we no longer do two intersections when setting the scissor, but we still have the two separate fields on CommandBuffer.\n\nAs discussed offline, combining these fields as suggested here isn\u0027t currently possible because of Dawn validation rules, as described in http://b/378729995. I did add a test here which fails if we try to intersect the viewport with the replay clip.",
+      "parentUuid": "a227416e_96be6513",
+      "range": {
+        "startLine": 284,
+        "startChar": 23,
+        "endLine": 284,
+        "endChar": 39
+      },
+      "revId": "fe3872a89d332491aafc0ad02769ed613d29e052",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
