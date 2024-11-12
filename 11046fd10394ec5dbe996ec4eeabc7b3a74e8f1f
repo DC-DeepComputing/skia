@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e2749dc_fa2d9769",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 0,
+      "message": "I am sorry. I understood your previous comment \"Undo all these rather bad intent \"fixes\" as they aren\u0027t related.\" as a suggestion to remove the whole thing.",
+      "parentUuid": "054d4e0e_09f02106",
+      "revId": "11046fd10394ec5dbe996ec4eeabc7b3a74e8f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42475c93_ba767bfa",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-11-12T05:23:05Z",
       "side": 0,
       "message": "Put this space back. No reason to touch this line just to make it worse.",
+      "range": {
+        "startLine": 244,
+        "startChar": 19,
+        "endLine": 244,
+        "endChar": 24
+      },
+      "revId": "11046fd10394ec5dbe996ec4eeabc7b3a74e8f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe04ea27_327d4176",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 0,
+      "message": "I checked the entire file and tried to remove all these things that CLion for some reason likes so much.",
+      "parentUuid": "42475c93_ba767bfa",
       "range": {
         "startLine": 244,
         "startChar": 19,

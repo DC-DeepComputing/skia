@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbea481e_1c4f6442",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ac981e24_8a6ad8fc",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3c14fd5_23712e98",
@@ -35,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e37e266_3cc6615b",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3c14fd5_23712e98",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b66664ff_695bccd5",
@@ -48,6 +84,24 @@
       "writtenOn": "2024-11-12T05:23:05Z",
       "side": 1,
       "message": "Also here (and several other places) just call the superclass implementation. That\u0027s what is supposed to be doing the wrapping (and allows this class not to need to be a `friend`).",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acd3b5a6_f22e9c25",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b66664ff_695bccd5",
       "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -75,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "149cccf8_75c224f7",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "247ed03a_250a981e",
+      "range": {
+        "startLine": 53,
+        "startChar": 65,
+        "endLine": 53,
+        "endChar": 70
+      },
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4e04c98_adb99b2c",
@@ -88,6 +166,24 @@
       "writtenOn": "2024-11-12T05:23:05Z",
       "side": 1,
       "message": "Probably want this to be `private` to avoid issues where derived classes try to work around this implementation being the proxy like is currently being done.",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c434a97_b702a59d",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4e04c98_adb99b2c",
       "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

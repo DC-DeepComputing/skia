@@ -101,6 +101,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba736231_1fc34764",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-12T15:39:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59eb74fe_c23dd445",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2f0b4ce1_e1a83246",
