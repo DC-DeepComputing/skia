@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "054d4e0e_09f02106",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 0,
+      "message": "Why is this being removed? We still support distros with older versions of FontConfig. Even if we didn\u0027t, that would mean removing the whole of `FCLocker` and would be done in another change. If this is just being removed due to hitting the assert, even more reason it needs to be here.",
+      "revId": "11046fd10394ec5dbe996ec4eeabc7b3a74e8f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42475c93_ba767bfa",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 0,
+      "message": "Put this space back. No reason to touch this line just to make it worse.",
+      "range": {
+        "startLine": 244,
+        "startChar": 19,
+        "endLine": 244,
+        "endChar": 24
+      },
+      "revId": "11046fd10394ec5dbe996ec4eeabc7b3a74e8f1f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

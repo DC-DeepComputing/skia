@@ -85,6 +85,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "59eb74fe_c23dd445",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 428,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "Not sure why line 433 (I\u0027m assuming a different version of this) but the only call seems to be like\n\n`fProxy-\u003eonGetFontDescriptor(desc, serialize);`\n\nwhich seems quite incorrect, it looks like you want to call\n\n`SkTypeface_proxy::onGetFontDescriptor(desc, serialize);`",
+      "parentUuid": "e9438717_c2bf2745",
+      "revId": "b1ecf0519c6fcdd5296283a8dc1dfda8d403bb76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2f0b4ce1_e1a83246",
         "filename": "src/ports/SkFontMgr_fontconfig.cpp",
         "patchSetId": 8

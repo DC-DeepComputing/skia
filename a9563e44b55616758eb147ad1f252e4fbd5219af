@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac981e24_8a6ad8fc",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "No reason to touch this line and make it worse.",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3c14fd5_23712e98",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "And the space here... and everywhere.",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b66664ff_695bccd5",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "Also here (and several other places) just call the superclass implementation. That\u0027s what is supposed to be doing the wrapping (and allows this class not to need to be a `friend`).",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247ed03a_250a981e",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "No need to give this a name (just `const SkGlyph\u0026` is enough) since it is obvious what it is (in order to squeeze this onto one line).",
+      "range": {
+        "startLine": 53,
+        "startChar": 65,
+        "endLine": 53,
+        "endChar": 70
+      },
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4e04c98_adb99b2c",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T05:23:05Z",
+      "side": 1,
+      "message": "Probably want this to be `private` to avoid issues where derived classes try to work around this implementation being the proxy like is currently being done.",
+      "revId": "a9563e44b55616758eb147ad1f252e4fbd5219af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
