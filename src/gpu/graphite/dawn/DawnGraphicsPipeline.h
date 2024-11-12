@@ -60,7 +60,7 @@ public:
                                             const RuntimeEffectDictionary* runtimeDict,
                                             const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc,
-                                            SkEnumBitMask<PipelineCreationFlags>);
+                                            SkEnumBitMask<PipelineCreationFlags>, bool);
 
     ~DawnGraphicsPipeline() override;
 

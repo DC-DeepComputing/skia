@@ -187,7 +187,7 @@ skgpu::ContextType DawnTestContext::contextType() {
     }
 }
 
-std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext(const TestOptions& options) {
+std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext(const TestOptions& options, bool) {
     skgpu::graphite::ContextOptions revisedContextOptions(options.fContextOptions);
     skgpu::graphite::ContextOptionsPriv contextOptionsPriv;
     if (!options.fContextOptions.fOptionsPriv) {
@@ -201,7 +201,7 @@ std::unique_ptr<skgpu::graphite::Context> DawnTestContext::makeContext(const Tes
         backendContext.fTick = nullptr;
     }
 
-    return skgpu::graphite::ContextFactory::MakeDawn(backendContext, revisedContextOptions);
+    return skgpu::graphite::ContextFactory::MakeDawn(backendContext, revisedContextOptions, true);
 }
 
 void DawnTestContext::tick() { fBackendContext.fTick(fBackendContext.fInstance); }

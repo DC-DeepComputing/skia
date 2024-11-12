@@ -470,7 +470,7 @@ sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
                                       runtimeDict,
                                       pipelineDesc,
                                       renderPassDesc,
-                                      pipelineCreationFlags);
+                                      pipelineCreationFlags, true);
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(

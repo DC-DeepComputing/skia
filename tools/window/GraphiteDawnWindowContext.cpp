@@ -55,7 +55,7 @@ void GraphiteDawnWindowContext::initializeContext(int width, int height) {
     // Needed to make synchronous readPixels work:
     fDisplayParams.fGraphiteTestOptions.fPriv.fStoreContextRefInRecorder = true;
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeDawn(
-            backendContext, fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions);
+            backendContext, fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions, true);
     if (!fGraphiteContext) {
         SkASSERT(false);
         return;

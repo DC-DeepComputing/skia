@@ -264,7 +264,7 @@ public:
     ContextID contextID() const { return fContextID; }
 
 protected:
-    Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>, const ContextOptions&);
+    Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>, const ContextOptions&, bool);
 
 private:
     friend class ContextPriv;

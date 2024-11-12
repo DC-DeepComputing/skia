@@ -104,7 +104,7 @@ ContextInfo ContextFactory::getContextInfo(skgpu::ContextType type) {
         return ContextInfo{};
     }
 
-    std::unique_ptr<skgpu::graphite::Context> context = testCtx->makeContext(fOptions);
+    std::unique_ptr<skgpu::graphite::Context> context = testCtx->makeContext(fOptions, true);
     if (!context) {
         return ContextInfo{};
     }

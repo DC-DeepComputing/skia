@@ -42,7 +42,7 @@ public:
 
     virtual skgpu::ContextType contextType() = 0;
 
-    virtual std::unique_ptr<skgpu::graphite::Context> makeContext(const TestOptions&) = 0;
+    virtual std::unique_ptr<skgpu::graphite::Context> makeContext(const TestOptions&, bool) = 0;
 
     bool getMaxGpuFrameLag(int *maxFrameLag) const {
         *maxFrameLag = kMaxFrameLag;

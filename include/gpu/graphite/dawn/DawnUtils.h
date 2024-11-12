@@ -19,7 +19,7 @@ struct ContextOptions;
 struct DawnBackendContext;
 
 namespace ContextFactory {
-SK_API std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
+SK_API std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&, bool);
 } // namespace ContextFactory
 
 } // namespace skgpu::graphite
