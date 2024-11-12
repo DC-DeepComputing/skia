@@ -443,15 +443,15 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
         config.options.use_scaling = 1;
 
         if (frameIsSubset) {
-            float scaleX = ((float) dstInfo.width()) / srcSize.width();
-            float scaleY = ((float) dstInfo.height()) / srcSize.height();
+            float scaleX = (((float) dstInfo.width()) / srcSize.width());
+            float scaleY = (((float) dstInfo.height()) / srcSize.height());
 
             // We need to be conservative here and floor rather than round.
             // Otherwise, we may find ourselves decoding off the end of memory.
-            dstX = scaleX * dstX;
-            scaledWidth = scaleX * scaledWidth;
-            dstY = scaleY * dstY;
-            scaledHeight = scaleY * scaledHeight;
+            dstX = round(scaleX * (float)dstX);
+            scaledWidth = round(scaleX * (float)scaledWidth);
+            dstY = round(scaleY * (float)dstY);
+            scaledHeight = round(scaleY * (float)scaledHeight);
             if (0 == scaledWidth || 0 == scaledHeight) {
                 return kSuccess;
             }
