@@ -12,11 +12,14 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+extern skgpu::StdSteadyClock::time_point fTimeTime;
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
-        : fGraphicsPipelineCache(256)  // TODO: find a good value for these limits
-        , fComputePipelineCache(256) {}
+        : fGraphicsPipelineCache(2, &fMap)  // TODO: find a good value for these limits
+        , fComputePipelineCache(256)
+        , fMap() {}
 
 GlobalCache::~GlobalCache() {
     // These should have been cleared out earlier by deleteResources().
@@ -34,12 +37,25 @@ void GlobalCache::deleteResources() {
     fStaticResource.clear();
 }
 
-sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key) {
+sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(const UniqueKey& key,
+                                                          bool forPrecompile) {
+    SkLog* log = this->gimme(key);
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
 #if defined(GPU_TEST_UTILS)
-    if (entry) { ++fStats.fGraphicsCacheHits; } else { ++fStats.fGraphicsCacheMisses; }
+    if (entry) {
+        ++fStats.fGraphicsCacheHits;
+        ++fStats.fBar[(*entry)->fromPrecompile()][forPrecompile];
+
+        log->addEvent2(GlobalCache::SkLog::EventType2::kCacheHit, forPrecompile);
+    } else {
+        ++fStats.fGraphicsCacheMisses;
+        ++fStats.fBaz[forPrecompile];
+
+        log->addEvent2(GlobalCache::SkLog::EventType2::kCacheMiss, forPrecompile);
+    }
 #endif
     return entry ? *entry : nullptr;
 }
@@ -67,6 +83,8 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
+    SkLog* log = this->gimme(key);
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
@@ -77,12 +95,27 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsCacheAdditions;
 #endif
+        bool fromPrecompile = pipeline->fromPrecompile();
         entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+        log->addEvent2(GlobalCache::SkLog::EventType2::kAdded, fromPrecompile);
+        log->setType(fromPrecompile ? GlobalCache::SkLog::Type::kPrecompile
+                                    : GlobalCache::SkLog::Type::kNormal);
     } else {
 #if defined(GPU_TEST_UTILS)
         // else there was a race creating the same pipeline and this thread lost, so return
         // the winner
-        ++fStats.fGraphicsRaces;
+        ++fStats.fTotalGraphicsRaces;
+        ++fStats.fFoo[(*entry)->fromPrecompile()][pipeline->fromPrecompile()];
+
+        static const GlobalCache::SkLog::EventType2 kCombos[4] = {
+                GlobalCache::SkLog::EventType2::kNWonRaceOverN,
+                GlobalCache::SkLog::EventType2::kNWonRaceOverP,
+                GlobalCache::SkLog::EventType2::kPWonRaceOverN,
+                GlobalCache::SkLog::EventType2::kPWonRaceOverP,
+        };
+
+        int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
+        log->addEvent2(kCombos[race], pipeline->fromPrecompile());
 #endif
 #if SK_HISTOGRAMS_ENABLED
         [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
@@ -113,6 +146,55 @@ void GlobalCache::forEachGraphicsPipeline(
 
     fGraphicsPipelineCache.foreach([&](const UniqueKey* k, const sk_sp<GraphicsPipeline>* v) {
         fn(*k, v->get());
+    });
+}
+
+namespace {
+
+[[maybe_unused]] auto micros_since = [](skgpu::StdSteadyClock::time_point start) {
+    skgpu::StdSteadyClock::duration elapsed = skgpu::StdSteadyClock::now() - start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+};
+
+}
+
+void GlobalCache::SkLog::addEvent2(EventType2 type, bool forPrecompile) {
+    uint32_t curEvent = fCurEvent1.fetch_add(1, std::memory_order_relaxed);
+    if (curEvent >= kMaxNumMsgs) {
+        return;
+    }
+
+    fEvents[curEvent] = { type, micros_since(fTimeTime), forPrecompile };
+}
+
+GlobalCache::SkLog* GlobalCache::gimme(const UniqueKey& key) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    sk_sp<SkLog>* log = fMap.find(key);
+    if (!log) {
+        sk_sp<SkLog> tmp = sk_make_sp<SkLog>(key);
+        log = fMap.set(std::move(tmp));
+    }
+
+    return (*log).get();
+}
+
+void GlobalCache::dump() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    int count = 0;
+    fMap.foreach([&count](sk_sp<SkLog>* log) {
+        uint32_t numEvents = (*log)->fCurEvent1.fetch_add(0, std::memory_order_relaxed);
+        numEvents = std::min(numEvents, SkLog::kMaxNumMsgs);
+
+        SkDebugf("%2d: %c %10u ", count++, SkLog::Name2((*log)->fType), (*log)->fKey.hash());
+        for (uint32_t i = 0; i < numEvents; ++i) {
+            SkDebugf("[%5lld %s %c]",
+                     (*log)->fEvents[i].fTime,
+                     SkLog::Name((*log)->fEvents[i].fType, (*log)->fType),
+                     (*log)->fEvents[i].fForPrecompile ? 'P' : 'N');
+        }
+        SkDebugf("\n");
     });
 }
 
