@@ -90,7 +90,7 @@ bool isAxisAligned(const SkScalerContextRec& rec) {
 
 sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
                                              const SkFontArguments& args) {
-    return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args);
+    return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args, nullptr);
 }
 
 SkTypeface_Fontations::SkTypeface_Fontations(
@@ -112,12 +112,19 @@ SkTypeface_Fontations::SkTypeface_Fontations(
         , fPalette(std::move(palette)) {}
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
+                                                        const SkFontArguments& args,
+                                                        SkFontScanner::UpdateStyle updateStyle) {
+    return MakeFromData(streamToData(stream), args, updateStyle);
+}
+
+sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
                                                         const SkFontArguments& args) {
-    return MakeFromData(streamToData(stream), args);
+    return MakeFromStream(std::move(stream), args, nullptr);
 }
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
-                                                      const SkFontArguments& args) {
+                                                      const SkFontArguments& args,
+                                                      SkFontScanner::UpdateStyle updateStyle) {
     uint32_t ttcIndex = args.getCollectionIndex();
     rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef = make_bridge_font_ref(data, ttcIndex);
     if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
@@ -177,6 +184,10 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
             args.getPalette().overrideCount);
     rust::Vec<uint32_t> palette =
             resolve_palette(*bridgeFontRef, args.getPalette().index, paletteOverrides);
+
+    if (updateStyle != nullptr) {
+        updateStyle(&style);
+    }
 
     return sk_sp<SkTypeface>(new SkTypeface_Fontations(data,
                                                        style,
@@ -858,7 +869,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args
             make_normalized_coords(*fBridgeFontRef, fusedArgs.getVariationDesignPosition());
 
     if (!fontations_ffi::normalized_coords_equal(*normalized_args, *fBridgeNormalizedCoords)) {
-        return MakeFromData(fFontData, fusedArgs);
+        return MakeFromData(fFontData, fusedArgs, nullptr);
     }
 
     // TODO(crbug.com/skia/330149870): Palette differences are not fused, see DWrite backend impl.
@@ -870,7 +881,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args
 
     if (fPalette.size() != newPalette.size() ||
         memcmp(fPalette.data(), newPalette.data(), fPalette.size() * sizeof(fPalette[0]))) {
-        return MakeFromData(fFontData, fusedArgs);
+        return MakeFromData(fFontData, fusedArgs, nullptr);
     }
 
     return sk_ref_sp(this);
