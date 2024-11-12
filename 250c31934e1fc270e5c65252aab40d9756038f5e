@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89e34977_c9269173",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-12T21:41:30Z",
+      "side": 1,
+      "message": "The last two jobs on the CQ are backed by a single machine which is currently in quarantine.",
+      "revId": "250c31934e1fc270e5c65252aab40d9756038f5e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
