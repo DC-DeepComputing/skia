@@ -701,6 +701,10 @@ std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngRustCodec::o
         return std::nullopt;
     }
 
+    if (!fReader->has_plte_chunk()) {
+        return std::nullopt;
+    }
+
     // No need for `has_plte_chunk` check here (and no such API provided by
     // `FFI.rs`) because the Rust decoder will return an error if an `Indexed`
     // image has no `pLTE` chunk before the `IDAT` chunk.
