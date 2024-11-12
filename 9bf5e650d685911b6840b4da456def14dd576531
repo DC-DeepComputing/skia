@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbe043c5_70d12e6a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 874,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Yes, I had a TODO somewhere for that I think but I went ahead and made that change in this patchset.",
+      "parentUuid": "0973cd50_0b4a5707",
+      "range": {
+        "startLine": 853,
+        "startChar": 15,
+        "endLine": 874,
+        "endChar": 56
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae336460_78aabdd5",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-05T18:30:40Z",
       "side": 1,
       "message": "Curious, was there something that triggered the need to add the caching for this? I can\u0027t imagine setting the viewport N times where N is the number of render passes would have much of a perf impact.",
+      "range": {
+        "startLine": 234,
+        "startChar": 4,
+        "endLine": 234,
+        "endChar": 29
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a1b2a7f_b8c94e45",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "After discussing offline, I did go ahead and change this CL to only update push constants once per RenderPass (unless we are loading MSAA from resolve in which case different push constant properties must be used) enabling me to get rid of this member attribute.",
+      "parentUuid": "ae336460_78aabdd5",
       "range": {
         "startLine": 234,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a50390b5_e2e82344",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "I had gotten rid of the empty check in command buffer but not here to enable dummy set creation. Good catch; deleted that condition here to make sure a dummy can be created when needed",
+      "parentUuid": "b1518b7a_8c67ff94",
+      "range": {
+        "startLine": 517,
+        "startChar": 20,
+        "endLine": 518,
+        "endChar": 24
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "346fa5be_f0719f90",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-11-05T20:56:40Z",
       "side": 1,
       "message": "Does this actually get used by graphite when compiling spirv? What does it mean if so?",
+      "range": {
+        "startLine": 647,
+        "startChar": 4,
+        "endLine": 647,
+        "endChar": 44
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f8512a3_45f66d97",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Yes, here: https://skia.googlesource.com/skia.git/+/refs/heads/main/src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp#5238\n\nThis informs the compiler to use the appropriate syntax for push constants v. UBOs. Theoretically once we are in SPIR-V land we already know we are using Vulkan, so if we know we are using graphite that we can always use push constant syntax, but the SPIR-V generation code is shared w/ ganesh which still sometimes opts to not use push constants. LMK if you\u0027re fine keeping this approach or if you have a different idea for how this should work.",
+      "parentUuid": "346fa5be_f0719f90",
       "range": {
         "startLine": 647,
         "startChar": 4,

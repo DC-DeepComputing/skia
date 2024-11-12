@@ -22,6 +22,30 @@
       },
       "revId": "422ba0087cffff9a2b56cc53d07f7a5537a4ddc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0695c892_78945950",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "These are graphite-level resource binding requirements (not a Caps attribute), so we need to be able to indicate to our SkSL compiler that we will be utilizing push constants (or otherwise convey to `emit_intrinsic_constants` within `src/gpu/graphite/ShaderInfo.cpp` that we are using Vulkan). LMKWYT.",
+      "parentUuid": "8e74dcda_015191ac",
+      "range": {
+        "startLine": 66,
+        "startChar": 9,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "422ba0087cffff9a2b56cc53d07f7a5537a4ddc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

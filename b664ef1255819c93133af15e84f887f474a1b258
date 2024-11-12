@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ad06d46_be9b0b32",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "See my other comments and we can figure out if this should be removed",
+      "parentUuid": "33c50049_1903bfdf",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 55
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4913bf2e_f7a51cad",
@@ -42,6 +66,76 @@
         "startChar": 4,
         "endLine": 80,
         "endChar": 5
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25301465_979a1fb9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Yeah I was thinking for a future where we potentially use push constants more similarly to how ganesh uses them.\nI deleted this method, added one SkASSERT before we call CmdPushConstants, and now statically assert our push constant sizes are below 128 bytes (min required device limit)",
+      "parentUuid": "4913bf2e_f7a51cad",
+      "range": {
+        "startLine": 78,
+        "startChar": 4,
+        "endLine": 80,
+        "endChar": 5
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79627e1a_9869812c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 1065,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Note: This is where we obtain a dummy descriptor set by passing in a potentially empty `descriptors` container. Let me know if you\u0027d like me to amend or add a comment!",
+      "range": {
+        "startLine": 1065,
+        "startChar": 12,
+        "endLine": 1065,
+        "endChar": 23
+      },
+      "revId": "b664ef1255819c93133af15e84f887f474a1b258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3a83d65_a2d5a957",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Note: We do actually add the dummy descriptor set here if we need to. If we have actual uniforms, we proceed to get a real layout. If we have none and we have no input attachments, then we also proceed to obtain a layout but simply an empty one (we pass in `{uniformDescriptors}` which is empty to layout creation). Let me know if the comment above could be more clear",
+      "range": {
+        "startLine": 519,
+        "startChar": 4,
+        "endLine": 519,
+        "endChar": 66
       },
       "revId": "b664ef1255819c93133af15e84f887f474a1b258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"

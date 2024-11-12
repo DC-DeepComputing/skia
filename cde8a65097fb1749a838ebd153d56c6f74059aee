@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fac123de_e15fdac9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-12T16:46:07Z",
+      "side": 1,
+      "message": "Sorry for the delay; I had some local changes on my work PC. Feel free to TAL",
+      "revId": "cde8a65097fb1749a838ebd153d56c6f74059aee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
