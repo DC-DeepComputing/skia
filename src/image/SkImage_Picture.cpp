@@ -61,6 +61,25 @@ void SkImage_Picture::replay(SkCanvas* canvas) const {
                         pictureIG->fPaint.getMaybeNull());
 }
 
+sk_sp<SkImage> SkImage_Picture::onMakeSubset(GrDirectContext*, const SkIRect& subset) const {
+    auto sharedGenerator = this->generator();
+    auto pictureIG = static_cast<SkPictureImageGenerator*>(sharedGenerator->fGenerator.get());
+
+    SkMatrix matrix = pictureIG->fMatrix;
+    matrix.postTranslate(-subset.left(), -subset.top());
+    SkImages::BitDepth bitDepth =
+            this->colorType() == kRGBA_F16_SkColorType ? SkImages::BitDepth::kF16
+                                                       : SkImages::BitDepth::kU8;
+    auto gen = SkImageGenerators::MakeFromPicture(subset.size(), pictureIG->fPicture,
+                                                  &matrix, pictureIG->fPaint.getMaybeNull(),
+                                                  bitDepth, this->refColorSpace(),
+                                                  pictureIG->fProps);
+    SkImage_Lazy::Validator validator(
+            SharedGenerator::Make(std::move(gen)), nullptr, nullptr);
+
+    return validator ? sk_make_sp<SkImage_Picture>(&validator) : nullptr;
+}
+
 bool SkImage_Picture::getImageKeyValues(
         uint32_t keyValues[SkTiledImageUtils::kNumImageKeyValues]) const {
 
