@@ -263,7 +263,15 @@ impl Reader {
         let transformations = compute_transformations(info);
         decoder.set_transformations(transformations);
 
-        Ok(Self { reader: decoder.read_info()?, last_interlace_info: None })
+        let reader = decoder.read_info()?;
+
+        // https://www.w3.org/TR/png-3/#11PLTE says that for color type 3 (indexed-color), the PLTE
+        // chunk is required.
+        if info.color_type == png::ColorType::Indexed && info.palette.is_none() {
+            return Err(ErrorKind::InvalidInput.into());
+        }
+
+        Ok(Self { reader, last_interlace_info: None })
     }
 
     fn height(&self) -> u32 {
@@ -351,7 +359,8 @@ impl Reader {
     }
 
     /// Returns contents of the `PLTE` chunk.  Panics if there is no `PLTE`
-    /// chunk.
+    /// chunk.  Note that `Reader.new` below explicitly checks that the
+    /// `PLTE` chunk is present in `png::ColorType::Indexed` images.
     fn get_plte_chunk(&self) -> &[u8] {
         self.reader.info().palette.as_ref().unwrap().as_ref()
     }
