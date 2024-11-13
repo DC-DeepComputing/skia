@@ -62,6 +62,10 @@
 #include "include/codec/SkJpegxlDecoder.h"
 #endif
 
+#if defined(SK_USE_RUST_PNG)
+#include "experimental/rust_png/SkPngRustDecoder.h"
+#endif
+
 #if defined(SK_CODEC_DECODES_PNG)
 #include "include/codec/SkPngDecoder.h"
 #endif
@@ -92,7 +96,9 @@ static std::vector<Decoder>* get_decoders_for_editing() {
     static SkOnce once;
     once([] {
         if (decoders->empty()) {
-#if defined(SK_CODEC_DECODES_PNG)
+#if defined(SK_USE_RUST_PNG)
+            decoders->push_back(SkPngRustDecoder::Decoder());
+#elif defined(SK_CODEC_DECODES_PNG)
             decoders->push_back(SkPngDecoder::Decoder());
 #endif
 #if defined(SK_CODEC_DECODES_JPEG)
