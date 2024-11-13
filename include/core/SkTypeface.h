@@ -288,6 +288,20 @@ public:
     bool getPostScriptName(SkString* name) const;
 
     /**
+     *  If the primary resource backing this typeface has a name (like a file
+     *  path or URL) representable by unicode code points, the `resourceName`
+     *  will be set. The primary purpose is as a user facing indication about
+     *  where the data was obtained (which font file was used).
+     *
+     *  Returns true if this typeface is backed by a single resource.
+     *
+     *  For local font collections this will often be a file path. The named
+     *  resource may or may not exist. If it does exist, using it to create an
+     *  SkTypeface may or may not create a similar SkTypeface to this one.
+     */
+    bool getResourceName(SkString* resourceName) const;
+
+    /**
      *  Return a stream for the contents of the font data, or NULL on failure.
      *  If ttcIndex is not null, it is set to the TrueTypeCollection index
      *  of this typeface within the stream, or 0 if the stream is not a
