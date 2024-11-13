@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa65fa9f_4bdfae35",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T18:36:22Z",
+      "side": 1,
+      "message": "Are `kSRGB` and `kP3` important to move here?  For simplicity of the CL description, for now I\u0027ve moved back everything that was not CICP-related.\n\nLet\u0027s talk? :-)",
+      "parentUuid": "9d22d73e_d4a970fd",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "314bf139_82585b4a",
         "filename": "include/core/SkColorSpace.h",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2024-11-13T08:46:56Z",
       "side": 1,
       "message": "I\u0027d leave everything below here only in `SkNamedTransferFnExt` (just pulling in the CICP values for now).",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a35b06d_69bbae8e",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T18:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "314bf139_82585b4a",
       "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -65,6 +101,24 @@
       "writtenOn": "2024-11-13T08:46:56Z",
       "side": 1,
       "message": "(And this one can be removed).",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c577764_de3417db",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T18:36:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7332022d_6e43717c",
       "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -88,6 +142,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "79856d83_4190f1df",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T18:36:22Z",
+      "side": 1,
+      "message": "Done.  I see your argument - the function only validates `matrix_coefficients` and `full_range_flag`.  OTOH, I am not sure if I like duplicating how these values are checked across all the callers.  Still, maybe this is indeed the most pragmatic way forward.",
+      "parentUuid": "386450a0_ff58202a",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fe5d2b69_ffb433dc",
         "filename": "src/core/SkColorSpace.cpp",
         "patchSetId": 3
@@ -99,6 +171,24 @@
       "writtenOn": "2024-11-13T08:46:56Z",
       "side": 1,
       "message": "nits: \"TODO(https://crbug.com/1339019)\"",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a0c2391_2fceb9c6",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T18:36:22Z",
+      "side": 1,
+      "message": "I\u0027ve moved this back into https://chromium-review.googlesource.com/c/chromium/src/+/6012927/5/third_party/blink/renderer/platform/image-decoders/png/png_image_decoder.cc\n\n(and presubmits told me to use the new Buganizer-based bug id, so I did)",
+      "parentUuid": "fe5d2b69_ffb433dc",
       "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
