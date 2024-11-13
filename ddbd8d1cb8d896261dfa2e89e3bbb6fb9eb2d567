@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04d15b16_d6c2ceb1",
+        "filename": "experimental/rust_png/impl/SkPngRustCodec.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 706,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-13T22:12:43Z",
+      "side": 0,
+      "message": "I was wrong here.  I don\u0027t remember why I thought that.\n\nBut it\u0027s actually good - this way we can match the behavior of `SkPngCodec` which doesn\u0027t return a fatal `kInvalidInput` when **creating** the codec, only when actually **decoding** the image.",
+      "range": {
+        "startLine": 704,
+        "startChar": 0,
+        "endLine": 706,
+        "endChar": 57
+      },
+      "revId": "ddbd8d1cb8d896261dfa2e89e3bbb6fb9eb2d567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
