@@ -15,6 +15,137 @@
 #include <cmath>
 #include <cstring>
 
+namespace SkNamedPrimaries {
+
+bool GetCicp(uint8_t primaries, SkColorSpacePrimaries& sk_primaries) {
+    // Rec. ITU-T H.273, Table 2.
+    switch (primaries) {
+        case 0:
+            // Reserved.
+            break;
+        case 1:
+            sk_primaries = kRec709;
+            return true;
+        case 2:
+            // Unspecified.
+            break;
+        case 3:
+            // Reserved.
+            break;
+        case 4:
+            sk_primaries = kRec470SystemM;
+            return true;
+        case 5:
+            sk_primaries = kRec470SystemBG;
+            return true;
+        case 6:
+            sk_primaries = kRec601;
+            return true;
+        case 7:
+            sk_primaries = kSMPTE_ST_240;
+            return true;
+        case 8:
+            sk_primaries = kGenericFilm;
+            return true;
+        case 9:
+            sk_primaries = kRec2020;
+            return true;
+        case 10:
+            sk_primaries = kSMPTE_ST_428_1;
+            return true;
+        case 11:
+            sk_primaries = kSMPTE_RP_431_2;
+            return true;
+        case 12:
+            sk_primaries = kSMPTE_EG_432_1;
+            return true;
+        case 22:
+            sk_primaries = kITU_T_H273_Value22;
+            return true;
+        default:
+            // Reserved.
+            break;
+    }
+    return false;
+}
+
+}  // namespace SkNamedPrimaries
+
+namespace SkNamedTransferFn {
+
+bool GetCicp(uint8_t transfer_characteristics,
+             bool prefer_srgb_trfn,
+             skcms_TransferFunction& trfn) {
+    // Rec. ITU-T H.273, Table 3.
+    switch (transfer_characteristics) {
+        case 0:
+            // Reserved.
+            break;
+        case 1:
+            trfn = prefer_srgb_trfn ? SkNamedTransferFn::kSRGB : kRec709;
+            return true;
+        case 2:
+            // Unspecified.
+            break;
+        case 3:
+            // Reserved.
+            break;
+        case 4:
+            trfn = kRec470SystemM;
+            return true;
+        case 5:
+            trfn = kRec470SystemBG;
+            return true;
+        case 6:
+            trfn = prefer_srgb_trfn ? SkNamedTransferFn::kSRGB : kRec601;
+            return true;
+        case 7:
+            trfn = kSMPTE_ST_240;
+            return true;
+        case 8:
+            trfn = SkNamedTransferFn::kLinear;
+            return true;
+        case 9:
+            // Logarithmic transfer characteristic (100:1 range).
+            break;
+        case 10:
+            // Logarithmic transfer characteristic (100 * Sqrt( 10 ) : 1 range).
+            break;
+        case 11:
+            trfn = prefer_srgb_trfn ? SkNamedTransferFn::kSRGB : kIEC61966_2_4;
+            break;
+        case 12:
+            // Rec. ITU-R BT.1361-0 extended colour gamut system (historical).
+            // Same as kRec709 on positive values, differs on negative values.
+            break;
+        case 13:
+            // IEC 61966-2-1.
+            trfn = SkNamedTransferFn::kSRGB;
+            return true;
+        case 14:
+            trfn = kRec2020_10bit;
+            return true;
+        case 15:
+            trfn = kRec2020_12bit;
+            return true;
+        case 16:
+            trfn = SkNamedTransferFn::kPQ;
+            return true;
+        case 17:
+            trfn = kSMPTE_ST_428_1;
+            return true;
+        case 18:
+            trfn = SkNamedTransferFn::kHLG;
+            return true;
+        default:
+            // 19-255 Reserved.
+            break;
+    }
+    return false;
+}
+
+}  // namespace SkNamedTransferFn
+
 bool SkColorSpacePrimaries::toXYZD50(skcms_Matrix3x3* toXYZ_D50) const {
     return skcms_PrimariesToXYZD50(fRX, fRY, fGX, fGY, fBX, fBY, fWX, fWY, toXYZ_D50);
 }
@@ -62,6 +193,22 @@ sk_sp<SkColorSpace> SkColorSpace::MakeRGB(const skcms_TransferFunction& transfer
     }
 
     return sk_sp<SkColorSpace>(new SkColorSpace(*tf, toXYZ));
+}
+
+sk_sp<SkColorSpace> SkColorSpace::MakeCICP(uint8_t color_primaries,
+                                           uint8_t transfer_characteristics,
+                                           bool prefer_srgb_trfn) {
+    skcms_TransferFunction trfn;
+    if (!SkNamedTransferFn::GetCicp(transfer_characteristics, prefer_srgb_trfn, trfn))
+        return nullptr;
+
+    SkColorSpacePrimaries primaries;
+    if (!SkNamedPrimaries::GetCicp(color_primaries, primaries)) return nullptr;
+
+    skcms_Matrix3x3 primaries_matrix;
+    if (!primaries.toXYZD50(&primaries_matrix)) return nullptr;
+
+    return SkColorSpace::MakeRGB(trfn, primaries_matrix);
 }
 
 class SkColorSpaceSingletonFactory {

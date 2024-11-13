@@ -39,6 +39,59 @@ struct SK_API SkColorSpacePrimaries {
     bool toXYZD50(skcms_Matrix3x3* toXYZD50) const;
 };
 
+namespace SkNamedPrimaries {
+
+////////////////////////////////////////////////////////////////////////////////
+// Color primaries defined by ITU-T H.273, table 2. Names are given by the first
+// specification referenced in the value's row.
+
+// Rec. ITU-R BT.709-6, value 1.
+static constexpr SkColorSpacePrimaries kRec709 = {
+        0.64f, 0.33f, 0.3f, 0.6f, 0.15f, 0.06f, 0.3127f, 0.329f};
+
+// Rec. ITU-R BT.470-6 System M (historical), value 4.
+static constexpr SkColorSpacePrimaries kRec470SystemM = {
+        0.67f, 0.33f, 0.21f, 0.71f, 0.14f, 0.08f, 0.31f, 0.316f};
+
+// Rec. ITU-R BT.470-6 System B, G (historical), value 5.
+static constexpr SkColorSpacePrimaries kRec470SystemBG = {
+        0.64f, 0.33f, 0.29f, 0.60f, 0.15f, 0.06f, 0.3127f, 0.3290f};
+
+// Rec. ITU-R BT.601-7 525, value 6.
+static constexpr SkColorSpacePrimaries kRec601 = {
+        0.630f, 0.340f, 0.310f, 0.595f, 0.155f, 0.070f, 0.3127f, 0.3290f};
+
+// SMPTE ST 240, value 7 (functionally the same as value 6).
+static constexpr SkColorSpacePrimaries kSMPTE_ST_240 = kRec601;
+
+// Generic film (colour filters using Illuminant C), value 8.
+static constexpr SkColorSpacePrimaries kGenericFilm = {
+        0.681f, 0.319f, 0.243f, 0.692f, 0.145f, 0.049f, 0.310f, 0.316f};
+
+// Rec. ITU-R BT.2020-2, value 9.
+static constexpr SkColorSpacePrimaries kRec2020{
+        0.708f, 0.292f, 0.170f, 0.797f, 0.131f, 0.046f, 0.3127f, 0.3290f};
+
+// SMPTE ST 428-1, value 10.
+static constexpr SkColorSpacePrimaries kSMPTE_ST_428_1 = {
+        1.f, 0.f, 0.f, 1.f, 0.f, 0.f, 1.f / 3.f, 1.f / 3.f};
+
+// SMPTE RP 431-2, value 11.
+static constexpr SkColorSpacePrimaries kSMPTE_RP_431_2 = {
+        0.680f, 0.320f, 0.265f, 0.690f, 0.150f, 0.060f, 0.314f, 0.351f};
+
+// SMPTE EG 432-1, value 12.
+static constexpr SkColorSpacePrimaries kSMPTE_EG_432_1 = {
+        0.680f, 0.320f, 0.265f, 0.690f, 0.150f, 0.060f, 0.3127f, 0.3290f};
+
+// No corresponding industry specification identified, value 22.
+// This is sometimes referred to as EBU 3213-E, but that document doesn't
+// specify these values.
+static constexpr SkColorSpacePrimaries kITU_T_H273_Value22 = {
+        0.630f, 0.340f, 0.295f, 0.605f, 0.155f, 0.077f, 0.3127f, 0.3290f};
+
+}  // namespace SkNamedPrimaries
+
 namespace SkNamedTransferFn {
 
 // Like SkNamedGamut::kSRGB, keeping this bitwise exactly the same as skcms makes things fastest.
@@ -59,6 +112,52 @@ static constexpr skcms_TransferFunction kPQ =
 
 static constexpr skcms_TransferFunction kHLG =
     {-3.0f, 2.0f, 2.0f, 1/0.17883277f, 0.28466892f, 0.55991073f, 0.0f };
+
+////////////////////////////////////////////////////////////////////////////////
+// Color primaries defined by ITU-T H.273, table 3. Names are given by the first
+// specification referenced in the value's row.
+
+// Rec. ITU-R BT.709-6, value 1.
+static constexpr skcms_TransferFunction kRec709 = {2.222222222222f,
+                                                   0.909672415686f,
+                                                   0.090327584314f,
+                                                   0.222222222222f,
+                                                   0.081242858299f,
+                                                   0.f,
+                                                   0.f};
+
+// Rec. ITU-R BT.470-6 System M (historical) assumed display gamma 2.2, value 4.
+static constexpr skcms_TransferFunction kRec470SystemM = {2.2f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f};
+
+// Rec. ITU-R BT.470-6 System B, G (historical) assumed display gamma 2.8,
+// value 5.
+static constexpr skcms_TransferFunction kRec470SystemBG = {2.8f, 1.f, 0.f, 0.f, 0.f, 0.f, 0.f};
+
+// Rec. ITU-R BT.601-7, same as kRec709, value 6.
+static constexpr skcms_TransferFunction kRec601 = kRec709;
+
+// SMPTE ST 240, value 7.
+static constexpr skcms_TransferFunction kSMPTE_ST_240 = {
+        2.222222222222f, 0.899626676224f, 0.100373323776f, 0.25f, 0.091286342118f, 0.f, 0.f};
+
+// IEC 61966-2-4, value 11, same as kRec709 (but is explicitly extended).
+static constexpr skcms_TransferFunction kIEC61966_2_4 = kRec709;
+
+// IEC 61966-2-1 sRGB, value 13. This is almost equal to
+// SkNamedTransferFn::kSRGB. The differences are rounding errors that
+// cause test failures (and should be unified).
+static constexpr skcms_TransferFunction kIEC61966_2_1 = {
+        2.4f, 0.947867345704f, 0.052132654296f, 0.077399380805f, 0.040449937172f, 0.f, 0.f};
+
+// Rec. ITU-R BT.2020-2 (10-bit system), value 14.
+static constexpr skcms_TransferFunction kRec2020_10bit = kRec709;
+
+// Rec. ITU-R BT.2020-2 (12-bit system), value 15.
+static constexpr skcms_TransferFunction kRec2020_12bit = kRec709;
+
+// SMPTE ST 428-1, value 17.
+static constexpr skcms_TransferFunction kSMPTE_ST_428_1 = {
+        2.6f, 1.034080527699f, 0.f, 0.f, 0.f, 0.f, 0.f};
 
 }  // namespace SkNamedTransferFn
 
@@ -121,6 +220,33 @@ public:
      */
     static sk_sp<SkColorSpace> MakeRGB(const skcms_TransferFunction& transferFn,
                                        const skcms_Matrix3x3& toXYZ);
+
+    /**
+     *  Create an SkColorSpace from code points specified in Rec. ITU-T H.273.
+     *  Null will be returned for invalid or unsupported combination of code
+     *  points.
+     *
+     *  Parameters:
+     *
+     * - `color_primaries` identifies an entry in Rec. ITU-T H.273, Table 2.
+     * - `transfer_characteristics` identifies an entry in Rec. ITU-T H.273, Table 3.
+     *    When `prefer_srgb_trfn` is true, then sRGB transfer function will be
+     *    used instead of other values (for compatibility with legacy Chromium
+     *    behavior)
+     *
+     * `SkColor` (and the underlying `skcms_ICCProfile`) only support RGB color
+     * spaces and therefore this function does not take a `matrix_coefficients`
+     * parameter - the caller is expected to verify that `matrix_coefficients`
+     * is `0`.
+     *
+     * Narrow range images are extremely rare - see
+     * https://github.com/w3c/png/issues/312#issuecomment-2327349614.  Therefore
+     * this function doesn't take a `video_full_range_flag` - the caller is
+     * expected to verify that it is `1` (indicating a full range image).
+     */
+    static sk_sp<SkColorSpace> MakeCICP(uint8_t color_primaries,
+                                        uint8_t transfer_characteristics,
+                                        bool prefer_srgb_trfn);
 
     /**
      *  Create an SkColorSpace from a parsed (skcms) ICC profile.
