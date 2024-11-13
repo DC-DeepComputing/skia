@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2a29924_584ed345",
+        "filename": "BUILD.gn",
+        "patchSetId": 18
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-13T15:20:38Z",
+      "side": 1,
+      "message": "This isn\u0027t an \"optional\", it just needs to be its own target and depended on.",
+      "revId": "d93be6496dafc87fd8820930cf09e0611f1cd008",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
