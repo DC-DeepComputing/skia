@@ -202,15 +202,9 @@ public:
         return SkImages::RasterFromBitmap(data);
     }
 
-#if defined(SK_USE_LEGACY_BLUR_RASTER)
-    const SkBlurEngine* getBlurEngine() const override { return nullptr; }
-#else
-    bool useLegacyFilterResultBlur() const override { return false; }
-
     const SkBlurEngine* getBlurEngine() const override {
         return SkBlurEngine::GetRasterBlurEngine();
     }
-#endif
 
 };
 
@@ -2130,24 +2124,6 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // in Builder::add()).
     auto sampleBounds = outputBounds;
     sampleBounds.outset(radii);
-
-    if (fContext.backend()->useLegacyFilterResultBlur()) {
-        SkASSERT(sigma.width() <= algorithm->maxSigma() && sigma.height() <= algorithm->maxSigma());
-
-        FilterResult resolved = fInputs[0].fImage.resolve(fContext, sampleBounds);
-        if (!resolved) {
-            return {};
-        }
-        auto srcRelativeOutput = outputBounds;
-        srcRelativeOutput.offset(-resolved.layerBounds().topLeft());
-        resolved = {algorithm->blur(SkSize(sigma),
-                                    resolved.fImage,
-                                    SkIRect::MakeSize(resolved.fImage->dimensions()),
-                                    SkTileMode::kDecal,
-                                    SkIRect(srcRelativeOutput)),
-                    outputBounds.topLeft()};
-        return resolved;
-    }
 
     float sx = sigma.width()  > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.width()  : 1.f;
     float sy = sigma.height() > algorithm->maxSigma() ? algorithm->maxSigma()/sigma.height() : 1.f;
