@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57499808_cd856aa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "lgtm with a couple of suggestions",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d22d73e_d4a970fd",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "I\u0027d leave the ones below here still in `SkNamedTransferFnExt` (except maybe kSRGB and kP3, since those are helpful aliases).",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "314bf139_82585b4a",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "I\u0027d leave everything below here only in `SkNamedTransferFnExt` (just pulling in the CICP values for now).",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7332022d_6e43717c",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "(And this one can be removed).",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "386450a0_ff58202a",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "I\u0027d recommend removing the `matrix_coefficients` and `full_range_flag` parameters, since they both have required values.",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5d2b69_ffb433dc",
+        "filename": "src/core/SkColorSpace.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2024-11-13T08:46:56Z",
+      "side": 1,
+      "message": "nits: \"TODO(https://crbug.com/1339019)\"",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
