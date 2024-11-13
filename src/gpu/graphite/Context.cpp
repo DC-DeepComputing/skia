@@ -16,6 +16,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "include/private/base/SkOnce.h"
 #include "src/base/SkRectMemcpy.h"
 #include "src/core/SkAutoPixmapStorage.h"
@@ -144,6 +145,12 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     }
 #endif
     return recorder;
+}
+
+sk_sp<ThreadSafeProxy> Context::makeProxy() {
+    ASSERT_SINGLE_OWNER
+
+    return sk_ref_sp(new ThreadSafeProxy(fSharedContext));
 }
 
 std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
