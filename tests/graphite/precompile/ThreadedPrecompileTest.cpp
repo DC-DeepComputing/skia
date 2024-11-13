@@ -9,6 +9,7 @@
 
 #if defined(SK_GRAPHITE)
 
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
@@ -49,7 +50,7 @@ PaintOptions conical() {
     return paintOptions;
 }
 
-void precompile_gradients(Context* context,
+void precompile_gradients(sk_sp<ThreadSafeProxy> threadSafeProxy,
                           skiatest::Reporter* reporter,
                           int threadID) {
     constexpr RenderPassProperties kProps = { DepthStencilFlags::kDepth,
@@ -58,7 +59,7 @@ void precompile_gradients(Context* context,
 
     for (auto createOptionsMtd : { linear, radial, sweep, conical }) {
         PaintOptions paintOptions = createOptionsMtd();
-        Precompile(context,
+        Precompile(threadSafeProxy,
                    paintOptions,
                    DrawTypeFlags::kBitmapText_Mask,
                    { &kProps, 1 });
@@ -75,10 +76,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPrecompileTest,
                                    CtsEnforcement::kNever) {
     constexpr int kNumThreads = 4;
 
+    sk_sp<ThreadSafeProxy> threadSafeProxy = context->makeProxy();
+
     std::thread threads[kNumThreads];
     for (int i = 0; i < kNumThreads; ++i) {
-        threads[i] = std::thread([context, reporter, i]() {
-            precompile_gradients(context, reporter, i);
+        threads[i] = std::thread([threadSafeProxy, reporter, i]() {
+            precompile_gradients(threadSafeProxy, reporter, i);
         });
     }
 

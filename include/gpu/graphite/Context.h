@@ -39,6 +39,7 @@ class Recording;
 class ResourceProvider;
 class SharedContext;
 class TextureProxy;
+class ThreadSafeProxy;
 
 class SK_API Context final {
 public:
@@ -52,6 +53,11 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+
+    /** Creates a helper object that can be moved to a different thread and used
+     * for precompilation.
+     */
+    sk_sp<ThreadSafeProxy> makeProxy();
 
     bool insertRecording(const InsertRecordingInfo&);
     bool submit(SyncToCpu = SyncToCpu::kNo);

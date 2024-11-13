@@ -106,6 +106,7 @@
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 // TODO: Remove this src include once we figure out public readPixels call for Graphite.
 #include "src/gpu/graphite/Surface_Graphite.h"
@@ -2298,6 +2299,8 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
 
+    sk_sp<ThreadSafeProxy> threadSafeProxy = context->makeProxy();
+
     for (const skgpu::UniqueKey& k : origKeys) {
         // TODO: add a separate path that decomposes the keys into PaintOptions
         //  and uses them to Precompile
@@ -2308,7 +2311,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
             continue;
         }
 
-        Precompile(context, rteDict, pipelineDesc, renderPassDesc);
+        Precompile1(threadSafeProxy, rteDict, pipelineDesc, renderPassDesc);
     }
 
     SkDEBUGCODE(int postRecreate = context->priv().globalCache()->numGraphicsPipelines();)
