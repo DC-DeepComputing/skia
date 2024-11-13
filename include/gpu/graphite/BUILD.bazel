@@ -20,6 +20,7 @@ skia_filegroup(
         "Recording.h",
         "Surface.h",
         "TextureInfo.h",
+        "ThreadSafeProxy.h",
         "YUVABackendTextures.h",
     ],
     visibility = ["//src/gpu/graphite:__subpackages__"],

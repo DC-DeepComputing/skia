@@ -13,8 +13,8 @@
 
 namespace skgpu::graphite {
 
-class Context;
 class PaintOptions;
+class ThreadSafeProxy;
 
 /**
  *  Describes the required properties of a RenderPass that will be combined with the
@@ -33,12 +33,12 @@ struct SK_API RenderPassProperties {
  * drawing. Graphite will always be able to perform an inline compilation if some SkPaint
  * combination was omitted from precompilation.
  *
- *   @param context              the Context to which the actual draws will be submitted
+ *   @param threadSafeProxy      thread-safely helper holding required portions of the Context
  *   @param paintOptions         captures a set of SkPaints that will be drawn
  *   @param drawTypes            communicates which primitives those paints will be drawn with
  *   @param renderPassProperties describes the RenderPasses needed for the desired Pipelines
  */
-void SK_API Precompile(Context* context,
+void SK_API Precompile(sk_sp<ThreadSafeProxy> threadSafeProxy,
                        const PaintOptions& paintOptions,
                        DrawTypeFlags drawTypes,
                        SkSpan<const RenderPassProperties> renderPassProperties);

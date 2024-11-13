@@ -35,6 +35,7 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
@@ -2152,12 +2153,13 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                                                  : &kDepth_1;
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
-    Precompile(context, paintOptions, dt,
+    Precompile(context->makeProxy(), paintOptions, dt,
                dt == kNonSimpleShape ? SkSpan(pathProperties, 1) : SkSpan(&kDepth_1, 1));
     if (gNeedSKPPaintOption) {
         // The skp draws a rect w/ a default SkPaint
         PaintOptions skpPaintOptions;
-        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape, { kDepth_1 });
+        Precompile(context->makeProxy(), skpPaintOptions, DrawTypeFlags::kSimpleShape,
+                   { kDepth_1 });
     }
     int after = context->priv().globalCache()->numGraphicsPipelines();
 
