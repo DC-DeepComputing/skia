@@ -10,6 +10,7 @@
 #if defined(SK_GRAPHITE)
 
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
@@ -112,7 +113,7 @@ void run_test(Context* context,
 
     context->priv().globalCache()->resetGraphicsPipelines();
 
-    Precompile(context, paintOptions, drawType, { &renderPassSettings, 1 });
+    Precompile(context->makeProxy(), paintOptions, drawType, { &renderPassSettings, 1 });
 
     std::vector<std::string> generated;
 

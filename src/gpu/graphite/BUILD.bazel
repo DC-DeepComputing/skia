@@ -136,6 +136,7 @@ GRAPHITE_FILES = [
     "TextureProxyView.h",
     "TextureUtils.cpp",
     "TextureUtils.h",
+    "ThreadSafeProxy.cpp",
     "Uniform.h",
     "UniformManager.cpp",
     "UniformManager.h",

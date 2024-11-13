@@ -9,6 +9,7 @@
 
 #if defined(SK_GRAPHITE)
 
+#include "include/gpu/graphite/ThreadSafeProxy.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
@@ -58,7 +59,7 @@ void precompile_gradients(Context* context,
 
     for (auto createOptionsMtd : { linear, radial, sweep, conical }) {
         PaintOptions paintOptions = createOptionsMtd();
-        Precompile(context,
+        Precompile(context->makeProxy(),
                    paintOptions,
                    DrawTypeFlags::kBitmapText_Mask,
                    { &kProps, 1 });
