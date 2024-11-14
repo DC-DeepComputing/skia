@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd014f73_b82ed24b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:03:13Z",
+      "side": 1,
+      "message": "This can be landed once Android no longer defines the flag: https://googleplex-android-review.git.corp.google.com/c/platform/external/skia/+/30376854",
+      "revId": "2199d0b17754a0b8abd328a65f1d713117725bb4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
