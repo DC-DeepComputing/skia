@@ -103,6 +103,7 @@
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/ContextOptions.h"
+#include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/Surface.h"
@@ -2298,6 +2299,8 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(context->priv().globalCache()->numGraphicsPipelines() == 0);
 
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+
     for (const skgpu::UniqueKey& k : origKeys) {
         // TODO: add a separate path that decomposes the keys into PaintOptions
         //  and uses them to Precompile
@@ -2308,7 +2311,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
             continue;
         }
 
-        Precompile(context, rteDict, pipelineDesc, renderPassDesc);
+        Precompile1(precompileContext.get(), rteDict, pipelineDesc, renderPassDesc);
     }
 
     SkDEBUGCODE(int postRecreate = context->priv().globalCache()->numGraphicsPipelines();)

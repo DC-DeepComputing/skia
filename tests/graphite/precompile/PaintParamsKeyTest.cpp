@@ -35,6 +35,7 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileBlender.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
@@ -2112,6 +2113,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
 // Precompile system will, at least, generate all the pipelines a real draw would generate.
 void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                       Context* context,
+                                      PrecompileContext* precompileContext,
                                       skiatest::graphite::GraphiteTestContext* testContext,
                                       Recorder* recorder,
                                       const SkPaint& paint,
@@ -2152,12 +2154,13 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                                                  : &kDepth_1;
 
     int before = context->priv().globalCache()->numGraphicsPipelines();
-    Precompile(context, paintOptions, dt,
+    Precompile(precompileContext, paintOptions, dt,
                dt == kNonSimpleShape ? SkSpan(pathProperties, 1) : SkSpan(&kDepth_1, 1));
     if (gNeedSKPPaintOption) {
         // The skp draws a rect w/ a default SkPaint
         PaintOptions skpPaintOptions;
-        Precompile(context, skpPaintOptions, DrawTypeFlags::kSimpleShape, { kDepth_1 });
+        Precompile(precompileContext, skpPaintOptions, DrawTypeFlags::kSimpleShape,
+                   { kDepth_1 });
     }
     int after = context->priv().globalCache()->numGraphicsPipelines();
 
@@ -2176,6 +2179,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
 
 void run_test(skiatest::Reporter* reporter,
               Context* context,
+              PrecompileContext* precompileContext,
               skiatest::graphite::GraphiteTestContext* testContext,
               const KeyContext& precompileKeyContext,
               ShaderType s,
@@ -2210,7 +2214,8 @@ void run_test(skiatest::Reporter* reporter,
     extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
                              paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
                              seed, &rand, verbose);
-    precompile_vs_real_draws_subtest(reporter, context, testContext, recorder.get(),
+    precompile_vs_real_draws_subtest(reporter, context, precompileContext,
+                                     testContext, recorder.get(),
                                      paint, paintOptions, clip, clipShader, dt, verbose);
 }
 
@@ -2222,6 +2227,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                testContext,
                                                true,
                                                CtsEnforcement::kNever) {
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
 #if 1
@@ -2257,6 +2263,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
 
     run_test(reporter,
              context,
+             precompileContext.get(),
              testContext,
              create_key_context(context, rtDict.get()),
              shaderType,
@@ -2283,6 +2290,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                testContext,
                                                true,
                                                CtsEnforcement::kNever) {
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
 
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
@@ -2400,7 +2408,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                 ++current;
 #endif
 
-                                run_test(reporter, context, testContext, precompileKeyContext,
+                                run_test(reporter, context, precompileContext.get(),
+                                         testContext, precompileKeyContext,
                                          shader, blender, cf, mf, imageFilter, clip, dt,
                                          kDefaultSeed, /* verbose= */ false);
                             }
