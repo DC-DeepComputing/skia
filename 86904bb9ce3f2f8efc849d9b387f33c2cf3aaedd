@@ -16,6 +16,69 @@
       "message": "Note that over in https://skia-review.googlesource.com/c/skia/+/915316 we will need to add `onGetResourceName` to the proxy.",
       "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8f798af_a90c8616",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-14T22:09:55Z",
+      "side": 1,
+      "message": "Noticed.",
+      "parentUuid": "8e3ce216_468ca7ca",
+      "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d0c5b61_cb6912c4",
+        "filename": "tests/FontMgrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-14T22:09:55Z",
+      "side": 1,
+      "message": "How users are going to use it actually?",
+      "fixSuggestions": [
+        {
+          "fixId": "eb3a36fe_5642e095",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/FontMgrTest.cpp",
+              "range": {
+                "startLine": 133,
+                "startChar": 0,
+                "endLine": 135,
+                "endChar": 0
+              },
+              "replacement": "            SkString postscript1;\n            face1-\u003egetPostScriptName(\u0026postscript1);\n"
+            },
+            {
+              "path": "tests/FontMgrTest.cpp",
+              "range": {
+                "startLine": 136,
+                "startChar": 0,
+                "endLine": 137,
+                "endChar": 0
+              },
+              "replacement": "                SkDebugf(\" \\\"%s\\\" \\\"%s\\\"\\n\", name1.c_str(), postscript1.c_str());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
