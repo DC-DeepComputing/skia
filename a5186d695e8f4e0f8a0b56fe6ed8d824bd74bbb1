@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a56bd78_667ab387",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 451,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:32:37Z",
+      "side": 1,
+      "message": "Can we add a comment along the lines of \"not using SkImage::makeSubset() because that will copy the raster data\"?",
+      "range": {
+        "startLine": 449,
+        "startChar": 1,
+        "endLine": 451,
+        "endChar": 21
+      },
+      "revId": "a5186d695e8f4e0f8a0b56fe6ed8d824bd74bbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "39d5b7a5_e9452b2c",
         "filename": "src/image/SkImage_Picture.cpp",
         "patchSetId": 8
@@ -19,6 +42,53 @@
         "startChar": 15,
         "endLine": 84,
         "endChar": 41
+      },
+      "revId": "a5186d695e8f4e0f8a0b56fe6ed8d824bd74bbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe00ef68_6e47290d",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:32:37Z",
+      "side": 1,
+      "message": "If we call `SkImages::TextureFromImage()` on the image returned by the other `onMakeSubset()` and pass in `props`, that would then generate mipmaps on the subset automatically.\n\nWe would want to go through the `recorder`\u0027s client image provider, though, since they could choose to not do anything. But by default that class is probably going to call `TextureFromImage()`.",
+      "parentUuid": "39d5b7a5_e9452b2c",
+      "range": {
+        "startLine": 84,
+        "startChar": 15,
+        "endLine": 84,
+        "endChar": 41
+      },
+      "revId": "a5186d695e8f4e0f8a0b56fe6ed8d824bd74bbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f108be8_ef5d03c5",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:32:37Z",
+      "side": 1,
+      "message": "Can we add a comment that says this version doesn\u0027t isn\u0027t actually Ganesh specific?",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 86,
+        "endChar": 51
       },
       "revId": "a5186d695e8f4e0f8a0b56fe6ed8d824bd74bbb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
