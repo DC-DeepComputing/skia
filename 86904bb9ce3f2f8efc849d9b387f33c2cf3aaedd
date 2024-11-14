@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3ce216_468ca7ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-14T21:51:11Z",
+      "side": 1,
+      "message": "Note that over in https://skia-review.googlesource.com/c/skia/+/915316 we will need to add `onGetResourceName` to the proxy.",
+      "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
