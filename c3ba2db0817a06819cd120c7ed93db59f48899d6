@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a41312a9_63e2bf29",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "nit: one more space",
+      "range": {
+        "startLine": 57,
+        "startChar": 6,
+        "endLine": 57,
+        "endChar": 7
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b6beae2_9eaa0aac",
+        "filename": "relnotes/precompilecontext.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "I would reframe this as an example threading model, not the general model.",
+      "range": {
+        "startLine": 8,
+        "startChar": 1,
+        "endLine": 8,
+        "endChar": 92
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52f39b79_9cbe32b6",
+        "filename": "relnotes/precompilecontext.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "I think this is clearer to say the PrecompileContext can safely outlive the Context that creates it, although it will effectively shut down at that point.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 96
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec7d4367_6f1dfe1e",
+        "filename": "src/gpu/graphite/PrecompileContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "nit: maybe `kEmptyBudget` to emphasize that its value should stay 0?",
+      "range": {
+        "startLine": 26,
+        "startChar": 28,
+        "endLine": 26,
+        "endChar": 49
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e33ab635_ea5d890f",
+        "filename": "src/gpu/graphite/PrecompileContextPriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "nit: Can we format the multiline comment like\n\n    /**\n     * Class that ...\n     */",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 35
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57d0cead_89d31863",
+        "filename": "src/gpu/graphite/PublicPrecompile.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T19:47:25Z",
+      "side": 1,
+      "message": "This function (and the header) can just go away at this point, right? The only thing that uses it appears to be hte `GraphitePrecompileTestingSink`, which may as well just call the ResourceProvider directly.\n\nHaving two static Precompile functions floating around, only one of which is the public API (but not the one that\u0027s in the PublicPrecompile.h header) is confusing to me.",
+      "range": {
+        "startLine": 28,
+        "startChar": 5,
+        "endLine": 28,
+        "endChar": 15
+      },
+      "revId": "c3ba2db0817a06819cd120c7ed93db59f48899d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
