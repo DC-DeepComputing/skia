@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7eee1168_898ab8ce",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-14T18:27:19Z",
+      "side": 1,
+      "message": "We discussed this yesterday and agreed that it\u0027s fine to leave `kP3` and `kSRGB` alone for now.",
+      "parentUuid": "aa65fa9f_4bdfae35",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "314bf139_82585b4a",
@@ -154,6 +172,24 @@
       "side": 1,
       "message": "Done.  I see your argument - the function only validates `matrix_coefficients` and `full_range_flag`.  OTOH, I am not sure if I like duplicating how these values are checked across all the callers.  Still, maybe this is indeed the most pragmatic way forward.",
       "parentUuid": "386450a0_ff58202a",
+      "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81088bbf_9f60155a",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-14T18:27:19Z",
+      "side": 1,
+      "message": "We\u0027ve discussed this further and agreed that exposing only 2 parameters (primaries + transfer-function) is fine.",
+      "parentUuid": "79856d83_4190f1df",
       "revId": "3b3a3fd5b743a714d5c250ec611f240e621ace78",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
