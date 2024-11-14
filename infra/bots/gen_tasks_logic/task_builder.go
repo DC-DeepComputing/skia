@@ -460,10 +460,10 @@ func (b *taskBuilder) goPlatform() (string, string) {
 	arch := "amd64"
 	if b.role("Upload") {
 		arch = "amd64"
-	} else if b.matchArch("Arm64") || b.matchBazelHost("on_rpi") || b.matchOs("Android", "ChromeOS", "iOS") {
+	} else if b.matchArch("Arm64") || b.matchBazelHost("on_rpi") || (b.matchOs("Android", "ChromeOS", "iOS") && !b.model("Pixel3XL")) {
 		// Tests on Android/ChromeOS/iOS are hosted on RPI.
 		arch = "arm64"
-	} else if b.isLinux() || b.isMac() || b.isWindows() {
+	} else if b.isLinux() || b.isMac() || b.isWindows() || b.model("Pixel3XL") {
 		arch = "amd64"
 	} else {
 		panic("unknown GOARCH for " + b.Name)
