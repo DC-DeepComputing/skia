@@ -52,6 +52,40 @@
       "parentUuid": "f67da770_b001a1b8",
       "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "347728e2_025c43e8",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-14T19:03:01Z",
+      "side": 1,
+      "message": "Visual Studio is complaining about this being listed twice, once here and then in once in `skia_sksl_core_sources` in `gn/sksl`. This is somewhat related to https://skia-review.googlesource.com/c/skia/+/753176 change to `include/private/BUILD.bazel` which added `SkSLSampleUsage.h` to `core_priv_hdrs` when it was already in `sksl_private_hdrs`. The issue being that `//:skia` add both `skia_core_sources` and `skia_sksl_core_sources` so gets two copies. `bin/gn desc out/debug/ //:skia` does end up listing this file twice. For the build this isn\u0027t an issue, but apparently for Visual Studio project generation it ends up making a difference?\n\nNot sure yet if this is an actual issue, but it does seem like some one target should own and provide this header instead of two, if possible.",
+      "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c09c95ef_71edce9f",
+        "filename": "gn/sksl.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-14T19:03:01Z",
+      "side": 1,
+      "message": "Was already here.",
+      "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
