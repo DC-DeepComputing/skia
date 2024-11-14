@@ -10,6 +10,7 @@
 #if defined(SK_GRAPHITE)
 
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
@@ -103,6 +104,7 @@ RenderPassProperties bgra_4_depth_stencil() {
 // Additionally, verify that overgeneration is within expected tolerances.
 // If you add an additional RenderStep you may need to increase the tolerance values.
 void run_test(Context* context,
+              PrecompileContext* precompileContext,
               skiatest::Reporter* reporter,
               const char* expectedString, size_t caseID,
               const PaintOptions& paintOptions,
@@ -112,7 +114,7 @@ void run_test(Context* context,
 
     context->priv().globalCache()->resetGraphicsPipelines();
 
-    Precompile(context, paintOptions, drawType, { &renderPassSettings, 1 });
+    Precompile(precompileContext, paintOptions, drawType, { &renderPassSettings, 1 });
 
     std::vector<std::string> generated;
 
@@ -181,6 +183,7 @@ bool is_dawn_metal_context_type(skgpu::ContextType type) {
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
 
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const Caps* caps = context->priv().caps();
 
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kBGRA_8888_SkColorType,
@@ -382,7 +385,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             allowedOvergeneration *= 2; // due to ExpandResolveTextureLoadOp
         }
 
-        run_test(context, reporter,
+        run_test(context, precompileContext.get(), reporter,
                  kCases[i], i,
                  paintOptions, drawTypeFlags, renderPassSettings, allowedOvergeneration);
     }
