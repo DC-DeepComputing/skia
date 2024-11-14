@@ -37,10 +37,10 @@ public:
     ShaderCodeDictionary* shaderCodeDictionary() {
         return fContext->fSharedContext->shaderCodeDictionary();
     }
-    const GlobalCache* globalCache() const {
+    const GlobalCache* globalCache1() const {
         return fContext->fSharedContext->globalCache();
     }
-    GlobalCache* globalCache() {
+    GlobalCache* globalCache1() {
         return fContext->fSharedContext->globalCache();
     }
     const RendererProvider* rendererProvider() const {
