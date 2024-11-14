@@ -16,6 +16,24 @@
       "message": "I\u0027m pretty sure these copyright headers are supposed to be more like `Copyright 2024 Google LLC.` now.",
       "revId": "1bed61eb617a4bd4614f4ea88b201df8607fe496",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c55c601c_7a4d04db",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-14T21:59:10Z",
+      "side": 1,
+      "message": "Copied from the wrong file :(",
+      "parentUuid": "f36b3adf_3d7af4f2",
+      "revId": "1bed61eb617a4bd4614f4ea88b201df8607fe496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
