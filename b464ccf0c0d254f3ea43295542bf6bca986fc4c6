@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "287d97f6_9ab4c747",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-11-14T16:18:14Z",
+      "side": 1,
+      "message": "Is this still a priority?  I have unemployed alerts for the devonf machines and I\u0027m wondering if I should wait or just remove the devices.",
+      "revId": "b464ccf0c0d254f3ea43295542bf6bca986fc4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
