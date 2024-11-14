@@ -79,6 +79,24 @@
       ],
       "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c90fed02_db52f93b",
+        "filename": "tests/FontMgrTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-14T22:57:25Z",
+      "side": 1,
+      "message": "As documented, the idea is to be able to show a \"debug hint\" to the end user (like in a user interface) about where the typeface came from.\n```\nSkString a;\nint num \u003d typeface-\u003egetResourceName(\u0026a);\nif (!a.empty()) {\n  printf(\"%s\", a.c_str());\n  if (num \u003e 1) {\n    printf(\"+\");\n  }\n}\n```\nThere will also be those who attempt to abuse this and if the resource name is set to non-empty and there is exactly one resource then attempt to use that information to look up the data later. This will eventually end in frustration for someone, but is probably a bit less bad than what Chromium currently does.\n```\nSkString a;\nint num \u003d typeface-\u003egetResourceName(\u0026a);\nif (num \u003d\u003d 1 \u0026\u0026 !a.empty()) {\n  FILE* file \u003d fopen(a.c_str(), \"r\");\n  if (file) {\n     // do something with file\n  }\n}\n```",
+      "parentUuid": "2d0c5b61_cb6912c4",
+      "revId": "86904bb9ce3f2f8efc849d9b387f33c2cf3aaedd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
