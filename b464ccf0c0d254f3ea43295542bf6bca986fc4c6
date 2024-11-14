@@ -34,6 +34,24 @@
       "parentUuid": "287d97f6_9ab4c747",
       "revId": "b464ccf0c0d254f3ea43295542bf6bca986fc4c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae9410c_930345cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T16:30:56Z",
+      "side": 1,
+      "message": "Give the Vulkan driver bugs, I would say try to get these running on the tree but for GL only for now. I have a feeling we won\u0027t get the vulkan stuff running until at least the next major release which would have drier fixes in it.",
+      "parentUuid": "82f36a60_30730abf",
+      "revId": "b464ccf0c0d254f3ea43295542bf6bca986fc4c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
