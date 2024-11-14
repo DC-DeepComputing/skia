@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94cb1a85_50f9d3f0",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:01:06Z",
+      "side": 1,
+      "message": "I really don\u0027t think this is needed right? I know we need the empty desc layout when creating the pipeline layout, but I didn\u0027t think we actually had to bind a descriptor to it. This is causing the validation error in the failing test because it causes us to created a descriptor pool of size 0 since the descriptor itself has no size.",
+      "range": {
+        "startLine": 1075,
+        "startChar": 4,
+        "endLine": 1078,
+        "endChar": 57
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
