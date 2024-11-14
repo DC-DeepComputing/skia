@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39d5b7a5_e9452b2c",
+        "filename": "src/image/SkImage_Picture.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-14T19:08:58Z",
+      "side": 1,
+      "message": "This will still fail if the Picture has GPU data -- I\u0027m not sure what to do in this case as we have to generate mipmaps somehow.",
+      "range": {
+        "startLine": 84,
+        "startChar": 15,
+        "endLine": 84,
+        "endChar": 41
+      },
+      "revId": "a5186d695e8f4e0f8a0b56fe6ed8d824bd74bbb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
