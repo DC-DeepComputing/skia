@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2424169_cb4cdbde",
+        "filename": "tests/MatrixTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 907,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T15:23:18Z",
+      "side": 1,
+      "message": "This test fails with the old code because we would pass the check on line 848: `!fMat[kMScaleX] || !fMat[kMScaleY]` is false so it wasn\u0027t marking `invertible` false.",
+      "range": {
+        "startLine": 907,
+        "startChar": 4,
+        "endLine": 907,
+        "endChar": 52
+      },
+      "revId": "39d7babc2d1f1fb3bf056437991691257f727260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe1414a_901b5214",
+        "filename": "tests/MatrixTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 908,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T15:23:18Z",
+      "side": 1,
+      "message": "This test was passing in the old code because of the check on line 826 would return true: `!SkIsFinite(invX, invY)`",
+      "range": {
+        "startLine": 908,
+        "startChar": 0,
+        "endLine": 908,
+        "endChar": 53
+      },
+      "revId": "39d7babc2d1f1fb3bf056437991691257f727260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bd8ad60_2f3854ca",
+        "filename": "tests/MatrixTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 917,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T15:23:18Z",
+      "side": 1,
+      "message": "Neither of these tests passed in the old code because the translation components were never checked. The new code catches this on line 832. This was the original fuzzer culprit.",
+      "range": {
+        "startLine": 916,
+        "startChar": 4,
+        "endLine": 917,
+        "endChar": 53
+      },
+      "revId": "39d7babc2d1f1fb3bf056437991691257f727260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f81e1b8_ca6238eb",
+        "filename": "tests/MatrixTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 924,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T15:23:18Z",
+      "side": 1,
+      "message": "Neither of these tests passed in the old code. This is caught in the new code in line 852.",
+      "range": {
+        "startLine": 923,
+        "startChar": 0,
+        "endLine": 924,
+        "endChar": 53
+      },
+      "revId": "39d7babc2d1f1fb3bf056437991691257f727260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e44fa20a_95528afb",
+        "filename": "tests/MatrixTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 934,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T15:23:18Z",
+      "side": 1,
+      "message": "Neither of these passed in the old code, and ensures that the new code doesn\u0027t just check the translation component for finite-ness before assuming the inverse is valid. This is why line 832 is checking `!SkIsFinite(invTX, invTY)` instead of `!SkIsFinite(fMat[kMTransX], fMat[kMTransY])`.\n\nFor the translation-only case (which this matrix is not), `!SkIsFinite(fMat[kMTransX], fMat[kMTransY])` is sufficient because the inverse scale factor is just `1.0`.",
+      "range": {
+        "startLine": 933,
+        "startChar": 0,
+        "endLine": 934,
+        "endChar": 53
+      },
+      "revId": "39d7babc2d1f1fb3bf056437991691257f727260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
