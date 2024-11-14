@@ -16,6 +16,23 @@
       "message": ".",
       "revId": "44f35254b0e4bacaf7af32f1cb9db05eec7bd7bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b2aabfb_4891c791",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T19:12:21Z",
+      "side": 1,
+      "message": "this CL is inactive. Let abandon this CL from now and can always reopen if needed in the future",
+      "revId": "44f35254b0e4bacaf7af32f1cb9db05eec7bd7bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
