@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc79769c_76b3d495",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-11-14T18:20:41Z",
+      "side": 0,
+      "message": "This was super-dodgy - testing-only though",
+      "revId": "ddbd8d1cb8d896261dfa2e89e3bbb6fb9eb2d567",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
