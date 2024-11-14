@@ -22,6 +22,167 @@
       },
       "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "517f4d63_f499cfdc",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "If we put a dummy layout in our PipelineLayout, I still don\u0027t think we should ever be trying to allocate descriptors for that set layout. So I don\u0027t think we want to support making pools that support this.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 93
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b16412fe_ce08f60f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "I don\u0027t understand this assert at this point. The previous one was basically checking if we\u0027re using the special msaa load pipeline that we shouldn\u0027t have any other type of uniforms besides push constants. But now we have both push constants and may or may not have other uniform buffers. So I don\u0027t think an assert makes any sense any more",
+      "range": {
+        "startLine": 484,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 73
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4673fed6_25e5be60",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "The pushing of setLayouts in all this code doesn\u0027t seem right to me. We should chat about this offline to figure out what\u0027s the right thing here.",
+      "range": {
+        "startLine": 528,
+        "startChar": 8,
+        "endLine": 528,
+        "endChar": 27
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bda1e5e_7b42fbb0",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "this isn\u0027t a handle, this is just a pointer. So use `nullptr` instead. Also are we sure this is even needed here? We do a similar thing in Ganesh, but that was because the validation layers had a bug and still tried to access pBindings even if bindingCount was zero. By the Vulkan spec it should be safe to put any ptr here if bindingCount is zero (i.e. just always do `bindingLayouts.data()`). You should confirm whether or not current validation layers still have this issue. If we still do need this then you should copy over the comment from ganesh,\n```\n// Setting to nullptr fixes an error in the param checker validation layer. Even though\n// bindingCount is 0 (which is valid), it still tries to validate pBindings unless it is\n// null.\n```",
+      "range": {
+        "startLine": 99,
+        "startChar": 58,
+        "endLine": 99,
+        "endChar": 72
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "056a48cf_b5eef191",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "you can just use `bindingLayouts.data()`",
+      "range": {
+        "startLine": 99,
+        "startChar": 75,
+        "endLine": 99,
+        "endChar": 98
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba9828cb_e750d211",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "kIntrinsicConstantStageFlags?",
+      "range": {
+        "startLine": 51,
+        "startChar": 36,
+        "endLine": 51,
+        "endChar": 92
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3f31635_14489e3a",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-11-14T15:48:08Z",
+      "side": 1,
+      "message": "From our offline discussion I think this should be renamed something like `fUseVulkanPushConstantsForGaneshRTAdjust` to make it super clear it doesn\u0027t help anything else related to push constants.",
+      "range": {
+        "startLine": 68,
+        "startChar": 9,
+        "endLine": 68,
+        "endChar": 32
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
