@@ -70,6 +70,7 @@ GRAPHITE_FILES = [
     "Image_Base_Graphite.h",
     "Image_Graphite.cpp",
     "Image_Graphite.h",
+    "Image_Picture_Graphite.cpp",
     "Image_YUVA_Graphite.cpp",
     "Image_YUVA_Graphite.h",
     "InternalDrawTypeFlags.h",
