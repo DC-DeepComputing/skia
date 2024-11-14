@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a42b47a_1cabf11d",
+        "filename": "BUILD.gn",
+        "patchSetId": 20
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-14T16:11:02Z",
+      "side": 1,
+      "message": "Right now listing these sources directly here works for Chromium because it doesn\u0027t use `SkFontMgr_fontconfig.cpp`. However, when attempting to apply this to other typefaces that Chromium does use, Chromium will need to know about these files, getting them from a `.gni` file somewhere. Probably want to follow the example of `skia_ports_fontmgr_fontconfig_sources` and `skia_ports_fontmgr_fontconfig_public` (and many of the others here) and how they are generated.\n\nOn the other hand, Flutter is using this in its desktop build, so we will probably want to get these into a `.gni` and then update Flutter\u0027s build. This will potentially mean landing the proxy files (and their build rules) first and then later updating fontconfig to use them.",
+      "revId": "9de89f631b6443b6c47e1abeea56150121a54877",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
