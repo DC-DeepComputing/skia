@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a374b80b_85e3392d",
+        "filename": "src/gpu/RefCntedCallback.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-14T16:00:31Z",
+      "side": 1,
+      "message": "The public docs say we prefer the release-stats-with-proc function, so should we make this be the first if condition and then check for `fReleaseProc`?",
+      "range": {
+        "startLine": 37,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 42
+      },
+      "revId": "25ffe5830e98b98dc188f79d6f92458e9e24bb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
