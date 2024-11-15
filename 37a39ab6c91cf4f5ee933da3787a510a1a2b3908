@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f6021d0_ef623e96",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-15T14:53:20Z",
+      "side": 1,
+      "message": "Trying to use SkImages::TextureFromImage wasn\u0027t working for various reasons, mainly that I was twisting the code in knots to avoid link errors when Graphite isn\u0027t enable. I don\u0027t think it makes sense to generate mipmaps for an SkImage_Picture subset anyway as in principle it\u0027s not backed by texels.",
+      "revId": "37a39ab6c91cf4f5ee933da3787a510a1a2b3908",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
