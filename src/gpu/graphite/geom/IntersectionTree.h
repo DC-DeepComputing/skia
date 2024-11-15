@@ -41,6 +41,10 @@ public:
         return false;
     }
 
+    bool test(Rect rect) {
+        return !fRoot->intersects(rect);
+    }
+
 private:
     class Node {
     public:

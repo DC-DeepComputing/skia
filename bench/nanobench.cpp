@@ -1521,14 +1521,16 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if (runs == 0 && FLAGS_ms < 1000) {
-                // Run the first bench for 1000ms to warm up the nanobench if FLAGS_ms < 1000.
-                // Otherwise, the first few benches' measurements will be inaccurate.
-                auto stop = now_ms() + 1000;
-                do {
-                    time(loops, bench.get(), target);
-                    pool.drain();
-                } while (now_ms() < stop);
+            if (kAutoTuneLoops == FLAGS_loops) {
+                if (runs == 0 && FLAGS_ms < 1000) {
+                    // Run the first bench for 1000ms to warm up the nanobench if FLAGS_ms < 1000.
+                    // Otherwise, the first few benches' measurements will be inaccurate.
+                    auto stop = now_ms() + 1000;
+                    do {
+                        time(loops, bench.get(), target);
+                        pool.drain();
+                    } while (now_ms() < stop);
+                }
             }
 
             if (FLAGS_ms) {
@@ -1615,12 +1617,12 @@ int main(int argc, char** argv) {
                 if (configs.size() == 1) {
                     config = ""; // Only print the config if we run the same bench on more than one.
                 }
-                SkDebugf("%4d/%-4dMB\t%s\t%s "
-                         , sk_tools::getCurrResidentSetSizeMB()
-                         , sk_tools::getMaxResidentSetSizeMB()
-                         , bench->getUniqueName()
-                         , config);
-                SkDebugf("\n");
+                // SkDebugf("%4d/%-4dMB\t%s\t%s "
+                //          , sk_tools::getCurrResidentSetSizeMB()
+                //          , sk_tools::getMaxResidentSetSizeMB()
+                //          , bench->getUniqueName()
+                //          , config);
+                // SkDebugf("\n");
             } else if (FLAGS_quiet) {
                 const char* mark = " ";
                 const double stddev_percent =
