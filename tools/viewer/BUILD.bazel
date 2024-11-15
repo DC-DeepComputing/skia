@@ -27,6 +27,7 @@ skia_cc_binary(
         "CowboySlide.cpp",
         "DegenerateQuadsSlide.cpp",
         "DegenerateTwoPtRadialsSlide.cpp",
+        "delaunator.hpp",
         "FatBitsSlide.cpp",
         "FilterBoundsSlide.cpp",
         "FitCubicToCircleSlide.cpp",
