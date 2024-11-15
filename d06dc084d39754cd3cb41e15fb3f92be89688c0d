@@ -71,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76487d85_3b7adb23",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-15T15:25:39Z",
+      "side": 1,
+      "message": "Resolved in https://skia-review.googlesource.com/c/skia/+/920392",
+      "parentUuid": "347728e2_025c43e8",
+      "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c09c95ef_71edce9f",
@@ -84,6 +102,24 @@
       "writtenOn": "2024-11-14T19:03:01Z",
       "side": 1,
       "message": "Was already here.",
+      "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "840ce4ef_9bd527b1",
+        "filename": "gn/sksl.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-15T15:25:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c09c95ef_71edce9f",
       "revId": "d06dc084d39754cd3cb41e15fb3f92be89688c0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
