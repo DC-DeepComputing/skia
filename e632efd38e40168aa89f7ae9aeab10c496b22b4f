@@ -111,6 +111,24 @@
       "message": "Because this was added here and in `skia_sksl_hlsl_sources` (below) Visual Studio doesn\u0027t like the gn `//:gpu_shared` Visual Studio target because it has two copies of this file in its source list. This works out in practice because header files aren\u0027t normally built and of course these are identically the same file. However, it would be nice if both here and in the Bazel rules there is a single provider of this header.",
       "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82bad0b_ddb5dc7f",
+        "filename": "gn/sksl.gni",
+        "patchSetId": 18
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-15T15:12:59Z",
+      "side": 1,
+      "message": "Resolved in https://skia-review.googlesource.com/c/skia/+/920391",
+      "parentUuid": "31b8c014_2a11187e",
+      "revId": "e632efd38e40168aa89f7ae9aeab10c496b22b4f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
