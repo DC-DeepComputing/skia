@@ -33,6 +33,24 @@
       "message": "@michaelludwig, can you PTAL as a Skia TL/owner?\n\nSome background notes:\n\n* I am a Chrome Security engineer working on `SkPngRustCodec` - see https://docs.google.com/document/d/1glx5ue5JDlCld5WzWgTOGK3wsMErQFnkY5N5Dsbi91Y/edit?usp\u003dsharing for more details about this project.\n* @fmalita is a Skia TL that I usually work with, but they suggested that in the next 2-3 weeks I may work with you instead.\n* For this particular CL the associated bug has some additional context.  In particular, I\u0027ve met virtually with @ccameron yesterday and they approve of the direction being taken in this CL.\n\nPlease let me know if you have any questions.\n\n/cc @danieldilan as FYI",
       "revId": "12c0b998a8c50ce1c8b1d50f5e6ddd0f42994c88",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f37d9013_f92b773e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-15T21:17:38Z",
+      "side": 1,
+      "message": "Thanks, this all seems pretty reasonable to me.",
+      "parentUuid": "60fa34f9_0e1d425c",
+      "revId": "12c0b998a8c50ce1c8b1d50f5e6ddd0f42994c88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
