@@ -22,9 +22,13 @@
 #include "src/base/SkSafeMath.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkSwizzler.h"
+#include "third_party/rust/cxx/v1/cxx.h"
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wprivate-header"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpList.h"
-#include "third_party/rust/cxx/v1/cxx.h"
+#pragma clang diagnostic pop
 
 #ifdef __clang__
 #pragma clang diagnostic error "-Wconversion"
