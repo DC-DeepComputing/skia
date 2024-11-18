@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/utils/SkShaderUtils.h"
 
+skgpu::StdSteadyClock::time_point fTimeTime;
+
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
@@ -37,7 +39,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
     fLabel = shaderInfo.fsLabel();
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
     fFromPrecompile =
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 #endif
