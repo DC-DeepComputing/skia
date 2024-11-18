@@ -16,6 +16,69 @@
       "message": "@kjlubick, can you PTAL?",
       "revId": "9022adad45eea4e3cfeab8766381ebc783a9a40a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34f320da_65941cec",
+        "filename": "experimental/rust_png/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-18T21:30:50Z",
+      "side": 1,
+      "message": "To be consistent with https://skia.org/docs/user/build/, we should encourage something like `gn args out/RustPng` and then using `gn args` here to do the editing (ubernit: cat doesn\u0027t do the editing)",
+      "revId": "9022adad45eea4e3cfeab8766381ebc783a9a40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0b39028_e096c3dd",
+        "filename": "experimental/rust_png/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-18T21:30:50Z",
+      "side": 1,
+      "message": "`gn gen out/RustPng`",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 12
+      },
+      "revId": "9022adad45eea4e3cfeab8766381ebc783a9a40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c31da1a_564086f8",
+        "filename": "experimental/rust_png/README.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-18T21:30:50Z",
+      "side": 1,
+      "message": "`out/RustPng/dm`",
+      "range": {
+        "startLine": 47,
+        "startChar": 6,
+        "endLine": 47,
+        "endChar": 8
+      },
+      "revId": "9022adad45eea4e3cfeab8766381ebc783a9a40a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
