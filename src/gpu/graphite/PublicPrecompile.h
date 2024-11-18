@@ -19,13 +19,13 @@ class GraphicsPipelineDesc;
 class PaintOptions;
 struct RenderPassDesc;
 class RuntimeEffectDictionary;
-
+class PrecompileContext;
 
 /*
  * TODO: Rather than passing in a pipelineDesc and renderPassDesc we need to add an
  * opaque serializable object that contains the same information.
  */
-bool Precompile(Context*,
+bool Precompile(PrecompileContext*,
                 RuntimeEffectDictionary* rteDict,
                 const GraphicsPipelineDesc& pipelineDesc,
                 const RenderPassDesc& renderPassDesc);
