@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb8f68d7_f5cc9ef3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-11-18T20:20:05Z",
+      "side": 1,
+      "message": "LGTM but G3 looks unhappy",
+      "revId": "e76868f23a5fdb08b2ed9c125f81b778d8a0bc91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
