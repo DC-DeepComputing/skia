@@ -16,6 +16,24 @@
       "message": "Will want to add the new `onGetResourceName` here.",
       "revId": "078933dbcac98270f81947dc25c2bce4afbcdf70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77950db8_0ac06117",
+        "filename": "src/ports/SkTypeface_proxy.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-18T16:17:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe54f13a_1811e73c",
+      "revId": "078933dbcac98270f81947dc25c2bce4afbcdf70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
