@@ -16,6 +16,23 @@
       "message": "LGTM. I don\u0027t have +1 here.",
       "revId": "d048b037b0629a22d808c15e4b254b059893c1d4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70455584_94c26cfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-11-18T19:04:39Z",
+      "side": 1,
+      "message": "Rubber stamping per jzern@\u0027s review",
+      "revId": "d048b037b0629a22d808c15e4b254b059893c1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
