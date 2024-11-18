@@ -89,6 +89,35 @@
    Skia consumers can provide their own definitions of these macros to
    integrate with their histogram collection backend.
 */
+
+#include <stdint.h>
+void SkHistogramBoolean(const char* name, bool sample);
+void SkHistogramEnumeration(const char* name, int sample, int enumSize);
+void SkHistogramExactLinear(const char* name, int sample, int valueMax);
+void SkHistogramMemoryKB(const char* name, int sample);
+void SkHistogramCustomMicrosecondsTimes(const char* name,
+                                        int64_t sampleUSec,
+                                        int minUSec,
+                                        int maxUSec,
+                                        int bucketCount);
+
+#define SK_HISTOGRAM_BOOLEAN(name, sample) \
+    SkHistogramBoolean(name, sample);
+
+#define SK_HISTOGRAM_ENUMERATION(name, sampleEnum, enumSize) \
+    SkHistogramEnumeration(name,                             \
+                           static_cast<int>(sampleEnum),     \
+                           static_cast<int>(enumSize));
+
+#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, valueMax) \
+    SkHistogramExactLinear(name, sample, valueMax);
+
+#define SK_HISTOGRAM_MEMORY_KB(name, sample) \
+    SkHistogramMemoryKB(name, sample);
+
+#define SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(name, sampleUSec, minUSec, maxUSec, bucketCount) \
+    SkHistogramCustomMicrosecondsTimes(name, sampleUSec, minUSec, maxUSec, bucketCount);
+
 //#define SK_HISTOGRAM_BOOLEAN(name, sample)
 //#define SK_HISTOGRAM_ENUMERATION(name, sampleEnum, enumSize)
 //#define SK_HISTOGRAM_EXACT_LINEAR(name, sample, valueMax)
