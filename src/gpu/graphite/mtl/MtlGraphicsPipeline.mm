@@ -388,6 +388,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
 
     PipelineInfo pipelineInfo;
     pipelineInfo.fNumFragTexturesAndSamplers = 1;
+
     // This is an internal shader, leave off filling out the test-utils shader code
     return Make(sharedContext,
                 pipelineLabel,
