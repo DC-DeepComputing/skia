@@ -32,6 +32,27 @@
 
 #include <vector>
 
+void SkHistogramBoolean(const char* name, bool sample) {
+    SkDebugf("%s %s\n", name, sample ? "true" : "false");
+}
+
+void SkHistogramEnumeration(const char* name, int sample, int enumSize) {
+    SkDebugf("%s %d %d\n", name, sample, enumSize);
+}
+
+void SkHistogramExactLinear(const char* name, int sample, int valueMax) {
+    SkDebugf("%s %d %d\n", name, sample, valueMax);
+}
+
+void SkHistogramMemoryKB(const char* name, int sample) {
+    SkDebugf("%s %d\n", name, sample);
+}
+
+void SkHistogramCustomMicrosecondsTimes(const char* name, int64_t sampleUS,
+                                        int minUS, int maxUS, int bucketCount) {
+    SkDebugf("%s %lld %d %d %d\n", name, sampleUS, minUS, maxUS, bucketCount);
+}
+
 namespace skgpu::graphite {
 
 namespace {
@@ -688,9 +709,10 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 #endif
     } else {
         std::optional<DawnErrorChecker> errorChecker;
-        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
-        }
+//        if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
+//            errorChecker.emplace(sharedContext);
+//        }
+
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
 
@@ -754,6 +776,10 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     // We shouldn't use CreateRenderPipelineAsync in wasm.
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+
+    //$$ stalling!
+    //fAsyncPipelineCreation->fStallStart;
+
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fAsyncPipelineCreation->fFuture;
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext())
