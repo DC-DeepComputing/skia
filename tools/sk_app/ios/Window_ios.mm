@@ -86,20 +86,20 @@ bool Window_ios::attach(BackendType attachType) {
     switch (attachType) {
 #ifdef SK_METAL
         case kMetal_BackendType:
-            fWindowContext = skwindow::MakeMetalForIOS(info, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeMetalForIOS(info, fRequestedDisplayParams->clone());
             break;
 #if defined(SK_GRAPHITE)
         case kGraphiteMetal_BackendType:
-            fWindowContext = MakeGraphiteMetalForIOS(info, fRequestedDisplayParams);
+            fWindowContext = MakeGraphiteMetalForIOS(info, fRequestedDisplayParams->clone());
             break;
 #endif
 #endif
 #ifdef SK_GL
         case kNativeGL_BackendType:
-            fWindowContext = skwindow::MakeGLForIOS(info, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeGLForIOS(info, fRequestedDisplayParams->clone());
             break;
         case kRaster_BackendType:
-            fWindowContext = skwindow::MakeRasterForIOS(info, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeRasterForIOS(info, fRequestedDisplayParams->clone());
             break;
 #endif
         default:
