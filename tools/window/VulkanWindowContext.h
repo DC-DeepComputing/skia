@@ -31,7 +31,7 @@ public:
         this->createSwapchain(w, h, fDisplayParams);
     }
 
-    void setDisplayParams(const DisplayParams& params) override {
+    void setDisplayParams(std::unique_ptr<const DisplayParams> params) override {
         this->destroyContext();
         fDisplayParams = params;
         this->initializeContext();
@@ -42,7 +42,7 @@ public:
     /** Platform specific function that determines whether presentation will succeed. */
     using CanPresentFn = sk_gpu_test::CanPresentFn;
 
-    VulkanWindowContext(const DisplayParams&, CreateVkSurfaceFn, CanPresentFn,
+    VulkanWindowContext(std::unique_ptr<const DisplayParams>, CreateVkSurfaceFn, CanPresentFn,
                         PFN_vkGetInstanceProcAddr);
 
 private:
@@ -55,7 +55,7 @@ private:
     };
 
     BackbufferInfo* getAvailableBackbuffer();
-    bool createSwapchain(int width, int height, const DisplayParams& params);
+    bool createSwapchain(int width, int height, std::unique_ptr<const DisplayParams> params);
     bool createBuffers(VkFormat format, VkImageUsageFlags, SkColorType colorType, VkSharingMode);
     void destroyBuffers();
     void onSwapBuffers() override;

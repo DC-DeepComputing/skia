@@ -28,7 +28,7 @@ namespace {
 
 class MetalWindowContext_ios : public MetalWindowContext {
 public:
-    MetalWindowContext_ios(const IOSWindowInfo&, const DisplayParams&);
+    MetalWindowContext_ios(const IOSWindowInfo&, std::unique_ptr<const DisplayParams>);
 
     ~MetalWindowContext_ios() override;
 
@@ -44,8 +44,8 @@ private:
 };
 
 MetalWindowContext_ios::MetalWindowContext_ios(const IOSWindowInfo& info,
-                                               const DisplayParams& params)
-    : MetalWindowContext(params)
+                                               std::unique_ptr<const DisplayParams> params)
+    : MetalWindowContext(std::move(params))
     , fWindow(info.fWindow)
     , fViewController(info.fViewController) {
 
@@ -96,7 +96,7 @@ void MetalWindowContext_ios::resize(int w, int h) {
 namespace skwindow {
 
 std::unique_ptr<WindowContext> MakeMetalForIOS(const IOSWindowInfo& info,
-                                               const DisplayParams& params) {
+                                               std::unique_ptr<const DisplayParams> params) {
     std::unique_ptr<WindowContext> ctx(new MetalWindowContext_ios(info, params));
     if (!ctx->isValid()) {
         return nullptr;

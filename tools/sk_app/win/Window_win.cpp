@@ -395,7 +395,7 @@ void Window_win::onInval() {
     InvalidateRect(fHWnd, nullptr, false);
 }
 
-void Window_win::setRequestedDisplayParams(const DisplayParams& params, bool allowReattach) {
+void Window_win::setRequestedDisplayParams(std::unique_ptr<const DisplayParams> params, bool allowReattach) {
     // GL on Windows doesn't let us change MSAA after the window is created
     if (params.fMSAASampleCount != this->getRequestedDisplayParams().fMSAASampleCount
             && allowReattach) {
