@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf0ed8e3_b42e0653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-11-18T18:11:27Z",
+      "side": 1,
+      "message": "LGTM. I don\u0027t have +1 here.",
+      "revId": "d048b037b0629a22d808c15e4b254b059893c1d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
