@@ -2331,7 +2331,9 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
         for (const skgpu::UniqueKey& origKey : origKeys) {
             if(std::find(recreatedKeys.begin(), recreatedKeys.end(), origKey) ==
                          recreatedKeys.end()) {
-                sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(origKey);
+                sk_sp<GraphicsPipeline> pipeline =
+                        context->priv().globalCache()->findGraphicsPipeline(origKey,
+                                                                            /* forPrecompile= */ false);
                 SkASSERT(!pipeline);
 
 #ifdef SK_DEBUG
