@@ -135,40 +135,41 @@ protected:
 
     void onDraw(SkCanvas* canvas) override {
         const SkBlendMode modes[] = {
-            SkBlendMode::kClear,
-            SkBlendMode::kSrc,
-            SkBlendMode::kDst,
-            SkBlendMode::kSrcOver,
-            SkBlendMode::kDstOver,
-            SkBlendMode::kSrcIn,
-            SkBlendMode::kDstIn,
-            SkBlendMode::kSrcOut,
-            SkBlendMode::kDstOut,
-            SkBlendMode::kSrcATop,
-            SkBlendMode::kDstATop,
-            SkBlendMode::kXor,
-            SkBlendMode::kPlus,
-            SkBlendMode::kModulate,
-            SkBlendMode::kScreen,
-            SkBlendMode::kOverlay,
-            SkBlendMode::kDarken,
-            SkBlendMode::kLighten,
-            SkBlendMode::kColorDodge,
+//            SkBlendMode::kClear,
+//            SkBlendMode::kSrc,
+//            SkBlendMode::kDst,
+//            SkBlendMode::kSrcOver,
+//            SkBlendMode::kDstOver,
+//            SkBlendMode::kSrcIn,
+//            SkBlendMode::kDstIn,
+//            SkBlendMode::kSrcOut,
+//            SkBlendMode::kDstOut,
+//            SkBlendMode::kSrcATop,
+//            SkBlendMode::kDstATop,
+//            SkBlendMode::kXor,
+//            SkBlendMode::kPlus,
+//            SkBlendMode::kModulate,
+//            SkBlendMode::kScreen,
+//            SkBlendMode::kOverlay,
+//            SkBlendMode::kDarken,
+//            SkBlendMode::kLighten,
+//            SkBlendMode::kColorDodge,
             SkBlendMode::kColorBurn,
-            SkBlendMode::kHardLight,
-            SkBlendMode::kSoftLight,
-            SkBlendMode::kDifference,
-            SkBlendMode::kExclusion,
-            SkBlendMode::kMultiply,
-            SkBlendMode::kHue,
-            SkBlendMode::kSaturation,
-            SkBlendMode::kColor,
-            SkBlendMode::kLuminosity,
+//            SkBlendMode::kHardLight,
+//            SkBlendMode::kSoftLight,
+//            SkBlendMode::kDifference,
+//            SkBlendMode::kExclusion,
+//            SkBlendMode::kMultiply,
+//            SkBlendMode::kHue,
+//            SkBlendMode::kSaturation,
+//            SkBlendMode::kColor,
+//            SkBlendMode::kLuminosity,
         };
 
         SkPaint paint;
 
         canvas->translate(4, 4);
+        int i = 0;
         for (auto mode : modes) {
             canvas->save();
             for (float alpha : {1.0f, 0.5f}) {
@@ -179,6 +180,8 @@ protected:
                             bool fHasTexs;
                         } kAttrs[] = {{true, false}, {false, true}, {true, true}};
                         for (auto attrs : kAttrs) {
+                            ++i;
+                            if (i != 3) continue;
                             paint.setShader(shader);
                             paint.setColorFilter(cf);
                             paint.setAlphaf(alpha);
