@@ -13,6 +13,7 @@
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkLRUCache.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 
 #include <functional>
 
@@ -42,7 +43,7 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&, bool forPrecompile) SK_EXCLUDES(fSpinLock);
 
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
@@ -57,11 +58,97 @@ public:
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
 
+    class SkLog : public SkRefCnt {
+    public:
+        SkLog(const UniqueKey& k) : fKey(k) {}
+
+        enum class EventType2 {
+            kUnset,
+            kCacheHit,
+            kCacheMiss,
+            kNWonRaceOverN,
+            kNWonRaceOverP,
+            kPWonRaceOverN,
+            kPWonRaceOverP,
+            kAdded,
+            kPurged,
+            kWaitBegin,
+            kWaitEnd,
+        };
+
+        enum class Type {
+            kUnset,
+            kPrecompile,
+            kNormal,
+        };
+
+        static const char* Name(EventType2 type, Type entryType) {
+            switch (type) {
+                case EventType2::kUnset: return "unset";
+                case EventType2::kCacheHit:
+                    if (entryType == Type::kPrecompile) {
+                        return "hit P for";
+                    } else if (entryType == Type::kNormal) {
+                        return "hit N for";
+                    } else {
+//                        SkASSERT(0);
+                        return "hit U for";
+                    }
+                case EventType2::kCacheMiss: return "miss";
+                case EventType2::kPWonRaceOverP: return "P won-race-over P";
+                case EventType2::kPWonRaceOverN: return "P won-race-over N";
+                case EventType2::kNWonRaceOverP: return "N won-race-over P";
+                case EventType2::kNWonRaceOverN: return "N won-race-over N";
+                case EventType2::kAdded:     return "added";
+                case EventType2::kPurged:   return "purged";
+                case EventType2::kWaitBegin:   return "wait-begin";
+                case EventType2::kWaitEnd:   return "wait-end";
+            }
+
+            return "unkw";
+        }
+
+        static char Name2(Type type) {
+            switch (type) {
+                case Type::kUnset: return 'U';
+                case Type::kPrecompile: return 'P';
+                case Type::kNormal: return 'N';
+            }
+
+            return 'U';
+        }
+
+        void addEvent2(EventType2 type, bool forPrecompile);
+        void setType(Type type) {
+//            SkASSERT(fType == Type::kUnset);
+            fType = type;
+        }
+
+        static constexpr uint32_t kMaxNumMsgs = 20;
+
+        const UniqueKey fKey;
+        struct {
+            EventType2 fType = EventType2::kUnset;
+            int64_t fTime = 0;
+            bool fForPrecompile = false;
+            int fAncillary = 0;
+        } fEvents[kMaxNumMsgs];
+        std::atomic<uint32_t> fCurEvent1{0};
+        Type fType = Type::kUnset;
+        uint32_t fNumHits = 0;
+    };
+
+    SkLog* gimme(const UniqueKey&) SK_GUARDED_BY(fSpinLock);
+    void dump();
+
     struct PipelineStats {
         int fGraphicsCacheHits = 0;
         int fGraphicsCacheMisses = 0;
         int fGraphicsCacheAdditions = 0;
-        int fGraphicsRaces = 0;
+        int fTotalGraphicsRaces = 0;
+        int fFoo[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBar[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBaz[2] = { 0, 0 };
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
@@ -82,8 +169,15 @@ private:
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
     };
+    struct PurgeCB {
+        void operator()(const UniqueKey& key, void* data) const {
+            skia_private::THashTable<sk_sp<SkLog>, UniqueKey, Traits2>* map = (skia_private::THashTable<sk_sp<SkLog>, UniqueKey, Traits2>*) data;
+            sk_sp<SkLog>* log = map->find(key);
+            (*log)->addEvent2(SkLog::EventType2::kPurged, /* forPrecompile= */ false);
+        }
+    };
 
-    using GraphicsPipelineCache = SkLRUCache<UniqueKey, sk_sp<GraphicsPipeline>, KeyHash>;
+    using GraphicsPipelineCache = SkLRUCache2<UniqueKey, sk_sp<GraphicsPipeline>, KeyHash, PurgeCB>;
     using ComputePipelineCache  = SkLRUCache<UniqueKey, sk_sp<ComputePipeline>,  KeyHash>;
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
@@ -94,6 +188,17 @@ private:
     // expected to be low. For these reasons we store pipelines globally instead of per-Recorder.
     GraphicsPipelineCache fGraphicsPipelineCache SK_GUARDED_BY(fSpinLock);
     ComputePipelineCache  fComputePipelineCache  SK_GUARDED_BY(fSpinLock);
+
+    struct Traits2 {
+        static const UniqueKey& GetKey(sk_sp<SkLog> e) {
+            return (e)->fKey;
+        }
+
+        static uint32_t Hash(const UniqueKey& k) {
+            return KeyHash()(k);
+        }
+    };
+    skia_private::THashTable<sk_sp<SkLog>, UniqueKey, Traits2> fMap SK_GUARDED_BY(fSpinLock);
 
     skia_private::TArray<sk_sp<Resource>> fStaticResource SK_GUARDED_BY(fSpinLock);
 
