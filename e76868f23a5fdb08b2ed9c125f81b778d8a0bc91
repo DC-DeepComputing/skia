@@ -16,6 +16,24 @@
       "message": "LGTM but G3 looks unhappy",
       "revId": "e76868f23a5fdb08b2ed9c125f81b778d8a0bc91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7adf961a_734d6390",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-18T20:21:06Z",
+      "side": 1,
+      "message": "The G3 issue is unrelated (and that build doesn\u0027t use these files anyway)",
+      "parentUuid": "bb8f68d7_f5cc9ef3",
+      "revId": "e76868f23a5fdb08b2ed9c125f81b778d8a0bc91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
