@@ -9,12 +9,21 @@
 
 #if defined(SK_GRAPHITE)
 
+#include "include/core/SkCanvas.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkTextBlob.h"
+#include "include/effects/SkGradientShader.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceProvider.h"
+#include "tools/fonts/FontToolUtils.h"
+#include "tools/graphite/UniqueKeyUtils.h"
 
 #include <thread>
 
@@ -22,43 +31,111 @@ using namespace::skgpu::graphite;
 
 namespace {
 
-PaintOptions linear() {
+static constexpr int kMaxNumStops = 9;
+static constexpr SkColor gColors[kMaxNumStops] = {
+        SK_ColorRED,
+        SK_ColorGREEN,
+        SK_ColorBLUE,
+        SK_ColorCYAN,
+        SK_ColorMAGENTA,
+        SK_ColorYELLOW,
+        SK_ColorBLACK,
+        SK_ColorDKGRAY,
+        SK_ColorLTGRAY,
+};
+static constexpr SkPoint gPts[kMaxNumStops] = {
+        { -100.0f, -100.0f },
+        { -50.0f, -50.0f },
+        { -25.0f, -25.0f },
+        { -12.5f, -12.5f },
+        { 0.0f, 0.0f },
+        { 12.5f, 12.5f },
+        { 25.0f, 25.0f },
+        { 50.0f, 50.0f },
+        { 100.0f, 100.0f }
+};
+static constexpr float gOffsets[kMaxNumStops] =
+            { 0.0f, 0.125f, 0.25f, 0.375f, 0.5f, 0.625f, 0.75f, 0.875f, 1.0f };
+
+std::pair<SkPaint, PaintOptions> linear(int numStops) {
+    SkASSERT(numStops <= kMaxNumStops);
+
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::LinearGradient() });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
-    return paintOptions;
+
+    SkPaint paint;
+    paint.setShader(SkGradientShader::MakeLinear(gPts,
+                                                 gColors, gOffsets, numStops,
+                                                 SkTileMode::kClamp));
+    paint.setBlendMode(SkBlendMode::kSrcOver);
+
+    return { paint, paintOptions };
 }
 
-PaintOptions radial() {
+std::pair<SkPaint, PaintOptions> radial(int numStops) {
+    SkASSERT(numStops <= kMaxNumStops);
+
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::RadialGradient() });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
-    return paintOptions;
+
+    SkPaint paint;
+    paint.setShader(SkGradientShader::MakeRadial(/* center= */ {0, 0}, /* radius= */ 100,
+                                                 gColors, gOffsets, numStops,
+                                                 SkTileMode::kClamp));
+    paint.setBlendMode(SkBlendMode::kSrcOver);
+
+    return { paint, paintOptions };
 }
 
-PaintOptions sweep() {
+std::pair<SkPaint, PaintOptions> sweep(int numStops) {
+    SkASSERT(numStops <= kMaxNumStops);
+
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::SweepGradient() });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
-    return paintOptions;
+
+    SkPaint paint;
+    paint.setShader(SkGradientShader::MakeSweep(/* cx= */ 0, /* cy= */ 0,
+                                                gColors, gOffsets, numStops,
+                                                SkTileMode::kClamp,
+                                                /* startAngle= */ 0, /* endAngle= */ 359,
+                                                /* flags= */ 0, /* localMatrix= */ nullptr));
+    paint.setBlendMode(SkBlendMode::kSrcOver);
+
+    return { paint, paintOptions };
 }
 
-PaintOptions conical() {
+std::pair<SkPaint, PaintOptions> conical(int numStops) {
+    SkASSERT(numStops <= kMaxNumStops);
+
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::TwoPointConicalGradient() });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
-    return paintOptions;
+
+    SkPaint paint;
+    paint.setShader(SkGradientShader::MakeTwoPointConical(/* start= */ {100, 100},
+                                                          /* startRadius= */ 100,
+                                                          /* end= */ {-100, -100},
+                                                          /* endRadius= */ 100,
+                                                          gColors, gOffsets, numStops,
+                                                          SkTileMode::kClamp));
+    paint.setBlendMode(SkBlendMode::kSrcOver);
+
+    return { paint, paintOptions };
 }
 
 void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
-                          skiatest::Reporter* reporter,
-                          int threadID) {
+                          skiatest::Reporter* /* reporter */,
+                          int /* threadID */) {
     constexpr RenderPassProperties kProps = { DepthStencilFlags::kDepth,
                                               kBGRA_8888_SkColorType,
                                               /* requiresMSAA= */ false };
 
     for (auto createOptionsMtd : { linear, radial, sweep, conical }) {
-        PaintOptions paintOptions = createOptionsMtd();
+        // numStops doesn't influence the paintOptions
+        auto [_, paintOptions] = createOptionsMtd(/* numStops= */ 2);
         Precompile(precompileContext.get(),
                    paintOptions,
                    DrawTypeFlags::kBitmapText_Mask,
@@ -66,6 +143,106 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
     }
 
     precompileContext.reset();
+}
+
+// A simple helper to call Context::insertRecording on the Recordings generated on the
+// recorder threads.
+class Listener : public SkRefCnt {
+public:
+    Listener(int numSenders) : fNumActiveSenders(numSenders) {}
+
+    void addRecording(std::unique_ptr<Recording> recording) {
+        {
+            SkAutoMutexExclusive lock(fLock);
+            fRecordings.push_back(std::move(recording));
+        }
+
+        fWorkAvailable.signal(1);
+    }
+
+    void deregister() {
+        {
+            SkAutoMutexExclusive lock(fLock);
+            fNumActiveSenders--;
+        }
+
+        fWorkAvailable.signal(1);
+    }
+
+    void wait() {
+        fWorkAvailable.wait();
+    }
+
+    bool submitRecordings(Context* context) {
+        Recording* recording = nullptr;
+        int numSendersLeft;
+
+        {
+            SkAutoMutexExclusive lock(fLock);
+
+            numSendersLeft = fNumActiveSenders;
+
+            SkASSERT(fRecordings.size() >= fCurHandled);
+            if (fRecordings.size() > fCurHandled) {
+                recording = fRecordings[fCurHandled++].get();
+            }
+        }
+
+        if (recording) {
+            context->insertRecording({recording});
+            return true;  // continue looping
+        }
+
+        return SkToBool(numSendersLeft); // continue looping if there are still active senders
+    }
+
+private:
+    skia_private::TArray<std::unique_ptr<Recording>> fRecordings;
+    int fCurHandled = 0;
+    SkMutex fLock;
+    SkSemaphore fWorkAvailable;
+    int fNumActiveSenders;
+};
+
+void compile_gradients(Recorder* recorder,
+                       sk_sp<Listener> listener,
+                       skiatest::Reporter* /* reporter */,
+                       int /* threadID */) {
+    SkFont font(ToolUtils::DefaultPortableTypeface(), /* size= */ 16);
+
+    const char text[] = "hambur1";
+    sk_sp<SkTextBlob> blob = SkTextBlob::MakeFromText(text, strlen(text), font);
+
+    SkImageInfo ii = SkImageInfo::Make(16, 16,
+                                       kBGRA_8888_SkColorType,
+                                       kPremul_SkAlphaType);
+
+    sk_sp<SkSurface> surf = SkSurfaces::RenderTarget(recorder, ii,
+                                                     skgpu::Mipmapped::kNo,
+                                                     /* props= */ nullptr);
+    SkCanvas* canvas = surf->getCanvas();
+
+    for (auto createOptionsMtd : { linear, radial, sweep, conical }) {
+        for (int numStops : { 2, 7, kMaxNumStops }) {
+            auto [paint, _] = createOptionsMtd(numStops);
+
+            canvas->drawTextBlob(blob, 0, 16, paint);
+
+            // This will trigger pipeline creation via TaskList::prepareResources
+            std::unique_ptr<skgpu::graphite::Recording> recording = recorder->snap();
+
+            listener->addRecording(std::move(recording));
+        }
+    }
+
+    listener->deregister();
+}
+
+void submit_work(Context* context, sk_sp<Listener> listener) {
+
+    do {
+        listener->wait();
+    } while (listener->submitRecordings(context));
 }
 
 } // anonymous namespace
@@ -90,13 +267,81 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPrecompileTest,
         thread.join();
     }
 
-    GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+    const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
     // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses =
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
                               stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
+}
+
+// This test runs two threads compiling the gradient flavours and two threads
+// pre-compiling the gradient flavors. This is to exercise the tracking of the
+// various race combinations.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumRecordingThreads = 2;
+    constexpr int kNumPrecompileThreads = 2;
+    constexpr int kTotNumThreads1 = kNumRecordingThreads + kNumPrecompileThreads + 1;
+
+    sk_sp<Listener> listener = sk_make_sp<Listener>(kNumRecordingThreads);
+
+    std::thread threads[kTotNumThreads1];
+
+    // Recorders need to be destroyed on the Context-owning thread
+    std::unique_ptr<Recorder> recorders[kNumRecordingThreads];
+
+    for (int i = 0; i < kNumRecordingThreads; ++i) {
+        recorders[i] = context->makeRecorder();
+
+        threads[i] = std::thread(compile_gradients,
+                                 recorders[i].get(),
+                                 listener,
+                                 reporter,
+                                 i);
+    }
+    for (int i = 0; i < kNumPrecompileThreads; ++i) {
+        std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+
+        int threadID = kNumRecordingThreads+i;
+        threads[kNumRecordingThreads+i] = std::thread(precompile_gradients,
+                                                      std::move(precompileContext),
+                                                      reporter,
+                                                      threadID);
+    }
+
+    threads[kTotNumThreads1-1] = std::thread([context, listener]() {
+        submit_work(context, listener);
+    });
+
+    for (auto& thread : threads) {
+        if (thread.joinable()) {
+            thread.join();
+        }
+    }
+
+    for (auto& recorder : recorders) {
+        recorder.reset();
+    }
+
+    context->submit(SyncToCpu::kYes);
+
+    const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+
+    // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
+                              stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
+
+    // The 48 comes from:
+    //     4 gradient flavors (linear, radial, ...) *
+    //     3 types of each flavor (4, 8, N) *
+    //     (2 normal-compile threads + 2 pre-compile threads)
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
 }
 
 #endif // SK_GRAPHITE
