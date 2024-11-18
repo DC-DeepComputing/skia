@@ -354,7 +354,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
             "int high = %d;"
             "int chunk = %d;"
             "for (int loop = 0; loop < %d; ++loop) {"
-                "if (t < thresholds[chunk].w) {"
+                "if (t <= thresholds[chunk].w) {"
                     "high = chunk;"
                 "} else {"
                     "low = chunk + 1;"
@@ -364,10 +364,10 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
 
             // Choose the final position via explicit 4-way binary search.
             "int pos;"
-            "if (t < thresholds[chunk].y) {"
-                "pos = (t < thresholds[chunk].x) ? 0 : 1;"
+            "if (t <= thresholds[chunk].y) {"
+                "pos = (t <= thresholds[chunk].x) ? 0 : 1;"
             "} else {"
-                "pos = (t < thresholds[chunk].z) ? 2 : 3;"
+                "pos = (t <= thresholds[chunk].z) ? 2 : 3;"
             "}"
             "if (%d > 0) {"
                 "pos += 4 * chunk;"
@@ -612,7 +612,7 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
         "uniform int layoutPreservesOpacity;"  // specialized
 
         "half4 main(float2 coord) {"
-            "float4 t = gradLayout.eval(coord);"
+            "half4 t = gradLayout.eval(coord);"
             "half4 outColor;"
 
             // If t.x is below 0, use the left border color without invoking the child processor.
