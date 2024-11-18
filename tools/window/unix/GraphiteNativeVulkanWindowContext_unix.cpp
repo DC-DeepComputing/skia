@@ -14,8 +14,8 @@
 
 namespace skwindow {
 
-std::unique_ptr<WindowContext> MakeGraphiteNativeVulkanForXlib(const XlibWindowInfo& info,
-                                                               const DisplayParams& displayParams) {
+std::unique_ptr<WindowContext> MakeGraphiteNativeVulkanForXlib(
+        const XlibWindowInfo& info, std::unique_ptr<const DisplayParams> displayParams) {
     PFN_vkGetInstanceProcAddr instProc;
     if (!sk_gpu_test::LoadVkLibraryAndGetProcAddrFuncs(&instProc)) {
         SkDebugf("Could not load vulkan library\n");
