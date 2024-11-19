@@ -157,6 +157,11 @@ var deps = deps_parser.DepsEntries{
 		Version: "6898ea1d553e3ab1f2128824feeb87244c766c11",
 		Path:    "third_party/externals/dawn",
 	},
+	"github.com/skia-dev/delaunator-cpp": {
+		Id:      "github.com/skia-dev/delaunator-cpp",
+		Version: "98305ef6c4e862f7d48df9cc647b690d796fec68",
+		Path:    "third_party/externals/delaunator-cpp",
+	},
 	"infra/3pp/tools/ninja": {
 		Id:      "infra/3pp/tools/ninja",
 		Version: "version:2@1.12.1.chromium.4",
