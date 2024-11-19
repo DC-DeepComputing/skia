@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56bc91a_6042dbb5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-19T19:22:06Z",
+      "side": 1,
+      "message": "@adetaylor, can you PTAL at Rust stuff:\n\n* `experimental/rust_png/ffi/FFI.rs`\n* `experimental/rust_png/patches/...` and `WORKSPACE.bazel` (this just replicates https://crrev.com/c/5999738)",
+      "revId": "0d178b9d2b343e3ec2a966577d4bda52acf2c708",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
