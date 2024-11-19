@@ -348,11 +348,14 @@ private:
     mutable SingleOwner fSingleOwner;
 
 #if defined(GPU_TEST_UTILS)
+    void deregisterRecorder(const Recorder*) SK_EXCLUDES(fTestingLock);
+
     // In test builds a Recorder may track the Context that was used to create it.
     bool fStoreContextRefInRecorder = false;
     // If this tracking is on, to allow the client to safely delete this Context or its Recorders
     // in any order we must also track the Recorders created here.
-    std::vector<Recorder*> fTrackedRecorders;
+    SkMutex fTestingLock;
+    std::vector<Recorder*> fTrackedRecorders1 SK_GUARDED_BY(fTestingLock);
 #endif
 
     // Needed for MessageBox handling
