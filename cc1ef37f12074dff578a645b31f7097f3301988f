@@ -39,6 +39,30 @@
       },
       "revId": "cc1ef37f12074dff578a645b31f7097f3301988f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b783269b_0af4a37c",
+        "filename": "include/private/base/SkFixed.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-19T19:06:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7599ccfe_5df85975",
+      "range": {
+        "startLine": 100,
+        "startChar": 22,
+        "endLine": 100,
+        "endChar": 32
+      },
+      "revId": "cc1ef37f12074dff578a645b31f7097f3301988f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
