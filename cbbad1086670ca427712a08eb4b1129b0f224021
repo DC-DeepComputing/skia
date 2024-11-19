@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1068c7a0_d9969afc",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-19T14:14:02Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be the case, are you seeing otherwise?",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 73
+      },
+      "revId": "cbbad1086670ca427712a08eb4b1129b0f224021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
