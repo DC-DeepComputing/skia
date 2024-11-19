@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68152655_b5015b58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-19T16:06:23Z",
+      "side": 1,
+      "message": "Updated -- see the Gold results for diffs. So far I don\u0027t see any visible differences other than the artifacts going away.",
+      "revId": "bc92392aa801293ef13954e81d8b27492998b1b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
