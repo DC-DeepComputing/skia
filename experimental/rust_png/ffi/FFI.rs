@@ -7,7 +7,7 @@
 //! The public API of this crate is the C++ API declared by the `#[cxx::bridge]`
 //! macro below and exposed through the auto-generated `FFI.rs.h` header.
 
-use std::io::{ErrorKind, Read};
+use std::io::{ErrorKind, Read, Write};
 use std::pin::Pin;
 
 // No `use png::...` nor `use ffi::...` because we want the code to explicitly
@@ -56,8 +56,13 @@ mod ffi {
 
     unsafe extern "C++" {
         include!("experimental/rust_png/ffi/FFI.h");
+
         type ReadTrait;
         fn read(self: Pin<&mut ReadTrait>, buffer: &mut [u8]) -> usize;
+
+        type WriteTrait;
+        fn write(self: Pin<&mut WriteTrait>, buffer: &[u8]) -> bool;
+        fn flush(self: Pin<&mut WriteTrait>);
     }
 
     // Rust functions, types, and methods that are exposed through FFI.
@@ -183,6 +188,21 @@ impl From<Option<&png::DecodingError>> for ffi::DecodingResult {
 impl<'a> Read for Pin<&'a mut ffi::ReadTrait> {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
         Ok(self.as_mut().read(buf))
+    }
+}
+
+impl<'a> Write for Pin<&'a mut ffi::WriteTrait> {
+    fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
+        if self.as_mut().write(buf) {
+            Ok(buf.len())
+        } else {
+            Err(ErrorKind::Other.into())
+        }
+    }
+
+    fn flush(&mut self) -> std::io::Result<()> {
+        self.as_mut().flush();
+        Ok(())
     }
 }
 
