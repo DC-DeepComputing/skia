@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3624774_49712233",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-11-19T23:06:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "12ba050f_cde126da",
+      "range": {
+        "startLine": 87,
+        "startChar": 44,
+        "endLine": 87,
+        "endChar": 57
+      },
+      "revId": "150ec310a73e5e10b2e99cb17738387632fed5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5400ca53_3e0f1af9",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d440af_d5d15c4d",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-11-19T23:06:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5400ca53_3e0f1af9",
+      "range": {
+        "startLine": 88,
+        "startChar": 18,
+        "endLine": 88,
+        "endChar": 77
+      },
+      "revId": "150ec310a73e5e10b2e99cb17738387632fed5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4de53fe1_831fd479",
@@ -77,6 +125,24 @@
       "writtenOn": "2024-11-19T22:02:36Z",
       "side": 1,
       "message": "On web/wire it would perform better to pop three times, then wait three times. With WaitAnyOnly, this should be OK even though all three reuse the same errorState struct, because the callbacks won\u0027t run (and overwrite errorState) until WaitAny.",
+      "revId": "150ec310a73e5e10b2e99cb17738387632fed5b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e80fe4fe_e495c825",
+        "filename": "src/gpu/graphite/dawn/DawnErrorChecker.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-11-19T23:06:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4de53fe1_831fd479",
       "revId": "150ec310a73e5e10b2e99cb17738387632fed5b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
