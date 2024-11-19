@@ -751,6 +751,7 @@
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All"},
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-ANGLE"},
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Release-All-Vulkan"},
+  {"name": "Test-Win10-Clang-Golo-GPU-GTX1660-x86_64-Debug-All"},
   {"name": "Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All"},
   {"name": "Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-ANGLE"},
   {"name": "Test-Win10-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-BonusConfigs"},

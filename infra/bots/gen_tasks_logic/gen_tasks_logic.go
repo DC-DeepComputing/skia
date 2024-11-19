@@ -993,6 +993,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if b.matchOs("Win") {
 				gpu, ok := map[string]string{
 					// At some point this might use the device ID, but for now it's like Chromebooks.
+					"GTX1660":       "10de:2184-31.0.15.4601",
 					"GTX660":        "10de:11c0-26.21.14.4120",
 					"GTX960":        "10de:1401-32.0.15.6094",
 					"IntelHD4400":   "8086:0a16-20.19.15.4963",
