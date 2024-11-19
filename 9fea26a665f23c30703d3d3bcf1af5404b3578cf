@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53b0c081_9457bc21",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-19T15:32:59Z",
+      "side": 1,
+      "message": "nit: newline",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "00e899ad_acc29557",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Context.h",
+              "range": {
+                "startLine": 18,
+                "startChar": 0,
+                "endLine": 18,
+                "endChar": 0
+              },
+              "replacement": "\n"
+            }
+          ]
+        }
+      ],
+      "revId": "9fea26a665f23c30703d3d3bcf1af5404b3578cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
