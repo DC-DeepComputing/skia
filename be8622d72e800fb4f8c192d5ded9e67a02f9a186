@@ -39,6 +39,30 @@
       },
       "revId": "be8622d72e800fb4f8c192d5ded9e67a02f9a186",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21ee7d06_b1df473b",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-11-19T05:05:29Z",
+      "side": 1,
+      "message": "Ack. I also have some plans to expose a unique_ptr from the crabbyavif header file since (unlike libavif) it can use C++.",
+      "parentUuid": "77b19ccc_652a31eb",
+      "range": {
+        "startLine": 324,
+        "startChar": 60,
+        "endLine": 324,
+        "endChar": 96
+      },
+      "revId": "be8622d72e800fb4f8c192d5ded9e67a02f9a186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
