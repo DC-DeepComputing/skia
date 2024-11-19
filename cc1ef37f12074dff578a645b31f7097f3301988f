@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "024fe7a7_5c0bbed3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-19T19:00:15Z",
+      "side": 1,
+      "message": "I would also recommend running the chrome canary try job to confirm that this rasterization change doesn\u0027t change their layout tests.",
+      "revId": "cc1ef37f12074dff578a645b31f7097f3301988f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7599ccfe_5df85975",
+        "filename": "include/private/base/SkFixed.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-19T19:00:15Z",
+      "side": 1,
+      "message": "nit: Can we name this `SkFixedSatAdd` to match the convention used in SkSafe32 where the saturation/pinning is called out in the name.",
+      "range": {
+        "startLine": 100,
+        "startChar": 22,
+        "endLine": 100,
+        "endChar": 32
+      },
+      "revId": "cc1ef37f12074dff578a645b31f7097f3301988f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
