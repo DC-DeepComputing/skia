@@ -181,7 +181,6 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
     fMapPtr = mappedAtCreationPtr;
 }
 
-#if defined(__EMSCRIPTEN__)
 void DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
     // This function is only useful for Emscripten where we have to pre-map the buffer
     // once it is returned to the cache.
@@ -245,8 +244,6 @@ void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
             },
             buffer.release());
 }
-
-#endif // defined(__EMSCRIPTEN__)
 
 void DawnBuffer::onMap() {
 #if defined(__EMSCRIPTEN__)

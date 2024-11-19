@@ -60,7 +60,7 @@ void DawnWorkSubmissionWithAsyncWait::onWaitUntilFinished(const SharedContext*) 
 
 // The version with wgpu::Future. This is not available in wasm yet so we have
 // to guard behind #if
-class DawnWorkSubmissionWithFuture final : public GpuWorkSubmission {
+class [[maybe_unused]] DawnWorkSubmissionWithFuture final : public GpuWorkSubmission {
 public:
     DawnWorkSubmissionWithFuture(std::unique_ptr<CommandBuffer> cmdBuffer,
                                  DawnQueueManager* queueManager);
@@ -136,12 +136,8 @@ QueueManager::OutstandingSubmission DawnQueueManager::onSubmitToGpu() {
 
     fQueue.Submit(/*commandCount=*/1, &wgpuCmdBuffer);
 
-#if defined(__EMSCRIPTEN__)
     return std::make_unique<DawnWorkSubmissionWithAsyncWait>(
             std::move(fCurrentCommandBuffer), this, dawnSharedContext());
-#else
-    return std::make_unique<DawnWorkSubmissionWithFuture>(std::move(fCurrentCommandBuffer), this);
-#endif
 }
 
 #if defined(GPU_TEST_UTILS)

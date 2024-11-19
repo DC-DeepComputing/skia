@@ -483,8 +483,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // For wasm, we use async map.
     fBufferMapsAreAsync = true;
 #else
-    // For Dawn native, we use direct mapping.
-    fBufferMapsAreAsync = false;
+    fBufferMapsAreAsync = true;
     fDrawBufferCanBeMapped =
             backendContext.fDevice.HasFeature(wgpu::FeatureName::BufferMapExtendedUsages);
 
