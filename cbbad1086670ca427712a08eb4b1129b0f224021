@@ -22,6 +22,30 @@
       },
       "revId": "cbbad1086670ca427712a08eb4b1129b0f224021",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5abfbf42_c31dc0fe",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-11-19T15:26:54Z",
+      "side": 1,
+      "message": "The issue is getting fixed over in https://skia-review.googlesource.com/c/skia/+/922256. Basically, some debugging code in deregisterRecorder was getting in the way.",
+      "parentUuid": "1068c7a0_d9969afc",
+      "range": {
+        "startLine": 292,
+        "startChar": 0,
+        "endLine": 292,
+        "endChar": 73
+      },
+      "revId": "cbbad1086670ca427712a08eb4b1129b0f224021",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
