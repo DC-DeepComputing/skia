@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ab89032_d0eb8850",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-11-19T03:15:39Z",
+      "side": 1,
+      "message": "LGTM.",
+      "revId": "be8622d72e800fb4f8c192d5ded9e67a02f9a186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b19ccc_652a31eb",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2024-11-19T03:15:39Z",
+      "side": 1,
+      "message": "This could be considered borderline since Skia doesn\u0027t own this API, though of course the codec team does and would be unlikely to change the attributes. (I\u0027m thinking of `-Wignored-attributes` here.) A workaround would be to add a wrapper function around this function. This is an existing typedef though, so it\u0027s fine to ignore in this change.",
+      "range": {
+        "startLine": 324,
+        "startChar": 60,
+        "endLine": 324,
+        "endChar": 96
+      },
+      "revId": "be8622d72e800fb4f8c192d5ded9e67a02f9a186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
