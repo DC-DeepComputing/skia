@@ -143,7 +143,6 @@ config("default") {
     ]
   } else {
     cflags += [
-      "-fstrict-aliasing",
       "-fPIC",
       "-fvisibility=hidden",
     ]
@@ -750,6 +749,21 @@ config("NDEBUG") {
 config("trivial_abi") {
   if (is_clang) {
     defines = [ "SK_TRIVIAL_ABI=[[clang::trivial_abi]]" ]
+  }
+}
+
+# Strict aliasing is a compiler optimization that assumes pointers to different
+# types never alias. This can lead to undefined behavior if the pointers do.
+#
+# As of 2024, only GCC is aggressive about strict aliasing. Clang isn't.
+config("strict_aliasing") {
+  if (!is_win) {
+    cflags = [ "-fstrict-aliasing" ]
+  }
+}
+config("no_strict_aliasing") {
+  if (!is_win) {
+    cflags = [ "-fno-strict-aliasing" ]
   }
 }
 
