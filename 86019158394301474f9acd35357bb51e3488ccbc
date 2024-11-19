@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33c4597f_13f92c03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-19T14:59:53Z",
+      "side": 1,
+      "message": "PTAL. You can see the effect of the change here (from an omnibus CL) https://gold.skia.org/search?issue\u003d921596\u0026crs\u003dgerrit\u0026patchsets\u003d3\u0026corpus\u003dgm",
+      "revId": "86019158394301474f9acd35357bb51e3488ccbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
