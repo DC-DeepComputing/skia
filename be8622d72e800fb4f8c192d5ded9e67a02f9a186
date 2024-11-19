@@ -37,6 +37,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "bd95490f_475686fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-11-19T13:44:11Z",
+      "side": 1,
+      "message": "Rubber stamp per LGTM from jzern@. FYI @danieldilan@google.com",
+      "revId": "be8622d72e800fb4f8c192d5ded9e67a02f9a186",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "77b19ccc_652a31eb",
         "filename": "src/codec/SkCrabbyAvifCodec.cpp",
         "patchSetId": 1
