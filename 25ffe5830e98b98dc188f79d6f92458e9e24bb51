@@ -46,6 +46,30 @@
       },
       "revId": "25ffe5830e98b98dc188f79d6f92458e9e24bb51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9b21b6b_c776060d",
+        "filename": "src/gpu/RefCntedCallback.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-11-19T14:41:47Z",
+      "side": 1,
+      "message": "We assert that at max one function pointer is non-null. So the order of checking shouldn\u0027t matter. But I reversed it to be in the order of preference.\n\nHere is where the preference is implemented:\nhttps://skia-review.googlesource.com/c/skia/+/913377/12/src/gpu/ganesh/GrGpu.cpp#721",
+      "parentUuid": "c355de0c_cd31c304",
+      "range": {
+        "startLine": 37,
+        "startChar": 11,
+        "endLine": 39,
+        "endChar": 42
+      },
+      "revId": "25ffe5830e98b98dc188f79d6f92458e9e24bb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
