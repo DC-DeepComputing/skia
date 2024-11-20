@@ -34,6 +34,24 @@
       "parentUuid": "97b83e3e_36875f7f",
       "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e568ac11_2f0be708",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-20T14:56:56Z",
+      "side": 1,
+      "message": "From what I understand about strict aliasing (source: https://gist.github.com/shafik/848ae25ee209f698763cffee272a58f8), if the flag is enabled, the compiler makes some assumption about changes to certain variables not impacting other variables, which means it can cut down on reads from memory if a variable happened to already be in a register (and probably other things).\nWhen the flag is disabled, the compiler is more cautious and makes more reads from RAM than might strictly be necessary, but it\u0027s safer. So this flag is a classic \"safety vs speed\" tradeoff. Chromium and most other Google code has opted for safety, but Skia at some point went with speed.\n\n`-fstrict-aliasing` was first added to the Skia codebase in https://codereview.appspot.com/7313049 to apparently align with Android. There was one time when SkChecksum.cpp needed to bypass the aliasing rules, but that appears to not be the case anymore https://github.com/google/skia/blob/4d1dd6643f2efa34d22d5fc3cf9cb4866252358e/src/core/SkChecksum.cpp\n\nFrom that context, I think it was added to warn about violations and prevent such problems from happening (with the side effect that if it\u0027s true, we can go faster). As such, Skia should consider disabling the flag to align with our client expectations and ensure the client code is safer.",
+      "parentUuid": "867b43ee_57143ff4",
+      "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
