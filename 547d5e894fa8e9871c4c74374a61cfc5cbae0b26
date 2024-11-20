@@ -52,6 +52,24 @@
       "parentUuid": "867b43ee_57143ff4",
       "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e84253_979a5a0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-20T14:57:41Z",
+      "side": 1,
+      "message": "Marking thread unresolved to solicit a dialog/discussion.",
+      "parentUuid": "e568ac11_2f0be708",
+      "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
