@@ -128,6 +128,7 @@ protected:
 private:
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
             const RuntimeEffectDictionary*,
+            const UniqueKey&,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
             SkEnumBitMask<PipelineCreationFlags>) = 0;
