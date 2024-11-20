@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4b88fa4_7c6fda79",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-11-20T20:07:46Z",
+      "side": 1,
+      "message": "I didn\u0027t realize when you commented about this function that it already existed with the same functionality, so deleting the one I added to get rid of redundancy.",
+      "range": {
+        "startLine": 610,
+        "startChar": 22,
+        "endLine": 610,
+        "endChar": 34
+      },
+      "revId": "9397a3ffe10eceedc96afeba73f94bfa0bfa42a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
