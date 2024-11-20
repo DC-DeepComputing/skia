@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a14dcca7_04d12d21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-11-20T22:41:16Z",
+      "side": 1,
+      "message": "Canary Android presubmits seem to be fine with this change (i have also run the CTS tests locally to ensure they are passing). It is being marked as failed because of a merge conflict since another instance of the roller ran in the meantime.\n\nI will go ahead and merge this. I will monitor the Android autoroller and revert this in the worst case. :)",
+      "revId": "d8d69873c3ff92d943f6ea34ae72e7590a54835b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
