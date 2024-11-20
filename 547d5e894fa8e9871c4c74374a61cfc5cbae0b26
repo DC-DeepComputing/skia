@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b83e3e_36875f7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-11-20T06:43:17Z",
+      "side": 1,
+      "message": "Hi Kaylee@,\n\nCould you please review this patch?\n\nThis patch addresses a DCHECK failure in PartitionAlloc caused by a mismatch in strict aliasing rules between Skia (enabled explicitly) and Chrome (disable explicitly). The patch disables strict aliasing for PartitionAlloc by adding `-fno-strict-aliasing` to its build config flags, aligning its original configuration.\nWhat are your thoughts on this?\n\nInterestingly, it seems that most Google codebases, compile everything with `-fno-strict-aliasing`. Are you aware about any specific reason Skia does use `-fstrict-aliasing`? Should we consider doing the same for Skia Standalone?\n\nOne reason might be keeping Skia compatible with the widest possible set of embedders. I might want to add a comment explaining the reason in the code, if you want.\n\nThanks,",
+      "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
