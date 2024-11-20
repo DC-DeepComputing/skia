@@ -93,6 +93,30 @@
       },
       "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "627e4715_27222408",
+        "filename": "gn/skia/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-20T16:54:33Z",
+      "side": 1,
+      "message": "In other words, this comment should read more like \"PartitionAlloc (and possibly other projects) isn\u0027t written in C or C++ but in a dialect that assumes pointers of different types (other than `char` or `unsigned char`) may freely point to the same locations in memory.\"",
+      "parentUuid": "1f55e63a_072fe34d",
+      "range": {
+        "startLine": 755,
+        "startChar": 23,
+        "endLine": 755,
+        "endChar": 44
+      },
+      "revId": "547d5e894fa8e9871c4c74374a61cfc5cbae0b26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
