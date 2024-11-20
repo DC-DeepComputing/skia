@@ -59,7 +59,8 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
-    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags);
     if (!pipeline) {
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
@@ -71,7 +72,8 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc,
+        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags);
         if (pipeline) {
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent

@@ -13,6 +13,7 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
@@ -246,8 +247,11 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 }
 
 struct AsyncPipelineCreationBase {
+    AsyncPipelineCreationBase(const UniqueKey& key) : fKey1(key) {}
+
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+    UniqueKey fKey1; // for logging the bad wait
 #if SK_HISTOGRAMS_ENABLED
     // We need these three for the Graphite.PipelineCreationTimes.* histograms (cf.
     // log_pipeline_creation)
@@ -307,6 +311,8 @@ void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) {
 struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreationBase {};
 #else
 struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreationBase {
+    AsyncPipelineCreation(const UniqueKey& key) : AsyncPipelineCreationBase(key) {}
+
     wgpu::Future fFuture;
 };
 #endif
@@ -316,6 +322,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const DawnSharedContext* sharedContext,
         DawnResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
@@ -652,7 +659,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     // For Dawn, we want Precompilation to happen synchronously
     const bool useAsync = caps.useAsyncPipelineCreation() && !forPrecompilation;
 
-    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+    auto asyncCreation = std::make_unique<AsyncPipelineCreation>(pipelineKey);
 #if SK_HISTOGRAMS_ENABLED
     asyncCreation->fStartTime = skgpu::StdSteadyClock::now();
     asyncCreation->fFromPrecompile = forPrecompilation;
@@ -689,7 +696,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     } else {
         std::optional<DawnErrorChecker> errorChecker;
         if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
+//            errorChecker.emplace(sharedContext);
         }
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
@@ -754,6 +761,17 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     // We shouldn't use CreateRenderPipelineAsync in wasm.
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+
+    //$$
+    const GlobalCache* cache = this->sharedContext()->globalCache();
+    GlobalCache::SkLog* log = const_cast<GlobalCache*>(cache)->gimme(fAsyncPipelineCreation->fKey1);
+    log->addEvent2(GlobalCache::SkLog::EventType2::kWaitBeginN);
+
+    SkDebugf("WaitStart: %u\n", fAsyncPipelineCreation->fKey1.hash());
+    TRACE_EVENT_INSTANT2("skia.gpu", "WaitBegin", TRACE_EVENT_SCOPE_THREAD,
+                         "key", fAsyncPipelineCreation->fKey1.hash(),
+                         "extra", 0);
+
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fAsyncPipelineCreation->fFuture;
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext())
@@ -765,6 +783,12 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
             instance.WaitAny(1, &waitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(waitInfo.completed);
+    log->addEvent2(GlobalCache::SkLog::EventType2::kWaitEndN);
+
+    SkDebugf("WaitEnd: %u\n", fAsyncPipelineCreation->fKey1.hash());
+    TRACE_EVENT_INSTANT2("skia.gpu", "WaitEnd", TRACE_EVENT_SCOPE_THREAD,
+                         "key", fAsyncPipelineCreation->fKey1.hash(),
+                         "extra", 0);
 #endif
 
     return fAsyncPipelineCreation->fRenderPipeline;
