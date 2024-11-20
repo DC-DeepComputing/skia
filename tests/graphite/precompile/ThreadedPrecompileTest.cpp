@@ -332,6 +332,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
     //     3 types of each flavor (4, 8, N) *
     //     4 threads (2 normal-compile + 2 pre-compile)
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    fpp
 }
 
 #endif // SK_GRAPHITE
