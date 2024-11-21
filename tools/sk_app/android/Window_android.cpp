@@ -50,22 +50,22 @@ void Window_android::initDisplay(ANativeWindow* window) {
 #ifdef SK_GL
         case kNativeGL_BackendType:
         default:
-            fWindowContext = skwindow::MakeGLForAndroid(window, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeGLForAndroid(window, std::move(fRequestedDisplayParams));
             break;
 #else
         default:
 #endif
         case kRaster_BackendType:
-            fWindowContext = skwindow::MakeRasterForAndroid(window, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeRasterForAndroid(window, std::move(fRequestedDisplayParams));
             break;
 #ifdef SK_VULKAN
         case kVulkan_BackendType:
-            fWindowContext = skwindow::MakeVulkanForAndroid(window, fRequestedDisplayParams);
+            fWindowContext = skwindow::MakeVulkanForAndroid(window, std::move(fRequestedDisplayParams));
             break;
 #if defined(SK_GRAPHITE)
         case kGraphiteVulkan_BackendType:
             fWindowContext = skwindow::MakeGraphiteVulkanForAndroid(window,
-                                                                    fRequestedDisplayParams);
+                                                                    std::move(fRequestedDisplayParams));
             break;
 #endif
 #endif
