@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c1336a7_0fde3b42",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "I finally turned it off completely so hopefully it\u0027s the last one.",
+      "parentUuid": "4c24e28a_9727f46c",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 24
+      },
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a5e808f9_ff165385",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-21T15:59:41Z",
       "side": 1,
       "message": "This should close over here.",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 24
+      },
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb40f45c_ca037368",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a5e808f9_ff165385",
       "range": {
         "startLine": 172,
         "startChar": 11,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cfc8775_04eb9ad6",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ccd6ed5e_a7d02e59",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a6118c6_e4fd7980",
@@ -83,6 +149,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "564b725f_4590762d",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "Same as above.",
+      "parentUuid": "5a6118c6_e4fd7980",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9cd8016a_41b1f4ab",
         "filename": "src/ports/SkTypeface_fontations_priv.h",
         "patchSetId": 16
@@ -94,6 +178,24 @@
       "writtenOn": "2024-11-21T15:59:41Z",
       "side": 1,
       "message": "Do we really need both of these?",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "606aa134_41ef8351",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "SkFontMgr_Fontations_Empty is using the one without update.\nIn SkTypeface.cpp std::vector\u003cDecoderProc\u003e* decoders() builds a vector with\n    struct DecoderProc {\n        SkFourByteTag id;\n        sk_sp\u003cSkTypeface\u003e (*makeFromStream)(std::unique_ptr\u003cSkStreamAsset\u003e, const SkFontArguments\u0026);\n    };",
+      "parentUuid": "9cd8016a_41b1f4ab",
       "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

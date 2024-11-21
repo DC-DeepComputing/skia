@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89952233_ac5fdaa1",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5f6a119_c421e012",
+      "revId": "b2ea1bff38121cddf4837839e98d6be11b539ac8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01850b3a_1c761b24",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-11-21T15:59:41Z",
       "side": 1,
       "message": "Since this is a proxy, need to call the super class so the proxy also can fill this out (for example, setting factory id, which is now missing here.",
+      "revId": "b2ea1bff38121cddf4837839e98d6be11b539ac8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3bc5314_3f6afec0",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "01850b3a_1c761b24",
       "revId": "b2ea1bff38121cddf4837839e98d6be11b539ac8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
