@@ -131,10 +131,11 @@ int Window::height() const {
     return fWindowContext->height();
 }
 
-void Window::setRequestedDisplayParams(const DisplayParams& params, bool /* allowReattach */) {
-    fRequestedDisplayParams = params;
+void Window::setRequestedDisplayParams(std::unique_ptr<const DisplayParams> params,
+                                       bool /* allowReattach */) {
+    fRequestedDisplayParams = std::move(params);
     if (fWindowContext) {
-        fWindowContext->setDisplayParams(fRequestedDisplayParams);
+        fWindowContext->setDisplayParams(fRequestedDisplayParams->clone());
     }
 }
 

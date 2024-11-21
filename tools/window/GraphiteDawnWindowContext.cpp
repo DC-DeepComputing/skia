@@ -26,10 +26,9 @@
 
 namespace skwindow::internal {
 
-GraphiteDawnWindowContext::GraphiteDawnWindowContext(const DisplayParams& params,
+GraphiteDawnWindowContext::GraphiteDawnWindowContext(std::unique_ptr<const DisplayParams> params,
                                                      wgpu::TextureFormat surfaceFormat)
-    : WindowContext(params)
-    , fSurfaceFormat(surfaceFormat) {
+        : WindowContext(std::move(params)), fSurfaceFormat(surfaceFormat) {
     WGPUInstanceDescriptor desc{};
     // need for WaitAny with timeout > 0
     desc.features.timedWaitAnyEnable = true;
@@ -52,10 +51,14 @@ void GraphiteDawnWindowContext::initializeContext(int width, int height) {
     backendContext.fInstance = wgpu::Instance(fInstance->Get());
     backendContext.fDevice = fDevice;
     backendContext.fQueue = fDevice.GetQueue();
+
+    auto opts = fDisplayParams->graphiteTestOptions();
     // Needed to make synchronous readPixels work:
-    fDisplayParams.fGraphiteTestOptions.fPriv.fStoreContextRefInRecorder = true;
+    opts.fPriv.fStoreContextRefInRecorder = true;
+    fDisplayParams = DisplayParamsBuilder::Make(fDisplayParams.release())->graphiteTestOptions(opts)->build();
+
     fGraphiteContext = skgpu::graphite::ContextFactory::MakeDawn(
-            backendContext, fDisplayParams.fGraphiteTestOptions.fTestOptions.fContextOptions);
+            backendContext, opts.fTestOptions.fContextOptions);
     if (!fGraphiteContext) {
         SkASSERT(false);
         return;
@@ -96,8 +99,8 @@ sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
     auto surface = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                   backendTex,
                                                   kBGRA_8888_SkColorType,
-                                                  fDisplayParams.fColorSpace,
-                                                  &fDisplayParams.fSurfaceProps);
+                                                  fDisplayParams->colorSpace(),
+                                                  &fDisplayParams->surfaceProps());
     SkASSERT(surface);
     return surface;
 }
@@ -107,9 +110,9 @@ void GraphiteDawnWindowContext::onSwapBuffers() {
     fSurface.Present();
 }
 
-void GraphiteDawnWindowContext::setDisplayParams(const DisplayParams& params) {
+void GraphiteDawnWindowContext::setDisplayParams(std::unique_ptr<const DisplayParams> params) {
     this->destroyContext();
-    fDisplayParams = params;
+    fDisplayParams = std::move(params);
     this->initializeContext(fWidth, fHeight);
 }
 
@@ -127,8 +130,9 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         "use_tint_ir",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
-    togglesDesc.enabledToggleCount  = std::size(kToggles) -
-        (fDisplayParams.fGraphiteTestOptions.fTestOptions.fUseTintIR ? 0 : 1);
+    togglesDesc.enabledToggleCount =
+            std::size(kToggles) -
+            (fDisplayParams->graphiteTestOptions().fTestOptions.fUseTintIR ? 0 : 1);
     togglesDesc.enabledToggles      = kToggles;
 
     wgpu::RequestAdapterOptions adapterOptions;
@@ -199,7 +203,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
 
     wgpu::DawnTogglesDescriptor deviceTogglesDesc;
 
-    if (fDisplayParams.fGraphiteTestOptions.fTestOptions.fDisableTintSymbolRenaming) {
+    if (fDisplayParams->graphiteTestOptions().fTestOptions.fDisableTintSymbolRenaming) {
         static constexpr const char* kOptionalDeviceToggles[] = {
             "disable_symbol_renaming",
         };
@@ -234,7 +238,7 @@ void GraphiteDawnWindowContext::configureSurface() {
     surfaceConfig.width = fWidth;
     surfaceConfig.height = fHeight;
     surfaceConfig.presentMode =
-            fDisplayParams.fDisableVsync ? wgpu::PresentMode::Immediate : wgpu::PresentMode::Fifo;
+            fDisplayParams->disableVsync() ? wgpu::PresentMode::Immediate : wgpu::PresentMode::Fifo;
     fSurface.Configure(&surfaceConfig);
 }
 
