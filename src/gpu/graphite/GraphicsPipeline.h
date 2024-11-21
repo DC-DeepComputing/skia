@@ -70,7 +70,7 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
         bool fFromPrecompile = false;
 #endif
     };
@@ -80,15 +80,18 @@ public:
         return fPipelineInfo;
     }
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
     bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
 #endif
+    int numHits() const { return fNumHits; }
+    void incrHits() { fNumHits++; }
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+    int fNumHits = 0;
 };
 
 }  // namespace skgpu::graphite
