@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5822b5d8_294fd053",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T19:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e148772_8a4d254d",
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ea262c4_b69a1811",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-11-21T19:12:30Z",
       "side": 1,
       "message": "This should now be `this-\u003efontStyle()`.",
+      "range": {
+        "startLine": 61,
+        "startChar": 33,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab7b6636_0e371ace",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T19:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ea262c4_b69a1811",
       "range": {
         "startLine": 61,
         "startChar": 33,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4e6d3ae_0e15e9de",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T19:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "234d6f2e_1521a99d",
+      "range": {
+        "startLine": 64,
+        "startChar": 35,
+        "endLine": 64,
+        "endChar": 41
+      },
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "908f85ad_cea78e9a",
@@ -77,6 +143,24 @@
       "writtenOn": "2024-11-21T19:12:30Z",
       "side": 1,
       "message": "Let\u0027s just return values from these.",
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8674a06e_d99cb43e",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T19:20:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "908f85ad_cea78e9a",
       "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
