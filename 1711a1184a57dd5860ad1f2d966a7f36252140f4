@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c24e28a_9727f46c",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "What\u0027s with this crazy indentation?",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 24
+      },
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5e808f9_ff165385",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "This should close over here.",
+      "range": {
+        "startLine": 172,
+        "startChar": 11,
+        "endLine": 172,
+        "endChar": 24
+      },
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccd6ed5e_a7d02e59",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "Indenting everything way over into the margin like this isn\u0027t helping anyone read this.",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a6118c6_e4fd7980",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "Do we really need both of these?",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cd8016a_41b1f4ab",
+        "filename": "src/ports/SkTypeface_fontations_priv.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "Do we really need both of these?",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

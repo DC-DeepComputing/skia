@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5f6a119_c421e012",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "Is there any reason to add this override since it doesn\u0027t actually do anything?",
+      "revId": "b2ea1bff38121cddf4837839e98d6be11b539ac8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01850b3a_1c761b24",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T15:59:41Z",
+      "side": 1,
+      "message": "Since this is a proxy, need to call the super class so the proxy also can fill this out (for example, setting factory id, which is now missing here.",
+      "revId": "b2ea1bff38121cddf4837839e98d6be11b539ac8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
