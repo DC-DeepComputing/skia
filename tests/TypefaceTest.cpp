@@ -695,6 +695,22 @@ DEF_TEST(LegacyMakeTypeface, reporter) {
     sk_sp<SkTypeface> typeface2 = fm->legacyMakeTypeface(nullptr, SkFontStyle::Bold());
     sk_sp<SkTypeface> typeface3 = fm->legacyMakeTypeface(nullptr, SkFontStyle::BoldItalic());
 
+    SkString ff1; typeface1->getFamilyName(&ff1);
+    SkDebugf("%s: %s %s\n",
+             ff1.c_str(),
+             typeface1->isItalic() ? "italic" : "",
+             typeface1->isBold() ? "bold" : "");
+    SkString ff2; typeface2->getFamilyName(&ff2);
+    SkDebugf("%s: %s %s\n",
+             ff2.c_str(),
+             typeface2->isItalic() ? "italic" : "",
+             typeface2->isBold() ? "bold" : "");
+    SkString ff3; typeface3->getFamilyName(&ff3);
+    SkDebugf("%s: %s %s\n",
+             ff3.c_str(),
+             typeface3->isItalic() ? "italic" : "",
+             typeface3->isBold() ? "bold" : "");
+
     if (typeface1 || typeface2 || typeface3) {
         REPORTER_ASSERT(reporter, typeface1 && typeface2 && typeface1);
     }
