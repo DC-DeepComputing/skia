@@ -54,6 +54,8 @@ protected:
                                      int coordinateCount) const override;
     int onGetVariationDesignParameters(SkFontParameters::Variation::Axis parameters[],
                                        int parameterCount) const override;
+    void onGetFontStyle(SkFontStyle* fontStyle) const override;
+    void onGetFixedPitch(bool* fixedPitch) const override;
     void onGetFamilyName(SkString* familyName) const override;
     bool onGetPostScriptName(SkString* postScriptName) const override;
     int onGetResourceName(SkString* resourceName) const override;

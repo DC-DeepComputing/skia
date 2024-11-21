@@ -480,6 +480,38 @@ int SkTypeface::onGetResourceName(SkString* resourceName) const {
     return 0;
 }
 
+SkFontStyle SkTypeface::fontStyle() const {
+    SkFontStyle fontStyle;
+    this->onGetFontStyle(&fontStyle);
+    return fontStyle;
+}
+
+void SkTypeface::getFontStyle(SkFontStyle* fontStyle) const {
+    return this->onGetFontStyle(fontStyle);
+}
+
+void SkTypeface::onGetFontStyle(SkFontStyle* fontStyle) const {
+    if (fontStyle != nullptr) {
+        *fontStyle = fStyle;
+    }
+}
+
+bool SkTypeface::isFixedPitch() const {
+    bool fixedPitch;
+    this->onGetFixedPitch(&fixedPitch);
+    return fixedPitch;
+}
+
+void SkTypeface::getFixedPitch(bool* fixedPitch) {
+    return this->onGetFixedPitch(fixedPitch);
+}
+
+void SkTypeface::onGetFixedPitch(bool* fixedPitch) const {
+    if (fixedPitch != nullptr) {
+        *fixedPitch = fIsFixedPitch;
+    }
+}
+
 void SkTypeface::getGlyphToUnicodeMap(SkUnichar* dst) const {
     sk_bzero(dst, sizeof(SkUnichar) * this->countGlyphs());
 }
