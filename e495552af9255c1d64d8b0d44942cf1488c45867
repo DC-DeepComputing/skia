@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e148772_8a4d254d",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T19:12:30Z",
+      "side": 1,
+      "message": "We can add these later if we really want to, but not now.",
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ea262c4_b69a1811",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T19:12:30Z",
+      "side": 1,
+      "message": "This should now be `this-\u003efontStyle()`.",
+      "range": {
+        "startLine": 61,
+        "startChar": 33,
+        "endLine": 61,
+        "endChar": 39
+      },
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "234d6f2e_1521a99d",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T19:12:30Z",
+      "side": 1,
+      "message": "`this-\u003efontStyle()`",
+      "range": {
+        "startLine": 64,
+        "startChar": 35,
+        "endLine": 64,
+        "endChar": 41
+      },
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908f85ad_cea78e9a",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-21T19:12:30Z",
+      "side": 1,
+      "message": "Let\u0027s just return values from these.",
+      "revId": "e495552af9255c1d64d8b0d44942cf1488c45867",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
