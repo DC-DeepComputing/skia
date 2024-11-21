@@ -132,6 +132,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//include/encode:png_hdrs"}},
 		{Var: "skia_encode_png_srcs",
 			Rules: []string{
+				"//src/encode:png_encode_base_srcs",
+				"//src/encode:png_encode_base_hdrs",
 				"//src/encode:png_encode_srcs",
 				"//src/encode:png_encode_hdrs",
 			}},
