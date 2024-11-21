@@ -165,6 +165,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a315db02_0d9e1237",
+        "filename": "src/ports/SkTypeface_FreeType.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-21T16:30:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "564b725f_4590762d",
+      "revId": "1711a1184a57dd5860ad1f2d966a7f36252140f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9cd8016a_41b1f4ab",
