@@ -2300,7 +2300,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
     SkDEBUGCODE(int numBeforeReset = globalCache->numGraphicsPipelines();)
     SkASSERT(numBeforeReset == (int) origKeys.size());
 
-    fPrecompileContext->priv().globalCache()->resetGraphicsPipelines();
+    globalCache->resetGraphicsPipelines();
 
     SkASSERT(globalCache->numGraphicsPipelines() == 0);
 

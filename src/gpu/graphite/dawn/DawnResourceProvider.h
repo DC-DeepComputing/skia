@@ -68,6 +68,7 @@ public:
 
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                   const UniqueKey& pipelineKey,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,
                                                    SkEnumBitMask<PipelineCreationFlags>) override;

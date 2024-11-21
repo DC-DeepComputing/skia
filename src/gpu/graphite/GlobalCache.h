@@ -12,7 +12,10 @@
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
+
 
 #include <functional>
 
@@ -42,7 +45,9 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+        const UniqueKey&,
+        SkEnumBitMask<PipelineCreationFlags> = PipelineCreationFlags::kNone) SK_EXCLUDES(fSpinLock);
 
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
@@ -57,11 +62,75 @@ public:
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
 
+    class SkLog : public SkRefCnt {
+    public:
+        SkLog(const UniqueKey& k) : fKey(k) {}
+
+        enum class EventType2 {
+            kUnset,
+            kCacheHitForN,
+            kCacheHitForP,
+            kCacheMissForN,
+            kCacheMissForP,
+            kNWonRaceOverN,
+            kNWonRaceOverP,
+            kPWonRaceOverN,
+            kPWonRaceOverP,
+            kAddedN,
+            kAddedP,
+            kPurgedN,
+            kPurgedP,
+            kWaitBeginN,
+            kWaitEndN,
+        };
+
+        static const char* Name(EventType2 type) {
+            switch (type) {
+                case EventType2::kUnset:         return "Unset";
+                case EventType2::kCacheHitForN:  return "CacheHitForN";
+                case EventType2::kCacheHitForP:  return "CacheHitForP";
+                case EventType2::kCacheMissForN: return "CacheMissForN";
+                case EventType2::kCacheMissForP: return "CacheMissForP";
+                case EventType2::kPWonRaceOverP: return "PWonRaceOverP";
+                case EventType2::kPWonRaceOverN: return "PWonRaceOverN";
+                case EventType2::kNWonRaceOverP: return "NWonRaceOverP";
+                case EventType2::kNWonRaceOverN: return "NWonRaceOverN";
+                case EventType2::kAddedN:        return "AddedN";
+                case EventType2::kAddedP:        return "AddedP";
+                case EventType2::kPurgedN:       return "PurgedN";
+                case EventType2::kPurgedP:       return "PurgedP";
+                case EventType2::kWaitBeginN:    return "WaitBeginN";
+                case EventType2::kWaitEndN:      return "WaitEndN";
+            }
+
+            SkUNREACHABLE;
+        }
+
+        void addEvent2(EventType2 type);
+
+        static constexpr uint32_t kMaxNumMsgs = 20;
+
+        const UniqueKey fKey;
+        struct {
+            EventType2 fType = EventType2::kUnset;
+            int64_t fTime = 0;
+            int fAncillary = 0;  // only used for kPurgedN and kPurgedP - for number of hits
+        } fEvents[kMaxNumMsgs];
+        std::atomic<uint32_t> fCurEvent1{0};
+        uint32_t fNumHits = 0;
+    };
+
+    SkLog* gimme(const UniqueKey&) SK_GUARDED_BY(fSpinLock);
+    void dump();
+
     struct PipelineStats {
         int fGraphicsCacheHits = 0;
         int fGraphicsCacheMisses = 0;
         int fGraphicsCacheAdditions = 0;
-        int fGraphicsRaces = 0;
+        int fTotalGraphicsRaces = 0;
+        int fFoo[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBar[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBaz[2] = { 0, 0 };
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
@@ -79,11 +148,47 @@ public:
     void addStaticResource(sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
 
 private:
+    struct Traits2 {
+        static const UniqueKey& GetKey(sk_sp<SkLog> e) {
+            return (e)->fKey;
+        }
+
+        static uint32_t Hash(const UniqueKey& k) {
+            return KeyHash()(k);
+        }
+    };
+    using LogHash = skia_private::THashTable<sk_sp<SkLog>, UniqueKey, Traits2>;
+
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
     };
+    struct PurgeCB {
+        void operator()(const UniqueKey& key, sk_sp<GraphicsPipeline>* p, void* data) const {
+            LogHash* hash = reinterpret_cast<LogHash *>(data);
+            sk_sp<SkLog>* log = hash->find(key);
+            bool fromPrecompile = (*p)->fromPrecompile();
+            auto event = fromPrecompile ? SkLog::EventType2::kPurgedP
+                                        : SkLog::EventType2::kPurgedN;
+            (*log)->addEvent2(event);
+            if ((*log)->fNumHits == 0 && (*p)->fromPrecompile()) {
+                SkDebugf("------------------ Wasted!!!\n");
+            }
+            (*log)->fNumHits = 0;
 
-    using GraphicsPipelineCache = SkLRUCache<UniqueKey, sk_sp<GraphicsPipeline>, KeyHash>;
+            if ((*p)->numHits() == 0 && (*p)->fromPrecompile()) {
+                // Add UMA stat for wasted precompile!
+            }
+
+            static const char* kNames[2] = { "PurgedN", "PurgedP" };
+            SkDebugf("%s: %u %d\n", kNames[fromPrecompile], key.hash(), (*p)->numHits());
+            TRACE_EVENT_INSTANT2("skia.gpu", TRACE_STR_STATIC(kNames[fromPrecompile]),
+                                 TRACE_EVENT_SCOPE_THREAD,
+                                 "key", key.hash(),
+                                 "numHits", (*p)->numHits());
+        }
+    };
+
+    using GraphicsPipelineCache = SkLRUCache<UniqueKey, sk_sp<GraphicsPipeline>, KeyHash, PurgeCB>;
     using ComputePipelineCache  = SkLRUCache<UniqueKey, sk_sp<ComputePipeline>,  KeyHash>;
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
@@ -94,6 +199,9 @@ private:
     // expected to be low. For these reasons we store pipelines globally instead of per-Recorder.
     GraphicsPipelineCache fGraphicsPipelineCache SK_GUARDED_BY(fSpinLock);
     ComputePipelineCache  fComputePipelineCache  SK_GUARDED_BY(fSpinLock);
+
+
+    LogHash fLogHash SK_GUARDED_BY(fSpinLock);
 
     skia_private::TArray<sk_sp<Resource>> fStaticResource SK_GUARDED_BY(fSpinLock);
 
