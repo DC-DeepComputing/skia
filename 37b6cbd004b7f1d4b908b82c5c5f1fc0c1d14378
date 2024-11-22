@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cb33e23_087b3852",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-22T20:45:36Z",
+      "side": 1,
+      "message": "Once errors are resolved this seems reasonable enough. You will still need a +1 from Michael or Greg as owners though.",
+      "revId": "37b6cbd004b7f1d4b908b82c5c5f1fc0c1d14378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb266ee_fc13cbb2",
+        "filename": "include/gpu/graphite/LogPriority.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-11-22T20:45:36Z",
+      "side": 1,
+      "message": "nit: Align with `/**/` comment style of the other comments within this file",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 34
+      },
+      "revId": "37b6cbd004b7f1d4b908b82c5c5f1fc0c1d14378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1b5869b_03b61aaf",
