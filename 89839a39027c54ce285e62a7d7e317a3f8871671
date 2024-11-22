@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73e8117a_2cfcf0c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-11-22T15:50:43Z",
+      "side": 1,
+      "message": "The failing bots now are fine (Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts*)",
+      "revId": "89839a39027c54ce285e62a7d7e317a3f8871671",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
