@@ -247,8 +247,15 @@ sk_sp<SkTypeface> SkTypeface::MakeDeserialize(SkStream* stream, sk_sp<SkFontMgr>
     if (desc.hasStream()) {
         for (const DecoderProc& proc : *decoders()) {
             if (proc.id == desc.getFactoryId()) {
-                return proc.makeFromStream(desc.detachStream(), desc.getFontArguments());
+                sk_sp<SkTypeface> result =  proc.makeFromStream(desc.dupStream(), desc.getFontArguments());
+                if (result) {
+                    return result;
+                }
             }
+        }
+
+        if (1auto tf = SkCustomTypefaceBuilder::Deserialize(desc.dupStream().get())) {
+            return tf;
         }
 
         [[maybe_unused]] FactoryId id = desc.getFactoryId();
