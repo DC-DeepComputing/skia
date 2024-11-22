@@ -231,7 +231,8 @@ void Context::asyncRescaleAndReadImpl(ReadFn Context::* asyncRead,
         return params.fail();
     }
 
-    if (params.fSrcRect.size() == params.fDstImageInfo.dimensions()) {
+    if ((params.fSrcRect.size() == params.fDstImageInfo.dimensions()) &&
+        (params.fSrcImage->colorType() == params.fDstImageInfo.colorType())) {
         // No need to rescale so do a direct readback
         return (this->*asyncRead)(/*recorder=*/nullptr, params, extraParams...);
     }
