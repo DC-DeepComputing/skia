@@ -10,10 +10,13 @@
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkSpan.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkAssert.h"
-
-namespace SkPngEncoderBase {
+#include "include/private/base/SkTemplates.h"
+#include "src/base/SkMSAN.h"
+#include "src/base/SkSafeMath.h"
 
 namespace {
 
@@ -52,9 +55,22 @@ SkEncodedInfo makeRgba16Info(const SkImageInfo& srcInfo) {
     return makeInfo(srcInfo, SkEncodedInfo::kRGBA_Color, 16);
 }
 
+size_t computeDstRowSize(const SkEncodedInfo& dstInfo) {
+    // `static_cast<size_t>`(dstInfo.bitsPerPixel())` uses trustworthy, bounded
+    // data as input - no need to use `SkSafeMath` for this part.
+    SkASSERT(dstInfo.bitsPerComponent() == 8 || dstInfo.bitsPerComponent() == 16);
+    SkASSERT(dstInfo.bitsPerPixel() <= (16 * 4));
+    size_t bitsPerPixel = static_cast<size_t>(dstInfo.bitsPerPixel());
+
+    SkSafeMath safe;
+    size_t dstRowSize = safe.mul(safe.castTo<size_t>(dstInfo.width()), bitsPerPixel);
+    return safe.ok() ? dstRowSize : 0;
+}
+
 }  // namespace
 
-std::optional<std::pair<SkEncodedInfo, transform_scanline_proc>> getTargetInfo(
+// static
+std::optional<std::pair<SkEncodedInfo, transform_scanline_proc>> SkPngEncoderBase::getTargetInfo(
         const SkImageInfo& srcInfo) {
     switch (srcInfo.colorType()) {
         case kUnknown_SkColorType:
@@ -202,4 +218,58 @@ std::optional<std::pair<SkEncodedInfo, transform_scanline_proc>> getTargetInfo(
     return std::nullopt;
 }
 
-}  // namespace SkPngEncoderBase
+SkPngEncoderBase::SkPngEncoderBase(const SkEncodedInfo& dstInfo,
+                                   const SkPixmap& src,
+                                   transform_scanline_proc transformProc)
+        : SkEncoder(src, computeDstRowSize(dstInfo))
+        , fTransformProc(transformProc)
+        , fDstRowSize(computeDstRowSize(dstInfo)) {
+    SkASSERT(fTransformProc);
+}
+
+bool SkPngEncoderBase::onEncodeRows(int numRows) {
+    // Postponed check from the constructor, in case `SkSafeMath` has failed.
+    if (fDstRowSize == 0) {
+        return false;
+    }
+
+    // https://www.w3.org/TR/png-3/#11IHDR says that "zero is an invalid value"
+    // for width and height.
+    if (fSrc.width() == 0 || fSrc.height() == 0) {
+        return false;
+    }
+
+    if (numRows < 0) {
+        return false;
+    }
+
+    while (numRows > 0) {
+        if (fCurrRow == fSrc.height()) {
+            return false;
+        }
+        const void* srcRow = fSrc.addr(0, fCurrRow);
+        sk_msan_assert_initialized(srcRow,
+                                   (const uint8_t*)srcRow + (fSrc.width() << fSrc.shiftPerPixel()));
+
+        fTransformProc((char*)fStorage.get(),
+                       (const char*)srcRow,
+                       fSrc.width(),
+                       SkColorTypeBytesPerPixel(fSrc.colorType()));
+
+        SkSpan<uint8_t> rowToEncode(fStorage.get(), fDstRowSize);
+        if (!this->onEncodeRow(rowToEncode)) {
+            return false;
+        }
+
+        srcRow = SkTAddOffset<const void>(srcRow, fSrc.rowBytes());
+
+        fCurrRow++;
+    }
+
+    if (fCurrRow == fSrc.height() && !fFinishedEncoding) {
+        fFinishedEncoding = true;
+        return this->onFinishEncoding();
+    }
+
+    return true;
+}
