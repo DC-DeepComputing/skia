@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f8decb4_94cdce22",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-22T14:38:39Z",
+      "side": 1,
+      "message": "So I take it the real issue here (which should be reported as a bug) is that macOS ships with PingFangUI.TTC and may use an index other than 0, and it isn\u0027t currently possible to deserialize such a font with CoreText since it doesn\u0027t provide any way to create a CTFont from data with a given ttc index.\n\nThis is a real issue which we should look into fixing, but I am perplexed by the proposed change which cannot possibly work.",
+      "revId": "a7307871dfe69f143b57a8a0226810690da92172",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "8b6727a8_d0ab15fa",
