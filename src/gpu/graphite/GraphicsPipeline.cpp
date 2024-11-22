@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/utils/SkShaderUtils.h"
 
+skgpu::StdSteadyClock::time_point fTimeStart;
+
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
@@ -20,24 +22,27 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
                    /*gpuMemorySize=*/0)
-        , fPipelineInfo(pipelineInfo) {}
+        , fPipelineInfo(pipelineInfo) {
+}
 
 GraphicsPipeline::~GraphicsPipeline() = default;
 
 GraphicsPipeline::PipelineInfo::PipelineInfo(
             const ShaderInfo& shaderInfo,
-            SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags)
+            SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+            uint32_t futureID)
         : fDstReadReq(shaderInfo.dstReadRequirement())
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasPaintUniforms(shaderInfo.hasPaintUniforms())
         , fHasStepUniforms(shaderInfo.hasStepUniforms())
-        , fHasGradientBuffer(shaderInfo.hasGradientBuffer()) {
+        , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
+        , fID1(futureID) {
 #if defined(GPU_TEST_UTILS)
     fSkSLVertexShader = SkShaderUtils::PrettyPrint(shaderInfo.vertexSkSL());
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
     fLabel = shaderInfo.fsLabel();
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
     fFromPrecompile =
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 #endif
