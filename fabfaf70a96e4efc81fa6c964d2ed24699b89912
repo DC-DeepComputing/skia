@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51f1062f_07adc3df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-11-22T13:09:49Z",
+      "side": 1,
+      "message": "LGTM % formatting and merge conflict",
+      "revId": "fabfaf70a96e4efc81fa6c964d2ed24699b89912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53c4a814_c9106b83",
+        "filename": "bin/fetch-clang-format",
+        "patchSetId": 4
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-11-22T13:09:49Z",
+      "side": 1,
+      "message": "Nit: mix of 2-space and 4-space indent",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 8
+      },
+      "revId": "fabfaf70a96e4efc81fa6c964d2ed24699b89912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
