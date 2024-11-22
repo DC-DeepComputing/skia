@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1b5869b_03b61aaf",
+        "filename": "src/gpu/graphite/Log.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-22T20:41:38Z",
+      "side": 1,
+      "message": "wdyt about adding `constexpr` here just to make it clear that only one branch is being taken at a time (could also add it to the first if too)?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 17
+      },
+      "revId": "37b6cbd004b7f1d4b908b82c5c5f1fc0c1d14378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
