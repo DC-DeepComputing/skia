@@ -56,10 +56,15 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+    bool forPrecompile = SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
-    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
+    uint32_t futureID;
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
+                                                                         pipelineCreationFlags,
+                                                                         &futureID);
     if (!pipeline) {
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
@@ -71,7 +76,28 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc,
+
+        auto event = forPrecompile ? GlobalCache::SkLog::EventType2::kBeginBuildP
+                                   : GlobalCache::SkLog::EventType2::kBeginBuildN;
+
+        GlobalCache::SkLog* log = globalCache->gimme(pipelineKey);
+        log->addEvent2(event, UINT32_MAX);  // Boo - ideally we would have the return from createGraphicsPipeline
+
+        static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
+        SkDebugf("{ %d, %lld, \"%s\", %u, -1, UINT32_MAX, UINT32_MAX },\n",
+                 log->id(),
+                 micros_since_0(),
+                 kNames[forPrecompile],
+                 pipelineKey.hash());
+        TRACE_EVENT_INSTANT2("skia.gpu",
+                             TRACE_STR_STATIC(kNames[forPrecompile]),
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "key", pipelineKey.hash(),
+                             "extra", -1);
+                             // pipelineID!!
+
+        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags);
         if (pipeline) {
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent

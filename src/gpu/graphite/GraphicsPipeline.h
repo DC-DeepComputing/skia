@@ -38,6 +38,8 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
+    uint32_t id1() const { return fID1; }
+
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
     DstReadRequirement dstReadRequirement() const { return fPipelineInfo.fDstReadReq; }
@@ -70,7 +72,7 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
         bool fFromPrecompile = false;
 #endif
     };
@@ -80,15 +82,19 @@ public:
         return fPipelineInfo;
     }
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
     bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
 #endif
+    int numHits() const { return fNumHits; }
+    void incrHits() { fNumHits++; }
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+    int fNumHits = 0;
+    const uint32_t fID1 = 0;
 };
 
 }  // namespace skgpu::graphite
