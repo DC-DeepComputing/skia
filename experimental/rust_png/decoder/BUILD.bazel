@@ -21,7 +21,7 @@ skia_filegroup(
 )
 
 skia_cc_library(
-    name = "rust_png",
+    name = "decoder",
     srcs = [":srcs"],
     hdrs = [":hdrs"],
     features = ["layering_check"],
