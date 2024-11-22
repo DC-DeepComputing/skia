@@ -110,6 +110,30 @@
       },
       "revId": "37b6cbd004b7f1d4b908b82c5c5f1fc0c1d14378",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e232d32_23813482",
+        "filename": "src/gpu/graphite/Log.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-11-22T21:40:44Z",
+      "side": 1,
+      "message": "Reverting this change. Code in `src/gpu/graphite/dawn/DawnBuffer.cpp` calls `SKGPU_LOG` directly with a `LogPriority` that is not a `constexpr`.",
+      "parentUuid": "3ee98cd0_1cf2d16c",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 17
+      },
+      "revId": "37b6cbd004b7f1d4b908b82c5c5f1fc0c1d14378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
