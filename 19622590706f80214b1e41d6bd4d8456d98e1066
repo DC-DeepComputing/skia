@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cbed2b1_56a1e0dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T16:58:00Z",
+      "side": 1,
+      "message": "Agreed. Right now I\u0027m using heuristics for that (read: how much I think it comes up), but it would be cool if we had a way to know which objects we create a lot.\n\nHopefully we use `const SkBigObject\u0026` a lot to avoid unnecessary copies and excess stack size for these anyway, but there\u0027s probably some low hanging fruit here.",
+      "parentUuid": "44e23ddd_18cdd2c3",
+      "revId": "19622590706f80214b1e41d6bd4d8456d98e1066",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e90db389_152f919b",
