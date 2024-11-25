@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44e23ddd_18cdd2c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T14:40:58Z",
+      "side": 1,
+      "message": "I am definitely interested in digging further into struct layouts and trying to reduce size, but I suspect that the most benefit will be gained if we can also correlate it with how often we construct the variables as well.",
+      "revId": "19622590706f80214b1e41d6bd4d8456d98e1066",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e90db389_152f919b",
@@ -14,6 +31,30 @@
       "writtenOn": "2024-11-25T13:38:00Z",
       "side": 1,
       "message": "Is it worth it to use a bitfield for these booleans? Same idea for GrDriverBugWorkarounds",
+      "range": {
+        "startLine": 348,
+        "startChar": 4,
+        "endLine": 348,
+        "endChar": 8
+      },
+      "revId": "19622590706f80214b1e41d6bd4d8456d98e1066",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54a3d82b_1a8dd754",
+        "filename": "include/gpu/ganesh/GrContextOptions.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T14:40:58Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s super critical because we aren\u0027t creating these objects all that often and I think bool is a little more usable.",
+      "parentUuid": "e90db389_152f919b",
       "range": {
         "startLine": 348,
         "startChar": 4,
