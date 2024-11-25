@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18df702b_91254531",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T18:52:06Z",
+      "side": 1,
+      "message": "Note that I moved the valid bool last as per a `-Wpadded` warning, but I think it\u0027s the same size in any order since the other fields are 4 bytes long and this struct would be 4 byte aligned anyway.",
+      "revId": "e3f9ecac7ecfdb8379dd4a563da72642663e07e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
