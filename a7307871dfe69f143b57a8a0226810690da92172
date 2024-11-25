@@ -50,6 +50,24 @@
       "message": "@bungeman@google.com SkCustomTypefaceBuilder::Deserialize can correctly deserialize the SkTypeFace of PingFangUI.TTC, so I wonder if this is a temporary fix.",
       "revId": "a7307871dfe69f143b57a8a0226810690da92172",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39713c0c_36a8dd19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-25T14:56:38Z",
+      "side": 1,
+      "message": "I\u0027m not sure how such a thing would even be possible. It might be possible to create an `SkUserTypeface` from the CoreText SkTypeface created with `PingFangUI.TTC`, serialize that, then deserialize. However, that would already work since it\u0027s already on the decoders list. `SkCustomTypefaceBuilder` should be returning nullptr here, since the data is obviously not the data serialized by an `SkUserTypeface`.",
+      "parentUuid": "2882a11a_3f42bec8",
+      "revId": "a7307871dfe69f143b57a8a0226810690da92172",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
