@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f7f576_c7085dc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T14:34:34Z",
+      "side": 1,
+      "message": "I confirmed with the modified GM that it highlighted the shifted UV planes.",
+      "revId": "858a5286e9bcd5c17838e2c873badd857490e098",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
