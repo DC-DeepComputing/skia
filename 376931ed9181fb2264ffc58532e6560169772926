@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55f20436_92f8b28d",
+        "filename": "tools/sk_app/Window.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T15:25:37Z",
+      "side": 1,
+      "message": "Does this need to be virtual?",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 72
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5ea8185_894a5ec8",
+        "filename": "tools/sk_app/android/Window_android.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T15:25:37Z",
+      "side": 1,
+      "message": "Why does this class move the requested display params, but the other OS variants clone them?",
+      "range": {
+        "startLine": 57,
+        "startChar": 73,
+        "endLine": 57,
+        "endChar": 74
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89cd7623_70ff1c01",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T15:25:37Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure how the Builder will play in with the eventual polymorphism you plan for `DisplayParams`, but it might be more concise to have the builder be a stack-allocated type with a `std::unique_ptr\u003cDisplayParams\u003e` that it modifies. Then `build()` just moves that to the return and the builder creates a new one (or we defer creating the new one, or we say you can only build once).",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 0
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "260a9b0a_f887c907",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T15:25:37Z",
+      "side": 1,
+      "message": "get()? It looks like the other Contexts also use release(), but that just means `fDisplayParams` is set to null and the object ends up leaking, right?",
+      "range": {
+        "startLine": 58,
+        "startChar": 63,
+        "endLine": 58,
+        "endChar": 70
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
