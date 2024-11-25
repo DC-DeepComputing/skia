@@ -38,7 +38,7 @@ private:
 
 GraphiteDawnMetalWindowContext_mac::GraphiteDawnMetalWindowContext_mac(
         const MacWindowInfo& info, std::unique_ptr<const DisplayParams> params)
-        : GraphiteDawnWindowContext(params, wgpu::TextureFormat::BGRA8Unorm)
+        : GraphiteDawnWindowContext(std::move(params), wgpu::TextureFormat::BGRA8Unorm)
         , fMainView(info.fMainView) {
     CGFloat backingScaleFactor = skwindow::GetBackingScaleFactor(fMainView);
     CGSize backingSize = fMainView.bounds.size;
