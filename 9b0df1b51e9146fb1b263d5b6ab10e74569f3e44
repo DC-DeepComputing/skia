@@ -16,6 +16,46 @@
       "message": "@kjlubick, can you PTAL?\n\n/cc @danieldilan and @fmalita as FYI",
       "revId": "9b0df1b51e9146fb1b263d5b6ab10e74569f3e44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07d5e31a_5e64e60d",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T20:05:38Z",
+      "side": 1,
+      "message": "Let\u0027s add a TODO to remove the first group once Chromium is migrated.",
+      "revId": "9b0df1b51e9146fb1b263d5b6ab10e74569f3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfa8d9e5_b7aa848c",
+        "filename": "experimental/rust_png/decoder/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T20:05:38Z",
+      "side": 1,
+      "message": "One thing I note here is that this target depends on libpng. Do we need to split that target up to make the rust version not depend on libpng at all?",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 31
+      },
+      "revId": "9b0df1b51e9146fb1b263d5b6ab10e74569f3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
