@@ -56,6 +56,23 @@
       "message": "Probably want to override this (not proxy it) as well.",
       "revId": "18067a2951df8af905e6b5c9063ebedfed784cd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1225073_ea960899",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-25T22:00:53Z",
+      "side": 1,
+      "message": "We can remove this.",
+      "revId": "18067a2951df8af905e6b5c9063ebedfed784cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
