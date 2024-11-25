@@ -10,6 +10,8 @@
 #include <cstdint>
 #include <memory>
 
+#include "include/core/SkDataTable.h"
+#include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
 
 class SkEncoder;
@@ -42,6 +44,13 @@ enum class CompressionLevel : uint8_t {
  */
 struct Options {
     CompressionLevel fCompressionLevel = CompressionLevel::kAverage;
+
+    /**
+     *  Represents comments in the tEXt ancillary chunk of the png.
+     *  The 2i-th entry is the keyword for the i-th comment,
+     *  and the (2i + 1)-th entry is the text for the i-th comment.
+     */
+    sk_sp<SkDataTable> fComments;
 };
 
 /**
