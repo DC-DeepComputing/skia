@@ -30,9 +30,9 @@ class SkRRect;
 
 // These are computed from a stream of verbs
 struct SkPathVerbAnalysis {
-    bool     valid;
     int      points, weights;
     unsigned segmentMask;
+    bool     valid;
 };
 SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t verbs[], int count);
 
@@ -541,7 +541,12 @@ private:
 
     void callGenIDChangeListeners();
 
+    PointsArray fPoints;
+    VerbsArray fVerbs;
+    ConicWeightsArray fConicWeights;
+
     mutable SkRect   fBounds;
+    SkRect           fArcOval;
 
     enum {
         kEmptyGenID = 1, // GenID reserved for path ref with zero points and zero verbs.
@@ -549,27 +554,25 @@ private:
     mutable uint32_t    fGenerationID;
     SkIDChangeListener::List fGenIDChangeListeners;
 
-    PointsArray fPoints;
-    VerbsArray fVerbs;
-    ConicWeightsArray fConicWeights;
-
     SkDEBUGCODE(std::atomic<int> fEditorsAttached;) // assert only one editor in use at any time.
 
-    mutable uint8_t  fBoundsIsDirty;
-    mutable bool     fIsFinite;    // only meaningful if bounds are valid
+    SkScalar    fArcStartAngle;
+    SkScalar    fArcSweepAngle;
 
     PathType fType;
-    // Both the circle and rrect special cases have a notion of direction and starting point
-    // The next two variables store that information for either.
-    bool     fRRectOrOvalIsCCW;
+
+    mutable uint8_t  fBoundsIsDirty;
+
     uint8_t  fRRectOrOvalStartIdx;
     uint8_t  fSegmentMask;
     // If the path is an arc, these four variables store that information.
     // We should just store an SkArc, but alignment would cost us 8 more bytes.
     SkArc::Type fArcType;
-    SkRect      fArcOval;
-    SkScalar    fArcStartAngle;
-    SkScalar    fArcSweepAngle;
+
+    mutable bool     fIsFinite;    // only meaningful if bounds are valid
+    // Both the circle and rrect special cases have a notion of direction and starting point
+    // The next two variables store that information for either.
+    bool     fRRectOrOvalIsCCW;
 
     friend class PathRefTest_Private;
     friend class ForceIsRRect_Private; // unit test isRRect
