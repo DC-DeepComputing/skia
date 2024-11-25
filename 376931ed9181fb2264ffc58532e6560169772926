@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6c10d02_9064f861",
+        "filename": "tools/sk_app/Window.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:36:42Z",
+      "side": 1,
+      "message": "I guess not.",
+      "parentUuid": "55f20436_92f8b28d",
+      "range": {
+        "startLine": 129,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 72
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5ea8185_894a5ec8",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-25T15:25:37Z",
       "side": 1,
       "message": "Why does this class move the requested display params, but the other OS variants clone them?",
+      "range": {
+        "startLine": 57,
+        "startChar": 73,
+        "endLine": 57,
+        "endChar": 74
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73606845_96398a02",
+        "filename": "tools/sk_app/android/Window_android.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:36:42Z",
+      "side": 1,
+      "message": "Good catch! Fixed.",
+      "parentUuid": "c5ea8185_894a5ec8",
       "range": {
         "startLine": 57,
         "startChar": 73,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "628a3c5f_a5b11e67",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:36:42Z",
+      "side": 1,
+      "message": "I was planning to have a GraphiteDisplayParamsBuilder() that modifies a GraphiteDisplayParams field. I wasn\u0027t sure how else to move the #ifdef\u0027d methods out of here. We\u0027ll see if I have to revisit that once I start writing it.",
+      "parentUuid": "89cd7623_70ff1c01",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 0
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "260a9b0a_f887c907",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-11-25T15:25:37Z",
       "side": 1,
       "message": "get()? It looks like the other Contexts also use release(), but that just means `fDisplayParams` is set to null and the object ends up leaking, right?",
+      "range": {
+        "startLine": 58,
+        "startChar": 63,
+        "endLine": 58,
+        "endChar": 70
+      },
+      "revId": "376931ed9181fb2264ffc58532e6560169772926",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7af6648_81c0ea7c",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:36:42Z",
+      "side": 1,
+      "message": "Oh yeah. I think Rust\u0027s ownership model polluted my unique_ptr knowledge. I audited all uses of .release() I added and nearly all of them are now (correctly) .get()",
+      "parentUuid": "260a9b0a_f887c907",
       "range": {
         "startLine": 58,
         "startChar": 63,
