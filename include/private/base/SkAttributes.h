@@ -56,20 +56,18 @@
  * Used to ignore sanitizer warnings.
  */
 #if !defined(SK_NO_SANITIZE)
-#  define SK_NO_SANITIZE(A) SK_ATTRIBUTE(no_sanitize(A))
-#endif
-
-/**
- * Helper macro to define no_sanitize attributes only with clang.
- */
-#if defined(__clang__) && defined(__has_attribute)
   #if __has_attribute(no_sanitize)
-    #define SK_CLANG_NO_SANITIZE(A) SK_NO_SANITIZE(A)
+    // This should be for clang and versions of gcc >= 8.5
+    #define SK_NO_SANITIZE(A) SK_ATTRIBUTE(no_sanitize(A))
+  #elif __has_attribute(no_sanitize_undefined)
+    // Old versions of gcc <= 7.5 just have coarse grained flags for disabling
+    // sanitization, so we'll turn off all undefined behaviors (since that's
+    // all Skia tends to disable).
+    #define SK_NO_SANITIZE(A) SK_ATTRIBUTE(no_sanitize_undefined)
+  #else
+    // For compilers that don't support sanitization, just do nothing.
+    #define SK_NO_SANITIZE(A)
   #endif
-#endif
-
-#if !defined(SK_CLANG_NO_SANITIZE)
-  #define SK_CLANG_NO_SANITIZE(A)
 #endif
 
 /**
