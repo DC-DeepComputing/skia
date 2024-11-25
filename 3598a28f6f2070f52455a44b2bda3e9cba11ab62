@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1290244_1b915312",
+        "filename": "include/core/SkFontScanner.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-25T15:03:20Z",
+      "side": 1,
+      "message": "Ok, now that https://skia-review.googlesource.com/c/skia/+/923676 has landed, we can remove this and have `SkTypeface_AndroidSystem` override the font style instead.",
+      "revId": "3598a28f6f2070f52455a44b2bda3e9cba11ab62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
