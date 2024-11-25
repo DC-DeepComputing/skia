@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65526bdc_ab8d00e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T12:51:32Z",
+      "side": 1,
+      "message": "For context, I initially tried to do this in https://skia-review.googlesource.com/c/skia/+/904856 but then re-did it here to split it up into multiple steps for easier landing/review.",
+      "revId": "2c774e78cf6e7da36c96912508f4bc3dd8b627bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
