@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c256c1_c2cebaf0",
+        "filename": "tests/graphite/ImageShaderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:12:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20c58295_bb3bc0a3",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 54,
+        "endChar": 8
+      },
+      "revId": "6a496feb7f47b75cf34fc4b5fefdc8b67cb8e224",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bce1cdcb_4a7061bd",
@@ -55,6 +79,30 @@
       "writtenOn": "2024-11-25T14:53:57Z",
       "side": 1,
       "message": "nit: this confused me for a while because I was thinking the intended use case was to have it very per-GM. Which is theoretically possible now, but isn\u0027t really the intent. It\u0027s more in line with the `viewer` and `dm` apps like you mention in the CL description right?",
+      "range": {
+        "startLine": 31,
+        "startChar": 9,
+        "endLine": 31,
+        "endChar": 11
+      },
+      "revId": "6a496feb7f47b75cf34fc4b5fefdc8b67cb8e224",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bb30e66_5af675b5",
+        "filename": "tools/GpuToolUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-25T17:12:12Z",
+      "side": 1,
+      "message": "Yes, `dm` and `viewer` are the clients I meant.",
+      "parentUuid": "bce1cdcb_4a7061bd",
       "range": {
         "startLine": 31,
         "startChar": 9,
