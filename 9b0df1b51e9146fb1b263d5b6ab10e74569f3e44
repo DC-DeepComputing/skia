@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f09b81ed_6bc943cb",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 8
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-25T20:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07d5e31a_5e64e60d",
+      "revId": "9b0df1b51e9146fb1b263d5b6ab10e74569f3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfa8d9e5_b7aa848c",
@@ -48,6 +66,30 @@
       "writtenOn": "2024-11-25T20:05:38Z",
       "side": 1,
       "message": "One thing I note here is that this target depends on libpng. Do we need to split that target up to make the rust version not depend on libpng at all?",
+      "range": {
+        "startLine": 35,
+        "startChar": 21,
+        "endLine": 35,
+        "endChar": 31
+      },
+      "revId": "9b0df1b51e9146fb1b263d5b6ab10e74569f3e44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec46f86c_de49361f",
+        "filename": "experimental/rust_png/decoder/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-25T20:31:39Z",
+      "side": 1,
+      "message": "Good catch - yes, let me do that in a follow-up CL here: http://review.skia.org/924476",
+      "parentUuid": "cfa8d9e5_b7aa848c",
       "range": {
         "startLine": 35,
         "startChar": 21,
