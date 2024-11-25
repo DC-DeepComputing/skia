@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5709b6b2_8ae38ac3",
+        "filename": "src/core/SkScan_AAAPath.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1011,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T14:38:11Z",
+      "side": 1,
+      "message": "nit: line length\n\nMight be easiest to just combine the ddx and dy comments to be above the return line.",
+      "range": {
+        "startLine": 1011,
+        "startChar": 0,
+        "endLine": 1011,
+        "endChar": 102
+      },
+      "revId": "82e28d9dc1a64c065a9a0297af694e0e5e0c4ca2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
