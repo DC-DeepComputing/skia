@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ebb75c4_86656236",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-25T21:57:58Z",
+      "side": 1,
+      "message": "This is the wrong style. We want to return `fStyle` of `this`, not the `fProxy`\u0027s style (this is one thing we don\u0027t want to proxy). We can get that with `SkTypeface::onGetFontStyle()`.",
+      "range": {
+        "startLine": 129,
+        "startChar": 15,
+        "endLine": 129,
+        "endChar": 49
+      },
+      "revId": "18067a2951df8af905e6b5c9063ebedfed784cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad08b311_d83ce7d1",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-25T21:57:58Z",
+      "side": 1,
+      "message": "Probably want to override this (not proxy it) as well.",
+      "revId": "18067a2951df8af905e6b5c9063ebedfed784cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
