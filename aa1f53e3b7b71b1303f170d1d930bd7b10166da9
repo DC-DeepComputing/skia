@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4859e772_f4932e76",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T19:29:12Z",
+      "side": 1,
+      "message": "nit: can we put a new line before and after this, and add a comment saying that this fills the query buffer for both the commandbuffer-timestamp path and the commandencoder path?",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 78
+      },
+      "revId": "aa1f53e3b7b71b1303f170d1d930bd7b10166da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840a5ad2_e70f5f50",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-11-25T19:29:12Z",
+      "side": 1,
+      "message": "I think this should check for non-null and return {} with a warning if it fails. There have definitely been crash reports in the past from where we assumed that if we had a mappable GPU buffer that it would return a valid pointer.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 22
+      },
+      "revId": "aa1f53e3b7b71b1303f170d1d930bd7b10166da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
