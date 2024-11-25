@@ -2614,6 +2614,8 @@ if (skia_enable_tools) {
     }
   }
 
+  print("Bulid nanobench")
+
   test_app("nanobench") {
     sources = [
       "bench/nanobench.cpp",
@@ -2635,6 +2637,7 @@ if (skia_enable_tools) {
       "modules/skshaper",
       "modules/skunicode",
       "modules/svg",
+      "tools/partition_alloc:test_support",
     ]
   }
 
