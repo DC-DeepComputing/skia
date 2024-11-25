@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15ac05b2_02898141",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-11-25T18:54:13Z",
+      "side": 1,
+      "message": "I suspect we shouldn\u0027t be using the line equation at all to do calculations, but this seems to fix this case at least.",
+      "revId": "b84089b930960f92c0c71a5153612c878655a563",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
