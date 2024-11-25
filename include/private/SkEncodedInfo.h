@@ -262,22 +262,22 @@ public:
 private:
     SkEncodedInfo(int width, int height, Color color, Alpha alpha,
             uint8_t bitsPerComponent, uint8_t colorDepth, std::unique_ptr<ICCProfile> profile)
-        : fWidth(width)
+        : fProfile(std::move(profile))
+        , fWidth(width)
         , fHeight(height)
         , fColor(color)
         , fAlpha(alpha)
         , fBitsPerComponent(bitsPerComponent)
         , fColorDepth(colorDepth)
-        , fProfile(std::move(profile))
     {}
 
+    std::unique_ptr<ICCProfile> fProfile;
     int                         fWidth;
     int                         fHeight;
     Color                       fColor;
     Alpha                       fAlpha;
     uint8_t                     fBitsPerComponent;
     uint8_t                     fColorDepth;
-    std::unique_ptr<ICCProfile> fProfile;
 };
 
 #endif
