@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c1f4ca7_d84d715c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-11-25T19:58:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4859e772_f4932e76",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 134,
+        "endChar": 78
+      },
+      "revId": "aa1f53e3b7b71b1303f170d1d930bd7b10166da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "840a5ad2_e70f5f50",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-25T19:29:12Z",
       "side": 1,
       "message": "I think this should check for non-null and return {} with a warning if it fails. There have definitely been crash reports in the past from where we assumed that if we had a mappable GPU buffer that it would return a valid pointer.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 22
+      },
+      "revId": "aa1f53e3b7b71b1303f170d1d930bd7b10166da9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "96510a29_3e21aafd",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-11-25T19:58:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "840a5ad2_e70f5f50",
       "range": {
         "startLine": 162,
         "startChar": 0,
