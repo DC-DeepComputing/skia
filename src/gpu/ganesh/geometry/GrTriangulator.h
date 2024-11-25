@@ -451,8 +451,16 @@ struct GrTriangulator::Edge {
         // longer on the ideal line.
         return (p == fTop->fPoint || p == fBottom->fPoint) ? 0.0 : fLine.dist(p);
     }
-    bool isRightOf(const Vertex& v) const { return this->dist(v.fPoint) < 0.0; }
-    bool isLeftOf(const Vertex& v) const { return this->dist(v.fPoint) > 0.0; }
+    bool isRightOf(const Vertex& v) const {
+        return !isLeftOf(v);
+    }
+    bool isLeftOf(const Vertex& v) const {
+        double wx = static_cast<double>(v.fPoint.fX) - static_cast<double>(fBottom->fPoint.fX);
+        double wy = static_cast<double>(v.fPoint.fY) - static_cast<double>(fBottom->fPoint.fY);
+        // fLine already has the vector we need to do a cross product against, but rotated 90°.
+        // So we use this calculation instead.
+        return (fLine.fB*wy + wx*fLine.fA > 0.0);
+    }
     void recompute() { fLine = Line(fTop, fBottom); }
     void insertAbove(Vertex*, const Comparator&);
     void insertBelow(Vertex*, const Comparator&);
