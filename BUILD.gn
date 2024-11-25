@@ -2635,6 +2635,7 @@ if (skia_enable_tools) {
       "modules/skshaper",
       "modules/skunicode",
       "modules/svg",
+      "tools/partition_alloc:test_support",
     ]
   }
 
