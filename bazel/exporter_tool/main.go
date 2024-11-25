@@ -56,7 +56,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		},
 		{Var: "skia_codec_rust_png_public",
 			Rules: []string{
-				"//experimental/rust_png:hdrs",
 				"//experimental/rust_png/decoder:hdrs",
 			},
 		},
