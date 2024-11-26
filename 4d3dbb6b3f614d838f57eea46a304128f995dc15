@@ -16,6 +16,24 @@
       "message": "Is this ready to be re-reviewed?",
       "revId": "4d3dbb6b3f614d838f57eea46a304128f995dc15",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "131d0148_f8653d55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2024-11-26T13:50:11Z",
+      "side": 1,
+      "message": "Thanks for this message! Sorry for the noise here. \n\nI don\u0027t want to make any change. However there is a one failing bot, so I can\u0027t merge it yet:\nhttps://task-scheduler.skia.org/job/aTRxdzrEpm8wLOLMNwuu\n\nIt looks like a timeout in dm. I was hoping the patch about strict-aliasing would fix it. It doesn\u0027t. I am a bit clueless how to understand the issue as I can\u0027t reproduce locally. If you have any tips, I would happily apply them.\n\nI am marking this patch as WIP in the meantime.",
+      "parentUuid": "280a9751_ab495b11",
+      "revId": "4d3dbb6b3f614d838f57eea46a304128f995dc15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
