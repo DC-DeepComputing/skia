@@ -50,6 +50,7 @@ protected:
     }
 
     void onDraw(SkCanvas* canvas) override {
+/*
         struct FillAndName {
             SkPathFillType fFill;
             const char*      fName;
@@ -144,6 +145,18 @@ protected:
         }
         canvas->restore();
         canvas->restore();
+*/
+        SkPaint paint;
+        paint.setColor(SK_ColorRED);
+        paint.setStyle(SkPaint::kFill_Style);
+
+        SkPoint vertices[3] = {SkPoint::Make(150,0), SkPoint::Make(200,100), SkPoint::Make(100, 100)};
+        auto path = SkPath::Polygon(vertices, 3, false);
+
+        canvas->concat(SkMatrix::RotateRad(0.5f));
+        canvas->clipRect(SkRect::MakeXYWH(100, 0, 100, 100));
+        canvas->clipPath(path);
+        canvas->drawPaint(paint);
     }
 
 private:
