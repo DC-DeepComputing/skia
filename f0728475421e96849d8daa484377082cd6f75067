@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b7e14de_6c7d86ed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T00:49:30Z",
+      "side": 1,
+      "message": "Could you please run those commands?  I don\u0027t have the necessary permissions.",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 24
+      },
+      "revId": "f0728475421e96849d8daa484377082cd6f75067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcd4dc5a_8d308820",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T00:49:30Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?",
+      "revId": "f0728475421e96849d8daa484377082cd6f75067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c05cdb27_f1c4c4f1",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T00:49:30Z",
+      "side": 1,
+      "message": "This mimics the changes from https://github.com/dtolnay/cxx/pull/1401/commits - from the 4th commit: https://github.com/dtolnay/cxx/pull/1401/commits/ac9f6ffb122df778df3cee39275b53fcca9a3cfd",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "f0728475421e96849d8daa484377082cd6f75067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
