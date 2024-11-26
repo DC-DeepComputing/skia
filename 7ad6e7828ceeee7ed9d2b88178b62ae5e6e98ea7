@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62d30b7b_97dda588",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T18:54:33Z",
+      "side": 1,
+      "message": "I guess I should have tried building Chromium before landing the Skia CL.  OTOH `enable_rust_png` is still `false` by default in Chromium so this doesn\u0027t impact Chromium builds outside of Rust FYI bots (and FYI bots I can just fix forward).",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 3
+      },
+      "revId": "7ad6e7828ceeee7ed9d2b88178b62ae5e6e98ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6215f8f6_9f1797d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T18:54:33Z",
+      "side": 1,
+      "message": "Does this plan look reasonable?  This will make GNI lists track Bazel targets more closely, so maybe this is desirable.  OTOH this also means that the GNI lists are quite small/granular and it feels weird - I like and endorse small build/Bazel targets, but maybe small GNI lists seem to work against the goal of insulating Chromium/Flutter from Skia changes?  I dunno...",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 32
+      },
+      "revId": "7ad6e7828ceeee7ed9d2b88178b62ae5e6e98ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "626d634b_0533fc12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-26T18:54:33Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?",
+      "revId": "7ad6e7828ceeee7ed9d2b88178b62ae5e6e98ea7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
