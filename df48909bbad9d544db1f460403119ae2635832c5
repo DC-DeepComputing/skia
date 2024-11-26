@@ -16,6 +16,29 @@
       "message": "@kjlubick, can you PTAL?\n\n/cc @danieldilan and @fmalita as FYI",
       "revId": "df48909bbad9d544db1f460403119ae2635832c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7017bfe_ef631343",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-26T13:44:14Z",
+      "side": 1,
+      "message": "You don\u0027t need this listed: everything in this folder has automatic visibility.",
+      "range": {
+        "startLine": 289,
+        "startChar": 15,
+        "endLine": 289,
+        "endChar": 20
+      },
+      "revId": "df48909bbad9d544db1f460403119ae2635832c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
