@@ -7,6 +7,7 @@
 #ifndef SkPngRustEncoder_DEFINED
 #define SkPngRustEncoder_DEFINED
 
+#include <cstdint>
 #include <memory>
 
 #include "include/private/base/SkAPI.h"
@@ -17,19 +18,40 @@ class SkWStream;
 
 namespace SkPngRustEncoder {
 
+/*
+ * Compression level.
+ */
+enum class CompressionLevel : uint8_t {
+    // Fast, but may results in bigger PNG files.
+    kFast,
+
+    // In-between `kFast` and `kSlow`.
+    kAverage,
+
+    // Slow, but should results in smaller PNG files.
+    kSlow,
+};
+
+/*
+ * PNG encoding options.
+ *
+ * TODO(https://crbug.com/379312510): Add support for `SkPngEncoder::Options`
+ * like:
+ *  - Comments - `tEXt` chunks.
+ *  - Color profile - `iCCP` chunk.
+ */
+struct Options {
+    CompressionLevel fCompressionLevel = CompressionLevel::kAverage;
+};
+
 /**
  *  Encode the |src| pixels to the |dst| stream.
  *  |options| may be used to control the encoding behavior.
  *
  *  Returns true on success.  Returns false on an invalid or unsupported |src|.
  *
- *  TODO(https://crbug.com/379312510): Add support for `SkPngEncoder::Options`
- *  like:
- *  * Comments - `tEXt` chunks.
- *  * Color profile - `iCCP` chunk.
- *  * Filter choice and compression level
  */
-SK_API bool Encode(SkWStream*, const SkPixmap&);
+SK_API bool Encode(SkWStream*, const SkPixmap&, const Options&);
 
 /**
  *  Create a png encoder that will encode the |src| pixels to the |dst| stream.
@@ -40,10 +62,8 @@ SK_API bool Encode(SkWStream*, const SkPixmap&);
  *  |dst| is unowned but must remain valid for the lifetime of the object.
  *
  *  This returns nullptr on an invalid or unsupported |src|.
- *
- *  TODO(https://crbug.com/379312510): Add support for `SkPngEncoder::Options`.
  */
-SK_API std::unique_ptr<SkEncoder> Make(SkWStream*, const SkPixmap&);
+SK_API std::unique_ptr<SkEncoder> Make(SkWStream*, const SkPixmap&, const Options&);
 
 }  // namespace SkPngRustEncoder
 
