@@ -361,6 +361,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
             }
 
             __m128i *d = reinterpret_cast<__m128i*>(dst);
+            const __m128i* mask128 = reinterpret_cast<const __m128i*>(mask);
             // Set alpha to 0xFF and replicate source four times in SSE register.
             __m128i src_sse = _mm_set1_epi32(SkPackARGB32(0xFF, srcR, srcG, srcB));
             // Interleave with zeros to get two sets of four 16-bit values.
@@ -372,7 +373,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
                 // Load four destination pixels into dst_sse.
                 __m128i dst_sse = _mm_load_si128(d);
                 // Load four 16-bit masks into lower half of mask_sse.
-                __m128i mask_sse = _mm_loadu_si64(mask);
+                __m128i mask_sse = _mm_loadl_epi64(mask128);
 
                 // Check whether masks are equal to 0 and get the highest bit
                 // of each byte of result, if masks are all zero, we will get
@@ -429,6 +430,8 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
             }
 
             __m128i *d = reinterpret_cast<__m128i*>(dst);
+            const __m128i* mask128 = reinterpret_cast<const __m128i*>(mask);
+
             // Set alpha to 0xFF and replicate source four times in SSE register.
             __m128i src_sse = _mm_set1_epi32(SkPackARGB32(0xFF, srcR, srcG, srcB));
             // Set srcA_sse to contain eight copies of srcA, padded with zero.
@@ -438,7 +441,7 @@ static inline SkPMColor blend_lcd16_opaque(int srcR, int srcG, int srcB,
                 // Load four destination pixels into dst_sse.
                 __m128i dst_sse = _mm_load_si128(d);
                 // Load four 16-bit masks into lower half of mask_sse.
-                __m128i mask_sse = _mm_loadu_si64(mask);
+                __m128i mask_sse = _mm_loadl_epi64(mask128);
 
                 // Check whether masks are equal to 0 and get the highest bit
                 // of each byte of result, if masks are all zero, we will get
