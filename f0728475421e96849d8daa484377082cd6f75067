@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "1df74585_37630b06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-26T13:46:00Z",
+      "side": 1,
+      "message": "Done. I had to get `skia-infra-breakglass-policy` permissions via twosync, as per our updated policies.",
+      "parentUuid": "5b7e14de_6c7d86ed",
+      "range": {
+        "startLine": 24,
+        "startChar": 22,
+        "endLine": 24,
+        "endChar": 24
+      },
+      "revId": "f0728475421e96849d8daa484377082cd6f75067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "fcd4dc5a_8d308820",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -54,6 +78,30 @@
       "writtenOn": "2024-11-26T00:49:30Z",
       "side": 1,
       "message": "This mimics the changes from https://github.com/dtolnay/cxx/pull/1401/commits - from the 4th commit: https://github.com/dtolnay/cxx/pull/1401/commits/ac9f6ffb122df778df3cee39275b53fcca9a3cfd",
+      "range": {
+        "startLine": 18,
+        "startChar": 4,
+        "endLine": 18,
+        "endChar": 6
+      },
+      "revId": "f0728475421e96849d8daa484377082cd6f75067",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abd89ec1_3dd452d1",
+        "filename": "bazel/external/cxx/BUILD.bazel.skia",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-26T13:46:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c05cdb27_f1c4c4f1",
       "range": {
         "startLine": 18,
         "startChar": 4,
