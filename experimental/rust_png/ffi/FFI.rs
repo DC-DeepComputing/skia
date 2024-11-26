@@ -153,14 +153,22 @@ mod ffi {
             bits_per_pixel: u8,
         );
 
-        fn new_stream_writer(
+        fn new_writer(
             output: UniquePtr<WriteTrait>,
             width: u32,
             height: u32,
             color: ColorType,
             bits_per_component: u8,
             compression: Compression,
-        ) -> Box<ResultOfStreamWriter>;
+        ) -> Box<ResultOfWriter>;
+
+        type ResultOfWriter;
+        fn err(self: &ResultOfWriter) -> EncodingResult;
+        fn unwrap(self: &mut ResultOfWriter) -> Box<Writer>;
+
+        type Writer;
+        fn write_text_chunk(self: &mut Writer, keyword: &[u8], text: &[u8]) -> EncodingResult;
+        fn into_stream_writer(self: &mut Writer) -> Box<ResultOfStreamWriter>;
 
         type ResultOfStreamWriter;
         fn err(self: &ResultOfStreamWriter) -> EncodingResult;
@@ -607,14 +615,14 @@ fn new_reader(input: cxx::UniquePtr<ffi::ReadTrait>) -> Box<ResultOfReader> {
 /// FFI-friendly wrapper around `Result<T, E>` (`cxx` can't handle arbitrary
 /// generics, so we manually monomorphize here, but still expose a minimal,
 /// somewhat tweaked API of the original type).
-struct ResultOfStreamWriter(Result<StreamWriter, png::EncodingError>);
+struct ResultOfWriter(Result<Writer, png::EncodingError>);
 
-impl ResultOfStreamWriter {
+impl ResultOfWriter {
     fn err(&self) -> ffi::EncodingResult {
         self.0.as_ref().err().into()
     }
 
-    fn unwrap(&mut self) -> Box<StreamWriter> {
+    fn unwrap(&mut self) -> Box<Writer> {
         // Leaving `self` in a C++-friendly "moved-away" state.
         let mut result = Err(png::EncodingError::LimitsExceeded);
         std::mem::swap(&mut self.0, &mut result);
@@ -623,12 +631,12 @@ impl ResultOfStreamWriter {
     }
 }
 
-/// FFI-friendly wrapper around `png::StreamWriter` (`cxx` can't handle
+/// FFI-friendly wrapper around `png::Writer` (`cxx` can't handle
 /// arbitrary generics, so we manually monomorphize here, but still expose a
 /// minimal, somewhat tweaked API of the original type).
-struct StreamWriter(Option<png::StreamWriter<'static, cxx::UniquePtr<ffi::WriteTrait>>>);
+struct Writer(Option<png::Writer<cxx::UniquePtr<ffi::WriteTrait>>>);
 
-impl StreamWriter {
+impl Writer {
     fn new(
         output: cxx::UniquePtr<ffi::WriteTrait>,
         width: u32,
@@ -654,10 +662,72 @@ impl StreamWriter {
         });
 
         let writer = encoder.write_header()?;
-        let stream_writer = writer.into_stream_writer()?;
-        Ok(Self(Some(stream_writer)))
+        Ok(Self(Some(writer)))
     }
 
+    /// FFI-friendly wrapper around `png::Writer::write_text_chunk`.
+    ///
+    /// See also https://docs.rs/png/latest/png/struct.Writer.html#method.write_text_chunk
+    fn write_text_chunk(&mut self, keyword: &[u8], text: &[u8]) -> ffi::EncodingResult {
+        // https://www.w3.org/TR/png-3/#11tEXt says that "`text` is interpreted according to the
+        // Latin-1 character set [ISO_8859-1]. The text string may contain any Latin-1
+        // character."
+        fn latin1_bytes_into_string(bytes: &[u8]) -> String {
+            bytes.iter().map(|&b| b as char).collect()
+        }
+
+        // https://www.w3.org/TR/png-3/#11keywords says that "keywords shall contain only printable
+        // Latin-1 [ISO_8859-1] characters and spaces; that is, only code points 0x20-7E
+        // and 0xA1-FF are allowed."
+        if !keyword.iter().all(|b| (0x20..=0x7E).contains(b) || (0xA1..=0xFF).contains(b)) {
+            return ffi::EncodingResult::ParameterError;
+        }
+
+        let keyword = latin1_bytes_into_string(keyword);
+        let text = latin1_bytes_into_string(text);
+        let chunk = png::text_metadata::TEXtChunk { keyword, text };
+
+        let writer = self.0.as_mut().unwrap();
+        let result = writer.write_text_chunk(&chunk);
+        result.as_ref().err().into()
+    }
+
+    /// FFI-friendly wrapper around `png::Writer::into_stream_writer`.
+    ///
+    /// See also https://docs.rs/png/latest/png/struct.Writer.html#method.into_stream_writer
+    fn into_stream_writer(&mut self) -> Box<ResultOfStreamWriter> {
+        let writer = self.0.take().unwrap();
+        let result_of_stream_writer =
+            writer.into_stream_writer().map(|stream_writer| StreamWriter(Some(stream_writer)));
+        Box::new(ResultOfStreamWriter(result_of_stream_writer))
+    }
+}
+
+/// FFI-friendly wrapper around `Result<T, E>` (`cxx` can't handle arbitrary
+/// generics, so we manually monomorphize here, but still expose a minimal,
+/// somewhat tweaked API of the original type).
+struct ResultOfStreamWriter(Result<StreamWriter, png::EncodingError>);
+
+impl ResultOfStreamWriter {
+    fn err(&self) -> ffi::EncodingResult {
+        self.0.as_ref().err().into()
+    }
+
+    fn unwrap(&mut self) -> Box<StreamWriter> {
+        // Leaving `self` in a C++-friendly "moved-away" state.
+        let mut result = Err(png::EncodingError::LimitsExceeded);
+        std::mem::swap(&mut self.0, &mut result);
+
+        Box::new(result.unwrap())
+    }
+}
+
+/// FFI-friendly wrapper around `png::StreamWriter` (`cxx` can't handle
+/// arbitrary generics, so we manually monomorphize here, but still expose a
+/// minimal, somewhat tweaked API of the original type).
+struct StreamWriter(Option<png::StreamWriter<'static, cxx::UniquePtr<ffi::WriteTrait>>>);
+
+impl StreamWriter {
     /// FFI-friendly wrapper around `Write::write` implementation of
     /// `png::StreamWriter`.
     ///
@@ -678,15 +748,15 @@ impl StreamWriter {
 }
 
 /// This provides a public C++ API for encoding a PNG image.
-fn new_stream_writer(
+fn new_writer(
     output: cxx::UniquePtr<ffi::WriteTrait>,
     width: u32,
     height: u32,
     color: ffi::ColorType,
     bits_per_component: u8,
     compression: ffi::Compression,
-) -> Box<ResultOfStreamWriter> {
-    Box::new(ResultOfStreamWriter(StreamWriter::new(
+) -> Box<ResultOfWriter> {
+    Box::new(ResultOfWriter(Writer::new(
         output,
         width,
         height,
