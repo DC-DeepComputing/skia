@@ -33,6 +33,69 @@
       "message": "@bungeman, would you like to take a look as a Skia TL?  Note that @kjlubick is already reviewing this CL (thanks!), but this is the first encoding-related CL, so I thought that it would be nice to give Skia TLs a chance to take a quick look.  (At any rate, I\u0027ll ask @fmalita to review the follow-up, more meaty CLs, so we can always iterate and/or change things in the future if needed.)\n\nI hope that this CL is non-controversial:\n\n* The `SkPngRustEncoder.h` API mimics the subset of `SkPngEncoder.h` APIs (only 2 functions + not taking `Options` for now - until https://skia-review.googlesource.com/c/skia/+/924461 and https://skia-review.googlesource.com/c/skia/+/924544)\n* The `SkPngRustEncoder.cc` mostly duplicates bits of `SkPngEncoder.cpp`.  It seems to me that this level of duplication is okay.\n* The `SkPngRustEncoderImpl.h/.cc` are mostly stubs, so probably not that important to get right on the first try.  The follow-up CLs evolve those (e.g. see https://skia-review.googlesource.com/c/skia/+/923337).\n* This is all under `experimental/` so it will only used from Chromium in the short-term (behind `enable_rust_png` GN arg, behind `base::Feature`), although Chromium won\u0027t actually use this until https://crrev.com/c/6044082 (which itself depends on a few extra Skia-side CLs).\n\nSome other background notes:\n\n* I am a Chrome Security engineer working on `SkPngRustCodec` - see https://docs.google.com/document/d/1glx5ue5JDlCld5WzWgTOGK3wsMErQFnkY5N5Dsbi91Y/edit?usp\u003dsharing for more details about this project.\n* @fmalita (in CC) is a Skia TL that I usually work with, but they suggested that around Thanksgiving I may work with you instead.",
       "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "115dee34_b31f76af",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-27T17:00:48Z",
+      "side": 1,
+      "message": "2 nits on GN and Bazel things, otherwise LGTM",
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b290cd5_5b1fe9de",
+        "filename": "experimental/rust_png/encoder/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-27T17:00:48Z",
+      "side": 1,
+      "message": "I\u0027d prefer this just be listed down in the skia_cc_library rule. We like to put just files in filegroups where we can because exporter_tool ignores all but just files.",
+      "range": {
+        "startLine": 11,
+        "startChar": 26,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bf427df_5dee52a8",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-27T17:00:48Z",
+      "side": 1,
+      "message": "Some IDEs complain if a header is listed twice. Can you remove the redundant one here?",
+      "range": {
+        "startLine": 785,
+        "startChar": 35,
+        "endLine": 785,
+        "endChar": 51
+      },
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
