@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9199bb8c_f85fcce2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-11-27T23:10:40Z",
+      "side": 1,
+      "message": "Temporary -1 to discuss logistics out-of-band",
+      "revId": "927478eabdb1d598d099e13f1ab60a9148d90a29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
