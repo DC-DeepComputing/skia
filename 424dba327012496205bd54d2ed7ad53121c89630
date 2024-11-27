@@ -16,6 +16,24 @@
       "message": "Interestingly, before [Update legacy LCD ARGB32 blitter to match RP for transparent pixels](https://skia.googlesource.com/skia.git/+/72009ef23b7a88e2699447cb69325689b4d3385d) this is what was used.",
       "revId": "424dba327012496205bd54d2ed7ad53121c89630",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e31aad70_24191cf6",
+        "filename": "src/core/SkBlitter_ARGB32.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-27T18:22:09Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0c0414fe_32016d61",
+      "revId": "424dba327012496205bd54d2ed7ad53121c89630",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
