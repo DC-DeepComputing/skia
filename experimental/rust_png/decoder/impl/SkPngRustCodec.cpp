@@ -33,6 +33,8 @@
 
 namespace {
 
+syntax error here
+
 SkEncodedInfo::Color ToColor(rust_png::ColorType colorType) {
     // TODO(https://crbug.com/359279096): Take `sBIT` chunk into account to
     // sometimes return `kXAlpha_Color` or `k565_Color`.  This may require
