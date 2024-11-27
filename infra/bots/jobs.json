@@ -153,6 +153,7 @@
   {"name": "Build-Debian10-Clang-x86_64-Release-SK_CPU_LIMIT_SSE2"},
   {"name": "Build-Debian10-Clang-x86_64-Release-SK_CPU_LIMIT_SSE41"},
   {"name": "Build-Debian10-Clang-x86_64-Release-SK_FORCE_RASTER_PIPELINE_BLITTER"},
+  {"name": "Build-Debian10-Clang-x86_64-Release-SK_USE_PADDED_BLUR_UPSCALE"},
   {"name": "Build-Debian10-Clang-x86_64-Release-Static"},
   {"name": "Build-Debian10-Clang-x86_64-Release-SwiftShader"},
   {"name": "Build-Debian10-Clang-x86_64-Release-SwiftShader_Graphite"},
@@ -274,6 +275,9 @@
   {"name": "Build-Mac-Clang-arm64-Release-iOS_Graphite_Native_Metal",
    "cq_config": {"location_regexes": ["(tests|src/gpu)/graphite/.*", "src/sksl/generated/.*"]}
   },
+  {"name": "Build-Ubuntu20.04-Clang-x86_64-Release"},
+  {"name": "Build-Ubuntu22.04-Clang-x86_64-Release"},
+  {"name": "Build-Ubuntu24.04-Clang-x86_64-Release"},
   {"name": "Build-Win-Clang-arm64-Release-Android"},
   {"name": "Build-Win-Clang-x86-Debug",
    "cq_config": {}
@@ -734,7 +738,6 @@
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All",
    "cq_config": {}
    },
-  {"name": "Build-Debian10-Clang-x86_64-Release-SK_USE_PADDED_BLUR_UPSCALE"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-SK_USE_PADDED_BLUR_UPSCALE"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-DDL3_TSAN"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Graphite_Dawn_Vulkan"},
@@ -745,6 +748,9 @@
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Valgrind_SK_CPU_LIMIT_SSE41"},
   {"name": "Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All-Vulkan"},
   {"name": "Test-Ubuntu18-EMCC-Golo-GPU-QuadroP400-wasm-Release-All-WasmGMTests_WebGL2"},
+  {"name": "Test-Ubuntu20.04-Clang-GCE-CPU-AVX2-x86_64-Release-All"},
+  {"name": "Test-Ubuntu22.04-Clang-GCE-CPU-AVX2-x86_64-Release-All"},
+  {"name": "Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All"},
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All"},
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-ANGLE"},
   {"name": "Test-Win10-Clang-AlphaR2-GPU-RadeonR9M470X-x86_64-Debug-All-Vulkan"},
