@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5064ee9f_3ac82dd0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-27T16:01:19Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?  I would appreciate your review of the overall CL, but especially the build integration parts.  (I\u0027ll loop in one of the TLs to review the new APIs.)\n\n/cc @fmalita and @danieldilan as FYI",
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
