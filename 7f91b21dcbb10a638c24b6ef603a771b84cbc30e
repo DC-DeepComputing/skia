@@ -75,6 +75,30 @@
       },
       "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3a1f634_d4d85d22",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T15:57:57Z",
+      "side": 1,
+      "message": "I don\u0027t think so? https://gcc.gnu.org/bugzilla/show_bug.cgi?id\u003d78204 appears to have added this in GCC 8.0?",
+      "parentUuid": "9f1a118d_b262dfd3",
+      "range": {
+        "startLine": 64,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 33
+      },
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
