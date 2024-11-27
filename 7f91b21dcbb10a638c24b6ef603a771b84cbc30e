@@ -99,6 +99,30 @@
       },
       "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7460b532_a643282c",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-11-27T16:00:21Z",
+      "side": 1,
+      "message": "I was looking at https://gcc.gnu.org/onlinedocs/ and saw it listed in the 8.5 version, but not the 7.5 version.",
+      "parentUuid": "e3a1f634_d4d85d22",
+      "range": {
+        "startLine": 64,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 33
+      },
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
