@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fc504db_d96d73f9",
+        "filename": "experimental/rust_png/encoder/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-27T17:29:53Z",
+      "side": 1,
+      "message": "Done\n\nFWIW I\u0027ve also checked that `skia_encode_public` from `core.gni` already covers `SkPngEncoder.h` (via `//include/encode:encode_hdrs`).",
+      "parentUuid": "4b290cd5_5b1fe9de",
+      "range": {
+        "startLine": 11,
+        "startChar": 26,
+        "endLine": 11,
+        "endChar": 37
+      },
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bf427df_5dee52a8",
@@ -88,6 +112,30 @@
       "writtenOn": "2024-11-27T17:00:48Z",
       "side": 1,
       "message": "Some IDEs complain if a header is listed twice. Can you remove the redundant one here?",
+      "range": {
+        "startLine": 785,
+        "startChar": 35,
+        "endLine": 785,
+        "endChar": 51
+      },
+      "revId": "31ad23ac6a4574d989938845e7d40ab045a62f25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccdfb595_b8007898",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-11-27T17:29:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7bf427df_5dee52a8",
       "range": {
         "startLine": 785,
         "startChar": 35,
