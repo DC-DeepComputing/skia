@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682854e2_54b70391",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T16:12:05Z",
+      "side": 1,
+      "message": "This leads me to believe that `SkFloatingPoint.h` has an actual specialized version of `SkIsNan`, but it\u0027s really just a template and there aren\u0027t (at least I cannot find) any specializations. Maybe this would be better as just `Skia already has SkIsNan.`",
+      "range": {
+        "startLine": 9,
+        "startChar": 19,
+        "endLine": 9,
+        "endChar": 40
+      },
+      "revId": "5beb75e1f1d2ebd8e116fecedb7faf49f7ae7e72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f814f13_af982193",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T16:12:05Z",
+      "side": 1,
+      "message": "Curious as to which warning, since while `SkIsNan` is a template it does exactly the same check?",
+      "revId": "5beb75e1f1d2ebd8e116fecedb7faf49f7ae7e72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
