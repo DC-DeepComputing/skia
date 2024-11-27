@@ -66,6 +66,9 @@ const (
 	COMPILE_TASK_NAME_OS_LINUX_OLD = "Debian9"
 	DEFAULT_OS_MAC                 = "Mac-14.5"
 	DEFAULT_OS_WIN_GCE             = "Windows-Server-17763"
+	UBUNTU_20_04_OS                = "Ubuntu-20.04"
+	UBUNTU_22_04_OS                = "Ubuntu-22.04"
+	UBUNTU_24_04_OS                = "Ubuntu-24.04"
 
 	// Small is a 2-core machine.
 	// TODO(dogben): Would n1-standard-1 or n1-standard-2 be sufficient?
@@ -769,6 +772,8 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 		} else if b.matchOs("Debian11") {
 			// We compile using the Debian11 machines in the skolo.
 			task_os = "Debian11"
+		} else if b.matchOs("Debian12") {
+			task_os = "Debian12"
 		} else if b.matchOs("Ubuntu", "Debian") {
 			task_os = COMPILE_TASK_NAME_OS_LINUX
 		} else if b.matchOs("Mac") {
@@ -859,25 +864,28 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 	}
 	if os, ok := b.parts["os"]; ok {
 		d["os"], ok = map[string]string{
-			"Android":    "Android",
-			"Android12":  "Android",
-			"ChromeOS":   "ChromeOS",
-			"Debian9":    DEFAULT_OS_LINUX_GCE, // Runs in Deb9 Docker.
-			"Debian10":   DEFAULT_OS_LINUX_GCE,
-			"Debian11":   DEBIAN_11_OS,
-			"Mac":        DEFAULT_OS_MAC,
-			"Mac10.15.1": "Mac-10.15.1",
-			"Mac10.15.7": "Mac-10.15.7",
-			"Mac11":      "Mac-11.4",
-			"Mac12":      "Mac-12",
-			"Mac13":      "Mac-13",
-			"Mokey":      "Android",
-			"MokeyGo32":  "Android",
-			"Ubuntu18":   "Ubuntu-18.04",
-			"Win":        DEFAULT_OS_WIN_GCE,
-			"Win10":      "Windows-10-19045",
-			"Win2019":    DEFAULT_OS_WIN_GCE,
-			"iOS":        "iOS-13.3.1",
+			"Android":     "Android",
+			"Android12":   "Android",
+			"ChromeOS":    "ChromeOS",
+			"Debian9":     DEFAULT_OS_LINUX_GCE, // Runs in Deb9 Docker.
+			"Debian10":    DEFAULT_OS_LINUX_GCE,
+			"Debian11":    DEBIAN_11_OS,
+			"Mac":         DEFAULT_OS_MAC,
+			"Mac10.15.1":  "Mac-10.15.1",
+			"Mac10.15.7":  "Mac-10.15.7",
+			"Mac11":       "Mac-11.4",
+			"Mac12":       "Mac-12",
+			"Mac13":       "Mac-13",
+			"Mokey":       "Android",
+			"MokeyGo32":   "Android",
+			"Ubuntu18":    "Ubuntu-18.04",
+			"Ubuntu20.04": UBUNTU_20_04_OS,
+			"Ubuntu22.04": UBUNTU_22_04_OS,
+			"Ubuntu24.04": UBUNTU_24_04_OS,
+			"Win":         DEFAULT_OS_WIN_GCE,
+			"Win10":       "Windows-10-19045",
+			"Win2019":     DEFAULT_OS_WIN_GCE,
+			"iOS":         "iOS-13.3.1",
 		}[os]
 		if !ok {
 			log.Fatalf("Entry %q not found in OS mapping.", os)
@@ -1028,6 +1036,12 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 
 				if b.matchOs("Debian11") {
 					d["os"] = DEBIAN_11_OS
+				} else if b.matchOs("Ubuntu20.04") {
+					d["os"] = UBUNTU_20_04_OS
+				} else if b.matchOs("Ubuntu22.04") {
+					d["os"] = UBUNTU_22_04_OS
+				} else if b.matchOs("Ubuntu24.04") {
+					d["os"] = UBUNTU_24_04_OS
 				} else if b.matchOs("Debian") {
 					// The Debian10 machines in the skolo are 10.10, not 10.3.
 					d["os"] = DEFAULT_OS_DEBIAN
