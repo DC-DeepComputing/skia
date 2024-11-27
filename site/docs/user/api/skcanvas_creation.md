@@ -76,39 +76,60 @@ also assumes that the correct OpenGL context has been made current to the
 current thread when Skia calls are made.
 
 <!--?prettify lang=cc?-->
-
-    #include "include/gpu/ganesh/GrDirectContext.h"
-    #include "include/gpu/ganesh/gl/GrGLInterface.h"
-    #include "include/gpu/ganesh/gl/GrGLInterface.h"
-    #include "include/core/SkData.h"
-    #include "include/core/SkImage.h"
-    #include "include/core/SkStream.h"
+    #include "include/core/SkCanvas.h"
+    #include "include/core/SkColorSpace.h"
     #include "include/core/SkSurface.h"
+    #include "include/gpu/ganesh/GrBackendSurface.h"
+    #include "include/gpu/ganesh/GrDirectContext.h"
+    #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
+    #include "include/gpu/ganesh/gl/GrGLDirectContext.h"
+    #include "include/gpu/ganesh/gl/GrGLInterface.h"
+    #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+    #include "src/gpu/ganesh/gl/GrGLDefines.h"
+    #include "gl/GL.h"
 
     void gl_example(int width, int height, void (*draw)(SkCanvas*), const char* path) {
         // You've already created your OpenGL context and bound it.
-        sk_sp<const GrGLInterface> interface = nullptr;
-        // Leaving interface as null makes Skia extract pointers to OpenGL functions for the current
-        // context in a platform-specific way. Alternatively, you may create your own GrGLInterface
-        // and initialize it however you like to attach to an alternate OpenGL implementation or
-        // intercept Skia's OpenGL calls.
-        sk_sp<GrDirectContext> context = GrDirectContexts::MakeGL(interface);
-        SkImageInfo info = SkImageInfo:: MakeN32Premul(width, height);
-        sk_sp<SkSurface> gpuSurface(
-                SkSurface::MakeRenderTarget(context.get(), skgpu::Budgeted::kNo, info));
-        if (!gpuSurface) {
-            SkDebugf("SkSurface::MakeRenderTarget returned null\n");
-            return;
-        }
-        SkCanvas* gpuCanvas = gpuSurface->getCanvas();
-        draw(gpuCanvas);
-        sk_sp<SkImage> img(gpuSurface->makeImageSnapshot());
-        if (!img) { return; }
-        // Must pass non-null context so the pixels can be read back and encoded.
-        sk_sp<SkData> png = SkPngEncoder::Encode(context.get(), img, {});
-        if (!png) { return; }
-        SkFILEWStream out(path);
-        (void)out.write(png->data(), png->size());
+        constexpr int sampleCount = 1; // Can be higher if MSAA extension present
+        constexpr int stencilBits = 8;
+
+        // Gl stencil stuff
+        glClearStencil(0);
+        glClearColor(0, 0, 0, 0);
+        glStencilMask(0xffffffff);
+        glClear(GL_STENCIL_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+        glViewport(0, 0, width, height);
+
+        // Create a backend context
+        sk_sp<const GrGLInterface> backendContext = GrGLMakeNativeInterface();
+
+        GrGLint buffer;
+        backendContext.get(), GetIntegerv(GR_GL_FRAMEBUFFER_BINDING, &buffer));
+
+        GrGLFramebufferInfo fbInfo;
+        fbInfo.fFBOID = buffer;
+        fbInfo.fFormat = GR_GL_RGBA8;
+        fbInfo.fProtected = skgpu::Protected(false);
+
+        // Create the Skia context
+        sk_sp<GrDirectContext> context = GrDirectContexts::MakeGL(backendContext);
+
+        // Create the backend Render Target
+        GrBackendRenderTarget backendRenderTarget = GrBackendRenderTargets::MakeGL(
+            width, height, sampleCount, stencilBits, fbInfo);
+
+        // Create the GL-backed SkSurface
+        SkSurfaceProps props(0, kRGB_H_SkPixelGeometry);
+        sk_sp<SkSurface> surface = SkSurfaces::WrapBackendRenderTarget(context.get(),
+            backendRenderTarget, kBottomLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
+            nullptr, &props);
+
+        // Draw!
+        SkCanvas *canvas = surface->getCanvas();
+        draw(canvas);
+        skgpu::ganesh::FlushAndSubmit(surface.get());
+
+        // Swap buffers using your OS's OpenGL API.
     }
 
 ## SkPDF
