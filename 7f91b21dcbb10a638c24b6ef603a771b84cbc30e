@@ -56,6 +56,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "328911f4_67c50083",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T16:20:51Z",
+      "side": 1,
+      "message": "This can read `8.0`.",
+      "range": {
+        "startLine": 61,
+        "startChar": 57,
+        "endLine": 61,
+        "endChar": 60
+      },
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f1a118d_b262dfd3",
         "filename": "include/private/base/SkAttributes.h",
         "patchSetId": 4
@@ -115,6 +138,30 @@
       "side": 1,
       "message": "I was looking at https://gcc.gnu.org/onlinedocs/ and saw it listed in the 8.5 version, but not the 7.5 version.",
       "parentUuid": "e3a1f634_d4d85d22",
+      "range": {
+        "startLine": 64,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 33
+      },
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c01fdbe_bf14b5a8",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T16:20:51Z",
+      "side": 1,
+      "message": "Of course, because they only list the latest version of each release. But knowing the exact release is relevant here because the compiler in question (GCC 8.1) comes between these. As pointed out `no_sanitize` was added in 8.0, so there is no reason at all for this `#elif`. I would much prefer not to be carrying around this extra weird bit of history to support a compiler we already don\u0027t support. Documentation for this in GCC 8.1.0 at https://gcc.gnu.org/onlinedocs/gcc-8.1.0/gcc/Common-Function-Attributes.html#Common-Function-Attributes .",
+      "parentUuid": "7460b532_a643282c",
       "range": {
         "startLine": 64,
         "startChar": 32,
