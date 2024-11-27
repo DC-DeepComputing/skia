@@ -34,6 +34,47 @@
       "parentUuid": "5c64700a_b4bf0187",
       "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28e2e3bc_0a0e2c1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T15:55:38Z",
+      "side": 1,
+      "message": "It looks like https://bugzilla.mozilla.org/show_bug.cgi?id\u003d1834436 was fixed a year ago to move to minimum of GCC 8.1.0. It looks like even at tip of tree the minimum is GCC 8.1.0 which falls between the versions listed in the comments here.\n\nIt also looks like C++20 support is iffy in GCC all the way up through at least GCC 11.",
+      "parentUuid": "5c64700a_b4bf0187",
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f1a118d_b262dfd3",
+        "filename": "include/private/base/SkAttributes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T15:55:38Z",
+      "side": 1,
+      "message": "Is this supposed to be an `8`?",
+      "range": {
+        "startLine": 64,
+        "startChar": 32,
+        "endLine": 64,
+        "endChar": 33
+      },
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
