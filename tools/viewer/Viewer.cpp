@@ -79,6 +79,7 @@
 #include "tools/viewer/Slide.h"
 #include "tools/viewer/SlideDir.h"
 #include "tools/window/DisplayParams.h"
+#include "tools/window/GraphiteDisplayParams.h"
 
 #include <algorithm>
 #include <cfloat>
@@ -511,6 +512,15 @@ static const Window::BackendType kSupportedBackends[] = {
 
 constexpr size_t kSupportedBackendTypeCount = std::size(kSupportedBackends);
 
+#if defined(SK_GRAPHITE)
+static std::unique_ptr<skwindow::GraphiteDisplayParamsBuilder> make_display_params_builder(
+        const DisplayParams* other = nullptr) {
+    if (!other) {
+        return skwindow::GraphiteDisplayParamsBuilder::Make();
+    }
+    return skwindow::GraphiteDisplayParamsBuilder::Make(other);
+}
+#else
 static std::unique_ptr<skwindow::DisplayParamsBuilder> make_display_params_builder(
         const DisplayParams* other = nullptr) {
     if (!other) {
@@ -518,6 +528,7 @@ static std::unique_ptr<skwindow::DisplayParamsBuilder> make_display_params_build
     }
     return skwindow::DisplayParamsBuilder::Make(other);
 }
+#endif
 
 Viewer::Viewer(int argc, char** argv, void* platformData)
     : fCurrentSlide(-1)
@@ -1326,9 +1337,10 @@ void Viewer::updateTitle() {
 
     if (is_graphite_backend_type(fBackendType)) {
 #if defined(SK_GRAPHITE)
-        skgpu::graphite::PathRendererStrategy strategy = fWindow->getRequestedDisplayParams()
-                                                                 ->graphiteTestOptions()
-                                                                 .fPriv.fPathRendererStrategy;
+        auto graphiteOptions = fWindow->getRequestedDisplayParams()->graphiteTestOptions();
+        SkASSERT(graphiteOptions);
+        skgpu::graphite::PathRendererStrategy strategy =
+                graphiteOptions->fPriv.fPathRendererStrategy;
         if (skgpu::graphite::PathRendererStrategy::kDefault != strategy) {
             title.appendf(" [Path renderer strategy: %s]",
                           get_path_renderer_strategy_string(strategy));
@@ -2300,7 +2312,8 @@ void Viewer::drawImGui() {
                     if (is_graphite_backend_type(fBackendType) && gctx) {
 #if defined(SK_GRAPHITE)
                         using skgpu::graphite::PathRendererStrategy;
-                        skwindow::GraphiteTestOptions opts = params->graphiteTestOptions();
+                        SkASSERT(params->graphiteTestOptions());
+                        skwindow::GraphiteTestOptions opts = *params->graphiteTestOptions();
                         auto prevPrs = opts.fPriv.fPathRendererStrategy;
                         auto prsButton = [&](skgpu::graphite::PathRendererStrategy s) {
                             if (ImGui::RadioButton(get_path_renderer_strategy_string(s),
