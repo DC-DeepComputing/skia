@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c64700a_b4bf0187",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-11-27T15:45:24Z",
+      "side": 1,
+      "message": "This seems fine, but do we have a link to a bug or external request to fix building with a GCC that is 7 years old at this point (GCC 7)? We\u0027re trying to move to C++20 soon-ish and GCC 7 doesn\u0027t really support that (it was released before the C++20 spec was even finished).",
+      "revId": "7f91b21dcbb10a638c24b6ef603a771b84cbc30e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
