@@ -205,7 +205,7 @@ public:
     void recycleDescriptorSet(const GrVkDescriptorSet* descSet,
                               const GrVkDescriptorSetManager::Handle&);
 
-    void storePipelineCacheData();
+    void storePipelineCacheData(size_t maxSize);
 
     // Destroy any cached resources. To be called before destroying the VkDevice.
     // The assumption is that all queues are idle and all command buffers are finished.
