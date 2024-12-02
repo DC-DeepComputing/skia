@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bca59bbf_9904a11e",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-02T14:53:49Z",
+      "side": 1,
+      "message": "an example of using the public API shouldn\u0027t use internal src/ files",
+      "range": {
+        "startLine": 88,
+        "startChar": 14,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "7125a02b7f9ff8e1db3fcf4fd24671bba4ccf573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b6329e2_037a80a3",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-02T14:53:49Z",
+      "side": 1,
+      "message": "I wouldn\u0027t use all the wrapping code in the example here. Like the original just use the APIs that has Skia create the gl render targets internally. That can be done with `SkSurfaces::RenderTarget` functions inside `\"include/gpu/ganesh/SkSurfaceGanesh.h\"`. This keeps the example simple to show how one needs to pass in the GrDirectContext to make calls targeting the GPU",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 125,
+        "endChar": 29
+      },
+      "revId": "7125a02b7f9ff8e1db3fcf4fd24671bba4ccf573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
