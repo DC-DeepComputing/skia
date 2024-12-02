@@ -127,6 +127,30 @@
       },
       "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e39cebcd_180103d1",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-02T22:12:51Z",
+      "side": 1,
+      "message": "SkEncodedInfo.h appears to be a pure header (which are ok to include in multiple libraries), so we should probably split it into something like include/private:encoded_info (a `filegroup`) and have it be used in both srcs of the skia_cc_library rules, rather than drawing a dependency arrow from encode -\u003e decode",
+      "parentUuid": "e5450163_b77575a3",
+      "range": {
+        "startLine": 150,
+        "startChar": 21,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
