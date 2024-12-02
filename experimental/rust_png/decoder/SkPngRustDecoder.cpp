@@ -14,7 +14,9 @@
 
 namespace SkPngRustDecoder {
 
-std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream, SkCodec::Result* result) {
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
+                                SkCodec::Result* result,
+                                SkCodecs::DecodeContext) {
     return SkPngRustCodec::MakeFromStream(std::move(stream), result);
 }
 
