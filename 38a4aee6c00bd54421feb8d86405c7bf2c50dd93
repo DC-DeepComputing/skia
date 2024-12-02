@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38331e23_bd7de145",
+        "filename": "tools/window/WindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:12:31Z",
+      "side": 1,
+      "message": "I am realizing now with this API that both Ganesh and Graphite could fail to measure the GPU elapsed time, so we should be checking that `stats` has the information we want to pass to the `GpuTimerCallback`, and/or other error checking.\n\nShould we just pass in a negative value or 0 to as the elapsed time?",
+      "range": {
+        "startLine": 53,
+        "startChar": 72,
+        "endLine": 53,
+        "endChar": 77
+      },
+      "revId": "38a4aee6c00bd54421feb8d86405c7bf2c50dd93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e04ec3_8159215a",
+        "filename": "tools/window/WindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:12:31Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 104
+      },
+      "revId": "38a4aee6c00bd54421feb8d86405c7bf2c50dd93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
