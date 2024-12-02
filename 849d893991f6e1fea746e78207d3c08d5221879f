@@ -16,6 +16,24 @@
       "message": "Should still open the file conservatively, like this. On Android there are a number of files listed in the `fonts.xml` file that aren\u0027t actually present.",
       "revId": "849d893991f6e1fea746e78207d3c08d5221879f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b3008dc_b78c2395",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-02T16:19:21Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "d9604d2d_e638f9d2",
+      "revId": "849d893991f6e1fea746e78207d3c08d5221879f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
