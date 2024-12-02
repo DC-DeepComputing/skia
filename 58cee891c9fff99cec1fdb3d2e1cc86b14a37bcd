@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0417a698_99a2367f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T21:26:49Z",
+      "side": 1,
+      "message": "@adetaylor, can you PTAL at the Rust and FFI-related bits?\n\n/cc @fmalita and @danieldilan as FYI for now\n\n\"Rust and FFI-related bits\" that need a review are:\n\n* 3 files under `experimental/rust_png/ffi/...` (`UtilsForFFI.h` has been extracted from `experimental/rust_png/decoder/impl/SkPngRustCodec.cpp`)\n* Using the above from `experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp`",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
