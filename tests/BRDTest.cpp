@@ -24,8 +24,10 @@ DEF_TEST(BRD_types, r) {
         { "images/box.gif", false },
         { "images/baby_tux.webp", true },
         { "images/brickwork-texture.jpg", true },
+#if defined(SK_CODEC_DECODES_ICO)
         { "images/color_wheel.ico", false },
-#ifdef SK_CODEC_DECODES_RAW
+#endif
+#if defined(SK_CODEC_DECODES_RAW) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
         { "images/sample_1mp.dng", false },
 #endif
         { "images/mandrill.wbmp", false },
@@ -33,6 +35,7 @@ DEF_TEST(BRD_types, r) {
     };
 
     for (const auto& rec : gRec) {
+        skiatest::ReporterContext context(r, rec.name);
         auto data = GetResourceAsData(rec.name);
         if (!data) return;
 

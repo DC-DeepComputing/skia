@@ -102,6 +102,8 @@ static void TypefaceStyle_test(skiatest::Reporter* reporter,
             newStyle.width() == width || newStyle.width() == SkFontStyle::Width::kNormal_Width,
             "newStyle.width(): %d width: %" PRIu16, newStyle.width(), width);
 }
+
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 DEF_TEST(TypefaceStyle, reporter) {
     std::unique_ptr<SkStreamAsset> stream(GetResourceAsStream("fonts/Em.ttf"));
     if (!stream) {
@@ -118,6 +120,7 @@ DEF_TEST(TypefaceStyle, reporter) {
         TypefaceStyle_test(reporter, 400, width, data.get());
     }
 }
+#endif
 
 DEF_TEST(TypefaceStyleVariable, reporter) {
     using Variation = SkFontArguments::VariationPosition;

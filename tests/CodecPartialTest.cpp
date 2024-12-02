@@ -478,7 +478,9 @@ DEF_TEST(Codec_incomplete, r) {
                               "images/baby_tux.webp",
                               "images/CMYK.jpg",
                               "images/color_wheel.gif",
+#if defined(SK_CODEC_DECODES_ICO)
                               "images/google_chrome.ico",
+#endif
                               "images/rle.bmp",
                               "images/mandrill.wbmp",
                               }) {
