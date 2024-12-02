@@ -47,9 +47,11 @@ DEF_TEST(AndroidCodec_computeSampleSize, r) {
                               "images/dog.jpg",
                               "images/color_wheel.gif",
                               "images/rle.bmp",
+#if defined(SK_CODEC_DECODES_ICO)
                               "images/google_chrome.ico",
+#endif
                               "images/mandrill.wbmp",
-#ifdef SK_CODEC_DECODES_RAW
+#if defined(SK_CODEC_DECODES_RAW) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
                               "images/sample_1mp.dng",
 #endif
                               }) {
