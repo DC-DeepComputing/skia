@@ -151,6 +151,30 @@
       },
       "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a76ff53d_635c5b10",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T23:39:54Z",
+      "side": 1,
+      "message": "\u003e drawing a dependency arrow from encode -\u003e decode\n\nThe dependency arrow from `encode` to `decode` already exists before this CL: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/BUILD.bazel;l\u003d91;drc\u003dac934b9e9df93b7a4f0e2652895a53d866df80cd.  I agree that this is a bit messy, but I think this shouldn\u0027t block _this_ CL.  WDYT?\n\n\u003e SkEncodedInfo.h appears to be a pure header\n\nOne wrinkle in this plan is `SkEncodedInfo::ICCProfile::Make` which has an implementation in `SkEncodedInfo.cpp`.  Similarily `SkExif.h` (use from JPEG _encoder_) has a corresponding `SkExif.cpp`.  And `SkExif.cpp` `#include`s `src/codec/SkCodecPriv.h` and other stuff from `src/codec`.  And that last realization made me abandon my initial attempt to extract separate targets for `SkExit` and `SkEncodedInfo` stuff (I initially hoped that those targets would just depend on core/base stuff and wouldn\u0027t need any other codecs stuff, but this turned out more complicated...).",
+      "parentUuid": "e39cebcd_180103d1",
+      "range": {
+        "startLine": 150,
+        "startChar": 21,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
