@@ -58,6 +58,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{
 				"//src/codec:buffet_png_srcs",
 				"//src/codec:common_png_srcs",
+				// TODO(lukasza, kjlubick): Remove "base" entries below
+				// after migrating Skia clients to use the more granular
+				// targets like `skia_codec_png_base`.
 				"//src/codec:png_codec_base_hdrs",
 				"//src/codec:png_codec_base_srcs",
 			},
@@ -140,10 +143,20 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{"//experimental/rust_png/encoder:hdrs"}},
 		{Var: "skia_encode_rust_png_srcs",
 			Rules: []string{"//experimental/rust_png/encoder:srcs"}},
+		{Var: "skia_encode_png_base",
+			Rules: []string{
+				"//src/encode:png_encode_base_srcs",
+				"//src/encode:png_encode_base_hdrs",
+			}},
 		{Var: "skia_encode_png_public",
 			Rules: []string{"//include/encode:png_hdrs"}},
 		{Var: "skia_encode_png_srcs",
 			Rules: []string{
+				// TODO(lukasza, kjlubick): Remove "base" entries below
+				// after migrating Skia clients to use the more granular
+				// targets like `skia_encode_png_base`.
+				"//src/encode:png_encode_base_srcs",
+				"//src/encode:png_encode_base_hdrs",
 				"//src/encode:png_encode_srcs",
 				"//src/encode:png_encode_hdrs",
 			}},
