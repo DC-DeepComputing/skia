@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ea212c1_e99b4d1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-02T17:01:33Z",
+      "side": 1,
+      "message": "Need to get `skia_ports_typeface_proxy_sources` into Chromium\u0027s `src/skia/BUILD.gn` first.",
+      "revId": "fce3c75617edbf79db9f04e1173e6f4c1173d36a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f04b8fc2_946657c1",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-02T17:01:33Z",
+      "side": 1,
+      "message": "This `.` should go on the next line, lined up with the `.` in `.setCollectionIndex`.",
+      "range": {
+        "startLine": 171,
+        "startChar": 69,
+        "endLine": 171,
+        "endChar": 70
+      },
+      "revId": "fce3c75617edbf79db9f04e1173e6f4c1173d36a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
