@@ -11,6 +11,10 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
 
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+#include "cutils/properties.h"
+#endif // defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+
 class SkData;
 class SkStream;
 
@@ -69,8 +73,16 @@ SK_API std::unique_ptr<SkCodec> Decode(sk_sp<SkData>,
                                        SkCodec::Result*,
                                        SkCodecs::DecodeContext = nullptr);
 
-inline constexpr SkCodecs::Decoder Decoder() {
+inline SkCodecs::Decoder Decoder() {
+#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK)
+    if (!property_get_bool("media.crabbyavif.enable.avif.decode", false)) {
+        return { "heif", IsAvif, Decode };
+    } else {
+        return { "avif", IsAvif, Decode };
+    }
+#else
     return { "avif", IsAvif, Decode };
+#endif
 }
 
 }  // namespace CrabbyAvif
