@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d44208_d23e29db",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:21:48Z",
+      "side": 1,
+      "message": "Since this is still guarded, I *think* it should be fine for this version to just return `GraphiteDisplayParamsBuilder` and the #else version to return `DisplayParamsBuilder`.",
+      "range": {
+        "startLine": 516,
+        "startChar": 6,
+        "endLine": 516,
+        "endChar": 62
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b6997a6_b9c75bf9",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:21:48Z",
+      "side": 1,
+      "message": "WDYT about just having this return `std::move(fDisplayParams)`? We don\u0027t need to support reusing builders.",
+      "range": {
+        "startLine": 137,
+        "startChar": 66,
+        "endLine": 137,
+        "endChar": 75
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bb5b9e_2ff92b11",
+        "filename": "tools/window/DisplayParams.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:21:48Z",
+      "side": 1,
+      "message": "I prefer the Graphite builder\u0027s approach of taking in the `const*` and doing the creation as part of `fDisplayParams`, vs. requiring `Make()` to call clone().",
+      "range": {
+        "startLine": 142,
+        "startChar": 25,
+        "endLine": 142,
+        "endChar": 61
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64cf3212_54e994a3",
+        "filename": "tools/window/GraphiteDisplayParams.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-02T16:21:48Z",
+      "side": 1,
+      "message": "It looks like the builders are never accessed indirectly, so I think it would be simpler to just have `Make` return them as a value, or even just have the ctors be public (as well as for `DisplayParamsBuilder`.)",
+      "range": {
+        "startLine": 64,
+        "startChar": 57,
+        "endLine": 64,
+        "endChar": 61
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
