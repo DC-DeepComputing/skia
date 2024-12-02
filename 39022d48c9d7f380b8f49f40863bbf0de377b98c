@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d33bedec_4edc0b5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-12-02T13:33:42Z",
+      "side": 1,
+      "message": "I can\u0027t vote but LGTM!",
+      "revId": "39022d48c9d7f380b8f49f40863bbf0de377b98c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
