@@ -16,7 +16,14 @@ class SkStream;
 
 namespace SkPngRustDecoder {
 
-SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>, SkCodec::Result*);
+/** Returns true if this data claims to be a PNG image. */
+inline bool IsPng(const void*, size_t) { return true; }  // TODO(b/40278281)
+
+SK_API std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream>,
+                                       SkCodec::Result*,
+                                       SkCodecs::DecodeContext = nullptr);
+
+inline constexpr SkCodecs::Decoder Decoder() { return {"png", IsPng, Decode}; }
 
 }  // namespace SkPngRustDecoder
 

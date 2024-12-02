@@ -114,6 +114,10 @@ skia_cc_library(
         "//include/encode:encode_hdrs",
         "//include/encode:png_hdrs",
     ],
+    defines = [
+        "SK_CODEC_ENCODES_PNG",
+        "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
+    ],
     features = ["layering_check"],
     visibility = ["//:__pkg__"],
     deps = [
@@ -137,6 +141,7 @@ skia_cc_library(
         "//include/encode:encode_hdrs",
         "//include/encode:jpeg_hdrs",
     ],
+    defines = ["SK_CODEC_ENCODES_JPEG"],
     features = ["layering_check"],
     visibility = ["//:__pkg__"],
     deps = [
@@ -157,6 +162,7 @@ skia_cc_library(
         "//include/encode:encode_hdrs",
         "//include/encode:webp_hdrs",
     ],
+    defines = ["SK_CODEC_ENCODES_WEBP"],
     features = ["layering_check"],
     visibility = ["//:__pkg__"],
     deps = [

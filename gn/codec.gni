@@ -100,11 +100,10 @@ skia_codec_png_base = [
 #  //src/codec:common_png_srcs
 #  //src/codec:png_codec_base_hdrs
 #  //src/codec:png_codec_base_srcs
-skia_codec_png = [
+
+skia_codec_libpng = [
   "$_src/codec/SkPngCodec.cpp",
   "$_src/codec/SkPngCodec.h",
-  "$_src/codec/SkPngCodecBase.cpp",
-  "$_src/codec/SkPngCodecBase.h",
   "$_src/codec/SkPngPriv.h",
 ]
 
