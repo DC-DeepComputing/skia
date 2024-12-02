@@ -295,7 +295,7 @@ skia_cc_library(
 )
 
 skia_filegroup(
-    name = "buffet_png_srcs",
+    name = "buffet_libpng_srcs",
     srcs = [
         "SkPngCodec.cpp",
         "SkPngCodec.h",
@@ -303,7 +303,7 @@ skia_filegroup(
 )
 
 skia_filegroup(
-    name = "common_png_srcs",
+    name = "common_libpng_srcs",
     srcs = [
         "SkPngPriv.h",
     ],
@@ -313,8 +313,8 @@ skia_filegroup(
 skia_cc_library(
     name = "png_decode",
     srcs = [
-        ":buffet_png_srcs",
-        ":common_png_srcs",
+        ":buffet_libpng_srcs",
+        ":common_libpng_srcs",
     ],
     hdrs = [
         "//include/codec:any_codec_hdrs",

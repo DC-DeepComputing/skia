@@ -67,13 +67,6 @@
 
 using namespace skia_private;
 
-#if PNG_LIBPNG_VER_MAJOR == 1 && PNG_LIBPNG_VER_MINOR < 5
-    // FIXME (scroggo): Google3 needs to be updated to use a newer version of libpng. In
-    // the meantime, we had to break some pieces of SkPngCodec in order to support Google3.
-    // The parts that are broken are likely not used by Google3.
-    #define SK_PNG_DISABLE_TESTS
-#endif
-
 static SkMD5::Digest md5(const SkBitmap& bm) {
     SkASSERT(bm.getPixels());
     SkMD5 md5;
@@ -465,7 +458,7 @@ static void check_codec_image_generator(skiatest::Reporter* r,
         REPORTER_ASSERT(r, gen->getPixels(info, bm.getPixels(), bm.rowBytes()));
         compare_to_good_digest(r, codecDigest, bm);
 
-#if !defined(SK_PNG_DISABLE_TESTS) && defined(SK_ENABLE_ANDROID_UTILS)
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG) && defined(SK_ENABLE_ANDROID_UTILS)
         // Test using FrontBufferedStream, as Android does
         auto bufferedStream = android::skia::FrontBufferedStream::Make(
                       SkMemoryStream::Make(std::move(fullData)), SkCodec::MinBufferedBytesNeeded());
@@ -486,6 +479,7 @@ static void check(skiatest::Reporter* r,
                   bool supportsSubsetDecoding,
                   bool supportsIncomplete,
                   bool supportsNewScanlineDecoding = false) {
+    skiatest::ReporterContext context(r, path);
     // If we're testing incomplete decodes, let's run the same test on full decodes.
     if (supportsIncomplete) {
         check(r, path, size, supportsScanlineDecoding, supportsSubsetDecoding,
@@ -541,6 +535,7 @@ DEF_TEST(Codec_bmp, r) {
     check(r, "images/rle.bmp", SkISize::Make(320, 240), true, false, true);
 }
 
+#if defined(SK_CODEC_DECODES_ICO)
 DEF_TEST(Codec_ico, r) {
     // FIXME: We are not ready to test incomplete ICOs
     // These two tests examine interestingly different behavior:
@@ -549,6 +544,7 @@ DEF_TEST(Codec_ico, r) {
     // Decodes an embedded PNG image
     check(r, "images/google_chrome.ico", SkISize::Make(256, 256), false, false, false, true);
 }
+#endif
 
 DEF_TEST(Codec_gif, r) {
     check(r, "images/box.gif", SkISize::Make(200, 55), false, false, true, true);
@@ -567,6 +563,7 @@ DEF_TEST(Codec_jpg, r) {
     check(r, "images/randPixels.jpg", SkISize::Make(8, 8), true, false, false);
 }
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 DEF_TEST(Codec_png, r) {
     check(r, "images/arrow.png", SkISize::Make(187, 312), false, false, true, true);
     check(r, "images/baby_tux.png", SkISize::Make(240, 246), false, false, true, true);
@@ -585,9 +582,10 @@ DEF_TEST(Codec_png, r) {
     check(r, "images/randPixels.png", SkISize::Make(8, 8), false, false, true, true);
     check(r, "images/yellow_rose.png", SkISize::Make(400, 301), false, false, true, true);
 }
+#endif
 
 // Disable RAW tests for Win32.
-#if defined(SK_CODEC_DECODES_RAW) && (!defined(_WIN32))
+#if defined(SK_CODEC_DECODES_RAW) && !defined(_WIN32) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 DEF_TEST(Codec_raw, r) {
     check(r, "images/sample_1mp.dng", SkISize::Make(600, 338), false, false, false);
     check(r, "images/sample_1mp_rotated.dng", SkISize::Make(600, 338), false, false, false);
@@ -678,6 +676,7 @@ DEF_TEST(Codec_Dimensions, r) {
     test_dimensions(r, "images/mandrill_512_q075.jpg");
     test_dimensions(r, "images/randPixels.jpg");
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
     // Decoding small images with very large scaling factors is a potential
     // source of bugs and crashes.  We disable these tests in Gold because
     // tiny images are not very useful to look at.
@@ -691,10 +690,11 @@ DEF_TEST(Codec_Dimensions, r) {
     test_dimensions(r, "images/16x1.png");
     test_dimensions(r, "images/1x16.png");
     test_dimensions(r, "images/mandrill_16.png");
+#endif
 
     // RAW
 // Disable RAW tests for Win32.
-#if defined(SK_CODEC_DECODES_RAW) && (!defined(_WIN32))
+#if defined(SK_CODEC_DECODES_RAW) && !defined(_WIN32) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
     test_dimensions(r, "images/sample_1mp.dng");
     test_dimensions(r, "images/sample_1mp_rotated.dng");
     test_dimensions(r, "images/dng_with_preview.dng");
@@ -740,10 +740,7 @@ DEF_TEST(Codec_Empty, r) {
     test_invalid(r, "invalid_images/ossfuzz6347");
 }
 
-#ifdef PNG_READ_UNKNOWN_CHUNKS_SUPPORTED
-
-#ifndef SK_PNG_DISABLE_TESTS   // reading chunks does not work properly with older versions.
-                               // It does not appear that anyone in Google3 is reading chunks.
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 
 static void codex_test_write_fn(png_structp png_ptr, png_bytep data, png_size_t len) {
     SkWStream* sk_stream = (SkWStream*)png_get_io_ptr(png_ptr);
@@ -898,8 +895,8 @@ DEF_TEST(Codec_pngChunkReader, r) {
     REPORTER_ASSERT(r, SkCodec::kSuccess == result);
     REPORTER_ASSERT(r, chunkReader.allHaveBeenSeen());
 }
-#endif // SK_PNG_DISABLE_TESTS
-#endif // PNG_READ_UNKNOWN_CHUNKS_SUPPORTED
+#endif // defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+
 
 // Stream that can only peek up to a limit
 class LimitedPeekingMemStream : public SkStream {
@@ -926,7 +923,7 @@ private:
 };
 
 // Disable RAW tests for Win32.
-#if defined(SK_CODEC_DECODES_RAW) && (!defined(_WIN32))
+#if defined(SK_CODEC_DECODES_RAW) && !defined(_WIN32) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 // Test that the RawCodec works also for not asset stream. This will test the code path using
 // SkRawBufferedStream instead of SkRawAssetStream.
 DEF_TEST(Codec_raw_notseekable, r) {
@@ -940,8 +937,9 @@ DEF_TEST(Codec_raw_notseekable, r) {
     std::unique_ptr<SkCodec> codec(SkCodec::MakeFromStream(
                                            std::make_unique<NotAssetMemStream>(std::move(data))));
     REPORTER_ASSERT(r, codec);
-
-    test_info(r, codec.get(), codec->getInfo(), SkCodec::kSuccess, nullptr);
+    if (codec) {
+        test_info(r, codec.get(), codec->getInfo(), SkCodec::kSuccess, nullptr);
+    }
 }
 #endif
 
@@ -1073,6 +1071,7 @@ DEF_TEST(Codec_jpeg_rewind, r) {
     REPORTER_ASSERT(r, SkCodec::kIncompleteInput == result);
 }
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 static void check_color_xform(skiatest::Reporter* r, const char* path) {
     std::unique_ptr<SkAndroidCodec> codec(SkAndroidCodec::MakeFromStream(GetResourceAsStream(path)));
 
@@ -1185,6 +1184,7 @@ DEF_TEST(Codec_PngRoundTrip, r) {
         check_round_trip(r, codec.get(), newInfo);
     }
 }
+#endif  // SK_CODEC_DECODES_PNG_WITH_LIBPNG
 
 static void test_conversion_possible(skiatest::Reporter* r, const char* path,
                                      bool supportsScanlineDecoder,
@@ -1345,9 +1345,11 @@ DEF_TEST(Codec_fallBack, r) {
     // Formats that currently do not support incremental decoding
     auto files = {
             "images/CMYK.jpg",
-            "images/color_wheel.ico",
             "images/mandrill.wbmp",
             "images/randPixels.bmp",
+#if defined(SK_CODEC_DECODES_ICO)
+            "images/color_wheel.ico",
+#endif
             };
     for (auto file : files) {
         auto stream = LimitedRewindingStream::Make(file, SkCodec::MinBufferedBytesNeeded());
@@ -1419,6 +1421,7 @@ DEF_TEST(Wuffs_seek_and_decode, r) {
 #endif
 }
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
 // This test verifies that we fixed an assert statement that fired when reusing a png codec
 // after scaling.
 DEF_TEST(Codec_reusePng, r) {
@@ -1448,6 +1451,7 @@ DEF_TEST(Codec_reusePng, r) {
     result = codec->getAndroidPixels(info, bm.getPixels(), bm.rowBytes(), &opts);
     REPORTER_ASSERT(r, result == SkCodec::kSuccess);
 }
+#endif
 
 DEF_TEST(Codec_rowsDecoded, r) {
     auto file = "images/plane_interlaced.png";
@@ -1526,7 +1530,9 @@ static void test_invalid_header(skiatest::Reporter* r, const char* path) {
 }
 
 DEF_TEST(Codec_InvalidHeader, r) {
+#if defined(SK_CODEC_DECODES_ICO)
     test_invalid_header(r, "invalid_images/int_overflow.ico");
+#endif
 
     // These files report values that have caused problems with SkFILEStreams.
     // They are invalid, and should not create SkCodecs.

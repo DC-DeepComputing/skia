@@ -205,11 +205,14 @@ DEF_TEST(Codec_frames, r) {
                 { kKeep, kKeep }, {false, true}, { kSrcOver, kSrcOver },
                 { {0, 0, 640, 400}, {0, 0, 640, 200}},
         },
-
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
         { "images/arrow.png",  1, {}, {}, {}, 0, {}, {}, {}, {} },
+#endif
+#if defined(SK_CODEC_DECODES_ICO)
         { "images/google_chrome.ico", 1, {}, {}, {}, 0, {}, {}, {}, {} },
+#endif
         { "images/brickwork-texture.jpg", 1, {}, {}, {}, 0, {}, {}, {}, {} },
-#if defined(SK_CODEC_DECODES_RAW) && (!defined(_WIN32))
+#if defined(SK_CODEC_DECODES_RAW) && !defined(_WIN32) && defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
         { "images/dng_with_preview.dng", 1, {}, {}, {}, 0, {}, {}, {}, {} },
 #endif
         { "images/mandrill.wbmp", 1, {}, {}, {}, 0, {}, {}, {}, {} },
@@ -247,6 +250,7 @@ DEF_TEST(Codec_frames, r) {
     };
 
     for (const auto& rec : gRecs) {
+        skiatest::ReporterContext context(r, rec.fName);
         sk_sp<SkData> data(GetResourceAsData(rec.fName));
         if (!data) {
             // Useful error statement, but sometimes people run tests without
