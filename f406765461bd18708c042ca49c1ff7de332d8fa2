@@ -16,6 +16,24 @@
       "message": "nit: include release/version number or git revision",
       "revId": "f406765461bd18708c042ca49c1ff7de332d8fa2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "435451ee_1a43c15f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-02T15:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2158455_eb5c2238",
+      "revId": "f406765461bd18708c042ca49c1ff7de332d8fa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
