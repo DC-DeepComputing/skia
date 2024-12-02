@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d90d9a4d_54355f45",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T22:05:37Z",
+      "side": 1,
+      "message": "Yes, we should do that.  But we also need to do that in Chromium and other Skia clients, so I plan to do that in separate CLs.  I plan to track this in https://crbug.com/381900683",
+      "parentUuid": "2a666435_84a7c63e",
+      "range": {
+        "startLine": 804,
+        "startChar": 16,
+        "endLine": 804,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "42d6468f_7342a561",
         "filename": "src/encode/BUILD.bazel",
         "patchSetId": 14
@@ -71,6 +95,30 @@
       "writtenOn": "2024-12-02T21:48:13Z",
       "side": 1,
       "message": "Why does the encoder need decoder libraries?",
+      "range": {
+        "startLine": 150,
+        "startChar": 21,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5450163_b77575a3",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T22:05:37Z",
+      "side": 1,
+      "message": "For `SkEncodedInfo` which is defined in `include/private/SkEncodedInfo.h` and gathered into `include/private:decode_srcs` `skia_filegroup`.  `third_party/skia/src/codec/BUILD.bazel` gathers `include/private:decode_srcs` (together with other things) into `PRIVATE_CODEC_HEADERS` which are then packaged up as `hdrs` of `//src/codec:any_decoder` target.\n\nI hope that it\u0027s okay to reuse `SkEncodedInfo` here, but maybe there is another way to represent (Rgb, Rgba, Gray, GrayAlpha) x (bpp\u003d8 or bpp\u003d16)?  FWIW it is also convenient to be able to use `SkEncodedInfo::bitsPerPixel`.",
+      "parentUuid": "42d6468f_7342a561",
       "range": {
         "startLine": 150,
         "startChar": 21,
