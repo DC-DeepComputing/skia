@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd7c5d75_edac9f4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-02T17:09:15Z",
+      "side": 1,
+      "message": "Will be a separate CL coming in before this one.",
+      "parentUuid": "9ea212c1_e99b4d1f",
+      "revId": "fce3c75617edbf79db9f04e1173e6f4c1173d36a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f04b8fc2_946657c1",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-12-02T17:01:33Z",
       "side": 1,
       "message": "This `.` should go on the next line, lined up with the `.` in `.setCollectionIndex`.",
+      "range": {
+        "startLine": 171,
+        "startChar": 69,
+        "endLine": 171,
+        "endChar": 70
+      },
+      "revId": "fce3c75617edbf79db9f04e1173e6f4c1173d36a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64436e1e_89a0805e",
+        "filename": "src/ports/SkFontMgr_android.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-02T17:09:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f04b8fc2_946657c1",
       "range": {
         "startLine": 171,
         "startChar": 69,
