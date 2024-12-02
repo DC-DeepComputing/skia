@@ -54,10 +54,18 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/codec:png_codec_base_srcs",
 			},
 		},
-		{Var: "skia_codec_png",
+		{Var: "skia_codec_png", // TODO(kjlubick) update clients to use more granular rules
 			Rules: []string{
-				"//src/codec:buffet_png_srcs",
-				"//src/codec:common_png_srcs",
+				"//src/codec:buffet_libpng_srcs",
+				"//src/codec:common_libpng_srcs",
+				"//src/codec:png_codec_base_hdrs",
+				"//src/codec:png_codec_base_srcs",
+			},
+		},
+		{Var: "skia_codec_libpng",
+			Rules: []string{
+				"//src/codec:buffet_libpng_srcs",
+				"//src/codec:common_libpng_srcs",
 				"//src/codec:png_codec_base_hdrs",
 				"//src/codec:png_codec_base_srcs",
 			},
