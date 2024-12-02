@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2afdf603_8f9069e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T15:47:49Z",
+      "side": 1,
+      "message": "@fmalita or @bungeman - can you PTAL?\n\nI am not sure whose turn it is now.  For more background about this CL, please see the earlier comment at https://skia-review.googlesource.com/c/skia/+/920958/15#message-b2392bc19795424461f0c624b09744753cb1a395",
+      "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
