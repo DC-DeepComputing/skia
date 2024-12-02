@@ -16,6 +16,98 @@
       "message": "@fmalita or @bungeman - can you PTAL?\n\nI am not sure whose turn it is now.  For more background about this CL, please see the earlier comment at https://skia-review.googlesource.com/c/skia/+/920958/15#message-b2392bc19795424461f0c624b09744753cb1a395",
       "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f900f1e_2a7cd4dd",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-02T18:32:56Z",
+      "side": 1,
+      "message": "nit: you can omit `.get` since `unique_ptr` has a bool operator.",
+      "range": {
+        "startLine": 19,
+        "startChar": 18,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f3c395ff_b78a2596",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/encoder/SkPngRustEncoder.cpp",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": "    return encoder \u0026\u0026 encoder-\u003eencodeRows(src.height());\n"
+            }
+          ]
+        }
+      ],
+      "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f505422f_dd3d6907",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-02T18:32:56Z",
+      "side": 1,
+      "message": "nit: named params, since they are mentioned in the docs",
+      "range": {
+        "startLine": 32,
+        "startChar": 19,
+        "endLine": 32,
+        "endChar": 46
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8e61811b_6f59c63d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 33,
+                "endChar": 0
+              },
+              "replacement": "SK_API bool Encode(SkWStream* dst, const SkPixmap\u0026 src);\n"
+            },
+            {
+              "path": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+              "range": {
+                "startLine": 46,
+                "startChar": 0,
+                "endLine": 47,
+                "endChar": 0
+              },
+              "replacement": "SK_API std::unique_ptr\u003cSkEncoder\u003e Make(SkWStream* dst, const SkPixmap\u0026 src);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
