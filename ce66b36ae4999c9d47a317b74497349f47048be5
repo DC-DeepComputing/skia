@@ -16,6 +16,23 @@
       "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
       "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9d89e2f_02d4f5b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T21:12:01Z",
+      "side": 1,
+      "message": "/cc @kjlubick because:\n\n* There may be light conflicts with their https://skia-review.googlesource.com/c/skia/+/926096\n* We have been chatting about `.gni` organization and I want to transparently share what I am doing in this CL with `skia_encode_png_base` (mostly postponing real work until we get to https://crbug.com/381900683;  and I will probably postpone this until Chromium actually hooks up Rusty encoder in https://crrev.com/c/6044082).\n\nPlease feel free to take a look at the overall CL (but FWIW I plan to go ahead and land this with just one LGTM - I don\u0027t think there is anything controversial in this CL;  if we decide to split or rename targets, then it should be fine to do it in a follow-up CL).",
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
