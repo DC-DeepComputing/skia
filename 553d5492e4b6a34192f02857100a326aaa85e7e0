@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d82573e6_224bd173",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T18:38:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6f900f1e_2a7cd4dd",
+      "range": {
+        "startLine": 19,
+        "startChar": 18,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f505422f_dd3d6907",
@@ -106,6 +130,30 @@
           ]
         }
       ],
+      "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59bbb2ee_f0c5acda",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-02T18:38:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f505422f_dd3d6907",
+      "range": {
+        "startLine": 32,
+        "startChar": 19,
+        "endLine": 32,
+        "endChar": 46
+      },
       "revId": "553d5492e4b6a34192f02857100a326aaa85e7e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
