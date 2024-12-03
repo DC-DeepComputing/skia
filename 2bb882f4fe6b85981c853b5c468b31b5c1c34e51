@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76eae81e_5f9d5d6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2024-12-03T08:29:25Z",
+      "side": 1,
+      "message": "-1 Please do not submit this.\n\nSkCrabbyAvifCodec can handle scaling internally, so whenever it is used, it has to be wrapped with SkAndroidCodecAdapter. SkHeifCodec (the current platform HEIC implementation) cannot handle scaling and is wrapped in SkSampledCodec. In this proposed fix, we will end up wrapping SkCrabbyAvifCodec in SkSampledCodec which is incorrect.\n\nI have some CrabbyAvif fixes coming up which fill fix the underylying AVIF issues and make this CL unnecessary.",
+      "revId": "2bb882f4fe6b85981c853b5c468b31b5c1c34e51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
