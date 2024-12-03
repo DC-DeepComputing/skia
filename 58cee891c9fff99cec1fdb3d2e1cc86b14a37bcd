@@ -16,6 +16,40 @@
       "message": "@adetaylor, can you PTAL at the Rust and FFI-related bits?\n\n/cc @fmalita and @danieldilan as FYI for now\n\n\"Rust and FFI-related bits\" that need a review are:\n\n* 3 files under `experimental/rust_png/ffi/...` (`UtilsForFFI.h` has been extracted from `experimental/rust_png/decoder/impl/SkPngRustCodec.cpp`)\n* Using the above from `experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp`",
       "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450f8908_51ca46df",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-12-03T08:03:32Z",
+      "side": 1,
+      "message": "Nit: `\u0026mut Self` in this and the next function?",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42df84cd_2b98190e",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-12-03T08:03:32Z",
+      "side": 1,
+      "message": "I think it would be good to avoid the `unwrap`s here because they provide a possibility of runtime error cases where we would ideally enforce everything at compile-time. The original `finish` method takes `self` by value, so there would be no need for the field to be an `Option`.\n\nDoes it work if you provide this method signature instead?\n\n```\n  pub fn finish(self: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n```\n\nI think it might!\n\nIf not perhaps you could switch this `finish` method from being a method into being a free function:\n\n```\npub fn finish_encode(this: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n```\n\nThat\u0027s not as neat and tidy but I personally would choose to value removal of runtime error paths over neatness. Up to you though.",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
