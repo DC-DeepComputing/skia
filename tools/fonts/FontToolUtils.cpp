@@ -253,6 +253,10 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 #  endif
 #endif
 
+bool TestHasFontations() {
+    return FLAGS_fontations;
+}
+
 sk_sp<SkFontMgr> TestFontMgr() {
     static sk_sp<SkFontMgr> mgr;
     static SkOnce once;
