@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0fa62a1_e2b900cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T16:32:29Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL again?",
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2a666435_84a7c63e",
@@ -214,6 +231,24 @@
       "writtenOn": "2024-12-03T15:52:38Z",
       "side": 1,
       "message": "Are we missing a `/8` here, for \"bits\" -\u003e \"bytes\"?",
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfb40d7b_9916debb",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T16:32:29Z",
+      "side": 1,
+      "message": "Ooops.  Good catch.\n\nThis didn\u0027t cause any functional issues, because this value is passed to the base class\u0027s constructor which uses it to calculate the size of the per-row buffer.  We would end-up constructing a buffer that is unnecessarily big (which is wasteful, but doesn\u0027t cause any functional or memory-safety issues).\n\nIIRC I caught that issue in testing, but apparently I\u0027ve only fixed it in https://skia-review.googlesource.com/c/skia/+/923336/12/src/encode/SkPngEncoderBase.cpp, and didn\u0027t realize that I should also fix this here.\n\nFixed / done.",
+      "parentUuid": "43a341fc_2bdbd772",
       "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
