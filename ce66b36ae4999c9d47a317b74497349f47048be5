@@ -175,6 +175,30 @@
       },
       "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55267a61_34299b39",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-03T13:13:24Z",
+      "side": 1,
+      "message": "Good point. I hadn\u0027t realized that arrow existed. Thanks for trying to detangle it though!",
+      "parentUuid": "a76ff53d_635c5b10",
+      "range": {
+        "startLine": 150,
+        "startChar": 21,
+        "endLine": 150,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
