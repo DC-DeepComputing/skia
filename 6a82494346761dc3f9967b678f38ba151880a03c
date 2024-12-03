@@ -22,6 +22,30 @@
       },
       "revId": "6a82494346761dc3f9967b678f38ba151880a03c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a08a60ab_f8f566a6",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-03T16:02:24Z",
+      "side": 1,
+      "message": "Yeah, I think my way was needlessly verbose (I forgot we had SkAlignTo) [but helpful for me to wrap my head around how the more concise version works].",
+      "parentUuid": "4c40eff9_afabbb10",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 61
+      },
+      "revId": "6a82494346761dc3f9967b678f38ba151880a03c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
