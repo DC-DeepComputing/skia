@@ -18,6 +18,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/encode/SkEncoder.h"
@@ -26,10 +27,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkNoncopyable.h"
-#include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
-#include "src/base/SkMSAN.h"
-#include "src/base/SkSafeMath.h"
 #include "src/codec/SkPngPriv.h"
 #include "src/encode/SkImageEncoderFns.h"
 #include "src/encode/SkImageEncoderPriv.h"
@@ -82,13 +80,14 @@ public:
      */
     static std::unique_ptr<SkPngEncoderMgr> Make(SkWStream* stream);
 
-    bool setHeader(const SkImageInfo& srcInfo, const SkPngEncoder::Options& options);
+    bool setHeader(const SkEncodedInfo& dstInfo,
+                   const SkImageInfo& srcInfo,
+                   const SkPngEncoder::Options& options);
     bool setColorSpace(const SkImageInfo& info, const SkPngEncoder::Options& options);
     bool writeInfo(const SkImageInfo& srcInfo);
 
     png_structp pngPtr() { return fPngPtr; }
     png_infop infoPtr() { return fInfoPtr; }
-    size_t bytesPerEncodedRow() const { return fBytesPerEncodedRow; }
     transform_scanline_proc proc() const { return fProc; }
 
     ~SkPngEncoderMgr() { png_destroy_write_struct(&fPngPtr, &fInfoPtr); }
@@ -98,7 +97,6 @@ private:
 
     png_structp fPngPtr;
     png_infop fInfoPtr;
-    size_t fBytesPerEncodedRow = 0;
     transform_scanline_proc fProc = nullptr;
 };
 
@@ -119,30 +117,10 @@ std::unique_ptr<SkPngEncoderMgr> SkPngEncoderMgr::Make(SkWStream* stream) {
     return std::unique_ptr<SkPngEncoderMgr>(new SkPngEncoderMgr(pngPtr, infoPtr));
 }
 
-bool SkPngEncoderMgr::setHeader(const SkImageInfo& srcInfo, const SkPngEncoder::Options& options) {
+bool SkPngEncoderMgr::setHeader(const SkEncodedInfo& dstInfo,
+                                const SkImageInfo& srcInfo,
+                                const SkPngEncoder::Options& options) {
     if (setjmp(png_jmpbuf(fPngPtr))) {
-        return false;
-    }
-
-    std::optional<std::pair<SkEncodedInfo, transform_scanline_proc>> maybeDstInfo =
-            SkPngEncoderBase::getTargetInfo(srcInfo);
-    if (!maybeDstInfo.has_value()) {
-        return false;
-    }
-    const SkEncodedInfo& dstInfo = maybeDstInfo->first;
-    fProc = maybeDstInfo->second;
-
-    // `static_cast<size_t>`(dstInfo.bitsPerPixel())` uses trustworthy, bounded
-    // data as input - no need to use `SkSafeMath` for this part.
-    SkASSERT(dstInfo.bitsPerComponent() == 8 || dstInfo.bitsPerComponent() == 16);
-    SkASSERT(dstInfo.bitsPerPixel() <= (16 * 4));
-    size_t bitsPerPixel = static_cast<size_t>(dstInfo.bitsPerPixel());
-    SkASSERT((bitsPerPixel % 8) == 0);
-    size_t bytesPerPixel = bitsPerPixel / 8;
-
-    SkSafeMath safe;
-    fBytesPerEncodedRow = safe.mul(safe.castTo<size_t>(dstInfo.width()), bytesPerPixel);
-    if (!safe.ok()) {
         return false;
     }
 
@@ -332,35 +310,32 @@ bool SkPngEncoderMgr::writeInfo(const SkImageInfo& srcInfo) {
     return true;
 }
 
-SkPngEncoderImpl::SkPngEncoderImpl(std::unique_ptr<SkPngEncoderMgr> encoderMgr, const SkPixmap& src)
-        : SkEncoder(src, encoderMgr->bytesPerEncodedRow()), fEncoderMgr(std::move(encoderMgr)) {}
+SkPngEncoderImpl::SkPngEncoderImpl(const SkEncodedInfo& dstInfo,
+                                   transform_scanline_proc transformProc,
+                                   std::unique_ptr<SkPngEncoderMgr> encoderMgr,
+                                   const SkPixmap& src)
+        : SkPngEncoderBase(dstInfo, src, transformProc), fEncoderMgr(std::move(encoderMgr)) {}
 
 SkPngEncoderImpl::~SkPngEncoderImpl() {}
 
-bool SkPngEncoderImpl::onEncodeRows(int numRows) {
+bool SkPngEncoderImpl::onEncodeRow(SkSpan<uint8_t> row) {
     if (setjmp(png_jmpbuf(fEncoderMgr->pngPtr()))) {
         return false;
     }
 
-    const void* srcRow = fSrc.addr(0, fCurrRow);
-    for (int y = 0; y < numRows; y++) {
-        sk_msan_assert_initialized(srcRow,
-                                   (const uint8_t*)srcRow + (fSrc.width() << fSrc.shiftPerPixel()));
-        fEncoderMgr->proc()((char*)fStorage.get(),
-                            (const char*)srcRow,
-                            fSrc.width(),
-                            SkColorTypeBytesPerPixel(fSrc.colorType()));
+    // `png_bytep` is `uint8_t*` rather than `const uint8_t*`.
+    png_bytep rowPtr = const_cast<png_bytep>(row.data());
 
-        png_bytep rowPtr = (png_bytep)fStorage.get();
-        png_write_rows(fEncoderMgr->pngPtr(), &rowPtr, 1);
-        srcRow = SkTAddOffset<const void>(srcRow, fSrc.rowBytes());
+    png_write_rows(fEncoderMgr->pngPtr(), &rowPtr, 1);
+    return true;
+}
+
+bool SkPngEncoderImpl::onFinishEncoding() {
+    if (setjmp(png_jmpbuf(fEncoderMgr->pngPtr()))) {
+        return false;
     }
 
-    fCurrRow += numRows;
-    if (fCurrRow == fSrc.height()) {
-        png_write_end(fEncoderMgr->pngPtr(), fEncoderMgr->infoPtr());
-    }
-
+    png_write_end(fEncoderMgr->pngPtr(), fEncoderMgr->infoPtr());
     return true;
 }
 
@@ -375,7 +350,15 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
         return nullptr;
     }
 
-    if (!encoderMgr->setHeader(src.info(), options)) {
+    std::optional<std::pair<SkEncodedInfo, transform_scanline_proc>> maybeDstInfo =
+            SkPngEncoderBase::getTargetInfo(src.info());
+    if (!maybeDstInfo.has_value()) {
+        return nullptr;
+    }
+    const SkEncodedInfo& dstInfo = maybeDstInfo->first;
+    transform_scanline_proc transformProc = maybeDstInfo->second;
+
+    if (!encoderMgr->setHeader(dstInfo, src.info(), options)) {
         return nullptr;
     }
 
@@ -387,7 +370,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
         return nullptr;
     }
 
-    return std::make_unique<SkPngEncoderImpl>(std::move(encoderMgr), src);
+    return std::make_unique<SkPngEncoderImpl>(dstInfo, transformProc, std::move(encoderMgr), src);
 }
 
 bool Encode(SkWStream* dst, const SkPixmap& src, const Options& options) {
