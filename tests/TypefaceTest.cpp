@@ -102,6 +102,7 @@ static void TypefaceStyle_test(skiatest::Reporter* reporter,
             newStyle.width() == width || newStyle.width() == SkFontStyle::Width::kNormal_Width,
             "newStyle.width(): %d width: %" PRIu16, newStyle.width(), width);
 }
+
 DEF_TEST(TypefaceStyle, reporter) {
     std::unique_ptr<SkStreamAsset> stream(GetResourceAsStream("fonts/Em.ttf"));
     if (!stream) {
