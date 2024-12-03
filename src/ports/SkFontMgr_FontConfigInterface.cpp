@@ -27,18 +27,11 @@ std::unique_ptr<SkStreamAsset> SkTypeface_FCI::onOpenStream(int* ttcIndex) const
     return std::unique_ptr<SkStreamAsset>(fFCI->openStream(this->getIdentity()));
 }
 
-std::unique_ptr<SkFontData> SkTypeface_FCI::onMakeFontData() const {
-    const SkFontConfigInterface::FontIdentity& id = this->getIdentity();
-    return std::make_unique<SkFontData>(std::unique_ptr<SkStreamAsset>(fFCI->openStream(id)),
-                                        id.fTTCIndex, 0, nullptr, 0, nullptr, 0);
-}
-
 void SkTypeface_FCI::onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const {
     SkString name;
     this->getFamilyName(&name);
     desc->setFamilyName(name.c_str());
     desc->setStyle(this->fontStyle());
-    desc->setFactoryId(SkTypeface_FreeType::FactoryId);
     *serialize = true;
 }
 
@@ -204,7 +197,7 @@ protected:
         // Check if a typeface with this FontIdentity is already in the FontIdentity cache.
         face = fTFCache.findByProcAndRef(find_by_FontIdentity, &identity);
         if (!face) {
-            face.reset(SkTypeface_FCI::Create(fFCI, identity, std::move(outFamilyName), outStyle));
+            face.reset(SkTypeface_FCI::Create(fFCI, identity, std::move(outFamilyName), outStyle, false));
             // Add this FontIdentity to the FontIdentity cache.
             fTFCache.add(face);
         }
