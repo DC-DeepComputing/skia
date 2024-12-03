@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19745e4e_bc4a1c40",
+        "filename": "src/encode/SkPngEncoderBase.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T17:42:05Z",
+      "side": 1,
+      "message": "Good idea.  Maybe I can package things up into an explicit `TargetInfo` struct.\n\nDone?",
+      "parentUuid": "59d9a0c2_d3cfb74f",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 5
+      },
+      "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8498fdb3_4fc27936",
@@ -78,6 +102,30 @@
           ]
         }
       ],
+      "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "468a7aa6_23a6e5ad",
+        "filename": "src/encode/SkPngEncoderBase.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T17:42:05Z",
+      "side": 1,
+      "message": "Good idea.  I should have thought about that :-/.  Done.",
+      "parentUuid": "8498fdb3_4fc27936",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 34
+      },
       "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

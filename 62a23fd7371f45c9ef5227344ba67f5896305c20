@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8902ae30_75fab5ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T17:42:05Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL again?",
+      "revId": "62a23fd7371f45c9ef5227344ba67f5896305c20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
