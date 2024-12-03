@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e936c7b_d959a538",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-03T14:10:20Z",
+      "side": 1,
+      "message": "c++ bits lgtm",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "450f8908_51ca46df",
