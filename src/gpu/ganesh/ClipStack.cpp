@@ -87,6 +87,11 @@ enum class ClipGeometry {
     kBoth
 };
 
+template<typename A>
+void dump1(const char* label, const A& a) {
+    a.dump(label);
+}
+
 // A and B can be Element, SaveRecord, or Draw. Supported combinations are, order not mattering,
 // (Element, Element), (Element, SaveRecord), (Element, Draw), and (SaveRecord, Draw).
 template<typename A, typename B>
@@ -103,6 +108,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
                 // B's full coverage region contains entirety of A, so intersection = A
                 return ClipGeometry::kAOnly;
             } else if (a.contains(b)) {
+                SkDebugf("A contains B\n");
+                dump1("A", a);
+                dump1("B", b);
                 // A's full coverage region contains entirety of B, so intersection = B
                 return ClipGeometry::kBOnly;
             } else {
@@ -130,6 +138,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
             // Difference (A) + Intersect (B) - the mirror of Intersect(A) + Difference(B),
             // but combining is commutative so this is equivalent barring naming.
             if (!SkIRect::Intersects(b.outerBounds(), a.outerBounds())) {
+                SkDebugf("A and B don't intersect\n");
+                dump1("A", a);
+                dump1("B", b);
                 // B only intersects A's full coverage region, so intersection = B
                 return ClipGeometry::kBOnly;
             } else if (a.contains(b)) {
@@ -147,6 +158,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
                 // coverage from their intersection.
                 return ClipGeometry::kAOnly;
             } else if (b.contains(a)) {
+                SkDebugf("B contains A\n");
+                dump1("A", a);
+                dump1("B", b);
                 // Mirror of the above case, intersection = B instead
                 return ClipGeometry::kBOnly;
             } else {
@@ -454,6 +468,12 @@ namespace skgpu::ganesh {
 
 class ClipStack::Draw {
 public:
+    void dump(const char* label) const {
+        SkDebugf("%s ClipStack::Draw outer: %d, %d, %d, %d\n",
+                 label,
+                 fBounds.fLeft, fBounds.fTop, fBounds.fRight, fBounds.fBottom);
+    }
+
     Draw(const SkRect& drawBounds, GrAA aa)
             : fBounds(GrClip::GetPixelIBounds(drawBounds, aa, BoundsType::kExterior))
             , fAA(aa) {
@@ -487,6 +507,12 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // ClipStack::Element
+
+void ClipStack::RawElement::dump(const char* label) const {
+    SkDebugf("%s: RawElement\n",
+             label,
+             ToStr(shape().type()));
+}
 
 ClipStack::RawElement::RawElement(const SkMatrix& localToDevice, const GrShape& shape,
                                   GrAA aa, SkClipOp op)
@@ -1305,12 +1331,98 @@ GrClip::PreClipResult ClipStack::preApply(const SkRect& bounds, GrAA aa) const {
     SkUNREACHABLE;
 }
 
+static const char* ToStr(ClipStack::ClipState cs) {
+    switch (cs) {
+        case ClipStack::ClipState::kEmpty:       return "empty";
+        case ClipStack::ClipState::kWideOpen:    return "wide open";
+        case ClipStack::ClipState::kDeviceRect:  return "device rect";
+        case ClipStack::ClipState::kDeviceRRect: return "device rrect";
+        case ClipStack::ClipState::kComplex:     return "complex";
+    }
+    SkUNREACHABLE;
+}
+enum class ClipState : uint8_t {
+};
+
+static const char* ToStr(GrShape::Type t) {
+    switch (t) {
+        case GrShape::Type::kEmpty: return "empty";
+        case GrShape::Type::kPoint: return "point";
+        case GrShape::Type::kRect:  return "rect";
+        case GrShape::Type::kRRect: return "rrect";
+        case GrShape::Type::kPath:  return "path";
+        case GrShape::Type::kArc:   return "arc";
+        case GrShape::Type::kLine:  return "line";
+    }
+    SkUNREACHABLE;
+}
+
+void ClipStack::dump(const SkRect* bounds, GrAAType aa) const {
+    SkDebugf("----------------------------------------------------------\n");
+    SkDebugf("drawBounds: %.2f %.2f %.2f %.2f\n",
+             bounds->fLeft, bounds->fTop, bounds->fRight, bounds->fBottom);
+    SkDebugf("deviceBounds: %d %d %d %d\n",
+             fDeviceBounds.fLeft,
+             fDeviceBounds.fTop,
+             fDeviceBounds.fRight,
+             fDeviceBounds.fBottom);
+
+    Draw draw(*bounds, GrAA(fForceAA || aa != GrAAType::kNone));
+    if (!draw.applyDeviceBounds(fDeviceBounds)) {
+        SkDebugf("clipped out\n");
+        SkDebugf("---------------------\n");
+        return;
+    }
+
+    const SaveRecord& cs = this->currentSaveRecord();
+    SkDebugf("state: %s shader: %p\n",
+             ToStr(cs.state()),
+             cs.shader());
+
+    switch (get_clip_geometry(cs, draw)) {
+        case ClipGeometry::kEmpty:
+            SkDebugf("empty - clipped out\n");
+            SkDebugf("---------------------\n");
+            return;
+
+        case ClipGeometry::kBOnly:
+            // Geometrically unclipped, but may need to add the shader as a coverage FP
+            if (cs.shader()) {
+                SkDebugf("B/Draw-Only with clipFP\n");
+                SkDebugf("---------------------\n");
+                return;
+            } else {
+                SkDebugf("B/Draw-Only - unclipped\n");
+                SkDebugf("---------------------\n");
+                return;
+            }
+
+        case ClipGeometry::kAOnly:
+            // Shouldn't happen since draws don't report inner bounds
+            SkASSERT(false);
+            [[fallthrough]];
+
+        case ClipGeometry::kBoth:
+            SkDebugf("Both\n");
+            break;
+    }
+
+    int count = 0;
+    for (const RawElement& e : fElements.items()) {
+        SkDebugf("%d: %s\n", count++,
+                 ToStr(e.shape().type()));
+    }
+    SkDebugf("---------------------\n");
+}
+
 GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
                                 SurfaceDrawContext* sdc,
                                 GrDrawOp* op,
                                 GrAAType aa,
                                 GrAppliedClip* out,
                                 SkRect* bounds) const {
+    this->dump(bounds, aa);
+
     // TODO: Once we no longer store SW masks, we don't need to sneak the provider in like this
     if (!fProxyProvider) {
         fProxyProvider = rContext->priv().proxyProvider();

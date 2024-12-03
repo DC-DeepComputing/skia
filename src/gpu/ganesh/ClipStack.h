@@ -51,6 +51,10 @@ public:
 
     // All data describing a geometric modification to the clip
     struct Element {
+        void dump(const char* label) const {
+            SkDebugf("%s: Element\n", label);
+        }
+
         GrShape  fShape;
         SkMatrix fLocalToDevice;
         SkClipOp fOp;
@@ -113,6 +117,8 @@ public:
     }
 #endif
 
+    void dump(const SkRect* drawBounds, GrAAType) const;
+
 private:
     class SaveRecord;
     // class Mask;
@@ -128,6 +134,8 @@ private:
     // Wraps the geometric Element data with logic for containment and bounds testing.
     class RawElement : private Element {
     public:
+        void dump(const char* label) const;
+
         using Stack = SkTBlockList<RawElement, 1>;
 
         RawElement(const SkMatrix& localToDevice, const GrShape& shape, GrAA aa, SkClipOp op);
@@ -229,6 +237,13 @@ private:
     // given a draw query.
     class SaveRecord {
     public:
+        void dump(const char* label) const {
+            SkDebugf("%s: SaveRecord inner: %d, %d, %d, %d outer: %d, %d, %d, %d\n",
+                     label,
+                     fInnerBounds.fLeft, fInnerBounds.fTop, fInnerBounds.fRight, fInnerBounds.fBottom,
+                     fOuterBounds.fLeft, fOuterBounds.fTop, fOuterBounds.fRight, fOuterBounds.fBottom);
+        }
+
         using Stack = SkTBlockList<SaveRecord, 2>;
 
         explicit SaveRecord(const SkIRect& deviceBounds);
