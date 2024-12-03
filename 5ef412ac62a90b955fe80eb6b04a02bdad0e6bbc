@@ -16,6 +16,70 @@
       "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
       "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59d9a0c2_d3cfb74f",
+        "filename": "src/encode/SkPngEncoderBase.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-03T16:51:24Z",
+      "side": 1,
+      "message": "Could we compute dstrowsize in `SkPngEncoder::Make`, and perform the check there (return nullptr for zero size)?\n\nThen we could just pass that value to the base ctor, and drop `dstInfo` and `fDstRowSize`.",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 5
+      },
+      "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8498fdb3_4fc27936",
+        "filename": "src/encode/SkPngEncoderBase.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-03T16:51:24Z",
+      "side": 1,
+      "message": "Looks like we\u0027re already const-casting in `SkPngEncoderImpl::onEncodeRow`, can this be `SkSpan\u003cconst uint8_t\u003e` at the virtual level?",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "75a2f32b_c29627a8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkPngEncoderBase.h",
+              "range": {
+                "startLine": 51,
+                "startChar": 0,
+                "endLine": 56,
+                "endChar": 0
+              },
+              "replacement": "    virtual bool onEncodeRow(SkSpan\u003cconst uint8_t\u003e row) \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5ef412ac62a90b955fe80eb6b04a02bdad0e6bbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
