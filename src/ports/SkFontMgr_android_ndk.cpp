@@ -542,7 +542,12 @@ protected:
         SkFontScanner::AxisDefinitions axisDefinitions;
         SkFontScanner::VariationPosition current;
         if (!fScanner->scanInstance(stream.get(), ttcIndex, 0,
+<<<<<<< PATCH SET (cd3a07 SkFontMgr_FCI refactoring)
+                                    &familyName, &style, &isFixedWidth, &axisDefinitions,
+                                    &current))
+=======
                                     &familyName, &style, &isFixedWidth, &axisDefinitions, &current))
+>>>>>>> BASE      (c745df Fix style and axis scanning for variable fonts)
         {
             if constexpr (kSkFontMgrVerbose) {
                 SkDebugf("SKIA: Font file %s exists, but is not a valid font.\n", filePath);
@@ -583,8 +588,12 @@ protected:
             requestAxisValues.get(), SkTo<int>(requestAxisCount)
         };
         const SkFontArguments::VariationPosition currentPos{current.data(), current.size()};
+<<<<<<< PATCH SET (cd3a07 SkFontMgr_FCI refactoring)
+        SkFontScanner_FreeType::computeAxisValues(axisDefinitions, currentPos, position, axisValues, familyName, &style);
+=======
         SkFontScanner_FreeType::computeAxisValues(axisDefinitions, currentPos, position,
                                                   axisValues, familyName, nullptr);
+>>>>>>> BASE      (c745df Fix style and axis scanning for variable fonts)
 
         STArray<4, SkLanguage> skLangs;
         const char* aLangs = font.getLocale();

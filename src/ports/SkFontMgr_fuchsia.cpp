@@ -268,8 +268,13 @@ sk_sp<SkTypeface> CreateTypefaceFromSkStream(std::unique_ptr<SkStreamAsset> stre
 
     const SkFontArguments::VariationPosition position = args.getVariationDesignPosition();
     AutoSTMalloc<4, SkFixed> axisValues(axisDefinitions.size());
+<<<<<<< PATCH SET (cd3a07 SkFontMgr_FCI refactoring)
+    const SkFontArguments::VariationPosition currentPos{current.data(), current.size()};
+    SkFontScanner_FreeType::computeAxisValues(axisDefinitions, currentPos, position, axisValues, name, &style);
+=======
     SkFontScanner_FreeType::computeAxisValues(axisDefinitions, current, position, axisValues,
                                               name, &style);
+>>>>>>> BASE      (c745df Fix style and axis scanning for variable fonts)
 
     auto fontData = std::make_unique<SkFontData>(
         std::move(stream), args.getCollectionIndex(), args.getPalette().index,
