@@ -37,12 +37,13 @@ private:
 #if defined(__EMSCRIPTEN__)
     void prepareForReturnToCache(const std::function<void()>& takeRef) override;
     void onAsyncMap(GpuFinishedProc, GpuFinishedContext) override;
+    void mapCallback(WGPUBufferMapAsyncStatus status, const char* message);
 #endif
     void onMap() override;
     void onUnmap() override;
 
-    template <typename StatusT>
-    void mapCallback(StatusT status, const char* message);
+    template <typename StatusT, typename MessageT>
+    void mapCallback(StatusT status, MessageT message);
 
     void freeGpuData() override;
 
