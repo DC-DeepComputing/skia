@@ -87,6 +87,37 @@ enum class ClipGeometry {
     kBoth
 };
 
+static const char* ToStr(skgpu::ganesh::ClipStack::ClipState cs) {
+    using namespace skgpu::ganesh;
+
+    switch (cs) {
+        case ClipStack::ClipState::kEmpty:       return "empty";
+        case ClipStack::ClipState::kWideOpen:    return "wide open";
+        case ClipStack::ClipState::kDeviceRect:  return "device rect";
+        case ClipStack::ClipState::kDeviceRRect: return "device rrect";
+        case ClipStack::ClipState::kComplex:     return "complex";
+    }
+    SkUNREACHABLE;
+}
+
+static const char* ToStr(GrShape::Type t) {
+    switch (t) {
+        case GrShape::Type::kEmpty: return "empty";
+        case GrShape::Type::kPoint: return "point";
+        case GrShape::Type::kRect:  return "rect";
+        case GrShape::Type::kRRect: return "rrect";
+        case GrShape::Type::kPath:  return "path";
+        case GrShape::Type::kArc:   return "arc";
+        case GrShape::Type::kLine:  return "line";
+    }
+    SkUNREACHABLE;
+}
+
+template<typename A>
+void dump1(const char* label, const A& a) {
+    a.dump(label);
+}
+
 // A and B can be Element, SaveRecord, or Draw. Supported combinations are, order not mattering,
 // (Element, Element), (Element, SaveRecord), (Element, Draw), and (SaveRecord, Draw).
 template<typename A, typename B>
@@ -103,6 +134,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
                 // B's full coverage region contains entirety of A, so intersection = A
                 return ClipGeometry::kAOnly;
             } else if (a.contains(b)) {
+                SkDebugf("A contains B\n");
+                dump1("A", a);
+                dump1("B", b);
                 // A's full coverage region contains entirety of B, so intersection = B
                 return ClipGeometry::kBOnly;
             } else {
@@ -130,6 +164,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
             // Difference (A) + Intersect (B) - the mirror of Intersect(A) + Difference(B),
             // but combining is commutative so this is equivalent barring naming.
             if (!SkIRect::Intersects(b.outerBounds(), a.outerBounds())) {
+                SkDebugf("A and B don't intersect\n");
+                dump1("A", a);
+                dump1("B", b);
                 // B only intersects A's full coverage region, so intersection = B
                 return ClipGeometry::kBOnly;
             } else if (a.contains(b)) {
@@ -147,6 +184,9 @@ ClipGeometry get_clip_geometry(const A& a, const B& b) {
                 // coverage from their intersection.
                 return ClipGeometry::kAOnly;
             } else if (b.contains(a)) {
+                SkDebugf("B contains A\n");
+                dump1("A", a);
+                dump1("B", b);
                 // Mirror of the above case, intersection = B instead
                 return ClipGeometry::kBOnly;
             } else {
@@ -454,6 +494,12 @@ namespace skgpu::ganesh {
 
 class ClipStack::Draw {
 public:
+    void dump(const char* label) const {
+        SkDebugf("%s ClipStack::Draw outer: %d, %d, %d, %d\n",
+                 label,
+                 fBounds.fLeft, fBounds.fTop, fBounds.fRight, fBounds.fBottom);
+    }
+
     Draw(const SkRect& drawBounds, GrAA aa)
             : fBounds(GrClip::GetPixelIBounds(drawBounds, aa, BoundsType::kExterior))
             , fAA(aa) {
@@ -488,11 +534,19 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 // ClipStack::Element
 
+void ClipStack::RawElement::dump(const char* label) const {
+    SkDebugf("%s: RawElement type: %s inner: %d,%d,%d,%d outer: %d,%d,%d,%d\n",
+             label,
+             ToStr(shape().type()),
+             fInnerBounds1.fLeft, fInnerBounds1.fTop, fInnerBounds1.fRight, fInnerBounds1.fBottom,
+             fOuterBounds1.fLeft, fOuterBounds1.fTop, fOuterBounds1.fRight, fOuterBounds1.fBottom);
+}
+
 ClipStack::RawElement::RawElement(const SkMatrix& localToDevice, const GrShape& shape,
                                   GrAA aa, SkClipOp op)
         : Element{shape, localToDevice, op, aa}
-        , fInnerBounds(SkIRect::MakeEmpty())
-        , fOuterBounds(SkIRect::MakeEmpty())
+        , fInnerBounds1(SkIRect::MakeEmpty())
+        , fOuterBounds1(SkIRect::MakeEmpty())
         , fInvalidatedByIndex(-1) {
     if (!localToDevice.invert(&fDeviceToLocal)) {
         // If the transform can't be inverted, it means that two dimensions are collapsed to 0 or
@@ -513,7 +567,7 @@ void ClipStack::RawElement::restoreValid(const SaveRecord& current) {
 }
 
 bool ClipStack::RawElement::contains(const Draw& d) const {
-    if (fInnerBounds.contains(d.outerBounds())) {
+    if (fInnerBounds1.contains(d.outerBounds())) {
         return true;
     } else {
         // If the draw is non-AA, use the already computed outer bounds so we don't need to use
@@ -525,7 +579,7 @@ bool ClipStack::RawElement::contains(const Draw& d) const {
 }
 
 bool ClipStack::RawElement::contains(const SaveRecord& s) const {
-    if (fInnerBounds.contains(s.outerBounds())) {
+    if (fInnerBounds1.contains(s.outerBounds())) {
         return true;
     } else {
         // This is very similar to contains(Draw) but we just have outerBounds to work with.
@@ -538,7 +592,7 @@ bool ClipStack::RawElement::contains(const SaveRecord& s) const {
 bool ClipStack::RawElement::contains(const RawElement& e) const {
     // This is similar to how RawElement checks containment for a Draw, except that both the tester
     // and testee have a transform that needs to be considered.
-    if (fInnerBounds.contains(e.fOuterBounds)) {
+    if (fInnerBounds1.contains(e.fOuterBounds1)) {
         return true;
     }
 
@@ -599,7 +653,7 @@ void ClipStack::RawElement::simplify(const SkIRect& deviceBounds, bool forceAA) 
 
     // Except for non-AA axis-aligned rects, the outer bounds is the rounded-out device-space
     // mapped bounds of the shape.
-    fOuterBounds = GrClip::GetPixelIBounds(outer, fAA, BoundsType::kExterior);
+    fOuterBounds1 = GrClip::GetPixelIBounds(outer, fAA, BoundsType::kExterior);
 
     if (fLocalToDevice.preservesAxisAlignment()) {
         if (fShape.isRect()) {
@@ -613,11 +667,11 @@ void ClipStack::RawElement::simplify(const SkIRect& deviceBounds, bool forceAA) 
                 // NOTE: Legacy behavior to avoid performance regressions. For non-aa axis-aligned
                 // clip rects we always just round so that they can be scissor-only (avoiding the
                 // uncertainty in how a GPU might actually round an edge on fractional coords).
-                fOuterBounds = outer.round();
-                fInnerBounds = fOuterBounds;
+                fOuterBounds1 = outer.round();
+                fInnerBounds1 = fOuterBounds1;
             } else {
-                fInnerBounds = GrClip::GetPixelIBounds(outer, fAA, BoundsType::kInterior);
-                SkASSERT(fOuterBounds.contains(fInnerBounds) || fInnerBounds.isEmpty());
+                fInnerBounds1 = GrClip::GetPixelIBounds(outer, fAA, BoundsType::kInterior);
+                SkASSERT_RELEASE(fOuterBounds1.contains(fInnerBounds1) || fInnerBounds1.isEmpty());
             }
         } else if (fShape.isRRect()) {
             // Can't transform in place and must still check transform result since some very
@@ -629,23 +683,24 @@ void ClipStack::RawElement::simplify(const SkIRect& deviceBounds, bool forceAA) 
                 fDeviceToLocal.setIdentity();
 
                 SkRect inner = SkRRectPriv::InnerBounds(fShape.rrect());
-                fInnerBounds = GrClip::GetPixelIBounds(inner, fAA, BoundsType::kInterior);
-                if (!fInnerBounds.intersect(deviceBounds)) {
-                    fInnerBounds = SkIRect::MakeEmpty();
+                fInnerBounds1 = GrClip::GetPixelIBounds(inner, fAA, BoundsType::kInterior);
+                if (!fInnerBounds1.intersect(deviceBounds)) {
+                    fInnerBounds1 = SkIRect::MakeEmpty();
                 }
+                SkASSERT_RELEASE(fOuterBounds1.contains(fInnerBounds1) || fInnerBounds1.isEmpty());
             }
         }
     }
 
-    if (fOuterBounds.isEmpty()) {
+    if (fOuterBounds1.isEmpty()) {
         // This can happen if we have non-AA shapes smaller than a pixel that do not cover a pixel
         // center. We could round out, but rasterization would still result in an empty clip.
         fShape.reset();
     }
 
     // Post-conditions on inner and outer bounds
-    SkASSERT(fShape.isEmpty() || (!fOuterBounds.isEmpty() && deviceBounds.contains(fOuterBounds)));
-    SkASSERT(fShape.isEmpty() || fInnerBounds.isEmpty() || fOuterBounds.contains(fInnerBounds));
+    SkASSERT_RELEASE(fShape.isEmpty() || (!fOuterBounds1.isEmpty() && deviceBounds.contains(fOuterBounds1)));
+    SkASSERT_RELEASE(fShape.isEmpty() || fInnerBounds1.isEmpty() || fOuterBounds1.contains(fInnerBounds1));
 }
 
 bool ClipStack::RawElement::combine(const RawElement& other, const SaveRecord& current) {
@@ -717,10 +772,11 @@ bool ClipStack::RawElement::combine(const RawElement& other, const SaveRecord& c
         // This logic works under the assumption that both combined elements were intersect, so we
         // don't do the full bounds computations like in simplify().
         SkASSERT(fOp == SkClipOp::kIntersect && other.fOp == SkClipOp::kIntersect);
-        SkAssertResult(fOuterBounds.intersect(other.fOuterBounds));
-        if (!fInnerBounds.intersect(other.fInnerBounds)) {
-            fInnerBounds = SkIRect::MakeEmpty();
+        SkAssertResult(fOuterBounds1.intersect(other.fOuterBounds1));
+        if (!fInnerBounds1.intersect(other.fInnerBounds1)) {
+            fInnerBounds1 = SkIRect::MakeEmpty();
         }
+        SkASSERT_RELEASE(fInnerBounds1.isEmpty() || fOuterBounds1.contains(fInnerBounds1));
         return true;
     } else {
         return false;
@@ -830,8 +886,8 @@ void ClipStack::Mask::invalidate(GrProxyProvider* proxyProvider) {
 // ClipStack::SaveRecord
 
 ClipStack::SaveRecord::SaveRecord(const SkIRect& deviceBounds)
-        : fInnerBounds(deviceBounds)
-        , fOuterBounds(deviceBounds)
+        : fInnerBounds2(deviceBounds)
+        , fOuterBounds2(deviceBounds)
         , fShader(nullptr)
         , fStartingMaskIndex(0)
         , fStartingElementIndex(0)
@@ -844,8 +900,8 @@ ClipStack::SaveRecord::SaveRecord(const SkIRect& deviceBounds)
 ClipStack::SaveRecord::SaveRecord(const SaveRecord& prior,
                                   int startingMaskIndex,
                                   int startingElementIndex)
-        : fInnerBounds(prior.fInnerBounds)
-        , fOuterBounds(prior.fOuterBounds)
+        : fInnerBounds2(prior.fInnerBounds2)
+        , fOuterBounds2(prior.fOuterBounds2)
         , fShader(prior.fShader)
         , fStartingMaskIndex(startingMaskIndex)
         , fStartingElementIndex(startingElementIndex)
@@ -854,6 +910,9 @@ ClipStack::SaveRecord::SaveRecord(const SaveRecord& prior,
         , fStackOp(prior.fStackOp)
         , fState(prior.fState)
         , fGenID(kInvalidGenID) {
+    SkASSERT_RELEASE(!fOuterBounds2.isEmpty() &&
+             (fInnerBounds2.isEmpty() || fOuterBounds2.contains(fInnerBounds2)));
+
     // If the prior record never needed a mask, this one will insert into the same index
     // (that's okay since we'll remove it when this record is popped off the stack).
     SkASSERT(startingMaskIndex >= prior.fStartingMaskIndex);
@@ -883,11 +942,11 @@ ClipStack::ClipState ClipStack::SaveRecord::state() const {
 }
 
 bool ClipStack::SaveRecord::contains(const ClipStack::Draw& draw) const {
-    return fInnerBounds.contains(draw.outerBounds());
+    return fInnerBounds2.contains(draw.outerBounds());
 }
 
 bool ClipStack::SaveRecord::contains(const ClipStack::RawElement& element) const {
-    return fInnerBounds.contains(element.outerBounds());
+    return fInnerBounds2.contains(element.outerBounds());
 }
 
 void ClipStack::SaveRecord::removeElements(RawElement::Stack* elements) {
@@ -925,8 +984,8 @@ void ClipStack::SaveRecord::invalidateMasks(GrProxyProvider* proxyProvider,
 void ClipStack::SaveRecord::reset(const SkIRect& bounds) {
     SkASSERT(this->canBeUpdated());
     fOldestValidIndex = fStartingElementIndex;
-    fOuterBounds = bounds;
-    fInnerBounds = bounds;
+    fOuterBounds2 = bounds;
+    fInnerBounds2 = bounds;
     fStackOp = SkClipOp::kIntersect;
     fState = ClipState::kWideOpen;
     fShader = nullptr;
@@ -1000,35 +1059,35 @@ bool ClipStack::SaveRecord::addElement(RawElement&& toAdd, RawElement::Stack* el
         if (toAdd.op() == SkClipOp::kIntersect) {
             // Intersect (stack) + Intersect (toAdd)
             //  - Bounds updates is simply the paired intersections of outer and inner.
-            SkAssertResult(fOuterBounds.intersect(toAdd.outerBounds()));
-            if (!fInnerBounds.intersect(toAdd.innerBounds())) {
+            SkAssertResult(fOuterBounds2.intersect(toAdd.outerBounds()));
+            if (!fInnerBounds2.intersect(toAdd.innerBounds())) {
                 // NOTE: this does the right thing if either rect is empty, since we set the
                 // inner bounds to empty here
-                fInnerBounds = SkIRect::MakeEmpty();
+                fInnerBounds2 = SkIRect::MakeEmpty();
             }
         } else {
             // Intersect (stack) + Difference (toAdd)
             //  - Shrink the stack's outer bounds if the difference op's inner bounds completely
             //    cuts off an edge.
             //  - Shrink the stack's inner bounds to completely exclude the op's outer bounds.
-            fOuterBounds = subtract(fOuterBounds, toAdd.innerBounds(), /* exact */ true);
-            fInnerBounds = subtract(fInnerBounds, toAdd.outerBounds(), /* exact */ false);
+            fOuterBounds2 = subtract(fOuterBounds2, toAdd.innerBounds(), /* exact */ true);
+            fInnerBounds2 = subtract(fInnerBounds2, toAdd.outerBounds(), /* exact */ false);
         }
     } else {
         if (toAdd.op() == SkClipOp::kIntersect) {
             // Difference (stack) + Intersect (toAdd)
             //  - Bounds updates are just the mirror of Intersect(stack) + Difference(toAdd)
-            SkIRect oldOuter = fOuterBounds;
-            fOuterBounds = subtract(toAdd.outerBounds(), fInnerBounds, /* exact */ true);
-            fInnerBounds = subtract(toAdd.innerBounds(), oldOuter,     /* exact */ false);
+            SkIRect oldOuter = fOuterBounds2;
+            fOuterBounds2 = subtract(toAdd.outerBounds(), fInnerBounds2, /* exact */ true);
+            fInnerBounds2 = subtract(toAdd.innerBounds(), oldOuter,     /* exact */ false);
         } else {
             // Difference (stack) + Difference (toAdd)
             //  - The updated outer bounds is the union of outer bounds and the inner becomes the
             //    largest of the two possible inner bounds
-            fOuterBounds.join(toAdd.outerBounds());
+            fOuterBounds2.join(toAdd.outerBounds());
             if (toAdd.innerBounds().width() * toAdd.innerBounds().height() >
-                fInnerBounds.width() * fInnerBounds.height()) {
-                fInnerBounds = toAdd.innerBounds();
+                fInnerBounds2.width() * fInnerBounds2.height()) {
+                fInnerBounds2 = toAdd.innerBounds();
             }
         }
     }
@@ -1036,8 +1095,8 @@ bool ClipStack::SaveRecord::addElement(RawElement&& toAdd, RawElement::Stack* el
     // If we get here, we're keeping the new element and the stack's bounds have been updated.
     // We ought to have caught the cases where the stack bounds resemble an empty or wide open
     // clip, so assert that's the case.
-    SkASSERT(!fOuterBounds.isEmpty() &&
-             (fInnerBounds.isEmpty() || fOuterBounds.contains(fInnerBounds)));
+    SkASSERT_RELEASE(!fOuterBounds2.isEmpty() &&
+             (fInnerBounds2.isEmpty() || fOuterBounds2.contains(fInnerBounds2)));
 
     return this->appendElement(std::move(toAdd), elements);
 }
@@ -1137,8 +1196,11 @@ bool ClipStack::SaveRecord::appendElement(RawElement&& toAdd, RawElement::Stack*
 
 void ClipStack::SaveRecord::replaceWithElement(RawElement&& toAdd, RawElement::Stack* elements) {
     // The aggregate state of the save record mirrors the element
-    fInnerBounds = toAdd.innerBounds();
-    fOuterBounds = toAdd.outerBounds();
+    fInnerBounds2 = toAdd.innerBounds();
+    fOuterBounds2 = toAdd.outerBounds();
+    SkASSERT_RELEASE(!fOuterBounds2.isEmpty() &&
+             (fInnerBounds2.isEmpty() || fOuterBounds2.contains(fInnerBounds2)));
+
     fStackOp = toAdd.op();
     fState = toAdd.clipType();
 
@@ -1305,12 +1367,72 @@ GrClip::PreClipResult ClipStack::preApply(const SkRect& bounds, GrAA aa) const {
     SkUNREACHABLE;
 }
 
+void ClipStack::dump(const SkRect* bounds, GrAAType aa) const {
+    SkDebugf("----------------------------------------------------------\n");
+    SkDebugf("drawBounds: %.2f %.2f %.2f %.2f\n",
+             bounds->fLeft, bounds->fTop, bounds->fRight, bounds->fBottom);
+    SkDebugf("deviceBounds: %d %d %d %d\n",
+             fDeviceBounds.fLeft,
+             fDeviceBounds.fTop,
+             fDeviceBounds.fRight,
+             fDeviceBounds.fBottom);
+
+    Draw draw(*bounds, GrAA(fForceAA || aa != GrAAType::kNone));
+    if (!draw.applyDeviceBounds(fDeviceBounds)) {
+        SkDebugf("clipped out\n");
+        SkDebugf("---------------------\n");
+        return;
+    }
+
+    const SaveRecord& cs = this->currentSaveRecord();
+    SkDebugf("state: %s shader: %p\n",
+             ToStr(cs.state()),
+             cs.shader());
+
+    switch (get_clip_geometry(cs, draw)) {
+        case ClipGeometry::kEmpty:
+            SkDebugf("empty - clipped out\n");
+            SkDebugf("---------------------\n");
+            return;
+
+        case ClipGeometry::kBOnly:
+            // Geometrically unclipped, but may need to add the shader as a coverage FP
+            if (cs.shader()) {
+                SkDebugf("B/Draw-Only with clipFP\n");
+                SkDebugf("---------------------\n");
+                return;
+            } else {
+                SkDebugf("B/Draw-Only - unclipped\n");
+                SkDebugf("---------------------\n");
+                return;
+            }
+
+        case ClipGeometry::kAOnly:
+            // Shouldn't happen since draws don't report inner bounds
+            SkASSERT(false);
+            [[fallthrough]];
+
+        case ClipGeometry::kBoth:
+            SkDebugf("Both\n");
+            break;
+    }
+
+    int count = 0;
+    for (const RawElement& e : fElements.items()) {
+        SkDebugf("%d: %s\n", count++,
+                 ToStr(e.shape().type()));
+    }
+    SkDebugf("---------------------\n");
+}
+
 GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
                                 SurfaceDrawContext* sdc,
                                 GrDrawOp* op,
                                 GrAAType aa,
                                 GrAppliedClip* out,
                                 SkRect* bounds) const {
+    this->dump(bounds, aa);
+
     // TODO: Once we no longer store SW masks, we don't need to sneak the provider in like this
     if (!fProxyProvider) {
         fProxyProvider = rContext->priv().proxyProvider();
