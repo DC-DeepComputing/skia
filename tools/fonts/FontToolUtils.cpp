@@ -18,6 +18,8 @@
 #include "include/core/SkPixelRef.h"  // IWYU pragma: keep
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "include/ports/SkFontScanner_Fontations.h"
+#include "include/ports/SkFontScanner_FreeType.h"
 #include "include/private/base/SkMutex.h"
 #include "include/utils/SkCustomTypeface.h"
 #include "src/base/SkUTF.h"
@@ -252,6 +254,20 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 #    define SK_FONT_FILE_PREFIX "/usr/share/fonts/"
 #  endif
 #endif
+
+std::unique_ptr<SkFontScanner> TestFontScanner() {
+#if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
+    auto result = SkFontScanner_Make_Fontations();
+    if (result) {
+        return result;
+    }
+#endif
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+    return SkFontScanner_Make_FreeType();
+#else
+    return nullptr;
+#endif
+}
 
 sk_sp<SkFontMgr> TestFontMgr() {
     static sk_sp<SkFontMgr> mgr;
