@@ -51,6 +51,10 @@ public:
 
     // All data describing a geometric modification to the clip
     struct Element {
+        void dump(const char* label) const {
+            SkDebugf("%s: Element\n", label);
+        }
+
         GrShape  fShape;
         SkMatrix fLocalToDevice;
         SkClipOp fOp;
@@ -113,6 +117,8 @@ public:
     }
 #endif
 
+    void dump(const SkRect* drawBounds, GrAAType) const;
+
 private:
     class SaveRecord;
     // class Mask;
@@ -128,13 +134,15 @@ private:
     // Wraps the geometric Element data with logic for containment and bounds testing.
     class RawElement : private Element {
     public:
+        void dump(const char* label) const;
+
         using Stack = SkTBlockList<RawElement, 1>;
 
         RawElement(const SkMatrix& localToDevice, const GrShape& shape, GrAA aa, SkClipOp op);
 
         // Common clip type interface
         SkClipOp        op() const { return fOp; }
-        const SkIRect&  outerBounds() const { return fOuterBounds; }
+        const SkIRect&  outerBounds() const { return fOuterBounds1; }
         bool            contains(const SaveRecord& s) const;
         bool            contains(const Draw& d) const;
         bool            contains(const RawElement& e) const;
@@ -144,7 +152,7 @@ private:
 
         const GrShape&  shape() const { return fShape; }
         const SkMatrix& localToDevice() const { return fLocalToDevice; }
-        const SkIRect&  innerBounds() const { return fInnerBounds; }
+        const SkIRect&  innerBounds() const { return fInnerBounds1; }
         GrAA            aa() const { return fAA; }
 
         ClipState       clipType() const;
@@ -179,8 +187,8 @@ private:
 
         // Device space bounds, rounded in or out to pixel boundaries and accounting for any
         // uncertainty around anti-aliasing and rasterization snapping.
-        SkIRect  fInnerBounds;
-        SkIRect  fOuterBounds;
+        SkIRect  fInnerBounds1;
+        SkIRect  fOuterBounds1;
 
         // Elements are invalidated by SaveRecords as the record is updated with new elements that
         // override old geometry. An invalidated element stores the index of the first element of
@@ -229,6 +237,13 @@ private:
     // given a draw query.
     class SaveRecord {
     public:
+        void dump(const char* label) const {
+            SkDebugf("%s: SaveRecord inner: %d, %d, %d, %d outer: %d, %d, %d, %d\n",
+                     label,
+                     fInnerBounds2.fLeft, fInnerBounds2.fTop, fInnerBounds2.fRight, fInnerBounds2.fBottom,
+                     fOuterBounds2.fLeft, fOuterBounds2.fTop, fOuterBounds2.fRight, fOuterBounds2.fBottom);
+        }
+
         using Stack = SkTBlockList<SaveRecord, 2>;
 
         explicit SaveRecord(const SkIRect& deviceBounds);
@@ -237,13 +252,13 @@ private:
 
         // The common clip type interface
         SkClipOp        op() const { return fStackOp; }
-        const SkIRect&  outerBounds() const { return fOuterBounds; }
+        const SkIRect&  outerBounds() const { return fOuterBounds2; }
         bool            contains(const Draw& d) const;
         bool            contains(const RawElement& e) const;
 
         // Additional save record-specific data/functionality
         const SkShader* shader() const { return fShader.get(); }
-        const SkIRect&  innerBounds() const { return fInnerBounds; }
+        const SkIRect&  innerBounds() const { return fInnerBounds2; }
         int             firstActiveElementIndex() const { return fStartingElementIndex; }
         int             oldestElementIndex() const { return fOldestValidIndex; }
         bool            canBeUpdated() const { return (fDeferredSaveCount == 0); }
@@ -287,8 +302,8 @@ private:
 
         // Inner bounds is always contained in outer bounds, or it is empty. All bounds will be
         // contained in the device bounds.
-        SkIRect   fInnerBounds; // Inside is full coverage (stack op == intersect) or 0 cov (diff)
-        SkIRect   fOuterBounds; // Outside is 0 coverage (op == intersect) or full cov (diff)
+        SkIRect   fInnerBounds2; // Inside is full coverage (stack op == intersect) or 0 cov (diff)
+        SkIRect   fOuterBounds2; // Outside is 0 coverage (op == intersect) or full cov (diff)
 
         // A save record can have up to one shader, multiple shaders are automatically blended
         sk_sp<SkShader> fShader;
