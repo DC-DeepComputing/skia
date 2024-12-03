@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "070b82a7_f7e562a6",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 639,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T16:43:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "450f8908_51ca46df",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42df84cd_2b98190e",
@@ -65,6 +83,24 @@
       "writtenOn": "2024-12-03T08:03:32Z",
       "side": 1,
       "message": "I think it would be good to avoid the `unwrap`s here because they provide a possibility of runtime error cases where we would ideally enforce everything at compile-time. The original `finish` method takes `self` by value, so there would be no need for the field to be an `Option`.\n\nDoes it work if you provide this method signature instead?\n\n```\n  pub fn finish(self: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n```\n\nI think it might!\n\nIf not perhaps you could switch this `finish` method from being a method into being a free function:\n\n```\npub fn finish_encode(this: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n```\n\nThat\u0027s not as neat and tidy but I personally would choose to value removal of runtime error paths over neatness. Up to you though.",
+      "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc733914_ac9dc7ea",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 9
+      },
+      "lineNbr": 649,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T16:43:05Z",
+      "side": 1,
+      "message": "\u003e I think it would be good to avoid the `unwrap`s here because they provide a possibility of runtime error cases where we would ideally enforce everything at compile-time. The original `finish` method takes `self` by value, so there would be no need for the field to be an `Option`.\n\u003e \n\u003e Does it work if you provide this method signature instead?\n\u003e \n\u003e ```\n\u003e   pub fn finish(self: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n\u003e ```\n\u003e \n\u003e I think it might!\n\n```\nerror[cxxbridge]: unsupported method receiver\n    ┌─ experimental/rust_png/ffi/FFI.rs:163:19\n    │\n163 │         fn finish(self: Box\u003cStreamWriter\u003e) -\u003e EncodingResult;\n    │                   ^^^^^^^^^^^^^^^^^^^^^^^ unsupported method receiver\n```\n \n\u003e If not perhaps you could switch this `finish` method from being a method into being a free function:\n\u003e \n\u003e ```\n\u003e pub fn finish_encode(this: Box\u003cStreamWriter) -\u003e ffi::EncodingResult\n\u003e ```\n\u003e \n\u003e That\u0027s not as neat and tidy but I personally would choose to value removal of runtime error paths over neatness. Up to you though.\n\nInteresting - thanks for this idea (I didn\u0027t see/consider this option).  This works.  And I think I like how it allows getting rid of `Option\u003c...\u003e` and `unwrap` in a few places.\n\nDone.",
+      "parentUuid": "42df84cd_2b98190e",
       "revId": "58cee891c9fff99cec1fdb3d2e1cc86b14a37bcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
