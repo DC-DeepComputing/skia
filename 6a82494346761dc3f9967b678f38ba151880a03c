@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c40eff9_afabbb10",
+        "filename": "include/private/base/SkTemplates.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-03T15:50:55Z",
+      "side": 1,
+      "message": "Is it any easier to follow if we use `SkAlignTo`?\n\n    static constexpr int kCount \u003d \n            SkAlignTo(kMinCount*sizeof(T) + sizeof(int), std::max(alignof(T*), alignof(T))) / sizeof(T);",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 279,
+        "endChar": 61
+      },
+      "revId": "6a82494346761dc3f9967b678f38ba151880a03c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
