@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ac3045fe_7f1566cc",
+        "filename": "tools/window/WindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-03T19:02:24Z",
+      "side": 1,
+      "message": "Currently the parameter to `GpuTimerCallback` is unsigned, so it can\u0027t be negative. In the current implementations both Ganesh and Graphite will provide a `GpuStats` with 0 for `elapsedTime` so `GpuTimerCallback` will also get a 0.\n\nOnly Graphite provides a `CallbackResult` here. We could force passing 0 to `GpuTimerCallback` if `CallbackResult` is not `kSuccess` in that case (but, as noted above, this is what already happens).\n\nA more radical change could be to modify GpuStats to have an `optional\u003cuint64_t\u003e` so we\ndisambiguate no report from a failed report (and then propagate that to `GpuTimerCallback` in viewer which could draw a line in a different color or something like that on failure).",
+      "parentUuid": "38331e23_bd7de145",
+      "range": {
+        "startLine": 53,
+        "startChar": 72,
+        "endLine": 53,
+        "endChar": 77
+      },
+      "revId": "38a4aee6c00bd54421feb8d86405c7bf2c50dd93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a0e04ec3_8159215a",
         "filename": "tools/window/WindowContext.cpp",
         "patchSetId": 4
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-02T16:12:31Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 104
+      },
+      "revId": "38a4aee6c00bd54421feb8d86405c7bf2c50dd93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d211ca2_84e05776",
+        "filename": "tools/window/WindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-03T19:02:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0e04ec3_8159215a",
       "range": {
         "startLine": 54,
         "startChar": 0,
