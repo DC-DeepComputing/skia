@@ -99,6 +99,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5153559_8717d8c9",
+        "filename": "gn/core.gni",
+        "patchSetId": 14
+      },
+      "lineNbr": 804,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T16:33:03Z",
+      "side": 1,
+      "message": "I assume it\u0027s okay to resolve this comment thread.",
+      "parentUuid": "d90d9a4d_54355f45",
+      "range": {
+        "startLine": 804,
+        "startChar": 16,
+        "endLine": 804,
+        "endChar": 32
+      },
+      "revId": "ce66b36ae4999c9d47a317b74497349f47048be5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42d6468f_7342a561",
