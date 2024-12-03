@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34e64f4_be341d4f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21925
+      },
+      "writtenOn": "2024-12-03T16:57:29Z",
+      "side": 1,
+      "message": "Interop LGTM FWIW!",
+      "revId": "ffefe1a2fa5041e6d178e8c590d679ccd6238341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
