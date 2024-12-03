@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4755a291_86b51898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T23:46:35Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL again at:\n\n1. the delta in tools/metrics/histograms/metadata/histogram_suffixes_list.xml\n2. the comments below\n\n?\n\nFWIW I am still trying to figure out how/if I can tweak the existing tests (e.g. `gm/encode_srgb.cpp`) to fail/show the pre-existing bugs that I _think_ are present (see the comments below).",
+      "revId": "454b012bcb61cee41d30f990402564a194126b00",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

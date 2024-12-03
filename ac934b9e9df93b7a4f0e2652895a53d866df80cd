@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57ca4298_a27db3aa",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T23:46:35Z",
+      "side": 0,
+      "message": "After this CL, `PNG_COLOR_TYPE_RGB_ALPHA` is always used.  This is a change in behavior, but this seems okay (4 channels / RGBA in source, so also RGBA in output).\n\nThis requires stopping special-casing `kRGBA_F16_SkColorType` in `SkPngEncoderMgr::writeInfo` (done in the latest patchset;  previous patchsets encounter a failure reported by `png_set_filler`).\n\nI am surprised that `SkPngEncoderMgr::writeInfo` would only special-case `kRGBA_F16_SkColorType`.  It seems that handling of `kRGBA_F32_SkColorType` may have had a bug before this CL?  (same `transform_scanline_F32` was used for opaque and non-opaque sources, but different `pngColorType` was used).",
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b022f42e_02bbd4d8",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T23:46:35Z",
+      "side": 0,
+      "message": "After this CL, `PNG_COLOR_TYPE_RGB_ALPHA` is always used.  This is a change in behavior, but this seems okay (4 channels / RGBA in source, so also RGBA in output).\n\nI am surprised that there was a difference in `pngColorType` when below the same `transform_scanline_1010102` was used for opaque and non-opaque sources.  This seems like a potential bug before this CL?",
+      "range": {
+        "startLine": 201,
+        "startChar": 69,
+        "endLine": 201,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "244175bd_b02b1f53",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-03T23:46:35Z",
+      "side": 0,
+      "message": "This is a similar scenario as `kRGBA_1010102_SkColorType` above.",
+      "range": {
+        "startLine": 219,
+        "startChar": 69,
+        "endLine": 219,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
