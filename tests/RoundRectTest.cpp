@@ -634,6 +634,12 @@ static void test_transform_helper(skiatest::Reporter* reporter, const SkRRect& o
     matrix.setPerspX(7);
     assert_transform_failure(reporter, orig, matrix);
 
+    // Test out the floating point issues w/ the radii transform
+    matrix = SkMatrix::Scale(0.999999f, 0.999999f);
+    dst.setEmpty();
+    success = orig.transform(matrix, &dst);
+    REPORTER_ASSERT(reporter, success);
+
     // Scaling in -y will flip the round rect vertically.
     matrix.reset();
     matrix.setScaleY(SkIntToScalar(-1));
@@ -1191,6 +1197,17 @@ static void test_round_rect_transform(skiatest::Reporter* reporter) {
         rrect.setRectRadii(r, radii);
         test_transform_helper(reporter, rrect);
     }
+#if 1
+    {
+        SkRect r = { 760.0f, 228.0f, 1160.0f, 1028.0f };
+        SkVector radii[4] = { { 400.0f, 400.0f },
+                              { 0, 0 },
+                              { 0, 0 },
+                              { 400.0f, 400.0f } };
+        rrect.setRectRadii(r, radii);
+        test_transform_helper(reporter, rrect);
+    }
+#endif
 }
 
 // Test out the case where an oval already off in space is translated/scaled
