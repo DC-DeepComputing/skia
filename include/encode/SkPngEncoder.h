@@ -10,6 +10,7 @@
 
 #include "include/core/SkDataTable.h"
 #include "include/core/SkRefCnt.h"
+#include "include/private/SkGainmapInfo.h"
 #include "include/private/base/SkAPI.h"
 
 // TODO(kjlubick) update clients to directly include this
@@ -23,6 +24,7 @@ class SkImage;
 class SkPixmap;
 class SkWStream;
 struct skcms_ICCProfile;
+struct SkGainmapInfo;
 
 namespace SkPngEncoder {
 
@@ -80,6 +82,12 @@ struct Options {
      */
     const skcms_ICCProfile* fICCProfile = nullptr;
     const char* fICCProfileDescription = nullptr;
+
+    /**
+     * A gainmap????? Without a spec????
+     */
+    const SkPixmap* fGainmap = nullptr;
+    const SkGainmapInfo* fGainmapInfo = nullptr;
 };
 
 /**
