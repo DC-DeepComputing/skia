@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e5b7f1_782604a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 18
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-04T20:31:02Z",
+      "side": 1,
+      "message": "I am still working on a test that (I think) would show the problem.  AFAICT there is no test that checks round-tripping that starts from `kRGBA_F32_SkColorType` (?).",
+      "range": {
+        "startLine": 38,
+        "startChar": 44,
+        "endLine": 40,
+        "endChar": 11
+      },
+      "revId": "b18ecea2c198be6a0de396c79c22b495d5f364dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

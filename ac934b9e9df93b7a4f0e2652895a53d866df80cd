@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dac8d166_97bcb096",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-04T20:31:02Z",
+      "side": 0,
+      "message": "Please see the updated CL description for more details.",
+      "parentUuid": "f80fdb9c_3f6a3eb6",
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b022f42e_02bbd4d8",
         "filename": "src/encode/SkPngEncoderImpl.cpp",
         "patchSetId": 15
@@ -77,6 +95,52 @@
         "startChar": 69,
         "endLine": 219,
         "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11c3470_8c3a0a46",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-04T20:31:02Z",
+      "side": 0,
+      "message": "This behavior is preserved.",
+      "range": {
+        "startLine": 158,
+        "startChar": 48,
+        "endLine": 158,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ebb105b_21e2d17c",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-04T20:31:02Z",
+      "side": 0,
+      "message": "This behavior is preserved.",
+      "range": {
+        "startLine": 178,
+        "startChar": 48,
+        "endLine": 178,
+        "endChar": 94
       },
       "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
