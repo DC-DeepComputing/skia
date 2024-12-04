@@ -98,7 +98,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
-        , fTextureDataCache(new TextureDataCache)
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fAtlasProvider(std::make_unique<AtlasProvider>(this))
@@ -171,19 +170,19 @@ std::unique_ptr<Recording> Recorder::snap() {
     // data cache so that they can be instantiated easily when the Recording is inserted.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](TextureDataBlock block) {
-        for (int j = 0; j < block.numTextures(); ++j) {
-            const TextureDataBlock::SampledTexture& tex = block.texture(j);
+    // fTextureDataCache->foreach([&](TextureDataBlock block) {
+    //     for (int j = 0; j < block.numTextures(); ++j) {
+    //         const TextureDataBlock::SampledTexture& tex = block.texture(j);
 
-            if (tex.first->isLazy()) {
-                if (tex.first->isVolatile()) {
-                    volatileLazyProxies.insert(tex.first);
-                } else {
-                    nonVolatileLazyProxies.insert(tex.first);
-                }
-            }
-        }
-    });
+    //         if (tex.first->isLazy()) {
+    //             if (tex.first->isVolatile()) {
+    //                 volatileLazyProxies.insert(tex.first);
+    //             } else {
+    //                 nonVolatileLazyProxies.insert(tex.first);
+    //             }
+    //         }
+    //     }
+    // });
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
@@ -222,7 +221,6 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
-    fTextureDataCache = std::make_unique<TextureDataCache>();
     if (!this->priv().caps()->requireOrderedRecordings()) {
         fAtlasProvider->textAtlasManager()->evictAtlases();
     }

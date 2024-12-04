@@ -72,6 +72,8 @@ public:
     using BindGroupLayouts = std::array<wgpu::BindGroupLayout, kBindGroupCount>;
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
 
+    const DawnSampler* findImmutableSampler(SamplerDesc) const;
+
 private:
     struct AsyncPipelineCreation;
 

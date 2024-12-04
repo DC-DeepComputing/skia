@@ -26,30 +26,6 @@
 
 namespace skgpu::graphite {
 
-UniquePaintParamsID ExtractPaintData(Recorder* recorder,
-                                     PipelineDataGatherer* gatherer,
-                                     PaintParamsKeyBuilder* builder,
-                                     const Layout layout,
-                                     const SkM44& local2Dev,
-                                     const PaintParams& p,
-                                     const Geometry& geometry,
-                                     const SkColorInfo& targetColorInfo) {
-    SkDEBUGCODE(builder->checkReset());
-
-    gatherer->resetWithNewLayout(layout);
-
-    KeyContext keyContext(recorder,
-                          local2Dev,
-                          targetColorInfo,
-                          geometry.isShape() || geometry.isEdgeAAQuad()
-                                  ? KeyContext::OptimizeSampling::kYes
-                                  : KeyContext::OptimizeSampling::kNo,
-                          p.color());
-    p.toKey(keyContext, builder, gatherer);
-
-    return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
-}
-
 DstReadRequirement GetDstReadRequirement(const Caps* caps,
                                          std::optional<SkBlendMode> blendMode,
                                          Coverage coverage) {

@@ -102,6 +102,11 @@ public:
         return fPipeline;
     }
 
+    // Returns null if the ith sampler is not an immutable sampler.
+    const VulkanSampler* immutableSampler(int i) const {
+        return fImmutableSamplers[i].get();
+    }
+
 private:
     VulkanGraphicsPipeline(const VulkanSharedContext* sharedContext,
                            const PipelineInfo& pipelineInfo,

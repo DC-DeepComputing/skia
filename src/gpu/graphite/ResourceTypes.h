@@ -212,6 +212,8 @@ struct SamplerDesc {
     constexpr SamplerDesc() = default;
     constexpr SamplerDesc(const SamplerDesc&) = default;
 
+    SamplerDesc& operator=(const SamplerDesc&) = default;
+
     bool operator==(const SamplerDesc& o) const {
         return o.fDesc == fDesc && o.fFormat == fFormat &&
                o.fExternalFormatMostSignificantBits == fExternalFormatMostSignificantBits;
@@ -243,11 +245,11 @@ struct SamplerDesc {
 
     // These are public such that backends can bitshift data in order to determine whatever
     // sampler qualities they need from fDesc.
-    static constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1);
-    static constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1);
-    static constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1);
+    static constexpr int kNumTileModeBits   = SkNextLog2_portable(int(SkTileMode::kLastTileMode)+1); // 2 bits x 2 = 4 bits --> dynamic samplers fit into 7 bits
+    static constexpr int kNumFilterModeBits = SkNextLog2_portable(int(SkFilterMode::kLast)+1); // 1 bit
+    static constexpr int kNumMipmapModeBits = SkNextLog2_portable(int(SkMipmapMode::kLast)+1); // 2 bits
     static constexpr int kMaxNumConversionInfoBits =
-            32 - kNumFilterModeBits - kNumMipmapModeBits - kNumTileModeBits;
+            32 - kNumFilterModeBits - kNumMipmapModeBits - 2*kNumTileModeBits;
 
     static constexpr int kTileModeXShift            = 0;
     static constexpr int kTileModeYShift            = kTileModeXShift  + kNumTileModeBits;

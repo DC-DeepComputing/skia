@@ -13,8 +13,11 @@
 #include "src/base/SkTBlockList.h"
 #include "src/gpu/graphite/CommandTypes.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 namespace skgpu::graphite {
+
+class TextureProxy;
 
 namespace DrawPassCommands {
 
@@ -75,7 +78,7 @@ static constexpr Type kType = Type::k##T;  \
 COMMAND(BindGraphicsPipeline,
             uint32_t fPipelineIndex);
 COMMAND(SetBlendConstants,
-            PODArray<float> fBlendConstants);
+            std::array<float, 4> fBlendConstants);
 COMMAND(BindUniformBuffer,
             BindBufferInfo fInfo;
             UniformSlot fSlot);
@@ -86,8 +89,8 @@ COMMAND(BindDrawBuffers,
             BindBufferInfo fIndirect);
 COMMAND(BindTexturesAndSamplers,
             int fNumTexSamplers;
-            PODArray<int> fTextureIndices;
-            PODArray<int> fSamplerIndices);
+            PODArray<const TextureProxy*> fTextures;
+            PODArray<SamplerDesc> fSamplers);
 COMMAND(SetScissor,
             Scissor fScissor);
 COMMAND(Draw,
@@ -138,20 +141,21 @@ public:
     }
 
     void setBlendConstants(std::array<float, 4>  blendConstants) {
-        this->add<SetBlendConstants>(this->copy(blendConstants.data(), 4));
+        this->add<SetBlendConstants>(blendConstants);
     }
 
     void bindUniformBuffer(BindBufferInfo info, UniformSlot slot) {
         this->add<BindUniformBuffer>(info, slot);
     }
 
-    // Caller must write 'numTexSamplers' texture and sampler indices into the two returned arrays.
-    std::pair<int*, int*>
+    // Caller must write 'numTexSamplers' textures and sampler descriptions into the two returned
+    // arrays. The texture proxies must have refs held for the lifetime of this command list.
+    std::pair<const TextureProxy**, SamplerDesc*>
     bindDeferredTexturesAndSamplers(int numTexSamplers) {
-        int* textureIndices = fAlloc.makeArrayDefault<int>(numTexSamplers);
-        int* samplerIndices = fAlloc.makeArrayDefault<int>(numTexSamplers);
-        this->add<BindTexturesAndSamplers>(numTexSamplers, textureIndices, samplerIndices);
-        return {textureIndices, samplerIndices};
+        const TextureProxy** textures = fAlloc.makeArrayDefault<const TextureProxy*>(numTexSamplers);
+        SamplerDesc* samplers = fAlloc.makeArrayDefault<SamplerDesc>(numTexSamplers);
+        this->add<BindTexturesAndSamplers>(numTexSamplers, textures, samplers);
+        return {textures, samplers};
     }
 
     void setScissor(SkIRect scissor) {
@@ -209,16 +213,6 @@ private:
     void add(Args&&... args) {
         T* cmd = fAlloc.make<T>(T{std::forward<Args>(args)...});
         fCommands.push_back(std::make_pair(T::kType, cmd));
-    }
-
-    // This copy() is for arrays.
-    // It will work with POD only arrays.
-    template <typename T>
-    T* copy(const T src[], size_t count) {
-        static_assert(std::is_trivially_copyable<T>::value);
-        T* dst = fAlloc.makeArrayDefault<T>(count);
-        memcpy(dst, src, count*sizeof(T));
-        return dst;
     }
 
     SkTBlockList<Command, 16> fCommands{SkBlockAllocator::GrowthPolicy::kFibonacci};
