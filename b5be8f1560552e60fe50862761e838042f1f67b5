@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5922d674_42eb5f96",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-04T21:41:29Z",
+      "side": 1,
+      "message": "Can we also add a comment here (or maybe down by the call to addWaitSemaphores()) that says we have to make sure the lazy proxies are all instantiated successfully before we make any modifications to the current command buffer, so this can\u0027t just happen inside Recording::addCommands?",
+      "range": {
+        "startLine": 137,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 95
+      },
+      "revId": "b5be8f1560552e60fe50862761e838042f1f67b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3dddc555_2fa34b44",
+        "filename": "src/gpu/graphite/Recording.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-04T21:41:29Z",
+      "side": 1,
+      "message": "With previous changes I made to surface/image instantiation for texture reuse, user-created SkSurfaces should always be immediately instantiated.\n\nI think we should avoid this extra instantiate call and just assert that it is instantiated.",
+      "range": {
+        "startLine": 159,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 5
+      },
+      "revId": "b5be8f1560552e60fe50862761e838042f1f67b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
