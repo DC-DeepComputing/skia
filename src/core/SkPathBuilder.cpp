@@ -706,6 +706,7 @@ SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, u
 }
 
 SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir, unsigned index) {
+    SkASSERT_RELEASE(!rrect.rect().isEmpty());
     const IsA prevIsA = fIsA;
     const SkRect& bounds = rrect.getBounds();
 

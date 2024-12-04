@@ -992,17 +992,22 @@ static int build_arc_conics(const SkRect& oval, const SkVector& start, const SkV
 
 SkPath& SkPath::addRoundRect(const SkRect& rect, const SkScalar radii[],
                           SkPathDirection dir) {
+    SkASSERT_RELEASE(!rect.isEmpty());
     SkRRect rrect;
     rrect.setRectRadii(rect, (const SkVector*) radii);
     return this->addRRect(rrect, dir);
 }
 
 SkPath& SkPath::addRRect(const SkRRect& rrect, SkPathDirection dir) {
+    SkASSERT_RELEASE(!rrect.rect().isEmpty());
+
     // legacy start indices: 6 (CW) and 7(CCW)
     return this->addRRect(rrect, dir, dir == SkPathDirection::kCW ? 6 : 7);
 }
 
 SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned startIndex) {
+    SkASSERT_RELEASE(!rrect.rect().isEmpty());
+
     assert_known_direction(dir);
 
     bool isRRect = hasOnlyMoveTos();
@@ -1092,11 +1097,15 @@ bool SkPath::isZeroLengthSincePoint(int startPtIndex) const {
 
 SkPath& SkPath::addRoundRect(const SkRect& rect, SkScalar rx, SkScalar ry,
                              SkPathDirection dir) {
+    SkASSERT_RELEASE(!rect.isEmpty());
+
     assert_known_direction(dir);
 
     if (rx < 0 || ry < 0) {
         return *this;
     }
+
+    SkASSERT_RELEASE(rx > 0 && ry > 0);
 
     SkRRect rrect;
     rrect.setRectXY(rect, rx, ry);

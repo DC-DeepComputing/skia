@@ -435,6 +435,7 @@ void SkRRect::computeType() {
 
 bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
     if (nullptr == dst) {
+        SkDebugf("SkRRect::transform 1\n");
         return false;
     }
 
@@ -445,15 +446,18 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
 
     if (matrix.isIdentity()) {
         *dst = *this;
+        SkDebugf("SkRRect::transform 2\n");
         return true;
     }
 
     if (!matrix.preservesAxisAlignment()) {
+        SkDebugf("SkRRect::transform 3\n");
         return false;
     }
 
     SkRect newRect;
     if (!matrix.mapRect(&newRect, fRect)) {
+        SkDebugf("SkRRect::transform 4\n");
         return false;
     }
 
@@ -462,6 +466,7 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
     // scale and translate and mapRect() produces a sorted rect. So an empty rect indicates
     // loss of precision.
     if (!newRect.isFinite() || newRect.isEmpty()) {
+        SkDebugf("SkRRect::transform 5\n");
         return false;
     }
 
@@ -474,6 +479,7 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
 
     if (kRect_Type == fType) {
         SkASSERT(dst->isValid());
+        SkDebugf("SkRRect::transform 6\n");
         return true;
     }
     if (kOval_Type == fType) {
@@ -482,6 +488,7 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
             dst->fRadii[i].fY = SkScalarHalf(newRect.height());
         }
         SkASSERT(dst->isValid());
+        SkDebugf("SkRRect::transform 7\n");
         return true;
     }
 
@@ -554,13 +561,16 @@ bool SkRRect::transform(const SkMatrix& matrix, SkRRect* dst) const {
         swap(dst->fRadii[kUpperRight_Corner], dst->fRadii[kLowerRight_Corner]);
     }
 
+    dst->scaleRadii();
+
     if (!AreRectAndRadiiValid(dst->fRect, dst->fRadii)) {
+        SkDebugf("SkRRect::transform 8\n");
         return false;
     }
 
-    dst->scaleRadii();
     dst->isValid();  // TODO: is this meant to be SkASSERT(dst->isValid())?
 
+    SkDebugf("SkRRect::transform 9\n");
     return true;
 }
 
@@ -742,11 +752,17 @@ bool SkRRect::isValid() const {
 
 bool SkRRect::AreRectAndRadiiValid(const SkRect& rect, const SkVector radii[4]) {
     if (!rect.isFinite() || !rect.isSorted()) {
+        SkDebugf("SkRRect::AreRectAndRadiiValid 1 %.2f %.2f %.2f %.2f\n",
+                 rect.fLeft, rect.fTop, rect.fRight, rect.fBottom);
         return false;
     }
     for (int i = 0; i < 4; ++i) {
         if (!are_radius_check_predicates_valid(radii[i].fX, rect.fLeft, rect.fRight) ||
             !are_radius_check_predicates_valid(radii[i].fY, rect.fTop, rect.fBottom)) {
+            SkDebugf("SkRRect::AreRectAndRadiiValid 2: %d %.2f %.2f %.2f - %.2f %.2f %.2f\n",
+                i,
+                radii[i].fX, rect.fLeft, rect.fRight,
+                radii[i].fY, rect.fTop, rect.fBottom);
             return false;
         }
     }

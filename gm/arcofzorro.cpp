@@ -7,9 +7,9 @@
 
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkRect.h"
+#include "include/core/SkPath.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
@@ -29,50 +29,33 @@ public:
 protected:
     SkString getName() const override { return SkString("arcofzorro"); }
 
-    SkISize getISize() override { return SkISize::Make(1000, 1000); }
+    SkISize getISize() override { return SkISize::Make(100, 100); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkRandom rand;
+#if 0
+        SkPath path;
+        path.setFillType(SkPathFillType::kWinding);
+        path.moveTo(12, 31);
+        path.lineTo(12, 16);
+        path.conicTo(12, 6, 22, 6, 0.707106769f);
+        path.lineTo(234, 6);
+        path.conicTo(244, 6, 244, 16, 0.707106769f);
+        path.lineTo(244, 31);
+        path.conicTo(244, 41, 234, 41, 0.707106769f);
+        path.lineTo(22, 41);
+        path.conicTo(12, 41, 12, 31, 0.707106769f);
+        path.close();
 
-        SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
+        SkRect bounds = path.getBounds();
+        SkRRect rrect;
+        path.isRRect(&rrect);
 
-        SkPaint p;
+        canvas->clipPath(path);
 
-        p.setStyle(SkPaint::kStroke_Style);
-        p.setStrokeWidth(35);
-        int xOffset = 0, yOffset = 0;
-        int direction = 0;
+        canvas->drawRect({0, 0, 1024, 1024}, SkPaint());
+#endif
 
-        for (float arc = 134.0f; arc < 136.0f; arc += 0.01f) {
-            SkColor color = rand.nextU();
-            color |= 0xff000000;
-            p.setColor(color);
-
-            canvas->save();
-            canvas->translate(SkIntToScalar(xOffset), SkIntToScalar(yOffset));
-            canvas->drawArc(rect, 0, arc, false, p);
-            canvas->restore();
-
-            switch (direction) {
-            case 0:
-                xOffset += 10;
-                if (xOffset >= 700) {
-                    direction = 1;
-                }
-                break;
-            case 1:
-                xOffset -= 10;
-                yOffset += 10;
-                if (xOffset < 50) {
-                    direction = 2;
-                }
-                break;
-            case 2:
-                xOffset += 10;
-                break;
-            }
-        }
-
+        canvas->clear(SK_ColorGREEN);
     }
 
 private:
