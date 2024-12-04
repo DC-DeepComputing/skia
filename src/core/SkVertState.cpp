@@ -20,14 +20,13 @@ bool VertState::Triangles(VertState* state) {
 }
 
 bool VertState::TrianglesX(VertState* state) {
-    const uint16_t* indices = state->fIndices;
     int index = state->fCurrIndex;
     if (index + 3 > state->fCount) {
         return false;
     }
-    state->f0 = indices[index + 0];
-    state->f1 = indices[index + 1];
-    state->f2 = indices[index + 2];
+    state->f0 = state->getIndex(index + 0);
+    state->f1 = state->getIndex(index + 1);
+    state->f2 = state->getIndex(index + 2);
     state->fCurrIndex = index + 3;
     return true;
 }
@@ -50,18 +49,17 @@ bool VertState::TriangleStrip(VertState* state) {
 }
 
 bool VertState::TriangleStripX(VertState* state) {
-    const uint16_t* indices = state->fIndices;
     int index = state->fCurrIndex;
     if (index + 3 > state->fCount) {
         return false;
     }
-    state->f2 = indices[index + 2];
+    state->f2 = state->getIndex(index + 2);
     if (index & 1) {
-        state->f0 = indices[index + 1];
-        state->f1 = indices[index + 0];
+        state->f0 = state->getIndex(index + 1);
+        state->f1 = state->getIndex(index + 0);
     } else {
-        state->f0 = indices[index + 0];
-        state->f1 = indices[index + 1];
+        state->f0 = state->getIndex(index + 0);
+        state->f1 = state->getIndex(index + 1);
     }
     state->fCurrIndex = index + 1;
     return true;
@@ -80,14 +78,13 @@ bool VertState::TriangleFan(VertState* state) {
 }
 
 bool VertState::TriangleFanX(VertState* state) {
-    const uint16_t* indices = state->fIndices;
     int index = state->fCurrIndex;
     if (index + 3 > state->fCount) {
         return false;
     }
-    state->f0 = indices[0];
-    state->f1 = indices[index + 1];
-    state->f2 = indices[index + 2];
+    state->f0 = state->getIndex(0);
+    state->f1 = state->getIndex(index + 1);
+    state->f2 = state->getIndex(index + 2);
     state->fCurrIndex = index + 1;
     return true;
 }
