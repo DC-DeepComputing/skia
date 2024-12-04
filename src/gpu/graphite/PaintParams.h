@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/UniquePaintParamsID.h"
 #include "src/gpu/graphite/geom/AnalyticClip.h"
 #include <functional>  // std::function
 
@@ -19,6 +20,7 @@ class SkShader;
 
 namespace skgpu::graphite {
 
+enum class Coverage;
 class DrawContext;
 class KeyContext;
 class PaintParamsKeyBuilder;
@@ -26,19 +28,17 @@ class PipelineDataGatherer;
 class Recorder;
 class TextureProxy;
 
-// TBD: If occlusion culling is eliminated as a phase, we can easily move the paint conversion
-// back to Device when the command is recorded (similar to SkPaint -> GrPaint), and then
-// PaintParams is not required as an intermediate representation.
 // NOTE: Only represents the shading state of an SkPaint. Style and complex effects (mask filters,
 // image filters, path effects) must be handled higher up. AA is not tracked since everything is
-// assumed to be anti-aliased.
+// assumed to be anti-aliased. However, the method of AA coverage must be provided since that can
+// impact how blending is implemented.
 class PaintParams {
 public:
     explicit PaintParams(const SkPaint&,
                          sk_sp<SkBlender> primitiveBlender,
                          const CircularRRectClip& analyticClip,
                          sk_sp<SkShader> clipShader,
-                         DstReadRequirement dstReadReq,
+                         Coverage rendererCoverage,
                          bool skipColorXform);
 
     PaintParams(const PaintParams&);
@@ -61,27 +61,33 @@ public:
     SkBlender* primitiveBlender() const { return fPrimitiveBlender.get(); }
     sk_sp<SkBlender> refPrimitiveBlender() const;
 
-    DstReadRequirement dstReadRequirement() const { return fDstReadReq; }
+    Coverage rendererCoverage() const { return fRendererCoverage; }
+
     bool skipColorXform() const { return fSkipColorXform; }
     bool dither() const { return fDither; }
 
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    using Result = std::optional<std::tuple<UniquePaintParamsID,
+                                            /*dependsOnDst*/bool,
+                                            DstReadRequirement>>;
+    std::optional<Result> toKey(const KeyContext&,
+                                PaintParamsKeyBuilder*,
+                                PipelineDataGatherer*) const;
 
     void notifyImagesInUse(Recorder*, DrawContext*) const;
 
 private:
-    void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handlePrimitiveColor(const KeyContext&,
+    // These functions return true if collected effects and paint-specific values are opaque.
+    bool addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    bool handlePrimitiveColor(const KeyContext&,
                               PaintParamsKeyBuilder*,
                               PipelineDataGatherer*) const;
-    void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    bool handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    bool handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    bool handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    bool handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
@@ -93,7 +99,7 @@ private:
     sk_sp<SkBlender>     fPrimitiveBlender;
     CircularRRectClip    fAnalyticClip;
     sk_sp<SkShader>      fClipShader;
-    DstReadRequirement   fDstReadReq;
+    Coverage             fRendererCoverage;
     bool                 fSkipColorXform;
     bool                 fDither;
 };

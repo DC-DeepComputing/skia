@@ -101,7 +101,7 @@ private:
     void syncDescriptorSets();
 
     void bindGraphicsPipeline(const GraphicsPipeline*);
-    void setBlendConstants(float* blendConstants);
+    void setBlendConstants(std::array<float, 4> blendConstants);
     void bindDrawBuffers(const BindBufferInfo& vertices,
                          const BindBufferInfo& instances,
                          const BindBufferInfo& indices,
@@ -229,7 +229,7 @@ private:
     size_t fBoundIndexBufferOffset = 0;
     size_t fBoundIndirectBufferOffset = 0;
 
-    float fCachedBlendConstant[4];
+    std::array<float, 4> fCachedBlendConstant;
 
     class IntrinsicConstantsManager;
     std::unique_ptr<IntrinsicConstantsManager> fIntrinsicConstants;

@@ -43,9 +43,11 @@ wgpu::MipmapFilterMode mipmap_mode_to_dawn_filter_mode(SkMipmapMode mode) {
 }
 
 DawnSampler::DawnSampler(const DawnSharedContext* sharedContext,
+                         SamplerDesc samplerDesc,
                          wgpu::Sampler sampler)
         : Sampler(sharedContext)
-        , fSampler(std::move(sampler)) {}
+        , fSampler(std::move(sampler))
+        , fSamplerDesc(samplerDesc) {}
 
 static inline wgpu::AddressMode tile_mode_to_dawn_address_mode(SkTileMode tileMode) {
     switch (tileMode) {
@@ -168,7 +170,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     if (!sampler) {
         return {};
     }
-    return sk_sp<DawnSampler>(new DawnSampler(sharedContext, std::move(sampler)));
+    return sk_sp<DawnSampler>(new DawnSampler(sharedContext, samplerDesc, std::move(sampler)));
 }
 
 void DawnSampler::freeGpuData() {
@@ -176,4 +178,3 @@ void DawnSampler::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-

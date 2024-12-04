@@ -113,6 +113,11 @@ Context::~Context() {
 bool Context::finishInitialization() {
     SkASSERT(!fSharedContext->rendererProvider()); // Can only initialize once
 
+    if (!fSharedContext->globalCache()->initializeDynamicSamplers(fResourceProvider.get(),
+                                                                  fSharedContext->caps())) {
+        return false;
+    }
+
     StaticBufferManager bufferManager{fResourceProvider.get(), fSharedContext->caps()};
     std::unique_ptr<RendererProvider> renderers{
             new RendererProvider(fSharedContext->caps(), &bufferManager)};

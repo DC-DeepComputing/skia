@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/PaintParams.h"
 
+#include "Device.h"
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkShader.h"
 #include "src/core/SkBlendModeBlender.h"
@@ -310,16 +311,27 @@ void PaintParams::handleClipping(const KeyContext& keyContext,
     }
 }
 
-void PaintParams::toKey(const KeyContext& keyContext,
-                        PaintParamsKeyBuilder* builder,
-                        PipelineDataGatherer* gatherer) const {
+std::optional<PaintParams::Result> PaintParams::toKey(const KeyContext& keyContext,
+                                                      PaintParamsKeyBuilder* builder,
+                                                      PipelineDataGatherer* gatherer) const {
     // Root Node 0 is the source color, which is the output of all effects post dithering
-    this->handleDithering(keyContext, builder, gatherer);
+    bool isOpaque = this->handleDithering(keyContext, builder, gatherer);
 
     // Root Node 1 is the final blender
     std::optional<SkBlendMode> finalBlendMode = this->asFinalBlendMode();
+    bool dependsOnDst = false;
+    Coverage finalCoverage = fRendererCoverage;
+    if (fClipShader || !fAnalyticClip.isEmpty()) {
+        finalCoverage = Coverage::kSingleChannel;
+        // Coverage is always blended after the final paint blend mode so analytic coverage
+        // external to the Renderer pessimistically always depends on the dst.
+        dependsOnDst = true;
+    }
+    DstReadRequirement dstReadReq = GetDstReadRequirement(keyContext->recorder().priv()->caps(),
+                                                          finalBlendMode,
+                                                          finalCoverage);
     if (finalBlendMode) {
-        if (fDstReadReq == DstReadRequirement::kNone) {
+        if (dstReadReq == DstReadRequirement::kNone) {
             // With no shader blending, be as explicit as possible about the final blend
             AddFixedBlendMode(keyContext, builder, gatherer, *finalBlendMode);
         } else {
@@ -330,12 +342,26 @@ void PaintParams::toKey(const KeyContext& keyContext,
             // not requiring lots of pipelines.
             AddBlendMode(keyContext, builder, gatherer, *finalBlendMode);
         }
+
+        // Blend modes can be analyzed to determine if specific src colors still depend on the dst.
+        dependsOnDst |= blender_depends_on_dst(*finalBlendMode, isOpaque);
     } else {
         AddToKey(keyContext, builder, gatherer, fFinalBlender.get());
+        // Cannot inspect runtime blenders to pessimistically assume they will always use the dst.
+        dependsOnDst = true;
     }
 
     // Optional Root Node 2 is the clip
     this->handleClipping(keyContext, builder, gatherer);
+
+    UniquePaintParamsID paintID = keyContext->recorder().priv()->shaderCodeDictionary()->findOrCreate(builder);
+    if (!paintID.isValid()) {
+        return {};
+    } else {
+        // If we don't depend on the dst, we'd better not be required to read from the dst.
+        SkASSERT(dependsOnDst || dstReadReq == DstReadRequirement::kNone);
+        return {paintID, dependsOnDst, dstReadReq};
+    }
 }
 
 // TODO(b/330864257): Can be deleted once keys are determined by the Device draw.

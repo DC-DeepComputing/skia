@@ -42,26 +42,6 @@
 
 namespace skgpu::graphite {
 
-namespace {
-
-// Discarding content on floating point textures can leave nans as the prior color for a pixel,
-// in which case hardware blending (when enabled) will fail even if the src, dst coefficients
-// and coverage would produce the unmodified src value.
-bool discard_op_should_use_clear(SkColorType ct) {
-    switch(ct) {
-        case kRGBA_F16Norm_SkColorType:
-        case kRGBA_F16_SkColorType:
-        case kRGBA_F32_SkColorType:
-        case kA16_float_SkColorType:
-        case kR16G16_float_SkColorType:
-            return true;
-        default:
-            return false;
-    }
-}
-
-} // anonymous namespace
-
 sk_sp<DrawContext> DrawContext::Make(const Caps* caps,
                                      sk_sp<TextureProxy> target,
                                      SkISize deviceSize,
@@ -111,39 +91,27 @@ DrawContext::DrawContext(const Caps* caps,
 DrawContext::~DrawContext() = default;
 
 void DrawContext::clear(const SkColor4f& clearColor) {
-    this->discard();
-
-    fPendingLoadOp = LoadOp::kClear;
-    SkPMColor4f pmColor = clearColor.premul();
-    fPendingClearColor = pmColor.array();
+    this->internalDiscard();
+    fPendingDraws->reset(LoadOp::kClear, clearColor);
 }
 
 void DrawContext::discard() {
+    this->internalDiscard();
+    fPendingDraws->reset(LoadOp::kDiscard);
+}
+
+void DrawContext::internalDiscard() {
     // Non-loading operations on a fully lazy target can corrupt data beyond the DrawContext's
     // region so should be avoided.
     SkASSERT(!fTarget->isFullyLazy());
 
-    // A fullscreen clear or discard will overwrite anything that came before, so clear the DrawList
     // NOTE: Eventually the current DrawTask should be reset, once there are no longer implicit
     // dependencies on atlas tasks between DrawContexts. When that's resolved, the only tasks in the
     // current DrawTask are those that directly impact the target, which becomes irrelevant with the
     // clear op overwriting it. For now, preserve the previous tasks that might include atlas
     // uploads that are not explicitly shared between DrawContexts.
-    if (fPendingDraws->renderStepCount() > 0) {
-        fPendingDraws = std::make_unique<DrawList>();
-    }
     if (fComputePathAtlas) {
         fComputePathAtlas->reset();
-    }
-
-    if (discard_op_should_use_clear(fImageInfo.colorType())) {
-        // In theory the clear color shouldn't matter since a discardable state should be fully
-        // overwritten by later draws, but if a previous call to clear() had injected bad data,
-        // the discard should not inherit it.
-        fPendingClearColor = {0.f, 0.f, 0.f, 0.f};
-        fPendingLoadOp = LoadOp::kClear;
-    } else {
-        fPendingLoadOp = LoadOp::kDiscard;
     }
 }
 
@@ -152,10 +120,13 @@ void DrawContext::recordDraw(const Renderer* renderer,
                              const Geometry& geometry,
                              const Clip& clip,
                              DrawOrder ordering,
-                             const PaintParams* paint,
+                             UniquePaintParamsID paintID,
+                             DstReadRequirement dstReadReq,
+                             PipelineDataGatherer* gatherer,
                              const StrokeStyle* stroke) {
     SkASSERT(SkIRect::MakeSize(this->imageInfo().dimensions()).contains(clip.scissor()));
-    fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering, paint, stroke);
+    fPendingDraws->recordDraw(renderer, localToDevice, geometry, clip, ordering,
+                              paintID, dstReadReq, gatherer, stroke);
 }
 
 bool DrawContext::recordUpload(Recorder* recorder,
@@ -192,7 +163,7 @@ PathAtlas* DrawContext::getComputePathAtlas(Recorder* recorder) {
     return fComputePathAtlas.get();
 }
 
-void DrawContext::flush(Recorder* recorder) {
+void DrawContext::flush(Recorder* recorder, SkSpan<const float> gradientData) {
     if (fPendingUploads->size() > 0) {
         TRACE_EVENT_INSTANT1("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
                              "# uploads", fPendingUploads->size());
@@ -218,7 +189,7 @@ void DrawContext::flush(Recorder* recorder) {
         fComputePathAtlas->reset();
     } // else platform doesn't support compute or atlas was never initialized.
 
-    if (fPendingDraws->renderStepCount() == 0 && fPendingLoadOp != LoadOp::kClear) {
+    if (!fPendingDraws->modifiesTarget()) {
         // Nothing will be rasterized to the target that warrants a RenderPassTask, but we preserve
         // any added uploads or compute tasks since those could also affect the target w/o
         // rasterizing anything directly.
@@ -232,17 +203,11 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     SkIRect dstCopyPixelBounds = fPendingDraws->dstCopyBounds().makeRoundOut().asSkIRect();
-    std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
-                                                    std::move(fPendingDraws),
-                                                    fTarget,
-                                                    this->imageInfo(),
-                                                    std::make_pair(fPendingLoadOp, fPendingStoreOp),
-                                                    fPendingClearColor);
-    fPendingDraws = std::make_unique<DrawList>();
-    // Now that there is content drawn to the target, that content must be loaded on any subsequent
-    // render pass.
-    fPendingLoadOp = LoadOp::kLoad;
-    fPendingStoreOp = StoreOp::kStore;
+    std::unique_ptr<DrawPass> pass = fPendingDraws->snapDrawPass(recorder,
+                                                                 fTarget,
+                                                                 fImageInfo.dimensions(),
+                                                                 gradientData);
+    SkASSERT(!fPendingDraws->modifiesTarget()); // Should be drained into `pass`.
 
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
@@ -293,11 +258,7 @@ void DrawContext::flush(Recorder* recorder) {
     // DrawContexts now implicitly depend on.
 }
 
-sk_sp<Task> DrawContext::snapDrawTask(Recorder* recorder) {
-    // If flush() was explicitly called earlier and no new work was recorded, this call to flush()
-    // is a no-op and shouldn't hurt performance.
-    this->flush(recorder);
-
+sk_sp<Task> DrawContext::snapDrawTask() {
     if (!fCurrentDrawTask->hasTasks()) {
         return nullptr;
     }

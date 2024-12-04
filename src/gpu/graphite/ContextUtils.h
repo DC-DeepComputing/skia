@@ -33,15 +33,6 @@ class UniquePaintParamsID;
 
 struct ResourceBindingRequirements;
 
-UniquePaintParamsID ExtractPaintData(Recorder*,
-                                     PipelineDataGatherer* gatherer,
-                                     PaintParamsKeyBuilder* builder,
-                                     const Layout layout,
-                                     const SkM44& local2Dev,
-                                     const PaintParams&,
-                                     const Geometry& geometry,
-                                     const SkColorInfo& targetColorInfo);
-
 // Intrinsic uniforms used by every program created in Graphite.
 //
 // `viewport` should hold the actual viewport set as backend state (defining the NDC -> pixel
