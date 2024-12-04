@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad937fcc_47a604ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-04T19:06:49Z",
+      "side": 1,
+      "message": "I\u0027m assuming the GPU backends don\u0027t explode with out of bounds indices, otherwise guarding in the sw backend may not be worth it.",
+      "revId": "089943cd0737fe7441aea44e39d799b4cb92e5fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
