@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae730dc9_fe918036",
+        "filename": "tools/window/WindowContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-04T18:30:43Z",
+      "side": 1,
+      "message": "I\u0027m fine with a consistent 0 value in these cases",
+      "parentUuid": "ac3045fe_7f1566cc",
+      "range": {
+        "startLine": 53,
+        "startChar": 72,
+        "endLine": 53,
+        "endChar": 77
+      },
+      "revId": "38a4aee6c00bd54421feb8d86405c7bf2c50dd93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0e04ec3_8159215a",
