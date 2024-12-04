@@ -452,7 +452,8 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kSetScissor: {
                 auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
-                this->setScissor(ss->fScissor);
+                const SkIRect& rect = ss->fScissor;
+                this->setScissor(rect.fLeft, rect.fTop, rect.width(), rect.height());
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
@@ -729,10 +730,19 @@ void DawnCommandBuffer::syncUniformBuffers() {
     }
 }
 
-void DawnCommandBuffer::setScissor(const Scissor& scissor) {
+void DawnCommandBuffer::setScissor(unsigned int left,
+                                   unsigned int top,
+                                   unsigned int width,
+                                   unsigned int height) {
     SkASSERT(fActiveRenderPassEncoder);
-    SkIRect rect = scissor.getRect(fReplayTranslation, fReplayClip);
-    fActiveRenderPassEncoder.SetScissorRect(rect.x(), rect.y(), rect.width(), rect.height());
+    SkIRect scissor = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
+        (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip))) {
+        scissor.setEmpty();
+    }
+    fActiveRenderPassEncoder.SetScissorRect(
+            scissor.x(), scissor.y(), scissor.width(), scissor.height());
 }
 
 bool DawnCommandBuffer::updateIntrinsicUniforms(SkIRect viewport) {

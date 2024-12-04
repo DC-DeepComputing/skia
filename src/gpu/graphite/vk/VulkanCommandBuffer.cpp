@@ -592,7 +592,7 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
     fBindUniformBuffers = false;
     fBindTextureSamplers = false;
 
-    this->setScissor(SkIRect::MakeXYWH(0, 0, dstDimensions.width(), dstDimensions.height()));
+    this->setScissor(/*left=*/0, /*top=*/0, dstDimensions.width(), dstDimensions.height());
 
     if (!this->updateAndBindLoadMSAAInputAttachment(resolveTexture)) {
         SKGPU_LOG_E("Unable to update and bind an input attachment descriptor for loading MSAA "
@@ -972,7 +972,8 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kSetScissor: {
                 auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
-                this->setScissor(ss->fScissor);
+                const SkIRect& rect = ss->fScissor;
+                this->setScissor(rect.fLeft, rect.fTop, rect.width(), rect.height());
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
@@ -1371,19 +1372,23 @@ void VulkanCommandBuffer::bindTextureSamplers() {
     }
 }
 
-void VulkanCommandBuffer::setScissor(const Scissor& scissor) {
-    this->setScissor(scissor.getRect(fReplayTranslation, fReplayClip));
-}
+void VulkanCommandBuffer::setScissor(unsigned int left, unsigned int top, unsigned int width,
+                                     unsigned int height) {
+    SkIRect scissor = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    if (!scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
+        (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip))) {
+        scissor.setEmpty();
+    }
 
-void VulkanCommandBuffer::setScissor(const SkIRect& rect) {
-    VkRect2D scissor = {
-            {rect.x(), rect.y()},
-            {static_cast<unsigned int>(rect.width()), static_cast<unsigned int>(rect.height())}};
+    VkRect2D vkScissor = {{scissor.x(), scissor.y()},
+                          {static_cast<unsigned int>(scissor.width()),
+                           static_cast<unsigned int>(scissor.height())}};
     VULKAN_CALL(fSharedContext->interface(),
                 CmdSetScissor(fPrimaryCommandBuffer,
                               /*firstScissor=*/0,
                               /*scissorCount=*/1,
-                              &scissor));
+                              &vkScissor));
 }
 
 void VulkanCommandBuffer::draw(PrimitiveType,

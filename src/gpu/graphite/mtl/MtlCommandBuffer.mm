@@ -399,7 +399,8 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kSetScissor: {
                 auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
-                this->setScissor(ss->fScissor);
+                const SkIRect& rect = ss->fScissor;
+                this->setScissor(rect.fLeft, rect.fTop, rect.width(), rect.height());
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
@@ -582,17 +583,22 @@ void MtlCommandBuffer::bindTextureAndSampler(const Texture* texture,
     fActiveRenderCommandEncoder->setFragmentSamplerState(mtlSamplerState, bindIndex);
 }
 
-void MtlCommandBuffer::setScissor(const Scissor& scissor) {
+void MtlCommandBuffer::setScissor(unsigned int left, unsigned int top,
+                                  unsigned int width, unsigned int height) {
     SkASSERT(fActiveRenderCommandEncoder);
-
-    SkIRect rect = scissor.getRect(fReplayTranslation, fReplayClip);
-    fDrawIsOffscreen = rect.isEmpty();
+    SkIRect scissor = SkIRect::MakeXYWH(
+            left + fReplayTranslation.x(), top + fReplayTranslation.y(), width, height);
+    fDrawIsOffscreen = !scissor.intersect(SkIRect::MakeSize(fColorAttachmentSize)) ||
+                       (!fReplayClip.isEmpty() && !scissor.intersect(fReplayClip));
+    if (fDrawIsOffscreen) {
+        scissor.setEmpty();
+    }
 
     fActiveRenderCommandEncoder->setScissorRect({
-            static_cast<unsigned int>(rect.x()),
-            static_cast<unsigned int>(rect.y()),
-            static_cast<unsigned int>(rect.width()),
-            static_cast<unsigned int>(rect.height()),
+            static_cast<unsigned int>(scissor.x()),
+            static_cast<unsigned int>(scissor.y()),
+            static_cast<unsigned int>(scissor.width()),
+            static_cast<unsigned int>(scissor.height()),
     });
 }
 
