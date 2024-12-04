@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5da3f241_b1a386f5",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-04T19:36:38Z",
+      "side": 1,
+      "message": "It looks like this isn\u0027t an issue?",
+      "parentUuid": "64a4292d_06b44de2",
+      "range": {
+        "startLine": 516,
+        "startChar": 6,
+        "endLine": 516,
+        "endChar": 62
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0b6997a6_b9c75bf9",
         "filename": "tools/window/DisplayParams.h",
         "patchSetId": 4
