@@ -33,6 +33,7 @@ protected:
     void mapToParent(SkPath*) const;
 
     void mapToParent(SkRect*) const;
+    SkRect objectBoundingBox(const SkSVGRenderContext& ) const final;
 
 private:
     // FIXME: should be sparse

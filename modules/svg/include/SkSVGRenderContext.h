@@ -77,7 +77,7 @@ public:
         const SkSVGNode*          fNode;
         const SkSVGRenderContext* fCtx;
     };
-
+    friend class SkSVGTransformableNode;
     SkSVGRenderContext(SkCanvas*,
                        const sk_sp<SkFontMgr>&,
                        const sk_sp<skresources::ResourceProvider>&,

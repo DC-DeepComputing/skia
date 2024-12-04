@@ -48,3 +48,12 @@ void SkSVGTransformableNode::mapToParent(SkPath* path) const {
 void SkSVGTransformableNode::mapToParent(SkRect* rect) const {
     *rect = fTransform.mapRect(*rect);
 }
+
+SkRect SkSVGTransformableNode::objectBoundingBox(const SkSVGRenderContext& ctx) const {
+    SkRect rect = this->onObjectBoundingBox(ctx);
+    if (ctx.fOBBScope.fNode != this && !fTransform.isIdentity()) {
+        rect = fTransform.mapRect(rect);
+    }
+    return rect;
+}
+
