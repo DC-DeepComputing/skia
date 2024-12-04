@@ -68,6 +68,24 @@
       "parentUuid": "2882a11a_3f42bec8",
       "revId": "a7307871dfe69f143b57a8a0226810690da92172",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3169e921_81f7e9c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3737112
+      },
+      "writtenOn": "2024-12-04T12:56:15Z",
+      "side": 1,
+      "message": "@bungeman@google.com, The data is not serialized by SkUserTypeface, but in my local test, SkCustomTypefaceBuilder can return a non-nullptr SkTypeface. Please verify it locally. At the same time, I noticed that the 109 version of Chrome is also normal, and there is no problem with PingFangUI.ttc printing exceptions.",
+      "parentUuid": "39713c0c_36a8dd19",
+      "revId": "a7307871dfe69f143b57a8a0226810690da92172",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
