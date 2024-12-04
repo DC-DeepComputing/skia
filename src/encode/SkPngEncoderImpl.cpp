@@ -79,6 +79,7 @@ public:
 
     bool setHeader(const SkImageInfo& srcInfo, const SkPngEncoder::Options& options);
     bool setColorSpace(const SkImageInfo& info, const SkPngEncoder::Options& options);
+    bool setV0Gainmap(const SkPngEncoder::Options& options);
     bool writeInfo(const SkImageInfo& srcInfo);
     void chooseProc(const SkImageInfo& srcInfo);
 
@@ -445,6 +446,62 @@ bool SkPngEncoderMgr::setColorSpace(const SkImageInfo& info, const SkPngEncoder:
     return true;
 }
 
+bool SkPngEncoderMgr::setV0Gainmap(const SkPngEncoder::Options& options) {
+#ifdef PNG_STORE_UNKNOWN_CHUNKS_SUPPORTED
+    if (setjmp(png_jmpbuf(fPngPtr))) {
+        return false;
+    }
+
+    if (!options.fGainmapInfo) {
+        return false;
+    }
+
+    if (options.fGainmap) {
+        sk_sp<SkData> gainmapVersion = SkGainmapInfo::SerializeVersion();
+        SkDynamicMemoryWStream gainmapStream;
+
+        auto modifiedOptions = options;
+        modifiedOptions.fGainmap = nullptr;
+
+        bool result = SkPngEncoder::Encode(&gainmapStream, *(options.fGainmap), modifiedOptions);
+        if (!result) {
+            return false;
+        }
+
+        sk_sp<SkData> gainmapData = gainmapStream.detachAsData();
+
+        std::array<png_unknown_chunk, 2> chunks = {
+                png_unknown_chunk{
+                        .name = "gmAP",
+                        .data = reinterpret_cast<png_byte*>(
+                                const_cast<void*>(gainmapVersion->data())),
+                        .size = gainmapVersion->size(),
+                        .location = PNG_HAVE_IHDR,
+                },
+                png_unknown_chunk{
+                        .name = "gdAT",
+                        .data = reinterpret_cast<png_byte*>(const_cast<void*>(gainmapData->data())),
+                        .size = gainmapData->size(),
+                        .location = PNG_HAVE_IHDR,
+                },
+        };
+        png_set_keep_unknown_chunks(fPngPtr, PNG_HANDLE_CHUNK_ALWAYS, (png_const_bytep)"gmAP\0gdAT\0", chunks.size());
+        png_set_unknown_chunks(fPngPtr, fInfoPtr, chunks.data(), chunks.size());
+    } else {
+        sk_sp<SkData> data = options.fGainmapInfo->serialize();
+        png_unknown_chunk chunk = {
+                .name = "gmAP",
+                .data = reinterpret_cast<png_byte*>(const_cast<void*>(data->data())),
+                .size = data->size(),
+                .location = PNG_HAVE_IHDR,
+        };
+        png_set_keep_unknown_chunks(fPngPtr, PNG_HANDLE_CHUNK_ALWAYS, (png_const_bytep)"gmAP\0", 1);
+        png_set_unknown_chunks(fPngPtr, fInfoPtr, &chunk, 1);
+    }
+#endif
+    return true;
+}
+
 bool SkPngEncoderMgr::writeInfo(const SkImageInfo& srcInfo) {
     if (setjmp(png_jmpbuf(fPngPtr))) {
         return false;
@@ -512,6 +569,10 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
     }
 
     if (!encoderMgr->setColorSpace(src.info(), options)) {
+        return nullptr;
+    }
+
+    if (options.fGainmapInfo && !encoderMgr->setV0Gainmap(options)) {
         return nullptr;
     }
 
