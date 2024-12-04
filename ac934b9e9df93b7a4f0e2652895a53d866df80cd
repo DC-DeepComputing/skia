@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f80fdb9c_3f6a3eb6",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-04T13:51:38Z",
+      "side": 0,
+      "message": "\u003e After this CL, `PNG_COLOR_TYPE_RGB_ALPHA` is always used.  This is a change in behavior, but this seems okay (4 channels / RGBA in source, so also RGBA in output).\n\nHmm, I thought we\u0027re preserving the old behavior:\n\n  - `getTargetInfo` checks alpha type and returns `SkEncodedInfo::kRGB_Color` when opaque\n  - the switch above sets `PNG_COLOR_TYPE_RGB` for `SkEncodedInfo::kRGB_Color`\n  \nSo we should still be using `PNG_COLOR_TYPE_RGB` when opaque, no?",
+      "parentUuid": "57ca4298_a27db3aa",
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b022f42e_02bbd4d8",
         "filename": "src/encode/SkPngEncoderImpl.cpp",
         "patchSetId": 15
