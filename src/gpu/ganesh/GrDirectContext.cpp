@@ -60,6 +60,8 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+#include "src/utils/SkJSONWriter.h"
+
 #include <array>
 #include <atomic>
 #include <forward_list>
@@ -251,6 +253,9 @@ bool GrDirectContext::init() {
     if (!GrRecordingContext::init()) {
         return false;
     }
+
+    SkJSONWriter writer(nullptr, SkJSONWriter::Mode::kPretty);
+    fGpu->caps()->dumpJSON(&writer);
 
     SkASSERT(this->getTextBlobRedrawCoordinator());
     SkASSERT(this->threadSafeCache());

@@ -58,7 +58,6 @@ public:
             : fBlock(new char[kBlockSize])
             , fWrite(fBlock)
             , fBlockEnd(fBlock + kBlockSize)
-            , fStream(stream)
             , fMode(mode)
             , fState(State::kStart) {
         fScopeStack.push_back(Scope::kNone);
@@ -77,7 +76,8 @@ public:
      */
     void flush() {
         if (fWrite != fBlock) {
-            fStream->write(fBlock, fWrite - fBlock);
+            SkDebugf("%.*s\n", (int)(fWrite - fBlock), fBlock);
+            //fStream->write(fBlock, fWrite - fBlock);
             fWrite = fBlock;
         }
     }
@@ -369,7 +369,8 @@ private:
         }
         if (length > kBlockSize) {
             // Send particularly large writes straight through to the stream (unbuffered).
-            fStream->write(buf, length);
+            SkDebugf("%*.s\n", (int)length, buf);
+            //fStream->write(buf, length);
         } else {
             memcpy(fWrite, buf, length);
             fWrite += length;
@@ -409,7 +410,6 @@ private:
     char* fWrite;
     char* fBlockEnd;
 
-    SkWStream* fStream;
     Mode fMode;
     State fState;
     skia_private::STArray<16, Scope, true> fScopeStack;
