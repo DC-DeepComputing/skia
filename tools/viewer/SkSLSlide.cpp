@@ -28,6 +28,7 @@
 #include "tools/Resources.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/sk_app/Application.h"
+#include "tools/sksltrace/SkSLTraceUtils.h"
 #include "tools/viewer/Viewer.h"
 
 #include <algorithm>
@@ -339,7 +340,7 @@ void SkSLSlide::draw(SkCanvas* canvas) {
 
     if (debugTrace && writeTrace) {
         SkFILEWStream traceFile("SkSLDebugTrace.json");
-        debugTrace->writeTrace(&traceFile);
+        SkSLTraceUtils::WriteTrace((SkSL::DebugTracePriv*)debugTrace.get(), &traceFile);
     }
     if (debugTrace && writeDump) {
         SkFILEWStream dumpFile("SkSLDebugTrace.dump.txt");
