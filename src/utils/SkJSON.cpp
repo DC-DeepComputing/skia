@@ -183,7 +183,6 @@ private:
         // on bytes [1..6] => the fastest way is to read8 @(src - 1) (always safe, because the
         // string requires a " prefix at the very least).
         memcpy(s64, src - 1, 8);
-
 #if defined(SK_CPU_LENDIAN)
         // The mask for a max-length string (6), with a leading tag and trailing \0 is
         // 0x00ffffffffffff00.  Accounting for the final left-shift, this becomes
