@@ -1,0 +1,126 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63e65559_5da121dd",
+        "filename": "tools/sksltrace/SkSLTraceUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T14:42:52Z",
+      "side": 1,
+      "message": "Could we use `const SkSL::DebugTracePriv\u0026 src` instead?",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "108bf315_308d9c1e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/sksltrace/SkSLTraceUtils.cpp",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "void WriteTrace(const SkSL::DebugTracePriv\u0026 src, SkWStream* w) {\n"
+            },
+            {
+              "path": "tools/sksltrace/SkSLTraceUtils.cpp",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": "    for (const std::string\u0026 line : src.fSource) {\n"
+            },
+            {
+              "path": "tools/sksltrace/SkSLTraceUtils.cpp",
+              "range": {
+                "startLine": 43,
+                "startChar": 0,
+                "endLine": 45,
+                "endChar": 0
+              },
+              "replacement": "    for (size_t index \u003d 0; index \u003c src.fSlotInfo.size(); ++index) {\n        const SkSL::SlotDebugInfo\u0026 info \u003d src.fSlotInfo[index];\n"
+            },
+            {
+              "path": "tools/sksltrace/SkSLTraceUtils.cpp",
+              "range": {
+                "startLine": 65,
+                "startChar": 0,
+                "endLine": 67,
+                "endChar": 0
+              },
+              "replacement": "    for (size_t index \u003d 0; index \u003c src.fFuncInfo.size(); ++index) {\n        const SkSL::FunctionDebugInfo\u0026 info \u003d src.fFuncInfo[index];\n"
+            },
+            {
+              "path": "tools/sksltrace/SkSLTraceUtils.cpp",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 78,
+                "endChar": 0
+              },
+              "replacement": "    for (size_t index \u003d 0; index \u003c src.fTraceInfo.size(); ++index) {\n        const SkSL::TraceInfo\u0026 trace \u003d src.fTraceInfo[index];\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2a9b0152486b1c6f1d4ade9ed5584de5f676f095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d66453_c55b2ed6",
+        "filename": "tools/viewer/SkSLSlide.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T14:42:52Z",
+      "side": 1,
+      "message": "nit: static_cast",
+      "range": {
+        "startLine": 343,
+        "startChar": 35,
+        "endLine": 343,
+        "endChar": 58
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2c2e6edc_d6b9d7f2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/viewer/SkSLSlide.cpp",
+              "range": {
+                "startLine": 343,
+                "startChar": 0,
+                "endLine": 344,
+                "endChar": 0
+              },
+              "replacement": "        SkSLTraceUtils::WriteTrace(static_cast\u003cSkSL::DebugTracePriv*\u003e(debugTrace.get()), \u0026traceFile);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "2a9b0152486b1c6f1d4ade9ed5584de5f676f095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
