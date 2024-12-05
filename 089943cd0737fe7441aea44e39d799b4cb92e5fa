@@ -16,6 +16,24 @@
       "message": "I\u0027m assuming the GPU backends don\u0027t explode with out of bounds indices, otherwise guarding in the sw backend may not be worth it.",
       "revId": "089943cd0737fe7441aea44e39d799b4cb92e5fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d57714f_ec394385",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-05T15:21:46Z",
+      "side": 1,
+      "message": "They could definitely lead to incorrect rendering and accessing depending on how the driver handles the drawIndexedRange calls. If they *assume* the data is valid given the min/max value we claim (0, vertexCount-1), it would be problematic. If they add their own clamping to those values then we are fine, but I don\u0027t see any code where we clean the index buffer before creating a GPU index buffer.\n\nGiven that this could be problematic for both CPU and GPU, should we instead validate the index buffer when the SkVertices is created? Then we would only validate it once instead of every time we render it.",
+      "parentUuid": "ad937fcc_47a604ab",
+      "revId": "089943cd0737fe7441aea44e39d799b4cb92e5fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
