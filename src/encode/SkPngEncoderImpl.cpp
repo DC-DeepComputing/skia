@@ -7,6 +7,8 @@
 
 #include "src/encode/SkPngEncoderImpl.h"
 
+#include <iostream>
+
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColorSpace.h"
@@ -134,6 +136,10 @@ bool SkPngEncoderMgr::setHeader(const SkImageInfo& srcInfo, const SkPngEncoder::
             bitDepth = 16;
             pngColorType = srcInfo.isOpaque() ? PNG_COLOR_TYPE_RGB : PNG_COLOR_TYPE_RGB_ALPHA;
             fPngBytesPerPixel = 8;
+            std::cerr << "SkPngEncoderMgr::setHeader"
+                      << "; pngColorType = " << static_cast<int>(pngColorType)
+                      << "; bitDepth = " << bitDepth
+                      << "\n";
             break;
         case kRGB_F16F16F16x_SkColorType:
             sigBit.red = 16;
@@ -329,8 +335,14 @@ static transform_scanline_proc choose_proc(const SkImageInfo& info) {
             switch (info.alphaType()) {
                 case kOpaque_SkAlphaType:
                 case kUnpremul_SkAlphaType:
+                    std::cerr << "choose_proc"
+                              << "; transform_scanline_F16"
+                              << "\n";
                     return transform_scanline_F16;
                 case kPremul_SkAlphaType:
+                    std::cerr << "choose_proc"
+                              << "; transform_scanline_F16_premul"
+                              << "\n";
                     return transform_scanline_F16_premul;
                 default:
                     SkDEBUGFAIL("unknown alpha type");
@@ -342,8 +354,14 @@ static transform_scanline_proc choose_proc(const SkImageInfo& info) {
             switch (info.alphaType()) {
                 case kOpaque_SkAlphaType:
                 case kUnpremul_SkAlphaType:
+                    std::cerr << "choose_proc"
+                              << "; transform_scanline_F32"
+                              << "\n";
                     return transform_scanline_F32;
                 case kPremul_SkAlphaType:
+                    std::cerr << "choose_proc"
+                              << "; transform_scanline_F32_premul"
+                              << "\n";
                     return transform_scanline_F32_premul;
                 default:
                     SkDEBUGFAIL("unknown alpha type");
