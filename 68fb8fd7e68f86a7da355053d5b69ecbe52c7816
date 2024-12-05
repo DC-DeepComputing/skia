@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8864884c_1d0eb31e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T02:04:45Z",
+      "side": 1,
+      "message": "Oh, and also the CL description got updated - see here: https://skia-review.googlesource.com/c/skia/+/922676/15..20//COMMIT_MSG",
+      "parentUuid": "92c7e669_417a910d",
+      "revId": "68fb8fd7e68f86a7da355053d5b69ecbe52c7816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7b85cf8a_7594e437",
         "filename": "tests/EncodeTest.cpp",
         "patchSetId": 20
