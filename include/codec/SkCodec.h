@@ -1053,6 +1053,7 @@ private:
     friend class PNGCodecGM;    // for fillIncompleteImage
     friend class SkSampledCodec;
     friend class SkIcoCodec;
+    friend class SkPngCodec;     // for onGetGainmapCodec
     friend class SkAndroidCodec; // for fEncodedInfo
     friend class SkPDFBitmap; // for fEncodedInfo
 };
