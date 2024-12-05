@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6c47f2b_3b4e8eb9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 1,
+      "message": "Resolving...",
+      "parentUuid": "8864884c_1d0eb31e",
+      "revId": "68fb8fd7e68f86a7da355053d5b69ecbe52c7816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b85cf8a_7594e437",
@@ -49,6 +67,30 @@
       "writtenOn": "2024-12-05T01:53:12Z",
       "side": 1,
       "message": "I probably should follow-up to test all the color/alpha combinations supported by the PNG encoder.  This will require:\n\n* Updating `SkColorType` \u003d\u003e `skcms_PixelFormat` conversion in the test code\n* Figuring out if `tolerance \u003d\u003d 0` works okay for all color/alpha combinations",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 1
+      },
+      "revId": "68fb8fd7e68f86a7da355053d5b69ecbe52c7816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a854f47_78ebb08b",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 1,
+      "message": "Resolving... FWIW I\u0027ve added this to a private doc listing of TODOs for myself..",
+      "parentUuid": "7b85cf8a_7594e437",
       "range": {
         "startLine": 341,
         "startChar": 0,

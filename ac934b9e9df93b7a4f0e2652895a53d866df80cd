@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e538bc5_f353c814",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 0,
+      "message": "Resolving...",
+      "parentUuid": "dac8d166_97bcb096",
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b022f42e_02bbd4d8",
@@ -67,6 +85,30 @@
       "writtenOn": "2024-12-03T23:46:35Z",
       "side": 0,
       "message": "After this CL, `PNG_COLOR_TYPE_RGB_ALPHA` is always used.  This is a change in behavior, but this seems okay (4 channels / RGBA in source, so also RGBA in output).\n\nI am surprised that there was a difference in `pngColorType` when below the same `transform_scanline_1010102` was used for opaque and non-opaque sources.  This seems like a potential bug before this CL?",
+      "range": {
+        "startLine": 201,
+        "startChar": 69,
+        "endLine": 201,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bca8e949_4c0fd893",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 0,
+      "message": "Resolving...",
+      "parentUuid": "b022f42e_02bbd4d8",
       "range": {
         "startLine": 201,
         "startChar": 69,
@@ -100,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a8d2a0d_30c0feb7",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 0,
+      "message": "Resolving...",
+      "parentUuid": "244175bd_b02b1f53",
+      "range": {
+        "startLine": 219,
+        "startChar": 69,
+        "endLine": 219,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e11c3470_8c3a0a46",
@@ -123,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "261de070_27663d01",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 0,
+      "message": "Resolving...",
+      "parentUuid": "e11c3470_8c3a0a46",
+      "range": {
+        "startLine": 158,
+        "startChar": 48,
+        "endLine": 158,
+        "endChar": 93
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ebb105b_21e2d17c",
@@ -136,6 +226,30 @@
       "writtenOn": "2024-12-04T20:31:02Z",
       "side": 0,
       "message": "This behavior is preserved.",
+      "range": {
+        "startLine": 178,
+        "startChar": 48,
+        "endLine": 178,
+        "endChar": 94
+      },
+      "revId": "ac934b9e9df93b7a4f0e2652895a53d866df80cd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8877e5f8_cf6d9d35",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T16:44:36Z",
+      "side": 0,
+      "message": "Resolving...",
+      "parentUuid": "3ebb105b_21e2d17c",
       "range": {
         "startLine": 178,
         "startChar": 48,
