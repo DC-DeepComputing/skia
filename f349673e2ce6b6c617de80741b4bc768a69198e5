@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "21cd7fab_ce76ebf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2024-12-05T04:51:03Z",
+      "side": 1,
+      "message": "Hello,\n\nI have uploaded some code for SVG rendering. I would appreciate it if you could review the code when you have free time.\n\nBest regards.",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
