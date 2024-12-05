@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04497ccd_2574ff9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "LGTM with some comments below",
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80869a96_b87accb6",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 1501,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "For consistency with other changes above, should that also define `SK_CODEC_DECODES_PNG`?",
+      "range": {
+        "startLine": 1501,
+        "startChar": 54,
+        "endLine": 1501,
+        "endChar": 55
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1b9aac2_708befc3",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 1515,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "Should that change to `SK_CODEC_ENCODES_PNG` and `SK_CODEC_ENCODES_PNG_WITH_RUST`?",
+      "range": {
+        "startLine": 1515,
+        "startChar": 22,
+        "endLine": 1515,
+        "endChar": 44
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1456972b_cd373718",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "optional nit (for future proofing if we decide to also have `skia_codec_libpng_public` to cover `include/codec/SkPngDecoder.h`):\n\nWould you consider renaming the new list/variable to `skia_codec_libpng_srcs`?",
+      "range": {
+        "startLine": 70,
+        "startChar": 2,
+        "endLine": 70,
+        "endChar": 3
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa468ee9_4bcd3de3",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "Should we have a `TODO(b/356875275): ...` here to suggest also setting `skia_use_libpng_encode` to `false`?",
+      "range": {
+        "startLine": 265,
+        "startChar": 43,
+        "endLine": 265,
+        "endChar": 44
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5902d770_218fc28d",
+        "filename": "src/codec/BUILD.bazel",
+        "patchSetId": 12
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "Oh, it\u0027s already defined here.  Now I understand why this CL only added the defines to `//BUILD.gn` and didn\u0027t have to tweak the Bazel side.",
+      "range": {
+        "startLine": 232,
+        "startChar": 16,
+        "endLine": 232,
+        "endChar": 37
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0b52c90_4cbedb93",
+        "filename": "tests/SkPngRustEncoderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T18:19:23Z",
+      "side": 1,
+      "message": "Is it worth also renaming this test to have a `RustPngCodec` substring?  If a different substring (`RustPngEncoder`?) is more appropriate, then we should also adjust the `--match` filter in `infra/bots/gen_tasks_logic/dm_flags.go` accordingly.\n\nSorry for sneaking in `tests/SkPngRustEncoderTest.cpp` while this CL was a WIP :-\u003e",
+      "range": {
+        "startLine": 16,
+        "startChar": 9,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
