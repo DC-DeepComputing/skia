@@ -418,6 +418,11 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fSupportsFrameBoundary = true;
     }
 
+    if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 3, 0) ||
+        extensions.hasExtension(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME, 1)) {
+        fSupportsPipelineCreationCacheControl = true;
+    }
+
     fMaxInputAttachmentDescriptors = properties.limits.maxDescriptorSetInputAttachments;
 
     fMaxSamplerAnisotropy = properties.limits.maxSamplerAnisotropy;

@@ -199,6 +199,8 @@ public:
 
     bool supportsFrameBoundary() const { return fSupportsFrameBoundary; }
 
+    bool supportsPipelineCreationCacheControl() const { return fSupportsPipelineCreationCacheControl; }
+
     // Returns whether we prefer to record draws directly into a primary command buffer.
     bool preferPrimaryOverSecondaryCommandBuffers() const {
         return fPreferPrimaryOverSecondaryCommandBuffers;
@@ -488,6 +490,8 @@ private:
     bool fSupportsDeviceFaultInfo = false;
 
     bool fSupportsFrameBoundary = false;
+
+    bool fSupportsPipelineCreationCacheControl = false;
 
     bool fPreferPrimaryOverSecondaryCommandBuffers = true;
     bool fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments = false;
