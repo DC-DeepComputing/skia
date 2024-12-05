@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71178260_7e78ec4e",
+        "filename": "modules/jsonreader/SkJSONReader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-05T21:29:58Z",
+      "side": 1,
+      "message": "Oops, didn\u0027t notice this was in the blast radius XD. Fixed.\n\nI did keep some things that I felt looked better.",
+      "parentUuid": "a09a6d38_c9e0a946",
+      "revId": "7e73213418b82e650941e8aea50ac87a1513262d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f2543e3c_063d8f7e",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-05T21:16:00Z",
       "side": 1,
       "message": "Was this run thorough an auto-formatter?  Some things look objectively worse.",
+      "revId": "7e73213418b82e650941e8aea50ac87a1513262d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94c43782_d91f49a7",
+        "filename": "modules/jsonreader/SkJSONReader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-05T21:29:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2543e3c_063d8f7e",
       "revId": "7e73213418b82e650941e8aea50ac87a1513262d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
