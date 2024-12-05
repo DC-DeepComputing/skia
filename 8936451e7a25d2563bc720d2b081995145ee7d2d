@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad1a5277_a818907d",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 2227,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-05T16:28:49Z",
+      "side": 1,
+      "message": "TIL we can have canvaskit bindings take in a pointer and not just an object or reference.",
+      "range": {
+        "startLine": 2227,
+        "startChar": 65,
+        "endLine": 2227,
+        "endChar": 75
+      },
+      "revId": "8936451e7a25d2563bc720d2b081995145ee7d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -84,6 +84,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "25fd7ca6_9aca0239",
+        "filename": "tools/sksltrace/SkSLTraceUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-05T16:28:49Z",
+      "side": 1,
+      "message": "I went with this for two reasons 1) All real uses of this type deal with `sk_sp\u003cDebugTracePriv\u003e` so it\u0027s more convenient to take a pointer and 2) DebugTracePriv inherits from SkRefCnt, so it\u0027s copy/move constructors are deleted and it\u0027s more work to implement those XD\n\nIf you think a const reference is better, happy to implement those constructors.",
+      "parentUuid": "63e65559_5da121dd",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "2a9b0152486b1c6f1d4ade9ed5584de5f676f095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3d66453_c55b2ed6",
         "filename": "tools/viewer/SkSLSlide.cpp",
         "patchSetId": 5
