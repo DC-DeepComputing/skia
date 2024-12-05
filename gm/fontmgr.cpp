@@ -34,7 +34,7 @@
 #include <utility>
 
 // limit this just so we don't take too long to draw
-#define MAX_FAMILIES    30
+#define MAX_FAMILIES    10
 
 static SkScalar drawString(SkCanvas* canvas, const SkString& text, SkScalar x,
                            SkScalar y, const SkFont& font) {
@@ -73,17 +73,31 @@ static const char* ja = "ja";
 
 class FontMgrGM : public skiagm::GM {
     sk_sp<SkFontMgr> fFM;
+    SkScalar fStyle[3] = {0, 0, 0};
 
     void onOnceBeforeDraw() override {
         SkGraphics::SetFontCacheLimit(16 * 1024 * 1024);
         fFM = ToolUtils::TestFontMgr();
+        fStyle[2] = fFM->countFamilies();
     }
 
     SkString getName() const override { return SkString("fontmgr_iter"); }
 
     SkISize getISize() override { return {1536, 768}; }
 
+    bool onGetControls(SkMetaData* controls) override {
+        controls->setScalars("Style Index", 3, fStyle);
+        return true;
+    }
+
+    void onSetControls(const SkMetaData& controls) override {
+        int numReturnedScalars = 0;
+        SkASSERT_RELEASE(controls.findScalars("Style Index", &numReturnedScalars, fStyle));
+        SkASSERT_RELEASE(numReturnedScalars == 3);
+    }
+
     DrawResult onDraw(SkCanvas* canvas, SkString* errorMsg) override {
+        int styleIndex = fStyle[0];
         SkScalar y = 20;
         SkFont font = ToolUtils::DefaultFont();
         font.setEdging(SkFont::Edging::kSubpixelAntiAlias);
@@ -91,13 +105,13 @@ class FontMgrGM : public skiagm::GM {
         font.setSize(17);
 
         SkFontMgr* fm = fFM.get();
-        int count = std::min(fm->countFamilies(), MAX_FAMILIES);
+        int count = std::min(fm->countFamilies() - styleIndex, MAX_FAMILIES);
         if (count == 0) {
             *errorMsg = "No families in SkFontMgr";
             return DrawResult::kSkip;
         }
 
-        for (int i = 0; i < count; ++i) {
+        for (int i = styleIndex; i < styleIndex + count; ++i) {
             SkString familyName;
             fm->getFamilyName(i, &familyName);
             font.setTypeface(ToolUtils::DefaultTypeface());
@@ -182,7 +196,7 @@ class FontMgrMatchGM : public skiagm::GM {
         font.setSize(17);
 
         const char* gNames[] = {
-            "Helvetica Neue", "Arial", "sans", "Roboto"
+            "Cantarell"
         };
 
         sk_sp<SkFontStyleSet> fset;
