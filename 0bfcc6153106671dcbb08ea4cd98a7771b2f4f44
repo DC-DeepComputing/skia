@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c844e88_e4f052a2",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T15:04:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4c28c3cc_292be297",
+      "range": {
+        "startLine": 164,
+        "startChar": 68,
+        "endLine": 165,
+        "endChar": 93
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a713f1f_764ab815",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08074e78_38e4fd7b",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T15:04:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5a713f1f_764ab815",
+      "range": {
+        "startLine": 175,
+        "startChar": 61,
+        "endLine": 175,
+        "endChar": 83
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9869e474_55f24704",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-12-05T03:20:30Z",
       "side": 1,
       "message": "The `SkColorType` to `skcms_PixelFormat` conversion is kind-of/sort-of already available in `SkCodec.cpp`: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d774;drc\u003d5108636c70c0b08fdbeb57de2640a22e138f6685\n\nBut I couldn\u0027t find a conversion routine that would already be available to tests (e.g. through public API of Skia) :-/",
+      "range": {
+        "startLine": 215,
+        "startChar": 8,
+        "endLine": 215,
+        "endChar": 9
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e4fda9_6b4f9aa1",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T15:04:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9869e474_55f24704",
       "range": {
         "startLine": 215,
         "startChar": 8,
