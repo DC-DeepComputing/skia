@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c28c3cc_292be297",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T03:20:30Z",
+      "side": 1,
+      "message": "I cargo cultured which image to test with from https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/gm/encode_srgb.cpp;l\u003d48-49;drc\u003d8f0238837ee48947b0428c1a2e7947c6fc6def2f",
+      "range": {
+        "startLine": 164,
+        "startChar": 68,
+        "endLine": 165,
+        "endChar": 93
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a713f1f_764ab815",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T03:20:30Z",
+      "side": 1,
+      "message": "I initially tried decoding directly into `colorType` / `alphaType`, but this doesn\u0027t always work - in particular for some cases `SkCodec::conversionSupported` would see `!valid_alpha` / would dislike opaque alpha: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d261-263;drc\u003d8f0238837ee48947b0428c1a2e7947c6fc6def2f\n\nSo I ended up decoding into kRGBA_8888, and then using `skcms_Transform` to get the real color type that I want to test with.",
+      "range": {
+        "startLine": 175,
+        "startChar": 61,
+        "endLine": 175,
+        "endChar": 83
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9869e474_55f24704",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T03:20:30Z",
+      "side": 1,
+      "message": "The `SkColorType` to `skcms_PixelFormat` conversion is kind-of/sort-of already available in `SkCodec.cpp`: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/codec/SkCodec.cpp;l\u003d774;drc\u003d5108636c70c0b08fdbeb57de2640a22e138f6685\n\nBut I couldn\u0027t find a conversion routine that would already be available to tests (e.g. through public API of Skia) :-/",
+      "range": {
+        "startLine": 215,
+        "startChar": 8,
+        "endLine": 215,
+        "endChar": 9
+      },
+      "revId": "0bfcc6153106671dcbb08ea4cd98a7771b2f4f44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
