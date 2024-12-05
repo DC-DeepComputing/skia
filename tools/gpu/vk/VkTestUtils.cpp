@@ -493,6 +493,20 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
         tailPNext = &ycbcrFeature->pNext;
     }
 
+    VkPhysicalDevicePipelineCreationCacheControlFeatures* cacheControlFeatures = nullptr;
+    if (physDeviceVersion >= VK_MAKE_VERSION(1, 3, 0) ||
+        extensions->hasExtension(VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME, 1)) {
+        cacheControlFeatures =
+                (VkPhysicalDevicePipelineCreationCacheControlFeatures*)sk_malloc_throw(
+                        sizeof(VkPhysicalDevicePipelineCreationCacheControlFeatures));
+        cacheControlFeatures->sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES;
+        cacheControlFeatures->pNext = nullptr;
+        cacheControlFeatures->pipelineCreationCacheControl = VK_TRUE;
+        *tailPNext = cacheControlFeatures;
+        tailPNext = &cacheControlFeatures->pNext;
+    }
+
     if (physDeviceVersion >= VK_MAKE_VERSION(1, 1, 0)) {
         ACQUIRE_VK_PROC_LOCAL(GetPhysicalDeviceFeatures2, inst, VK_NULL_HANDLE);
         grVkGetPhysicalDeviceFeatures2(physDev, features);
