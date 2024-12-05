@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92c7e669_417a910d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T01:53:12Z",
+      "side": 1,
+      "message": "@fmalita, I think this may be ready for another review - can you PTAL at:\n\n* The unresolved comments in Gerrit\n* The upstream CL with a new test: http://review.skia.org/926870\n* How *this* CL fixes the new test: https://skia-review.googlesource.com/c/skia/+/922676/20/tests/EncodeTest.cpp (this was already fixed in earlier patchsets by consolidating transformProc / SkEncodedInfo::Color calculations into a single place - and therefore helping keep things in sync;  I knew that I am making a behavior change when refactoring things, but didn\u0027t write it down and forgot about it when the whole chain of CLs was ready to review... :-/)\n* How this CL had to make one more change to pass CQ for F16: https://skia-review.googlesource.com/c/skia/+/922676/15..20/src/encode/SkPngEncoderImpl.cpp",
+      "revId": "68fb8fd7e68f86a7da355053d5b69ecbe52c7816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b85cf8a_7594e437",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-05T01:53:12Z",
+      "side": 1,
+      "message": "I probably should follow-up to test all the color/alpha combinations supported by the PNG encoder.  This will require:\n\n* Updating `SkColorType` \u003d\u003e `skcms_PixelFormat` conversion in the test code\n* Figuring out if `tolerance \u003d\u003d 0` works okay for all color/alpha combinations",
+      "range": {
+        "startLine": 341,
+        "startChar": 0,
+        "endLine": 341,
+        "endChar": 1
+      },
+      "revId": "68fb8fd7e68f86a7da355053d5b69ecbe52c7816",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
