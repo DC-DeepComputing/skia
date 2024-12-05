@@ -16,6 +16,76 @@
       "message": "Very minor nit, but this looks like a temporary comment? (Although the phrasing does bring me joy.) Perhaps add a TODO if we\u0027re not quite ready to describe things in depth? IDK",
       "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ea6871_c4ba8e28",
+        "filename": "src/codec/SkPngCompositeChunkReader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T21:42:57Z",
+      "side": 1,
+      "message": "nit: extra line",
+      "fixSuggestions": [
+        {
+          "fixId": "4ceb3056_c1eebff5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCompositeChunkReader.cpp",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e7b72bf_864d8b40",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T21:42:57Z",
+      "side": 1,
+      "message": "nit: explicit",
+      "fixSuggestions": [
+        {
+          "fixId": "2519afae_b5ddfec4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCompositeChunkReader.h",
+              "range": {
+                "startLine": 31,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "    explicit SkPngCompositeChunkReader(SkPngChunkReader* chunkReader)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
