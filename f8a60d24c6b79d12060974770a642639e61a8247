@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60526334_80eb40bb",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 516,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-05T13:28:45Z",
+      "side": 1,
+      "message": "I realize I misread your comment earlier XD. Yeah, we ended up being on the same page.",
+      "parentUuid": "5da3f241_b1a386f5",
+      "range": {
+        "startLine": 516,
+        "startChar": 6,
+        "endLine": 516,
+        "endChar": 62
+      },
+      "revId": "f8a60d24c6b79d12060974770a642639e61a8247",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b6997a6_b9c75bf9",
