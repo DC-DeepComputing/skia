@@ -254,14 +254,18 @@ SkISize SkJpegCodec::onGetScaledDimensions(float desiredScale) const {
 
     // Set up a fake decompress struct in order to use libjpeg to calculate output dimensions
     jpeg_decompress_struct dinfo;
-    sk_bzero(&dinfo, sizeof(dinfo));
+    // TODO: Add comment why this is necessary. (And destroy)
+    jpeg_create_decompress(&dinfo);
     dinfo.image_width = this->dimensions().width();
     dinfo.image_height = this->dimensions().height();
     dinfo.global_state = fReadyState;
     calc_output_dimensions(&dinfo, num, denom);
+    SkISize outputDimensions = SkISize::Make(dinfo.output_width, dinfo.output_height);
+    jpeg_destroy_decompress(&dinfo);
 
     // Return the calculated output dimensions for the given scale
-    return SkISize::Make(dinfo.output_width, dinfo.output_height);
+    // return SkISize::Make(dinfo.output_width, dinfo.output_height);
+    return outputDimensions;
 }
 
 bool SkJpegCodec::onRewind() {
@@ -363,7 +367,8 @@ bool SkJpegCodec::onDimensionsSupported(const SkISize& size) {
     // Set up a fake decompress struct in order to use libjpeg to calculate output dimensions
     // FIXME: Why is this necessary?
     jpeg_decompress_struct dinfo;
-    sk_bzero(&dinfo, sizeof(dinfo));
+    // TODO: Add comment why this is necessary. (And destroy)
+    jpeg_create_decompress(&dinfo);
     dinfo.image_width = this->dimensions().width();
     dinfo.image_height = this->dimensions().height();
     dinfo.global_state = fReadyState;
@@ -383,6 +388,7 @@ bool SkJpegCodec::onDimensionsSupported(const SkISize& size) {
         num -= 1;
         calc_output_dimensions(&dinfo, num, denom);
     }
+    jpeg_destroy_decompress(&dinfo);
 
     fDecoderMgr->dinfo()->scale_num = num;
     fDecoderMgr->dinfo()->scale_denom = denom;
