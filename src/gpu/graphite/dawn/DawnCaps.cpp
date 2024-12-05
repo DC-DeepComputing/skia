@@ -423,6 +423,10 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 #endif // defined(__EMSCRIPTEN__)
 
     wgpu::SupportedLimits limits;
+    wgpu::DawnTexelCopyBufferRowAlignmentLimits alignmentLimits{};
+    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment)) {
+        limits.nextInChain = &alignmentLimits;
+    }
 #if defined(__EMSCRIPTEN__)
     // TODO(crbug.com/42241199): Update Emscripten path with when webgpu.h in Emscripten is updated.
     [[maybe_unused]] bool limitsSucceeded = backendContext.fDevice.GetLimits(&limits);
@@ -443,8 +447,12 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fRequiredUniformBufferAlignment = limits.limits.minUniformBufferOffsetAlignment;
     fRequiredStorageBufferAlignment = limits.limits.minStorageBufferOffsetAlignment;
 
-    // Dawn requires 256 bytes per row alignment for buffer texture copies.
-    fTextureDataRowBytesAlignment = 256;
+    // By default, Dawn requires 256 bytes per row alignment for buffer texture copies. If the
+    // device supports the DawnTexelCopyBufferRowAlignment feature, the alignment can be queried
+    // from its limits.
+    fTextureDataRowBytesAlignment =
+            backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment) ?
+            alignmentLimits.minTexelCopyBufferRowAlignment : 256;
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // The WGSL generator assumes tightly packed std430 layout for SSBOs which is also the default
