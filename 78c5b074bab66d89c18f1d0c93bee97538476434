@@ -16,6 +16,24 @@
       "message": "I would expect that we would create a deferred canvas and then not use it. Is this actually testing what is advertised?",
       "revId": "78c5b074bab66d89c18f1d0c93bee97538476434",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52b7018e_6969e437",
+        "filename": "tests/graphite/RecordingSurfacesTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-12-05T19:44:21Z",
+      "side": 1,
+      "message": "I actually don\u0027t think the existence of a deferred canvas is relevant. The point is that if a recording doesn\u0027t have any knowledge that it was drawing to a deferred canvas, it should ignore any surface provided on replay rather than crashing if it gets such a surface. This is the scenario happening in the failing Chrome tests. (Though I suppose that really no client should be doing this so maybe we want to fix up whatever Chrome is doing rather than validating this client behavior with a unit test.)",
+      "parentUuid": "d15ed4fc_ba978e5b",
+      "revId": "78c5b074bab66d89c18f1d0c93bee97538476434",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
