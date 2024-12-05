@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85bb352a_10bec1ab",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T22:39:34Z",
+      "side": 1,
+      "message": "I changed the phrasing to be less fun :P The comment would have been temporary on the order of months, I\u0027d expect.",
+      "parentUuid": "a66a8ea5_8e87f96b",
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75ea6871_c4ba8e28",
@@ -53,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6adbdfc0_ecc26e75",
+        "filename": "src/codec/SkPngCompositeChunkReader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T22:39:34Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "75ea6871_c4ba8e28",
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e7b72bf_864d8b40",
@@ -84,6 +120,24 @@
           ]
         }
       ],
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a91ee8c_709f1da6",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T22:39:34Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "9e7b72bf_864d8b40",
       "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
