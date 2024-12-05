@@ -108,6 +108,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9ede1bbc_79fea09c",
+        "filename": "tools/sksltrace/SkSLTraceUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:48:47Z",
+      "side": 1,
+      "message": "I only see a handful of callers: `SkSLDebugTraceTest` uses stack allocation, so it\u0027s actually easier to pass as a ref, while `SkSLSlide` and `canvaskit_bindings` should be convertible using something like \n\n```\n  sk_sp\u003cSkSL::DebugTrace\u003e debugTrace;\n  ...\n  WriteTrace(static_cast\u003cconst SkSL::DebugTracePriv\u0026\u003e(*debugTrace), ...);\n```\n\nwhich isn\u0027t much different from the pointer downcast (and I think should not require any changes to `SkRefCnt`).\n\nThe reason I prefer refs is because it eliminates null ambiguity.  IIRC the chromium/google style guide also only recommends pointers for nullable params - so the presence of a pointer param is usually an indication that it is optional/nullable.",
+      "parentUuid": "25fd7ca6_9aca0239",
+      "range": {
+        "startLine": 29,
+        "startChar": 4,
+        "endLine": 29,
+        "endChar": 18
+      },
+      "revId": "2a9b0152486b1c6f1d4ade9ed5584de5f676f095",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d3d66453_c55b2ed6",
         "filename": "tools/viewer/SkSLSlide.cpp",
         "patchSetId": 5
