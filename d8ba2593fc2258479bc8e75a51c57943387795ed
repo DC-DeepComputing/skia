@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8195a2a2_71dc7543",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "Yes we would have to support encoding existing assets.\n\n* The risk of the spec moving in a different direction is non-zero, but is not very high. The solution implemented here is one that was suggested during the spec discussion, and since we have an example implementation (this) we could influence the spec to move in this direction; the only difference once the spec is finalized would be the names of the chunks rather than the layout of the chunks and where they\u0027re expected to live in the file\n* Of course, there is a chance that the spec _does_ move in a different direction. But, I don\u0027t think the maintenance burden wouldn\u0027t be very high. It would probably be less than the maintenance burden for JPEG + gainmaps, which supports multiple representations for locating and interpreting the gainmap + its metadata (gContainer vs MPF vs ISO payloads). In the worst case on the decoding side I\u0027d expect that the \"official\" chunks are emitted by a libpng or rust crate api (similar to how the ICC chunk is extracted); the only difference would really be if we need to fallback to this if we\u0027re decoding an \"old\" file. One the encoding side, we could probably just switch over to encoding the new spec once it\u0027s ready, so there would be no duplication cost.",
+      "parentUuid": "51786207_37ea7ecd",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7237a88_6c5f4d81",
@@ -59,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d0c9fce_6eb081b7",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7237a88_6c5f4d81",
+      "range": {
+        "startLine": 715,
+        "startChar": 52,
+        "endLine": 715,
+        "endChar": 96
+      },
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7eaf8b4a_43cd9e5d",
@@ -76,6 +118,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e6aaac3_80297a84",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1064,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "It shouldn\u0027t be arbitrary no.\n\nAdded some comments, and tweaked this so that it\u0027s more clear that you can\u0027t recurse multiple times.",
+      "parentUuid": "7eaf8b4a_43cd9e5d",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "034bb886_eee62ce1",
@@ -89,6 +149,24 @@
       "writtenOn": "2024-12-05T17:13:59Z",
       "side": 1,
       "message": "Let\u0027s move the impl to SkPngCompositeChunkReader.cpp.",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b48f5ce_d0f1b80e",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "034bb886_eee62ce1",
       "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -128,6 +206,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "394ae5c5_75dd19d5",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "`fChunkReader` is client-provided so having it be `nullptr` is valid.",
+      "parentUuid": "88fae8ab_ada0fb2d",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93f10479_27b1afa9",
@@ -151,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f3a0a07_e639acc5",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "`fGainmapInfo` is necessary to correctly interpret the gainmap. If there\u0027s no info, then I think it\u0027s fine to just drop the gainmap on the floor.",
+      "parentUuid": "93f10479_27b1afa9",
+      "range": {
+        "startLine": 457,
+        "startChar": 9,
+        "endLine": 457,
+        "endChar": 29
+      },
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "858b97c8_1608415e",
@@ -164,6 +284,30 @@
       "writtenOn": "2024-12-05T17:13:59Z",
       "side": 1,
       "message": "nit: you could use `gainmapVersion-\u003ewritableData()` instead (also below)",
+      "range": {
+        "startLine": 478,
+        "startChar": 53,
+        "endLine": 478,
+        "endChar": 94
+      },
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19e05b67_ed483ad9",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2024-12-05T19:30:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "858b97c8_1608415e",
       "range": {
         "startLine": 478,
         "startChar": 53,
