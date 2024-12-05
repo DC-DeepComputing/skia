@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a66a8ea5_8e87f96b",
+        "filename": "include/encode/SkPngEncoder.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2024-12-05T20:09:28Z",
+      "side": 1,
+      "message": "Very minor nit, but this looks like a temporary comment? (Although the phrasing does bring me joy.) Perhaps add a TODO if we\u0027re not quite ready to describe things in depth? IDK",
+      "revId": "1a616847d666fe470514a708c81cee8f2cb8c9f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
