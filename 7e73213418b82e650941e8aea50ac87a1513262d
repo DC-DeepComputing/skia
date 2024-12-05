@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a09a6d38_c9e0a946",
+        "filename": "modules/jsonreader/SkJSONReader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 274,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T21:16:00Z",
+      "side": 1,
+      "message": "Yeah, this is throughly ruined :)  Let\u0027s not auto-format these files.",
+      "revId": "7e73213418b82e650941e8aea50ac87a1513262d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2543e3c_063d8f7e",
+        "filename": "modules/jsonreader/SkJSONReader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T21:16:00Z",
+      "side": 1,
+      "message": "Was this run thorough an auto-formatter?  Some things look objectively worse.",
+      "revId": "7e73213418b82e650941e8aea50ac87a1513262d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
