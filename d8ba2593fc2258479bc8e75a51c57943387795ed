@@ -1,0 +1,177 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51786207_37ea7ecd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "Since the spec is not finalized, what is the maintenance risk here?\n\nI\u0027m assuming we\u0027ll have to continue supporting existing assets after the spec potentially moves in a different direction.  Would that involve significant duplication, or you estimate the differences should be fairly minor/localized?",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7237a88_6c5f4d81",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 715,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "nit: `\u003d sk_make_sp\u003cSkPngCompositeChunkReader\u003e(chunkReader)`",
+      "range": {
+        "startLine": 715,
+        "startChar": 52,
+        "endLine": 715,
+        "endChar": 96
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "97d908d2_d3a6b345",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCodec.cpp",
+              "range": {
+                "startLine": 715,
+                "startChar": 0,
+                "endLine": 716,
+                "endChar": 0
+              },
+              "replacement": "    sk_sp\u003cSkPngCompositeChunkReader\u003e compositeReader \u003d sk_make_sp\u003cSkPngCompositeChunkReader\u003e(chunkReader);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7eaf8b4a_43cd9e5d",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1064,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "Is nesting arbitrarily deep?  Can malicious inputs cause issues here?\n\nMaybe add some comments describing how this works in practice, and why it is safe to use unbounded recursion.",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "034bb886_eee62ce1",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "Let\u0027s move the impl to SkPngCompositeChunkReader.cpp.",
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88fae8ab_ada0fb2d",
+        "filename": "src/codec/SkPngCompositeChunkReader.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "Looks like we fall through when `fChunkReader` \u003d\u003d nullptr.  Does that leave the output uninitialized?  Should we return false instead?",
+      "fixSuggestions": [
+        {
+          "fixId": "e94e1e09_ae45be39",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCompositeChunkReader.h",
+              "range": {
+                "startLine": 28,
+                "startChar": 0,
+                "endLine": 29,
+                "endChar": 0
+              },
+              "replacement": "        if (!fChunkReader || !fChunkReader-\u003ereadChunk(tag, data, length)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93f10479_27b1afa9",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "Looks like we only use `fGainmapInfo` if an `fGainmap` is not present.  Should we allow omitting `fGainmapInfo` when `fGainmap` is set?",
+      "range": {
+        "startLine": 457,
+        "startChar": 9,
+        "endLine": 457,
+        "endChar": 29
+      },
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "858b97c8_1608415e",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 478,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-05T17:13:59Z",
+      "side": 1,
+      "message": "nit: you could use `gainmapVersion-\u003ewritableData()` instead (also below)",
+      "range": {
+        "startLine": 478,
+        "startChar": 53,
+        "endLine": 478,
+        "endChar": 94
+      },
+      "revId": "d8ba2593fc2258479bc8e75a51c57943387795ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
