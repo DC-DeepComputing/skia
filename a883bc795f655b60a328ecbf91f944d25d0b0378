@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf5be394_2be60666",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-05T15:23:21Z",
+      "side": 1,
+      "message": "Just wanted to point out that GCC 7.1 is also fine with just using the more obvious initialization with parenthesis instead of braces.",
+      "revId": "a883bc795f655b60a328ecbf91f944d25d0b0378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
