@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e42a08db_2fa79a31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6030
+      },
+      "writtenOn": "2024-12-06T07:54:24Z",
+      "side": 1,
+      "message": "It looks like SkSLTraceUtils is still built with SkJSONReader.h included, so wouldn\u0027t this still pull in the little-endian-only check? At least in 132, I couldn\u0027t opt out of building SkSLTraceUtils, which pulled in the SkJSONReader.h include, which caused all these problems?",
+      "revId": "345450d1addc8c51cf1e35c3d2794de9c1beed3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
