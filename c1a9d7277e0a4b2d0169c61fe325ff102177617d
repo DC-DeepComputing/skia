@@ -69,6 +69,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6ad9a77_d3f0a15b",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T22:41:54Z",
+      "side": 1,
+      "message": "Thanks for the feedback!  I agree that low/medium/high are better.  Done.",
+      "parentUuid": "a9d2ceae_2c48f329",
+      "revId": "c1a9d7277e0a4b2d0169c61fe325ff102177617d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eb3dbb93_153ad91d",
@@ -82,6 +100,30 @@
       "writtenOn": "2024-12-05T22:18:42Z",
       "side": 1,
       "message": "The Rust and Skia names don\u0027t match.  But I prefer `kFast`, `kAverage`, and `kSlow`, because:\n\n* Having `Fast` and `Best` feels inconsistent\n* `Default` doesn\u0027t directly say average/middle compression level.",
+      "range": {
+        "startLine": 52,
+        "startChar": 42,
+        "endLine": 52,
+        "endChar": 46
+      },
+      "revId": "c1a9d7277e0a4b2d0169c61fe325ff102177617d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28a4f967_e5c788dd",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T22:41:54Z",
+      "side": 1,
+      "message": "Resolving...",
+      "parentUuid": "eb3dbb93_153ad91d",
       "range": {
         "startLine": 52,
         "startChar": 42,
