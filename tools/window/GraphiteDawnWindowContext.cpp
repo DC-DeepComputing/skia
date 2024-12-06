@@ -184,6 +184,9 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     if (adapter.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture)) {
         features.push_back(wgpu::FeatureName::DawnPartialLoadResolveTexture);
     }
+    if (adapter.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment)) {
+        features.push_back(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment);
+    }
 
     wgpu::DeviceDescriptor deviceDescriptor;
     deviceDescriptor.requiredFeatures = features.data();
