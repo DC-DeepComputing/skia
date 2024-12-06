@@ -16,6 +16,24 @@
       "message": "It looks like SkSLTraceUtils is still built with SkJSONReader.h included, so wouldn\u0027t this still pull in the little-endian-only check? At least in 132, I couldn\u0027t opt out of building SkSLTraceUtils, which pulled in the SkJSONReader.h include, which caused all these problems?",
       "revId": "345450d1addc8c51cf1e35c3d2794de9c1beed3d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1fec371d_2079d680",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T12:14:29Z",
+      "side": 1,
+      "message": "SkSLTraceUtils is only built when Skia\u0027s tools/tests are built. I wouldn\u0027t expect our official release to be building that.\n\nI\u0027m also not sure what you mean by \"in 132\" - SkSLTraceUtils.h/.cpp has only existed for the last day or so https://skia-review.googlesource.com/c/skia/+/926676",
+      "parentUuid": "e42a08db_2fa79a31",
+      "revId": "345450d1addc8c51cf1e35c3d2794de9c1beed3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
