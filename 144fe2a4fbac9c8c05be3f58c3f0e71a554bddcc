@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "715feac6_18f56ca4",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-12-06T18:39:09Z",
+      "side": 1,
+      "message": "There\u0027s a leak here.",
+      "range": {
+        "startLine": 383,
+        "startChar": 12,
+        "endLine": 383,
+        "endChar": 25
+      },
+      "revId": "144fe2a4fbac9c8c05be3f58c3f0e71a554bddcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
