@@ -34,6 +34,24 @@
       "parentUuid": "e695fced_910016f2",
       "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75dc58a4_b39920f5",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 10562
+      },
+      "writtenOn": "2024-12-06T15:44:24Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s valid to do `memset(\u0026fragment, 0, sizeof(wgpu::FragmentState))` for dawn C++ structs since it would overwrite non-POD member data. For example, FragmentState::entryPoint is a wgpu::StringView. We can initialize this as `wgpu::FragmentState fragment \u003d {};` which follows aggregate initialization rules and will ensure all member variables are initialized, either with their default member initializer or zero initialized. That\u0027s probably the best solution here but I was copying the VertexState initialization that listed constantCount/constants explicitly.\n\n\u003e I think this should be fixed in Dawn if possible\n\nI can ask dawn team about this. It would be handy to not have to worry about.",
+      "parentUuid": "31f8e5c5_7e5a34e1",
+      "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
