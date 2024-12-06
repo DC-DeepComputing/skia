@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb781d7e_539623e3",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T01:05:27Z",
+      "side": 1,
+      "message": "We now have three separate `ResultOfFoo` which seems quite boilerplatey.  I guess I could have a declarative macro to reduce duplication?  But non-macro code is probably more readable?  I dunno...",
+      "range": {
+        "startLine": 719,
+        "startChar": 0,
+        "endLine": 719,
+        "endChar": 1
+      },
+      "revId": "c35ffaf81a74a196f61ab5e61cd916f9b2d6e4d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
