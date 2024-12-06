@@ -16,6 +16,29 @@
       "message": "@kjlubick, can you PTAL at the delta in the reland:  http://review.skia.org/skia/+/927457/1..2\n?\n\nI think the main question for this CL is: does it fix the roll problems from b/382576498?  FWIW, I can repro those problems locally, so we can adjust the fix if needed (but I guess landing _any_ fix, and then iterating may be more desirable to unblock Skia CI/CQ [see b/382576498#comment6] + the internal Skia rolls earlier)?",
       "revId": "83cedacdf1ee582950f246c4d01254ddc2901c86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ec88c6_adf62f3f",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T17:09:43Z",
+      "side": 1,
+      "message": "I think this is ultimately the right fix. I think I had encoder_hdrs in srcs to initially imply no public clients should depend on this, but the design needs changed.",
+      "range": {
+        "startLine": 92,
+        "startChar": 26,
+        "endLine": 92,
+        "endChar": 37
+      },
+      "revId": "83cedacdf1ee582950f246c4d01254ddc2901c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
