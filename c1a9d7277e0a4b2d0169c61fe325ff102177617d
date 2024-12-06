@@ -54,6 +54,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9d2ceae_2c48f329",
+        "filename": "experimental/rust_png/encoder/SkPngRustEncoder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-06T14:56:39Z",
+      "side": 1,
+      "message": "naming bike-shed: since the enum is Compression*Level*, it seems something like kLow/kMedium/kHigh would fit better?",
+      "revId": "c1a9d7277e0a4b2d0169c61fe325ff102177617d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb3dbb93_153ad91d",
         "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
         "patchSetId": 5
