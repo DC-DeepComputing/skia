@@ -555,7 +555,7 @@ void GrVkResourceProvider::releaseUnlockedBackendObjects() {
     fAvailableCommandPools.clear();
 }
 
-void GrVkResourceProvider::storePipelineCacheData() {
+void GrVkResourceProvider::storePipelineCacheData(size_t maxSize) {
     if (this->pipelineCache() == VK_NULL_HANDLE) {
         return;
     }
@@ -567,11 +567,13 @@ void GrVkResourceProvider::storePipelineCacheData() {
         return;
     }
 
+    dataSize = std::min(dataSize, maxSize);
+
     std::unique_ptr<uint8_t[]> data(new uint8_t[dataSize]);
 
     GR_VK_CALL_RESULT(fGpu, result, GetPipelineCacheData(fGpu->device(), this->pipelineCache(),
                                                          &dataSize, (void*)data.get()));
-    if (result != VK_SUCCESS) {
+    if ((result != VK_SUCCESS) && (result != VK_INCOMPLETE)) {
         return;
     }
 

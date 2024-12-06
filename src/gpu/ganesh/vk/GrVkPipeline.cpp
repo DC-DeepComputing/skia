@@ -541,7 +541,7 @@ sk_sp<GrVkPipeline> GrVkPipeline::Make(GrVkGpu* gpu,
     memset(&pipelineCreateInfo, 0, sizeof(VkGraphicsPipelineCreateInfo));
     pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineCreateInfo.pNext = nullptr;
-    pipelineCreateInfo.flags = 0;
+    pipelineCreateInfo.flags = VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
     pipelineCreateInfo.stageCount = shaderStageCount;
     pipelineCreateInfo.pStages = shaderStageInfo;
     pipelineCreateInfo.pVertexInputState = &vertexInputInfo;
@@ -570,6 +570,24 @@ sk_sp<GrVkPipeline> GrVkPipeline::Make(GrVkGpu* gpu,
         GR_VK_CALL_RESULT(gpu, err, CreateGraphicsPipelines(gpu->device(), cache, 1,
                                                             &pipelineCreateInfo, nullptr,
                                                             &vkPipeline));
+    }
+    if (err == VK_PIPELINE_COMPILE_REQUIRED) {
+        pipelineCreateInfo.flags &= ~VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;
+        {
+            TRACE_EVENT0_ALWAYS("skia.shaders", "CreateGraphicsPipeline");
+#if defined(SK_ENABLE_SCOPED_LSAN_SUPPRESSIONS)
+            // skia:8712
+            __lsan::ScopedDisabler lsanDisabler;
+#endif
+            GR_VK_CALL_RESULT(
+                    gpu,
+                    err,
+                    CreateGraphicsPipelines(
+                            gpu->device(), cache, 1, &pipelineCreateInfo, nullptr, &vkPipeline));
+        }
+        if (err == VK_SUCCESS) {
+            gpu->onPipelineCompileRequired();
+        }
     }
     if (err) {
         SkDebugf("Failed to create pipeline. Error: %d\n", err);
