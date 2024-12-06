@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e695fced_910016f2",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-12-06T14:47:12Z",
+      "side": 1,
+      "message": "Could we do memset(\u0026fragment, 0, sizeof(wgpu::FragmentState)); here (and elsewhere)? That\u0027s what we do in the Vulkan backend to initialize structs.",
+      "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
