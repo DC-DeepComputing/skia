@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1bbd584_b4dc917f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T03:04:51Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\nI don\u0027t understand why the problem described in the bug only repros for some targets.  It would be great if Skia CI/CQ was able to prevent such problems from landing in Skia, but for some reason all Blaze/Bazelisk commands I tried are succeeding for Skia targets (see the bug for more details).",
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbb15223_8151c712",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T03:04:51Z",
+      "side": 1,
+      "message": "I guess that an alternative fix would be to also cover `//include/encode:encode_hdrs` in the `hdrs` list here.  But this seems wrong - we already depend on `:encoder_common` which IMO should be providing this as a public header.",
+      "range": {
+        "startLine": 120,
+        "startChar": 14,
+        "endLine": 120,
+        "endChar": 34
+      },
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "61fef8ba_51116aad",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T03:04:51Z",
+      "side": 1,
+      "message": "Maybe this line is not needed anymore now?  I haven\u0027t tested this - I just wanted to get the fix out as soon as possible...",
+      "range": {
+        "startLine": 142,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 38
+      },
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
