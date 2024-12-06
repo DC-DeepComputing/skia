@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51bb52b4_47332b69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T03:05:32Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\nI don\u0027t understand why the problem described in the bug only repros for some targets. It would be great if Skia CI/CQ was able to prevent such problems from landing in Skia, but for some reason all Blaze/Bazelisk commands I tried are succeeding for Skia targets (see the bug for more details).",
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbb15223_8151c712",
