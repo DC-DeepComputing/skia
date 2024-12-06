@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c483eef_263ea287",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T17:03:44Z",
+      "side": 1,
+      "message": "I think this should land and roll just fine. It was the moving around of the .gni files in the following CL that I need to be more careful of for Chromium.",
+      "revId": "25db395069be50e162186beb821168659f9455fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
