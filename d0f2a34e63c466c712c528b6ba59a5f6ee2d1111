@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ac57ea3_82306450",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T17:10:49Z",
+      "side": 1,
+      "message": "It looks like this other revert landed? https://skia-review.googlesource.com/c/skia/+/927597",
+      "revId": "d0f2a34e63c466c712c528b6ba59a5f6ee2d1111",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
