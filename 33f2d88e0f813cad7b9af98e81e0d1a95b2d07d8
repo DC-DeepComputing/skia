@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf674040_826ecaaa",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-06T15:01:57Z",
+      "side": 1,
+      "message": "nit: remove attribute",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c95bbf06_d72a71b4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+              "range": {
+                "startLine": 19,
+                "startChar": 0,
+                "endLine": 20,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+              "range": {
+                "startLine": 24,
+                "startChar": 0,
+                "endLine": 25,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8786eb60_3100b632",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-06T15:01:57Z",
+      "side": 1,
+      "message": "Do we actually need this? It looks like it should fit with the template with `MessageT \u003d const char*`.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 75
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4334ff7b_7016bb05",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-06T15:01:57Z",
+      "side": 1,
+      "message": "We can remove this attribute now",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5b06200a_aae4b359",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+              "range": {
+                "startLine": 21,
+                "startChar": 0,
+                "endLine": 22,
+                "endChar": 0
+              },
+              "replacement": "class DawnWorkSubmissionWithAsyncWait final : public GpuWorkSubmission {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9217681a_5f2923df",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-06T15:01:57Z",
+      "side": 1,
+      "message": "nit: can we keep the newlines surrounding the `#else`?\n```suggestion\n\n#else\n\n```",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 5
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
