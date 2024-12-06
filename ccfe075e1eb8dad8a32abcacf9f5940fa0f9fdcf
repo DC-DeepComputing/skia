@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccebf148_3ac60e17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-06T15:06:28Z",
+      "side": 1,
+      "message": "@jvanverth, I am worried that dependent/follow-up/downstream CLs (which have already landed yesterday) are now broken - I\u0027ve added more details in b/382576498",
+      "revId": "ccfe075e1eb8dad8a32abcacf9f5940fa0f9fdcf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
