@@ -52,6 +52,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f75ccc1_8b0519b7",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-12-06T19:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bf674040_826ecaaa",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 16
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8786eb60_3100b632",
@@ -65,6 +89,30 @@
       "writtenOn": "2024-12-06T15:01:57Z",
       "side": 1,
       "message": "Do we actually need this? It looks like it should fit with the template with `MessageT \u003d const char*`.",
+      "range": {
+        "startLine": 40,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 75
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9e88abe_ac388c56",
+        "filename": "src/gpu/graphite/dawn/DawnBuffer.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-12-06T19:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8786eb60_3100b632",
       "range": {
         "startLine": 40,
         "startChar": 0,
@@ -116,6 +164,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b71e3a5c_8b33c0c0",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-12-06T19:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4334ff7b_7016bb05",
+      "range": {
+        "startLine": 21,
+        "startChar": 6,
+        "endLine": 21,
+        "endChar": 22
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9217681a_5f2923df",
@@ -129,6 +201,30 @@
       "writtenOn": "2024-12-06T15:01:57Z",
       "side": 1,
       "message": "nit: can we keep the newlines surrounding the `#else`?\n```suggestion\n\n#else\n\n```",
+      "range": {
+        "startLine": 57,
+        "startChar": 0,
+        "endLine": 57,
+        "endChar": 5
+      },
+      "revId": "33f2d88e0f813cad7b9af98e81e0d1a95b2d07d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f72174d_94db3395",
+        "filename": "src/gpu/graphite/dawn/DawnQueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2024-12-06T19:52:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9217681a_5f2923df",
       "range": {
         "startLine": 57,
         "startChar": 0,
