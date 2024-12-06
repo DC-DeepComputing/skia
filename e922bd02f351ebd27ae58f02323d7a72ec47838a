@@ -16,6 +16,24 @@
       "message": "Could we do memset(\u0026fragment, 0, sizeof(wgpu::FragmentState)); here (and elsewhere)? That\u0027s what we do in the Vulkan backend to initialize structs.",
       "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31f8e5c5_7e5a34e1",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-06T14:54:22Z",
+      "side": 1,
+      "message": "I think this should be fixed in Dawn if possible. Most of the `wgpu` structs have default initializers and many of the fields in `FragmentState` are initialized. It just is missing assigning `constants` to nullptr.",
+      "parentUuid": "e695fced_910016f2",
+      "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
