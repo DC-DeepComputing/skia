@@ -162,10 +162,10 @@ public:
     ArrayType(std::string_view name, const char* abbrev, const Type& componentType, int count,
               bool isBuiltin)
             : INHERITED(name, abbrev, kTypeKind)
-            , fComponentType(componentType)
             , fCount(count)
-            , fIsBuiltin(isBuiltin) {
-        SkASSERT(count > 0 || count == kUnsizedArray);
+            , fIsBuiltin(isBuiltin)
+            , fComponentType(componentType) {
+        SkASSERT((count > 0 && count <= std::numeric_limits<int16_t>::max()) || count == kUnsizedArray);
         // Multi-dimensional arrays are disallowed.
         SkASSERT(!componentType.is<ArrayType>());
     }
@@ -238,9 +238,9 @@ public:
 private:
     using INHERITED = Type;
 
-    const Type& fComponentType;
-    int fCount;
+    int16_t fCount;
     bool fIsBuiltin;
+    const Type& fComponentType;
 };
 
 class GenericType final : public Type {
@@ -348,9 +348,9 @@ public:
     ScalarType(std::string_view name, const char* abbrev, NumberKind numberKind, int8_t priority,
                int8_t bitWidth)
             : INHERITED(name, abbrev, kTypeKind)
-            , fNumberKind(numberKind)
             , fPriority(priority)
-            , fBitWidth(bitWidth) {}
+            , fBitWidth(bitWidth)
+            , fNumberKind(numberKind) {}
 
     NumberKind numberKind() const override {
         return fNumberKind;
@@ -439,9 +439,9 @@ public:
 private:
     using INHERITED = Type;
 
-    NumberKind fNumberKind;
     int8_t fPriority;
     int8_t fBitWidth;
+    NumberKind fNumberKind;
 };
 
 class AtomicType final : public Type {
@@ -472,9 +472,9 @@ public:
     MatrixType(std::string_view name, const char* abbrev, const Type& componentType,
                int8_t columns, int8_t rows)
             : INHERITED(name, abbrev, kTypeKind)
-            , fComponentType(componentType.as<ScalarType>())
             , fColumns(columns)
-            , fRows(rows) {
+            , fRows(rows)
+            , fComponentType(componentType.as<ScalarType>()) {
         SkASSERT(columns >= 2 && columns <= 4);
         SkASSERT(rows >= 2 && rows <= 4);
     }
@@ -515,9 +515,9 @@ public:
 private:
     using INHERITED = Type;
 
-    const ScalarType& fComponentType;
     int8_t fColumns;
     int8_t fRows;
+    const ScalarType& fComponentType;
 };
 
 class TextureType final : public Type {
@@ -736,8 +736,8 @@ public:
     VectorType(std::string_view name, const char* abbrev, const Type& componentType,
                int8_t columns)
             : INHERITED(name, abbrev, kTypeKind)
-            , fComponentType(componentType.as<ScalarType>())
-            , fColumns(columns) {
+            , fColumns(columns)
+            , fComponentType(componentType.as<ScalarType>()) {
         SkASSERT(columns >= 2 && columns <= 4);
     }
 
@@ -785,8 +785,8 @@ public:
 private:
     using INHERITED = Type;
 
-    const ScalarType& fComponentType;
     int8_t fColumns;
+    const ScalarType& fComponentType;
 };
 
 std::string Type::getArrayName(int arraySize) const {
