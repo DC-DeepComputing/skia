@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e961918a_ff156ef0",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T17:14:31Z",
+      "side": 1,
+      "message": "Your above fix is the correct one. I\u0027m not entirely sure why the layering_check that we set below did not catch this before G3 did, but my guess is that it might have been due to our toolchain not compiling headers.",
+      "parentUuid": "cbb15223_8151c712",
+      "range": {
+        "startLine": 120,
+        "startChar": 14,
+        "endLine": 120,
+        "endChar": 34
+      },
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "61fef8ba_51116aad",
         "filename": "src/encode/BUILD.bazel",
         "patchSetId": 3
@@ -71,6 +95,30 @@
       "writtenOn": "2024-12-06T03:04:51Z",
       "side": 1,
       "message": "Maybe this line is not needed anymore now?  I haven\u0027t tested this - I just wanted to get the fix out as soon as possible...",
+      "range": {
+        "startLine": 142,
+        "startChar": 8,
+        "endLine": 142,
+        "endChar": 38
+      },
+      "revId": "fbf3d6315b8b3729a19bb537e8452684de6ebb52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8305db4f_d9dce21b",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-06T17:14:31Z",
+      "side": 1,
+      "message": "We do need this, as clients will depend on this target directly and we want them to have SkEncoder.h available and publicly usable.",
+      "parentUuid": "61fef8ba_51116aad",
       "range": {
         "startLine": 142,
         "startChar": 8,
