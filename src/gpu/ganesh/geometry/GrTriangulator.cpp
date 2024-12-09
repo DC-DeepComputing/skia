@@ -961,18 +961,34 @@ bool GrTriangulator::mergeCollinearEdges(Edge* edge, EdgeList* activeEdges, Vert
                                          const Comparator& c) const {
     for (;;) {
         if (top_collinear(edge->fPrevEdgeAbove, edge)) {
+            if (bottom_collinear(edge->fPrevEdgeAbove, edge)) {
+                // We don't know what to do with this, will lead to infinite recursion
+                return false;
+            }
             if (!this->mergeEdgesAbove(edge->fPrevEdgeAbove, edge, activeEdges, current, c)) {
                 return false;
             }
         } else if (top_collinear(edge, edge->fNextEdgeAbove)) {
+            if (bottom_collinear(edge->fNextEdgeAbove, edge)) {
+                // We don't know what to do with this, will lead to infinite recursion
+                return false;
+            }
             if (!this->mergeEdgesAbove(edge->fNextEdgeAbove, edge, activeEdges, current, c)) {
                 return false;
             }
         } else if (bottom_collinear(edge->fPrevEdgeBelow, edge)) {
+            if (top_collinear(edge->fPrevEdgeBelow, edge)) {
+                // We don't know what to do with this, will lead to infinite recursion
+                return false;
+            }
             if (!this->mergeEdgesBelow(edge->fPrevEdgeBelow, edge, activeEdges, current, c)) {
                 return false;
             }
         } else if (bottom_collinear(edge, edge->fNextEdgeBelow)) {
+            if (top_collinear(edge->fNextEdgeBelow, edge)) {
+                // We don't know what to do with this, will lead to infinite recursion
+                return false;
+            }
             if (!this->mergeEdgesBelow(edge->fNextEdgeBelow, edge, activeEdges, current, c)) {
                 return false;
             }
