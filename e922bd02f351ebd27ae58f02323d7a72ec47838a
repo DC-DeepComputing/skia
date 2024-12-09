@@ -70,6 +70,24 @@
       "parentUuid": "75dc58a4_b39920f5",
       "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "841790a1_091a7625",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-09T15:10:44Z",
+      "side": 1,
+      "message": "I\u0027m fine as well if this will unblock getting more reports from MSAN running",
+      "parentUuid": "d142030b_05d71fa8",
+      "revId": "e922bd02f351ebd27ae58f02323d7a72ec47838a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
