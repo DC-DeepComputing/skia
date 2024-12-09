@@ -546,7 +546,7 @@ bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTextu
     writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
     writeInfo.pNext = nullptr;
     writeInfo.dstSet = *set->descriptorSet();
-    writeInfo.dstBinding = VulkanGraphicsPipeline::kInputAttachmentBindingIndex;
+    writeInfo.dstBinding = 0;
     writeInfo.dstArrayElement = 0;
     writeInfo.descriptorCount = 1;
     writeInfo.descriptorType = DsTypeEnumToVkDs(DescriptorType::kInputAttachment);
