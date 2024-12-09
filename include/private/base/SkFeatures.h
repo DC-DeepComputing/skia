@@ -166,4 +166,6 @@
     #define SK_ARM_HAS_NEON
 #endif
 
+#define SK_VERBOSE_PIPELINE_LIFETIME_LOGGING
+
 #endif // SkFeatures_DEFINED
