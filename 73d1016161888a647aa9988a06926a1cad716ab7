@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "79e43307_d508130a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2024-12-09T10:57:35Z",
+      "side": 1,
+      "message": "Do you have some context on what is broken and how this CL fixes it? Does this affect Fontations system font instantiation on Android, as it has become possible after Julia\u0027s AndroidFontMgr refactoring change?",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "73d1016161888a647aa9988a06926a1cad716ab7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7d9b39dc_511aede0",
