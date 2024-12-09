@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd6322d8_29d9699d",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 1501,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "No. `SK_CODEC_DECODES_PNG` is used by G3 clients to know if they can use `include/encode/SkPngEncoder.h` (e.g. the libpng impl). It should now be considered a \"legacy define\"",
+      "parentUuid": "80869a96_b87accb6",
+      "range": {
+        "startLine": 1501,
+        "startChar": 54,
+        "endLine": 1501,
+        "endChar": 55
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f1b9aac2_708befc3",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-12-05T18:19:23Z",
       "side": 1,
       "message": "Should that change to `SK_CODEC_ENCODES_PNG` and `SK_CODEC_ENCODES_PNG_WITH_RUST`?",
+      "range": {
+        "startLine": 1515,
+        "startChar": 22,
+        "endLine": 1515,
+        "endChar": 44
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "258d4cf7_2eefc113",
+        "filename": "BUILD.gn",
+        "patchSetId": 12
+      },
+      "lineNbr": 1515,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "Done. Did a quick check and this seems to be the only usage (here and in Chromium)",
+      "parentUuid": "f1b9aac2_708befc3",
       "range": {
         "startLine": 1515,
         "startChar": 22,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c64850ac_e592c58e",
+        "filename": "bazel/exporter_tool/main.go",
+        "patchSetId": 12
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1456972b_cd373718",
+      "range": {
+        "startLine": 70,
+        "startChar": 2,
+        "endLine": 70,
+        "endChar": 3
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "412c20e5_b6a2f4d3",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3cd0a2b_4eb2435d",
+        "filename": "experimental/rust_png/README.md",
+        "patchSetId": 12
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "412c20e5_b6a2f4d3",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 22
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa468ee9_4bcd3de3",
@@ -123,6 +219,30 @@
       "writtenOn": "2024-12-05T18:19:23Z",
       "side": 1,
       "message": "Should we have a `TODO(b/356875275): ...` here to suggest also setting `skia_use_libpng_encode` to `false`?",
+      "range": {
+        "startLine": 265,
+        "startChar": 43,
+        "endLine": 265,
+        "endChar": 44
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c77a4f9_74a1b9e1",
+        "filename": "infra/bots/recipe_modules/build/default.py",
+        "patchSetId": 12
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa468ee9_4bcd3de3",
       "range": {
         "startLine": 265,
         "startChar": 43,
@@ -169,6 +289,30 @@
       "writtenOn": "2024-12-05T18:19:23Z",
       "side": 1,
       "message": "Is it worth also renaming this test to have a `RustPngCodec` substring?  If a different substring (`RustPngEncoder`?) is more appropriate, then we should also adjust the `--match` filter in `infra/bots/gen_tasks_logic/dm_flags.go` accordingly.\n\nSorry for sneaking in `tests/SkPngRustEncoderTest.cpp` while this CL was a WIP :-\u003e",
+      "range": {
+        "startLine": 16,
+        "startChar": 9,
+        "endLine": 16,
+        "endChar": 35
+      },
+      "revId": "4f6316c0dc5fa1eb6a7a5ef9425127150a2ce63b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f13055b7_1beba814",
+        "filename": "tests/SkPngRustEncoderTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-09T15:33:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b0b52c90_4cbedb93",
       "range": {
         "startLine": 16,
         "startChar": 9,
