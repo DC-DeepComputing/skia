@@ -51,6 +51,42 @@
       "message": "Would like to trigger some build jobs, but don\u0027t seem to have perms...",
       "revId": "1430091ecee878e0c507f4a4f16e9962a869fd0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "104babdd_41ae1c8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3784088
+      },
+      "writtenOn": "2024-12-09T19:15:23Z",
+      "side": 1,
+      "message": "great, that\u0027s what I was trying to do just now, but didn\u0027t have perms. Thanks for the update",
+      "parentUuid": "3387bea6_ecfa7feb",
+      "revId": "1430091ecee878e0c507f4a4f16e9962a869fd0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e0c63a_739143db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3784088
+      },
+      "writtenOn": "2024-12-09T19:15:23Z",
+      "side": 1,
+      "message": "oh, seems the checks autostarted; no need then",
+      "parentUuid": "50454476_d8860214",
+      "revId": "1430091ecee878e0c507f4a4f16e9962a869fd0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
