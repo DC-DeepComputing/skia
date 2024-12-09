@@ -22,23 +22,34 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                    /*gpuMemorySize=*/0)
         , fPipelineInfo(pipelineInfo) {}
 
-GraphicsPipeline::~GraphicsPipeline() = default;
+GraphicsPipeline::~GraphicsPipeline() {
+    static const char* kNames[2] = { "DeletionN", "DeletionP" };
+    TRACE_EVENT_INSTANT2("skia.gpu",
+                         TRACE_STR_STATIC(kNames[this->fromPrecompile1()]),
+                         TRACE_EVENT_SCOPE_THREAD,
+                         "key", this->getPipelineInfo().fHash1,
+                         "pipelineID", this->id1());
+}
 
 GraphicsPipeline::PipelineInfo::PipelineInfo(
             const ShaderInfo& shaderInfo,
-            SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags)
+            SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+            uint32_t hash,
+            uint32_t futureID)
         : fDstReadReq(shaderInfo.dstReadRequirement())
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasPaintUniforms(shaderInfo.hasPaintUniforms())
         , fHasStepUniforms(shaderInfo.hasStepUniforms())
-        , fHasGradientBuffer(shaderInfo.hasGradientBuffer()) {
+        , fHasGradientBuffer(shaderInfo.hasGradientBuffer())
+        , fHash1(hash)
+        , fID1(futureID) {
 #if defined(GPU_TEST_UTILS)
     fSkSLVertexShader = SkShaderUtils::PrettyPrint(shaderInfo.vertexSkSL());
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
     fLabel = shaderInfo.fsLabel();
 #endif
-#if SK_HISTOGRAMS_ENABLED
-    fFromPrecompile =
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
+    fFromPrecompile1 =
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 #endif
 }
