@@ -12,7 +12,10 @@
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/ResourceKey.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
+
 
 #include <functional>
 
@@ -42,7 +45,10 @@ public:
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
-    sk_sp<GraphicsPipeline> findGraphicsPipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
+    sk_sp<GraphicsPipeline> findGraphicsPipeline(
+        const UniqueKey&,
+        SkEnumBitMask<PipelineCreationFlags> /* = PipelineCreationFlags::kNone */,
+        uint32_t* futureID) SK_EXCLUDES(fSpinLock);
 
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
