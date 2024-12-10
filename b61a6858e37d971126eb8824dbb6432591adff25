@@ -16,6 +16,24 @@
       "message": "The diffs are unexpected, looking into it.",
       "revId": "b61a6858e37d971126eb8824dbb6432591adff25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df3cd4f5_ec716bc7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-10T18:57:42Z",
+      "side": 1,
+      "message": "What was going on is GPU/Ganesh expects two-vertex meshes to work (draw a line?) internally (Device::drawPoints impl), even if we don\u0027t support that in public APIs.\n\nSince we just need at least one vertex to sanitize indices, I relaxed the builder validation to accommodate Ganesh.\n\nThe IWYU failures are unrelated.\n\nPTAL",
+      "parentUuid": "0f083ead_5c8da1ff",
+      "revId": "b61a6858e37d971126eb8824dbb6432591adff25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
