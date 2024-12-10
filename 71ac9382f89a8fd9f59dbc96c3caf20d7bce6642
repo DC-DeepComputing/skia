@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7aa65c5_baeca46d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-10T18:34:42Z",
+      "side": 1,
+      "message": "When I set out to fix the bug originally I thought there was a either an accounting error or a classification error (more as non-purgeable than purgeable), but then I realized that all the accounting should be fine since it\u0027s based on the resource\u0027s own ref counts.\n\nI added a single owner assert for consistency with the rest of the ResourceCache API, and added a comment to avoid confusion in the future.",
+      "revId": "71ac9382f89a8fd9f59dbc96c3caf20d7bce6642",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
