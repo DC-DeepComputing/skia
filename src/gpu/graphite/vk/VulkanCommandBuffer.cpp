@@ -546,7 +546,7 @@ bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTextu
     writeInfo.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
     writeInfo.pNext = nullptr;
     writeInfo.dstSet = *set->descriptorSet();
-    writeInfo.dstBinding = VulkanGraphicsPipeline::kInputAttachmentBindingIndex;
+    writeInfo.dstBinding = 0;
     writeInfo.dstArrayElement = 0;
     writeInfo.descriptorCount = 1;
     writeInfo.descriptorType = DsTypeEnumToVkDs(DescriptorType::kInputAttachment);
@@ -1085,39 +1085,39 @@ void VulkanCommandBuffer::syncDescriptorSets() {
 void VulkanCommandBuffer::bindUniformBuffers() {
     fBindUniformBuffers = false;
 
-    // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
-    // up to three (one for render step uniforms, one for paint uniforms).
-    STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
-    descriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
-
     DescriptorType uniformBufferType = fSharedContext->caps()->storageBufferSupport()
                                             ? DescriptorType::kStorageBuffer
                                             : DescriptorType::kUniformBuffer;
+
+    // We always bind at least one uniform buffer descriptor for intrinsic uniforms, but can bind
+    // up to three (one for render step uniforms, one for paint uniforms).
+    STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
+    descriptors.push_back({
+            uniformBufferType, /*count=*/1,
+            VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex,
+            PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader });
+
     if (fActiveGraphicsPipeline->hasStepUniforms() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex].fBuffer) {
         descriptors.push_back({
-            uniformBufferType,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
-            PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
+                uniformBufferType,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader });
     }
     if (fActiveGraphicsPipeline->hasPaintUniforms() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kPaintUniformBufferIndex].fBuffer) {
-        descriptors.push_back({
-            uniformBufferType,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kPaintUniformBufferIndex,
-            PipelineStageFlags::kFragmentShader});
+        descriptors.push_back({ uniformBufferType, /*count=*/1,
+                                VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+                                PipelineStageFlags::kFragmentShader });
     }
     if (fActiveGraphicsPipeline->hasGradientBuffer() &&
         fUniformBuffersToBind[VulkanGraphicsPipeline::kGradientBufferIndex].fBuffer) {
         SkASSERT(fSharedContext->caps()->gradientBufferSupport() &&
                  fSharedContext->caps()->storageBufferSupport());
-        descriptors.push_back({
-            DescriptorType::kStorageBuffer,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kGradientBufferIndex,
-            PipelineStageFlags::kFragmentShader});
+        descriptors.push_back({ DescriptorType::kStorageBuffer, /*count=*/1,
+                                VulkanGraphicsPipeline::kGradientBufferIndex,
+                                PipelineStageFlags::kFragmentShader });
     }
 
     sk_sp<VulkanDescriptorSet> descSet = fResourceProvider->findOrCreateUniformBuffersDescriptorSet(

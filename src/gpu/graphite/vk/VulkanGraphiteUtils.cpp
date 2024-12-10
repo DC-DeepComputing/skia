@@ -74,7 +74,7 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      VkDescriptorSetLayout* outLayout) {
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
-        if (requestedDescriptors[i].fCount != 0) {
+        if (requestedDescriptors[i].isValid()) {
             const DescriptorData& currDescriptor = requestedDescriptors[i];
             VkDescriptorSetLayoutBinding& layoutBinding = bindingLayouts.push_back();
             memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
@@ -123,6 +123,8 @@ VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
             return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
         case DescriptorType::kInputAttachment:
             return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
+        case DescriptorType::kInvalid:
+            SkUNREACHABLE;
     }
     SkUNREACHABLE;
 }
