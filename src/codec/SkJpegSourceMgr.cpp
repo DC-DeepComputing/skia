@@ -59,9 +59,26 @@ public:
     }
     bool fillInputBuffer(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
         // The whole JPEG data is expected to reside in the supplied memory buffer, so any request
-        // for more data beyond the given buffer size is treated as an error.
-        SkCodecPrintf("Asked to re-fill a memory-mapped stream.\n");
-        return false;
+        // for more data beyond the given buffer size is treated as truncated a fake EOI marker
+        // is inserted. This allows the decompresser to output however much of the image is there.
+        // This matches the functionality of the libjpeg source manager:
+        // https://github.com/libjpeg-turbo/libjpeg-turbo/blob/c23672ce52ae53bd846b555439aa0a070b6d2c07/jdatasrc.c#L109
+
+        if (fStartOfFile && bytesInBuffer == 0) {
+            SkCodecPrintf("Treat empty file as error.\n");
+            return false;
+        }
+        // Insert fake EOI marker.
+        SkCodecPrintf("Asked to read past end of memory-mapped stream. Insert EOI marker.\n");
+        uint8_t markerCode[kJpegMarkerCodeSize] = {0};
+        markerCode[0] = 0xFF;
+        markerCode[1] = kJpegMarkerEndOfImage;
+
+        bytesInBuffer = 2;
+        nextInputByte = markerCode;
+        fStartOfFile = false;
+        return true;
+
     }
     bool skipInputBytes(size_t bytesToSkip,
                         const uint8_t*& nextInputByte,
@@ -115,6 +132,10 @@ public:
                                        segment.parameterLength - kJpegSegmentParameterLengthSize);
     }
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
+
+private:
+    bool fStartOfFile = true;
+    sk_sp<SkData> fBuffer;
 };
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
