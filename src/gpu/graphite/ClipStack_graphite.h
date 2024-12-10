@@ -257,6 +257,39 @@ private:
         int fInvalidatedByIndex;
     };
 
+    // Represents an alpha mask with the rasterized coverage from elements in a draw query that
+    // could not be converted to analytic coverage FPs. This is only required for SW masks.
+    class Mask {
+    public:
+        using Stack = SkTBlockList<Mask, 1>;
+
+        Mask(const SaveRecord& current, const SkIRect& bounds);
+
+        ~Mask() {
+            // The key should have been released by the clip stack before hand
+            SkASSERT(!fKey.isValid());
+        }
+
+        const UniqueKey& key() const { return fKey; }
+        const SkIRect&   bounds() const { return fBounds; }
+        uint32_t         genID() const { return fGenID; }
+
+        bool appliesToDraw(const SaveRecord& current, const SkIRect& drawBounds) const;
+        void invalidate(Recorder* recorder);
+
+        SkDEBUGCODE(const SaveRecord* owner() const { return fOwner; })
+    private:
+        UniqueKey fKey;
+        // The gen ID of the save record and the query bounds uniquely define the set of elements
+        // that would go into a mask. If the save record adds new elements, its gen ID would change.
+        // If the draw had different bounds it would select a different set of masked elements.
+        // Repeatedly querying an unmodified save record with the same bounds is idempotent.
+        SkIRect     fBounds;
+        uint32_t    fGenID;
+
+        SkDEBUGCODE(const SaveRecord* fOwner;)
+    };
+
     // Represents a saved point in the clip stack, and manages the life time of elements added to
     // stack within the record's life time. Also provides the logic for determining active elements
     // given a draw query.
@@ -266,13 +299,14 @@ private:
 
         explicit SaveRecord(const Rect& deviceBounds);
 
-        SaveRecord(const SaveRecord& prior, int startingElementIndex);
+        SaveRecord(const SaveRecord& prior, int startingMaskIndex, int startingElementIndex);
 
         const SkShader* shader()      const { return fShader.get(); }
         const Rect&     outerBounds() const { return fOuterBounds;  }
         const Rect&     innerBounds() const { return fInnerBounds;  }
         SkClipOp        op()          const { return fStackOp;      }
         ClipState       state()       const;
+        uint32_t        genID()       const;
 
         int  firstActiveElementIndex() const { return fStartingElementIndex;     }
         int  oldestElementIndex()      const { return fOldestValidIndex;         }
@@ -306,6 +340,8 @@ private:
         // Restore element validity now that this record is the new top of the stack.
         void restoreElements(RawElement::Stack* elements);
 
+        void invalidateMasks(Recorder* recorder, Mask::Stack* masks);
+
     private:
         // These functions modify 'elements' and element-dependent state of the record
         // (such as valid index and fState). Records draws for any clips that have deferred usages
@@ -321,6 +357,7 @@ private:
         // A save record can have up to one shader, multiple shaders are automatically blended
         sk_sp<SkShader> fShader;
 
+        const int fStartingMaskIndex;    // First mask owned by this save record
         const int fStartingElementIndex; // First element owned by this save record
         int       fOldestValidIndex;     // Index of oldest element that's valid for this record
         int       fDeferredSaveCount;    // Number of save() calls without modifications (yet)
@@ -329,6 +366,7 @@ private:
         // because if kDifference then there is an implicit extra outer bounds at the device edges.
         SkClipOp  fStackOp;
         ClipState fState;
+        uint32_t  fGenID;
     };
 
     Rect deviceBounds() const;
@@ -344,6 +382,11 @@ private:
 
     RawElement::Stack fElements;
     SaveRecord::Stack fSaves; // always has one wide open record at the top
+
+    // The masks are recorded during apply() calls so we can cache them; they are not modifications
+    // of the actual clip stack.
+    // TODO: Store this in the clip atlas instead?
+    mutable Mask::Stack      fMasks;
 
     Device* fDevice; // the device this clip stack is coupled with
 };
