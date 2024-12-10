@@ -31,6 +31,7 @@
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTo.h"
 #include "modules/skcms/skcms.h"
+#include "src/codec/SkCodecPriv.h"
 #include "src/core/SkTHash.h"
 #include "src/pdf/SkDeflate.h"
 #include "src/pdf/SkPDFDocumentPriv.h"
@@ -44,10 +45,6 @@
 #include <memory>
 #include <optional>
 #include <utility>
-
-/*static*/ const SkEncodedInfo& SkPDFBitmap::GetEncodedInfo(SkCodec& codec) {
-    return codec.getEncodedInfo();
-}
 
 namespace {
 
@@ -282,55 +279,91 @@ void do_deflated_image(const SkPixmap& pm,
     }
 }
 
-bool do_jpeg(sk_sp<SkData> data, SkColorSpace* imageColorSpace, SkPDFDocument* doc, SkISize size,
-             SkPDFIndirectReference ref) {
+bool write_data_to_stream_as_jpeg(sk_sp<SkData> jpegData,
+                                  SkColorSpace* imageColorSpace,
+                                  SkPDFDocument* doc,
+                                  SkPDFIndirectReference ref,
+                                  SkISize jpegSize,
+                                  SkPDFUnion pdfColorSpace,
+                                  int colorChannels) {
+    SkASSERT(jpegData);
+    SkASSERT(doc);
+    SkASSERT(colorChannels == 1 || colorChannels == 3);  // YUV should be 3, 1 otherwise.
+
+    if (imageColorSpace) {
+        skcms_ICCProfile imageIccProfile;
+        imageColorSpace->toProfile(&imageIccProfile);
+        if (!icc_channel_mismatch(&imageIccProfile, colorChannels)) {
+            sk_sp<SkData> imageIccData = SkWriteICCProfile(&imageIccProfile, "");
+            pdfColorSpace = write_icc_profile(doc, std::move(imageIccData), colorChannels);
+        }
+    }
+
+    emit_image_stream(
+            doc,
+            ref,
+            [&jpegData](SkWStream* dst) { dst->write(jpegData->data(), jpegData->size()); },
+            jpegSize,
+            std::move(pdfColorSpace),
+            SkPDFIndirectReference(),
+            SkToInt(jpegData->size()),
+            SkPDFStreamFormat::DCT);
+    return true;
+}
+
+// As a fast path, if a user has created an SkImage from .jpeg data, we will re-embed the
+// data untouched (having gotten it from SkImage::refEncodedData()). However, we need to
+// use a jpeg decoder to pull out some metadata we need to embed in the PDF. If that's
+// not available or the metadata is wrong, we'll need to re-encoded it.
+bool inspect_jpeg_and_write_to_stream(sk_sp<SkData> jpegData,
+                                      SkColorSpace* imageColorSpace,
+                                      SkPDFDocument* doc,
+                                      SkISize imageSize,
+                                      SkPDFIndirectReference ref) {
     static constexpr const SkCodecs::Decoder decoders[] = {
         SkJpegDecoder::Decoder(),
     };
-    std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(data, decoders);
+    std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(jpegData, decoders);
     if (!codec) {
         return false;
     }
 
     SkISize jpegSize = codec->dimensions();
-    const SkEncodedInfo& encodedInfo = SkPDFBitmap::GetEncodedInfo(*codec);
+    if (jpegSize != imageSize) {
+        // We wouldn't expect this to happen given that SkImage should have loaded this correctly,
+        // but if they've gotten out of sync, bail out.
+        return false;
+    }
+    const SkEncodedInfo& encodedInfo = SkCodecPriv::GetEncodedInfo(codec.get());
     SkEncodedInfo::Color jpegColorType = encodedInfo.color();
-    SkEncodedOrigin exifOrientation = codec->getOrigin();
-
-    bool yuv = jpegColorType == SkEncodedInfo::kYUV_Color;
-    bool goodColorType = yuv || jpegColorType == SkEncodedInfo::kGray_Color;
-    if (jpegSize != size  // Safety check.
-            || !goodColorType
-            || kTopLeft_SkEncodedOrigin != exifOrientation) {
+    if (!(jpegColorType == SkEncodedInfo::kYUV_Color ||
+          jpegColorType == SkEncodedInfo::kGray_Color)) {
+        return false;  // don't support other colors.
+    }
+    if (codec->getOrigin() != kTopLeft_SkEncodedOrigin) {
         return false;
     }
 
+    bool yuv = jpegColorType == SkEncodedInfo::kYUV_Color;
     int channels = yuv ? 3 : 1;
     SkPDFUnion colorSpace = yuv ? SkPDFUnion::Name("DeviceRGB") : SkPDFUnion::Name("DeviceGray");
 
     if (sk_sp<SkData> encodedIccProfileData = encodedInfo.profileData();
-        encodedIccProfileData && !icc_channel_mismatch(encodedInfo.profile(), channels))
-    {
+        encodedIccProfileData && !icc_channel_mismatch(encodedInfo.profile(), channels)) {
         colorSpace = write_icc_profile(doc, std::move(encodedIccProfileData), channels);
     } else if (const skcms_ICCProfile* codecIccProfile = codec->getICCProfile();
-               codecIccProfile && !icc_channel_mismatch(codecIccProfile, channels))
-    {
+               codecIccProfile && !icc_channel_mismatch(codecIccProfile, channels)) {
         sk_sp<SkData> codecIccData = SkWriteICCProfile(codecIccProfile, "");
         colorSpace = write_icc_profile(doc, std::move(codecIccData), channels);
-    } else if (imageColorSpace) {
-        skcms_ICCProfile imageIccProfile;
-        imageColorSpace->toProfile(&imageIccProfile);
-        if (!icc_channel_mismatch(&imageIccProfile, channels)) {
-            sk_sp<SkData> imageIccData = SkWriteICCProfile(&imageIccProfile, "");
-            colorSpace = write_icc_profile(doc, std::move(imageIccData), channels);
-        }
     }
 
-    emit_image_stream(doc, ref,
-                      [&data](SkWStream* dst) { dst->write(data->data(), data->size()); },
-                      jpegSize, std::move(colorSpace),
-                      SkPDFIndirectReference(), SkToInt(data->size()), SkPDFStreamFormat::DCT);
-    return true;
+    return write_data_to_stream_as_jpeg(std::move(jpegData),
+                                        imageColorSpace,
+                                        doc,
+                                        ref,
+                                        imageSize,
+                                        std::move(colorSpace),
+                                        channels);
 }
 
 SkBitmap to_pixels(const SkImage* image) {
@@ -368,7 +401,8 @@ void serialize_image(const SkImage* img,
     SkISize dimensions = img->dimensions();
 
     if (sk_sp<SkData> data = img->refEncodedData()) {
-        if (do_jpeg(std::move(data), img->colorSpace(), doc, dimensions, ref)) {
+        if (inspect_jpeg_and_write_to_stream(
+                    std::move(data), img->colorSpace(), doc, dimensions, ref)) {
             return;
         }
     }
@@ -379,8 +413,16 @@ void serialize_image(const SkImage* img,
         SkJpegEncoder::Options jOpts;
         jOpts.fQuality = encodingQuality;
         SkDynamicMemoryWStream stream;
+        // This will encode as RGB, not YUV, so we can set the default colorspace and
+        // number of channels accordingly.
         if (SkJpegEncoder::Encode(&stream, pm, jOpts)) {
-            if (do_jpeg(stream.detachAsData(), pm.colorSpace(), doc, dimensions, ref)) {
+            if (write_data_to_stream_as_jpeg(stream.detachAsData(),
+                                             pm.colorSpace(),
+                                             doc,
+                                             ref,
+                                             pm.dimensions(),
+                                             SkPDFUnion::Name("DeviceRGB"),
+                                             1)) {
                 return;
             }
         }

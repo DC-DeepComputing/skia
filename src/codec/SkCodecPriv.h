@@ -8,6 +8,7 @@
 #ifndef SkCodecPriv_DEFINED
 #define SkCodecPriv_DEFINED
 
+#include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkTypes.h"
@@ -22,10 +23,6 @@
 #else
     #define SkCodecPrintf(...)
 #endif
-
-// Defined in SkCodec.cpp
-bool sk_select_xform_format(SkColorType colorType, bool forColorTable,
-                            skcms_PixelFormat* outFormat);
 
 // FIXME: Consider sharing with dm, nanbench, and tools.
 static inline float get_scale_from_sample_size(int sampleSize) {
@@ -258,5 +255,17 @@ static inline PackColorProc choose_pack_color_proc(bool isPremul, SkColorType co
 namespace SkCodecs {
 bool HasDecoder(std::string_view id);
 }
+
+class SkCodecPriv final {
+public:
+    static const SkEncodedInfo& GetEncodedInfo(const SkCodec* codec) {
+        SkASSERT(codec);
+        return codec->getEncodedInfo();
+    }
+
+    static bool SelectXformFormat(SkColorType colorType,
+                                  bool forColorTable,
+                                  skcms_PixelFormat* outFormat);
+};
 
 #endif // SkCodecPriv_DEFINED

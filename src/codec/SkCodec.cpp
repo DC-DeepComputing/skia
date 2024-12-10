@@ -771,8 +771,9 @@ void SkCodec::fillIncompleteImage(const SkImageInfo& info, void* dst, size_t row
     SkSampler::Fill(fillInfo, fillDst, rowBytes, kNo_ZeroInitialized);
 }
 
-bool sk_select_xform_format(SkColorType colorType, bool forColorTable,
-                            skcms_PixelFormat* outFormat) {
+bool SkCodecPriv::SelectXformFormat(SkColorType colorType,
+                                    bool forColorTable,
+                                    skcms_PixelFormat* outFormat) {
     SkASSERT(outFormat);
 
     switch (colorType) {
@@ -843,8 +844,8 @@ bool SkCodec::initializeColorXform(const SkImageInfo& dstInfo, SkEncodedInfo::Al
         fXformTime = SkEncodedInfo::kPalette_Color != fEncodedInfo.color()
                           || kRGBA_F16_SkColorType == dstInfo.colorType()
                 ? kDecodeRow_XformTime : kPalette_XformTime;
-        if (!sk_select_xform_format(dstInfo.colorType(), fXformTime == kPalette_XformTime,
-                                    &fDstXformFormat)) {
+        if (!SkCodecPriv::SelectXformFormat(
+                    dstInfo.colorType(), fXformTime == kPalette_XformTime, &fDstXformFormat)) {
             return false;
         }
         if (encodedAlpha == SkEncodedInfo::kUnpremul_Alpha

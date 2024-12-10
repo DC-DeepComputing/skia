@@ -748,7 +748,7 @@ SkCodec::Result SkRawCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst,
 
     constexpr auto srcFormat = skcms_PixelFormat_RGB_888;
     skcms_PixelFormat dstFormat;
-    if (!sk_select_xform_format(dstInfo.colorType(), false, &dstFormat)) {
+    if (!SkCodecPriv::SelectXformFormat(dstInfo.colorType(), false, &dstFormat)) {
         return kInvalidConversion;
     }
 
