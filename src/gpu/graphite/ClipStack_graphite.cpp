@@ -35,6 +35,22 @@ Rect subtract(const Rect& a, const Rect& b, bool exact) {
     }
 }
 
+static uint32_t kInvalidGenID  = 0;
+static uint32_t kEmptyGenID    = 1;
+static uint32_t kWideOpenGenID = 2;
+
+uint32_t next_gen_id() {
+    // 0-2 are reserved for invalid, empty & wide-open
+    static const uint32_t kFirstUnreservedGenID = 3;
+    static std::atomic<uint32_t> nextID{kFirstUnreservedGenID};
+
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id < kFirstUnreservedGenID);
+    return id;
+}
+
 bool oriented_bbox_intersection(const Rect& a, const Transform& aXform,
                                 const Rect& b, const Transform& bXform) {
     // NOTE: We intentionally exclude projected bounds for two reasons:
@@ -631,31 +647,89 @@ ClipStack::ClipState ClipStack::RawElement::clipType() const {
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// ClipStack::Mask
+
+ClipStack::Mask::Mask(const SaveRecord& current, const SkIRect& drawBounds)
+        : fBounds(drawBounds)
+        , fGenID(current.genID()) {
+    static const UniqueKey::Domain kDomain = UniqueKey::GenerateDomain();
+
+    // The gen ID should not be invalid, empty, or wide open, since those do not require masks
+    SkASSERT(fGenID != kInvalidGenID && fGenID != kEmptyGenID && fGenID != kWideOpenGenID);
+
+    UniqueKey::Builder builder(&fKey, kDomain, 5, "clip_mask");
+    builder[0] = fGenID;
+    builder[1] = drawBounds.fLeft;
+    builder[2] = drawBounds.fRight;
+    builder[3] = drawBounds.fTop;
+    builder[4] = drawBounds.fBottom;
+    SkASSERT(fKey.isValid());
+
+    SkDEBUGCODE(fOwner = &current;)
+}
+
+bool ClipStack::Mask::appliesToDraw(const SaveRecord& current, const SkIRect& drawBounds) const {
+    // For the same save record, a larger mask will have the same or more elements
+    // baked into it, so it can be reused to clip the smaller draw.
+    SkASSERT(fGenID != current.genID() || &current == fOwner);
+    return fGenID == current.genID() && fBounds.contains(drawBounds);
+}
+
+void ClipStack::Mask::invalidate(Recorder* recorder) {
+    SkASSERT(recorder);
+    SkASSERT(fKey.isValid()); // Should only be invalidated once
+//    proxyProvider->processInvalidUniqueKey(
+//            fKey, nullptr, GrProxyProvider::InvalidateGPUResource::kYes);
+    fKey.reset();
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // ClipStack::SaveRecord
 
 ClipStack::SaveRecord::SaveRecord(const Rect& deviceBounds)
         : fInnerBounds(deviceBounds)
         , fOuterBounds(deviceBounds)
         , fShader(nullptr)
+        , fStartingMaskIndex(0)
         , fStartingElementIndex(0)
         , fOldestValidIndex(0)
         , fDeferredSaveCount(0)
         , fStackOp(SkClipOp::kIntersect)
-        , fState(ClipState::kWideOpen)  {}
+        , fState(ClipState::kWideOpen)
+        , fGenID(kInvalidGenID) {}
 
 ClipStack::SaveRecord::SaveRecord(const SaveRecord& prior,
+                                  int startingMaskIndex,
                                   int startingElementIndex)
         : fInnerBounds(prior.fInnerBounds)
         , fOuterBounds(prior.fOuterBounds)
         , fShader(prior.fShader)
+        , fStartingMaskIndex(startingMaskIndex)
         , fStartingElementIndex(startingElementIndex)
         , fOldestValidIndex(prior.fOldestValidIndex)
         , fDeferredSaveCount(0)
         , fStackOp(prior.fStackOp)
-        , fState(prior.fState) {
+        , fState(prior.fState)
+        , fGenID(kInvalidGenID) {
+    // If the prior record never needed a mask, this one will insert into the same index
+    // (that's okay since we'll remove it when this record is popped off the stack).
+    SkASSERT(startingMaskIndex >= prior.fStartingMaskIndex);
     // If the prior record added an element, this one will insert into the same index
     // (that's okay since we'll remove it when this record is popped off the stack).
     SkASSERT(startingElementIndex >= prior.fStartingElementIndex);
+}
+
+uint32_t ClipStack::SaveRecord::genID() const {
+    if (fState == ClipState::kEmpty) {
+        return kEmptyGenID;
+    } else if (fState == ClipState::kWideOpen) {
+        return kWideOpenGenID;
+    } else {
+        // The gen ID shouldn't be empty or wide open, since they are reserved for the above
+        // if-cases. It may be kInvalid if the record hasn't had any elements added to it yet.
+        SkASSERT(fGenID != kEmptyGenID && fGenID != kWideOpenGenID);
+        return fGenID;
+    }
 }
 
 ClipStack::ClipState ClipStack::SaveRecord::state() const {
@@ -719,6 +793,17 @@ void ClipStack::SaveRecord::restoreElements(RawElement::Stack* elements) {
         e.restoreValid(*this);
         --i;
     }
+}
+
+void ClipStack::SaveRecord::invalidateMasks(Recorder* recorder,
+                                            Mask::Stack* masks) {
+    // Must explicitly invalidate the key before removing the mask object from the stack
+    while (masks->count() > fStartingMaskIndex) {
+        SkASSERT(masks->back().owner() == this && recorder);
+        masks->back().invalidate(recorder);
+        masks->pop_back();
+    }
+    SkASSERT(masks->empty() || masks->back().genID() != fGenID);
 }
 
 void ClipStack::SaveRecord::addShader(sk_sp<SkShader> shader) {
@@ -932,6 +1017,8 @@ bool ClipStack::SaveRecord::appendElement(RawElement&& toAdd,
         elements->back() = std::move(toAdd);
     }
 
+    // Changing this will prompt ClipStack to invalidate any masks associated with this record.
+    fGenID = next_gen_id();
     return true;
 }
 
@@ -961,6 +1048,7 @@ void ClipStack::SaveRecord::replaceWithElement(RawElement&& toAdd,
 
     // This invalidates all older elements that are owned by save records lower in the clip stack.
     fOldestValidIndex = fStartingElementIndex;
+    fGenID = next_gen_id();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -983,7 +1071,16 @@ ClipStack::ClipStack(Device* owningDevice)
     fSaves.emplace_back(this->deviceBounds());
 }
 
-ClipStack::~ClipStack() = default;
+ClipStack::~ClipStack() {
+    // Invalidate all mask keys that remain. Since we're tearing the clip stack down, we don't need
+    // to go through SaveRecord.
+    SkASSERT(fDevice->recorder() || fMasks.empty());
+    if (fDevice->recorder()) {
+        for (Mask& m : fMasks.ritems()) {
+            m.invalidate(fDevice->recorder());
+        }
+    }
+}
 
 void ClipStack::save() {
     SkASSERT(!fSaves.empty());
@@ -1001,6 +1098,10 @@ void ClipStack::restore() {
     // When we remove a save record, we delete all elements >= its starting index and any masks
     // that were rasterized for it.
     current.removeElements(&fElements, fDevice);
+    SkASSERT(fDevice->recorder() || fMasks.empty());
+    if (fDevice->recorder()) {
+        current.invalidateMasks(fDevice->recorder(), &fMasks);
+    }
 
     fSaves.pop_back();
     // Restore any remaining elements that were only invalidated by the now-removed save record.
@@ -1039,7 +1140,7 @@ ClipStack::SaveRecord& ClipStack::writableSaveRecord(bool* wasDeferred) {
         // Must undefer the save to get a new record.
         SkAssertResult(current.popSave());
         *wasDeferred = true;
-        return fSaves.emplace_back(current, fElements.count());
+        return fSaves.emplace_back(current, fMasks.count(), fElements.count());
     }
 }
 
@@ -1351,6 +1452,36 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
             outEffectiveElements->push_back(&e);
         }
     }
+
+    // Ganesh would try to get a SWMask here if no MSAA. It would be pushed onto Mask stack if
+    // it's not already in there. The SWMask FP would be appended to the general clip FP.
+    // So maybe: try to add effective elements to RasterPathAtlas (or ClipAtlas), add Proxy &
+    // Rect to Clip? Then clear effective elements list.
+
+    // Now rasterize any remaining elements, either to the stencil or a SW mask. All elements are
+    // flattened into a single mask.
+//    if (!outEffectiveElements->empty()) {
+//        bool hasSWMask = false;
+//        if (fDevice->numSamples() <= 1 && !sdc->canUseDynamicMSAA())
+//            // Must use a texture mask to represent the combined clip elements since MSAA
+//            // isn't available.
+//            std::tie(hasSWMask, clipFP) = GetSWMaskFP(
+//                     rContext, &fMasks, cs, scissorBounds, outEffectiveElements->begin(),
+//                     outEffectiveElements->size(), std::move(clipFP));
+//            outEffectiveElements.clear();
+//        }
+//    }
+
+
+    // Things to figure out:
+    // * What key to use (genID?)
+    // * Setting up the shader and shader data seems straightforward, not sure about the Proxy
+    // * Will need a separate DrawAtlas & cache in RasterPathAtlas to ensure the key is unique
+    // * Rendering multiple clips to a bounded mask region (can probably steal from Ganesh)
+    //    * Can iterate through Element list -- Device does it.
+    // * Do I need MaskStack?
+
+
 
     return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), analyticClip, cs.shader());
 }
