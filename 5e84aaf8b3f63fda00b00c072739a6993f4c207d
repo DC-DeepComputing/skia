@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2172da6_73c0a181",
+        "filename": "infra/bots/tasks.json",
+        "patchSetId": 5
+      },
+      "lineNbr": 47765,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-10T18:24:09Z",
+      "side": 1,
+      "message": "Unfortunately, `infra/bots/cfg.json`\u0027s `no_upload` contains `ASAN` and we do want this (or some like configuration) to upload.",
+      "range": {
+        "startLine": 47765,
+        "startChar": 1441,
+        "endLine": 47765,
+        "endChar": 1460
+      },
+      "revId": "5e84aaf8b3f63fda00b00c072739a6993f4c207d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
