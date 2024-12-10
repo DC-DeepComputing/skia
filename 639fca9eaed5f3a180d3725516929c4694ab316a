@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04813e88_e26bc202",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-10T14:14:21Z",
+      "side": 1,
+      "message": "We\u0027re also intersecting explicitly right below.",
+      "range": {
+        "startLine": 1417,
+        "startChar": 64,
+        "endLine": 1418,
+        "endChar": 52
+      },
+      "revId": "639fca9eaed5f3a180d3725516929c4694ab316a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
