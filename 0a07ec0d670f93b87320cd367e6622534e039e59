@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02358bc6_1f6dbeb1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-10T13:50:29Z",
+      "side": 1,
+      "message": "PTAL, I had to update one more generated file.",
+      "revId": "0a07ec0d670f93b87320cd367e6622534e039e59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
