@@ -22,6 +22,30 @@
       },
       "revId": "639fca9eaed5f3a180d3725516929c4694ab316a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "230247a9_8dd4e898",
+        "filename": "src/core/SkAAClip.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1418,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-10T14:19:21Z",
+      "side": 1,
+      "message": "Oh, right. I missed forgot intersect() is a mutating operation.",
+      "parentUuid": "04813e88_e26bc202",
+      "range": {
+        "startLine": 1417,
+        "startChar": 64,
+        "endLine": 1418,
+        "endChar": 52
+      },
+      "revId": "639fca9eaed5f3a180d3725516929c4694ab316a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
