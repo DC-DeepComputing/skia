@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0539e975_58a1bcd1",
+        "filename": "tests/VerticesTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-10T19:44:15Z",
+      "side": 1,
+      "message": "How are you leaning in this regard? I\u0027m inclined to have it reject creating an SkVertices object but it would be a breaking change compared to having it clamp if there are invalid vertex meshes out in the wild.\n\nI like that we can just clamp the indices with the skvx instructions, which seems fairly low overhead. If we wanted to actually validate it, we could use `any()` to still have some vectorization, but the horizontal operation is likely slower.",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 55
+      },
+      "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
