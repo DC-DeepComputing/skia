@@ -557,6 +557,9 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     static constexpr SkVertices::VertexMode kIgnoredMode = SkVertices::kTriangles_VertexMode;
     sk_sp<SkVertices> vertices = SkVertices::MakeCopy(kIgnoredMode, SkToS32(count), pts, nullptr,
                                                       nullptr);
+    if (!vertices) {
+        return;
+    }
 
     GrPrimitiveType primitiveType = point_mode_to_primitive_type(mode);
     fSurfaceDrawContext->drawVertices(this->clip(), std::move(grPaint), this->localToDevice(),
