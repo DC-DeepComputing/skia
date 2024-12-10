@@ -447,11 +447,9 @@ static void setup_shader_stage_info(VkShaderStageFlagBits stage,
     shaderStageInfo->pSpecializationInfo = nullptr;
 }
 
-
 static VkDescriptorSetLayout descriptor_data_to_layout(const VulkanSharedContext* sharedContext,
         const SkSpan<DescriptorData>& descriptorData) {
-    if (descriptorData.empty()) { return VK_NULL_HANDLE; }
-
+    // descriptorData can be empty to indicate that we should make a layout for a dummy/empty set.
     VkDescriptorSetLayout setLayout;
     DescriptorDataToVkDescSetLayout(sharedContext, descriptorData, &setLayout);
     if (setLayout == VK_NULL_HANDLE) {
@@ -473,6 +471,98 @@ static void destroy_desc_set_layouts(const VulkanSharedContext* sharedContext,
     }
 }
 
+static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
+                                    const VulkanSharedContext* sharedContext,
+                                    bool usesIntrinsicConstantUbo,
+                                    bool hasStepUniforms,
+                                    bool hasPaintUniforms,
+                                    bool hasGradientBuffer) {
+    // Fill a container with default-initialized (invalid; with counts of 0) DescriptorData
+    // structures.
+    skia_private::STArray<
+            VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> uniformDescriptors;
+    uniformDescriptors.push_back_n(VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData());
+
+    DescriptorType uniformBufferType =
+            sharedContext->caps()->storageBufferSupport() ? DescriptorType::kStorageBuffer
+                                                          : DescriptorType::kUniformBuffer;
+    if (usesIntrinsicConstantUbo) {
+        uniformDescriptors[VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex] = {
+                uniformBufferType, /*count=*/1,
+                VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+    }
+    if (hasStepUniforms) {
+        uniformDescriptors[VulkanGraphicsPipeline::kRenderStepUniformBufferIndex] = {
+                uniformBufferType, /*count=*/1,
+                VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
+                PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader};
+    }
+    if (hasPaintUniforms) {
+        uniformDescriptors[VulkanGraphicsPipeline::kPaintUniformBufferIndex] = {
+                uniformBufferType, /*count=*/1,
+                VulkanGraphicsPipeline::kPaintUniformBufferIndex,
+                PipelineStageFlags::kFragmentShader};
+    }
+    if (hasGradientBuffer) {
+        uniformDescriptors[VulkanGraphicsPipeline::kGradientBufferIndex] = {
+                DescriptorType::kStorageBuffer,
+                /*count=*/1,
+                VulkanGraphicsPipeline::kGradientBufferIndex,
+                PipelineStageFlags::kFragmentShader};
+    }
+
+    outLayout = descriptor_data_to_layout(sharedContext, {uniformDescriptors});
+    return true;
+}
+
+static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
+                                            const VulkanSharedContext* sharedContext,
+                                            const int numTextureSamplers,
+                                            SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
+    SkASSERT(numTextureSamplers >= 0);
+    if (numTextureSamplers == 0) {
+        return true;
+    }
+    // The immutable sampler span size must be = the total number of texture/samplers such that
+    // we can use the index of a sampler as its binding index (or we just have none, which
+    // enables us to skip some of this logic entirely).
+    SkASSERT(immutableSamplers.empty() ||
+             SkTo<int>(immutableSamplers.size()) == numTextureSamplers);
+
+    skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
+    for (int i = 0; i < numTextureSamplers; i++) {
+        Sampler* immutableSampler = nullptr;
+        if (!immutableSamplers.empty() && immutableSamplers[i]) {
+            immutableSampler = immutableSamplers[i].get();
+        }
+        textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
+                                        /*count=*/1,
+                                        /*bindingIdx=*/i,
+                                        PipelineStageFlags::kFragmentShader,
+                                        immutableSampler});
+    }
+
+    outLayout = descriptor_data_to_layout(sharedContext, {textureSamplerDescs});
+    return outLayout != VK_NULL_HANDLE;
+}
+
+static bool input_attachment_desc_set_layout(VkDescriptorSetLayout& outLayout,
+                                             const VulkanSharedContext* sharedContext,
+                                             int numInputAttachments) {
+    // For now, we expect to have either 0 or 1 input attachment (used to load MSAA from resolve)
+    SkASSERT(numInputAttachments == 0 || numInputAttachments == 1);
+    if (numInputAttachments == 0) {
+        return true;
+    }
+
+    skia_private::TArray<DescriptorData> inputAttachmentDescriptors(numInputAttachments);
+    inputAttachmentDescriptors.push_back(VulkanGraphicsPipeline::kInputAttachmentDescriptor);
+
+    outLayout = descriptor_data_to_layout(sharedContext, {inputAttachmentDescriptors});
+    return outLayout != VK_NULL_HANDLE;
+}
+
 static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedContext,
                                               bool usesIntrinsicConstantUbo,
                                               bool useMSAALoadPushConstant,
@@ -482,98 +572,40 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               int numTextureSamplers,
                                               int numInputAttachments,
                                               SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
-    SkASSERT(!useMSAALoadPushConstant ||
-             (!usesIntrinsicConstantUbo && !hasStepUniforms && !hasPaintUniforms));
-    // Determine descriptor set layouts for this pipeline based upon render pass information.
-    skia_private::STArray<3, VkDescriptorSetLayout> setLayouts;
-
-    // Determine uniform descriptor set layout
-    skia_private::STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData>
-            uniformDescriptors;
-    if (usesIntrinsicConstantUbo) {
-        uniformDescriptors.push_back(VulkanGraphicsPipeline::kIntrinsicUniformBufferDescriptor);
+    // Create a container to later populate with descriptor set layouts in order to form the
+    // pipeline layout.
+    skia_private::STArray<VulkanGraphicsPipeline::kNumDescSets, VkDescriptorSetLayout> setLayouts;
+    // Explicitly push back the expected number of VkDescriptorSetLayouts as VK_NULL_HANDLE.
+    // We use a loop to populate the STArray rather than push_back_n(...) or an initializer list
+    // because VK_NULL_HANDLE arguments lead to ambiguous method calls into STArray when using
+    // certain compilers. Default-initialized VkDescriptorSetLayouts also were not reliably being
+    // initialized as the expected VK_NULL_HANDLE value on all test devices.
+    for (unsigned int i = 0; i < VulkanGraphicsPipeline::kNumDescSets; i++) {
+        setLayouts.push_back(VK_NULL_HANDLE);
     }
 
-    DescriptorType uniformBufferType = sharedContext->caps()->storageBufferSupport()
-                                            ? DescriptorType::kStorageBuffer
-                                            : DescriptorType::kUniformBuffer;
-    if (hasStepUniforms) {
-        uniformDescriptors.push_back({
-            uniformBufferType,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kRenderStepUniformBufferIndex,
-            PipelineStageFlags::kVertexShader | PipelineStageFlags::kFragmentShader});
-    }
-    if (hasPaintUniforms) {
-        uniformDescriptors.push_back({
-            uniformBufferType,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kPaintUniformBufferIndex,
-            PipelineStageFlags::kFragmentShader});
-    }
-    if (hasGradientBuffer) {
-        uniformDescriptors.push_back({
-            DescriptorType::kStorageBuffer,
-            /*count=*/1,
-            VulkanGraphicsPipeline::kGradientBufferIndex,
-            PipelineStageFlags::kFragmentShader});
-    }
-
-    if (!uniformDescriptors.empty()) {
-        VkDescriptorSetLayout uniformSetLayout =
-                descriptor_data_to_layout(sharedContext, {uniformDescriptors});
-        if (uniformSetLayout == VK_NULL_HANDLE) { return VK_NULL_HANDLE; }
-        setLayouts.push_back(uniformSetLayout);
-    }
-
-    // Determine input attachment descriptor set layout
-    if (numInputAttachments > 0) {
-        // For now, we only expect to have up to 1 input attachment. We also share that descriptor
-        // set number with uniform descriptors for normal graphics pipeline usages, so verify that
-        // we are not using any uniform descriptors to avoid conflicts.
-        SkASSERT(numInputAttachments == 1 && uniformDescriptors.empty());
-        skia_private::TArray<DescriptorData> inputAttachmentDescriptors(numInputAttachments);
-        inputAttachmentDescriptors.push_back(VulkanGraphicsPipeline::kInputAttachmentDescriptor);
-
-        VkDescriptorSetLayout inputAttachmentDescSetLayout =
-                descriptor_data_to_layout(sharedContext, {inputAttachmentDescriptors});
-
-        if (inputAttachmentDescSetLayout == VK_NULL_HANDLE) {
-            destroy_desc_set_layouts(sharedContext, setLayouts);
-            return VK_NULL_HANDLE;
-        }
-        setLayouts.push_back(inputAttachmentDescSetLayout);
-    }
-
-    // Determine texture/sampler descriptor set layout
-    if (numTextureSamplers > 0) {
-        skia_private::TArray<DescriptorData> textureSamplerDescs(numTextureSamplers);
-        // The immutable sampler span size must be = the total number of texture/samplers such that
-        // we can use the index of a sampler as its binding index (or we just have none, which
-        // enables us to skip some of this logic entirely).
-        SkASSERT(immutableSamplers.empty() ||
-                 SkTo<int>(immutableSamplers.size()) == numTextureSamplers);
-
-        for (int i = 0; i < numTextureSamplers; i++) {
-            Sampler* immutableSampler = nullptr;
-            if (!immutableSamplers.empty() && immutableSamplers[i]) {
-                immutableSampler = immutableSamplers[i].get();
-            }
-            textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                           /*count=*/1,
-                                           /*bindingIdx=*/i,
-                                           PipelineStageFlags::kFragmentShader,
-                                           immutableSampler});
-        }
-
-        VkDescriptorSetLayout textureSamplerDescSetLayout =
-                descriptor_data_to_layout(sharedContext, {textureSamplerDescs});
-
-        if (textureSamplerDescSetLayout == VK_NULL_HANDLE) {
-            destroy_desc_set_layouts(sharedContext, setLayouts);
-            return VK_NULL_HANDLE;
-        }
-        setLayouts.push_back(textureSamplerDescSetLayout);
+    // Determine descriptor set layouts based upon render pass properties. VK_NULL_HANDLE is a valid
+    // set layout for pipelines that do not use certain descriptor types (ie, when not using an
+    // input attachment). To check for failures, instead check whether any of the helpers returned
+    // false.
+    if (!uniform_desc_set_layout(
+                setLayouts[VulkanGraphicsPipeline::kUniformBufferDescSetIndex],
+                sharedContext,
+                usesIntrinsicConstantUbo,
+                hasStepUniforms,
+                hasPaintUniforms,
+                hasGradientBuffer) ||
+        !texture_sampler_desc_set_layout(
+                setLayouts[VulkanGraphicsPipeline::kTextureBindDescSetIndex],
+                sharedContext,
+                numTextureSamplers,
+                immutableSamplers) ||
+        !input_attachment_desc_set_layout(
+                setLayouts[VulkanGraphicsPipeline::kInputAttachmentDescSetIndex],
+                sharedContext,
+                numInputAttachments)) {
+        destroy_desc_set_layouts(sharedContext, setLayouts);
+        return VK_NULL_HANDLE;
     }
 
     VkPushConstantRange pushConstantRange;
@@ -591,7 +623,6 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     layoutCreateInfo.flags = 0;
     layoutCreateInfo.setLayoutCount = setLayouts.size();
     layoutCreateInfo.pSetLayouts = setLayouts.begin();
-    // TODO: Add support for push constants.
     layoutCreateInfo.pushConstantRangeCount = useMSAALoadPushConstant ? 1 : 0;
     layoutCreateInfo.pPushConstantRanges = useMSAALoadPushConstant ? &pushConstantRange : nullptr;
 
