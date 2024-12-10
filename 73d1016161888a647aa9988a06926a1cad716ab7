@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "263f3b79_26850aed",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-10T21:53:17Z",
+      "side": 1,
+      "message": "No, this is an unrelated fix for an existing issue. The issue is that the font scanning on the FreeType side has been calculating the wrong variation and style for named instances for some time. Instead of the variation and style based on the named instance it is instead always based on the default instance. The variation part of this was partially covered up by `SkTypeface_FreeType::FaceRec::setupAxes` ignoring the requested variation if a named instance were requested (on the original theory that specifying a named instance this way essentially made it \"not variable\" anymore, though we think of them less this way now). However, the style was incorrectly computed as pointed out by the now resurrected `fontmgr_FontConfigInterface_tests`.\n\nThis also points out that everything here is calling the scanner too often, though it looks like we might be able to clean that up after AndroidNDK, FCI, and Fuchsia are updated.\n\nAlso, this also points out that this whole `SkFontScanner` interface is only good for FreeType and Fontations. It cannot be made to work with DirectWrite and CoreText. For the future we will need an interface which takes some font data and returns a collection of typefaces (or proto-typefaces) as DirectWrite does not expose instance indexes and CoreText does not expose ttc indexes or instance indexes. In general it may be required to get rid of the idea of ttc index and named index and instead have the lookup be by postscript name (at least internally) as I believe is the current proposal on the web standards side.",
+      "parentUuid": "79e43307_d508130a",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 46
+      },
+      "revId": "73d1016161888a647aa9988a06926a1cad716ab7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "7d9b39dc_511aede0",
