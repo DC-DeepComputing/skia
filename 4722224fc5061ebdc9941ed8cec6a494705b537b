@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc1ca578_bf46a18e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-10T18:30:42Z",
+      "side": 1,
+      "message": "I think there\u0027s also a infra/bots/deps/deps_gen.go you need to update",
+      "revId": "4722224fc5061ebdc9941ed8cec6a494705b537b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
