@@ -462,15 +462,25 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
 
 sk_sp<GraphicsPipeline> DawnResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+        , uint32_t pipelineID
+#endif
+        ) {
     return DawnGraphicsPipeline::Make(this->dawnSharedContext(),
                                       this,
                                       runtimeDict,
+                                      pipelineKey,
                                       pipelineDesc,
                                       renderPassDesc,
-                                      pipelineCreationFlags);
+                                      pipelineCreationFlags
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+                                      , pipelineID
+#endif
+                                      );
 }
 
 sk_sp<ComputePipeline> DawnResourceProvider::createComputePipeline(
