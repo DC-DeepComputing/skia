@@ -10,6 +10,8 @@
 
 #include "src/gpu/graphite/PathAtlas.h"
 
+#include "src/gpu/graphite/ClipStack_graphite.h"
+
 namespace skgpu::graphite {
 
 /**
@@ -39,6 +41,11 @@ public:
         fSmallPathAtlasMgr.evictAll();
         fUncachedAtlasMgr.evictAll();
     }
+
+    // Clip Atlas functionality
+    std::tuple<const TextureProxy*, Rect> findClip(const UniqueKey&);
+    std::tuple<const TextureProxy*, Rect> addClip(const UniqueKey&, Rect bounds,
+                                                  const ClipStack::ElementList*);
 
 protected:
     const TextureProxy* onAddShape(const Shape&,
