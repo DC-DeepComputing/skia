@@ -70,6 +70,30 @@
       },
       "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2ae1317_bad2d54a",
+        "filename": "tests/VerticesTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-11T15:45:40Z",
+      "side": 1,
+      "message": "Ah gotcha, I think it\u0027s okay to allow and ignore trailing indices. IIRC that is the behavior of the indexed draw APIs in GPUs as well.",
+      "parentUuid": "2c0428a6_b144e227",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 55
+      },
+      "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
