@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b113cb9c_003351d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-12-11T08:55:05Z",
+      "side": 1,
+      "message": "I can\u0027t help for Skia reviews :)",
+      "revId": "86e71957f1b2f25149f14bc9d601467f55946d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
