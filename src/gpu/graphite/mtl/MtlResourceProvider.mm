@@ -58,12 +58,21 @@ sk_sp<MtlGraphicsPipeline> MtlResourceProvider::findOrCreateLoadMSAAPipeline(
 
 sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+        , uint32_t futureID
+#endif
+        ) {
     return MtlGraphicsPipeline::Make(this->mtlSharedContext(), this,
-                                     runtimeDict, pipelineDesc, renderPassDesc,
-                                     pipelineCreationFlags);
+                                     runtimeDict, pipelineKey, pipelineDesc, renderPassDesc,
+                                     pipelineCreationFlags
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+                                     , futureID
+#endif
+                                     );
 }
 
 sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(

@@ -42,9 +42,14 @@ public:
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
                                            MtlResourceProvider*,
                                            const RuntimeEffectDictionary*,
+                                           const UniqueKey&,
                                            const GraphicsPipelineDesc&,
                                            const RenderPassDesc&,
-                                           SkEnumBitMask<PipelineCreationFlags>);
+                                           SkEnumBitMask<PipelineCreationFlags>
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+                                           , uint32_t futureID
+#endif
+                                           );
 
     static sk_sp<MtlGraphicsPipeline> MakeLoadMSAAPipeline(const MtlSharedContext*,
                                                            MtlResourceProvider*,

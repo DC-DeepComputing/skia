@@ -56,10 +56,21 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+
     auto globalCache = fSharedContext->globalCache();
     UniqueKey pipelineKey = fSharedContext->caps()->makeGraphicsPipelineKey(pipelineDesc,
                                                                             renderPassDesc);
-    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey);
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+    bool forPrecompile =
+            SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
+    uint32_t futureID;
+#endif
+    sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+                                                                         , pipelineCreationFlags,
+                                                                         &futureID
+#endif
+                                                                         );
     if (!pipeline) {
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
@@ -71,8 +82,23 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
-        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineDesc, renderPassDesc,
-                                                pipelineCreationFlags);
+
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+        static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
+        TRACE_EVENT_INSTANT2("skia.gpu",
+                             TRACE_STR_STATIC(kNames[forPrecompile]),
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "key", pipelineKey.hash(),
+                             "pipelineID", futureID);
+#endif
+
+        pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
+                                                pipelineDesc, renderPassDesc,
+                                                pipelineCreationFlags
+#if defined(SK_VERBOSE_PIPELINE_LIFETIME_LOGGING)
+                                                , futureID
+#endif
+        );
         if (pipeline) {
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
