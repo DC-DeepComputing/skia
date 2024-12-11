@@ -22,6 +22,30 @@
       },
       "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d064a14c_df03e5df",
+        "filename": "tests/VerticesTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-11T13:49:08Z",
+      "side": 1,
+      "message": "Yeah, for validating index values I think clamping makes sense.\n\nThe comment was directed at the index count - e.g. in triangle mode we expect tuples of 3, so what should we do if the count is not a multiple of 3?  Currently we copy all, and the software impl ignores any trailing indices when drawing (not sure about gpu).  Maybe we could reject the mesh, but I\u0027m wary of changing behavior so not tackling in this CL.",
+      "parentUuid": "0539e975_58a1bcd1",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 55
+      },
+      "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
