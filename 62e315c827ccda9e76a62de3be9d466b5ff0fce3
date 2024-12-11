@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e6b07191_3cb4b9e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-11T18:04:54Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\n/cc @adetaylor, @fmalita, @danieldilan, @thakis as FYI",
+      "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "218c388e_368840fc",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-11T18:04:54Z",
+      "side": 1,
+      "message": "I think this is okay.  I am hesitant to do this in a Skia-global way without having a way to opt-out third-party crates.  But maybe we can/should discuss this further?",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
