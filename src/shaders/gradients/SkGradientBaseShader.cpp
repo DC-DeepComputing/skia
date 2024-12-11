@@ -641,6 +641,11 @@ static sk_sp<SkColorSpace> intermediate_color_space(SkGradientShader::Interpolat
             // part of the conversion is a matrix multiply, which could be absorbed into the
             // color space xform.
             return SkColorSpace::MakeSRGBLinear();
+        case SkGradientShader::Interpolation::ColorSpace::kDisplayP3:
+        case SkGradientShader::Interpolation::ColorSpace::kA98RGB:
+        case SkGradientShader::Interpolation::ColorSpace::kProphotoRGB:
+        case SkGradientShader::Interpolation::ColorSpace::kRec2020:
+            break;
     }
     SkUNREACHABLE;
 }
