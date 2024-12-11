@@ -239,7 +239,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		} else {
 			configs = append(configs, glPrefix, glPrefix+"dft")
 			if sampleCount > 0 {
-				configs = append(configs, fmt.Sprintf("%smsaa%d", glPrefix, sampleCount))
+				// "glmsaa4" stopped working after a driver update, it seems
+				if !(b.os("Ubuntu18") && b.matchGpu("P400")) {
+					configs = append(configs, fmt.Sprintf("%smsaa%d", glPrefix, sampleCount))
+				}
 				// Temporarily limit the machines we test dynamic MSAA on.
 				if b.gpu("QuadroP400", "MaliG77") || b.matchOs("Mac") {
 					configs = append(configs, fmt.Sprintf("%sdmsaa", glPrefix))
