@@ -13,6 +13,7 @@
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
@@ -31,6 +32,8 @@
 #include "src/sksl/ir/SkSLProgram.h"
 
 #include <vector>
+
+int64_t micros_since_0();
 
 namespace skgpu::graphite {
 
@@ -246,8 +249,11 @@ static wgpu::BlendOperation blend_equation_to_dawn_blend_op(skgpu::BlendEquation
 }
 
 struct AsyncPipelineCreationBase {
+    AsyncPipelineCreationBase(const UniqueKey& key) : fKey(key) {}
+
     wgpu::RenderPipeline fRenderPipeline;
     bool fFinished = false;
+    UniqueKey fKey; // for logging the bad wait
 #if SK_HISTOGRAMS_ENABLED
     // We need these three for the Graphite.PipelineCreationTimes.* histograms (cf.
     // log_pipeline_creation)
@@ -278,21 +284,21 @@ void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) {
         SkASSERT(!apcb->fAsynchronous);     // precompile is done synchronously on a thread
         SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
             "Graphite.PipelineCreationTimes.Precompile",
-            micros_since(apcb->fStartTime),
+            micros_since_1(apcb->fStartTime),
             /* minUSec= */ 1,
             /* maxUSec= */ kOneSecInUS,
             kBucketCount);
     } else if (apcb->fAsynchronous) {
         SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
             "Graphite.PipelineCreationTimes.Asynchronous",
-            micros_since(apcb->fStartTime),
+            micros_since_1(apcb->fStartTime),
             /* minUSec= */ 1,
             /* maxUSec= */ kOneSecInUS,
             kBucketCount);
     } else {
         SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(
             "Graphite.PipelineCreationTimes.Synchronous",
-            micros_since(apcb->fStartTime),
+            micros_since_1(apcb->fStartTime),
             /* minUSec= */ 1,
             /* maxUSec= */ kOneSecInUS,
             kBucketCount);
@@ -307,6 +313,8 @@ void log_pipeline_creation(const AsyncPipelineCreationBase* apcb) {
 struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreationBase {};
 #else
 struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreationBase {
+    AsyncPipelineCreation(const UniqueKey& key) : AsyncPipelineCreationBase(key) {}
+
     wgpu::Future fFuture;
 };
 #endif
@@ -316,9 +324,11 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const DawnSharedContext* sharedContext,
         DawnResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
+        uint32_t futureID) {
     const DawnCaps& caps = *static_cast<const DawnCaps*>(sharedContext->caps());
     const auto& device = sharedContext->device();
 
@@ -652,7 +662,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     // For Dawn, we want Precompilation to happen synchronously
     const bool useAsync = caps.useAsyncPipelineCreation() && !forPrecompilation;
 
-    auto asyncCreation = std::make_unique<AsyncPipelineCreation>();
+    auto asyncCreation = std::make_unique<AsyncPipelineCreation>(pipelineKey);
 #if SK_HISTOGRAMS_ENABLED
     asyncCreation->fStartTime = skgpu::StdSteadyClock::now();
     asyncCreation->fFromPrecompile = forPrecompilation;
@@ -689,7 +699,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     } else {
         std::optional<DawnErrorChecker> errorChecker;
         if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-            errorChecker.emplace(sharedContext);
+//            errorChecker.emplace(sharedContext);
         }
         asyncCreation->fRenderPipeline = device.CreateRenderPipeline(&descriptor);
         asyncCreation->fFinished = true;
@@ -701,7 +711,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         log_pipeline_creation(asyncCreation.get());
     }
 
-    PipelineInfo pipelineInfo{*shaderInfo, pipelineCreationFlags};
+    PipelineInfo pipelineInfo{*shaderInfo, pipelineCreationFlags, pipelineKey.hash(), futureID};
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode);
@@ -754,6 +764,22 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     // We shouldn't use CreateRenderPipelineAsync in wasm.
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
+
+    //$$
+    const GlobalCache* cache = this->sharedContext()->globalCache();
+    GlobalCache::SkLog* log = const_cast<GlobalCache*>(cache)->gimme(fAsyncPipelineCreation->fKey);
+    log->addEvent2(GlobalCache::SkLog::EventType2::kWaitBeginN, this->id1());
+
+    SkDebugf("{ %d, %lld, \"WaitBeginN\", %u, -1, %u, UINT32_MAX },\n",
+             log->id(),
+             micros_since_0(),
+             fAsyncPipelineCreation->fKey.hash(),
+             this->id1());
+    TRACE_EVENT_INSTANT2("skia.gpu", "WaitBeginN",
+                         TRACE_EVENT_SCOPE_THREAD,
+                         "key", fAsyncPipelineCreation->fKey.hash(),
+                         "pipelineID", this->id1());
+
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fAsyncPipelineCreation->fFuture;
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext())
@@ -765,6 +791,17 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
             instance.WaitAny(1, &waitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(waitInfo.completed);
+    log->addEvent2(GlobalCache::SkLog::EventType2::kWaitEndN, this->id1());
+
+    SkDebugf("{ %d, %lld, \"WaitEndN\", %u, -1, %u, UINT32_MAX },\n",
+             log->id(),
+             micros_since_0(),
+             fAsyncPipelineCreation->fKey.hash(),
+             this->id1());
+    TRACE_EVENT_INSTANT2("skia.gpu", "WaitEndN",
+                         TRACE_EVENT_SCOPE_THREAD,
+                         "key", fAsyncPipelineCreation->fKey.hash(),
+                         "pipelineID", this->id1());
 #endif
 
     return fAsyncPipelineCreation->fRenderPipeline;

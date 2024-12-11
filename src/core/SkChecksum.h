@@ -97,6 +97,11 @@ struct SkGoodHash {
     }
 };
 
+struct SkNoPrint {
+    template <typename K, typename V>
+    void operator()(const K& /* k */, const V* /* v */, void* /* data */) const {}
+};
+
 // The default hashing behavior in SkGoodHash requires the type to have a unique object
 // representation (i.e. all bits in contribute to its identity so can be hashed directly). This is
 // false when a struct has padding for alignment (which can be avoided by using

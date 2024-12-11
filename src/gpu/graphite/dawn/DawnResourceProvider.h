@@ -68,9 +68,11 @@ public:
 
 private:
     sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+                                                   const UniqueKey& pipelineKey,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,
-                                                   SkEnumBitMask<PipelineCreationFlags>) override;
+                                                   SkEnumBitMask<PipelineCreationFlags>,
+                                                   uint32_t futureID) override;
     sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) override;
 
     sk_sp<Texture> createTexture(SkISize, const TextureInfo&, skgpu::Budgeted) override;

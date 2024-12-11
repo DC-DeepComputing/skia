@@ -38,6 +38,8 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
+    uint32_t id1() const { return fPipelineInfo.fID1; }
+
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
     DstReadRequirement dstReadRequirement() const { return fPipelineInfo.fDstReadReq; }
@@ -51,7 +53,8 @@ public:
         PipelineInfo() = default;
 
         // NOTE: Subclasses must manually fill in native shader code in GPU_TEST_UTILS builds.
-        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>);
+        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>,
+                     uint32_t hash, uint32_t id);
 
         DstReadRequirement fDstReadReq = DstReadRequirement::kNone;
         int  fNumFragTexturesAndSamplers = 0;
@@ -70,9 +73,11 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
-        bool fFromPrecompile = false;
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
+        bool fFromPrecompile1 = false;
 #endif
+        const uint32_t fHash1 = 0;
+        const uint32_t fID1 = 0;
     };
 
 #if defined(GPU_TEST_UTILS)
@@ -80,15 +85,18 @@ public:
         return fPipelineInfo;
     }
 #endif
-#if SK_HISTOGRAMS_ENABLED
-    bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS)
+    bool fromPrecompile1() const { return fPipelineInfo.fFromPrecompile1; }
 #endif
+    int numHits() const { return fNumHits; }
+    void incrHits() { fNumHits++; }
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+    int fNumHits = 0;
 };
 
 }  // namespace skgpu::graphite
