@@ -39,6 +39,30 @@
       },
       "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e39d979_bc23d930",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-11T18:24:37Z",
+      "side": 1,
+      "message": "Is this something we can add to our Bazel rule that builds the library? That way it doesn\u0027t go in the source and potentially pollute things?",
+      "parentUuid": "218c388e_368840fc",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
