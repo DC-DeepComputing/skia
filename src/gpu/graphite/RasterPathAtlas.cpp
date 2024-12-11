@@ -84,6 +84,20 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
+/// Clip Atlas methods
+
+std::tuple<const TextureProxy*, Rect> RasterPathAtlas::findClip(const UniqueKey&) {
+    return {nullptr, {}};
+}
+
+std::tuple<const TextureProxy*, Rect> RasterPathAtlas::addClip(const UniqueKey&, Rect bounds,
+                                                               const ClipStack::ElementList*) {
+    return {nullptr, {}};
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
 
 bool RasterPathAtlas::RasterAtlasMgr::onAddToAtlas(const Shape& shape,
                                                    const Transform& transform,
