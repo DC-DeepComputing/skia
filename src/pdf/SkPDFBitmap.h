@@ -27,11 +27,6 @@ SkPDFIndirectReference SkPDFSerializeImage(const SkImage* img,
                                            SkPDFDocument* doc,
                                            int encodingQuality = 101);
 
-class SkPDFBitmap {
-public:
-    static const SkEncodedInfo& GetEncodedInfo(SkCodec&);
-};
-
 struct SkPDFIccProfileKey {
     sk_sp<SkData> fData;
     int fChannels;
