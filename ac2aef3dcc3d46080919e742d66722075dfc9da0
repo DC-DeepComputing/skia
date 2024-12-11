@@ -46,6 +46,30 @@
       },
       "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c0428a6_b144e227",
+        "filename": "tests/VerticesTest.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-11T15:38:20Z",
+      "side": 1,
+      "message": "Resolving to land.",
+      "parentUuid": "d064a14c_df03e5df",
+      "range": {
+        "startLine": 197,
+        "startChar": 8,
+        "endLine": 197,
+        "endChar": 55
+      },
+      "revId": "ac2aef3dcc3d46080919e742d66722075dfc9da0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
