@@ -88,15 +88,11 @@ public:
         return fShouldPersistentlyMapCpuToGpuBuffers;
     }
 
-    bool supportsYcbcrConversion() const { return fSupportsYcbcrConversion; }
+    bool supportsYcbcrConversion()   const { return fSupportsYcbcrConversion; }
+    bool supportsDeviceFaultInfo()   const { return fSupportsDeviceFaultInfo; }
 
-    bool supportsDeviceFaultInfo() const { return fSupportsDeviceFaultInfo; }
-
-    uint32_t maxVertexAttributes() const {
-        return fMaxVertexAttributes;
-    }
+    uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
-
     uint64_t maxStorageBufferRange() const { return fMaxStorageBufferRange; }
 
     const VkPhysicalDeviceMemoryProperties2& physicalDeviceMemoryProperties2() const {
