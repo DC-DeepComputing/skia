@@ -629,11 +629,7 @@ void add_hw_image_uniform_data(const ShaderCodeDictionary* dict,
 }
 
 bool can_do_tiling_in_hw(const Caps* caps, const ImageShaderBlock::ImageData& imgData) {
-    if (!caps->clampToBorderSupport() && (imgData.fTileModes.first == SkTileMode::kDecal ||
-                                          imgData.fTileModes.second == SkTileMode::kDecal)) {
-        return false;
-    }
-    return imgData.fSubset.contains(SkRect::Make(imgData.fImgSize));
+    return true;
 }
 
 void add_sampler_data_to_key(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
@@ -1701,15 +1697,15 @@ static void notify_in_use(Recorder*, DrawContext*, const SkEmptyShader*) {
     // No-op
 }
 
-static bool is_premul_alpha_only(const ColorSpaceTransformBlock::ColorSpaceTransformData& data) {
-    // A mask value of 16 means premul only.
-    if (SkTo<int>(data.fSteps.flags.mask()) != 16) {
-        return false;
-    }
+// static bool is_premul_alpha_only(const ColorSpaceTransformBlock::ColorSpaceTransformData& data) {
+//     // A mask value of 16 means premul only.
+//     if (SkTo<int>(data.fSteps.flags.mask()) != 16) {
+//         return false;
+//     }
 
-    // If read swizzle is RGBA or BGRA we don't need to do alpha swizzle
-    return (data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kBGRA);
-}
+//     // If read swizzle is RGBA or BGRA we don't need to do alpha swizzle
+//     return (data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kBGRA);
+// }
 
 static void add_yuv_image_to_key(const KeyContext& keyContext,
                                  PaintParamsKeyBuilder* builder,
@@ -1822,75 +1818,75 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     );
     imgData.fYUVtoRGBTranslate = {yuvM[4], yuvM[9], yuvM[14]};
 
-    SkColorSpaceXformSteps steps;
-    SkASSERT(steps.flags.mask() == 0);   // By default, the colorspace should have no effect
+    // SkColorSpaceXformSteps steps;
+    // SkASSERT(steps.flags.mask() == 0);   // By default, the colorspace should have no effect
 
     // The actual output from the YUV image shader for non-opaque images is unpremul so
     // we need to correct for the fact that the Image_YUVA_Graphite's alpha type is premul.
-    SkAlphaType srcAT = imageToDraw->alphaType() == kPremul_SkAlphaType
-                                ? kUnpremul_SkAlphaType
-                                : imageToDraw->alphaType();
-    if (origShader->isRaw()) {
-        // Because we've avoided the premul alpha step in the YUV shader, we need to make sure
-        // it happens when drawing unpremul (i.e., non-opaque) images.
-        steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
-                                       srcAT,
-                                       imageToDraw->colorSpace(),
-                                       imageToDraw->alphaType());
-    } else {
-        SkAlphaType dstAT = keyContext.dstColorInfo().alphaType();
-        // Setting the dst alphaType up this way is necessary because otherwise the constructor
-        // for SkColorSpaceXformSteps will set dstAT = srcAT when dstAT == kOpaque, and the
-        // premul step needed for non-opaque images won't occur.
-        if (dstAT == kOpaque_SkAlphaType && srcAT == kUnpremul_SkAlphaType) {
-            dstAT = kPremul_SkAlphaType;
-        }
-        steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
-                                       srcAT,
-                                       keyContext.dstColorInfo().colorSpace(),
-                                       dstAT);
-    }
-    ColorSpaceTransformBlock::ColorSpaceTransformData data(steps);
+    // SkAlphaType srcAT = imageToDraw->alphaType() == kPremul_SkAlphaType
+    //                             ? kUnpremul_SkAlphaType
+    //                             : imageToDraw->alphaType();
+    // if (origShader->isRaw()) {
+    //     // Because we've avoided the premul alpha step in the YUV shader, we need to make sure
+    //     // it happens when drawing unpremul (i.e., non-opaque) images.
+    //     steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+    //                                    srcAT,
+    //                                    imageToDraw->colorSpace(),
+    //                                    imageToDraw->alphaType());
+    // } else {
+    //     SkAlphaType dstAT = keyContext.dstColorInfo().alphaType();
+    //     // Setting the dst alphaType up this way is necessary because otherwise the constructor
+    //     // for SkColorSpaceXformSteps will set dstAT = srcAT when dstAT == kOpaque, and the
+    //     // premul step needed for non-opaque images won't occur.
+    //     if (dstAT == kOpaque_SkAlphaType && srcAT == kUnpremul_SkAlphaType) {
+    //         dstAT = kPremul_SkAlphaType;
+    //     }
+    //     steps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+    //                                    srcAT,
+    //                                    keyContext.dstColorInfo().colorSpace(),
+    //                                    dstAT);
+    // }
+    // ColorSpaceTransformBlock::ColorSpaceTransformData data(steps);
 
     // We only do this for YUV images because this is the only case where we expect
     // a premul-only colorspace transformation to be common. Otherwise it's not
     // worth the combinatorial explosion in the precompile system.
-    if (is_premul_alpha_only(data)) {
-        Compose(keyContext, builder, gatherer,
-                /* addInnerToKey= */ [&]() -> void {
+    // if (is_premul_alpha_only(data)) {
+    //     Compose(keyContext, builder, gatherer,
+    //             /* addInnerToKey= */ [&]() -> void {
                     YUVImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
-                },
-                /* addOuterToKey= */ [&]() -> void {
-                    builder->addBlock(BuiltInCodeSnippetID::kPremulAlphaColorFilter);
-                });
-    } else {
-        Compose(keyContext, builder, gatherer,
-                /* addInnerToKey= */ [&]() -> void {
-                    YUVImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
-                },
-                /* addOuterToKey= */ [&]() -> void {
-                    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
-                });
-    }
+    //             },
+    //             /* addOuterToKey= */ [&]() -> void {
+    //                 builder->addBlock(BuiltInCodeSnippetID::kPremulAlphaColorFilter);
+    //             });
+    // } else {
+    //     Compose(keyContext, builder, gatherer,
+    //             /* addInnerToKey= */ [&]() -> void {
+    //                 YUVImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+    //             },
+    //             /* addOuterToKey= */ [&]() -> void {
+    //                 ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
+    //             });
+    // }
 }
 
-static skgpu::graphite::ReadSwizzle swizzle_class_to_read_enum(const skgpu::Swizzle& swizzle) {
-    if (swizzle == skgpu::Swizzle::RGBA()) {
-        return skgpu::graphite::ReadSwizzle::kRGBA;
-    } else if (swizzle == skgpu::Swizzle::RGB1()) {
-        return skgpu::graphite::ReadSwizzle::kRGB1;
-    } else if (swizzle == skgpu::Swizzle("rrr1")) {
-        return skgpu::graphite::ReadSwizzle::kRRR1;
-    } else if (swizzle == skgpu::Swizzle::BGRA()) {
-        return skgpu::graphite::ReadSwizzle::kBGRA;
-    } else if (swizzle == skgpu::Swizzle("000r")) {
-        return skgpu::graphite::ReadSwizzle::k000R;
-    } else {
-        SKGPU_LOG_W("%s is an unsupported read swizzle. Defaulting to RGBA.\n",
-                    swizzle.asString().data());
-        return skgpu::graphite::ReadSwizzle::kRGBA;
-    }
-}
+// static skgpu::graphite::ReadSwizzle swizzle_class_to_read_enum(const skgpu::Swizzle& swizzle) {
+//     if (swizzle == skgpu::Swizzle::RGBA()) {
+//         return skgpu::graphite::ReadSwizzle::kRGBA;
+//     } else if (swizzle == skgpu::Swizzle::RGB1()) {
+//         return skgpu::graphite::ReadSwizzle::kRGB1;
+//     } else if (swizzle == skgpu::Swizzle("rrr1")) {
+//         return skgpu::graphite::ReadSwizzle::kRRR1;
+//     } else if (swizzle == skgpu::Swizzle::BGRA()) {
+//         return skgpu::graphite::ReadSwizzle::kBGRA;
+//     } else if (swizzle == skgpu::Swizzle("000r")) {
+//         return skgpu::graphite::ReadSwizzle::k000R;
+//     } else {
+//         SKGPU_LOG_W("%s is an unsupported read swizzle. Defaulting to RGBA.\n",
+//                     swizzle.asString().data());
+//         return skgpu::graphite::ReadSwizzle::kRGBA;
+//     }
+// }
 
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
@@ -1962,19 +1958,19 @@ static void add_to_key(const KeyContext& keyContext,
 
     imgData.fSampling = samplingHasNoEffect ? SkFilterMode::kNearest : newSampling;
     imgData.fTextureProxy = view.refProxy();
-    skgpu::Swizzle readSwizzle = view.swizzle();
+    // skgpu::Swizzle readSwizzle = view.swizzle();
     // If the color type is alpha-only, propagate the alpha value to the other channels.
-    if (imageToDraw->isAlphaOnly()) {
-        readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("000a"));
-    }
-    ColorSpaceTransformBlock::ColorSpaceTransformData colorXformData(
-            swizzle_class_to_read_enum(readSwizzle));
+    // if (imageToDraw->isAlphaOnly()) {
+    //     readSwizzle = skgpu::Swizzle::Concat(readSwizzle, skgpu::Swizzle("000a"));
+    // }
+    // ColorSpaceTransformBlock::ColorSpaceTransformData colorXformData(
+    //         swizzle_class_to_read_enum(readSwizzle));
 
     if (!shader->isRaw()) {
-        colorXformData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
-                                                       imageToDraw->alphaType(),
-                                                       keyContext.dstColorInfo().colorSpace(),
-                                                       keyContext.dstColorInfo().alphaType());
+        // colorXformData.fSteps = SkColorSpaceXformSteps(imageToDraw->colorSpace(),
+        //                                                imageToDraw->alphaType(),
+        //                                                keyContext.dstColorInfo().colorSpace(),
+        //                                                keyContext.dstColorInfo().alphaType());
 
         if (imageToDraw->isAlphaOnly() && keyContext.scope() != KeyContext::Scope::kRuntimeEffect) {
             Blend(keyContext, builder, gatherer,
@@ -1982,15 +1978,16 @@ static void add_to_key(const KeyContext& keyContext,
                       AddFixedBlendMode(keyContext, builder, gatherer, SkBlendMode::kDstIn);
                   },
                   /* addSrcToKey= */ [&] () -> void {
-                      Compose(keyContext, builder, gatherer,
-                              /* addInnerToKey= */ [&]() -> void {
-                                  ImageShaderBlock::AddBlock(keyContext, builder, gatherer,
-                                                             imgData);
-                              },
-                              /* addOuterToKey= */ [&]() -> void {
-                                  ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
-                                                                     colorXformData);
-                              });
+                    ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+                    //   Compose(keyContext, builder, gatherer,
+                    //           /* addInnerToKey= */ [&]() -> void {
+                    //               ImageShaderBlock::AddBlock(keyContext, builder, gatherer,
+                    //                                          imgData);
+                    //           },
+                    //           /* addOuterToKey= */ [&]() -> void {
+                    //               ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
+                    //                                                  colorXformData);
+                    //           });
                   },
                   /* addDstToKey= */ [&]() -> void {
                       RGBPaintColorBlock::AddBlock(keyContext, builder, gatherer);
@@ -1999,13 +1996,13 @@ static void add_to_key(const KeyContext& keyContext,
         }
     }
 
-    Compose(keyContext, builder, gatherer,
-            /* addInnerToKey= */ [&]() -> void {
+    // Compose(keyContext, builder, gatherer,
+    //         /* addInnerToKey= */ [&]() -> void {
                 ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
-            },
-            /* addOuterToKey= */ [&]() -> void {
-                ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, colorXformData);
-            });
+            // },
+            // /* addOuterToKey= */ [&]() -> void {
+            //     ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, colorXformData);
+            // });
 }
 static void notify_in_use(Recorder* recorder,
                           DrawContext* drawContext,
@@ -2054,6 +2051,9 @@ static void add_to_key(const KeyContext& keyContext,
                 }
             }
 
+            // HACK: just add the wrapped shader without the LocalMatrixShaderBlock
+            AddToKey(keyContext, builder, gatherer, wrappedShader);
+            return;
         }
     } else if (wrappedShaderBase->type() == SkShaderBase::ShaderType::kGradientBase) {
         auto gradShader = static_cast<const SkGradientBaseShader*>(wrappedShader);

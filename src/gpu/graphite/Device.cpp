@@ -934,6 +934,8 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
         rrectToDraw.setRRect(snappedRRect);
     }
 
+    // HACK: force rrects to be rects to avoid coverage math
+    rrectToDraw.setRect(rrectToDraw.rrect().rect());
     this->drawGeometry(this->localToDeviceTransform(), Geometry(rrectToDraw), paint, style);
 }
 
@@ -1556,7 +1558,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         SkASSERT(!requireMSAA && style.isFillStyle());
         // handled by specialized system, simplified from rects and round rects
         const EdgeAAQuad& quad = geometry.edgeAAQuad();
-        if (quad.isRect() && quad.edgeFlags() == EdgeAAQuad::Flags::kNone) {
+        if (quad.isRect()) {
             // For non-AA rectangular quads, it can always use a coverage-less renderer; there's no
             // need to check for pixel alignment to avoid popping if MSAA is turned on because quad
             // tile edges will seam with each in either mode.
@@ -1576,12 +1578,7 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     if (!requireMSAA && is_simple_shape(shape, type)) {
         // For pixel-aligned rects, use the the non-AA bounds renderer to avoid triggering any
         // dst-read requirement due to src blending.
-        bool pixelAlignedRect = false;
-        if (shape.isRect() && style.isFillStyle() &&
-            localToDevice.type() <= Transform::Type::kRectStaysRect) {
-            Rect devRect = localToDevice.mapRect(shape.rect());
-            pixelAlignedRect = devRect.nearlyEquals(devRect.makeRound());
-        }
+        bool pixelAlignedRect = shape.isRect() && style.isFillStyle();
 
         if (shape.isEmpty() || pixelAlignedRect) {
             SkASSERT(!shape.isEmpty() || shape.inverted());
