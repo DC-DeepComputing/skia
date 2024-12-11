@@ -16,6 +16,23 @@
       "message": "PTAL, I removed `glmsaa4` from the dm args due to it failing",
       "revId": "7c0621c6811318e9a0ab15c6cfcb1cfc6b364415",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f380113_c7753350",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-11T17:58:18Z",
+      "side": 1,
+      "message": "Have you confirmed that this is still not working?  The GPU dimensions are back after Bryce\u0027s fix, though I think they\u0027ve updated.",
+      "revId": "7c0621c6811318e9a0ab15c6cfcb1cfc6b364415",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
