@@ -51,7 +51,11 @@ public:
         PipelineInfo() = default;
 
         // NOTE: Subclasses must manually fill in native shader code in GPU_TEST_UTILS builds.
-        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>);
+        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+                     , uint32_t hash, uint32_t pipelineID
+#endif
+                     );
 
         DstReadRequirement fDstReadReq = DstReadRequirement::kNone;
         int  fNumFragTexturesAndSamplers = 0;
@@ -70,17 +74,21 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS) || defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool fFromPrecompile = false;
+#endif
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+        const uint32_t fHash = 0;
+        const uint32_t fID = 0;
 #endif
     };
 
-#if defined(GPU_TEST_UTILS)
+#if defined(GPU_TEST_UTILS) || defined(SK_PIPELINE_LIFETIME_LOGGING)
     const PipelineInfo& getPipelineInfo() const {
         return fPipelineInfo;
     }
 #endif
-#if SK_HISTOGRAMS_ENABLED
+#if SK_HISTOGRAMS_ENABLED || defined(GPU_TEST_UTILS) || defined(SK_PIPELINE_LIFETIME_LOGGING)
     bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
 #endif
 
