@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "449b1fb8_646e0788",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-11T18:24:17Z",
+      "side": 1,
+      "message": "IMO the defines at this level impose a big readability hit for little gain. Passing in flags or pointers, or storing extra hashes/id on a pipeline shouldn\u0027t hurt performance even if this flag is disabled.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 41
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5149f345_520277c0",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-11T18:24:17Z",
+      "side": 1,
+      "message": "Can we rename this to `fUniqueKeyHash` to show what it\u0027s coming from, vs. a hash of the GraphicsPipelineDesc or other hash-ish thing that could confuse us later.",
+      "range": {
+        "startLine": 81,
+        "startChar": 23,
+        "endLine": 81,
+        "endChar": 28
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df53b7f1_44070ad5",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-11T18:24:17Z",
+      "side": 1,
+      "message": "GraphicsPipeline is a Resource so it already has a uniqueID, although it\u0027s not possible to get the ID ahead of creation.\n\nHow important is it to log the ID on a cache miss, since that\u0027s the only trace event that wouldn\u0027t have access to the Resource\u0027s ID?",
+      "range": {
+        "startLine": 82,
+        "startChar": 23,
+        "endLine": 82,
+        "endChar": 26
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
