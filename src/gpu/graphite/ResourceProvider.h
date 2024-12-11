@@ -128,9 +128,14 @@ protected:
 private:
     virtual sk_sp<GraphicsPipeline> createGraphicsPipeline(
             const RuntimeEffectDictionary*,
+            const UniqueKey&,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,
-            SkEnumBitMask<PipelineCreationFlags>) = 0;
+            SkEnumBitMask<PipelineCreationFlags>
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+            , uint32_t pipelineID
+#endif
+            ) = 0;
     virtual sk_sp<ComputePipeline> createComputePipeline(const ComputePipelineDesc&) = 0;
     virtual sk_sp<Texture> createTexture(SkISize,
                                          const TextureInfo&,
