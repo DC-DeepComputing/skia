@@ -94,9 +94,24 @@ public:
             kHSL,
             kHWB,
 
-            kLastColorSpace = kHWB,
+            // Color spaces that are defined in
+            // https://www.w3.org/TR/css-color-4/#interpolation-space
+            // but are not yet supported here:
+            kDisplayP3,
+            kA98RGB,
+            kProphotoRGB,
+            kRec2020,
+
+            kLastColorSpace = kRec2020,
         };
         static constexpr int kColorSpaceCount = static_cast<int>(ColorSpace::kLastColorSpace) + 1;
+
+        static bool IsUnsupported(ColorSpace color_space) {
+            return (color_space == ColorSpace::kDisplayP3) ||
+                   (color_space == ColorSpace::kA98RGB) ||
+                   (color_space == ColorSpace::kProphotoRGB) ||
+                   (color_space == ColorSpace::kRec2020);
+        }
 
         enum class HueMethod : uint8_t {
             // https://www.w3.org/TR/css-color-4/#hue-interpolation
