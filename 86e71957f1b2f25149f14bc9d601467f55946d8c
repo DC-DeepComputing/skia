@@ -16,6 +16,47 @@
       "message": "I can\u0027t help for Skia reviews :)",
       "revId": "86e71957f1b2f25149f14bc9d601467f55946d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56d1c367_e0d9fe64",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-11T18:28:29Z",
+      "side": 1,
+      "message": "This should be `type`.",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 19
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e72d093a_277e185c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/window/GraphiteDawnWindowContext.cpp",
+              "range": {
+                "startLine": 143,
+                "startChar": 0,
+                "endLine": 144,
+                "endChar": 0
+              },
+              "replacement": "            type \u003d\u003d wgpu::BackendType::OpenGL || type \u003d\u003d wgpu::BackendType::OpenGLES\n"
+            }
+          ]
+        }
+      ],
+      "revId": "86e71957f1b2f25149f14bc9d601467f55946d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
