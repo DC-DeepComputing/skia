@@ -63,6 +63,30 @@
       },
       "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0247f67b_3aaa3ee9",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-11T18:54:05Z",
+      "side": 1,
+      "message": "Good point (I didn\u0027t internalize this enough after reading https://www.reddit.com/r/rust/comments/f5xpib/comment/fi1k83a/?utm_source\u003dshare\u0026utm_medium\u003dweb3x\u0026utm_name\u003dweb3xcss\u0026utm_term\u003d1\u0026utm_content\u003dshare_button).\n\nDone.",
+      "parentUuid": "0e39d979_bc23d930",
+      "range": {
+        "startLine": 10,
+        "startChar": 17,
+        "endLine": 10,
+        "endChar": 18
+      },
+      "revId": "62e315c827ccda9e76a62de3be9d466b5ff0fce3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
