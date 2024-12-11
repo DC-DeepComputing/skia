@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65b5114d_2b1bf541",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-12-11T20:10:48Z",
+      "side": 1,
+      "message": "Done - the new version swings entirely the other way and only guards the new TRACE_EVENT_INSTANT2 calls. We probably do want to keep those optionally triggered.",
+      "parentUuid": "449b1fb8_646e0788",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 49,
+        "endChar": 41
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5149f345_520277c0",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9174831a_e2e81459",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-12-11T20:10:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5149f345_520277c0",
+      "range": {
+        "startLine": 81,
+        "startChar": 23,
+        "endLine": 81,
+        "endChar": 28
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df53b7f1_44070ad5",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-12-11T18:24:17Z",
       "side": 1,
       "message": "GraphicsPipeline is a Resource so it already has a uniqueID, although it\u0027s not possible to get the ID ahead of creation.\n\nHow important is it to log the ID on a cache miss, since that\u0027s the only trace event that wouldn\u0027t have access to the Resource\u0027s ID?",
+      "range": {
+        "startLine": 82,
+        "startChar": 23,
+        "endLine": 82,
+        "endChar": 26
+      },
+      "revId": "d215bab6d493755722585145c6af933de85b649a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2203b562_7d71ee4c",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2024-12-11T20:10:48Z",
+      "side": 1,
+      "message": "It would also impact the BeginBuild* traces since they also fire before the new Pipeline has been created. Those ones are probably more important since we actually care about those time stamps (for computing the build duration).\n\nOne thing we could try is calling the Resource\u0027s create_unique_id helper to pull the Pipeline\u0027s id from the same pool as the Resources and then add a new Resource ctor that takes that ID rather than calling create_unique_id itself. That would get rid of the duplicate ID in Pipeline but still have the oddness of getting the ID early.",
+      "parentUuid": "df53b7f1_44070ad5",
       "range": {
         "startLine": 82,
         "startChar": 23,
