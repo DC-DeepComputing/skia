@@ -639,9 +639,14 @@ static void setup_dynamic_state(VkPipelineDynamicStateCreateInfo* dynamicInfo,
 sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         VulkanResourceProvider* rsrcProvider,
         const RuntimeEffectDictionary* runtimeDict,
+        const UniqueKey& pipelineKey,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
-        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags) {
+        SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+        , uint32_t pipelineID
+#endif
+        ) {
     SkASSERT(rsrcProvider);
     SkSL::Program::Interface vsInterface, fsInterface;
 
@@ -849,7 +854,11 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     // After creating the pipeline object, we can clean up the VkShaderModule(s).
     destroy_shader_modules(sharedContext, vsModule, fsModule);
 
-    PipelineInfo pipelineInfo{*shaderInfo, pipelineCreationFlags};
+    PipelineInfo pipelineInfo{*shaderInfo, pipelineCreationFlags
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+                              , pipelineKey.hash(), pipelineID
+#endif
+                             };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader   = "SPIR-V disassembly not available";
     pipelineInfo.fNativeFragmentShader = "SPIR-V disassmebly not available";

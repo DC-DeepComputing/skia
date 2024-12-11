@@ -58,9 +58,14 @@ public:
     static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext* sharedContext,
                                             DawnResourceProvider* resourceProvider,
                                             const RuntimeEffectDictionary* runtimeDict,
+                                            const UniqueKey& pipelineKey,
                                             const GraphicsPipelineDesc& pipelineDesc,
                                             const RenderPassDesc& renderPassDesc,
-                                            SkEnumBitMask<PipelineCreationFlags>);
+                                            SkEnumBitMask<PipelineCreationFlags>
+#if defined(SK_PIPELINE_LIFETIME_LOGGING)
+                                            , uint32_t pipelineID
+#endif
+                                            );
 
     ~DawnGraphicsPipeline() override;
 
