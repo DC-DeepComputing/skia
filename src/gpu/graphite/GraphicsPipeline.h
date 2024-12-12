@@ -12,8 +12,11 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+//#include "src/gpu/graphite/GlobalCache.h"
+
 namespace skgpu::graphite {
 
+class SkLog;
 class ShaderInfo;
 class RenderStep;
 
@@ -38,6 +41,8 @@ class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
 
+    uint32_t id1() const { return fPipelineInfo.fID1; }
+
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
     DstReadRequirement dstReadRequirement() const { return fPipelineInfo.fDstReadReq; }
@@ -51,7 +56,8 @@ public:
         PipelineInfo() = default;
 
         // NOTE: Subclasses must manually fill in native shader code in GPU_TEST_UTILS builds.
-        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>);
+        PipelineInfo(const ShaderInfo&, SkEnumBitMask<PipelineCreationFlags>,
+                     uint32_t hash, uint32_t id);
 
         DstReadRequirement fDstReadReq = DstReadRequirement::kNone;
         int  fNumFragTexturesAndSamplers = 0;
@@ -70,25 +76,26 @@ public:
         std::string fNativeVertexShader;
         std::string fNativeFragmentShader;
 #endif
-#if SK_HISTOGRAMS_ENABLED
+        const uint32_t fHash1 = 0;
+        const uint32_t fID1 = 0;
         bool fFromPrecompile = false;
-#endif
+        bool fWasUsed = false;
     };
 
-#if defined(GPU_TEST_UTILS)
     const PipelineInfo& getPipelineInfo() const {
         return fPipelineInfo;
     }
-#endif
-#if SK_HISTOGRAMS_ENABLED
     bool fromPrecompile() const { return fPipelineInfo.fFromPrecompile; }
-#endif
+
+    void markUsed() { fPipelineInfo.fWasUsed = true; }
+    bool wasUsed() const { return fPipelineInfo.fWasUsed; }
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+    SkLog* fLog;
 };
 
 }  // namespace skgpu::graphite

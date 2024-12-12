@@ -15,13 +15,13 @@
 /**
  * A generic LRU cache.
  */
-template <typename K, typename V, typename HashK = SkGoodHash>
+template <typename K, typename V, typename HashK = SkGoodHash, typename PurgeCB = SkNoPrint>
 class SkLRUCache {
 private:
     struct Entry {
         Entry(const K& key, V&& value)
-        : fKey(key)
-        , fValue(std::move(value)) {}
+                : fKey(key)
+                , fValue(std::move(value)) {}
 
         K fKey;
         V fValue;
@@ -30,7 +30,7 @@ private:
     };
 
 public:
-    explicit SkLRUCache(int maxCount) : fMaxCount(maxCount) {}
+    explicit SkLRUCache(int maxCount, void* data = nullptr) : fMaxCount(maxCount), fData(data) {}
     SkLRUCache() = delete;
 
     ~SkLRUCache() {
@@ -117,6 +117,7 @@ private:
         SkASSERT(value);
         Entry* entry = *value;
         SkASSERT(key == entry->fKey);
+        PurgeCB()(key, &entry->fValue, fData);
         fMap.remove(key);
         fLRU.remove(entry);
         delete entry;
@@ -125,6 +126,7 @@ private:
     int                                         fMaxCount;
     skia_private::THashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>                     fLRU;
+    void*                                       fData;
 };
 
 #endif
