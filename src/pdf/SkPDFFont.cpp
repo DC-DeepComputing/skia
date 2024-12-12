@@ -7,6 +7,8 @@
 
 #include "src/pdf/SkPDFFont.h"
 
+#include "include/codec/SkCodec.h"
+#include "include/codec/SkJpegDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
@@ -24,6 +26,7 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
+#include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -823,14 +826,22 @@ static void emit_subset_type3(const SkPDFFont& pdfFont, SkPDFDocument* doc) {
                 AppendScalar(pimg.fOffset.y() * bitmapScale, &content);
                 content.writeText(" cm\n");
 
-                // Convert Gray image to jpeg if needed
+                // Convert Gray image to jpeg if needed so it can be more efficiently embedded in
+                // the glyphDevice below.
                 if (pdfStrike.fHasMaskFilter) {
                     SkJpegEncoder::Options jpegOptions;
-                    jpegOptions.fQuality = 50; // SK_PDF_MASK_QUALITY
+                    jpegOptions.fQuality = SK_PDF_MASK_QUALITY;
                     SkImage* image = pimg.fImage.get();
-                    sk_sp<SkData> jpegData = SkJpegEncoder::Encode(nullptr, image, jpegOptions);
-                    if (jpegData) {
-                        sk_sp<SkImage> jpegImage = SkImages::DeferredFromEncodedData(jpegData);
+                    SkPixmap pm;
+                    SkAssertResult(image->peekPixels(&pm));
+                    SkDynamicMemoryWStream buffer;
+                    if (SkJpegEncoder::Encode(&buffer, pm, jpegOptions)) {
+                        std::unique_ptr<SkCodec> codec =
+                                SkJpegDecoder::Decode(buffer.detachAsData(), nullptr);
+                        SkASSERT(codec);
+                        // By decoding this back into an image, it can follow the fast path during
+                        // subsequent drawImage calls.
+                        sk_sp<SkImage> jpegImage = SkCodecs::DeferredImage(std::move(codec));
                         SkASSERT(jpegImage);
                         if (jpegImage) {
                             pimg.fImage = jpegImage;
