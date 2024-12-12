@@ -12,9 +12,9 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegConstants.h"
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
-#include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
@@ -59,8 +59,23 @@ public:
     }
     bool fillInputBuffer(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
         // The whole JPEG data is expected to reside in the supplied memory buffer, so any request
-        // for more data beyond the given buffer size is treated as an error.
-        SkCodecPrintf("Asked to re-fill a memory-mapped stream.\n");
+        // for more data beyond the given buffer size is treated as truncated a fake EOI marker
+        // is inserted. This allows the decompresser to output however much of the image is there.
+        // This matches the functionality of the libjpeg source manager:
+        // https://github.com/libjpeg-turbo/libjpeg-turbo/blob/c23672ce52ae53bd846b555439aa0a070b6d2c07/jdatasrc.c#L109
+
+        SkCodecPrintf("Asked to read past end of memory-mapped stream.\n");
+        // When we read the header to get the metadata we do not want to append the EOI marker
+        // to note the data is incomplete.
+        if (fShouldTruncateStream) {
+            SkCodecPrintf("Insert EOI marker.\n");
+            uint8_t markerCode[kJpegMarkerCodeSize] = {0};
+            markerCode[0] = 0xFF;
+            markerCode[1] = kJpegMarkerEndOfImage;
+            nextInputByte = markerCode;
+            bytesInBuffer = 2;
+            return true;
+        }
         return false;
     }
     bool skipInputBytes(size_t bytesToSkip,

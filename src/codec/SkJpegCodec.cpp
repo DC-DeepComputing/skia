@@ -155,6 +155,8 @@ SkCodec::Result SkJpegCodec::ReadHeader(
             profile = std::move(defaultColorProfile);
         }
 
+        decoderMgr->readHeaderComplete();
+
         SkEncodedInfo info = SkEncodedInfo::Make(dinfo->image_width, dinfo->image_height,
                                                  color, SkEncodedInfo::kOpaque_Alpha, 8,
                                                  std::move(profile));
