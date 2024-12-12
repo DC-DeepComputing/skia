@@ -22,6 +22,23 @@
       },
       "revId": "16e728a177b3902b1e9e311bf4af3acd769730e7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5239c2e_31e94e49",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T21:07:31Z",
+      "side": 0,
+      "message": "Fine to remove this here, but need to add call to the proxy one first to set other stuff like this. (This will fix the failing `SkMultiPictureDocument` test.)",
+      "revId": "16e728a177b3902b1e9e311bf4af3acd769730e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
