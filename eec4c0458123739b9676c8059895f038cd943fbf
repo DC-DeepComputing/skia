@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a67677a_43622c74",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T22:36:33Z",
+      "side": 1,
+      "message": "This is a good case for a `std::optional\u003cint\u003e`.",
+      "range": {
+        "startLine": 552,
+        "startChar": 8,
+        "endLine": 552,
+        "endChar": 31
+      },
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bafa403_fc946c17",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T22:36:33Z",
+      "side": 1,
+      "message": "Can put a space back in after this comma.",
+      "range": {
+        "startLine": 583,
+        "startChar": 34,
+        "endLine": 583,
+        "endChar": 35
+      },
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a088c9f0_90c96e60",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T22:36:33Z",
+      "side": 1,
+      "message": "This comment is a repeat of the one above and this one should be removed.",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09118073_66376c22",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T22:36:33Z",
+      "side": 1,
+      "message": "All the arguments after the constant string should go on one line here.",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc46fc24_15dc6a30",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T22:36:33Z",
+      "side": 1,
+      "message": "This is actually a not well thought out set of items to pass and is more of a bag and should look like it. Better for these arguments to be on two lines (like it was before, with `style` starting the second line) .",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
