@@ -31,10 +31,14 @@ func newTaskBuilder(b *jobBuilder, name string) *taskBuilder {
 		log.Fatal(err)
 	}
 	return &taskBuilder{
-		jobBuilder:       b,
-		parts:            parts,
-		Name:             name,
-		Spec:             &specs.TaskSpec{},
+		jobBuilder: b,
+		parts:      parts,
+		Name:       name,
+		Spec: &specs.TaskSpec{
+			Environment: map[string]string{
+				"USE_BAZEL_FALLBACK_VERSION": "error",
+			},
+		},
 		recipeProperties: map[string]string{},
 	}
 }
