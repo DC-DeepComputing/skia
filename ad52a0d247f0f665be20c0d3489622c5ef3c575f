@@ -34,6 +34,24 @@
       ],
       "revId": "ad52a0d247f0f665be20c0d3489622c5ef3c575f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da3ef1af_e01e6354",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-12T14:43:23Z",
+      "side": 1,
+      "message": "It would dump caps for both backends. However, I don\u0027t think the Vulkan specific caps have been implemented to be dumped by GrVkCaps. So when dumping Vulkan we will get the shared caps from GrCaps (which is the majority) and GrShaderCaps. When dumping for GL we will also get some GL specific ones.",
+      "parentUuid": "14fab7af_96c5b805",
+      "revId": "ad52a0d247f0f665be20c0d3489622c5ef3c575f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
