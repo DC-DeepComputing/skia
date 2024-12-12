@@ -437,6 +437,8 @@ public:
         : fAPI(androidFontAPI)
         , fScanner(std::move(scanner))
     {
+#include <stdio.h>
+        fprintf(stderr, "SkFontMgr_AndroidNDK\n");
         SkASystemFontIterator fontIter(fAPI);
         if (!fontIter) {
             if constexpr (kSkFontMgrVerbose) { SkDebugf("SKIA: No ASystemFontIterator"); }
@@ -453,6 +455,7 @@ public:
             SkString name;
             typeface->getFamilyName(&name);
             this->addSystemTypeface(typeface, name);
+            fprintf(stderr, "= %s\n", name.c_str());
 
             // A font may have many localized family names.
             sk_sp<SkTypeface::LocalizedStrings> names(typeface->createFamilyNameIterator());
@@ -460,6 +463,7 @@ public:
             while (names->next(&localeName)) {
                 if (localeName.fString != name) {
                     this->addSystemTypeface(typeface, localeName.fString);
+                    fprintf(stderr, "> %s\n", localeName.fString.c_str());
                 }
             }
 

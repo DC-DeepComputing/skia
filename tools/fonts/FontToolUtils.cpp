@@ -323,8 +323,12 @@ sk_sp<SkTypeface> CreateTestTypeface(const char* name, SkFontStyle style) {
     SkASSERT_RELEASE(fm);
     sk_sp<SkTypeface> face = fm->legacyMakeTypeface(name, style);
     if (face) {
+        SkString ff;
+        face->getFamilyName(&ff);
+        fprintf(stderr, "CreateTestTypeface: %s\n", ff.c_str());
         return face;
     }
+    fprintf(stderr, "CreatePortableTypeface\n");
     return CreatePortableTypeface(name, style);
 }
 
