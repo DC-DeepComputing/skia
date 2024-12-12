@@ -52,6 +52,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f68d149a_ff1a64a1",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-12-12T20:03:05Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "2a513456_e40f4638",
+      "range": {
+        "startLine": 18,
+        "startChar": 33,
+        "endLine": 18,
+        "endChar": 42
+      },
+      "revId": "9b40d5d8f8a3859b44abcd8a13acdf3d5df40cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e6a1235_8879451c",
@@ -89,6 +113,30 @@
           ]
         }
       ],
+      "revId": "9b40d5d8f8a3859b44abcd8a13acdf3d5df40cae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10513949_17f80f8b",
+        "filename": "src/gpu/graphite/ClipAtlasManager.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-12-12T20:03:05Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "1e6a1235_8879451c",
+      "range": {
+        "startLine": 54,
+        "startChar": 62,
+        "endLine": 54,
+        "endChar": 74
+      },
       "revId": "9b40d5d8f8a3859b44abcd8a13acdf3d5df40cae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
