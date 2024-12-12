@@ -18,7 +18,8 @@ namespace skgpu::graphite {
  * Types of descriptors supported within graphite
 */
 enum class DescriptorType : uint8_t {
-    kUniformBuffer = 0,
+    kInvalid = 0,
+    kUniformBuffer,
     kTextureSampler,
     kTexture,
     kCombinedTextureSampler,
@@ -30,6 +31,7 @@ enum class DescriptorType : uint8_t {
 static constexpr int kDescriptorTypeCount = (int)(DescriptorType::kLast) + 1;
 
 enum class PipelineStageFlags : uint8_t {
+    kInvalid = 0,
     kVertexShader = 0b001,
     kFragmentShader = 0b010,
     kCompute = 0b100,
@@ -47,6 +49,21 @@ struct DescriptorData {
             , fBindingIndex (bindingIdx)
             , fPipelineStageFlags(stageFlags)
             , fImmutableSampler(immutableSampler) {}
+
+    // Default ctor that initializes attributes to invalid values
+    DescriptorData()
+            : fType()
+            , fCount(0)
+            , fBindingIndex(-1)
+            , fPipelineStageFlags(PipelineStageFlags::kInvalid)
+            , fImmutableSampler(nullptr) {}
+
+    bool isValid() const {
+        return (fType != DescriptorType::kInvalid &&
+                fCount > 0 &&
+                fBindingIndex >= 0 &&
+                fPipelineStageFlags != PipelineStageFlags::kInvalid);
+    }
 
     DescriptorType fType;
     uint32_t fCount;
