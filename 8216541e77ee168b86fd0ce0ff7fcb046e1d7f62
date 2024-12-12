@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae17ea0a_aae024fd",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-12T14:56:06Z",
+      "side": 1,
+      "message": "if you like my `fCompileID` proposal, all of these parameters would need to be updated too.",
+      "range": {
+        "startLine": 55,
+        "startChar": 54,
+        "endLine": 55,
+        "endChar": 64
+      },
+      "revId": "8216541e77ee168b86fd0ce0ff7fcb046e1d7f62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
