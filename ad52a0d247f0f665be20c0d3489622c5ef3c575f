@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14fab7af_96c5b805",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 22075
+      },
+      "writtenOn": "2024-12-12T00:13:42Z",
+      "side": 1,
+      "message": "Is this the right place to dump caps regardless of whether GL or VK is the target backend?",
+      "fixSuggestions": [
+        {
+          "fixId": "07414a33_1a334598",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/GrDirectContext.cpp",
+              "range": {
+                "startLine": 256,
+                "startChar": 0,
+                "endLine": 259,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "ad52a0d247f0f665be20c0d3489622c5ef3c575f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
