@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10c43d91_167b34e6",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T20:12:27Z",
+      "side": 1,
+      "message": "This is always `nullptr`.",
+      "range": {
+        "startLine": 448,
+        "startChar": 96,
+        "endLine": 448,
+        "endChar": 109
+      },
+      "revId": "050843d070b762a07562a83a6ea321a145e87cef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
