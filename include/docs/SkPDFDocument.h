@@ -16,9 +16,12 @@
 #include <vector>
 
 class SkCanvas;
+class SkCodec;
+class SkData;
 class SkExecutor;
 class SkPDFArray;
 class SkPDFStructTree;
+class SkPixmap;
 class SkWStream;
 
 #define SKPDF_STRING(X) SKPDF_STRING_IMPL(X)
@@ -79,6 +82,9 @@ struct DateTime {
 
     void toISO8601(SkString* dst) const;
 };
+
+using DecodeJpegCallback = std::unique_ptr<SkCodec> (*)(sk_sp<SkData>);
+using EncodeJpegCallback = bool (*)(SkWStream* dst, const SkPixmap& src, int quality);
 
 /** Optional metadata to be passed into the PDF factory function.
 */
@@ -186,6 +192,20 @@ struct Metadata {
     enum Subsetter {
         kHarfbuzz_Subsetter,
     } fSubsetter = kHarfbuzz_Subsetter;
+
+    // Clients can provide a way to decode jpeg. To use Skia's JPEG decoder, pass in
+    // SkJpegDecoder::Decode. If not supplied, all images will need to be re-encoded
+    // as jpegs or deflated images before embedding. If supplied, Skia may be able to
+    // skip the re-encoding step.
+    // Skia's JPEG decoder can be used here.
+    SkPDF::DecodeJpegCallback jpegDecoder = nullptr;
+
+    // Clients can provide a way to encode jpeg. If not supplied, images will be embedded
+    // as a deflated image, potentially making them much larger. If clients provide
+    // their own implementation, JPEGs should be encoded to RGB (not YUV) otherwise they
+    // will have the wrong surrounding metadata provided by Skia.
+    // Skia's JPEG encoder can be used here
+    SkPDF::EncodeJpegCallback jpegEncoder = nullptr;
 };
 
 /** Associate a node ID with subsequent drawing commands in an

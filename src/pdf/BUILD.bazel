@@ -83,9 +83,11 @@ skia_cc_library(
     visibility = ["//:__pkg__"],
     deps = [
         "//:core",
-        "//:jpeg_decode_codec",
-        "//:jpeg_encode_codec",
+        #"//:jpeg_decode_codec",
+        #"//:jpeg_encode_codec",
         "//:pathops",
+        "//src/codec:any_decoder",
+        "//src/encode:icc_support",
         "//src/core:core_priv",
         "//src/utils:clip_stack_utils",
         "//src/utils:float_to_decimal",
