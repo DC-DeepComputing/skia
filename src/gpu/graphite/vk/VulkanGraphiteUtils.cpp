@@ -72,9 +72,11 @@ VkShaderModule createVulkanShaderModule(const VulkanSharedContext* context,
 void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
                                      const SkSpan<DescriptorData>& requestedDescriptors,
                                      VkDescriptorSetLayout* outLayout) {
+    // If requestedDescriptors is empty, that simply means we should create a placeholder "dummy"
+    // layout that doesn't actually contain any descriptors.
     skia_private::STArray<kDescriptorTypeCount, VkDescriptorSetLayoutBinding> bindingLayouts;
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
-        if (requestedDescriptors[i].fCount != 0) {
+        if (requestedDescriptors[i].isValid()) {
             const DescriptorData& currDescriptor = requestedDescriptors[i];
             VkDescriptorSetLayoutBinding& layoutBinding = bindingLayouts.push_back();
             memset(&layoutBinding, 0, sizeof(VkDescriptorSetLayoutBinding));
@@ -96,7 +98,7 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext* ctxt,
     layoutCreateInfo.pNext = nullptr;
     layoutCreateInfo.flags = 0;
     layoutCreateInfo.bindingCount = bindingLayouts.size();
-    layoutCreateInfo.pBindings = &bindingLayouts.front();
+    layoutCreateInfo.pBindings = bindingLayouts.data();
 
     VkResult result;
     VULKAN_CALL_RESULT(
@@ -123,6 +125,8 @@ VkDescriptorType DsTypeEnumToVkDs(DescriptorType type) {
             return VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC;
         case DescriptorType::kInputAttachment:
             return VK_DESCRIPTOR_TYPE_INPUT_ATTACHMENT;
+        case DescriptorType::kInvalid:
+            SkUNREACHABLE;
     }
     SkUNREACHABLE;
 }

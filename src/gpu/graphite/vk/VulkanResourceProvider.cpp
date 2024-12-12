@@ -341,6 +341,9 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
                                    VkDescriptorSet descSet,
                                    const VulkanSharedContext* sharedContext) {
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
+        if (!requestedDescriptors[i].isValid()) {
+            continue;
+        }
         int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
         SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
         const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
