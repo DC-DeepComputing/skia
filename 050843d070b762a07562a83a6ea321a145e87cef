@@ -22,6 +22,54 @@
       },
       "revId": "050843d070b762a07562a83a6ea321a145e87cef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7119b7f7_1bf2a0d8",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10c43d91_167b34e6",
+      "range": {
+        "startLine": 448,
+        "startChar": 96,
+        "endLine": 448,
+        "endChar": 109
+      },
+      "revId": "050843d070b762a07562a83a6ea321a145e87cef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c70e132a_225aca2d",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 448,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "This is what happens when I first time start debugging on the bot.",
+      "parentUuid": "10c43d91_167b34e6",
+      "range": {
+        "startLine": 448,
+        "startChar": 96,
+        "endLine": 448,
+        "endChar": 109
+      },
+      "revId": "050843d070b762a07562a83a6ea321a145e87cef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

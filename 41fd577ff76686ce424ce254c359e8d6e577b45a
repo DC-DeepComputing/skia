@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04c97df8_eb64798a",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2be0121b_d122ba89",
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a00cbaf_bdbe5d0c",
@@ -31,6 +49,30 @@
       "writtenOn": "2024-12-12T18:02:27Z",
       "side": 1,
       "message": "Why this change? Why remove the `\u0026\u0026`? I\u0027m actually a bit concered that this compiles because we\u0027re  going to move from it, which means it is very not const.",
+      "range": {
+        "startLine": 264,
+        "startChar": 26,
+        "endLine": 264,
+        "endChar": 32
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ada33eb_d6a19438",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a00cbaf_bdbe5d0c",
       "range": {
         "startLine": 264,
         "startChar": 26,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52b955da_78ab116b",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a307064d_351c8d60",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 10
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4747adc_ac7d9055",
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "960fecfc_da820cb8",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4747adc_ac7d9055",
+      "range": {
+        "startLine": 332,
+        "startChar": 34,
+        "endLine": 332,
+        "endChar": 45
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f66e75b4_6393b430",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-12-12T18:02:27Z",
       "side": 1,
       "message": "This was an accidental leftover and isn\u0027t used anywhere, just remove.",
+      "range": {
+        "startLine": 342,
+        "startChar": 33,
+        "endLine": 342,
+        "endChar": 47
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6352ce8_2daff792",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f66e75b4_6393b430",
       "range": {
         "startLine": 342,
         "startChar": 33,

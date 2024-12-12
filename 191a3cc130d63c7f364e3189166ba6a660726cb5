@@ -22,6 +22,30 @@
       },
       "revId": "191a3cc130d63c7f364e3189166ba6a660726cb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "572ee792_67fce6e4",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-12T21:40:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afb7f6b6_af8b4be7",
+      "range": {
+        "startLine": 564,
+        "startChar": 21,
+        "endLine": 564,
+        "endChar": 28
+      },
+      "revId": "191a3cc130d63c7f364e3189166ba6a660726cb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
