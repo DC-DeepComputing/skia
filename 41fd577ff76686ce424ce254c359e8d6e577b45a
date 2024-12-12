@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2be0121b_d122ba89",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T18:02:27Z",
+      "side": 1,
+      "message": "Is this include really needed? It seems `SkFontMgr_android.cpp` also has this include and may not need it as well?",
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a00cbaf_bdbe5d0c",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T18:02:27Z",
+      "side": 1,
+      "message": "Why this change? Why remove the `\u0026\u0026`? I\u0027m actually a bit concered that this compiles because we\u0027re  going to move from it, which means it is very not const.",
+      "range": {
+        "startLine": 264,
+        "startChar": 26,
+        "endLine": 264,
+        "endChar": 32
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a307064d_351c8d60",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T18:02:27Z",
+      "side": 1,
+      "message": "It\u0027s a bit awkward to make the `protected` in this change and also move them. It also doesn\u0027t make much sense to make these `protected` but not the member data (above)?",
+      "range": {
+        "startLine": 312,
+        "startChar": 0,
+        "endLine": 312,
+        "endChar": 10
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4747adc_ac7d9055",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T18:02:27Z",
+      "side": 1,
+      "message": "Should be checking the return value of this.",
+      "range": {
+        "startLine": 332,
+        "startChar": 34,
+        "endLine": 332,
+        "endChar": 45
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f66e75b4_6393b430",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T18:02:27Z",
+      "side": 1,
+      "message": "This was an accidental leftover and isn\u0027t used anywhere, just remove.",
+      "range": {
+        "startLine": 342,
+        "startChar": 33,
+        "endLine": 342,
+        "endChar": 47
+      },
+      "revId": "41fd577ff76686ce424ce254c359e8d6e577b45a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
