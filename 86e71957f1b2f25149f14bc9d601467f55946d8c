@@ -57,6 +57,30 @@
       ],
       "revId": "86e71957f1b2f25149f14bc9d601467f55946d8c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fac8f5d_d1091f8e",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-12-12T07:41:07Z",
+      "side": 1,
+      "message": "🤦‍♂️",
+      "parentUuid": "56d1c367_e0d9fe64",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 19
+      },
+      "revId": "86e71957f1b2f25149f14bc9d601467f55946d8c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
