@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da43d77_a0eddaeb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-12-12T14:30:33Z",
+      "side": 1,
+      "message": "Discussed offline, but these optimizations are measured on cases where we\u0027re hitting these colorspace conversions; some examples added to the CL description.",
+      "parentUuid": "eaa7317f_eb060c12",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 19
+      },
+      "revId": "cae0cb54c32e7dfc42a0de5d5a9e4319ac11f67b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dce7d68b_8845f241",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "897748a1_c5dc40b2",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-12-12T14:30:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dce7d68b_8845f241",
+      "range": {
+        "startLine": 96,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 19
+      },
+      "revId": "cae0cb54c32e7dfc42a0de5d5a9e4319ac11f67b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eee4a1fa_861c9a11",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-12-11T18:02:45Z",
       "side": 1,
       "message": "This may not affect anything if the compiler is good at copy elision, but we could adjust the signature of `$apply_xfer_fn` to just take two separate `half4` values and then pass in either `coeffs[0], coeffs[1]` or `coeffs[2], coeffs[3]`",
+      "range": {
+        "startLine": 115,
+        "startChar": 12,
+        "endLine": 117,
+        "endChar": 37
+      },
+      "revId": "cae0cb54c32e7dfc42a0de5d5a9e4319ac11f67b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4291204a_cd42348f",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-12-12T14:30:33Z",
+      "side": 1,
+      "message": "Seems cleaner anyways; done.",
+      "parentUuid": "eee4a1fa_861c9a11",
       "range": {
         "startLine": 115,
         "startChar": 12,
