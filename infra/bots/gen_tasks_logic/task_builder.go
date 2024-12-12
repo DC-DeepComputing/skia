@@ -31,10 +31,10 @@ func newTaskBuilder(b *jobBuilder, name string) *taskBuilder {
 		log.Fatal(err)
 	}
 	return &taskBuilder{
-		jobBuilder:       b,
-		parts:            parts,
-		Name:             name,
-		Spec:             &specs.TaskSpec{},
+		jobBuilder: b,
+		parts:      parts,
+		Name:       name,
+		Spec: &specs.TaskSpec{},
 		recipeProperties: map[string]string{},
 	}
 }
@@ -242,6 +242,7 @@ func (b *taskBuilder) usesBazel(hostOSArch string) {
 	}
 	b.cipd(b.MustGetCipdPackageFromAsset(pkg))
 	b.addToPATH(pkg)
+	b.env("USE_BAZEL_FALLBACK_VERSION", "error")
 }
 
 // usesCCache adds attributes to tasks which use ccache.
