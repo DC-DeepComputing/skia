@@ -54,6 +54,13 @@ public:
     bool getEncodedColor(SkEncodedInfo::Color* outColor);
 
     /*
+     * If the header is successfully read, we should indicate to the source manager
+     * to truncate the data and add a fake EOI marker when the decompresser asks
+     * for more data beyond the buffer size.
+     */
+    void readHeaderComplete() { getSourceMgr()->shouldTruncateStream(); }
+
+    /*
      * Free memory used by the decode manager
      */
     ~JpegDecoderMgr();
