@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "afb7f6b6_af8b4be7",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-12T20:58:17Z",
+      "side": 1,
+      "message": "Why is this passed in? This isn\u0027t a static method and could just use `fScanner` (we\u0027re keeping it around at the moment for making fotns from data later).",
+      "range": {
+        "startLine": 564,
+        "startChar": 21,
+        "endLine": 564,
+        "endChar": 28
+      },
+      "revId": "191a3cc130d63c7f364e3189166ba6a660726cb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
