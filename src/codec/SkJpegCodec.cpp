@@ -389,12 +389,13 @@ bool SkJpegCodec::onDimensionsSupported(const SkISize& size) {
     return true;
 }
 
-int SkJpegCodec::readRows(const SkImageInfo& dstInfo, void* dst, size_t rowBytes, int count,
-                          const Options& opts) {
+SkCodec::Result SkJpegCodec::readRows(const SkImageInfo& dstInfo, void* dst, size_t rowBytes, int count,
+                          const Options& opts, int* rowsDecoded) {
     // Set the jump location for libjpeg-turbo errors
     skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());
     if (setjmp(jmp)) {
-        return 0;
+        *rowsDecoded = 0;
+        return kInvalidInput;
     }
 
     // When fSwizzleSrcRow is non-null, it means that we need to swizzle.  In this case,
@@ -430,7 +431,8 @@ int SkJpegCodec::readRows(const SkImageInfo& dstInfo, void* dst, size_t rowBytes
     for (int y = 0; y < count; y++) {
         uint32_t lines = jpeg_read_scanlines(fDecoderMgr->dinfo(), &decodeDst, 1);
         if (0 == lines) {
-            return y;
+            *rowsDecoded = y;
+            return kSuccess;
         }
 
         if (fSwizzler) {
@@ -446,7 +448,8 @@ int SkJpegCodec::readRows(const SkImageInfo& dstInfo, void* dst, size_t rowBytes
         swizzleDst = SkTAddOffset<uint32_t>(swizzleDst, swizzleDstRowBytes);
     }
 
-    return count;
+    *rowsDecoded = count;
+    return kSuccess;
 }
 
 /*
@@ -481,33 +484,61 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
     // Get a pointer to the decompress info since we will use it quite frequently
     jpeg_decompress_struct* dinfo = fDecoderMgr->dinfo();
 
+    int output_passes = 0;
+
     // Set the jump location for libjpeg errors
     skjpeg_error_mgr::AutoPushJmpBuf jmp(fDecoderMgr->errorMgr());
     if (setjmp(jmp)) {
         return fDecoderMgr->returnFailure("setjmp", kInvalidInput);
     }
 
-    if (!jpeg_start_decompress(dinfo)) {
+    bool fProgressive = dinfo->progressive_mode;
+
+    if (fProgressive) {
+      dinfo->buffered_image = TRUE;
+      jpeg_start_decompress(dinfo);
+    } else if (!jpeg_start_decompress(dinfo)) {
         return fDecoderMgr->returnFailure("startDecompress", kInvalidInput);
     }
 
-    // The recommended output buffer height should always be 1 in high quality modes.
-    // If it's not, we want to know because it means our strategy is not optimal.
-    SkASSERT(1 == dinfo->rec_outbuf_height);
+    while (!jpeg_input_complete(dinfo)) {
+        if (fProgressive) jpeg_start_output(dinfo, dinfo->input_scan_number);
+        // The recommended output buffer height should always be 1 in high quality modes.
+        // If it's not, we want to know because it means our strategy is not optimal.
+        SkASSERT(1 == dinfo->rec_outbuf_height);
 
-    if (needs_swizzler_to_convert_from_cmyk(dinfo->out_color_space,
-                                            this->getEncodedInfo().profile(), this->colorXform())) {
-        this->initializeSwizzler(dstInfo, options, true);
-    }
+        if (needs_swizzler_to_convert_from_cmyk(dinfo->out_color_space,
+                                                this->getEncodedInfo().profile(), this->colorXform())) {
+            this->initializeSwizzler(dstInfo, options, true);
+        }
 
-    if (!this->allocateStorage(dstInfo)) {
-        return kInternalError;
-    }
+        if (!this->allocateStorage(dstInfo)) {
+            return kInternalError;
+        }
 
-    int rows = this->readRows(dstInfo, dst, dstRowBytes, dstInfo.height(), options);
-    if (rows < dstInfo.height()) {
-        *rowsDecoded = rows;
-        return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+        int rows = 0;
+        SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
+                                                    dstInfo.height(), options, &rows);
+        if (readResult != kSuccess) {
+            return fDecoderMgr->returnFailure("readRows", readResult);
+        }
+        if (rows < dstInfo.height()) {
+            // Progressive images with at least one output pass can be shown and return success
+            // even if it is missing an EOF marker.
+            if (fProgressive && output_passes > 0) {
+                break;
+            }
+            *rowsDecoded = rows;
+            return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+        }
+
+        // Non-progressive images should only be scanned once, and a progressive
+        // image with at least one output pass can be shown even if it is missing
+        // an EOF marker.
+        if (!fProgressive || (!jpeg_finish_output(dinfo) && output_passes > 0)) {
+            break;
+        }
+        output_passes++;
     }
 
     return kSuccess;
@@ -671,7 +702,12 @@ SkCodec::Result SkJpegCodec::onStartScanlineDecode(const SkImageInfo& dstInfo,
 }
 
 int SkJpegCodec::onGetScanlines(void* dst, int count, size_t dstRowBytes) {
-    int rows = this->readRows(this->dstInfo(), dst, dstRowBytes, count, this->options());
+    int rows = 0;
+    SkCodec::Result readResult = this->readRows(this->dstInfo(), dst, dstRowBytes,
+                                                count, this->options(), &rows);
+    if (readResult != kSuccess) {
+        return 0;
+    }
     if (rows < count) {
         // This allows us to skip calling jpeg_finish_decompress().
         fDecoderMgr->dinfo()->output_scanline = this->dstInfo().height();
