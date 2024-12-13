@@ -933,11 +933,12 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 		} else if b.os("iOS") {
 			device, ok := map[string]string{
-				"iPadMini4": "iPad5,1",
-				"iPhone7":   "iPhone9,1",
-				"iPhone8":   "iPhone10,1",
-				"iPhone11":  "iPhone12,1",
-				"iPadPro":   "iPad6,3",
+				"iPadMini4":   "iPad5,1",
+				"iPhone7":     "iPhone9,1",
+				"iPhone8":     "iPhone10,1",
+				"iPhone11":    "iPhone12,1",
+				"iPhone15Pro": "iPhone16,1",
+				"iPadPro":     "iPad6,3",
 			}[b.parts["model"]]
 			if !ok {
 				log.Fatalf("Entry %q not found in iOS mapping.", b.parts["model"])
