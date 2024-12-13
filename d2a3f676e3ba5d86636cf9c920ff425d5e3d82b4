@@ -16,6 +16,24 @@
       "message": "I would remove this blank line since it is separating the weight and slant from the width and constrcution of the style (they all go together).",
       "revId": "d2a3f676e3ba5d86636cf9c920ff425d5e3d82b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e436131a_eb8be9a5",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T23:42:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9415794b_1c07fa19",
+      "revId": "d2a3f676e3ba5d86636cf9c920ff425d5e3d82b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
