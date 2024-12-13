@@ -22,6 +22,30 @@
       },
       "revId": "fbc33e74001eb1c678e694d56e3352915b95cd13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49bdcfad_ee1dfb4c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-13T21:09:35Z",
+      "side": 1,
+      "message": "Marking this as resolved just because it\u0027s a note/small nit, but feel free to LMKWYT and reopen it.",
+      "parentUuid": "df1ce35d_68b9983d",
+      "range": {
+        "startLine": 549,
+        "startChar": 26,
+        "endLine": 549,
+        "endChar": 29
+      },
+      "revId": "fbc33e74001eb1c678e694d56e3352915b95cd13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
