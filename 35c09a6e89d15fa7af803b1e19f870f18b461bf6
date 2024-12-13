@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7d7beb4_0d0c55db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-13T18:04:44Z",
+      "side": 1,
+      "message": "I think these are replacing our Shuttle machines, so I copied the configs they run. If other configs would be better, we can do that instead.",
+      "revId": "35c09a6e89d15fa7af803b1e19f870f18b461bf6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
