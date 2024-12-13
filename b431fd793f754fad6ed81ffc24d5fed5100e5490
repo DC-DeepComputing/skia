@@ -152,6 +152,30 @@
       },
       "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60a2fe65_3aff077e",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T19:32:04Z",
+      "side": 1,
+      "message": "Somehow... I remember doing that!",
+      "parentUuid": "3bb3f0f7_96741202",
+      "range": {
+        "startLine": 582,
+        "startChar": 35,
+        "endLine": 582,
+        "endChar": 44
+      },
+      "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
