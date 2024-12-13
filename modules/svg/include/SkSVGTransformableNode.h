@@ -8,7 +8,6 @@
 #ifndef SkSVGTransformableNode_DEFINED
 #define SkSVGTransformableNode_DEFINED
 
-#include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGNode.h"
@@ -33,6 +32,10 @@ protected:
     void mapToParent(SkPath*) const;
 
     void mapToParent(SkRect*) const;
+
+    SkRect onObjectBoundingBox(const SkSVGRenderContext&) const final;
+
+    virtual SkRect onTransformableObjectBoundingBox(const SkSVGRenderContext&) const;
 
 private:
     // FIXME: should be sparse
