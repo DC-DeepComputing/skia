@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b189bba_a4b22023",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-13T20:16:49Z",
+      "side": 1,
+      "message": "Use `Bug: 380677629`, Gerrit will turn that into a link.",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "21cd7fab_ce76ebf2",
@@ -48,6 +65,58 @@
       "writtenOn": "2024-12-06T02:00:27Z",
       "side": 1,
       "message": "Hello,\n\nI have uploaded some code for SVG rendering. I would appreciate it if you could review the code when you have free time.\n\nBest regards.",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7592cb7f_626f1e87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-13T20:16:49Z",
+      "side": 1,
+      "message": "Thanks for the bug report and patch!\n\nThe root cause analysis looks correct.  I have some suggestions for the cl (prototyped in https://skia-review.googlesource.com/c/skia/+/929339).  Let me know if you want to update and land the fix yourself, or if you want me to go ahead and just land my cl.",
+      "parentUuid": "96ce8c65_8fec2c40",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c551c226_ec8de2a9",
+        "filename": "modules/svg/include/SkSVGNode.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-13T20:16:49Z",
+      "side": 1,
+      "message": "Having both `objectBoundingBox` and `onObjectBoundingBox` virtual is kinda confusing and breaks the usual pattern of non-virtual public entry point + virtual protected impl.\n\nEven if it\u0027s more typing, I think it would be cleaner to introduce a separate obb virtual just for TransformableNode subclasses (`onTransformableObjectBoundingBox`?), and terminate the `onObjectBoundingBox` overrides in TransformableNode (make it final).\n\nThen convert all TransformableNode subclasses to override `onTransformableObjectBoundingBox` instead of `onObjectBoundingBox`, and implement the bounding box transform fix in `SkSVGTransformableNode:: onObjectBoundingBox`.",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a786cc7_afe74168",
+        "filename": "modules/svg/include/SkSVGRenderContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-13T20:16:49Z",
+      "side": 1,
+      "message": "Let\u0027s add an `OBBScope` getter instead:\n\n`const OBBScope\u0026 currentOBBScope() const { return fOBBScope; }`",
       "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
