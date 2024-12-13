@@ -806,6 +806,11 @@ size_t Context::maxBudgetedBytes() const {
     return fResourceProvider->getResourceCacheLimit();
 }
 
+void Context::setMaxGpuCacheBudget(size_t bytes) {
+    ASSERT_SINGLE_OWNER
+    return fResourceProvider->setCacheBudget(bytes);
+}
+
 void Context::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     ASSERT_SINGLE_OWNER
     fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
