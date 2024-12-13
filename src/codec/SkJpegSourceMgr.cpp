@@ -59,7 +59,7 @@ public:
     }
     bool fillInputBuffer(const uint8_t*& nextInputByte, size_t& bytesInBuffer) override {
         // The whole JPEG data is expected to reside in the supplied memory buffer, so any request
-        // for more data beyond the given buffer size is treated as an error.
+        // for more data beyond the given buffer size is treated as an error;
         SkCodecPrintf("Asked to re-fill a memory-mapped stream.\n");
         return false;
     }
