@@ -9,7 +9,6 @@
 
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkEncodedOrigin.h"
-#include "include/codec/SkJpegDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkColor.h"
@@ -25,7 +24,6 @@
 #include "include/core/SkStream.h"
 #include "include/docs/SkPDFDocument.h"
 #include "include/encode/SkICC.h"
-#include "include/encode/SkJpegEncoder.h"
 #include "include/private/SkEncodedInfo.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkMutex.h"
@@ -320,7 +318,11 @@ bool inspect_jpeg_and_write_to_stream(sk_sp<SkData> jpegData,
                                       SkPDFDocument* doc,
                                       SkISize imageSize,
                                       SkPDFIndirectReference ref) {
-    std::unique_ptr<SkCodec> codec = SkJpegDecoder::Decode(jpegData, nullptr);
+    SkPDF::DecodeJpegCallback decodeJPEG = doc->metadata().jpegDecoder;
+    if (!decodeJPEG) {
+        return false;
+    }
+    std::unique_ptr<SkCodec> codec = decodeJPEG(jpegData);
     if (!codec) {
         return false;
     }
@@ -395,6 +397,7 @@ void serialize_image(const SkImage* img,
     SkASSERT(img);
     SkASSERT(doc);
     SkASSERT(encodingQuality >= 0);
+
     SkISize dimensions = img->dimensions();
 
     if (sk_sp<SkData> data = img->refEncodedData()) {
@@ -405,14 +408,14 @@ void serialize_image(const SkImage* img,
     }
     SkBitmap bm = to_pixels(img);
     const SkPixmap& pm = bm.pixmap();
+    SkPDF::EncodeJpegCallback encodeJPEG = doc->metadata().jpegEncoder;
+
     bool isOpaque = pm.isOpaque() || pm.computeIsOpaque();
-    if (encodingQuality <= 100 && isOpaque) {
-        SkJpegEncoder::Options jOpts;
-        jOpts.fQuality = encodingQuality;
+    if (encodeJPEG && encodingQuality <= 100 && isOpaque) {
         SkDynamicMemoryWStream stream;
         // This will encode as RGB, not YUV, so we can set the default colorspace and
         // number of channels accordingly.
-        if (SkJpegEncoder::Encode(&stream, pm, jOpts)) {
+        if (encodeJPEG(&stream, pm, encodingQuality)) {
             if (write_data_to_stream_as_jpeg(stream.detachAsData(),
                                              pm.colorSpace(),
                                              doc,
