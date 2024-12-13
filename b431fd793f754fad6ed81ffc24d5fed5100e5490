@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2166f2ef_88c46496",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-13T17:22:31Z",
+      "side": 1,
+      "message": "Something seems wrong with the width calculation for the style.",
+      "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
