@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbfb7f8a_d2052a72",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 392,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-13T21:06:41Z",
+      "side": 1,
+      "message": "This function was changed to return a result because the libjpeg function jpeg_read_scanlines() errors if too many scans have been performed as to not cause the decoder to hang. We want to catch that and return invalid input when that happens.",
+      "range": {
+        "startLine": 392,
+        "startChar": 0,
+        "endLine": 392,
+        "endChar": 15
+      },
+      "revId": "ac086017076fc031d65c1638eb57a01580036ef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
