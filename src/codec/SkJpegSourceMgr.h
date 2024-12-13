@@ -67,7 +67,7 @@ public:
 protected:
     SkJpegSourceMgr(SkStream* stream);
     SkStream* const fStream;  // unowned
-
+    bool fShouldTruncateStream = false;
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // The segment scanner is lazily creatd only when needed.
     std::unique_ptr<SkJpegSegmentScanner> fScanner;
