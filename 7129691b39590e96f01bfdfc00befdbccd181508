@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35bde84c_e8dc9610",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-13T21:08:42Z",
+      "side": 1,
+      "message": "PTAL - I have isolated this change and made it sufficiently sized to get your thoughts.",
+      "revId": "7129691b39590e96f01bfdfc00befdbccd181508",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

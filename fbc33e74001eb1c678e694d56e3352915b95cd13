@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df1ce35d_68b9983d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-13T21:08:42Z",
+      "side": 1,
+      "message": "I could keep this binding as a statically-defined variable if we want. It\u0027s always just 0 for the one input attachment we use though.",
+      "range": {
+        "startLine": 549,
+        "startChar": 26,
+        "endLine": 549,
+        "endChar": 29
+      },
+      "revId": "fbc33e74001eb1c678e694d56e3352915b95cd13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
