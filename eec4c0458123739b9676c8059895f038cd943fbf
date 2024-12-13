@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b474fab6_0defc352",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T01:38:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a67677a_43622c74",
+      "range": {
+        "startLine": 552,
+        "startChar": 8,
+        "endLine": 552,
+        "endChar": 31
+      },
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bafa403_fc946c17",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-12T22:36:33Z",
       "side": 1,
       "message": "Can put a space back in after this comma.",
+      "range": {
+        "startLine": 583,
+        "startChar": 34,
+        "endLine": 583,
+        "endChar": 35
+      },
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b43de9d9_aeae4239",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T01:38:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bafa403_fc946c17",
       "range": {
         "startLine": 583,
         "startChar": 34,
@@ -64,6 +112,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b7d18b_1b825f6a",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T01:38:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a088c9f0_90c96e60",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09118073_66376c22",
@@ -81,6 +147,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8364278_f4b219ae",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 627,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T01:38:00Z",
+      "side": 1,
+      "message": "I have to teach CLion that.",
+      "parentUuid": "09118073_66376c22",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc46fc24_15dc6a30",
@@ -94,6 +178,24 @@
       "writtenOn": "2024-12-12T22:36:33Z",
       "side": 1,
       "message": "This is actually a not well thought out set of items to pass and is more of a bag and should look like it. Better for these arguments to be on two lines (like it was before, with `style` starting the second line) .",
+      "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c8b7d0_f69bf5fe",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-13T01:38:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc46fc24_15dc6a30",
       "revId": "eec4c0458123739b9676c8059895f038cd943fbf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
