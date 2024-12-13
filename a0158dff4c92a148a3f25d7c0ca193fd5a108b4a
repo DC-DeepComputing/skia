@@ -1,0 +1,226 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcc7fd92_d15a2180",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "lgtm, just nits to keep nomenclature the same between getters/setters",
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70056cab_18f1d4ec",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "nit: setMaxBudgetedBytes",
+      "range": {
+        "startLine": 234,
+        "startChar": 9,
+        "endLine": 234,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "c68e0232_096fb259",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Context.h",
+              "range": {
+                "startLine": 234,
+                "startChar": 0,
+                "endLine": 235,
+                "endChar": 0
+              },
+              "replacement": "    void setMaxBudgetedBytes(size_t bytes);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26685658_29546837",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "nit: setMaxBudgetedBytes",
+      "range": {
+        "startLine": 216,
+        "startChar": 9,
+        "endLine": 216,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f79058e5_462dc7da",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/gpu/graphite/Recorder.h",
+              "range": {
+                "startLine": 216,
+                "startChar": 0,
+                "endLine": 217,
+                "endChar": 0
+              },
+              "replacement": "    void setMaxBudgetedBytes(size_t bytes);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c0e8703_275182d2",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "nit: setMaxBudgetedBytes",
+      "range": {
+        "startLine": 809,
+        "startChar": 14,
+        "endLine": 809,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "a81a6d6b_bb4f500d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Context.cpp",
+              "range": {
+                "startLine": 809,
+                "startChar": 0,
+                "endLine": 810,
+                "endChar": 0
+              },
+              "replacement": "void Context::setMaxBudgetedBytes(size_t bytes) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae8b17a7_6634e93c",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "nit: setMaxBudgetedBytes()",
+      "range": {
+        "startLine": 488,
+        "startChar": 15,
+        "endLine": 488,
+        "endChar": 35
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "71d240f5_692900fa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Recorder.cpp",
+              "range": {
+                "startLine": 488,
+                "startChar": 0,
+                "endLine": 489,
+                "endChar": 0
+              },
+              "replacement": "void Recorder::setMaxBudgetedBytes(size_t bytes) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "135e6703_193c2e27",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-13T14:46:31Z",
+      "side": 1,
+      "message": "nit: let\u0027s keep it in line with the getter, e.g. `setResourceCacheLimit()`",
+      "range": {
+        "startLine": 89,
+        "startChar": 9,
+        "endLine": 89,
+        "endChar": 23
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eb7be073_c5f2e18e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ResourceProvider.h",
+              "range": {
+                "startLine": 89,
+                "startChar": 0,
+                "endLine": 90,
+                "endChar": 0
+              },
+              "replacement": "    void setResourceCacheLimit(size_t bytes) { return fResourceCache-\u003esetMaxBudget(bytes); }\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
