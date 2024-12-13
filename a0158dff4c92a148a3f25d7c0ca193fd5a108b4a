@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "852f0151_5e943061",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-13T15:01:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70056cab_18f1d4ec",
+      "range": {
+        "startLine": 234,
+        "startChar": 9,
+        "endLine": 234,
+        "endChar": 29
+      },
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "26685658_29546837",
@@ -96,6 +120,30 @@
           ]
         }
       ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5f5755a_250d7d0b",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-13T15:01:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "26685658_29546837",
+      "range": {
+        "startLine": 216,
+        "startChar": 9,
+        "endLine": 216,
+        "endChar": 29
+      },
       "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -141,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5d1dbfd_9d112746",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 809,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-13T15:01:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c0e8703_275182d2",
+      "range": {
+        "startLine": 809,
+        "startChar": 14,
+        "endLine": 809,
+        "endChar": 34
+      },
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae8b17a7_6634e93c",
@@ -182,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db01e462_92cc2abf",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-13T15:01:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae8b17a7_6634e93c",
+      "range": {
+        "startLine": 488,
+        "startChar": 15,
+        "endLine": 488,
+        "endChar": 35
+      },
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "135e6703_193c2e27",
@@ -219,6 +315,30 @@
           ]
         }
       ],
+      "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55167087_8942a249",
+        "filename": "src/gpu/graphite/ResourceProvider.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-13T15:01:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "135e6703_193c2e27",
+      "range": {
+        "startLine": 89,
+        "startChar": 9,
+        "endLine": 89,
+        "endChar": 23
+      },
       "revId": "a0158dff4c92a148a3f25d7c0ca193fd5a108b4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
