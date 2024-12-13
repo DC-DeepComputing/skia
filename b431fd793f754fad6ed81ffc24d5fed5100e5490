@@ -16,6 +16,52 @@
       "message": "Something seems wrong with the width calculation for the style.",
       "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d0ee98_f293f514",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 552,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-13T17:24:47Z",
+      "side": 1,
+      "message": "You are always initializing this to have a value of 0. The point is to not initialize this except in the loop (if `wdth` is found).",
+      "range": {
+        "startLine": 552,
+        "startChar": 41,
+        "endLine": 552,
+        "endChar": 45
+      },
+      "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "40794e03_e69145f5",
+        "filename": "src/ports/SkFontMgr_android_ndk.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-13T17:24:47Z",
+      "side": 1,
+      "message": "`value_or`",
+      "range": {
+        "startLine": 582,
+        "startChar": 35,
+        "endLine": 582,
+        "endChar": 44
+      },
+      "revId": "b431fd793f754fad6ed81ffc24d5fed5100e5490",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
