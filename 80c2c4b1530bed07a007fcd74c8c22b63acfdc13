@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bddbf409_bd4d550c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2024-12-16T13:40:39Z",
+      "side": 1,
+      "message": "Chrome is no longer using this so it should be safe now.",
+      "revId": "80c2c4b1530bed07a007fcd74c8c22b63acfdc13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
