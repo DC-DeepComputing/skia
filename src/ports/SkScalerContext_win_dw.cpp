@@ -51,7 +51,7 @@
 #include <dwrite_3.h>
 
 namespace {
-static inline const constexpr bool kSkShowTextBlitCoverage = false;
+constexpr bool kSkShowTextBlitCoverage = false;
 
 /* Note:
  * In versions 8 and 8.1 of Windows, some calls in DWrite are not thread safe.
@@ -1262,7 +1262,7 @@ bool SkScalerContext_DW::generateColorV1Image(const SkGlyph& glyph, void* imageB
     dstBitmap.setPixels(imageBuffer);
 
     SkCanvas canvas(dstBitmap);
-    if constexpr (kSkShowTextBlitCoverage) {
+    if (kSkShowTextBlitCoverage) {
         canvas.clear(0x33FF0000);
     } else {
         canvas.clear(SK_ColorTRANSPARENT);
@@ -1947,7 +1947,7 @@ void SkScalerContext_DW::BilevelToBW(const uint8_t* SK_RESTRICT src,
         dst += dstRB;
     }
 
-    if constexpr (kSkShowTextBlitCoverage) {
+    if (kSkShowTextBlitCoverage) {
         dst = static_cast<uint8_t*>(imageBuffer);
         for (unsigned y = 0; y < (unsigned)glyph.height(); y += 2) {
             for (unsigned x = (y & 0x2); x < (unsigned)glyph.width(); x+=4) {
@@ -1970,7 +1970,7 @@ void SkScalerContext_DW::GrayscaleToA8(const uint8_t* SK_RESTRICT src,
         for (int i = 0; i < width; i++) {
             U8CPU a = *(src++);
             dst[i] = sk_apply_lut_if<APPLY_PREBLEND>(a, table8);
-            if constexpr (kSkShowTextBlitCoverage) {
+            if (kSkShowTextBlitCoverage) {
                 dst[i] = std::max<U8CPU>(0x30, dst[i]);
             }
         }
@@ -1992,7 +1992,7 @@ void SkScalerContext_DW::RGBToA8(const uint8_t* SK_RESTRICT src,
             U8CPU g = *(src++);
             U8CPU b = *(src++);
             dst[i] = sk_apply_lut_if<APPLY_PREBLEND>((r + g + b) / 3, table8);
-            if constexpr (kSkShowTextBlitCoverage) {
+            if (kSkShowTextBlitCoverage) {
                 dst[i] = std::max<U8CPU>(0x30, dst[i]);
             }
         }
@@ -2021,7 +2021,7 @@ void SkScalerContext_DW::RGBToLcd16(const uint8_t* SK_RESTRICT src, const SkGlyp
                 g = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableG);
                 r = sk_apply_lut_if<APPLY_PREBLEND>(*(src++), tableR);
             }
-            if constexpr (kSkShowTextBlitCoverage) {
+            if (kSkShowTextBlitCoverage) {
                 r = std::max<U8CPU>(0x30, r);
                 g = std::max<U8CPU>(0x30, g);
                 b = std::max<U8CPU>(0x30, b);
@@ -2245,7 +2245,7 @@ bool SkScalerContext_DW::generateColorImage(const SkGlyph& glyph, void* imageBuf
     dstBitmap.setPixels(imageBuffer);
 
     SkCanvas canvas(dstBitmap);
-    if constexpr (kSkShowTextBlitCoverage) {
+    if (kSkShowTextBlitCoverage) {
         canvas.clear(0x33FF0000);
     } else {
         canvas.clear(SK_ColorTRANSPARENT);
@@ -2317,7 +2317,7 @@ bool SkScalerContext_DW::generateSVGImage(const SkGlyph& glyph, void* imageBuffe
     dstBitmap.setPixels(imageBuffer);
 
     SkCanvas canvas(dstBitmap);
-    if constexpr (kSkShowTextBlitCoverage) {
+    if (kSkShowTextBlitCoverage) {
         canvas.clear(0x33FF0000);
     } else {
         canvas.clear(SK_ColorTRANSPARENT);
@@ -2453,7 +2453,7 @@ sk_sp<SkDrawable> SkScalerContext_DW::generateDrawable(const SkGlyph& glyph) {
         SkRect onGetBounds() override { return fGlyph.rect();  }
         size_t onApproximateBytesUsed() override { return sizeof(GlyphDrawable); }
         void maybeShowTextBlitCoverage(SkCanvas* canvas) {
-            if constexpr (kSkShowTextBlitCoverage) {
+            if (kSkShowTextBlitCoverage) {
                 SkPaint paint;
                 paint.setColor(0x3300FF00);
                 paint.setStyle(SkPaint::kFill_Style);
