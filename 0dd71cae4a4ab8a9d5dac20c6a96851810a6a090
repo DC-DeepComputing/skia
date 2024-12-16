@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "110b7b46_416d1152",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 0,
+      "message": "This really is an `else if` and I don\u0027t understand why `imageColorSpace` is now being passed to the jpeg emitter.",
+      "revId": "0dd71cae4a4ab8a9d5dac20c6a96851810a6a090",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

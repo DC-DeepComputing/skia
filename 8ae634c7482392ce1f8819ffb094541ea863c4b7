@@ -1,0 +1,250 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9c3d1f4_c0d2d8c3",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "At the very least this would need to add ` \u0026\u0026 !pdfColorSpace` (or logically something like that).",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e96e821c_9acf465e",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "Size optimization",
+      "range": {
+        "startLine": 314,
+        "startChar": 3,
+        "endLine": 314,
+        "endChar": 17
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52882dea_d13b6971",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "deferred image",
+      "range": {
+        "startLine": 314,
+        "startChar": 44,
+        "endLine": 314,
+        "endChar": 51
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686c0a80_ce3691c2",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "no `re-`.",
+      "range": {
+        "startLine": 314,
+        "startChar": 77,
+        "endLine": 314,
+        "endChar": 80
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df0de68f_efbfac81",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "it will need to be re-encoded. (In general, there are a few too many chatty `we` in here.)",
+      "range": {
+        "startLine": 317,
+        "startChar": 43,
+        "endLine": 317,
+        "endChar": 70
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f0f7394_cd414f39",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "This is quite verbose for repeating the predicate and also misleading in that this test isn\u0027t here because it is expected that these sized will be the same, but that it is required that they be the same for this size optimization to work properly with the expectations of the users.",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c11415c_a3166528",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "If we need a comment like this it would be something like `formats` or `encodings`, but that\u0027s not really an interesting comment here because that\u0027s exactly what the code says. An interessting comment here would be about CMYK support, but I\u0027m not sure I can write that comment without going back through a bunch of changes.",
+      "range": {
+        "startLine": 338,
+        "startChar": 46,
+        "endLine": 338,
+        "endChar": 52
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eafeeefb_88c32a02",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "I don\u0027t understand this comment. This is a jpeg so it never encodes as RGB?",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49625d4d_0cfc7d1c",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "Why is this a single color channel?",
+      "range": {
+        "startLine": 422,
+        "startChar": 45,
+        "endLine": 422,
+        "endChar": 46
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f347b5d5_22545595",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "This comment is too verbose (simplify so it fits on one line) and belongs at the top of the block, not hidden down here.",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e272e3_b0cf75a3",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 830,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "This is very wordy. If it doesn\u0027t fit on one line, make it fit. Obviously this is being done to compress something for later use, so this isn\u0027t adding any new information. Perharps\n\n    // Covert Grey image to deffered jpeg image to emit as jpeg",
+      "range": {
+        "startLine": 829,
+        "startChar": 56,
+        "endLine": 830,
+        "endChar": 41
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fee32e7_87f07494",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T15:08:37Z",
+      "side": 1,
+      "message": "This is also excessively verbose and is the point of this entire block, so the motivation should go at the top of the block.",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
