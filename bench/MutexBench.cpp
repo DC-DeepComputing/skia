@@ -7,7 +7,6 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkString.h"
 #include "include/private/base/SkMutex.h"
-#include "src/base/SkSharedMutex.h"
 #include "src/base/SkSpinlock.h"
 
 template <typename Mutex>
@@ -31,37 +30,11 @@ protected:
     }
 
 private:
-    using INHERITED = Benchmark;
     SkString fBenchName;
     Mutex fMu;
 };
 
-class SharedBench : public Benchmark {
-public:
-    bool isSuitableFor(Backend backend) override {
-        return backend == Backend::kNonRendering;
-    }
-
-protected:
-    const char* onGetName() override {
-        return "SkSharedMutexSharedUncontendedBenchmark";
-    }
-
-    void onDraw(int loops, SkCanvas*) override {
-        for (int i = 0; i < loops; i++) {
-            fMu.acquireShared();
-            fMu.releaseShared();
-        }
-    }
-
-private:
-    using INHERITED = Benchmark;
-    SkSharedMutex fMu;
-};
-
 ///////////////////////////////////////////////////////////////////////////////
 
-DEF_BENCH( return new MutexBench<SkSharedMutex>(SkString("SkSharedMutex")); )
 DEF_BENCH( return new MutexBench<SkMutex>(SkString("SkMutex")); )
 DEF_BENCH( return new MutexBench<SkSpinlock>(SkString("SkSpinlock")); )
-DEF_BENCH( return new SharedBench; )
