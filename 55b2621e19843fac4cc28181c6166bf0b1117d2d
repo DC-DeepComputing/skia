@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8daf545_cd10496a",
+        "filename": "BUILD.gn",
+        "patchSetId": 15
+      },
+      "lineNbr": 410,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T22:06:31Z",
+      "side": 1,
+      "message": "I would leave out `FONTCONFIG_`.",
+      "range": {
+        "startLine": 410,
+        "startChar": 33,
+        "endLine": 410,
+        "endChar": 44
+      },
+      "revId": "55b2621e19843fac4cc28181c6166bf0b1117d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29b90dcf_62350eee",
+        "filename": "tests/FCITest.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T22:06:31Z",
+      "side": 1,
+      "message": "It looks here like you want a `TestFontScanner` something like `TestFontMgr` but returns a scanner (or nullptr).",
+      "revId": "55b2621e19843fac4cc28181c6166bf0b1117d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba20d123_9b87004a",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T22:06:31Z",
+      "side": 1,
+      "message": "`TestFontScanner` instead.",
+      "revId": "55b2621e19843fac4cc28181c6166bf0b1117d2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
