@@ -39,6 +39,13 @@ static DEFINE_double(frame, 1.0,
 #include "include/codec/SkPngDecoder.h"
 #endif
 
+#if defined(SK_SUPPORT_PDF)
+#if !defined(SK_CODEC_DECODES_JPEG) || !defined(SK_CODEC_ENCODES_JPEG)
+#error "Need jpeg for PDF backend"
+#endif
+#include "include/docs/SkPDFJpegHelpers.h"
+#endif
+
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
 #include "include/ports/SkFontScanner_FreeType.h"
@@ -332,10 +339,10 @@ int main(int argc, char** argv) {
     }
 #endif
 
-#ifdef SK_SUPPORT_PDF
+#if defined(SK_SUPPORT_PDF)
     if (options.pdf) {
         SkDynamicMemoryWStream pdfStream;
-        auto document = SkPDF::MakeDocument(&pdfStream);
+        auto document = SkPDF::MakeDocument(&pdfStream, SkPDF::JPEG::MetadataWithCallbacks());
         if (document) {
             srand(0);
             draw(prepare_canvas(document->beginPage(options.size.width(), options.size.height())));

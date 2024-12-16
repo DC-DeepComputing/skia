@@ -1261,7 +1261,7 @@ optional("pdf") {
   public_defines = [ "SK_SUPPORT_PDF" ]
 
   deps = [ "//third_party/zlib" ]
-  public = skia_pdf_public
+  public = skia_pdf_public + skia_pdf_jpeg_public
   sources = skia_pdf_sources
   sources_when_disabled = [ "src/pdf/SkDocument_PDF_None.cpp" ]
   if (skia_pdf_subset_harfbuzz) {

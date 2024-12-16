@@ -54,6 +54,7 @@ skia_cc_library(
     visibility = [
         "//experimental/rust_png:__subpackages__",
         "//src/encode:__pkg__",
+        "//src/pdf:__pkg__",
         "//src/ports:__pkg__",
     ],
     deps = [
