@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0822aa10_63f65ded",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T21:45:34Z",
+      "side": 1,
+      "message": "I very dislike changes like these. Removing the `const` from declarations that are not definitions is fine (they don\u0027t mean anything), but removing the `const` from defintions is terrible. As a maintainer I want all locals (including parameters) to be marked `const` unless there is a need to do otherwise so there is less need to keep track of potential state.",
+      "revId": "2a3d54540db1e3fcbf8efaa4ef5f33a1bb752275",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
