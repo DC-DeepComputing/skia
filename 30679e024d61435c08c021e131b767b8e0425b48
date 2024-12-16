@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72521fa1_eed71b5c",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T21:17:10Z",
+      "side": 1,
+      "message": "`be embedded as jpeg data`\n\nIt isn\u0027t really a \"fast path\" so much as a \"small size without lossy re-encoding path\".",
+      "range": {
+        "startLine": 156,
+        "startChar": 46,
+        "endLine": 156,
+        "endChar": 66
+      },
+      "revId": "30679e024d61435c08c021e131b767b8e0425b48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c86563f_99e887c3",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 837,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-16T21:17:10Z",
+      "side": 1,
+      "message": "`be embedded as jpeg data`",
+      "range": {
+        "startLine": 837,
+        "startChar": 58,
+        "endLine": 837,
+        "endChar": 78
+      },
+      "revId": "30679e024d61435c08c021e131b767b8e0425b48",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
