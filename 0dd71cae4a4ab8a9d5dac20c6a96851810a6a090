@@ -16,6 +16,42 @@
       "message": "This really is an `else if` and I don\u0027t understand why `imageColorSpace` is now being passed to the jpeg emitter.",
       "revId": "0dd71cae4a4ab8a9d5dac20c6a96851810a6a090",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d258f1d_51cf6055",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "110b7b46_416d1152",
+      "revId": "0dd71cae4a4ab8a9d5dac20c6a96851810a6a090",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25729980_455dd35b",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 0,
+      "message": "Ack. I had been trying to remove duplicated code since the \"encode as JPEG, then use JPEG decoder",
+      "parentUuid": "110b7b46_416d1152",
+      "revId": "0dd71cae4a4ab8a9d5dac20c6a96851810a6a090",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

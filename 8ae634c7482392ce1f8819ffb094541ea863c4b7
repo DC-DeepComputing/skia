@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "387a3c04_6da2da8f",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "A lot of this change resulted in me mis-understanding how jpeg encoding and decoding worked in conjuection with PDF. I\u0027ve redone this file to be less invasive.",
+      "parentUuid": "f9c3d1f4_c0d2d8c3",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e96e821c_9acf465e",
         "filename": "src/pdf/SkPDFBitmap.cpp",
         "patchSetId": 8
@@ -87,6 +105,78 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "39238688_38ca5240",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "52882dea_d13b6971",
+      "range": {
+        "startLine": 314,
+        "startChar": 44,
+        "endLine": 314,
+        "endChar": 51
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "428f2922_b57ce910",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e96e821c_9acf465e",
+      "range": {
+        "startLine": 314,
+        "startChar": 3,
+        "endLine": 314,
+        "endChar": 17
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "178f595f_793a7da6",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "686c0a80_ce3691c2",
+      "range": {
+        "startLine": 314,
+        "startChar": 77,
+        "endLine": 314,
+        "endChar": 80
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df0de68f_efbfac81",
@@ -100,6 +190,30 @@
       "writtenOn": "2024-12-16T15:08:37Z",
       "side": 1,
       "message": "it will need to be re-encoded. (In general, there are a few too many chatty `we` in here.)",
+      "range": {
+        "startLine": 317,
+        "startChar": 43,
+        "endLine": 317,
+        "endChar": 70
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c10b3ec0_b8235ca1",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "df0de68f_efbfac81",
       "range": {
         "startLine": 317,
         "startChar": 43,
@@ -127,6 +241,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ec7b3db_a173a700",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "9f0f7394_cd414f39",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5c11415c_a3166528",
@@ -140,6 +272,30 @@
       "writtenOn": "2024-12-16T15:08:37Z",
       "side": 1,
       "message": "If we need a comment like this it would be something like `formats` or `encodings`, but that\u0027s not really an interesting comment here because that\u0027s exactly what the code says. An interessting comment here would be about CMYK support, but I\u0027m not sure I can write that comment without going back through a bunch of changes.",
+      "range": {
+        "startLine": 338,
+        "startChar": 46,
+        "endLine": 338,
+        "endChar": 52
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "477e2a6a_667e3629",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5c11415c_a3166528",
       "range": {
         "startLine": 338,
         "startChar": 46,
@@ -167,6 +323,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "010eb8d5_07bf3cf6",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 414,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eafeeefb_88c32a02",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "49625d4d_0cfc7d1c",
@@ -180,6 +354,30 @@
       "writtenOn": "2024-12-16T15:08:37Z",
       "side": 1,
       "message": "Why is this a single color channel?",
+      "range": {
+        "startLine": 422,
+        "startChar": 45,
+        "endLine": 422,
+        "endChar": 46
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4732dea9_1905843c",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49625d4d_0cfc7d1c",
       "range": {
         "startLine": 422,
         "startChar": 45,
@@ -207,6 +405,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b31a204_24ffe5c0",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f347b5d5_22545595",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4e272e3_b0cf75a3",
@@ -230,6 +446,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "63e1958a_d8039b1e",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 830,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4e272e3_b0cf75a3",
+      "range": {
+        "startLine": 829,
+        "startChar": 56,
+        "endLine": 830,
+        "endChar": 41
+      },
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fee32e7_87f07494",
@@ -243,6 +483,24 @@
       "writtenOn": "2024-12-16T15:08:37Z",
       "side": 1,
       "message": "This is also excessively verbose and is the point of this entire block, so the motivation should go at the top of the block.",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "338cee5f_7734d844",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 843,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T20:00:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3fee32e7_87f07494",
       "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
