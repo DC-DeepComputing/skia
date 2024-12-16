@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d9a4d235_f5115cad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2024-12-16T15:26:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8b189bba_a4b22023",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "21cd7fab_ce76ebf2",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -122,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1f1e5ec_e9d83cc4",
+        "filename": "modules/svg/include/SkSVGNode.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2024-12-16T15:26:30Z",
+      "side": 1,
+      "message": "ok, thanks.I followed your instruction, and I considered situation when matrix is identity. Is that ok?",
+      "parentUuid": "c551c226_ec8de2a9",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a786cc7_afe74168",
@@ -135,6 +171,24 @@
       "writtenOn": "2024-12-13T20:16:49Z",
       "side": 1,
       "message": "Let\u0027s add an `OBBScope` getter instead:\n\n`const OBBScope\u0026 currentOBBScope() const { return fOBBScope; }`",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa979e8_c7bbdef4",
+        "filename": "modules/svg/include/SkSVGRenderContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2024-12-16T15:26:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a786cc7_afe74168",
       "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
