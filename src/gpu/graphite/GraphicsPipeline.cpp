@@ -13,6 +13,13 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/utils/SkShaderUtils.h"
 
+#include "src/gpu/graphite/GlobalCache.h"
+#include "src/gpu/graphite/SharedContext.h"
+
+skgpu::StdSteadyClock::time_point fTimeStart;
+
+int64_t micros_since_0();
+
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
@@ -21,11 +28,26 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
                    /*gpuMemorySize=*/0)
-        , fPipelineInfo(pipelineInfo) {}
+        , fPipelineInfo(pipelineInfo) {
+    auto gCache = sharedContext->globalCache();
+
+    fLog = gCache->gimme2(this->getPipelineInfo().fUniqueKeyHash);
+}
 
 GraphicsPipeline::~GraphicsPipeline() {
+    auto event = this->fromPrecompile() ? SkLog::EventType2::kDeletionP
+                                        : SkLog::EventType2::kDeletionN;
+
+    fLog->addEvent2(event, this->id1());
+
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
     static const char* kNames[2] = { "DeletionN", "DeletionP" };
+    SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+             fLog->fID,
+             micros_since_0(),
+             kNames[this->fromPrecompile()],
+             this->getPipelineInfo().fUniqueKeyHash,
+             this->id1());
     TRACE_EVENT_INSTANT2("skia.gpu",
                          TRACE_STR_STATIC(kNames[this->fromPrecompile()]),
                          TRACE_EVENT_SCOPE_THREAD,
