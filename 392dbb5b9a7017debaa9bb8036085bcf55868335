@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0abbb4da_16ccf6f5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-16T17:35:02Z",
+      "side": 1,
+      "message": "nit: move the Bug line after the description, just before Change-Id",
+      "revId": "392dbb5b9a7017debaa9bb8036085bcf55868335",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
