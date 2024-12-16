@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727ce248_beb3c633",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-16T16:52:21Z",
+      "side": 1,
+      "message": "I could maybe see how the constexprs on the conditions are defensive more than required, but I wasn\u0027t quite sure why they were added in http://review.skia.org/526520",
+      "revId": "97a214196fb5fd2ece6ab52fe62aa1689d0f8644",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
