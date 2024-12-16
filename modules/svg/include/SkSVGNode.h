@@ -114,7 +114,7 @@ public:
     void render(const SkSVGRenderContext&) const;
     bool asPaint(const SkSVGRenderContext&, SkPaint*) const;
     SkPath asPath(const SkSVGRenderContext&) const;
-    SkRect objectBoundingBox(const SkSVGRenderContext&) const;
+    virtual SkRect objectBoundingBox(const SkSVGRenderContext&) const;
 
     void setAttribute(SkSVGAttribute, const SkSVGValue&);
     bool setAttribute(const char* attributeName, const char* attributeValue);
