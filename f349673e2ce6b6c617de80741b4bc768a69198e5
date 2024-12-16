@@ -87,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "03ca5207_4b04f53d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2024-12-16T04:21:42Z",
+      "side": 1,
+      "message": "Sorry for late reply.It is my pleasure that i can fix by myself, if i get a chance",
+      "parentUuid": "7592cb7f_626f1e87",
+      "revId": "f349673e2ce6b6c617de80741b4bc768a69198e5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c551c226_ec8de2a9",
