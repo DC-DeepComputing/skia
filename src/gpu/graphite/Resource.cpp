@@ -79,7 +79,8 @@ void Resource::internalDispose() {
     SkASSERT(fSharedContext);
     this->invokeReleaseProc();
     this->freeGpuData();
-    fSharedContext = nullptr;
+//    fSharedContext = nullptr;
+    fWasDestroyed = true;
     // TODO: If we ever support freeing all the backend objects without deleting the object, we'll
     // need to add a hasAnyRefs() check here.
     delete this;
@@ -137,4 +138,3 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 } // namespace skgpu::graphite
-

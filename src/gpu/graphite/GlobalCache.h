@@ -12,11 +12,13 @@
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkLRUCache.h"
+#include "src/core/SkTraceEvent.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 
-
 #include <functional>
+
+int64_t micros_since_0();
 
 namespace skgpu::graphite {
 
@@ -24,6 +26,81 @@ class ComputePipeline;
 class GraphicsPipeline;
 class Resource;
 class ShaderCodeDictionary;
+
+    class SkLog : public SkRefCnt {
+    public:
+        SkLog(const UniqueKey& k, int id) : fKey(k), fID(id) {}
+
+        int id() const { return fID; }
+
+        enum class EventType2 {
+            kUnset,
+            kCacheHitForN,
+            kCacheHitForP,
+            kCacheMissForN,
+            kCacheMissForP,
+            kBeginBuildN,
+            kBeginBuildP,
+            kNWonRaceOverN,
+            kNWonRaceOverP,
+            kPWonRaceOverN,
+            kPWonRaceOverP,
+            kAddedN,
+            kAddedP,
+            kGoodPurgedN,
+            kGoodPurgedP,
+            kBadPurgedN,
+            kBadPurgedP,
+            kWaitBeginN,
+            kWaitEndN,
+            kDeletionN,
+            kDeletionP,
+        };
+
+        static const char* Name(EventType2 type) {
+            switch (type) {
+                case EventType2::kUnset:         return "Unset";
+                case EventType2::kCacheHitForN:  return "CacheHitForN";
+                case EventType2::kCacheHitForP:  return "CacheHitForP";
+                case EventType2::kCacheMissForN: return "CacheMissForN";
+                case EventType2::kCacheMissForP: return "CacheMissForP";
+                case EventType2::kBeginBuildN:   return "BeginBuildN";
+                case EventType2::kBeginBuildP:   return "BeginBuildP";
+                case EventType2::kPWonRaceOverP: return "PWonRaceOverP";
+                case EventType2::kPWonRaceOverN: return "PWonRaceOverN";
+                case EventType2::kNWonRaceOverP: return "NWonRaceOverP";
+                case EventType2::kNWonRaceOverN: return "NWonRaceOverN";
+                case EventType2::kAddedN:        return "AddedN";
+                case EventType2::kAddedP:        return "AddedP";
+                case EventType2::kGoodPurgedN:   return "PurgedN";
+                case EventType2::kGoodPurgedP:   return "PurgedP";
+                case EventType2::kBadPurgedN:    return "BadPurgedN";
+                case EventType2::kBadPurgedP:    return "BadPurgedP";
+                case EventType2::kWaitBeginN:    return "WaitBeginN";
+                case EventType2::kWaitEndN:      return "WaitEndN";
+                case EventType2::kDeletionN:     return "DeletionN";
+                case EventType2::kDeletionP:     return "DeletionP";
+            }
+
+            SkUNREACHABLE;
+        }
+
+        void addEvent2(EventType2 type, uint32_t pipelineID1, uint32_t pipelineID2 = UINT32_MAX);
+
+        static constexpr uint32_t kMaxNumMsgs = 40;
+
+        const UniqueKey fKey;
+        const int fID;
+        struct {
+            EventType2 fType = EventType2::kUnset;
+            int64_t fTime = 0;
+            int fAncillary = 0;  // only used for kPurgedN and kPurgedP - for number of hits
+            uint32_t fPipelineKey1;
+            uint32_t fPipelineKey2;
+        } fEvents[kMaxNumMsgs];
+        std::atomic<uint32_t> fCurEvent1{0};
+        uint32_t fNumHits = 0;
+    };
 
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement
@@ -62,11 +139,18 @@ public:
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
 
+    SkLog* gimme2(uint32_t hash) const SK_GUARDED_BY(fSpinLock);
+    SkLog* gimme(const UniqueKey&) SK_GUARDED_BY(fSpinLock);
+    void dump();
+
     struct PipelineStats {
         int fGraphicsCacheHits = 0;
         int fGraphicsCacheMisses = 0;
         int fGraphicsCacheAdditions = 0;
-        int fGraphicsRaces = 0;
+        int fTotalGraphicsRaces = 0;
+        int fFoo[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBar[2][2] = { { 0, 0 }, { 0, 0 } }; // [winner][loser]
+        int fBaz[2] = { 0, 0 };
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
@@ -84,9 +168,32 @@ public:
     void addStaticResource(sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
 
 private:
+    struct Traits2 {
+        static const UniqueKey& GetKey(sk_sp<SkLog> e) {
+            return (e)->fKey;
+        }
+
+        static uint32_t Hash(const UniqueKey& k) {
+            return KeyHash()(k);
+        }
+    };
+    using LogHash = skia_private::THashTable<sk_sp<SkLog>, UniqueKey, Traits2>;
+
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
     };
+    struct PurgeCB {
+        void operator()(const UniqueKey& key, sk_sp<GraphicsPipeline>* p, void* data) const {
+            LogHash* hash = reinterpret_cast<LogHash *>(data);
+            sk_sp<SkLog>* log = hash->find(key);
+            bool fromPrecompile = (*p)->fromPrecompile();
+            auto event = fromPrecompile ? ((*p)->wasUsed() ? SkLog::EventType2::kGoodPurgedP : SkLog::EventType2::kBadPurgedP)
+                                        : ((*p)->wasUsed() ? SkLog::EventType2::kGoodPurgedN : SkLog::EventType2::kBadPurgedN);
+            (*log)->addEvent2(event, (*p)->id1());
+            if ((*log)->fNumHits == 0 && (*p)->fromPrecompile()) {
+                SkDebugf("------------------ Wasted!!!\n");
+            }
+            (*log)->fNumHits = 0;
 
     static void LogPurge(const UniqueKey& key, sk_sp<GraphicsPipeline>* p);
     struct PurgeCB {
@@ -104,6 +211,9 @@ private:
     // expected to be low. For these reasons we store pipelines globally instead of per-Recorder.
     GraphicsPipelineCache fGraphicsPipelineCache SK_GUARDED_BY(fSpinLock);
     ComputePipelineCache  fComputePipelineCache  SK_GUARDED_BY(fSpinLock);
+
+
+    LogHash fLogHash SK_GUARDED_BY(fSpinLock);
 
     skia_private::TArray<sk_sp<Resource>> fStaticResource SK_GUARDED_BY(fSpinLock);
 

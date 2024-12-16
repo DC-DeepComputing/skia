@@ -65,6 +65,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
     sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(pipelineKey,
                                                                          pipelineCreationFlags,
                                                                          &compilationID);
+
     if (!pipeline) {
         // Haven't encountered this pipeline, so create a new one. Since pipelines are shared
         // across Recorders, we could theoretically create equivalent pipelines on different
@@ -77,18 +78,29 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
 
+        auto event = forPrecompile ? SkLog::EventType2::kBeginBuildP
+                                   : SkLog::EventType2::kBeginBuildN;
+
+        SkLog* log = globalCache->gimme(pipelineKey);
+        log->addEvent2(event, futureID);
+
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool forPrecompile =
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
         static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
+        SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+                 log->id(),
+                 micros_since_0(),
+                 kNames[forPrecompile],
+                 pipelineKey.hash(),
+                 futureID);
         TRACE_EVENT_INSTANT2("skia.gpu",
                              TRACE_STR_STATIC(kNames[forPrecompile]),
                              TRACE_EVENT_SCOPE_THREAD,
                              "key", pipelineKey.hash(),
                              "compilationID", compilationID);
 #endif
-
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
                                                 pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags,

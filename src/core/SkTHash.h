@@ -122,6 +122,22 @@ public:
         return nullptr;
     }
 
+    T* find2(uint32_t hash) const {
+        int index = hash & (fCapacity-1);
+        for (int n = 0; n < fCapacity; n++) {
+            Slot& s = fSlots[index];
+            if (s.empty()) {
+                return nullptr;
+            }
+            if (hash == s.fHash) {
+                return &*s;
+            }
+            index = this->next(index);
+        }
+        SkASSERT(fCapacity == fCount);
+        return nullptr;
+    }
+
     // If there is an entry in the table with this key, return it.  If not, null.
     // This only works for pointer type T, and cannot be used to find an nullptr entry.
     T findOrNull(const K& key) const {

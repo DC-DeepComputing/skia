@@ -35,7 +35,7 @@ private:
     };
 
 public:
-    explicit SkLRUCache(int maxCount) : fMaxCount(maxCount) {}
+    explicit SkLRUCache(int maxCount, void* data = nullptr) : fMaxCount(maxCount), fData(data) {}
     SkLRUCache() = delete;
 
     ~SkLRUCache() {
@@ -131,6 +131,7 @@ private:
     int                                         fMaxCount;
     skia_private::THashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>                     fLRU;
+    void*                                       fData;
 };
 
 #endif

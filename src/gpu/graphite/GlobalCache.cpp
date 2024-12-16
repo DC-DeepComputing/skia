@@ -24,11 +24,24 @@ uint32_t next_compilation_id() {
 
 } // anonymous namespce
 
+extern skgpu::StdSteadyClock::time_point fTimeStart;
+
+int64_t micros_since_1(skgpu::StdSteadyClock::time_point start) {
+    skgpu::StdSteadyClock::duration elapsed = skgpu::StdSteadyClock::now() - start;
+    return std::chrono::duration_cast<std::chrono::microseconds>(elapsed).count();
+};
+
+int64_t micros_since_0() {
+    return micros_since_1(fTimeStart);
+}
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
-        : fGraphicsPipelineCache(256)  // TODO: find a good value for these limits
-        , fComputePipelineCache(256) {}
+        : fGraphicsPipelineCache(/*256*/ 2, &fLogHash)  // TODO: find a good value for these limits
+        , fComputePipelineCache(256)
+        , fLogHash() {
+}
 
 GlobalCache::~GlobalCache() {
     // These should have been cleared out earlier by deleteResources().
@@ -48,11 +61,20 @@ void GlobalCache::deleteResources() {
 
 void GlobalCache::LogPurge(const UniqueKey& key, sk_sp<GraphicsPipeline>* p) {
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
+    if (!(*p)->wasUsed() && (*p)->fromPrecompile()) {
+        // Add UMA stat for wasted precompile!
+    }
+
     // A "Bad" Purge is one where the Pipeline was never retrieved from the Cache (i.e., unused
     // overgeneration).
     static const char* kNames[2][2] = { { "BadPurgedN", "BadPurgedP" },
                                         { "PurgedN",    "PurgedP"} };
-
+    SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+             (*log)->id(),
+             micros_since_0(),
+             kNames[(*p)->wasUsed()][fromPrecompile],
+             key.hash(),
+             (*p)->id1());
     TRACE_EVENT_INSTANT2("skia.gpu",
                          TRACE_STR_STATIC(kNames[(*p)->wasUsed()][(*p)->fromPrecompile()]),
                          TRACE_EVENT_SCOPE_THREAD,
@@ -65,6 +87,7 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         const UniqueKey& key,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t *compilationID) {
+    SkLog* log = this->gimme(key);
 
     [[maybe_unused]] bool forPrecompile =
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
@@ -77,10 +100,24 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         ++fStats.fGraphicsCacheHits;
 #endif
 
+        ++fStats.fBar[(*entry)->fromPrecompile()][forPrecompile];
+
+        auto event = forPrecompile ? SkLog::EventType2::kCacheHitForP
+                                   : SkLog::EventType2::kCacheHitForN;
+
+        log->fNumHits++;
         (*entry)->markUsed();
+
+        log->addEvent2(event, (*entry)->id1());
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         static const char* kNames[2] = { "CacheHitForN", "CacheHitForP" };
+        SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+                 log->id(),
+                 micros_since_0(),
+                 kNames[forPrecompile],
+                 key.hash(),
+                 (*entry)->id1());
         TRACE_EVENT_INSTANT2("skia.gpu",
                              TRACE_STR_STATIC(kNames[forPrecompile]),
                              TRACE_EVENT_SCOPE_THREAD,
@@ -94,6 +131,12 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         ++fStats.fGraphicsCacheMisses;
 #endif
 
+        ++fStats.fBaz[forPrecompile];
+
+        auto event = forPrecompile ? SkLog::EventType2::kCacheMissForP
+                                   : SkLog::EventType2::kCacheMissForN;
+        log->addEvent2(event, *futureID);
+
         if (compilationID) {
             // This is a cache miss so we know the next step is going to be a Pipeline
             // creation. Create the compilationID here so we can use it in the "CacheMissFor"
@@ -102,6 +145,12 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
             static const char* kNames[2] = { "CacheMissForN", "CacheMissForP" };
+            SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+                     log->id(),
+                     micros_since_0(),
+                     kNames[forPrecompile],
+                     key.hash(),
+                     *futureID);
             TRACE_EVENT_INSTANT2("skia.gpu",
                                  TRACE_STR_STATIC(kNames[forPrecompile]),
                                  TRACE_EVENT_SCOPE_THREAD,
@@ -137,6 +186,8 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
+    SkLog* log = this->gimme(key);
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
@@ -149,6 +200,20 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsCacheAdditions;
 #endif
+        bool fromPrecompile = pipeline->fromPrecompile();
+        auto event = fromPrecompile ? SkLog::EventType2::kAddedP
+                                    : SkLog::EventType2::kAddedN;
+        SkASSERT(!pipeline->wasUsed());
+        SkASSERT(log->fNumHits == 0);
+        uint32_t pipelineID = pipeline->id1();
+        entry = fGraphicsPipelineCache.insert(key, std::move(pipeline));
+        log->addEvent2(event, pipelineID);
+
+        // Precompile Pipelines are only marked as used when they get a cache hit in
+        // findGraphicsPipeline
+        if (!fromPrecompile) {
+            (*entry)->markUsed();
+        }
 
         // Precompile Pipelines are only marked as used when they get a cache hit in
         // findGraphicsPipeline
@@ -158,6 +223,12 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         static const char* kNames[2] = { "AddedN", "AddedP" };
+        SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, UINT32_MAX },\n",
+                 log->id(),
+                 micros_since_0(),
+                 kNames[fromPrecompile],
+                 key.hash(),
+                 pipelineID);
         TRACE_EVENT_INSTANT2("skia.gpu",
                              TRACE_STR_STATIC(kNames[(*entry)->fromPrecompile()]),
                              TRACE_EVENT_SCOPE_THREAD,
@@ -168,7 +239,38 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #if defined(GPU_TEST_UTILS)
         // else there was a race creating the same pipeline and this thread lost, so return
         // the winner
-        ++fStats.fGraphicsRaces;
+        ++fStats.fTotalGraphicsRaces;
+        ++fStats.fFoo[(*entry)->fromPrecompile()][pipeline->fromPrecompile()];
+
+        static const SkLog::EventType2 kCombos[4] = {
+                SkLog::EventType2::kNWonRaceOverN,
+                SkLog::EventType2::kNWonRaceOverP,
+                SkLog::EventType2::kPWonRaceOverN,
+                SkLog::EventType2::kPWonRaceOverP,
+        };
+
+
+        int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
+        log->addEvent2(kCombos[race], (*entry)->id1(), pipeline->id1());
+
+        static const char* kNames[4] = {
+                "NWonRaceOverN",
+                "NWonRaceOverP",
+                "PWonRaceOverN",
+                "PWonRaceOverP"
+        };
+        SkDebugf("{ %d, %lld, \"%s\", %u, -1, %u, %u },\n",
+                 log->id(),
+                 micros_since_0(),
+                 kNames[race],
+                 key.hash(),
+                 (*entry)->id1(),   // winner
+                 pipeline->id1());  // loser
+        TRACE_EVENT_INSTANT2("skia.gpu",
+                             TRACE_STR_STATIC(kNames[race]),
+                             TRACE_EVENT_SCOPE_THREAD,
+                             "key", key.hash(),
+                             "losingPipelineID", pipeline->id1());
 #endif
 
         [[maybe_unused]] int race = (*entry)->fromPrecompile() * 2 + pipeline->fromPrecompile();
@@ -216,6 +318,61 @@ void GlobalCache::forEachGraphicsPipeline(
 
     fGraphicsPipelineCache.foreach([&](const UniqueKey* k, const sk_sp<GraphicsPipeline>* v) {
         fn(*k, v->get());
+    });
+}
+
+void SkLog::addEvent2(EventType2 type, uint32_t pipelineID1, uint32_t pipelineID2) {
+    uint32_t curEvent = fCurEvent1.fetch_add(1, std::memory_order_relaxed);
+    SkASSERT_RELEASE(curEvent < kMaxNumMsgs);
+
+    fEvents[curEvent] = { type, micros_since_0(), (int) fNumHits, pipelineID1, pipelineID2 };
+}
+
+SkLog* GlobalCache::gimme2(uint32_t hash) const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    sk_sp<SkLog>* log = fLogHash.find2(hash);
+    if (!log) {
+        SkASSERT(0);
+        return nullptr;
+    }
+
+    return const_cast<SkLog*>((*log).get());
+}
+
+SkLog* GlobalCache::gimme(const UniqueKey& key) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    sk_sp<SkLog>* log = fLogHash.find(key);
+    if (!log) {
+        sk_sp<SkLog> tmp = sk_make_sp<SkLog>(key, fLogHash.count());
+        log = fLogHash.set(std::move(tmp));
+    }
+
+    return (*log).get();
+}
+
+void GlobalCache::dump() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    fLogHash.foreach([](sk_sp<SkLog>* log) {
+        uint32_t numEvents = (*log)->fCurEvent1.fetch_add(0, std::memory_order_relaxed);
+        numEvents = std::min(numEvents, SkLog::kMaxNumMsgs);
+
+        SkDebugf("%2d: %10u ", (*log)->id(), (*log)->fKey.hash());
+        for (uint32_t i = 0; i < numEvents; ++i) {
+            SkDebugf("[%5lld %s",
+                     (*log)->fEvents[i].fTime,
+                     SkLog::Name((*log)->fEvents[i].fType));
+            if ((*log)->fEvents[i].fPipelineKey1 != UINT32_MAX) {
+                SkDebugf(" %u", (*log)->fEvents[i].fPipelineKey1);
+            }
+            if ((*log)->fEvents[i].fPipelineKey2 != UINT32_MAX) {
+                SkDebugf(" %u", (*log)->fEvents[i].fPipelineKey2);
+            }
+            SkDebugf("]");
+        }
+        SkDebugf("\n");
     });
 }
 
