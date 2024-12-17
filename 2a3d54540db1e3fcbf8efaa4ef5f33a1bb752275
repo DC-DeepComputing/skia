@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "201332f7_b1382151",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T12:15:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0822aa10_63f65ded",
+      "revId": "2a3d54540db1e3fcbf8efaa4ef5f33a1bb752275",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a35e3b62_77362931",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-16T21:48:25Z",
       "side": 1,
       "message": "I\u0027m sure Clang Tidy comlained about this one because it is a declaration and not a definition. The rest of these changes are not consistent, the other changes are removing `const` from a definition, which is quite different.\n\nI\u0027m not a big fan of removing `const` from declarations to begin with even if they don\u0027t actually mean anything. But we really should not be removing `const` from definitions.",
+      "revId": "2a3d54540db1e3fcbf8efaa4ef5f33a1bb752275",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b4b4677_6d1e0ca5",
+        "filename": "include/core/SkString.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T12:15:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a35e3b62_77362931",
       "revId": "2a3d54540db1e3fcbf8efaa4ef5f33a1bb752275",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
