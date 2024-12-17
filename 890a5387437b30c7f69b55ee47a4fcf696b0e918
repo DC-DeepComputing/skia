@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb9a7192_d62836a6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:56:16Z",
+      "side": 1,
+      "message": "Ah, the C++23 `~std::unique_ptr` is now `constexpr` thing.",
+      "revId": "890a5387437b30c7f69b55ee47a4fcf696b0e918",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
