@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2261ae3_1fb3563c",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-17T18:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c9903ada_de59e19e",
+      "range": {
+        "startLine": 25,
+        "startChar": 12,
+        "endLine": 25,
+        "endChar": 43
+      },
+      "revId": "b3b3e4cc40cdf6bfaa56c74a4b5a1d4ef4c487c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e523d248_18e5906f",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bcde600_1278f09b",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 264,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-17T18:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e523d248_18e5906f",
+      "range": {
+        "startLine": 264,
+        "startChar": 12,
+        "endLine": 264,
+        "endChar": 43
+      },
+      "revId": "b3b3e4cc40cdf6bfaa56c74a4b5a1d4ef4c487c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27f8ae01_061c3122",
@@ -60,6 +108,30 @@
       "writtenOn": "2024-12-17T18:33:24Z",
       "side": 1,
       "message": "This should be about FreeType being available (not fontconfig)?",
+      "range": {
+        "startLine": 270,
+        "startChar": 12,
+        "endLine": 270,
+        "endChar": 43
+      },
+      "revId": "b3b3e4cc40cdf6bfaa56c74a4b5a1d4ef4c487c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2119151a_2b573322",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2024-12-17T18:40:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27f8ae01_061c3122",
       "range": {
         "startLine": 270,
         "startChar": 12,
