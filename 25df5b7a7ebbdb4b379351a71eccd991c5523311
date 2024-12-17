@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af00fc41_43f485c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-17T16:48:34Z",
+      "side": 1,
+      "message": "I agree with the offline discussion that eventually adding a public API to SkPicture to check if it has GPU-only content would be helpful, but this seems like a good stopgap.  I could also believe that it could remain our policy, if we make the argument that an SkPicture should always be rendered by the same backend.",
+      "revId": "25df5b7a7ebbdb4b379351a71eccd991c5523311",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
