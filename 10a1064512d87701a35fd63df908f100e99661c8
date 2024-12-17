@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2502b0_22d021b1",
+        "filename": "include/docs/SkPDFDocument.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T21:40:30Z",
+      "side": 1,
+      "message": "I think the statement was from when I was confused. I\u0027ve deleted it.",
+      "parentUuid": "41264965_4d5e9cb6",
+      "range": {
+        "startLine": 206,
+        "startChar": 34,
+        "endLine": 206,
+        "endChar": 74
+      },
+      "revId": "10a1064512d87701a35fd63df908f100e99661c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cc3c5e7_a5781eb6",
@@ -37,6 +61,24 @@
       "writtenOn": "2024-12-17T21:24:34Z",
       "side": 1,
       "message": "This should rather take a mutable metadata reference and update it. What if we want more of these to string together? There isn\u0027t anything special about this procedure that it should create a Metadata. Also, the name is a bit generic, this is specifically for adding the default jpeg callbacks.",
+      "revId": "10a1064512d87701a35fd63df908f100e99661c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7b1f369_ef32f770",
+        "filename": "include/docs/SkPDFJpegHelpers.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T21:40:30Z",
+      "side": 1,
+      "message": "When clients invoke it `SkPDF::JPEG::MetadataWithCallbacks()` the namespace indicates it\u0027s about the JPEG things. Good enough?\n\nI added `SkPDF::JPEG::AddCallbacks` in addition to this, WDYT?",
+      "parentUuid": "0cc3c5e7_a5781eb6",
       "revId": "10a1064512d87701a35fd63df908f100e99661c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
