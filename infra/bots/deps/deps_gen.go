@@ -29,7 +29,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/angle/angle": {
 		Id:      "chromium.googlesource.com/angle/angle",
-		Version: "e9b33f04020efd5728dc1a0e9762032e64d52861",
+		Version: "00d9ef8f182ca015ca6ec6a0fa4bd76512a9bca2",
 		Path:    "third_party/externals/angle2",
 	},
 	"chromium.googlesource.com/chromium/deps/icu": {
@@ -144,7 +144,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"chromium.googlesource.com/vulkan-deps": {
 		Id:      "chromium.googlesource.com/vulkan-deps",
-		Version: "83e6ead8ab3b79845da980ee2605caf0d8806d4f",
+		Version: "296cdf58b6ec6427a878dbe640e0c83b7930a54b",
 		Path:    "third_party/externals/vulkan-deps",
 	},
 	"chromium.googlesource.com/webm/libwebp": {
@@ -154,13 +154,8 @@ var deps = deps_parser.DepsEntries{
 	},
 	"dawn.googlesource.com/dawn": {
 		Id:      "dawn.googlesource.com/dawn",
-		Version: "cf71700f44a8f75ce59d6e677e9279350caec006",
+		Version: "ad54e957a81258f0bec879e1ff6fde0272f70099",
 		Path:    "third_party/externals/dawn",
-	},
-	"github.com/skia-dev/delaunator-cpp": {
-		Id:      "github.com/skia-dev/delaunator-cpp",
-		Version: "98305ef6c4e862f7d48df9cc647b690d796fec68",
-		Path:    "third_party/externals/delaunator-cpp",
 	},
 	"infra/3pp/tools/ninja": {
 		Id:      "infra/3pp/tools/ninja",
@@ -169,7 +164,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"skia.googlesource.com/buildbot": {
 		Id:      "skia.googlesource.com/buildbot",
-		Version: "9513bbe24fc9a653b9a724e038e06dcba7405ff8",
+		Version: "43322002e47108a4f17c51a19fdde7f82157f5f7",
 		Path:    "infra/skia-infra",
 	},
 	"skia.googlesource.com/external/github.com/AOMediaCodec/libavif": {
@@ -204,7 +199,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools": {
 		Id:      "skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
-		Version: "1229f1ef3b82498af600965141cde29a3c928e29",
+		Version: "7cac4f3551b177ebc32aa58d47e3a5ce734f160f",
 		Path:    "third_party/externals/spirv-tools",
 	},
 	"skia.googlesource.com/external/github.com/abseil/abseil-cpp": {
@@ -237,6 +232,11 @@ var deps = deps_parser.DepsEntries{
 		Version: "55d35d8387c15bf0cfd71861df67af8cfbda7456",
 		Path:    "third_party/externals/imgui",
 	},
+	"skia.googlesource.com/external/github.com/skia-dev/delaunator-cpp": {
+		Id:      "skia.googlesource.com/external/github.com/skia-dev/delaunator-cpp",
+		Version: "98305ef6c4e862f7d48df9cc647b690d796fec68",
+		Path:    "third_party/externals/delaunator-cpp",
+	},
 	"skia.googlesource.com/third_party/libpng": {
 		Id:      "skia.googlesource.com/third_party/libpng",
 		Version: "ed217e3e601d8e462f7fd1e04bed43ac42212429",
@@ -249,12 +249,12 @@ var deps = deps_parser.DepsEntries{
 	},
 	"skia/tools/sk": {
 		Id:      "skia/tools/sk",
-		Version: "git_revision:9513bbe24fc9a653b9a724e038e06dcba7405ff8",
+		Version: "git_revision:43322002e47108a4f17c51a19fdde7f82157f5f7",
 		Path:    "bin",
 	},
 	"swiftshader.googlesource.com/SwiftShader": {
 		Id:      "swiftshader.googlesource.com/SwiftShader",
-		Version: "7e54d43d6905f978ccf90680dd22a48b0ede8d8b",
+		Version: "23b93c7cfe27e205e178a135a6ea24d1dcba1068",
 		Path:    "third_party/externals/swiftshader",
 	},
 }
