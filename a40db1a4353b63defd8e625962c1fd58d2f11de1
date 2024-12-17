@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1aa56cea_0a7a074f",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-17T16:15:39Z",
+      "side": 1,
+      "message": "`jpeg_input_complete(dinfo)` only checks if we have read the EOF marker of the data so it wouldn\u0027t matter for non buffered images. However, after making these changes there are enough differences for the progressive images that I just made a separate code path.",
+      "parentUuid": "932abdfb_985f52fa",
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "91dce9e5_56ab5d78",
         "filename": "src/codec/SkJpegCodec.cpp",
         "patchSetId": 9
@@ -76,6 +94,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e4fdaeb_59233377",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-17T16:15:39Z",
+      "side": 1,
+      "message": "Yes looks like it can, documentation reads `/* We do not require the whole pass to have been completed. */.` I don\u0027t see anything requiring it but if we want to read the data again then maybe we should so libjpeg is in a good state.",
+      "parentUuid": "91dce9e5_56ab5d78",
+      "range": {
+        "startLine": 505,
+        "startChar": 26,
+        "endLine": 505,
+        "endChar": 43
+      },
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33c09813_8683fb4d",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-17T16:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2eeca59f_e848faa3",
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1efab68b_ccb1c9de",
@@ -99,6 +159,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "703e9528_d106b199",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 517,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-17T16:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1efab68b_ccb1c9de",
+      "range": {
+        "startLine": 509,
+        "startChar": 0,
+        "endLine": 517,
+        "endChar": 9
+      },
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4f47cd0_5477e206",
@@ -112,6 +196,30 @@
       "writtenOn": "2024-12-16T21:02:51Z",
       "side": 1,
       "message": "If `jpeg_finish_output` fails on the first output pass, do we want to continue or return failure?",
+      "range": {
+        "startLine": 538,
+        "startChar": 30,
+        "endLine": 538,
+        "endChar": 77
+      },
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "db6a8c0e_34c179a2",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-17T16:15:39Z",
+      "side": 1,
+      "message": "Yes we want to return an incomplete failure to match the functionality of non-progressive images.",
+      "parentUuid": "c4f47cd0_5477e206",
       "range": {
         "startLine": 538,
         "startChar": 30,
