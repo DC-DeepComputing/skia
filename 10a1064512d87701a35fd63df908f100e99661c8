@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41264965_4d5e9cb6",
+        "filename": "include/docs/SkPDFDocument.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T21:24:34Z",
+      "side": 1,
+      "message": "This is a confusing statement. Almost all JPEGs are intenally YCrCb (YUV) 420. More importantly these need to be JFIF DCT. I think YCrCbK (CMYK) and single channel are also fine.",
+      "range": {
+        "startLine": 206,
+        "startChar": 34,
+        "endLine": 206,
+        "endChar": 74
+      },
+      "revId": "10a1064512d87701a35fd63df908f100e99661c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cc3c5e7_a5781eb6",
+        "filename": "include/docs/SkPDFJpegHelpers.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T21:24:34Z",
+      "side": 1,
+      "message": "This should rather take a mutable metadata reference and update it. What if we want more of these to string together? There isn\u0027t anything special about this procedure that it should create a Metadata. Also, the name is a bit generic, this is specifically for adding the default jpeg callbacks.",
+      "revId": "10a1064512d87701a35fd63df908f100e99661c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
