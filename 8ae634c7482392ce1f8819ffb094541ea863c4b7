@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fa77bd4_51c9f206",
+        "filename": "src/pdf/SkPDFBitmap.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T12:22:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "387a3c04_6da2da8f",
+      "revId": "8ae634c7482392ce1f8819ffb094541ea863c4b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e96e821c_9acf465e",
