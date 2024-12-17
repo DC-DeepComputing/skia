@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba8e71d_7e140caf",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-17T19:29:32Z",
+      "side": 1,
+      "message": "naming nit: `progressive` of `isProgressive`?",
+      "range": {
+        "startLine": 493,
+        "startChar": 15,
+        "endLine": 493,
+        "endChar": 27
+      },
+      "revId": "53b32dca293ad730537075b0e5a00f558b008eda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

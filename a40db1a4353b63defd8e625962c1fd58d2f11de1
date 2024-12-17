@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8308d9d_5dc47a82",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 504,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-17T19:29:32Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1aa56cea_0a7a074f",
+      "revId": "a40db1a4353b63defd8e625962c1fd58d2f11de1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91dce9e5_56ab5d78",
