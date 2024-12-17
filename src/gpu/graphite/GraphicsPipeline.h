@@ -12,8 +12,11 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+//#include "src/gpu/graphite/GlobalCache.h"
+
 namespace skgpu::graphite {
 
+class SkLog;
 class ShaderInfo;
 class RenderStep;
 
@@ -37,6 +40,8 @@ enum class PipelineCreationFlags : uint8_t {
 class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
+
+    uint32_t id1() const { return fPipelineInfo.fCompilationID; }
 
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
@@ -92,6 +97,7 @@ protected:
 
 private:
     PipelineInfo fPipelineInfo;
+    SkLog* fLog;
 };
 
 }  // namespace skgpu::graphite
