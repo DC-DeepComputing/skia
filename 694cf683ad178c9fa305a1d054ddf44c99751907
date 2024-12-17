@@ -33,6 +33,24 @@
       "message": "Can you add a small note about the wrapper types throwing off gradient base?",
       "revId": "694cf683ad178c9fa305a1d054ddf44c99751907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53df5acd_03c506c8",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-17T13:21:04Z",
+      "side": 1,
+      "message": "Part of me wonders if a small helper method on SkShaderBase like `SkShaderBase::hasGradient()` would be helpful here and in other places as a self-documenting method.",
+      "parentUuid": "077c46b1_88dd73d5",
+      "revId": "694cf683ad178c9fa305a1d054ddf44c99751907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
