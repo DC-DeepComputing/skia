@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9be4035_98686bf6",
+        "filename": "include/ports/SkFontMgr_FontConfigInterface.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "324ba7cb_663751d9",
+      "range": {
+        "startLine": 20,
+        "startChar": 75,
+        "endLine": 20,
+        "endChar": 76
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "714fff6d_47960069",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-12-17T15:17:24Z",
       "side": 1,
       "message": "Put the following arguments on the next line for line length.",
+      "range": {
+        "startLine": 208,
+        "startChar": 79,
+        "endLine": 208,
+        "endChar": 80
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12817b73_570cb977",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "714fff6d_47960069",
       "range": {
         "startLine": 208,
         "startChar": 79,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "041b66c9_ed9cb76b",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3da3d00_fb54c293",
+      "range": {
+        "startLine": 258,
+        "startChar": 75,
+        "endLine": 258,
+        "endChar": 76
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77390482_9a16285f",
@@ -83,6 +155,24 @@
       "writtenOn": "2024-12-17T15:17:24Z",
       "side": 1,
       "message": "I don\u0027t think these includes are needed anymore?",
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd8cb4e5_0e0eb947",
+        "filename": "tests/FCITest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77390482_9a16285f",
       "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "230b817a_3affe580",
+        "filename": "tests/FCITest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27f5e2ea_9c06e8db",
+      "range": {
+        "startLine": 114,
+        "startChar": 73,
+        "endLine": 114,
+        "endChar": 84
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "67d9182a_b182e17b",
@@ -123,6 +237,24 @@
       "writtenOn": "2024-12-17T15:17:24Z",
       "side": 1,
       "message": "These includes should probably have `ifdef`s?",
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23f7c9f5_b31bc6b2",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18374
+      },
+      "writtenOn": "2024-12-17T15:37:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "67d9182a_b182e17b",
       "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
