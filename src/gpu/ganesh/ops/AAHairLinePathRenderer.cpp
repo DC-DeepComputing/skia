@@ -1219,16 +1219,28 @@ void AAHairlineOp::onPrepareDraws(GrMeshDrawTarget* target) {
 
     int instanceCount = fPaths.size();
     bool convertConicsToQuads = !target->caps().shaderCaps()->fFloatIs32Bits;
+    SkSafeMath safeMath;
     for (int i = 0; i < instanceCount; i++) {
         const PathData& args = fPaths[i];
-        quadCount += gather_lines_and_quads(args.fPath, args.fViewMatrix, args.fDevClipBounds,
-                                            args.fCapLength, convertConicsToQuads, &lines, &quads,
-                                            &conics, &qSubdivs, &cWeights);
+        quadCount = safeMath.addInt(quadCount,
+                                    gather_lines_and_quads(args.fPath,
+                                                           args.fViewMatrix,
+                                                           args.fDevClipBounds,
+                                                           args.fCapLength,
+                                                           convertConicsToQuads,
+                                                           &lines,
+                                                           &quads,
+                                                           &conics,
+                                                           &qSubdivs,
+                                                           &cWeights));
     }
 
     int lineCount = lines.size() / 2;
     int conicCount = conics.size() / 3;
-    int quadAndConicCount = conicCount + quadCount;
+    int quadAndConicCount = safeMath.addInt(conicCount, quadCount);
+    if (!safeMath) {
+        return;
+    }
 
     static constexpr int kMaxLines = SK_MaxS32 / kLineSegNumVertices;
     static constexpr int kMaxQuadsAndConics = SK_MaxS32 / kQuadNumVertices;
