@@ -1,0 +1,130 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "324ba7cb_663751d9",
+        "filename": "include/ports/SkFontMgr_FontConfigInterface.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "Second argument on next line for line length.",
+      "range": {
+        "startLine": 20,
+        "startChar": 75,
+        "endLine": 20,
+        "endChar": 76
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "714fff6d_47960069",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "Put the following arguments on the next line for line length.",
+      "range": {
+        "startLine": 208,
+        "startChar": 79,
+        "endLine": 208,
+        "endChar": 80
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3da3d00_fb54c293",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "Second argument on the next line for line length.",
+      "range": {
+        "startLine": 258,
+        "startChar": 75,
+        "endLine": 258,
+        "endChar": 76
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77390482_9a16285f",
+        "filename": "tests/FCITest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "I don\u0027t think these includes are needed anymore?",
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27f5e2ea_9c06e8db",
+        "filename": "tests/FCITest.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "Remove the ` fontconfig` here and this will fit on the line.",
+      "range": {
+        "startLine": 114,
+        "startChar": 73,
+        "endLine": 114,
+        "endChar": 84
+      },
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d9182a_b182e17b",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 1,
+      "message": "These includes should probably have `ifdef`s?",
+      "revId": "1bb7a380a4d16b032e64c03973c67e0a396ffe8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

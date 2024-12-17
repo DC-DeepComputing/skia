@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d573dbed_fcc1b0e9",
+        "filename": "src/ports/SkFontConfigTypeface.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T15:17:24Z",
+      "side": 0,
+      "message": "Wow, this really was always `false`. Yet another reason this shouldn\u0027t be used.",
+      "range": {
+        "startLine": 53,
+        "startChar": 31,
+        "endLine": 53,
+        "endChar": 36
+      },
+      "revId": "7fc6934b20348e6609552918b9d09da0d6f03457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
