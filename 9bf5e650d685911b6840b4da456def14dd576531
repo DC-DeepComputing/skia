@@ -187,6 +187,30 @@
       },
       "revId": "9bf5e650d685911b6840b4da456def14dd576531",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad76d86e_ebe80ad8",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 647,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Per other comment, renamed `fUseVulkanPushConstants` -\u003e `fUseVulkanPushConstantsForGaneshRTAdjust`. You are correct that it is just for ganesh\u0027s rtAdjust values, so I have also removed any references within graphite to this variable",
+      "parentUuid": "0f8512a3_45f66d97",
+      "range": {
+        "startLine": 647,
+        "startChar": 4,
+        "endLine": 647,
+        "endChar": 44
+      },
+      "revId": "9bf5e650d685911b6840b4da456def14dd576531",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5908bc2_e07422de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 46
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "PTAL - I reparented this branch to pull from the input attachment descriptor set change which incorporates descriptor set layout changes which should help address a comment or so left on this CL.",
+      "revId": "c2edef22afeddb9822aa6d07732a81e43035a087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

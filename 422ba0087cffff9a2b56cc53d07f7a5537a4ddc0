@@ -46,6 +46,30 @@
       },
       "revId": "422ba0087cffff9a2b56cc53d07f7a5537a4ddc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11158447_415e9d95",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "To clarify on the above: it\u0027s an attribute of the Caps-level `ResourceBindingRequirements` struct and not of the `Caps` class that gets implemented by backends. \n\nAnyhow, yes, we will always use push constants for Vulkan. For now I have renamed this bool to `fUseVulkanPushConstantsForIntrinsicConstants` which is, at the very least, more precise. \n\nAnother option to indicate to the SkSL compiler that we are utilizing Vulkan push constant syntax for intrinsic constants would be to somehow communicate to `ShaderInfo` that we are using Vulkan. \nOne option could be to add a method for `Caps` to report its `BackendApi`, allowing `ShaderInfo` to query that to behave accordingly (something like passing in a bool representing whether we should use Vulkan push constants to `emit_intrinsic_constants`. That value would be determined by checking `caps-\u003ebackendApi() \u003d\u003d BackendApi::kVulkan` from the `generate[Vertex/Fragment]SkSL` methods). \n\nPlease LMKWYT or if I am missing an easier way to access what backend we are using at SkSL generation time!",
+      "parentUuid": "0695c892_78945950",
+      "range": {
+        "startLine": 66,
+        "startChar": 9,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "422ba0087cffff9a2b56cc53d07f7a5537a4ddc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3526b5e_87e3212c",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Fixed - now only uniforms which actually need to be bound are used within `bindUniformBuffers`. Empty layouts should now also trigger an early exit where no descriptors are bound.",
+      "parentUuid": "94cb1a85_50f9d3f0",
+      "range": {
+        "startLine": 1075,
+        "startChar": 4,
+        "endLine": 1078,
+        "endChar": 57
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "517f4d63_f499cfdc",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-11-14T15:48:08Z",
       "side": 1,
       "message": "If we put a dummy layout in our PipelineLayout, I still don\u0027t think we should ever be trying to allocate descriptors for that set layout. So I don\u0027t think we want to support making pools that support this.",
+      "range": {
+        "startLine": 19,
+        "startChar": 4,
+        "endLine": 19,
+        "endChar": 93
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f79a909b_e389c38d",
+        "filename": "src/gpu/graphite/vk/VulkanDescriptorPool.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "517f4d63_f499cfdc",
       "range": {
         "startLine": 19,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ddc817_80dfb699",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 485,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Removed",
+      "parentUuid": "b16412fe_ce08f60f",
+      "range": {
+        "startLine": 484,
+        "startChar": 4,
+        "endLine": 485,
+        "endChar": 73
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4673fed6_25e5be60",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-11-14T15:48:08Z",
       "side": 1,
       "message": "The pushing of setLayouts in all this code doesn\u0027t seem right to me. We should chat about this offline to figure out what\u0027s the right thing here.",
+      "range": {
+        "startLine": 528,
+        "startChar": 8,
+        "endLine": 528,
+        "endChar": 27
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "449a96af_a0a3a710",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "After talking offline, these concerns are addressed moreso in the parent CL which assigns a bespoke input attachment descriptor set index and can be explored more there (https://skia-review.googlesource.com/c/skia/+/926764)",
+      "parentUuid": "4673fed6_25e5be60",
       "range": {
         "startLine": 528,
         "startChar": 8,
@@ -139,6 +235,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b9e5489_2798a8dd",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "In the latest patch, I juse use `bindingLayouts.data()` as per your earlier suggestion which should be `nullptr` if empty. If I get a validation layer error locally or on a bot, I will carry over that comment!",
+      "parentUuid": "5bda1e5e_7b42fbb0",
+      "range": {
+        "startLine": 99,
+        "startChar": 58,
+        "endLine": 99,
+        "endChar": 72
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "455ed0c5_801caf97",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Good call; done",
+      "parentUuid": "056a48cf_b5eef191",
+      "range": {
+        "startLine": 99,
+        "startChar": 75,
+        "endLine": 99,
+        "endChar": 98
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba9828cb_e750d211",
@@ -162,6 +306,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b64e3a36_f58bcca0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 40
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Ah, yes, TYSM. Fixed",
+      "parentUuid": "ba9828cb_e750d211",
+      "range": {
+        "startLine": 51,
+        "startChar": 36,
+        "endLine": 51,
+        "endChar": 92
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3f31635_14489e3a",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-11-14T15:48:08Z",
       "side": 1,
       "message": "From our offline discussion I think this should be renamed something like `fUseVulkanPushConstantsForGaneshRTAdjust` to make it super clear it doesn\u0027t help anything else related to push constants.",
+      "range": {
+        "startLine": 68,
+        "startChar": 9,
+        "endLine": 68,
+        "endChar": 32
+      },
+      "revId": "72294a9dc9e0b733d01c9858be765a0a65ea5aa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa6fd015_b90dda4a",
+        "filename": "src/sksl/SkSLProgramSettings.h",
+        "patchSetId": 40
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-17T18:39:11Z",
+      "side": 1,
+      "message": "Makes sense. I isolated this small rename change into its own CL as well to hopefully cut down on confusion (this is adjacent to graphite push constant changes and doesn\u0027t actually matter for implementation, the name was just a bit misleading with the new changes): https://skia-review.googlesource.com/c/skia/+/928800",
+      "parentUuid": "a3f31635_14489e3a",
       "range": {
         "startLine": 68,
         "startChar": 9,
