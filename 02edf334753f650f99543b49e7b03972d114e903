@@ -40,6 +40,30 @@
       ],
       "revId": "02edf334753f650f99543b49e7b03972d114e903",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "793c3624_ff46d5bb",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1223,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2024-12-17T17:01:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b972c219_2f58cb0c",
+      "range": {
+        "startLine": 1223,
+        "startChar": 24,
+        "endLine": 1223,
+        "endChar": 37
+      },
+      "revId": "02edf334753f650f99543b49e7b03972d114e903",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
