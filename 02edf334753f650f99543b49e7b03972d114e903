@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b972c219_2f58cb0c",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-17T16:58:03Z",
+      "side": 1,
+      "message": "We should add `\u0026\u0026 safeMath.ok()` to the loop condition.",
+      "range": {
+        "startLine": 1223,
+        "startChar": 24,
+        "endLine": 1223,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1d613915_48ccce73",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+              "range": {
+                "startLine": 1223,
+                "startChar": 0,
+                "endLine": 1224,
+                "endChar": 0
+              },
+              "replacement": "    for (int i \u003d 0; i \u003c instanceCount \u0026\u0026 safeMath.ok(); i++) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "02edf334753f650f99543b49e7b03972d114e903",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
