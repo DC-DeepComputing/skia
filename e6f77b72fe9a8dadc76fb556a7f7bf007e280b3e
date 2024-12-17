@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c338dc25_a534ac1c",
+        "filename": "third_party/libmicrohttpd/BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-17T19:38:06Z",
+      "side": 0,
+      "message": "I realize that for the one target that depends on this (`skiaserve`) this might work, but we cannot add this flag when compiling with msvc. We don\u0027t currently have a good check for \"am I building with clang or gcc\" in our build, it appears we are currently using `!is_win` for that on the assumption that we will need something special for clang-cl anyway.\n\nBeyond that, it\u0027s quite possible this issue has been fixed upstream, but Skia appears to currently be pointing at a version that is very old. More importantly this dependency should probably get updated. I\u0027ll see if that can be done.",
+      "revId": "e6f77b72fe9a8dadc76fb556a7f7bf007e280b3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
