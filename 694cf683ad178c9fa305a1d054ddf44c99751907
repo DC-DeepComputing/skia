@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa55a6d4_49aa8db4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-17T14:30:45Z",
+      "side": 1,
+      "message": "Kinda tricky to catch without looking at specific examples/failures (which I happened to do while adding radial gradients).\n\nThe closest thing is probably round-tripping GMs through SVG, but since feature support is so sparse the number of diffs is overwhelming.\n\nMight be useful to have a task producing Gold results for that config, just to catch progress/regressions, but I\u0027m not sure the SVG writer is important enough.  WDYT?\n\nAlso the \"via\" option is disabled by default, sounds like there were some G3 issues at the time: https://skia-review.googlesource.com/8720",
+      "parentUuid": "46872c65_0431f5fc",
+      "revId": "694cf683ad178c9fa305a1d054ddf44c99751907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "077c46b1_88dd73d5",
@@ -49,6 +67,24 @@
       "side": 1,
       "message": "Part of me wonders if a small helper method on SkShaderBase like `SkShaderBase::hasGradient()` would be helpful here and in other places as a self-documenting method.",
       "parentUuid": "077c46b1_88dd73d5",
+      "revId": "694cf683ad178c9fa305a1d054ddf44c99751907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c93d9b3_a440cb64",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-17T14:30:45Z",
+      "side": 1,
+      "message": "Ack, maybe something similar to `isAImage`.\n\nAdded a comment.",
+      "parentUuid": "53df5acd_03c506c8",
       "revId": "694cf683ad178c9fa305a1d054ddf44c99751907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
