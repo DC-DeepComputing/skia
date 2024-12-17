@@ -87,6 +87,24 @@
       "parentUuid": "f009fee5_53433aa8",
       "revId": "392dbb5b9a7017debaa9bb8036085bcf55868335",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37085d68_d443b7b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-17T13:36:40Z",
+      "side": 1,
+      "message": "Yes, there are two failures, easy to fix:\n\n1) you need to add your email address to the `AUTHORS` file in the repo root\n(see one of the SkCQ comments above)\n\n2) the IWYU bot wants you to `#include \"include/core/SkRect.h\"` in `modules/svg/include/SkSVGShape.h` (not your fault, probably the bot just started checking this directory because you touched some files there)",
+      "parentUuid": "3de9bdcc_c40c3b38",
+      "revId": "392dbb5b9a7017debaa9bb8036085bcf55868335",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
