@@ -604,7 +604,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = vertexAttributes.data();
         } else {
             layout.arrayStride = 0;
-            layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
+            layout.stepMode = wgpu::VertexStepMode::Undefined;
             layout.attributeCount = 0;
             layout.attributes = nullptr;
         }
@@ -624,7 +624,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = instanceAttributes.data();
         } else {
             layout.arrayStride = 0;
-            layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
+            layout.stepMode = wgpu::VertexStepMode::Undefined;
             layout.attributeCount = 0;
             layout.attributes = nullptr;
         }
