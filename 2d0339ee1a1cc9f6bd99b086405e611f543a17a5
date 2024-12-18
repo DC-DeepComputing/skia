@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "762268c2_f782b77e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 47
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-18T19:44:30Z",
+      "side": 1,
+      "message": "Addressed the nits. Also, syncing to ToT Android to get the fix from b/378924245 while using this branch of Skia shows protected video rendering correctly on the Pixel 6.",
+      "revId": "2d0339ee1a1cc9f6bd99b086405e611f543a17a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
