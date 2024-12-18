@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e63451b_10c349a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-18T19:28:09Z",
+      "side": 1,
+      "message": "PTAL. Gerrit +1 was lost b/c of deleted assert",
+      "revId": "2d85c0dbc9cdf0e570cd00c75a44c1cd8709684e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
