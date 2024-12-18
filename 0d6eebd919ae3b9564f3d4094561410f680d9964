@@ -38,6 +38,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3d08ac6c_26711f3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-18T16:28:51Z",
+      "side": 1,
+      "message": "Curious, which version of GCC are you using?",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29638b2d_106ae6f3",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
