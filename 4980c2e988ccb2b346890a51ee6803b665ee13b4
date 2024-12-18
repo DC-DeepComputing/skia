@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20403cb_68c44316",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-18T16:40:06Z",
+      "side": 1,
+      "message": "I saw in the git history some sagas of trying to use a different data type for this. Happy to chat about why those were rolled back if you remember.",
+      "revId": "4980c2e988ccb2b346890a51ee6803b665ee13b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
