@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "561979c7_726d540c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-18T16:44:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e9b00045_09b09763",
+      "range": {
+        "startLine": 25,
+        "startChar": 23,
+        "endLine": 25,
+        "endChar": 24
+      },
+      "revId": "8e25ef1ba09d26627f931a856264412d3133b1f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "9bf51ab6_8fc57372",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -54,6 +78,30 @@
       "writtenOn": "2024-12-18T16:37:32Z",
       "side": 1,
       "message": "These changes got auto-generated when running\n\n```\n$ CARGO_BAZEL_REPIN\u003d1 bazelisk build experimental/rust_png/ffi:ffi_rs\n```",
+      "range": {
+        "startLine": 9,
+        "startChar": 76,
+        "endLine": 9,
+        "endChar": 77
+      },
+      "revId": "8e25ef1ba09d26627f931a856264412d3133b1f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b03919bc_8914a11b",
+        "filename": "bazel/external/cxx/Cargo.lock",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-18T16:44:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4b3a95f1_7e7d4f9e",
       "range": {
         "startLine": 9,
         "startChar": 76,
