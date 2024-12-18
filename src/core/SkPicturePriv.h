@@ -125,6 +125,12 @@ public:
     // v106: SaveLayer supports custom backdrop tile modes
 
     enum Version {
+        kFilterEnumInImageShader_Version    = 76,
+        kFilterOptionsInImageShader_Version = 77,
+        kSerializeMipmaps_Version           = 78,
+        kCubicResamplerImageShader_Version  = 79,
+        kSamplingInImageShader_Version      = 80,
+        kSamplingInDrawImage_Version        = 81,
         kPictureShaderFilterParam_Version   = 82,
         kMatrixImageFilterSampling_Version  = 83,
         kImageFilterImageSampling_Version   = 84,
@@ -173,7 +179,7 @@ public:
         // 5) Run `make -C infra/bots train`
         //
         // Contact the Infra Gardener if the above steps do not work for you.
-        kMin_Version     = kPictureShaderFilterParam_Version,
+        kMin_Version     = kFilterEnumInImageShader_Version,
         kCurrent_Version = kSaveLayerBackdropTileMode
     };
 };

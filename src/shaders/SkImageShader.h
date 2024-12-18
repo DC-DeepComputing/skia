@@ -95,6 +95,9 @@ private:
 
     friend class SkShaderBase;
     using INHERITED = SkShaderBase;
+
+     // for legacy unflattening
+    static sk_sp<SkFlattenable> PreSamplingCreate(SkReadBuffer&);
 };
 
 #endif
