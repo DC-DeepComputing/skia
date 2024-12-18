@@ -16,6 +16,75 @@
       "message": "I saw in the git history some sagas of trying to use a different data type for this. Happy to chat about why those were rolled back if you remember.",
       "revId": "4980c2e988ccb2b346890a51ee6803b665ee13b4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dd30c42_e0520d9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-18T16:47:53Z",
+      "side": 1,
+      "message": "I believe the main issue had been that originally `MCRec` and other internal types were declared in the header but not defined until inside `SkCanvas.cpp` so the size wasn\u0027t available to allocate this storage space.\n\nThat is obviously no longer the case and probably should have been done when `MCRec` was moved into the header.",
+      "parentUuid": "e20403cb_68c44316",
+      "revId": "4980c2e988ccb2b346890a51ee6803b665ee13b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1c95cef_2af58d83",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 2511,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-18T16:47:53Z",
+      "side": 1,
+      "message": "nit: I don\u0027t think there\u0027s much value in adding a new variable name here and would just have it be `sizeof(MCRec)`.",
+      "range": {
+        "startLine": 2511,
+        "startChar": 43,
+        "endLine": 2511,
+        "endChar": 53
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "859d04ea_c2232ffa",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkCanvas.h",
+              "range": {
+                "startLine": 2506,
+                "startChar": 0,
+                "endLine": 2507,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "include/core/SkCanvas.h",
+              "range": {
+                "startLine": 2511,
+                "startChar": 0,
+                "endLine": 2512,
+                "endChar": 0
+              },
+              "replacement": "    alignas(MCRec) std::byte fMCRecStorage[sizeof(MCRec) * kMCRecCount];\n"
+            }
+          ]
+        }
+      ],
+      "revId": "4980c2e988ccb2b346890a51ee6803b665ee13b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
