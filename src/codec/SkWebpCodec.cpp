@@ -12,9 +12,14 @@
 #include "include/codec/SkWebpDecoder.h"
 #include "include/core/SkAlphaType.h"
 #include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorType.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSamplingOptions.h"
+#include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/private/base/SkAlign.h"
@@ -449,9 +454,9 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
             // We need to be conservative here and floor rather than round.
             // Otherwise, we may find ourselves decoding off the end of memory.
             dstX = scaleX * dstX;
-            scaledWidth = scaleX * scaledWidth;
+            scaledWidth = SkScalarRoundToInt(scaleX * scaledWidth);
             dstY = scaleY * dstY;
-            scaledHeight = scaleY * scaledHeight;
+            scaledHeight = SkScalarRoundToInt(scaleY * scaledHeight);
             if (0 == scaledWidth || 0 == scaledHeight) {
                 return kSuccess;
             }
@@ -483,8 +488,15 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
         webpInfo = webpInfo.makeColorType(kBGRA_8888_SkColorType);
     }
 
+    const bool frameIsScaledSubset = frameIsSubset && srcSize != dstInfo.dimensions();
+    if (frameIsScaledSubset) {
+        // TODO: why aren't we minimizing the buffer allocation size for all intermediate buffer cases?
+        dstX = dstY = 0;
+        webpInfo = webpInfo.makeDimensions({scaledWidth, scaledHeight});
+    }
+
     SkBitmap webpDst;
-    if ((this->colorXform() && !is_8888(dstInfo.colorType())) || blendWithPrevFrame) {
+    if ((this->colorXform() && !is_8888(dstInfo.colorType())) || blendWithPrevFrame || frameIsScaledSubset) {
         // We will decode the entire image and then perform the color transform.  libwebp
         // does not provide a row-by-row API.  This is a shame particularly when we do not want
         // 8888, since we will need to create another image sized buffer.
@@ -500,6 +512,9 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 
     config.output.u.RGBA.rgba = reinterpret_cast<uint8_t*>(webpDst.getAddr(dstX, dstY));
     config.output.u.RGBA.stride = static_cast<int>(webpDst.rowBytes());
+
+    // TODO: this looks wrong -- .rgba points inside webpDst's pixel buffer (we're essentially
+    // passing a view), so the view size should be adjusted accordingly.
     config.output.u.RGBA.size = webpDst.computeByteSize();
 
     SkAutoTCallVProc<WebPIDecoder, WebPIDelete> idec(WebPIDecode(nullptr, 0, &config));
@@ -526,6 +541,37 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
             return kInvalidInput;
     }
 
+    if (frameIsScaledSubset) {
+        float scaleX = static_cast<float>(dstInfo.width())  / srcSize.width(),
+              scaleY = static_cast<float>(dstInfo.height()) / srcSize.height();
+
+        // The actual frame dest rect, unconstrained by int snapping.
+        const SkRect dstRect = SkMatrix::Scale(scaleX, scaleY).mapRect(SkRect::Make(frameRect));
+
+        if constexpr (0) {
+            printf("*** frame[%d] - scale: [%f %f], frame: [%d %d %d %d] -> [%f %f %f %f]\n",
+                   index,
+                   scaleX, scaleY,
+                   frameRect.fLeft, frameRect.fTop, frameRect.fRight, frameRect.fBottom,
+                   dstRect.fLeft, dstRect.fTop, dstRect.fRight, dstRect.fBottom);
+            printf("** blend: %d, xform: %d, subset: %d\n",
+                   blendWithPrevFrame, this->colorXform(), !!options.fSubset);
+        }
+
+        SkPaint paint;
+        paint.setAntiAlias(true);
+        paint.setBlendMode(blendWithPrevFrame ? SkBlendMode::kSrcOver : SkBlendMode::kSrc);
+
+        auto canvas = SkCanvas::MakeRasterDirect(dstInfo, dst, rowBytes);
+        auto image = SkImages::RasterFromBitmap(webpDst);
+
+        SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNone);
+
+        canvas->drawImageRect(image, dstRect, sampling, &paint);
+
+        return result;
+    }
+
     const size_t dstBpp = dstInfo.bytesPerPixel();
     dst = SkTAddOffset<void>(dst, dstBpp * dstX + rowBytes * dstY);
     const size_t srcRowBytes = config.output.u.RGBA.stride;
@@ -544,6 +590,8 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
             xformDst = dst;
         }
 
+        // TODO: blend_line instantiates an internal raster pipeline to execute the blending ops.
+        // We should be able to reuse that for all lines.
         for (int y = 0; y < rowsDecoded; y++) {
             this->applyColorXform(xformDst, xformSrc, scaledWidth);
             if (blendWithPrevFrame) {
