@@ -22,6 +22,54 @@
       },
       "revId": "b9beaa9fbd8fc7c4cbb846fca669ae2a456c2e3c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9aed067_aed1a4c1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-18T17:49:04Z",
+      "side": 1,
+      "message": "But",
+      "parentUuid": "19dfe6b8_2dae9a69",
+      "range": {
+        "startLine": 10,
+        "startChar": 72,
+        "endLine": 10,
+        "endChar": 120
+      },
+      "revId": "b9beaa9fbd8fc7c4cbb846fca669ae2a456c2e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51f9eee5_cd22000b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-18T17:49:04Z",
+      "side": 1,
+      "message": "But then the codec could give different results for the same frame... so maybe this solution just isn\u0027t viable",
+      "parentUuid": "19dfe6b8_2dae9a69",
+      "range": {
+        "startLine": 10,
+        "startChar": 72,
+        "endLine": 10,
+        "endChar": 120
+      },
+      "revId": "b9beaa9fbd8fc7c4cbb846fca669ae2a456c2e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
