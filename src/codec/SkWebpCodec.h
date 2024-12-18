@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/codec/SkFrameHolder.h"
 #include "src/codec/SkScalingCodec.h"
@@ -38,6 +39,11 @@ public:
     static std::unique_ptr<SkCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
     static bool IsWebp(const void*, size_t);
 protected:
+    // This can get pixels in one of two ways. The general case writes directly from the libwebp
+    // decoder to dst buffer (this is faster and more memory efficient). For certain cases that
+    // the Skia API supports but libwebp doesn't, (e.g. animated scaling, and animated RGB565)
+    // we use "two pass" decoding. Two pass decoding first writes into an intermediate buffer,
+    // then composites and transforms the intermediate buffer into the dst buffer.
     Result onGetPixels(const SkImageInfo&, void*, size_t, const Options&, int*) override;
     SkEncodedImageFormat onGetEncodedFormat() const override { return SkEncodedImageFormat::kWEBP; }
 
@@ -107,6 +113,9 @@ private:
     // that we will cap the frame count to the frames that
     // succeed.
     bool        fFailed;
+    // Lazily allocated intermediate pixel buffer, for two pass decoding.
+    std::unique_ptr<void, decltype(&sk_free)>    fTwoPassPixbufPtr;
+    size_t                                       fTwoPassPixbufLen;
 
     using INHERITED = SkScalingCodec;
 };
