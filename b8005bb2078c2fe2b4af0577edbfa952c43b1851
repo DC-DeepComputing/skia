@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f597449c_6ac54645",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-18T16:25:25Z",
+      "side": 1,
+      "message": "Seems to be causing issues with GCC, see https://skia-review.googlesource.com/c/skia/+/930996 .",
+      "revId": "b8005bb2078c2fe2b4af0577edbfa952c43b1851",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
