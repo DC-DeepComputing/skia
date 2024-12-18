@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e7c240b9_85787eff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-18T16:32:11Z",
+      "side": 1,
+      "message": "Yeah, I\u0027d prefer a `SK_NO_SANITIZE_CFI` macro over the CLANG one.",
+      "parentUuid": "893aa88a_f31d1f14",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29638b2d_106ae6f3",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
