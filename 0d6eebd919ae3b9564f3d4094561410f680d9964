@@ -109,6 +109,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f33f7975_b878b5e7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-18T20:00:13Z",
+      "side": 1,
+      "message": "May be a larger issue, but it appears that Skia currently blanket adds\n\nC and C++\n-Wno-attributes\n-Wno-deprecated-declarations\n-Wno-maybe-uninitialized\n-Wno-psabi\n-Wno-switch-default\n-Wno-unused-parameter\n-Wno-unreachable-code\n\nC++ only\n-Wno-noexcept-type\n-Wno-dangling-reference\n\nSome of these may or may not still be needed, but in the case of `-Wno-attributes` this is due to the fact that while `__has_attribute` now exists so we can test if `no_sanitize` exists, because the warning is about the string inside we cannot test for support for that (arguably this attribute should have been split up into many `no_sanitize_foo` attributes so they could be individually detected).",
+      "parentUuid": "dc1266e8_124263ab",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29638b2d_106ae6f3",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
