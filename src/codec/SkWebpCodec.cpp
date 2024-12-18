@@ -15,9 +15,11 @@
 #include "include/core/SkColorType.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/private/base/SkAlign.h"
+#include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTemplates.h"
@@ -371,6 +373,15 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     SkASSERT(0 == index || index < fFrameHolder.size());
     SkASSERT(0 == index || !options.fSubset);
 
+    const bool isAnimated = fFrameHolder.size() > 1;
+    SkISize srcSize = options.fSubset ? options.fSubset->size() : this->dimensions();
+    const bool scaled = srcSize != dstInfo.dimensions();
+    const bool fUseTwoPassDecode = (scaled || SkColorTypeIsAlwaysOpaque(dstInfo.colorType()))
+                                    && isAnimated;
+
+    const bool independent = index == 0 ? true :
+            (fFrameHolder.frame(index)->getRequiredFrame() == kNoFrame);
+
     WebPDecoderConfig config;
     if (0 == WebPInitDecoderConfig(&config)) {
         // ABI mismatch.
@@ -386,21 +397,46 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     // If this succeeded in onGetFrameCount(), it should succeed again here.
     SkAssertResult(WebPDemuxGetFrame(fDemux, index + 1, &frame));
 
-    const bool independent = index == 0 ? true :
-            (fFrameHolder.frame(index)->getRequiredFrame() == kNoFrame);
     // Get the frameRect.  libwebp will have already signaled an error if this is not fully
     // contained by the canvas.
     auto frameRect = SkIRect::MakeXYWH(frame.x_offset, frame.y_offset, frame.width, frame.height);
     SkASSERT(this->bounds().contains(frameRect));
     const bool frameIsSubset = frameRect != this->bounds();
-    if (independent && frameIsSubset) {
-        SkSampler::Fill(dstInfo, dst, rowBytes, options.fZeroInitialized);
-    }
 
     int dstX = frameRect.x();
     int dstY = frameRect.y();
     int subsetWidth = frameRect.width();
     int subsetHeight = frameRect.height();
+
+    SkImageInfo decodeDstInfo = dstInfo;
+    void* decodeDst = dst;
+    size_t decodeRowBytes = rowBytes;
+
+    // If |fUseTwoPassDecode| is true, we want to use, or create, a pixel buffer to decode to
+    // that is the same size as the encodedInfo.
+    if (fUseTwoPassDecode) {
+        decodeDstInfo = dstInfo.makeColorType(kRGBA_8888_SkColorType).makeDimensions(srcSize);
+        decodeRowBytes = decodeDstInfo.minRowBytes();
+
+        if (!fTwoPassPixbufPtr) {
+          uint64_t pixbuf_len = static_cast<uint64_t>(decodeDstInfo.bytesPerPixel())
+                                 * srcSize.height() * srcSize.width();
+          void* pixbuf_ptr_raw = (pixbuf_len <= SIZE_MAX)
+                                  ? sk_malloc_flags(pixbuf_len, SK_MALLOC_ZERO_INITIALIZE)
+                                  : nullptr;
+          if (!pixbuf_ptr_raw) {
+            return SkCodec::kInternalError;
+          }
+          fTwoPassPixbufPtr.reset(pixbuf_ptr_raw);
+          fTwoPassPixbufLen = SkToSizeT(pixbuf_len);
+        }
+        decodeDst = fTwoPassPixbufPtr.get();
+    }
+
+    if (independent && frameIsSubset) {
+        SkSampler::Fill(decodeDstInfo, decodeDst, decodeRowBytes, options.fZeroInitialized);
+    }
+
     if (options.fSubset) {
         SkIRect subset = *options.fSubset;
         SkASSERT(this->bounds().contains(subset));
@@ -438,13 +474,13 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     // Ignore the frame size and offset when determining if scaling is necessary.
     int scaledWidth = subsetWidth;
     int scaledHeight = subsetHeight;
-    SkISize srcSize = options.fSubset ? options.fSubset->size() : this->dimensions();
-    if (srcSize != dstInfo.dimensions()) {
+
+    if (scaled && !isAnimated) {
         config.options.use_scaling = 1;
 
         if (frameIsSubset) {
-            float scaleX = ((float) dstInfo.width()) / srcSize.width();
-            float scaleY = ((float) dstInfo.height()) / srcSize.height();
+            float scaleX = ((float) decodeDstInfo.width()) / srcSize.width();
+            float scaleY = ((float) decodeDstInfo.height()) / srcSize.height();
 
             // We need to be conservative here and floor rather than round.
             // Otherwise, we may find ourselves decoding off the end of memory.
@@ -456,8 +492,8 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
                 return kSuccess;
             }
         } else {
-            scaledWidth = dstInfo.width();
-            scaledHeight = dstInfo.height();
+            scaledWidth = decodeDstInfo.width();
+            scaledHeight = decodeDstInfo.height();
         }
 
         config.options.scaled_width = scaledWidth;
@@ -467,7 +503,7 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     const bool blendWithPrevFrame = !independent && frame.blend_method == WEBP_MUX_BLEND
         && frame.has_alpha;
 
-    auto webpInfo = dstInfo;
+    auto webpInfo = decodeDstInfo;
     if (!frame.has_alpha) {
         webpInfo = webpInfo.makeAlphaType(kOpaque_SkAlphaType);
     } else if (this->colorXform() || blendWithPrevFrame) {
@@ -484,14 +520,15 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
     }
 
     SkBitmap webpDst;
-    if ((this->colorXform() && !is_8888(dstInfo.colorType())) || blendWithPrevFrame) {
+    if ((this->colorXform() && !is_8888(decodeDstInfo.colorType())) || blendWithPrevFrame) {
         // We will decode the entire image and then perform the color transform.  libwebp
         // does not provide a row-by-row API.  This is a shame particularly when we do not want
         // 8888, since we will need to create another image sized buffer.
         webpDst.allocPixels(webpInfo);
-    } else {
+     }
+    else {
         // libwebp can decode directly into the output memory.
-        webpDst.installPixels(webpInfo, dst, rowBytes);
+        webpDst.installPixels(webpInfo, decodeDst, decodeRowBytes);
     }
 
     config.output.colorspace = webp_decode_mode(webpInfo.colorType(),
@@ -500,6 +537,9 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 
     config.output.u.RGBA.rgba = reinterpret_cast<uint8_t*>(webpDst.getAddr(dstX, dstY));
     config.output.u.RGBA.stride = static_cast<int>(webpDst.rowBytes());
+
+    // TODO: this looks wrong -- .rgba points inside webpDst's pixel buffer (we're essentially
+    // passing a view), so the view size should be adjusted accordingly.
     config.output.u.RGBA.size = webpDst.computeByteSize();
 
     SkAutoTCallVProc<WebPIDecoder, WebPIDelete> idec(WebPIDecode(nullptr, 0, &config));
@@ -519,18 +559,22 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
                     || rowsDecoded <= 0) {
                 return kInvalidInput;
             }
-            *rowsDecodedPtr = rowsDecoded + dstY;
+            // If using two pass decode the rows decoded should always be the
+            // dst height because we decode the whole bitmap everytime.
+            if (!fUseTwoPassDecode) {
+              *rowsDecodedPtr = rowsDecoded + dstY;
+            }
             result = kIncompleteInput;
             break;
         default:
             return kInvalidInput;
     }
 
-    const size_t dstBpp = dstInfo.bytesPerPixel();
-    dst = SkTAddOffset<void>(dst, dstBpp * dstX + rowBytes * dstY);
+    const size_t dstBpp = decodeDstInfo.bytesPerPixel();
+    decodeDst = SkTAddOffset<void>(decodeDst, dstBpp * dstX + decodeRowBytes * dstY);
     const size_t srcRowBytes = config.output.u.RGBA.stride;
 
-    const auto dstCT = dstInfo.colorType();
+    const auto dstCT = decodeDstInfo.colorType();
     if (this->colorXform()) {
         uint32_t* xformSrc = (uint32_t*) config.output.u.RGBA.rgba;
         SkBitmap tmp;
@@ -538,36 +582,75 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 
         if (blendWithPrevFrame) {
             // Xform into temporary bitmap big enough for one row.
-            tmp.allocPixels(dstInfo.makeWH(scaledWidth, 1));
+            tmp.allocPixels(decodeDstInfo.makeWH(scaledWidth, 1));
             xformDst = tmp.getPixels();
         } else {
-            xformDst = dst;
+            xformDst = decodeDst;
         }
 
+        // TODO: blend_line instantiates an internal raster pipeline to execute the blending ops.
+        // We should be able to reuse that for all lines.
         for (int y = 0; y < rowsDecoded; y++) {
             this->applyColorXform(xformDst, xformSrc, scaledWidth);
             if (blendWithPrevFrame) {
-                blend_line(dstCT, dst, dstCT, xformDst,
-                        dstInfo.alphaType(), frame.has_alpha, scaledWidth);
-                dst = SkTAddOffset<void>(dst, rowBytes);
+                blend_line(dstCT, decodeDst, dstCT, xformDst,
+                        decodeDstInfo.alphaType(), frame.has_alpha, scaledWidth);
+                decodeDst = SkTAddOffset<void>(decodeDst, decodeRowBytes);
             } else {
-                xformDst = SkTAddOffset<void>(xformDst, rowBytes);
+                xformDst = SkTAddOffset<void>(xformDst, decodeRowBytes);
             }
             xformSrc = SkTAddOffset<uint32_t>(xformSrc, srcRowBytes);
         }
-    } else if (blendWithPrevFrame) {
+    }
+    else if (blendWithPrevFrame) {
         const uint8_t* src = config.output.u.RGBA.rgba;
 
         for (int y = 0; y < rowsDecoded; y++) {
-            blend_line(dstCT, dst, webpDst.colorType(), src,
-                    dstInfo.alphaType(), frame.has_alpha, scaledWidth);
+            blend_line(dstCT, decodeDst, webpDst.colorType(), src,
+                    decodeDstInfo.alphaType(), frame.has_alpha, scaledWidth);
             src = SkTAddOffset<const uint8_t>(src, srcRowBytes);
-            dst = SkTAddOffset<void>(dst, rowBytes);
+            decodeDst = SkTAddOffset<void>(decodeDst, decodeRowBytes);
         }
     }
 
+    // Apply our own scaling and color transform back into the original dst if
+    // using two pass decoding.
+    if (fUseTwoPassDecode) {
+        SkSamplingOptions sampling(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        SkPixmap dstPm = SkPixmap(dstInfo, dst, rowBytes);
+        SkPixmap tempDstPm = SkPixmap(decodeDstInfo, fTwoPassPixbufPtr.get(), decodeRowBytes);
+
+        if (!tempDstPm.scalePixels(dstPm, sampling)) {
+          result = SkCodec::kInternalError;
+        }
+
+        *rowsDecodedPtr = dstInfo.height();
+
+        if (frame.dispose_method == WEBP_MUX_DISPOSE_BACKGROUND) {
+          void* background = SkTAddOffset<void>(fTwoPassPixbufPtr.get(), dstBpp * dstX + decodeRowBytes * dstY);
+          SkImageInfo rectInfo = decodeDstInfo.makeDimensions(SkISize::Make(frame.width, frame.height));
+          SkSampler::Fill(rectInfo, background, decodeRowBytes, options.fZeroInitialized);
+        }
+
+        // On success, we are done using the "two pass" pixel buffer for this frame.
+        // We can either release the memory and may have to reallocate, or will just
+        // be holding onto memory if the SkCodec object isn't deleted.
+        // The heuristic we use is to free the memory if we have decoded the last
+        // frame of animation, which should lower the steady state memory use as many
+        // times frames are decoded only once and cached. This is favorable to keeping
+        // the fTwoPassPixbufPtr until the SkWebpCodec object is destroyed.
+        if (result == SkCodec::kSuccess) {
+          if ((options.fFrameIndex == fFrameHolder.size() - 1)) {
+              fTwoPassPixbufPtr.reset(nullptr);
+              fTwoPassPixbufLen = 0;
+          }
+        }
+    }
+
+
     return result;
 }
+
 
 SkWebpCodec::SkWebpCodec(SkEncodedInfo&& info, std::unique_ptr<SkStream> stream,
                          WebPDemuxer* demux, sk_sp<SkData> data, SkEncodedOrigin origin)
@@ -576,6 +659,8 @@ SkWebpCodec::SkWebpCodec(SkEncodedInfo&& info, std::unique_ptr<SkStream> stream,
     , fDemux(demux)
     , fData(std::move(data))
     , fFailed(false)
+    , fTwoPassPixbufPtr(nullptr, &sk_free)
+    , fTwoPassPixbufLen(0)
 {
     const auto& eInfo = this->getEncodedInfo();
     fFrameHolder.setScreenSize(eInfo.width(), eInfo.height());
