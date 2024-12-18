@@ -2502,15 +2502,15 @@ private:
         void reset(SkDevice* device);
     };
 
-    // the first N recs that can fit here mean we won't call malloc
-    static constexpr int kMCRecSize      = 96; // most recent measurement
-    static constexpr int kMCRecCount     = 32; // common depth for save/restores
+    static constexpr size_t kMCRecSize = sizeof(MCRec);
+    static constexpr int kMCRecCount   = 32; // common depth for save/restores
 
-    intptr_t fMCRecStorage[kMCRecSize * kMCRecCount / sizeof(intptr_t)];
+    // This stack allocation of memory will be used to house the first kMCRecCount
+    // layers without need to call malloc.
+    alignas(MCRec) std::byte fMCRecStorage[kMCRecSize * kMCRecCount];
 
-    SkDeque     fMCStack;
-    // points to top of stack
-    MCRec*      fMCRec;
+    SkDeque     fMCStack; // uses the stack memory
+    MCRec*      fMCRec;   // points to top of stack for convenience
 
     // Installed via init()
     sk_sp<SkDevice> fRootDevice;
