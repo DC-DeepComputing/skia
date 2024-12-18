@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc1266e8_124263ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-18T16:51:11Z",
+      "side": 1,
+      "message": "Note that Skia compiles with `-Wno-attributes` (see `gn/skia/BUILD.gn`) to avoid this sort of issue, which is why this hasn\u0027t been picked up in local GCC builds.",
+      "parentUuid": "e7c240b9_85787eff",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29638b2d_106ae6f3",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
