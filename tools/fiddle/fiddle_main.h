@@ -7,18 +7,15 @@
 #ifndef fiddle_main_DEFINED
 #define fiddle_main_DEFINED
 
-#ifdef FIDDLE_BUILD_TEST
-    #include "include/core/SkCanvas.h"
-    #include "include/core/SkDocument.h"
-    #include "include/core/SkPictureRecorder.h"
-    #include "include/core/SkStream.h"
-    #include "include/core/SkSurface.h"
-    #include "include/gpu/ganesh/GrDirectContext.h"
-    #include "include/gpu/ganesh/gl/GrGLAssembleInterface.h"
-    #include "include/gpu/ganesh/gl/GrGLInterface.h"
-#else
-    #include "skia.h"
-#endif
+#include "include/core/SkCanvas.h"
+#include "include/core/SkDocument.h"
+#include "include/core/SkFontMgr.h"
+#include "include/core/SkPictureRecorder.h"
+#include "include/core/SkStream.h"
+#include "include/core/SkSurface.h"
+#include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/gl/GrGLAssembleInterface.h"
+#include "include/gpu/ganesh/gl/GrGLInterface.h"
 
 #include <memory>
 #include <sstream>

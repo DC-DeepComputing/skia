@@ -5,33 +5,24 @@
  * found in the LICENSE file.
  */
 
-#include <cstdio>
-#include <cstdlib>
-#include <sstream>
-#include <string>
-
-#include "src/core/SkAutoPixmapStorage.h"
-#include "src/core/SkMemset.h"
-#include "src/core/SkMipmap.h"
-#include "tools/flags/CommandLineFlags.h"
-
-#include "tools/fiddle/fiddle_main.h"
-
-static DEFINE_double(duration, 1.0,
-                     "The total duration, in seconds, of the animation we are drawing.");
-static DEFINE_double(frame, 1.0,
-                     "A double value in [0, 1] that specifies the point in animation to draw.");
-
 #include "include/codec/SkCodec.h"
 #include "include/codec/SkJpegDecoder.h"
+#include "include/core/SkBitmap.h"
+#include "include/core/SkPicture.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/gpu/ganesh/GrBackendSurface.h"
 #include "include/gpu/ganesh/SkSurfaceGanesh.h"
+#include "src/core/SkAutoPixmapStorage.h"
+#include "src/core/SkMemset.h"
+#include "src/core/SkMipmap.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
 #include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
 #include "src/gpu/ganesh/GrResourceProvider.h"
 #include "src/gpu/ganesh/GrTexture.h"
+
+#include "tools/fiddle/fiddle_main.h"
+#include "tools/flags/CommandLineFlags.h"
 #include "tools/gpu/ManagedBackendTexture.h"
 #include "tools/gpu/gl/GLTestContext.h"
 
@@ -44,7 +35,21 @@ static DEFINE_double(frame, 1.0,
 #include "include/ports/SkFontScanner_FreeType.h"
 #endif
 
+#if defined(SK_SUPPORT_PDF)
+#include "include/docs/SkPDFDocument.h"
+#endif
+
+#include <cstdio>
+#include <cstdlib>
+#include <sstream>
+#include <string>
+
 using namespace skia_private;
+
+static DEFINE_double(duration, 1.0,
+                     "The total duration, in seconds, of the animation we are drawing.");
+static DEFINE_double(frame, 1.0,
+                     "A double value in [0, 1] that specifies the point in animation to draw.");
 
 // Globals externed in fiddle_main.h
 GrBackendTexture backEndTexture;

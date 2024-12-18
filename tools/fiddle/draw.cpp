@@ -9,9 +9,8 @@
 // assembled by the fiddler program to compile into a fiddle: an
 // implementation of the GetDrawOptions() and draw() functions.
 
-#include "include/gpu/ganesh/SkSurfaceGanesh.h"
-#include "tools/fiddle/fiddle_main.h"
-#include "tools/gpu/ManagedBackendTexture.h"
+#include "fiddle_main.h"
+#include "skia.h"
 
 DrawOptions GetDrawOptions() {
     // path *should* be absolute.
