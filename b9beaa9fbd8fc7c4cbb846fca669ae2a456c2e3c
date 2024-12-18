@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19dfe6b8_2dae9a69",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-18T16:48:35Z",
+      "side": 1,
+      "message": "actually thinking about this more this is problematic if someone decodes the same frame twice, or decodes half then goes back to decode a prior frame with a cached required frame, for example.\nHowever I think I can just put a check in to see if the options.fPriorFrame matches the one we have in the buffer and if not just don\u0027t use the twopassdecoding?",
+      "range": {
+        "startLine": 10,
+        "startChar": 72,
+        "endLine": 10,
+        "endChar": 120
+      },
+      "revId": "b9beaa9fbd8fc7c4cbb846fca669ae2a456c2e3c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
