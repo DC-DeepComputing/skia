@@ -33,6 +33,24 @@
       "message": "Thinking about this a big, I\u0027m leaning towards saying we don\u0027t actually land this CL, but just keep it around for anyone to patch in trying to do local testing.\n\nThe first reasoning is I think we\u0027d need to add more code back to support the APIs in 78-81. I think this CL works for the set of MSKPs here since may not use the other APIs, but if we are adding back the other older versions we should add the code for them as well. Second, we currently don\u0027t do any automated testing and tracking of the MSKPs. So we\u0027re not losing anything right now with them not working by default. Finally, we are actively working on fixing the ability to capture these in Android again. At that point we can just refresh the corpus and set up a system to make sure they don\u0027t get so out of date again.",
       "revId": "cdc128d700961fe91d106f581c187f1b59498dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a6334c8_6aa6c66d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2024-12-18T15:44:04Z",
+      "side": 1,
+      "message": "That makes sense to me. I thought it\u0027d be useful as capturing these again looks like it could be some work, but if that\u0027s the plan it sounds good.\n\nI also think the MSKPs can be forward ported (load in version 82 and save again), though my initial attempt isn\u0027t dealing with image references correctly and the recordings got 10x larger.",
+      "parentUuid": "6903ff00_62201c70",
+      "revId": "cdc128d700961fe91d106f581c187f1b59498dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
