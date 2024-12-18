@@ -16,6 +16,23 @@
       "message": "PTAL\n\nNote that I\u0027ve uploaded a similar CL for Chromium at https://chromium-review.googlesource.com/c/chromium/src/+/6097797",
       "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eeb5561_8845c8fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-18T16:32:44Z",
+      "side": 1,
+      "message": "It looks like this both needs to be guarded for compiling with emscripten, and we need to wait for a dawn roll that updates the validation rules. Tests are failing, claiming it now needs a bound vertex buffer.",
+      "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
