@@ -16,6 +16,52 @@
       "message": "PTAL - I reparented this branch to pull from the input attachment descriptor set change which incorporates descriptor set layout changes which should help address a comment or so left on this CL.",
       "revId": "c2edef22afeddb9822aa6d07732a81e43035a087",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb3bec9a_9a41139b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 46
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-18T16:42:18Z",
+      "side": 1,
+      "message": "nit: why the extra space here?",
+      "range": {
+        "startLine": 91,
+        "startChar": 34,
+        "endLine": 91,
+        "endChar": 37
+      },
+      "revId": "c2edef22afeddb9822aa6d07732a81e43035a087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3532af86_1ab05e38",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 46
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-18T16:42:18Z",
+      "side": 1,
+      "message": "nit: lets replace the use of the word dummy with something else in this CL.",
+      "range": {
+        "startLine": 455,
+        "startChar": 47,
+        "endLine": 455,
+        "endChar": 52
+      },
+      "revId": "c2edef22afeddb9822aa6d07732a81e43035a087",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
