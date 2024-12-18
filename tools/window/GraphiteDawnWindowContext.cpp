@@ -131,6 +131,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         // Robustness impacts performance and is always disabled when running Graphite in Chrome,
         // so this keeps Skia's tests operating closer to real-use behavior.
         "disable_robustness",
+        "disable_symbol_renaming",
         // Must be last to correctly respond to `fUseTintIR` option.
         "use_tint_ir",
     };
@@ -146,7 +147,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
             type == wgpu::BackendType::OpenGL || type == wgpu::BackendType::OpenGLES
                     ? wgpu::FeatureLevel::Compatibility
                     : wgpu::FeatureLevel::Core;
-    adapterOptions.nextInChain = &togglesDesc;
+    // adapterOptions.nextInChain = &togglesDesc;
 
     std::vector<dawn::native::Adapter> adapters = fInstance->EnumerateAdapters(&adapterOptions);
     if (adapters.empty()) {
@@ -225,8 +226,8 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
 
         // Insert the toggles descriptor ahead of any existing entries in the chain that might have
         // been added above.
-        deviceTogglesDesc.nextInChain = deviceDescriptor.nextInChain;
-        deviceDescriptor.nextInChain  = &deviceTogglesDesc;
+        // deviceTogglesDesc.nextInChain = deviceDescriptor.nextInChain;
+        // deviceDescriptor.nextInChain  = &deviceTogglesDesc;
     }
 
     auto device = adapter.CreateDevice(&deviceDescriptor);

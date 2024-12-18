@@ -520,7 +520,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
         // Native Dawn has an API for writing timestamps on command buffers. WebGPU only supports
         // begin and end timestamps on render and compute passes.
 #if !defined(__EMSCRIPTEN__)
-        fSupportsCommandBufferTimestamps = true;
+        fSupportsCommandBufferTimestamps = false;
 #endif
 
         // The emscripten C/C++ interface before 3.1.48 for timestamp query writes on render and

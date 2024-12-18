@@ -530,6 +530,7 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
             colorXformFlags |= kColorSpaceXformFlagAlphaSwizzle;
         }
     }
+    // SkDebugf("flags = %d, swizzle = %d\n", colorXformFlags, (int) readSwizzle);
     gatherer->write(colorXformFlags);
 
     if (steps.flags.linearize) {
@@ -1041,11 +1042,74 @@ void TableColorFilterBlock::AddBlock(const KeyContext& keyContext,
 namespace {
 
 void add_color_space_xform_uniform_data(
-        const ShaderCodeDictionary* dict,
-        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
-        PipelineDataGatherer* gatherer) {
-    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformColorFilter)
-    add_color_space_uniforms(data.fSteps, data.fReadSwizzle, gatherer);
+       const ShaderCodeDictionary* dict,
+       const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
+       PipelineDataGatherer* gatherer) {
+   BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformColorFilter)
+   add_color_space_uniforms(data.fSteps, data.fReadSwizzle, gatherer);
+}
+
+void add_color_space_xform_uniform_data2(
+       const ShaderCodeDictionary* dict,
+       const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
+       PipelineDataGatherer* gatherer) {
+   BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformColorFilter2)
+
+   const auto& steps = data.fSteps;
+
+   SkMatrix gamutTransform;
+   const float identity[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+   // TODO: it seems odd to copy this into an SkMatrix just to write it to the gatherer
+   // src_to_dst_matrix is column-major, SkMatrix is row-major.
+   const float* m = steps.flags.gamut_transform ? steps.src_to_dst_matrix : identity;
+   if (data.fReadSwizzle == ReadSwizzle::kRRR1) {
+       gamutTransform.setAll(m[0] + m[3] + m[6], 0, 0,
+                             m[1] + m[4] + m[7], 0, 0,
+                             m[2] + m[5] + m[8], 0, 0);
+   } else if (data.fReadSwizzle == ReadSwizzle::kBGRA) {
+       gamutTransform.setAll(m[6], m[3], m[0],
+                             m[7], m[4], m[1],
+                             m[8], m[5], m[2]);
+   } else if (data.fReadSwizzle == ReadSwizzle::k000R) {
+       gamutTransform.setAll(0, 0, 0,
+                             0, 0, 0,
+                             0, 0, 0);
+   } else {
+       gamutTransform.setAll(m[0], m[3], m[6],
+                             m[1], m[4], m[7],
+                             m[2], m[5], m[8]);
+   }
+   gatherer->writeHalf(gamutTransform);
+
+   float srcAlpha = (data.fReadSwizzle == ReadSwizzle::k000R) ? 1.f :
+                    (data.fReadSwizzle == ReadSwizzle::kRRR1 ||
+                     data.fReadSwizzle == ReadSwizzle::kRGB1) ? 2.f :
+                    steps.flags.unpremul ? -1.f
+                                         : 0.f;
+   if (steps.flags.linearize) {
+       auto type = skcms_TransferFunction_getType(&steps.srcTF);
+       float srcGamma = type == skcms_TFType_sRGBish ? steps.srcTF.g :
+                        type == skcms_TFType_PQish ? -2 :
+                        type == skcms_TFType_HLGinvish ? -1 : 0.f;
+       gatherer->writeHalf(SkV4{steps.srcTF.a, steps.srcTF.b, steps.srcTF.c, srcGamma});
+       gatherer->writeHalf(SkV4{steps.srcTF.d, steps.srcTF.e, steps.srcTF.f, srcAlpha});
+   } else {
+       gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f}); // Ignored except W = 0 specifies no xfer_fn
+       gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, srcAlpha}); // Ignored except for src alpha flag
+   }
+
+   float dstAlpha = steps.flags.premul ? 0.f : 1.f;
+   if (steps.flags.encode) {
+       auto type = skcms_TransferFunction_getType(&steps.dstTFInv);
+       float dstGamma = type == skcms_TFType_sRGBish ? steps.dstTFInv.g :
+                        type == skcms_TFType_PQish ? -2 :
+                        type == skcms_TFType_HLGinvish ? -1 : 0.f;
+       gatherer->writeHalf(SkV4{steps.dstTFInv.a, steps.dstTFInv.b, steps.dstTFInv.c, dstGamma});
+       gatherer->writeHalf(SkV4{steps.dstTFInv.d, steps.dstTFInv.e, steps.dstTFInv.f, dstAlpha});
+   } else {
+       gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f}); // Ignored except W = 0 specifies no xfer_fn
+       gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, dstAlpha}); // Ignored except for dst alpha flag
+   }
 }
 
 }  // anonymous namespace
@@ -1062,6 +1126,126 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         const ColorSpaceTransformData& data) {
     add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
     builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
+    if ((true)) return;
+
+    // In reverse order of application:
+    if (data.fSteps.flags.premul) {
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_Premul);
+    } else {
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+    }
+
+    if (data.fSteps.flags.encode) {
+        switch (skcms_TransferFunction_getType(&data.fSteps.dstTFInv)) {
+            case skcms_TFType_sRGBish: {
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_sRGB);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_sRGB);
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.a, data.fSteps.dstTFInv.b, data.fSteps.dstTFInv.c});
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.d, data.fSteps.dstTFInv.e, data.fSteps.dstTFInv.f});
+                gatherer->writeHalf(data.fSteps.dstTFInv.g);
+                break; }
+            case skcms_TFType_PQish: {
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_PQ);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_PQ);
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.a, data.fSteps.dstTFInv.b, data.fSteps.dstTFInv.c});
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.d, data.fSteps.dstTFInv.e, data.fSteps.dstTFInv.f});
+                break; }
+            case skcms_TFType_HLGish:{
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_HLG);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_HLG);
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.a, data.fSteps.dstTFInv.b, data.fSteps.dstTFInv.c});
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.d, data.fSteps.dstTFInv.e, data.fSteps.dstTFInv.f});
+                break; }
+            case skcms_TFType_HLGinvish:{
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_HLGinv);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_HLGinv);
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.a, data.fSteps.dstTFInv.b, data.fSteps.dstTFInv.c});
+                gatherer->writeHalf(SkV3{data.fSteps.dstTFInv.d, data.fSteps.dstTFInv.e, data.fSteps.dstTFInv.f});
+                break; }
+            default:
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+                break;
+        }
+    } else {
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+    }
+
+    if (data.fSteps.flags.gamut_transform ||
+        data.fReadSwizzle == ReadSwizzle::kRRR1 ||
+        data.fReadSwizzle == ReadSwizzle::kBGRA) {
+        BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_Gamut);
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Gamut);
+
+        const float identity[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+        const float* m = data.fSteps.flags.gamut_transform ? data.fSteps.src_to_dst_matrix : identity;
+        SkMatrix gamutTransform;
+        if (data.fReadSwizzle == ReadSwizzle::kRRR1) {
+            gamutTransform.setAll(m[0] + m[3] + m[6], 0, 0,
+                                    m[1] + m[4] + m[7], 0, 0,
+                                    m[2] + m[5] + m[8], 0, 0);
+        } else if (data.fReadSwizzle == ReadSwizzle::kBGRA) {
+            gamutTransform.setAll(m[6], m[3], m[0],
+                                    m[7], m[4], m[1],
+                                    m[8], m[5], m[2]);
+        } else {
+            gamutTransform.setAll(m[0], m[3], m[6],
+                                    m[1], m[4], m[7],
+                                    m[2], m[5], m[8]);
+        }
+        gatherer->writeHalf(gamutTransform);
+    } else {
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+    }
+
+    if (data.fSteps.flags.linearize) {
+        switch (skcms_TransferFunction_getType(&data.fSteps.srcTF)) {
+            case skcms_TFType_sRGBish: {
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_sRGB);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_sRGB);
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.a, data.fSteps.srcTF.b, data.fSteps.srcTF.c});
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.d, data.fSteps.srcTF.e, data.fSteps.srcTF.f});
+                gatherer->writeHalf(data.fSteps.srcTF.g);
+                break; }
+            case skcms_TFType_PQish: {
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_PQ);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_PQ);
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.a, data.fSteps.srcTF.b, data.fSteps.srcTF.c});
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.d, data.fSteps.srcTF.e, data.fSteps.srcTF.f});
+                break; }
+            case skcms_TFType_HLGish:{
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_HLG);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_HLG);
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.a, data.fSteps.srcTF.b, data.fSteps.srcTF.c});
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.d, data.fSteps.srcTF.e, data.fSteps.srcTF.f});
+                break; }
+            case skcms_TFType_HLGinvish:{
+                BEGIN_WRITE_UNIFORMS(gatherer, keyContext.dict(), BuiltInCodeSnippetID::kCSXform_TF_HLGinv);
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_HLGinv);
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.a, data.fSteps.srcTF.b, data.fSteps.srcTF.c});
+                gatherer->writeHalf(SkV3{data.fSteps.srcTF.d, data.fSteps.srcTF.e, data.fSteps.srcTF.f});
+                break; }
+            default:
+                builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+                break;
+        }
+    } else {
+        builder->beginBlock(BuiltInCodeSnippetID::kCSXform_TF_Noop);
+    }
+
+    if (data.fReadSwizzle == ReadSwizzle::k000R) {
+        builder->addBlock(BuiltInCodeSnippetID::kCSXform_RtoA);
+    } else if (data.fReadSwizzle == ReadSwizzle::kRGB1 || data.fReadSwizzle == ReadSwizzle::kRRR1) {
+        builder->addBlock(BuiltInCodeSnippetID::kCSXform_Opaque);
+    } else if (data.fSteps.flags.unpremul) {
+        builder->addBlock(BuiltInCodeSnippetID::kCSXform_Unpremul);
+    } else {
+        builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+    }
+
+    builder->endBlock(); // linearize
+    builder->endBlock(); // gamut
+    builder->endBlock(); // encode
+    builder->endBlock(); // premul
 }
 
 //--------------------------------------------------------------------------------------------------

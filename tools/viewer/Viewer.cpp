@@ -3042,10 +3042,10 @@ void Viewer::drawImGui() {
             // we overwrite the pointer with nullptr after wrapping it to make sure we don't
             // have two "unique" pointers pointing to the same object.
             skwindow::DisplayParams* newParams = newParamsBuilder.build().release();
-            fDeferredActions.emplace_back([displayParamsChanged, &newParams, this]() {
+            fDeferredActions.emplace_back([displayParamsChanged, newParams, this]() {
                 if (displayParamsChanged && newParams) {
                     auto npp = std::unique_ptr<skwindow::DisplayParams>(newParams);
-                    newParams = nullptr;
+                    // newParams = nullptr;
                     fWindow->setRequestedDisplayParams(std::move(npp));
                 }
                 fWindow->inval();

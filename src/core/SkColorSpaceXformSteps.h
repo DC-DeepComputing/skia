@@ -19,11 +19,11 @@ enum SkAlphaType : int;
 struct SkColorSpaceXformSteps {
 
     struct Flags {
-        bool unpremul         = false;
-        bool linearize        = false;
-        bool gamut_transform  = false;
-        bool encode           = false;
-        bool premul           = false;
+        bool unpremul         = false; // 2
+        bool linearize        = false; // 4 or 5
+        bool gamut_transform  = false; // 2
+        bool encode           = false; // 4 or 5
+        bool premul           = false; // 2
 
         constexpr uint32_t mask() const {
             return (unpremul        ?  1 : 0)

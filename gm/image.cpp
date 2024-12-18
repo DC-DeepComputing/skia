@@ -29,6 +29,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkGradientShader.h"
 #include "include/encode/SkJpegEncoder.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/gpu/ganesh/GrDirectContext.h"
@@ -39,6 +40,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+#include "tools/DecodeUtils.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -554,3 +556,64 @@ DEF_SIMPLE_GM_CAN_FAIL(image_subset, canvas, errorMsg, 440, 220) {
     canvas->drawImage(subset, 220+110, 10);
     return skiagm::DrawResult::kOk;
 }
+
+
+
+class CSXformTestGM : public skiagm::GM {
+public:
+    CSXformTestGM(bool drawImage) : fDrawImage(drawImage) {}
+
+protected:
+    SkString getName() const override {
+        auto str = SkString("csxform");
+        if (fDrawImage) {
+            str += "-image";
+        } else {
+            str += "-gradient";
+        }
+        return str;
+    }
+
+    void onDraw(SkCanvas* canvas) override {
+        for (int i = 0; i < 1024; ++i) {
+            if (fDrawImage) {
+                canvas->drawImage(fImage.get(), 0, 0, SkSamplingOptions(), &fPaint);
+
+            } else {
+                canvas->drawIRect(fRect, fPaint);
+            }
+        }
+    }
+
+    void onOnceBeforeDraw() override {
+        if (fDrawImage) {
+            fPaint.setColor4f({ 0.0f, 0.0f, 0.0f, 0.5f });
+            fImage = ToolUtils::GetResourceAsImage("images/mandrill_512.png")
+                              ->makeRasterImage(nullptr)
+                            //   ->makeColorTypeAndColorSpace(nullptr,
+                            //                                kRGB_888x_SkColorType,
+                            //                                SkColorSpace::MakeSRGB())
+                              ->reinterpretColorSpace(SkColorSpace::MakeSRGB()->makeColorSpin()->makeLinearGamma());
+        } else {
+            const SkPoint points[2] = {{0.0f, 0.0f}, {512.0f, 0.0f}};
+            constexpr SkColor colors[2] = {SK_ColorRED, SK_ColorGREEN};
+            fPaint.setShader(SkGradientShader::MakeLinear(
+                    points, colors, nullptr, std::size(colors), SkTileMode::kClamp));
+            fRect = SkIRect::MakeWH(512, 512);
+        }
+    }
+
+    SkISize getISize() override { return {512, 512}; }
+
+
+private:
+    using INHERITED = skiagm::GM;
+
+    const bool fDrawImage;
+    SkPaint fPaint;
+    sk_sp<SkImage> fImage;
+    SkIRect fRect;
+};
+
+DEF_GM( return new CSXformTestGM(false); )
+DEF_GM( return new CSXformTestGM(true); )

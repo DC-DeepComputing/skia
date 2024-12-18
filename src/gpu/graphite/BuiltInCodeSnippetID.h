@@ -60,7 +60,20 @@ enum class BuiltInCodeSnippetID : int32_t {
     kTableColorFilter,
     kGaussianColorFilter,
     kColorSpaceXformColorFilter,
+    kColorSpaceXformColorFilter2,
     kPremulAlphaColorFilter,
+
+    // ColorSpace Transform snippets
+    kCSXform_RtoA,
+    kCSXform_Unpremul,
+    kCSXform_Premul,
+    kCSXform_Opaque,
+    kCSXform_TF_sRGB,
+    kCSXform_TF_PQ,
+    kCSXform_TF_HLG,
+    kCSXform_TF_HLGinv,
+    kCSXform_TF_Gamut,
+    kCSXform_TF_Noop,
 
     // Emits special variable holding the primitiveColor emitted by a RenderStep
     kPrimitiveColor,

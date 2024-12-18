@@ -102,22 +102,26 @@ std::string stitch_csv(SkSpan<const std::string> args) {
 // null, it is assumed to be the expressions to invoke the default signature.
 void append_defaults(TArray<std::string>* list,
                      const ShaderNode* node,
-                     const ShaderSnippet::Args* args) {
+                     const ShaderSnippet::Args* args,
+                     bool forStaticFn = false) {
     // Use the node's aggregate required flags so that the provided dynamic variables propagate
     // to the child nodes that require them.
-    if (node->requiredFlags() & SnippetRequirementFlags::kPriorStageOutput) {
+    auto flags = forStaticFn ? node->entry()->fSnippetRequirementFlags
+                             : node->requiredFlags();
+
+    if (flags & SnippetRequirementFlags::kPriorStageOutput) {
         list->push_back(args ? args->fPriorStageOutput.c_str() : "half4 inColor");
     }
-    if (node->requiredFlags() & SnippetRequirementFlags::kBlenderDstColor) {
+    if (flags & SnippetRequirementFlags::kBlenderDstColor) {
         list->push_back(args ? args->fBlenderDstColor.c_str() : "half4 destColor");
     }
-    if (node->requiredFlags() & SnippetRequirementFlags::kLocalCoords) {
+    if (flags & SnippetRequirementFlags::kLocalCoords) {
         list->push_back(args ? args->fFragCoord.c_str() : "float2 pos");
     }
 
     // Special variables and/or "global" scope variables that have to propagate
     // through the node tree.
-    if (node->requiredFlags() & SnippetRequirementFlags::kPrimitiveColor) {
+    if (flags & SnippetRequirementFlags::kPrimitiveColor) {
         list->push_back(args ? "primitiveColor" : "half4 primitiveColor");
     }
 }
@@ -235,7 +239,7 @@ std::string ShaderNode::generateDefaultPreamble(const ShaderInfo& shaderInfo) co
 
     // Finally, invoke the snippet from the helper function, passing uniforms and child outputs.
     STArray<3, std::string> params;
-    append_defaults(&params, this, &ShaderSnippet::kDefaultArgs);
+    append_defaults(&params, this, &ShaderSnippet::kDefaultArgs, true);
     append_uniforms(&params, shaderInfo, this, childOutputVarNames);
 
     SkSL::String::appendf(&code,
@@ -1130,6 +1134,110 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
                            { "dstKind",        SkSLType::kInt },
                            { "csXformCoeffs",  SkSLType::kHalf4x4 } }
     };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kColorSpaceXformColorFilter2] = {
+            /*name=*/"ColorSpaceTransform2",
+            /*staticFn=*/"sk_color_space_transform2",
+            SnippetRequirementFlags::kPriorStageOutput,
+            /*uniforms=*/{ { "gamut", SkSLType::kHalf3x3 },
+                           { "srcABC_gamma",  SkSLType::kHalf4 },
+                           { "srcDEF_alpha",  SkSLType::kHalf4 },
+                           { "dstABC_gamma",  SkSLType::kHalf4 },
+                           { "dstDEF_alpha",  SkSLType::kHalf4 } }
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_RtoA] = {
+        /*name=*/"RtoAlpha",
+        /*staticFn=*/"sk_csxform_r2a",
+        SnippetRequirementFlags::kPriorStageOutput,
+        /*uniforms=*/{}
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_Unpremul] = {
+        /*name=*/"UnpremulAlpha",
+        /*staticFn=*/"sk_csxform_unpremul",
+        SnippetRequirementFlags::kPriorStageOutput,
+        /*uniforms=*/{}
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_Opaque] = {
+        /*name=*/"OpaqueAlpha",
+        /*staticFn=*/"sk_csxform_opaque",
+        SnippetRequirementFlags::kPriorStageOutput,
+        /*uniforms=*/{}
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_Premul] = {
+        /*name=*/"Premul",
+        /*staticFn=*/"sk_premul_alpha",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{},
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_sRGB] = {
+        /*name=*/"TF_sRGB",
+        /*staticFn=*/"sk_csxform_tf_srgb",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{ { "abc", SkSLType::kHalf3 },
+                       { "def", SkSLType::kHalf3 },
+                       { "gamma", SkSLType::kHalf } },
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_PQ] = {
+        /*name=*/"TF_PQ",
+        /*staticFn=*/"sk_csxform_tf_pq",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{ { "abc", SkSLType::kHalf3 },
+                       { "def", SkSLType::kHalf3 } },
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_HLG] = {
+        /*name=*/"TF_HLG",
+        /*staticFn=*/"sk_csxform_tf_hlg",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{ { "abc", SkSLType::kHalf3 },
+                       { "def", SkSLType::kHalf3 } },
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_HLGinv] = {
+        /*name=*/"TF_HLGinv",
+        /*staticFn=*/"sk_csxform_tf_hlg_inv",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{ { "abc", SkSLType::kHalf3 },
+                       { "def", SkSLType::kHalf3 } },
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_Gamut] = {
+        /*name=*/"GamutTransform",
+        /*staticFn=*/"sk_csxform_gamut",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{ { "gamut", SkSLType::kHalf3x3 }},
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCSXform_TF_Noop] = {
+        /*name=*/"Noop",
+        /*staticFn=*/"sk_passthrough",
+        SnippetRequirementFlags::kNone,
+        /*uniforms=*/{},
+        /*texturesAndSamplers=*/{},
+        nullptr,
+        /*numChildren=*/1,
+    };
+
+
+
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kPremulAlphaColorFilter] = {
             /*name=*/"PremulAlpha",
             /*staticFn=*/"sk_premul_alpha",
