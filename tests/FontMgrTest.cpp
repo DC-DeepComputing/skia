@@ -155,6 +155,7 @@ DEF_TEST(FontMgr_Iter, reporter) {
                                 name1.c_str(), s1.weight(), s1.width(), s1.slant(),
                                 name2.c_str(), s2.weight(), s2.width(), s2.slant());
             }
+
         }
     }
 }
