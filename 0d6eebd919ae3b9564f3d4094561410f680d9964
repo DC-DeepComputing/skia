@@ -55,6 +55,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "893aa88a_f31d1f14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-18T16:29:59Z",
+      "side": 1,
+      "message": "Hmm, that is unfortunate but `SK_NO_SANITIZE_CFI` + `SK_NO_SANITIZE(\"str\")` seem to have an easier model than the previous `SK_CLANG_NO_SANITIZE`.  If \"cfi\" is ever supported on other compilers that can be folded into `SK_NO_SANITIZE_CFI` pretty easily.",
+      "parentUuid": "82f9a2ff_6cea4624",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "29638b2d_106ae6f3",
         "filename": "include/private/base/SkTArray.h",
         "patchSetId": 1
