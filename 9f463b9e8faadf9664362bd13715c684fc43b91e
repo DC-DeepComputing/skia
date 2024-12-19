@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57c2a843_93a34029",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-19T16:46:30Z",
+      "side": 1,
+      "message": "Just wanted to add the apis to the ResourceCache in their own CL. Vulkan implementation will be in follow on CL.",
+      "revId": "9f463b9e8faadf9664362bd13715c684fc43b91e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
