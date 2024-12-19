@@ -16,6 +16,23 @@
       "message": "lgtm but I can\u0027t +1",
       "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b7dbe4d_259dfbde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-19T15:55:26Z",
+      "side": 1,
+      "message": "Adding Rob for a Skia review vote. This change just remedies the omission of one struct attribute when comparing for equality, so deep context here isn\u0027t really necessary. A differing YCbCr model *does* mean that the conversions should not be considered compatible (we check for it in Vulkan conversion comparisons and include the model information in conversion/sampler keys for both backends).",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
