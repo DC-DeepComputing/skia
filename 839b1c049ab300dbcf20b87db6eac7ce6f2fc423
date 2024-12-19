@@ -33,6 +33,41 @@
       "message": "Adding Rob for a Skia review vote. This change just remedies the omission of one struct attribute when comparing for equality, so deep context here isn\u0027t really necessary. A differing YCbCr model *does* mean that the conversions should not be considered compatible (we check for it in Vulkan conversion comparisons and include the model information in conversion/sampler keys for both backends).",
       "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "280a220a_ec9f4d55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-12-19T16:00:41Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c3c0e6_999b8473",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10537
+      },
+      "writtenOn": "2024-12-19T16:00:41Z",
+      "side": 1,
+      "message": "Just to make sure I\u0027m understanding based on discussion on Kyle\u0027s Chromium CL: This comparison is used only in debug to e.g. raise asserts but a mismatch won\u0027t actually cause the draw to fail in production? Kyle\u0027s Chromium-side CL is relying on that behavior - is the intention for that to continue to hold?",
+      "parentUuid": "3b7dbe4d_259dfbde",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
