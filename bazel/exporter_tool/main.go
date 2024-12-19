@@ -648,12 +648,10 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "modules/skparagraph/skparagraph.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skparagraph_public",
 			Rules: []string{
-				"//modules/skparagraph/include:hdrs",
-				"//modules/skparagraph/utils:utils_hdrs"}},
+				"//modules/skparagraph/include:hdrs"}},
 		{Var: "skparagraph_sources",
 			Rules: []string{
-				"//modules/skparagraph/src:srcs",
-				"//modules/skparagraph/utils:utils_srcs"}},
+				"//modules/skparagraph/src:srcs"}},
 		{Var: "skparagraph_utils",
 			Rules: []string{
 				"//modules/skparagraph/utils:utils_hdrs",
