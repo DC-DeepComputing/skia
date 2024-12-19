@@ -16,6 +16,29 @@
       "message": "Just wanted to add the apis to the ResourceCache in their own CL. Vulkan implementation will be in follow on CL.",
       "revId": "9f463b9e8faadf9664362bd13715c684fc43b91e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceed982e_58ce6195",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-19T17:55:53Z",
+      "side": 1,
+      "message": "I think it works out to basically the same thing, but is it more intuitive to have this return the current/possibly-updated value with the expectation that the caller grabbed the gpu size before calling update?",
+      "range": {
+        "startLine": 238,
+        "startChar": 47,
+        "endLine": 239,
+        "endChar": 75
+      },
+      "revId": "9f463b9e8faadf9664362bd13715c684fc43b91e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
