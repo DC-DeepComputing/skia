@@ -51,6 +51,24 @@
       "parentUuid": "2eeb5561_8845c8fe",
       "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42cf468f_f89d1de6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3490583
+      },
+      "writtenOn": "2024-12-19T09:04:15Z",
+      "side": 1,
+      "message": "Shall we re-run failed jobs to see if Dawn roll was now reflected?",
+      "parentUuid": "9263ce10_f056ac12",
+      "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
