@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "297c7a42_0d1f4657",
+        "filename": "BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-19T20:32:46Z",
+      "side": 1,
+      "message": "This file doesn\u0027t actually get synced to G3. I only plan for there to be one version of this in G3 (it\u0027s the above pdf_writer) since all clients there want the JPEG helpers too. It seemed like it would be less churn than having to expand 1 dependency to 2 for those few clients. WDYT?",
+      "parentUuid": "734f676f_f1e7f3be",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbb8cb7e_2b536033",
         "filename": "BUILD.gn",
         "patchSetId": 11
@@ -31,6 +49,30 @@
       "writtenOn": "2024-12-19T19:30:11Z",
       "side": 1,
       "message": "It seems like it would be best to have a separate `optional(\"pdf_jpeg_helpers\")` and update all the internal Skia users of `:pdf` to also depend on that.\n\nThis is also informative, since it points out this new `:pdf_jpeg_helpers` depends on `pdf` (`SkPDFJpegHelpers.h` includes `SkPDFDocument.h`.",
+      "range": {
+        "startLine": 1264,
+        "startChar": 29,
+        "endLine": 1264,
+        "endChar": 49
+      },
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f17bb2_2569eea8",
+        "filename": "BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-19T20:32:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bbb8cb7e_2b536033",
       "range": {
         "startLine": 1264,
         "startChar": 29,
@@ -54,6 +96,24 @@
       "writtenOn": "2024-12-19T19:30:11Z",
       "side": 1,
       "message": "I\u0027m not sure why the sandboxing isn\u0027t pointing this out, but this needs to depend on `:pdf` for the `SkPDFDocument.h` header (and it\u0027s really too bad that `//include/docs:pdf_jpeg_hdrs` can\u0027t just state that).",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e40d31f_503f776c",
+        "filename": "src/pdf/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-19T20:32:46Z",
+      "side": 1,
+      "message": "I can\u0027t without adding a dependency cycle, but I did fix it by adding to `hdrs`.",
+      "parentUuid": "709ea2f0_6d02c3e3",
       "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
