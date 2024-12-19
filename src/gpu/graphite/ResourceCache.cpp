@@ -316,6 +316,14 @@ void ResourceCache::returnResourceToCache(Resource* resource, LastRemovedRef rem
         }
     }
 
+    if (resource->budgeted() == skgpu::Budgeted::kYes) {
+        size_t oldSize = resource->updateGpuMemorySize();
+        if (oldSize != resource->gpuMemorySize()) {
+            fBudgetedBytes -= oldSize;
+            fBudgetedBytes += resource->gpuMemorySize();
+        }
+    }
+
     // If we weren't using multiple threads, it is ok to assume a resource that isn't purgeable must
     // be in the non purgeable array. However, since resources can be unreffed from multiple
     // threads, it is possible that a resource became purgeable while we are in the middle of

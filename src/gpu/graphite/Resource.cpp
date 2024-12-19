@@ -136,5 +136,14 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     //this->setMemoryBacking(traceMemoryDump, resourceName);
 }
 
+size_t Resource::updateGpuMemorySize() {
+    size_t oldSize = this->gpuMemorySize();
+    if (std::optional<size_t> newSize = this->onUpdateGpuMemorySize()) {
+        fGpuMemorySize = newSize.value();
+    }
+    return oldSize;
+}
+
+
 } // namespace skgpu::graphite
 
