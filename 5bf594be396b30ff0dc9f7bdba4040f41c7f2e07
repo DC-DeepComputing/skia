@@ -16,6 +16,29 @@
       "message": "Patch updated, I\u0027ve added `SK_NO_SANITIZE_CFI`, changed `SkVx.h` to also use it. \n\nPTAL 🙏",
       "revId": "5bf594be396b30ff0dc9f7bdba4040f41c7f2e07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc599d11_2012d6a8",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-19T15:22:19Z",
+      "side": 1,
+      "message": "We can remove this #if block, right?",
+      "range": {
+        "startLine": 687,
+        "startChar": 4,
+        "endLine": 687,
+        "endChar": 11
+      },
+      "revId": "5bf594be396b30ff0dc9f7bdba4040f41c7f2e07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
