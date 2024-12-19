@@ -22,6 +22,30 @@
       },
       "revId": "84693dd923ec03356be10dd50d0701a2a0f30ed8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e21b8a76_e8f71100",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-19T22:02:17Z",
+      "side": 1,
+      "message": "There was another reason I didn\u0027t do it is because it actually won\u0027t fail when the image data doesn\u0027t produce at least one full image so this isn\u0027t viable and I should add a test for this case.",
+      "parentUuid": "c1c2b40a_b8c539ca",
+      "range": {
+        "startLine": 9,
+        "startChar": 355,
+        "endLine": 9,
+        "endChar": 356
+      },
+      "revId": "84693dd923ec03356be10dd50d0701a2a0f30ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
