@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b87bd85d_7620329c",
+        "filename": "infra/fiddler-backend/Dockerfile",
+        "patchSetId": 4
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-19T18:10:50Z",
+      "side": 1,
+      "message": "This came from https://louhi.dev/6316342352543744/artifact/5195103629344768 which was autobuilt after http://review.skia.org/931400 landed",
+      "range": {
+        "startLine": 1,
+        "startChar": 44,
+        "endLine": 1,
+        "endChar": 108
+      },
+      "revId": "98e391b8b531022e0b3d569f012fd0422eccce43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
