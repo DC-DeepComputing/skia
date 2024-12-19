@@ -54,6 +54,11 @@ public:
     bool getEncodedColor(SkEncodedInfo::Color* outColor);
 
     /*
+     * Set the source manager's field fShouldTruncate to be true if implemented.
+     */
+    void truncateProgressiveJpeg();
+
+    /*
      * Free memory used by the decode manager
      */
     ~JpegDecoderMgr();
