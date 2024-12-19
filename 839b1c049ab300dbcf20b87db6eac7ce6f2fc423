@@ -85,6 +85,24 @@
       "message": "Probably want to keep these in the order they\u0027re in in the struct",
       "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc6beec5_fa0647c2",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2024-12-19T16:26:13Z",
+      "side": 1,
+      "message": "Whoops, you\u0027re right, the VkFormat definition was longer so my brain did a goof and thought the model came first. Thanks! Done",
+      "parentUuid": "3ed3e3fd_3f7c1046",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
