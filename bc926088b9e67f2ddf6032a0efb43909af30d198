@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb747289_6640414b",
+        "filename": "tools/fiddle/fiddle_main.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-19T19:03:43Z",
+      "side": 1,
+      "message": "I was like \"Why isn\u0027t `SkPDFDocument.h` included here, and since it isn\u0027t, where is this getting `SkPDF:MakeDocument` from?\" Turns out it is from `fiddle_main.h` and it including `skia.h` which includes everything. Turns out `FIDDLE_BUILD_TEST` hasn\u0027t been defined since [remove all GYP files](https://skia.googlesource.com/skia.git/+/aa1d75868c0523ab547d04566da945b76bdea553).\n\nSo I\u0027ve gone off an created\nhttps://skia-review.googlesource.com/c/buildbot/+/931400\nhttps://skia-review.googlesource.com/c/skia/+/931456",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
