@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02d5f57f_cae4f0d2",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-19T16:58:00Z",
+      "side": 1,
+      "message": "There\u0027s only one of these devices in the new lab, and it\u0027s quarantined.  We have 3 in our existing lab.  It\u0027d be nice if we could get them on the same OS version to use all of the capacity.",
+      "range": {
+        "startLine": 838,
+        "startChar": 0,
+        "endLine": 838,
+        "endChar": 52
+      },
+      "revId": "8b52fe92d3f9f874734bd0ad07b1544cdcec9a03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6764370a_7f09909b",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-19T16:58:00Z",
+      "side": 1,
+      "message": "I left this unused entry around but corrected the friendly device name.",
+      "range": {
+        "startLine": 851,
+        "startChar": 0,
+        "endLine": 851,
+        "endChar": 51
+      },
+      "revId": "8b52fe92d3f9f874734bd0ad07b1544cdcec9a03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
