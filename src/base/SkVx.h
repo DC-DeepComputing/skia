@@ -690,7 +690,7 @@ SI auto map(std::index_sequence<I...>,
     // noexcept' failed during indirect function call... note: sqrtf.cfi_jt defined
     // here".  But we can be quite sure fn is the right type: it's all inferred!
     // So, stifle CFI in this function.
-    __attribute__((no_sanitize("cfi")))
+    SK_NO_SANITIZE_CFI
 #endif
     { return fn(args[static_cast<int>(i)]...); };
 
