@@ -161,6 +161,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "788ae3fc_53b98f60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-19T16:30:05Z",
+      "side": 1,
+      "message": "I see that Skia in WebKit is being compiled with [`-Wno-attributes`](https://github.com/WebKit/WebKit/blob/13710089bc1a5a0c079f1e58404d62e7c94ce81d/Source/ThirdParty/skia/CMakeLists.txt#L1046C5-L1046C20) the issue being that `SkTArray.h` is (terribly) in `include/private` so is being compiled in translation units that depend on Skia, requiring this issue to be fixed (otherwise all downstream users of Skia must also use `-Wno-attributes`). So `SkVx.h` could use (and probably should have used) `SK_NO_SANITIZE(\"cfi\")` instead of the as-hoc `#if` and it would be fine since it is in `src/`.\n\nMore frustrating here is that this particular case is about SkCanvas::Layer having an STArray, but SkCanvas::Layer is only ever used in private implementation details and doesn\u0027t even need to be a complete type in the header (except that C++ syntax makes it rather ugly for it not to be).\n\nIn any event, this (at Patch Set 4) is a fine short term fix for this issue.",
+      "parentUuid": "f2b6fef5_ee53995a",
+      "revId": "0d6eebd919ae3b9564f3d4094561410f680d9964",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29638b2d_106ae6f3",
