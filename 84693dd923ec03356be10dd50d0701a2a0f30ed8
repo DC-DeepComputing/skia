@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1c2b40a_b8c539ca",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-19T20:03:58Z",
+      "side": 1,
+      "message": "I was going to do this before, but didn\u0027t because it was before I found the easy way to tell when an image was progressive by just reading the field from dinfo.\nThis still produces the same results as the last CL because we will still check how many rows are read and see if we get at least one full image.",
+      "range": {
+        "startLine": 9,
+        "startChar": 355,
+        "endLine": 9,
+        "endChar": 356
+      },
+      "revId": "84693dd923ec03356be10dd50d0701a2a0f30ed8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
