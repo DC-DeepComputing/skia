@@ -39,6 +39,30 @@
       },
       "revId": "5bf594be396b30ff0dc9f7bdba4040f41c7f2e07",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "704c7ad9_bc867c35",
+        "filename": "src/base/SkVx.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 687,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-12-19T15:36:38Z",
+      "side": 1,
+      "message": "Ah, silly me! Of course we can. I have updated the patch accordingy.",
+      "parentUuid": "dc599d11_2012d6a8",
+      "range": {
+        "startLine": 687,
+        "startChar": 4,
+        "endLine": 687,
+        "endChar": 11
+      },
+      "revId": "5bf594be396b30ff0dc9f7bdba4040f41c7f2e07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
