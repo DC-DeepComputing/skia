@@ -48,6 +48,10 @@ public:
                                 const uint8_t*& nextInputByte,
                                 size_t& bytesInBuffer) = 0;
 
+    // Returns true if fShouldTruncate was able to be set. Only will return true for memory source
+    // managers.
+    virtual bool setShouldTruncate(bool truncate) = 0;
+
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // Parse this stream all the way through its EndOfImage marker and return the list of segments.
     // Return false if there is an error or if no EndOfImage marker is found.
@@ -67,6 +71,9 @@ public:
 protected:
     SkJpegSourceMgr(SkStream* stream);
     SkStream* const fStream;  // unowned
+    // Indicate that we should append EOF bytes if asked to read more memory after
+    // the supplied memory buffer. Used for memory source managers.
+    bool fShouldTruncate = false;
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     // The segment scanner is lazily creatd only when needed.

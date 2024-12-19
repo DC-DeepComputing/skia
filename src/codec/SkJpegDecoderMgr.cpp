@@ -85,6 +85,12 @@ bool JpegDecoderMgr::getEncodedColor(SkEncodedInfo::Color* outColor) {
     }
 }
 
+void JpegDecoderMgr::truncateProgressiveJpeg() {
+    if (!this->getSourceMgr()->setShouldTruncate(true)) {
+      SkCodecPrintf("Did not set source manager truncate to true.\n");
+    }
+}
+
 SkJpegSourceMgr* JpegDecoderMgr::getSourceMgr() {
     return fSrcMgr.fSourceMgr.get();
 }

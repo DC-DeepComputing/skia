@@ -12,9 +12,9 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "src/codec/SkCodecPriv.h"
+#include "src/codec/SkJpegConstants.h"
 
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
-#include "src/codec/SkJpegConstants.h"
 #include "src/codec/SkJpegSegmentScan.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
@@ -61,6 +61,12 @@ public:
         // The whole JPEG data is expected to reside in the supplied memory buffer, so any request
         // for more data beyond the given buffer size is treated as an error.
         SkCodecPrintf("Asked to re-fill a memory-mapped stream.\n");
+        if (fShouldTruncate) {
+            uint8_t markerCode[kJpegMarkerCodeSize] = {0xFF, kJpegMarkerEndOfImage};
+            nextInputByte = markerCode;
+            bytesInBuffer = 2;
+            return true;
+        }
         return false;
     }
     bool skipInputBytes(size_t bytesToSkip,
@@ -72,6 +78,10 @@ public:
         }
         nextInputByte += bytesToSkip;
         bytesInBuffer -= bytesToSkip;
+        return true;
+    }
+    bool setShouldTruncate(bool truncate) override {
+        fShouldTruncate = true;
         return true;
     }
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
@@ -162,6 +172,9 @@ public:
         bytesInBuffer = 0;
         nextInputByte = fBuffer->bytes();
         return true;
+    }
+    bool setShouldTruncate(bool truncate) override {
+        return false;
     }
 #ifdef SK_CODEC_DECODES_JPEG_GAINMAPS
     const std::vector<SkJpegSegment>& getAllSegments() override {
@@ -300,6 +313,9 @@ public:
         bytesInBuffer = 0;
         nextInputByte = fBuffer->bytes();
         return true;
+    }
+    bool setShouldTruncate(bool truncate) override {
+        return false;
     }
     const std::vector<SkJpegSegment>& getAllSegments() override {
         while (!fScanner->isDone() && !fScanner->hadError()) {
