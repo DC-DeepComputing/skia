@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7663a268_461974c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2024-12-19T06:35:33Z",
+      "side": 1,
+      "message": "I changed the \u0027false\u0027 in the following line of code to \u0027true\u0027 in my macbook, \"https://skia.googlesource.com/skia/+/44e33b331d6c0411063969bc19befe51119a0b14/tests/FontMgrTest.cpp#152\". Without the patch, an error will be reported:\n```\nFailures:\n\t../../tests/FontMgrTest.cpp:156\tAvenir Next [600 5 1] !\u003d Avenir Next [700 5 1] [FontMgr_Iter]: s1 \u003d\u003d s2\n\t../../tests/FontMgrTest.cpp:156\tBaskerville [600 5 1] !\u003d Baskerville [700 5 1] [FontMgr_Iter]: s1 \u003d\u003d s2\n``` \nBut with the patch can pass the test.\n\nHere are the values ​​of kCTFontSlantTrait for the relevant fonts：\n```\nAvenirNext-Italic slant : 0.050000\nAvenirNext-UltraLightItalic slant : 0.050000\nAvenirNext-MediumItalic slant : 0.050000\nAvenirNext-DemiBoldItalic slant : 0.050000\nAvenirNext-BoldItalic slant : 0.055556\nAvenirNext-HeavyItalic slant : 0.055556\nAvenirNextCondensed-Italic slant : 0.055556\nAvenirNextCondensed-UltraLightItalic slant : 0.055556\nAvenirNextCondensed-MediumItalic slant : 0.055556\nAvenirNextCondensed-DemiBoldItalic slant : 0.055556\nAvenirNextCondensed-BoldItalic slant : 0.055556\nAvenirNextCondensed-HeavyItalic slant : 0.050000\nBaskerville-Italic slant : 0.094444\nBaskerville-SemiBoldItalic slant : 0.088889\nBaskerville-BoldItalic slant : 0.094444\n```\n\nOn my macbook, the slant value of all italic fonts ranges from 0.016 to 0.16.",
+      "revId": "4bb1cc25e4b569b942b36fd3ae45e73da194d07f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
