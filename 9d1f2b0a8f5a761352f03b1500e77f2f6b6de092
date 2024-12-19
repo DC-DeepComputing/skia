@@ -16,6 +16,24 @@
       "message": "This is clever, but it seems problematic that it only works for in-memory streams, and not for e.g. file streams.\n\nI\u0027m also kinda wary of injecting input like this, but that\u0027s mostly due to my lack of familiarity with jpeg (is libjpeg guaranteed to stop requesting data after EOI? are there any alignment/offset requirements for EOI to be recognized?).\n\nWDYT about using multi-pass decoding only as a fallback for regular decoding instead?  Something like\n\n```\n  // readRows as usual\n  if (isProgressive \u0026\u0026 (readResult !\u003d kSuccess || rows \u003c dstInfo.height()) {\n      // attempt multi-pass decoding\n  }\n```\n\nThen we only take the slow path for incomplete data, as a last ditch effort.  \n\nReading the docs, there also appears to be a way to make multi-pass faster by skipping the display stage until the last valid pass: https://chromium.googlesource.com/chromium/deps/libjpeg_turbo/+/HEAD/libjpeg.txt#2035 (we can look into this as a separate optimization)",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da59df3c_ac0951d2",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-19T22:20:49Z",
+      "side": 1,
+      "message": "(Most of this is for my own thoughts:) Yes this seems much better, after further tests libjpeg will still produce scanlines and be in \"good\" state even if it doesn\u0027t have the data for it, so there isn\u0027t a way to know if its outputting actual valid scanlines while also having the EOI. I also don\u0027t have enough familitarity with the libjpeg code to know under what circumstances this fill_input_buffer is being called. \nSo going back to using buffered output looks like the way to go. \nThe hard part is going to be knowing when to fallback, because once we try decoding by calling jpeg_start_decompress the state of libjpeg makes it so that we can\u0027t call that again (which we need to after switching buffered_mode to true) without calling jpeg_read_header again (which is done in construction). So we can\u0027t fail and try again but I think we can get around this by just checking if the jpeg is progressive then if the EOI marker exists. So that only in the case of progressive and no EOI we use multipass scanning. \nWays to check for EOI looks like it could be using SkJpegSegmentScanner or maybe there is a libjpeg function",
+      "parentUuid": "9b8f8da9_f8313340",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
