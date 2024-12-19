@@ -3,6 +3,63 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "734f676f_f1e7f3be",
+        "filename": "BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-19T19:30:11Z",
+      "side": 1,
+      "message": "This comment seems a bit misleading. This is the target to depend on if you don\u0027t want to drag in Skia\u0027s jpeg ecnoder and decoder (at least in the future). But it seems weird (epecailly here) to have two aliases for what should be mutually exclusive targets. Like if one library in g3 depends on one of these, nothing else in that dependency chain can depend on the other. So it would seem best to in the future to have this just be `pdf_writer` and `pdf_writer_jpeg_helpers`. Sure, it\u0027s unhelpful an non-intuitive to users of this build system, but that\u0027s just the downside of forcing everything into non-overlapping dependency DAG.",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bbb8cb7e_2b536033",
+        "filename": "BUILD.gn",
+        "patchSetId": 11
+      },
+      "lineNbr": 1264,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-19T19:30:11Z",
+      "side": 1,
+      "message": "It seems like it would be best to have a separate `optional(\"pdf_jpeg_helpers\")` and update all the internal Skia users of `:pdf` to also depend on that.\n\nThis is also informative, since it points out this new `:pdf_jpeg_helpers` depends on `pdf` (`SkPDFJpegHelpers.h` includes `SkPDFDocument.h`.",
+      "range": {
+        "startLine": 1264,
+        "startChar": 29,
+        "endLine": 1264,
+        "endChar": 49
+      },
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "709ea2f0_6d02c3e3",
+        "filename": "src/pdf/BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-19T19:30:11Z",
+      "side": 1,
+      "message": "I\u0027m not sure why the sandboxing isn\u0027t pointing this out, but this needs to depend on `:pdf` for the `SkPDFDocument.h` header (and it\u0027s really too bad that `//include/docs:pdf_jpeg_hdrs` can\u0027t just state that).",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fb747289_6640414b",
         "filename": "tools/fiddle/fiddle_main.cpp",
         "patchSetId": 11
