@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b8f8da9_f8313340",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-19T22:02:03Z",
+      "side": 1,
+      "message": "This is clever, but it seems problematic that it only works for in-memory streams, and not for e.g. file streams.\n\nI\u0027m also kinda wary of injecting input like this, but that\u0027s mostly due to my lack of familiarity with jpeg (is libjpeg guaranteed to stop requesting data after EOI? are there any alignment/offset requirements for EOI to be recognized?).\n\nWDYT about using multi-pass decoding only as a fallback for regular decoding instead?  Something like\n\n```\n  // readRows as usual\n  if (isProgressive \u0026\u0026 (readResult !\u003d kSuccess || rows \u003c dstInfo.height()) {\n      // attempt multi-pass decoding\n  }\n```\n\nThen we only take the slow path for incomplete data, as a last ditch effort.  \n\nReading the docs, there also appears to be a way to make multi-pass faster by skipping the display stage until the last valid pass: https://chromium.googlesource.com/chromium/deps/libjpeg_turbo/+/HEAD/libjpeg.txt#2035 (we can look into this as a separate optimization)",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
