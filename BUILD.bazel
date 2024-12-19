@@ -237,6 +237,14 @@ alias(
 
 alias(
     name = "pdf_writer",
+    actual = "//src/pdf:pdf_and_jpeg",
+    visibility = ["//visibility:public"],
+)
+
+# Clients should rarely use this target as creating PDFs without JPEGs
+# leads to bloated and inefficient output
+alias(
+    name = "pdf_writer_no_jpeg",
     actual = "//src/pdf:pdf",
     visibility = ["//visibility:public"],
 )
