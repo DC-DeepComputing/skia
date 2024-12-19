@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd99de00_b227e67c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10562
+      },
+      "writtenOn": "2024-12-19T15:54:23Z",
+      "side": 1,
+      "message": "lgtm but I can\u0027t +1",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
