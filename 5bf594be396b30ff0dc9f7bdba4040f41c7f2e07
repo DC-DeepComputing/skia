@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "392ef2fc_5b547760",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3302461
+      },
+      "writtenOn": "2024-12-19T15:19:06Z",
+      "side": 1,
+      "message": "Patch updated, I\u0027ve added `SK_NO_SANITIZE_CFI`, changed `SkVx.h` to also use it. \n\nPTAL 🙏",
+      "revId": "5bf594be396b30ff0dc9f7bdba4040f41c7f2e07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
