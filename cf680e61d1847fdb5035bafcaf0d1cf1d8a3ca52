@@ -69,6 +69,24 @@
       "parentUuid": "9263ce10_f056ac12",
       "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4afcf14_489250d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-19T17:50:43Z",
+      "side": 1,
+      "message": "They are now succeeding when we are compiling Skia for dawn-native. However, when we build for emscripten/webgpu, the Undefined value is undefined.\n\nIs this expected? Do we need to update our emscripten header? Or add a `#if !defined(__EMSCRIPTEN__)` guard? What is the expected C-\u003eWASM behavior with this new API?",
+      "parentUuid": "42cf468f_f89d1de6",
+      "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
