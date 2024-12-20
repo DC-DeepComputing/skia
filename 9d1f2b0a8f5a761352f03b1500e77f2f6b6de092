@@ -52,6 +52,24 @@
       "parentUuid": "da59df3c_ac0951d2",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6ae1880_84ebd486",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-20T19:59:32Z",
+      "side": 1,
+      "message": "Great, that works thanks.\nThe only thing is there is a test that checks if there are too many scans for a progressive image and will error out. In this solution we are able to consume input more times than our scan limit is, but when checking the result of readRows we catch the error. So right now we are still able to fail when our scan limit is too large, but is this a problem that we can consume_input more times than that?\n \nI think it should be fine because the docs mention \"a call will occur once per MCU row, scanline, or sample row group, whichever unit is convenient for the current processing mode\", in reference to the check. \n\nThe test: https://skia-review.googlesource.com/c/skia/+/4560\nLibJpeg docs: https://chromium.googlesource.com/chromium/deps/libjpeg_turbo/+/HEAD/libjpeg.txt#2895",
+      "parentUuid": "2e100e99_21aec724",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
