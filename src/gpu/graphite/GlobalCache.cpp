@@ -27,7 +27,7 @@ uint32_t next_compilation_id() {
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
-        : fGraphicsPipelineCache(256)  // TODO: find a good value for these limits
+        : fGraphicsPipelineCache(256)  // TODO: find a good value for these limits //$$
         , fComputePipelineCache(256) {}
 
 GlobalCache::~GlobalCache() {
@@ -208,6 +208,28 @@ void GlobalCache::resetGraphicsPipelines() {
     SkAutoSpinlock lock{fSpinLock};
 
     fGraphicsPipelineCache.reset();
+}
+
+void GlobalCache::purgifyGraphicsPipelines() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    std::vector<skgpu::UniqueKey> toRemove;
+
+    fGraphicsPipelineCache.foreach([&](const UniqueKey* k, const sk_sp<GraphicsPipeline>* v) {
+        fn(*k, v->get());
+    });
+
+    fCache.foreach([&](const skgpu::UniqueKey& key, const sk_sp<TextureProxy>* proxy) {
+        if (Resource* resource = (*proxy)->texture();
+                resource &&
+                (!purgeTime || resource->lastAccessTime() < *purgeTime)) {
+            toRemove.push_back(key);
+        }
+    });
+
+    for (const skgpu::UniqueKey& k : toRemove) {
+        fCache.remove(k);
+    }
 }
 
 void GlobalCache::forEachGraphicsPipeline(
