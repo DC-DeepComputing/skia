@@ -22,6 +22,30 @@
       },
       "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13c6c7b2_0a1bbdaf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T21:02:55Z",
+      "side": 1,
+      "message": "From what I can tell Android 14 requires are least a target of SDK 23 and Android 15 requires a target of SDK 24 (SDK 22 was the last of the very old security model that most malware targeted). The Play Store is requiring targeting SDK 34+ to allow new installs from the store at the moment.\n\nIn any event, it would be nice to have some more information about this in this commit comment so we have a good idea why we\u0027re churning the number.",
+      "parentUuid": "3cd8d840_389ccfa1",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
