@@ -40,6 +40,30 @@
       ],
       "revId": "3bd4ed4016359b943605cea09fdb0190c8295c97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbcc6a62_3983f478",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2024-12-20T20:21:59Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "e4a2ca82_08101388",
+      "range": {
+        "startLine": 524,
+        "startChar": 39,
+        "endLine": 524,
+        "endChar": 42
+      },
+      "revId": "3bd4ed4016359b943605cea09fdb0190c8295c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
