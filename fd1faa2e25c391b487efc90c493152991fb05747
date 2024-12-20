@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "094ba99a_8ec56d4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T22:23:10Z",
+      "side": 1,
+      "message": "\"would be a nice to have\"",
+      "range": {
+        "startLine": 10,
+        "startChar": 12,
+        "endLine": 10,
+        "endChar": 21
+      },
+      "revId": "fd1faa2e25c391b487efc90c493152991fb05747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1a6c3575_fa7735b3",
