@@ -16,6 +16,24 @@
       "message": "Somewhat unsurprisingly, this works everywhere except on 10.15 where the change in [Adjust slant value for \u0027CTFontDescriptor\u0027 to improve font matching](https://skia.googlesource.com/skia.git/+show/8f33adb1ac77a3bb1df93b0c420d878be68247ec) isn\u0027t run due to a version check which may or may not still be relevant.",
       "revId": "4ec22b947f3cb65b41911bb17d6d2ae85a198853",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd0dd718_b394a0c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T18:21:49Z",
+      "side": 1,
+      "message": "This particular CoreText15 check was added primarially as a work around in https://skia-review.googlesource.com/c/skia/+/260346 for https://issues.chromium.org/issues/40104990 which was later actually fixed with https://issues.chromium.org/issues/40115836 so it may be possible that this particular check isn\u0027t really necessary anymore, especially with the change to using 0.07 instead of 1. Also since that issue was reported against macOS 10.15.0 and the behaviour may have changed by 10.15.7.\n\nIn particular Chromium no longer supports macOS 10.15, though some of Skia\u0027s other dependents still at least claim to support it. Removing this check doesn\u0027t really remove support but might lead to \"interesting behavior\" in somewhat uncommon situations.\n\nI\u0027ve created https://skia-review.googlesource.com/c/skia/+/931946 to see about removing these old checks.",
+      "parentUuid": "a18b99cb_63661a9c",
+      "revId": "4ec22b947f3cb65b41911bb17d6d2ae85a198853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
