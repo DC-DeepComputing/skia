@@ -39,6 +39,30 @@
       },
       "revId": "9f463b9e8faadf9664362bd13715c684fc43b91e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b666aba6_efe7039c",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T20:18:08Z",
+      "side": 1,
+      "message": "given how I ended up using everything I simplified the API by not returning anything for the main call and having the virtual just always return a size.",
+      "parentUuid": "ceed982e_58ce6195",
+      "range": {
+        "startLine": 238,
+        "startChar": 47,
+        "endLine": 239,
+        "endChar": 75
+      },
+      "revId": "9f463b9e8faadf9664362bd13715c684fc43b91e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
