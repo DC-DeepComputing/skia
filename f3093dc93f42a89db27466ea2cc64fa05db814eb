@@ -16,6 +16,24 @@
       "message": "You\u0027ll also need to add \"modules/skparagraph:utils\" to //BUILD.gn right above \"modules/skparagraph:tests\" so we build these with the skparagraph tests.",
       "revId": "f3093dc93f42a89db27466ea2cc64fa05db814eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70898508_05970fc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3799384
+      },
+      "writtenOn": "2024-12-20T15:03:39Z",
+      "side": 1,
+      "message": "Would adding :utils to the deps of `skia_source_set(\"tests\")` in modules/skparagraph/BUILD.gn be a reasonable fix? Or is the right place really in the top level tests target?\n\nI\u0027m having trouble repro-ing the bot failures such as https://logs.chromium.org/logs/skia/6dfd42652c0ef511/+/steps/ninja/0/stdout on my local Ubuntu 24.04 machine. But looking at the logs, either fix should probably work.",
+      "parentUuid": "522b5365_6ead14b9",
+      "revId": "f3093dc93f42a89db27466ea2cc64fa05db814eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
