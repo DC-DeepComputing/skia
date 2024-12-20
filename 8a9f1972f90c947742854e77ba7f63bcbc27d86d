@@ -46,6 +46,30 @@
       },
       "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b73b25c_52ac927f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T21:11:10Z",
+      "side": 1,
+      "message": "Finally found some actual official documentation.\n\nhttps://developer.android.com/about/versions/15/behavior-changes-all#minimum-target-api-level",
+      "parentUuid": "13c6c7b2_0a1bbdaf",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
