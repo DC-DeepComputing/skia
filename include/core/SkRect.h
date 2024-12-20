@@ -20,6 +20,19 @@
 #include <cstdint>
 #include <cstring>
 
+// TODO(crbug.com/40256175): Use spaceship unconditionally after dropping
+// support for old libstdc++ versions.
+#if __has_include(<version>)
+#include <version>
+#endif
+#if defined(__cpp_lib_three_way_comparison) &&   \
+    __cpp_lib_three_way_comparison >= 201711L && \
+    defined(__cpp_lib_concepts) && __cpp_lib_concepts >= 202002L
+#define SKIA_HAVE_SPACESHIP_OPERATOR 1
+#else
+#define SKIA_HAVE_SPACESHIP_OPERATOR 0
+#endif
+
 struct SkRect;
 class SkString;
 
@@ -222,17 +235,9 @@ struct SK_API SkIRect {
                a.fRight == b.fRight && a.fBottom == b.fBottom;
     }
 
-    /** Returns true if any member in a: fLeft, fTop, fRight, and fBottom; is not
-        identical to the corresponding member in b.
-
-        @param a  SkIRect to compare
-        @param b  SkIRect to compare
-        @return   true if members are not equal
-    */
-    friend bool operator!=(const SkIRect& a, const SkIRect& b) {
-        return a.fLeft != b.fLeft || a.fTop != b.fTop ||
-               a.fRight != b.fRight || a.fBottom != b.fBottom;
-    }
+#if SKIA_HAVE_SPACESHIP_OPERATOR
+    friend auto operator<=>(const SkIRect& a, const SkIRect& b) = default;
+#endif  // SKIA_HAVE_SPACESHIP_OPERATOR
 
     /** Sets SkIRect to (0, 0, 0, 0).
 
