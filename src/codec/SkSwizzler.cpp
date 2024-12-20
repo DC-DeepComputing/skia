@@ -838,8 +838,9 @@ std::unique_ptr<SkSwizzler> SkSwizzler::Make(const SkEncodedInfo& encodedInfo,
     RowProc fastProc = nullptr;
     RowProc proc = nullptr;
     SkCodec::ZeroInitialized zeroInit = options.fZeroInitialized;
-    const bool premultiply = (SkEncodedInfo::kOpaque_Alpha != encodedInfo.alpha()) &&
-            (kPremul_SkAlphaType == dstInfo.alphaType());
+    const bool premultiply = !ctable &&  // `ctable` creator already took care of premul
+                             (SkEncodedInfo::kOpaque_Alpha != encodedInfo.alpha()) &&
+                             (kPremul_SkAlphaType == dstInfo.alphaType());
 
     switch (encodedInfo.color()) {
         case SkEncodedInfo::kGray_Color:

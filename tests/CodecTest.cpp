@@ -62,6 +62,7 @@
 #include <cstring>
 #include <initializer_list>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -527,6 +528,55 @@ static void check(skiatest::Reporter* r,
     check_codec_image_generator(r, codecDigest, info, path, supportsIncomplete);
 }
 
+static sk_sp<SkImage> decodeToSkImage(skiatest::Reporter* r,
+                                      const char* resourcePath,
+                                      SkColorType dstColorType,
+                                      SkAlphaType dstAlphaType) {
+    std::unique_ptr<SkStream> stream(GetResourceAsStream(resourcePath));
+    REPORTER_ASSERT(r, !!stream);
+    if (!stream) {
+        return nullptr;
+    }
+
+    std::unique_ptr<SkCodec> codec = SkCodec::MakeFromStream(std::move(stream));
+    REPORTER_ASSERT(r, !!codec);
+    if (!codec) {
+        return nullptr;
+    }
+
+    SkImageInfo dstInfo = codec->getInfo()
+                                  .makeColorType(dstColorType)
+                                  .makeAlphaType(dstAlphaType)
+                                  .makeColorSpace(SkColorSpace::MakeSRGB());
+    sk_sp<SkImage> image;
+    SkCodec::Result result;
+    std::tie(image, result) = codec->getImage(dstInfo);
+    REPORTER_ASSERT(r, !!result == SkCodec::kSuccess);
+    REPORTER_ASSERT(r, !!image);
+    return image;
+}
+
+static std::optional<uint32_t> decodeSingleRawPixelAsUint32(skiatest::Reporter* r,
+                                                            const char* resourcePath,
+                                                            SkColorType dstColorType,
+                                                            SkAlphaType dstAlphaType,
+                                                            int x = 0,
+                                                            int y = 0) {
+    SkASSERT(dstColorType == kBGRA_8888_SkColorType || dstColorType == kRGBA_8888_SkColorType);
+    sk_sp<SkImage> image = decodeToSkImage(r, resourcePath, dstColorType, dstAlphaType);
+    if (!image) {
+        return std::nullopt;  // REPORTER_ASSERT should already fire in `decodeToSkImage`.
+    }
+
+    SkPixmap pixmap;
+    if (!image->peekPixels(&pixmap)) {
+        REPORTER_ASSERT(r, false, "peekPixels failed");
+        return std::nullopt;
+    }
+
+    return *pixmap.addr32(0, 0);
+}
+
 DEF_TEST(Codec_wbmp, r) {
     check(r, "images/mandrill.wbmp", SkISize::Make(512, 512), true, false, true);
 }
@@ -587,6 +637,123 @@ DEF_TEST(Codec_png, r) {
     check(r, "images/plane_interlaced.png", SkISize::Make(250, 126), false, false, true, true);
     check(r, "images/randPixels.png", SkISize::Make(8, 8), false, false, true, true);
     check(r, "images/yellow_rose.png", SkISize::Make(400, 301), false, false, true, true);
+    check(r, "images/plte_trns_gama.png", SkISize::Make(1, 1), false, false, true, true);
+}
+
+DEF_TEST(Codec_png_plte_trns_gama_into_rgba_premul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns_gama.png", kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    //
+    // After `gAMA` transformation we should get: R=161, G=197, B=227.
+    //
+    // After alpha premultiplication by 25% we should get: R=40, G=49, B=57.
+    REPORTER_ASSERT(r, pixel[0] == 40, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 49, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[2] == 57, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
+}
+
+DEF_TEST(Codec_png_plte_trns_gama_into_bgra_premul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns_gama.png", kBGRA_8888_SkColorType, kPremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    //
+    // After `gAMA` transformation we should get: R=161, G=197, B=227.
+    //
+    // After alpha premultiplication by 25% we should get: R=40, G=49, B=57.
+    REPORTER_ASSERT(r, pixel[2] == 40, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 49, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[0] == 57, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
+}
+
+DEF_TEST(Codec_png_plte_trns_gama_into_rgba_unpremul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns_gama.png", kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    //
+    // After `gAMA` transformation we should get: R=161, G=197, B=227.
+    REPORTER_ASSERT(r, pixel[0] == 161, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 197, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[2] == 227, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
+}
+
+DEF_TEST(Codec_png_plte_trns_into_rgba_premul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns.png", kRGBA_8888_SkColorType, kPremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    //
+    // After alpha premultiplication by 25% we should get: R=25, G=38, B=50.
+    REPORTER_ASSERT(r, pixel[0] == 25, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 38, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[2] == 50, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
+}
+
+DEF_TEST(Codec_png_plte_trns_into_bgra_premul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns.png", kBGRA_8888_SkColorType, kPremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    //
+    // After alpha premultiplication by 25% we should get: R=25, G=38, B=50.
+    REPORTER_ASSERT(r, pixel[2] == 25, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 38, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[0] == 50, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
+}
+
+DEF_TEST(Codec_png_plte_trns_into_rgba_unpremul, r) {
+    std::optional<uint32_t> maybe_color = decodeSingleRawPixelAsUint32(
+            r, "images/plte_trns.png", kRGBA_8888_SkColorType, kUnpremul_SkAlphaType);
+    if (!maybe_color.has_value()) {
+        // `REPORTER_ASSERT` should already fire in `decodeSinglePixel`.
+        return;
+    }
+    const uint8_t* pixel = static_cast<const uint8_t*>(static_cast<const void*>(&*maybe_color));
+
+    // RGB in `PLTE` chunk is: 100 (0x64), 150 (0x96), 200 (0xC8)
+    // Alpha in `tRNS` chunk is: 64 (i.e. 25% or 0x40)
+    REPORTER_ASSERT(r, pixel[0] == 100, "Actual byte0 = %d", pixel[0]);
+    REPORTER_ASSERT(r, pixel[1] == 150, "Actual byte1 = %d", pixel[1]);
+    REPORTER_ASSERT(r, pixel[2] == 200, "Actual byte2 = %d", pixel[2]);
+    REPORTER_ASSERT(r, pixel[3] == 64, "Actual byte3 = %d", pixel[3]);
 }
 
 // Disable RAW tests for Win32.
