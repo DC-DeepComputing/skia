@@ -32,6 +32,7 @@ public:
 
     void startZoom();
     void updateZoom(float scale, float startX, float startY, float lastX, float lastY);
+    bool updateZoom(float scale);
     void endZoom();
 
     const SkMatrix& localM();

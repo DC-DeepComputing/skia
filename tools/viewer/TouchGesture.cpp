@@ -205,6 +205,21 @@ void TouchGesture::updateZoom(float scale, float startX, float startY, float las
     fLocalM.postTranslate(lastX, lastY);
 }
 
+bool TouchGesture::updateZoom(float scale) {
+    if (fState == kTranslate_State) {
+        int index = this->findRec(nullptr);
+        if (index < 0) {
+            SkDebugf("---- ignoring move without begin\n");
+            return false;
+        }
+        Rec& rec = fTouches[index];
+
+        this->updateZoom(scale, rec.fLastX, rec.fLastY, rec.fLastX, rec.fLastY);
+        return true;
+    }
+    return false;
+}
+
 void TouchGesture::endZoom() {
     this->flushLocalM();
     SkASSERT(kZoom_State == fState);

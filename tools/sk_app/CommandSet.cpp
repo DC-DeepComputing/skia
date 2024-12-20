@@ -22,7 +22,7 @@ namespace sk_app {
 
 CommandSet::CommandSet()
     : fHelpMode(kNone_HelpMode) {
-    this->addCommand('h', "Overlays", "Show help screen", [this]() {
+    this->addCommand('h', "Overlays", "Show help screen", [this](skui::ModifierKey) {
         switch (this->fHelpMode) {
             case kNone_HelpMode:
                 this->fHelpMode = kGrouped_HelpMode;
@@ -46,7 +46,7 @@ bool CommandSet::onKey(skui::Key key, skui::InputState state, skui::ModifierKey 
     if (skui::InputState::kDown == state) {
         for (Command& cmd : fCommands) {
             if (Command::kKey_CommandType == cmd.fType && key == cmd.fKey) {
-                cmd.fFunction();
+                cmd.fFunction(modifiers);
                 return true;
             }
         }
@@ -58,7 +58,7 @@ bool CommandSet::onKey(skui::Key key, skui::InputState state, skui::ModifierKey 
 bool CommandSet::onChar(SkUnichar c, skui::ModifierKey modifiers) {
     for (Command& cmd : fCommands) {
         if (Command::kChar_CommandType == cmd.fType && c == cmd.fChar) {
-            cmd.fFunction();
+            cmd.fFunction(modifiers);
             return true;
         }
     }
@@ -69,7 +69,7 @@ bool CommandSet::onChar(SkUnichar c, skui::ModifierKey modifiers) {
 bool CommandSet::onSoftkey(const SkString& softkey) {
     for (const Command& cmd : fCommands) {
         if (cmd.getSoftkeyString().equals(softkey)) {
-            cmd.fFunction();
+            cmd.fFunction(skui::ModifierKey::kNone);
             return true;
         }
     }
@@ -77,12 +77,13 @@ bool CommandSet::onSoftkey(const SkString& softkey) {
 }
 
 void CommandSet::addCommand(SkUnichar c, const char* group, const char* description,
-                            std::function<void(void)> function) {
+                            std::function<void(skui::ModifierKey)> function) {
     fCommands.push_back(Command(c, group, description, function));
 }
 
 void CommandSet::addCommand(skui::Key k, const char* keyName, const char* group,
-                            const char* description, std::function<void(void)> function) {
+                            const char* description,
+                            std::function<void(skui::ModifierKey)> function) {
     fCommands.push_back(Command(k, keyName, group, description, function));
 }
 

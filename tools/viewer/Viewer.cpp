@@ -634,35 +634,36 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
     fWindow->pushLayer(&fImGuiLayer);
 
     // add key-bindings
-    fCommands.addCommand(' ', "GUI", "Toggle Debug GUI", [this]() {
+    fCommands.addCommand(' ', "GUI", "Toggle Debug GUI", [this](skui::ModifierKey) {
         this->fShowImGuiDebugWindow = !this->fShowImGuiDebugWindow;
         fWindow->inval();
     });
     // Command to jump directly to the slide picker and give it focus
-    fCommands.addCommand('/', "GUI", "Jump to slide picker", [this]() {
+    fCommands.addCommand('/', "GUI", "Jump to slide picker", [this](skui::ModifierKey) {
         this->fShowImGuiDebugWindow = true;
         this->fShowSlidePicker = true;
         fWindow->inval();
     });
     // Alias that to Backspace, to match SampleApp
-    fCommands.addCommand(skui::Key::kBack, "Backspace", "GUI", "Jump to slide picker", [this]() {
+    fCommands.addCommand(skui::Key::kBack, "Backspace", "GUI", "Jump to slide picker",
+            [this](skui::ModifierKey) {
         this->fShowImGuiDebugWindow = true;
         this->fShowSlidePicker = true;
         fWindow->inval();
     });
-    fCommands.addCommand('g', "GUI", "Toggle GUI Demo", [this]() {
+    fCommands.addCommand('g', "GUI", "Toggle GUI Demo", [this](skui::ModifierKey) {
         this->fShowImGuiTestWindow = !this->fShowImGuiTestWindow;
         fWindow->inval();
     });
-    fCommands.addCommand('z', "GUI", "Toggle zoom window", [this]() {
+    fCommands.addCommand('z', "GUI", "Toggle zoom window", [this](skui::ModifierKey) {
         this->fShowZoomWindow = !this->fShowZoomWindow;
         fWindow->inval();
     });
-    fCommands.addCommand('Z', "GUI", "Toggle zoom window state", [this]() {
+    fCommands.addCommand('Z', "GUI", "Toggle zoom window state", [this](skui::ModifierKey) {
         this->fZoomWindowFixed = !this->fZoomWindowFixed;
         fWindow->inval();
     });
-    fCommands.addCommand('v', "Swapchain", "Toggle vsync on/off", [this]() {
+    fCommands.addCommand('v', "Swapchain", "Toggle vsync on/off", [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         paramsBuilder.disableVsync(!params->disableVsync());
@@ -670,7 +671,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('V', "Swapchain", "Toggle delayed acquire on/off (Metal only)", [this]() {
+    fCommands.addCommand('V', "Swapchain", "Toggle delayed acquire on/off (Metal only)",
+            [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         paramsBuilder.delayDrawableAcquisition(!params->delayDrawableAcquisition());
@@ -678,24 +680,24 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('r', "Redraw", "Toggle redraw", [this]() {
+    fCommands.addCommand('r', "Redraw", "Toggle redraw", [this](skui::ModifierKey) {
         fRefresh = !fRefresh;
         fWindow->inval();
     });
-    fCommands.addCommand('s', "Overlays", "Toggle stats display", [this]() {
+    fCommands.addCommand('s', "Overlays", "Toggle stats display", [this](skui::ModifierKey) {
         fStatsLayer.setActive(!fStatsLayer.getActive());
         fWindow->inval();
     });
-    fCommands.addCommand('0', "Overlays", "Reset stats", [this]() {
+    fCommands.addCommand('0', "Overlays", "Reset stats", [this](skui::ModifierKey) {
         fStatsLayer.resetMeasurements();
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('C', "GUI", "Toggle color histogram", [this]() {
+    fCommands.addCommand('C', "GUI", "Toggle color histogram", [this](skui::ModifierKey) {
         this->fShowHistogramWindow = !this->fShowHistogramWindow;
         fWindow->inval();
     });
-    fCommands.addCommand('c', "Modes", "Cycle color mode", [this]() {
+    fCommands.addCommand('c', "Modes", "Cycle color mode", [this](skui::ModifierKey) {
         switch (fColorMode) {
             case ColorMode::kLegacy:
                 this->setColorMode(ColorMode::kColorManaged8888);
@@ -711,7 +713,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
                 break;
         }
     });
-    fCommands.addCommand('w', "Modes", "Toggle wireframe", [this]() {
+    fCommands.addCommand('w', "Modes", "Toggle wireframe", [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         GrContextOptions grOpts = params->grContextOptions();
@@ -720,7 +722,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fWindow->setRequestedDisplayParams(paramsBuilder.build());
         fWindow->inval();
     });
-    fCommands.addCommand('w', "Modes", "Toggle reduced shaders", [this]() {
+    fCommands.addCommand('w', "Modes", "Toggle reduced shaders", [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         GrContextOptions grOpts = params->grContextOptions();
@@ -729,22 +731,29 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         fWindow->setRequestedDisplayParams(paramsBuilder.build());
         fWindow->inval();
     });
-    fCommands.addCommand(skui::Key::kRight, "Right", "Navigation", "Next slide", [this]() {
+    fCommands.addCommand(skui::Key::kRight, "Right", "Navigation", "Next slide",
+            [this](skui::ModifierKey) {
         this->setCurrentSlide(fCurrentSlide < fSlides.size() - 1 ? fCurrentSlide + 1 : 0);
     });
-    fCommands.addCommand(skui::Key::kLeft, "Left", "Navigation", "Previous slide", [this]() {
+    fCommands.addCommand(skui::Key::kLeft, "Left", "Navigation", "Previous slide",
+            [this](skui::ModifierKey) {
         this->setCurrentSlide(fCurrentSlide > 0 ? fCurrentSlide - 1 : fSlides.size() - 1);
     });
-    fCommands.addCommand(skui::Key::kUp, "Up", "Transform", "Zoom in", [this]() {
-        this->changeZoomLevel(1.f / 32.f);
+    fCommands.addCommand(skui::Key::kUp, "Up", "Transform", "Zoom in",
+            [this](skui::ModifierKey) {
+        float scale = 1.f / 32.f;
+        this->changeZoomLevel(scale);
         fWindow->inval();
     });
-    fCommands.addCommand(skui::Key::kDown, "Down", "Transform", "Zoom out", [this]() {
-        this->changeZoomLevel(-1.f / 32.f);
+    fCommands.addCommand(skui::Key::kDown, "Down", "Transform", "Zoom out",
+            [this](skui::ModifierKey) {
+        float scale = -1.f / 32.f;
+        this->changeZoomLevel(scale);
         fWindow->inval();
     });
 
-    fCommands.addCommand('d', "Modes", "Change rendering backend", [this]() {
+    fCommands.addCommand('d', "Modes", "Change rendering backend",
+            [this](skui::ModifierKey) {
         int currIdx = -1;
         for (size_t i = 0; i < kSupportedBackendTypeCount; i++) {
             if (kSupportedBackends[i] == fBackendType) {
@@ -756,15 +765,15 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         auto newBackend = kSupportedBackends[(currIdx + 1) % kSupportedBackendTypeCount];
         this->setBackend(newBackend);
     });
-    fCommands.addCommand('K', "IO", "Save slide to SKP", [this]() {
+    fCommands.addCommand('K', "IO", "Save slide to SKP", [this](skui::ModifierKey) {
         fSaveToSKP = true;
         fWindow->inval();
     });
-    fCommands.addCommand('&', "Overlays", "Show slide dimensios", [this]() {
+    fCommands.addCommand('&', "Overlays", "Show slide dimensios", [this](skui::ModifierKey) {
         fShowSlideDimensions = !fShowSlideDimensions;
         fWindow->inval();
     });
-    fCommands.addCommand('G', "Modes", "Geometry", [this]() {
+    fCommands.addCommand('G', "Modes", "Geometry", [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         SkSurfaceProps newProps;
@@ -799,7 +808,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('H', "Font", "Hinting mode", [this]() {
+    fCommands.addCommand('H', "Font", "Hinting mode", [this](skui::ModifierKey) {
         if (!fFontOverrides.fHinting) {
             fFontOverrides.fHinting = true;
             fFont.setHinting(SkFontHinting::kNone);
@@ -823,7 +832,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('D', "Modes", "DFT", [this]() {
+    fCommands.addCommand('D', "Modes", "DFT", [this](skui::ModifierKey) {
         auto params = fWindow->getRequestedDisplayParams();
         auto paramsBuilder = make_display_params_builder(params);
         uint32_t flags = params->surfaceProps().flags();
@@ -835,7 +844,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('L', "Font", "Subpixel Antialias Mode", [this]() {
+    fCommands.addCommand('L', "Font", "Subpixel Antialias Mode", [this](skui::ModifierKey) {
         if (!fFontOverrides.fEdging) {
             fFontOverrides.fEdging = true;
             fFont.setEdging(SkFont::Edging::kAlias);
@@ -856,7 +865,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('S', "Font", "Subpixel Position Mode", [this]() {
+    fCommands.addCommand('S', "Font", "Subpixel Position Mode", [this](skui::ModifierKey) {
         if (!fFontOverrides.fSubpixel) {
             fFontOverrides.fSubpixel = true;
             fFont.setSubpixel(false);
@@ -870,7 +879,7 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('B', "Font", "Baseline Snapping", [this]() {
+    fCommands.addCommand('B', "Font", "Baseline Snapping", [this](skui::ModifierKey) {
         if (!fFontOverrides.fBaselineSnap) {
             fFontOverrides.fBaselineSnap = true;
             fFont.setBaselineSnap(false);
@@ -884,31 +893,31 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('p', "Transform", "Toggle Perspective Mode", [this]() {
+    fCommands.addCommand('p', "Transform", "Toggle Perspective Mode", [this](skui::ModifierKey) {
         fPerspectiveMode = (kPerspective_Real == fPerspectiveMode) ? kPerspective_Fake
                                                                    : kPerspective_Real;
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('P', "Transform", "Toggle Perspective", [this]() {
+    fCommands.addCommand('P', "Transform", "Toggle Perspective", [this](skui::ModifierKey) {
         fPerspectiveMode = (kPerspective_Off == fPerspectiveMode) ? kPerspective_Real
                                                                   : kPerspective_Off;
         this->updateTitle();
         fWindow->inval();
     });
-    fCommands.addCommand('a', "Transform", "Toggle Animation", [this]() {
+    fCommands.addCommand('a', "Transform", "Toggle Animation", [this](skui::ModifierKey) {
         fAnimTimer.togglePauseResume();
     });
-    fCommands.addCommand('u', "GUI", "Zoom UI", [this]() {
+    fCommands.addCommand('u', "GUI", "Zoom UI", [this](skui::ModifierKey) {
         fZoomUI = !fZoomUI;
         fStatsLayer.setDisplayScale((fZoomUI ? 2.0f : 1.0f) * fWindow->scaleFactor());
         fWindow->inval();
     });
-    fCommands.addCommand('=', "Transform", "Apply Backing Scale", [this]() {
+    fCommands.addCommand('=', "Transform", "Apply Backing Scale", [this](skui::ModifierKey) {
         fApplyBackingScale = !fApplyBackingScale;
         fWindow->inval();
     });
-    fCommands.addCommand('$', "ViaSerialize", "Toggle ViaSerialize", [this]() {
+    fCommands.addCommand('$', "ViaSerialize", "Toggle ViaSerialize", [this](skui::ModifierKey) {
         fDrawViaSerialize = !fDrawViaSerialize;
         this->updateTitle();
         fWindow->inval();
@@ -928,7 +937,8 @@ Viewer::Viewer(int argc, char** argv, void* platformData)
 
     auto gamutImage = ToolUtils::GetResourceAsImage("images/gamut.png");
     if (gamutImage) {
-        fImGuiGamutPaint.setShader(gamutImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear)));
+        fImGuiGamutPaint.setShader(
+                gamutImage->makeShader(SkSamplingOptions(SkFilterMode::kLinear)));
     }
     fImGuiGamutPaint.setColor(SK_ColorWHITE);
 
@@ -1476,6 +1486,9 @@ void Viewer::setupCurrentSlide() {
 void Viewer::changeZoomLevel(float delta) {
     fZoomLevel += delta;
     fZoomLevel = SkTPin(fZoomLevel, MIN_ZOOM_LEVEL, MAX_ZOOM_LEVEL);
+    if (!fGesture.updateZoom(exp(fZoomLevel))) {
+        fGesture.updateZoom(exp(fZoomLevel), 0, 0, 0, 0);
+    }
     this->updateGestureTransLimit();
 }
 
@@ -1483,7 +1496,7 @@ void Viewer::updateGestureTransLimit() {
     // Update the trans limit as the transform changes.
     const SkRect slideBounds = SkRect::Make(this->currentSlideSize());
     const SkRect windowRect = SkRect::MakeIWH(fWindow->width(), fWindow->height());
-    fGesture.setTransLimit(slideBounds, windowRect, this->computePreTouchMatrix());
+//    fGesture.setTransLimit(slideBounds, windowRect, this->computePreTouchMatrix());
 }
 
 SkMatrix Viewer::computePerspectiveMatrix() {
@@ -1503,7 +1516,7 @@ SkMatrix Viewer::computePerspectiveMatrix() {
 SkMatrix Viewer::computePreTouchMatrix() {
     SkMatrix m = fDefaultMatrix;
 
-    SkScalar zoomScale = exp(fZoomLevel);
+    SkScalar zoomScale = 1.0f;//exp(fZoomLevel);
     if (fApplyBackingScale) {
         zoomScale *= fWindow->scaleFactor();
     }
@@ -2003,7 +2016,8 @@ bool Viewer::onTouch(intptr_t owner, skui::InputState state, float x, float y) {
     }
 
     const auto slidePt = this->mapEvent(x, y);
-    if (fSlides[fCurrentSlide]->onMouse(slidePt.x(), slidePt.y(), state, skui::ModifierKey::kNone)) {
+    if (fSlides[fCurrentSlide]->onMouse(slidePt.x(), slidePt.y(), state,
+                                        skui::ModifierKey::kNone)) {
         fWindow->inval();
         return true;
     }
