@@ -16,6 +16,23 @@
       "message": "+ben to have another eye here as I\u0027m signing off for the holidays",
       "revId": "fd1faa2e25c391b487efc90c493152991fb05747",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "204552ba_9b3d4e78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T22:21:18Z",
+      "side": 1,
+      "message": "Skia for various reasons cannot move to C++20 yet, and we don\u0027t currently even have any C++20 builders (though we probably should in order to ensure forward compatibility with all the breaking changes C++ has been going through).\n\nIt seems iffy to add this one, since it would mean a great burden to also possibly have many more of these. Will need to think about this one.",
+      "revId": "fd1faa2e25c391b487efc90c493152991fb05747",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
