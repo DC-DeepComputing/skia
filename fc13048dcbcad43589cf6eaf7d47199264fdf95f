@@ -46,6 +46,30 @@
       },
       "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efa121e8_a9573c78",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T21:37:29Z",
+      "side": 1,
+      "message": "My opinion is that we need Mac14 and Mac15 jobs, especially for NativeFonts and GPU. That\u0027s where most of the current users are but we don\u0027t have any coverage right now (outside of Chromium test coverage). We have much more coverage of macOS 10.15 which Chromium doesn\u0027t support than macOS 14 or 15.",
+      "parentUuid": "f719fb11_3144f595",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 82
+      },
+      "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
