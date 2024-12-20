@@ -34,6 +34,24 @@
       "parentUuid": "9b8f8da9_f8313340",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e100e99_21aec724",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-20T17:02:16Z",
+      "side": 1,
+      "message": "I traced what `jpeg_start_decompress` does for progressive jpegs in unbuffered mode, and it seems to just consume the input using the equivalent of `jpeg_consume_input`.\n\nThat aligns with hints from docs about skipping output stages for more efficient stream processing.  Looks like the root cause for our regression is that we\u0027re outputing all scans, when we really want just the last valid scan.\n\nSo I hacked up something simliar and it seems to fix the regression:\n\n```\n    if (isProgressive) {\n        int last_scan_completed \u003d 0;\n        while (!jpeg_input_complete(dinfo)) {\n            const int res \u003d jpeg_consume_input(dinfo);\n            if (res \u003d\u003d JPEG_SUSPENDED) {\n                break;\n            }\n            if (res \u003d\u003d JPEG_SCAN_COMPLETED) {\n                last_scan_completed \u003d dinfo-\u003einput_scan_number;\n            }\n        }\n        if (last_scan_completed \u003e 0) {\n            jpeg_start_output(dinfo, last_scan_completed);\n            int rows \u003d 0;\n            SkCodec::Result readResult \u003d this-\u003ereadRows(dstInfo, dst, dstRowBytes,\n                                                        dstInfo.height(), options, \u0026rows);\n            jpeg_finish_output(dinfo);\n            if (rows \u003c dstInfo.height()) {\n                // failure\n            }\n        } else {\n            // failure\n        }\n    } else {\n        ...\n```",
+      "parentUuid": "da59df3c_ac0951d2",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
