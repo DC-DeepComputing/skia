@@ -94,6 +94,30 @@
       },
       "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca55d087_13df8a66",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T22:09:45Z",
+      "side": 1,
+      "message": "I actually have no idea really. Like many things Android, there is too much magic going on here to have a good handle on what updates what.",
+      "parentUuid": "9229dc59_f90fe125",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
