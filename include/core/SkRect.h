@@ -20,6 +20,16 @@
 #include <cstdint>
 #include <cstring>
 
+// TODO(crbug.com/40256175): Use spaceship unconditionally after dropping
+// support for old libstdc++ versions.
+#if defined(__cpp_lib_three_way_comparison) &&   \
+    __cpp_lib_three_way_comparison >= 201711L && \
+    defined(__cpp_lib_concepts) && __cpp_lib_concepts >= 202002L
+#define SKIA_HAVE_SPACESHIP_OPERATOR 1
+#else
+#define SKIA_HAVE_SPACESHIP_OPERATOR 0
+#endif
+
 struct SkRect;
 class SkString;
 
@@ -222,6 +232,17 @@ struct SK_API SkIRect {
                a.fRight == b.fRight && a.fBottom == b.fBottom;
     }
 
+#if SKIA_HAVE_SPACESHIP_OPERATOR
+    /** Returns the comparison result of the members of a and b in the following
+        order: fLeft, fTop, fRight, fBottom.
+
+        @param a SkIRect to compare
+        @param b SkIRect to compare
+        @return the strong ordering indicating whether a is less than, equal, or
+                greater than b.
+    */
+    friend auto operator<=>(const SkIRect& a, const SkIRect& b) = default;
+#else
     /** Returns true if any member in a: fLeft, fTop, fRight, and fBottom; is not
         identical to the corresponding member in b.
 
@@ -233,6 +254,7 @@ struct SK_API SkIRect {
         return a.fLeft != b.fLeft || a.fTop != b.fTop ||
                a.fRight != b.fRight || a.fBottom != b.fBottom;
     }
+#endif  // SKIA_HAVE_SPACESHIP_OPERATOR
 
     /** Sets SkIRect to (0, 0, 0, 0).
 
@@ -809,6 +831,17 @@ struct SK_API SkRect {
                a.fBottom == b.fBottom;
     }
 
+#if SKIA_HAVE_SPACESHIP_OPERATOR
+    /** Returns the comparison result of the members of a and b in the following
+        order: fLeft, fTop, fRight, fBottom.
+
+        @param a SkRect to compare
+        @param b SkRect to compare
+        @return the strong ordering indicating whether a is less than, equal, or
+                greater than b.
+    */
+    friend auto operator<=>(const SkRect& a, const SkRect& b) = default;
+#else
     /** Returns true if any in a: fLeft, fTop, fRight, and fBottom; does not
         equal the corresponding members in b.
 
@@ -822,6 +855,7 @@ struct SK_API SkRect {
     friend bool operator!=(const SkRect& a, const SkRect& b) {
         return !(a == b);
     }
+#endif  // SKIA_HAVE_SPACESHIP_OPERATOR
 
     /** Returns four points in quad that enclose SkRect ordered as: top-left, top-right,
         bottom-right, bottom-left.
