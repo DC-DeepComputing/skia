@@ -31,4 +31,9 @@ PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext)
             /* avoidBufferAlloc= */ true);
 }
 
+void PrecompileContext::purgeUnusedSince() {
+
+}
+
+
 } // namespace skgpu::graphite

@@ -432,15 +432,15 @@ void ResourceCache::purgeAsNeeded() {
 
 void ResourceCache::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(&purgeTime);
+    this->purgeResources1(&purgeTime);
 }
 
 void ResourceCache::purgeResources() {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(nullptr);
+    this->purgeResources1(nullptr);
 }
 
-void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) {
+void ResourceCache::purgeResources1(const StdSteadyClock::time_point* purgeTime) {
     TRACE_EVENT0("skia.gpu.cache", TRACE_FUNC);
     if (fProxyCache) {
         fProxyCache->purgeProxiesNotUsedSince(purgeTime);

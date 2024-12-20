@@ -41,6 +41,8 @@ public:
     GlobalCache();
     ~GlobalCache();
 
+    void purgifyGraphicsPipelines();
+
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.

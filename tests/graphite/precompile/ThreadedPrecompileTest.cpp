@@ -145,6 +145,15 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
     precompileContext.reset();
 }
 
+void purge_on_thread(std::unique_ptr<PrecompileContext> precompileContext,
+                     skiatest::Reporter* /* reporter */,
+                     int /* threadID */) {
+
+    precompileContext->purgeUnusedSince();
+
+    precompileContext.reset();
+}
+
 // A simple helper to call Context::insertRecording on the Recordings generated on the
 // recorder threads. It collects (and keeps ownership) of all the generated Recordings.
 class Listener : public SkRefCnt {
@@ -319,6 +328,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
     }
 
     context->submit(SyncToCpu::kYes);
+
+    {
+        std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+
+        precompileContext->purgeUnusedSince();
+    }
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
