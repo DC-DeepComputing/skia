@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "949afd8b_e5aadf88",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-20T21:00:50Z",
+      "side": 1,
+      "message": "I need some direction on what jobs we actually need to be running on these machines, not sure who to ask about that.",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 82
+      },
+      "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
