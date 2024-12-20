@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4a2ca82_08101388",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 524,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T17:50:23Z",
+      "side": 1,
+      "message": "nit: that",
+      "range": {
+        "startLine": 524,
+        "startChar": 39,
+        "endLine": 524,
+        "endChar": 42
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "689d3e5c_0efeb956",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCaps.cpp",
+              "range": {
+                "startLine": 524,
+                "startChar": 0,
+                "endLine": 525,
+                "endChar": 0
+              },
+              "replacement": "        // to measure all the encoders that the start/end commands encapsulate in the command buffer.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3bd4ed4016359b943605cea09fdb0190c8295c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
