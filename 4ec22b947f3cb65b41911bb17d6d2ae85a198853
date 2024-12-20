@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a18b99cb_63661a9c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T16:24:31Z",
+      "side": 1,
+      "message": "Somewhat unsurprisingly, this works everywhere except on 10.15 where the change in [Adjust slant value for \u0027CTFontDescriptor\u0027 to improve font matching](https://skia.googlesource.com/skia.git/+show/8f33adb1ac77a3bb1df93b0c420d878be68247ec) isn\u0027t run due to a version check which may or may not still be relevant.",
+      "revId": "4ec22b947f3cb65b41911bb17d6d2ae85a198853",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
