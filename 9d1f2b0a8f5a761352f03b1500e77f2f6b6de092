@@ -70,6 +70,24 @@
       "parentUuid": "2e100e99_21aec724",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252841f5_4601b735",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-20T20:48:55Z",
+      "side": 1,
+      "message": "Ah, good find.  We seem to pass the test, but the original DoS jpeg hangs (eoflop.jpg from here: https://g-issues.chromium.org/issues/40482814).  Looks like our test jpeg doesn\u0027t have as many scans as the original.\n\nKinda surpsiing that `jpeg_consume_input` doesn\u0027t invoke the progress callback.  A couple of ideas:\n\n  - call the progress monitor explicitly from our consume loop (would be nice if libjpeg had a helper for that)\n  - duplicate the scan limit check in our loop\n  \nI\u0027m somewhat skeptical of the scan limit approach: it happens to work because the hostile jpeg has lots of scans but what happens if it just has a bunch or rows in a single scan instead?  I suspect we\u0027d still hang.  Still, let\u0027s try not to regress that bug.",
+      "parentUuid": "d6ae1880_84ebd486",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
