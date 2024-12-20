@@ -88,6 +88,24 @@
       "parentUuid": "d6ae1880_84ebd486",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05ac5ff3_7f96287f",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2024-12-20T21:39:14Z",
+      "side": 1,
+      "message": "I like the idea of invoking the progress monitor to avoid code duplication, so I did that. Although hacky, the api doesn\u0027t give another option.\nFor your second point, I think that would be classified as just a very large image which I imagine is handled somehow in the library, but more testing would be needed.",
+      "parentUuid": "252841f5_4601b735",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
