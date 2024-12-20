@@ -70,6 +70,30 @@
       },
       "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9229dc59_f90fe125",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T22:07:18Z",
+      "side": 1,
+      "message": "Also, I pulled down this change and did a `platform_tools/android/bin/android_build_app -C out/android viewer` and it worked even though I seem to have pointed it at an SDK 28 and NDK 27. Does gradle just pull down what is needed? If it does, then I suppose we can rev this number however much we like. It kinda looks like it because after building I now have a shiny new `build-tools/34.0.0` in my `android-sdk` directory. I don\u0027t think the system or the play store care about the NDK used.",
+      "parentUuid": "9b73b25c_52ac927f",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
