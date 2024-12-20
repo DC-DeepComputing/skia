@@ -518,38 +518,33 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
     }
 
     if (isProgressive) {
-      int output_passes = 0;
+      int last_scan_completed = 0;
       while (!jpeg_input_complete(dinfo)) {
-         // This call is balanced with jpeg_finish_output at all early exits below.
-         jpeg_start_output(dinfo, dinfo->input_scan_number);
-
-         int rows = 0;
+        const int res = jpeg_consume_input(dinfo);
+        if (res == JPEG_SUSPENDED) {
+           break;
+        }
+        if (res == JPEG_SCAN_COMPLETED) {
+           last_scan_completed = dinfo->input_scan_number;
+        }
+      }
+      if (last_scan_completed >  0) {
+        jpeg_start_output(dinfo, last_scan_completed);
+        int rows = 0;
          SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
                                                      dstInfo.height(), options, &rows);
          // Checks if scan was called too many times to not stall the decoder.
          if (readResult != kSuccess) {
-           jpeg_finish_output(dinfo);
-           return fDecoderMgr->returnFailure("readRows", readResult);
+            jpeg_finish_output(dinfo);
+            return fDecoderMgr->returnFailure("readRows", readResult);
          }
-        if (rows < dstInfo.height()) {
-            // Progressive images with at least one output pass can be shown and return success
-            // even if it is missing an EOF marker.
-           jpeg_finish_output(dinfo);
-           if (output_passes > 0) {
-               break;
-           }
-           *rowsDecoded = rows;
+         jpeg_finish_output(dinfo);
+         if (rows < dstInfo.height()) {
+             *rowsDecoded = rows;
+             return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+         }
+      } else {
            return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
-        }
-
-        // If a progressive image fails to find EOF on the first output pass, return a failure.
-        if (!jpeg_finish_output(dinfo)) {
-           if (output_passes > 0) {
-              break;
-           }
-           return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
-        }
-        output_passes++;
       }
     } else {
       // Baseline image
