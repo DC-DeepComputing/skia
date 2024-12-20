@@ -74,6 +74,7 @@ if (skia_enable_skparagraph && skia_enable_skshaper && skia_enable_skunicode &&
         sources = skparagraph_tests
         deps = [
           ":skparagraph",
+          ":utils",
           "../..:skia",
           "../..:test",
           "../skshaper",
