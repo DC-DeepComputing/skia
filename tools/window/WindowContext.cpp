@@ -25,16 +25,24 @@ void WindowContext::swapBuffers() {
 }
 
 bool WindowContext::supportsGpuTimer() const {
+    SkDebugf("skia1\n");
     auto flags = skgpu::GpuStatsFlags::kNone;
+    SkDebugf("skia2\n");
 #if defined(SK_GRAPHITE)
+    SkDebugf("skia3\n");
     if (fGraphiteContext) {
+        SkDebugf("skia4\n");
         flags = fGraphiteContext->supportedGpuStats();
     } else
 #endif
+        SkDebugf("skia5\n");
     if (fContext) {
+        SkDebugf("skia6\n");
         flags = fContext->supportedGpuStats();
     }
+    SkDebugf("skia7\n");
     using T = std::underlying_type_t<skgpu::GpuStatsFlags>;
+    SkDebugf("skia8\n");
     return static_cast<T>(flags) & static_cast<T>(skgpu::GpuStatsFlags::kElapsedTime);
 }
 

@@ -427,4 +427,19 @@ bool VulkanTexture::supportsInputAttachmentUsage() const {
             VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT);
 }
 
+std::optional<size_t> VulkanTexture::onUpdateGpuMemorySize() {
+    if (!this->textureInfo().isMemoryless()) {
+        return {};
+    }
+
+    auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
+    VkDeviceSize committedMemory;
+    VULKAN_CALL(sharedContext->interface(),
+                GetDeviceMemoryCommitment(sharedContext->device(),
+                                          fMemoryAlloc.fMemory,
+                                          &committedMemory));
+    SkDebugf("commitedSize: %" PRIu64 "\n", committedMemory);
+    return committedMemory;
+}
+
 } // namespace skgpu::graphite
