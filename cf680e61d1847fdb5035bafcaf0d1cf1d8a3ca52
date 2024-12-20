@@ -105,6 +105,24 @@
       "parentUuid": "a4afcf14_489250d0",
       "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92021144_663e0d2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2024-12-20T09:14:31Z",
+      "side": 1,
+      "message": "Skia builds with the old webgpu wasm bindings that are built into emscripten (not with emdawnwebgpu). We won\u0027t be updating emscripten\u0027s built-in bindings until we\u0027re done with breaking changes, so we can ship all the breaking changes at once. Because of that Skia will need to just use `#if` for now.",
+      "parentUuid": "32c4fb89_b56c48ba",
+      "revId": "cf680e61d1847fdb5035bafcaf0d1cf1d8a3ca52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
