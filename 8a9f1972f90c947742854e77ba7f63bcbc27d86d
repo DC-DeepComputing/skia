@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cd8d840_389ccfa1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-20T20:56:38Z",
+      "side": 1,
+      "message": "Is it really the play store that is enforcing this even for side loaded apps? Is someone putting viewer in the play store? Is the system itself refusing to run apps built for older targer sdks?",
+      "range": {
+        "startLine": 9,
+        "startChar": 27,
+        "endLine": 9,
+        "endChar": 37
+      },
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
