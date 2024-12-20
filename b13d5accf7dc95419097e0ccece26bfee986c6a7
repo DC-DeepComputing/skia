@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ea6fdea_8085d7fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2024-12-20T14:04:36Z",
+      "side": 1,
+      "message": "You mentioned elsewhere that this is to fix https://github.com/microsoft/vcpkg/issues/41971. That\u0027s probably good to mention somewhere over here -- for example, in this comment right here 😊 Maybe it should be in the commit description too.\n\nI\u0027m not super familiar with this area of the world. I\u0027ll read a bit and will do a real review in a few minutes.",
+      "revId": "b13d5accf7dc95419097e0ccece26bfee986c6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
