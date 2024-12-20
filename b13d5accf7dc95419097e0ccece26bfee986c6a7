@@ -50,6 +50,23 @@
       "message": "https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skparagraph/BUILD.gn;l\u003d29?q\u003dskparagraph_utils has a skparagraph target that contains only skparagraph_sources, while :utils in the same file (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skparagraph/BUILD.gn;l\u003d46?q\u003dskparagraph_utils) is built only in skia standalone builds. So from a distance, it looks like this probably changes behavior.\n\nI\u0027ll hit the CQ DRY RUN button, and maybe the bots will tell us the same thing. (Or maybe they don\u0027t; the skia bots do skia standalone builds.)\n\nkjlubick has touched the code in this area a bit in Jul 2022 and can maybe say something with more domain knowledge though :)",
       "revId": "b13d5accf7dc95419097e0ccece26bfee986c6a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77c1a9c0_fe83741f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2024-12-20T14:26:07Z",
+      "side": 1,
+      "message": "I fired off a Flutter Canary, as they also use this target. Hopefully they aren\u0027t using that file, but if they are, I can land an upstream fix first.",
+      "revId": "b13d5accf7dc95419097e0ccece26bfee986c6a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
