@@ -86,6 +86,8 @@ public:
 
     bool supportsInputAttachmentUsage() const;
 
+    std::optional<size_t> onUpdateGpuMemorySize() override;
+
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
