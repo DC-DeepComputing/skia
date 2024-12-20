@@ -69,6 +69,24 @@
       "parentUuid": "b7a9855a_3580f46e",
       "revId": "91eb129b4131438ffde4273938905a1bd0f3633f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f1e862e_cc5e6b2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2024-12-20T19:13:18Z",
+      "side": 1,
+      "message": "They probably pull a fixed version of skia, right? So isn\u0027t it fine to land this (they won\u0027t update skia for a while anyways since they\u0027re holding off on PRs) and tell them to merge your PR before they start updating it again?",
+      "parentUuid": "080af383_b75476cf",
+      "revId": "91eb129b4131438ffde4273938905a1bd0f3633f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
