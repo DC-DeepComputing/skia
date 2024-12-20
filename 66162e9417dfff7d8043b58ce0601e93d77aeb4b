@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b912694c_f5470c4f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 231,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T21:37:37Z",
+      "side": 1,
+      "message": "since we removed the tracking from pipelineBarrier, there is nothing else that puts a ref on this texture which is coming directly from a public API call and might not be used anywhere else in the command buffer",
+      "range": {
+        "startLine": 231,
+        "startChar": 10,
+        "endLine": 231,
+        "endChar": 36
+      },
+      "revId": "66162e9417dfff7d8043b58ce0601e93d77aeb4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba6ab13_5a98f412",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 772,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T21:37:37Z",
+      "side": 0,
+      "message": "All the attachments get a Ref in CommandBuffer::addRenderPass",
+      "range": {
+        "startLine": 772,
+        "startChar": 4,
+        "endLine": 772,
+        "endChar": 21
+      },
+      "revId": "60f1c30d0755fbd58090ac491af8dda507f9bf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c8888f0_830957fb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1139,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T21:37:37Z",
+      "side": 0,
+      "message": "All our vertex, index, and indirect buffers get refs from the BufferManager\u0027s tracking of them.",
+      "range": {
+        "startLine": 1139,
+        "startChar": 18,
+        "endLine": 1139,
+        "endChar": 31
+      },
+      "revId": "60f1c30d0755fbd58090ac491af8dda507f9bf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95b81d75_8cb9cbce",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1718,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-20T21:37:37Z",
+      "side": 0,
+      "message": "We only put barriers in for resources that are used with this command buffer and thus they will all have refs already.\n\nThe one caveat to this is for the surface in prepareSurfaceForStateUpdate, but this change adds a track call there directly.",
+      "range": {
+        "startLine": 1718,
+        "startChar": 14,
+        "endLine": 1718,
+        "endChar": 27
+      },
+      "revId": "60f1c30d0755fbd58090ac491af8dda507f9bf2d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
