@@ -104,6 +104,8 @@ private:
 #if defined(SK_DEBUG)
     size_t fDstRowBytes = 0;      // Size of destination row in bytes.
 #endif
+
+    std::optional<SkImageInfo> fDstInfoOfPreviousColorTableCreation;
 };
 
 #endif  // SkPngCodecBase_DEFINED
