@@ -70,6 +70,30 @@
       },
       "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "304b9680_63c8e017",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-23T14:40:58Z",
+      "side": 1,
+      "message": "We have some MacMinis running 14 which are coming soon: https://chromium-swarm.appspot.com/botlist?c\u003did\u0026c\u003dcpu\u0026c\u003dmac_model\u0026c\u003dos\u0026c\u003dpool\u0026c\u003dstatus\u0026d\u003dasc\u0026f\u003did%3Amac-294-e505%7Cmac-295-e505%7Cmac-296-e505%7Cmac-297-e505%7Cmac-298-e505%7Cmac-299-e505%7Cmac-300-e505%7Cmac-301-e505%7Cbuild793-m9%7Cbuild794-m9%7Cbuild795-m9\u0026s\u003did\n\nI think we have the option to request a new OS version if that would be preferable?",
+      "parentUuid": "efa121e8_a9573c78",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 82
+      },
+      "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

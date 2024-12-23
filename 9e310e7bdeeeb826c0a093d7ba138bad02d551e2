@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3bf78b7_e145128d",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 711,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-23T14:40:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "ff7a2144_6bfd78b5",
+      "revId": "9e310e7bdeeeb826c0a093d7ba138bad02d551e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1610e094_f848cfc0",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-12-20T21:37:29Z",
       "side": 1,
       "message": "For future reference, doesn\u0027t really matter which macOS this runs on, but the newer the better.",
+      "revId": "9e310e7bdeeeb826c0a093d7ba138bad02d551e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee6726a5_8de144be",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-23T14:40:58Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1610e094_f848cfc0",
       "revId": "9e310e7bdeeeb826c0a093d7ba138bad02d551e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
