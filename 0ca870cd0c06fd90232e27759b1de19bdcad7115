@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ee4b4fb_db23cfe4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:15:59Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL when you have a chance?\n\nWhen debugging the problem in http://review.skia.org/932018 I\u0027ve noticed that decoding the animated PNG behind `BitmapImageTest.APNGDecoder19` test leads to re-creating the color table many times (and calling `skcms_Transform` on the color table many times).  This is what motivated this CL.  It is a bit of an arm-chair-based / not-really-measured-in-the-wild micro-optimization, but I think it\u0027s fine.  FWIW I checked that `SkImageInfo` seems relatively cheap to copy.\n\n/cc @danieldilan as FYI",
+      "revId": "0ca870cd0c06fd90232e27759b1de19bdcad7115",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
