@@ -94,6 +94,30 @@
       },
       "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca651edf_3275264a",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2024-12-23T14:43:22Z",
+      "side": 1,
+      "message": "We can follow up with an OS update if necessary.",
+      "parentUuid": "304b9680_63c8e017",
+      "range": {
+        "startLine": 462,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 82
+      },
+      "revId": "fc13048dcbcad43589cf6eaf7d47199264fdf95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
