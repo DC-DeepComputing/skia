@@ -106,6 +106,24 @@
       "parentUuid": "252841f5_4601b735",
       "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d2a1cb8_2761c501",
+        "filename": "src/codec/SkJpegSourceMgr.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2024-12-23T13:07:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "05ac5ff3_7f96287f",
+      "revId": "9d1f2b0a8f5a761352f03b1500e77f2f6b6de092",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
