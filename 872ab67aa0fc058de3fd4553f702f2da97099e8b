@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24eed018_4f4cc3ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:13:34Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL when you have a chance?\n\nThis CL fixes a bug that affects not only SkPngRustCodec, but also the older, `libpng`-based `SkPngCodec` (since `SkPngCodecBase` was extracted by me from `SkPngCodec` in a series of CLs starting with http://review.skia.org/893460) as well as `SkBmpCodec` (since it also uses `SkSwizzler`).\n\nI am quite confident in the fix based on the newly added PNG tests.  The `plte_trns.png` tests only go through `SkCodecPriv::ChoosePackColorProc` but they do *not* go through `applyColorXform`.  The `pltr_trns_gama.png` tests also go through `SkCodecPriv::ChoosePackColorProc` (after this CL without alpha premul) and *also* they go through `applyColorXform`.  And for both test inputs we ask for premul/unpremul output and rgba-vs-bgra output.  I created the test inputs using existing test utils from the `png` Rust crate + ad-hoc code to stitch them together in a new way.  I looked at the resulting files in a binary editor to confirm they look okay.\n\nI spent 20-30 minutes trying to read ImageMagick docs, but I was sadly unable to create a BMP test input (we need a BMP that uses 1) a palette and 2) alpha channel).  I think this is okay - things seems like they should work based on reading the code.\n\n/cc @danieldilan as FYI",
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4559ff0a_89dc90cd",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:13:34Z",
+      "side": 1,
+      "message": "This also does alpha premultiplication if needed.  Note that (unlike `SkPngCodecBase`) BMP doesn\u0027t call `applyColorXform` so it only does premultiplication twice (here + via SkSwizzler).",
+      "range": {
+        "startLine": 110,
+        "startChar": 29,
+        "endLine": 110,
+        "endChar": 48
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d416feb_54739019",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:13:34Z",
+      "side": 1,
+      "message": "This is where `fColorTable` is set.",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 139,
+        "endChar": 19
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cdaaffb_2d1a32f6",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:13:34Z",
+      "side": 1,
+      "message": "This is a call to `SkSwizzler::Make` that can pass a non-null `colorPtr`.",
+      "range": {
+        "startLine": 209,
+        "startChar": 86,
+        "endLine": 209,
+        "endChar": 87
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee2c1e1c_486f794b",
+        "filename": "src/codec/SkSwizzler.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:13:34Z",
+      "side": 1,
+      "message": "I looked at the callers of `SkSwizzler::Make` and IIUC only `SkPngCodecBase` and `SkBmpStandardCodec` pass a non-null `ctable`.",
+      "range": {
+        "startLine": 50,
+        "startChar": 42,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
