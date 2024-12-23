@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "be3d7b34_7c631144",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:40:43Z",
+      "side": 1,
+      "message": "Resolving - N/A (since we are not modifying `SkSwizzler.cpp` in the latest patchset).",
+      "parentUuid": "4559ff0a_89dc90cd",
+      "range": {
+        "startLine": 110,
+        "startChar": 29,
+        "endLine": 110,
+        "endChar": 48
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d416feb_54739019",
@@ -54,6 +78,30 @@
       "writtenOn": "2024-12-23T17:13:34Z",
       "side": 1,
       "message": "This is where `fColorTable` is set.",
+      "range": {
+        "startLine": 139,
+        "startChar": 8,
+        "endLine": 139,
+        "endChar": 19
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ee3a1c5_5df8a820",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:40:43Z",
+      "side": 1,
+      "message": "Resolving - N/A (since we are not modifying `SkSwizzler.cpp` in the latest patchset).",
+      "parentUuid": "8d416feb_54739019",
       "range": {
         "startLine": 139,
         "startChar": 8,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8622e34f_518d5baa",
+        "filename": "src/codec/SkBmpStandardCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:40:43Z",
+      "side": 1,
+      "message": "Resolving - N/A (since we are not modifying `SkSwizzler.cpp` in the latest patchset).",
+      "parentUuid": "4cdaaffb_2d1a32f6",
+      "range": {
+        "startLine": 209,
+        "startChar": 86,
+        "endLine": 209,
+        "endChar": 87
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee2c1e1c_486f794b",
@@ -100,6 +172,30 @@
       "writtenOn": "2024-12-23T17:13:34Z",
       "side": 1,
       "message": "I looked at the callers of `SkSwizzler::Make` and IIUC only `SkPngCodecBase` and `SkBmpStandardCodec` pass a non-null `ctable`.",
+      "range": {
+        "startLine": 50,
+        "startChar": 42,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "872ab67aa0fc058de3fd4553f702f2da97099e8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eabb5535_3ec4467d",
+        "filename": "src/codec/SkSwizzler.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:40:43Z",
+      "side": 1,
+      "message": "Resolving - N/A (since we are not modifying `SkSwizzler.cpp` in the latest patchset).",
+      "parentUuid": "ee2c1e1c_486f794b",
       "range": {
         "startLine": 50,
         "startChar": 42,

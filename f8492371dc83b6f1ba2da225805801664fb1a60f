@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a68b0d6_886a5065",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2024-12-23T17:40:43Z",
+      "side": 1,
+      "message": "Hmmm... after sending this out for review, I read the code a bit more and realized that `SkSwizzler` does *not* do alpha-premultiplication when the source is a palette-based image.  I think this CL is still desirable (it fixes a real issue as shown by the new tests), but the changes in `SkSwizzler.cpp` were not really necessary (they didn\u0027t really affect anything).",
+      "revId": "f8492371dc83b6f1ba2da225805801664fb1a60f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
