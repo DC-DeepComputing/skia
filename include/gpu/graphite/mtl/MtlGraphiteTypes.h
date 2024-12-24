@@ -10,7 +10,6 @@
 
 #include "include/core/SkTypes.h"
 
-#if __OBJC__  // <Metal/Metal.h> only works when compiled for Objective C
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/TextureInfo.h"
@@ -18,7 +17,9 @@
 #include "include/private/base/SkAPI.h"
 
 #import <CoreFoundation/CoreFoundation.h>
+#if __OBJC__  // <Metal/Metal.h> only works when compiled for Objective C
 #import <Metal/Metal.h>
+#endif
 #import <TargetConditionals.h>
 
 #if TARGET_OS_SIMULATOR
@@ -29,6 +30,7 @@
 
 namespace skgpu::graphite {
 
+#if __OBJC__
 struct SK_API MtlTextureInfo {
     uint32_t fSampleCount = 1;
     skgpu::Mipmapped fMipmapped = skgpu::Mipmapped::kNo;
@@ -53,6 +55,9 @@ struct SK_API MtlTextureInfo {
             , fStorageMode(storageMode)
             , fFramebufferOnly(framebufferOnly) {}
 };
+#else
+struct SK_API MtlTextureInfo;
+#endif  // __OBJC__
 
 namespace TextureInfos {
 SK_API TextureInfo MakeMetal(const MtlTextureInfo&);
@@ -78,7 +83,5 @@ SK_API uint64_t GetMtlValue(const BackendSemaphore&);
 }  // namespace BackendSemaphores
 
 } // namespace skgpu::graphite
-
-#endif  // __OBJC__
 
 #endif // skgpu_graphite_MtlGraphiteTypes_DEFINED
