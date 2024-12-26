@@ -162,6 +162,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9798ba1_a5a14f18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T20:46:02Z",
+      "side": 1,
+      "message": "Luckily no one is using Graphite Metal so I think its fine to modify the public headers. I actually think I would keep the the current file as MtlGraphiteTypes.h and then add a MtlGraphiteTypesUtils.h to have all the helper functions. So wouldn\u0027t break the defining of MtlTextureInfo for anyone (if there is anyone), but would require the header if they\u0027re using any of the helpers.",
+      "parentUuid": "724c121c_928d4a57",
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7efe2d1_9e27a5dc",
         "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
         "patchSetId": 2
