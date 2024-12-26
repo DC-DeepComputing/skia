@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "017790d6_21db4e60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T20:38:17Z",
+      "side": 1,
+      "message": "I found that as an external bazel client I was having to depend on things (e.g. py_deps) that aren\u0027t really needed to build Skia\u0027s public libraries. They are referred to in macros.bzl and that file is loaded for other reasons (e.g. to use skia_cc_library) in BUILD.bazel files that are used by external clients.\n\nI thought it might be good to pull these into a different bzl file that external clients typically would never load.",
+      "revId": "5d34d8e2b105e8d3fbda6822f6c4f60a5d9b88d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "171dc88b_807f18b4",
+        "filename": "bazel/extra_macros.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T20:38:17Z",
+      "side": 1,
+      "message": "I\u0027m guessing that an extra_macros.bzl with stubs (or something like that) would have to first land in G3 to make this landable.",
+      "revId": "5d34d8e2b105e8d3fbda6822f6c4f60a5d9b88d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
