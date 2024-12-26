@@ -53,6 +53,9 @@ struct Target {
         but some may replace it. */
     virtual SkCanvas* beginTiming(SkCanvas* canvas) { return canvas; }
 
+    /** Called *after* a frame of a benchmark is drawn. This is mostly only useful for MSKPs*/
+    virtual void endFrame() { }
+
     /** Called *after* a benchmark is drawn, but before the clock timer
         is stopped.  */
     virtual void endTiming() { }
