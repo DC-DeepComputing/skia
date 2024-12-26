@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7cc31e96_69dacee7",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T18:33:48Z",
+      "side": 1,
+      "message": "Right about `__OBJC__`. I don\u0027t see any problem with mixing. In some translation units `MtlTextureInfo` will be forward declared and others fully defined. We never have two *different* definitions (ODR violation).",
+      "parentUuid": "b7efe2d1_9e27a5dc",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 12
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bec37ef9_8ce25cc6",
         "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "writtenOn": "2024-12-26T18:21:21Z",
       "side": 1,
       "message": "Do these make any sense without a real MtlTextureInfo?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 28
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cfe454_fdfc6605",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T18:33:48Z",
+      "side": 1,
+      "message": "The middle one, absolutely. It\u0027s the reason I\u0027m making the change. I see no reason to exclude the other two, though. By forward declaring them we allow a `MtlTextureInfo` that is created in some Objective-C++ code (that *can* see the definition of `MtlTextureInfo`) to pass by pointer or reference to C++ only code that just sees the forward declarations of `MtlTextureInfo` and the first `MakeMetal` on line 63. That C++ code can then pass the `MetalTextureInfo` by reference to the Objective-C++ implementation of `MakeMetal` in Skia.",
+      "parentUuid": "bec37ef9_8ce25cc6",
       "range": {
         "startLine": 62,
         "startChar": 0,
