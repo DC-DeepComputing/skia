@@ -1,4 +1,4 @@
-load("//bazel:macros.bzl", "go_binary", "go_library", "py_binary")
+load("//bazel:extra_macros.bzl", "go_binary", "go_library", "py_binary")
 
 go_library(
     name = "interface_lib",

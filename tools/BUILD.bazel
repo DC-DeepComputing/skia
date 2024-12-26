@@ -1,4 +1,4 @@
-load("//bazel:macros.bzl", "py_binary")
+load("//bazel:extra_macros.bzl", "py_binary")
 load("//bazel:skia_rules.bzl", "skia_cc_library", "skia_objc_library")
 
 package(

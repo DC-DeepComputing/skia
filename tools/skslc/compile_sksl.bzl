@@ -2,7 +2,7 @@
 This defines a macro to cut down on boiler plate for generating sksl test resources.
 """
 
-load("//bazel:macros.bzl", "py_binary")
+load("//bazel:extra_macros.bzl", "py_binary")
 
 def compile_sksl(name, lang, inputs, settings = "settings"):
     """Creates a rule to compile the given sksl inputs

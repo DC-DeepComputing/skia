@@ -1,5 +1,6 @@
 load("@skia_user_config//:copts.bzl", "DEFAULT_COPTS")
-load("//bazel:macros.bzl", "bool_flag", "skia_filegroup", "wasm_cc_binary")
+load("//bazel:extra_macros.bzl", "wasm_cc_binary")
+load("//bazel:macros.bzl", "bool_flag", "skia_filegroup")
 load("//bazel/karma:karma_test.bzl", "karma_test")
 
 package(
