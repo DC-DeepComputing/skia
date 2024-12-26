@@ -46,6 +46,52 @@
       },
       "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7efe2d1_9e27a5dc",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:21:21Z",
+      "side": 1,
+      "message": "This question stems from my minimal compiler knowledge. I\u0027m assuming if compiling an mm file it will set OBJC and if it\u0027s a cpp file it will not be set. Is there any worry about building a whole project with a mix of mm and cpp files where this header (and specifically MtlTextureInfo) will get set differently?",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 12
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bec37ef9_8ce25cc6",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:21:21Z",
+      "side": 1,
+      "message": "Do these make any sense without a real MtlTextureInfo?",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 28
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
