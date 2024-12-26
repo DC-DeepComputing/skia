@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f11ceb71_bf367cd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T20:38:44Z",
+      "side": 1,
+      "message": "I was thinking the new file would stay pure objc. Then the other would have all the helper functions declared while forward declaring MtlTextureInfo.",
+      "parentUuid": "97b08dce_d95be6c3",
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7efe2d1_9e27a5dc",
         "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
         "patchSetId": 2
