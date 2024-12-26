@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "97b08dce_d95be6c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T20:34:07Z",
+      "side": 1,
+      "message": "I dunno. You tell me 😊\n\nI think the new file would look something like this:\n\n```\n#ifndef skgpu_graphite_MtlTextureInfo_DEFINED\n#define skgpu_graphite_MtlTextureInfo_DEFINED\n\n#include \"include/core/SkTypes.h\"\n\n#include \"include/gpu/graphite/GraphiteTypes.h\"\n#include \"include/private/base/SkAPI.h\"\n\n#if __OBJC__  // \u003cMetal/Metal.h\u003e only works when compiled for Objective C\n#import \u003cMetal/Metal.h\u003e\n#endif\n\nnamespace skgpu::graphite {\n\n#if __OBJC__\n\nstruct SK_API MtlTextureInfo {\n    uint32_t fSampleCount \u003d 1;\n    skgpu::Mipmapped fMipmapped \u003d skgpu::Mipmapped::kNo;\n\n    MTLPixelFormat fFormat \u003d MTLPixelFormatInvalid;\n    MTLTextureUsage fUsage \u003d MTLTextureUsageUnknown;\n    MTLStorageMode fStorageMode \u003d MTLStorageModeShared;\n    bool fFramebufferOnly \u003d false;\n\n    MtlTextureInfo() \u003d default;\n    MtlTextureInfo(CFTypeRef mtlTexture);\n    MtlTextureInfo(uint32_t sampleCount,\n                   skgpu::Mipmapped mipmapped,\n                   MTLPixelFormat format,\n                   MTLTextureUsage usage,\n                   MTLStorageMode storageMode,\n                   bool framebufferOnly)\n            : fSampleCount(sampleCount)\n            , fMipmapped(mipmapped)\n            , fFormat(format)\n            , fUsage(usage)\n            , fStorageMode(storageMode)\n            , fFramebufferOnly(framebufferOnly) {}\n};\n\n#else  // __OBJC__\n\nstruct SK_API MtlTextureInfo;\n\n#endif  // __OBJC__\n\n}  // namespace skgpu::grpahite\n\n#endif // skgpu_graphite_MtlTextureInfo_DEFINED\n```\n\nand then we\u0027d #include that in the existing file.",
+      "parentUuid": "dde18332_ac7679bf",
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b7efe2d1_9e27a5dc",
         "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
         "patchSetId": 2
