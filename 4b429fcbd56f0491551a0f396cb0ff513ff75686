@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff2b6a11_afc4846d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T14:09:53Z",
+      "side": 1,
+      "message": "This is possible in MTL? I didn\u0027t think MTLTexture were even c++ types?",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
