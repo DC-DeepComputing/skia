@@ -48,6 +48,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16167227_5f029849",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:38:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0bf8b844_6a75ea06",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02e6e3d3_0c3ec32b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:38:27Z",
+      "side": 1,
+      "message": "may need to wait until after holidays for second reviewer.",
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7efe2d1_9e27a5dc",
@@ -95,6 +136,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed5224fb_7189e2a8",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:38:27Z",
+      "side": 1,
+      "message": "Ahhh still have holiday brain on. I somehow read the MtlTextureInfo forward declare as actually a definition of an empty struct. Well that fixes all my worries then",
+      "parentUuid": "7cc31e96_69dacee7",
+      "range": {
+        "startLine": 20,
+        "startChar": 4,
+        "endLine": 20,
+        "endChar": 12
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bec37ef9_8ce25cc6",
@@ -132,6 +197,30 @@
       "side": 1,
       "message": "The middle one, absolutely. It\u0027s the reason I\u0027m making the change. I see no reason to exclude the other two, though. By forward declaring them we allow a `MtlTextureInfo` that is created in some Objective-C++ code (that *can* see the definition of `MtlTextureInfo`) to pass by pointer or reference to C++ only code that just sees the forward declarations of `MtlTextureInfo` and the first `MakeMetal` on line 63. That C++ code can then pass the `MetalTextureInfo` by reference to the Objective-C++ implementation of `MakeMetal` in Skia.",
       "parentUuid": "bec37ef9_8ce25cc6",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 28
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03fe9201_92acd0d6",
+        "filename": "include/gpu/graphite/mtl/MtlGraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2024-12-26T18:38:27Z",
+      "side": 1,
+      "message": "Sounds good to me.",
+      "parentUuid": "b6cfe454_fdfc6605",
       "range": {
         "startLine": 62,
         "startChar": 0,
