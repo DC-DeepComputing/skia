@@ -22,6 +22,30 @@
       },
       "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bf8b844_6a75ea06",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2024-12-26T18:09:10Z",
+      "side": 1,
+      "message": "Yep. `CTypeRef` (taken by `MakeMetal` on line 64) is really just `const void*`. So you can have one in C++ code. And the C++ wrappers for Metal provided by Apple let you just pass `MTL::Texture*`. The `MTL::` classes are really just interfaces around underlying Obj-C types that have been pointer-casted to the equivalent C++ wrapper type. So a `MTL::Texture*` is actually a `id\u003cMTLTexture\u003e` and a therefore a valid `CTypeRef`.",
+      "parentUuid": "ff2b6a11_afc4846d",
+      "range": {
+        "startLine": 9,
+        "startChar": 29,
+        "endLine": 9,
+        "endChar": 50
+      },
+      "revId": "4b429fcbd56f0491551a0f396cb0ff513ff75686",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
