@@ -118,6 +118,23 @@
       },
       "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e81c566_b03ef921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2024-12-30T15:56:45Z",
+      "side": 1,
+      "message": "This change itself is fine, I\u0027m mostly just concerned about the commit comment leading future updaters astray. It appears we don\u0027t currently have a builder for Viewer on Android, so it isn\u0027t like this is going to break any thing on the waterfall. However, now that we have a bunch of comments here on the review about how unsure we actually are about what is actually needed, perhaps it\u0027s fine.",
+      "revId": "8a9f1972f90c947742854e77ba7f63bcbc27d86d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
