@@ -19,29 +19,24 @@ public:
     static ResourceType GenerateResourceType();
 
     /** Creates an invalid key. It must be initialized using a Builder object before use. */
-    GraphiteResourceKey() : fShareable(Shareable::kNo) {}
+    GraphiteResourceKey() {}
 
     GraphiteResourceKey(const GraphiteResourceKey& that) { *this = that; }
 
     /** reset() returns the key to the invalid state. */
-    using ResourceKey::reset;
+    // using ResourceKey::reset;
 
-    using ResourceKey::isValid;
+    // using ResourceKey::isValid;
 
     ResourceType resourceType() const { return this->domain(); }
 
-    Shareable shareable() const { return fShareable; }
-
     GraphiteResourceKey& operator=(const GraphiteResourceKey& that) {
         this->ResourceKey::operator=(that);
-        fShareable = that.fShareable;
         return *this;
     }
 
     bool operator==(const GraphiteResourceKey& that) const {
-        bool result = this->ResourceKey::operator==(that);
-        SkASSERT(!result || (result == (fShareable == that.fShareable)));
-        return result;
+        return this->ResourceKey::operator==(that);
     }
     bool operator!=(const GraphiteResourceKey& that) const {
         return !(*this == that);
@@ -49,14 +44,9 @@ public:
 
     class Builder : public ResourceKey::Builder {
     public:
-        Builder(GraphiteResourceKey* key, ResourceType type, int data32Count, Shareable shareable)
-                : ResourceKey::Builder(key, type, data32Count) {
-            key->fShareable = shareable;
-        }
+        Builder(GraphiteResourceKey* key, ResourceType type, int data32Count)
+                : ResourceKey::Builder(key, type, data32Count) {}
     };
-
-private:
-    Shareable fShareable;
 };
 
 } // namespace skgpu::graphite
