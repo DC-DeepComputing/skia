@@ -16,6 +16,64 @@
       "message": "Hmmm... after sending this out for review, I read the code a bit more and realized that `SkSwizzler` does *not* do alpha-premultiplication when the source is a palette-based image.  I think this CL is still desirable (it fixes a real issue as shown by the new tests), but the changes in `SkSwizzler.cpp` were not really necessary (they didn\u0027t really affect anything).",
       "revId": "f8492371dc83b6f1ba2da225805801664fb1a60f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d674d90c_62cb663b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-02T14:23:15Z",
+      "side": 1,
+      "message": "Good find!",
+      "revId": "f8492371dc83b6f1ba2da225805801664fb1a60f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "524fdc7c_cca33b90",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-02T14:23:15Z",
+      "side": 1,
+      "message": "(x, y)",
+      "range": {
+        "startLine": 577,
+        "startChar": 25,
+        "endLine": 577,
+        "endChar": 31
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6a55d8b5_5de8906c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/CodecTest.cpp",
+              "range": {
+                "startLine": 577,
+                "startChar": 0,
+                "endLine": 578,
+                "endChar": 0
+              },
+              "replacement": "    return *pixmap.addr32(x, y);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f8492371dc83b6f1ba2da225805801664fb1a60f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
