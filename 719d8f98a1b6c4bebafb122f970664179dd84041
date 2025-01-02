@@ -16,6 +16,23 @@
       "message": "This makes it easier for me to build Ganesh/Graphite using Bazel from an external project.",
       "revId": "719d8f98a1b6c4bebafb122f970664179dd84041",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6f580a2_996895da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-02T15:47:42Z",
+      "side": 1,
+      "message": "FYI for Kaylee and bazel modifications.",
+      "revId": "719d8f98a1b6c4bebafb122f970664179dd84041",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
