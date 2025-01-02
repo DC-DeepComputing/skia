@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3271a982_460f3003",
+        "filename": "bench/MSKPBench.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-02T15:50:55Z",
+      "side": 1,
+      "message": "I think the base `SKPBench` could be updated to use internal frames now instead of forcing a submit in each loop as well.",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 54
+      },
+      "revId": "ce7a33c6e542f1d128a63c3b6d67dccc6a05ccb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
