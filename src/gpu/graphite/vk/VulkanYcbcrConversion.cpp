@@ -55,6 +55,46 @@ sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(
     return sk_sp<VulkanYcbcrConversion>(new VulkanYcbcrConversion(context, conversion));
 }
 
+ImmutableSamplerInfo VulkanYcbcrConversion::ToImmutableSamplerInfo(
+        const VulkanYcbcrConversionInfo& conversionInfo) {
+    SkASSERT(conversionInfo.isValid());
+
+    static_assert(kComponentAShift + kComponentBits <= 32);
+
+    SkASSERT(conversionInfo.fYcbcrModel                  < (1u << kYcbcrModelBits        ));
+    SkASSERT(conversionInfo.fYcbcrRange                  < (1u << kYcbcrRangeBits        ));
+    SkASSERT(conversionInfo.fXChromaOffset               < (1u << kXChromaOffsetBits     ));
+    SkASSERT(conversionInfo.fYChromaOffset               < (1u << kYChromaOffsetBits     ));
+    SkASSERT(conversionInfo.fChromaFilter                < (1u << kChromaFilterBits      ));
+    SkASSERT(conversionInfo.fForceExplicitReconstruction < (1u << kForceExplicitReconBits));
+    SkASSERT(conversionInfo.fComponents.r                < (1u << kComponentBits         ));
+    SkASSERT(conversionInfo.fComponents.g                < (1u << kComponentBits         ));
+    SkASSERT(conversionInfo.fComponents.b                < (1u << kComponentBits         ));
+    SkASSERT(conversionInfo.fComponents.a                < (1u << kComponentBits         ));
+
+    const bool usesExternalFormat = conversionInfo.fFormat == VK_FORMAT_UNDEFINED;
+
+    ImmutableSamplerInfo info;
+    info.fNonFormatYcbcrConversionInfo =
+            (((uint32_t)(usesExternalFormat                         ) << kUsesExternalFormatShift) |
+             ((uint32_t)(conversionInfo.fYcbcrModel                 ) << kYcbcrModelShift        ) |
+             ((uint32_t)(conversionInfo.fYcbcrRange                 ) << kYcbcrRangeShift        ) |
+             ((uint32_t)(conversionInfo.fXChromaOffset              ) << kXChromaOffsetShift     ) |
+             ((uint32_t)(conversionInfo.fYChromaOffset              ) << kYChromaOffsetShift     ) |
+             ((uint32_t)(conversionInfo.fChromaFilter               ) << kChromaFilterShift      ) |
+             ((uint32_t)(conversionInfo.fForceExplicitReconstruction) << kForceExplicitReconShift) |
+             ((uint32_t)(conversionInfo.fComponents.r               ) << kComponentRShift        ) |
+             ((uint32_t)(conversionInfo.fComponents.g               ) << kComponentGShift        ) |
+             ((uint32_t)(conversionInfo.fComponents.b               ) << kComponentBShift        ) |
+             ((uint32_t)(conversionInfo.fComponents.a               ) << kComponentAShift        ));
+    info.fFormat = usesExternalFormat  ? conversionInfo.fExternalFormat : conversionInfo.fFormat;
+    return info;
+}
+
+VulkanYcbcrConversionInfo VulkanYcbcrConversion::FromImmutableSamplerInfo(ImmutableSamplerInfo) {
+
+}
+
 sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(const VulkanSharedContext* context,
                                                          uint32_t nonFormatInfo,
                                                          uint64_t format) {
@@ -138,8 +178,7 @@ GraphiteResourceKey VulkanYcbcrConversion::MakeYcbcrConversionKey(
     GraphiteResourceKey key;
     GraphiteResourceKey::Builder builder(&key,
                                          conversion_rsrc_type(),
-                                         ycbcrPackaging::numInt32sNeeded(info),
-                                         Shareable::kYes);
+                                         ycbcrPackaging::numInt32sNeeded(info));
     int i = 0;
     builder[i++] = ycbcrPackaging::nonFormatInfoAsUInt32(info);
     if (useExternalFormat) {
@@ -157,8 +196,7 @@ GraphiteResourceKey VulkanYcbcrConversion::MakeYcbcrConversionKey(
 GraphiteResourceKey VulkanYcbcrConversion::GetKeyFromSamplerDesc(const SamplerDesc& samplerDesc) {
     GraphiteResourceKey key;
     const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan();
-    GraphiteResourceKey::Builder builder(&key, conversion_rsrc_type(), samplerData.size(),
-                                         Shareable::kYes);
+    GraphiteResourceKey::Builder builder(&key, conversion_rsrc_type(), samplerData.size());
 
     // The first index of sampler data (sampler desc value) includes non-ycbcr information
     // that needs to be shifted past in order to isolate the ycbcr information for this key.
@@ -175,7 +213,6 @@ VulkanYcbcrConversion::VulkanYcbcrConversion(const VulkanSharedContext* context,
                                              VkSamplerYcbcrConversion ycbcrConversion)
         : Resource(context,
                    Ownership::kOwned,
-                   skgpu::Budgeted::kYes, // Shareable, so must be budgeted
                    /*gpuMemorySize=*/0)
         , fYcbcrConversion (ycbcrConversion) {}
 
@@ -187,4 +224,3 @@ void VulkanYcbcrConversion::freeGpuData() {
 }
 
 } // namespace skgpu::graphite
-

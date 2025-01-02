@@ -1526,28 +1526,9 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
     return pipelineKey;
 }
 
-GraphiteResourceKey VulkanCaps::makeSamplerKey(const SamplerDesc& samplerDesc) const {
-    GraphiteResourceKey samplerKey;
-    const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan();
-    static const ResourceType kSamplerType = GraphiteResourceKey::GenerateResourceType();
-    // Non-format ycbcr and sampler information are guaranteed to fit within one uint32, so the size
-    // of the returned span accurately captures the quantity of uint32s needed whether the sampler
-    // is immutable or not.
-    GraphiteResourceKey::Builder builder(&samplerKey, kSamplerType, samplerData.size(),
-                                         Shareable::kYes);
-
-    for (size_t i = 0; i < samplerData.size(); i++) {
-        builder[i] = samplerData[i];
-    }
-
-    builder.finish();
-    return samplerKey;
-}
-
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                                     const TextureInfo& info,
                                     ResourceType type,
-                                    Shareable shareable,
                                     GraphiteResourceKey* key) const {
     SkASSERT(!dimensions.isEmpty());
 
@@ -1583,7 +1564,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     const VulkanYcbcrConversionInfo& ycbcrInfo = TextureInfos::GetVulkanYcbcrConversionInfo(info);
     num32DataCnt += ycbcrPackaging::numInt32sNeeded(ycbcrInfo);
 
-    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt);
 
     int i = 0;
     builder[i++] = dimensions.width();
@@ -1620,6 +1601,7 @@ ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* pro
                 TextureInfos::GetVulkanYcbcrConversionInfo(proxy->textureInfo());
 
         if (ycbcrConversionInfo.isValid()) {
+            return VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);
             ImmutableSamplerInfo immutableSamplerInfo;
             // ycbcrConversionInfo's fFormat being VK_FORMAT_UNDEFINED indicates we are using an
             // external format rather than a known VkFormat.
