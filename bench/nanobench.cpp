@@ -262,9 +262,14 @@ struct GPUTarget : public Target {
     void onSetup() override {
         this->contextInfo.testContext()->makeCurrent();
     }
-    void endTiming() override {
+    void endFrame() override {
         if (this->contextInfo.testContext()) {
             this->contextInfo.testContext()->flushAndWaitOnSync(contextInfo.directContext());
+        }
+    }
+    void endTiming(bool benchManagedFrameSubmits) override {
+        if (!benchManagedFrameSubmits) {
+            this->endFrame();
         }
     }
     void submitWorkAndSyncCPU() override {
@@ -330,13 +335,17 @@ struct GraphiteTarget : public Target {
         // holds a ref to the Graphite device
         surface.reset();
     }
-
-    void endTiming() override {
+    void endFrame() override {
         if (context && recorder) {
             std::unique_ptr<skgpu::graphite::Recording> recording = this->recorder->snap();
             if (recording) {
                 this->testContext->submitRecordingAndWaitOnSync(this->context, recording.get());
             }
+        }
+    }
+    void endTiming(bool benchManagedFrameSubmits) override {
+        if (!benchManagedFrameSubmits) {
+            this->endFrame();
         }
     }
     void submitWorkAndSyncCPU() override {
@@ -406,9 +415,11 @@ static double time(int loops, Benchmark* bench, Target* target) {
     double start = now_ms();
     canvas = target->beginTiming(canvas);
 
-    bench->draw(loops, canvas);
+    auto endFrame = [target]() { target->endFrame(); };
 
-    target->endTiming();
+    bench->draw(loops, canvas, endFrame);
+
+    target->endTiming(bench->hasInternalFrames());
     double elapsed = now_ms() - start;
     bench->postDraw(canvas);
     return elapsed;

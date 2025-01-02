@@ -18,13 +18,16 @@ public:
     ~MSKPBench() override;
 
 protected:
-    void onDraw(int loops, SkCanvas*) override;
+    void onDraw(int loops, SkCanvas*) override { SkASSERT(false); }
+    void onDrawFrame(int loops, SkCanvas*, std::function<void()> endFrame) override;
     const char* onGetName() override;
     SkISize onGetSize() override;
     void onPreDraw(SkCanvas*) override;
     void onPostDraw(SkCanvas*) override;
 
 private:
+    bool hasInternalFrames() override { return true; }
+
     SkString fName;
     std::unique_ptr<MSKPPlayer> fPlayer;
 };
