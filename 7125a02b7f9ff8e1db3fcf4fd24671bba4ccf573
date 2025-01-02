@@ -93,6 +93,30 @@
       },
       "revId": "7125a02b7f9ff8e1db3fcf4fd24671bba4ccf573",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "289b0e4f_6cc34091",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 5
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-02T13:58:19Z",
+      "side": 1,
+      "message": "Sure SkSurfaces::MakeRenderTarget makes an offscreen surface which isn\u0027t connected to any window. But this example is meant to be how to create an SkCanvas from a GPU surface. This example is not about to wrap a window surface into Skia. So I would got back to the method used in the original example of making an offscreen GPU surface, then snapping an SkImage fromt he Surface. Then reading back the pixels to a cpu buffer.",
+      "parentUuid": "7d3ff009_30bd2836",
+      "range": {
+        "startLine": 93,
+        "startChar": 1,
+        "endLine": 125,
+        "endChar": 29
+      },
+      "revId": "7125a02b7f9ff8e1db3fcf4fd24671bba4ccf573",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
