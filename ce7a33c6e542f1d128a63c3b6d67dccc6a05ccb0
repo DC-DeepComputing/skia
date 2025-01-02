@@ -22,6 +22,30 @@
       },
       "revId": "ce7a33c6e542f1d128a63c3b6d67dccc6a05ccb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4edacec4_c91d1ce2",
+        "filename": "bench/MSKPBench.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-02T16:29:16Z",
+      "side": 1,
+      "message": "Ahh I didn\u0027t realize it was doing that every loop, good catch. Updated SKPBench to also use frames.\n\nI also updated endTiming to not do an extra submit since we\u0027ll be doing a submit at the end of each bench run with the frame system.",
+      "parentUuid": "3271a982_460f3003",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 54
+      },
+      "revId": "ce7a33c6e542f1d128a63c3b6d67dccc6a05ccb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
