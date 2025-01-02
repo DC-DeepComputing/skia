@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9322a27c_8e26f1ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-02T16:37:21Z",
+      "side": 1,
+      "message": "This is a relatively small optimization noticed by the Docs team. However, because PDF can only compress streams and cannot compress these dictionaries, removing these very common extra two bytes means two bytes removed from the PDF. On a large PDF with many leaves in the structure tree this can add up to many bytes.",
+      "revId": "1982448535882977e03bbc684085a4fe4c48fe37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
