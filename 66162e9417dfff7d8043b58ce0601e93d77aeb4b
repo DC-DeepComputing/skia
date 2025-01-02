@@ -3,6 +3,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d94828a4_4d671fa7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-02T15:46:29Z",
+      "side": 1,
+      "message": "I think this fixes b/361875857",
+      "revId": "66162e9417dfff7d8043b58ce0601e93d77aeb4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b912694c_f5470c4f",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 1
