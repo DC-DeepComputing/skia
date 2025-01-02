@@ -16,6 +16,70 @@
       "message": "Please take a look again after updates",
       "revId": "ddae875d48ed67d8a6eb92fd02166ae4df10c8fa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "877301e8_51d02c3a",
+        "filename": "bench/Benchmark.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-02T16:40:31Z",
+      "side": 1,
+      "message": "nit: returns",
+      "range": {
+        "startLine": 105,
+        "startChar": 13,
+        "endLine": 105,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bc643fe6_80ac4f36",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "bench/Benchmark.h",
+              "range": {
+                "startLine": 105,
+                "startChar": 0,
+                "endLine": 106,
+                "endChar": 0
+              },
+              "replacement": "    // If it returns true then onDrawFrame will be called intstead of onDraw.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ddae875d48ed67d8a6eb92fd02166ae4df10c8fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b5f3fa5_5a5e4a74",
+        "filename": "bench/nanobench.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-02T16:40:31Z",
+      "side": 1,
+      "message": "chat plan: Remove endTiming(), rename endFrame() to submitFrame().",
+      "range": {
+        "startLine": 422,
+        "startChar": 0,
+        "endLine": 422,
+        "endChar": 50
+      },
+      "revId": "ddae875d48ed67d8a6eb92fd02166ae4df10c8fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
