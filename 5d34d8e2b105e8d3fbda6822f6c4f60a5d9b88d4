@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fd333349_4cd918fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-03T15:30:40Z",
+      "side": 1,
+      "message": "I think http://review.skia.org/934676 is a better fix, as we already have broken out most of the \"no external deps required\" Bazel rules into skia_rules.bzl",
+      "revId": "5d34d8e2b105e8d3fbda6822f6c4f60a5d9b88d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "171dc88b_807f18b4",
         "filename": "bazel/extra_macros.bzl",
         "patchSetId": 1
