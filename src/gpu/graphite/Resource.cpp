@@ -25,7 +25,6 @@ uint32_t create_unique_id() {
 
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
-                   skgpu::Budgeted budgeted,
                    size_t gpuMemorySize,
                    bool commandBufferRefsAsUsageRefs)
         : fSharedContext(sharedContext)
@@ -35,11 +34,14 @@ Resource::Resource(const SharedContext* sharedContext,
         , fCommandBufferRefsAsUsageRefs(commandBufferRefsAsUsageRefs)
         , fOwnership(ownership)
         , fGpuMemorySize(gpuMemorySize)
-        , fBudgeted(budgeted)
         , fUniqueID(create_unique_id()) {
-    // If we don't own the resource that must mean its wrapped in a client object. Thus we should
-    // not be budgeted
-    SkASSERT(fOwnership == Ownership::kOwned || fBudgeted == skgpu::Budgeted::kNo);
+    // At initialization time, a Resource should not be considered budgeted because it does not
+    // belong to a ResourceCache yet, which would be how the budget could be managed.
+    // For wrapped resources and owned resources that aren't cached, they will never be added to
+    // a cache, so depend on this initial value (vs. a cached resource having its budget and
+    // shareable state set with registerWithCache()).
+    SkASSERT(fBudgeted == Budgeted::kNo);
+    SkASSERT(fShareable == Shareable::kNo);
 }
 
 Resource::~Resource() {
@@ -47,11 +49,17 @@ Resource::~Resource() {
     SkASSERT(this->wasDestroyed());
 }
 
-void Resource::registerWithCache(sk_sp<ResourceCache> returnCache) {
+void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
+                                 const GraphiteResourceKey& key,
+                                 Budgeted initialBudgetedState,
+                                 Shareable initialShareableState) {
     SkASSERT(!fReturnCache);
     SkASSERT(returnCache);
 
     fReturnCache = std::move(returnCache);
+    fKey = key;
+    this->setBudgeted(initialBudgetedState);
+    this->setShareable(initialShareableState);
 }
 
 bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
@@ -137,4 +145,3 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
 }
 
 } // namespace skgpu::graphite
-
