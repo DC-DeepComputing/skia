@@ -38,6 +38,8 @@ class Resource;
 class Texture;
 #endif
 
+using ScratchResourceSet = skia_private::THashSet<const Resource*>;
+
 class ResourceCache : public SkRefCnt {
 public:
     static sk_sp<ResourceCache> Make(SingleOwner*, uint32_t recorderID, size_t maxBytes);
@@ -55,7 +57,6 @@ public:
 
     void insertResource(Resource*, const GraphiteResourceKey&, Budgeted, Shareable);
 
-    using ScratchResourceSet = skia_private::THashSet<const Resource*>;
     // Find a resource that matches a key. If Shareable == kScratch, then `unavailable` must be
     // non-null and is used to filter the scratch resources that can fulfill this request.
     Resource* findAndRefResource(const GraphiteResourceKey& key,

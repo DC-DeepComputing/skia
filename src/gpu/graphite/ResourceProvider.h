@@ -68,7 +68,7 @@ public:
     sk_sp<Texture> findOrCreateScratchTexture(SkISize,
                                               const TextureInfo&,
                                               std::string_view label,
-                                              const ResourceCache::ScratchResourceSet& unavailable);
+                                              const ScratchResourceSet& unavailable);
 
     sk_sp<Texture> createWrappedTexture(const BackendTexture&, std::string_view label);
 
@@ -148,7 +148,7 @@ private:
                                        std::string_view label,
                                        Budgeted,
                                        Shareable,
-                                       const ResourceCache::ScratchResourceSet*);
+                                       const ScratchResourceSet* unavailable = nullptr);
 
     virtual sk_sp<Texture> onCreateWrappedTexture(const BackendTexture&) = 0;
 

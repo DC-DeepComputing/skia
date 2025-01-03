@@ -127,15 +127,14 @@ sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensi
                                      info,
                                      std::move(label),
                                      budgeted,
-                                     Shareable::kNo,
-                                     /*unavailable=*/nullptr);
+                                     Shareable::kNo);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
         SkISize dimensions,
         const TextureInfo& info,
         std::string_view label,
-        const ResourceCache::ScratchResourceSet& unavailable) {
+        const ScratchResourceSet& unavailable) {
     SkASSERT(info.isValid());
     return this->findOrCreateTexture(dimensions,
                                      info,
@@ -155,8 +154,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateDepthStencilAttachment(SkISize dime
                                      info,
                                      "DepthStencilAttachment",
                                      Budgeted::kYes,
-                                     Shareable::kYes,
-                                     /*unavailable=*/nullptr);
+                                     Shareable::kYes);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize dimensions,
@@ -171,8 +169,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize d
                                      info,
                                      "DiscardableMSAAAttachment",
                                      Budgeted::kYes,
-                                     Shareable::kYes,
-                                     /*unavailable=*/nullptr);
+                                     Shareable::kYes);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(
@@ -181,7 +178,7 @@ sk_sp<Texture> ResourceProvider::findOrCreateTexture(
         std::string_view label,
         Budgeted budgeted,
         Shareable shareable,
-        const ResourceCache::ScratchResourceSet* unavailable) {
+        const ScratchResourceSet* unavailable) {
     // If the resource is shareable it should be budgeted since it shouldn't be backing any client
     // owned object.
     SkASSERT(shareable == Shareable::kNo || budgeted == Budgeted::kYes);
