@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1b3a16e_35ad569e",
+        "filename": "src/core/SkPictureRecord.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 836,
+      "author": {
+        "id": 3816470
+      },
+      "writtenOn": "2025-01-03T09:25:08Z",
+      "side": 1,
+      "message": "why not use find_or_append here?",
+      "range": {
+        "startLine": 836,
+        "startChar": 22,
+        "endLine": 836,
+        "endChar": 33
+      },
+      "revId": "8fd15d8c7ef09ab5aad4d7bbf8c3f3564a537722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
