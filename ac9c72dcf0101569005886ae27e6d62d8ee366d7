@@ -70,6 +70,24 @@
       "parentUuid": "7a844665_39db6738",
       "revId": "ac9c72dcf0101569005886ae27e6d62d8ee366d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89716d7e_cfff10e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-03T21:22:59Z",
+      "side": 1,
+      "message": "ummm this code needs to all be removed from Chrome. There shouldn\u0027t be a reason they\u0027re using our mtl backed at all. Fine if you want to land the quick fix to unblock roll, but really we need to fix Chrome to not have this code at all and then we can revert Brian\u0027s fix",
+      "parentUuid": "9788a2e0_37167356",
+      "revId": "ac9c72dcf0101569005886ae27e6d62d8ee366d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
