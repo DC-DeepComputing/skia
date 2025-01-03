@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c4bca6e_52a58c17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-03T15:08:20Z",
+      "side": 1,
+      "message": "Thanks for both the exposed rule and the example+test!",
+      "revId": "460f80d13ca9e2413e13f7e08cd3b612853f1bcc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
