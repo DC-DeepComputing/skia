@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b14748bb_c51b1241",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-03T15:31:11Z",
+      "side": 1,
+      "message": "If you are still seeing issues with that other CL, let me know though (in case I misjudged why you need this change)",
+      "parentUuid": "fd333349_4cd918fe",
+      "revId": "5d34d8e2b105e8d3fbda6822f6c4f60a5d9b88d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "171dc88b_807f18b4",
         "filename": "bazel/extra_macros.bzl",
         "patchSetId": 1
