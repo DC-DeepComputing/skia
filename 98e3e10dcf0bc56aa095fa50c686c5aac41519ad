@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c6de5bd_770257b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6765
+      },
+      "writtenOn": "2025-01-03T13:05:14Z",
+      "side": 1,
+      "message": "The PNG spec\u0027s correction can be found here: https://w3c.github.io/png/#changes-20230921",
+      "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
