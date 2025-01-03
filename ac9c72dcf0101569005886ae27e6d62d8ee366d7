@@ -16,6 +16,24 @@
       "message": "Seems to be breaking the Chromium roll, https://chromium-review.googlesource.com/c/chromium/src/+/6142195 . Might just need some more includes Chromium side?",
       "revId": "ac9c72dcf0101569005886ae27e6d62d8ee366d7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f9a27cc_ec205a9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-01-03T20:55:51Z",
+      "side": 1,
+      "message": "Looks like it! I think we could either fix on Chromium side by either:\n\n* including MtlGraphiteTypesUtils.h in Chrome\n* or make MtlGraphiteTypes.h include MtlGraphiteTypesUtils.h in Skia.\n\nGreg assured me no one was using the Metal backend of Graphite, so I blame Greg! 😊",
+      "parentUuid": "4c5b55b3_8e93b38f",
+      "revId": "ac9c72dcf0101569005886ae27e6d62d8ee366d7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
