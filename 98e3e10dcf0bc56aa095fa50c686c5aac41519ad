@@ -33,6 +33,23 @@
       "message": "Any idea what that means? \"[SubmittableVerifier]: CL is not submittable\"\nThe diff shows +/-0 B but it should have some bytes changed (the chunk names and CRCs).",
       "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e7952b3_c3f045bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6765
+      },
+      "writtenOn": "2025-01-03T22:19:18Z",
+      "side": 1,
+      "message": "Is it perhaps because Skia auto-pulls the image from Chrome\u0027s third_party/blink/web_tests/images/resources/cicp_pq.png and so changes shouldn\u0027t be landed here?",
+      "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
