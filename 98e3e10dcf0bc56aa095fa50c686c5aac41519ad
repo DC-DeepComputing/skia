@@ -16,6 +16,23 @@
       "message": "The PNG spec\u0027s correction can be found here: https://w3c.github.io/png/#changes-20230921",
       "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8c71ae9_1671447b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6765
+      },
+      "writtenOn": "2025-01-03T22:16:38Z",
+      "side": 1,
+      "message": "Any idea what that means? \"[SubmittableVerifier]: CL is not submittable\"\nThe diff shows +/-0 B but it should have some bytes changed (the chunk names and CRCs).",
+      "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
