@@ -1119,7 +1119,6 @@ ImmutableSamplerInfo DawnCaps::getImmutableSamplerInfo(const TextureProxy* proxy
 void DawnCaps::buildKeyForTexture(SkISize dimensions,
                                   const TextureInfo& info,
                                   ResourceType type,
-                                  Shareable shareable,
                                   GraphiteResourceKey* key) const {
     const DawnTextureSpec dawnSpec = TextureInfos::GetDawnTextureSpec(info);
 
@@ -1148,7 +1147,7 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
         num32DataCnt += 3; // non-format flags and 64-bit format
     }
 #endif
-    GraphiteResourceKey::Builder builder(key, type, num32DataCnt, shareable);
+    GraphiteResourceKey::Builder builder(key, type, num32DataCnt);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
