@@ -144,10 +144,21 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
         return nullptr;
     }
 
-    // Default to SRGB gamut.
-    skcms_Matrix3x3 toXYZD50 = skcms_sRGB_profile()->toXYZD50;
-
-    // Next, check for chromaticities.
+    // Next, check for presence of `gAMA` and `cHRM` chunks.
+    bool got_gamma = false;
+    float gamma = 0.0;
+    got_gamma = reader.try_get_gama(gamma);
+    if (!got_gamma) {
+        // We ignore whether `chRM` is present or not.
+        //
+        // This preserves the behavior decided in Chromium's 83587041dc5f1428c09
+        // (https://codereview.chromium.org/2469473002).  The PNG spec states
+        // that cHRM is valid even without gAMA but we cannot apply the cHRM
+        // without guessing a gAMA.  Color correction is not a guessing game,
+        // so we match the behavior of Safari and Firefox instead (compat).
+        return nullptr;
+    }
+    bool got_chrm = false;
     float rx = 0.0;
     float ry = 0.0;
     float gx = 0.0;
@@ -156,33 +167,40 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     float by = 0.0;
     float wx = 0.0;
     float wy = 0.0;
-    if (reader.try_get_chrm(wx, wy, rx, ry, gx, gy, bx, by)) {
+    got_chrm = reader.try_get_chrm(wx, wy, rx, ry, gx, gy, bx, by);
+    if (!got_chrm) {
+        // If there is no `cHRM` chunk then check if `gamma` is neutral (in PNG
+        // / `SkNamedTransferFn::k2Dot2` sense).  0.95-1.05 threshold mimics
+        // `libpng` behavior (see `PNG_GAMMA_THRESHOLD_FIXED`).
+        float tmp = gamma * 2.2f;
+        bool is_neutral = 0.95f < tmp && tmp < 1.05f;
+        if (is_neutral) {
+            // Don't construct a custom color profile if the only encoded color
+            // space information is a "neutral" gamma.  This is primarily needed
+            // for correctness (see // https://crbug.com/388025081), but may
+            // also help with performance (using a slightly more direct
+            // `SkSwizzler` instead of `skcms_Transform`).
+            return nullptr;
+        }
+    }
+
+    // Construct a color profile based on `cHRM` and `gAMA` chunks.
+    skcms_Matrix3x3 toXYZD50;
+    if (got_chrm) {
         skcms_Matrix3x3 tmp;
         if (skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, &tmp)) {
             toXYZD50 = tmp;
         } else {
-            // Note that Blink simply returns nullptr in this case. We'll fall
-            // back to srgb.
-            //
-            // TODO(https://crbug.com/362306048): If this implementation ends up
-            // replacing the one from Blink, then we should 1) double-check that
-            // we are comfortable with the difference and 2) remove this comment
-            // (since the Blink code that it refers to will get removed).
+            return nullptr;
         }
+    } else {
+        toXYZD50 = skcms_sRGB_profile()->toXYZD50;
     }
 
     skcms_TransferFunction fn;
-    float gamma;
-    if (reader.try_get_gama(gamma)) {
-        fn.a = 1.0f;
-        fn.b = fn.c = fn.d = fn.e = fn.f = 0.0f;
-        fn.g = 1.0f / gamma;
-    } else {
-        // Default to sRGB gamma if the image has color space information,
-        // but does not specify gamma.
-        // Note that Blink would again return nullptr in this case.
-        fn = *skcms_sRGB_TransferFunction();
-    }
+    fn.a = 1.0f;
+    fn.b = fn.c = fn.d = fn.e = fn.f = 0.0f;
+    fn.g = 1.0f / gamma;
 
     skcms_ICCProfile profile;
     skcms_Init(&profile);
