@@ -41,10 +41,16 @@ public:
     // Attaches the local and ancestor transform chain for the layer "native" type.
     sk_sp<sksg::Transform> buildTransform(const AnimationBuilder&, CompositionBuilder*);
 
+    // Attaches the layer content, modulo motion blur and top level layer controller.
+    // Can be called transitively, possibly multiple times per layer.
+    sk_sp<sksg::RenderNode> buildContentTree(const AnimationBuilder&, CompositionBuilder*);
+    const sk_sp<sksg::RenderNode>& getContentTree(const AnimationBuilder&, CompositionBuilder*);
+
     // Attaches the actual layer content and finalizes its render tree.  Called once per layer.
     sk_sp<sksg::RenderNode> buildRenderTree(const AnimationBuilder&, CompositionBuilder*,
-                                            const LayerBuilder* prev_layer);
+                                            int prev_layer_index);
 
+    // TODO: convert existing callers to getContentTree()/getLayerContent()
     const sk_sp<sksg::RenderNode>& contentTree() const { return fContentTree; }
 
     const SkSize& size() const { return fInfo.fSize; }
@@ -57,8 +63,9 @@ private:
 
     enum Flags {
         // k2DTransformValid = 0x01,  // reserved for cache tracking
-        // k3DTransformValie = 0x02,  // reserved for cache tracking
+        // k3DTransformValid = 0x02,  // reserved for cache tracking
         kIs3D                = 0x04,  // 3D layer ("ddd": 1) or camera layer
+        kBuiltContent        = 0x08,  // the content tree has been built
     };
 
     bool is3D() const { return fFlags & Flags::kIs3D; }
@@ -77,6 +84,14 @@ private:
     sk_sp<sksg::Transform> doAttachTransform(const AnimationBuilder&, CompositionBuilder*,
                                              TransformType);
 
+    using LayerBuilderFunc =
+        sk_sp<sksg::RenderNode> (AnimationBuilder::*)(const skjson::ObjectValue&,
+                                                      AnimationBuilder::LayerInfo*) const;
+    struct BuilderInfo {
+        LayerBuilderFunc fBuilder = nullptr;
+        uint32_t         fFlags   = 0;
+    };
+
     const skjson::ObjectValue& fJlayer;
     const int                  fIndex;
     const int                  fParentIndex;
@@ -84,6 +99,7 @@ private:
     const bool                 fAutoOrient;
 
     AnimationBuilder::LayerInfo fInfo;
+    BuilderInfo                 fBuilderInfo;
     sk_sp<sksg::Transform>     fLayerTransform;             // this layer's transform node.
     sk_sp<sksg::Transform>     fTransformCache[2];          // cached 2D/3D chain for the local node
     sk_sp<sksg::RenderNode>    fContentTree;                // render tree for layer content,
