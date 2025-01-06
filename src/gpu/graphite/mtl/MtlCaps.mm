@@ -1186,7 +1186,6 @@ std::pair<SkColorType, bool /*isRGBFormat*/> MtlCaps::supportedReadPixelsColorTy
 void MtlCaps::buildKeyForTexture(SkISize dimensions,
                                  const TextureInfo& info,
                                  ResourceType type,
-                                 Shareable shareable,
                                  GraphiteResourceKey* key) const {
     const MtlTextureSpec mtlSpec = TextureInfos::GetMtlTextureSpec(info);
 
@@ -1218,7 +1217,7 @@ void MtlCaps::buildKeyForTexture(SkISize dimensions,
     // We need two uint32_ts for dimensions, 2 for format, and 1 for the rest of the key;
     static int kNum32DataCnt = 2 + 2 + 1;
 
-    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt, shareable);
+    GraphiteResourceKey::Builder builder(key, type, kNum32DataCnt);
 
     builder[0] = dimensions.width();
     builder[1] = dimensions.height();
