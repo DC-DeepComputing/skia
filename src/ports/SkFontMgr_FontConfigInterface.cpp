@@ -22,6 +22,8 @@
 
 #include <new>
 
+// Running the main branch version to see if it also fails on Chromium canary
+
 using namespace skia_private;
 
 std::unique_ptr<SkStreamAsset> SkTypeface_FCI::onOpenStream(int* ttcIndex) const {
