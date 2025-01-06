@@ -203,6 +203,9 @@ void VulkanBuffer::internalMap(size_t readOffset, size_t readSize) {
         // buffer that currently has a ref held by something else. However, we do need to make sure
         // there isn't a buffer with just a command buffer usage that is trying to be mapped.
 #ifdef SK_DEBUG
+// FIXME: maybe this is part of Buffer's map function? could we call it inUseOnGPU?
+// or can we use isPurgeable?
+// no I don't think so because this is being called in map() when we've already handed out new usage refs
         SkASSERT(!this->debugHasCommandBufferRef());
 #endif
         SkASSERT(fAlloc.fSize > 0);
