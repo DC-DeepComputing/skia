@@ -34,6 +34,24 @@
       "parentUuid": "10268955_6e774279",
       "revId": "df3f49098f7f848d0e5031f52ef837ee7f14de1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efdfee17_062c0462",
+        "filename": "example/external_client/src/play_skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-01-06T17:28:42Z",
+      "side": 1,
+      "message": "I\u0027ll defer to your expertise on the library.\n\nBut if we think `surface` is very unlikely to end up null here, I\u0027d advocate removing the check altogether instead of leaving things as they are now.  To the extent that folks might look to the example code (and possibly copy/paste from it) for their uses, the current code, with a check that\u0027s always going to be `false` since it\u0027s a repeated check from above, seems like it will only lead to confusion and potential bugs as folks modify the code.",
+      "parentUuid": "d272b01d_f81b3db0",
+      "revId": "df3f49098f7f848d0e5031f52ef837ee7f14de1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
