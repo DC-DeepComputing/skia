@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05bad5c7_5657fb68",
+        "filename": "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:35:04Z",
+      "side": 1,
+      "message": "nit: rm space",
+      "range": {
+        "startLine": 15,
+        "startChar": 11,
+        "endLine": 15,
+        "endChar": 12
+      },
+      "revId": "97b5b18e8a3f60627f37eee994f160d0bbd7f566",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
