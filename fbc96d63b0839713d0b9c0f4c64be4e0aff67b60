@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "826dc96b_bbf36b5c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-06T20:50:50Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "986e4ac8_1c6cdbca",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-06T20:50:50Z",
+      "side": 1,
+      "message": "This CL diverges even futher from `SkPngCodec` behavior, so let\u0027s also match Blink here.",
+      "range": {
+        "startLine": 194,
+        "startChar": 12,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4d807f5_4dd93172",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-06T20:50:50Z",
+      "side": 1,
+      "message": "In theory a similar change could be applied to `SkPngCodec`, but I am hesitant to change the behavior of existing code.  I note that `SkPngRustCodec` has already diverged from `SkPngCodec` even before this CL, but this was limited to `cICP` handling (present in `SkPngRustCodec` and missing in `SkPngCodec`).",
+      "range": {
+        "startLine": 203,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 5
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74df4da9_15e47026",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-06T20:50:50Z",
+      "side": 1,
+      "message": "This should have really been part of http://review.skia.org/933417.  I have this change locally in the old git branch, but apparently I forgot to upload this into http://review.skia.org/933417 :-(.\n\nThese changes are not really related to the new test or the bug linked from the CL description...",
+      "range": {
+        "startLine": 616,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 1
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4da80f1_ab6dd762",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-06T20:50:50Z",
+      "side": 1,
+      "message": "Without `SkPngRustCodec.cpp` changes this would be 0x81",
+      "range": {
+        "startLine": 660,
+        "startChar": 62,
+        "endLine": 660,
+        "endChar": 66
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
