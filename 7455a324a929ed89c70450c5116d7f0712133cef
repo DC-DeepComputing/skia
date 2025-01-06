@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae177f45_75de83d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-01-06T17:47:49Z",
+      "side": 1,
+      "message": "I don\u0027t have voting privs (nor should I), but LGTM.  Thanks!",
+      "revId": "7455a324a929ed89c70450c5116d7f0712133cef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
