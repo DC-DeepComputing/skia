@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df29df0a_89fc2e25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:32:09Z",
+      "side": 1,
+      "message": "Thank you; these are some good edits - still using 3 ints even for conversions with known VkFormats does significantly simplify some logic at low cost.",
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "861ec39e_6aab4de9",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:32:09Z",
+      "side": 1,
+      "message": "nit: `kNum32DataCntYcbcr`?",
+      "range": {
+        "startLine": 551,
+        "startChar": 58,
+        "endLine": 551,
+        "endChar": 59
+      },
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79d32d9a_0e91d73b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:32:09Z",
+      "side": 1,
+      "message": "nit: add space",
+      "range": {
+        "startLine": 555,
+        "startChar": 52,
+        "endLine": 555,
+        "endChar": 56
+      },
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
