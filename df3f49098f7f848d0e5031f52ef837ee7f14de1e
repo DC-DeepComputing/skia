@@ -16,6 +16,24 @@
       "message": "Naive post-submit drive-by.  We checked if `animation` was null on line 36, and we `return` if it is.  So this check is always `false`.  Did we intend to check `surface` here instead?",
       "revId": "df3f49098f7f848d0e5031f52ef837ee7f14de1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d272b01d_f81b3db0",
+        "filename": "example/external_client/src/play_skottie.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 13150
+      },
+      "writtenOn": "2025-01-06T15:31:00Z",
+      "side": 1,
+      "message": "I suppose we should. It could fail on OOM, but that would result in a deliberate crash. SkImageInfo can be invalid. Given the way we\u0027re making SkImageInfo here, and that Animation doesn\u0027t allow a w/h \u003c\u003d 0, I believe the only way it could fail with nullptr is if the animation is very large: width/height \u003e max signed int / 4.\n\nThis is also example code to show that we can compile against Skottie as an external bazel client. I don\u0027t think think anyone will ever actually run this code.",
+      "parentUuid": "10268955_6e774279",
+      "revId": "df3f49098f7f848d0e5031f52ef837ee7f14de1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
