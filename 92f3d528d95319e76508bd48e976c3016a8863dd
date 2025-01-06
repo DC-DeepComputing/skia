@@ -1,0 +1,177 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47ed1139_5a3c64e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "A few nits and some comment suggestions which you are free to do what you want with (mainly small phrasing or grammatical changes that helped me make more sense of things)",
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42176c33_a3148994",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "nit: Small phrasing changes for conciseness/clarity (feel free to not accept this suggestion):\n```\n    // At initialization time, a Resource should not be considered budgeted because it does not\n    // belong to a ResourceCache (which manages a budget) yet. Wrapped resources and owned resources\n    // will never be added to a cache and can therefore depend on this default value (as opposed to\n    // a resource having its budget and shareable state set via registerWithCache()).\n```",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c13d0e18_736fa0aa",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "nit: Align plurality\n`// All resources created internally by Graphite that are held in the ResourceCache as shared or available scratch resources are considered budgeted.`",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 71
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4923a0a_b1a26100",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "nit: consolidate explanation that wrapped/client-backed Resource objects should never be budgeted (or clarify what you mean by \"Wrapped objects (not inserted in a cache)\" here - do you mean a resource wrapping another resource of any budgeted status?)\n`   // Resources that back client-owned objects (e.g. SkSurface or SkImage) and wrapper objects do not count against cache limits and therefore should never be budgeted.`",
+      "range": {
+        "startLine": 371,
+        "startChar": 71,
+        "endLine": 373,
+        "endChar": 76
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b964595_f0476e0a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "nit: These should be able to fit on one line now",
+      "range": {
+        "startLine": 487,
+        "startChar": 50,
+        "endLine": 488,
+        "endChar": 77
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "407f141f_f84f6473",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+              "range": {
+                "startLine": 487,
+                "startChar": 0,
+                "endLine": 489,
+                "endChar": 0
+              },
+              "replacement": "sk_sp\u003cTexture\u003e DawnResourceProvider::createTexture(SkISize dimensions, const TextureInfo\u0026 info) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "804e277f_015b4ff5",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "nit: These can all fit on one line now; though I understand if you want to have it look more consistent with the other methods in this file that do have their params on separate lines out of necessity.",
+      "range": {
+        "startLine": 25,
+        "startChar": 1,
+        "endLine": 27,
+        "endChar": 51
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "090f60b5_9477b404",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-06T21:17:14Z",
+      "side": 1,
+      "message": "Address this outstanding FIXME / clean up this area",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 27
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
