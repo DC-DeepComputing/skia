@@ -56,12 +56,15 @@
 #if defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
 #include "include/ports/SkFontMgr_Fontations.h"
 #endif
-
 #if defined(SK_BUILD_FOR_UNIX) && defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
 #endif
-
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
+#endif
 #if defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
 #include "include/ports/SkFontMgr_directory.h"
 #endif
@@ -260,16 +263,11 @@ sk_sp<SkImage> CreateStringImage(int w, int h, SkColor c, int x, int y, int text
 #  endif
 #endif
 
+// Font scanner only works with FreeType or Fontations
 std::unique_ptr<SkFontScanner> TestFontScanner() {
-#if defined(SK_TYPEFACE_FACTORY_FONTATIONS) && defined(SK_FONTMGR_FONTATIONS_AVAILABLE)
-    if (FLAGS_fontations) {
-        auto result = SkFontScanner_Make_Fontations();
-        if (result) {
-            return result;
-        }
-    }
-#endif
-#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    return SkFontScanner_Make_Fontations();
+#elif defined(SK_TYPEFACE_FACTORY_FREETYPE)
     return SkFontScanner_Make_FreeType();
 #else
     return nullptr;
@@ -308,6 +306,8 @@ sk_sp<SkFontMgr> TestFontMgr() {
             mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
             mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+            mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #elif defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
             // In particular, this is used on ChromeOS, which is Linux-like but doesn't have
             // FontConfig.
