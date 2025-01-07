@@ -219,17 +219,19 @@ private:
     void updateAccessTime() {
         fLastAccess = skgpu::StdSteadyClock::now();
     }
-    skgpu::StdSteadyClock::time_point lastAccessTime() const {
+public:
+    skgpu::StdSteadyClock::time_point lastAccessTime1() const {
         return fLastAccess;
     }
 
+private:
     virtual void setBackendLabel(char const* label) {}
 
     ////////////////////////////////////////////////////////////////////////////
     // The following set of functions are only meant to be called by the ResourceCache. We don't
     // want them public general users of a Resource, but they also aren't purely internal calls.
     ////////////////////////////////////////////////////////////////////////////
-    friend ResourceCache;
+    friend ResourceCache; // also access to lastAccessTime
 
     void makeBudgeted() { fBudgeted = skgpu::Budgeted::kYes; }
     void makeUnbudgeted() { fBudgeted = skgpu::Budgeted::kNo; }
