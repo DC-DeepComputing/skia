@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "539780c7_7b76c8a5",
+        "filename": "modules/skottie/src/Layer.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3241878
+      },
+      "writtenOn": "2025-01-07T18:24:34Z",
+      "side": 1,
+      "message": "Nit: Exclude grouping is ambiguous, is it-\n\n1 attach layer content (excluding blur, controller, mattes) or\n2 attach layer content (excluding blur), controller, mattes\n\n?",
+      "revId": "874421e8f82e6a6f58f2fc26a34d00c44135f4e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
