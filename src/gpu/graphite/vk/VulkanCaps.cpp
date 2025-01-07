@@ -193,6 +193,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (features && features->features.dualSrcBlend) {
         fShaderCaps->fDualSourceBlendingSupport = true;
     }
+    // TODO(nicolettep): Determine if Vulkan can always support sampling the dst texture from
+    // within the shader.
+    // TODO(nicolettep): specify frag shader?
+    fShaderCaps->fDstReadInShaderSupport = true;
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.

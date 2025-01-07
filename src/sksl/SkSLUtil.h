@@ -90,6 +90,7 @@ struct ShaderCaps {
     bool fNonsquareMatrixSupport = false;
     /** asinh(), acosh(), atanh() */
     bool fInverseHyperbolicSupport = false;
+    bool fDstReadInShaderSupport = false;
     bool fFBFetchSupport = false;
     bool fFBFetchNeedsCustomOutput = false;
     bool fUsesPrecisionModifiers = false;
