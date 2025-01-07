@@ -128,7 +128,7 @@ private:
     void purgeAsNeeded();
     void purgeResource(Resource*);
     // Passing in a nullptr for purgeTime will trigger us to try and free all unlocked resources.
-    void purgeResources(const StdSteadyClock::time_point* purgeTime);
+    void purgeResources1(const StdSteadyClock::time_point* purgeTime);
 
 #ifdef SK_DEBUG
     bool isInCache(const Resource* r) const;

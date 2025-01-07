@@ -109,7 +109,7 @@ void ResourceCache::insertResource(Resource* resource) {
     // We must set the timestamp before adding to the array in case the timestamp wraps and we wind
     // up iterating over all the resources that already have timestamps.
     this->setResourceTimestamp(resource, this->getNextTimestamp());
-    resource->updateAccessTime();
+    resource->updateAccessTime1();
 
     this->addToNonpurgeableArray(resource);
 
@@ -352,7 +352,7 @@ void ResourceCache::returnResourceToCache(Resource* resource, LastRemovedRef rem
     if (resource->shouldDeleteASAP() == Resource::DeleteASAP::kYes) {
         this->purgeResource(resource);
     } else {
-        resource->updateAccessTime();
+        resource->updateAccessTime1();
         fPurgeableQueue.insert(resource);
         fPurgeableBytes += resource->gpuMemorySize();
     }
@@ -444,15 +444,15 @@ void ResourceCache::purgeAsNeeded() {
 
 void ResourceCache::purgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(&purgeTime);
+    this->purgeResources1(&purgeTime);
 }
 
 void ResourceCache::purgeResources() {
     ASSERT_SINGLE_OWNER
-    this->purgeResources(nullptr);
+    this->purgeResources1(nullptr);
 }
 
-void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) {
+void ResourceCache::purgeResources1(const StdSteadyClock::time_point* purgeTime) {
     TRACE_EVENT0("skia.gpu.cache", TRACE_FUNC);
     if (fProxyCache) {
         fProxyCache->purgeProxiesNotUsedSince(purgeTime);
@@ -470,6 +470,7 @@ void ResourceCache::purgeResources(const StdSteadyClock::time_point* purgeTime) 
     // Sort the queue
     fPurgeableQueue.sort();
 
+    //$$
     // Make a list of the scratch resources to delete
     SkTDArray<Resource*> resourcesToPurge;
     for (int i = 0; i < fPurgeableQueue.count(); i++) {

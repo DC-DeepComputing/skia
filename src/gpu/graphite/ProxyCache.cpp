@@ -92,7 +92,7 @@ sk_sp<TextureProxy> ProxyCache::findOrCreateCachedProxy(Recorder* recorder,
 
     if (sk_sp<TextureProxy>* cached = fCache.find(key)) {
         if (Resource* resource = (*cached)->texture()) {
-            resource->updateAccessTime();
+            resource->updateAccessTime1();
         }
         return *cached;
     }
@@ -159,6 +159,7 @@ void ProxyCache::purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_poin
 
     std::vector<skgpu::UniqueKey> toRemove;
 
+    //$$
     fCache.foreach([&](const skgpu::UniqueKey& key, const sk_sp<TextureProxy>* proxy) {
         if (Resource* resource = (*proxy)->texture();
             resource &&
