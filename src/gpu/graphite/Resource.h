@@ -24,6 +24,7 @@ class SkTraceMemoryDump;
 
 namespace skgpu::graphite {
 
+class GlobalCache;
 class ResourceCache;
 class SharedContext;
 class Texture;
@@ -200,6 +201,7 @@ protected:
 
 private:
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
+    friend GlobalCache; // for lastAccessTime
 
     // Overridden to free GPU resources in the backend API.
     virtual void freeGpuData() = 0;
@@ -216,7 +218,7 @@ private:
 
     // In the ResourceCache this is called whenever a Resource is moved into the purgeableQueue. It
     // may also be called by the ProxyCache to track the time on Resources it is holding on to.
-    void updateAccessTime() {
+    void updateAccessTime1() {
         fLastAccess = skgpu::StdSteadyClock::now();
     }
     skgpu::StdSteadyClock::time_point lastAccessTime() const {
@@ -229,7 +231,7 @@ private:
     // The following set of functions are only meant to be called by the ResourceCache. We don't
     // want them public general users of a Resource, but they also aren't purely internal calls.
     ////////////////////////////////////////////////////////////////////////////
-    friend ResourceCache;
+    friend ResourceCache; // also access to lastAccessTime
 
     void makeBudgeted() { fBudgeted = skgpu::Budgeted::kYes; }
     void makeUnbudgeted() { fBudgeted = skgpu::Budgeted::kNo; }
