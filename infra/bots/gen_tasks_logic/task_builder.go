@@ -288,7 +288,7 @@ func (b *taskBuilder) usesGo() {
 
 // usesDocker adds attributes to tasks which use docker.
 func (b *taskBuilder) usesDocker() {
-	b.dimension("docker_installed:true")
+	//b.dimension("docker_installed:true")
 
 	// The "docker" binary reads its config from $HOME/.docker/config.json which, after running
 	// "gcloud auth configure-docker", typically looks like this:
