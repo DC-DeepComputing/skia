@@ -19,11 +19,15 @@
 #include "modules/svg/include/SkSVGDOM.h"
 #include "modules/skshaper/utils/FactoryHelpers.h"
 
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#endif
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
 #endif
-
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
 #include "include/ports/SkFontMgr_mac_ct.h"
 #endif
@@ -58,13 +62,13 @@ int main(int argc, char** argv) {
     sk_sp<SkFontMgr> fontMgr;
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
     fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
     fontMgr = SkFontMgr_New_CoreText(nullptr);
+#else
+#error "Unsupported OS"
 #endif
-    if (!fontMgr) {
-        printf("No Font Manager configured\n");
-        return 1;
-    }
 
     SkMemoryStream svgStream(svg, std::strlen(svg));
 
