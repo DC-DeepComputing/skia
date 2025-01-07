@@ -52,6 +52,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b06b3f_a6f7d9f2",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-07T18:59:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d2af2a1_4522af86",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28f4ed6e_59e97a6f",
@@ -69,6 +87,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f6a21b4_06869a6e",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-07T18:59:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "28f4ed6e_59e97a6f",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e9fa5d4_802f73d5",
@@ -82,6 +118,24 @@
       "writtenOn": "2025-01-07T18:45:22Z",
       "side": 1,
       "message": "Could we express these constants in terms of `PNG_GAMMA_THRESHOLD`?\n\n`\n    bool is_neutral \u003d (1.f - PNG_GAMMA_THRESHOLD) \u003c tmp \u0026\u0026 tmp \u003c (1.f + PNG_GAMMA_THRESHOLD);\n`",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7585ac66_676e526a",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-07T18:59:08Z",
+      "side": 1,
+      "message": "Done, I think.  (I don\u0027t want to depend on `libpng` headers here, so I am introducing a separate constant, instead of directly reusing `PNG_GAMMA_THRESHOLD_FIXED`.)",
+      "parentUuid": "4e9fa5d4_802f73d5",
       "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -146,6 +200,30 @@
       "writtenOn": "2025-01-07T18:45:22Z",
       "side": 1,
       "message": "Do we actually need the temp value?\n\n```\n    if (!skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, \u0026toXYZD50)) {\n    \treturn nullptr;\n    }\n```",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f3792a1_001e3e34",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-07T18:59:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91f4c03d_c3927a2d",
       "range": {
         "startLine": 190,
         "startChar": 0,
