@@ -344,18 +344,15 @@ public:
                 .bind(kExpandOutput_Index    , fExpandOutput      );
     }
 
-    static std::tuple<sk_sp<sksg::RenderNode>, SkSize> GetDisplacementSource(
+    static EffectBuilder::LayerContent GetDisplacementSource(
             const skjson::ArrayValue& jprops,
             const EffectBuilder* ebuilder) {
 
         if (const skjson::ObjectValue* jv = EffectBuilder::GetPropValue(jprops, kMapLayer_Index)) {
-            auto* map_builder = ebuilder->getLayerBuilder(ParseDefault((*jv)["k"], -1));
-            if (map_builder) {
-                return std::make_tuple(map_builder->contentTree(), map_builder->size());
-            }
+            return ebuilder->getLayerContent(ParseDefault((*jv)["k"], -1));
         }
 
-        return std::make_tuple<sk_sp<sksg::RenderNode>, SkSize>(nullptr, {0,0});
+        return { nullptr, {0,0} };
     }
 
 private:

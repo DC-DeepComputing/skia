@@ -40,9 +40,11 @@ public:
 
     static const skjson::Value& GetPropValue(const skjson::ArrayValue& jprops, size_t prop_index);
 
-    LayerBuilder* getLayerBuilder(int layer_index) const {
-        return fCompBuilder->layerBuilder(layer_index);
-    }
+    struct LayerContent {
+        sk_sp<sksg::RenderNode> fContent;
+        SkSize                  fSize;
+    };
+    LayerContent getLayerContent(int layer_index) const;
 
 private:
     using EffectBuilderT = sk_sp<sksg::RenderNode>(EffectBuilder::*)(const skjson::ArrayValue&,
