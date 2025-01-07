@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "447fdb33_4e295e60",
+        "filename": "src/gpu/graphite/Resource.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "Done, but updated it to clarify that it is \"owned-but-uncahced\" resources.  Owned just means that Skia was the creator of the backend GPU object. Some resources we own but don\u0027t cache, like render encoders.  I need to go through and see if it makes sense to just make it so everything goes into a cache, but it depends on whether or not we can reset them.",
+      "parentUuid": "42176c33_a3148994",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 53
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c13d0e18_736fa0aa",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12841daf_187e718f",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c13d0e18_736fa0aa",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 71
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4923a0a_b1a26100",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-01-06T21:17:14Z",
       "side": 1,
       "message": "nit: consolidate explanation that wrapped/client-backed Resource objects should never be budgeted (or clarify what you mean by \"Wrapped objects (not inserted in a cache)\" here - do you mean a resource wrapping another resource of any budgeted status?)\n`   // Resources that back client-owned objects (e.g. SkSurface or SkImage) and wrapper objects do not count against cache limits and therefore should never be budgeted.`",
+      "range": {
+        "startLine": 371,
+        "startChar": 71,
+        "endLine": 373,
+        "endChar": 76
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92498833_0c13d6b1",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 373,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "I updated the comment to give an example of the wrapped resource, which is a Resource that wraps a backend-specific object (e.g. the BackendTexture) that is provided by the client (has fOwnership \u003d\u003d Ownership::kWrapped).",
+      "parentUuid": "e4923a0a_b1a26100",
       "range": {
         "startLine": 371,
         "startChar": 71,
@@ -128,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c464250f_580fa8c6",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 488,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b964595_f0476e0a",
+      "range": {
+        "startLine": 487,
+        "startChar": 50,
+        "endLine": 488,
+        "endChar": 77
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "804e277f_015b4ff5",
@@ -151,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f06f209d_be64e719",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "I think I will keep them in the same style.",
+      "parentUuid": "804e277f_015b4ff5",
+      "range": {
+        "startLine": 25,
+        "startChar": 1,
+        "endLine": 27,
+        "endChar": 51
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "090f60b5_9477b404",
@@ -164,6 +284,30 @@
       "writtenOn": "2025-01-06T21:17:14Z",
       "side": 1,
       "message": "Address this outstanding FIXME / clean up this area",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 27
+      },
+      "revId": "92f3d528d95319e76508bd48e976c3016a8863dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b904b48a_82ff2ddc",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T18:37:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "090f60b5_9477b404",
       "range": {
         "startLine": 66,
         "startChar": 0,
