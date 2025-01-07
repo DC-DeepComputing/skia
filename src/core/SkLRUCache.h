@@ -71,7 +71,7 @@ public:
         fMap.set(entry);
         fLRU.addToHead(entry);
         while (fMap.count() > fMaxCount) {
-            this->remove(fLRU.tail()->fKey);
+            this->remove1(fLRU.tail()->fKey);
         }
         return &entry->fValue;
     }
@@ -117,7 +117,8 @@ private:
         }
     };
 
-    void remove(const K& key) {
+public:
+    void remove1(const K& key) {
         Entry** value = fMap.find(key);
         SkASSERT(value);
         Entry* entry = *value;
@@ -128,6 +129,7 @@ private:
         delete entry;
     }
 
+private:
     int                                         fMaxCount;
     skia_private::THashTable<Entry*, K, Traits> fMap;
     SkTInternalLList<Entry>                     fLRU;

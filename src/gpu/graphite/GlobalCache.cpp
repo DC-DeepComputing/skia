@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include <vector>
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -195,6 +197,31 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #endif
     }
     return *entry;
+}
+
+
+void GlobalCache::purgifyGraphicsPipelines(StdSteadyClock::time_point purgeTime) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    std::vector<skgpu::UniqueKey> toRemove;
+
+#if 1
+// Impl from GlobalCache::forEachGraphicsPipeline
+//    fGraphicsPipelineCache.foreach([&](const UniqueKey* k, const sk_sp<GraphicsPipeline>* v) {
+//        fn(*k, v->get());
+//    });
+
+    // from ProxyCache::purgeProxiesNotUsedSince
+    fGraphicsPipelineCache.foreach([&](const UniqueKey* key, const sk_sp<GraphicsPipeline>* pipeline) {
+        if ((*pipeline)->lastAccessTime1() < purgeTime) {
+            toRemove.push_back(*key);
+        }
+    });
+#endif
+
+    for (const skgpu::UniqueKey& k : toRemove) {
+        fGraphicsPipelineCache.remove1(k);
+    }
 }
 
 #if defined(GPU_TEST_UTILS)
