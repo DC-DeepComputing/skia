@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include <vector>
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -77,6 +79,7 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         ++fStats.fGraphicsCacheHits;
 #endif
 
+        (*entry)->updateAccessTime();
         (*entry)->markUsed();
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
@@ -139,6 +142,10 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
 
+    {
+        pipeline->lastAccessTime();
+    }
+
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
     if (!entry) {
         // No equivalent pipeline was stored in the cache between a previous call to
@@ -195,6 +202,26 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #endif
     }
     return *entry;
+}
+
+
+void GlobalCache::purgeGraphicsPipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    std::vector<skgpu::UniqueKey> toRemove;
+
+    // This is probably fine for now but is looping from most-recently-used to least-recently-used.
+    // It seems like a reverse loop with an early out could be more efficient.
+    fGraphicsPipelineCache.foreach([&toRemove, purgeTime](const UniqueKey* key,
+                                                          const sk_sp<GraphicsPipeline>* pipeline) {
+        if ((*pipeline)->lastAccessTime() >= purgeTime) {
+            toRemove.push_back(*key);
+        }
+    });
+
+    for (const skgpu::UniqueKey& k : toRemove) {
+        fGraphicsPipelineCache.remove(k);
+    }
 }
 
 #if defined(GPU_TEST_UTILS)
