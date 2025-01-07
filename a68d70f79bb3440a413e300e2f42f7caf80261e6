@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "99ec26b7_7141e2a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-07T21:19:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "1a4fea02_b0928493",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 48
+      },
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0b41a5d9_f8ccc603",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -101,6 +125,30 @@
           ]
         }
       ],
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41173684_3aa16d5c",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-07T21:19:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d188606_5cdb98db",
+      "range": {
+        "startLine": 569,
+        "startChar": 46,
+        "endLine": 569,
+        "endChar": 51
+      },
       "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
