@@ -41,6 +41,8 @@ public:
     GlobalCache();
     ~GlobalCache();
 
+    void purgifyGraphicsPipelines(StdSteadyClock::time_point purgeTime);
+
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.

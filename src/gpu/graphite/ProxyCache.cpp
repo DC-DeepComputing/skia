@@ -162,7 +162,7 @@ void ProxyCache::purgeProxiesNotUsedSince(const skgpu::StdSteadyClock::time_poin
     fCache.foreach([&](const skgpu::UniqueKey& key, const sk_sp<TextureProxy>* proxy) {
         if (Resource* resource = (*proxy)->texture();
             resource &&
-            (!purgeTime || resource->lastAccessTime() < *purgeTime)) {
+            (!purgeTime || resource->lastAccessTime1() < *purgeTime)) {
             toRemove.push_back(key);
         }
     });
