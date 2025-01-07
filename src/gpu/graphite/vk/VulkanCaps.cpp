@@ -76,6 +76,11 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // give the minimum max size across all configs. So for simplicity we will use that for now.
     fMaxTextureSize = std::min(physDevProperties.limits.maxImageDimension2D, (uint32_t)INT_MAX);
 
+    // Assert that our push constant sizes are below the maximum allowed (which is guaranteed to be
+    // at least 128 bytes per spec).
+    static_assert(VulkanResourceProvider::kIntrinsicConstantSize < 128 &&
+                  VulkanResourceProvider::kLoadMSAAPushConstantSize < 128);
+
     fRequiredUniformBufferAlignment = physDevProperties.limits.minUniformBufferOffsetAlignment;
     fRequiredStorageBufferAlignment =  physDevProperties.limits.minStorageBufferOffsetAlignment;
     fRequiredTransferBufferAlignment = 4;
@@ -84,16 +89,19 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // Y-down coordinate space of the viewport.
     fNDCYAxisPointsDown = true;
 
-    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // We can enable std430 and ensure no array stride mismatch in functions because all bound
     // buffers will either be a UBO or SSBO, depending on if storage buffers are enabled or not.
     // Although intrinsic uniforms always use uniform buffers, they do not contain any arrays.
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
+
+    // TODO(b/374997389): Somehow convey & enforce Layout::kStd430 for push constants.
+    fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
     fResourceBindingReqs.fDistinctIndexRanges = false;
 
-    fResourceBindingReqs.fIntrinsicBufferBinding =
-            VulkanGraphicsPipeline::kIntrinsicUniformBufferIndex;
+    // Vulkan uses push constants instead of an intrinsic UBO, so we do not need to assign
+    // fResourceBindingReqs.fIntrinsicBufferBinding.
+    fResourceBindingReqs.fUseVulkanPushConstantsForIntrinsicConstants = true;
     fResourceBindingReqs.fRenderStepBufferBinding =
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex;
     fResourceBindingReqs.fPaintParamsBufferBinding =
@@ -185,6 +193,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (features && features->features.dualSrcBlend) {
         fShaderCaps->fDualSourceBlendingSupport = true;
     }
+    // TODO(nicolettep): Determine if Vulkan can always support sampling the dst texture from
+    // within the shader.
+    // TODO(nicolettep): specify frag shader?
+    fShaderCaps->fDstReadInShaderSupport = true;
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -379,8 +391,11 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
      * Graphite, unlike ganesh, does not require a dedicated MSAA attachment on every surface.
      * MSAA textures now get resolved within the scope of a render pass, which can be done simply
      * with the color attachment usage flag. So we no longer require transfer src/dst usage flags.
+     * At this point, it is guaranteed that we are using a renderable format, and graphite makes
+     * all renderable color attachments also usable as input attachments so add that flag here.
     */
-    VkImageUsageFlags flags = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    VkImageUsageFlags flags =
+            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
     if (discardable == Discardable::kYes && fSupportsMemorylessAttachments) {
         flags = flags | VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
     }
