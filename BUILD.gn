@@ -387,10 +387,7 @@ optional("fontmgr_fontconfig") {
   # The public header includes fontconfig.h and uses FcConfig*
   public_deps = [ "//third_party:fontconfig" ]
   public = skia_ports_fontmgr_fontconfig_public
-  deps = [
-    ":typeface_freetype",
-    ":typeface_proxy",
-  ]
+  deps = [ ":typeface_proxy" ]
   sources = skia_ports_fontmgr_fontconfig_sources
   sources_for_tests = [ "tests/FontMgrFontConfigTest.cpp" ]
 }
@@ -408,10 +405,7 @@ skia_source_set("fontscanner_tests") {
 optional("fontmgr_FontConfigInterface") {
   enabled = skia_enable_fontmgr_FontConfigInterface
   public_defines = [ "SK_FONTMGR_FCI_AVAILABLE" ]
-  deps = [
-    ":typeface_freetype",
-    "//third_party:fontconfig",
-  ]
+  deps = [ "//third_party:fontconfig" ]
   public = skia_ports_fci_public
   sources = skia_ports_fci_sources
   sources_for_tests = [ "tests/FCITest.cpp" ]
@@ -1641,6 +1635,7 @@ skia_component("skia") {
     ":raw",
     ":skx",
     ":typeface_fontations",
+    ":typeface_freetype",
     ":vello",
     ":webp_decode",
     ":wuffs",
@@ -2525,6 +2520,7 @@ if (skia_enable_tools) {
       ":test",
       ":tool_utils",
       ":typeface_fontations_tests",
+      ":typeface_freetype_tests",
       "modules/bentleyottmann:tests",
       "modules/skottie:tests",
       "modules/skparagraph:tests",

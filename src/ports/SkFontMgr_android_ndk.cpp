@@ -6,11 +6,14 @@
  */
 
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkFontScanner.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_android_ndk.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
@@ -806,7 +809,12 @@ private:
 }  // namespace
 
 sk_sp<SkFontMgr> SkFontMgr_New_AndroidNDK(bool cacheFontFiles) {
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
     return SkFontMgr_New_AndroidNDK(cacheFontFiles, SkFontScanner_Make_FreeType());
+#else
+    SkDEBUGFAIL("No FreeType scanner configured.");
+    return nullptr;
+#endif
 }
 
 sk_sp<SkFontMgr> SkFontMgr_New_AndroidNDK(bool cacheFontFiles,
