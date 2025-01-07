@@ -19,10 +19,14 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkStream.h"
 #include "include/docs/SkPDFDocument.h"
-
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
 #endif
 
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
@@ -51,16 +55,15 @@ int main(int argc, char** argv) {
     sk_sp<SkDocument> pdf = SkPDF::MakeDocument(&output, metadata);
     SkCanvas* canvas = pdf->beginPage(100, 50);
 
-    sk_sp<SkFontMgr> mgr;
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
-    mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    sk_sp<SkFontMgr> mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
-    mgr = SkFontMgr_New_CoreText(nullptr);
+    sk_sp<SkFontMgr> mgr = SkFontMgr_New_CoreText(nullptr);
+#else
+#error "Unsupported OS"
 #endif
-    if (!mgr) {
-        printf("No Font Manager configured\n");
-        return 1;
-    }
     sk_sp<SkTypeface> face = mgr->matchFamilyStyle("Roboto", SkFontStyle());
     if (!face) {
       printf("Cannot open typeface\n");

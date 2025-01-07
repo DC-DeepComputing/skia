@@ -16,9 +16,14 @@
 
 #include "modules/skplaintexteditor/include/editor.h"
 
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
+#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
 #endif
 
 #if defined(SK_FONTMGR_CORETEXT_AVAILABLE)
@@ -107,10 +112,14 @@ sk_sp<SkFontMgr> fontMgr() {
     if (!init) {
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
         fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+        fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #elif defined(SK_FONTMGR_CORETEXT_AVAILABLE)
         fontMgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_DIRECTWRITE_AVAILABLE)
         fontMgr = SkFontMgr_New_DirectWrite();
+#else
+#error "Unsupported OS"
 #endif
         init = true;
     }
