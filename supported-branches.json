@@ -9,6 +9,10 @@
       "owner": "djsollen@google.com"
     },
     {
+      "ref": "refs/heads/chrome/m100",
+      "owner": "hcm@google.com"
+    },
+    {
       "ref": "refs/heads/chrome/m129",
       "owner": "sharaks@google.com"
     },
