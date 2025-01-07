@@ -23,7 +23,8 @@ namespace {
 
 bool textBlobsAllPathsEqual(sk_sp<const SkTextBlob> blobA,
                             sk_sp<const SkTextBlob> blobB,
-                            SkString fontName) {
+                            SkString fontName,
+                            SkString* error) {
     SkTextBlob::Iter iterA(*blobA);
     SkTextBlob::Iter iterB(*blobB);
     SkTextBlob::Iter::ExperimentalRun runAInfo;
@@ -58,6 +59,7 @@ bool textBlobsAllPathsEqual(sk_sp<const SkTextBlob> blobA,
                                            dataA->size());
                 std::string freetypePath(reinterpret_cast<const char*>(dataB->bytes()),
                                          dataB->size());
+                *error = SkStringPrintf("fontations: %s\nfreetype: %s\n", fontationsPath.c_str(), freetypePath.c_str());
                 SkDebugf("Path A (Fontations): \n%s\n", fontationsPath.c_str());
                 SkDebugf("Path B (FreeType): \n%s\n", freetypePath.c_str());
                 return false;
@@ -104,11 +106,13 @@ public:
                 sk_sp<const SkTextBlob> freetypeTextBlob =
                         makeTextBlobWithFontAndText(freetypeFont, sampleLang.sampleLong);
 
+                SkString error;
                 REPORTER_ASSERT(reporter,
                                 textBlobsAllPathsEqual(
-                                        fontationsTextBlob, freetypeTextBlob, testSet.fontName),
-                                "paths not equal for %s",
-                                testSet.fontName.c_str());
+                                    fontationsTextBlob, freetypeTextBlob, testSet.fontName, &error),
+                                "paths not equal for %s:\n%s",
+                                testSet.fontName.c_str(),
+                                error.c_str());
             }
             numTestsExecuted++;
         }
