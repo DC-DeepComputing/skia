@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include <vector>
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -77,6 +79,7 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         ++fStats.fGraphicsCacheHits;
 #endif
 
+        (*entry)->updateAccessTime();
         (*entry)->markUsed();
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
@@ -153,6 +156,7 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         // Precompile Pipelines are only marked as used when they get a cache hit in
         // findGraphicsPipeline
         if (!(*entry)->fromPrecompile()) {
+            (*entry)->updateAccessTime();
             (*entry)->markUsed();
         }
 
@@ -195,6 +199,39 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
 #endif
     }
     return *entry;
+}
+
+
+void GlobalCache::purgeGraphicsPipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    std::vector<skgpu::UniqueKey> toRemove;
+
+    // This is probably fine for now but is looping from most-recently-used to least-recently-used.
+    // It seems like a reverse loop with an early out could be more efficient.
+    fGraphicsPipelineCache.foreach([&toRemove, purgeTime](const UniqueKey* key,
+                                                          const sk_sp<GraphicsPipeline>* pipeline) {
+
+        auto foo = std::chrono::duration_cast<std::chrono::milliseconds>(purgeTime.time_since_epoch()).count();
+
+        SkDebugf("%d %lld purgeTime: %lld will-be-purged %d\n",
+                 (*pipeline)->getRefCnt(),
+                 std::chrono::duration_cast<std::chrono::milliseconds>((*pipeline)->lastAccessTime().time_since_epoch()).count(),
+                 foo,
+                 (*pipeline)->unique() && (*pipeline)->lastAccessTime() < purgeTime);
+
+        if ((*pipeline)->unique() && (*pipeline)->lastAccessTime() < purgeTime) {
+            toRemove.push_back(*key);
+        }
+    });
+
+    for (const skgpu::UniqueKey& k : toRemove) {
+#if defined(GPU_TEST_UTILS)
+        ++fStats.fGraphicsPurges;
+#endif
+
+        fGraphicsPipelineCache.remove(k);
+    }
 }
 
 #if defined(GPU_TEST_UTILS)
