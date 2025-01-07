@@ -1,5 +1,23 @@
 {
-  "comments": [],
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e75b08e5_effb3c78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-01-07T22:08:54Z",
+      "side": 1,
+      "message": "/cc @jmbetancourt (a reviewer of https://crrev.com/c/6153195 \u003d Skia gardener IIUC)",
+      "revId": "ca89da560f3b478ea3e59cdf9c45a632a958b6fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ],
   "submitRequirementResults": [
     {
       "submitRequirement": {
