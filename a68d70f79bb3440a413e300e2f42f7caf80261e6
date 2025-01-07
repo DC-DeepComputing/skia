@@ -1,0 +1,108 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a4fea02_b0928493",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T19:15:12Z",
+      "side": 1,
+      "message": "I suspect that\u0027s going to be tricky, since `SkPath`\u0027s `std::atomic` fields are not movable afaik.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 48
+      },
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b41a5d9_f8ccc603",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T19:15:12Z",
+      "side": 1,
+      "message": "Nice find!",
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee33a2e_4392728a",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 695,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T19:15:12Z",
+      "side": 1,
+      "message": "This looks a bit iffy because `pointData` is being used below. I think it\u0027s safe though, since the accessed fields don\u0027t include `fFirst`/`fLast`.",
+      "range": {
+        "startLine": 685,
+        "startChar": 0,
+        "endLine": 695,
+        "endChar": 1
+      },
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d188606_5cdb98db",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T19:15:12Z",
+      "side": 1,
+      "message": "`pathToUse \u003d\u003d \u0026strokePath`? (mutable when using the local stroke path)",
+      "range": {
+        "startLine": 569,
+        "startChar": 46,
+        "endLine": 569,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ada777c7_f27967c5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScalerContext.cpp",
+              "range": {
+                "startLine": 569,
+                "startChar": 0,
+                "endLine": 570,
+                "endChar": 0
+              },
+              "replacement": "    draw.drawPath(*pathToUse, paint, nullptr, pathToUse \u003d\u003d \u0026strokePath);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a68d70f79bb3440a413e300e2f42f7caf80261e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
