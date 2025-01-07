@@ -18,6 +18,74 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d70b65ac_c61e1d82",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "LGTM with some nits.",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d2af2a1_4522af86",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "nit: looks like we don\u0027t need a separate declaration, this could be\n\n`const bool got_gama \u003d reader.try_get_gama(gamma);`",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28f4ed6e_59e97a6f",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "nit: same",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e9fa5d4_802f73d5",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Could we express these constants in terms of `PNG_GAMMA_THRESHOLD`?\n\n`\n    bool is_neutral \u003d (1.f - PNG_GAMMA_THRESHOLD) \u003c tmp \u0026\u0026 tmp \u003c (1.f + PNG_GAMMA_THRESHOLD);\n`",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "986e4ac8_1c6cdbca",
@@ -41,6 +109,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "19c88f38_e2e9bec9",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "986e4ac8_1c6cdbca",
+      "range": {
+        "startLine": 194,
+        "startChar": 12,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f4c03d_c3927a2d",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Do we actually need the temp value?\n\n```\n    if (!skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, \u0026toXYZD50)) {\n    \treturn nullptr;\n    }\n```",
+      "range": {
+        "startLine": 190,
+        "startChar": 0,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4d807f5_4dd93172",
@@ -54,6 +169,30 @@
       "writtenOn": "2025-01-06T20:50:50Z",
       "side": 1,
       "message": "In theory a similar change could be applied to `SkPngCodec`, but I am hesitant to change the behavior of existing code.  I note that `SkPngRustCodec` has already diverged from `SkPngCodec` even before this CL, but this was limited to `cICP` handling (present in `SkPngRustCodec` and missing in `SkPngCodec`).",
+      "range": {
+        "startLine": 203,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 5
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86a41f55_82ed9797",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Makes sense, let\u0027s not change this for legacy clients.",
+      "parentUuid": "b4d807f5_4dd93172",
       "range": {
         "startLine": 203,
         "startChar": 4,
@@ -87,6 +226,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e944933d_b285c719",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 616,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "74df4da9_15e47026",
+      "range": {
+        "startLine": 616,
+        "startChar": 0,
+        "endLine": 616,
+        "endChar": 1
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4da80f1_ab6dd762",
@@ -100,6 +263,30 @@
       "writtenOn": "2025-01-06T20:50:50Z",
       "side": 1,
       "message": "Without `SkPngRustCodec.cpp` changes this would be 0x81",
+      "range": {
+        "startLine": 660,
+        "startChar": 62,
+        "endLine": 660,
+        "endChar": 66
+      },
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66d1af2e_1473abdb",
+        "filename": "tests/SkPngRustDecoderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T18:45:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d4da80f1_ab6dd762",
       "range": {
         "startLine": 660,
         "startChar": 62,
