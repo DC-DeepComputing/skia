@@ -31,7 +31,12 @@
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkFontScanner_Fontations.h"
+#endif
 #endif
 
 #if defined(SK_SUPPORT_PDF)
@@ -265,8 +270,10 @@ int main(int argc, char** argv) {
         options.pdf = false;
         options.skp = false;
     }
-#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
+#if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
     fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    fontMgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #else
     fontMgr = SkFontMgr::RefEmpty();
 #endif
