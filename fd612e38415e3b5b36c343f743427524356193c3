@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a9d393_746c5226",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T14:49:29Z",
+      "side": 1,
+      "message": "Yeah, I suspect we won\u0027t see any change. Obviously if perf complains, then I\u0027ll revisit it, but 3 ints isn\u0027t a lot of data to move around.",
+      "parentUuid": "df29df0a_89fc2e25",
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "861ec39e_6aab4de9",
@@ -41,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe868d38_465251c5",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T14:49:29Z",
+      "side": 1,
+      "message": "Done, I decided to call it `kKeySize` for brevity since it\u0027s in the ycbcr function already and I moved `kType` to be declared next to it since that is only used within the `{}` for building the key too.",
+      "parentUuid": "861ec39e_6aab4de9",
+      "range": {
+        "startLine": 551,
+        "startChar": 58,
+        "endLine": 551,
+        "endChar": 59
+      },
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79d32d9a_0e91d73b",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-01-06T21:32:09Z",
       "side": 1,
       "message": "nit: add space",
+      "range": {
+        "startLine": 555,
+        "startChar": 52,
+        "endLine": 555,
+        "endChar": 56
+      },
+      "revId": "fd612e38415e3b5b36c343f743427524356193c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d2df6756_14653ad5",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 555,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-07T14:49:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79d32d9a_0e91d73b",
       "range": {
         "startLine": 555,
         "startChar": 52,
