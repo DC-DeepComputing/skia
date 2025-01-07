@@ -140,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "30d36730_59fd5d60",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-07T19:19:40Z",
+      "side": 1,
+      "message": "Ah, I didn\u0027t think about the dependency being introduced.  Thanks!",
+      "parentUuid": "7585ac66_676e526a",
+      "revId": "fbc96d63b0839713d0b9c0f4c64be4e0aff67b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "986e4ac8_1c6cdbca",
