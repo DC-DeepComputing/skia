@@ -958,7 +958,7 @@ static bool bottom_collinear(Edge* left, Edge* right) {
 }
 
 // How deep of a stack of mergeCollinearEdges() we'll accept
-static constexpr int kMaxMergeCollinearCalls = 56;
+static constexpr int kMaxMergeCollinearCalls = 256;
 
 bool GrTriangulator::mergeCollinearEdges(Edge* edge, EdgeList* activeEdges, Vertex** current,
                                          const Comparator& c) const {
