@@ -145,6 +145,21 @@ void precompile_gradients(std::unique_ptr<PrecompileContext> precompileContext,
     precompileContext.reset();
 }
 
+void purge_on_thread(std::unique_ptr<PrecompileContext> precompileContext,
+                     std::atomic_bool* keepLooping,
+                     skiatest::Reporter* /* reporter */,
+                     int /* threadID */) {
+    const auto kSleepDuration = std::chrono::milliseconds(1);
+
+    while (*keepLooping) {
+        std::this_thread::sleep_for(kSleepDuration);
+
+        precompileContext->purgeGraphicsPipelinesNotUsedInMs(kSleepDuration);
+    }
+
+    precompileContext.reset();
+}
+
 // A simple helper to call Context::insertRecording on the Recordings generated on the
 // recorder threads. It collects (and keeps ownership) of all the generated Recordings.
 class Listener : public SkRefCnt {
@@ -243,74 +258,57 @@ void compile_gradients(std::unique_ptr<Recorder> recorder,
     listener->deregister();
 }
 
-} // anonymous namespace
+void run_test(Context* context,
+              skiatest::Reporter* reporter,
+              int numPurgingThreads,
+              int numRecordingThreads,
+              int numPrecompileThreads) {
+    const int totNumThreads = numPurgingThreads + numRecordingThreads + numPrecompileThreads;
 
-// This test precompiles all four flavors of gradient sequentially but on multiple
-// threads with the goal of creating cache races.
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPrecompileTest,
-                                   reporter,
-                                   context,
-                                   CtsEnforcement::kNever) {
-    constexpr int kNumThreads = 4;
+    sk_sp<Listener> listener;
+    if (numRecordingThreads) {
+        listener = sk_make_sp<Listener>(numRecordingThreads);
+    }
 
+    std::atomic_bool keepPurging = true; // controls the looping in the purging thread(s)
 
-    std::thread threads[kNumThreads];
-    for (int i = 0; i < kNumThreads; ++i) {
+    std::vector<std::thread> threads;
+    threads.reserve(totNumThreads);
+
+    int threadID = 0;
+    for (int i = 0; i < numPurgingThreads; ++i, ++threadID) {
         std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
 
-        threads[i] = std::thread(precompile_gradients, std::move(precompileContext), reporter, i);
+        threads.push_back(std::thread(purge_on_thread,
+                                      std::move(precompileContext),
+                                      &keepPurging,
+                                      reporter,
+                                      threadID));
     }
-
-    for (auto& thread : threads) {
-        thread.join();
-    }
-
-    const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
-
-    // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
-    REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
-                              stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
-}
-
-// This test runs two threads compiling the gradient flavours and two threads
-// pre-compiling the gradient flavors. This is to exercise the tracking of the
-// various race combinations (i.e., Normal vs Precompile, Normal vs. Normal, etc.).
-DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
-                                   reporter,
-                                   context,
-                                   CtsEnforcement::kNever) {
-
-    constexpr int kNumRecordingThreads = 2;
-    constexpr int kNumPrecompileThreads = 2;
-    constexpr int kTotNumThreads = kNumRecordingThreads + kNumPrecompileThreads;
-
-    sk_sp<Listener> listener = sk_make_sp<Listener>(kNumRecordingThreads);
-
-    std::thread threads[kTotNumThreads];
-
-    for (int i = 0; i < kNumRecordingThreads; ++i) {
+    for (int i = 0; i < numRecordingThreads; ++i, ++threadID) {
         std::unique_ptr<Recorder> recorder = context->makeRecorder();
 
-        threads[i] = std::thread(compile_gradients,
-                                 std::move(recorder),
-                                 listener,
-                                 reporter,
-                                 i);
+        threads.push_back(std::thread(compile_gradients,
+                                      std::move(recorder),
+                                      listener,
+                                      reporter,
+                                      threadID));
     }
-    for (int i = 0; i < kNumPrecompileThreads; ++i) {
+    for (int i = 0; i < numPrecompileThreads; ++i, ++threadID) {
         std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
 
-        int threadID = kNumRecordingThreads+i;
-        threads[threadID] = std::thread(precompile_gradients,
-                                        std::move(precompileContext),
-                                        reporter,
-                                        threadID);
+        threads.push_back(std::thread(precompile_gradients,
+                                      std::move(precompileContext),
+                                      reporter,
+                                      threadID));
     }
 
     // Process the work generated by the recording threads
-    listener->insertRecordings(context);
+    if (listener) {
+        listener->insertRecordings(context);
+    }
+
+    keepPurging = false; // stop the loops in the purging thread(s)
 
     for (auto& thread : threads) {
         if (thread.joinable()) {
@@ -319,20 +317,171 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
     }
 
     context->submit(SyncToCpu::kYes);
+}
+
+// The 12 comes from 4 types of gradient times 3 combinations (i.e., 4,8,N) for each one.
+static constexpr int kNumDiffPipelines = 12;
+
+} // anonymous namespace
+
+// This test precompiles all four flavors of gradient sequentially but on multiple
+// threads with the goal of creating cache races.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumPurgingThreads = 0;
+    constexpr int kNumRecordingThreads = 0;
+    constexpr int kNumPrecompileThreads = 4;
+
+    run_test(context, reporter, kNumPurgingThreads, kNumRecordingThreads, kNumPrecompileThreads);
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
-    // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
-                              stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
+    REPORTER_ASSERT(reporter, stats.fGraphicsPurges == 0);
+
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
+                                                            stats.fGraphicsRaces);
+}
+
+// This test runs two threads compiling the gradient flavours and two threads
+// pre-compiling the gradient flavors. This is to exercise the tracking of the
+// various race combinations (i.e., Normal vs Precompile, Normal vs. Normal, etc.).
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileCompileTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumPurgingThreads = 0;
+    constexpr int kNumRecordingThreads = 2;
+    constexpr int kNumPrecompileThreads = 2;
+
+    run_test(context, reporter, kNumPurgingThreads, kNumRecordingThreads, kNumPrecompileThreads);
+
+    const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
     // The 48 comes from:
     //     4 gradient flavors (linear, radial, ...) *
     //     3 types of each flavor (4, 8, N) *
     //     4 threads (2 normal-compile + 2 pre-compile)
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsPurges == 0);
+
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
+                                                            stats.fGraphicsRaces);
+}
+
+// This test compiles the gradient flavors on a thread and then tests out the time-based
+// purging.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelineCompilePurgingTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumPurgingThreads = 0;
+    constexpr int kNumRecordingThreads = 1;
+    constexpr int kNumPrecompileThreads = 0;
+
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+
+    auto begin = std::chrono::steady_clock::now();
+
+    run_test(context, reporter, kNumPurgingThreads, kNumRecordingThreads, kNumPrecompileThreads);
+
+    auto end = std::chrono::steady_clock::now();
+
+    auto deltaMS = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+
+    precompileContext->purgeGraphicsPipelinesNotUsedInMs(deltaMS);
+
+    GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
+    // Every created Pipeline should've been used since the start of this test
+    REPORTER_ASSERT(reporter, stats.fGraphicsPurges == 0);
+
+    //--------------------------------------------------------------------------------------------
+    const auto kSleepDuration = std::chrono::milliseconds(1);
+
+    std::this_thread::sleep_for(kSleepDuration);
+
+    precompileContext->purgeGraphicsPipelinesNotUsedInMs(kSleepDuration);
+
+    stats = context->priv().globalCache()->getStats();
+
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
+    // None of the created Pipelines should've been used since we started to sleep - so they
+    // all get purged.
+    REPORTER_ASSERT(reporter, stats.fGraphicsPurges == kNumDiffPipelines);
+}
+
+// This test *precompiles* the gradient flavors on a thread and then tests out the time-based
+// purging.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompilePurgingTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumPurgingThreads = 0;
+    constexpr int kNumRecordingThreads = 0;
+    constexpr int kNumPrecompileThreads = 1;
+
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+
+    auto begin = std::chrono::steady_clock::now();
+
+    run_test(context, reporter, kNumPurgingThreads, kNumRecordingThreads, kNumPrecompileThreads);
+
+    auto end = std::chrono::steady_clock::now();
+
+    auto deltaMS = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+
+    precompileContext->purgeGraphicsPipelinesNotUsedInMs(deltaMS);
+
+    GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits == 0);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces == 0);
+    // Precompilation doesn't count as a use so all the Pipelines will be purged even though
+    // they were created w/in 'deltaMS'
+    REPORTER_ASSERT(reporter, stats.fGraphicsPurges == kNumDiffPipelines);
+}
+
+// This test fires off two compilation threads, two precompilation threads and one
+// purging thread. This is intended to stress test the Pipeline cache's thread safety and
+// the purging behavior.
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPipelinePrecompileCompilePurgingTest,
+                                   reporter,
+                                   context,
+                                   CtsEnforcement::kNever) {
+    constexpr int kNumPurgingThreads = 1;
+    constexpr int kNumRecordingThreads = 2;
+    constexpr int kNumPrecompileThreads = 2;
+
+    run_test(context, reporter, kNumPurgingThreads, kNumRecordingThreads, kNumPrecompileThreads);
+
+    GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
+
+    // The 48 comes from:
+    //     4 gradient flavors (linear, radial, ...) *
+    //     3 types of each flavor (4, 8, N) *
+    //     4 threads (2 normal-compile + 2 pre-compile)
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses == stats.fGraphicsCacheAdditions +
+                                                            stats.fGraphicsRaces);
+    // Purges can force recreation of a Pipeline
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions >= kNumDiffPipelines);
+    REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
 }
 
 #endif // SK_GRAPHITE
