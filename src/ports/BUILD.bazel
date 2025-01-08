@@ -197,6 +197,47 @@ skia_cc_library(
     ],
 )
 
+skia_cc_library(
+    name = "fontmgr_android_fontations",
+    srcs = [
+        "SkFontMgr_android.cpp",
+        "SkFontMgr_android_parser.cpp",
+    ],
+    hdrs = [
+        "SkFontMgr_android_parser.h",
+        "//include/ports:android_fontmgr_hdrs",
+    ],
+    defines = ["SK_FONTMGR_ANDROID_AVAILABLE"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        ":fontations_support",
+        ":typeface_proxy",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+        "@expat",
+    ],
+)
+
+skia_cc_library(
+    name = "fontmgr_android_ndk_fontations",
+    srcs = [
+        "SkFontMgr_android_ndk.cpp",
+    ],
+    hdrs = [
+        "//include/ports:android_ndk_fontmgr_hdrs",
+    ],
+    defines = ["SK_FONTMGR_ANDROID_NDK_AVAILABLE"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        ":fontations_support",
+        ":typeface_proxy",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
 skia_objc_library(
     name = "fontmgr_coretext",
     srcs = [
