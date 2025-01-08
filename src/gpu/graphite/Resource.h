@@ -289,7 +289,8 @@ private:
 
 #ifdef SK_DEBUG
     bool isUsableAsScratch() const {
-        return fShareable == Shareable::kNo && !this->hasUsageRef() && fNonShareableInCache;
+        return fShareable == Shareable::kScratch ||
+               (fShareable == Shareable::kNo && !this->hasUsageRef() && fNonShareableInCache);
     }
 #endif
 
