@@ -119,6 +119,7 @@ skia_cc_library(
         "SkTypeface_FreeType.h",
         "//include/ports:typeface_freetype_hdrs",
     ],
+    defines = ["SK_TYPEFACE_FACTORY_FREETYPE"],
     implementation_deps = [
         "//:pathops",
         "@freetype",
