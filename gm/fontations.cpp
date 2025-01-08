@@ -136,7 +136,7 @@ protected:
         }
 
         SkFont font(fTestTypeface);
-        const char32_t testText[] = U"abc";
+        const char32_t testText[] = U"中字文";
         size_t testTextBytesize = std::char_traits<char32_t>::length(testText) * sizeof(char32_t);
         SkScalar x = 100;
         SkScalar y = 150;
@@ -183,6 +183,7 @@ SkFourByteTag constexpr operator"" _t(const char* tagName, size_t size) {
 }
 }  // namespace
 DEF_GM(return new FontationsTypefaceGM("roboto", "fonts/Roboto-Regular.ttf", {});)
+DEF_GM(return new FontationsTypefaceGM("dfkai", "fonts/dfkai.ttf", {});)
 DEF_GM(return new FontationsTypefaceGM(
                       "distortable_light",
                       "fonts/Distortable.ttf",
