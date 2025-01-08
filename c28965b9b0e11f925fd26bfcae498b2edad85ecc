@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fddf5f2c_9b23ddcb",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-08T13:15:08Z",
+      "side": 1,
+      "message": "Label required, e.g. analogue to \n```\n    build_file \u003d \"//:BUILD.fonttypes-local\",\n```",
+      "revId": "c28965b9b0e11f925fd26bfcae498b2edad85ecc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
