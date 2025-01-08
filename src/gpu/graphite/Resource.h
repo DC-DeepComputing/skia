@@ -24,6 +24,7 @@ class SkTraceMemoryDump;
 
 namespace skgpu::graphite {
 
+class GlobalCache;
 class ResourceCache;
 class SharedContext;
 class Texture;
@@ -38,6 +39,7 @@ public:
     Resource& operator=(const Resource&) = delete;
     Resource& operator=(Resource&&) = delete;
 
+    bool unique() const { return 1 == fUsageRefCnt.load(std::memory_order_acquire); }
     // Adds a usage ref to the resource. Named ref so we can easily manage usage refs with sk_sp.
     void ref() const {
         // Only the cache should be able to add the first usage ref to a resource.
@@ -200,6 +202,7 @@ protected:
 
 private:
     friend class ProxyCache; // for setDeleteASAP and updateAccessTime
+    friend GlobalCache; // for lastAccessTime and updateAccessTime
 
     // Overridden to free GPU resources in the backend API.
     virtual void freeGpuData() = 0;
@@ -215,7 +218,8 @@ private:
     DeleteASAP shouldDeleteASAP() const { return fDeleteASAP; }
 
     // In the ResourceCache this is called whenever a Resource is moved into the purgeableQueue. It
-    // may also be called by the ProxyCache to track the time on Resources it is holding on to.
+    // may also be called by the ProxyCache and GlobalCache to track the time on Resources they are
+    // holding on to.
     void updateAccessTime() {
         fLastAccess = skgpu::StdSteadyClock::now();
     }

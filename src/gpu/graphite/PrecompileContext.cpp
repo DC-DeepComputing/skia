@@ -28,4 +28,13 @@ PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext)
             fSharedContext->makeResourceProvider(&fSingleOwner, SK_InvalidGenID, kEmptyBudget);
 }
 
+void PrecompileContext::purgeGraphicsPipelinesNotUsedInMs(std::chrono::milliseconds msNotUsed) {
+    ASSERT_SINGLE_OWNER
+
+    auto purgeTime = skgpu::StdSteadyClock::now() - msNotUsed;
+
+    fSharedContext->globalCache()->purgeGraphicsPipelinesNotUsedSince(purgeTime);
+}
+
+
 } // namespace skgpu::graphite
