@@ -8,6 +8,7 @@
 #include "include/core/SkDataTable.h"
 #include "include/core/SkFontArguments.h"
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkFontScanner.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRefCnt.h"
@@ -17,7 +18,9 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_fontconfig.h"
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkTArray.h"
@@ -984,6 +987,8 @@ sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc, std::unique_ptr<SkFontSc
     return sk_make_sp<SkFontMgr_fontconfig>(fc, std::move(scanner));
 }
 
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc) {
     return sk_make_sp<SkFontMgr_fontconfig>(fc, SkFontScanner_Make_FreeType());
 }
+#endif
