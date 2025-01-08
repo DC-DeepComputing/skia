@@ -210,6 +210,7 @@ void AnimationBuilder::parseFonts(const skjson::ObjectValue* jfonts,
 }
 
 bool AnimationBuilder::resolveNativeTypefaces() {
+    SkDebugf("resolveNativeTypefaces\n");
     bool has_unresolved = false;
 
     fFonts.foreach([&](const SkString& name, FontInfo* finfo) {
@@ -217,6 +218,7 @@ bool AnimationBuilder::resolveNativeTypefaces() {
 
         if (finfo->fTypeface) {
             // Already resolved from glyph paths.
+            SkDebugf("Already resolved from glyph paths\n");
             return;
         }
 
@@ -226,17 +228,26 @@ bool AnimationBuilder::resolveNativeTypefaces() {
         //   3) system default
 
         finfo->fTypeface = fResourceProvider->loadTypeface(name.c_str(), finfo->fPath.c_str());
+        if (finfo->fTypeface) {
+            SkDebugf("fResourceProvider->loadTypeface('%s', '%s');\n", name.c_str(), finfo->fPath.c_str());
+        }
 
         // legacy API fallback
         // TODO: remove after client migration
         if (!finfo->fTypeface && fFontMgr) {
             finfo->fTypeface = fFontMgr->makeFromData(
                     fResourceProvider->loadFont(name.c_str(), finfo->fPath.c_str()));
+            if (finfo->fTypeface) {
+                SkDebugf("fFontMgr->makeFromData(fResourceProvider->loadFont('%s', '%s'));\n", name.c_str(), finfo->fPath.c_str());
+            }
         }
 
         if (!finfo->fTypeface && fFontMgr) {
             finfo->fTypeface = fFontMgr->matchFamilyStyle(finfo->fFamily.c_str(),
                                                       FontStyle(this, finfo->fStyle.c_str()));
+            if (finfo->fTypeface) {
+                SkDebugf("fFontMgr->matchFamilyStyle('%s')\n", finfo->fFamily.c_str());
+            }
 
             if (!finfo->fTypeface) {
                 this->log(Logger::Level::kError, nullptr, "Could not create typeface for %s|%s.",
