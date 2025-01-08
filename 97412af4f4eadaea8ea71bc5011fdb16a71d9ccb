@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b10f7fbe_5081e3de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-08T17:12:42Z",
+      "side": 1,
+      "message": "I\u0027m not sure I understand. The linked bug indicates that this cannot be Windows, so the complain would have to be about the FreeType related code, but that change seems extremely straight forward. Is this a more general issue with fibers?",
+      "revId": "97412af4f4eadaea8ea71bc5011fdb16a71d9ccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
