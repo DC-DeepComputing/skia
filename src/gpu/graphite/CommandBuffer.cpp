@@ -16,7 +16,6 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceProvider.h"
-#include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
@@ -93,6 +92,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> depthStencilTexture,
                                   const Texture* dstCopy,
                                   SkIRect dstCopyBounds,
+                                  std::pair<const Texture*, sk_sp<const Sampler>> dstTextureSampler,
                                   SkISize viewportDims,
                                   const DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
@@ -133,6 +133,11 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
         fDstCopy.second = nearestNeighbor.get();
         this->trackResource(std::move(nearestNeighbor));
     }
+
+    // We should never be using a dst copy and a dst sampler - they are mutually exclusive dst
+    // read requirements.
+    SkASSERT(!(fDstCopy.first && dstTextureSampler.first));
+    fDstTextureSampler = std::move(dstTextureSampler);
 
     // We don't intersect the viewport with the render pass bounds or target size because it just
     // defines a linear transform, which we don't want to change just because a portion of it maps

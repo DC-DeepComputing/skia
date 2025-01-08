@@ -41,6 +41,7 @@ DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureSimpleCreationTest, rep
     recorder->deleteBackendTexture(beTexture);
 
     // It should also pass if we set the usage to be a render target
+    // TODO: Check input usage passes here?
     textureInfo.fImageUsageFlags |= VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
     beTexture = recorder->createBackendTexture(kSize, TextureInfos::MakeVulkan(textureInfo));
     REPORTER_ASSERT(reporter, beTexture.isValid());

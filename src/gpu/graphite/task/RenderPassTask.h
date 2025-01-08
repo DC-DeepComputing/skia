@@ -35,7 +35,8 @@ public:
                                       const RenderPassDesc&,
                                       sk_sp<TextureProxy> target,
                                       sk_sp<TextureProxy> dstCopy,
-                                      SkIRect dstCopyBounds);
+                                      SkIRect dstCopyBounds,
+                                      bool requiresDstSampler);
 
     ~RenderPassTask() override;
 
@@ -50,7 +51,8 @@ private:
                    const RenderPassDesc&,
                    sk_sp<TextureProxy> target,
                    sk_sp<TextureProxy> dstCopy,
-                   SkIRect dstCopyBounds);
+                   SkIRect dstCopyBounds,
+                   bool requiresDstSampler);
 
     DrawPassList fDrawPasses;
     RenderPassDesc fRenderPassDesc;
@@ -58,6 +60,9 @@ private:
 
     sk_sp<TextureProxy> fDstCopy;
     SkIRect fDstCopyBounds;
+    // store actual dst sampler or simply indicate we need one?
+    bool fRequiresDstSampler;
+    sk_sp<const Sampler> fDstSampler;
 };
 
 } // namespace skgpu::graphite
