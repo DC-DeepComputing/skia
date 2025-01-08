@@ -19,6 +19,10 @@ class SkFontMgr;
  *  Takes ownership of 'fc' and will call FcConfigDestroy on it.
  */
 class SkFontScanner;
+
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc, std::unique_ptr<SkFontScanner> scanner);
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+// Deprecated: you should use another method explicitly passing SkFontScanner instead
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FontConfig(FcConfig* fc);
+#endif
 #endif // #ifndef SkFontMgr_fontconfig_DEFINED
