@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "764820f6_cc4f65f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-08T14:38:48Z",
+      "side": 1,
+      "message": "The ycbcr tests are passing now on the chrome canary after swapping the format handling in PS1 -\u003e PS2. The canary is still red because it overlapped with an unrelated png codec CL that\u0027s been reverted.",
+      "revId": "7f20bddf3af97c356795d7b9a10a4fba40722958",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
