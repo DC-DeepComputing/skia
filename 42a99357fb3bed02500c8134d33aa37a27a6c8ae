@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c271a1c9_41919121",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-08T21:14:22Z",
+      "side": 1,
+      "message": "When doing a fontations roll, you will want to run at least `Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations`. This change causes some of the tests to fail, though it isn\u0027t clear if the tests just need to be updated or not.",
+      "revId": "42a99357fb3bed02500c8134d33aa37a27a6c8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
