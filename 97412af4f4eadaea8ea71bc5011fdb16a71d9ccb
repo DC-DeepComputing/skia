@@ -34,6 +34,24 @@
       "parentUuid": "b10f7fbe_5081e3de",
       "revId": "97412af4f4eadaea8ea71bc5011fdb16a71d9ccb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c0f8e3f_8f9a58fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-08T17:52:08Z",
+      "side": 1,
+      "message": "In particular `SkSharedMutex` eventually bottoms out in `sem_wait` which in G3 appears to have fiber support. On the other hand `std::shared_mutex` probably does not. It would be good to know if this is a restriction we\u0027re going to need to live with going forward (no use of `barrier`, `condition_variable`, `future`, `jthread`, `latch`, `mutex`, `shared_mutex`, `semaphore`, `stop_token`, and `thread` standard library stuff, at least on any code that might end up in G3).",
+      "parentUuid": "035cacd9_a88e3ee5",
+      "revId": "97412af4f4eadaea8ea71bc5011fdb16a71d9ccb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
