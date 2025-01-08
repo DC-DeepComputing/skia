@@ -1,0 +1,15 @@
+load("@rules_rust//rust:defs.bzl", "rust_library")
+
+rust_library(
+    name = "read-fonts",
+    srcs = glob(
+        include = ["src/**/*.rs", "generated/**/*.rs"],
+        allow_empty = False,
+    ),
+    crate_features = ["scale", "std"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "@fonttypes-local//:font-types",
+        "@fontations//:bytemuck",
+    ],
+)
