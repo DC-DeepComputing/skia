@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eda04a7f_d43d170e",
+        "filename": "PRESUBMIT.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 491,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-08T20:15:28Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure Skia only pulls in Abseil for Dawn, so these aren\u0027t really valid replacements. Probably better to just leave the replacements blank.\n\nAwkwardly, even Google3 is actually ok with all of these if the code won\u0027t run with fibers (like building for Android, desktop Linux, macOS, iOS, Windows, etc). Though it isn\u0027t immediately obvious which parts of the code that is.",
+      "range": {
+        "startLine": 491,
+        "startChar": 23,
+        "endLine": 491,
+        "endChar": 27
+      },
+      "revId": "d11f7688aa07fec08391ef6140514d8101f5ca33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
