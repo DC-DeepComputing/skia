@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f620ff_1f688934",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-08T16:10:24Z",
+      "side": 1,
+      "message": "nit: if",
+      "range": {
+        "startLine": 145,
+        "startChar": 23,
+        "endLine": 145,
+        "endChar": 24
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1b38a769_56047618",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ResourceCache.cpp",
+              "range": {
+                "startLine": 145,
+                "startChar": 0,
+                "endLine": 146,
+                "endChar": 0
+              },
+              "replacement": "        // Otherwise, if it\u0027s available, it can only be reused with the same mode.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7dc6f08cbe662923e00883964aad8efb1236a8e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
