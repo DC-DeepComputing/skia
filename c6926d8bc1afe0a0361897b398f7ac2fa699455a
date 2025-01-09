@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb4d3adc_15dc31f0",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-09T15:37:07Z",
+      "side": 1,
+      "message": "nit: If there\u0027s a bug to include here to capture that future work it would be nice to have it added here",
+      "range": {
+        "startLine": 96,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 12
+      },
+      "revId": "c6926d8bc1afe0a0361897b398f7ac2fa699455a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
