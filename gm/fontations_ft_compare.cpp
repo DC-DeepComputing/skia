@@ -19,7 +19,9 @@
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
 #include "modules/skshaper/include/SkShaper.h"
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 #include "src/ports/SkTypeface_FreeType.h"
+#endif
 #include "tools/Resources.h"
 #include "tools/TestFontDataProvider.h"
 
@@ -35,7 +37,9 @@ constexpr float kLangYIncrementScale = 1.9;
 /** Compare bitmap A and B, in this case originating from text rendering results with FreeType and
  * Fontations + Skia path rendering, compute individual pixel differences for the rectangles that
  * must match in size. Produce a highlighted difference bitmap, in which any pixel becomes white for
- * which a difference was determined. */
+ * which a difference was determined.
+ * This comparison only works when FreeType is configured (which will not be the default case soon).
+ **/
 void comparePixels(const SkPixmap& pixmapA,
                    const SkPixmap& pixmapB,
                    SkBitmap* outPixelDiffBitmap,
@@ -125,8 +129,12 @@ protected:
         while (fTestDataIterator.next(&testSet)) {
             sk_sp<SkTypeface> testTypeface = SkTypeface_Make_Fontations(
                     SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
             sk_sp<SkTypeface> ftTypeface = SkTypeface_FreeType::MakeFromStream(
                     SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
+#else
+            sk_sp<SkTypeface> ftTypeface = nullptr;
+#endif
 
             if (!testTypeface || !ftTypeface) {
                 *errorMsg = "Unable to initialize typeface.";
@@ -293,6 +301,7 @@ private:
     std::unique_ptr<SkFontArguments::VariationPosition::Coordinate[]> fCoordinates;
 };
 
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 DEF_GM(return new FontationsFtCompareGM(
         "NotoSans",
         "Noto Sans",
@@ -395,4 +404,5 @@ DEF_GM(return new FontationsFtCompareGM("NotoSans_Vith", "Noto Sans Vithkuqi", "
 
 DEF_GM(return new FontationsFtCompareGM("NotoSans_Guru", "Noto Sans Gurmukhi", "pa_Guru"));
 
+#endif
 }  // namespace skiagm

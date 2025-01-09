@@ -9,6 +9,8 @@
 
 #if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "src/ports/SkTypeface_FreeType.h"
+#elif defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#include "include/ports/SkTypeface_fontations.h"
 #elif defined(SK_TYPEFACE_FACTORY_CORETEXT)
 #include "src/ports/SkTypeface_mac_ct.h"
 #elif defined(SK_TYPEFACE_FACTORY_DIRECTWRITE)
@@ -60,6 +62,8 @@ bool TestFontCollection::addFontFromFile(const std::string& path, const std::str
 #if defined(SK_TYPEFACE_FACTORY_FREETYPE)
     sk_sp<SkTypeface> face =
             SkTypeface_FreeType::MakeFromStream(std::move(file), SkFontArguments());
+#elif defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+    sk_sp<SkTypeface> face = SkTypeface_Make_Fontations(std::move(file), SkFontArguments());
 #elif defined(SK_TYPEFACE_FACTORY_CORETEXT)
     sk_sp<SkTypeface> face = SkTypeface_Mac::MakeFromStream(std::move(file), SkFontArguments());
 #elif defined(SK_TYPEFACE_FACTORY_DIRECTWRITE)
