@@ -34,6 +34,24 @@
       "parentUuid": "c271a1c9_41919121",
       "revId": "42a99357fb3bed02500c8134d33aa37a27a6c8ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e812496e_0eff9c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-09T08:56:32Z",
+      "side": 1,
+      "message": "Fix for unit tests failues in `Fontations_*` unit tests in https://skia-review.googlesource.com/c/skia/+/936357",
+      "parentUuid": "4738c614_ba9aae7b",
+      "revId": "42a99357fb3bed02500c8134d33aa37a27a6c8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
