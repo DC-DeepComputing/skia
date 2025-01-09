@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b52054a_f8c4dccf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-09T19:29:54Z",
+      "side": 1,
+      "message": "The HouseKeeper complaint should be fixed by: https://skia-review.googlesource.com/c/skia/+/937036",
+      "revId": "ec435d2de6df647e3c674bc3c884a2d6259e9fd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
