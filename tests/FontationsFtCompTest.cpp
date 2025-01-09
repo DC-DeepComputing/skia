@@ -11,9 +11,13 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTextBlob.h"
 #include "include/core/SkTypeface.h"
+#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 #include "include/ports/SkTypeface_fontations.h"
+#endif
 #include "modules/skshaper/include/SkShaper.h"
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 #include "src/ports/SkTypeface_FreeType.h"
+#endif
 #include "tests/Test.h"
 #include "tools/TestFontDataProvider.h"
 
@@ -78,8 +82,13 @@ public:
         while (fTestDataIterator.next(&testSet)) {
             sk_sp<SkTypeface> fontationsTypeface = SkTypeface_Make_Fontations(
                     SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
-            sk_sp<SkTypeface> freetypeTypeface = SkTypeface_FreeType::MakeFromStream(
-                    SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
+            sk_sp<SkTypeface> freetypeTypeface =
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
+                    SkTypeface_FreeType::MakeFromStream(
+                        SkStream::MakeFromFile(testSet.fontFilename.c_str()), SkFontArguments());
+#else
+                    nullptr;
+#endif
 
             SkASSERT_RELEASE(fontationsTypeface);
             SkASSERT_RELEASE(freetypeTypeface);
@@ -138,6 +147,7 @@ private:
 
 }  // namespace
 
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 DEF_TEST(Fontations_NotoSans, reporter) {
     FontationsFtComparison("Noto Sans",
                            "en_Latn|es_Latn|pt_Latn|id_Latn|ru_Cyrl|fr_Latn|tr_Latn|vi_Latn|de_"
@@ -249,3 +259,4 @@ DEF_TEST(Fontations_NotoSans_Vith, reporter) {
 DEF_TEST(Fontations_NotoSans_Guru, reporter) {
     FontationsFtComparison("Noto Sans Gurmukhi", "pa_Guru").assertAllPathsEqual(reporter);
 }
+#endif

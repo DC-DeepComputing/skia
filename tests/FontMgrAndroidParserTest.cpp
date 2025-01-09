@@ -205,11 +205,16 @@ static void test_parse_fixed(skiatest::Reporter* reporter) {
 #define DEF_TEST_FONTATIONS(name, reporter)
 #endif
 
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 #define DEF_TEST_SCANNERS(name, reporter) \
     static void name(skiatest::Reporter*, std::unique_ptr<SkFontScanner>);                     \
     DEF_TEST(name, reporter) { name(reporter, SkFontScanner_Make_FreeType()); }                \
     DEF_TEST_FONTATIONS(name, reporter)                                                        \
     void name(skiatest::Reporter* reporter, std::unique_ptr<SkFontScanner> fs)
+#else
+#define DEF_TEST_SCANNERS(name, reporter) \
+    void name(skiatest::Reporter* reporter, std::unique_ptr<SkFontScanner> fs)
+#endif
 
 DEF_TEST_SCANNERS(FontMgrAndroidParser, reporter) {
     test_parse_fixed(reporter);
