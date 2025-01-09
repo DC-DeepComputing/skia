@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cd46c33_9fb5bf9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-09T21:32:39Z",
+      "side": 1,
+      "message": "Here\u0027s a first pass at a first specialization for color space transform shaders. It\u0027s still got some bugs, specifically the following config fails in PaintParamsKeyTestReduced:\n\n```\nuint32_t seed \u003d 1736439303;\nShaderType shaderType \u003d ShaderType::kImage;\nBlenderType blenderType \u003d BlenderType::kNone;\nColorFilterType colorFilterType \u003d ColorFilterType::kNone;\nMaskFilterType maskFilterType \u003d MaskFilterType::kNone;\nImageFilterType imageFilterType \u003d ImageFilterType::kNone;\nClipType clipType \u003d ClipType::kShader_Diff;\nDrawTypeFlags drawTypeFlags \u003d DrawTypeFlags::kSimpleShape;\n```\n\n(From what I can tell, the clip shader generated in this case is a gradient shader, both the gradient shader and the image shader have associated color space transform blocks, the block associated with the image shader is the universal shader in the actual draw, and no pipeline with this shader combination has been precompiled, though many with the specialized shader have been precompiled.)",
+      "revId": "3a21e428428d72405a47069bc8970c8742b71bac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "503cf949_a56d67f6",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-09T21:32:39Z",
+      "side": 1,
+      "message": "Rob: I changed this around pretty significantly; instead of tracking a `fFlags` field this uses the flags to set combination counts on construction. It simplified the logic in `numIntrinsicCombinations` and `addToKey` a bit, but perhaps it\u0027s a little less obvious now where the magic constants here are coming from. Anyways I don\u0027t want to step on any toes so let me know if this seems off in any way.",
+      "revId": "3a21e428428d72405a47069bc8970c8742b71bac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
