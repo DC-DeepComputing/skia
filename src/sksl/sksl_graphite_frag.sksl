@@ -118,6 +118,26 @@ $pure half4 sk_color_space_transform(half4 halfColor,
     return halfColor;
 }
 
+$pure half4 sk_color_space_transform_premul(half4 color,
+                                            half3 opaque_doUnpremul_doPremul) {
+    half opaque = opaque_doUnpremul_doPremul.x;
+    half doUnpremul = opaque_doUnpremul_doPremul.y;
+    half doPremul = opaque_doUnpremul_doPremul.z;
+
+    color.a = max(color.a, opaque);
+
+    if (doUnpremul != 0.0) {
+        color = unpremul(color);
+    }
+
+    // Premul cases
+    //  1. No-op (doPremul = 0) -> max(...) = 1.0 -> identity function
+    //  2. Premultiply (doPremul = 1) -> max(...) = color.a -> premul
+    color.rgb = color.rgb * max(color.a, 1.0 - doPremul);
+
+    return color;
+}
+
 $pure half4 sk_circular_rrect_clip(float4 rect,
                                    float2 radiusPlusHalf,
                                    half4 edgeSelect) {

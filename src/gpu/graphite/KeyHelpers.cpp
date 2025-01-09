@@ -1048,6 +1048,18 @@ void add_color_space_xform_uniform_data(
     add_color_space_uniforms(data.fSteps, data.fReadSwizzle, gatherer);
 }
 
+void add_color_space_xform_premul_uniform_data(
+        const ShaderCodeDictionary* dict,
+        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
+        PipelineDataGatherer* gatherer) {
+    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformPremul)
+    gatherer->writeHalf(SkV3{
+            data.fReadSwizzle == ReadSwizzle::kRGB1 ? 1.f : 0.f,
+            data.fSteps.flags.unpremul ? 1.f : 0.f,
+            data.fSteps.flags.premul ? 1.f : 0.f,
+    });
+}
+
 }  // anonymous namespace
 
 ColorSpaceTransformBlock::ColorSpaceTransformData::ColorSpaceTransformData(const SkColorSpace* src,
@@ -1060,6 +1072,16 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
+    const bool swizzleDoesNotNeedGamutTransform =
+            data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kRGB1;
+    if (!(data.fSteps.flags.linearize || data.fSteps.flags.encode ||
+          data.fSteps.flags.gamut_transform) &&
+        swizzleDoesNotNeedGamutTransform) {
+        add_color_space_xform_premul_uniform_data(keyContext.dict(), data, gatherer);
+        builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformPremul);
+        return;
+    }
+
     add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
     builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
 }
