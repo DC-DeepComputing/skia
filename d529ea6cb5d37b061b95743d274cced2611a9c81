@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "d529ea6cb5d37b061b95743d274cced2611a9c81",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "145cb030_7ba29c78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-01-09T18:06:05Z",
+      "side": 1,
+      "message": "Rubber stamp -- proxying LGTM from jzern@",
+      "revId": "d529ea6cb5d37b061b95743d274cced2611a9c81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
