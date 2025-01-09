@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71cccbd0_9dcab8b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T20:42:56Z",
+      "side": 1,
+      "message": "PTAL, +1\u0027s got dropped by some of the cleanup",
+      "revId": "dcabbccf15c8e7932f94bf5c7e467408d2033c3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
