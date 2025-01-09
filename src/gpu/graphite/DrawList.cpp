@@ -46,8 +46,12 @@ void DrawList::recordDraw(const Renderer* renderer,
     }
 #endif
 
-    if (paint && paint->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        fDstCopyBounds.join(clip.drawBounds());
+    if (paint) {
+        if (paint->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+            fDstCopyBounds.join(clip.drawBounds());
+        } else if (paint->dstReadRequirement() == DstReadRequirement::kTextureSample) {
+            fUsesDstSampler = true;
+        }
     }
 }
 
