@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90c79437_f72ece50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T15:15:38Z",
+      "side": 1,
+      "message": "For the changed `color4shader` GMs, this behavior is expected. The GMs are being rendered in gold with a legacy dst surface, so the color transform was inheriting the src colorspace (spin in this case) and then optimized to the identity.  When looking at the GM in viewer before this change and switching to a color-managed mode, the 3rd column shows the spun color channels as expected.\n\nWith this change, we apply the spin up front to store the sRGB color.  On a legacy dst surface, that means it now inherits the sRGB color space and the spin effect remains visible. This is consistent with the behavior of the `color4blendcf` GM. A while ago it went through a similar change to store the constant color as sRGB instead of remembering the colorspace.  There have been know complaints I am aware of with changing the legacy SkSurface behavior.\n\nThere is no change in behavior if the SkSurface has a colorspace (other than maybe slight floating point differences that shouldn\u0027t be perceptible).",
+      "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
