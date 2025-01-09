@@ -232,12 +232,14 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     SkIRect dstCopyPixelBounds = fPendingDraws->dstCopyBounds().makeRoundOut().asSkIRect();
+    bool drawPassUsesDstSampler = fPendingDraws->usesDstSampler();
     std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
                                                     std::move(fPendingDraws),
                                                     fTarget,
                                                     this->imageInfo(),
                                                     std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                                     fPendingClearColor);
+
     fPendingDraws = std::make_unique<DrawList>();
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
@@ -285,8 +287,20 @@ void DrawContext::flush(Recorder* recorder) {
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
-        fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes), desc, fTarget,
-                                                       std::move(dstCopy), dstCopyPixelBounds));
+
+        if (drawPassUsesDstSampler) {
+            // Does this bool or real sampler need to be included in RenderPassDesc? Or can it
+            // simply be handled in RenderPassTask?
+            SkDebugf("uses dst sampler\n");
+        }
+
+        fCurrentDrawTask->addTask(
+                RenderPassTask::Make(std::move(passes),
+                desc,
+                fTarget,
+                std::move(dstCopy),
+                dstCopyPixelBounds,
+                drawPassUsesDstSampler));
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other

@@ -588,12 +588,14 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                            VulkanTexture* depthStencilTexture,
                            bool loadMSAAFromResolve) {
     if (colorTexture) {
-        colorTexture->setImageLayout(cmdBuf,
-                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                     /*byRegion=*/false);
+        // The color texture is also used as an input attachment to support dst reads.
+        VkAccessFlags access = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                                          VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        colorTexture->setImageLayout(
+                cmdBuf, VK_IMAGE_LAYOUT_GENERAL, access, stageFlags, /*byRegion=*/false);
         if (resolveTexture) {
             if (loadMSAAFromResolve) {
                 // When loading MSAA from resolve, the texture is used in the first subpass as an
@@ -959,8 +961,9 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
     // descriptor sets with any new bindGraphicsPipeline DrawPassCommand.
     fBindUniformBuffers = true;
 
-    if (graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy &&
-        graphicsPipeline->numFragTexturesAndSamplers() == 1) {
+    if (graphicsPipeline->numFragTexturesAndSamplers() == 1 &&
+        (graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy ||
+         graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureSample)) {
         // The only texture-sampler that the pipeline declares must be the dstCopy, which means
         // there are no other textures that will trigger BindTextureAndSampler commands in a
         // DrawPass (e.g. solid-color + dst-read-requiring blend). Configure the texture binding
@@ -1160,11 +1163,14 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         const DrawPass* drawPass, const DrawPassCommands::BindTexturesAndSamplers* command) {
     SkASSERT(SkToBool(drawPass) == SkToBool(command));
     SkASSERT(fActiveGraphicsPipeline);
-    // Add one extra texture for dst copies, which is not included in the command itself.
-    int numTexSamplers = command ? command->fNumTexSamplers : 0;
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        numTexSamplers++;
-    }
+
+    // The command itself does not account for an additional texture/sampler used for dst copies or
+    // dst samplers, so determine whether we need to add that here.
+    DstReadRequirement dstReadRequirement = fActiveGraphicsPipeline->dstReadRequirement();
+    bool requiresExtraTextureSampler = dstReadRequirement == DstReadRequirement::kTextureCopy ||
+                                       dstReadRequirement == DstReadRequirement::kTextureSample;
+    int numTexSamplers =
+            (command ? command->fNumTexSamplers : 0) + (requiresExtraTextureSampler ? 1 : 0);
 
     if (numTexSamplers == 0) {
         fNumTextureSamplers = 0;
@@ -1189,8 +1195,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                    immutableSampler});
         }
     }
-    // If required the dst copy texture+sampler is the last one in the descriptor set
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+    // If required, the dst copy texture+sampler is the last one in the descriptor set
+    if (requiresExtraTextureSampler) {
         descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                /*count=*/1,
                                /*bindingIdx=*/numTexSamplers-1,
@@ -1202,7 +1208,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
 
     if (!set) {
-        SKGPU_LOG_E("Unable to find or create descriptor set");
+        SKGPU_LOG_E("Unable to find or create texture/sampler descriptor set");
         fNumTextureSamplers = 0;
         fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
         fBindTextureSamplers = false;
@@ -1227,7 +1233,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
         textureInfo.imageView =
                 texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
-        textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        textureInfo.imageLayout = texture->currentLayout();
 
         VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
         memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -1256,9 +1262,25 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             }
         }
     }
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        auto texture = static_cast<const VulkanTexture*>(fDstCopy.first);
-        auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+
+    if (requiresExtraTextureSampler) {
+        const VulkanTexture* texture;
+        const VulkanSampler* sampler;
+        switch (dstReadRequirement) {
+            case DstReadRequirement::kTextureCopy:
+                texture = static_cast<const VulkanTexture*>(fDstCopy.first);
+                sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+                break;
+            case DstReadRequirement::kTextureSample:
+                texture = static_cast<const VulkanTexture*>(fDstTextureSampler.first);
+                sampler = static_cast<const VulkanSampler*>(fDstTextureSampler.second);
+                break;
+            // case DstReadRequirement::kFramebufferFetch:
+                // reutrn error?
+            default:
+                texture = nullptr; sampler = nullptr; break;
+        }
+
         if (!appendTextureSampler(texture, sampler)) {
             return;
         }
@@ -1283,6 +1305,15 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
 void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
+
+    // TODO: remove debugging check
+    if(fActiveGraphicsPipeline->numFragTexturesAndSamplers() != fNumTextureSamplers &&
+       !(fActiveGraphicsPipeline->numFragTexturesAndSamplers() == 0 && fNumTextureSamplers == 1)) {
+        SkDebugf("NICOLETTEP: pipeline num: %d, cmd buf num: %d\n",
+                 fActiveGraphicsPipeline->numFragTexturesAndSamplers(),
+                 fNumTextureSamplers);
+    }
+
     if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE &&
         fActiveGraphicsPipeline->numFragTexturesAndSamplers() == fNumTextureSamplers) {
         VULKAN_CALL(fSharedContext->interface(),

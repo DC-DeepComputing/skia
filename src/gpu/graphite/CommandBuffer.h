@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/Sampler.h"
 
 #include <optional>
 
@@ -34,7 +35,6 @@ class SharedContext;
 class GraphicsPipeline;
 struct RenderPassDesc;
 class ResourceProvider;
-class Sampler;
 class Texture;
 class TextureProxy;
 
@@ -93,6 +93,8 @@ public:
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstCopyBounds,
+                       // TODO: Explain why texture can be raw ptr
+                       std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -148,6 +150,13 @@ protected:
     // Already includes replay translation and respects final color attachment bounds, but with
     // dimensions that equal fDstCopy's width and height.
     SkIRect fDstCopyBounds;
+
+    // TODO: Make sampler const? track on CommandBuffer?
+    // The texture/sampler pairing to use for implementing DstReadRequirement::kTextureSample for
+    // the current render pass. These are bare pointers because the destination texture is
+    // referencing the target texture for a RenderPass, which has its lifetime tracked already,
+    // and the sampler is added to the command buffer's tracked resources.
+    std::pair<const Texture*, const Sampler*> fDstTextureSampler;
 
     Protected fIsProtected;
 
