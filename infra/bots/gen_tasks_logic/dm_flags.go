@@ -247,7 +247,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			}
 		}
 
-		if b.matchGpu("QuadroP400") && b.compiler("Clang") {
+		if b.compiler("Clang") && b.matchOs("Win", "Debian11", "Ubuntu18", "Mac") {
 			// On both Ubuntu18 and Win10, these tests fail with Clang but not MSVC (b/388554039)
 			skip(ALL, "test", ALL, "DMSAA_blendmodes")
 		}
