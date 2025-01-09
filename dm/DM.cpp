@@ -40,6 +40,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -283,7 +284,8 @@ static void done(const char* config, const char* src, const char* srcOptions, co
     // We write out dm.json file and print out a progress update every once in a while.
     // Notice this also handles the final dm.json and progress update when pending == 0.
     double now = SkTime::GetNSecs();
-    bool updateDueToTime = now - lastUpdate > 4e9;
+    double timeDelta = now - lastUpdate;
+    bool updateDueToTime = timeDelta > 4e9;
     if (updateDueToProgress || updateDueToTime) {
         dump_json();
 
@@ -296,9 +298,10 @@ static void done(const char* config, const char* src, const char* srcOptions, co
         // this one and printed an update since we did our progress check above. We detect this case
         // by checking to see if `gLastUpdate` has changed; if so, we don't need to print anything.
         if (lastUpdate == gLastUpdate) {
-            info("\n[%d/%d] %dMB RAM, %dMB peak, %d queued, %d threads:\n\t%s  done\n",
+            info("\n[%d/%d] %dMB RAM, %dMB peak, %d queued, %d threads, %d seconds elapsed :\n\t%s  done\n",
                  gTotalCounts - gPending, gTotalCounts,
-                 curr, peak, gPending - gRunning->size(), gRunning->size() + 1, id.c_str());
+                 curr, peak, gPending - gRunning->size(), gRunning->size() + 1, (int)(timeDelta / 1e9),
+                 id.c_str());
             for (auto& task : *gRunning) {
                 task.dump();
             }
@@ -1572,7 +1575,20 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv, char** envp) {
+    // Debug: print the command line arguments.
+    for (int i = 0; i < argc; i++) {
+        printf("argv[%d] = %s\n", i, argv[i]);
+    }
+
+    for (int i = 0; envp[i]; i++) {
+        printf("envp[%d] = %s\n", i, envp[i]);
+    }
+
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    skiatest::InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
