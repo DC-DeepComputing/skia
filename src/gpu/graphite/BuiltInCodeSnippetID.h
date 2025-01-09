@@ -62,6 +62,9 @@ enum class BuiltInCodeSnippetID : int32_t {
     kColorSpaceXformColorFilter,
     kPremulAlphaColorFilter,
 
+    // Color space transform specializations
+    kColorSpaceXformPremul,
+
     // Emits special variable holding the primitiveColor emitted by a RenderStep
     kPrimitiveColor,
 
