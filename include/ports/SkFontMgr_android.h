@@ -45,7 +45,9 @@ struct SkFontMgr_Android_CustomFonts {
 /** Create a font manager for Android. If 'custom' is NULL, use only system fonts. */
 
 // Deprecated
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom);
+#endif
 
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom,
                                               std::unique_ptr<SkFontScanner> scanner);

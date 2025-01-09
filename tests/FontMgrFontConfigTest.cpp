@@ -56,6 +56,7 @@ bool bitmap_compare(const SkBitmap& ref, const SkBitmap& test) {
     return (count == 0);
 }
 
+[[maybe_unused]]
 FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
     FcConfig* config = FcConfigCreate();
 
@@ -70,6 +71,7 @@ FcConfig* build_fontconfig_with_fontfile(const char* fontFilename) {
     return config;
 }
 
+[[maybe_unused]]
 FcConfig* build_fontconfig_from_resources() {
 
     SkString path = GetResourcePath("");
@@ -106,6 +108,7 @@ static void write_bitmap(const SkBitmap* bm, const char fileName[]) {
 
 }  // namespace
 
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE)
 DEF_TEST(FontMgrFontConfig, reporter) {
     FcConfig* config = build_fontconfig_with_fontfile("/fonts/Distortable.ttf");
 
@@ -170,6 +173,7 @@ DEF_TEST(FontMgrFontConfig, reporter) {
         REPORTER_ASSERT(reporter, success);
     }
 }
+#endif
 
 void testAllBold(sk_sp<SkFontMgr> fontMgr, skiatest::Reporter* reporter) {
     constexpr float kTextSize = 20;
@@ -232,7 +236,7 @@ DEF_TEST(FontMgrFontConfig_FreeType_AllBold, reporter) {
 }
 #endif
 
-#if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+#if defined(SK_TYPEFACE_FACTORY_FREETYPE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 DEF_TEST(FontMgrFontConfig_Fontations_AllBold, reporter) {
 
     FcConfig* config = build_fontconfig_from_resources();
