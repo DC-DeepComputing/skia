@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edd0d7ff_b3366d67",
+        "filename": "src/shaders/SkColorShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T20:38:41Z",
+      "side": 1,
+      "message": "It was primarily to avoid ref/unref churn on the srgb singleton, but it\u0027s extremely unlikely to ever be a hotspot so I switched to the public factory.",
+      "parentUuid": "45d78bb9_acaeb882",
+      "range": {
+        "startLine": 83,
+        "startChar": 56,
+        "endLine": 83,
+        "endChar": 63
+      },
+      "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e702d339_c8e3d165",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-01-09T15:24:08Z",
       "side": 1,
       "message": "We seem to do this a few times in the codebase `git grep SkTPin | grep fA` - do you think it\u0027s worth adding a constructor or function to SkColor4f encapsulate this in a more self-documenting way?",
+      "range": {
+        "startLine": 93,
+        "startChar": 14,
+        "endLine": 93,
+        "endChar": 18
+      },
+      "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a7c97fb_72215509",
+        "filename": "src/shaders/SkColorShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T20:38:41Z",
+      "side": 1,
+      "message": "I added a SkRGBA4f::pinAlpha() function. It performs the same regardless of whether or not it\u0027s premul or unpremul.  One of the usages of the direct SkTPin was intentionally operating on a SkPMColor4f and wanted to pin the alpha before converting back to an unpremul color.  I preserved that ability, vs. doing the alternative of \"unpremul().pinAlpha().premul()\" flow.\n\nI also updated the SkBlendModeColorFilter to pin alpha, so it\u0027s consistent with SkColorShader and SkPaint\u0027s handling of the constant colors.",
+      "parentUuid": "e702d339_c8e3d165",
       "range": {
         "startLine": 93,
         "startChar": 14,
