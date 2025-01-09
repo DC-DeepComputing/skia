@@ -660,3 +660,40 @@ DEF_TEST(RustPngCodec_green15x15, r) {
     const SkColor kExpectedColor = SkColorSetARGB(0xFF, 0x00, 0x80, 0x00);
     AssertPixelColor(r, pixmap, 0, 0, kExpectedColor, "Expecting a dark green pixel");
 }
+
+DEF_TEST(RustPngCodec_adhoc_transfer_fn_test, r) {
+    // DO NOT SUBMIT
+    skcms_TransferFunction f2dot2 = SkNamedTransferFn::k2Dot2;
+    skcms_TransferFunction f2dot2_inverse;
+    REPORTER_ASSERT(r, skcms_TransferFunction_invert(&f2dot2, &f2dot2_inverse));
+
+    skcms_TransferFunction rgb = SkNamedTransferFn::kSRGB;
+    skcms_TransferFunction srgbInv;
+    REPORTER_ASSERT(r, skcms_TransferFunction_invert(&rgb, &srgbInv));
+
+    skcms_TransferFunction srcFn = f2dot2;
+    // srcFn.g = 1.0 / 0.45455;
+    float gammaValueFromFile = 0.5555555;
+    srcFn.g = 1.0 / gammaValueFromFile;
+
+    float input = 0.5f;
+
+    float x = skcms_TransferFunction_eval(&srcFn, input);
+
+    fprintf(stderr, "f2dot2_inverse.g = %.5g\n", f2dot2_inverse.g);
+
+    float y = skcms_TransferFunction_eval(&f2dot2_inverse, x);
+    float y2 = powf(input, 0.45455 / gammaValueFromFile);
+    fprintf(stderr, "y = %.5g\n", y);
+    fprintf(stderr, "y2 = %.5g\n", y2);
+    float p = skcms_TransferFunction_eval(&rgb, y);
+
+    float q = skcms_TransferFunction_eval(&srgbInv, p);
+    fprintf(stderr, "BOOM!  y = %.3f\n", y * 255.0f);
+    fprintf(stderr, "BOOM!  q = %.3f\n", q * 255.0f);
+
+    skcms_TransferFunction srcFnAlt;
+    srcFnAlt.d = powf(rgb.d, gammaValueFromFile / 0.45455);
+
+    REPORTER_ASSERT(r, false);
+}

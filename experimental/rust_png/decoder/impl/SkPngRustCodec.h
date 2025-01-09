@@ -8,6 +8,7 @@
 #define SkPngRustCodec_DEFINED
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "experimental/rust_png/ffi/FFI.rs.h"
@@ -30,7 +31,10 @@ public:
     static std::unique_ptr<SkPngRustCodec> MakeFromStream(std::unique_ptr<SkStream>, Result*);
 
     // `public` to support `std::make_unique<SkPngRustCodec>(...)`.
-    SkPngRustCodec(SkEncodedInfo&&, std::unique_ptr<SkStream>, rust::Box<rust_png::Reader>);
+    SkPngRustCodec(SkEncodedInfo&&,
+                   std::unique_ptr<SkStream>,
+                   rust::Box<rust_png::Reader>,
+                   std::optional<float> gamma_for_internal_correction);
 
     ~SkPngRustCodec() override;
 
@@ -95,6 +99,10 @@ private:
     // Attempts to read through the input stream to parse the additional `fcTL`
     // chunks.
     Result parseAdditionalFrameInfos();
+
+    // Applies `fInternalGammaCorrection` is appropriate and then applies
+    // regular transformations from `SkPngCodecBase`.
+    void applyXformRow(SkSpan<uint8_t> dst, SkSpan<const uint8_t> src);
 
     // SkCodec overrides:
     Result onGetPixels(const SkImageInfo& dstInfo,
@@ -165,6 +173,25 @@ private:
     // doesn't yet contain frame info for all `num_frames` declared in an `acTL`
     // chunk.
     bool fCanParseAdditionalFrameInfos = true;
+
+    // Mimicking gamma correction from `libpng`.  Such correction is not
+    // entirely correct/desirable, but is included for backcompatibility.  See
+    // also https://crbug.com/388025081.
+    class InternalGammaCorrection {
+    public:
+        InternalGammaCorrection(float gamaChunkValue,
+                                SkEncodedInfo::Color color,
+                                uint8_t bitsPerComponent);
+        SkSpan<const uint8_t> apply(SkSpan<const uint8_t> src);
+
+    private:
+        skcms_ICCProfile fSrcProfile;
+        skcms_ICCProfile fDstProfile;
+        skcms_PixelFormat fPixelFormat;
+        size_t fBytesPerPixel;
+        std::vector<uint8_t> fBuffer;
+    };
+    std::optional<InternalGammaCorrection> fInternalGammaCorrection;
 };
 
 #endif  // SkPngRustCodec_DEFINED

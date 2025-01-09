@@ -94,7 +94,8 @@ SkCodecAnimation::Blend ToBlend(rust_png::BlendOp op) {
     SK_ABORT("Unexpected `rust_png::BlendOp`: %d", static_cast<int>(op));
 }
 
-std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Reader& reader) {
+std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(
+        const rust_png::Reader& reader, std::optional<float>& gamma_for_internal_correction) {
     // NOTE: This method is based on `read_color_profile` in
     // `src/codec/SkPngCodec.cpp` but has been refactored to use Rust inputs
     // instead of `libpng`.
@@ -157,6 +158,8 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
         // so we match the behavior of Safari and Firefox instead (compat).
         return nullptr;
     }
+
+    // Construct a color profile based on `gAMA` and (optional) `cHRM` chunk.
     float rx = 0.0;
     float ry = 0.0;
     float gx = 0.0;
@@ -167,37 +170,24 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     float wy = 0.0;
     const bool got_chrm = reader.try_get_chrm(wx, wy, rx, ry, gx, gy, bx, by);
     if (!got_chrm) {
-        // If there is no `cHRM` chunk then check if `gamma` is neutral (in PNG
-        // / `SkNamedTransferFn::k2Dot2` sense).  `kPngGammaThreshold` mimics
-        // `PNG_GAMMA_THRESHOLD_FIXED` from `libpng`.
+        // We preserve `blink::PNGImageDecoder` / `libpng` behavior and 1)
+        // report no profile and 2) do an internal gamma correction.
+
+        // `kPngGammaThreshold` mimics `PNG_GAMMA_THRESHOLD_FIXED` from `libpng`.
         constexpr float kPngGammaThreshold = 0.05f;
         constexpr float kMinNeutralValue = 1.0f - kPngGammaThreshold;
         constexpr float kMaxNeutralValue = 1.0f + kPngGammaThreshold;
         float tmp = gamma * 2.2f;
         bool is_neutral = kMinNeutralValue < tmp && tmp < kMaxNeutralValue;
-        if (is_neutral) {
-            // Don't construct a custom color profile if the only encoded color
-            // space information is a "neutral" gamma.  This is primarily needed
-            // for correctness (see // https://crbug.com/388025081), but may
-            // also help with performance (using a slightly more direct
-            // `SkSwizzler` instead of `skcms_Transform`).
-            return nullptr;
+        if (!is_neutral) {
+            gamma_for_internal_correction = gamma;
         }
+        return nullptr;
     }
 
-    // Construct a color profile based on `cHRM` and `gAMA` chunks.
     skcms_Matrix3x3 toXYZD50;
-    if (got_chrm) {
-        if (!skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, &toXYZD50)) {
-            return nullptr;
-        }
-    } else {
-        // `blink::PNGImageDecoder` returns a null color profile when `gAMA` is
-        // present without `cHRM`.  We fall back to the sRGB profile instead
-        // because we do gamma correction via `skcms_Transform` (rather than
-        // relying on `libpng` gamma correction as the legacy Blink decoder does
-        // in this scenario).
-        toXYZD50 = skcms_sRGB_profile()->toXYZD50;
+    if (!skcms_PrimariesToXYZD50(rx, ry, gx, gy, bx, by, wx, wy, &toXYZD50)) {
+        return nullptr;
     }
 
     skcms_TransferFunction fn;
@@ -212,11 +202,13 @@ std::unique_ptr<SkEncodedInfo::ICCProfile> CreateColorProfile(const rust_png::Re
     return SkEncodedInfo::ICCProfile::Make(profile);
 }
 
-SkEncodedInfo CreateEncodedInfo(const rust_png::Reader& reader) {
+SkEncodedInfo CreateEncodedInfo(const rust_png::Reader& reader,
+                                std::optional<float>& gamma_for_internal_correction) {
     rust_png::ColorType rustColor = reader.output_color_type();
     SkEncodedInfo::Color skColor = ToColor(rustColor);
 
-    std::unique_ptr<SkEncodedInfo::ICCProfile> profile = CreateColorProfile(reader);
+    std::unique_ptr<SkEncodedInfo::ICCProfile> profile =
+            CreateColorProfile(reader, gamma_for_internal_correction);
     if (!SkPngCodecBase::isCompatibleColorProfileAndType(profile.get(), skColor)) {
         profile = nullptr;
     }
@@ -328,6 +320,79 @@ void blendAllRows(SkSpan<uint8_t> dstFrame,
 
 }  // namespace
 
+SkPngRustCodec::InternalGammaCorrection::InternalGammaCorrection(float gamaChunkValue,
+                                                                 SkEncodedInfo::Color color,
+                                                                 uint8_t bitsPerComponent) {
+    SkASSERT(bitsPerComponent == 8 || bitsPerComponent == 16);
+    size_t bytesPerComponent = static_cast<size_t>(bitsPerComponent) / 8;
+
+    skcms_Init(&fDstProfile);
+    skcms_Init(&fSrcProfile);
+    skcms_SetXYZD50(&fDstProfile, &skcms_sRGB_profile()->toXYZD50);
+    skcms_SetXYZD50(&fSrcProfile, &skcms_sRGB_profile()->toXYZD50);
+
+    skcms_TransferFunction fn = SkNamedTransferFn::k2Dot2;
+    skcms_SetTransferFunction(&fDstProfile, &fn);
+    fn.g = 1.0f / gamaChunkValue;
+    skcms_SetTransferFunction(&fSrcProfile, &fn);
+
+    switch (color) {
+        case SkEncodedInfo::kPalette_Color:
+            // This is the format used in `SkPngRustCodec::onTryGetPlteChunk`.
+            fBytesPerPixel = 3;
+            fPixelFormat = skcms_PixelFormat_RGB_888;
+            break;
+        case SkEncodedInfo::kGray_Color:
+            fBytesPerPixel = bytesPerComponent;
+            if (bitsPerComponent == 8) {
+                fPixelFormat = skcms_PixelFormat_G_8;
+            } else {
+                SkUNREACHABLE;
+            }
+            break;
+        case SkEncodedInfo::kGrayAlpha_Color:
+            fBytesPerPixel = 2 * bytesPerComponent;
+            if (bitsPerComponent == 8) {
+                fPixelFormat = skcms_PixelFormat_GA_88;
+            } else {
+                SkUNREACHABLE;
+            }
+            break;
+        case SkEncodedInfo::kRGB_Color:
+            fBytesPerPixel = 3 * bytesPerComponent;
+            fPixelFormat = bitsPerComponent == 8 ? skcms_PixelFormat_RGB_888
+                                                 : skcms_PixelFormat_RGB_161616BE;
+            break;
+        case SkEncodedInfo::kRGBA_Color:
+            fBytesPerPixel = 4 * bytesPerComponent;
+            fPixelFormat = bitsPerComponent == 8 ? skcms_PixelFormat_RGBA_8888
+                                                 : skcms_PixelFormat_RGBA_16161616BE;
+            break;
+        default:
+            SkUNREACHABLE;
+    }
+}
+
+SkSpan<const uint8_t> SkPngRustCodec::InternalGammaCorrection::apply(SkSpan<const uint8_t> src) {
+    if (fBuffer.size() < src.size()) {
+        fBuffer.resize(src.size(), 0x00);
+    }
+    size_t npixels = src.size() / fBytesPerPixel;
+
+    bool success = skcms_Transform(src.data(),
+                                   fPixelFormat,
+                                   skcms_AlphaFormat_Unpremul,
+                                   &fSrcProfile,
+                                   fBuffer.data(),
+                                   fPixelFormat,
+                                   skcms_AlphaFormat_Unpremul,
+                                   &fDstProfile,
+                                   npixels);
+    SkASSERT(success);
+
+    return SkSpan(fBuffer);
+}
+
 // static
 std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
                                                                Result* result) {
@@ -343,13 +408,26 @@ std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<S
     }
     rust::Box<rust_png::Reader> reader = resultOfReader->unwrap();
 
-    return std::make_unique<SkPngRustCodec>(
-            CreateEncodedInfo(*reader), std::move(stream), std::move(reader));
+    std::optional<float> gamma_for_internal_correction;
+    SkEncodedInfo info = CreateEncodedInfo(*reader, gamma_for_internal_correction);
+    if (gamma_for_internal_correction.has_value() && info.bitsPerComponent() == 16 &&
+        (info.color() == SkEncodedInfo::kGray_Color ||
+         info.color() == SkEncodedInfo::kGrayAlpha_Color)) {
+        // `skcms_Transform` doesn't support this color type...
+        *result = kUnimplemented;
+        return nullptr;
+    }
+
+    return std::make_unique<SkPngRustCodec>(std::move(info),
+                                            std::move(stream),
+                                            std::move(reader),
+                                            std::move(gamma_for_internal_correction));
 }
 
 SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
                                std::unique_ptr<SkStream> stream,
-                               rust::Box<rust_png::Reader> reader)
+                               rust::Box<rust_png::Reader> reader,
+                               std::optional<float> gamma_for_internal_correction)
         : SkPngCodecBase(std::move(encodedInfo),
                          // TODO(https://crbug.com/370522089): If/when `SkCodec` can
                          // avoid unnecessary rewinding, then stop "hiding" our stream
@@ -359,6 +437,12 @@ SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
         , fPrivStream(std::move(stream))
         , fFrameHolder(encodedInfo.width(), encodedInfo.height()) {
     SkASSERT(fPrivStream);
+
+    if (gamma_for_internal_correction.has_value()) {
+        fInternalGammaCorrection.emplace(gamma_for_internal_correction.value(),
+                                         this->getEncodedInfo().color(),
+                                         this->getEncodedInfo().bitsPerComponent());
+    }
 
     bool idatIsNotPartOfAnimation = fReader->has_actl_chunk() && !fReader->has_fctl_chunk();
     fFrameAtCurrentStreamPosition = idatIsNotPartOfAnimation ? -1 : 0;
@@ -536,6 +620,17 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
     }
 
     return kSuccess;
+}
+
+void SkPngRustCodec::applyXformRow(SkSpan<uint8_t> dst, SkSpan<const uint8_t> src) {
+    if (fInternalGammaCorrection.has_value()) {
+        // For `kPalette_Color` the internal gamma correction was already
+        // applied in `SkPngRustCodec::onTryGetPlteChunk`.
+        if (this->getEncodedInfo().color() != SkEncodedInfo::kPalette_Color) {
+            src = fInternalGammaCorrection->apply(src);
+        }
+    }
+    this->SkPngCodecBase::applyXformRow(dst, src);
 }
 
 void SkPngRustCodec::expandDecodedInterlacedRow(SkSpan<uint8_t> dstFrame,
@@ -756,6 +851,10 @@ std::optional<SkSpan<const SkPngCodecBase::PaletteColorEntry>> SkPngRustCodec::o
     // `sizeof(PaletteColorEntry)`.
     constexpr size_t kEntrySize = sizeof(PaletteColorEntry);
     bytes = bytes.first((bytes.size() / kEntrySize) * kEntrySize);
+
+    if (fInternalGammaCorrection.has_value()) {
+        bytes = fInternalGammaCorrection->apply(bytes);
+    }
 
     // Alignment of `PaletteColorEntry` is 1, because its size is 3, and size
     // has to be a multiple of alignment (every element of an array has to be
