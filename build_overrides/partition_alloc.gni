@@ -36,6 +36,14 @@ if (is_debug) {
   ]
 }
 
+# In non official build, Skia does use '-g' to generate source level debug
+# information. This causes a bot to run 180x slower:
+# Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan
+# Get rid of it not matter the configuration.
+if (!is_official_build) {
+  partition_alloc_remove_configs += [ "//gn/skia:debug_symbols" ]
+}
+
 # MSVC's cl.exe compiler is not supported.
 _supported_compiler = is_clang || !is_win
 
