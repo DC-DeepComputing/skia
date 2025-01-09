@@ -106,6 +106,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1bfdfda_6ec545cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-09T15:50:41Z",
+      "side": 1,
+      "message": "First, a million apologies for missing these in my inbox!\n\nAs for your question - This change just remedied the omission of an attribute hen comparing 2 Dawn `YCbCrVkDescriptor`s which *is* used in production within Skia, but as of right now is not checked in order to trigger any kind of fatal failure within Skia. The plan is for this to continue to be true such that Chrome can handle the comparison of promised and real-time YCbCr information and operate accordingly (ie, skipping a draw call, rendering the past frame, etc.). \n\nI hope this helps answer your question?",
+      "parentUuid": "94b30ad4_0bf322f0",
+      "revId": "839b1c049ab300dbcf20b87db6eac7ce6f2fc423",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ed3e3fd_3f7c1046",
