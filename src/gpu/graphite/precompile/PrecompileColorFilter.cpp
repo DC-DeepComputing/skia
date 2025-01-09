@@ -157,7 +157,7 @@ private:
 
         // Here the color is just a stand-in for a later value.
         AddBlendModeColorFilter(keyContext, builder, gatherer,
-                                representativeBlendMode, SK_PMColor4fWHITE);
+                                representativeBlendMode, SkColors::kWhite);
     }
 
     // NOTE: The BlendMode color filter can only be created with SkBlendModes, not arbitrary

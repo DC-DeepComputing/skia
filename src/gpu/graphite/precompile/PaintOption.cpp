@@ -91,7 +91,7 @@ void PaintOption::handlePaintAlpha(const KeyContext& keyContext,
     if (!fShader.first && !fHasPrimitiveBlender) {
         // If there is no shader and no primitive blending the input to the colorFilter stage
         // is just the premultiplied paint color.
-        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, gatherer, SK_PMColor4fWHITE);
+        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, gatherer, SkColors::kWhite);
         return;
     }
 

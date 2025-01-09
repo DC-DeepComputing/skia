@@ -135,7 +135,11 @@ void add_solid_uniform_data(const ShaderCodeDictionary* dict,
 void SolidColorShaderBlock::AddBlock(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* builder,
                                      PipelineDataGatherer* gatherer,
-                                     const SkPMColor4f& premulColor) {
+                                     const SkColor4f& color) {
+    SkPMColor4f premulColor = {color.fR, color.fG, color.fB, color.fA};
+    const SkColorSpace* dst = keyContext.dstColorInfo().colorSpace();
+    SkColorSpaceXformSteps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
+                           dst,                 kPremul_SkAlphaType).apply(premulColor.vec());
     add_solid_uniform_data(keyContext.dict(), premulColor, gatherer);
 
     builder->addBlock(BuiltInCodeSnippetID::kSolidColorShader);
@@ -1119,7 +1123,7 @@ void AddBlendModeColorFilter(const KeyContext& keyContext,
                              PaintParamsKeyBuilder* builder,
                              PipelineDataGatherer* gatherer,
                              SkBlendMode bm,
-                             const SkPMColor4f& srcColor) {
+                             const SkColor4f& srcColor) {
     Blend(keyContext, builder, gatherer,
           /* addBlendToKey= */ [&] () -> void {
             AddBlendMode(keyContext, builder, gatherer, bm);
@@ -1239,7 +1243,7 @@ void add_children_to_key(const KeyContext& keyContext,
                 case ChildType::kShader:
                     // A missing shader returns transparent black
                     SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
-                                                    SK_PMColor4fTRANSPARENT);
+                                                    SkColors::kTransparent);
                     break;
 
                 case ChildType::kColorFilter:
@@ -1365,22 +1369,13 @@ void NotifyImagesInUse(Recorder* recorder, DrawContext* drawContext, const SkBle
 }
 
 //--------------------------------------------------------------------------------------------------
-//--------------------------------------------------------------------------------------------------
-static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace* dst) {
-    SkPMColor4f color = {c.fR, c.fG, c.fB, c.fA};
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kPremul_SkAlphaType).apply(color.vec());
-    return color;
-}
+
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
                        const SkBlendModeColorFilter* filter) {
     SkASSERT(filter);
-
-    SkPMColor4f color = map_color(filter->color(), sk_srgb_singleton(),
-                                  keyContext.dstColorInfo().colorSpace());
-
-    AddBlendModeColorFilter(keyContext, builder, gatherer, filter->mode(), color);
+    AddBlendModeColorFilter(keyContext, builder, gatherer, filter->mode(), filter->color());
 }
 
 static void add_to_key(const KeyContext& keyContext,
@@ -1628,11 +1623,7 @@ static void add_to_key(const KeyContext& keyContext,
                        PipelineDataGatherer* gatherer,
                        const SkColorShader* shader) {
     SkASSERT(shader);
-
-    SkPMColor4f color = map_color(shader->color(), sk_srgb_singleton(),
-                                  keyContext.dstColorInfo().colorSpace());
-
-    SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, color);
+    SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, shader->color());
 }
 static void notify_in_use(Recorder*, DrawContext*, const SkColorShader*) {
     // No-op
@@ -2561,7 +2552,7 @@ void AddToKey(const KeyContext& keyContext,
         // and PaintParamsKey structure in release builds but assert since this should either not
         // happen or should be changing high-level logic within PaintParams::toKey().
         SkASSERT(false);
-        SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, SK_PMColor4fTRANSPARENT);
+        SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, SkColors::kTransparent);
         return;
     }
     switch (as_SB(shader)->type()) {

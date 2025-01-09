@@ -149,7 +149,7 @@ private:
                     case SkRuntimeEffect::ChildType::kShader:
                         // A missing shader returns transparent black
                         SolidColorShaderBlock::AddBlock(childContext, builder, gatherer,
-                                                        SK_PMColor4fTRANSPARENT);
+                                                        SkColors::kTransparent);
                         break;
 
                     case SkRuntimeEffect::ChildType::kColorFilter:

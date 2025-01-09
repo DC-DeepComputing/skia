@@ -215,9 +215,7 @@ void PaintParams::handlePaintAlpha(const KeyContext& keyContext,
     if (!fShader && !fPrimitiveBlender) {
         // If there is no shader and no primitive blending the input to the colorFilter stage
         // is just the premultiplied paint color.
-        SkPMColor4f paintColor = PaintParams::Color4fPrepForDst(fColor,
-                                                                keyContext.dstColorInfo()).premul();
-        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, gatherer, paintColor);
+        SolidColorShaderBlock::AddBlock(keyContext, keyBuilder, gatherer, fColor);
         return;
     }
 

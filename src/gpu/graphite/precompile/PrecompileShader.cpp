@@ -81,8 +81,8 @@ private:
 
         SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
 
-        // The white PMColor is just a placeholder for the actual paint params color
-        SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, SK_PMColor4fWHITE);
+        // The white color is just a placeholder for the actual shader color
+        SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, SkColors::kWhite);
     }
 };
 

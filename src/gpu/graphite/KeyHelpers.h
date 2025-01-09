@@ -58,10 +58,12 @@ enum class DstColorType {
  */
 
 struct SolidColorShaderBlock {
+    // Assumes the color value is unpremul sRGB and will automatically convert it to premul within
+    // the dst color space.
     static void AddBlock(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
-                         const SkPMColor4f&);
+                         const SkColor4f&);
 };
 
 struct RGBPaintColorBlock {
@@ -393,7 +395,7 @@ void AddBlendModeColorFilter(const KeyContext&,
                              PaintParamsKeyBuilder*,
                              PipelineDataGatherer*,
                              SkBlendMode,
-                             const SkPMColor4f& srcColor);
+                             const SkColor4f& srcColor);
 
 struct RuntimeEffectBlock {
     struct ShaderData {
