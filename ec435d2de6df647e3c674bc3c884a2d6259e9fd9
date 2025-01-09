@@ -16,6 +16,52 @@
       "message": "The HouseKeeper complaint should be fixed by: https://skia-review.googlesource.com/c/skia/+/937036",
       "revId": "ec435d2de6df647e3c674bc3c884a2d6259e9fd9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d337c578_da8f5f14",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T21:16:14Z",
+      "side": 1,
+      "message": "nit: prefer SkTArray over std::vector",
+      "range": {
+        "startLine": 208,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 43
+      },
+      "revId": "ec435d2de6df647e3c674bc3c884a2d6259e9fd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d3589ae_db10e000",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 24
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-09T21:16:14Z",
+      "side": 1,
+      "message": "I don\u0027t love exposing more functions on Resource related to reference counting. Right now, I don\u0027t think we need to be checking unique because chrome is not holding on to Recordings for long, the last used time would be very close to reflecting when the last fetch from the global cache was.\n\nIf that was old enough to be purged, the Recording that then recorded the commands to use it is almost assuredly been submitted already (and deleted). We can safely unref the pipeline from the GlobalCache even if there are other recordings that do hold on to it, because they will keep it alive until they are gone.\n\nWhen Recordings are being replayed and kept alive by it with the current GlobalCache system, we could have a pipeline that is repeatedly being used on replay but won\u0027t have updated its access time here.  I think that that problem goes away if we are successful in going back to a single ResourceCache that removes the GlobalCache.  At that point the pipelines would be going in/out of the cache as their usage refs are removed and we\u0027d have an updated access time when they actually became purgeable.  A long-lived recording would prevent it from being purgeable.\n\nGiven that, wdyt about removing the unique() check and just do it based on time?",
+      "range": {
+        "startLine": 214,
+        "startChar": 12,
+        "endLine": 214,
+        "endChar": 34
+      },
+      "revId": "ec435d2de6df647e3c674bc3c884a2d6259e9fd9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
