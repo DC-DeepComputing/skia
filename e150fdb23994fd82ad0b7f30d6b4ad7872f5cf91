@@ -16,6 +16,52 @@
       "message": "For the changed `color4shader` GMs, this behavior is expected. The GMs are being rendered in gold with a legacy dst surface, so the color transform was inheriting the src colorspace (spin in this case) and then optimized to the identity.  When looking at the GM in viewer before this change and switching to a color-managed mode, the 3rd column shows the spun color channels as expected.\n\nWith this change, we apply the spin up front to store the sRGB color.  On a legacy dst surface, that means it now inherits the sRGB color space and the spin effect remains visible. This is consistent with the behavior of the `color4blendcf` GM. A while ago it went through a similar change to store the constant color as sRGB instead of remembering the colorspace.  There have been know complaints I am aware of with changing the legacy SkSurface behavior.\n\nThere is no change in behavior if the SkSurface has a colorspace (other than maybe slight floating point differences that shouldn\u0027t be perceptible).",
       "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d78bb9_acaeb882",
+        "filename": "src/shaders/SkColorShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-09T15:24:08Z",
+      "side": 1,
+      "message": "Is there any harm in calling `SkColorSpace::MakeSRGB()` here? It\u0027d allow us to get rid of the comments and be self-documenting.",
+      "range": {
+        "startLine": 83,
+        "startChar": 56,
+        "endLine": 83,
+        "endChar": 63
+      },
+      "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e702d339_c8e3d165",
+        "filename": "src/shaders/SkColorShader.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-09T15:24:08Z",
+      "side": 1,
+      "message": "We seem to do this a few times in the codebase `git grep SkTPin | grep fA` - do you think it\u0027s worth adding a constructor or function to SkColor4f encapsulate this in a more self-documenting way?",
+      "range": {
+        "startLine": 93,
+        "startChar": 14,
+        "endLine": 93,
+        "endChar": 18
+      },
+      "revId": "e150fdb23994fd82ad0b7f30d6b4ad7872f5cf91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
