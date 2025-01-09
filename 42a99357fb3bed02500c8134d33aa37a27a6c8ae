@@ -16,6 +16,24 @@
       "message": "When doing a fontations roll, you will want to run at least `Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations`. This change causes some of the tests to fail, though it isn\u0027t clear if the tests just need to be updated or not.",
       "revId": "42a99357fb3bed02500c8134d33aa37a27a6c8ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4738c614_ba9aae7b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-09T08:23:54Z",
+      "side": 1,
+      "message": "True, will do. You mean Gold tests? Would you have a link? Do they look  related to \nhttps://github.com/googlefonts/fontations/commit/a79f00b0a39f04c72f99dbc4f9365ce780a1116e ?",
+      "parentUuid": "c271a1c9_41919121",
+      "revId": "42a99357fb3bed02500c8134d33aa37a27a6c8ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
