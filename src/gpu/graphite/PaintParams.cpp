@@ -200,7 +200,10 @@ void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
                   this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
               },
               /* addDstToKey= */ [&]() -> void {
-                  PrimitiveColorBlock::AddBlock(keyContext, keyBuilder, gatherer);
+                  const SkColorSpace* primitiveCS =
+                        fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
+                                        : sk_srgb_singleton();
+                  AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
               });
     } else {
         this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
