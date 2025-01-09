@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be41a060_9bb0e6d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-09T15:20:56Z",
+      "side": 1,
+      "message": "```\n--- a/gm/fontations.cpp\n+++ b/gm/fontations.cpp\n@@ -136,7 +136,7 @@ protected:\n         }\n \n         SkFont font(fTestTypeface);\n-        const char32_t testText[] \u003d U\"abc\";\n+        const char32_t testText[] \u003d U\"中字文\";\n         size_t testTextBytesize \u003d std::char_traits\u003cchar32_t\u003e::length(testText) * sizeof(char32_t);\n         SkScalar x \u003d 100;\n         SkScalar y \u003d 150;\n@@ -183,6 +183,7 @@ SkFourByteTag constexpr operator\"\" _t(const char* tagName, size_t size) {\n }\n }  // namespace\n DEF_GM(return new FontationsTypefaceGM(\"roboto\", \"fonts/Roboto-Regular.ttf\", {});)\n+DEF_GM(return new FontationsTypefaceGM(\"dfkai\", \"fonts/dfkai.ttf\", {});)\n DEF_GM(return new FontationsTypefaceGM(\n                       \"distortable_light\",\n                       \"fonts/Distortable.ttf\",\n```\n\nRendered correctly instead of showing truncated glyph shapes.",
+      "revId": "e133df3864f7bbe6586535874175d3f108f370f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c11cfbe_c24b1324",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-09T15:20:56Z",
+      "side": 1,
+      "message": "PTAL, Ben, in particular with regards to whether you think this effectively matches the `SkTypeface` FreeType-backends behavior for what FreeType calls \"tricky\" fonts.",
+      "revId": "e133df3864f7bbe6586535874175d3f108f370f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
