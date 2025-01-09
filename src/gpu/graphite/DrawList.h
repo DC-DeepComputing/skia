@@ -85,6 +85,7 @@ public:
 
     // Bounds for a dst copy required by this DrawList.
     const Rect& dstCopyBounds() const { return fDstCopyBounds; }
+    bool usesDstSampler() const { return fUsesDstSampler; }
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
@@ -119,6 +120,7 @@ private:
 #endif
 
     Rect fDstCopyBounds = Rect::InfiniteInverted();
+    bool fUsesDstSampler = false;
 };
 
 } // namespace skgpu::graphite

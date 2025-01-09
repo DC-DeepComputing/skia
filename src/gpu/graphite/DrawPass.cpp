@@ -482,6 +482,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         TextureDataBlock paintTextures;
 
         if (draw.fPaintParams.has_value()) {
+            // drawPass->fRequiresDstSampler =
+            //         draw.fPaintParams->dstReadRequirement() == DstReadRequirement::kTextureSample;
+
             shaderID = ExtractPaintData(recorder,
                                         &gatherer,
                                         &builder,

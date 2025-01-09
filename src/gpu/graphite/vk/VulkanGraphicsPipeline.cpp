@@ -801,6 +801,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                 &pipelineShaderStages[1]);
     }
 
+    if (shaderInfo->dstReadRequirement() == DstReadRequirement::kTextureSample) {
+        // TODO: Add sampler for performing texture sample operation to pipeline layout
+    }
+
     // TODO: Query RenderPassDesc for input attachment information. For now, we only use one for
     // loading MSAA from resolve so we can simply pass in 0 when not doing that.
     VkPipelineLayout pipelineLayout =
