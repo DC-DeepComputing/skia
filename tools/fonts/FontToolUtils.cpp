@@ -308,6 +308,8 @@ sk_sp<SkFontMgr> TestFontMgr() {
             mgr = SkFontMgr_New_CoreText(nullptr);
 #elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FREETYPE)
             mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_FreeType());
+#elif defined(SK_FONTMGR_FONTCONFIG_AVAILABLE) && defined(SK_TYPEFACE_FACTORY_FONTATIONS)
+            mgr = SkFontMgr_New_FontConfig(nullptr, SkFontScanner_Make_Fontations());
 #elif defined(SK_FONTMGR_FREETYPE_DIRECTORY_AVAILABLE)
             // In particular, this is used on ChromeOS, which is Linux-like but doesn't have
             // FontConfig.
