@@ -11,6 +11,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMath.h"
+#include "partition_alloc/pointers/raw_ptr.h"
+#include "partition_alloc/pointers/raw_ptr_exclusion.h"
 #include "src/pathops/SkPathOpsTypes.h"
 
 class SkOpAngle;
@@ -563,7 +565,12 @@ public:
     }
 
 private:  // no direct access to internals to avoid treating a span base as a span
-    SkOpSpan* fCoincident;  // linked list of spans coincident with this one (may point to itself)
+    // TODO(351867706): Remove `DanglingUntriaged`.
+    // The DanglingPointerDetector is not currently enabled in Skia standalone, preventing local
+    // verification. This is used preemptively to avoid blocking Skia's roll into Chromium if a
+    // dangle exists. It is likely dangling as it is used in a circular linked list.
+    raw_ptr<SkOpSpan, DanglingUntriaged>
+            fCoincident;  // linked list of spans coincident with this one (may point to itself)
     SkOpAngle* fToAngle;  // points to next angle from span start to end
     SkOpSpanBase* fNext;  // next intersection point
     int fWindSum;  // accumulated from contours surrounding this one.
