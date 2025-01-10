@@ -44,6 +44,8 @@ class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
+typedef void (*CBFunc)(void* data, int payload);
+
 class SK_API Context final {
 public:
     Context(const Context&) = delete;
@@ -52,6 +54,8 @@ public:
     Context& operator=(Context&&) = delete;
 
     ~Context();
+
+    void setFoo(CBFunc cb, void* data);
 
     BackendApi backend() const;
 

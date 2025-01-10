@@ -100,6 +100,10 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 #endif
 }
 
+void Context::setFoo(CBFunc cb, void* data) {
+    fSharedContext->globalCache()->setFoo(cb, data);
+}
+
 Context::~Context() {
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);

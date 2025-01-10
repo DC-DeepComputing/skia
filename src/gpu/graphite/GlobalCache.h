@@ -25,6 +25,8 @@ class GraphicsPipeline;
 class Resource;
 class ShaderCodeDictionary;
 
+typedef void (*CBFunc)(void* data, int payload);
+
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement
  * of these resources are they are static/read-only, have long lifetimes, and are likely to be used
@@ -41,6 +43,10 @@ public:
     GlobalCache();
     ~GlobalCache();
 
+    void setFoo(CBFunc cb, void* data) SK_EXCLUDES(fSpinLock);
+
+    void callback1(int payload, const UniqueKey& pipelineKey);
+
     void deleteResources();
 
     // Find a cached GraphicsPipeline that matches the associated key.
@@ -52,7 +58,7 @@ public:
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
     // Otherwise, the passed-in pipeline is held by the GlobalCache and also returned back.
-    sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
+    sk_sp<GraphicsPipeline> addGraphicsPipeline1(const UniqueKey&,
                                                 sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
@@ -110,6 +116,8 @@ private:
 #if defined(GPU_TEST_UTILS)
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
 #endif
+    CBFunc fCB SK_GUARDED_BY(fSpinLock) = nullptr;
+    void* fData SK_GUARDED_BY(fSpinLock) = nullptr;
 };
 
 }  // namespace skgpu::graphite

@@ -614,6 +614,22 @@ public:
     }
 
 private:
+
+    class bar {
+    public:
+        static void CB(void* data, int payload) {
+            bar* b = reinterpret_cast<bar*>(data);
+
+            b->hi();
+        }
+
+        void hi() {
+            SkDebugf("hi\n");
+        }
+
+    private:
+    };
+
     Result drawSrc(const Src&,
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*) const;
@@ -621,6 +637,7 @@ private:
 
     mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
     mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
+    mutable std::unique_ptr<bar> fFlooble;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE
