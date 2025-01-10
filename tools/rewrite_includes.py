@@ -42,6 +42,10 @@ ignorelist = [
   # Don't count our local Vulkan headers as Skia headers;
   # we don't want #include <vulkan/vulkan_foo.h> rewritten to point to them.
   'include/third_party/vulkan',
+  # Don't count our local PartitionAlloc pointers headers as Skia headers.
+  # We don't want #include <partition_alloc/pointers/raw_ptr.h> rewritten to
+  # point to them.
+  'src/partition_alloc/partition_alloc',
   # Some node_modules/ files (used by CanvasKit et al) have c++ code which we should ignore.
   'node_modules',
   'include/third_party/skcms',
