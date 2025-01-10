@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12d5d71b_4d42f0e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-10T08:13:52Z",
+      "side": 1,
+      "message": "Super! Great to see this. One thing I am curious about: If we use a form of this in Chrome, to say: Build Skia without FreeType as part of the Chromium build, would PDFium in Chrome still work. PDFium has its own FreeType dependencies, but I wonder if it internally relies on some FreeType-behavior from Skia? (Since the Fontations backend is modelled to be very similar in behavior to the FreeType backend, perhaps it wouldn\u0027t matter?)",
+      "revId": "9aec60d65f0051dabb550fcff8c1bdb9387c1835",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
