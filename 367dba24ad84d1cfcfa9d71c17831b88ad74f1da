@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dc78a8f_5f477c45",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-10T21:48:41Z",
+      "side": 1,
+      "message": "Noelle,\n\nAll the Android AVIF/HEIC tests are passing with this change. I will monitor the post-submit/post-android-roll breakages to ensure that there aren\u0027t any issues caused by this.",
+      "revId": "367dba24ad84d1cfcfa9d71c17831b88ad74f1da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
