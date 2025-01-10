@@ -87,6 +87,10 @@
 #include "include/codec/SkPngDecoder.h"
 #endif
 
+#if defined(SK_USE_PARTITION_ALLOC)
+  #include "tools/partition_alloc/TestSupport.h"
+#endif
+
 #include <cinttypes>
 #include <memory>
 #include <optional>
@@ -1359,6 +1363,13 @@ class NanobenchShaderErrorHandler : public GrContextOptions::ShaderErrorHandler 
 };
 
 int main(int argc, char** argv) {
+#if defined(SK_USE_PARTITION_ALLOC)
+    // To achieve benchmark results closers to what Chromium based applications would obtain, the
+    // benchmark are run with PartitionAlloc enabled. This is the memory allocator used by Chromium
+    // based applications.
+    skiatest::InitializePartitionAllocForTesting();
+#endif
+
     CommandLineFlags::Parse(argc, argv);
 
     initializeEventTracingForTools();
