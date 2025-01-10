@@ -58,12 +58,44 @@ void RasterMaskHelper::drawShape(const Shape& shape,
     translatedMatrix.postTranslate(resultBounds.x(), resultBounds.y());
 
     fDraw.fCTM = &translatedMatrix;
+    // TODO: use drawRect, drawRRect, drawArc
     SkPath path = shape.asPath();
     if (path.isInverseFillType()) {
         // The shader will handle the inverse fill in this case
         path.toggleInverseFillType();
     }
     fDraw.drawPathCoverage(path, paint);
+}
+
+void RasterMaskHelper::drawClip(const Shape& shape,
+                                const Transform& transform,
+                                uint8_t alpha,
+                                const SkIRect& resultBounds) {
+    fRasterClip.setRect(resultBounds);
+
+    SkPaint paint;
+    paint.setBlendMode(SkBlendMode::kSrc);  // "Replace" mode
+    paint.setAntiAlias(true);
+    // SkPaint's color is unpremul so this will produce alpha in every channel.
+    paint.setColor(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF));
+
+    SkMatrix translatedMatrix = SkMatrix(transform);
+    // The atlas transform of the shape is the linear-components (scale, rotation, skew) of
+    // `localToDevice` translated by the top-left offset of the resultBounds.
+    // We will need to translate draws so the bound's UL corner is at the origin
+    translatedMatrix.postTranslate(resultBounds.x(), resultBounds.y());
+
+    fDraw.fCTM = &translatedMatrix;
+    // TODO: use drawRect, drawRRect, drawArc
+    SkPath path = shape.asPath();
+    // Because we could be combining multiple paths into one entry we don't touch
+    // the inverse fill in this case.
+    if (0xFF == alpha) {
+        SkASSERT(0xFF == paint.getAlpha());
+        fDraw.drawPathCoverage(path, paint);
+    } else {
+        fDraw.drawPath(path, paint, nullptr, true);
+    }
 }
 
 skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,

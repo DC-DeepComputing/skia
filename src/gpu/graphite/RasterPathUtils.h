@@ -40,11 +40,24 @@ public:
 
     bool init(SkISize pixmapSize);
 
-    // Draw a single shape into the bitmap (as a path) at location resultBounds
+    void clear(uint8_t alpha, const SkIRect& resultBounds) {
+        SkPaint paint;
+        paint.setColor(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF));
+        fDraw.drawRect(SkRect::Make(resultBounds), paint);
+    }
+
+    // Draw a single shape into the bitmap (as a path) at location resultBounds.
     void drawShape(const Shape& shape,
                    const Transform& transform,
                    const SkStrokeRec& strokeRec,
                    const SkIRect& resultBounds);
+
+    // Draw a single shape into the bitmap (as a path) at location resultBounds.
+    // Variant used for clipping.
+    void drawClip(const Shape& shape,
+                  const Transform& transform,
+                  uint8_t alpha,
+                  const SkIRect& resultBounds);
 
 private:
     SkAutoPixmapStorage* fPixels;
