@@ -14,6 +14,7 @@
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/gpu/MemoryCache.h"
 
@@ -614,6 +615,22 @@ public:
     }
 
 private:
+
+    class bar {
+    public:
+        static void CB(void* data, sk_sp<SkData> payload) {
+            bar* b = reinterpret_cast<bar*>(data);
+
+            b->hi();
+        }
+
+        void hi() {
+            SkDebugf("hi\n");
+        }
+
+    private:
+    };
+
     Result drawSrc(const Src&,
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*) const;
@@ -621,6 +638,7 @@ private:
 
     mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
     mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
+    mutable std::unique_ptr<bar> fFlooble;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE

@@ -2380,21 +2380,27 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
                                            SkBitmap* dst,
                                            SkWStream* dstStream,
                                            SkString* log) const {
-    skiatest::graphite::TestOptions options = fOptions;
+    using namespace skgpu::graphite;
+    using namespace skiatest::graphite;
+
+    TestOptions options = fOptions;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
     SkASSERT(!options.fContextOptions.fOptionsPriv);
-    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
     src.modifyGraphiteContextOptions(&options.fContextOptions);
 
-    skiatest::graphite::ContextFactory factory(options);
+    ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
-    skgpu::graphite::Context* context = ctxInfo.fContext;
+    Context* context = ctxInfo.fContext;
     if (!context) {
         return Result::Fatal("Could not create a context.");
     }
+
+    fFlooble.reset(new bar);
+    context->setFoo(bar::CB, fFlooble.get());
 
     // First, clear out any miscellaneous Pipelines that might be cluttering up the global cache.
     context->priv().globalCache()->resetGraphicsPipelines();
@@ -2414,6 +2420,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    SkDEBUGCODE(GlobalCache* globalCache = fPrecompileContext->priv().globalCache();)
+    SkDEBUGCODE(int numBeforeSecondDraw = globalCache->numGraphicsPipelines();)
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2424,7 +2433,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     fRecorder.reset();
 
-    // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
+    SkASSERT(numBeforeSecondDraw == globalCache->numGraphicsPipelines());
+
     return Result::Ok();
 }
 #endif // SK_ENABLE_PRECOMPILE
