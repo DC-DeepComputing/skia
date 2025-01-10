@@ -53,6 +53,8 @@ public:
 
     ~Context();
 
+    void setFoo(void* cb, void* data);
+
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
