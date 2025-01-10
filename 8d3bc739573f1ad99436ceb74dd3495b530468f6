@@ -16,6 +16,24 @@
       "message": "I wonder if we could use a more sophisticated heuristic - e.g. if all frames are the same size and none of them are blended with previous, I *think* it should be safe to downscale.\n\nThat would have to live in the codec impl (new virtual), and assumes all the frame metadata is available at this point (not sure).\n\nLet\u0027s land as is, just something to think about.",
       "revId": "8d3bc739573f1ad99436ceb74dd3495b530468f6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a59efb_ccd9847a",
+        "filename": "src/codec/SkAndroidCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-10T14:41:06Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "41267230_ffadc2cf",
+      "revId": "8d3bc739573f1ad99436ceb74dd3495b530468f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
