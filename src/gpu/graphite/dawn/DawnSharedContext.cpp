@@ -56,8 +56,9 @@ sk_sp<SharedContext> DawnSharedContext::Make(const DawnBackendContext& backendCo
 
 DawnSharedContext::DawnSharedContext(const DawnBackendContext& backendContext,
                                      std::unique_ptr<const DawnCaps> caps,
-                                     wgpu::ShaderModule noopFragment)
-        : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kDawn)
+                                     wgpu::ShaderModule noopFragment,
+                                     void* cb, void* data)
+        : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kDawn, cb, data)
         , fInstance(backendContext.fInstance)
         , fDevice(backendContext.fDevice)
         , fQueue(backendContext.fQueue)

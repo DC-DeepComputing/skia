@@ -26,9 +26,11 @@ uint32_t next_compilation_id() {
 
 namespace skgpu::graphite {
 
-GlobalCache::GlobalCache()
+GlobalCache::GlobalCache(/*CBFunc*/ void* cb, void* data)
         : fGraphicsPipelineCache(256)  // TODO: find a good value for these limits
-        , fComputePipelineCache(256) {}
+        , fComputePipelineCache(256)
+        , fCB(cb)
+        , fData(data) {}
 
 GlobalCache::~GlobalCache() {
     // These should have been cleared out earlier by deleteResources().
@@ -36,6 +38,13 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+}
+
+void GlobalCache::setFoo(void* cb, void* data) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fCB = cb;
+    fData = data;
 }
 
 void GlobalCache::deleteResources() {
@@ -135,7 +144,7 @@ enum class PipelineCreationRace {
         static_cast<int>(PipelineCreationRace::kMaxValue) + 1;
 #endif // SK_HISTOGRAMS_ENABLED
 
-sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
+sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline1(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
 

@@ -61,7 +61,7 @@ public:
     virtual void deviceTick(Context*) {}
 
 protected:
-    SharedContext(std::unique_ptr<const Caps>, BackendApi);
+    SharedContext(std::unique_ptr<const Caps>, BackendApi, void* cb, void* data);
 
 private:
     friend class Context; // for setRendererProvider()

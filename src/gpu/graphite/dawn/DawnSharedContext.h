@@ -21,7 +21,7 @@ struct ContextOptions;
 
 class DawnSharedContext final : public SharedContext {
 public:
-    static sk_sp<SharedContext> Make(const DawnBackendContext&, const ContextOptions&);
+    static sk_sp<SharedContext> Make(const DawnBackendContext&, const ContextOptions&, void* cb, void* data);
     ~DawnSharedContext() override;
 
     std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,

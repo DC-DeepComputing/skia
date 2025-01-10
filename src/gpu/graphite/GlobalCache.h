@@ -38,8 +38,17 @@ class ShaderCodeDictionary;
  */
 class GlobalCache {
 public:
-    GlobalCache();
+    typedef void (*CBFunc)(void* data);
+
+    GlobalCache(/*CBFunc*/ void* cb, void* data);
     ~GlobalCache();
+
+    void setFoo(void* cb, void* data) SK_EXCLUDES(fSpinLock);
+
+    void callback() {
+        //fCB(fData);
+        SkDebugf("%p %p\n", fCB, fData);
+    }
 
     void deleteResources();
 
@@ -52,7 +61,7 @@ public:
     // Associate the given pipeline with the key. If the key has already had a separate pipeline
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
     // Otherwise, the passed-in pipeline is held by the GlobalCache and also returned back.
-    sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
+    sk_sp<GraphicsPipeline> addGraphicsPipeline1(const UniqueKey&,
                                                 sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
@@ -110,6 +119,8 @@ private:
 #if defined(GPU_TEST_UTILS)
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
 #endif
+    /*CBFunc*/ void* fCB;
+    void* fData;
 };
 
 }  // namespace skgpu::graphite

@@ -22,10 +22,11 @@ static Layout get_binding_layout(const Caps* caps) {
     return caps->storageBufferSupport() ? reqs.fStorageBufferLayout : reqs.fUniformBufferLayout;
 }
 
-SharedContext::SharedContext(std::unique_ptr<const Caps> caps, BackendApi backend)
+SharedContext::SharedContext(std::unique_ptr<const Caps> caps, BackendApi backend,
+                             void* cb, void* data)
     : fCaps(std::move(caps))
     , fBackend(backend)
-    , fGlobalCache()
+    , fGlobalCache(cb, data)
     , fShaderDictionary(get_binding_layout(fCaps.get())) {}
 
 SharedContext::~SharedContext() {
