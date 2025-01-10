@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ea48b9c_cf1079e1",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-10T18:36:16Z",
+      "side": 1,
+      "message": "Is this backwards? It seems to me if we skip the xform we should ignore the colorspace and assume srgb.",
+      "range": {
+        "startLine": 204,
+        "startChar": 24,
+        "endLine": 205,
+        "endChar": 62
+      },
+      "revId": "22541603dd9ee2eb5d2337a453d486f3163d2bc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
