@@ -38,6 +38,31 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fStaticResource.empty());
 }
 
+void GlobalCache::setFoo(CBFunc cb, void* data) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fCB = cb;
+    fData = data;
+}
+
+void GlobalCache::callback1(int payload) {
+    CBFunc tmpCB = nullptr;
+    void* tmpData = nullptr;
+
+    {
+        // We want to get a consistent callback/data pair but not invoke the callback
+        // w/in our lock.
+        SkAutoSpinlock lock{fSpinLock};
+
+        tmpCB = fCB;
+        tmpData = fData;
+    }
+
+    if (tmpCB) {
+        tmpCB(tmpData, payload);
+    }
+}
+
 void GlobalCache::deleteResources() {
     SkAutoSpinlock lock{ fSpinLock };
 
@@ -135,7 +160,7 @@ enum class PipelineCreationRace {
         static_cast<int>(PipelineCreationRace::kMaxValue) + 1;
 #endif // SK_HISTOGRAMS_ENABLED
 
-sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
+sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline1(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
 
