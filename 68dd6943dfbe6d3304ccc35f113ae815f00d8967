@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "598b0cbf_618849e1",
+        "filename": "src/gpu/graphite/BuiltInCodeSnippetID.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "lets move kColorSpaceXformColorFilter and kPremulAlphaColorFilter down here for now.\n\nIdeally, we can have a follow-up CL that replaces the use of kPremulAlphaColorFilter with kColorSpaceXformPremul.",
+      "range": {
+        "startLine": 66,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 26
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32c0e496_0f916659",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "I think we need `kRRR1` here too.",
+      "range": {
+        "startLine": 1057,
+        "startChar": 33,
+        "endLine": 1057,
+        "endChar": 51
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "686beaf5_0890229e",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "nit: maybe pull out into a separate bool with a descriptive name like `xformDoesNotNeedGamutOrTF`?",
+      "range": {
+        "startLine": 1077,
+        "startChar": 8,
+        "endLine": 1078,
+        "endChar": 44
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db37d930_aa14f83a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "I think it\u0027s okay to update this function\u0027s structure to match `sk_color_space_transform_premul` in a later CL to differentiate any performance changes. Unfortunately I don\u0027t think we can set it up as a composition very easily where we nest either a gamut+tf node or a passthrough node under the premul specialization because this specialization has to modify the color at the start and the end.",
+      "range": {
+        "startLine": 90,
+        "startChar": 12,
+        "endLine": 90,
+        "endChar": 36
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e6e3ed8_47add3ef",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to use a half3 to control these behaviors.\n\n - For the case where we don\u0027t have a gamut+TF in the middle, we should never be seeing doUnpremul and doPremul at the same time.\n - If we are forcing the alpha to 1, neither unpremul or premul are going to have an effect so they could be skipped.\n \nPossible actual values for the uniform are then\n    {0,0,0} // identity\n    {1,0,0} // make opaque\n    {0,1,0} // unpremul\n    {0,0,1} // premul\nif we copy this structure to the universal shader, then `{0,1,1}` also becomes a possible value.\n\nI think we could encode all of this with a half2 `{opaqueOrUnpremul, doPremul}`.\n - If it\u0027s supposed to be opaque, the first value is still 1.\n - If it\u0027s supposed to be unpremul, the first value is \u003c 0.\n - If neither opaque or unpremul, then the first value is 0.\n - The second value is 0 or 1, just like you have it.\n \nOther than changing the if condition for doUnpremul to \u003c, I think everything else works out with the opaque and premul cases.\n\nI couldn\u0027t think of a way that handled every case with just a single value. It wasn\u0027t able to differentiate the {0,0,1} vs {0,0,0} case and wouldn\u0027t have applied to the universal function\u0027s {0,1,1} requirement either.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 49
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "256be493_83bb6be5",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-10T18:08:22Z",
+      "side": 1,
+      "message": "Can you add a comment similar to the `// Premul cases` breakdown for the opacity cases.  I don\u0027t think you need it for unpremul because that\u0027s just using a simple branch.",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 35
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
