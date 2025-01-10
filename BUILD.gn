@@ -2909,6 +2909,10 @@ if (skia_enable_tools) {
       if (skia_enable_graphite) {
         deps += [ ":common_flags_graphite" ]
       }
+      if (skia_use_partition_alloc) {
+        deps += [ "tools/partition_alloc:test_support" ]
+        defines = [ "SK_USE_PARTITION_ALLOC" ]
+      }
     }
   }
 
