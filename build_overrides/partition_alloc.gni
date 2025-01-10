@@ -36,6 +36,11 @@ if (is_debug) {
   ]
 }
 
+# Skia has an escape hatch config named "extra_flags" that bots are using to
+# provide arbitrary values, sometimes clashing with other configs. For instance,
+# adding "O1" will reduce the optimization level from "O3" to "O1".
+partition_alloc_remove_configs += [ "//gn/skia:extra_flags" ]
+
 # MSVC's cl.exe compiler is not supported.
 _supported_compiler = is_clang || !is_win
 
