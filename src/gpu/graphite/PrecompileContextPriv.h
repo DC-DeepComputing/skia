@@ -22,11 +22,11 @@ namespace skgpu::graphite {
 class PrecompileContextPriv {
 public:
     const Caps* caps() const { return fPrecompileContext->fSharedContext->caps(); }
-    const ShaderCodeDictionary* shaderCodeDictionary() const {
-        return fPrecompileContext->fSharedContext->shaderCodeDictionary();
+    const ShaderCodeDictionary* shaderCodeDictionary5() const {
+        return fPrecompileContext->fSharedContext->shaderCodeDictionary9();
     }
-    ShaderCodeDictionary* shaderCodeDictionary() {
-        return fPrecompileContext->fSharedContext->shaderCodeDictionary();
+    ShaderCodeDictionary* shaderCodeDictionary5() {
+        return fPrecompileContext->fSharedContext->shaderCodeDictionary9();
     }
     const RendererProvider* rendererProvider() const {
         return fPrecompileContext->fSharedContext->rendererProvider();

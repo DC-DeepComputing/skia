@@ -33,8 +33,9 @@ public:
     KeyContext(const Caps* caps,
                ShaderCodeDictionary* dict,
                RuntimeEffectDictionary* rtEffectDict,
-               const SkColorInfo& dstColorInfo)
-            : fDictionary(dict)
+               const SkColorInfo& dstColorInfo,
+               bool)
+            : fDictionary7(dict)
             , fRTEffectDict(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
             , fCaps(caps) {}
@@ -44,7 +45,8 @@ public:
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
                OptimizeSampling optimizeSampling,
-               const SkColor4f& paintColor);
+               const SkColor4f& paintColor,
+               bool);
 
     KeyContext(const KeyContext&);
 
@@ -55,7 +57,7 @@ public:
     const SkM44& local2Dev() const { return fLocal2Dev; }
     const SkMatrix* localMatrix() const { return fLocalMatrix; }
 
-    ShaderCodeDictionary* dict() const { return fDictionary; }
+    ShaderCodeDictionary* dict() const { return fDictionary7; }
     RuntimeEffectDictionary* rtEffectDict() const { return fRTEffectDict; }
 
     const SkColorInfo& dstColorInfo() const { return fDstColorInfo; }
@@ -74,7 +76,7 @@ protected:
     Recorder* fRecorder = nullptr;
     SkM44 fLocal2Dev;
     SkMatrix* fLocalMatrix = nullptr;
-    ShaderCodeDictionary* fDictionary;
+    ShaderCodeDictionary* fDictionary7;
     RuntimeEffectDictionary* fRTEffectDict;
     SkColorInfo fDstColorInfo;
     // Although stored as premul the paint color is actually comprised of an opaque RGB portion

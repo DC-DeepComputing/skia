@@ -28,4 +28,21 @@ PrecompileContext::PrecompileContext(sk_sp<SharedContext> sharedContext)
             fSharedContext->makeResourceProvider(&fSingleOwner, SK_InvalidGenID, kEmptyBudget);
 }
 
+bool PrecompileContext::androidSpecificPrecompile(sk_sp<SkData> androidStyleKey) {
+
+#if 0
+    sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
+            rteDict,
+            pipelineDesc,
+            renderPassDesc,
+            PipelineCreationFlags::kForPrecompilation);
+    if (!pipeline) {
+        SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+        return false;
+    }
+#endif
+
+    return true;
+}
+
 } // namespace skgpu::graphite

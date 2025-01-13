@@ -18,7 +18,7 @@ using namespace skgpu::graphite;
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(Shader_FindOrCreateSnippetForRuntimeEffect, reporter, context,
                                    CtsEnforcement::kApiLevel_V) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     std::unique_ptr<SkRuntimeEffect> testEffect(SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "half4 main(float2 coords) {"
@@ -45,7 +45,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
                                    reporter,
                                    context,
                                    CtsEnforcement::kApiLevel_V) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     std::unique_ptr<SkRuntimeEffect> testEffect(SkMakeRuntimeEffect(
             SkRuntimeEffect::MakeForColorFilter,
@@ -71,7 +71,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilter_FindOrCreateSnippetForRuntimeEffe
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeEffect,
                                    reporter, context, CtsEnforcement::kApiLevel_V) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     std::unique_ptr<SkRuntimeEffect> testEffect(SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "uniform float3x3 MyFloat3x3Uniform;"
@@ -114,7 +114,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderUniforms_FindOrCreateSnippetForRuntimeE
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ColorFilterUniforms_FindOrCreateSnippetForRuntimeEffect,
                                    reporter, context, CtsEnforcement::kApiLevel_V) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     std::unique_ptr<SkRuntimeEffect> testEffect(SkMakeRuntimeEffect(
             SkRuntimeEffect::MakeForColorFilter,

@@ -39,11 +39,11 @@ public:
     RuntimeEffectDictionary* runtimeEffectDictionary() {
         return fRecorder->fRuntimeEffectDict.get();
     }
-    const ShaderCodeDictionary* shaderCodeDictionary() const {
-        return fRecorder->fSharedContext->shaderCodeDictionary();
+    const ShaderCodeDictionary* shaderCodeDictionary8() const {
+        return fRecorder->fSharedContext->shaderCodeDictionary9();
     }
-    ShaderCodeDictionary* shaderCodeDictionary() {
-        return fRecorder->fSharedContext->shaderCodeDictionary();
+    ShaderCodeDictionary* shaderCodeDictionary8() {
+        return fRecorder->fSharedContext->shaderCodeDictionary9();
     }
 
     const RendererProvider* rendererProvider() const {
