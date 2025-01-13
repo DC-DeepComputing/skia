@@ -16,6 +16,24 @@
       "message": "Just curious, should these tests work? If so, is there an associated bug for this segfault?",
       "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13a8782b_dec058de",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-13T18:51:11Z",
+      "side": 1,
+      "message": "We already have:\n   b/380049954 - for Native/Vulkan\nand\n   b/380039123 - for dawn::native::ErrorScopeStack::Push for Dawn/Metal\n\nI\u0027m going to add two new ones for:\n   Dawn/GLES  - hard crash\n   Dawn/Metal - thread race in Buffer creation\n   \nSo - not yet but before this lands.",
+      "parentUuid": "0ebeecc5_ca765a82",
+      "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
