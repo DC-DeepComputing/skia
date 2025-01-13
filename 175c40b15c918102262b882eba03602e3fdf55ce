@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "40f29697_0b5ff831",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-13T17:45:54Z",
+      "side": 1,
+      "message": "Sounds good. That said, I\u0027m going to leave it for now until I see how the rendering shakes out rather than having to patch it back in later.",
+      "parentUuid": "f178d85b_7e975ba0",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "51c7e348_e2441b10",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 2
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "72958601_abcecd49",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-13T17:45:54Z",
+      "side": 1,
+      "message": "My plan was to put it in RasterPathUtils, so I moved it there -- unless you think it has more general use beyond atlasing.\n\nDo you think we don\u0027t need the ANDROID_FRAMEWORK part for clips?",
+      "parentUuid": "51c7e348_e2441b10",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7e218afc_25e6d109",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 2
@@ -77,6 +125,30 @@
       "writtenOn": "2025-01-13T16:02:10Z",
       "side": 1,
       "message": "helper function on DrawAtlas? e.g. `DrawAtlas::getListIndex(PlotLocator)`?",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 33
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07581896_50101fb4",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-13T17:45:54Z",
+      "side": 1,
+      "message": "Good idea, done.",
+      "parentUuid": "7e218afc_25e6d109",
       "range": {
         "startLine": 110,
         "startChar": 0,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4b56dc51_82b1fd6f",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-13T17:45:54Z",
+      "side": 1,
+      "message": "Ah, I looked for something like that and didn\u0027t find it. I\u0027ll do it as a follow-up.",
+      "parentUuid": "c9c5867f_208f5776",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3183dddf_db69f1d2",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 2
@@ -123,6 +219,30 @@
       "writtenOn": "2025-01-13T16:02:10Z",
       "side": 1,
       "message": "This ends up using the element\u0027s local-to-device transform, plus the post translate to place it into the plot\u0027s bitmap. `renderPos` seems to account for the plot location and the locator\u0027s offset within the atlas texture, but with us removing the integer translation from the keys, don\u0027t we also need to account for removing that offset when we render to the plot?",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 79
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62291d5e_2ab33999",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-13T17:45:54Z",
+      "side": 1,
+      "message": "As best as I can tell this is the same pattern as RasterPathAtlas uses, just with multiple mask renders. I believe RasterMaskHelper::drawShape()/drawClip() does the translation handling for us.",
+      "parentUuid": "3183dddf_db69f1d2",
       "range": {
         "startLine": 255,
         "startChar": 0,
