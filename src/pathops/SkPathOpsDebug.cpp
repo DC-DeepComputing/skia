@@ -15,6 +15,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkMutex.h"
+#include "src/core/SkOSFile.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkIntersections.h"
 #include "src/pathops/SkOpAngle.h"
@@ -1370,6 +1371,17 @@ void SkOpAngle::debugValidate() const {
 
 void SkOpAngle::debugValidateNext() const {
 #if !FORCE_RELEASE
+    auto findInSkTDArray = [](SkTDArray<const SkOpAngle*> angles, const SkOpAngle* angle)
+    {
+        for (int idx = 0; idx < angles.size(); ++idx) {
+            if (angles[idx] == angle) {
+                return true;
+            }
+        }
+
+        return false;
+    };
+
     const SkOpAngle* first = this;
     const SkOpAngle* next = first;
     SkTDArray<const SkOpAngle*> angles;
@@ -1380,7 +1392,7 @@ void SkOpAngle::debugValidateNext() const {
         if (next == first) {
             break;
         }
-        SkASSERT_RELEASE(!angles.contains(next));
+        SkASSERT_RELEASE(!findInSkTDArray(angles, next));
         if (!next) {
             return;
         }
