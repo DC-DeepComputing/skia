@@ -598,12 +598,12 @@ void colorfilter_subtest(const KeyContext& keyContext,
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
                                    CtsEnforcement::kNextRelease) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>(false); //$$
 
     SkColorInfo ci(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
-    KeyContext keyContext(context->priv().caps(), dict, rtEffectDict.get(), ci);
+    KeyContext keyContext(context->priv().caps(), dict, rtEffectDict.get(), ci, false); //$$
 
     PipelineDataGatherer gatherer(Layout::kMetal);
 

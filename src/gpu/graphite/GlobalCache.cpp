@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -36,6 +38,31 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+}
+
+void GlobalCache::setAndroidStyleCallback(AndroidStyleCBFunc callback, void* callbackData) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fAndroidStyleCallback = callback;
+    fData = callbackData;
+}
+
+void GlobalCache::invokeCallback(const BlobOStuff& blob) {
+    AndroidStyleCBFunc tmpCB = nullptr;
+    void* tmpData = nullptr;
+
+    {
+        // We want to get a consistent callback/data pair but not invoke the callback
+        // w/in our lock.
+        SkAutoSpinlock lock{fSpinLock};
+
+        tmpCB = fAndroidStyleCallback;
+        tmpData = fData;
+    }
+
+    if (tmpCB) {
+        tmpCB(tmpData, blob.snap());
+    }
 }
 
 void GlobalCache::deleteResources() {
@@ -135,7 +162,7 @@ enum class PipelineCreationRace {
         static_cast<int>(PipelineCreationRace::kMaxValue) + 1;
 #endif // SK_HISTOGRAMS_ENABLED
 
-sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
+sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline1(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
 

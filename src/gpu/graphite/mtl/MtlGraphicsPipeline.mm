@@ -290,7 +290,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     UniquePaintParamsID paintID = pipelineDesc.paintParamsID();
 
     std::unique_ptr<ShaderInfo> shaderInfo = ShaderInfo::Make(sharedContext->caps(),
-                                                              sharedContext->shaderCodeDictionary(),
+                                                              sharedContext->shaderCodeDictionary9(),
                                                               runtimeDict,
                                                               step,
                                                               paintID,
@@ -336,7 +336,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 #endif
 
     std::string pipelineLabel =
-            GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
+            GetPipelineLabel(sharedContext->shaderCodeDictionary9(), renderPassDesc, step, paintID);
     return Make(sharedContext,
                 pipelineLabel,
                 pipelineInfo,

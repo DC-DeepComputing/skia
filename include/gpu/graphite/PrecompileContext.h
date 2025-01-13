@@ -13,6 +13,8 @@
 
 #include <memory>
 
+class SkData;
+
 namespace skgpu::graphite {
 
 class SharedContext;
@@ -26,6 +28,8 @@ public:
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();
     const PrecompileContextPriv priv() const;  // NOLINT(readability-const-return-type)
+
+    bool androidSpecificPrecompile(sk_sp<SkData> androidStyleKey);
 
 private:
     friend class PrecompileContextPriv;
