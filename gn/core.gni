@@ -725,6 +725,7 @@ skia_pathops_sources = [
   "$_src/pathops/SkPathOpsCurve.h",
   "$_src/pathops/SkPathOpsDebug.cpp",
   "$_src/pathops/SkPathOpsDebug.h",
+  "$_src/pathops/SkPathOpsDispatch.cpp",
   "$_src/pathops/SkPathOpsLine.cpp",
   "$_src/pathops/SkPathOpsLine.h",
   "$_src/pathops/SkPathOpsOp.cpp",

@@ -17,6 +17,7 @@
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsCurve.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
 #include "src/pathops/SkPathOpsTypes.h"
@@ -405,7 +406,7 @@ static bool set_result_path(SkPath* result, const SkPath& path, SkPathFillType f
     return true;
 }
 
-bool AsWinding(const SkPath& path, SkPath* result) {
+bool skpathopsinternal::AsWinding(const SkPath& path, SkPath* result) {
     if (!path.isFinite()) {
         return false;
     }

@@ -12,6 +12,8 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTDArray.h"
 
+#include <optional>
+
 struct SkRect;
 
 
@@ -27,37 +29,40 @@ enum SkPathOp {
     kReverseDifference_SkPathOp,  //!< subtract the first path from the op path
 };
 
+namespace skia {
+namespace pathops {
+
 /** Set this path to the result of applying the Op to this path and the
-    specified path: this = (this op operand).
-    The resulting path will be constructed from non-overlapping contours.
-    The curve order is reduced where possible so that cubics may be turned
-    into quadratics, and quadratics maybe turned into lines.
+ specified path: this = (this op operand).
+ The resulting path will be constructed from non-overlapping contours.
+ The curve order is reduced where possible so that cubics may be turned
+ into quadratics, and quadratics maybe turned into lines.
 
-    Returns true if operation was able to produce a result;
-    otherwise, result is unmodified.
+ Returns true if operation was able to produce a result;
+ otherwise, result is unmodified.
 
-    @param one The first operand (for difference, the minuend)
-    @param two The second operand (for difference, the subtrahend)
-    @param op The operator to apply.
-    @param result The product of the operands. The result may be one of the
-                  inputs.
-    @return True if the operation succeeded.
-  */
-bool SK_API Op(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result);
+ @param one The first operand (for difference, the minuend)
+ @param two The second operand (for difference, the subtrahend)
+ @param op The operator to apply.
+ @param result The product of the operands. The result may be one of the
+ inputs.
+ @return True if the operation succeeded.
+ */
+std::optional<SkPath> SK_API Op(const SkPath& one, const SkPath& two, SkPathOp op);
 
 /** Set this path to a set of non-overlapping contours that describe the
-    same area as the original path.
-    The curve order is reduced where possible so that cubics may
-    be turned into quadratics, and quadratics maybe turned into lines.
+ same area as the original path.
+ The curve order is reduced where possible so that cubics may
+ be turned into quadratics, and quadratics maybe turned into lines.
 
-    Returns true if operation was able to produce a result;
-    otherwise, result is unmodified.
+ Returns true if operation was able to produce a result;
+ otherwise, result is unmodified.
 
-    @param path The path to simplify.
-    @param result The simplified path. The result may be the input.
-    @return True if simplification succeeded.
-  */
-bool SK_API Simplify(const SkPath& path, SkPath* result);
+ @param path The path to simplify.
+ @param result The simplified path. The result may be the input.
+ @return True if simplification succeeded.
+ */
+std::optional<SkPath> SK_API Simplify(const SkPath& path);
 
 /** Set the resulting rectangle to the tight bounds of the path.
 
@@ -65,21 +70,61 @@ bool SK_API Simplify(const SkPath& path, SkPath* result);
     @param result The tight bounds of the path.
     @return True if the bounds could be computed.
   */
-bool SK_API TightBounds(const SkPath& path, SkRect* result);
+std::optional<SkRect> TightBounds(const SkPath& path);
 
 /** Set the result with fill type winding to area equivalent to path.
-    Returns true if successful. Does not detect if path contains contours which
-    contain self-crossings or cross other contours; in these cases, may return
-    true even though result does not fill same area as path.
+ Returns true if successful. Does not detect if path contains contours which
+ contain self-crossings or cross other contours; in these cases, may return
+ true even though result does not fill same area as path.
 
-    Returns true if operation was able to produce a result;
-    otherwise, result is unmodified. The result may be the input.
+ Returns true if operation was able to produce a result;
+ otherwise, result is unmodified. The result may be the input.
 
-    @param path The path typically with fill type set to even odd.
-    @param result The equivalent path with fill type set to winding.
-    @return True if winding path was set.
-  */
-bool SK_API AsWinding(const SkPath& path, SkPath* result);
+ @param path The path typically with fill type set to even odd.
+ @param result The equivalent path with fill type set to winding.
+ @return True if winding path was set.
+ */
+std::optional<SkPath> SK_API AsWinding(const SkPath& path);
+
+}}  // namespaces
+
+//  These are legacy functions that forward to the pathops:: equivalents.
+
+[[deprecated]]
+static inline bool Op(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* resultPath) {
+    if (auto result = skia::pathops::Op(one, two, op)) {
+        *resultPath = *result;
+        return true;
+    }
+    return false;
+}
+
+[[deprecated]]
+static inline bool Simplify(const SkPath& path, SkPath* resultPath) {
+    if (auto result = skia::pathops::Simplify(path)) {
+        *resultPath = *result;
+        return true;
+    }
+    return false;
+}
+
+[[deprecated]]
+static inline bool TightBounds(const SkPath& path, SkRect* resultRect) {
+    if (auto result = skia::pathops::TightBounds(path)) {
+        *resultRect = *result;
+        return true;
+    }
+    return false;
+}
+
+[[deprecated]]
+static inline bool AsWinding(const SkPath& path, SkPath* resultPath) {
+    if (auto result = skia::pathops::AsWinding(path)) {
+        *resultPath = *result;
+        return true;
+    }
+    return false;
+}
 
 /** Perform a series of path operations, optimized for unioning many paths together.
   */

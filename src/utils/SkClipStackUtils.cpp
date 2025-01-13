@@ -36,7 +36,9 @@ void SkClipStack_AsPath(const SkClipStack& cs, SkPath* path) {
             // TODO: Once expanding clip ops are removed, we can switch the iterator to be top
             // to bottom, which allows us to break here on encountering a replace op.
         } else {
-            Op(*path, operand, (SkPathOp)elementOp, path);
+            if (auto result = skia::pathops::Op(*path, operand, (SkPathOp)elementOp)) {
+                *path = *result;
+            }
         }
     }
 }
