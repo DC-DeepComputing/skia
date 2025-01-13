@@ -14,8 +14,11 @@
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/gpu/MemoryCache.h"
+
+#include "src/base/SkSpinlock.h"
 
 #include <functional>
 
@@ -614,6 +617,33 @@ public:
     }
 
 private:
+
+    // This is intended to be an example of a Precompilation Callback. For DM it will collect
+    // all the Android-style keys that are given to it and, at the end, hand them DM for ...
+    class AndroidStyleCBHandler {
+    public:
+        static void CallBack(void* data, sk_sp<SkData> payload) {
+            AndroidStyleCBHandler* b = reinterpret_cast<AndroidStyleCBHandler*>(data);
+
+            b->add(std::move(payload));
+        }
+
+        // Add an Android-style key to the map
+        void add(sk_sp<SkData> payload) SK_EXCLUDES(fSpinLock);
+
+        // Retrieve all the unique collected keys
+        void retrieve(std::vector<sk_sp<SkData>>*) SK_EXCLUDES(fSpinLock);
+
+    private:
+        mutable SkSpinlock fSpinLock;
+
+        // Simple helper to hash the Android-style key. TODO: should provide its internal hash
+        // obviating the need for this?
+        static uint32_t hash_data(sk_sp<SkData>);
+
+        skia_private::THashMap<uint32_t, sk_sp<SkData>> fMap SK_GUARDED_BY(fSpinLock);
+    };
+
     Result drawSrc(const Src&,
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*) const;
@@ -621,6 +651,7 @@ private:
 
     mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
     mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
+    mutable std::unique_ptr<AndroidStyleCBHandler> fAndroidStyleCBHandler;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE

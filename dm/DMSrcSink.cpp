@@ -2298,6 +2298,8 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
 
     UniqueKeyUtils::FetchUniqueKeys(fPrecompileContext.get(), &origKeys);
 
+
+
     SkDEBUGCODE(int numBeforeReset = globalCache->numGraphicsPipelines();)
     SkASSERT(numBeforeReset == (int) origKeys.size());
 
@@ -2376,25 +2378,56 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
     return Result::Ok();
 }
 
+void GraphitePrecompileTestingSink::AndroidStyleCBHandler::add(sk_sp<SkData> payload) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    uint32_t hash = hash_data(payload);
+
+    sk_sp<SkData>* data = fMap.find(hash);
+    if (!data) {
+        fMap.set(hash, payload);
+    }
+}
+
+void GraphitePrecompileTestingSink::AndroidStyleCBHandler::retrieve(std::vector<sk_sp<SkData>>* result) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    result->reserve(fMap.count());
+
+    fMap.foreach([result](int32_t hash, sk_sp<SkData> data) {
+        result->push_back(data);
+    });
+}
+
+uint32_t GraphitePrecompileTestingSink::AndroidStyleCBHandler::hash_data(sk_sp<SkData> payload) {
+    return SkGoodHash()(payload);
+}
+
 Result GraphitePrecompileTestingSink::draw(const Src& src,
                                            SkBitmap* dst,
                                            SkWStream* dstStream,
                                            SkString* log) const {
-    skiatest::graphite::TestOptions options = fOptions;
+    using namespace skgpu::graphite;
+    using namespace skiatest::graphite;
+
+    TestOptions options = fOptions;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
     SkASSERT(!options.fContextOptions.fOptionsPriv);
-    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
     src.modifyGraphiteContextOptions(&options.fContextOptions);
 
-    skiatest::graphite::ContextFactory factory(options);
+    ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
-    skgpu::graphite::Context* context = ctxInfo.fContext;
+    Context* context = ctxInfo.fContext;
     if (!context) {
         return Result::Fatal("Could not create a context.");
     }
+
+    fAndroidStyleCBHandler.reset(new AndroidStyleCBHandler);
+    context->setAndroidStyleCallback(AndroidStyleCBHandler::CallBack, fAndroidStyleCBHandler.get());
 
     // First, clear out any miscellaneous Pipelines that might be cluttering up the global cache.
     context->priv().globalCache()->resetGraphicsPipelines();
@@ -2414,6 +2447,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    SkDEBUGCODE(GlobalCache* globalCache = fPrecompileContext->priv().globalCache();)
+    SkDEBUGCODE(int numBeforeSecondDraw = globalCache->numGraphicsPipelines();)
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2424,7 +2460,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     fRecorder.reset();
 
-    // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
+    SkASSERT(numBeforeSecondDraw == globalCache->numGraphicsPipelines());
+
     return Result::Ok();
 }
 #endif // SK_ENABLE_PRECOMPILE
