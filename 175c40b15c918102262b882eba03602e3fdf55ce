@@ -16,6 +16,121 @@
       "message": "PTAL",
       "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f178d85b_7e975ba0",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T16:02:10Z",
+      "side": 1,
+      "message": "If we always use NN sampling for the mask, and we do the explicit inverse rendering like you have in this CL, then I don\u0027t think we need to add padding.  That\u0027s all part of how the CoverageMaskRenderStep samples its texture, but if we are embedding in the PaintParams, I think we can control things more.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51c7e348_e2441b10",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T16:02:10Z",
+      "side": 1,
+      "message": "That seems like a good idea. At the very least, we could put a version of this on `Transform` and drop the SK_BUILD_FOR_ANDROID_FRAMEWORK case possibly?",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e218afc_25e6d109",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T16:02:10Z",
+      "side": 1,
+      "message": "helper function on DrawAtlas? e.g. `DrawAtlas::getListIndex(PlotLocator)`?",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 33
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9c5867f_208f5776",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T16:02:10Z",
+      "side": 1,
+      "message": "I don\u0027t know how well it fits in regards to cleaning up entries, but I just learned about SkTMultiMap having a `find()` that takes a predicate function and already handles storing a linked list of values that match the key.",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3183dddf_db69f1d2",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T16:02:10Z",
+      "side": 1,
+      "message": "This ends up using the element\u0027s local-to-device transform, plus the post translate to place it into the plot\u0027s bitmap. `renderPos` seems to account for the plot location and the locator\u0027s offset within the atlas texture, but with us removing the integer translation from the keys, don\u0027t we also need to account for removing that offset when we render to the plot?",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 79
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
