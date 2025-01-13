@@ -455,6 +455,8 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 					// This GM is larger than Dawn compat's max texture size.
 					skip(ALL, "gm", ALL, "wacky_yuv_formats_domain")
+
+					skip(ALL, "test", ALL, "ThreadedPipelineCompilePurgingTest")
 				}
 
 				// b/373845830 - Precompile isn't thread-safe on either Dawn Metal
