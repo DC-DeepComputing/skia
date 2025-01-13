@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ee2d07c_67402563",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1057,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:45:22Z",
+      "side": 1,
+      "message": "Ah right, since kBGRA would trigger the swizzleNeedsGamutTransform path that picks the universal snippet.",
+      "parentUuid": "7331352a_7e6f9ea3",
+      "range": {
+        "startLine": 1057,
+        "startChar": 33,
+        "endLine": 1057,
+        "endChar": 51
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "686beaf5_0890229e",
@@ -226,6 +250,30 @@
       "side": 1,
       "message": "I currently have the shader encoding these cases with half2s {0, 0}, {0, 1}, {1, 0} and {1, 1}. This seemed slightly simpler to me, and I wasn\u0027t as concerned with copying this structure to the universal shader, since it would still be a little different in that it encodes cases in `srcAlpha.w`/`dstAlpha.w`. But is that ok with you, or is consistency between the two shaders more important? (e.g. we could handle both `args.x`/`args.y` and `srcAlpha.w`/`dstAlpha.w` in the universal shader exactly as you described above)",
       "parentUuid": "7e6e3ed8_47add3ef",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 49
+      },
+      "revId": "68dd6943dfbe6d3304ccc35f113ae815f00d8967",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f53807ba_ca1360bd",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:45:22Z",
+      "side": 1,
+      "message": "By `srcAlpha` and `dstAlpha`, are you referring to the `srcDEF_alpha` and `dstDEF_alpha` variables that were in my prototype?\n\nIf that\u0027s the case, then I agree that we can pack things differently between this specialization and the pending universal specialization given it allows us to stick to just two `half4`\u0027s in the more complicated case.\n\nBut I think the current encoding imposes more work in the fragment shader than we need to.  Since we are branching on the `unpremul` due to its cost already, and it\u0027s mutually exclusive with making things opaque, we can use that to simplify the encoding.\n\n    // - identity: {0, 0}\n    // - do premul: {0, 1}\n    // - do unpremul: {-1, 0}\n    // - make opaque: {1, 0}\n    if (args.x \u003c 0) {\n        // Unpremul case (mutually exclusive with other cases, and costly)\n        color \u003d unpremul(color);\n    } else {\n        // All other cases (identity, premul, make-opaque) are branchless\n        \n        // Opaque cases\n        //  1. No-op (opaque \u003d 0) -\u003e max(...) \u003d color.a -\u003e identity function\n        //  2. Make opaque (opaque \u003d 1) -\u003e max(...) \u003d 1.0 -\u003e make opaque\n        color.a \u003d max(color.a, args.x);\n\n        // Premul cases:\n        //  1. No-op (doPremul \u003d 0) -\u003e max(...) \u003d 1.0 -\u003e identity function\n        //  2. Premultiply (doPremul \u003d 1) -\u003e max(...) \u003d color.a -\u003e premul\n        color.rgb \u003d color.rgb * max(color.a, 1.0 - args.y);\n    }\n    \n    \nThis also removes the need to do the multiplies and subtractions to get the final parameters. We could take this further and swap the premul and identity cases so that args.y is 0 for premul and 1 for identity.  But that just gets back 1 subtraction and we have the benefit of the values mostly corresponding to true/false.",
+      "parentUuid": "d89eff54_5ad98648",
       "range": {
         "startLine": 123,
         "startChar": 0,

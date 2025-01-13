@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68dc189a_2efe71f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:45:22Z",
+      "side": 1,
+      "message": "I added a variation to handling the premul/unpremul cases reduces some math ops but adds an else to the if (unpremul).  I\u0027d expect that this would be no extra branching cost and maybe less instructions given the reduced handling of `args`, but I would still run it through your local benchmarking to see if it\u0027s no-cost or an improvement.\n\nI would guess that even if it\u0027s no-cost, the power usage would hopefully be a bit better. I also like the else in there because it highlights the exclusivity of the unpremul scenario.",
+      "revId": "e99f84f98ec61fd3d4b7e8613def0dbf5465efbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
