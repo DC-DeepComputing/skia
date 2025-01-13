@@ -52,6 +52,24 @@
       "parentUuid": "13a8782b_dec058de",
       "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "997e5b9d_0b85f5f0",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-13T19:18:11Z",
+      "side": 1,
+      "message": "I\u0027ve added b/389701894 both here and in the commit message.",
+      "parentUuid": "7e096e4f_a5242c47",
+      "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
