@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f15a40_3c71c0f0",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 2
+      },
+      "lineNbr": 477,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-13T18:37:35Z",
+      "side": 1,
+      "message": "And a bug for this thread race?",
+      "revId": "9f8e6af7ec70e38f3538bad6aea9e6b5a462147f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ebeecc5_ca765a82",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-13T18:37:35Z",
+      "side": 1,
+      "message": "Just curious, should these tests work? If so, is there an associated bug for this segfault?",
+      "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
