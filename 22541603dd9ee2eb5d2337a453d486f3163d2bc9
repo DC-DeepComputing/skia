@@ -22,6 +22,30 @@
       },
       "revId": "22541603dd9ee2eb5d2337a453d486f3163d2bc9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76757828_3a6ed7c3",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T14:51:44Z",
+      "side": 1,
+      "message": "I added a quote to clarify, but it\u0027s not backwards because this is setting the src color space.  For regular cases we want the transform to be sRGB -\u003e dst, and for skipXform cases we want it to be dst -\u003e dst \u003d\u003d no-op.",
+      "parentUuid": "2ea48b9c_cf1079e1",
+      "range": {
+        "startLine": 204,
+        "startChar": 24,
+        "endLine": 205,
+        "endChar": 62
+      },
+      "revId": "22541603dd9ee2eb5d2337a453d486f3163d2bc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
