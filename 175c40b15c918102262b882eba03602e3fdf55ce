@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0183f5a6_935cc119",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:22:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "40f29697_0b5ff831",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51c7e348_e2441b10",
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "My plan was to put it in RasterPathUtils, so I moved it there -- unless you think it has more general use beyond atlasing.\n\nDo you think we don\u0027t need the ANDROID_FRAMEWORK part for clips?",
       "parentUuid": "51c7e348_e2441b10",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b465ed_a2c19ed7",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:22:52Z",
+      "side": 1,
+      "message": "That looks like a performance optimization that I\u0027m hoping is unnecessary in android so I was hoping to start from a clean slate.\n\nI was thinking that since it could apply to compute atlases, it was more general than just RasterPathUtils.",
+      "parentUuid": "72958601_abcecd49",
       "range": {
         "startLine": 69,
         "startChar": 19,
@@ -206,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e43593d_071c4e3a",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:22:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4b56dc51_82b1fd6f",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3183dddf_db69f1d2",
@@ -243,6 +315,30 @@
       "side": 1,
       "message": "As best as I can tell this is the same pattern as RasterPathAtlas uses, just with multiple mask renders. I believe RasterMaskHelper::drawShape()/drawClip() does the translation handling for us.",
       "parentUuid": "3183dddf_db69f1d2",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 79
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a08b359_99f4738a",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-13T20:22:52Z",
+      "side": 1,
+      "message": "Thanks that helped me find what I was looking for: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/PathAtlas.cpp;drc\u003da0c37ec4ca3bf73cca92e1160befeb7109be4329;l\u003d61\n\nRasterPathAtlas works because the transform that\u0027s passed to onAddShape and eventually the RasterMaskHelper is pre-adjusted by PathAtlas to remove the regular integer translation in the local-to-device transform.",
+      "parentUuid": "62291d5e_2ab33999",
       "range": {
         "startLine": 255,
         "startChar": 0,
