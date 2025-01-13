@@ -34,6 +34,24 @@
       "parentUuid": "0ebeecc5_ca765a82",
       "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7e096e4f_a5242c47",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-13T18:57:14Z",
+      "side": 1,
+      "message": "It would be nice to have a comment here linking to these, so that someone in the future who wants to remove these has some idea what to look at.",
+      "parentUuid": "13a8782b_dec058de",
+      "revId": "9d8b968a4759b3d140589394c2f34ed476c06029",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
