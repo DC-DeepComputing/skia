@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d017879f_4a04e7dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-14T14:28:38Z",
+      "side": 1,
+      "message": "We may need to fix all internal users upfront. If clients also build with `Werror`, maybe we should only mark them as deprecated at the very end, after converting the world.\n\n```\nFAILED: obj/src/xps/xps.SkXPSDevice.obj \n\nC:\\b\\s\\w\\ir\\skia\\src\\xps\\SkXPSDevice.cpp(1628): error C2220: the following warning is treated as an error\nC:\\b\\s\\w\\ir\\skia\\src\\xps\\SkXPSDevice.cpp(1628): warning C4996: \u0027Simplify\u0027: was declared deprecated\n```",
+      "revId": "cc6b680c3168a8bd3aea2d8dcf7a89fc7a75f327",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba29e42_1773093d",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-14T14:28:38Z",
+      "side": 1,
+      "message": "Since c++17 I think we can nest namespace declarations: `namespace skia::pathops {`.",
+      "revId": "cc6b680c3168a8bd3aea2d8dcf7a89fc7a75f327",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
