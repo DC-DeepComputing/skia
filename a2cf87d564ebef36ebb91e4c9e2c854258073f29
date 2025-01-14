@@ -16,6 +16,24 @@
       "message": "LGTM but it might be a good idea to give it even more time.  IIRC the actual SKP generation part takes 30-40 minutes, so even 7 hours might be cutting it close.  I seem to remember looking into downloading a daily build of chrome so that we don\u0027t have to build it just-in-time, but I don\u0027t remember what, if anything, came of that.",
       "revId": "a2cf87d564ebef36ebb91e4c9e2c854258073f29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69eb9cad_2eedfc18",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-14T20:22:19Z",
+      "side": 1,
+      "message": "Changed to 8 hours.\n\nEven just using the latest Chrome Canary (if newer than the last run, might be easier since it is public) would probably be fine. Usually there are two of those a day anyway.",
+      "parentUuid": "568599a7_f31f36ba",
+      "revId": "a2cf87d564ebef36ebb91e4c9e2c854258073f29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
