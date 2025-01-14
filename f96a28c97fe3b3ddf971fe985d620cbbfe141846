@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6d4c11b_a80fa6b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-14T15:09:07Z",
+      "side": 1,
+      "message": "I also adjusted the global graphics pipeline cache limit, for tests only, to make PaintParamsKeyTestReduced less flaky, but consulting with Rob we\u0027d rather this not be necessary (e.g. by providing a way in the public API to avoid precompiling color space xform specializations).",
+      "revId": "f96a28c97fe3b3ddf971fe985d620cbbfe141846",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
