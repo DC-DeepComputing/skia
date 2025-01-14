@@ -31,7 +31,6 @@
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/utils/SkTextUtils.h"
 #include "src/image/SkImageGeneratorPriv.h"
 #include "tools/ToolUtils.h"
@@ -56,14 +55,14 @@ static void draw_vector_logo(SkCanvas* canvas, const SkRect& viewBox) {
     SkPath path;
     SkRect iBox, skiBox, skiaBox;
     SkTextUtils::GetPath("SKI", 3, SkTextEncoding::kUTF8, 0, 0, font, &path);
-    TightBounds(path, &skiBox);
+    skiBox = path.computeTightBounds();
     SkTextUtils::GetPath("I", 1, SkTextEncoding::kUTF8, 0, 0, font, &path);
-    TightBounds(path, &iBox);
+    iBox = path.computeTightBounds();
     iBox.offsetTo(skiBox.fRight - iBox.width(), iBox.fTop);
 
     const size_t textLen = strlen(kSkiaStr);
     SkTextUtils::GetPath(kSkiaStr, textLen, SkTextEncoding::kUTF8, 0, 0, font, &path);
-    TightBounds(path, &skiaBox);
+    skiaBox = path.computeTightBounds();
     skiaBox.outset(0, 2 * iBox.width() * (kVerticalSpacing + 1));
 
     const SkScalar accentSize = iBox.width() * kAccentScale;
