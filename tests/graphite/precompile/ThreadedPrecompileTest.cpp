@@ -267,8 +267,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedPrecompileTest,
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
-    // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
+    // Four types of gradient times six combinations (i.e., 4,8,N x color space) for each one.
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 24);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
                               stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
@@ -322,17 +322,17 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ThreadedCompilePrecompileTest,
 
     const GlobalCache::PipelineStats stats = context->priv().globalCache()->getStats();
 
-    // Four types of gradient times three combinations (i.e., 4,8,N) for each one.
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 12);
+    // Four types of gradient times six combinations (i.e., 4,8,N x color space) for each one.
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheAdditions == 24);
     REPORTER_ASSERT(reporter, stats.fGraphicsRaces > 0);
     REPORTER_ASSERT(reporter, stats.fGraphicsCacheMisses ==
                               stats.fGraphicsCacheAdditions + stats.fGraphicsRaces);
 
-    // The 48 comes from:
+    // The 72 comes from:
     //     4 gradient flavors (linear, radial, ...) *
     //     3 types of each flavor (4, 8, N) *
-    //     4 threads (2 normal-compile + 2 pre-compile)
-    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 48);
+    //     (2 normal-compile threads + 2 pre-compile threads * 2 color space shader variations)
+    REPORTER_ASSERT(reporter, stats.fGraphicsCacheHits + stats.fGraphicsCacheMisses == 72);
 }
 
 #endif // SK_GRAPHITE
