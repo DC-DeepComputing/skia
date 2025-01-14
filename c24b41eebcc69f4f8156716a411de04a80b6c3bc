@@ -16,6 +16,24 @@
       "message": "May need this here as well, since it looks like this is also failing `Vulkan` (see `Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Dawn_Vulkan`.\n\nHowever, non-Dawn also seems to be having issues? See `Test-Debian11-Clang-NUC11TZi5-GPU-IntelIrisXe-x86_64-Release-All-TSAN_Graphite_Native_Vulkan`.",
       "revId": "c24b41eebcc69f4f8156716a411de04a80b6c3bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d92aab05_a506138b",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 7
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-14T19:34:50Z",
+      "side": 1,
+      "message": "Both should be resolved over in https://skia-review.googlesource.com/c/skia/+/938297",
+      "parentUuid": "6f665626_72a75c10",
+      "revId": "c24b41eebcc69f4f8156716a411de04a80b6c3bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
