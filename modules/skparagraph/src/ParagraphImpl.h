@@ -208,6 +208,8 @@ public:
     void updateForegroundPaint(size_t from, size_t to, SkPaint paint) override;
     void updateBackgroundPaint(size_t from, size_t to, SkPaint paint) override;
 
+    void resetTextBlobCache() override;
+
     void visit(const Visitor&) override;
     void extendedVisit(const ExtendedVisitor&) override;
     int getPath(int lineNumber, SkPath* dest) override;
