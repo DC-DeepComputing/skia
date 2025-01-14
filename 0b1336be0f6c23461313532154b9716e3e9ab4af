@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "335bba79_12c52335",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-14T20:02:03Z",
+      "side": 1,
+      "message": "What do you think about having a helper on `Transform` like `getAtlasTransform(atlasOffset, transformedMaskOffset)`?",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 98
+      },
+      "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
