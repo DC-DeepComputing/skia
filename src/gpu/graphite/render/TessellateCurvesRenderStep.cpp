@@ -83,6 +83,8 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
                                                        StaticBufferManager* bufferManager)
         : RenderStep("TessellateCurvesRenderStep",
                      evenOdd ? "even-odd" : "winding",
+                     evenOdd ? RenderStepID::kTessellateCurvesEvenOdd
+                             : RenderStepID::kTessellateCurvesWinding,
                      Flags::kRequiresMSAA,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,

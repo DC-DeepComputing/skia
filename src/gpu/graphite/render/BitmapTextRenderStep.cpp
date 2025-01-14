@@ -61,9 +61,10 @@ std::string variant_name(skgpu::MaskFormat variant) {
 
 }  // namespace
 
-BitmapTextRenderStep::BitmapTextRenderStep(skgpu::MaskFormat variant)
+BitmapTextRenderStep::BitmapTextRenderStep(RenderStepID renderStepID, skgpu::MaskFormat variant)
         : RenderStep("BitmapTextRenderStep",
                      variant_name(variant),
+                     renderStepID,
                      Flags(variant),
                      /*uniforms=*/{{"subRunDeviceMatrix", SkSLType::kFloat4x4},
                                    {"deviceToLocal"     , SkSLType::kFloat4x4},

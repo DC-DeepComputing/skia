@@ -32,6 +32,8 @@ namespace skgpu::graphite {
 MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
         : RenderStep("MiddleOutFanRenderStep",
                      evenOdd ? "even-odd" : "winding",
+                     evenOdd ? RenderStepID::kMiddleOutFanEvenOdd
+                             : RenderStepID::kMiddleOutFanWinding,
                      Flags::kRequiresMSAA,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,

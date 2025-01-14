@@ -340,7 +340,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
     ShaderErrorHandler* errorHandler = caps.shaderErrorHandler();
 
-    const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID());
+    const RenderStep* step = sharedContext->rendererProvider()->lookup(pipelineDesc.renderStepID1());
     const bool useStorageBuffers = caps.storageBufferSupport();
 
     std::string vsCode, fsCode;
@@ -357,7 +357,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 #endif
 
     std::unique_ptr<ShaderInfo> shaderInfo = ShaderInfo::Make(&caps,
-                                                              sharedContext->shaderCodeDictionary(),
+                                                              sharedContext->shaderCodeDictionary9(),
                                                               runtimeDict,
                                                               step,
                                                               paintID,
@@ -402,7 +402,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     }
 
     std::string pipelineLabel =
-            GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
+            GetPipelineLabel(sharedContext->shaderCodeDictionary9(), renderPassDesc, step, paintID);
     wgpu::RenderPipelineDescriptor descriptor;
     // Always set the label for pipelines, dawn may need it for tracing.
     descriptor.label = pipelineLabel.c_str();

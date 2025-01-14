@@ -37,9 +37,9 @@ void DumpDescs(PrecompileContext* precompileContext,
                const GraphicsPipelineDesc& pipelineDesc,
                const RenderPassDesc& rpd) {
     const RendererProvider* rendererProvider = precompileContext->priv().rendererProvider();
-    const ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
+    const ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary5();
 
-    const RenderStep* rs = rendererProvider->lookup(pipelineDesc.renderStepID());
+    const RenderStep* rs = rendererProvider->lookup(pipelineDesc.renderStepID1());
     SkDebugf("GraphicsPipelineDesc: %u %s\n", pipelineDesc.paintParamsID().asUInt(), rs->name());
 
     dict->dump(pipelineDesc.paintParamsID());

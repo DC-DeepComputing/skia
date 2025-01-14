@@ -1966,14 +1966,15 @@ void check_draw(skiatest::Reporter* reporter,
 }
 
 KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     SkColorInfo destColorInfo = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                                             SkColorSpace::MakeSRGB());
     return KeyContext(context->priv().caps(),
                       dict,
                       rtDict,
-                      destColorInfo);
+                      destColorInfo,
+                      false); //$$
 }
 
 // This subtest compares the output of ExtractPaintData (applied to an SkPaint) and
@@ -2000,7 +2001,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               SkRandom* rand,
                               bool verbose) {
 
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     PaintParamsKeyBuilder builder(dict);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
@@ -2231,7 +2232,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>(false); //$$
 
 #if 1
     //----------------------
@@ -2294,7 +2295,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>(false); //$$
 
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 

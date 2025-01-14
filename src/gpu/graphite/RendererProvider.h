@@ -96,7 +96,7 @@ public:
         return {fRenderers.data(), fRenderers.size()};
     }
 
-    const RenderStep* lookup(uint32_t uniqueID) const;
+    const RenderStep* lookup(RenderStep::RenderStepID) const;
 
 #ifdef SK_ENABLE_VELLO_SHADERS
     // Compute shader-based path renderer and compositor.

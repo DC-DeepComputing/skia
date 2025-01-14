@@ -19,13 +19,18 @@ namespace skgpu::graphite {
  */
 class GraphicsPipelineDesc {
 public:
-    GraphicsPipelineDesc() : fRenderStepID(0), fPaintID(UniquePaintParamsID::InvalidID()) {}
-    GraphicsPipelineDesc(const RenderStep* renderStep, UniquePaintParamsID paintID)
-        : fRenderStepID(renderStep->uniqueID())
+    GraphicsPipelineDesc() : fRenderStepID1(RenderStep::RenderStepID::kInvalid)
+                           , fPaintID(UniquePaintParamsID::InvalidID()) {}
+    GraphicsPipelineDesc(RenderStep::RenderStepID renderStepID, UniquePaintParamsID paintID)
+        : fRenderStepID1(renderStepID)
         , fPaintID(paintID) {}
+    bool isValid() const {
+        return fRenderStepID1 != RenderStep::RenderStepID::kInvalid &&
+               fPaintID != UniquePaintParamsID::InvalidID();
+    }
 
     bool operator==(const GraphicsPipelineDesc& that) const {
-        return fRenderStepID == that.fRenderStepID && fPaintID == that.fPaintID;
+        return fRenderStepID1 == that.fRenderStepID1 && fPaintID == that.fPaintID;
     }
 
     bool operator!=(const GraphicsPipelineDesc& other) const {
@@ -34,7 +39,7 @@ public:
 
     // Describes the geometric portion of the pipeline's program and the pipeline's fixed state
     // (except for renderpass-level state that will never change between draws).
-    uint32_t renderStepID() const { return fRenderStepID; }
+    RenderStep::RenderStepID renderStepID1() const { return fRenderStepID1; }
     // UniqueID of the required PaintParams
     UniquePaintParamsID paintParamsID() const { return fPaintID; }
 
@@ -44,7 +49,7 @@ private:
     // is combined with the rest of the shader generated from the PaintParams. Because each
     // RenderStep is fixed, its pointer can be used as a proxy for everything that it specifies in
     // the GraphicsPipeline.
-    uint32_t fRenderStepID;
+    RenderStep::RenderStepID fRenderStepID1;
     UniquePaintParamsID fPaintID;
 };
 

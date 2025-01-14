@@ -86,6 +86,7 @@ std::string variant_name(PrimitiveType type, bool hasColor, bool hasTexCoords) {
 VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool hasTexCoords)
         : RenderStep("VerticesRenderStep",
                      variant_name(type, hasColor, hasTexCoords),
+                     RenderStepID::kInvalid,
                      hasColor ? Flags::kEmitsPrimitiveColor | Flags::kPerformsShading
                               : Flags::kPerformsShading,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},

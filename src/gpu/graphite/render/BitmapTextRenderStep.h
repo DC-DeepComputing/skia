@@ -27,7 +27,7 @@ struct ResourceBindingRequirements;
 
 class BitmapTextRenderStep final : public RenderStep {
 public:
-    BitmapTextRenderStep(skgpu::MaskFormat variant);
+    BitmapTextRenderStep(RenderStep::RenderStepID, skgpu::MaskFormat variant);
 
     ~BitmapTextRenderStep() override;
 

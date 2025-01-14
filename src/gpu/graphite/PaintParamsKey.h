@@ -124,6 +124,7 @@ private:
                                  int* currentIndex,
                                  SkArenaAlloc* arena) const;
 
+public:
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // from the Builder, or clone() puts the span in an arena.
     SkSpan<const uint32_t> fData;

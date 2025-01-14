@@ -26,7 +26,8 @@
 
 namespace skgpu::graphite {
 
-CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings)
+#if 0
+CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool)
         : RenderStep("CoverBoundsRenderStep",
                      tag,
                      Flags::kPerformsShading,
@@ -40,6 +41,55 @@ CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettin
                                         {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                                         {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
                                         {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
+#endif
+
+CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool)
+        : RenderStep("CoverBoundsRenderStep",
+                     tag,
+                     RenderStepID::kCoverBoundsNonAAFill,
+                     Flags::kPerformsShading,
+                     /*uniforms=*/{},
+                     PrimitiveType::kTriangleStrip,
+                     dsSettings,
+                     /*vertexAttrs=*/  {},
+                     /*instanceAttrs=*/{{"bounds", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                                        {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                                        {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+                                        {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                                        {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                                        {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
+
+    CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool, bool)
+            : RenderStep("CoverBoundsRenderStep",
+                         tag,
+                         RenderStepID::kCoverBoundsRegularCover,
+                         Flags::kPerformsShading,
+            /*uniforms=*/{},
+                         PrimitiveType::kTriangleStrip,
+                         dsSettings,
+            /*vertexAttrs=*/  {},
+            /*instanceAttrs=*/{{"bounds", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                               {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                               {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+                               {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                               {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                               {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
+
+    CoverBoundsRenderStep::CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool, bool, bool)
+            : RenderStep("CoverBoundsRenderStep",
+                         tag,
+                         RenderStepID::kCoverBoundsInverseCover,
+                         Flags::kPerformsShading,
+            /*uniforms=*/{},
+                         PrimitiveType::kTriangleStrip,
+                         dsSettings,
+            /*vertexAttrs=*/  {},
+            /*instanceAttrs=*/{{"bounds", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                               {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
+                               {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+                               {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                               {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                               {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
 
 CoverBoundsRenderStep::~CoverBoundsRenderStep() {}
 

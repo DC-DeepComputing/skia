@@ -104,8 +104,6 @@ public:
     // 'half4 primitiveColor' variable (defined in the calling code).
     virtual const char* fragmentColorSkSL() const { return R"()"; }
 
-    uint32_t uniqueID() const { return fUniqueID; }
-
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return fName.c_str(); }
@@ -150,6 +148,40 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
+    enum class RenderStepID : uint32_t {
+        kInvalid = 0,
+
+        kCircularArc = 1,
+
+        kAnalyticRRect = 2,
+        kAnalyticBlur = 3,
+
+        kPerEdgeAAQuad = 4,
+
+        kCoverBoundsNonAAFill = 5,
+        kCoverBoundsRegularCover = 6,
+        kCoverBoundsInverseCover = 7,
+
+        kCoverageMask = 8,
+
+        kBitmapTextA8 = 9, // 2
+        kBitmapText565 = 10, // 3
+        kBitmapText8888 = 11, // 4
+
+        kMiddleOutFanEvenOdd = 12,
+        kMiddleOutFanWinding = 13,
+
+        kSDFTextLCD = 14,
+        kSDFText = 15,
+
+        kTessellateCurvesEvenOdd = 16,
+        kTessellateCurvesWinding = 17,
+
+        kTessellateStrokes = 18,
+    };
+
+    RenderStepID renderStepID1() const { return fRenderStepID; }
+
     // TODO: Actual API to do things
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
     //    way to support that. It may mean that RenderSteps get state per draw.
@@ -176,6 +208,7 @@ protected:
     // the RenderStep constructor by subclasses.
     RenderStep(std::string_view className,
                std::string_view variantName,
+               RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
@@ -193,7 +226,7 @@ private:
 
     static Coverage GetCoverage(SkEnumBitMask<Flags>);
 
-    uint32_t fUniqueID;
+    RenderStepID fRenderStepID;
     SkEnumBitMask<Flags> fFlags;
     PrimitiveType        fPrimitiveType;
 

@@ -22,7 +22,11 @@ struct DepthStencilSettings;
 
 class CoverBoundsRenderStep final : public RenderStep {
 public:
-    CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings);
+//    CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool);
+
+    CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool);
+    CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool, bool);
+    CoverBoundsRenderStep(const char* tag, DepthStencilSettings dsSettings, bool, bool, bool, bool);
 
     ~CoverBoundsRenderStep() override;
 

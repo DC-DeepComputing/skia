@@ -120,7 +120,7 @@ void run_test(PrecompileContext* precompileContext,
 
     {
         const RendererProvider* rendererProvider = precompileContext->priv().rendererProvider();
-        const ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
+        const ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary5();
 
         std::vector<skgpu::UniqueKey> generatedKeys;
 
@@ -131,7 +131,7 @@ void run_test(PrecompileContext* precompileContext,
             RenderPassDesc renderPassDesc;
             UniqueKeyUtils::ExtractKeyDescs(precompileContext, key, &pipelineDesc, &renderPassDesc);
 
-            const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
+            const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID1());
             generated.push_back(GetPipelineLabel(dict, renderPassDesc, renderStep,
                                                  pipelineDesc.paintParamsID()));
         }

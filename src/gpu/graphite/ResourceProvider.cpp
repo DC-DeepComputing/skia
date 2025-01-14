@@ -29,14 +29,16 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
+
 namespace skgpu::graphite {
 
 // This is only used when tracing is enabled at compile time.
 [[maybe_unused]] static std::string to_str(const SharedContext* ctx,
                                            const GraphicsPipelineDesc& gpDesc,
                                            const RenderPassDesc& rpDesc) {
-    const ShaderCodeDictionary* dict = ctx->shaderCodeDictionary();
-    const RenderStep* step = ctx->rendererProvider()->lookup(gpDesc.renderStepID());
+    const ShaderCodeDictionary* dict = ctx->shaderCodeDictionary9();
+    const RenderStep* step = ctx->rendererProvider()->lookup(gpDesc.renderStepID1());
     return GetPipelineLabel(dict, rpDesc, step, gpDesc.paintParamsID());
 }
 
@@ -51,7 +53,7 @@ ResourceProvider::~ResourceProvider() {
     fResourceCache->shutdown();
 }
 
-sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
+sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline99(
         const RuntimeEffectDictionary* runtimeDict,
         const GraphicsPipelineDesc& pipelineDesc,
         const RenderPassDesc& renderPassDesc,
@@ -94,9 +96,11 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                                                 pipelineCreationFlags,
                                                 compilationID);
         if (pipeline) {
+            globalCache->invokeCallback7(fSharedContext,
+                                         BlobOStuff(pipelineDesc, renderPassDesc));
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
-            pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+            pipeline = globalCache->addGraphicsPipeline1(pipelineKey, std::move(pipeline));
         }
     }
     return pipeline;

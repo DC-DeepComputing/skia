@@ -81,18 +81,19 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                        static_cast<int>(InternalDrawTypeFlags::kCoverageMask)));
 
     static constexpr struct {
+        RenderStep::RenderStepID      fRenderStepID;
         skgpu::MaskFormat fFormat;
         DrawTypeFlags     fDrawType;
     } kBitmapTextVariants [] = {
         // We are using 565 here to represent LCD text, regardless of texture format
-        { skgpu::MaskFormat::kA8,   DrawTypeFlags::kBitmapText_Mask  },
-        { skgpu::MaskFormat::kA565, DrawTypeFlags::kBitmapText_LCD   },
-        { skgpu::MaskFormat::kARGB, DrawTypeFlags::kBitmapText_Color }
+        { RenderStep::RenderStepID::kBitmapTextA8,   skgpu::MaskFormat::kA8,   DrawTypeFlags::kBitmapText_Mask  },
+        { RenderStep::RenderStepID::kBitmapText565,  skgpu::MaskFormat::kA565, DrawTypeFlags::kBitmapText_LCD   },
+        { RenderStep::RenderStepID::kBitmapText8888, skgpu::MaskFormat::kARGB, DrawTypeFlags::kBitmapText_Color }
     };
 
     for (auto textVariant : kBitmapTextVariants) {
         fBitmapText[int(textVariant.fFormat)] =
-                makeFromStep(std::make_unique<BitmapTextRenderStep>(textVariant.fFormat),
+                makeFromStep(std::make_unique<BitmapTextRenderStep>(textVariant.fRenderStepID, textVariant.fFormat),
                              textVariant.fDrawType);
     }
     for (bool lcd : {false, true}) {
@@ -108,7 +109,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
                                   DrawTypeFlags::kSimpleShape);
     fNonAABoundsFill = makeFromStep(std::make_unique<CoverBoundsRenderStep>(
-                                            "non-aa-fill", kDirectDepthGreaterPass),
+                                            "non-aa-fill", kDirectDepthGreaterPass, true, true),
                                     DrawTypeFlags::kSimpleShape);
     fCircularArc = makeFromStep(std::make_unique<CircularArcRenderStep>(bufferManager),
                                 DrawTypeFlags::kSimpleShape);
@@ -128,8 +129,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     }
 
     // The tessellating path renderers that use stencil can share the cover steps.
-    auto coverFill = std::make_unique<CoverBoundsRenderStep>("regular-cover", kRegularCoverPass);
-    auto coverInverse = std::make_unique<CoverBoundsRenderStep>("inverse-cover", kInverseCoverPass);
+    auto coverFill = std::make_unique<CoverBoundsRenderStep>("regular-cover", kRegularCoverPass, true, true, true);
+    auto coverInverse = std::make_unique<CoverBoundsRenderStep>("inverse-cover", kInverseCoverPass, true, true, true, true);
 
     for (bool evenOdd : {false, true}) {
         // These steps can be shared by regular and inverse fills
@@ -184,9 +185,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 #endif
 }
 
-const RenderStep* RendererProvider::lookup(uint32_t uniqueID) const {
+const RenderStep* RendererProvider::lookup(RenderStep::RenderStepID renderStepID) const {
     for (auto&& rs : fRenderSteps) {
-        if (rs->uniqueID() == uniqueID) {
+        if (rs->renderStepID1() == renderStepID) {
             return rs.get();
         }
     }
