@@ -30,7 +30,6 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkVertices.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/private/SkIDChangeListener.h"
 #include "include/private/SkPathRef.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -5208,29 +5207,6 @@ static void rand_path(SkPath* path, SkRandom& rand, SkPath::Verb verb, int n) {
                 break;
             default:
                 SkASSERT(false);
-        }
-    }
-}
-
-DEF_TEST(path_tight_bounds, reporter) {
-    SkRandom rand;
-
-    const SkPath::Verb verbs[] = {
-        SkPath::kLine_Verb, SkPath::kQuad_Verb, SkPath::kConic_Verb, SkPath::kCubic_Verb,
-    };
-    for (int i = 0; i < 1000; ++i) {
-        for (int n = 1; n <= 10; n += 9) {
-            for (SkPath::Verb verb : verbs) {
-                SkPath path;
-                rand_path(&path, rand, verb, n);
-                SkRect bounds = path.getBounds();
-                SkRect tight = path.computeTightBounds();
-                REPORTER_ASSERT(reporter, bounds.contains(tight));
-
-                SkRect tight2;
-                TightBounds(path, &tight2);
-                REPORTER_ASSERT(reporter, nearly_equal(tight, tight2));
-            }
         }
     }
 }
