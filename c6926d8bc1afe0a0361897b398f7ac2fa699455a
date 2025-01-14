@@ -22,6 +22,30 @@
       },
       "revId": "c6926d8bc1afe0a0361897b398f7ac2fa699455a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9412474c_3df9535f",
+        "filename": "src/gpu/graphite/TextureProxy.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-14T19:44:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb4d3adc_15dc31f0",
+      "range": {
+        "startLine": 96,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 12
+      },
+      "revId": "c6926d8bc1afe0a0361897b398f7ac2fa699455a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
