@@ -67,10 +67,11 @@ static SkScalar get_area_coverage(const bool edgeAA[4], const SkPoint corners[4]
     SkPath pixel;
     pixel.addRect(SkRect::MakeXYWH(point.fX - 0.5f, point.fY - 0.5f, 1.f, 1.f));
 
-    SkPath intersection;
-    if (!Op(shape, pixel, kIntersect_SkPathOp, &intersection) || intersection.isEmpty()) {
+    auto result = skia::pathops::Op(shape, pixel, kIntersect_SkPathOp);
+    if (!result || result->isEmpty()) {
         return 0.f;
     }
+    SkPath intersection = *result;
 
     // Calculate area of the convex polygon
     SkScalar area = 0.f;
