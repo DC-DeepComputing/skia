@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19143126_cd149959",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-14T21:43:11Z",
+      "side": 1,
+      "message": "On a fresh MBP, my SDK location is `/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk`.\n\nAccording to Gemini:\n\n\"The difference between the two paths is that \"/Library/Developer/CommandLineTools/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk\" is the older, more detailed path to the macOS SDK within the Command Line Tools, while \"/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk\" is the newer, simplified path that most modern Xcode installations will use, essentially removing the \"Platforms\" directory layer; it\u0027s generally recommended to use the latter path in most cases today.\"\n\nSee also https://github.com/hedronvision/bazel-compile-commands-extractor/issues/68",
+      "revId": "2e6621309ed0050bdbac59e46777ad7b78df7d28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
