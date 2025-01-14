@@ -29139,8 +29139,8 @@
           "cache/vpython3"
         ]
       },
-      "execution_timeout_ns": 21600000000000,
-      "io_timeout_ns": 21600000000000,
+      "execution_timeout_ns": 25200000000000,
+      "io_timeout_ns": 25200000000000,
       "max_attempts": 2,
       "service_account": "skia-recreate-skps@skia-swarming-bots.iam.gserviceaccount.com"
     },
@@ -30062,8 +30062,8 @@
           "cache/vpython3"
         ]
       },
-      "execution_timeout_ns": 21600000000000,
-      "io_timeout_ns": 21600000000000,
+      "execution_timeout_ns": 25200000000000,
+      "io_timeout_ns": 25200000000000,
       "max_attempts": 2,
       "service_account": "skia-recreate-skps@skia-swarming-bots.iam.gserviceaccount.com"
     },
