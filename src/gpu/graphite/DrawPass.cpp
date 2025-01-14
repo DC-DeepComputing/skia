@@ -482,6 +482,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         TextureDataBlock paintTextures;
 
         if (draw.fPaintParams.has_value()) {
+            // drawPass->fRequiresDstSampler =
+            //         draw.fPaintParams->dstReadRequirement() == DstReadRequirement::kTextureSample;
+
             shaderID = ExtractPaintData(recorder,
                                         &gatherer,
                                         &builder,
@@ -568,7 +571,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
     const bool rebindTexturesOnPipelineChange =
-            recorder->priv().caps()->getDstReadRequirement() == DstReadRequirement::kTextureCopy;
+            recorder->priv().caps()->getDstReadRequirement() == DstReadRequirement::kTextureCopy ||
+            recorder->priv().caps()->getDstReadRequirement() == DstReadRequirement::kTextureSample;
 
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
