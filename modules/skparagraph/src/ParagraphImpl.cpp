@@ -1107,6 +1107,10 @@ void ParagraphImpl::updateForegroundPaint(size_t from, size_t to, SkPaint paint)
     for (auto& textStyle : fTextStyles) {
         textStyle.fStyle.setForegroundColor(paint);
     }
+    // We only need to reset the text blob cache in one case:
+    // when we build it. The other update methods either use text styles directly
+    // or require the full re-layout which will rebuild this cache, too
+    this->resetTextBlobCache();
 }
 
 void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint) {
@@ -1117,6 +1121,22 @@ void ParagraphImpl::updateBackgroundPaint(size_t from, size_t to, SkPaint paint)
 
     for (auto& textStyle : fTextStyles) {
         textStyle.fStyle.setBackgroundColor(paint);
+    }
+    // We need to background color on all the lines now
+    this->setHasBackground(true);
+}
+
+void ParagraphImpl::resetTextBlobCache() {
+    // Reset the text blob cache for all the lines
+    for (auto& line : fLines) {
+        line.resetTextBlobCache();
+    }
+}
+
+void ParagraphImpl::setHasBackground(bool value) {
+    // Set/clear the background color on all the lines
+    for (auto& line : fLines) {
+        line.setHasBackground(value);
     }
 }
 
