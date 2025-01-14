@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b654cfac_785a9673",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-14T19:04:03Z",
+      "side": 1,
+      "message": "Removed.\n\nComputePathAtlas uses the same key as it goes through PathAtlas code. Perhaps I should rename it to PathCachingUtils or something like that.",
+      "parentUuid": "05b465ed_a2c19ed7",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 41
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7e218afc_25e6d109",
@@ -339,6 +363,30 @@
       "side": 1,
       "message": "Thanks that helped me find what I was looking for: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/PathAtlas.cpp;drc\u003da0c37ec4ca3bf73cca92e1160befeb7109be4329;l\u003d61\n\nRasterPathAtlas works because the transform that\u0027s passed to onAddShape and eventually the RasterMaskHelper is pre-adjusted by PathAtlas to remove the regular integer translation in the local-to-device transform.",
       "parentUuid": "62291d5e_2ab33999",
+      "range": {
+        "startLine": 255,
+        "startChar": 0,
+        "endLine": 255,
+        "endChar": 79
+      },
+      "revId": "175c40b15c918102262b882eba03602e3fdf55ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d165b1b5_1ca8d0af",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-14T19:04:03Z",
+      "side": 1,
+      "message": "Missed that totally. I\u0027ve done a rebase of the atlas setup code so this doesn\u0027t get lost again and added the translation here.",
+      "parentUuid": "4a08b359_99f4738a",
       "range": {
         "startLine": 255,
         "startChar": 0,
