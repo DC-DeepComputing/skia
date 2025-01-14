@@ -44,6 +44,8 @@ PATHOPS_FILES = [
     "SkPathOpsCurve.h",
     "SkPathOpsDebug.cpp",
     "SkPathOpsDebug.h",
+    "SkPathOpsDispatch.cpp",
+    "SkPathOpsInternal.h",
     "SkPathOpsLine.cpp",
     "SkPathOpsLine.h",
     "SkPathOpsOp.cpp",
