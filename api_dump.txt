@@ -1,0 +1,10 @@
+1 srcs * 1 sinks + 0 tests == 1 tasks
+
+[1/1] 101MB RAM, 601MB peak, 0 queued, 1 threads:
+	grvk gm  destcolor  done
+Finished!
+1 srcs * 1 sinks + 0 tests == 1 tasks
+
+[1/1] 101MB RAM, 602MB peak, 0 queued, 1 threads:
+	grvk gm  destcolor  done
+Finished!
