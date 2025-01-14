@@ -383,6 +383,19 @@ void TextLine::buildTextBlob(TextRange textRange, const TextStyle& style, const 
                                    this->offset().fY + correctedBaseline);
 }
 
+void TextLine::resetTextBlobCache() {
+    if (!this->fTextBlobCachePopulated) {
+        return;
+    }
+
+    this->fTextBlobCache.clear();
+    this->fTextBlobCachePopulated = false;
+}
+
+void TextLine::setHasBackground(bool value) {
+    this->fHasBackground = value;
+}
+
 void TextLine::TextBlobRecord::paint(ParagraphPainter* painter, SkScalar x, SkScalar y) {
     if (fClippingNeeded) {
         painter->save();
