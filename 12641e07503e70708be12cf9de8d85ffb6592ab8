@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bd1a785_6a1de0b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-14T14:45:04Z",
+      "side": 1,
+      "message": "Awesome, lgtm",
+      "revId": "12641e07503e70708be12cf9de8d85ffb6592ab8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6d5828a_65215038",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1072,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-14T14:45:04Z",
+      "side": 1,
+      "message": "nit: I like lining up the `:` under the `?` when these get dangling.",
+      "range": {
+        "startLine": 1072,
+        "startChar": 20,
+        "endLine": 1072,
+        "endChar": 21
+      },
+      "revId": "12641e07503e70708be12cf9de8d85ffb6592ab8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
