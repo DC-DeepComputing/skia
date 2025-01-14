@@ -33,6 +33,24 @@
       "message": "Since c++17 I think we can nest namespace declarations: `namespace skia::pathops {`.",
       "revId": "cc6b680c3168a8bd3aea2d8dcf7a89fc7a75f327",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaebe6a9_18959386",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-14T15:38:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ba29e42_1773093d",
+      "revId": "cc6b680c3168a8bd3aea2d8dcf7a89fc7a75f327",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
