@@ -1114,7 +1114,22 @@ public:
         auto paragraph = builder.Build();
         paragraph->layout(this->size().width());
 
+        SkPaint paint;
+        paint.setColor(SK_ColorRED);
+        paint.setStyle(SkPaint::Style::kFill_Style);
+        paragraph->updateForegroundPaint(0, strlen(text), paint);
+        SkPaint background;
+        background.setColor(SK_ColorLTGRAY);
+        paragraph->updateBackgroundPaint(0, strlen(text), background);
         paragraph->paint(canvas, 0, 0);
+        SkPaint paint2;
+        paint2.setColor(SK_ColorGREEN);
+        paint2.setStyle(SkPaint::Style::kFill_Style);
+        paragraph->updateForegroundPaint(0, strlen(text), paint2);
+        SkPaint background2;
+        background2.setColor(SK_ColorDKGRAY);
+        paragraph->updateBackgroundPaint(0, strlen(text), background2);
+        paragraph->paint(canvas, 0, paragraph->getHeight() + 20);
     }
 };
 
