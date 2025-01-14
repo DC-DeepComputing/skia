@@ -70,8 +70,8 @@ public:
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
-    bool requiresDstTexture() const { return false;            }
-    bool requiresMSAA()       const { return fRequiresMSAA;    }
+    // bool requiresDstSampler() const { return fRequiresDstSampler; }
+    bool requiresMSAA()       const { return fRequiresMSAA;       }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
@@ -116,6 +116,7 @@ private:
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
     bool fRequiresMSAA = false;
+    // bool fRequiresDstSampler = false;
 
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines.
