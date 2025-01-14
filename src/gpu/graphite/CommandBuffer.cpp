@@ -93,6 +93,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> depthStencilTexture,
                                   const Texture* dstCopy,
                                   SkIRect dstCopyBounds,
+                                  std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler,
                                   SkISize viewportDims,
                                   const DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
@@ -132,6 +133,21 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                 {SkFilterMode::kNearest, SkTileMode::kClamp});
         fDstCopy.second = nearestNeighbor.get();
         this->trackResource(std::move(nearestNeighbor));
+    }
+
+    // We should never be using a dst copy and a dst sampler - they are mutually exclusive dst
+    // read requirements.
+    SkASSERT(!(fDstCopy.first && dstTextureSampler.first));
+    // dstTextureSampler should contain either 2 valid pointers or 2 nullptrs.
+    SkASSERT((dstTextureSampler.first && dstTextureSampler.second) ||
+             (!dstTextureSampler.first && !dstTextureSampler.second));
+
+    if (dstTextureSampler.first && dstTextureSampler.second) {
+        fDstTextureSampler = {std::move(dstTextureSampler.first), dstTextureSampler.second.get()};
+        // The dstTexture simply points to one of the RenderPass's attachmented textures, which is
+        // already tracked. However, the sampler is not used elsewhere and needs to be tracked on
+        // the command buffer.
+        this->trackResource(std::move(dstTextureSampler.second));
     }
 
     // We don't intersect the viewport with the render pass bounds or target size because it just
