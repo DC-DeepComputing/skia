@@ -75,8 +75,10 @@ public:
 
     // Experimental API that allows fast way to update some of "immutable" paragraph attributes
     // but not the text itself
+    // The next two methods currently require another layout
     virtual void updateTextAlign(TextAlign textAlign) = 0;
     virtual void updateFontSize(size_t from, size_t to, SkScalar fontSize) = 0;
+    // The next two methods do not require another layout
     virtual void updateForegroundPaint(size_t from, size_t to, SkPaint paint) = 0;
     virtual void updateBackgroundPaint(size_t from, size_t to, SkPaint paint) = 0;
 
