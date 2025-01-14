@@ -104,7 +104,7 @@ public:
     // 'half4 primitiveColor' variable (defined in the calling code).
     virtual const char* fragmentColorSkSL() const { return R"()"; }
 
-    uint32_t uniqueID() const { return fUniqueID; }
+    uint32_t uniqueID() const { return fUniqueID1; }
 
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
@@ -193,7 +193,7 @@ private:
 
     static Coverage GetCoverage(SkEnumBitMask<Flags>);
 
-    uint32_t fUniqueID;
+    uint32_t fUniqueID1;
     SkEnumBitMask<Flags> fFlags;
     PrimitiveType        fPrimitiveType;
 

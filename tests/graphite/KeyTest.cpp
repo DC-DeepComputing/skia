@@ -56,7 +56,7 @@ bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, context,
                                    CtsEnforcement::kApiLevel_V) {
     SkArenaAlloc arena{256};
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     // A builder without any data is invalid. The Builder and the PaintParamKeys can include
     // invalid IDs without themselves becoming invalid. Normally adding an invalid ID triggers an
@@ -85,7 +85,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyWithInvalidCodeSnippetIDTest, reporter, co
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context,
                                    CtsEnforcement::kApiLevel_V) {
     SkArenaAlloc arena{256};
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     PaintParamsKey keyA = create_key(dict, (int) BuiltInCodeSnippetID::kSolidColorShader, &arena);
     PaintParamsKey keyB = create_key(dict, (int) BuiltInCodeSnippetID::kSolidColorShader, &arena);
@@ -100,7 +100,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter, context,
                                    CtsEnforcement::kApiLevel_V) {
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary9();
 
     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
         PaintParamsKeyBuilder builder(dict);
