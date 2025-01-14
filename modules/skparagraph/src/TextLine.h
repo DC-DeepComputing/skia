@@ -142,6 +142,8 @@ public:
 
     bool endsWithHardLineBreak() const;
 
+    void resetTextBlobCache();
+
 private:
     std::unique_ptr<Run> shapeEllipsis(const SkString& ellipsis, const Cluster* cluster);
     void justify(SkScalar maxWidth);
