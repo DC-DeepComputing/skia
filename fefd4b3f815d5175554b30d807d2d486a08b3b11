@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63bb704c_586be215",
+        "filename": "src/codec/SkPngCodec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-15T14:02:47Z",
+      "side": 1,
+      "message": "IWYU wants this to be forward-declared.",
+      "revId": "fefd4b3f815d5175554b30d807d2d486a08b3b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
