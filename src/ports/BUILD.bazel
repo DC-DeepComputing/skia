@@ -119,6 +119,7 @@ skia_cc_library(
         "SkTypeface_FreeType.h",
         "//include/ports:typeface_freetype_hdrs",
     ],
+    defines = ["SK_TYPEFACE_FACTORY_FREETYPE"],
     implementation_deps = [
         "//:pathops",
         "@freetype",
@@ -190,6 +191,25 @@ skia_cc_library(
     visibility = ["//:__pkg__"],
     deps = [
         ":freetype_support",
+        ":typeface_proxy",
+        "//:core",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "fontmgr_android_ndk_fontations",
+    srcs = [
+        "SkFontMgr_android_ndk.cpp",
+    ],
+    hdrs = [
+        "//include/ports:android_ndk_fontmgr_hdrs",
+    ],
+    defines = ["SK_FONTMGR_ANDROID_NDK_AVAILABLE"],
+    visibility = ["//:__pkg__"],
+    deps = [
+        ":fontations_support",
         ":typeface_proxy",
         "//:core",
         "//src/base",
