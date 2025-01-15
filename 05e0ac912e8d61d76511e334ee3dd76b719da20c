@@ -56,6 +56,30 @@
       },
       "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6270bed9_da28a8a0",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-15T17:41:03Z",
+      "side": 1,
+      "message": "What I get for not compiling it... in any case, we need to tile one more than you expect because the width/height might not be evenly divisible by tileSize. In that case there will be a sliver of a tile where x \u003d\u003d nx.",
+      "parentUuid": "ac014854_ba0949a9",
+      "range": {
+        "startLine": 116,
+        "startChar": 53,
+        "endLine": 116,
+        "endChar": 58
+      },
+      "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
