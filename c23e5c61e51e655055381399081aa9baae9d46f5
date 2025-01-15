@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c1d20d4_b5c00476",
+        "filename": "src/gpu/ganesh/GrResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-15T18:26:55Z",
+      "side": 0,
+      "message": "this can also be removed.",
+      "range": {
+        "startLine": 402,
+        "startChar": 40,
+        "endLine": 402,
+        "endChar": 83
+      },
+      "revId": "c23e5c61e51e655055381399081aa9baae9d46f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
