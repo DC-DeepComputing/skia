@@ -87,6 +87,30 @@
       },
       "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b30528ed_91a62a4a",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-15T18:40:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ae2ec03_a6f73d2e",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 98
+      },
+      "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
