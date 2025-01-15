@@ -61,6 +61,7 @@ private:
 
     sk_sp<TextureProxy> fDstCopy;
     SkIRect fDstCopyBounds;
+
     // Store whether or not the RenderPassTask requires a dst sampler. If so, an actual sampler will
     // be assigned during prepareResources() and stored on the RenderPassTask until ownership can
     // be transferred to the CommandBuffer.

@@ -82,11 +82,15 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
     }
 
     if (fRequiresDstSampler) {
-        // Uuse the resource provider to fetch an appropriate sampler for the dst texture.
+        SkASSERT(fTarget); // must have target texture if we require sampling from it
+        // Use the resource provider to fetch an appropriate sampler for the dst texture.
         SkMipmapMode mipmapMode = fTarget->mipmapped() == Mipmapped::kYes ? SkMipmapMode::kNearest
                                                                           : SkMipmapMode::kNone;
         fDstSampler = resourceProvider->findOrCreateCompatibleSampler(
                     {{SkFilterMode::kNearest, mipmapMode}, /*tileMode=*/{}});
+        if (!fDstSampler) {
+            return Status::kFail;
+        }
     }
 
     // Assuming one draw pass per renderpasstask for now
@@ -169,6 +173,15 @@ Task::Status RenderPassTask::addCommands(Context* context,
             SKGPU_LOG_W("Could not get DepthStencil attachment for RenderPassTask");
             return Status::kFail;
         }
+    }
+
+    // Pass in dst texture sampler to addRP method if needed
+    // TODO: does fTarget need to be a real reference?
+    std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler {};
+    if (fRequiresDstSampler) {
+        dstTextureSampler =
+                std::make_pair<const Texture*, sk_sp<Sampler>>(fTarget->texture(),
+                                                               std::move(fDstSampler));
     }
 
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.

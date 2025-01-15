@@ -609,7 +609,7 @@ void GrVkImage::prepareForPresent(GrVkGpu* gpu) {
 void GrVkImage::prepareForExternal(GrVkGpu* gpu) {
     this->setImageLayoutAndQueueIndex(gpu, this->currentLayout(), 0,
                                       VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT, false,
-                                     fInitialQueueFamily);
+                                      fInitialQueueFamily);
 }
 
 void GrVkImage::releaseImage() {
