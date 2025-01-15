@@ -16,6 +16,24 @@
       "message": "IWYU wants this to be forward-declared.",
       "revId": "fefd4b3f815d5175554b30d807d2d486a08b3b11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5793d909_88b3ab6c",
+        "filename": "src/codec/SkPngCodec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-01-15T16:09:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63bb704c_586be215",
+      "revId": "fefd4b3f815d5175554b30d807d2d486a08b3b11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
