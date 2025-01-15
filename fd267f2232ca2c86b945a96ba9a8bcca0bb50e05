@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1e0427f_9632ecbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-15T19:07:27Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "fd267f2232ca2c86b945a96ba9a8bcca0bb50e05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a24542c1_7382b2ad",
+        "filename": "src/codec/SkCrabbyAvifCodec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-15T19:07:27Z",
+      "side": 1,
+      "message": "It looks like the validations are deferred to the decode call. The pointer could be checked (it returns false in the webp wrapper), but the decode call itself handles both.",
+      "revId": "fd267f2232ca2c86b945a96ba9a8bcca0bb50e05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
