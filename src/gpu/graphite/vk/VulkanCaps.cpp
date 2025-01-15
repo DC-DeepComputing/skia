@@ -193,6 +193,9 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (features && features->features.dualSrcBlend) {
         fShaderCaps->fDualSourceBlendingSupport = true;
     }
+    // TODO(b/383769988): Once graphite/Vulkan backend is hooked up to perform dst reads, enable
+    // this shader flag.
+    // fShaderCaps->fDstReadInShaderSupport = true;
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -389,6 +392,11 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
      * with the color attachment usage flag. So we no longer require transfer src/dst usage flags.
     */
     VkImageUsageFlags flags = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+
+    // All renderable textures in graphite should also support being used as input attachments.
+    if (formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, fDefaultMSAASamples)) {
+        flags = flags | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+    }
     if (discardable == Discardable::kYes && fSupportsMemorylessAttachments) {
         flags = flags | VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
     }
