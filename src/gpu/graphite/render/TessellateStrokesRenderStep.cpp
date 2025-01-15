@@ -92,6 +92,7 @@ static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveT
 TessellateStrokesRenderStep::TessellateStrokesRenderStep(bool infinitySupport)
         : RenderStep("TessellateStrokesRenderStep",
                      "",
+                     RenderStepID::kTessellateStrokes, true,
                      Flags::kRequiresMSAA | Flags::kPerformsShading,
                      /*uniforms=*/{{"affineMatrix", SkSLType::kFloat4},
                                    {"translate", SkSLType::kFloat2},

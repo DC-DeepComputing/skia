@@ -34,6 +34,7 @@ namespace skgpu::graphite {
 AnalyticBlurRenderStep::AnalyticBlurRenderStep()
         : RenderStep("AnalyticBlurRenderStep",
                      "",
+                     RenderStepID::kAnalyticBlur, true,
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
                      /*uniforms=*/
                      {{"localToDevice", SkSLType::kFloat4x4},

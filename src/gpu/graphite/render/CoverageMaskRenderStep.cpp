@@ -60,6 +60,7 @@ static skvx::float2 get_device_translation(const SkM44& localToDevice) {
 CoverageMaskRenderStep::CoverageMaskRenderStep()
         : RenderStep("CoverageMaskRenderStep",
                      "",
+                     RenderStepID::kCoverageMask, true,
                      // The mask will have AA outsets baked in, but the original bounds for clipping
                      // still require the outset for analytic coverage.
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
