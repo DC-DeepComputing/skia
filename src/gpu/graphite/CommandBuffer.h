@@ -82,7 +82,10 @@ public:
 
     // If any recorded draw requires a dst texture copy for blending, that texture must be provided
     // in `dstCopy`; otherwise it should be null. The `dstCopyBounds` are in the same coordinate
-    // space of the logical viewport *before* any replay translation is applied.
+    // space of the logical viewport *before* any replay translation is applied. If any recorded
+    // draw requires a dst texture sampler for blending, `dstTextureSampler` must consist of a valid
+    // texture/sampler pair (which should otherwise contain nullptrs). The sampler ref must be
+    // adopted and tracked on the command buffer.
     //
     // The logical viewport is always (0,0,viewportDims) and matches the "device" coordinate space
     // of the higher-level SkDevices that recorded the rendering operations. The actual viewport
@@ -93,6 +96,7 @@ public:
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstCopyBounds,
+                       std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -148,6 +152,11 @@ protected:
     // Already includes replay translation and respects final color attachment bounds, but with
     // dimensions that equal fDstCopy's width and height.
     SkIRect fDstCopyBounds;
+    // The texture/sampler pairing to use for implementing DstReadRequirement::kTextureSample for
+    // the current render pass. These are bare pointers because the destination texture is
+    // referencing the target texture for a RenderPass, which has its lifetime tracked already,
+    // and the sampler is added to the command buffer's tracked resources.
+    std::pair<const Texture*, const Sampler*> fDstTextureSampler;
 
     Protected fIsProtected;
 
