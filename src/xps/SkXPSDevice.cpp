@@ -59,6 +59,8 @@
 #include "src/utils/win/SkTScopedComPtr.h"
 #include "src/xps/SkXPSDevice.h"
 
+#include <optional>
+
 using namespace skia_private;
 
 //Windows defines a FLOAT type,
@@ -1625,10 +1627,12 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
                 xpsCompatiblePath = &modifiedPath;
                 pathIsMutable = true;
             }
-            if (!Simplify(*fillablePath, xpsCompatiblePath)) {
+            auto result = skia::pathops::Simplify(*fillablePath);
+            if (!result) {
                 SkDEBUGF("Could not simplify inverse winding path.");
                 return;
             }
+            *xpsCompatiblePath = *result;
         }
         [[fallthrough]];  // The xpsCompatiblePath is now inverse even odd, so fall through.
         case SkPathFillType::kInverseEvenOdd: {

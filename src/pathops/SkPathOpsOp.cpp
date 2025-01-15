@@ -20,6 +20,7 @@
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsCommon.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsTypes.h"
 #include "src/pathops/SkPathWriter.h"
 
@@ -297,7 +298,7 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
         if (inverseFill != work.isInverseFillType()) {
             work.toggleInverseFillType();
         }
-        return Simplify(work, result);
+        return skpathopsinternal::Simplify(work, result);
     }
     SkSTArenaAlloc<4096> allocator;  // FIXME: add a constant expression here, tune
     SkOpContour contour;
@@ -380,7 +381,7 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
     return true;
 }
 
-bool Op(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result) {
+bool skpathopsinternal::Op(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result) {
 #if DEBUG_DUMP_VERIFY
     if (SkPathOpsDebug::gVerifyOp) {
         if (!OpDebug(one, two, op, result  SkDEBUGPARAMS(false) SkDEBUGPARAMS(nullptr))) {
