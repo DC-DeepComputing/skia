@@ -242,6 +242,7 @@ void DrawContext::flush(Recorder* recorder) {
                                                     this->imageInfo(),
                                                     std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                                     fPendingClearColor);
+
     fPendingDraws = std::make_unique<DrawList>();
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
@@ -289,12 +290,20 @@ void DrawContext::flush(Recorder* recorder) {
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
-        fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes),
-                                                       desc,
-                                                       fTarget,
-                                                       std::move(dstCopy),
-                                                       dstCopyPixelBounds,
-                                                       drawTaskUsesDstSampler));
+
+        if (drawTaskUsesDstSampler) {
+            // Does this bool or real sampler need to be included in RenderPassDesc? Or can it
+            // simply be handled in RenderPassTask?
+            SkDebugf("uses dst sampler\n");
+        }
+
+        fCurrentDrawTask->addTask(
+                RenderPassTask::Make(std::move(passes),
+                desc,
+                fTarget,
+                std::move(dstCopy),
+                dstCopyPixelBounds,
+                drawTaskUsesDstSampler));
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other

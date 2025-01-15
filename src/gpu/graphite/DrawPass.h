@@ -115,6 +115,7 @@ private:
 
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
     bool fRequiresMSAA = false;
+    // bool fRequiresDstSampler = false;
 
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines.

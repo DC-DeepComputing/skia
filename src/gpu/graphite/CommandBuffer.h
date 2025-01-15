@@ -17,6 +17,7 @@
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/Resource.h"
+#include "src/gpu/graphite/Sampler.h"
 
 #include <optional>
 
@@ -34,7 +35,6 @@ class SharedContext;
 class GraphicsPipeline;
 struct RenderPassDesc;
 class ResourceProvider;
-class Sampler;
 class Texture;
 class TextureProxy;
 
