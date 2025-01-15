@@ -59,11 +59,25 @@ std::string variant_name(skgpu::MaskFormat variant) {
     }
 }
 
+RenderStep::RenderStepID variant_id(skgpu::MaskFormat variant) {
+    switch (variant) {
+        case skgpu::MaskFormat::kA8:
+            return RenderStep::RenderStepID::kBitmapText_Mask;
+        case skgpu::MaskFormat::kA565:
+            return RenderStep::RenderStepID::kBitmapText_LCD;
+        case skgpu::MaskFormat::kARGB:
+            return RenderStep::RenderStepID::kBitmapText_Color;
+    }
+
+    SkUNREACHABLE;
+}
+
 }  // namespace
 
 BitmapTextRenderStep::BitmapTextRenderStep(skgpu::MaskFormat variant)
         : RenderStep("BitmapTextRenderStep",
                      variant_name(variant),
+                     variant_id(variant), true,
                      Flags(variant),
                      /*uniforms=*/{{"subRunDeviceMatrix", SkSLType::kFloat4x4},
                                    {"deviceToLocal"     , SkSLType::kFloat4x4},

@@ -78,12 +78,14 @@ static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveT
 
 }  // namespace
 
-TessellateWedgesRenderStep::TessellateWedgesRenderStep(std::string_view variantName,
+TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID,
+                                                       std::string_view variantName,
                                                        bool infinitySupport,
                                                        DepthStencilSettings depthStencilSettings,
                                                        StaticBufferManager* bufferManager)
         : RenderStep("TessellateWedgesRenderStep",
                      variantName,
+                     renderStepID, true,
                      Flags::kRequiresMSAA |
                      (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
                                                               : Flags::kNone),

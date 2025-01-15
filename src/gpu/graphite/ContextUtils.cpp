@@ -44,10 +44,11 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
                           geometry.isShape() || geometry.isEdgeAAQuad()
                                   ? KeyContext::OptimizeSampling::kYes
                                   : KeyContext::OptimizeSampling::kNo,
-                          p.color());
+                          p.color(),
+                          false); //$$
     p.toKey(keyContext, builder, gatherer);
 
-    return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
+    return recorder->priv().shaderCodeDictionary8()->findOrCreate(builder);
 }
 
 DstReadRequirement GetDstReadRequirement(const Caps* caps,

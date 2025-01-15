@@ -14,8 +14,11 @@
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/gpu/MemoryCache.h"
+
+#include "src/base/SkSpinlock.h"
 
 #include <functional>
 
@@ -614,13 +617,55 @@ public:
     }
 
 private:
+
+    // This is intended to be an example of a Precompilation Callback. For DM it will collect
+    // all the Android-style keys that are given to it and, at the end, hand them DM for ...
+    class AndroidStyleCBHandler {
+    public:
+        static void CallBack(void* data, sk_sp<SkData> androidStyleKey) {
+            AndroidStyleCBHandler* b = reinterpret_cast<AndroidStyleCBHandler*>(data);
+
+            b->add(std::move(androidStyleKey));
+        }
+
+        // Add an Android-style key to the map
+        void add(sk_sp<SkData> androidStyleKey) SK_EXCLUDES(fSpinLock);
+
+        // Retrieve all the unique collected keys
+        void retrieve(std::vector<sk_sp<SkData>>*) SK_EXCLUDES(fSpinLock);
+
+        void reset() SK_EXCLUDES(fSpinLock);
+
+    private:
+        mutable SkSpinlock fSpinLock;
+
+        // Simple helper to hash an Android-style key. TODO: should Skia provide its internal hash,
+        // obviating the need for this?
+        static uint32_t hash_android_style_key(sk_sp<SkData>);
+
+        skia_private::THashMap<uint32_t, sk_sp<SkData>> fMap SK_GUARDED_BY(fSpinLock);
+    };
+
     Result drawSrc(const Src&,
                    skgpu::graphite::Context*,
                    skiatest::graphite::GraphiteTestContext*) const;
     Result resetAndRecreatePipelines() const;
 
+#ifdef SK_DEBUG
+    static void logMissingKey(skgpu::graphite::PrecompileContext* precompileContext,
+                              const skgpu::UniqueKey& k,
+                              const char* kName,
+                              const std::vector<skgpu::UniqueKey>& b,
+                              const char* bName);
+#endif
+
+    static void compareKeys(skgpu::graphite::PrecompileContext* precompileContext,
+                            const std::vector<skgpu::UniqueKey>& vA, const char* aName,
+                            const std::vector<skgpu::UniqueKey>& vB, const char* bName);
+
     mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
     mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
+    mutable std::unique_ptr<AndroidStyleCBHandler> fAndroidStyleCBHandler;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE
