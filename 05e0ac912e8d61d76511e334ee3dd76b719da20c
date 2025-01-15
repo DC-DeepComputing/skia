@@ -16,6 +16,46 @@
       "message": "PTAL",
       "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "771d8e41_31ff9188",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-15T17:02:03Z",
+      "side": 1,
+      "message": "I added a note but also adding Rob as a reviewer since I think he wrote this code originally.",
+      "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac014854_ba0949a9",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-15T17:02:03Z",
+      "side": 1,
+      "message": "Looks like `originalSize` is an SkSize so I think we can\u0027t call `right()`/`bottom()` here. I guess the best thing we could do is call `width()`/`height()` but then we can see that `tileR.left()` will equal `tileR.right()` so this iteration of the loop would always be a no-op? At least from my naive, high-level reading of the code. It seems like we only want to loop `x` from [`0` ... `nx`) i.e. not including `ny`, and respectively for `y`.",
+      "range": {
+        "startLine": 116,
+        "startChar": 53,
+        "endLine": 116,
+        "endChar": 58
+      },
+      "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
