@@ -423,6 +423,16 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                       false);
     }
 
+    // Force image memory barrier here
+    // if (fDstTextureSampler.first) {
+    //     this->addImageMemoryBarrier(
+    //             fDstTextureSampler.first,
+    //              // srcStageMask
+    //             VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT, // dstStageMask
+    //             /*byRegion=*/true,
+
+    // }
+
     this->setViewport(viewport);
 
     if (!this->beginRenderPass(renderPassDesc,
@@ -464,6 +474,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
+// TODO: Check whether this holds up for blending input attachment usage.
 bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTexture& resolveTexture)
 {
     // Fetch a descriptor set that contains one input attachment
@@ -527,6 +538,10 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
         return false;
     }
 
+    if (fDstTextureSampler.second) {
+        SkDebugf("GM loads MSAA from resolve and also samples from dst texture\n");
+    }
+
     // Update and bind uniform descriptor set
     int w = nativeDrawBounds.width();
     int h = nativeDrawBounds.height();
@@ -570,9 +585,9 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
     // If we loaded the resolve attachment, then we would have set the image layout to be
     // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
     // input attachment. However, when we switched to the main subpass it will transition the
-    // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
+    // layout internally to VK_IMAGE_LAYOUT_GENERAL. Thus we need to update our
     // tracking of the layout to match the new layout.
-    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_GENERAL);
 
     // After using a distinct descriptor set layout for loading MSAA from resolve, we will need to
     // (re-)bind any descriptor sets.
@@ -588,12 +603,14 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                            VulkanTexture* depthStencilTexture,
                            bool loadMSAAFromResolve) {
     if (colorTexture) {
-        colorTexture->setImageLayout(cmdBuf,
-                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                     /*byRegion=*/false);
+        // The color texture is also used as an input attachment to support dst reads.
+        VkAccessFlags access = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                                          VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        colorTexture->setImageLayout(
+                cmdBuf, VK_IMAGE_LAYOUT_GENERAL, access, stageFlags, /*byRegion=*/false);
         if (resolveTexture) {
             if (loadMSAAFromResolve) {
                 // When loading MSAA from resolve, the texture is used in the first subpass as an
@@ -609,7 +626,7 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                                                /*byRegion=*/false);
             } else {
                 resolveTexture->setImageLayout(cmdBuf,
-                                               VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                               VK_IMAGE_LAYOUT_GENERAL,
                                                VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
                                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
                                                VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
@@ -959,8 +976,9 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
     // descriptor sets with any new bindGraphicsPipeline DrawPassCommand.
     fBindUniformBuffers = true;
 
-    if (graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy &&
-        graphicsPipeline->numFragTexturesAndSamplers() == 1) {
+    if (graphicsPipeline->numFragTexturesAndSamplers() == 1 &&
+        (graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy ||
+         graphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureSample)) {
         // The only texture-sampler that the pipeline declares must be the dstCopy, which means
         // there are no other textures that will trigger BindTextureAndSampler commands in a
         // DrawPass (e.g. solid-color + dst-read-requiring blend). Configure the texture binding
@@ -1008,6 +1026,16 @@ void VulkanCommandBuffer::syncDescriptorSets() {
     }
     if (fBindTextureSamplers) {
         this->bindTextureSamplers();
+    }
+    // If performing a dst texture read, handle the input attachment descriptor management here
+    // before performing any draws.
+    if (fActiveGraphicsPipeline &&
+        fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureSample) {
+        auto vkDstTexture = static_cast<const VulkanTexture*>(fDstTextureSampler.first);
+        if (!this->updateAndBindLoadMSAAInputAttachment(*vkDstTexture)) {
+            SKGPU_LOG_E("Unable to update and bind an input attachment descriptor for performing "
+                        "dst read");
+        }
     }
 }
 
@@ -1160,11 +1188,14 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         const DrawPass* drawPass, const DrawPassCommands::BindTexturesAndSamplers* command) {
     SkASSERT(SkToBool(drawPass) == SkToBool(command));
     SkASSERT(fActiveGraphicsPipeline);
-    // Add one extra texture for dst copies, which is not included in the command itself.
-    int numTexSamplers = command ? command->fNumTexSamplers : 0;
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        numTexSamplers++;
-    }
+
+    // The command itself does not account for an additional texture/sampler used for dst copies or
+    // dst samplers, so determine whether we need to add that here.
+    DstReadRequirement dstReadRequirement = fActiveGraphicsPipeline->dstReadRequirement();
+    bool requiresExtraTextureSampler = dstReadRequirement == DstReadRequirement::kTextureCopy ||
+                                       dstReadRequirement == DstReadRequirement::kTextureSample;
+    int numTexSamplers =
+            (command ? command->fNumTexSamplers : 0) + (requiresExtraTextureSampler ? 1 : 0);
 
     if (numTexSamplers == 0) {
         fNumTextureSamplers = 0;
@@ -1189,8 +1220,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                    immutableSampler});
         }
     }
-    // If required the dst copy texture+sampler is the last one in the descriptor set
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+    // If required, the dst copy texture+sampler is the last one in the descriptor set
+    if (requiresExtraTextureSampler) {
         descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                /*count=*/1,
                                /*bindingIdx=*/numTexSamplers-1,
@@ -1202,7 +1233,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
 
     if (!set) {
-        SKGPU_LOG_E("Unable to find or create descriptor set");
+        SKGPU_LOG_E("Unable to find or create texture/sampler descriptor set");
         fNumTextureSamplers = 0;
         fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
         fBindTextureSamplers = false;
@@ -1211,7 +1242,9 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
     // Populate the descriptor set with texture/sampler descriptors
     TArray<VkWriteDescriptorSet> writeDescriptorSets(numTexSamplers);
     TArray<VkDescriptorImageInfo> descriptorImageInfos(numTexSamplers);
-    auto appendTextureSampler = [&](const VulkanTexture* texture, const VulkanSampler* sampler) {
+    auto appendTextureSampler = [&](const VulkanTexture* texture,
+                                    VulkanImageView::Usage textureUsage,
+                                    const VulkanSampler* sampler) {
         if (!texture || !sampler) {
             // TODO(b/294198324): Investigate the root cause for null texture or samplers on
             // Ubuntu QuadP400 GPU
@@ -1225,9 +1258,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
         memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
         textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE : sampler->vkSampler();
-        textureInfo.imageView =
-                texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
-        textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        textureInfo.imageView = texture->getImageView(textureUsage)->imageView();
+        textureInfo.imageLayout = texture->currentLayout();
 
         VkWriteDescriptorSet& writeInfo = writeDescriptorSets.push_back();
         memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -1251,15 +1283,34 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                     drawPass->getTexture(command->fTextureIndices[i]));
             auto sampler = static_cast<const VulkanSampler*>(
                     drawPass->getSampler(command->fSamplerIndices[i]));
-            if (!appendTextureSampler(texture, sampler)) {
+            if (!appendTextureSampler(texture, VulkanImageView::Usage::kShaderInput, sampler)) {
                 return;
             }
         }
     }
-    if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        auto texture = static_cast<const VulkanTexture*>(fDstCopy.first);
-        auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
-        if (!appendTextureSampler(texture, sampler)) {
+
+    if (requiresExtraTextureSampler) {
+        const VulkanTexture* texture;
+        const VulkanSampler* sampler;
+        VulkanImageView::Usage imgViewUsage;
+        switch (dstReadRequirement) {
+            case DstReadRequirement::kTextureCopy:
+                texture = static_cast<const VulkanTexture*>(fDstCopy.first);
+                sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+                imgViewUsage = VulkanImageView::Usage::kShaderInput;
+                break;
+            case DstReadRequirement::kTextureSample:
+                texture = static_cast<const VulkanTexture*>(fDstTextureSampler.first);
+                sampler = static_cast<const VulkanSampler*>(fDstTextureSampler.second);
+                imgViewUsage = VulkanImageView::Usage::kShaderInput;
+                break;
+            // case DstReadRequirement::kFramebufferFetch:
+                // return error?
+            default:
+                break;
+        }
+
+        if (!appendTextureSampler(texture, imgViewUsage, sampler)) {
             return;
         }
     }
@@ -1283,6 +1334,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
 void VulkanCommandBuffer::bindTextureSamplers() {
     fBindTextureSamplers = false;
+
     if (fTextureSamplerDescSetToBind != VK_NULL_HANDLE &&
         fActiveGraphicsPipeline->numFragTexturesAndSamplers() == fNumTextureSamplers) {
         VULKAN_CALL(fSharedContext->interface(),
