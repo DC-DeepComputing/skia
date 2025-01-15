@@ -70,7 +70,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 
     fConvexTessellatedWedges =
             makeFromStep(std::make_unique<TessellateWedgesRenderStep>(
-                                 "convex", infinitySupport, kDirectDepthGreaterPass, bufferManager),
+                                 RenderStep::RenderStepID::kTessellateWedges_Convex,
+                                 infinitySupport, kDirectDepthGreaterPass, bufferManager),
                          DrawTypeFlags::kNonSimpleShape);
     fTessellatedStrokes = makeFromStep(
             std::make_unique<TessellateStrokesRenderStep>(infinitySupport),
@@ -108,7 +109,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     fPerEdgeAAQuad = makeFromStep(std::make_unique<PerEdgeAAQuadRenderStep>(bufferManager),
                                   DrawTypeFlags::kSimpleShape);
     fNonAABoundsFill = makeFromStep(std::make_unique<CoverBoundsRenderStep>(
-                                            "non-aa-fill", kDirectDepthGreaterPass),
+                                            RenderStep::RenderStepID::kCoverBounds_NonAAFill,
+                                            kDirectDepthGreaterPass),
                                     DrawTypeFlags::kSimpleShape);
     fCircularArc = makeFromStep(std::make_unique<CircularArcRenderStep>(bufferManager),
                                 DrawTypeFlags::kSimpleShape);
@@ -128,8 +130,10 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     }
 
     // The tessellating path renderers that use stencil can share the cover steps.
-    auto coverFill = std::make_unique<CoverBoundsRenderStep>("regular-cover", kRegularCoverPass);
-    auto coverInverse = std::make_unique<CoverBoundsRenderStep>("inverse-cover", kInverseCoverPass);
+    auto coverFill = std::make_unique<CoverBoundsRenderStep>(
+            RenderStep::RenderStepID::kCoverBounds_RegularCover, kRegularCoverPass);
+    auto coverInverse = std::make_unique<CoverBoundsRenderStep>(
+            RenderStep::RenderStepID::kCoverBounds_InverseCover, kInverseCoverPass);
 
     for (bool evenOdd : {false, true}) {
         // These steps can be shared by regular and inverse fills
@@ -138,9 +142,11 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                 evenOdd, infinitySupport, bufferManager);
         auto stencilWedge =
                 evenOdd ? std::make_unique<TessellateWedgesRenderStep>(
-                                  "evenodd", infinitySupport, kEvenOddStencilPass, bufferManager)
+                                RenderStep::RenderStepID::kTessellateWedges_EvenOdd,
+                                infinitySupport, kEvenOddStencilPass, bufferManager)
                         : std::make_unique<TessellateWedgesRenderStep>(
-                                  "winding", infinitySupport, kWindingStencilPass, bufferManager);
+                                RenderStep::RenderStepID::kTessellateWedges_Winding,
+                                infinitySupport, kWindingStencilPass, bufferManager);
 
         for (bool inverse : {false, true}) {
             static const char* kTessVariants[4] =
@@ -182,11 +188,21 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 #ifdef SK_ENABLE_VELLO_SHADERS
     fVelloRenderer = std::make_unique<VelloRenderer>(caps);
 #endif
+
+//    SkASSERT((int)RenderStep::RenderStepID2::kLast == (int)RenderStep::RenderStepID2::kLast);
+    for (auto&& rs : fRenderSteps) {
+//        const char* name1 = RenderStep::RenderStepName(rs->renderStepID1());
+//        SkASSERTF(!strcmp(rs->name(), name1), "%s != %s", rs->name(), name1);
+
+        const char* name2 = RenderStep::RenderStepName(rs->renderStepID());
+        SkASSERTF(!strcmp(rs->name(), name2), "%s != %s", rs->name(), name2);
+//        SkASSERTF(!strcmp(name1, name2), "%s != %s", name1, name2);
+    }
 }
 
-const RenderStep* RendererProvider::lookup(uint32_t uniqueID) const {
+const RenderStep* RendererProvider::lookup(RenderStep::RenderStepID renderStepID) const {
     for (auto&& rs : fRenderSteps) {
-        if (rs->uniqueID() == uniqueID) {
+        if (rs->renderStepID() == renderStepID) {
             return rs.get();
         }
     }
