@@ -63,6 +63,30 @@
       },
       "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ae2ec03_a6f73d2e",
+        "filename": "src/gpu/graphite/ComputePathAtlas.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-15T16:33:58Z",
+      "side": 1,
+      "message": "Compute and Raster use different types and I need to figure out the best types to pass in here. So I\u0027d like to hold on this for the moment if that\u0027s ok.",
+      "parentUuid": "902a99e6_971021c6",
+      "range": {
+        "startLine": 247,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 98
+      },
+      "revId": "0b1336be0f6c23461313532154b9716e3e9ab4af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
