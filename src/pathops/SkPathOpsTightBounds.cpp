@@ -9,18 +9,18 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
-#include "include/pathops/SkPathOps.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkOpContour.h"
 #include "src/pathops/SkOpEdgeBuilder.h"
 #include "src/pathops/SkPathOpsBounds.h"
 #include "src/pathops/SkPathOpsCommon.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsTypes.h"
 
 #include <algorithm>
 
-bool TightBounds(const SkPath& path, SkRect* result) {
+bool skpathopsinternal::TightBounds(const SkPath& path, SkRect* result) {
     SkRect moveBounds = { SK_ScalarMax, SK_ScalarMax, SK_ScalarMin, SK_ScalarMin };
     bool wellBehaved = true;
     for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
