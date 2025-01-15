@@ -801,6 +801,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                 &pipelineShaderStages[1]);
     }
 
+    int inputAttachmentCount =
+            shaderInfo->dstReadRequirement() == DstReadRequirement::kTextureSample ? 1 : 0;
+
     // TODO: Query RenderPassDesc for input attachment information. For now, we only use one for
     // loading MSAA from resolve so we can simply pass in 0 when not doing that.
     VkPipelineLayout pipelineLayout =
@@ -811,7 +814,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                   shaderInfo->hasPaintUniforms(),
                                   shaderInfo->hasGradientBuffer(),
                                   shaderInfo->numFragmentTexturesAndSamplers(),
-                                  /*numInputAttachments=*/0,
+                                  /*numInputAttachments=*/inputAttachmentCount,
                                   SkSpan<sk_sp<VulkanSampler>>(immutableSamplers));
     if (pipelineLayout == VK_NULL_HANDLE) {
         destroy_shader_modules(sharedContext, vsModule, fsModule);

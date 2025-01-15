@@ -23,7 +23,8 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target,
                                            sk_sp<TextureProxy> dstCopy,
-                                           SkIRect dstCopyBounds) {
+                                           SkIRect dstCopyBounds,
+                                           bool requiresDstSampler) {
     // For now we have one DrawPass per RenderPassTask
     SkASSERT(passes.size() == 1);
     // We should only have dst copy bounds if we have a dst copy texture, and the texture should be
@@ -50,19 +51,22 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                                     desc,
                                                     std::move(target),
                                                     std::move(dstCopy),
-                                                    dstCopyBounds));
+                                                    dstCopyBounds,
+                                                    requiresDstSampler));
 }
 
 RenderPassTask::RenderPassTask(DrawPassList passes,
                                const RenderPassDesc& desc,
                                sk_sp<TextureProxy> target,
                                sk_sp<TextureProxy> dstCopy,
-                               SkIRect dstCopyBounds)
+                               SkIRect dstCopyBounds,
+                               bool requiresDstSampler)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
         , fTarget(std::move(target))
         , fDstCopy(std::move(dstCopy))
-        , fDstCopyBounds(dstCopyBounds) {}
+        , fDstCopyBounds(dstCopyBounds)
+        , fRequiresDstSampler(requiresDstSampler) {}
 
 RenderPassTask::~RenderPassTask() = default;
 
@@ -75,6 +79,18 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
         SKGPU_LOG_W("Dimensions are (%d, %d).",
                     fTarget->dimensions().width(), fTarget->dimensions().height());
         return Status::kFail;
+    }
+
+    if (fRequiresDstSampler) {
+        SkASSERT(fTarget); // must have target texture if we require sampling from it
+
+        // TODO: Determine sampler description based upon target properties
+        // target's TextureInfo has mipmapped status,
+        fDstSampler = resourceProvider->findOrCreateCompatibleSampler({});
+
+        if (!fDstSampler) {
+            return Status::kFail;
+        }
     }
 
     // Assuming one draw pass per renderpasstask for now
@@ -159,6 +175,15 @@ Task::Status RenderPassTask::addCommands(Context* context,
         }
     }
 
+    // Pass in dst texture sampler to addRP method if needed
+    // TODO: does fTarget need to be a real reference?
+    std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler {};
+    if (fRequiresDstSampler) {
+        dstTextureSampler =
+                std::make_pair<const Texture*, sk_sp<Sampler>>(fTarget->texture(),
+                                                               std::move(fDstSampler));
+    }
+
     // TODO(b/313629288) we always pass in the render target's dimensions as the viewport here.
     // Using the dimensions of the logical device that we're drawing to could reduce flakiness in
     // rendering.
@@ -168,6 +193,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
                                      std::move(depthStencilAttachment),
                                      fDstCopy ? fDstCopy->texture() : nullptr,
                                      fDstCopyBounds,
+                                     std::move(dstTextureSampler),
                                      fTarget->dimensions(),
                                      fDrawPasses)) {
         return Status::kSuccess;

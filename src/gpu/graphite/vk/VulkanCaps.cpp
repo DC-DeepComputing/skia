@@ -193,6 +193,10 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (features && features->features.dualSrcBlend) {
         fShaderCaps->fDualSourceBlendingSupport = true;
     }
+    // TODO(nicolettep): Determine if Vulkan can always support sampling the dst texture from
+    // within the shader.
+    // TODO(nicolettep): specify frag shader?
+    fShaderCaps->fDstReadInShaderSupport = true;
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.
@@ -387,8 +391,11 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
      * Graphite, unlike ganesh, does not require a dedicated MSAA attachment on every surface.
      * MSAA textures now get resolved within the scope of a render pass, which can be done simply
      * with the color attachment usage flag. So we no longer require transfer src/dst usage flags.
+     * At this point, it is guaranteed that we are using a renderable format, and graphite makes
+     * all renderable color attachments also usable as input attachments so add that flag here.
     */
-    VkImageUsageFlags flags = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
+    VkImageUsageFlags flags =
+            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
     if (discardable == Discardable::kYes && fSupportsMemorylessAttachments) {
         flags = flags | VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
     }

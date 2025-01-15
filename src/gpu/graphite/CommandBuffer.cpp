@@ -16,7 +16,6 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceProvider.h"
-#include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/TextureProxy.h"
 
@@ -42,6 +41,7 @@ void CommandBuffer::resetCommandBuffer() {
     // before we release their refs. Assuming we don't go idle and free lots of resources, we'll
     // get the same cached sampler the next time we need a dst copy.
     fDstCopy = {nullptr, nullptr};
+    fDstTextureSampler = {nullptr, nullptr};
     this->releaseResources();
     this->onResetCommandBuffer();
     fBuffersToAsyncMap.clear();
@@ -93,6 +93,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> depthStencilTexture,
                                   const Texture* dstCopy,
                                   SkIRect dstCopyBounds,
+                                  std::pair<const Texture*, sk_sp<Sampler>> dstTextureSampler,
                                   SkISize viewportDims,
                                   const DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
@@ -132,6 +133,24 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                 {SkFilterMode::kNearest, SkTileMode::kClamp});
         fDstCopy.second = nearestNeighbor.get();
         this->trackResource(std::move(nearestNeighbor));
+    }
+
+    // We should never be using a dst copy and a dst sampler - they are mutually exclusive dst
+    // read requirements.
+    SkASSERT(!(fDstCopy.first && dstTextureSampler.first));
+
+    if (dstTextureSampler.second) {
+        // dstTextureSampler should contain either 2 valid pointers to a texture/sampler pair or
+        // 2 nullptrs.
+        SkASSERT(dstTextureSampler.first);
+        fDstTextureSampler = {std::move(dstTextureSampler.first), dstTextureSampler.second.get()};
+
+        // The dstTexture simply points to one of the RenderPass's attachmented textures, which is
+        // already tracked. However, the sampler is not used elsewhere and needs to be tracked on
+        // the command buffer.
+        this->trackResource(std::move(dstTextureSampler.second));
+    } else {
+        fDstTextureSampler = {nullptr, nullptr};
     }
 
     // We don't intersect the viewport with the render pass bounds or target size because it just
