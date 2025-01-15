@@ -674,6 +674,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         preamble += emit_textures_and_samplers(bindingReqs, fRootNodes, &binding, outDescs);
         int paintTextureCount = binding;
         if (step->hasTextures()) {
+            // TODO: Check dst read requirement here?
             preamble += step->texturesAndSamplersSkSL(bindingReqs, &binding);
             if (outDescs) {
                 // Determine how many render step samplers were used by comparing the binding value
