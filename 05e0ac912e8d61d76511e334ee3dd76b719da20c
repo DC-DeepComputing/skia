@@ -80,6 +80,30 @@
       },
       "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84877b0_3fd5e049",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-15T17:46:17Z",
+      "side": 1,
+      "message": "Ahh so `originalSize.width()` does not necessarily equal `tileSize * (originalSize.width() / tileSize)`, got it.",
+      "parentUuid": "6270bed9_da28a8a0",
+      "range": {
+        "startLine": 116,
+        "startChar": 53,
+        "endLine": 116,
+        "endChar": 58
+      },
+      "revId": "05e0ac912e8d61d76511e334ee3dd76b719da20c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
