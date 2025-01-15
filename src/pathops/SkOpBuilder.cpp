@@ -22,6 +22,7 @@
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsCommon.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsTypes.h"
 #include "src/pathops/SkPathWriter.h"
 
@@ -178,7 +179,7 @@ bool SkOpBuilder::resolve(SkPath* result) {
     if (!allUnion) {
         *result = fPathRefs[0];
         for (int index = 1; index < count; ++index) {
-            if (!Op(*result, fPathRefs[index], fOps[index], result)) {
+            if (!skpathopsinternal::Op(*result, fPathRefs[index], fOps[index], result)) {
                 reset();
                 *result = original;
                 return false;
@@ -189,7 +190,7 @@ bool SkOpBuilder::resolve(SkPath* result) {
     }
     SkPath sum;
     for (int index = 0; index < count; ++index) {
-        if (!Simplify(fPathRefs[index], &fPathRefs[index])) {
+        if (!skpathopsinternal::Simplify(fPathRefs[index], &fPathRefs[index])) {
             reset();
             *result = original;
             return false;
@@ -204,7 +205,7 @@ bool SkOpBuilder::resolve(SkPath* result) {
         }
     }
     reset();
-    bool success = Simplify(sum, result);
+    bool success = skpathopsinternal::Simplify(sum, result);
     if (!success) {
         *result = original;
     }
