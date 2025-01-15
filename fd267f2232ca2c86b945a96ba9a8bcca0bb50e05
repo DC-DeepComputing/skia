@@ -33,6 +33,24 @@
       "message": "It looks like the validations are deferred to the decode call. The pointer could be checked (it returns false in the webp wrapper), but the decode call itself handles both.",
       "revId": "fd267f2232ca2c86b945a96ba9a8bcca0bb50e05",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a1f1f38_a1b9ef50",
+        "filename": "src/codec/SkCrabbyAvifCodec.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-15T19:08:43Z",
+      "side": 1,
+      "message": "yeah the call to `crabby_avifImageSetViewRect` validates that the rectangle region is valid for the given image.",
+      "parentUuid": "a24542c1_7382b2ad",
+      "revId": "fd267f2232ca2c86b945a96ba9a8bcca0bb50e05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
