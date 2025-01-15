@@ -6,11 +6,14 @@
  */
 
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkFontScanner.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/ports/SkFontMgr_android_ndk.h"
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 #include "include/ports/SkFontScanner_FreeType.h"
+#endif
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTemplates.h"
 #include "src/base/SkTSearch.h"
@@ -804,9 +807,11 @@ private:
 
 }  // namespace
 
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
 sk_sp<SkFontMgr> SkFontMgr_New_AndroidNDK(bool cacheFontFiles) {
     return SkFontMgr_New_AndroidNDK(cacheFontFiles, SkFontScanner_Make_FreeType());
 }
+#endif
 
 sk_sp<SkFontMgr> SkFontMgr_New_AndroidNDK(bool cacheFontFiles,
                                            std::unique_ptr<SkFontScanner> scanner)
