@@ -31,7 +31,6 @@ struct GrShaderCaps : SkSL::ShaderCaps {
 
     void applyOptionsOverrides(const GrContextOptions& options);
 
-    bool fDstReadInShaderSupport = false;
     bool fPreferFlatInterpolation = false;
     bool fVertexIDSupport = false;
     // Returns true if `expr` in `myArray[expr]` can be any integer expression. If false, `expr`
