@@ -81,11 +81,46 @@ std::string variant_name(PrimitiveType type, bool hasColor, bool hasTexCoords) {
     return name;
 }
 
+RenderStep::RenderStepID variant_id(PrimitiveType type, bool hasColor, bool hasTexCoords) {
+    if (type == PrimitiveType::kTriangles) {
+        if (hasColor) {
+            if (hasTexCoords) {
+                return RenderStep::RenderStepID::kVertices_TrisColorTexCoords;
+            } else {
+                return RenderStep::RenderStepID::kVertices_TrisColor;
+            }
+        } else {
+            if (hasTexCoords) {
+                return RenderStep::RenderStepID::kVertices_TrisTexCoords;
+            } else {
+                return RenderStep::RenderStepID::kVertices_Tris;
+            }
+        }
+    } else {
+        SkASSERT(type == PrimitiveType::kTriangleStrip);
+
+        if (hasColor) {
+            if (hasTexCoords) {
+                return RenderStep::RenderStepID::kVertices_TristripsColorTexCoords;
+            } else {
+                return RenderStep::RenderStepID::kVertices_TristripsColor;
+            }
+        } else {
+            if (hasTexCoords) {
+                return RenderStep::RenderStepID::kVertices_TristripsTexCoords;
+            } else {
+                return RenderStep::RenderStepID::kVertices_Tristrips;
+            }
+        }
+    }
+}
+
 }  // namespace
 
 VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool hasTexCoords)
         : RenderStep("VerticesRenderStep",
                      variant_name(type, hasColor, hasTexCoords),
+                     variant_id(type, hasColor, hasTexCoords), true,
                      hasColor ? Flags::kEmitsPrimitiveColor | Flags::kPerformsShading
                               : Flags::kPerformsShading,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},

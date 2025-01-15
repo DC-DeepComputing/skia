@@ -127,6 +127,7 @@ static void write_vertex_buffer(VertexWriter writer) {
 CircularArcRenderStep::CircularArcRenderStep(StaticBufferManager* bufferManager)
         : RenderStep("CircularArcRenderStep",
                      "",
+                     RenderStepID::kCircularArc, true,
                      Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,

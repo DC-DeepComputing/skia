@@ -9,23 +9,18 @@
 
 namespace skgpu::graphite {
 
-static uint32_t next_id() {
-    static std::atomic<uint32_t> nextID{0};
-    // Not worried about overflow since each Context won't have that many RenderSteps, so even if
-    // it wraps back to 0, that RenderStep will not be in the same Context as the original 0.
-    return nextID.fetch_add(1, std::memory_order_relaxed);
-}
-
 RenderStep::RenderStep(std::string_view className,
-               std::string_view variantName,
-               SkEnumBitMask<Flags> flags,
-               std::initializer_list<Uniform> uniforms,
-               PrimitiveType primitiveType,
-               DepthStencilSettings depthStencilSettings,
-               SkSpan<const Attribute> vertexAttrs,
-               SkSpan<const Attribute> instanceAttrs,
-               SkSpan<const Varying> varyings)
-        : fUniqueID(next_id())
+                       std::string_view variantName,
+                       RenderStepID renderStepID,
+                       bool,
+                       SkEnumBitMask<Flags> flags,
+                       std::initializer_list<Uniform> uniforms,
+                       PrimitiveType primitiveType,
+                       DepthStencilSettings depthStencilSettings,
+                       SkSpan<const Attribute> vertexAttrs,
+                       SkSpan<const Attribute> instanceAttrs,
+                       SkSpan<const Varying> varyings)
+        : fRenderStepID(renderStepID)
         , fFlags(flags)
         , fPrimitiveType(primitiveType)
         , fDepthStencilSettings(depthStencilSettings)
@@ -35,7 +30,7 @@ RenderStep::RenderStep(std::string_view className,
         , fVaryings(varyings.begin(), varyings.end())
         , fVertexStride(0)
         , fInstanceStride(0)
-        , fName(className) {
+        , fName1(className) {
     for (auto v : this->vertexAttributes()) {
         fVertexStride += v.sizeAlign4();
     }
@@ -43,10 +38,12 @@ RenderStep::RenderStep(std::string_view className,
         fInstanceStride += i.sizeAlign4();
     }
     if (!variantName.empty()) {
-        fName += "[";
-        fName += variantName;
-        fName += "]";
+        fName1 += "[";
+        fName1 += variantName;
+        fName1 += "]";
     }
+
+    SkASSERT(!strcmp(RenderStepName(fRenderStepID), fName1.c_str()));
 }
 
 Coverage RenderStep::GetCoverage(SkEnumBitMask<Flags> flags) {
@@ -54,5 +51,71 @@ Coverage RenderStep::GetCoverage(SkEnumBitMask<Flags> flags) {
            : (flags & Flags::kLCDCoverage)  ? Coverage::kLCD
                                             : Coverage::kSingleChannel;
 }
+
+#if 0
+const char* RenderStep::RenderStepName(skgpu::graphite::RenderStep::RenderStepID id) {
+#define CASE1(BaseName) case RenderStepID::k##BaseName: return #BaseName "RenderStep";
+#define CASE3(BaseName, VariantName, VariantTag) \
+    case RenderStepID::k##BaseName##_##VariantName: return #BaseName "RenderStep[" VariantTag "]";
+
+    switch (id) {
+        SKGPU_RENDERSTEP_TYPES(CASE1, CASE3)
+    }
+#undef CASE1
+#undef CASE3
+
+    SkUNREACHABLE;
+}
+#else
+const char* RenderStep::RenderStepName(RenderStepID id) {
+    switch (id) {
+        case RenderStepID::kInvalid: return "InvalidRenderStep";
+
+        case RenderStepID::kCircularArc: return "CircularArcRenderStep";
+
+        case RenderStepID::kAnalyticRRect: return "AnalyticRRectRenderStep";
+        case RenderStepID::kAnalyticBlur : return "AnalyticBlurRenderStep";
+
+        case RenderStepID::kPerEdgeAAQuad: return "PerEdgeAAQuadRenderStep";
+
+        case RenderStepID::kCoverBounds_NonAAFill: return "CoverBoundsRenderStep[non-aa-fill]";
+        case RenderStepID::kCoverBounds_RegularCover: return "CoverBoundsRenderStep[regular-cover]";
+        case RenderStepID::kCoverBounds_InverseCover : return "CoverBoundsRenderStep[inverse-cover]";
+
+        case RenderStepID::kCoverageMask: return "CoverageMaskRenderStep";
+
+        case RenderStepID::kBitmapText_Mask: return "BitmapTextRenderStep[mask]";
+        case RenderStepID::kBitmapText_LCD: return "BitmapTextRenderStep[LCD]";
+        case RenderStepID::kBitmapText_Color: return "BitmapTextRenderStep[color]";
+
+        case RenderStepID::kMiddleOutFan_EvenOdd: return "MiddleOutFanRenderStep[even-odd]";
+        case RenderStepID::kMiddleOutFan_Winding: return "MiddleOutFanRenderStep[winding]";
+
+        case RenderStepID::kSDFTextLCD: return "SDFTextLCDRenderStep";
+        case RenderStepID::kSDFText : return "SDFTextRenderStep";
+
+        case RenderStepID::kTessellateCurves_EvenOdd: return "TessellateCurvesRenderStep[even-odd]";
+        case RenderStepID::kTessellateCurves_Winding : return "TessellateCurvesRenderStep[winding]";
+
+        case RenderStepID::kTessellateStrokes: return "TessellateStrokesRenderStep";
+
+        case RenderStepID::kTessellateWedges_Convex : return "TessellateWedgesRenderStep[convex]";
+        case RenderStepID::kTessellateWedges_EvenOdd : return "TessellateWedgesRenderStep[evenodd]";  // maybe "even-odd" ?
+        case RenderStepID::kTessellateWedges_Winding : return "TessellateWedgesRenderStep[winding]";
+
+        case RenderStepID::kVertices_Tris: return "VerticesRenderStep[tris]";
+        case RenderStepID::kVertices_TrisColor: return "VerticesRenderStep[tris-color]";
+        case RenderStepID::kVertices_TrisTexCoords: return "VerticesRenderStep[tris-texCoords]";
+        case RenderStepID::kVertices_TrisColorTexCoords: return "VerticesRenderStep[tris-color-texCoords]";
+
+        case RenderStepID::kVertices_Tristrips: return "VerticesRenderStep[tristrips]";
+        case RenderStepID::kVertices_TristripsColor: return "VerticesRenderStep[tristrips-color]";
+        case RenderStepID::kVertices_TristripsTexCoords: return "VerticesRenderStep[tristrips-texCoords]";
+        case RenderStepID::kVertices_TristripsColorTexCoords: return "VerticesRenderStep[tristrips-color-texCoords]";
+    }
+
+    SkUNREACHABLE;
+}
+#endif
 
 } // namespace skgpu::graphite
