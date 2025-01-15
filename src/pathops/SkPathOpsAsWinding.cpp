@@ -11,12 +11,12 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkMacros.h"
 #include "src/core/SkPathPriv.h"
 #include "src/pathops/SkPathOpsConic.h"
 #include "src/pathops/SkPathOpsCubic.h"
 #include "src/pathops/SkPathOpsCurve.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsPoint.h"
 #include "src/pathops/SkPathOpsQuad.h"
 #include "src/pathops/SkPathOpsTypes.h"
@@ -405,7 +405,7 @@ static bool set_result_path(SkPath* result, const SkPath& path, SkPathFillType f
     return true;
 }
 
-bool AsWinding(const SkPath& path, SkPath* result) {
+bool skpathopsinternal::AsWinding(const SkPath& path, SkPath* result) {
     if (!path.isFinite()) {
         return false;
     }

@@ -11,8 +11,12 @@
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkAssert.h"
 
+#include <optional>
 #include <utility>
+
 class SkSVGRenderContext;
+
+using namespace skia;
 
 SkSVGContainer::SkSVGContainer(SkSVGTag t) : INHERITED(t) { }
 
@@ -37,7 +41,9 @@ SkPath SkSVGContainer::onAsPath(const SkSVGRenderContext& ctx) const {
     for (int i = 0; i < fChildren.size(); ++i) {
         const SkPath childPath = fChildren[i]->asPath(ctx);
 
-        Op(path, childPath, kUnion_SkPathOp, &path);
+        if (auto result = pathops::Op(path, childPath, kUnion_SkPathOp)) {
+            path = *result;
+        } // what if we fail?
     }
 
     this->mapToParent(&path);
