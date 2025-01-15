@@ -1,0 +1,109 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e8e712_462d20e3",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-15T15:05:13Z",
+      "side": 1,
+      "message": "Let\u0027s update the docs too.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 41
+      },
+      "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b592bddd_b20b7215",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-15T15:05:13Z",
+      "side": 1,
+      "message": "I find it annyoing that IWYU forces us to include this in clients code.  If there is an option to disable this particular type of check, I\u0027d vote for it.",
+      "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bab22b9_9e836c5d",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-15T15:05:13Z",
+      "side": 1,
+      "message": "nit: these may read a little clearer with `return std::nullopt`.",
+      "fixSuggestions": [
+        {
+          "fixId": "3f09f0a0_bdc7a146",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pathops/SkPathOpsDispatch.cpp",
+              "range": {
+                "startLine": 29,
+                "startChar": 0,
+                "endLine": 30,
+                "endChar": 0
+              },
+              "replacement": "    return std::nullopt;\n"
+            },
+            {
+              "path": "src/pathops/SkPathOpsDispatch.cpp",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 38,
+                "endChar": 0
+              },
+              "replacement": "    return std::nullopt;\n"
+            },
+            {
+              "path": "src/pathops/SkPathOpsDispatch.cpp",
+              "range": {
+                "startLine": 45,
+                "startChar": 0,
+                "endLine": 46,
+                "endChar": 0
+              },
+              "replacement": "    return std::nullopt;\n"
+            },
+            {
+              "path": "src/pathops/SkPathOpsDispatch.cpp",
+              "range": {
+                "startLine": 53,
+                "startChar": 0,
+                "endLine": 54,
+                "endChar": 0
+              },
+              "replacement": "    return std::nullopt;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
