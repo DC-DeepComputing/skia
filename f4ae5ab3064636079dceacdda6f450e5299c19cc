@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "08977f23_fab1b52e",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-15T15:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8e8e712_462d20e3",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 41
+      },
+      "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b592bddd_b20b7215",
         "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
         "patchSetId": 13
@@ -102,6 +126,24 @@
           ]
         }
       ],
+      "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd810b62_542a2102",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-15T15:49:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bab22b9_9e836c5d",
       "revId": "f4ae5ab3064636079dceacdda6f450e5299c19cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
