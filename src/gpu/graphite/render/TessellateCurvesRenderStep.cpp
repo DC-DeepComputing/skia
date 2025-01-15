@@ -81,8 +81,8 @@ static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveT
 TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
                                                        bool infinitySupport,
                                                        StaticBufferManager* bufferManager)
-        : RenderStep("TessellateCurvesRenderStep",
-                     evenOdd ? "even-odd" : "winding",
+        : RenderStep(evenOdd ? RenderStepID::kTessellateCurves_EvenOdd
+                             : RenderStepID::kTessellateCurves_Winding,
                      Flags::kRequiresMSAA,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
