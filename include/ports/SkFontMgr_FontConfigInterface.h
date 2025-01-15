@@ -16,7 +16,10 @@ class SkFontConfigInterface;
 class SkFontScanner;
 
 /** Creates a SkFontMgr which wraps a SkFontConfigInterface. */
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+// Deprecated: you should use another method explicitly passing SkFontScanner instead
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FCI(sk_sp<SkFontConfigInterface> fci);
+#endif
 SK_API sk_sp<SkFontMgr> SkFontMgr_New_FCI(sk_sp<SkFontConfigInterface> fci,
                                           std::unique_ptr<SkFontScanner> scanner);
 
