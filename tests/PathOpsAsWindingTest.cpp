@@ -18,6 +18,8 @@
 #include <initializer_list>
 #include <string>
 
+using namespace skia;
+
 static SkPath build_squircle(SkPath::Verb verb, const SkRect& rect, SkPathDirection dir) {
     SkPath path;
     bool reverse = SkPathDirection::kCCW == dir;
@@ -58,6 +60,12 @@ static SkPath build_squircle(SkPath::Verb verb, const SkRect& rect, SkPathDirect
     }
     return path;
 }
+
+#define NEED_OPTIONAL_RESULT(result)                        \
+    if (!result.has_value()) {                          \
+        REPORTER_ASSERT(reporter, result.has_value());  \
+        return;                                         \
+    }
 
 void bug12040_1(skiatest::Reporter* reporter) {
     SkPath path;
@@ -124,16 +132,16 @@ void bug12040_1(skiatest::Reporter* reporter) {
     path2.cubicTo(-84.8599f, 194.886f, -83.5464f, 191.715f, -83.5464f, 188);
     path2.close();
 
-    SkPath opResult;
-    Op(path, path2, kDifference_SkPathOp, &opResult);
+    auto opResult = pathops::Op(path, path2, kDifference_SkPathOp);
+    NEED_OPTIONAL_RESULT(opResult)
 
-    SkPath winding;
-    REPORTER_ASSERT(reporter, AsWinding(opResult, &winding));
-    REPORTER_ASSERT(reporter, winding.getFillType() == SkPathFillType::kWinding);
+    auto winding = pathops::AsWinding(opResult.value());
+    NEED_OPTIONAL_RESULT(winding)
+    REPORTER_ASSERT(reporter, winding->getFillType() == SkPathFillType::kWinding);
 
-    SkPath difference;
-    Op(winding, opResult, kXOR_SkPathOp, &difference);
-    REPORTER_ASSERT(reporter, difference.isEmpty());
+    auto difference = pathops::Op(*winding, *opResult, kXOR_SkPathOp);
+    NEED_OPTIONAL_RESULT(difference)
+    REPORTER_ASSERT(reporter, difference->isEmpty());
 }
 
 void bug12040_2(skiatest::Reporter* reporter) {
@@ -201,21 +209,21 @@ void bug12040_2(skiatest::Reporter* reporter) {
     path2.cubicTo(267.82f, 78.2255f, 269.134f, 75.0543f, 269.134f, 71.3392f);
     path2.close();
 
-    SkPath opResult;
-    Op(path, path2, kDifference_SkPathOp, &opResult);
+    auto opResult = pathops::Op(path, path2, kDifference_SkPathOp);
+    NEED_OPTIONAL_RESULT(opResult)
 
     // This produces the correct result in all the cases I've tried.
     // So it appears to be a winding issue.
     // canvas->drawPath(opResult, p);
 
-    SkPath winding;
     path2.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, AsWinding(opResult, &winding));
-    REPORTER_ASSERT(reporter, winding.getFillType() == SkPathFillType::kWinding);
+    auto winding = pathops::AsWinding(*opResult);
+    NEED_OPTIONAL_RESULT(winding)
+    REPORTER_ASSERT(reporter, winding->getFillType() == SkPathFillType::kWinding);
 
-    SkPath difference;
-    Op(winding, opResult, kXOR_SkPathOp, &difference);
-    REPORTER_ASSERT(reporter, difference.isEmpty());
+    auto difference = pathops::Op(*winding, *opResult, kXOR_SkPathOp);
+    NEED_OPTIONAL_RESULT(difference)
+    REPORTER_ASSERT(reporter, difference->isEmpty());
 }
 
 void bug12040_3(skiatest::Reporter* reporter) {
