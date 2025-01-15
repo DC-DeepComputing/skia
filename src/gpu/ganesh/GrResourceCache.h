@@ -210,10 +210,6 @@ public:
      */
     void purgeUnlockedResources(size_t bytesToPurge, bool preferScratchResources);
 
-    /** Returns true if the cache would like a flush to occur in order to make more resources
-        purgeable. */
-    bool requestsFlush() const;
-
 #if GR_CACHE_STATS
     struct Stats {
         int fTotal;

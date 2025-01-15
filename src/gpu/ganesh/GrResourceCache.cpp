@@ -632,11 +632,6 @@ void GrResourceCache::purgeUnlockedResources(size_t bytesToPurge, bool preferScr
     }
 }
 
-bool GrResourceCache::requestsFlush() const {
-    return this->overBudget() && !fPurgeableQueue.count() &&
-           fNumBudgetedResourcesFlushWillMakePurgeable > 0;
-}
-
 void GrResourceCache::processFreedGpuResources() {
     TArray<UnrefResourceMessage> msgs;
     fUnrefResourceInbox.poll(&msgs);
