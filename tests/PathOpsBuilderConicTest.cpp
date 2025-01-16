@@ -45,7 +45,8 @@ static void testOvalSet(const OvalSet& set, const SkPath& oval, SkOpBuilder* bui
                 if (builder) {
                     builder->add(rotated, kUnion_SkPathOp);
                 } else if (!region) {
-                    Op(*result, rotated, kUnion_SkPathOp, result);
+                    auto tmp = skia::pathops::Op(*result, rotated, kUnion_SkPathOp);
+                    *result = tmp.value();
                 } else {
                     SkRegion rgnB, openClip;
                     openClip.setRect({-16000, -16000, 16000, 16000});
@@ -455,8 +456,7 @@ path.conicTo(-22.2313f, 12.4807f, -23.7764f, 7.72543f, 0.707107f);
 path.conicTo(-25.3215f, 2.97014f, -1.54509f, -4.75528f, 0.707107f);
 path.close();
 SkPath two(path);
-SkPath result;
-Op(one, two, kUnion_SkPathOp, &result);
+skia::pathops::Op(one, two, kUnion_SkPathOp);
 }
 
 DEF_TEST(SixtyOvalsAX, reporter) {
@@ -497,8 +497,7 @@ path.conicTo(SkBits2Float(0xc1b1d9c2), SkBits2Float(0x4147b0fc), SkBits2Float(0x
 path.conicTo(SkBits2Float(0xc1ca926e), SkBits2Float(0x403e16da), SkBits2Float(0xbfc5c55c), SkBits2Float(0xc0982b46), SkBits2Float(0x3f3504f3));  // -25.3215f, 2.97014f, -1.54509f, -4.75528f, 0.707107f
 path.close();
 SkPath two(path);
-SkPath result;
-Op(one, two, kUnion_SkPathOp, &result);
+skia::pathops::Op(one, two, kUnion_SkPathOp);
 }
 
 const char ovalsAsQuads[] = "M 146.4187316894531 136.5"
@@ -635,7 +634,7 @@ DEF_TEST(PathOpsOvalsAsQuads, reporter) {
     if ((false)) { // don't execute this for now
         SkPath path;
         SkParsePath::FromSVGString(ovalsAsQuads, &path);
-        Simplify(path, &path);
+        skia::pathops::Simplify(path);
     }
 }
 

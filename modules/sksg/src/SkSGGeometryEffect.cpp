@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <optional>
 
 using namespace skia_private;
 
@@ -165,10 +166,9 @@ SkPath OffsetEffect::onRevalidateEffect(const sk_sp<GeometryNode>& child) {
         SkPath fill_path;
         skpathutils::FillPathWithPaint(path, paint, &fill_path, nullptr);
 
-        if (fOffset > 0) {
-            Op(path, fill_path, kUnion_SkPathOp, &path);
-        } else {
-            Op(path, fill_path, kDifference_SkPathOp, &path);
+        SkPathOp op = fOffset > 0 ? kUnion_SkPathOp : kDifference_SkPathOp;
+        if (auto result = skia::pathops::Op(path, fill_path, op)) {
+            path = *result;
         }
 
         // TODO: this seems to break path combining (winding mismatch?)
