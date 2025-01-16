@@ -43,6 +43,42 @@ struct ResourceBindingRequirements;
 
 enum class Coverage { kNone, kSingleChannel, kLCD };
 
+// If this list is modified in any way, please increment the
+// RenderStep::kRenderStepIDVersion value. The enum values generated from this
+// list are serialized and the kRenderStepIDVersion value is the signal to
+// abandon older serialized data.
+#define SKGPU_RENDERSTEP_TYPES(M1, M3)                                        \
+        M1(Invalid)                                                           \
+        M1(CircularArc)                                                       \
+        M1(AnalyticRRect)                                                     \
+        M1(AnalyticBlur)                                                      \
+        M1(PerEdgeAAQuad)                                                     \
+        M3(CoverBounds,      NonAAFill,               "non-aa-fill")          \
+        M3(CoverBounds,      RegularCover,            "regular-cover")        \
+        M3(CoverBounds,      InverseCover,            "inverse-cover")        \
+        M1(CoverageMask)                                                      \
+        M3(BitmapText,       Mask,                    "mask")                 \
+        M3(BitmapText,       LCD,                     "LCD")                  \
+        M3(BitmapText,       Color,                   "color")                \
+        M3(MiddleOutFan,     EvenOdd,                 "even-odd")             \
+        M3(MiddleOutFan,     Winding,                 "winding")              \
+        M1(SDFTextLCD)                                                        \
+        M1(SDFText)                                                           \
+        M3(TessellateCurves, EvenOdd,                 "even-odd")             \
+        M3(TessellateCurves, Winding,                 "winding")              \
+        M1(TessellateStrokes)                                                 \
+        M3(TessellateWedges, Convex,                  "convex")               \
+        M3(TessellateWedges, EvenOdd,                 "evenodd") /* maybe even-odd*/ \
+        M3(TessellateWedges, Winding,                 "winding")              \
+        M3(Vertices,         Tris,                    "tris")                 \
+        M3(Vertices,         TrisColor,               "tris-color")           \
+        M3(Vertices,         TrisTexCoords,           "tris-texCoords")       \
+        M3(Vertices,         TrisColorTexCoords,      "tris-color-texCoords") \
+        M3(Vertices,         Tristrips,               "tristrips")            \
+        M3(Vertices,         TristripsColor,          "tristrips-color")      \
+        M3(Vertices,         TristripsTexCoords,      "tristrips-texCoords")  \
+        M3(Vertices,         TristripsColorTexCoords, "tristrips-color-texCoords")
+
 /**
  * The actual technique for rasterizing a high-level draw recorded in a DrawList is handled by a
  * specific Renderer. Each technique has an associated singleton Renderer that decomposes the
@@ -104,11 +140,9 @@ public:
     // 'half4 primitiveColor' variable (defined in the calling code).
     virtual const char* fragmentColorSkSL() const { return R"()"; }
 
-    uint32_t uniqueID() const { return fUniqueID; }
-
     // Returns a name formatted as "Subclass[variant]", where "Subclass" matches the C++ class name
     // and variant is a unique term describing instance's specific configuration.
-    const char* name() const { return fName.c_str(); }
+    const char* name() const { return RenderStepName(fRenderStepID); }
 
     bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
     bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
@@ -150,6 +184,24 @@ public:
                         ? DepthStencilFlags::kDepth : DepthStencilFlags::kNone);
     }
 
+    static const int kRenderStepIDVersion = 1;
+
+#define ENUM1(BaseName) k##BaseName,
+#define ENUM3(BaseName, VariantName, VariantTag) k##BaseName##_##VariantName,
+    enum class RenderStepID : uint32_t {
+        SKGPU_RENDERSTEP_TYPES(ENUM1, ENUM3)
+
+        kLast = kVertices_TristripsColorTexCoords,
+    };
+#undef ENUM1
+#undef ENUM3
+    static const int kNumRenderSteps = static_cast<int>(RenderStepID::kLast) + 1;
+
+    RenderStepID renderStepID() const { return fRenderStepID; }
+
+    static const char* RenderStepName(RenderStepID);
+    static bool IsValidRenderStepID(uint32_t);
+
     // TODO: Actual API to do things
     // 6. Some Renderers benefit from being able to share vertices between RenderSteps. Must find a
     //    way to support that. It may mean that RenderSteps get state per draw.
@@ -174,8 +226,7 @@ protected:
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
     // the RenderStep constructor by subclasses.
-    RenderStep(std::string_view className,
-               std::string_view variantName,
+    RenderStep(RenderStepID renderStepID,
                SkEnumBitMask<Flags> flags,
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
@@ -193,7 +244,7 @@ private:
 
     static Coverage GetCoverage(SkEnumBitMask<Flags>);
 
-    uint32_t fUniqueID;
+    RenderStepID fRenderStepID;
     SkEnumBitMask<Flags> fFlags;
     PrimitiveType        fPrimitiveType;
 
@@ -212,8 +263,6 @@ private:
 
     size_t fVertexStride;   // derived from vertex attribute set
     size_t fInstanceStride; // derived from instance attribute set
-
-    std::string fName;
 };
 SK_MAKE_BITMASK_OPS(RenderStep::Flags)
 
