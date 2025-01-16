@@ -141,7 +141,7 @@ protected:
     // This is in target texture space, having been transformed by the replay translation.
     SkIRect fReplayClip;
 
-    // The texture to use for implementing DstReadRequirement::kTextureCopy for the current render
+    // The texture to use for implementing DstReadStrategy::kTextureCopy for the current render
     // pass. This is a bare pointer since the CopyTask that initializes the texture's contents
     // will have tracked the resource on the CommandBuffer already.
     std::pair<const Texture*, const Sampler*> fDstCopy;
