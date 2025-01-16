@@ -98,8 +98,15 @@ public:
     // Copy val into the hash table, returning a pointer to the copy now in the table.
     // If there already is an entry in the table with the same key, we overwrite it.
     T* set(T val) {
-        if (4 * fCount >= 3 * fCapacity) {
-            this->resize(fCapacity > 0 ? fCapacity * 2 : 4);
+        static constexpr int kGrowFactor = 2;
+        bool should_grow = false;
+        if constexpr (HasShouldGrow<Traits>::value) {
+            should_grow = Traits::ShouldGrow(fCount, fCapacity);
+        } else {
+            should_grow = (2 * fCount >= fCapacity);
+        }
+        if (should_grow) {
+            this->resize(fCapacity > 0 ? fCapacity * kGrowFactor : 4);
         }
         return this->uncheckedSet(std::move(val));
     }
@@ -274,6 +281,15 @@ public:
     };
 
 private:
+    template <typename Traits1, typename = void>
+    struct HasShouldGrow : std::false_type {};
+
+    template <typename Traits1>
+    struct HasShouldGrow<
+            Traits1,
+            std::void_t<decltype(Traits1::ShouldGrow(std::declval<int>(), std::declval<int>()))>>
+            : std::true_type {};
+
     // Finds the first non-empty slot for an iterator.
     int firstPopulatedSlot() const {
         for (int i = 0; i < fCapacity; i++) {
