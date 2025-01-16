@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37027f16_deb5f799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-16T18:47:55Z",
+      "side": 1,
+      "message": "This was quite the exercise in frustration :)\n\nThe decision tree looks something like\n\n-- Sequoia only supports Xcode \u003e\u003d 16\n\n-- our clang15 toolchain blows up scpectacularly when trying to compile objc with XC16 frameworks:\n\n```\nIn file included from tools/window/MetalWindowContext.mm:8:\nIn file included from ./tools/window/MetalWindowContext.h:17:\nIn file included from external/clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Metal.framework/Headers/Metal.h:9:\nIn file included from external/clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Metal.framework/Headers/MTLTypes.h:8:\nIn file included from external/clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h:9:\nexternal/clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h:626:74: error: unknown type name \u0027NSUInteger\u0027\nFOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *typePtr, NSUInteger * _Nullable sizep, NSUInteger * _Nullable alignp);\n                                                                         ^\nexternal/clang_mac/symlinks/xcode/MacSDK/System/Library/Frameworks/Foundation.framework/Headers/NSObjCRuntime.h:626:104: error: unknown type name \u0027NSUInteger\u0027\nFOUNDATION_EXPORT const char *NSGetSizeAndAlignment(const char *typePtr, NSUInteger * _Nullable sizep, NSUInteger * _Nullable alignp);\n...\n...\n```\n(I looked into it and it seems that some of the builtin macros are borked and they mess up `TARGET_OS_OSX` detection in XC\u0027s `TargetConditionals.h`)\n\n-- latest llvm releases (19.x) no longer publish any mac binaries\n\n-- *some* llvm 18 releases have arm64-apple binaries, but they seem to have issues (complaining about missing `default` branches in exhaustive `switch` statements)\n\n-- last llvm 17 (17.0.6) does have arm64-apple binaries and appears to work\n\n-- no x86_64-apple binaries released beyond llvm 15\n\nKinda sucks to have different toolchain versions for intel vs arm, we should figure out a way forward for Intel.  But I don\u0027t think we\u0027re making anything worse, afaict bazel builds are all broken on recent macs.",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ac3112_507ce2e0",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-16T18:47:55Z",
+      "side": 1,
+      "message": "I think we\u0027re going to need a different toolchain source:\n\n`Volunteers make binaries for the LLVM project, which will be uploaded\nwhen they have had time to test and build these binaries. They might\nnot be available directly or not at all for each release. We suggest\nyou use the binaries from your distribution or build your own if you\nrely on a specific platform or configuration.`\n\nSome issues with that:\n\n  * general security - not sure what \"volunteers\" means, and whether they are vetted/trustworthy\n  * missing builds \u0026 spotty platform coverage - e.g. arm64-apple binaries are quite rare in releases and no x86_64-apple binaries have been published since 15\n  * inconsistent configuration/quality - some builds are unusable (configration issues?)\n\nAny thoughts on alternatives?  One thing that comes to mind is Homebrew LLVM bottles, but no idea if they\u0027re accessible for our bazel use.",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
