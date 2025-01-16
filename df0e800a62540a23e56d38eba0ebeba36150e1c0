@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "aa1757c2_8c840705",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-16T16:49:24Z",
+      "side": 1,
+      "message": "We seem to favor hypens (as in the \"even-odd\" above). As implemented, it preserves the existing name but, if we\u0027re willing to make an externally observable change, switching this to \"even-odd\" seems like it would be more consistent.\n\nOn that front we could also use the second token as the variant name; as in:\n  VerticesRenderStep[tris-color] --\u003e VerticesRenderStep[TrisColor]",
+      "parentUuid": "a4b92ad1_45c19595",
+      "range": {
+        "startLine": 71,
+        "startChar": 52,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b99f252c_16fe9a1a",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 8
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58a5cfa0_fa2cd1e0",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-16T16:49:24Z",
+      "side": 1,
+      "message": "PTAL",
+      "parentUuid": "b99f252c_16fe9a1a",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 74
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "58a299d6_0a085e57",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 8
@@ -60,6 +108,30 @@
       "writtenOn": "2025-01-16T16:24:22Z",
       "side": 1,
       "message": "3",
+      "range": {
+        "startLine": 197,
+        "startChar": 11,
+        "endLine": 197,
+        "endChar": 12
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51edc2e3_f6ea8892",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-16T16:49:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58a299d6_0a085e57",
       "range": {
         "startLine": 197,
         "startChar": 11,
