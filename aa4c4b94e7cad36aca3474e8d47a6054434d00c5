@@ -72,6 +72,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "24ea8cc8_7319bc82",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-16T17:39:36Z",
+      "side": 1,
+      "message": "It\u0027s not clear what the failure conditions for `Op` are, so it\u0027s kinda hard to reason about error handling.\n\nIn general, Skottie defaults to do-nothing on pathops errors.  In this case do-nothing means we\u0027re ignoring the offset effect and returning the original geometry - which seems reasonable.",
+      "parentUuid": "52d98271_b9bf71a7",
+      "range": {
+        "startLine": 172,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 9
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a72be10_763dc188",
         "filename": "modules/svg/src/SkSVGContainer.cpp",
         "patchSetId": 16
