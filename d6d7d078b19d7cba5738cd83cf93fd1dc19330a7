@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03c88e47_8eea46d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-16T15:06:53Z",
+      "side": 1,
+      "message": "Not sure your review load, but figured I\u0027d throw you on this since I\u0027ll definitely have you as a reviewer for the Vulkan implementation follow-up CL(s). LMKWYT! Copying Michael who weighed in offline on the general structure/design.",
+      "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
