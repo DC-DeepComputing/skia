@@ -119,6 +119,7 @@ private:
 #endif
 
     Rect fDstCopyBounds = Rect::InfiniteInverted();
+    DstReadStrategy fDstReadStrategy;
 };
 
 } // namespace skgpu::graphite

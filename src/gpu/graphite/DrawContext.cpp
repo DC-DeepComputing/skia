@@ -104,6 +104,8 @@ DrawContext::DrawContext(const Caps* caps,
         Swizzle swizzle = caps->getReadSwizzle(ii.colorType(), fTarget->textureInfo());
         fReadView = {fTarget, swizzle};
     }
+    // TODO: Add tracking bug for determining dstReadRequirement for DrawContexts, each of which
+    // targets one texture.
     // TBD - Will probably want DrawLists (and its internal commands) to come from an arena
     // that the DC manages.
 }

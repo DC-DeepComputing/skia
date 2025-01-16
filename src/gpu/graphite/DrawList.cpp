@@ -46,7 +46,8 @@ void DrawList::recordDraw(const Renderer* renderer,
     }
 #endif
 
-    if (paint && paint->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+    if (paint && paint->readsDst()) {
+        // TODO: Add comment why tracking this in all cases of dstreads is fine.
         fDstCopyBounds.join(clip.drawBounds());
     }
 }
