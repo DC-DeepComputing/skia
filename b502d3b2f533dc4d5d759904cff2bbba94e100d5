@@ -22,6 +22,30 @@
       },
       "revId": "b502d3b2f533dc4d5d759904cff2bbba94e100d5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0ff98b2_6e7b1227",
+        "filename": "src/gpu/graphite/ScratchResourceManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T17:03:04Z",
+      "side": 1,
+      "message": "No, I thought it was slightly simpler than `v |\u003d ct \u003e 0` to read, but I can update it to avoid the overflow possibility.",
+      "parentUuid": "10aa2655_0a1ba78d",
+      "range": {
+        "startLine": 23,
+        "startChar": 11,
+        "endLine": 23,
+        "endChar": 25
+      },
+      "revId": "b502d3b2f533dc4d5d759904cff2bbba94e100d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
