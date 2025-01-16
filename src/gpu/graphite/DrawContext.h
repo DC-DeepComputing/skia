@@ -107,6 +107,7 @@ private:
     TextureProxyView fReadView;
     SkImageInfo fImageInfo;
     const SkSurfaceProps fSurfaceProps;
+    DstReadStrategy fDstReadStrategy;
 
     // The in-progress DrawTask that will be snapped and returned when some external requirement
     // must depend on the contents of this DrawContext's target. As higher-level Skia operations
