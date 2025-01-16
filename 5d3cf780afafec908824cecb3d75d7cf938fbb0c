@@ -16,6 +16,46 @@
       "message": "Summary of key information w.r.t. the long-term goals for how \u0026 where dst read strategies will be determined:\n\nKey areas with access to dst texture information with which to query Caps for a DstReadStrategy:\n* DrawContext (has target texture info; caps ptr)\n- reports strategy to Device, where we must determine needsFlushBeforeDraw which is true in the case of dst copies\n- reports strategy to DrawLists in order to determine whether we should keep track of dstCopyBounds or not\n- can later pass strategy down into RenderPassTasks and subsequently into CommandBuffers for comparison against that of the active graphics pipeline. \n\n* GraphicsPipeline implementations (can consult color attachment texture info from RenderPassDesc for target texture info; has access to caps)\n- will need to report this to ShaderInfo for frag shader SkSL generation\n- command buffer can query the dst read strategy off of pipelines\n\nCommandBuffer impls. must take know the dst read strategy in order to implement it. This can be accomplished by querying the active graphics pipeline and could also be stored on the RenderPassTask and passed into/stored within the CommandBuffer when calling addRenderPass().\n\nPaintParams / PaintOptions do not need to know the specific strategy, but do need to determine and/or keep track of whether a dst read is needed based upon paint properties, blend mode, etc.",
       "revId": "5d3cf780afafec908824cecb3d75d7cf938fbb0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be0631ff_9bd0718c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-16T22:16:51Z",
+      "side": 1,
+      "message": "I tried to put together all the key info / assumptions of this CL into a comment, though if you don\u0027t need to reference it, that\u0027s cool too. Tear it up 🤓",
+      "revId": "5d3cf780afafec908824cecb3d75d7cf938fbb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1848f68a_890336fc",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-16T22:16:51Z",
+      "side": 1,
+      "message": "LMK if you have a preference for enforcing a DstReadStrategy being passed in in order to skip this logic when possible (as it is now) or to just simply track it in all cases, only actually using fDstCopyBounds in some cases (as discussed offline).",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 5
+      },
+      "revId": "5d3cf780afafec908824cecb3d75d7cf938fbb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
