@@ -16,6 +16,7 @@
 #include <memory>
 #include <new>
 #include <type_traits>
+#include <unordered_map>
 #include <utility>
 
 namespace skia_private {
@@ -29,7 +30,7 @@ namespace skia_private {
 //   - static uint32_t Hash(K)
 // If the key is large and stored inside T, you may want to make K a const&.
 // Similarly, if T is large you might want it to be a pointer.
-template <typename T, typename K, typename Traits = T>
+template <typename T, typename K, typename Traits = T, bool CollectStats = false>
 class THashTable {
 public:
     THashTable()  = default;
@@ -98,7 +99,8 @@ public:
     // Copy val into the hash table, returning a pointer to the copy now in the table.
     // If there already is an entry in the table with the same key, we overwrite it.
     T* set(T val) {
-        if (4 * fCount >= 3 * fCapacity) {
+        //if (4 * fCount >= 3 * fCapacity) {
+        if (2 * fCount >= fCapacity) {
             this->resize(fCapacity > 0 ? fCapacity * 2 : 4);
         }
         return this->uncheckedSet(std::move(val));
@@ -108,15 +110,22 @@ public:
     T* find(const K& key) const {
         uint32_t hash = Hash(key);
         int index = hash & (fCapacity-1);
+        size_t attempt = 0;
         for (int n = 0; n < fCapacity; n++) {
             Slot& s = fSlots[index];
             if (s.empty()) {
                 return nullptr;
             }
             if (hash == s.fHash && key == Traits::GetKey(*s)) {
+                if constexpr (CollectStats) {
+                  ++stats[attempt];
+                }
                 return &*s;
             }
             index = this->next(index);
+            if constexpr (CollectStats) {
+              ++attempt;
+            }
         }
         SkASSERT(fCapacity == fCount);
         return nullptr;
@@ -272,6 +281,13 @@ public:
         const TTable* fTable;
         int fSlot;
     };
+
+    static void PrintStats() requires CollectStats {
+      fprintf(stderr, "Stats:\n");
+      for (auto [probe, count]: stats) {
+        fprintf(stderr, "Probe %lu, count: %lu\n", probe, count);
+      }
+    }
 
 private:
     // Finds the first non-empty slot for an iterator.
@@ -456,6 +472,13 @@ private:
     int fCount    = 0,
         fCapacity = 0;
     std::unique_ptr<Slot[]> fSlots;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wexit-time-destructors"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wglobal-constructors"
+    inline static std::unordered_map<size_t, size_t> stats;
+#pragma clang diagnostic pop
+#pragma clang diagnostic pop
 };
 
 // Maps K->V.  A more user-friendly wrapper around THashTable, suitable for most use cases.
