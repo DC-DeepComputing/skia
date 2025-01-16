@@ -372,6 +372,9 @@ public:
     static uint32_t Hash(SkPackedGlyphID packedID) {
         return packedID.hash();
     }
+    //static bool ShouldGrow(int count, int capacity) {
+      //return 2 * count >= capacity;
+    //}
 
 private:
     void setAction(skglyph::ActionType actionType, skglyph::GlyphAction action) {
