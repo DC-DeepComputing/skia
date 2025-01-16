@@ -36,6 +36,8 @@ if (is_debug) {
   ]
 }
 
+partition_alloc_add_configs += [ "//gn/skia:partition_alloc_default_lib" ]
+
 # MSVC's cl.exe compiler is not supported.
 _supported_compiler = is_clang || !is_win
 
