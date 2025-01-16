@@ -95,8 +95,9 @@ DrawContext::DrawContext(const Caps* caps,
         : fTarget(std::move(target))
         , fImageInfo(ii)
         , fSurfaceProps(props)
+        , fDstReadStrategy(caps->getDstReadStrategy())
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
-        , fPendingDraws(std::make_unique<DrawList>())
+        , fPendingDraws(std::make_unique<DrawList>(fDstReadStrategy))
         , fPendingUploads(std::make_unique<UploadList>()) {
     if (!caps->isTexturable(fTarget->textureInfo())) {
         fReadView = {}; // Presumably this DrawContext is rendering into a swap chain
@@ -130,7 +131,7 @@ void DrawContext::discard() {
     // clear op overwriting it. For now, preserve the previous tasks that might include atlas
     // uploads that are not explicitly shared between DrawContexts.
     if (fPendingDraws->renderStepCount() > 0) {
-        fPendingDraws = std::make_unique<DrawList>();
+        fPendingDraws = std::make_unique<DrawList>(fDstReadStrategy);
     }
     if (fComputePathAtlas) {
         fComputePathAtlas->reset();
@@ -238,7 +239,7 @@ void DrawContext::flush(Recorder* recorder) {
                                                     this->imageInfo(),
                                                     std::make_pair(fPendingLoadOp, fPendingStoreOp),
                                                     fPendingClearColor);
-    fPendingDraws = std::make_unique<DrawList>();
+    fPendingDraws = std::make_unique<DrawList>(fDstReadStrategy);
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
     fPendingLoadOp = LoadOp::kLoad;
