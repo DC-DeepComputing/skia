@@ -38,7 +38,7 @@ public:
                          sk_sp<SkBlender> primitiveBlender,
                          const CircularRRectClip& analyticClip,
                          sk_sp<SkShader> clipShader,
-                         DstReadRequirement dstReadReq,
+                         bool dstReadRequired,
                          bool skipColorXform);
 
     PaintParams(const PaintParams&);
@@ -61,7 +61,7 @@ public:
     SkBlender* primitiveBlender() const { return fPrimitiveBlender.get(); }
     sk_sp<SkBlender> refPrimitiveBlender() const;
 
-    DstReadRequirement dstReadRequirement() const { return fDstReadReq; }
+    bool readsDst() const { return fReadsDst; }
     bool skipColorXform() const { return fSkipColorXform; }
     bool dither() const { return fDither; }
 
@@ -93,7 +93,7 @@ private:
     sk_sp<SkBlender>     fPrimitiveBlender;
     CircularRRectClip    fAnalyticClip;
     sk_sp<SkShader>      fClipShader;
-    DstReadRequirement   fDstReadReq;
+    bool                 fReadsDst;
     bool                 fSkipColorXform;
     bool                 fDither;
 };
