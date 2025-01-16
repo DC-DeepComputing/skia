@@ -57,7 +57,7 @@ public:
     }
     const char* ssboIndex() const { return fSsboIndex; }
 
-    DstReadRequirement dstReadRequirement() const { return fDstReadRequirement; }
+    DstReadStrategy dstReadStrategy() const { return fDstReadStrategy; }
     const skgpu::BlendInfo& blendInfo() const { return fBlendInfo; }
 
     const skia_private::TArray<uint32_t>& data() const { return fData; }
@@ -113,7 +113,7 @@ private:
     // The blendInfo represents the actual GPU blend operations, which may or may not completely
     // implement the paint and coverage blending defined by the root nodes.
     skgpu::BlendInfo fBlendInfo;
-    DstReadRequirement fDstReadRequirement = DstReadRequirement::kNone;
+    DstReadStrategy fDstReadStrategy = DstReadStrategy::kNoneRequired;
 
     // Note that fData is currently only used to store SamplerDesc information for shaders that have
     // the option of using immutable samplers. However, other snippets could leverage this field to
