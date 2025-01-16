@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "920c1e84_960af4a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-16T16:03:05Z",
+      "side": 1,
+      "message": "Cherry-pick the most recent rolls of fontations back to m133. Currently building with fontations is broken on m133 due to https://skia-review.googlesource.com/c/skia/+/938516 having landed without rolling fontations first.",
+      "revId": "24a7f0719c3512d4dfe52bedefe6cd26c1697d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
