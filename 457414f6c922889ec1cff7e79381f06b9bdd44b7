@@ -22,6 +22,75 @@
       },
       "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29d4979a_b2364d6e",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T18:01:51Z",
+      "side": 1,
+      "message": "Is this always going to be the color attachment or the resolve attachment? How does the input attachment sampling work when there are multiple samples?",
+      "range": {
+        "startLine": 159,
+        "startChar": 14,
+        "endLine": 159,
+        "endChar": 28
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecd44d00_a9ce9a78",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T18:01:51Z",
+      "side": 1,
+      "message": "nit: It\u0027s the DrawPass that uses the dst sampler, not the DrawTask. The DrawTask is a wrapping task that can hold many more operations than just the pass (and the RenderPassTask that it goes into).",
+      "range": {
+        "startLine": 238,
+        "startChar": 9,
+        "endLine": 238,
+        "endChar": 17
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80b3ba77_83a47f29",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T18:01:51Z",
+      "side": 1,
+      "message": "Right now we dont\u0027 have any barriers to support non-coherent reads. Is this required for some, all, or none of the implementation in Vulkan?",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 51
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
