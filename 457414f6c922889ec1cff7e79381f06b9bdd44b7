@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a648a9e_e514a054",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T17:52:36Z",
+      "side": 1,
+      "message": "The sampler that gets created by the CommandBuffer for the dstCopy looks equivalent to the sampler needed for the dst texture sample. We could just split that out into a separate field instead of storing a pair of things for dst-copy.  That should simpify addRenderPass() and RenderPassTask to just opt into the color texture being attached.",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 44
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
