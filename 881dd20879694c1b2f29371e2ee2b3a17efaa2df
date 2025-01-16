@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e26bf78b_d2eb2f31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-16T19:04:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b175077_9d618e7f",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75ac3112_507ce2e0",
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "We should probably look into what Chromium does and maybe use their build. For Linux, at least, they Clang build from source somewhat regularly.\n\nFor Linux, we, Skia, compile our own clang so we can get IWYU. We might want to set up something similar (although we might not have access to Docker like we do for Linux).",
       "parentUuid": "75ac3112_507ce2e0",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74aeddd4_dfb6034c",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-16T19:04:56Z",
+      "side": 1,
+      "message": "\u003e We should probably look into what Chromium does and maybe use their build. For Linux, at least, they Clang build from source somewhat regularly.\n\nGood idea!",
+      "parentUuid": "de34d511_c40deb26",
       "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
