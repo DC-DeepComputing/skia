@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "05073518_8460adfc",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-16T18:09:58Z",
+      "side": 1,
+      "message": "We should look up what is supported. Right now Ganesh won\u0027t use the input attachment for MSAA. But I forget if that\u0027s a restriction of the API or we just didn\u0027t implement it.",
+      "parentUuid": "29d4979a_b2364d6e",
+      "range": {
+        "startLine": 159,
+        "startChar": 14,
+        "endLine": 159,
+        "endChar": 28
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ecd44d00_a9ce9a78",
         "filename": "src/gpu/graphite/DrawContext.cpp",
         "patchSetId": 13
@@ -83,6 +107,30 @@
       "writtenOn": "2025-01-16T18:01:51Z",
       "side": 1,
       "message": "Right now we dont\u0027 have any barriers to support non-coherent reads. Is this required for some, all, or none of the implementation in Vulkan?",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 51
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db2a128b_d53663f6",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-16T18:09:58Z",
+      "side": 1,
+      "message": "Vulkan will need a barrier before each draw that will read the dst",
+      "parentUuid": "80b3ba77_83a47f29",
       "range": {
         "startLine": 198,
         "startChar": 0,
