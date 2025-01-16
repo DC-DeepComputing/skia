@@ -22,6 +22,30 @@
       },
       "revId": "9897a6992ea3ea1752149a59bbd23f35b2e580a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "649344fc_27066590",
+        "filename": "src/gpu/graphite/ScratchResourceManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T18:02:52Z",
+      "side": 1,
+      "message": "Thanks, that\u0027s why you just use `[\u0026]` even when it\u0027s not necessary :p",
+      "parentUuid": "a264b754_c106564a",
+      "range": {
+        "startLine": 20,
+        "startChar": 22,
+        "endLine": 20,
+        "endChar": 31
+      },
+      "revId": "9897a6992ea3ea1752149a59bbd23f35b2e580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
