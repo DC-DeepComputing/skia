@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9c010b1_5bbc136f",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-16T17:45:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "727cb947_d7b5e068",
+      "range": {
+        "startLine": 71,
+        "startChar": 52,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b99f252c_16fe9a1a",
@@ -133,6 +157,30 @@
       "side": 1,
       "message": "I like that look, particularly if e drop to two columns",
       "parentUuid": "58a5cfa0_fa2cd1e0",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 74
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b8f053e_cfead741",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-16T17:45:40Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ee22c2d1_3e496826",
       "range": {
         "startLine": 51,
         "startChar": 0,
