@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "727cb947_d7b5e068",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T16:51:31Z",
+      "side": 1,
+      "message": "I like that idea to use the second token, avoids some redundancy.",
+      "parentUuid": "aa1757c2_8c840705",
+      "range": {
+        "startLine": 71,
+        "startChar": 52,
+        "endLine": 71,
+        "endChar": 71
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b99f252c_16fe9a1a",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 8
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "PTAL",
       "parentUuid": "b99f252c_16fe9a1a",
+      "range": {
+        "startLine": 51,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 74
+      },
+      "revId": "df0e800a62540a23e56d38eba0ebeba36150e1c0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee22c2d1_3e496826",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T16:51:31Z",
+      "side": 1,
+      "message": "I like that look, particularly if e drop to two columns",
+      "parentUuid": "58a5cfa0_fa2cd1e0",
       "range": {
         "startLine": 51,
         "startChar": 0,
