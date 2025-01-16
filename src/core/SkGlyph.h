@@ -120,7 +120,7 @@ struct SkPackedGlyphID {
     }
 
     uint32_t hash() const {
-        return SkChecksum::CheapMix(fID);
+        return SkChecksum::Mix(fID);
     }
 
     SkString dump() const {
