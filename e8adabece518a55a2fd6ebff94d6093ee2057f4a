@@ -52,6 +52,24 @@
       "parentUuid": "df30b4e4_3959a5ee",
       "revId": "e8adabece518a55a2fd6ebff94d6093ee2057f4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ef21001_d01f04e5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-16T16:27:42Z",
+      "side": 1,
+      "message": "Sorry, now I understand why the bots were red. Will ensure dependencies are rolled next time. I was coming from a situation in Chromium were not all bots on the branches are expected to go pass.",
+      "parentUuid": "caf7dfbb_9f6ee80e",
+      "revId": "e8adabece518a55a2fd6ebff94d6093ee2057f4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
