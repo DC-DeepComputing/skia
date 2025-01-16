@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01c0b981_126b44ec",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3612c126_2582e961",
+      "range": {
+        "startLine": 35,
+        "startChar": 1,
+        "endLine": 35,
+        "endChar": 10
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5f62779_eb212a7a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-16T17:13:36Z",
       "side": 1,
       "message": "nit: I think the word wrapping can be improved for the 100 char limit.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 57
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd44be65_294367a0",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5f62779_eb212a7a",
       "range": {
         "startLine": 36,
         "startChar": 0,
@@ -94,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5aec025_4c8079ea",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "24ea8cc8_7319bc82",
+      "range": {
+        "startLine": 172,
+        "startChar": 8,
+        "endLine": 172,
+        "endChar": 9
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a72be10_763dc188",
@@ -107,6 +179,24 @@
       "writtenOn": "2025-01-16T17:13:36Z",
       "side": 1,
       "message": "nit: preface with TODO",
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bded147d_dd9ae3f8",
+        "filename": "modules/svg/src/SkSVGContainer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a72be10_763dc188",
       "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -128,6 +218,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01186bad_78d7df36",
+        "filename": "modules/svg/src/SkSVGNode.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a1bbc93_2d16bc23",
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3b1f99e8_3feb4553",
@@ -141,6 +249,24 @@
       "writtenOn": "2025-01-16T17:13:36Z",
       "side": 1,
       "message": "nit: \"T\"",
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07279904_916f3c46",
+        "filename": "src/pathops/SkPathOpsInternal.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b1f99e8_3feb4553",
       "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -168,6 +294,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9510d323_1b91f922",
+        "filename": "src/pathops/SkPathOpsInternal.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "The comment is about the current pathops impl calling itself. It should call itself directly (when it wants to), and not go through any \"dispatching\" that we may do.\n\nNotice that already, the public differs from what the impl expects, in terms of return style: the (new) public methods return optional\u003c\u003e, while the impl versions return a bool (as they had in the past).",
+      "parentUuid": "06c6837c_892c4e64",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 17,
+        "endChar": 74
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a56b668_4a07f414",
@@ -181,6 +331,30 @@
       "writtenOn": "2025-01-16T17:13:36Z",
       "side": 1,
       "message": "Mayeb a follow-up, but this seems like a very expensive way to arrive at the bounds of the intersection of the clip stack and the path.",
+      "range": {
+        "startLine": 418,
+        "startChar": 29,
+        "endLine": 418,
+        "endChar": 65
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b37058_8bc59f2b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 418,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-01-16T21:09:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8a56b668_4a07f414",
       "range": {
         "startLine": 418,
         "startChar": 29,
