@@ -13,6 +13,9 @@
 
 namespace skgpu::graphite {
 
+ DrawList::DrawList(DstReadStrategy dstReadStrategy)
+        : fDstReadStrategy(dstReadStrategy) {};
+
 const Transform& DrawList::deduplicateTransform(const Transform& localToDevice) {
     // TODO: This is a pretty simple deduplication strategy and doesn't take advantage of the stack
     // knowledge that Device has.
@@ -45,8 +48,8 @@ void DrawList::recordDraw(const Renderer* renderer,
         fCoverageMaskShapeDrawCount++;
     }
 #endif
-
-    if (paint && paint->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+    if (paint && paint->readsDst() && fDstReadStrategy == DstReadStrategy::kTextureCopy) {
+        // TODO: Add comment why tracking this in all cases of dstreads is fine.
         fDstCopyBounds.join(clip.drawBounds());
     }
 }

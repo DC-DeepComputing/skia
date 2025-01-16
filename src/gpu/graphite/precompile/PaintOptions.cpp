@@ -149,19 +149,6 @@ int PaintOptions::numCombinations() const {
            this->numClipShaderCombinations();
 }
 
-namespace {
-
-DstReadRequirement get_dst_read_req(const Caps* caps,
-                                    Coverage coverage,
-                                    PrecompileBlender* blender) {
-    if (blender) {
-        return GetDstReadRequirement(caps, blender->priv().asBlendMode(), coverage);
-    }
-    return GetDstReadRequirement(caps, SkBlendMode::kSrcOver, coverage);
-}
-
-} // anonymous namespace
-
 void PaintOptions::createKey(const KeyContext& keyContext,
                              PaintParamsKeyBuilder* keyBuilder,
                              PipelineDataGatherer* gatherer,
@@ -204,8 +191,11 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     if (!finalBlender.first) {
         finalBlender = { PrecompileBlenders::Mode(SkBlendMode::kSrcOver), 0 };
     }
-    DstReadRequirement dstReadReq = get_dst_read_req(keyContext.caps(), coverage,
-                                                     finalBlender.first.get());
+
+    PrecompileBlender* blender = finalBlender.first.get();
+    std::optional<SkBlendMode> blendMode = blender ? blender->priv().asBlendMode()
+                                                   : SkBlendMode::kSrcOver;
+    bool dstReadRequired = DetermineIfDstReadRequired(keyContext.caps(), blendMode, coverage);
 
     PaintOption option(kOpaquePaintColor,
                        finalBlender,
@@ -215,7 +205,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
                        clipShader,
-                       dstReadReq,
+                       dstReadRequired,
                        fDither);
 
     option.toKey(keyContext, keyBuilder, gatherer);
