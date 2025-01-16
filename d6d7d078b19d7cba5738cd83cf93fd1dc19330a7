@@ -16,6 +16,52 @@
       "message": "Not sure your review load, but figured I\u0027d throw you on this since I\u0027ll definitely have you as a reviewer for the Vulkan implementation follow-up CL(s). LMKWYT! Copying Michael who weighed in offline on the general structure/design.",
       "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38b99ffb_49068063",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-16T15:24:09Z",
+      "side": 1,
+      "message": "how does this interact with the pair you just added? IMO I feel like the dstTextureSampler you added should only be used in the case where we can directly sample the texture we\u0027re rendering to. In that case is there reason to even pass in the Texture* here since we know it should be the same as the colorTexture?",
+      "range": {
+        "startLine": 97,
+        "startChar": 23,
+        "endLine": 97,
+        "endChar": 45
+      },
+      "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaf34f6d_ca2a946d",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-16T15:24:09Z",
+      "side": 1,
+      "message": "This should always be kNone for mipmap mode. We will always be sampling pixels 1:1 in these dst reads.",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 87,
+        "endChar": 96
+      },
+      "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
