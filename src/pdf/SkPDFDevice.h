@@ -90,7 +90,8 @@ public:
     void drawRect(const SkRect& r, const SkPaint& paint) override;
     void drawOval(const SkRect& oval, const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
-    void drawPath(const SkPath& origpath, const SkPaint& paint, bool pathIsMutable) override;
+    void drawPath(const SkPath& origPath, const SkPaint& paint) override;
+    void drawPath(SkPath& origPath, const SkPaint& paint) override;
 
     void drawImageRect(const SkImage*,
                        const SkRect* src,
@@ -223,16 +224,16 @@ private:
 
     void internalDrawPath(const SkClipStack&,
                           const SkMatrix&,
-                          const SkPath&,
-                          const SkPaint&,
-                          bool pathIsMutable);
+                          const SkPath& origPath,
+                          SkPath* resultPath,
+                          const SkPaint&);
 
     void internalDrawPathWithFilter(const SkClipStack& clipStack,
                                     const SkMatrix& ctm,
                                     const SkPath& origPath,
                                     const SkPaint& paint);
 
-    bool handleInversePath(const SkPath& origPath, const SkPaint& paint, bool pathIsMutable);
+    bool handleInversePath(const SkPath& origPath, const SkPaint& paint);
 
     void clearMaskOnGraphicState(SkDynamicMemoryWStream*);
     void setGraphicState(SkPDFIndirectReference gs, SkDynamicMemoryWStream*);

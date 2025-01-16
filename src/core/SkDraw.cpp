@@ -26,6 +26,7 @@
 #include "src/core/SkAutoBlitterChoose.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkDrawTypes.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkMatrixUtils.h"
