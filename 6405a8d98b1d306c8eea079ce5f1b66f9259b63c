@@ -16,6 +16,24 @@
       "message": "I had been able to reproduce assertion failures where `SkASSERT(fUnavailable.empty())` triggered in a local build of chrome (ie. the leaking resources between Recordings was a real issue).\n\nThe changes I added to RenderPassTask should address this but I will need to patch it in and test tonight to confirm that it in fact resolves the issue.",
       "revId": "6405a8d98b1d306c8eea079ce5f1b66f9259b63c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c599d5c_16c2793f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-16T02:50:48Z",
+      "side": 1,
+      "message": "Patching this into my local build I was no longer able to trigger the asserts of `SkASSERT(fUnavailable.empty())` so this should be good to go. The chrome canary failures are unrelated (a swiftshader failure in linux-blink-rel).",
+      "parentUuid": "cecf580d_8707d53c",
+      "revId": "6405a8d98b1d306c8eea079ce5f1b66f9259b63c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
