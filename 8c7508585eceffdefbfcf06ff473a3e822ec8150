@@ -62,6 +62,30 @@
       },
       "revId": "8c7508585eceffdefbfcf06ff473a3e822ec8150",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "417af34f_d6f56ff2",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-16T18:53:58Z",
+      "side": 1,
+      "message": "If we glob everything, then that slows down the sandboxing because *all* those files need to be symlinked in. Using a subset is dramatically faster. For linking, which is done less frequently, it might not be necessary, but for compile, it certainly is.",
+      "parentUuid": "515b9d5b_ccc79495",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 202,
+        "endChar": 44
+      },
+      "revId": "8c7508585eceffdefbfcf06ff473a3e822ec8150",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

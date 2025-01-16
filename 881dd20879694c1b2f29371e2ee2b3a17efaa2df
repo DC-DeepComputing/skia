@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b175077_9d618e7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-16T18:53:58Z",
+      "side": 1,
+      "message": "Sorry you had to slog through all that :upsidedown:\n\nCan you add something about supporting Sequoia to the commit message for justification?",
+      "parentUuid": "37027f16_deb5f799",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "75ac3112_507ce2e0",
         "filename": "toolchain/download_mac_toolchain.bzl",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2025-01-16T18:47:55Z",
       "side": 1,
       "message": "I think we\u0027re going to need a different toolchain source:\n\n`Volunteers make binaries for the LLVM project, which will be uploaded\nwhen they have had time to test and build these binaries. They might\nnot be available directly or not at all for each release. We suggest\nyou use the binaries from your distribution or build your own if you\nrely on a specific platform or configuration.`\n\nSome issues with that:\n\n  * general security - not sure what \"volunteers\" means, and whether they are vetted/trustworthy\n  * missing builds \u0026 spotty platform coverage - e.g. arm64-apple binaries are quite rare in releases and no x86_64-apple binaries have been published since 15\n  * inconsistent configuration/quality - some builds are unusable (configration issues?)\n\nAny thoughts on alternatives?  One thing that comes to mind is Homebrew LLVM bottles, but no idea if they\u0027re accessible for our bazel use.",
+      "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de34d511_c40deb26",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-16T18:53:58Z",
+      "side": 1,
+      "message": "We should probably look into what Chromium does and maybe use their build. For Linux, at least, they Clang build from source somewhat regularly.\n\nFor Linux, we, Skia, compile our own clang so we can get IWYU. We might want to set up something similar (although we might not have access to Docker like we do for Linux).",
+      "parentUuid": "75ac3112_507ce2e0",
       "revId": "881dd20879694c1b2f29371e2ee2b3a17efaa2df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
