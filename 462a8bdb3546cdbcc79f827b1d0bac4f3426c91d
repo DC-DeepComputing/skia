@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feab07de_a88c4522",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-16T22:10:03Z",
+      "side": 1,
+      "message": "General feedback question:\n\nThere\u0027s a couple of ways to go about separating dst read requirement from its dst read strategy. I went with using a simple bool in areas I thought made sense and renaming this `DstReadRequirement` enum to `DstReadStrategy`.\n\nHowever, it may be a bit clunky or unreliable to rely upon other areas (like the cmd buffer) to check **if** a dst read is needed before looking at the actual strategy, so I added a `DstReadStrategy::kNoneRequired` for cases where it has definitely been determined that no dst read is required (as opposed to areas where it simply hasn\u0027t been determined yet).\n\nLMKWYT... some options:\nA) Alluded to above, remove `DstReadStrategy::kNoneRequired` and add a way for the cmd buffer to access a bool of whether a dst read is needed. Rely upon the cmd buffer ad other relevant areas to check that prior to doing any analysis or action with a DstReadStrategy.\n\nB) Perhaps replace `DstReadStrategy::kNoneRequired` with `DstReadStrategy::kInvalid` for clear failure in the case of being asked for a strategy where whether a dst read is required has A) not yet been determined or B) been determined to be false. E.g., if the cmd buffer does query the pipeline for a dst read strategy but the pipeline thinks there shouldn\u0027t be a dst read, then it would return `kInvalid` as its strategy.\n\nC) Other; add your own suggestion :^)",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 2
+      },
+      "revId": "462a8bdb3546cdbcc79f827b1d0bac4f3426c91d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
