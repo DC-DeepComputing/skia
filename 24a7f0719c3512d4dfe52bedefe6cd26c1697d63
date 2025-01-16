@@ -33,6 +33,24 @@
       "message": "Sorry, didn\u0027t realize we need the roll in the branch, too? I thought this would be picked from the Chromium build, but I assume you have your own branch bots?",
       "revId": "24a7f0719c3512d4dfe52bedefe6cd26c1697d63",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b4a3128_cbc66eb2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-16T16:16:38Z",
+      "side": 1,
+      "message": "Skia\u0027s builders do not depend on Chromium\u0027s builds in any interesting way (the commonality starts with swarming, cipd, and some recipie stuff, afaik). We source some of third_party from chromium.googlesource.com but that is mostly for convienience and those are all pinned and could be sourced from anywhere really.\n\nSkia has also had continuous builds and commit queue on branches (aka the job configs live with the source) for way longer than Chromium has. They\u0027re not really \"branch bots\" they\u0027re just the jobs that run the same way any other Skia jobs run.",
+      "parentUuid": "aa3b8df0_9125cd7b",
+      "revId": "24a7f0719c3512d4dfe52bedefe6cd26c1697d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
