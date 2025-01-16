@@ -41,6 +41,7 @@
 #include <freetype/ftsynth.h>
 
 using namespace skia_private;
+using namespace skia;
 
 namespace {
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
@@ -2078,11 +2079,15 @@ bool SkScalerContextFTUtils::generateGlyphPath(FT_Face face, SkPath* path) const
         return false;
     }
     if (face->glyph->outline.flags & FT_OUTLINE_OVERLAP) {
-        Simplify(*path, path);
+        if (auto result = pathops::Simplify(*path)) {
+            *path = *result;
+        }
         // Simplify will return an even-odd path.
         // A stroke+fill (for fake bold) may be incorrect for even-odd.
         // https://github.com/flutter/flutter/issues/112546
-        AsWinding(*path, path);
+        if (auto result = pathops::AsWinding(*path)) {
+            *path = *result;
+        }
     }
     return true;
 }

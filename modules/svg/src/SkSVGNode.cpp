@@ -19,6 +19,9 @@
 #include <algorithm>
 #include <array>
 #include <cstddef>
+#include <optional>
+
+using namespace skia;
 
 SkSVGNode::SkSVGNode(SkSVGTag t) : fTag(t) {
     // Uninherited presentation attributes need a non-null default value.
@@ -55,7 +58,9 @@ SkPath SkSVGNode::asPath(const SkSVGRenderContext& ctx) const {
 
     if (const auto* clipPath = localContext.clipPath()) {
         // There is a clip-path present on the current node.
-        Op(path, *clipPath, kIntersect_SkPathOp, &path);
+        if (auto result = pathops::Op(path, *clipPath, kIntersect_SkPathOp)) {
+            path = *result;
+        } // TODO: what if we fail?
     }
 
     return path;

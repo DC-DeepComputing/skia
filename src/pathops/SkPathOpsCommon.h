@@ -34,6 +34,4 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
              SkDEBUGPARAMS(bool skipAssert)
              SkDEBUGPARAMS(const char* testName));
 
-bool ComputeTightBounds(const SkPath&, SkRect*);
-
 #endif

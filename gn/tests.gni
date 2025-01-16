@@ -455,7 +455,6 @@ pathops_tests_sources = [
   "$_tests/PathOpsThreadedCommon.h",
   "$_tests/PathOpsThreeWayTest.cpp",
   "$_tests/PathOpsTigerTest.cpp",
-  "$_tests/PathOpsTightBoundsTest.cpp",
   "$_tests/PathOpsTypesTest.cpp",
   "$_tests/WangsFormulaTest.cpp",
 ]
