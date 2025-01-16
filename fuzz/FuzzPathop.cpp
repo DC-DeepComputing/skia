@@ -104,8 +104,7 @@ DEF_FUZZ(Pathop, fuzz) {
             fuzz->nextRange(&ft, 0, SkPathFillType::kInverseEvenOdd);
             path.setFillType(ft);
 
-            SkRect result;
-            ComputeTightBounds(path, &result);
+            path.computeTightBounds();  // used to be TightBounds()
             break;
         }
         default: {
