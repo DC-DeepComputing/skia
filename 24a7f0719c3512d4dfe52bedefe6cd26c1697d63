@@ -51,6 +51,24 @@
       "parentUuid": "aa3b8df0_9125cd7b",
       "revId": "24a7f0719c3512d4dfe52bedefe6cd26c1697d63",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa634667_c51fe58d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-16T16:19:11Z",
+      "side": 1,
+      "message": "Understood, I will make sure to commit the dependencies to the branch next time as well.",
+      "parentUuid": "6b4a3128_cbc66eb2",
+      "revId": "24a7f0719c3512d4dfe52bedefe6cd26c1697d63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
