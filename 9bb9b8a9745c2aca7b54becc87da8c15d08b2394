@@ -349,6 +349,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff85018_72a7f33f",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T16:46:56Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "fafb7282_de8d9dee",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 38
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "921d86ac_5b4f7c2f",
