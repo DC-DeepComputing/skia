@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc9a6c85_ddabd7ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:13:28Z",
+      "side": 1,
+      "message": "This should fix one of the \"named fiddles failing\" alerts too",
+      "revId": "a5092680f56e4d074df9a2a1a34d2d9e44d52e27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
