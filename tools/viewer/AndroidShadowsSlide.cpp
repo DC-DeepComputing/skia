@@ -19,6 +19,8 @@
 #include "tools/timer/TimeUtils.h"
 #include "tools/viewer/Slide.h"
 
+using namespace skia;
+
 ////////////////////////////////////////////////////////////////////////////
 
 class ShadowsSlide : public Slide {
@@ -228,7 +230,9 @@ public:
         SkPath tmpPath;
         SkPath tmpClipPath;
         tmpClipPath.addCircle(fAnimTranslate, 0, 60);
-        Op(fSquareRRectPath, tmpClipPath, kIntersect_SkPathOp, &tmpPath);
+        if (auto result = pathops::Op(fSquareRRectPath, tmpClipPath, kIntersect_SkPathOp)) {
+            tmpPath = *result;
+        }
 
         paint.setColor(SK_ColorMAGENTA);
         canvas->translate(-725, 240);
@@ -239,7 +243,9 @@ public:
         // path ops bug
         SkPath tmpClipPathBug;
         tmpClipPathBug.addCircle(88.0344925f, 0, 60);
-        Op(fSquareRRectPath, tmpClipPathBug, kIntersect_SkPathOp, &tmpPath);
+        if (auto result = pathops::Op(fSquareRRectPath, tmpClipPathBug, kIntersect_SkPathOp)) {
+            tmpPath = *result;
+        }
 
         canvas->translate(250, 0);
         zPlaneParams.fZ = std::max(1.0f, 32 + fZDelta);

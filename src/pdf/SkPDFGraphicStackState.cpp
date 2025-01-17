@@ -14,6 +14,10 @@
 #include "src/pdf/SkPDFUtils.h"
 #include "src/utils/SkClipStackUtils.h"
 
+#include <optional>
+
+using namespace skia;
+
 static void emit_pdf_color(SkColor4f color, SkWStream* result) {
     SkASSERT(color.fA == 1);  // We handle alpha elsewhere.
     SkPDFUtils::AppendColorComponentF(color.fR, result);
@@ -86,7 +90,9 @@ static void apply_clip(const SkClipStack& stack, const SkRect& outerBounds, F fn
             operand.isInverseFillType() ||
             !kHuge.contains(operand.getBounds()))
         {
-            Op(SkPath::Rect(bounds), operand, op, &operand);
+            if (auto result = pathops::Op(SkPath::Rect(bounds), operand, op)) {
+                operand = *result;
+            }
         }
         SkASSERT(!operand.isInverseFillType());
         fn(operand);
@@ -126,8 +132,8 @@ static void append_clip(const SkClipStack& clipStack,
     if (is_complex_clip(clipStack)) {
         SkPath clipPath;
         SkClipStack_AsPath(clipStack, &clipPath);
-        if (Op(clipPath, SkPath::Rect(outsetBounds), kIntersect_SkPathOp, &clipPath)) {
-            append_clip_path(clipPath, wStream);
+        if (auto result = pathops::Op(clipPath, SkPath::Rect(outsetBounds), kIntersect_SkPathOp)) {
+            append_clip_path(*result, wStream);
         }
         // If Op() fails (pathological case; e.g. input values are
         // extremely large or NaN), emit no clip at all.

@@ -7,7 +7,6 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkTypes.h"
-#include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkPoint_impl.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkArenaAlloc.h"
@@ -18,6 +17,7 @@
 #include "src/pathops/SkOpSegment.h"
 #include "src/pathops/SkOpSpan.h"
 #include "src/pathops/SkPathOpsCommon.h"
+#include "src/pathops/SkPathOpsInternal.h"
 #include "src/pathops/SkPathOpsTypes.h"
 #include "src/pathops/SkPathWriter.h"
 
@@ -280,7 +280,7 @@ bool SimplifyDebug(const SkPath& path, SkPath* result
     return true;
 }
 
-bool Simplify(const SkPath& path, SkPath* result) {
+bool skpathopsinternal::Simplify(const SkPath& path, SkPath* result) {
 #if DEBUG_DUMP_VERIFY
     if (SkPathOpsDebug::gVerifyOp) {
         if (!SimplifyDebug(path, result  SkDEBUGPARAMS(false) SkDEBUGPARAMS(nullptr))) {
