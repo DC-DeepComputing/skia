@@ -525,6 +525,9 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // Defaults to zero since most checks care if it is greater than a specific value. So this will
     // just default to it being less.
     androidAPIVersion = (strLength == 0) ? 0 : atoi(androidAPIVersionStr);
+#else
+    // Disable all workarounds based on Android api levels.
+    androidAPIVersion = std::numeric_limits<int>::max();
 #endif
 
     // Protected memory features have problems in Android P and earlier.
