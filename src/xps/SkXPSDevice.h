@@ -85,9 +85,13 @@ public:
                   const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr,
                    const SkPaint& paint) override;
-    void drawPath(const SkPath& path,
-                  const SkPaint& paint,
-                  bool pathIsMutable = false) override;
+    void drawPath(const SkPath& path, const SkPaint& paint) override {
+        SkPath scratchPath;
+        this->drawPath(path, &scratchPath, paint);
+    }
+    void drawPath(SkPath& path, const SkPaint& paint) override {
+        this->drawPath(path, &path, paint);
+    }
     void drawImageRect(const SkImage*,
                        const SkRect* srcOrNull, const SkRect& dst,
                        const SkSamplingOptions&, const SkPaint& paint,
@@ -116,6 +120,7 @@ private:
     friend HRESULT subset_typeface(const TypefaceUse& current);
 
     void onDrawGlyphRunList(SkCanvas*, const sktext::GlyphRunList&, const SkPaint&) override;
+    void drawPath(const SkPath& origPath, SkPath* scratchPath, const SkPaint&);
 
     bool createCanvasForLayer();
 
