@@ -86,14 +86,14 @@ protected:
                 canvas->restore();
                 int xPos = 150;
                 for (int op = kDifference_SkPathOp; op <= kReverseDifference_SkPathOp; ++op) {
-                    SkPath result;
-                    Op(one, two, (SkPathOp) op, &result);
-                    canvas->save();
-                    canvas->translate(SkIntToScalar(xPos), SkIntToScalar(yPos));
-                    canvas->clipRect(SkRect::MakeWH(110, 110), true);
-                    canvas->drawPath(result, fOpPaint[op]);
-                    canvas->drawPath(result, fOutlinePaint);
-                    canvas->restore();
+                    if (auto result = skia::pathops::Op(one, two, (SkPathOp)op)) {
+                        canvas->save();
+                        canvas->translate(SkIntToScalar(xPos), SkIntToScalar(yPos));
+                        canvas->clipRect(SkRect::MakeWH(110, 110), true);
+                        canvas->drawPath(*result, fOpPaint[op]);
+                        canvas->drawPath(*result, fOutlinePaint);
+                        canvas->restore();
+                    }
                     xPos += 150;
                 }
                 yPos += 150;
