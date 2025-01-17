@@ -22,6 +22,30 @@
       },
       "revId": "462a8bdb3546cdbcc79f827b1d0bac4f3426c91d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c4214a2_c214d55b",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "I like renaming it to `DstReadStrategy` and having the requirement be represented as a bool.\n\nI think that the CommandBuffer will likely have some implicit state that will have been set by the RenderPassTask that lets it know whether or not it\u0027s in a dst-read required mode (e.g. it has the dstCopy or dstTexture to sample), so if a pipeline comes in with a strategy that can\u0027t be handled with its current state, it can fail then.\n\nThese would be error cases in Graphite\u0027s internal logic so I think it\u0027s fine for things to be asserts that everything is correctly wired up so we fail fast. That means we don\u0027t necessarily need a kInvalid strategy.  I also think that if we are in a mode where we haven\u0027t fully determined the strategy yet, it\u0027s pretty intuitive to start with the default of kNoneRequired and then upgrade as something requires it.",
+      "parentUuid": "feab07de_a88c4522",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 2
+      },
+      "revId": "462a8bdb3546cdbcc79f827b1d0bac4f3426c91d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4e5828b_c9d0c935",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "Drive-by!",
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb242a5e_08a88c6b",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "WDYT about just `IsDstReadRequired()`?",
+      "range": {
+        "startLine": 65,
+        "startChar": 5,
+        "endLine": 65,
+        "endChar": 31
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b6e02e7_7cb389fd",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "If we changed to having DrawList always track the dstReadBounds, this if check would still be valid, we\u0027d just then add a term for checking if fDstReadStrategy is kTextureCopy.",
+      "range": {
+        "startLine": 252,
+        "startChar": 13,
+        "endLine": 252,
+        "endChar": 31
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26da6a76_2466f215",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "Can we add a comment here (or on the getter) that this strategy is the strategy to use *when/if* a paint requires the dst read, but does not reflect what is currently recorded in the DrawLists?",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 37
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46df0a25_4c2f584d",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "nit: also rename?",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 38
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f61954ce_692c9a43",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-17T15:03:42Z",
+      "side": 1,
+      "message": "I have a slight preference to keep it like `fDstReadRequired`",
+      "range": {
+        "startLine": 66,
+        "startChar": 10,
+        "endLine": 66,
+        "endChar": 19
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
