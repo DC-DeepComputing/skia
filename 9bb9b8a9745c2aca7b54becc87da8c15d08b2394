@@ -1,6 +1,52 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0c8b5cf_9ce1d302",
+        "filename": "modules/audioplayer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "Since these are the same, you can make one list with `sdk_frameworks`",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2acc308c_50f3d879",
+        "filename": "modules/audioplayer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "Remove this visibility",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "381f151c_21a33332",
@@ -19,6 +65,99 @@
         "startChar": 0,
         "endLine": 192,
         "endChar": 27
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8683812_55cfe235",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "Why is allow_empty True? False is the only value I\u0027ve had need to set it to",
+      "parentUuid": "381f151c_21a33332",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 27
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a965f85d_05fa07b0",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "We can probably remove the `SkTypes.h` #include and remove this core dep if we wanted. I\u0027m not sure it\u0027s necessary.",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 20
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4fc66f4_6b02530d",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "Hang on, why is this needed? To me it seems like some other objc_library is missing the OpenGL dependency. Maybe in //src/gpu/ganesh/gl/mac?",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 38
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921d86ac_5b4f7c2f",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T14:29:22Z",
+      "side": 1,
+      "message": "`sdk_frameworks` instead of both",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 18
       },
       "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
