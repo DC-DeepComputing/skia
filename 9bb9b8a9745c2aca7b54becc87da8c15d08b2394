@@ -183,6 +183,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a295172_524c9c9f",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T16:18:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e5961011_3fab4084",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 27
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a965f85d_05fa07b0",
@@ -230,6 +254,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54c8660c_b272b999",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T16:18:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3631777a_59a6352e",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 20
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4fc66f4_6b02530d",
@@ -267,6 +315,30 @@
       "side": 1,
       "message": "We pull everyhing into `ganesh_gl_utils` via `file_group`s.  I guess the alternative is to refactor all that, but since this is where we\u0027re actually assembling the lib, it doesn\u0027t seem like a terrible place to inject the framework deps.",
       "parentUuid": "f4fc66f4_6b02530d",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 38
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fafb7282_de8d9dee",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-17T16:18:46Z",
+      "side": 1,
+      "message": "Oh, yeah, I see. This is fine then, maybe add a comment then mentioning that these are needed for CreatePlatformGLTestContext_mac.cpp",
+      "parentUuid": "88572ae6_54562dd0",
       "range": {
         "startLine": 42,
         "startChar": 12,
