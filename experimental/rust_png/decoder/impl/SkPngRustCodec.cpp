@@ -16,6 +16,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkStream.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/SkExif.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkSafe32.h"
 #include "include/private/base/SkTemplates.h"
@@ -326,6 +327,20 @@ void blendAllRows(SkSpan<uint8_t> dstFrame,
     }
 }
 
+SkEncodedOrigin GetEncodedOrigin(const rust_png::Reader& reader) {
+    if (reader.has_exif_chunk()) {
+        rust::Slice<const uint8_t> rust_slice = reader.get_exif_chunk();
+        sk_sp<SkData> borrowed_data = SkData::MakeWithoutCopy(rust_slice.data(), rust_slice.size());
+        SkExif::Metadata metadata;
+        SkExif::Parse(metadata, borrowed_data.get());
+        if (metadata.fOrigin.has_value()) {
+            return metadata.fOrigin.value();
+        }
+    }
+
+    return kTopLeft_SkEncodedOrigin;
+}
+
 }  // namespace
 
 // static
@@ -354,7 +369,8 @@ SkPngRustCodec::SkPngRustCodec(SkEncodedInfo&& encodedInfo,
                          // TODO(https://crbug.com/370522089): If/when `SkCodec` can
                          // avoid unnecessary rewinding, then stop "hiding" our stream
                          // from it.
-                         /* stream = */ nullptr)
+                         /* stream = */ nullptr,
+                         GetEncodedOrigin(*reader))
         , fReader(std::move(reader))
         , fPrivStream(std::move(stream))
         , fFrameHolder(encodedInfo.width(), encodedInfo.height()) {
