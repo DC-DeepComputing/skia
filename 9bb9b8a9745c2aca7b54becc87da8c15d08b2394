@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "34f1e425_8ae638c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "(need to look at the linux failures)",
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e0c8b5cf_9ce1d302",
@@ -24,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "406d124a_08686b7e",
+        "filename": "modules/audioplayer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e0c8b5cf_9ce1d302",
+      "range": {
+        "startLine": 14,
+        "startChar": 4,
+        "endLine": 14,
+        "endChar": 18
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2acc308c_50f3d879",
@@ -37,6 +78,30 @@
       "writtenOn": "2025-01-17T14:29:22Z",
       "side": 1,
       "message": "Remove this visibility",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 14
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a427e77_e7a40f84",
+        "filename": "modules/audioplayer/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2acc308c_50f3d879",
       "range": {
         "startLine": 16,
         "startChar": 4,
@@ -96,6 +161,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e5961011_3fab4084",
+        "filename": "toolchain/download_mac_toolchain.bzl",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "It\u0027s a defensive mechanism against internal SDK framework deps changes.\n\nThe transitive closure of framework deps can vary across SKD releases.  New deps/frameworks can be added at any time, and I assume deprecated frameworks can be removed.\n\nE.g. it looks like `ModeIO.framework` (which is not something we use directly) was added in macOS 10.11.  If we want our build to support both macOS 10.10 and macOS 10.11, we need to allow empty glob matches.",
+      "parentUuid": "d8683812_55cfe235",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 27
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a965f85d_05fa07b0",
         "filename": "tools/BUILD.bazel",
         "patchSetId": 1
@@ -107,6 +196,30 @@
       "writtenOn": "2025-01-17T14:29:22Z",
       "side": 1,
       "message": "We can probably remove the `SkTypes.h` #include and remove this core dep if we wanted. I\u0027m not sure it\u0027s necessary.",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 20
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3631777a_59a6352e",
+        "filename": "tools/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "`AutoReleasePool.h` uses `SK_BUILD_FOR_MAC`/`SK_BUILD_FOR_IOS`, so it needs `SkFeatures.h` (which it should include explicitly).  I guess the minimal dependency is `//src/base`?\n\nUpdated.",
+      "parentUuid": "a965f85d_05fa07b0",
       "range": {
         "startLine": 72,
         "startChar": 16,
@@ -142,6 +255,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "88572ae6_54562dd0",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "We pull everyhing into `ganesh_gl_utils` via `file_group`s.  I guess the alternative is to refactor all that, but since this is where we\u0027re actually assembling the lib, it doesn\u0027t seem like a terrible place to inject the framework deps.",
+      "parentUuid": "f4fc66f4_6b02530d",
+      "range": {
+        "startLine": 42,
+        "startChar": 12,
+        "endLine": 42,
+        "endChar": 38
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "921d86ac_5b4f7c2f",
         "filename": "tools/gpu/BUILD.bazel",
         "patchSetId": 1
@@ -153,6 +290,30 @@
       "writtenOn": "2025-01-17T14:29:22Z",
       "side": 1,
       "message": "`sdk_frameworks` instead of both",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 18
+      },
+      "revId": "9bb9b8a9745c2aca7b54becc87da8c15d08b2394",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92255d9d_0523aa8e",
+        "filename": "tools/gpu/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-17T15:31:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "921d86ac_5b4f7c2f",
       "range": {
         "startLine": 43,
         "startChar": 4,
