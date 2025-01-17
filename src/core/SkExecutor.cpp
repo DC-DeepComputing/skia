@@ -27,7 +27,8 @@ using namespace skia_private;
 #else
     #include <unistd.h>
     static int num_cores() {
-        return (int)sysconf(_SC_NPROCESSORS_ONLN);
+        return 1;
+        //return (int)sysconf(_SC_NPROCESSORS_ONLN);
     }
 #endif
 
@@ -145,11 +146,11 @@ private:
 
 std::unique_ptr<SkExecutor> SkExecutor::MakeFIFOThreadPool(int threads, bool allowBorrowing) {
     using WorkList = std::deque<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(threads > 0 ? threads : num_cores(),
+    return std::make_unique<SkThreadPool<WorkList>>(threads > 0 ? threads : std::min(4, num_cores()),
                                                     allowBorrowing);
 }
 std::unique_ptr<SkExecutor> SkExecutor::MakeLIFOThreadPool(int threads, bool allowBorrowing) {
     using WorkList = TArray<std::function<void(void)>>;
-    return std::make_unique<SkThreadPool<WorkList>>(threads > 0 ? threads : num_cores(),
+    return std::make_unique<SkThreadPool<WorkList>>(threads > 0 ? threads : std::min(4, num_cores()),
                                                     allowBorrowing);
 }

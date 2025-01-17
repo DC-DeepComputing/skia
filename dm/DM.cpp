@@ -40,6 +40,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -1572,7 +1573,11 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
-int main(int argc, char** argv) {
+int main(int argc, char** argv, char** envp) {
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    skiatest::InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
@@ -1615,7 +1620,7 @@ int main(int argc, char** argv) {
 #if defined(SK_ENABLE_SVG)
     SkGraphics::SetOpenTypeSVGDecoderFactory(SkSVGOpenTypeSVGDecoder::Make);
 #endif
-    SkTaskGroup::Enabler enabled(FLAGS_threads);
+    SkTaskGroup::Enabler enabled(1);
     CodecUtils::RegisterAllAvailable();
 
     if (nullptr == GetResourceAsData("images/color_wheel.png")) {
