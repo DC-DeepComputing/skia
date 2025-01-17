@@ -5,9 +5,11 @@
  * found in the LICENSE file.
  */
 
+#include <thread>
 #include "dm/DMJsonWriter.h"
 #include "dm/DMSrcSink.h"
 #include "include/codec/SkCodec.h"
+#include "fstream"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkColorPriv.h"
@@ -40,6 +42,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -1572,7 +1575,36 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
-int main(int argc, char** argv) {
+int getThreadCount() {
+  std::ifstream statusFile("/proc/self/status");
+  std::string line;
+  while (std::getline(statusFile, line)) {
+    if (line.find("Threads:") == 0) {
+      // Extract the thread count from the line
+      int threadCount = std::stoi(line.substr(line.find(":") + 2));
+      return threadCount;
+    }
+  }
+  return -1; // Error: Couldn't find thread count
+}
+
+// A thread is printing the number of thread periodically:
+bool threadPrinterContinue = true;
+void ThreadPrinter() {
+    while(threadPrinterContinue) {
+        SkDebugf("Number of threads: %d\n", getThreadCount());
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+}
+
+
+int main(int argc, char** argv, char** envp) {
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    skiatest::InitializePartitionAllocForTesting();
+
+    std::thread threadPrinter(ThreadPrinter);
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
@@ -1717,6 +1749,8 @@ int main(int argc, char** argv) {
 
     SkGraphics::PurgeAllCaches();
     info("Finished!\n");
+
+    threadPrinterContinue = false;
 
     return 0;
 }
