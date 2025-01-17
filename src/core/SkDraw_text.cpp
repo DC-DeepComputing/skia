@@ -17,6 +17,7 @@
 #include "src/core/SkAAClip.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkDraw.h"
+#include "src/core/SkDrawTypes.h"
 #include "src/core/SkGlyph.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkMask.h"
@@ -56,7 +57,7 @@ void SkDraw::paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& 
                                            *fCTM,
                                            paint,
                                            &alloc,
-                                           false,
+                                           SkDrawCoverage::kNo,
                                            fRC->clipShader(),
                                            SkSurfacePropsCopyOrDefault(fProps));
 

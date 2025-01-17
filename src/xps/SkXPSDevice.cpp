@@ -1164,7 +1164,7 @@ void SkXPSDevice::drawRRect(const SkRRect& rr,
                             const SkPaint& paint) {
     SkPath path;
     path.addRRect(rr);
-    this->drawPath(path, paint, true);
+    this->drawPath(path, paint);
 }
 
 void SkXPSDevice::internalDrawRect(const SkRect& r,
@@ -1180,7 +1180,7 @@ void SkXPSDevice::internalDrawRect(const SkRect& r,
         SkPath tmp;
         tmp.addRect(r);
         tmp.setFillType(SkPathFillType::kWinding);
-        this->drawPath(tmp, paint, true);
+        this->drawPath(tmp, paint);
         return;
     }
 
@@ -1485,9 +1485,9 @@ HRESULT SkXPSDevice::shadePath(IXpsOMPath* shadedPath,
     return S_OK;
 }
 
-void SkXPSDevice::drawPath(const SkPath& platonicPath,
-                           const SkPaint& origPaint,
-                           bool pathIsMutable) {
+void SkXPSDevice::drawPath(const SkPath& origPath,
+                           SkPath* scratchPath,
+                           const SkPaint& origPaint) {
     SkTCopyOnFirstWrite<SkPaint> paint(origPaint);
 
     // nothing to draw
@@ -1495,22 +1495,13 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
         return;
     }
 
-    SkPath modifiedPath;
     const bool paintHasPathEffect = paint->getPathEffect()
                                  || paint->getStyle() != SkPaint::kFill_Style;
 
-    //Apply pre-path matrix [Platonic-path -> Skeletal-path].
     SkMatrix matrix = this->localToDevice();
-    SkPath* skeletalPath = const_cast<SkPath*>(&platonicPath);
 
-    //Apply path effect [Skeletal-path -> Fillable-path].
-    SkPath* fillablePath = skeletalPath;
     if (paintHasPathEffect) {
-        if (!pathIsMutable) {
-            fillablePath = &modifiedPath;
-            pathIsMutable = true;
-        }
-        bool fill = skpathutils::FillPathWithPaint(*skeletalPath, *paint, fillablePath);
+        bool fill = skpathutils::FillPathWithPaint(origPath, *paint, scratchPath);
 
         SkPaint* writablePaint = paint.writable();
         writablePaint->setPathEffect(nullptr);
@@ -1520,6 +1511,9 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
             writablePaint->setStyle(SkPaint::kStroke_Style);
             writablePaint->setStrokeWidth(0);
         }
+    } else {
+        // Copy the original path to scratchPath so we can use it in follow-up steps
+        *scratchPath = origPath;
     }
 
     //Create the shaded path. This will be the path which is painted.
@@ -1565,8 +1559,7 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
                            &clipIRect);
 
         //[Fillable-path -> Pixel-path]
-        SkPath* pixelPath = pathIsMutable ? fillablePath : &modifiedPath;
-        fillablePath->transform(matrix, pixelPath);
+        scratchPath->transform(matrix, scratchPath);
 
         SkMask* mask = nullptr;
 
@@ -1610,9 +1603,8 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
     bool xpsTransformsPath = true;
 
     //Set the fill rule.
-    SkPath* xpsCompatiblePath = fillablePath;
     XPS_FILL_RULE xpsFillRule;
-    switch (fillablePath->getFillType()) {
+    switch (scratchPath->getFillType()) {
         case SkPathFillType::kWinding:
             xpsFillRule = XPS_FILL_RULE_NONZERO;
             break;
@@ -1621,16 +1613,12 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
             break;
         case SkPathFillType::kInverseWinding: {
             //[Fillable-path (inverse winding) -> XPS-path (inverse even odd)]
-            if (!pathIsMutable) {
-                xpsCompatiblePath = &modifiedPath;
-                pathIsMutable = true;
-            }
-            if (!Simplify(*fillablePath, xpsCompatiblePath)) {
+            if (!Simplify(*scratchPath, scratchPath)) {
                 SkDEBUGF("Could not simplify inverse winding path.");
                 return;
             }
         }
-        [[fallthrough]];  // The xpsCompatiblePath is now inverse even odd, so fall through.
+        [[fallthrough]];  // The scratchPath is now inverse even odd, so fall through.
         case SkPathFillType::kInverseEvenOdd: {
             const SkRect universe = SkRect::MakeLTRB(
                 0, 0,
@@ -1666,7 +1654,6 @@ void SkXPSDevice::drawPath(const SkPath& platonicPath,
     SkPath* devicePath = xpsCompatiblePath;
     if (!xpsTransformsPath) {
         //[Fillable-path -> Device-path]
-        devicePath = pathIsMutable ? xpsCompatiblePath : &modifiedPath;
         xpsCompatiblePath->transform(matrix, devicePath);
     }
     HRV(this->addXpsPathGeometry(shadedFigures.get(),
@@ -1905,7 +1892,7 @@ void SkXPSDevice::onDrawGlyphRunList(SkCanvas*,
             SkPath path;
             //TODO: make this work, Draw currently does not handle as well.
             //paint.getTextPath(text, byteLength, x, y, &path);
-            //this->drawPath(path, paint, nullptr, true);
+            //this->drawPath(path, paint, nullptr);
             //TODO: add automation "text"
             continue;
         }
@@ -1986,7 +1973,7 @@ sk_sp<SkDevice> SkXPSDevice::createDevice(const CreateInfo& info, const SkPaint*
 void SkXPSDevice::drawOval( const SkRect& o, const SkPaint& p) {
     SkPath path;
     path.addOval(o);
-    this->drawPath(path, p, true);
+    this->drawPath(path, p);
 }
 
 void SkXPSDevice::drawImageRect(const SkImage* image,

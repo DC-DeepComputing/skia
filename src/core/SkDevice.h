@@ -350,15 +350,10 @@ public:
     virtual void drawDRRect(const SkRRect& outer,
                             const SkRRect& inner, const SkPaint&);
 
-    /**
-     *  If pathIsMutable, then the implementation is allowed to cast path to a
-     *  non-const pointer and modify it in place (as an optimization). Canvas
-     *  may do this to implement helpers such as drawOval, by placing a temp
-     *  path on the stack to hold the representation of the oval.
-     */
     virtual void drawPath(const SkPath& path,
-                          const SkPaint& paint,
-                          bool pathIsMutable) = 0;
+                          const SkPaint& paint) = 0;
+    virtual void drawPath(SkPath& path,
+                          const SkPaint& paint) = 0;
 
     virtual void drawImageRect(const SkImage*, const SkRect* src, const SkRect& dst,
                                const SkSamplingOptions&, const SkPaint&,
@@ -606,7 +601,8 @@ protected:
     void drawRect(const SkRect&, const SkPaint&) override {}
     void drawOval(const SkRect&, const SkPaint&) override {}
     void drawRRect(const SkRRect&, const SkPaint&) override {}
-    void drawPath(const SkPath&, const SkPaint&, bool) override {}
+    void drawPath(const SkPath&, const SkPaint&) override {}
+    void drawPath(SkPath&, const SkPaint&) override {}
     void drawDevice(SkDevice*, const SkSamplingOptions&, const SkPaint&) override {}
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override {}
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override {}

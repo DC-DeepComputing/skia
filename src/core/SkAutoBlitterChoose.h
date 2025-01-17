@@ -12,6 +12,7 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkBlitter.h"
 #include "src/core/SkDrawBase.h"
+#include "src/core/SkDrawTypes.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSurfacePriv.h"
 
@@ -25,7 +26,7 @@ public:
     SkAutoBlitterChoose(const SkDrawBase& draw,
                         const SkMatrix* ctm,
                         const SkPaint& paint,
-                        bool drawCoverage = false) {
+                        SkDrawCoverage drawCoverage = SkDrawCoverage::kNo) {
         this->choose(draw, ctm, paint, drawCoverage);
     }
 
@@ -33,7 +34,8 @@ public:
     SkBlitter*  get() const { return fBlitter; }
 
     SkBlitter* choose(const SkDrawBase& draw, const SkMatrix* ctm,
-                      const SkPaint& paint, bool drawCoverage = false) {
+                      const SkPaint& paint,
+                      SkDrawCoverage drawCoverage = SkDrawCoverage::kNo) {
         SkASSERT(!fBlitter);
         fBlitter = draw.fBlitterChooser(draw.fDst,
                                         ctm ? *ctm : *draw.fCTM,
