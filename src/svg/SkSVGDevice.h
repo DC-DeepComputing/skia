@@ -9,6 +9,7 @@
 #define SkSVGDevice_DEFINED
 
 #include "include/core/SkCanvas.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
@@ -33,7 +34,6 @@ class SkData;
 class SkImage;
 class SkMesh;
 class SkPaint;
-class SkPath;
 class SkRRect;
 class SkVertices;
 class SkXMLWriter;
@@ -56,9 +56,14 @@ public:
     void drawRect(const SkRect& r, const SkPaint& paint) override;
     void drawOval(const SkRect& oval, const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
-    void drawPath(const SkPath& path,
-                  const SkPaint& paint,
-                  bool pathIsMutable = false) override;
+    void drawPath(const SkPath& path, const SkPaint& paint) override {
+        SkPath scratchPath;
+        this->drawPath(path, &scratchPath, paint);
+    }
+
+    void drawPath(SkPath& path, const SkPaint& paint) override {
+        this->drawPath(path, &path, paint);
+    }
 
     void drawVertices(const SkVertices*, sk_sp<SkBlender>, const SkPaint&, bool) override;
     void drawMesh(const SkMesh&, sk_sp<SkBlender>, const SkPaint&) override;
@@ -75,6 +80,8 @@ private:
     void syncClipStack(const SkClipStack&);
 
     SkParsePath::PathEncoding pathEncoding() const;
+
+    void drawPath(const SkPath& srcPath, SkPath* scratchPath, const SkPaint& paint);
 
     class AutoElement;
     class ResourceBucket;
