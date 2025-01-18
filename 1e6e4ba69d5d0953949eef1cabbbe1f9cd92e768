@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd44d844_d5c398a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-18T15:52:37Z",
+      "side": 1,
+      "message": "We should fix g3\u0027s skia_rules.bzl, this is a quick workaround to unblock the roll.",
+      "revId": "1e6e4ba69d5d0953949eef1cabbbe1f9cd92e768",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
