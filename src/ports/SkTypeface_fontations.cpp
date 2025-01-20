@@ -317,6 +317,8 @@ public:
             , fBridgeNormalizedCoords(static_cast<SkTypeface_Fontations*>(proxyTypeface.get())
                                               ->getBridgeNormalizedCoords())
             , fOutlines(static_cast<SkTypeface_Fontations*>(proxyTypeface.get())->getOutlines())
+            , fMappingIndex(
+                      static_cast<SkTypeface_Fontations*>(proxyTypeface.get())->getMappingIndex())
             , fPalette(static_cast<SkTypeface_Fontations*>(proxyTypeface.get())->getPalette())
             , fHintingInstance(fontations_ffi::no_hinting_instance()) {
         fRec.computeMatrices(
@@ -385,6 +387,20 @@ public:
                 }
             }
         }
+    }
+
+    bool getContourHeightForLetter(char letter, SkScalar& height) {
+        uint16_t glyphId =
+                fontations_ffi::lookup_glyph_or_zero(fBridgeFontRef, fMappingIndex, letter);
+        if (!glyphId) {
+            return false;
+        }
+        SkPath glyphPath;
+        if (!generateYScalePathForGlyphId(glyphId, &glyphPath, fScale.y(), *fHintingInstance)) {
+            return false;
+        }
+        height = glyphPath.getBounds().height();
+        return true;
     }
 
     // yScale is only used if hintinInstance is set to Unhinted,
@@ -769,8 +785,8 @@ protected:
     }
 
     void generateFontMetrics(SkFontMetrics* out_metrics) override {
-        fontations_ffi::Metrics metrics =
-                fontations_ffi::get_skia_metrics(fBridgeFontRef, fScale.y(), fBridgeNormalizedCoords);
+        fontations_ffi::Metrics metrics = fontations_ffi::get_skia_metrics(
+                fBridgeFontRef, fScale.y(), fBridgeNormalizedCoords);
         out_metrics->fTop = -metrics.top;
         out_metrics->fAscent = -metrics.ascent;
         out_metrics->fDescent = -metrics.descent;
@@ -783,15 +799,27 @@ protected:
         out_metrics->fXHeight = -metrics.x_height;
         out_metrics->fCapHeight = -metrics.cap_height;
         out_metrics->fFlags = 0;
+
+        // Cap height synthesis.
+        if (!out_metrics->fCapHeight) {
+            SkScalar height;
+            if (getContourHeightForLetter('H', height)) {
+                out_metrics->fCapHeight = height;
+            }
+        } else {
+            out_metrics->fCapHeight = out_metrics->fAscent;
+        }
+
         if (fontations_ffi::table_data(fBridgeFontRef,
                                        SkSetFourByteTag('f', 'v', 'a', 'r'),
                                        0,
                                        rust::Slice<uint8_t>())) {
             out_metrics->fFlags |= SkFontMetrics::kBoundsInvalid_Flag;
         }
-        auto setMetric = [](float& dstMetric, const float srcMetric,
-                            uint32_t& flags, const SkFontMetrics::FontMetricsFlags flag)
-        {
+        auto setMetric = [](float& dstMetric,
+                            const float srcMetric,
+                            uint32_t& flags,
+                            const SkFontMetrics::FontMetricsFlags flag) {
             if (std::isnan(srcMetric)) {
                 dstMetric = 0;
             } else {
@@ -799,15 +827,23 @@ protected:
                 flags |= flag;
             }
         };
-        setMetric(out_metrics->fUnderlinePosition, -metrics.underline_position,
-                  out_metrics->fFlags, SkFontMetrics::kUnderlinePositionIsValid_Flag);
-        setMetric(out_metrics->fUnderlineThickness, metrics.underline_thickness,
-                  out_metrics->fFlags, SkFontMetrics::kUnderlineThicknessIsValid_Flag);
+        setMetric(out_metrics->fUnderlinePosition,
+                  -metrics.underline_position,
+                  out_metrics->fFlags,
+                  SkFontMetrics::kUnderlinePositionIsValid_Flag);
+        setMetric(out_metrics->fUnderlineThickness,
+                  metrics.underline_thickness,
+                  out_metrics->fFlags,
+                  SkFontMetrics::kUnderlineThicknessIsValid_Flag);
 
-        setMetric(out_metrics->fStrikeoutPosition, -metrics.strikeout_position,
-                  out_metrics->fFlags, SkFontMetrics::kStrikeoutPositionIsValid_Flag);
-        setMetric(out_metrics->fStrikeoutThickness, metrics.strikeout_thickness,
-                  out_metrics->fFlags, SkFontMetrics::kStrikeoutThicknessIsValid_Flag);
+        setMetric(out_metrics->fStrikeoutPosition,
+                  -metrics.strikeout_position,
+                  out_metrics->fFlags,
+                  SkFontMetrics::kStrikeoutPositionIsValid_Flag);
+        setMetric(out_metrics->fStrikeoutThickness,
+                  metrics.strikeout_thickness,
+                  out_metrics->fFlags,
+                  SkFontMetrics::kStrikeoutThicknessIsValid_Flag);
     }
 
 private:
@@ -817,6 +853,7 @@ private:
     const fontations_ffi::BridgeFontRef& fBridgeFontRef;
     const fontations_ffi::BridgeNormalizedCoords& fBridgeNormalizedCoords;
     const fontations_ffi::BridgeOutlineCollection& fOutlines;
+    const fontations_ffi::BridgeMappingIndex& fMappingIndex;
     const SkSpan<const SkColor> fPalette;
     rust::Box<fontations_ffi::BridgeHintingInstance> fHintingInstance;
     bool fDoLinearMetrics = false;

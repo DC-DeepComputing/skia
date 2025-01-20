@@ -5,6 +5,8 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkFont.h"
+#include "include/core/SkFontMetrics.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
 #include "include/ports/SkTypeface_fontations.h"
@@ -16,6 +18,7 @@
 namespace {
 const char kFontResource[] = "fonts/ahem.ttf";
 const char kTtcResource[] = "fonts/test.ttc";
+const char kNoCapHeightResource[] = "fonts/DejaVuSans.subset.ttf";
 const char kVariableResource[] = "fonts/test_glyphs-glyf_colr_1_variable.ttf";
 constexpr size_t kNumVariableAxes = 44;
 
@@ -264,4 +267,14 @@ DEF_TEST(Fontations_VariationParameters_BufferTooSmall, reporter) {
     SkFontParameters::Variation::Axis axes[kArrayTooSmall] = {};
     REPORTER_ASSERT(reporter,
                     variableTypeface->getVariationDesignParameters(axes, kArrayTooSmall) == -1);
+}
+
+DEF_TEST(Fontations_SyntheticCapHeight, reporter) {
+    sk_sp<SkTypeface> noCapHeightTypeface(SkTypeface_Make_Fontations(
+            GetResourceAsStream(kNoCapHeightResource), SkFontArguments()));
+    SkFont capHeightFont(noCapHeightTypeface);
+    capHeightFont.setSize(12);
+    SkFontMetrics metrics;
+    capHeightFont.getMetrics(&metrics);
+    REPORTER_ASSERT(reporter, metrics.fCapHeight == 9);
 }
