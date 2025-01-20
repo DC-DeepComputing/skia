@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d311b2b_7802cf3c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-20T17:17:44Z",
+      "side": 1,
+      "message": "If you consider the subsetted font an unsuitable addition, let me know what kind of alternative you have in mind. I could alternatively make a Roboto subset with a modified `OS/2` table (turned into a v1 table without cap height), for example.",
+      "revId": "3e9f344db177f891b59cd3bd131e744bf035a2dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
