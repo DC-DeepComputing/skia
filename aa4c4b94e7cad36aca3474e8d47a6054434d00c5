@@ -318,6 +318,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8d2a131_d00192df",
+        "filename": "src/pathops/SkPathOpsInternal.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-21T17:23:09Z",
+      "side": 1,
+      "message": "But what extra dispatching are we planning to add to pathops that we wouldn\u0027t want to always happen? Why wouldn\u0027t the impl functions want to also adopt the nice signatures?",
+      "parentUuid": "9510d323_1b91f922",
+      "range": {
+        "startLine": 17,
+        "startChar": 3,
+        "endLine": 17,
+        "endChar": 74
+      },
+      "revId": "aa4c4b94e7cad36aca3474e8d47a6054434d00c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a56b668_4a07f414",
