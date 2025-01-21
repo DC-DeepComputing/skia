@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa293906_ff0b6ff1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-21T20:54:01Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca12dbf3_44b3a815",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-21T20:54:01Z",
+      "side": 1,
+      "message": "I think you need to check whether `image.imir.axis` is positive (or at least \u003e\u003d -1) unless that\u0027s handled elsewhere.",
+      "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
