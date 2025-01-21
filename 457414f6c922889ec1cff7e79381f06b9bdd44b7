@@ -235,6 +235,30 @@
       },
       "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c202bf9d_b7868c5f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T18:29:07Z",
+      "side": 1,
+      "message": "FYI VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT::advancedBlendCoherentOperations is only important if we are using that extension which allows you to specify the advanced blends as actual pipeline blend state. When using input attachments/barriers we will always have non-coherent blending.",
+      "parentUuid": "7fa7cdd9_67530666",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 51
+      },
+      "revId": "457414f6c922889ec1cff7e79381f06b9bdd44b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
