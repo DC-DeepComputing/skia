@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f035c54_3c6b5ce7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 22
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T19:36:56Z",
+      "side": 1,
+      "message": "As much as possible we want to move away from any form of \"registration\" / \"global\" to set. This has run into huge issues with using Skia as a library as any global makes it more difficult for a library to use Skia (at the moment it is really only possible to use Skia from application code).\n\nIn other words, we really do just want an interface and then have an object of an implementation of that interface passed in from the user of Skia.",
+      "range": {
+        "startLine": 17,
+        "startChar": 17,
+        "endLine": 17,
+        "endChar": 27
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f04c8c3_75e1c0bb",
+        "filename": "include/pathops/SkPathOps.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T19:36:56Z",
+      "side": 1,
+      "message": "If we\u0027re going through all this work to rename everything, why not make pathops an interface? Even if for the first pass we just always create a new one (of a specific implementation type, with no state) and then call the method on it. In other words, why this rename which leaves everything static? SkPathOps is currently set up like the old SkFontHost and what we want is an interface more like SkFontMgr.",
+      "range": {
+        "startLine": 32,
+        "startChar": 16,
+        "endLine": 32,
+        "endChar": 23
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b271e638_d24b5cbd",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T19:36:56Z",
+      "side": 1,
+      "message": "No, this needs to be avoided like the plague. No more global registration. Just pass the thing in like SkFontMgr is now.",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 39
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
