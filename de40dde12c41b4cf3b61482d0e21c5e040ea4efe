@@ -52,6 +52,24 @@
       "parentUuid": "1930647e_adf099a5",
       "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d807a7e_e4f37bef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2025-01-21T17:49:45Z",
+      "side": 1,
+      "message": "We cross-posted 😊\n\nThere are mali workarounds that do not depend on `androidAPIVersion`.  I suppose it is better to keep them?",
+      "parentUuid": "c4673393_45d447b1",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
