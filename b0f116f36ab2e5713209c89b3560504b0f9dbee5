@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6fcd3d_e9a9c3d9",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T15:22:20Z",
+      "side": 1,
+      "message": "I\u0027m sure (here and below) that this is just some auto formatter making life more difficult for humans trying to read the code by doing a very bad job at formatting, but it is doubly annoying since it\u0027s touching a bunch of lines here where nothing has otherwise changed.",
+      "range": {
+        "startLine": 820,
+        "startChar": 0,
+        "endLine": 820,
+        "endChar": 27
+      },
+      "revId": "b0f116f36ab2e5713209c89b3560504b0f9dbee5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
