@@ -22,6 +22,30 @@
       },
       "revId": "b0f116f36ab2e5713209c89b3560504b0f9dbee5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc2671bd_f382fefb",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-21T15:32:05Z",
+      "side": 1,
+      "message": "Removed unrelated re-formatting (while I still prefer files to be clang-format clean, we can add clang-format off blocks around this if you prefer the manual style here).",
+      "parentUuid": "0d6fcd3d_e9a9c3d9",
+      "range": {
+        "startLine": 820,
+        "startChar": 0,
+        "endLine": 820,
+        "endChar": 27
+      },
+      "revId": "b0f116f36ab2e5713209c89b3560504b0f9dbee5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
