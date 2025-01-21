@@ -232,6 +232,10 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     SkIRect dstCopyPixelBounds = fPendingDraws->dstCopyBounds().makeRoundOut().asSkIRect();
+
+    // Before relinquishing control of fPendingDraws, record whether or not any of them will require
+    // a dst texture sampler.
+    bool drawPassUsesDstSampler = fPendingDraws->usesDstSampler();
     std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
                                                     std::move(fPendingDraws),
                                                     fTarget,
@@ -247,18 +251,22 @@ void DrawContext::flush(Recorder* recorder) {
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
 
+        if (drawPassUsesDstSampler || !dstCopyPixelBounds.isEmpty()) {
+            // Whether we are performing a dst copy or sampling the dst texture directly, the
+            // target must be texturable.
+            SkASSERT(recorder->priv().caps()->isTexturable(fTarget->textureInfo()));
+        }
+
         sk_sp<TextureProxy> dstCopy;
         if (!dstCopyPixelBounds.isEmpty()) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
 
-            // TODO: Right now this assert is ensuring that the dstCopy will be texturable since it
-            // uses the same texture info as fTarget. Ideally, if fTarget were not texturable but
-            // still readable, we would perform a fallback to a compatible texturable info. We also
-            // should decide whether or not a copy-as-draw fallback is necessary here too. All of
-            // this is handled inside Image::Copy() except we would need it to expose the task in
-            // order to link it correctly.
-            SkASSERT(recorder->priv().caps()->isTexturable(fTarget->textureInfo()));
+            // TODO: Right now, we assume the dstCopy will be texturable since it  uses the same
+            // texture info as fTarget. Ideally, if fTarget were not texturable but still readable,
+            // we would perform a fallback to a compatible texturable info. We also should decide
+            // whether or not a copy-as-draw fallback is necessary here too. All of this is handled
+            // inside Image::Copy(), but we would need it to expose the task to link it correctly.
             dstCopy = TextureProxy::Make(recorder->priv().caps(),
                                          recorder->priv().resourceProvider(),
                                          dstCopyPixelBounds.size(),
@@ -285,8 +293,12 @@ void DrawContext::flush(Recorder* recorder) {
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
-        fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes), desc, fTarget,
-                                                       std::move(dstCopy), dstCopyPixelBounds));
+        fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes),
+                                                       desc,
+                                                       fTarget,
+                                                       std::move(dstCopy),
+                                                       dstCopyPixelBounds,
+                                                       drawPassUsesDstSampler));
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other

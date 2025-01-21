@@ -90,6 +90,7 @@ struct ShaderCaps {
     bool fNonsquareMatrixSupport = false;
     /** asinh(), acosh(), atanh() */
     bool fInverseHyperbolicSupport = false;
+    bool fDstReadInShaderSupport = false;
     bool fFBFetchSupport = false;
     bool fFBFetchNeedsCustomOutput = false;
     bool fUsesPrecisionModifiers = false;
@@ -161,6 +162,8 @@ struct ShaderCaps {
     const char* fSecondExternalTextureExtensionString = nullptr;
     const char* fFBFetchColorName = nullptr;
 
+    // TODO(b/239726010): Implement advanced blending equation determination & relevant backend
+    // support within graphite.
     AdvBlendEqInteraction fAdvBlendEqInteraction = kNotSupported_AdvBlendEqInteraction;
 };
 

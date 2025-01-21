@@ -487,9 +487,9 @@ void MtlCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipe
         // The last texture binding is reserved for the dstCopy texture, which is not included in
         // the list on each BindTexturesAndSamplers command. We can set it once now and any
         // subsequent BindTexturesAndSamplers commands in a DrawPass will set the other N-1.
-        SkASSERT(fDstCopy.first && fDstCopy.second);
+        SkASSERT(fDstCopy && fDstSampler);
         const int textureIndex = graphicsPipeline->numFragTexturesAndSamplers() - 1;
-        this->bindTextureAndSampler(fDstCopy.first, fDstCopy.second, textureIndex);
+        this->bindTextureAndSampler(fDstCopy, fDstSampler, textureIndex);
     }
 }
 
