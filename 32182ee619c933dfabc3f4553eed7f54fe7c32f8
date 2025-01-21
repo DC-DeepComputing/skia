@@ -51,6 +51,24 @@
       "parentUuid": "ca12dbf3_44b3a815",
       "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110c7ab8_7b86a7c4",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-21T20:56:52Z",
+      "side": 1,
+      "message": "\u003e `image.imir.axis` is a `uint8_t`. so the `\u003c\u003d 1` check is sufficient.\n\nThanks for confirming, I didn\u0027t check the type.",
+      "parentUuid": "9a5e42bb_127625b4",
+      "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
