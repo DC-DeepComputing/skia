@@ -50,9 +50,7 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
     return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
 }
 
-DstReadRequirement GetDstReadRequirement(const Caps* caps,
-                                         std::optional<SkBlendMode> blendMode,
-                                         Coverage coverage) {
+bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> blendMode, Coverage coverage) {
     // If the blend mode is absent, this is assumed to be for a runtime blender, for which we always
     // do a dst read.
     // If the blend mode is plus, always do in-shader blending since we may be drawing to an
@@ -61,7 +59,7 @@ DstReadRequirement GetDstReadRequirement(const Caps* caps,
     // when necessary, but we can't detect that during shader precompilation.
     if (!blendMode || *blendMode > SkBlendMode::kLastCoeffMode ||
         *blendMode == SkBlendMode::kPlus) {
-        return caps->getDstReadRequirement();
+        return true;
     }
 
     const bool isLCD = coverage == Coverage::kLCD;
@@ -70,10 +68,10 @@ DstReadRequirement GetDstReadRequirement(const Caps* caps,
                                       : skgpu::GetBlendFormula(false, hasCoverage, *blendMode);
     if ((blendFormula.hasSecondaryOutput() && !caps->shaderCaps()->fDualSourceBlendingSupport) ||
         (coverage == Coverage::kLCD && blendMode != SkBlendMode::kSrcOver)) {
-        return caps->getDstReadRequirement();
+        return true;
     }
 
-    return DstReadRequirement::kNone;
+    return false;
 }
 
 void CollectIntrinsicUniforms(const Caps* caps,
