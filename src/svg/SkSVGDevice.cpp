@@ -926,12 +926,12 @@ void SkSVGDevice::drawPoints(SkCanvas::PointMode mode, size_t count,
             break;
     }
 
-    this->drawPath(path.detach(), paint, true);
+    this->drawPath(path.detach(), paint);
 }
 
 void SkSVGDevice::drawRect(const SkRect& r, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::Rect(r), paint, true);
+        this->drawPath(SkPath::Rect(r), paint);
         return;
     }
 
@@ -955,7 +955,7 @@ void SkSVGDevice::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void SkSVGDevice::drawOval(const SkRect& oval, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::Oval(oval), paint, true);
+        this->drawPath(SkPath::Oval(oval), paint);
         return;
     }
 
@@ -968,7 +968,7 @@ void SkSVGDevice::drawOval(const SkRect& oval, const SkPaint& paint) {
 
 void SkSVGDevice::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     if (paint.getPathEffect()) {
-        this->drawPath(SkPath::RRect(rr), paint, true);
+        this->drawPath(SkPath::RRect(rr), paint);
         return;
     }
 
@@ -976,25 +976,23 @@ void SkSVGDevice::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     elem.addPathAttributes(SkPath::RRect(rr), this->pathEncoding());
 }
 
-void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+void SkSVGDevice::drawPath(const SkPath& path, SkPath* scratchPath, const SkPaint& paint) {
+    SkASSERT(scratchPath);
     if (path.isInverseFillType()) {
       SkDebugf("Inverse path fill type not yet implemented.");
       return;
     }
 
-    SkPath pathStorage;
-    SkPath* pathPtr = const_cast<SkPath*>(&path);
     SkTCopyOnFirstWrite<SkPaint> path_paint(paint);
 
+    const SkPath* toDraw = &path;
     // Apply path effect from paint to path.
     if (path_paint->getPathEffect()) {
-      if (!pathIsMutable) {
-        pathPtr = &pathStorage;
-      }
-      bool fill = skpathutils::FillPathWithPaint(path, *path_paint, pathPtr);
-      if (fill) {
-        // Path should be filled.
-        path_paint.writable()->setStyle(SkPaint::kFill_Style);
+        bool fill = skpathutils::FillPathWithPaint(path, *path_paint, scratchPath);
+        toDraw = scratchPath;
+        if (fill) {
+            // Path should be filled.
+            path_paint.writable()->setStyle(SkPaint::kFill_Style);
       } else {
         // Path should be drawn with a hairline (width == 0).
         path_paint.writable()->setStyle(SkPaint::kStroke_Style);
@@ -1006,10 +1004,10 @@ void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint, bool pathIs
 
     // Create path element.
     AutoElement elem("path", this, fResourceBucket.get(), MxCp(this), *path_paint);
-    elem.addPathAttributes(*pathPtr, this->pathEncoding());
+    elem.addPathAttributes(*toDraw, this->pathEncoding());
 
     // TODO: inverse fill types?
-    if (pathPtr->getFillType() == SkPathFillType::kEvenOdd) {
+    if (toDraw->getFillType() == SkPathFillType::kEvenOdd) {
         elem.addAttribute("fill-rule", "evenodd");
     }
 }

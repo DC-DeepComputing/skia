@@ -10,6 +10,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPath.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
@@ -29,7 +30,6 @@ class SkDevice;
 class SkGlyph;
 class SkMaskFilter;
 class SkMatrix;
-class SkPath;
 class SkRRect;
 class SkRasterClip;
 class SkShader;
@@ -49,18 +49,21 @@ public:
         this->drawRect(rect, paint, nullptr, nullptr);
     }
     void drawRRect(const SkRRect&, const SkPaint&) const;
+
     /**
-     *  To save on mallocs, we allow a flag that tells us that srcPath is
-     *  mutable, so that we don't have to make copies of it as we transform it.
+     *  If path is non-const, we may modify the passed in path instead of allocating a new one.
      *
      *  If prePathMatrix is not null, it should logically be applied before any
      *  stroking or other effects. If there are no effects on the paint that
      *  affect the geometry/rasterization, then the pre matrix can just be
      *  pre-concated with the current matrix.
      */
-    void drawPath(const SkPath& path, const SkPaint& paint,
-                  const SkMatrix* prePathMatrix, bool pathIsMutable) const {
-        this->drawPath(path, paint, prePathMatrix, pathIsMutable, SkDrawCoverage::kNo);
+    void drawPath(const SkPath& path, const SkPaint& paint, const SkMatrix* prePathMatrix) const {
+        SkPath scratchPath;
+        this->drawPath(path, &scratchPath, paint, prePathMatrix, SkDrawCoverage::kNo, nullptr);
+    }
+    void drawPath(SkPath& path, const SkPaint& paint, const SkMatrix* prePathMatrix) const {
+        this->drawPath(path, &path, paint, prePathMatrix, SkDrawCoverage::kNo, nullptr);
     }
 
     /**
@@ -73,10 +76,11 @@ public:
                           SkBlitter* customBlitter = nullptr) const {
         bool isHairline = paint.getStyle() == SkPaint::kStroke_Style &&
                           paint.getStrokeWidth() == 0;
+        SkPath scratchPath;
         this->drawPath(src,
+                       &scratchPath,
                        paint,
                        nullptr,
-                       false,
                        isHairline ? SkDrawCoverage::kNo : SkDrawCoverage::kYes,
                        customBlitter);
     }
@@ -120,7 +124,7 @@ public:
                                       const SkMatrix& ctm,
                                       const SkPaint&,
                                       SkArenaAlloc*,
-                                      SkDrawCoverage drawCoverage,
+                                      SkDrawCoverage,
                                       sk_sp<SkShader> clipShader,
                                       const SkSurfaceProps&);
 
@@ -130,18 +134,18 @@ private:
     void drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
                     const SkSamplingOptions&, const SkPaint&) const override;
 
-    void drawPath(const SkPath&,
+    void drawPath(const SkPath& srcPath,
+                  SkPath* scratchPath,
                   const SkPaint&,
                   const SkMatrix* preMatrix,
-                  bool pathIsMutable,
-                  SkDrawCoverage drawCoverage,
-                  SkBlitter* customBlitter = nullptr) const;
+                  SkDrawCoverage,
+                  SkBlitter* customBlitter) const;
 
     void drawLine(const SkPoint[2], const SkPaint&) const;
 
     void drawDevPath(const SkPath& devPath,
                      const SkPaint& paint,
-                     SkDrawCoverage drawCoverage,
+                     SkDrawCoverage,
                      SkBlitter* customBlitter,
                      bool doFill) const;
     /**

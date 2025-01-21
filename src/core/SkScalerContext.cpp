@@ -501,7 +501,7 @@ void SkScalerContext::GenerateImageFromPath(
 
     SkPaint paint;
     SkPath strokePath;
-    const SkPath* pathToUse = &path;
+    bool useStrokePath = false;
 
     int srcW = dstMask.fBounds.width();
     int srcH = dstMask.fBounds.height();
@@ -539,7 +539,7 @@ void SkScalerContext::GenerateImageFromPath(
             rec.setStrokeParams(SkPaint::kButt_Cap, SkPaint::kRound_Join, 0.0f);
         }
         if (rec.needToApply() && rec.applyToPath(&strokePath, path)) {
-            pathToUse = &strokePath;
+            useStrokePath = true;
             paint.setStyle(SkPaint::kFill_Style);
         }
     }
@@ -567,7 +567,11 @@ void SkScalerContext::GenerateImageFromPath(
     draw.fRC             = &clip;
     draw.fCTM            = &matrix;
     // We can save a copy if we had to use the local strokePath
-    draw.drawPath(*pathToUse, paint, nullptr, pathToUse == &strokePath);
+    if (useStrokePath) {
+        draw.drawPath(strokePath, paint, nullptr);
+    } else {
+        draw.drawPath(path, paint, nullptr);
+    }
 
     switch (dstMask.fFormat) {
         case SkMask::kBW_Format:
