@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70b8c488_2916561e",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 1611,
+      "author": {
+        "id": 18384
+      },
+      "writtenOn": "2025-01-21T13:23:59Z",
+      "side": 1,
+      "message": "Hi @kjlubick@google.com,\n\nI\u0027m encountering a performance issue in Skia `DM` and I\u0027m hoping you can lend your expertise. I\u0027m seeing a significant slowdown (180x) on the `Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-Vulkan` bot when using `PartitionAlloc` with `dm`. I was expecting some small performance improvement instead.\n\nTo investigate this further, I\u0027d like to capture a performance profile on the bot. I tried using `instrument_with_perf`, but it seems `perf` isn\u0027t installed. \n\nGiven your experience with Skia infrastructure, do you know the best way to obtain a performance profile in this environment? Any pointers on how to profile Skia on these bots would be greatly appreciated. If I could install `linux-tools` on this Ubuntu VM, that would be solved.\n\nI wrote a [doc](https://docs.google.com/document/d/16EJbzsFyazrAyD-M6Bgonabsj8TVHHQbmYhlOCjClFw/edit?resourcekey\u003d0-IDm4Z6SPITWnq1nD99SVbg\u0026tab\u003dt.0) with what I found so far, but I am out of good ideas. A performance profile would really unblock this.\n\nThanks,\nArthur",
+      "range": {
+        "startLine": 1611,
+        "startChar": 0,
+        "endLine": 1611,
+        "endChar": 29
+      },
+      "revId": "2b36bf69afe4789daa41f2695d9a722fa20cd556",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
