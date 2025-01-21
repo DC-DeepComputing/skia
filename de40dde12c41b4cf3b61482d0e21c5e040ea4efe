@@ -70,6 +70,24 @@
       "parentUuid": "c4673393_45d447b1",
       "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3185dfe0_7aa1e5e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T17:53:14Z",
+      "side": 1,
+      "message": "If you just want to disable all workarounds I would do it as suggested above. If there is a chance that there are still driver bugs I would keep the workarounds. If we have another way to check driver versions to know when I bug is fixed that we can add that to any workaround. For example:\n`(androidAPIVersion \u003c\u003d2 8 \u0026\u0026 maliDriverVersion \u003c\u003d value)`. But I don\u0027t know right now how to get those driver versions.",
+      "parentUuid": "4d807a7e_e4f37bef",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
