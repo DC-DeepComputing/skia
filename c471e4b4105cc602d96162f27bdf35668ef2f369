@@ -1,6 +1,98 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3afd0aee_cc2e0659",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T21:17:18Z",
+      "side": 1,
+      "message": "This will need to take in the TextureInfo and call into a backend virtual to know what the right dst read strategy is. For example does the dst support input attachment or not",
+      "range": {
+        "startLine": 140,
+        "startChar": 45,
+        "endLine": 140,
+        "endChar": 48
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601535ac_9fa8d8a0",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T21:17:18Z",
+      "side": 1,
+      "message": "So I\u0027m thinking I\u0027m not a big fan of this. IIRC when using an input attachment you don\u0027t actually need a sampler at all. Instead you have an input attachment on the RenderPass and then you bind a DescSet with input attachment descriptor.\n\nThis makes me feel like if we need to use an input attachment then we should make that part of the RenderPassDesc. I\u0027m undecided now if we want to leave the presence of an InputAttachment on the RenderPassDesc to be enough to say we require a self-dependency or if we additionally want to pass another flag that says there is a self dependency on the RP.\n\nThe Texture and Sampler for DstCopy can stay paired together and renamed fDstTextureInfo if we want. This would be used for cases where we either have a copy (like today) or if we actually bind the dst as a normal Texture (e.g. desktop metal or gl).",
+      "range": {
+        "startLine": 98,
+        "startChar": 23,
+        "endLine": 98,
+        "endChar": 47
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6fa6933_4d7dc652",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T21:17:18Z",
+      "side": 1,
+      "message": "This is not true for Vulkan. A VkImage can support being read as in input attachment without needing to support being texturable",
+      "range": {
+        "startLine": 256,
+        "startChar": 21,
+        "endLine": 256,
+        "endChar": 40
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4648fe24_b3879e01",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T21:17:18Z",
+      "side": 1,
+      "message": "nit: extra space",
+      "range": {
+        "startLine": 268,
+        "startChar": 82,
+        "endLine": 268,
+        "endChar": 83
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "1a190086_a0cc7907",
