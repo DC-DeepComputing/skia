@@ -92,6 +92,30 @@
       },
       "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f463db72_126b2021",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T21:12:25Z",
+      "side": 1,
+      "message": "Yes, absolutely. Otherwise there is no point to any of this. Just compile in a different implementation otherwise.",
+      "parentUuid": "b8ee7056_9a1347c3",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 39
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
