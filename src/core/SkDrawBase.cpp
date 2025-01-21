@@ -153,7 +153,7 @@ static void draw_rect_as_path(const SkDrawBase& orig,
     SkPath  tmp;
     tmp.addRect(prePaintRect);
     tmp.setFillType(SkPathFillType::kWinding);
-    draw.drawPath(tmp, paint, nullptr, true);
+    draw.drawPath(tmp, paint, nullptr);
 }
 
 void SkDrawBase::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
@@ -319,7 +319,7 @@ DRAW_PATH:
     // Now fall back to the default case of using a path.
     SkPath path;
     path.addRRect(rrect);
-    this->drawPath(path, paint, nullptr, true);
+    this->drawPath(path, paint, nullptr);
 }
 
 void SkDrawBase::drawDevPath(const SkPath& devPath,
@@ -385,35 +385,29 @@ void SkDrawBase::drawDevPath(const SkPath& devPath,
 }
 
 void SkDrawBase::drawPath(const SkPath& origSrcPath,
+                          SkPath* scratchPath,
                           const SkPaint& origPaint,
                           const SkMatrix* prePathMatrix,
-                          bool pathIsMutable,
                           SkDrawCoverage drawCoverage,
                           SkBlitter* customBlitter) const {
     SkDEBUGCODE(this->validate();)
+    SkASSERT(scratchPath);
 
     // nothing to draw
     if (fRC->isEmpty()) {
         return;
     }
 
-    SkPath*         pathPtr = const_cast<SkPath*>(&origSrcPath);
-    bool            doFill = true;
-    SkPath          tmpPathStorage;
-    SkPath*         tmpPath = &tmpPathStorage;
+    const SkPath* pathPtr = &origSrcPath;
+    scratchPath->setIsVolatile(true);
+
+    bool doFill = true;
     SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
-    tmpPath->setIsVolatile(true);
 
     if (prePathMatrix) {
         if (origPaint.getPathEffect() || origPaint.getStyle() != SkPaint::kFill_Style) {
-            SkPath* result = pathPtr;
-
-            if (!pathIsMutable) {
-                result = tmpPath;
-                pathIsMutable = true;
-            }
-            pathPtr->transform(*prePathMatrix, result);
-            pathPtr = result;
+            pathPtr->transform(*prePathMatrix, scratchPath);
+            pathPtr = scratchPath;
         } else {
             matrix.writable()->preConcat(*prePathMatrix);
         }
@@ -451,23 +445,20 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
         if (this->computeConservativeLocalClipBounds(&cullRect)) {
             cullRectPtr = &cullRect;
         }
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, tmpPath, cullRectPtr, *fCTM);
-        pathPtr = tmpPath;
+        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, scratchPath, cullRectPtr, *fCTM);
+        pathPtr = scratchPath;
     }
 
-    // avoid possibly allocating a new path in transform if we can
-    SkPath* devPathPtr = pathIsMutable ? pathPtr : tmpPath;
-
     // transform the path into device space
-    pathPtr->transform(*matrix, devPathPtr);
+    pathPtr->transform(*matrix, scratchPath);
 
 #if defined(SK_BUILD_FOR_FUZZER)
-    if (devPathPtr->countPoints() > 1000) {
+    if (scratchPath->countPoints() > 1000) {
         return;
     }
 #endif
 
-    this->drawDevPath(*devPathPtr, *paint, drawCoverage, customBlitter, doFill);
+    this->drawDevPath(*scratchPath, *paint, drawCoverage, customBlitter, doFill);
 }
 
 void SkDrawBase::paintMasks(SkZip<const SkGlyph*, SkPoint>, const SkPaint&) const {
@@ -559,7 +550,7 @@ static void draw_into_mask(const SkMask& mask, const SkPath& devPath,
             break;
 
     }
-    draw.drawPath(devPath, paint, nullptr, false);
+    draw.drawPath(devPath, paint, nullptr);
 }
 
 bool SkDrawBase::DrawToMask(const SkPath& devPath, const SkIRect& clipBounds,
@@ -646,12 +637,18 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
                         preMatrix.setTranslate(pts[i].fX, pts[i].fY);
                         // pass true for the last point, since we can modify
                         // then path then
-                        path.setIsVolatile((count-1) == i);
-                        this->drawPath(path, newPaint, &preMatrix, (count-1) == i);
+                        if (i == count - 1) {
+                            // On the last point, we can let drawPath modify the circle.
+                            path.setIsVolatile(true);
+                            this->drawPath(path, newPaint, &preMatrix);
+                        } else {
+                            // On other points, we don't want to modify the path.
+                            this->drawPath((const SkPath&)path, newPaint, &preMatrix);
+                        }
                     }
                 }
             } else {
-                SkRect  r;
+                SkRect r;
 
                 for (size_t i = 0; i < count; i++) {
                     r.fLeft = pts[i].fX - radius;
@@ -688,17 +685,17 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
 
                     if (!pointData.fFirst.isEmpty()) {
                         if (device) {
-                            device->drawPath(pointData.fFirst, newP, true);
+                            device->drawPath(pointData.fFirst, newP);
                         } else {
-                            this->drawPath(pointData.fFirst, newP, nullptr, true);
+                            this->drawPath(pointData.fFirst, newP, nullptr);
                         }
                     }
 
                     if (!pointData.fLast.isEmpty()) {
                         if (device) {
-                            device->drawPath(pointData.fLast, newP, true);
+                            device->drawPath(pointData.fLast, newP);
                         } else {
-                            this->drawPath(pointData.fLast, newP, nullptr, true);
+                            this->drawPath(pointData.fLast, newP, nullptr);
                         }
                     }
 
@@ -760,9 +757,9 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
                 path.moveTo(pts[i]);
                 path.lineTo(pts[i+1]);
                 if (device) {
-                    device->drawPath(path, p, true);
+                    device->drawPath(path, p);
                 } else {
-                    this->drawPath(path, p, nullptr, true);
+                    this->drawPath(path, p, nullptr);
                 }
                 path.rewind();
             }

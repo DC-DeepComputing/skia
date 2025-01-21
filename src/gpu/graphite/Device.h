@@ -148,7 +148,10 @@ public:
     void drawArc(const SkArc& arc, const SkPaint& paint) override;
     void drawPoints(SkCanvas::PointMode mode, size_t count,
                     const SkPoint[], const SkPaint& paint) override;
-    void drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable = false) override;
+    void drawPath(const SkPath& path, const SkPaint& paint) override;
+    void drawPath(SkPath& path, const SkPaint& paint) override {
+        this->drawPath((const SkPath&)path, paint);
+    }
 
     // No need to specialize drawDRRect, drawRegion, drawPatch as the default impls all
     // route to drawPath, drawRect, or drawVertices as desired.
