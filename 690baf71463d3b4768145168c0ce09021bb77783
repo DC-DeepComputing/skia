@@ -60,6 +60,46 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9c390322_45bd4af7",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "nit: four space indent",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 376,
+        "endChar": 6
+      },
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eaa5fabc_4f60c076",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "Not sure why this is being declared here at this scope. If this really needs a name, it should go in the `if (shouldGrow) {` block since it isn\u0027t used anywhere else.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1e2bf42f_3f3fe550",
         "filename": "src/core/SkTHash.h",
         "patchSetId": 12
@@ -125,6 +165,80 @@
           ]
         }
       ],
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7859db9_2fe532a6",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "It would be so nice if C++ could copy the local `final` rules from Java. There should be some way to write this cleaner.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b15dbbe5_c66d32bf",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "If we so want this then we also need to consider this. This still \"works\" because the shrink happens at 1/4 and we never remove from most hashes (like `fDigestForPackedGlyphID`) anyway. However, this class needs to make sense independently of that.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf50ccf0_2f5f1fa3",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "Also here.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52889aea_9c61141f",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T18:50:47Z",
+      "side": 1,
+      "message": "The number at the end is awkward. Using `Traits` in this name is awkward. This is just a generic type, it can be called `T` or `U` or whatever.",
+      "range": {
+        "startLine": 284,
+        "startChar": 23,
+        "endLine": 284,
+        "endChar": 30
+      },
       "revId": "690baf71463d3b4768145168c0ce09021bb77783",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
