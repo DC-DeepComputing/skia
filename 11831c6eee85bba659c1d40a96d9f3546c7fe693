@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "007313fd_550c3fe4",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 14
+      },
+      "lineNbr": 357,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T15:48:40Z",
+      "side": 1,
+      "message": "So G3 continues to work because of this direct dependency here.",
+      "revId": "11831c6eee85bba659c1d40a96d9f3546c7fe693",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
