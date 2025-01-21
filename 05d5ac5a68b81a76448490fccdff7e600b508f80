@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "67276c35_5f5c609c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-01-21T20:17:21Z",
+      "side": 1,
+      "message": "Done, looks like there are other examples which point to skia:7603 which is http://b/40038854",
+      "parentUuid": "de299960_ce4041f9",
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12d32d32_ef6babcd",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 3
