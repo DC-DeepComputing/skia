@@ -22,6 +22,30 @@
       },
       "revId": "8703d858e9060420cae958e7d889aa86c123bd0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e47eb63_4a9116cd",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 5
+      },
+      "lineNbr": 975,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-01-21T20:45:10Z",
+      "side": 1,
+      "message": "Nope, apparently I\u0027ve been typing 8.3 but meaning 8.1 :-/",
+      "parentUuid": "2fda80dd_919b1324",
+      "range": {
+        "startLine": 975,
+        "startChar": 13,
+        "endLine": 975,
+        "endChar": 16
+      },
+      "revId": "8703d858e9060420cae958e7d889aa86c123bd0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
