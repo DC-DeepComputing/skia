@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cbbb9501_47bd645d",
+        "filename": "src/core/SkDrawTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-21T21:51:19Z",
+      "side": 1,
+      "message": "I was going back and forth on naming, something like\n```\nenum class SkDrawType {\n    kCoverage,\n    k???\n};\n```\n\nseems to better capture the semantics (we\u0027re either drawing the \"thing\" or we\u0027re just drawing its coverage).  But I can\u0027t come up with a decent name for the second enum value, so coverage yes/no sgtm :)",
+      "revId": "9536865811db3a980acf17362721071a70817157",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
