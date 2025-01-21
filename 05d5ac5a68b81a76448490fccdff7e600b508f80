@@ -16,6 +16,47 @@
       "message": "Are these the right set of tasks we\u0027d like to run on these machines?  It looks like capacity is quite limited on the MacMini8.3, so if we can trim those down a bit that\u0027d be preferable.  At the moment there are two test failues:\n\n```\n\t../../../../../../skia/tests/GrMeshTest.cpp:677\t[drawInstanced] pixel (0,4): got 0xbaaaaaad expected 0xff00ff00 [GrMeshTest, OpenGL]\n\t../../../../../../skia/tests/GrMeshTest.cpp:677\t[drawIndirect] pixel (0,0): got 0xbaaaaaad expected 0xff000000 [GrMeshTest, OpenGL]\n```\nAnd:\n```\n\t../../../../../../skia/tests/SkSLTest.cpp:201\t [SkSLIntrinsicAny_Graphite, Metal]: surface-\u003ereadPixels(bitmap, 0, 0)\n\t../../../../../../skia/tests/SkSLTest.cpp:633\tExpected (Unoptimized): solid green. Actual output from Intel(R) UHD Graphics 630 using Metal:\nRRGGBBAA RRGGBBAA\n00000000 00000000\n00000000 00000000 [SkSLIntrinsicAny_Graphite, Metal]\n```",
       "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cfb40ba_4fd10441",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-21T17:17:03Z",
+      "side": 1,
+      "message": "Do you mean the MacMini 8.1\u0027s being over capacity?",
+      "parentUuid": "3c3131d7_66584ab8",
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d32d32_ef6babcd",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-21T17:17:03Z",
+      "side": 1,
+      "message": "Could we also have a Release-All-Graphite_Dawn_Metal job? It is valuable to have Graphite_Native_Metal and Graphite_Dawn_Metal running on the same hardware to measure overhead of dawn.",
+      "range": {
+        "startLine": 473,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 94
+      },
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
