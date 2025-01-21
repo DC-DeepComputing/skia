@@ -1177,7 +1177,7 @@ void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
     int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
 
     if (codeSnippetID >= SkKnownRuntimeEffects::kUnknownRuntimeEffectIDStart) {
-        keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
+        keyContext.rtEffectDict()->set17(codeSnippetID, shaderData.fEffect);
     }
 
     const ShaderSnippet* entry = dict->getEntry(codeSnippetID);

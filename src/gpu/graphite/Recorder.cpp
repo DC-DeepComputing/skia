@@ -95,7 +95,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
                    const Context* context)
         : fSharedContext(std::move(sharedContext))
-        , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
+        , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>(false)) //$$
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
         , fTextureDataCache(new TextureDataCache)

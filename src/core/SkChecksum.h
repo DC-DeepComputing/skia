@@ -8,6 +8,7 @@
 #ifndef SkChecksum_DEFINED
 #define SkChecksum_DEFINED
 
+#include "include/core/SkData.h"
 #include "include/core/SkString.h"
 #include "include/private/base/SkAPI.h"
 
@@ -94,6 +95,10 @@ struct SkGoodHash {
 
     uint32_t operator()(std::string_view k) const {
         return SkChecksum::Hash32(k.data(), k.size());
+    }
+
+    uint32_t operator()(sk_sp<SkData> data) const {
+        return SkChecksum::Hash32(data->bytes(), data->size());
     }
 };
 
