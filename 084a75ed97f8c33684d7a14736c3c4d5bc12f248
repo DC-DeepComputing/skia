@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd413d6_6868e7c8",
+        "filename": "src/gpu/graphite/ContextUtils.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Done - this also led to some sick line formatting wins, so thanks 😎",
+      "parentUuid": "eb242a5e_08a88c6b",
+      "range": {
+        "startLine": 65,
+        "startChar": 5,
+        "endLine": 65,
+        "endChar": 31
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b6e02e7_7cb389fd",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-01-17T15:03:42Z",
       "side": 1,
       "message": "If we changed to having DrawList always track the dstReadBounds, this if check would still be valid, we\u0027d just then add a term for checking if fDstReadStrategy is kTextureCopy.",
+      "range": {
+        "startLine": 252,
+        "startChar": 13,
+        "endLine": 252,
+        "endChar": 31
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e835ad4c_82cf818f",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b6e02e7_7cb389fd",
       "range": {
         "startLine": 252,
         "startChar": 13,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9fc06fc_31a0700e",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Good idea. Done",
+      "parentUuid": "26da6a76_2466f215",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 112,
+        "endChar": 37
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46df0a25_4c2f584d",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "321df582_fdbb7a95",
+        "filename": "src/gpu/graphite/GraphicsPipeline.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Yeah, this is where it got a bit funky, since the dst read strategy can be \"none\" (indicating a requirement). Renamed though w/ the new feedback that NoneRequired is intuitive enough.",
+      "parentUuid": "46df0a25_4c2f584d",
+      "range": {
+        "startLine": 43,
+        "startChar": 20,
+        "endLine": 43,
+        "endChar": 38
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f61954ce_692c9a43",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-01-17T15:03:42Z",
       "side": 1,
       "message": "I have a slight preference to keep it like `fDstReadRequired`",
+      "range": {
+        "startLine": 66,
+        "startChar": 10,
+        "endLine": 66,
+        "endChar": 19
+      },
+      "revId": "084a75ed97f8c33684d7a14736c3c4d5bc12f248",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5cad421a_ac78b150",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f61954ce_692c9a43",
       "range": {
         "startLine": 66,
         "startChar": 10,

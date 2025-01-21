@@ -46,6 +46,30 @@
       },
       "revId": "462a8bdb3546cdbcc79f827b1d0bac4f3426c91d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "429c57b2_a64f9854",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:01:05Z",
+      "side": 1,
+      "message": "Okay, this is good feedback - thank you!\n\n\"I also think that if we are in a mode where we haven\u0027t fully determined the strategy yet, it\u0027s pretty intuitive to start with the default of kNoneRequired and then upgrade as something requires it\" especially, since I didn\u0027t want to inadvertently get to a state later on somehow where we just have not checked yet and operate as if we do not need it, though this is all internal code that we control so asserts and comment docs should be all good. Thank you!",
+      "parentUuid": "9c4214a2_c214d55b",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 2
+      },
+      "revId": "462a8bdb3546cdbcc79f827b1d0bac4f3426c91d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
