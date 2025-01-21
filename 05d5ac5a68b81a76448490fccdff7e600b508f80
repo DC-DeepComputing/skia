@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3c83b72e_dac7e206",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-21T20:53:42Z",
+      "side": 1,
+      "message": "I guess we should do the same for the SkSLIntrinsicAny_Graphite failure (i.e., file a bug an suppress here). If it is a real issue it is pretty concerning.",
+      "parentUuid": "67276c35_5f5c609c",
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12d32d32_ef6babcd",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 3
