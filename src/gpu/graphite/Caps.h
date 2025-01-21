@@ -111,7 +111,8 @@ public:
 
     virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
                                                           uint32_t sampleCount,
-                                                          Protected) const = 0;
+                                                          Protected,
+                                                          Discardable discardable) const = 0;
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
 
