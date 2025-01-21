@@ -674,8 +674,8 @@ bool DawnCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPip
         // copy texture may not go in a group with the regular textures, in which case this binding
         // can hopefully happen in a single place (e.g. here or at the start of the renderpass and
         // not also every other time the textures are changed).
-        const auto* texture = static_cast<const DawnTexture*>(fDstCopy.first);
-        const auto* sampler = static_cast<const DawnSampler*>(fDstCopy.second);
+        const auto* texture = static_cast<const DawnTexture*>(fDstCopy);
+        const auto* sampler = static_cast<const DawnSampler*>(fDstSampler);
         wgpu::BindGroup bindGroup =
                 fResourceProvider->findOrCreateSingleTextureSamplerBindGroup(sampler, texture);
         fActiveRenderPassEncoder.SetBindGroup(
@@ -818,13 +818,13 @@ void DawnCommandBuffer::bindTextureAndSamplers(
             // Append the dstCopy sampler and texture as the very last two bind group entries
             wgpu::BindGroupEntry samplerEntry;
             samplerEntry.binding = 2*numTexturesAndSamplers - 2;
-            samplerEntry.sampler = static_cast<const DawnSampler*>(fDstCopy.second)->dawnSampler();
+            samplerEntry.sampler = static_cast<const DawnSampler*>(fDstSampler)->dawnSampler();
             entries.push_back(samplerEntry);
 
             wgpu::BindGroupEntry textureEntry;
             textureEntry.binding = 2*numTexturesAndSamplers - 1;
             textureEntry.textureView =
-                    static_cast<const DawnTexture*>(fDstCopy.first)->sampleTextureView();
+                    static_cast<const DawnTexture*>(fDstCopy)->sampleTextureView();
             entries.push_back(textureEntry);
         }
 

@@ -138,9 +138,11 @@ skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const TextureInfo& info) co
 }
 
 DstReadRequirement Caps::getDstReadRequirement() const {
-    // TODO(b/238757201): Currently this only supports dst reads by FB fetch and texture copy.
+    // Query ShaderCaps for dst read support features in order of most -> least ideal.
     if (this->shaderCaps()->fFBFetchSupport) {
         return DstReadRequirement::kFramebufferFetch;
+    } else if (this->shaderCaps()->fDstReadInShaderSupport) {
+        return DstReadRequirement::kTextureSample;
     } else {
         return DstReadRequirement::kTextureCopy;
     }
