@@ -26,7 +26,7 @@ uint32_t next_compilation_id() {
 #if defined(GPU_TEST_UTILS)
 // TODO(jamesgk): get rid of this special case once we've got color space transform shader
 // specialization more under control
-constexpr int kGlobalGraphicsPipelineCacheSizeLimit = 2048;
+constexpr int kGlobalGraphicsPipelineCacheSizeLimit = 1 << 13;
 constexpr int kGlobalComputePipelineCacheSizeLimit = 256;
 
 #else
