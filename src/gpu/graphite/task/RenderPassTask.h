@@ -10,6 +10,7 @@
 
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/task/Task.h"
 
 namespace skgpu::graphite {
@@ -35,7 +36,8 @@ public:
                                       const RenderPassDesc&,
                                       sk_sp<TextureProxy> target,
                                       sk_sp<TextureProxy> dstCopy,
-                                      SkIRect dstCopyBounds);
+                                      SkIRect dstCopyBounds,
+                                      bool requiresDstSampler);
 
     ~RenderPassTask() override;
 
@@ -50,7 +52,8 @@ private:
                    const RenderPassDesc&,
                    sk_sp<TextureProxy> target,
                    sk_sp<TextureProxy> dstCopy,
-                   SkIRect dstCopyBounds);
+                   SkIRect dstCopyBounds,
+                   bool requiresDstSampler);
 
     DrawPassList fDrawPasses;
     RenderPassDesc fRenderPassDesc;
@@ -58,6 +61,11 @@ private:
 
     sk_sp<TextureProxy> fDstCopy;
     SkIRect fDstCopyBounds;
+    // Store whether or not the RenderPassTask requires a dst sampler. This can be intuited in the
+    // case of DstReadRequirement::kTextureCopy by the presence of valid fDstCopy and fDstCopyBounds
+    // but we must havea way to indicate to the command buffer whether one must be created for
+    // DstReadRequirement::kTextureSample.
+    bool fRequiresDstSampler;
 };
 
 } // namespace skgpu::graphite

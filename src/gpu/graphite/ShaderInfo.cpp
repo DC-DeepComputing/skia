@@ -740,16 +740,19 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         // Get the current dst color into a local variable, it may be used later on for coverage
         // blending as well as the final blend.
         mainBody += "half4 dstColor;";
-        if (useDstSampler) {
-            // dstCopyBounds is in frag coords and already includes the replay translation. The
-            // reciprocol of the dstCopy dimensions are in ZW.
-            mainBody += "dstColor = sample(dstSampler,"
-                                          "dstCopyBounds.zw*(sk_FragCoord.xy - dstCopyBounds.xy));";
-        } else {
-            SkASSERT(fDstReadRequirement == DstReadRequirement::kFramebufferFetch);
-            mainBody += "dstColor = sk_LastFragColor;";
+        switch (fDstReadRequirement) {
+            case DstReadRequirement::kTextureCopy:
+                // dstCopyBounds is in frag coords and already includes the replay translation. The
+                // reciprocol of the dstCopy dimensions are in ZW.
+                mainBody += "dstColor = sample(dstSampler, dstCopyBounds.zw*"
+                            "(sk_FragCoord.xy - dstCopyBounds.xy));";
+            case DstReadRequirement::kTextureSample:
+                mainBody += "dstColor = sample(dstSampler, sk_FragCoord.xy);";
+            case DstReadRequirement::kFramebufferFetch:
+                mainBody += "dstColor = sk_LastFragColor;";
+            default:
+                SkUNREACHABLE;
         }
-
         args.fBlenderDstColor = "dstColor";
         args.fPriorStageOutput = finalBlendRoot->invokeAndAssign(*this, args, &mainBody);
         finalBlendMode = SkBlendMode::kSrc;

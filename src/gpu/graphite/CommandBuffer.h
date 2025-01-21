@@ -84,6 +84,10 @@ public:
     // in `dstCopy`; otherwise it should be null. The `dstCopyBounds` are in the same coordinate
     // space of the logical viewport *before* any replay translation is applied.
     //
+    // If any recorded draw requires a dst texture sampler for blending, `dstSampler` must be a
+    // valid pointer to a sampler and should otherwise be null. The sampler ref will be adopted and
+    // tracked on the command buffer.
+    //
     // The logical viewport is always (0,0,viewportDims) and matches the "device" coordinate space
     // of the higher-level SkDevices that recorded the rendering operations. The actual viewport
     // is automatically adjusted by the replay translation.
@@ -93,6 +97,7 @@ public:
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstCopyBounds,
+                       bool requiresDstSampler,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -144,10 +149,15 @@ protected:
     // The texture to use for implementing DstReadRequirement::kTextureCopy for the current render
     // pass. This is a bare pointer since the CopyTask that initializes the texture's contents
     // will have tracked the resource on the CommandBuffer already.
-    std::pair<const Texture*, const Sampler*> fDstCopy;
+    const Texture* fDstCopy;
     // Already includes replay translation and respects final color attachment bounds, but with
     // dimensions that equal fDstCopy's width and height.
     SkIRect fDstCopyBounds;
+    // DstReadRequirement::kTextureSample and DstReadRequirement::kTextureCopy both require a
+    // sampler for the destination texture (either to sample the dst texture directly or a copy),
+    // respectively. The sampler will be added to the command buffer's tracked resources via a
+    // call from within the cmd buffer (kTextureSample) or the CopyTask (kTextureCopy).
+    const Sampler* fDstSampler;
 
     Protected fIsProtected;
 
