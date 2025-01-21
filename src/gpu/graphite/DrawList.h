@@ -118,6 +118,8 @@ private:
     int fCoverageMaskShapeDrawCount = 0;
 #endif
 
+    // Tracked for all paints that read from the dst. If it is later determined that the
+    // DstReadStrategy is not kTextureCopy, this value can simply be ignored.
     Rect fDstCopyBounds = Rect::InfiniteInverted();
 };
 
