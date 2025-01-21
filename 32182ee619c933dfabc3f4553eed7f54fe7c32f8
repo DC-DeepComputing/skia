@@ -33,6 +33,24 @@
       "message": "I think you need to check whether `image.imir.axis` is positive (or at least \u003e\u003d -1) unless that\u0027s handled elsewhere.",
       "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a5e42bb_127625b4",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-21T20:55:56Z",
+      "side": 1,
+      "message": "`image.imir.axis` is a `uint8_t`. so the `\u003c\u003d 1` check is sufficient.",
+      "parentUuid": "ca12dbf3_44b3a815",
+      "revId": "32182ee619c933dfabc3f4553eed7f54fe7c32f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
