@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a190086_a0cc7907",
+        "filename": "src/gpu/graphite/DrawList.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T19:26:37Z",
+      "side": 1,
+      "message": "This is modified to always track dst copy bounds in https://skia-review.googlesource.com/c/skia/+/938644/9..10",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 51
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
