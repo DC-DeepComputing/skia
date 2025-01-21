@@ -413,9 +413,9 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                           false);
         }
     }
-    if (fDstCopy.first) {
+    if (fDstCopy) {
         VulkanTexture* vulkanTexture =
-                const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(fDstCopy.first));
+                const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(fDstCopy));
         vulkanTexture->setImageLayout(this,
                                       VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                       VK_ACCESS_SHADER_READ_BIT,
@@ -1257,8 +1257,8 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         }
     }
     if (fActiveGraphicsPipeline->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
-        auto texture = static_cast<const VulkanTexture*>(fDstCopy.first);
-        auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+        auto texture = static_cast<const VulkanTexture*>(fDstCopy);
+        auto sampler = static_cast<const VulkanSampler*>(fDstSampler);
         if (!appendTextureSampler(texture, sampler)) {
             return;
         }
