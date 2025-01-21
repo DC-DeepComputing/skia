@@ -68,6 +68,30 @@
       },
       "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8ee7056_9a1347c3",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-21T21:07:04Z",
+      "side": 1,
+      "message": "How would this work in practice?\n\nUnlike SkFontMgr, which reflects a core dependency for font-related functionality, PathOps use is pretty much an implementation detail which tends to pop up in random places.  Are you thinking of plumbing the interface through all the APIs (public and private) which happen to be currently terminating in these random spots?",
+      "parentUuid": "b271e638_d24b5cbd",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 39
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
