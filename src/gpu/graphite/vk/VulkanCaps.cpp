@@ -193,6 +193,12 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     if (features && features->features.dualSrcBlend) {
         fShaderCaps->fDualSourceBlendingSupport = true;
     }
+    // TODO(b/383769988): Once graphite/Vulkan backend is hooked up to perform dst reads, enable
+    // this shader flag.
+    // fShaderCaps->fDstReadInShaderSupport = true;
+
+    // TODO(b/239726010): Determine advanced blending equation support and assign
+    // fShaderCaps->fAdvBlendEqInteraction.
 
     // Note that format table initialization should be performed at the end of this method to ensure
     // all capability determinations are completed prior to populating the format tables.

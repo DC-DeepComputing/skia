@@ -80,9 +80,11 @@ public:
     void addBuffersToAsyncMapOnSubmit(SkSpan<const sk_sp<Buffer>>);
     SkSpan<const sk_sp<Buffer>> buffersToAsyncMapOnSubmit() const;
 
-    // If any recorded draw requires a dst texture copy for blending, that texture must be provided
-    // in `dstCopy`; otherwise it should be null. The `dstCopyBounds` are in the same coordinate
-    // space of the logical viewport *before* any replay translation is applied.
+    // If any recorded draw requires a dst read sampler (DstReadRequirement::kTextureSample,
+    // DstReadRequirement::kTextureCopy) `requiresDstSampler` must be true. If a dst texture copy
+    // is needed for blending, that texture must be provided in `dstCopy` and should otherwise be
+    // null. The `dstCopyBounds` are in the same coordinate space of the logical viewport *before*
+    // any replay translation is applied.
     //
     // The logical viewport is always (0,0,viewportDims) and matches the "device" coordinate space
     // of the higher-level SkDevices that recorded the rendering operations. The actual viewport
@@ -93,6 +95,7 @@ public:
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstCopyBounds,
+                       bool requiresDstSampler,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -144,10 +147,15 @@ protected:
     // The texture to use for implementing DstReadRequirement::kTextureCopy for the current render
     // pass. This is a bare pointer since the CopyTask that initializes the texture's contents
     // will have tracked the resource on the CommandBuffer already.
-    std::pair<const Texture*, const Sampler*> fDstCopy;
+    const Texture* fDstCopy;
     // Already includes replay translation and respects final color attachment bounds, but with
     // dimensions that equal fDstCopy's width and height.
     SkIRect fDstCopyBounds;
+    // DstReadRequirement::kTextureSample and DstReadRequirement::kTextureCopy both require a
+    // sampler for the destination texture (either to sample the dst texture directly or a copy,
+    // respectively). This is a bare pointer since the sampler will be added to the command buffer's
+    // tracked resources.
+    const Sampler* fDstSampler;
 
     Protected fIsProtected;
 
