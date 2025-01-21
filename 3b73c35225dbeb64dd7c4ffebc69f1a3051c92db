@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb79367d_d79b01f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-21T16:25:55Z",
+      "side": 1,
+      "message": "One thing I\u0027m not sure about is how error-prone it is to have both versions of the function (const and non-const) be named the same. WDYT?",
+      "revId": "3b73c35225dbeb64dd7c4ffebc69f1a3051c92db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
