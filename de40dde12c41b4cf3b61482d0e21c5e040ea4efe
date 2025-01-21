@@ -16,6 +16,24 @@
       "message": "I guess this is a little confusing to me as to what SK_BUILD_FOR_ANDROID means now. Before that flag just meant we were compiling Android code and thus it would make sense to restrict things on the androidAPIVersion. However, now it seems like you want to use that flag to differentiate from compiling Android for say a phone and compiling Android for a chrome os device? I would have thought the later would still be compiling core Android and thus still respect all the same flags.",
       "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78bd5dce_17c7ab7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-21T17:46:22Z",
+      "side": 1,
+      "message": "Ahh I think I missed that these were Mali/Adreno devices that were specifically not running on Android.\n\nIn that case it looks like you are just trying to not apply any of the driver workarounds at all right? If that is the case can you just set this flag from this client at runtime, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/gpu/ganesh/GrContextOptions.h;l\u003d273?",
+      "parentUuid": "1930647e_adf099a5",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
