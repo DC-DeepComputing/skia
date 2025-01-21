@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "122417ab_84463329",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-21T17:15:27Z",
+      "side": 1,
+      "message": "The issue here appears to be that this is being called from an SkDrawable (SkFontationsScalerContext::generateDrawable::ColrGlyphDrawable to drawCOLRGlyph) which could be called from more that one thread, as well as being called in the \"normal\" single thread way.\n\nIn general SkScalerContexts are single thread, but in this case `generateDrawable` allowed a reference to leak out into the wild, so whatever that SkDrawable needs to do needs to be thread safe.",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 61
+      },
+      "revId": "43a3db176740a3cb3184965a55a132714bb5c945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
