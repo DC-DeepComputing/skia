@@ -22,6 +22,30 @@
       },
       "revId": "43a3db176740a3cb3184965a55a132714bb5c945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30e75bd3_f919417a",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-01-21T17:17:08Z",
+      "side": 1,
+      "message": "Thanks for the analysis, I add that to comment and the commit message.",
+      "parentUuid": "122417ab_84463329",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 61
+      },
+      "revId": "43a3db176740a3cb3184965a55a132714bb5c945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
