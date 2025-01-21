@@ -5,9 +5,25 @@
  * found in the LICENSE file.
  */
 
+#include <thread>
+#include <cstdlib>
+#include <iostream>
+#include <map>
+#include <sstream>
+#include <string>
+#include <thread>
+#include <unistd.h>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <csignal>
+#include <sys/wait.h>
+#include <cstring>
+#include <cerrno>
 #include "dm/DMJsonWriter.h"
 #include "dm/DMSrcSink.h"
 #include "include/codec/SkCodec.h"
+#include "fstream"
 #include "include/codec/SkEncodedImageFormat.h"
 #include "include/core/SkBBHFactory.h"
 #include "include/core/SkColorPriv.h"
@@ -40,6 +56,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -1572,7 +1589,70 @@ TestHarness CurrentTestHarness() {
 
 #endif // !SK_DISABLE_LEGACY_TESTS
 
-int main(int argc, char** argv) {
+// Helper function to execute a shell command and get the output
+std::string exec(const char* cmd) {
+    std::array<char, 128> buffer;
+    std::string result;
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    if (!pipe) {
+        std::cerr << "popen() failed!" << std::endl;
+        return ""; // Return empty string on error
+    }
+    while (fgets(buffer.data(), buffer.size(), pipe.get()) != nullptr) {
+        result += buffer.data();
+    }
+    return result;
+}
+
+/**
+ * Instruments the current executable using perf, collects performance data for a specified duration,
+ * analyzes the data, and prints the top 100 slowest functions to standard output.
+ */
+void instrument_with_perf() {
+    pid_t profiler_pid = getpid();
+
+    // 1. Fork for running the tests.
+    pid_t tester_pid = fork();
+    if (tester_pid == 0) {
+        return; // Continue running the tests in the child process.
+    }
+
+    // Start profiling
+    std::string perf_command = "perf record -p " + std::to_string(tester_pid) +
+        " -g -o perf.data --call-graph -e cpu-clock -F 5000 -a -- sleep 10";
+    std::cout << "[Profiling] Starting perf with command: " << perf_command << std::endl;
+    system(perf_command.c_str());
+    std::cout << "[Profiling] Perf has finished." << std::endl;
+
+    // Kill the tester process as well.
+    kill(tester_pid, SIGKILL);
+
+    // Wait for the process to finish.
+    int status;
+    std::cout << "[Profiling] Waiting for tester process to finish." << std::endl;
+    waitpid(tester_pid, &status, 0);
+
+    // 2. Analyze the data as a call graph, with a 0.1% threshold.
+    {
+        std::string perf_report_command = "perf report -i perf.data --stdio --percent-limit 0.1";
+        std::cout << "[Profiling] Analyzing perf data with command: " << perf_report_command << std::endl;
+        std::string perf_report_output = exec(perf_report_command.c_str());
+        std::cout << perf_report_output << std::endl;
+    }
+
+
+    // Exit.
+    std::cout << "[Profiling] Exiting." << std::endl;
+    std::exit(EXIT_SUCCESS);
+}
+
+int main(int argc, char** argv, char** envp) {
+    instrument_with_perf();
+
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    skiatest::InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
@@ -1629,6 +1709,7 @@ int main(int argc, char** argv) {
     }
     bool defaultConfigs = true;
     for (int i = 0; i < argc; i++) {
+
         if (strcmp(argv[i], "--config") == 0) {
             defaultConfigs = false;
             break;
