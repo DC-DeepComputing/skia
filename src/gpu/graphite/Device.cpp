@@ -936,7 +936,7 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     this->drawGeometry(this->localToDeviceTransform(), Geometry(rrectToDraw), paint, style);
 }
 
-void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
+void Device::drawPath(const SkPath& path, const SkPaint& paint) {
     // Alternatively, we could move this analysis to SkCanvas. Also, we could consider applying the
     // path effect, being careful about starting point and direction.
     if (!paint.getPathEffect() && !path.isInverseFillType()) {

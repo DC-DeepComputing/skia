@@ -730,7 +730,7 @@ void Device::drawRegion(const SkRegion& region, const SkPaint& paint) {
         SkPath path;
         region.getBoundaryPath(&path);
         path.setIsVolatile(true);
-        return this->drawPath(path, paint, true);
+        return this->drawPath(path, paint);
     }
 
     GrPaint grPaint;
@@ -800,10 +800,10 @@ void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool pathIsMutable) {
+void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint) {
 #if defined(GPU_TEST_UTILS)
     if (fContext->priv().options().fAllPathsVolatile && !origSrcPath.isVolatile()) {
-        this->drawPath(SkPath(origSrcPath).setIsVolatile(true), paint, true);
+        this->drawPath(SkPath(origSrcPath).setIsVolatile(true), paint);
         return;
     }
 #endif
@@ -825,7 +825,6 @@ void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool path
         return;
     }
 
-    // TODO: losing possible mutability of 'origSrcPath' here
     GrStyledShape shape(origSrcPath, paint);
 
     GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
