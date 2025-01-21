@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "82aba497_9285be27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-01-21T18:48:33Z",
+      "side": 1,
+      "message": "It looks like the failing Test*Metal tasks are taking \u003e 2.5 hours on the 8.3 machines, which is eating the capacity (only three machines).  I\u0027m not sure why dm is taking so long there.",
+      "parentUuid": "1cfb40ba_4fd10441",
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "12d32d32_ef6babcd",
         "filename": "infra/bots/jobs.json",
         "patchSetId": 3
@@ -49,6 +67,30 @@
       "writtenOn": "2025-01-21T17:17:03Z",
       "side": 1,
       "message": "Could we also have a Release-All-Graphite_Dawn_Metal job? It is valuable to have Graphite_Native_Metal and Graphite_Dawn_Metal running on the same hardware to measure overhead of dawn.",
+      "range": {
+        "startLine": 473,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 94
+      },
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeda4342_ffc3ec87",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-01-21T18:48:33Z",
+      "side": 1,
+      "message": "Done for the 9.1.",
+      "parentUuid": "12d32d32_ef6babcd",
       "range": {
         "startLine": 473,
         "startChar": 0,
