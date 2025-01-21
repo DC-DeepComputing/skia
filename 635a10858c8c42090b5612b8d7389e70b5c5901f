@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a26992_422811d7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T18:24:12Z",
+      "side": 1,
+      "message": "Okay, PTAL! Thank you both for the feedback. \n\nDst sampler attributes and arguments have been made independent from those for dst copy reads so it can be more easily used when sampling the dst texture directly.\n\nAt some point I will tie this in with the other CL which handles the changing of dst texture read strategy determination \u0026 storage. https://skia-review.googlesource.com/c/skia/+/938644\n\nAdded more relevant TODOs related to advanced (non-)coherent blend mode support and MSAA dst texture read support.",
+      "revId": "635a10858c8c42090b5612b8d7389e70b5c5901f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

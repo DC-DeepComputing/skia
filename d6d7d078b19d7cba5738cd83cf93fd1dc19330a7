@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "44cc4cc9_320ed6fb",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T18:24:12Z",
+      "side": 1,
+      "message": "Really, this method only needs *either* a `dstCopy` and `dstBounds` OR `dstTextureSampler`, depending on the dst read requirement (`kTextureCopy` versus `kTextureSample`). \nBoth require that the render target be texturable (and check via `Caps::isTexturable`). I\u0027ve made a change that now performs this check not just in the case of a dstcopy but also for the case of dst samples (within `DrawContext`). \n\nThis, combined w/ paints determining dst read strategy by querying Caps, is why we know the dst read strategy will be the same for all draws that require a dst read within a `DrawList` (which informs `RenderPassTask`s).\n\nThough by the time we are beginning a render pass if we know the color attachment is the target, then yes, the texture part can be dropped. Done\n\nThe sampler for a dst copy v. the dst texture should be compatible for both, of course - the lifetime management just differs in the current implementation. I\u0027ve made a change that uses the same sampler creation logic but consolidates it in a way that supports direct or copy dst reads.\n\nTY for the thought provoking comment, this should be more streamlined now!",
+      "parentUuid": "38b99ffb_49068063",
+      "range": {
+        "startLine": 97,
+        "startChar": 23,
+        "endLine": 97,
+        "endChar": 45
+      },
+      "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaf34f6d_ca2a946d",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-01-16T15:24:09Z",
       "side": 1,
       "message": "This should always be kNone for mipmap mode. We will always be sampling pixels 1:1 in these dst reads.",
+      "range": {
+        "startLine": 86,
+        "startChar": 8,
+        "endLine": 87,
+        "endChar": 96
+      },
+      "revId": "d6d7d078b19d7cba5738cd83cf93fd1dc19330a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4456135d_a31e4665",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-21T18:24:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaf34f6d_ca2a946d",
       "range": {
         "startLine": 86,
         "startChar": 8,
