@@ -158,7 +158,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
                 }
             });
     desc.SetUncapturedErrorCallback([](const wgpu::Device&, wgpu::ErrorType, const char* message) {
-        SkDebugf("Device error: %s\n", message);
+        SkDebugf("Device error: %s ff\n", message);
     });
 
     wgpu::Device device = wgpu::Device::Acquire(matchedAdaptor.CreateDevice(&desc));
