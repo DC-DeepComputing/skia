@@ -43,7 +43,9 @@ public:
 
     void clear(uint8_t alpha, const SkIRect& resultBounds) {
         SkPaint paint;
+        SkMatrix identity;
         paint.setColor(SkColorSetARGB(alpha, 0xFF, 0xFF, 0xFF));
+        fDraw.fCTM = &identity;
         fDraw.drawRect(SkRect::Make(resultBounds), paint);
     }
 
@@ -56,7 +58,7 @@ public:
     // Draw a single shape into the bitmap (as a path) at location resultBounds.
     // Variant used for clipping.
     void drawClip(const Shape& shape,
-                  const Transform& transform,
+                  const Transform& localToDevice,
                   uint8_t alpha,
                   const SkIRect& resultBounds);
 
