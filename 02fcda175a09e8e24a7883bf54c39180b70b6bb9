@@ -51,6 +51,24 @@
       "message": "In a follow up we should probably add a Debug-All-Graphite_Dawn_Metal version of this",
       "revId": "02fcda175a09e8e24a7883bf54c39180b70b6bb9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e56c8c97_7d6c2932",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-22T15:30:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7c737e67_1cc41707",
+      "revId": "02fcda175a09e8e24a7883bf54c39180b70b6bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
