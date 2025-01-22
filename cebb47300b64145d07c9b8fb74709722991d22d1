@@ -1,0 +1,193 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f08ecb47_f422bad5",
+        "filename": "bench/CoverageBench.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "If we move these to a helper (`static make_path` or such), then we could initialize fPath in the constructor and mark the field as const.  Then we don\u0027t need to const-cast below.\n\nThen again, it\u0027a bench, up to you....",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 37
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ba9dc7a_e60360d9",
+        "filename": "bench/CoverageBench.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "nit: `const_cast`",
+      "range": {
+        "startLine": 64,
+        "startChar": 31,
+        "endLine": 64,
+        "endChar": 46
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bed65343_4b177a31",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 394,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "nit: `const_cast`",
+      "range": {
+        "startLine": 394,
+        "startChar": 27,
+        "endLine": 394,
+        "endChar": 42
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b272044_fa536c29",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "There\u0027s still quite a bit of tricky logic left here, I wonder if it would clean up better if we used an abstraction to encapsulate the switcheroo:\n\n```\n    // Offers writable path semantics by wrapping either a non-const path (which can be modified\n    // directly) or a const path (in which case we use a scratch buffer).\n    class AutoMutablePath {\n    public:\n        explicit AutoMutablePath(const SkPath\u0026 p) : fImmutablePath(\u0026p) {}\n        explicit AutoMutablePath(SkPath\u0026 p) : fMutablePath(\u0026p) { fMutablePath-\u003esetIsVolatile(true); }\n\n        operator const SkPath\u0026() const {\n            if (fMutablePath) {\n                SkASSERT(!fScratch.isValid());\n                return *fMutablePath;\n            }\n\n            SkASSERT(fImmutablePath);\n            return fScratch.isValid() ? *fScratch : *fImmutablePath;\n        }\n        const SkPath* operator-\u003e() const { return \u0026(this-\u003eoperator const SkPath\u0026()); }\n\n        SkPath* writable() {\n            if (fMutablePath) {\n                return fMutablePath;\n            }\n\n            if (!fScratch.isValid()) {\n                fScratch.init();\n                fScratch-\u003esetIsVolatile(true);\n            }\n\n            return fScratch.get();\n        }\n\n    private:\n        const SkPath*   fImmutablePath \u003d nullptr;\n        SkPath*         fMutablePath   \u003d nullptr;\n        SkTLazy\u003cSkPath\u003e fScratch;\n    };\n```\n\nThen if we pass in an `AutoMutablePath path` we should be able to write stuff like\n\n`path-\u003etransform(..., path.writable())`, `drawDevPath(path, ...)`, etc.",
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3f14a08_0eabdc00",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "`const_cast`",
+      "range": {
+        "startLine": 646,
+        "startChar": 43,
+        "endLine": 646,
+        "endChar": 58
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a82d058a_1c3f5240",
+        "filename": "src/gpu/ganesh/Device.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "`const_cast`",
+      "range": {
+        "startLine": 192,
+        "startChar": 23,
+        "endLine": 192,
+        "endChar": 38
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2006222f_6d87e204",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "`const_cast`",
+      "range": {
+        "startLine": 153,
+        "startChar": 23,
+        "endLine": 153,
+        "endChar": 38
+      },
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e608698_03dc0a3b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "I\"m not convinced the mutable input optimization is worth it here, since path effects and perspective are rare.\n\nWe could use a `SkTCopyOnFirstWrite\u003cSkPath\u003e path(origPath)` and probably nobody will notice.",
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f06c3f9_aa5c0d33",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 979,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T14:11:58Z",
+      "side": 1,
+      "message": "Likewise, pretty sure this micro optimization doesn\u0027t matter for SVG device.",
+      "revId": "cebb47300b64145d07c9b8fb74709722991d22d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
