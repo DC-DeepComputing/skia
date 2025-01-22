@@ -116,6 +116,30 @@
       },
       "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66555a50_1fab12d0",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-22T13:22:39Z",
+      "side": 1,
+      "message": "That would make sense if we already had a `skia_lib_ctx` being passed around consistently.  So let\u0027s do that first, instead of polluting unrelated public APIs with pathops gunk (which again is mostly an implementation detail for random bits of skia) and introducing significant client code refactors for a feature that afaik nobody is asking for.\n\nThe approach here should not preclude further runtime decoupling when we have a sane framework in place.",
+      "parentUuid": "f463db72_126b2021",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 39
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
