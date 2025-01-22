@@ -884,7 +884,10 @@ void SkPathStroker::cubicPerpRay(const SkPoint cubic[4], SkScalar t, SkPoint* tP
             dxy = cPts[3] - cPts[0];
         }
     }
-    setRayPts(*tPt, &dxy, onPt, tangent);
+    setRayPts(*tPt, &dxy, onPt, nullptr);
+    if (tangent) {
+      *tangent = dxy;
+    }
 }
 
 // Given a cubic and a t range, find the start and end if they haven't been found already.
