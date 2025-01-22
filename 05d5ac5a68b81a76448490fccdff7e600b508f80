@@ -126,6 +126,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "10b3926e_cc6cb493",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-22T15:22:44Z",
+      "side": 1,
+      "message": "I think this thread is done",
+      "parentUuid": "36ee70dd_8f15091c",
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "12d32d32_ef6babcd",
@@ -163,6 +181,30 @@
       "side": 1,
       "message": "Done for the 9.1.",
       "parentUuid": "12d32d32_ef6babcd",
+      "range": {
+        "startLine": 473,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 94
+      },
+      "revId": "05d5ac5a68b81a76448490fccdff7e600b508f80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17699b21_b4a7ae7e",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-22T15:22:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aeda4342_ffc3ec87",
       "range": {
         "startLine": 473,
         "startChar": 0,
