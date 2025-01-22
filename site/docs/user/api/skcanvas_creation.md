@@ -31,7 +31,7 @@ canvas commands are drawn.
                 void (*draw)(SkCanvas*),
                 const char* path) {
         sk_sp<SkSurface> rasterSurface =
-                SkSurface::MakeRasterN32Premul(width, height);
+                SkSurfaces::Raster(SkImageInfo::MakeN32Premul(width, height));
         SkCanvas* rasterCanvas = rasterSurface->getCanvas();
         draw(rasterCanvas);
         sk_sp<SkImage> img(rasterSurface->makeImageSnapshot());
@@ -56,7 +56,7 @@ instead of asking Skia to manage it.
         size_t size = info.getSafeSize(rowBytes);
         std::vector<char> pixelMemory(size);  // allocate memory
         sk_sp<SkSurface> surface =
-                SkSurface::MakeRasterDirect(
+                SkSurface::WrapPixels(
                         info, &pixelMemory[0], rowBytes);
         SkCanvas* canvas = surface->getCanvas();
         draw(canvas);
@@ -95,9 +95,9 @@ current thread when Skia calls are made.
         sk_sp<GrDirectContext> context = GrDirectContexts::MakeGL(interface);
         SkImageInfo info = SkImageInfo:: MakeN32Premul(width, height);
         sk_sp<SkSurface> gpuSurface(
-                SkSurface::MakeRenderTarget(context.get(), skgpu::Budgeted::kNo, info));
+                SkSurface::RenderTarget(context.get(), skgpu::Budgeted::kNo, info));
         if (!gpuSurface) {
-            SkDebugf("SkSurface::MakeRenderTarget returned null\n");
+            SkDebugf("SkSurface::RenderTarget returned null\n");
             return;
         }
         SkCanvas* gpuCanvas = gpuSurface->getCanvas();
