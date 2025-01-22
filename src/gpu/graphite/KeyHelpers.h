@@ -379,6 +379,25 @@ struct CircularRRectClipBlock {
                          const CircularRRectClipData&);
 };
 
+struct AtlasClipBlock {
+    struct AtlasClipData {
+        AtlasClipData(SkPoint texCoordOffset,
+                      SkRect maskBounds,
+                      SkISize atlasSize) :
+            fTexCoordOffset(texCoordOffset),
+            fMaskBounds(maskBounds),
+            fAtlasSize(atlasSize) {}
+        SkPoint fTexCoordOffset;  // translation from fragCoords to unnormalized texel coords
+        SkRect  fMaskBounds;      // bounds of mask area, in unnormalized texel coords
+        SkISize fAtlasSize;       // size of atlas texture
+    };
+
+    static void AddBlock(const KeyContext&,
+                         PaintParamsKeyBuilder*,
+                         PipelineDataGatherer*,
+                         const AtlasClipData&);
+};
+
 /**
  * Adds a block that references the primitive color produced by the RenderStep and accounts for
  * color space transformation.
