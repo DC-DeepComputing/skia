@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70fb3418_a398bfec",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-22T17:53:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7818e889_e2600cc7",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 25
+      },
+      "revId": "7fbb8760012ff4d8adc5288b495ab01f0d637aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aafa76cd_9fb60b4e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-22T17:09:30Z",
       "side": 1,
       "message": "nit: this is duplicated\n\nShould probably be changed out for include/gpu/ganesh/SkSurfaceGanesh.h",
+      "range": {
+        "startLine": 82,
+        "startChar": 36,
+        "endLine": 82,
+        "endChar": 49
+      },
+      "revId": "7fbb8760012ff4d8adc5288b495ab01f0d637aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e2c3f25_1f82354c",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-22T17:53:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aafa76cd_9fb60b4e",
       "range": {
         "startLine": 82,
         "startChar": 36,
