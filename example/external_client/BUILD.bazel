@@ -306,6 +306,7 @@ cc_binary(
     deps = [
         "@skia//:core",
         "@skia//:pdf_writer",
+        "@skia//:pdf_jpeg_helpers",
     ] + select({
         "@platforms//os:linux": ["@skia//:fontmgr_fontconfig_freetype"],
         "@platforms//os:macos": ["@skia//:fontmgr_coretext"],
