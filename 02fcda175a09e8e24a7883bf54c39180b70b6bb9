@@ -34,6 +34,23 @@
       "parentUuid": "cd5d2a65_98f1325d",
       "revId": "02fcda175a09e8e24a7883bf54c39180b70b6bb9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c737e67_1cc41707",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 6
+      },
+      "lineNbr": 755,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-22T15:30:03Z",
+      "side": 1,
+      "message": "In a follow up we should probably add a Debug-All-Graphite_Dawn_Metal version of this",
+      "revId": "02fcda175a09e8e24a7883bf54c39180b70b6bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
