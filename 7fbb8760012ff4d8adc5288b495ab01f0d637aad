@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7818e889_e2600cc7",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-22T17:09:30Z",
+      "side": 1,
+      "message": "SkSurfaces (plural). Here and for RenderTarget",
+      "range": {
+        "startLine": 59,
+        "startChar": 16,
+        "endLine": 59,
+        "endChar": 25
+      },
+      "revId": "7fbb8760012ff4d8adc5288b495ab01f0d637aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aafa76cd_9fb60b4e",
+        "filename": "site/docs/user/api/skcanvas_creation.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-22T17:09:30Z",
+      "side": 1,
+      "message": "nit: this is duplicated\n\nShould probably be changed out for include/gpu/ganesh/SkSurfaceGanesh.h",
+      "range": {
+        "startLine": 82,
+        "startChar": 36,
+        "endLine": 82,
+        "endChar": 49
+      },
+      "revId": "7fbb8760012ff4d8adc5288b495ab01f0d637aad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
