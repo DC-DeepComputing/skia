@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "329e8242_6a4f7e01",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "988c1f7a_e7a3e76e",
@@ -81,6 +98,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ab57b9f_82bfac9e",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "988c1f7a_e7a3e76e",
+      "range": {
+        "startLine": 376,
+        "startChar": 0,
+        "endLine": 376,
+        "endChar": 35
+      },
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a218705_8c6d105f",
+        "filename": "src/core/SkGlyph.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9c390322_45bd4af7",
+      "range": {
+        "startLine": 376,
+        "startChar": 4,
+        "endLine": 376,
+        "endChar": 6
+      },
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "eaa5fabc_4f60c076",
@@ -94,6 +159,24 @@
       "writtenOn": "2025-01-21T18:50:47Z",
       "side": 1,
       "message": "Not sure why this is being declared here at this scope. If this really needs a name, it should go in the `if (shouldGrow) {` block since it isn\u0027t used anywhere else.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b2e1358_1fa5c8e4",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eaa5fabc_4f60c076",
       "revId": "690baf71463d3b4768145168c0ce09021bb77783",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -186,6 +269,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "53317a9b_6f302eb5",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e2bf42f_3f3fe550",
+      "range": {
+        "startLine": 102,
+        "startChar": 13,
+        "endLine": 102,
+        "endChar": 24
+      },
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3adee90_8369525f",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c7859db9_2fe532a6",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b15dbbe5_c66d32bf",
@@ -199,6 +324,24 @@
       "writtenOn": "2025-01-21T18:50:47Z",
       "side": 1,
       "message": "If we so want this then we also need to consider this. This still \"works\" because the shrink happens at 1/4 and we never remove from most hashes (like `fDigestForPackedGlyphID`) anyway. However, this class needs to make sense independently of that.",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d36915_343d0d5d",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Added `ShouldShrink()`.",
+      "parentUuid": "b15dbbe5_c66d32bf",
       "revId": "690baf71463d3b4768145168c0ce09021bb77783",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -220,6 +363,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "405cd985_91065e9e",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Thanks, missed it!",
+      "parentUuid": "bf50ccf0_2f5f1fa3",
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52889aea_9c61141f",
@@ -233,6 +394,30 @@
       "writtenOn": "2025-01-21T18:50:47Z",
       "side": 1,
       "message": "The number at the end is awkward. Using `Traits` in this name is awkward. This is just a generic type, it can be called `T` or `U` or whatever.",
+      "range": {
+        "startLine": 284,
+        "startChar": 23,
+        "endLine": 284,
+        "endChar": 30
+      },
+      "revId": "690baf71463d3b4768145168c0ce09021bb77783",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bfa4c22_85f07235",
+        "filename": "src/core/SkTHash.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 18629
+      },
+      "writtenOn": "2025-01-22T12:20:43Z",
+      "side": 1,
+      "message": "Subjective, but to me it\u0027s just clearer and more specific that `ShouldGrow` must be in the user-provided traits class. I\u0027m fine either way though.",
+      "parentUuid": "52889aea_9c61141f",
       "range": {
         "startLine": 284,
         "startChar": 23,
