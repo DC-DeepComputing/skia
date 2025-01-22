@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "739f0377_517c0072",
+        "filename": "BUILD.bazel",
+        "patchSetId": 11
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-22T19:36:38Z",
+      "side": 1,
+      "message": "So it appears possible to depend on both of these targets since under the hood the one is just depending on the other (plus an extra). The downside is this is setting things up so that a Skia target is depending on `jpeg_helpers` when the point is to have the user of Skia depend on that if they should want it.\n\nMostly I\u0027m taking issue with the comment here since in this change at least we\u0027re not allowing the creation of PDFs by checking that the jpeg codec and decoder are set (at runtime) and also because ideally this would be the only target (it is the existing `pdf_writer` which depends on `jpeg` that should go away). In other words, if the comment were at least changed to \"`pdf_writer_no_jpeg` is the correct thing to depend on, but the user may depend on `//src/pdf/jpeg_helpers` (or just copy that code) to have some code to set up jpeg stuff.",
+      "parentUuid": "297c7a42_0d1f4657",
+      "revId": "bc926088b9e67f2ddf6032a0efb43909af30d198",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bbb8cb7e_2b536033",
         "filename": "BUILD.gn",
         "patchSetId": 11
