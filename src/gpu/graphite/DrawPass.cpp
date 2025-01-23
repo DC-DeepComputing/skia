@@ -566,10 +566,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     UniformTracker geometryUniformTracker(useStorageBuffers);
     UniformTracker shadingUniformTracker(useStorageBuffers);
 
-    // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
-    // bound separately from the rest of the textures.
+    // TODO(b/372953722): Remove this forced binding command behavior once dst copies and texture
+    // samplers are always bound separately from the rest of the textures.
     const bool rebindTexturesOnPipelineChange =
-            recorder->priv().caps()->getDstReadStrategy() == DstReadStrategy::kTextureCopy;
+            recorder->priv().caps()->getDstReadStrategy() == DstReadStrategy::kTextureCopy ||
+            recorder->priv().caps()->getDstReadStrategy() == DstReadStrategy::kTextureSample;
 
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();

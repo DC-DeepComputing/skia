@@ -23,13 +23,16 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                            const RenderPassDesc& desc,
                                            sk_sp<TextureProxy> target,
                                            sk_sp<TextureProxy> dstCopy,
-                                           SkIRect dstCopyBounds) {
+                                           SkIRect dstCopyBounds,
+                                           bool requiresDstSampler) {
     // For now we have one DrawPass per RenderPassTask
     SkASSERT(passes.size() == 1);
     // If we have a dst copy texture, ensure it is big enough to cover the copy bounds that
     // will be sampled.
     SkASSERT(!dstCopy || (dstCopy->dimensions().width() >= dstCopyBounds.width() &&
                           dstCopy->dimensions().height() >= dstCopyBounds.height()));
+    // If we are performing a dst copy, requiresDstSampler should be true.
+    SkASSERT(!dstCopy || requiresDstSampler);
     if (!target) {
         return nullptr;
     }
@@ -49,19 +52,22 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                                     desc,
                                                     std::move(target),
                                                     std::move(dstCopy),
-                                                    dstCopyBounds));
+                                                    dstCopyBounds,
+                                                    requiresDstSampler));
 }
 
 RenderPassTask::RenderPassTask(DrawPassList passes,
                                const RenderPassDesc& desc,
                                sk_sp<TextureProxy> target,
                                sk_sp<TextureProxy> dstCopy,
-                               SkIRect dstCopyBounds)
+                               SkIRect dstCopyBounds,
+                               bool requiresDstSampler)
         : fDrawPasses(std::move(passes))
         , fRenderPassDesc(desc)
         , fTarget(std::move(target))
         , fDstCopy(std::move(dstCopy))
-        , fDstCopyBounds(dstCopyBounds) {}
+        , fDstCopyBounds(dstCopyBounds)
+        , fRequiresDstSampler(requiresDstSampler) {}
 
 RenderPassTask::~RenderPassTask() = default;
 
@@ -182,6 +188,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
                                      std::move(depthStencilAttachment),
                                      fDstCopy ? fDstCopy->texture() : nullptr,
                                      fDstCopyBounds,
+                                     fRequiresDstSampler,
                                      fTarget->dimensions(),
                                      fDrawPasses)) {
         return Status::kSuccess;

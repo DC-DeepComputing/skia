@@ -85,6 +85,7 @@ public:
 
     // Bounds for a dst copy required by this DrawList.
     const Rect& dstCopyBounds() const { return fDstCopyBounds; }
+    bool usesDstSampler() const { return fUsesDstSampler; }
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
@@ -121,6 +122,7 @@ private:
     // Tracked for all paints that read from the dst. If it is later determined that the
     // DstReadStrategy is not kTextureCopy, this value can simply be ignored.
     Rect fDstCopyBounds = Rect::InfiniteInverted();
+    bool fUsesDstSampler = false;
 };
 
 } // namespace skgpu::graphite
