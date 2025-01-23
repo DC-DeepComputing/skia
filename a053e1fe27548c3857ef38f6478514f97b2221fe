@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ce8fe7f_86c7d994",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-23T18:25:07Z",
+      "side": 1,
+      "message": "Oop, thank you! :)",
+      "parentUuid": "51e68dec_6ee1554e",
+      "range": {
+        "startLine": 335,
+        "startChar": 36,
+        "endLine": 335,
+        "endChar": 44
+      },
+      "revId": "a053e1fe27548c3857ef38f6478514f97b2221fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad06a6e4_29eca65a",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-01-23T18:08:45Z",
       "side": 1,
       "message": "nit: dstReadPixelBounds",
+      "range": {
+        "startLine": 235,
+        "startChar": 12,
+        "endLine": 235,
+        "endChar": 30
+      },
+      "revId": "a053e1fe27548c3857ef38f6478514f97b2221fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4957b43_6562a061",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-23T18:25:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad06a6e4_29eca65a",
       "range": {
         "startLine": 235,
         "startChar": 12,
