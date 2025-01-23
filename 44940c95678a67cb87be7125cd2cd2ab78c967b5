@@ -22,6 +22,30 @@
       },
       "revId": "44940c95678a67cb87be7125cd2cd2ab78c967b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39b4b231_20e2f22f",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-23T17:49:32Z",
+      "side": 1,
+      "message": "So we don\u0027t currently have a plan for non discardable depth/stencil buffers so you\u0027re right it is always set to yes. At a minimum I didn\u0027t want the backend to be making the decision to use discardable or not. An alternative would be to rename the caps function to `getDefaultDiscardableDepthStencilTextureInfo` to make it explicit. However, we currently have the same pattern/usage with the MSAA buffer above, so I decided to leave them both looking the same with passing in Discardable. But don\u0027t have a strong opinion if you like the renaming version better.",
+      "parentUuid": "a5b485ab_a8fb58ab",
+      "range": {
+        "startLine": 95,
+        "startChar": 80,
+        "endLine": 95,
+        "endChar": 97
+      },
+      "revId": "44940c95678a67cb87be7125cd2cd2ab78c967b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
