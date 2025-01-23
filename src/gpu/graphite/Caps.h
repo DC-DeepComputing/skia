@@ -129,13 +129,6 @@ public:
                                       RenderPassDesc*,
                                       const RendererProvider*) const { return false; }
 
-    bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
-    virtual uint32_t channelMask(const TextureInfo&) const = 0;
-
-    bool isTexturable(const TextureInfo&) const;
-    virtual bool isRenderable(const TextureInfo&) const = 0;
-    virtual bool isStorage(const TextureInfo&) const = 0;
-
     virtual bool loadOpAffectsMSAAPipelines() const { return false; }
 
     int maxTextureSize() const { return fMaxTextureSize; }
@@ -172,52 +165,62 @@ public:
         return {};
     }
 
-    /**
-     * Backends may have restrictions on what types of textures support Device::writePixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, pixels are written to it, and then that is copied or drawn into the the surface.
-     */
-    virtual bool supportsWritePixels(const TextureInfo& textureInfo) const = 0;
+    bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
+
+    virtual uint32_t channelMask(const TextureInfo&) const = 0;
+
+    // If true, the texture can be used as an image source to sample within a shader.
+    bool isTexturable(const TextureInfo&) const;
+    // If true, the texture can be used as the destination for rendering work.
+    bool isRenderable(const TextureInfo&) const;
+    // If true, the texture can be the source of data copied to another texture or to a buffer.
+    // If false, the texture can only be copied via drawing (which requires isTexturable()).
+    bool isCopyableSrc(const TextureInfo&) const;
+    // If true, the texture can be the destination of data copied from another texture or buffer.
+    // If false, the texture can only be updated by drawing (which requires isRenderable()).
+    bool isCopyableDst(const TextureInfo&) const;
+    // If true, the texture can be used as a storage texture in compute shaders.
+    bool isStorage(const TextureInfo&) const;
+
+    // Returns the skgpu::Swizzle to use when sampling within a shader in order to adjust the
+    // values to match the RGBA order reflective of the color type.
+    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
+
+    // Returns the skgpu::Swizzle to use when rasterizing colors to a surface with the passed in
+    // SkColorType and TextureInfo.
+    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
     /**
-     * Backends may have restrictions on what types of textures support Device::readPixels().
-     * If this returns false then the caller should implement a fallback where a temporary texture
-     * is created, the original texture is copied or drawn into it, and then pixels read from
-     * the temporary texture.
-     */
-    virtual bool supportsReadPixels(const TextureInfo& textureInfo) const = 0;
-
-    /**
-     * Given a dst pixel config and a src color type what color type must the caller coax the
-     * the data into in order to use writePixels.
+     * Given a dst pixel config and a dst color type, returns the color type that the caller must
+     * coax the the data into in order to use writePixels or a buffer-to-texture blit. kUnknown is
+     * returned if `dstTextureInfo` does not support being copied into or it's incompatible with
+     * `dstColorType`. The returned color type may be different from `dstColorType`, in which case
+     * the source data must be converted on the CPU to the returned type before the upload.
      *
      * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
      * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
      * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
+     * return value and handle it manually.
      */
-    virtual std::pair<SkColorType, bool /*isRGB888Format*/> supportedWritePixelsColorType(
+    std::pair<SkColorType, bool /*isRGB888Format*/> supportedWritePixelsColorType(
             SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const = 0;
+            const TextureInfo& dstTextureInfo) const;
 
     /**
-     * Given a src surface's color type and its texture info as well as a color type the caller
-     * would like read into, this provides a legal color type that the caller can use for
-     * readPixels. The returned color type may differ from the passed dstColorType, in
-     * which case the caller must convert the read pixel data (see GrConvertPixels). When converting
-     * to dstColorType the swizzle in the returned struct should be applied. The caller must check
-     * the returned color type for kUnknown.
+     * Given a src pixel config and it's interpreted src color type, returns the color type that
+     * the data will be in after readPixels or a texture-to-buffer copy. kUnknown is
+     * returned if `srcTextureInfo` does not support being copied out of or it's incompatible with
+     * `srcColorType`. The returned color type may be different from `srcColorType`, in which case
+     * the source data must be converted on the CPU from the returned type to the desired dst type.
      *
      * We currently don't have an SkColorType for a 3 channel RGB format. Additionally the current
      * implementation of raster pipeline requires power of 2 channels, so it is not easy to add such
      * an SkColorType. Thus we need to check for data that is 3 channels using the isRGBFormat
-     * return value and handle it manually
+     * return value and handle it manually.
      */
-    virtual std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
+    std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
             SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const = 0;
+            const TextureInfo& srcTextureInfo) const;
 
     /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
@@ -284,14 +287,6 @@ public:
      * ever be supported on Android devices with API level >= 26.
      */
     bool supportsAHardwareBufferImages() const { return fSupportsAHardwareBufferImages; }
-
-    // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
-    // passed in SkColorType and TextureInfo.
-    skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
-
-    // Returns the skgpu::Swizzle to use when writing colors to a surface with the passed in
-    // SkColorType and TextureInfo.
-    skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
@@ -373,6 +368,8 @@ protected:
             // Does Graphite itself support rendering to this colorType & format pair. Renderability
             // still additionally depends on if the format itself is renderable.
             kRenderable_Flag = 0x2,
+            // Does the underlying data format only have 3 channels for RGB.
+            kRGBFormat_Flag = 0x4,
         };
         uint32_t fFlags = 0;
 
@@ -440,7 +437,14 @@ protected:
     bool fSetBackendLabels = false;
 
 private:
+    // Backend implementations are only responsible for checking the backend-specific usages and
+    // formats, the base Caps already accounts for logic available on the base TextureInfo.
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
+    virtual bool onIsRenderable(const TextureInfo&) const = 0;
+    virtual bool onIsCopyableSrc(const TextureInfo&) const = 0;
+    virtual bool onIsCopyableDst(const TextureInfo&) const = 0;
+    virtual bool onIsStorage(const TextureInfo&) const = 0;
+
     virtual const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const = 0;
 
     sk_sp<SkCapabilities> fCapabilities;

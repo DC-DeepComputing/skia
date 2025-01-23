@@ -166,6 +166,8 @@ struct ImmutableSamplerInfo {
     uint32_t fNonFormatYcbcrConversionInfo = 0;
     // fFormat represents known OR external format numerical representation.
     uint64_t fFormat = 0;
+
+    bool isDefault() const { return fNonFormatYcbcrConversionInfo == 0 && fFormat == 0; }
 };
 
 

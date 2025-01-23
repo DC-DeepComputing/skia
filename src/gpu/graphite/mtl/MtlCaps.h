@@ -61,9 +61,6 @@ public:
 
     uint32_t channelMask(const TextureInfo&) const override;
 
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
-
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
                             ResourceType,
@@ -91,21 +88,12 @@ private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
 
     bool onIsTexturable(const TextureInfo&) const override;
-    bool isTexturable(MTLPixelFormat) const;
+    bool onIsRenderable(const TextureInfo&) const override;
+    bool onIsCopyableSrc(const TextureInfo&) const override;
+    bool onIsCopyableDst(const TextureInfo&) const override;
+    bool onIsStorage(const TextureInfo&) const override;
+
     bool isRenderable(MTLPixelFormat, uint32_t numSamples) const;
-    uint32_t maxRenderTargetSampleCount(MTLPixelFormat) const;
-
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
-
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const override;
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const override;
 
     MTLStorageMode getDefaultMSAAStorageMode(Discardable discardable) const;
 

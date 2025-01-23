@@ -1073,142 +1073,73 @@ UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDes
 }
 
 uint32_t MtlCaps::channelMask(const TextureInfo& info) const {
-    return skgpu::MtlFormatChannels(TextureInfos::GetMTLPixelFormat(info));
+    return skgpu::MtlFormatChannels(TextureInfos::GetMtlTextureSpec(info).fFormat);
 }
 
 bool MtlCaps::onIsTexturable(const TextureInfo& info) const {
-    if (!info.isValid()) {
-        return false;
-    }
-    if (!(TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageShaderRead)) {
-        return false;
-    }
-    if (TextureInfos::GetMtlFramebufferOnly(info)) {
-        return false;
-    }
-    return this->isTexturable(TextureInfos::GetMTLPixelFormat(info));
-}
+    const auto spec = TextureInfos::GetMtlTextureSpec(info);
 
-bool MtlCaps::isTexturable(MTLPixelFormat format) const {
-    const FormatInfo& formatInfo = this->getFormatInfo(format);
+    if (!(spec.fUsage & MTLTextureUsageShaderRead)) {
+        return false;
+    }
+    if (spec.fFramebufferOnly) {
+        return false;
+    }
+
+    const FormatInfo& formatInfo = this->getFormatInfo(spec.fFormat);
     return SkToBool(FormatInfo::kTexturable_Flag & formatInfo.fFlags);
 }
 
-bool MtlCaps::isRenderable(const TextureInfo& info) const {
-    return info.isValid() &&
-           (TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageRenderTarget) &&
-           this->isRenderable(TextureInfos::GetMTLPixelFormat(info), info.numSamples());
+bool MtlCaps::onIsRenderable(const TextureInfo& info) const {
+    const auto spec = TextureInfos::GetMtlTextureSpec(info);
+    if (!(spec.fUsage & MTLTextureUsageRenderTarget)) {
+        return false;
+    }
+    return this->isRenderable(spec.fFormat, info.numSamples());
 }
 
 bool MtlCaps::isRenderable(MTLPixelFormat format, uint32_t sampleCount) const {
-    return sampleCount <= this->maxRenderTargetSampleCount(format);
-}
-
-bool MtlCaps::isStorage(const TextureInfo& info) const {
-    if (!info.isValid()) {
-        return false;
-    }
-    if (!(TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageShaderWrite)) {
-        return false;
-    }
-    if (TextureInfos::GetMtlFramebufferOnly(info)) {
-        return false;
-    }
-    const FormatInfo& formatInfo = this->getFormatInfo(TextureInfos::GetMTLPixelFormat(info));
-    return info.numSamples() == 1 && SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
-}
-
-uint32_t MtlCaps::maxRenderTargetSampleCount(MTLPixelFormat format) const {
     const FormatInfo& formatInfo = this->getFormatInfo(format);
     if (!SkToBool(formatInfo.fFlags & FormatInfo::kRenderable_Flag)) {
         return 0;
     }
     if (SkToBool(formatInfo.fFlags & FormatInfo::kMSAA_Flag)) {
-        return fColorSampleCounts[fColorSampleCounts.size() - 1];
+        return sampleCount <= fColorSampleCounts[fColorSampleCounts.size() - 1];
     } else {
-        return 1;
+        return sampleCount == 1;
     }
 }
 
-bool MtlCaps::supportsWritePixels(const TextureInfo& texInfo) const {
-    MtlTextureInfo mtlInfo;
-    if (!TextureInfos::GetMtlTextureInfo(texInfo, &mtlInfo)) {
-        return false;
-    }
-    if (mtlInfo.fFramebufferOnly) {
-        return false;
-    }
+bool MtlCaps::onIsCopyableDst(const TextureInfo& info) const {
+    const auto spec = TextureInfos::GetMtlTextureSpec(info);
 
-    if (texInfo.numSamples() > 1) {
+    if (spec.fFramebufferOnly) {
         return false;
     }
-
     return true;
 }
 
-bool MtlCaps::supportsReadPixels(const TextureInfo& texInfo) const {
-    MtlTextureInfo mtlInfo;
-    if (!TextureInfos::GetMtlTextureInfo(texInfo, &mtlInfo)) {
-        return false;
-    }
-    if (mtlInfo.fFramebufferOnly) {
-        return false;
-    }
+bool MtlCaps::onIsCopyableSrc(const TextureInfo& info) const {
+    const auto spec = TextureInfos::GetMtlTextureSpec(info);
 
-    // We disallow reading back directly from compressed textures.
-    if (MtlFormatIsCompressed(mtlInfo.fFormat)) {
+    if (spec.fFramebufferOnly) {
         return false;
     }
-
-    if (texInfo.numSamples() > 1) {
-        return false;
-    }
-
     return true;
 }
 
-std::pair<SkColorType, bool /*isRGBFormat*/> MtlCaps::supportedWritePixelsColorType(
-        SkColorType dstColorType,
-        const TextureInfo& dstTextureInfo,
-        SkColorType srcColorType) const {
-    MtlTextureInfo mtlInfo;
-    if (!TextureInfos::GetMtlTextureInfo(dstTextureInfo, &mtlInfo)) {
-        return {kUnknown_SkColorType, false};
+bool MtlCaps::onIsStorage(const TextureInfo& info) const {
+    const auto spec = TextureInfos::GetMtlTextureSpec(info);
+
+    if (!(spec.fUsage & MTLTextureUsageShaderWrite)) {
+        return false;
+    }
+    if (spec.fFramebufferOnly) {
+        return false;
     }
 
-    const FormatInfo& info = this->getFormatInfo(mtlInfo.fFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        const auto& ctInfo = info.fColorTypeInfos[i];
-        if (ctInfo.fColorType == dstColorType) {
-            return {dstColorType, false};
-        }
-    }
-    return {kUnknown_SkColorType, false};
-}
-
-std::pair<SkColorType, bool /*isRGBFormat*/> MtlCaps::supportedReadPixelsColorType(
-        SkColorType srcColorType,
-        const TextureInfo& srcTextureInfo,
-        SkColorType dstColorType) const {
-    MtlTextureInfo mtlInfo;
-    if (!TextureInfos::GetMtlTextureInfo(srcTextureInfo, &mtlInfo)) {
-        return {kUnknown_SkColorType, false};
-    }
-
-    // TODO: handle compressed formats
-    if (MtlFormatIsCompressed(mtlInfo.fFormat)) {
-        SkASSERT(this->isTexturable(mtlInfo.fFormat));
-        return {kUnknown_SkColorType, false};
-    }
-
-    const FormatInfo& info = this->getFormatInfo(mtlInfo.fFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        const auto& ctInfo = info.fColorTypeInfos[i];
-        if (ctInfo.fColorType == srcColorType) {
-            return {srcColorType, false};
-        }
-    }
-    return {kUnknown_SkColorType, false};
+    const FormatInfo& formatInfo = this->getFormatInfo(spec.fFormat);
+    return SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
 void MtlCaps::buildKeyForTexture(SkISize dimensions,
