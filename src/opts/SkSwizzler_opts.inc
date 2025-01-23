@@ -117,12 +117,11 @@ static void RGBA_to_rgbA_portable(uint32_t* dst, const uint32_t* src, int count)
 //   2) round to even for sure - ARMv8
 //   3) round to even maybe - intel. The rounding on intel depends on MXCSR which
 //                            defaults to round to even.
-//
-// Note: that vrndns_f32 is the single float version of vcvtnq_u32_f32.
 
 SI uint32_t pixel_round_as_RP(float n) {
 #if defined(SK_ARM_HAS_NEON) && defined(SK_CPU_ARM64)
-    return vrndns_f32(n);
+    float32x4_t vN{n};
+    return vrndnq_f32(vN)[0];
 #elif defined(SK_ARM_HAS_NEON) && !defined(SK_CPU_ARM64)
     float32x4_t vN{n + 0.5f};
     return vcvtq_u32_f32(vN)[0];
