@@ -73,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "15172bf9_63a68001",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 20
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-23T14:28:53Z",
+      "side": 1,
+      "message": "I think we could get away without updating RenderPassDesc now. However, the higher level thing here is that input attachments have nothing to do with using Samplers. Right now we have no support (and no plans for it) for binding the dst as a texture with a sampler. We probably will want that for non arm macs and desktop GL if that ever happens (maybe d3d11 needs it??). But until we can ignore that.\n\nSo maybe its just a matter of renaming variables to not mention Samplers, but I guess my main point is that using input attachments is different.",
+      "parentUuid": "f318f735_584c3127",
+      "range": {
+        "startLine": 98,
+        "startChar": 23,
+        "endLine": 98,
+        "endChar": 47
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d6fa6933_4d7dc652",
         "filename": "src/gpu/graphite/DrawContext.cpp",
         "patchSetId": 20
