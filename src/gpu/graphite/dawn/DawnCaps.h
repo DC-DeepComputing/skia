@@ -57,10 +57,8 @@ public:
                               RenderPassDesc*,
                               const RendererProvider*) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
-    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureProxy* proxy) const override;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
     uint32_t channelMask(const TextureInfo&) const override;
-    bool isRenderable(const TextureInfo&) const override;
-    bool isStorage(const TextureInfo&) const override;
 
     bool loadOpAffectsMSAAPipelines() const override {
         return fSupportedResolveTextureLoadOp.has_value();
