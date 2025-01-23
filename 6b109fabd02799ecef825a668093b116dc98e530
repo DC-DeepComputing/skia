@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c9ce5e7_e40d75dd",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-23T17:33:56Z",
+      "side": 1,
+      "message": "Renamed here as well because eventually those bounds won\u0027t just be used for dst copies but for the direct sample approach",
+      "range": {
+        "startLine": 102,
+        "startChar": 5,
+        "endLine": 102,
+        "endChar": 20
+      },
+      "revId": "6b109fabd02799ecef825a668093b116dc98e530",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

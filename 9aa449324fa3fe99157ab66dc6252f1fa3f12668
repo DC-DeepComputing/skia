@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4cfdb6b_7f350bce",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-23T17:33:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bdc6cee3_fbb6e93e",
+      "range": {
+        "startLine": 115,
+        "startChar": 52,
+        "endLine": 115,
+        "endChar": 60
+      },
+      "revId": "9aa449324fa3fe99157ab66dc6252f1fa3f12668",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dccc4205_c5112884",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-23T16:34:35Z",
       "side": 1,
       "message": "I think we can name this `fDstReadBounds` and it\u0027ll represent the area of the dst target that will be read, regardless of what the strategy is. We can then use its emptiness value when handling the texture-sampling approach, and makes the `CommandBuffer::addRenderPass` signature simpler because you always just pass in the dst read bounds. If the strategy is texture-sample, it looks at non-empty. If it\u0027s texture-copy, it uses it as is, if it\u0027s fb fetch it just ignores it.",
+      "range": {
+        "startLine": 123,
+        "startChar": 9,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "9aa449324fa3fe99157ab66dc6252f1fa3f12668",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1de568e8_acab1d72",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-23T17:33:56Z",
+      "side": 1,
+      "message": "Renamed to fDstReadBounds (and renamed other relevant methods, variables).\n\nI think we are on the same page, but just to make sure - \"We can then use its emptiness value when handling the texture-sampling approach\" - the bounds will not be empty in this case unless we later check the strategy and decide to pass in empty bounds. If any paint requires dst texture info (regardless of strategy), the dstBounds will be nonempty. \n\nThe bounds will be non-empty but have an invalid dstCopy ptr for strategies like FB fetch and input attachment reads. For direct texture sampling, the dstCopy ptr can become simply a dst ptr (so long as at some point we handle the impl. differences b/w direct and dst copy sampling). The command buffer can consult the DstReadStrategy from the pipeline (or via some other means) to decide what, if anything, needs to be done w.r.t. the bounds.\n\nMarking as resolved, but let me know if you see a flaw in my logic or implementation.",
+      "parentUuid": "dccc4205_c5112884",
       "range": {
         "startLine": 123,
         "startChar": 9,
