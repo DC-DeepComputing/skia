@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4bc1f30_10950941",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1159,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T17:21:32Z",
+      "side": 1,
+      "message": "Hmm, that does complicate things. Let\u0027s keep it this way for now, and we can re-evaluate once the rest of the updates are done.",
+      "parentUuid": "105ba4b8_6d233206",
+      "range": {
+        "startLine": 1157,
+        "startChar": 8,
+        "endLine": 1159,
+        "endChar": 63
+      },
+      "revId": "f812dd29bb6e1b34b70a907328c81783861c183b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5eaa284e_24e88fae",
