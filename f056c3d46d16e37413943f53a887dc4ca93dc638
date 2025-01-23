@@ -33,6 +33,24 @@
       "message": "The CL looks good to me but you need to follow the steps over on https://skia.org/docs/dev/contrib/ (i.e., file a Contributors Agreement and add yourself to the AUTHORS file).",
       "revId": "f056c3d46d16e37413943f53a887dc4ca93dc638",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72f02a8f_4782acb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-23T14:16:50Z",
+      "side": 1,
+      "message": "Actually, I see that you\u0027ve signed a CLA but I can\u0027t find an entry for you in the AUTHORS file.",
+      "parentUuid": "3da4d5eb_a8e8155b",
+      "revId": "f056c3d46d16e37413943f53a887dc4ca93dc638",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
