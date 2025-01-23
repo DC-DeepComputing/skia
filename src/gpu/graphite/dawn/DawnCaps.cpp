@@ -103,10 +103,6 @@ uint32_t DawnCaps::channelMask(const TextureInfo& info) const {
 }
 
 bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
-    if (!info.isValid()) {
-        return false;
-    }
-
     const DawnTextureSpec spec = TextureInfos::GetDawnTextureSpec(info);
 
     if (!(spec.fUsage & wgpu::TextureUsage::TextureBinding)) {
@@ -157,47 +153,46 @@ bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
     }
 #endif
 
-    return this->isTexturable(spec.getViewFormat());
-}
-
-bool DawnCaps::isTexturable(wgpu::TextureFormat format) const {
-    const FormatInfo& formatInfo = this->getFormatInfo(format);
+    const FormatInfo& formatInfo = this->getFormatInfo(spec.getViewFormat());
     return SkToBool(FormatInfo::kTexturable_Flag & formatInfo.fFlags);
 }
 
-bool DawnCaps::isRenderable(const TextureInfo& info) const {
+bool DawnCaps::onIsRenderable(const TextureInfo& info) const {
     const DawnTextureSpec spec = TextureInfos::GetDawnTextureSpec(info);
 
-    return info.isValid() && (spec.fUsage & wgpu::TextureUsage::RenderAttachment) &&
-           this->isRenderable(spec.getViewFormat(), info.numSamples());
-}
-
-bool DawnCaps::isStorage(const TextureInfo& info) const {
-    if (!info.isValid()) {
+    if (!(spec.fUsage & wgpu::TextureUsage::RenderAttachment)) {
         return false;
     }
+
+    const FormatInfo& formatInfo = this->getFormatInfo(spec.getViewFormat());
+    if (!(formatInfo.fFlags & FormatInfo::kRenderable_Flag)) {
+        return false;
+    }
+
+    if (!(formatInfo.fFlags & FormatInfo::kMSAA_Flag)) {
+        return info.numSamples() == 1;
+    }
+
+    return true;
+}
+
+bool DawnCaps::onIsCopyableDst(const TextureInfo& textureInfo) const {
+    const auto spec = TextureInfos::GetDawnTextureSpec(textureInfo);
+    return spec.fUsage & wgpu::TextureUsage::CopyDst;
+}
+
+bool DawnCaps::onIsCopyableSrc(const TextureInfo& textureInfo) const {
+    const auto spec = TextureInfos::GetDawnTextureSpec(textureInfo);
+    return spec.fUsage & wgpu::TextureUsage::CopySrc;
+}
+
+bool DawnCaps::onIsStorage(const TextureInfo& info) const {
     const DawnTextureSpec spec = TextureInfos::GetDawnTextureSpec(info);
     if (!(spec.fUsage & wgpu::TextureUsage::StorageBinding)) {
         return false;
     }
     const FormatInfo& formatInfo = this->getFormatInfo(spec.getViewFormat());
-    return info.numSamples() == 1 && SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
-}
-
-uint32_t DawnCaps::maxRenderTargetSampleCount(wgpu::TextureFormat format) const {
-    const FormatInfo& formatInfo = this->getFormatInfo(format);
-    if (!SkToBool(formatInfo.fFlags & FormatInfo::kRenderable_Flag)) {
-        return 0;
-    }
-    if (SkToBool(formatInfo.fFlags & FormatInfo::kMSAA_Flag)) {
-        return 8;
-    } else {
-        return 1;
-    }
-}
-
-bool DawnCaps::isRenderable(wgpu::TextureFormat format, uint32_t sampleCount) const {
-    return sampleCount <= this->maxRenderTargetSampleCount(format);
+    return SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
 TextureInfo DawnCaps::getDefaultSampledTextureInfo(SkColorType colorType,
@@ -376,38 +371,6 @@ const Caps::ColorTypeInfo* DawnCaps::getColorTypeInfo(SkColorType colorType,
     }
 
     return nullptr;
-}
-
-bool DawnCaps::supportsWritePixels(const TextureInfo& textureInfo) const {
-    const auto spec = TextureInfos::GetDawnTextureSpec(textureInfo);
-    return spec.fUsage & wgpu::TextureUsage::CopyDst;
-}
-
-bool DawnCaps::supportsReadPixels(const TextureInfo& textureInfo) const {
-    const auto spec = TextureInfos::GetDawnTextureSpec(textureInfo);
-    return spec.fUsage & wgpu::TextureUsage::CopySrc;
-}
-
-std::pair<SkColorType, bool /*isRGBFormat*/> DawnCaps::supportedWritePixelsColorType(
-        SkColorType dstColorType,
-        const TextureInfo& dstTextureInfo,
-        SkColorType srcColorType) const {
-    return {dstColorType, false};
-}
-
-std::pair<SkColorType, bool /*isRGBFormat*/> DawnCaps::supportedReadPixelsColorType(
-        SkColorType srcColorType,
-        const TextureInfo& srcTextureInfo,
-        SkColorType dstColorType) const {
-    auto dawnFormat = getFormatFromColorType(srcColorType);
-    const FormatInfo& info = this->getFormatInfo(dawnFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        const auto& ctInfo = info.fColorTypeInfos[i];
-        if (ctInfo.fColorType == srcColorType) {
-            return {srcColorType, false};
-        }
-    }
-    return {kUnknown_SkColorType, false};
 }
 
 void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextOptions& options) {

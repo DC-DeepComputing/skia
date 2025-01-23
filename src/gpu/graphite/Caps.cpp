@@ -62,10 +62,88 @@ SkISize Caps::getDepthAttachmentDimensions(const TextureInfo& textureInfo,
 }
 
 bool Caps::isTexturable(const TextureInfo& info) const {
+    SkASSERT(info.isValid());
     if (info.numSamples() > 1) {
         return false;
     }
     return this->onIsTexturable(info);
+}
+
+bool Caps::isRenderable(const TextureInfo& info) const {
+    SkASSERT(info.isValid());
+
+    return this->onIsRenderable(info);
+}
+
+bool Caps::isCopyableSrc(const TextureInfo& info) const {
+    SkASSERT(info.isValid());
+    if (info.isProtected() == Protected::kYes) {
+        return false;
+    }
+    if (info.numSamples() > 1) {
+        return false;
+    }
+    if (info.compressionType() != SkTextureCompressionType::kNone) {
+        return false;
+    }
+    if (!this->getImmutableSamplerInfo(info).isDefault()) {
+        return false;
+    }
+    return this->onIsCopyableSrc(info);
+}
+
+bool Caps::isCopyableDst(const TextureInfo& info) const {
+    SkASSERT(info.isValid());
+    if (info.numSamples() > 1) {
+        return false;
+    }
+    if (!this->getImmutableSamplerInfo(info).isDefault()) {
+        return false;
+    }
+    return this->onIsCopyableSrc(info);
+}
+
+bool Caps::isStorage(const TextureInfo& info) const {
+    SkASSERT(info.isValid());
+    if (info.numSamples() > 1) {
+        return false;
+    }
+    if (!this->getImmutableSamplerInfo(info).isDefault()) {
+        return false;
+    }
+    return this->onIsStorage(info);
+}
+
+std::pair<SkColorType, bool /*isRGBFormat*/> Caps::supportedWritePixelsColorType(
+        SkColorType dstColorType,
+        const TextureInfo& dstTextureInfo) const {
+    if (!this->isCopyableDst(dstTextureInfo)) {
+        return {kUnknown_SkColorType, false};
+    }
+
+    const ColorTypeInfo* ctInfo = this->getColorTypeInfo(dstColorType, dstTextureInfo);
+    if (ctInfo) {
+        SkASSERT(ctInfo->fColorType == dstColorType);
+        return {ctInfo->fTransferColorType, ctInfo->fFlags & ColorTypeInfo::kRGBFormat_Flag};
+    } else {
+        return {kUnknown_SkColorType, false};
+    }
+}
+
+std::pair<SkColorType, bool /*isRGBFormat*/> Caps::supportedReadPixelsColorType(
+        SkColorType srcColorType,
+        const TextureInfo& srcTextureInfo) const {
+    if (!this->isCopyableSrc(srcTextureInfo)) {
+        return {kUnknown_SkColorType, false};
+    }
+
+    const ColorTypeInfo* ctInfo = this->getColorTypeInfo(srcColorType, srcTextureInfo);
+    if (ctInfo) {
+        SkASSERT(ctInfo->fColorType == srcColorType);
+        return {ctInfo->fTransferColorType, ctInfo->fFlags & ColorTypeInfo::kRGBFormat_Flag};
+    } else {
+        return {kUnknown_SkColorType, false};
+    }
 }
 
 bool Caps::areColorTypeAndTextureInfoCompatible(SkColorType ct, const TextureInfo& info) const {

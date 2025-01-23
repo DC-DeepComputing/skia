@@ -75,16 +75,10 @@ public:
 private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
     bool onIsTexturable(const TextureInfo&) const override;
-    bool supportsWritePixels(const TextureInfo& textureInfo) const override;
-    bool supportsReadPixels(const TextureInfo& textureInfo) const override;
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const override;
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const override;
+    bool onIsRenderable(const TextureInfo&) const override;
+    bool onIsCopyableSrc(const TextureInfo&) const override;
+    bool onIsCopyableDst(const TextureInfo&) const override;
+    bool onIsStorage(const TextureInfo&) const override;
 
     void initCaps(const DawnBackendContext& backendContext, const ContextOptions& options);
     void initShaderCaps(const wgpu::Device& device);
@@ -94,10 +88,6 @@ private:
         int idx = static_cast<int>(colorType);
         return fColorTypeToFormatTable[idx];
     }
-
-    uint32_t maxRenderTargetSampleCount(wgpu::TextureFormat format) const;
-    bool isTexturable(wgpu::TextureFormat format) const;
-    bool isRenderable(wgpu::TextureFormat format, uint32_t numSamples) const;
 
     struct FormatInfo {
         uint32_t colorTypeFlags(SkColorType colorType) const {

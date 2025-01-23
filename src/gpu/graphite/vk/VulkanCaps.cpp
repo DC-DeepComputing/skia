@@ -640,7 +640,9 @@ void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
                 // transfers. We signal this need for manual conversions in the
                 // supportedRead/WriteColorType calls.
                 ctInfo.fTransferColorType = SkColorType::kRGB_888x_SkColorType;
-                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag | ColorTypeInfo::kRenderable_Flag;
+                ctInfo.fFlags = ColorTypeInfo::kUploadData_Flag |
+                                ColorTypeInfo::kRenderable_Flag |
+                                ColorTypeInfo::kRGBFormat_Flag;
             }
         }
     }
@@ -1340,166 +1342,53 @@ const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
 }
 
 bool VulkanCaps::onIsTexturable(const TextureInfo& texInfo) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
-        return false;
-    }
-    return this->isTexturable(vkInfo);
-}
+    VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(texInfo);
 
-bool VulkanCaps::isTexturable(const VulkanTextureInfo& vkInfo) const {
     // All images using external formats are required to be able to be sampled per Vulkan spec.
     // https://registry.khronos.org/vulkan/specs/1.3-extensions/man/html/VkAndroidHardwareBufferFormatPropertiesANDROID.html#_description
-    if (vkInfo.fFormat == VK_FORMAT_UNDEFINED && vkInfo.fYcbcrConversionInfo.isValid()) {
+    if (spec.fFormat == VK_FORMAT_UNDEFINED && spec.fYcbcrConversionInfo.isValid()) {
         return true;
     }
 
     // Otherwise, we are working with a known format and can simply reference the format table info.
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isTexturable(vkInfo.fImageTiling);
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
+    return info.isTexturable(spec.fImageTiling);
 }
 
-bool VulkanCaps::isRenderable(const TextureInfo& texInfo) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
-        return false;
-    }
-    return this->isRenderable(vkInfo);
+bool VulkanCaps::onIsRenderable(const TextureInfo& texInfo) const {
+    VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(texInfo);
+
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
+    return info.isRenderable(spec.fImageTiling, texInfo.numSamples());
 }
 
-bool VulkanCaps::isRenderable(const VulkanTextureInfo& vkInfo) const {
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isRenderable(vkInfo.fImageTiling, vkInfo.fSampleCount);
+bool VulkanCaps::onIsStorage(const TextureInfo& texInfo) const {
+    VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(texInfo);
+
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
+    return info.isStorage(spec.fImageTiling);
 }
 
-bool VulkanCaps::isStorage(const TextureInfo& texInfo) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
+bool VulkanCaps::onIsCopyableSrc(const TextureInfo& texInfo) const {
+    VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(texInfo);
+
+    if (!SkToBool(spec.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT)) {
         return false;
     }
 
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isStorage(vkInfo.fImageTiling);
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
+    return info.isTransferSrc(spec.fImageTiling);
 }
 
-bool VulkanCaps::isTransferSrc(const VulkanTextureInfo& vkInfo) const {
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isTransferSrc(vkInfo.fImageTiling);
-}
+bool VulkanCaps::onIsCopyableDst(const TextureInfo& texInfo) const {
+    VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(texInfo);
 
-bool VulkanCaps::isTransferDst(const VulkanTextureInfo& vkInfo) const {
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isTransferDst(vkInfo.fImageTiling);
-}
-
-bool VulkanCaps::supportsWritePixels(const TextureInfo& texInfo) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
+    if (!SkToBool(spec.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)) {
         return false;
     }
 
-    // Can't write if it needs a YCbCr sampler
-    if (VkFormatNeedsYcbcrSampler(vkInfo.fFormat)) {
-        return false;
-    }
-
-    if (vkInfo.fSampleCount > 1) {
-        return false;
-    }
-
-    if (!SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT)) {
-        return false;
-    }
-
-    return true;
-}
-
-bool VulkanCaps::supportsReadPixels(const TextureInfo& texInfo) const {
-    if (texInfo.isProtected() == Protected::kYes) {
-        return false;
-    }
-
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(texInfo, &vkInfo)) {
-        return false;
-    }
-
-    // Can't read if it needs a YCbCr sampler
-    if (VkFormatNeedsYcbcrSampler(vkInfo.fFormat)) {
-        return false;
-    }
-
-    if (VkFormatIsCompressed(vkInfo.fFormat)) {
-        return false;
-    }
-
-    if (vkInfo.fSampleCount > 1) {
-        return false;
-    }
-
-    if (!SkToBool(vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_SRC_BIT)) {
-        return false;
-    }
-
-    return true;
-}
-
-std::pair<SkColorType, bool /*isRGBFormat*/> VulkanCaps::supportedWritePixelsColorType(
-        SkColorType dstColorType,
-        const TextureInfo& dstTextureInfo,
-        SkColorType srcColorType) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(dstTextureInfo, &vkInfo)) {
-        return {kUnknown_SkColorType, false};
-    }
-
-    // Can't write to YCbCr formats
-    // TODO: Can't write to external formats, either
-    if (VkFormatNeedsYcbcrSampler(vkInfo.fFormat)) {
-        return {kUnknown_SkColorType, false};
-    }
-
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        const auto& ctInfo = info.fColorTypeInfos[i];
-        if (ctInfo.fColorType == dstColorType) {
-            return {ctInfo.fTransferColorType, vkInfo.fFormat == VK_FORMAT_R8G8B8_UNORM};
-        }
-    }
-
-    return {kUnknown_SkColorType, false};
-}
-
-std::pair<SkColorType, bool /*isRGBFormat*/> VulkanCaps::supportedReadPixelsColorType(
-        SkColorType srcColorType,
-        const TextureInfo& srcTextureInfo,
-        SkColorType dstColorType) const {
-    VulkanTextureInfo vkInfo;
-    if (!TextureInfos::GetVulkanTextureInfo(srcTextureInfo, &vkInfo)) {
-        return {kUnknown_SkColorType, false};
-    }
-
-    // Can't read from YCbCr formats
-    // TODO: external formats?
-    if (VkFormatNeedsYcbcrSampler(vkInfo.fFormat)) {
-        return {kUnknown_SkColorType, false};
-    }
-
-    // TODO: handle compressed formats
-    if (VkFormatIsCompressed(vkInfo.fFormat)) {
-        SkASSERT(this->isTexturable(vkInfo));
-        return {kUnknown_SkColorType, false};
-    }
-
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
-        const auto& ctInfo = info.fColorTypeInfos[i];
-        if (ctInfo.fColorType == srcColorType) {
-            return {ctInfo.fTransferColorType, vkInfo.fFormat == VK_FORMAT_R8G8B8_UNORM};
-        }
-    }
-
-    return {kUnknown_SkColorType, false};
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
+    return info.isTransferDst(spec.fImageTiling);
 }
 
 UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,

@@ -685,8 +685,8 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
         return {};
     }
 
-    if (!importAsExternalFormat && (!vkCaps.isTransferSrc(vkTexInfo) ||
-                                    !vkCaps.isTransferDst(vkTexInfo) ||
+    if (!importAsExternalFormat && (!vkCaps.isCopyableSrc(vkTexInfo) ||
+                                    !vkCaps.isCopyableDst(vkTexInfo) ||
                                     !vkCaps.isTexturable(vkTexInfo))) {
         if (isRenderable) {
             SKGPU_LOG_W("VkFormat %d is either unfamiliar to Skia or doesn't support the necessary"
