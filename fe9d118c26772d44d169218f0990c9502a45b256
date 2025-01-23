@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b2ed288_c5ee5628",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T17:15:58Z",
+      "side": 1,
+      "message": "Since the replay translation isn\u0027t used other than (0,0) when we\u0027re testing clips at the moment, we can do my comment in a follow-up.",
+      "revId": "fe9d118c26772d44d169218f0990c9502a45b256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69bf0f59_c4170afe",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T17:15:58Z",
+      "side": 1,
+      "message": "I think both this and `kCircularRRectClip` should pass in `kLocalCoords` here and take the `float2` coords as their first arg in the static modules. This way ShaderInfo passes in the adjusted fragcoord that\u0027s removed the replay translation automatically: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/ShaderInfo.cpp;drc\u003d27d34700b83f381c62e3a348de2e6dfdc08364b8;l\u003d796",
+      "range": {
+        "startLine": 1170,
+        "startChar": 37,
+        "endLine": 1170,
+        "endChar": 42
+      },
+      "revId": "fe9d118c26772d44d169218f0990c9502a45b256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
