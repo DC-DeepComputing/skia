@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "109fabd4_c241e140",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T18:08:45Z",
+      "side": 1,
+      "message": "Looks like the native metal backend needs to be updated too.",
+      "revId": "a053e1fe27548c3857ef38f6478514f97b2221fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51e68dec_6ee1554e",
+        "filename": "fuzz/FuzzPrecompile.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 335,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T18:08:45Z",
+      "side": 1,
+      "message": "nit: line up with the `?`",
+      "range": {
+        "startLine": 335,
+        "startChar": 36,
+        "endLine": 335,
+        "endChar": 44
+      },
+      "revId": "a053e1fe27548c3857ef38f6478514f97b2221fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad06a6e4_29eca65a",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T18:08:45Z",
+      "side": 1,
+      "message": "nit: dstReadPixelBounds",
+      "range": {
+        "startLine": 235,
+        "startChar": 12,
+        "endLine": 235,
+        "endChar": 30
+      },
+      "revId": "a053e1fe27548c3857ef38f6478514f97b2221fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
