@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc6cee3_fbb6e93e",
+        "filename": "src/gpu/graphite/DrawContext.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T16:34:35Z",
+      "side": 1,
+      "message": "nit: \"require\"",
+      "range": {
+        "startLine": 115,
+        "startChar": 52,
+        "endLine": 115,
+        "endChar": 60
+      },
+      "revId": "9aa449324fa3fe99157ab66dc6252f1fa3f12668",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dccc4205_c5112884",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T16:34:35Z",
+      "side": 1,
+      "message": "I think we can name this `fDstReadBounds` and it\u0027ll represent the area of the dst target that will be read, regardless of what the strategy is. We can then use its emptiness value when handling the texture-sampling approach, and makes the `CommandBuffer::addRenderPass` signature simpler because you always just pass in the dst read bounds. If the strategy is texture-sample, it looks at non-empty. If it\u0027s texture-copy, it uses it as is, if it\u0027s fb fetch it just ignores it.",
+      "range": {
+        "startLine": 123,
+        "startChar": 9,
+        "endLine": 123,
+        "endChar": 23
+      },
+      "revId": "9aa449324fa3fe99157ab66dc6252f1fa3f12668",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
