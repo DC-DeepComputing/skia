@@ -53,7 +53,7 @@ public:
 
     // The runtime effect dictionary provides a link between SkCodeSnippetIds referenced in the
     // paint key and the current SkRuntimeEffect that provides the SkSL for that id.
-    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline(
+    sk_sp<GraphicsPipeline> findOrCreateGraphicsPipeline99(
             const RuntimeEffectDictionary*,
             const GraphicsPipelineDesc&,
             const RenderPassDesc&,

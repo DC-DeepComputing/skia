@@ -64,7 +64,7 @@ void compile(const RendererProvider* rendererProvider,
                                                                : UniquePaintParamsID::InvalidID();
             GraphicsPipelineDesc pipelineDesc(s->renderStepID(), paintID);
 
-            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline99(
                     keyContext.rtEffectDict(),
                     pipelineDesc,
                     renderPassDesc,
@@ -87,7 +87,7 @@ bool AndroidSpecificPrecompile(PrecompileContext* precompileContext,
                                const RenderPassDesc& renderPassDesc) {
     ResourceProvider* resourceProvider = precompileContext->priv().resourceProvider();
 
-    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+    sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline99(
             rteDict,
             pipelineDesc,
             renderPassDesc,
@@ -105,10 +105,11 @@ void Precompile(PrecompileContext* precompileContext,
                 DrawTypeFlags drawTypes,
                 SkSpan<const RenderPassProperties> renderPassProperties) {
 
-    ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary5();
     const Caps* caps = precompileContext->priv().caps();
 
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    //$$
+    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>(false);
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
         // TODO: Allow the client to pass in mipmapping and protection too?
@@ -147,7 +148,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          writeSwizzle);
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
-            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
+            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci, false); //$$
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
                 PrecompileCombinations(

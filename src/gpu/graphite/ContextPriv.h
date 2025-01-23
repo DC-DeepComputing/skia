@@ -31,11 +31,11 @@ class ContextPriv {
 public:
     const Caps* caps() const { return fContext->fSharedContext->caps(); }
 
-    const ShaderCodeDictionary* shaderCodeDictionary() const {
-        return fContext->fSharedContext->shaderCodeDictionary();
+    const ShaderCodeDictionary* shaderCodeDictionary9() const {
+        return fContext->fSharedContext->shaderCodeDictionary9();
     }
-    ShaderCodeDictionary* shaderCodeDictionary() {
-        return fContext->fSharedContext->shaderCodeDictionary();
+    ShaderCodeDictionary* shaderCodeDictionary9() {
+        return fContext->fSharedContext->shaderCodeDictionary9();
     }
 #if defined(GPU_TEST_UTILS)
     const GlobalCache* globalCache() const {

@@ -463,7 +463,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     TextureBindingTracker textureBindingTracker;
     GradientBufferTracker gradientBufferTracker;
 
-    ShaderCodeDictionary* dict = recorder->priv().shaderCodeDictionary();
+    ShaderCodeDictionary* dict = recorder->priv().shaderCodeDictionary8();
     PaintParamsKeyBuilder builder(dict);
 
     // The initial layout we pass here is not important as it will be re-assigned when writing
@@ -666,7 +666,7 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 
     fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
-        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
+        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline99(runtimeDict,
                                                                        pipelineDesc,
                                                                        renderPassDesc);
         if (!pipeline) {
