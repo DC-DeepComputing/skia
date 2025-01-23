@@ -1,0 +1,68 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24c833f_9ee7ef5f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T17:57:24Z",
+      "side": 1,
+      "message": "Buganizer bugs have to be on their own line.",
+      "range": {
+        "startLine": 13,
+        "startChar": 18,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "270636dd28ad8ad9a98ee0d5d6e9b34c9e6c4487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35090db1_30edd9fb",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T17:57:24Z",
+      "side": 1,
+      "message": "nit: assuming",
+      "range": {
+        "startLine": 343,
+        "startChar": 20,
+        "endLine": 343,
+        "endChar": 27
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "0d3b2cd6_8f7d25f0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkSurface.h",
+              "range": {
+                "startLine": 343,
+                "startChar": 0,
+                "endLine": 344,
+                "endChar": 0
+              },
+              "replacement": "        of the data assuming the user frees either the SkImage or SkSurface as described above.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "270636dd28ad8ad9a98ee0d5d6e9b34c9e6c4487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
