@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ba7a94a_85b4ea38",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-23T18:04:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e24c833f_9ee7ef5f",
+      "range": {
+        "startLine": 13,
+        "startChar": 18,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "270636dd28ad8ad9a98ee0d5d6e9b34c9e6c4487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "35090db1_30edd9fb",
@@ -61,6 +85,30 @@
           ]
         }
       ],
+      "revId": "270636dd28ad8ad9a98ee0d5d6e9b34c9e6c4487",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30fc440d_c5e21bff",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-23T18:04:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35090db1_30edd9fb",
+      "range": {
+        "startLine": 343,
+        "startChar": 20,
+        "endLine": 343,
+        "endChar": 27
+      },
       "revId": "270636dd28ad8ad9a98ee0d5d6e9b34c9e6c4487",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
