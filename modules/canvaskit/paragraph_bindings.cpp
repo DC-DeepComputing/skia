@@ -471,7 +471,8 @@ JSArray GetShapedLines(para::Paragraph& self) {
 
 // TODO: figure out how to set a wrapped sk_sp<SkTypeface>
 //        jrun.set("typeface", info->font.getTypeface());
-        jrun.set("typeface",    emscripten::val::null());
+//        jrun.set("typeface",    emscripten::val::null());
+        jrun.set("typeface", info->font.refTypeface());
         jrun.set("size",        info->font.getSize());
         if (info->font.getScaleX()) {
             jrun.set("scaleX",  info->font.getScaleX());
