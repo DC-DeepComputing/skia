@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a90707b4_ffdc0be8",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-23T21:11:50Z",
+      "side": 1,
+      "message": "Does it work if we pass in the shader snippet ID and just use the same function for writing both the srgb and universal uniforms?",
+      "range": {
+        "startLine": 510,
+        "startChar": 5,
+        "endLine": 510,
+        "endChar": 29
+      },
+      "revId": "bbd1f38aed24ecfd03ecebef1cc336b69a052fa1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
