@@ -26,9 +26,8 @@ sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                            SkIRect dstCopyBounds) {
     // For now we have one DrawPass per RenderPassTask
     SkASSERT(passes.size() == 1);
-    // We should only have dst copy bounds if we have a dst copy texture, and the texture should be
-    // big enough to cover the copy bounds that will be sampled.
-    SkASSERT(dstCopyBounds.isEmpty() == !dstCopy);
+    // If we have a dst copy texture, ensure it is big enough to cover the copy bounds that
+    // will be sampled.
     SkASSERT(!dstCopy || (dstCopy->dimensions().width() >= dstCopyBounds.width() &&
                           dstCopy->dimensions().height() >= dstCopyBounds.height()));
     if (!target) {

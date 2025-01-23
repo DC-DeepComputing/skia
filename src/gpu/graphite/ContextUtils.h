@@ -20,7 +20,7 @@ namespace skgpu::graphite {
 
 class ComputeStep;
 enum class Coverage;
-enum class DstReadRequirement;
+enum class DstReadStrategy;
 class Geometry;
 class PaintParams;
 class PipelineDataGatherer;
@@ -62,7 +62,7 @@ void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect dstCopyBounds,
                               UniformManager*);
 
-DstReadRequirement GetDstReadRequirement(const Caps*, std::optional<SkBlendMode>, Coverage);
+bool IsDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,

@@ -45,8 +45,9 @@ void DrawList::recordDraw(const Renderer* renderer,
         fCoverageMaskShapeDrawCount++;
     }
 #endif
-
-    if (paint && paint->dstReadRequirement() == DstReadRequirement::kTextureCopy) {
+    if (paint && paint->dstReadRequired()) {
+        // It is cheap to track these bounds, so do so for any paints which read the dst texture.
+        // Can simply be ignored if we end up not needing a dst texture copy.
         fDstCopyBounds.join(clip.drawBounds());
     }
 }
