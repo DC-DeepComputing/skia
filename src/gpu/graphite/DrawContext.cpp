@@ -95,6 +95,7 @@ DrawContext::DrawContext(const Caps* caps,
         : fTarget(std::move(target))
         , fImageInfo(ii)
         , fSurfaceProps(props)
+        , fDstReadStrategy(caps->getDstReadStrategy())
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
         , fPendingDraws(std::make_unique<DrawList>())
         , fPendingUploads(std::make_unique<UploadList>()) {
@@ -231,7 +232,7 @@ void DrawContext::flush(Recorder* recorder) {
     // TODO: At this point, there's only ever one DrawPass in a RenderPassTask to a target. When
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
-    SkIRect dstCopyPixelBounds = fPendingDraws->dstCopyBounds().makeRoundOut().asSkIRect();
+    SkIRect dstCopyPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
     std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
                                                     std::move(fPendingDraws),
                                                     fTarget,
@@ -247,8 +248,10 @@ void DrawContext::flush(Recorder* recorder) {
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
 
+        // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
+        // dstCopyPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.
         sk_sp<TextureProxy> dstCopy;
-        if (!dstCopyPixelBounds.isEmpty()) {
+        if (!dstCopyPixelBounds.isEmpty() && fDstReadStrategy == DstReadStrategy::kTextureCopy) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
 
