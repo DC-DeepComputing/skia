@@ -57,11 +57,7 @@ public:
 
     uint32_t channelMask(const TextureInfo&) const override;
 
-    bool isTexturable(const VulkanTextureInfo&) const;
 
-    bool isRenderable(const TextureInfo&) const override;
-    bool isRenderable(const VulkanTextureInfo&) const;
-    bool isStorage(const TextureInfo&) const override;
 
     void buildKeyForTexture(SkISize dimensions,
                             const TextureInfo&,
@@ -96,9 +92,6 @@ public:
         return fPhysicalDeviceMemoryProperties2;
     }
 
-    bool isTransferSrc(const VulkanTextureInfo&) const;
-    bool isTransferDst(const VulkanTextureInfo&) const;
-
     bool mustLoadFullImageForMSAA() const { return fMustLoadFullImageForMSAA; }
 
 private:
@@ -132,18 +125,10 @@ private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
 
     bool onIsTexturable(const TextureInfo&) const override;
-
-    bool supportsWritePixels(const TextureInfo&) const override;
-    bool supportsReadPixels(const TextureInfo&) const override;
-
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedWritePixelsColorType(
-            SkColorType dstColorType,
-            const TextureInfo& dstTextureInfo,
-            SkColorType srcColorType) const override;
-    std::pair<SkColorType, bool /*isRGBFormat*/> supportedReadPixelsColorType(
-            SkColorType srcColorType,
-            const TextureInfo& srcTextureInfo,
-            SkColorType dstColorType) const override;
+    bool onIsRenderable(const TextureInfo&) const override;
+    bool onIsCopyableSrc(const TextureInfo&) const override;
+    bool onIsCopyableDst(const TextureInfo&) const override;
+    bool onIsStorage(const TextureInfo&) const override;
 
     // Struct that determines and stores which sample count quantities a VkFormat supports.
     struct SupportedSampleCounts {

@@ -134,8 +134,7 @@ UploadInstance UploadInstance::Make(Recorder* recorder,
     bool isRGB888Format;
     std::tie(supportedColorType, isRGB888Format) =
             caps->supportedWritePixelsColorType(dstColorInfo.colorType(),
-                                                textureProxy->textureInfo(),
-                                                srcColorInfo.colorType());
+                                                textureProxy->textureInfo());
     if (supportedColorType == kUnknown_SkColorType) {
         return Invalid();
     }
