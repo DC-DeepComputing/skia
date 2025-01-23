@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb7c6fb2_5fe33ddb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-01-23T20:57:11Z",
+      "side": 1,
+      "message": "Based on the remaining changes from http://review.skia.org/931401. There\u0027s still a lot of duplicated code between the universal shader and the sRGB specialization, both in KeyHelpers and in the shader itself. I\u0027m a little hesitant to move code into helper functions because it could make the way we encode arguments even harder to follow. But I\u0027m open to suggestions.",
+      "revId": "600b4ffe99dfb228dde2310040bb821ff7095704",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
