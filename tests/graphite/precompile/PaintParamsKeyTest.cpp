@@ -1973,7 +1973,8 @@ KeyContext create_key_context(Context* context, RuntimeEffectDictionary* rtDict)
     return KeyContext(context->priv().caps(),
                       dict,
                       rtDict,
-                      destColorInfo);
+                      destColorInfo,
+                      false); //$$
 }
 
 // This subtest compares the output of ExtractPaintData (applied to an SkPaint) and
@@ -2231,7 +2232,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>(false); //$$
 
 #if 1
     //----------------------
@@ -2294,7 +2295,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>(false); //$$
 
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 

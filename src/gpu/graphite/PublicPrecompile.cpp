@@ -108,7 +108,8 @@ void Precompile(PrecompileContext* precompileContext,
     ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
     const Caps* caps = precompileContext->priv().caps();
 
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    //$$
+    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>(false);
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
         // TODO: Allow the client to pass in mipmapping and protection too?
@@ -147,7 +148,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          writeSwizzle);
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
-            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
+            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci, false); //$$
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
                 PrecompileCombinations(

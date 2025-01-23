@@ -26,7 +26,7 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps, BackendApi backen
     : fCaps(std::move(caps))
     , fBackend(backend)
     , fGlobalCache()
-    , fShaderDictionary(get_binding_layout(fCaps.get())) {}
+    , fShaderDictionaryM(get_binding_layout(fCaps.get())) {}
 
 SharedContext::~SharedContext() {
     // TODO: add disconnect?

@@ -47,8 +47,8 @@ public:
 
     const RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
 
-    ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
-    const ShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionary; }
+    ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionaryM; }
+    const ShaderCodeDictionary* shaderCodeDictionary() const { return &fShaderDictionaryM; }
 
     virtual std::unique_ptr<ResourceProvider> makeResourceProvider(SingleOwner*,
                                                                    uint32_t recorderID,
@@ -74,7 +74,7 @@ private:
     BackendApi fBackend;
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
-    ShaderCodeDictionary fShaderDictionary;
+    ShaderCodeDictionary fShaderDictionaryM;
 };
 
 } // namespace skgpu::graphite

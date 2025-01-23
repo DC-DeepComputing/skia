@@ -44,7 +44,8 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
                           geometry.isShape() || geometry.isEdgeAAQuad()
                                   ? KeyContext::OptimizeSampling::kYes
                                   : KeyContext::OptimizeSampling::kNo,
-                          p.color());
+                          p.color(),
+                          false); //$$
     p.toKey(keyContext, builder, gatherer);
 
     return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);

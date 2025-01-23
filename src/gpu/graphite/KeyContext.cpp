@@ -16,7 +16,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
                        OptimizeSampling optimizeSampling,
-                       const SkColor4f& paintColor)
+                       const SkColor4f& paintColor,
+                       bool)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)

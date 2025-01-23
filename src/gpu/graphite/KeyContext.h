@@ -33,7 +33,8 @@ public:
     KeyContext(const Caps* caps,
                ShaderCodeDictionary* dict,
                RuntimeEffectDictionary* rtEffectDict,
-               const SkColorInfo& dstColorInfo)
+               const SkColorInfo& dstColorInfo,
+               bool)
             : fDictionary(dict)
             , fRTEffectDict(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
@@ -44,7 +45,8 @@ public:
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
                OptimizeSampling optimizeSampling,
-               const SkColor4f& paintColor);
+               const SkColor4f& paintColor,
+               bool);
 
     KeyContext(const KeyContext&);
 
