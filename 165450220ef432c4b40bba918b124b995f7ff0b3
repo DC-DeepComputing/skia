@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8c79fc76_a2049b5c",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-01-24T18:48:25Z",
+      "side": 1,
+      "message": "\u003e What is the context for vrndnq_f32 being more supported than vrndns_f32?\n\nThe QNX compiler for the platform I was targeting seems to be based on GCC 8.3. See https://godbolt.org/z/oK9z9j9Ea for a reproduction of the issue on that compiler. I could just switch to scalar version on __QNX__ but this seemed to be more portable. Another option is for me to check if the compiler is GCC (with some version checks) and do this while keeping the scalar verion be.\n\nTo be honest, I didn\u0027t get why SIMD was used here or why the different archs have not quite the same semantics. In tha armv7 version, I don\u0027t think 0.5 should be added either.",
+      "parentUuid": "8cd7efe7_ec4bece7",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
