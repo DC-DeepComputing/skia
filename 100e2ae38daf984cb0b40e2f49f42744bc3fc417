@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75b77d3b_f4623c78",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-24T18:50:47Z",
+      "side": 1,
+      "message": "R ?",
+      "range": {
+        "startLine": 66,
+        "startChar": 43,
+        "endLine": 66,
+        "endChar": 44
+      },
+      "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3699fc16_e87ccd26",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-24T18:50:47Z",
+      "side": 1,
+      "message": "nit: preceded",
+      "range": {
+        "startLine": 79,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 16
+      },
+      "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4b0e3be_bd9dce37",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-24T18:50:47Z",
+      "side": 1,
+      "message": "nit: preceded",
+      "range": {
+        "startLine": 85,
+        "startChar": 7,
+        "endLine": 85,
+        "endChar": 16
+      },
+      "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cde7f739_723dbfc7",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-24T18:50:47Z",
+      "side": 1,
+      "message": "nit: interpreted",
+      "range": {
+        "startLine": 88,
+        "startChar": 35,
+        "endLine": 88,
+        "endChar": 46
+      },
+      "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
