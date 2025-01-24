@@ -12,6 +12,7 @@ from . import android
 from . import chromebook
 from . import default
 from . import ios
+from . import ios_legacy
 from . import valgrind
 
 
@@ -43,9 +44,25 @@ def is_chromebook(vars_api):
   return ('Chromebook' in vars_api.extra_tokens or
           'ChromeOS' in vars_api.builder_cfg.get('os', ''))
 
+_LEGACY_IOS_DEVICES = [
+  'iPadPro',
+  'iPhone7',
+  'iPhone8',
+]
+
 def is_ios(vars_api):
-  return ('iOS' in vars_api.extra_tokens or
-          'iOS' == vars_api.builder_cfg.get('os', ''))
+  if ('iOS' == vars_api.builder_cfg.get('os', '') and
+          vars_api.builder_cfg.get('model') not in _LEGACY_IOS_DEVICES): # pragma: no cover
+    return True
+  return False
+
+def is_ios_legacy(vars_api):
+  if 'iOS' in vars_api.extra_tokens: # pragma: no cover
+    return True
+  if ('iOS' == vars_api.builder_cfg.get('os', '') and
+      vars_api.builder_cfg.get('model') in _LEGACY_IOS_DEVICES):
+    return True
+  return False
 
 def is_valgrind(vars_api):
   return 'Valgrind' in vars_api.extra_tokens
@@ -58,8 +75,10 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
       return chromebook.ChromebookFlavor(self, app_name)
     if is_android(vars_api):
       return android.AndroidFlavor(self, app_name)
-    elif is_ios(vars_api):
+    elif is_ios(vars_api): # pragma: no cover
       return ios.iOSFlavor(self, app_name)
+    elif is_ios_legacy(vars_api):
+      return ios_legacy.iOSFlavor(self, app_name)
     elif is_valgrind(vars_api):
       return valgrind.ValgrindFlavor(self, app_name)
     else:
