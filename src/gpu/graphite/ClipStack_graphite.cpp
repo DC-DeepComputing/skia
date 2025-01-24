@@ -10,12 +10,16 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkStrokeRec.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkRectPriv.h"
+#include "src/gpu/graphite/AtlasProvider.h"
+#include "src/gpu/graphite/ClipAtlasManager.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "src/gpu/graphite/geom/Geometry.h"
 
@@ -33,6 +37,22 @@ Rect subtract(const Rect& a, const Rect& b, bool exact) {
         // For our purposes, we want the original A when A-B cannot be exactly represented
         return a;
     }
+}
+
+static uint32_t kInvalidGenID  = 0;
+static uint32_t kEmptyGenID    = 1;
+static uint32_t kWideOpenGenID = 2;
+
+uint32_t next_gen_id() {
+    // 0-2 are reserved for invalid, empty & wide-open
+    static const uint32_t kFirstUnreservedGenID = 3;
+    static std::atomic<uint32_t> nextID{kFirstUnreservedGenID};
+
+    uint32_t id;
+    do {
+        id = nextID.fetch_add(1, std::memory_order_relaxed);
+    } while (id < kFirstUnreservedGenID);
+    return id;
 }
 
 bool oriented_bbox_intersection(const Rect& a, const Transform& aXform,
@@ -384,7 +404,8 @@ void ClipStack::RawElement::drawClip(Device* device) {
         device->drawClipShape(fLocalToDevice,
                               fShape,
                               Clip{drawBounds, drawBounds, scissor.asSkIRect(),
-                                   /* analyticClip= */ {}, /* shader= */ nullptr},
+                                   /* analyticClip= */ {}, /* atlasClip= */{},
+                                   /* shader= */ nullptr},
                               order);
     }
 
@@ -641,7 +662,8 @@ ClipStack::SaveRecord::SaveRecord(const Rect& deviceBounds)
         , fOldestValidIndex(0)
         , fDeferredSaveCount(0)
         , fStackOp(SkClipOp::kIntersect)
-        , fState(ClipState::kWideOpen)  {}
+        , fState(ClipState::kWideOpen)
+        , fGenID(kInvalidGenID) {}
 
 ClipStack::SaveRecord::SaveRecord(const SaveRecord& prior,
                                   int startingElementIndex)
@@ -652,10 +674,24 @@ ClipStack::SaveRecord::SaveRecord(const SaveRecord& prior,
         , fOldestValidIndex(prior.fOldestValidIndex)
         , fDeferredSaveCount(0)
         , fStackOp(prior.fStackOp)
-        , fState(prior.fState) {
+        , fState(prior.fState)
+        , fGenID(kInvalidGenID) {
     // If the prior record added an element, this one will insert into the same index
     // (that's okay since we'll remove it when this record is popped off the stack).
     SkASSERT(startingElementIndex >= prior.fStartingElementIndex);
+}
+
+uint32_t ClipStack::SaveRecord::genID() const {
+    if (fState == ClipState::kEmpty) {
+        return kEmptyGenID;
+    } else if (fState == ClipState::kWideOpen) {
+        return kWideOpenGenID;
+    } else {
+        // The gen ID shouldn't be empty or wide open, since they are reserved for the above
+        // if-cases. It may be kInvalid if the record hasn't had any elements added to it yet.
+        SkASSERT(fGenID != kEmptyGenID && fGenID != kWideOpenGenID);
+        return fGenID;
+    }
 }
 
 ClipStack::ClipState ClipStack::SaveRecord::state() const {
@@ -932,6 +968,8 @@ bool ClipStack::SaveRecord::appendElement(RawElement&& toAdd,
         elements->back() = std::move(toAdd);
     }
 
+    // Changing this will prompt ClipStack to invalidate any masks associated with this record.
+    fGenID = next_gen_id();
     return true;
 }
 
@@ -961,6 +999,7 @@ void ClipStack::SaveRecord::replaceWithElement(RawElement&& toAdd,
 
     // This invalidates all older elements that are owned by save records lower in the clip stack.
     fOldestValidIndex = fStartingElementIndex;
+    fGenID = next_gen_id();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -983,7 +1022,7 @@ ClipStack::ClipStack(Device* owningDevice)
     fSaves.emplace_back(this->deviceBounds());
 }
 
-ClipStack::~ClipStack() = default;
+ClipStack::~ClipStack() {}
 
 void ClipStack::save() {
     SkASSERT(!fSaves.empty());
@@ -1190,10 +1229,11 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                                       const Geometry& geometry,
                                       const SkStrokeRec& style,
                                       bool outsetBoundsForAA,
+                                      bool msaaSupported,
                                       ClipStack::ElementList* outEffectiveElements) const {
     static const Clip kClippedOut = {
             Rect::InfiniteInverted(), Rect::InfiniteInverted(), SkIRect::MakeEmpty(),
-            /* analyticClip= */ {}, /* shader= */ nullptr};
+            /* analyticClip= */ {}, /* atlasClip= */ {}, /* shader= */ nullptr};
 
     const SaveRecord& cs = this->currentSaveRecord();
     if (cs.state() == ClipState::kEmpty) {
@@ -1292,7 +1332,8 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         // Either the draw is off screen, so it's clipped out regardless of the state of the
         // SaveRecord, or there are no elements to apply to the draw. In both cases, 'drawBounds'
         // has the correct value, the scissor is the device bounds (ignored if clipped-out).
-        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), {}, cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, deviceBounds.asSkIRect(), {}, {},
+                    cs.shader());
     }
 
     // We don't evaluate Simplify() on the SaveRecord and the draw because a reduced version of
@@ -1309,7 +1350,8 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     transformedShapeBounds.intersect(scissor);
     if (drawBounds.isEmptyNegativeOrNaN() || cs.innerBounds().contains(drawBounds)) {
         // Like above, in both cases drawBounds holds the right value.
-        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), {}, cs.shader());
+        return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), {}, {},
+                    cs.shader());
     }
 
     // If we made it here, the clip stack affects the draw in a complex way so iterate each element.
@@ -1352,7 +1394,38 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         }
     }
 
-    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), analyticClip, cs.shader());
+    // Ganesh would try to get a SWMask here if no MSAA. It would be pushed onto Mask stack if
+    // it's not already in there. The SWMask FP would be appended to the general clip FP.
+    // So maybe: try to add effective elements to RasterPathAtlas (or ClipAtlas), add Proxy &
+    // Rect to Clip? Then clear effective elements list.
+
+    // Now rasterize any remaining elements, either to the stencil or a SW mask. All elements are
+    // flattened into a single mask.
+    AtlasClip atlasClip;
+    AtlasProvider* atlasProvider = fDevice->recorder()->priv().atlasProvider();
+    if (!msaaSupported && !outEffectiveElements->empty()) {
+        ClipAtlasManager* clipAtlas = atlasProvider->getClipAtlasManager();
+        SkASSERT(clipAtlas);
+
+        //**** still not sure how to manage the bounds
+        //*** I did figure this out at one point -- notes at home?
+        const TextureProxy* proxy = clipAtlas->findOrCreateEntry(cs.genID(), outEffectiveElements,
+                                                                 scissor, &atlasClip.fOutPos);
+        if (proxy) {
+            // add to Clip
+            atlasClip.fMaskBounds = scissor;
+            atlasClip.fAtlasTexture = sk_ref_sp(proxy);
+
+            // Elements are represented in the clip, discard.
+            outEffectiveElements->clear();
+        }
+    }
+
+    // Things to figure out:
+    // * Setting up the shader and shader data seems straightforward, not sure about the Proxy
+
+    return Clip(drawBounds, transformedShapeBounds, scissor.asSkIRect(), analyticClip, atlasClip,
+                cs.shader());
 }
 
 CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,

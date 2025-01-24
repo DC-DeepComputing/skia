@@ -12,6 +12,8 @@
 
 namespace skgpu::graphite {
 
+class TextureProxy;
+
 /**
  * Represents a rect or rrect clip with any non-rect corners having the same circular radii.
  */
@@ -38,6 +40,17 @@ struct CircularRRectClip {
                  fEdgeFlags & kRight_EdgeFlag  ? 1.f : 0.f,
                  fEdgeFlags & kBottom_EdgeFlag ? 1.f : 0.f };
     }
+};
+
+/**
+ * Represents a clip that uses a mask in an atlas
+ */
+struct AtlasClip {
+    Rect                fMaskBounds;
+    skvx::half2         fOutPos;
+    sk_sp<TextureProxy> fAtlasTexture;
+
+    bool isEmpty() const { return !SkToBool(fAtlasTexture.get()); }
 };
 
 } // namespace skgpu::graphite

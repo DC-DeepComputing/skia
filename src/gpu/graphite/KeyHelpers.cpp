@@ -1217,8 +1217,22 @@ void AtlasClipBlock::AddBlock(const KeyContext& keyContext,
                               PaintParamsKeyBuilder* builder,
                               PipelineDataGatherer* gatherer,
                               const AtlasClipData& data) {
+    if (keyContext.recorder() && !data.fAtlasTexture) {
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        return;
+    }
+
     add_atlas_clip_data(keyContext.dict(), data, gatherer);
-    builder->addBlock(BuiltInCodeSnippetID::kAtlasClip);
+    builder->beginBlock(BuiltInCodeSnippetID::kAtlasClip);
+
+    const Caps* caps = keyContext.caps();
+    ImmutableSamplerInfo info = caps->getImmutableSamplerInfo(data.fAtlasTexture.get());
+    SamplerDesc samplerDesc {SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
+                             {SkTileMode::kClamp, SkTileMode::kClamp},
+                             info};
+    gatherer->add(data.fAtlasTexture, samplerDesc);
+
+    builder->endBlock();
 }
 
 //--------------------------------------------------------------------------------------------------

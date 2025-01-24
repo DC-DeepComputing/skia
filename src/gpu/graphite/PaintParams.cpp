@@ -287,6 +287,8 @@ void PaintParams::handleDithering(const KeyContext& keyContext,
 void PaintParams::handleClipping(const KeyContext& keyContext,
                                  PaintParamsKeyBuilder* builder,
                                  PipelineDataGatherer* gatherer) const {
+    //**** is there a clean way to blend all this together with the atlas clip?
+
     if (!fAnalyticClip.isEmpty()) {
         float radius = fAnalyticClip.fRadius + 0.5f;
         // N.B.: Because the clip data is normally used with depth-based clipping,

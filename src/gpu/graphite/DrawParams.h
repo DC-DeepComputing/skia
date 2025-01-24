@@ -69,11 +69,13 @@ public:
          const Rect& shapeBounds,
          const SkIRect& scissor,
          const CircularRRectClip& analyticClip,
+         const AtlasClip& atlasClip,
          const SkShader* shader)
             : fDrawBounds(drawBounds)
             , fTransformedShapeBounds(shapeBounds)
             , fScissor(scissor)
             , fAnalyticClip(analyticClip)
+            , fAtlasClip(atlasClip)
             , fShader(shader) {}
 
     // Tight bounds of the draw, including any padding/outset for stroking and expansion due to
@@ -93,10 +95,17 @@ public:
     // If set, the shape's bounds are further used to clip the draw.
     const CircularRRectClip& analyticClip() const { return fAnalyticClip; }
 
+    // If set, the mask's bounds are further used to clip the draw.
+    const AtlasClip& atlasClip() const { return fAtlasClip; }
+
     // If set, the clip shader's output alpha is further used to clip the draw.
     const SkShader* shader() const { return fShader; }
 
     bool isClippedOut() const { return fDrawBounds.isEmptyNegativeOrNaN(); }
+
+    bool needsCoverage() const { return SkToBool(fShader) ||
+                                        !fAnalyticClip.isEmpty() ||
+                                        !fAtlasClip.isEmpty(); }
 
 private:
     // DrawList assumes the DrawBounds are correct for a given shape, transform, and style. They
@@ -105,6 +114,7 @@ private:
     Rect              fTransformedShapeBounds;
     SkIRect           fScissor;
     CircularRRectClip fAnalyticClip;
+    AtlasClip         fAtlasClip;
     const SkShader*   fShader;
 };
 
