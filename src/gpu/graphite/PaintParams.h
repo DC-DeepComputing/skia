@@ -8,11 +8,13 @@
 #ifndef skgpu_graphite_PaintParams_DEFINED
 #define skgpu_graphite_PaintParams_DEFINED
 
+#include <functional>  // std::function
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/KeyHelpers.h"
+#include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/geom/AnalyticClip.h"
-#include <functional>  // std::function
 
 class SkColorInfo;
 class SkShader;
@@ -100,10 +102,39 @@ private:
 
 using AddToKeyFn = std::function<void()>;
 
-void Blend(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
-           AddToKeyFn addBlendToKey, AddToKeyFn addSrcToKey, AddToKeyFn addDstToKey);
-void Compose(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*,
-             AddToKeyFn addInnerToKey, AddToKeyFn addOuterToKey);
+template <typename AddToBlendKeyT, typename AddSrcToKeyT, typename AddDstToKeyT>
+void Blend(const KeyContext& keyContext,
+           PaintParamsKeyBuilder* keyBuilder,
+           PipelineDataGatherer* gatherer,
+           const AddToBlendKeyT& addBlendToKey,
+           const AddSrcToKeyT& addSrcToKey,
+           const AddDstToKeyT& addDstToKey) {
+    BlendComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+    addSrcToKey();
+
+    addDstToKey();
+
+    addBlendToKey();
+
+    keyBuilder->endBlock();  // BlendComposeBlock
+}
+
+template <typename AddInnerToKeyT, typename AddOuterToKeyT>
+void Compose(const KeyContext& keyContext,
+             PaintParamsKeyBuilder* keyBuilder,
+             PipelineDataGatherer* gatherer,
+             const AddInnerToKeyT& addInnerToKey,
+             const AddOuterToKeyT& addOuterToKey) {
+    ComposeBlock::BeginBlock(keyContext, keyBuilder, gatherer);
+
+    addInnerToKey();
+
+    addOuterToKey();
+
+    keyBuilder->endBlock();  // ComposeBlock
+}
+
 // Add a fixed blend mode node for a specific SkBlendMode.
 void AddFixedBlendMode(const KeyContext&,
                        PaintParamsKeyBuilder*,
