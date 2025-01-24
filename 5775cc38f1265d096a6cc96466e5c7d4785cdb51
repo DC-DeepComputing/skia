@@ -65,6 +65,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e10e3df6_8b08528c",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T21:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2d56530_9351b3de",
+      "range": {
+        "startLine": 354,
+        "startChar": 14,
+        "endLine": 354,
+        "endChar": 74
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df8a1549_4e4d8d56",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T21:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c2d56530_9351b3de",
+      "range": {
+        "startLine": 354,
+        "startChar": 14,
+        "endLine": 354,
+        "endChar": 74
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5d76b1c_e918609d",
@@ -78,6 +126,30 @@
       "writtenOn": "2025-01-24T15:47:41Z",
       "side": 1,
       "message": "I know it is multiple other parts of the code, but probably worth saying again here this is need (vs being 0) since we add the kReturnQueue to fReusableRefMask",
+      "range": {
+        "startLine": 368,
+        "startChar": 49,
+        "endLine": 368,
+        "endChar": 79
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13e013f7_51c0b654",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T21:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5d76b1c_e918609d",
       "range": {
         "startLine": 368,
         "startChar": 49,
@@ -172,6 +244,30 @@
       "writtenOn": "2025-01-24T15:47:41Z",
       "side": 1,
       "message": "nit: match name above or change above, i.e. kPurgeableReturnMask",
+      "range": {
+        "startLine": 529,
+        "startChar": 27,
+        "endLine": 529,
+        "endChar": 51
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "371b74a9_3d6ace88",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T21:42:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a40b9a10_73a11968",
       "range": {
         "startLine": 529,
         "startChar": 27,
