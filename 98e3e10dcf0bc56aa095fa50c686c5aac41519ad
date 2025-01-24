@@ -50,6 +50,23 @@
       "message": "Is it perhaps because Skia auto-pulls the image from Chrome\u0027s third_party/blink/web_tests/images/resources/cicp_pq.png and so changes shouldn\u0027t be landed here?",
       "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2072cd5_2dcb5ae6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6765
+      },
+      "writtenOn": "2025-01-24T23:24:42Z",
+      "side": 1,
+      "message": "I notice now the \"Review-Enforcement\" requires 2 Google employees approve the CL.\nI\u0027m adding Robert as a second reviewer.",
+      "revId": "98e3e10dcf0bc56aa095fa50c686c5aac41519ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
