@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7352a29d_87e73eea",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T14:38:35Z",
+      "side": 1,
+      "message": "This is currently the only format in any backend that has a transfer color type different from `fColorType`, but is needed to resolve https://g-issues.chromium.org/issues/384866222.\n\nIt seems very plausible that a lot of these format configurations can be lifted into the base Caps, at which point it wouldn\u0027t be too much more work to generalize the `supportedRead|WritePixelsColorType` functions to instead return a conversion function that could simply return a swizzle operation in this case. For now, this is just bringing the dawn and metal backends up to speed with the vulkan backend.",
+      "range": {
+        "startLine": 696,
+        "startChar": 40,
+        "endLine": 696,
+        "endChar": 62
+      },
+      "revId": "c90b621f07b8661fdecea0ea50c1298caebe584d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
