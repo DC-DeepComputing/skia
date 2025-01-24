@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "20832f8f_35eda1a9",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2025-01-24T16:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcc4baa3_a9dc82e2",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 39
+      },
+      "revId": "49eebd1044355b8f04af54d0cb63a1b4ba2202b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3d9ab4f_e2057d6f",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-01-24T16:05:29Z",
       "side": 1,
       "message": "I think it would actually be better if we moved `Blend` and `Compose` to be defined inside `KeyHelpers.h`",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 40
+      },
+      "revId": "49eebd1044355b8f04af54d0cb63a1b4ba2202b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdd4d28a_7af07bf1",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2025-01-24T16:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3d9ab4f_e2057d6f",
       "range": {
         "startLine": 15,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "334a18b5_3caea6a2",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2025-01-24T16:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03ec70e9_0386565b",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 41
+      },
+      "revId": "49eebd1044355b8f04af54d0cb63a1b4ba2202b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "659d182e_6aff10ec",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-01-24T16:05:29Z",
       "side": 1,
       "message": "usually in Skia when we use templates with function parameters, we don\u0027t bother including const\u0026 around them in the parameter list, assuming that that doesn\u0027t actually impact the template inlining and performance you\u0027ve measured of course.",
+      "range": {
+        "startLine": 109,
+        "startChar": 11,
+        "endLine": 109,
+        "endChar": 16
+      },
+      "revId": "49eebd1044355b8f04af54d0cb63a1b4ba2202b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d62ea14_258c5715",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2025-01-24T16:52:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "659d182e_6aff10ec",
       "range": {
         "startLine": 109,
         "startChar": 11,
