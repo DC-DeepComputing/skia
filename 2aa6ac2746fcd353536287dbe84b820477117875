@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f135e168_354455f3",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 2
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T15:21:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "861932db_0e00495d",
+      "range": {
+        "startLine": 316,
+        "startChar": 40,
+        "endLine": 316,
+        "endChar": 61
+      },
+      "revId": "2aa6ac2746fcd353536287dbe84b820477117875",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "706a6932_ffde045f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-24T15:07:28Z",
       "side": 1,
       "message": "Should this be RGBA_8888 ?",
+      "range": {
+        "startLine": 949,
+        "startChar": 64,
+        "endLine": 949,
+        "endChar": 73
+      },
+      "revId": "2aa6ac2746fcd353536287dbe84b820477117875",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "286875d6_33647e1d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 949,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T15:21:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "706a6932_ffde045f",
       "range": {
         "startLine": 949,
         "startChar": 64,
