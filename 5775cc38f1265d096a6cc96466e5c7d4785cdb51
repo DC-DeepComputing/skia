@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edf91e4_7e340d8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-24T16:24:07Z",
+      "side": 1,
+      "message": "Outisde the remaining nits this LGTM.\n\nNicolette, I highly recommend you still thouroughly review this CL even make sure you understand everything that is going on. This Resource and ResourceCache stuff is very tricky and suibtle and the more people outside of Michael and I who understand it the better. Even if we land this CL before, please review it and ask as many questions as you need to understand what\u0027s happening.",
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a49cf247_2463bb10",
@@ -118,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "491a54e4_54320674",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-24T16:24:07Z",
+      "side": 1,
+      "message": "makes sense, forgot about CB refs here.",
+      "parentUuid": "faf977f4_7ea402ff",
+      "range": {
+        "startLine": 384,
+        "startChar": 68,
+        "endLine": 384,
+        "endChar": 100
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a40b9a10_73a11968",
@@ -178,6 +219,30 @@
       "side": 1,
       "message": "At the moment, this can\u0027t happen because we are still holding the `fReturnMutex`, and shutting down the cache has to also acquire the return mutex.\n\nIf we later switch to a lock-free return queue, this mutex would go away. At that point, we would need to atomically increase the usage ref and remove the return queue ref. Since we are only in this prepareForReturnToCache() function for non-shareable resources that are also only reusable when purgeable, it should mean that the ref value of the resource is 0 for CB ref and usage ref, 1 for return queue, and 1 for cache.\n\nWe could set usage to 1, zero the return queue, and then whether or not the cache was also shut down off thread, we\u0027d be fine. Eventually the usage ref would go back down and on the re-return it\u0027d see the cache was shutdown and it\u0027d delete itself.",
       "parentUuid": "ee5cb3ce_9fed87ee",
+      "range": {
+        "startLine": 249,
+        "startChar": 16,
+        "endLine": 249,
+        "endChar": 44
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdeec40a_fc6882a4",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-24T16:24:07Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8f97bf1a_3ac25962",
       "range": {
         "startLine": 249,
         "startChar": 16,
