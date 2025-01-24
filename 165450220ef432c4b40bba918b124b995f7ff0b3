@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "828ee2c2_88235a75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T15:17:51Z",
+      "side": 1,
+      "message": "Looping in Ben as he tends to have thoughts on these kinds of CLs.",
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cd7efe7_ec4bece7",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T15:17:51Z",
+      "side": 1,
+      "message": "I\u0027m not sure how this was working before without a cast to uint32_t, but `vrndnq_f32` would have the same problem since they round to an integral floating point value, not an actual bitwise integer that `pixel_round_as_RP` is meant to return.\n\nI\u0027m also not sure about wholesale disabling the use of a scalar function when it\u0027s supposedly available for an architecture that we are not otherwise supporting or testing. What is the context for `vrndnq_f32` being more supported than `vrndns_f32`?",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6adbdd8c_82ef849e",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T15:17:51Z",
+      "side": 1,
+      "message": "aside for Ben: given the prior comment about `vrndns_f32` \"matching\" `vcvtq_u32_f32`, I\u0027d think we would *not* want to be adding 0.5 here, since both functions are already supposedly doing round-to-nearest even.",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 27
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
