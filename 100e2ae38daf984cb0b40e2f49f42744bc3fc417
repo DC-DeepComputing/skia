@@ -91,6 +91,29 @@
       },
       "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71da870c_349557e7",
+        "filename": "include/core/SkColorType.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-24T18:58:26Z",
+      "side": 1,
+      "message": "8 ?",
+      "range": {
+        "startLine": 107,
+        "startChar": 21,
+        "endLine": 107,
+        "endChar": 22
+      },
+      "revId": "100e2ae38daf984cb0b40e2f49f42744bc3fc417",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
