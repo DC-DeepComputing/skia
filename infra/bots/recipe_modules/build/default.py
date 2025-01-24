@@ -96,7 +96,7 @@ def compile_fn(api, checkout_root, out_dir):
             cmd=['python3', skia_dir.joinpath('bin', 'fetch-ninja')],
             infra_step=True)
 
-  if os == 'Mac' or os == 'Mac10.15.7':
+  if os in ('Mac', 'Mac10.15.7', 'Mac14'):
     # XCode build is listed in parentheses after the version at
     # https://developer.apple.com/news/releases/, or on Wikipedia here:
     # https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
@@ -131,6 +131,9 @@ def compile_fn(api, checkout_root, out_dir):
           # test with the lower SDK.
           env['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
           args['ios_min_target'] = '"12.0"'
+        elif 'iOS18' in extra_tokens:
+          env['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
+          args['ios_min_target'] = '"18.0"'
         else:
           env['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
           args['ios_min_target'] = '"13.0"'
