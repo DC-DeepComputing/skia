@@ -206,7 +206,7 @@ var (
 			Path: "mac_toolchain",
 			// When this is updated, also update
 			// https://skia.googlesource.com/skcms.git/+/f1e2b45d18facbae2dece3aca673fe1603077846/infra/bots/gen_tasks.go#56
-			Version: "git_revision:e6f45bde6c5ee56924b1f905159b6a1a48ef25dd",
+			Version: "git_revision:0cb1e51344de158f72524c384f324465aebbcef2",
 		},
 	}
 
@@ -764,6 +764,9 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			} else {
 				task_os = "Mac"
 			}
+		} else if b.os("iOS18") {
+			ec = append([]string{task_os}, ec...)
+			task_os = "Mac14"
 		} else if b.matchOs("Win") {
 			task_os = "Win"
 		} else if b.compiler("GCC") {
@@ -828,6 +831,10 @@ func (b *taskBuilder) swarmDimensions() {
 	b.defaultSwarmDimensions()
 }
 
+func (b *taskBuilder) isNonLegacyiOS() bool {
+	return b.os("iOS18")
+}
+
 // androidDeviceInfo maps Android models (as in the "model" part of a task) to the device_type and
 // device_os Swarming dimensions.
 var androidDeviceInfos = map[string][]string{
@@ -889,6 +896,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			"Win11":       "Windows-11-26100.1742",
 			"Win2019":     DEFAULT_OS_WIN_GCE,
 			"iOS":         "iOS-13.3.1",
+			"iOS18":       "iOS-18.2.1",
 		}[os]
 		if !ok {
 			log.Fatalf("Entry %q not found in OS mapping.", os)
@@ -942,18 +950,26 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if b.extraConfig("HWASAN") {
 				d["android_hwasan_build"] = "1"
 			}
-		} else if b.os("iOS") {
-			device, ok := map[string]string{
+		} else if b.matchOs("iOS") {
+			device_type, ok := map[string]string{
 				"iPadMini4": "iPad5,1",
 				"iPhone7":   "iPhone9,1",
 				"iPhone8":   "iPhone10,1",
 				"iPhone11":  "iPhone12,1",
 				"iPadPro":   "iPad6,3",
 			}[b.parts["model"]]
-			if !ok {
-				log.Fatalf("Entry %q not found in iOS mapping.", b.parts["model"])
+			if ok {
+				d["device_type"] = device_type
+			} else {
+				device, ok := map[string]string{
+					"iPhone15Pro": "iPhone16,1",
+				}[b.parts["model"]]
+				if ok {
+					d["device"] = device
+				} else {
+					log.Fatalf("Entry %q not found in iOS mapping.", b.parts["model"])
+				}
 			}
-			d["device_type"] = device
 		} else if b.cpu() || b.extraConfig("CanvasKit", "Docker", "SwiftShader") {
 			modelMapping, ok := map[string]map[string]string{
 				"AppleM1": {
@@ -1112,6 +1128,8 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			// Target the AMDRyzen 5 4500U machines, as they are beefy and we have
 			// 19 of them, and they are setup to compile.
 			d["gpu"] = "1002:1636"
+		} else if d["os"] == "Mac-14.7" {
+			// Nothing to do?
 		} else {
 			d["gpu"] = "none"
 		}
@@ -1266,10 +1284,14 @@ func (b *taskBuilder) maybeAddIosDevImage() {
 				asset = "ios-dev-image-13.5"
 			case "13.6":
 				asset = "ios-dev-image-13.6"
+			case "18.2.1":
+				// Newer iOS versions don't use a pre-packaged dev image.
 			default:
 				log.Fatalf("Unable to determine correct ios-dev-image asset for %s. If %s is a new iOS release, you must add a CIPD package containing the corresponding iOS dev image; see ios-dev-image-11.4 for an example.", b.Name, m[1])
 			}
-			b.asset(asset)
+			if asset != "" {
+				b.asset(asset)
+			}
 			break
 		} else if strings.Contains(dim, "iOS") {
 			log.Fatalf("Must specify iOS version for %s to obtain correct dev image; os dimension is missing version: %s", b.Name, dim)
@@ -1370,6 +1392,12 @@ func (b *jobBuilder) compile() string {
 					b.usesBazel("mac_x64")
 					b.attempts(1)
 				}
+			} else if b.isNonLegacyiOS() {
+				b.cipd(CIPD_PKGS_XCODE...)
+				b.Spec.Caches = append(b.Spec.Caches, &specs.Cache{
+					Name: "xcode",
+					Path: "cache/Xcode.app",
+				})
 			}
 		})
 	}
@@ -1786,6 +1814,13 @@ func (b *jobBuilder) dm() {
 				Version: "version:20230913",
 			})
 		}
+		if b.isNonLegacyiOS() {
+			b.cipd(CIPD_PKGS_XCODE...)
+			b.Spec.Caches = append(b.Spec.Caches, &specs.Cache{
+				Name: "xcode",
+				Path: "cache/Xcode.app",
+			})
+		}
 		b.commonTestPerfAssets()
 		if b.matchExtraConfig("Lottie") {
 			b.asset("lottie-samples")
@@ -2012,6 +2047,13 @@ func (b *jobBuilder) perf() {
 			b.timeout(6 * time.Hour)
 		} else if b.matchOs("Mac11") {
 			b.timeout(30 * time.Minute)
+		}
+		if b.isNonLegacyiOS() {
+			b.cipd(CIPD_PKGS_XCODE...)
+			b.Spec.Caches = append(b.Spec.Caches, &specs.Cache{
+				Name: "xcode",
+				Path: "cache/Xcode.app",
+			})
 		}
 
 		if b.extraConfig("LottieWeb", "SkottieWASM") {
