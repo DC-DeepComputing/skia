@@ -108,6 +108,7 @@ void Precompile(PrecompileContext* precompileContext,
     ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
     const Caps* caps = precompileContext->priv().caps();
 
+    //$$
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
     for (const RenderPassProperties& rpp : renderPassProperties) {

@@ -10,6 +10,10 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#include "include/gpu/graphite/precompile/BlobOStuff.h"
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(&fSingleOwner)
@@ -36,5 +40,26 @@ void PrecompileContext::purgePipelinesNotUsedInMs(std::chrono::milliseconds msNo
     fSharedContext->globalCache()->purgePipelinesNotUsedSince(purgeTime);
 }
 
+
+bool PrecompileContext::androidSpecificPrecompile(sk_sp<SkData> androidStyleKey) {
+    //$$
+    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+
+    std::unique_ptr<BlobOStuff> blob = BlobOStuff::MakeFromData(androidStyleKey.get(),
+                                                                this->fSharedContext->shaderCodeDictionary(),
+                                                                this->fSharedContext->caps());
+
+    sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
+            rtEffectDict.get(),
+            blob->gpd(),
+            blob->rpd(),
+            PipelineCreationFlags::kForPrecompilation);
+    if (!pipeline) {
+        SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+        return false;
+    }
+
+    return true;
+}
 
 } // namespace skgpu::graphite
