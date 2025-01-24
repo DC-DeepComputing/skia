@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c2d56530_9351b3de",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T16:13:52Z",
+      "side": 1,
+      "message": "Yes, I think that\u0027s a good addition.",
+      "parentUuid": "a49cf247_2463bb10",
+      "range": {
+        "startLine": 354,
+        "startChar": 14,
+        "endLine": 354,
+        "endChar": 74
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5d76b1c_e918609d",
         "filename": "src/gpu/graphite/Resource.h",
         "patchSetId": 14
@@ -72,6 +96,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "faf977f4_7ea402ff",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 384,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T16:13:52Z",
+      "side": 1,
+      "message": "That is what it\u0027s doing. The code asserts this in `processReturnedResource()` after it\u0027s unref\u0027ed the return queue. But for resources that are reusable after just usage refs go to zero, we can then later have a CB ref drop to 0 and re-return it. Since we unreffed the return queue just prior, there\u0027s a chance it goes back into the return queue from the CB ref dropping and we don\u0027t want that to impact the assertion.",
+      "parentUuid": "94daf67a_443d4e81",
+      "range": {
+        "startLine": 384,
+        "startChar": 68,
+        "endLine": 384,
+        "endChar": 100
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a40b9a10_73a11968",
         "filename": "src/gpu/graphite/Resource.h",
         "patchSetId": 14
@@ -106,6 +154,30 @@
       "writtenOn": "2025-01-24T15:47:41Z",
       "side": 1,
       "message": "since we\u0027re in a cache function right now (and resource-\u003ecache() \u003d\u003d this above) is it safe to assume the cache ref is valid. And thus there is no risk that this call could delete the resoruce? What happens if on the cache thread the cache shuts itself down right before this unrefReturnQueue() is called?",
+      "range": {
+        "startLine": 249,
+        "startChar": 16,
+        "endLine": 249,
+        "endChar": 44
+      },
+      "revId": "5775cc38f1265d096a6cc96466e5c7d4785cdb51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f97bf1a_3ac25962",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-24T16:13:52Z",
+      "side": 1,
+      "message": "At the moment, this can\u0027t happen because we are still holding the `fReturnMutex`, and shutting down the cache has to also acquire the return mutex.\n\nIf we later switch to a lock-free return queue, this mutex would go away. At that point, we would need to atomically increase the usage ref and remove the return queue ref. Since we are only in this prepareForReturnToCache() function for non-shareable resources that are also only reusable when purgeable, it should mean that the ref value of the resource is 0 for CB ref and usage ref, 1 for return queue, and 1 for cache.\n\nWe could set usage to 1, zero the return queue, and then whether or not the cache was also shut down off thread, we\u0027d be fine. Eventually the usage ref would go back down and on the re-return it\u0027d see the cache was shutdown and it\u0027d delete itself.",
+      "parentUuid": "ee5cb3ce_9fed87ee",
       "range": {
         "startLine": 249,
         "startChar": 16,
