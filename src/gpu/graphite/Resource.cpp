@@ -26,11 +26,11 @@ uint32_t create_unique_id() {
 Resource::Resource(const SharedContext* sharedContext,
                    Ownership ownership,
                    size_t gpuMemorySize,
-                   bool reusableRequiresPurgeable)
-        : fRefs(RefIncrement(RefType::kUsage)) // Start with 1 usage ref and no others
-        , fReusableRefMask(
-                (reusableRequiresPurgeable ? PurgeableMask() : RefMask(RefType::kUsage)) |
-                RefMask(RefType::kReturnQueue))
+                   bool commandBufferRefsAsUsageRefs)
+        : fUsageRefCnt(1)
+        , fCommandBufferRefCnt(0)
+        , fCacheRefCnt(0)
+        , fCommandBufferRefsAsUsageRefs(commandBufferRefsAsUsageRefs)
         , fSharedContext(sharedContext)
         , fOwnership(ownership)
         , fUniqueID(create_unique_id())
@@ -41,7 +41,6 @@ Resource::Resource(const SharedContext* sharedContext,
     // opposed to a resource having its budget and shareable state set via registerWithCache()).
     SkASSERT(fBudgeted == Budgeted::kNo);
     SkASSERT(fShareable == Shareable::kNo);
-    SkASSERT(this->isUniquelyHeld());
 }
 
 Resource::~Resource() {
@@ -53,33 +52,34 @@ void Resource::registerWithCache(sk_sp<ResourceCache> returnCache,
                                  const GraphiteResourceKey& key,
                                  Budgeted initialBudgetedState,
                                  Shareable initialShareableState) {
-    // ResourceCache should be registered before the Resource escapes the ResourceProvider, e.g. it
-    // has a single usage ref and no others.
-    SkASSERT(this->isUniquelyHeld());
     SkASSERT(!fReturnCache);
     SkASSERT(returnCache);
 
-    fKey = key;
     fReturnCache = std::move(returnCache);
-
-    this->addRef<RefType::kCache>();
-
+    fKey = key;
     this->setBudgeted(initialBudgetedState);
     this->setShareable(initialShareableState);
 }
 
-bool Resource::returnToCache() const {
+bool Resource::notifyARefIsZero(LastRemovedRef removedRef) const {
     // No resource should have been destroyed if there was still any sort of ref on it.
     SkASSERT(!this->wasDestroyed());
 
-    // Not all resources are registered with the cache, but returnToCache() should only be called
-    // when they have been registered.
-    SkASSERT(fReturnCache);
-    // In order to be returned, the Resource's "return queue" ref bit must be set. Its cache ref
-    // may not be set if the cache has been shut down (but `fReturnCache` remains valid and just
-    // returns false to reject the resource return).
-    SkASSERT(this->hasReturnQueueRef());
-    return fReturnCache->returnResource(const_cast<Resource*>(this));
+    Resource* mutableThis = const_cast<Resource*>(this);
+
+    // TODO: We have not switched all resources to use the ResourceCache yet. Once we do we should
+    // be able to assert that we have an fCacheReturn.
+    // SkASSERT(fReturnCache);
+    if (removedRef != LastRemovedRef::kCache &&
+        fReturnCache &&
+        fReturnCache->returnResource(mutableThis, removedRef)) {
+        return false;
+    }
+
+    if (!this->hasAnyRefs()) {
+        return true;
+    }
+    return false;
 }
 
 void Resource::internalDispose() {
@@ -92,8 +92,14 @@ void Resource::internalDispose() {
     delete this;
 }
 
-void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
-                                    bool inPurgeableQueue) const {
+bool Resource::isPurgeable() const {
+    // For being purgeable we don't care if there are cacheRefs on the object since the cacheRef
+    // will always be greater than 1 since we add one on insert and don't remove that ref until
+    // the Resource is removed from the cache.
+    return !(this->hasUsageRef() || this->hasCommandBufferRef());
+}
+
+void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     if (this->ownership() == Ownership::kWrapped && !traceMemoryDump->shouldDumpWrappedObjects()) {
         return;
     }
@@ -118,7 +124,7 @@ void Resource::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
     traceMemoryDump->dumpNumericValue(resourceName.c_str(), "size", "bytes", size);
     traceMemoryDump->dumpStringValue(resourceName.c_str(), "type", this->getResourceType());
     traceMemoryDump->dumpStringValue(resourceName.c_str(), "label", this->getLabel().c_str());
-    if (inPurgeableQueue) {
+    if (this->isPurgeable()) {
         traceMemoryDump->dumpNumericValue(resourceName.c_str(), "purgeable_size", "bytes", size);
     }
     if (traceMemoryDump->shouldDumpWrappedObjects()) {

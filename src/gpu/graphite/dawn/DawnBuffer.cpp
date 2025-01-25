@@ -181,13 +181,13 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
         : Buffer(sharedContext,
                  size,
                  Protected::kNo, // Dawn doesn't support protected memory
-                 /*reusableRequiresPurgeable=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite)
+                 /*commandBufferRefsAsUsageRefs=*/buffer.GetUsage() & wgpu::BufferUsage::MapWrite)
         , fBuffer(std::move(buffer)) {
     fMapPtr = mappedAtCreationPtr;
 }
 
 #if defined(__EMSCRIPTEN__)
-bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
+void DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
     // This function is only useful for Emscripten where we have to pre-map the buffer
     // once it is returned to the cache.
     SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
@@ -196,16 +196,17 @@ bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
     // way of distinguishing a buffer that is mappable for writing from one mappable for reading.
     // We only need to re-map the former.
     if (!(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite)) {
-        return false;
+        return;
     }
     // We cannot start an async map while the GPU is still using the buffer. We asked that
-    // our Resource not become reusable until it was purgeable (no outstanding CPU or GPU refs)
-    SkASSERT(this->isPurgeable());
+    // our Resource convert command buffer refs to usage refs. So we should never have any
+    // command buffer refs.
+    SkASSERT(!this->debugHasCommandBufferRef());
     // Note that the map state cannot change on another thread when we are here. We got here
     // because there were no UsageRefs on the buffer but async mapping holds a UsageRef until it
     // completes.
     if (this->isMapped()) {
-        return false;
+        return;
     }
     takeRef();
     this->asyncMap([](void* ctx, skgpu::CallbackResult result) {
@@ -215,7 +216,6 @@ bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
                        }
                    },
                    this);
-    return true;
 }
 
 void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {

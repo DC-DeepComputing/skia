@@ -39,11 +39,11 @@ protected:
     Buffer(const SharedContext* sharedContext,
            size_t size,
            Protected isProtected,
-           bool reusableRequiresPurgeable = false)
+           bool commandBufferRefsAsUsageRefs = false)
             : Resource(sharedContext,
                        Ownership::kOwned,
                        size,
-                       reusableRequiresPurgeable)
+                       /*commandBufferRefsAsUsageRefs=*/commandBufferRefsAsUsageRefs)
             , fSize(size)
             , fIsProtected(isProtected) {}
 
