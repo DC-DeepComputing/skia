@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be60dbb_dccfaa09",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2500,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "nit: unindent this 8 spaces or so",
+      "range": {
+        "startLine": 2500,
+        "startChar": 19,
+        "endLine": 2500,
+        "endChar": 20
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdc44617_6e56c094",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "Of note, one can pass in a normal JS array [0, text.length] and we\u0027ll malloc an array for the user. One only needs to go through the Malloc here if they want to re-use the memory frame-to-frame or something like that.\nIf you want to simplify the example here, we can just use JS arrays. Your choice.",
+      "range": {
+        "startLine": 454,
+        "startChar": 38,
+        "endLine": 454,
+        "endChar": 44
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee7053a0_3788b65a",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "What does this 0 mean? Is this the start index and the text.length is the end index?",
+      "range": {
+        "startLine": 455,
+        "startChar": 40,
+        "endLine": 455,
+        "endChar": 41
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cd33521_82c4fd04",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "The example should get the typeface from fontMgr - the default font only exists if CanvasKit was compiled in with a monospace font; it\u0027s not recommended for a production use.",
+      "range": {
+        "startLine": 492,
+        "startChar": 52,
+        "endLine": 492,
+        "endChar": 60
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91e5600c_f951daf4",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "Let\u0027s delete the others here and the TODO",
+      "range": {
+        "startLine": 474,
+        "startChar": 15,
+        "endLine": 474,
+        "endChar": 18
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9acae3cd_642043c0",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T14:31:57Z",
+      "side": 1,
+      "message": "nit: less indentation here",
+      "range": {
+        "startLine": 1272,
+        "startChar": 20,
+        "endLine": 1272,
+        "endChar": 21
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
