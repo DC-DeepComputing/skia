@@ -39,6 +39,21 @@ struct SK_API SkColorSpacePrimaries {
     bool toXYZD50(skcms_Matrix3x3* toXYZD50) const;
 };
 
+SK_API bool operator==(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b);
+
+SK_API bool operator!=(const SkColorSpacePrimaries& a, const SkColorSpacePrimaries& b);
+
+namespace skia {
+
+// Display SkColorSpacePrimaries as a string.
+SK_API std::string SkColorSpacePrimariesToString(const SkColorSpacePrimaries& primaries);
+
+// Given a matrix that transforms to XYZD50, compute the primaries with a D65
+// white point that would produce this matrix.
+SK_API SkColorSpacePrimaries GetD65PrimariesFromToXYZD50Matrix(const skcms_Matrix3x3& m);
+
+}  // namespace skia
+
 namespace SkNamedPrimaries {
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -111,6 +126,49 @@ enum class CicpId : uint8_t {
     kITU_T_H273_Value22 = 22,
     // Values 23-255 are reserved.
 };
+
+////////////////////////////////////////////////////////////////////////////////
+// CSS Color Level 4 predefined and xyz color spaces.
+
+// 'srgb'
+static constexpr SkColorSpacePrimaries kSRGB = SkNamedPrimaries::kRec709;
+
+// 'display-p3' (and also 'p3' as a color gamut).
+static constexpr SkColorSpacePrimaries kP3 = SkNamedPrimaries::kSMPTE_EG_432_1;
+
+// 'a98-rgb'
+static constexpr SkColorSpacePrimaries kA98RGB = {
+        0.64f, 0.33f, 0.21f, 0.71f, 0.15f, 0.06f, 0.3127f, 0.3290f};
+
+// 'prophoto-rgb'
+static constexpr SkColorSpacePrimaries kProPhotoRGB = {
+        0.7347f, 0.2653f, 0.1596f, 0.8404f, 0.0366f, 0.0001f, 0.34567f, 0.35850f};
+
+// 'rec2020' (as both a predefined color space and color gamut).
+// The value kRec2020 is already defined above.
+
+// 'xyzd50'
+static constexpr SkColorSpacePrimaries kXYZD50 = {
+        1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.34567f, 0.35850f};
+
+// 'xyz' and 'xyzd65'
+static constexpr SkColorSpacePrimaries kXYZD65 = {
+        1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.3127f, 0.3290f};
+
+////////////////////////////////////////////////////////////////////////////////
+// Additional helper color primaries.
+
+// Invalid primaries, initialized to zero.
+static constexpr SkColorSpacePrimaries kInvalid = {0};
+
+// The GenericRGB space on macOS.
+static constexpr SkColorSpacePrimaries kAppleGenericRGB = {
+        0.63002f, 0.34000f, 0.29505f, 0.60498f, 0.15501f, 0.07701f, 0.3127f, 0.3290f};
+
+// Primaries where the colors are rotated and the gamut is huge. Good for
+// testing.
+static constexpr SkColorSpacePrimaries kWideGamutColorSpin = {
+        0.01f, 0.98f, 0.01f, 0.01f, 0.98f, 0.01f, 0.3127f, 0.3290f};
 
 }  // namespace SkNamedPrimaries
 
@@ -207,6 +265,40 @@ enum class CicpId : uint8_t {
     kHLG = 18,
     // Values 19-255 are reserved.
 };
+
+////////////////////////////////////////////////////////////////////////////////
+// CSS Color Level 4 predefined color spaces.
+
+// 'display-p3'
+static constexpr skcms_TransferFunction kDisplayP3 = SkNamedTransferFn::kSRGB;
+
+// 'a98-rgb'
+static constexpr skcms_TransferFunction kA98RGB = {2.2f, 1.};
+
+// 'prophoto-rgb'
+static constexpr skcms_TransferFunction kProPhotoRGB = {1.8f, 1.};
+
+////////////////////////////////////////////////////////////////////////////////
+// Additional helper transfer functions.
+
+// Invalid primaries, initialized to zero.
+static constexpr skcms_TransferFunction kInvalid = {0};
+
+// The interpretation of kRec709 that is produced by accelerated video decode
+// on macOS.
+static constexpr skcms_TransferFunction kRec709Apple = {1.961f, 1.};
+
+// If the sRGB transfer function is f(x), then this transfer function is
+// f(x * 1023 / 510). This function gives 510 values to SDR content, and can
+// reach a maximum brightnes of 4.99x SDR brightness.
+static constexpr skcms_TransferFunction kSRGBExtended1023Over510 = {
+        SkNamedTransferFn::kSRGB.g,
+        SkNamedTransferFn::kSRGB.a * 1023 / 510,
+        SkNamedTransferFn::kSRGB.b,
+        SkNamedTransferFn::kSRGB.c * 1023 / 510,
+        SkNamedTransferFn::kSRGB.d * 1023 / 510,
+        SkNamedTransferFn::kSRGB.e,
+        SkNamedTransferFn::kSRGB.f};
 
 }  // namespace SkNamedTransferFn
 
