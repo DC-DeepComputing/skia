@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42b7917d_880d0c3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-27T18:22:16Z",
+      "side": 1,
+      "message": "PTAL. My thought is we may end up with two options for the NonMSAAClip shader: one that\u0027s just the analytic clip, and one that\u0027s both analytic and atlas. That decision would be made in KeyHelpers. On a platform that supports MSAA we\u0027d only get the analytic clip version of the shader so it would be fast with no combinatorial explosion.",
+      "revId": "0ece9df0ac12e1b96ea3515fe9f2ddacf9324a55",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
