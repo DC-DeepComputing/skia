@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a37df0b_b714f13c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca938df3_a2c7da26",
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1be60dbb_dccfaa09",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-01-27T14:31:57Z",
       "side": 1,
       "message": "nit: unindent this 8 spaces or so",
+      "range": {
+        "startLine": 2500,
+        "startChar": 19,
+        "endLine": 2500,
+        "endChar": 20
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d61ccedb_7dfc168f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2500,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1be60dbb_dccfaa09",
       "range": {
         "startLine": 2500,
         "startChar": 19,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "22b797ca_c4e25cb7",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fdc44617_6e56c094",
+      "range": {
+        "startLine": 454,
+        "startChar": 38,
+        "endLine": 454,
+        "endChar": 44
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee7053a0_3788b65a",
@@ -77,6 +143,30 @@
       "writtenOn": "2025-01-27T14:31:57Z",
       "side": 1,
       "message": "What does this 0 mean? Is this the start index and the text.length is the end index?",
+      "range": {
+        "startLine": 455,
+        "startChar": 40,
+        "endLine": 455,
+        "endChar": 41
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99736358_11eb692b",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 455,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Yes",
+      "parentUuid": "ee7053a0_3788b65a",
       "range": {
         "startLine": 455,
         "startChar": 40,
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ff8bb0_a8a302d0",
+        "filename": "modules/canvaskit/npm_build/extra.html",
+        "patchSetId": 1
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cd33521_82c4fd04",
+      "range": {
+        "startLine": 492,
+        "startChar": 52,
+        "endLine": 492,
+        "endChar": 60
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "91e5600c_f951daf4",
@@ -133,6 +247,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "36e0391a_db7a7f9b",
+        "filename": "modules/canvaskit/paragraph_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 474,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91e5600c_f951daf4",
+      "range": {
+        "startLine": 474,
+        "startChar": 15,
+        "endLine": 474,
+        "endChar": 18
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9acae3cd_642043c0",
@@ -146,6 +284,30 @@
       "writtenOn": "2025-01-27T14:31:57Z",
       "side": 1,
       "message": "nit: less indentation here",
+      "range": {
+        "startLine": 1272,
+        "startChar": 20,
+        "endLine": 1272,
+        "endChar": 21
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d97047f_61354d12",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T15:42:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9acae3cd_642043c0",
       "range": {
         "startLine": 1272,
         "startChar": 20,
