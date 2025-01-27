@@ -21,6 +21,8 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTPin.h"
 #include "include/private/base/SkTo.h"
+#include "skia/ext/skcolorspace_primaries.h"
+#include "skia/ext/skcolorspace_trfn.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkFloatBits.h"
 #include "src/base/SkVx.h"
@@ -641,6 +643,22 @@ static sk_sp<SkColorSpace> intermediate_color_space(SkGradientShader::Interpolat
             // part of the conversion is a matrix multiply, which could be absorbed into the
             // color space xform.
             return SkColorSpace::MakeSRGBLinear();
+
+        // These rectangular color spaces have their own transfer curves.
+        case SkGradientShader::Interpolation::ColorSpace::kDisplayP3:
+            return SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kDisplayP3);
+
+        case SkGradientShader::Interpolation::ColorSpace::kRec2020:
+            return SkColorSpace::MakeRGB(SkNamedTransferFn::kRec2020, SkNamedGamut::kRec2020);
+
+        case SkGradientShader::Interpolation::ColorSpace::kProphotoRGB:
+            static skcms_Matrix3x3 lin_proPhoto_to_XYZ_D50;
+            SkNamedPrimariesExt::kProPhotoRGB.toXYZD50(&lin_proPhoto_to_XYZ_D50);
+            return SkColorSpace::MakeRGB(SkNamedTransferFnExt::kProPhotoRGB,
+                                         lin_proPhoto_to_XYZ_D50);
+
+        case SkGradientShader::Interpolation::ColorSpace::kA98RGB:
+            return SkColorSpace::MakeRGB(SkNamedTransferFnExt::kA98RGB, SkNamedGamut::kAdobeRGB);
     }
     SkUNREACHABLE;
 }
