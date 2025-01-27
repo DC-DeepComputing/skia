@@ -139,6 +139,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "154cff2e_10c8b2a6",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-27T19:20:08Z",
+      "side": 1,
+      "message": "Is there a reason you aren\u0027t able to update your compiler on this platform?",
+      "parentUuid": "1d44cd62_cc2f4d48",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
@@ -174,6 +198,30 @@
       "side": 1,
       "message": "uint32x4_t vcvtq_u32_f32(float32x4_t a): Floating-point Convert to Unsigned fixed-point, rounding toward Zero (vector).\n\nRound to even is `vcvtnq_u32_f32`? Do we want to use that for consistency, or is there some other issue with using it?",
       "parentUuid": "6adbdd8c_82ef849e",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 27
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "110c984a_280d90db",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-27T19:20:08Z",
+      "side": 1,
+      "message": "Ah, I\u0027d missed the `n` stuck in there, so maybe this is all fine (and actually documented as intended behavior above this function). `vcvtnq_u32_f32` isn\u0027t supported on ARM v7 so we can\u0027t just switch to that instead.",
+      "parentUuid": "c4e0e4c6_6070ae00",
       "range": {
         "startLine": 126,
         "startChar": 19,
