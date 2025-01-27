@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbedc48f_1fecec1f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1769,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T20:35:33Z",
+      "side": 1,
+      "message": "I thought alpha was always opaque for this format? Can\u0027t we just do `*a \u003d 1.f`?\n\nBy the spec \"Bits 30 and 31 are padding, and their value is 0.\" so this is always 0? That\u0027s the opposite of what I would expect for opaque.\n\nLooking elsewhere in the file, we seem to be storing alpha to the padding bits for 1010102_xr also. Are we out of spec?",
+      "range": {
+        "startLine": 1769,
+        "startChar": 56,
+        "endLine": 1769,
+        "endChar": 61
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7c567b1_7d8a57b7",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T20:35:33Z",
+      "side": 1,
+      "message": "I kind of like what you did in the other CL with (0+6) and (16+6) instead of 6 and 22. Consider doing it again here.",
+      "range": {
+        "startLine": 1776,
+        "startChar": 29,
+        "endLine": 1776,
+        "endChar": 30
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "287cb4e7_5cbabd5f",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3092,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T20:35:33Z",
+      "side": 1,
+      "message": "See comment above about just setting this to 0.\n\nhttps://developer.apple.com/documentation/metal/mtlpixelformat/bgr10_xr",
+      "range": {
+        "startLine": 3092,
+        "startChar": 13,
+        "endLine": 3092,
+        "endChar": 21
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
