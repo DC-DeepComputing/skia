@@ -16,6 +16,7 @@
 #include "include/private/base/SkCPUTypes.h"
 #include "src/core/SkBlitRow.h"
 #include "src/core/SkBlitter.h"
+#include "src/core/SkDrawTypes.h"
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
@@ -86,6 +87,7 @@ private:
 
     using INHERITED = SkRasterBlitter;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkARGB32_Blitter)
 
 class SkARGB32_Opaque_Blitter : public SkARGB32_Blitter {
 public:
@@ -98,6 +100,7 @@ public:
 private:
     using INHERITED = SkARGB32_Blitter;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkARGB32_Opaque_Blitter)
 
 class SkARGB32_Black_Blitter : public SkARGB32_Opaque_Blitter {
 public:
@@ -110,6 +113,7 @@ public:
 private:
     using INHERITED = SkARGB32_Opaque_Blitter;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkARGB32_Black_Blitter)
 
 class SkARGB32_Shader_Blitter : public SkShaderBlitter {
 public:
@@ -133,6 +137,7 @@ private:
 
     using INHERITED = SkShaderBlitter;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkARGB32_Shader_Blitter)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

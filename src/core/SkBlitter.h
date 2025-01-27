@@ -17,6 +17,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkAutoMalloc.h"
+#include "src/core/SkDrawTypes.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -28,7 +29,6 @@ class SkPixmap;
 class SkShader;
 class SkSurfaceProps;
 struct SkMask;
-enum class SkDrawCoverage : bool;
 
 /** SkBlitter and its subclasses are responsible for actually writing pixels
     into memory. Besides efficiency, they handle clipping and antialiasing.
@@ -175,6 +175,7 @@ public:
     void blitMask(const SkMask&, const SkIRect& clip) override;
     bool isNullBlitter() const override;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkNullBlitter);
 
 /** Wraps another (real) blitter, and ensures that the real blitter is only
     called with coordinates that have been clipped by the specified clipRect.

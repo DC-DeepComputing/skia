@@ -52,7 +52,7 @@ private:
     // Owned by fAlloc, which will handle the delete.
     SkBlitter* fBlitter = nullptr;
 
-    SkSTArenaAlloc<kSkBlitterContextSize> fAlloc;
+    SkSTArenaAlloc<kSkAutoBlitterMaxSize> fAlloc;
 };
 
 #endif

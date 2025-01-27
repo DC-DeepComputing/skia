@@ -184,6 +184,7 @@ private:
 
     using INHERITED = SkBlitter;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkA8_Blitter)
 
 SkA8_Blitter::SkA8_Blitter(const SkPixmap& device,
                            const SkPaint& paint) : fDevice(device) {

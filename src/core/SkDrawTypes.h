@@ -18,4 +18,11 @@ enum class SkDrawCoverage : bool {
 // A good size for creating shader contexts on the stack.
 constexpr size_t kSkBlitterContextSize = 3332;
 
+// The maximum size of a blitter that could be created with
+// SkAutoBlitterChoose
+constexpr size_t kSkAutoBlitterMaxSize = 1500;
+
+#define SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(x) \
+static_assert(sizeof(x) <= kSkAutoBlitterMaxSize);
+
 #endif

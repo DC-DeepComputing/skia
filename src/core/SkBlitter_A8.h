@@ -12,6 +12,7 @@
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRefCnt.h"
 #include "src/core/SkBlitter.h"
+#include "src/core/SkDrawTypes.h"
 
 #include <cstdint>
 
@@ -22,7 +23,6 @@ class SkShader;
 class SkSurfaceProps;
 struct SkIRect;
 struct SkMask;
-enum class SkDrawCoverage : bool;
 
 class SkA8_Coverage_Blitter : public SkBlitter {
 public:
@@ -36,6 +36,7 @@ public:
 private:
     const SkPixmap fDevice;
 };
+SK_ENSURE_BLITTER_WOULD_FIT_ON_STACK(SkA8_Coverage_Blitter);
 
 SkBlitter* SkA8Blitter_Choose(const SkPixmap& dst,
                               const SkMatrix& ctm,
