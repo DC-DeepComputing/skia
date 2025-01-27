@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "713834c1_23e63a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-27T19:22:45Z",
+      "side": 1,
+      "message": "Clang-tidy fix means I need another +1, sorry.",
+      "revId": "3dc7a9df84c8c04d801b683d53f9dd5beac5b534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
