@@ -16,6 +16,46 @@
       "message": "The CTS test added in ag/31451537 exercises this case.",
       "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03141d0f_889050b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-27T19:01:15Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7de517_eae578de",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 5920
+      },
+      "writtenOn": "2025-01-27T19:01:15Z",
+      "side": 1,
+      "message": "`clap` is clean aperture unless this is referring to something else? Same goes for the commit message.",
+      "range": {
+        "startLine": 342,
+        "startChar": 40,
+        "endLine": 342,
+        "endChar": 53
+      },
+      "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
