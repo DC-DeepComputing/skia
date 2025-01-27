@@ -1306,7 +1306,8 @@ bool Type::checkForOutOfRangeLiteral(const Context& context, const Expression& e
     if (baseType.isNumber()) {
         // Replace constant expressions with their corresponding values.
         const Expression* valueExpr = ConstantFolder::GetConstantValueForVariable(expr);
-        if (valueExpr->supportsConstantValues()) {
+        // We can't get a slotCount for unsized arrays.
+        if (valueExpr->supportsConstantValues() && !valueExpr->type().isUnsizedArray()) {
             // Iterate over every constant subexpression in the value.
             int numSlots = valueExpr->type().slotCount();
             for (int slot = 0; slot < numSlots; ++slot) {
