@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f2b3de9_e0045ba1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-27T20:59:46Z",
+      "side": 1,
+      "message": "drive-by nit: the rest of the code avoids runtime division for perf reasons, probably a good idea to do the same\n\n`* (1/510.f)`",
+      "range": {
+        "startLine": 1766,
+        "startChar": 46,
+        "endLine": 1766,
+        "endChar": 53
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dbedc48f_1fecec1f",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 3
