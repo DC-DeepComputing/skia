@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4112519e_9d0495da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-01-27T18:01:12Z",
+      "side": 1,
+      "message": "I promise I will turn up my CLion settings to avoid all these indents problems.",
+      "revId": "95fef9df7e114b5de2a171b02b559e948fc86eb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
