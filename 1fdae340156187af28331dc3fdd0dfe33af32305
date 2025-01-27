@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e93977c4_481896e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-27T17:17:20Z",
+      "side": 1,
+      "message": "The CTS test added in ag/31451537 exercises this case.",
+      "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
