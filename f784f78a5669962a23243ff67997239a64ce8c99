@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a8d2f62_ec17a845",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-27T17:08:17Z",
+      "side": 0,
+      "message": "float32_t vrndns_f32(float32_t a): Floating-point Round to Integral, to nearest with ties to even (vector).",
+      "range": {
+        "startLine": 125,
+        "startChar": 11,
+        "endLine": 125,
+        "endChar": 21
+      },
+      "revId": "f784f78a5669962a23243ff67997239a64ce8c99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -91,6 +91,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "57a4ab2b_be921808",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-27T17:08:17Z",
+      "side": 1,
+      "message": "float32x4_t vrndnq_f32(float32x4_t a): Floating-point Round to Integral, to nearest with ties to even (vector). \n\nIt looks like the only difference here is that while `vrndns_f32` is an intrisic documented by ARM, there is no instruction for it.\n\nI do need to point out that the complaint here is that `vrndns_f32` isn\u0027t available in GCC 8.3.0, however it is in GCC 8.5.0 (GCC commmit 852423cd68b403d09a14f6436080243c609a57a8). It seems rather unfotunate to make this kind of change when a minor version compiler update fixed this issue (and presumably many more). That being said, I suppose we\u0027ve been trying to support Firefox which currently claims to support GCC 8.1, it seems strange that this issue hasn\u0027t come up there.\n\nNote that GCC 8 was the first to support C++17 and we\u0027re currently trying to drop support for GCC 8 so we can move to C++20 (which means at least GCC 10, though maybe 11).",
+      "parentUuid": "144b2ab2_9adf7be0",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
@@ -102,6 +126,30 @@
       "writtenOn": "2025-01-24T15:17:51Z",
       "side": 1,
       "message": "aside for Ben: given the prior comment about `vrndns_f32` \"matching\" `vcvtq_u32_f32`, I\u0027d think we would *not* want to be adding 0.5 here, since both functions are already supposedly doing round-to-nearest even.",
+      "range": {
+        "startLine": 126,
+        "startChar": 19,
+        "endLine": 126,
+        "endChar": 27
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4e0e4c6_6070ae00",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-27T17:08:17Z",
+      "side": 1,
+      "message": "uint32x4_t vcvtq_u32_f32(float32x4_t a): Floating-point Convert to Unsigned fixed-point, rounding toward Zero (vector).\n\nRound to even is `vcvtnq_u32_f32`? Do we want to use that for consistency, or is there some other issue with using it?",
+      "parentUuid": "6adbdd8c_82ef849e",
       "range": {
         "startLine": 126,
         "startChar": 19,
