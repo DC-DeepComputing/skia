@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8b9f92c2_3e73e6dc",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1771,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T20:39:48Z",
+      "side": 1,
+      "message": "driveby: I can\u0027t say I grok why this is called `_10x6` Isn\u0027t it really 16 bits times 4 instead of 10 bits times 6?",
+      "range": {
+        "startLine": 1771,
+        "startChar": 29,
+        "endLine": 1771,
+        "endChar": 34
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e7c567b1_7d8a57b7",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 3
