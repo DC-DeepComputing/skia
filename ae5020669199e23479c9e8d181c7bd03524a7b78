@@ -85,6 +85,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c763d29_1fc6c06f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2500,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T16:04:18Z",
+      "side": 1,
+      "message": "Oh, and the above 3 lines too",
+      "parentUuid": "d61ccedb_7dfc168f",
+      "range": {
+        "startLine": 2500,
+        "startChar": 19,
+        "endLine": 2500,
+        "endChar": 20
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "fdc44617_6e56c094",
         "filename": "modules/canvaskit/npm_build/extra.html",
         "patchSetId": 1
@@ -308,6 +332,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "9acae3cd_642043c0",
+      "range": {
+        "startLine": 1272,
+        "startChar": 20,
+        "endLine": 1272,
+        "endChar": 21
+      },
+      "revId": "ae5020669199e23479c9e8d181c7bd03524a7b78",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d055b4f8_f69a7046",
+        "filename": "modules/canvaskit/tests/paragraph_test.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-27T16:04:18Z",
+      "side": 1,
+      "message": "And the 3 lines above",
+      "parentUuid": "5d97047f_61354d12",
       "range": {
         "startLine": 1272,
         "startChar": 20,
