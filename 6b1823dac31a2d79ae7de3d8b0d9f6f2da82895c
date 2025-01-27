@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b6a8827_b25ff1bd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-27T16:46:15Z",
+      "side": 1,
+      "message": "Is there a bug to capture this precompile work?",
+      "range": {
+        "startLine": 691,
+        "startChar": 4,
+        "endLine": 691,
+        "endChar": 11
+      },
+      "revId": "6b1823dac31a2d79ae7de3d8b0d9f6f2da82895c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
