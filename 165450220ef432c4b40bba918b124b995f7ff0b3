@@ -163,6 +163,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a2215a08_11c64568",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-01-27T19:24:53Z",
+      "side": 1,
+      "message": "The customer is deploying to a platform that is licensed to use \"QNX Software Development Platform 7.1\" at this time.",
+      "parentUuid": "154cff2e_10c8b2a6",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
