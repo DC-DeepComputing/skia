@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad9778c_81aff143",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-01-27T21:02:05Z",
+      "side": 1,
+      "message": "Proxying LGTM from jzern@",
+      "revId": "7782f50f2cc347c2e0ef14f5354c4f7aedd8b5ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
