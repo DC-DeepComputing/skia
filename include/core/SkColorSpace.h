@@ -112,6 +112,10 @@ enum class CicpId : uint8_t {
     // Values 23-255 are reserved.
 };
 
+// 'prophoto-rgb'
+static constexpr SkColorSpacePrimaries kProPhotoRGB = {
+        0.7347f, 0.2653f, 0.1596f, 0.8404f, 0.0366f, 0.0001f, 0.34567f, 0.35850f};
+
 }  // namespace SkNamedPrimaries
 
 namespace SkNamedTransferFn {
@@ -207,6 +211,12 @@ enum class CicpId : uint8_t {
     kHLG = 18,
     // Values 19-255 are reserved.
 };
+
+// 'prophoto-rgb'
+static constexpr skcms_TransferFunction kProPhotoRGB = {1.8f, 1.};
+
+// 'a98-rgb'
+static constexpr skcms_TransferFunction kA98RGB = {2.2f, 1.};
 
 }  // namespace SkNamedTransferFn
 
