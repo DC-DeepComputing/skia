@@ -115,6 +115,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1d44cd62_cc2f4d48",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-01-27T18:58:00Z",
+      "side": 1,
+      "message": "\u003e It seems rather unfotunate to make this kind of change when a minor version compiler update fixed this issue (and presumably many more). \n\nThat\u0027s entirely fair. And the very next QNX SDK does bump the version. I can also just sidestep this issues using a GCC specific check like `(__clang__ || (__GNUC__ \u003e\u003d 3 \u0026\u0026 __GNUC_MINOR__ \u003e 2))` and fallback to the scalar backup which does exist.\n\n\u003e That being said, I suppose we\u0027ve been trying to support Firefox which currently claims to support GCC 8.1, it seems strange that this issue hasn\u0027t come up there.\n\nPerhaps Firefox doesn\u0027t build for arm64 using that toolchain? Not sure.\n\nThat said, I am ambivalent about 1) using `vrndnq_f32`, 2) using a GCC specific guard, or 3) adding a `__QNX__` guard. The next QNX version will fix this and more anyway. 4) Any other suggestion that would avoid maintaining Skia patches OOB to build on QNX. Any guidance would be appreciated.",
+      "parentUuid": "57a4ab2b_be921808",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
