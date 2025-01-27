@@ -56,6 +56,30 @@
       },
       "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a25265e3_1a4ac819",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-27T19:07:40Z",
+      "side": 1,
+      "message": "sorry it\u0027s a typo. i meant CleanAperture.",
+      "parentUuid": "db7de517_eae578de",
+      "range": {
+        "startLine": 342,
+        "startChar": 40,
+        "endLine": 342,
+        "endChar": 53
+      },
+      "revId": "1fdae340156187af28331dc3fdd0dfe33af32305",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
