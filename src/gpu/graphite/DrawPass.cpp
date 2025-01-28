@@ -473,6 +473,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
 
+    // Query Caps to see if barriers are needed when/if a paint uses an advanced noncoherent
+    // blend mode.
+    bool addBarrierForAdvBlends;
+
     for (const DrawList::Draw& draw : draws->fDraws.items()) {
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
         // bound independently of those used by the rest of the RenderStep, then we can upload now
@@ -582,6 +586,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
                 shadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
 
+        // TODO: If addBarrierForAdvBlends, then check whether the Draw has fPaintParams and, if so,
+        // if we are using an advanced non-coherent blend mode. If all of the prior conditions are
+        // true, then consider that when determining whether there is a state change below.
+        const bool drawRequiresBlendBarrier =
+                (addBarrierForAdvBlends &&
+                 draw.fPaintParams.has_value() &&
+                 draw.fPaintParams.usesNoncherentAdvBlend()) ? true : false;
         // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
         // dst copy to the texture bind group/descriptor set automatically when processing a
         // BindTexturesAndSamplers call because they use a single group to contain all textures.
@@ -596,9 +607,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const SkIRect* newScissor        = draw.fDrawParams.clip().scissor() != lastScissor ?
                 &draw.fDrawParams.clip().scissor() : nullptr;
 
+
         const bool stateChange = geomBindingChange ||
                                  shadingBindingChange ||
                                  textureBindingsChange ||
+                                 // drawRequiresBlendBarrier ||
                                  SkToBool(newScissor);
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
@@ -631,6 +644,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 drawPass->fCommandList.setScissor(*newScissor);
                 lastScissor = *newScissor;
             }
+            // if drawRequiresBlendBarrier, add DrawPassCommand to list to add said barrier.
+            // if (drawRequiresBlendBarrier) {
+            //     drawPass->fCommandList.addBarrier();
+            // }
         }
 
         uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
