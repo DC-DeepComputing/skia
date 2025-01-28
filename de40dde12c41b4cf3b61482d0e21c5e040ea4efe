@@ -88,6 +88,24 @@
       "parentUuid": "4d807a7e_e4f37bef",
       "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c63b6516_26e3cb69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21169
+      },
+      "writtenOn": "2025-01-28T00:52:11Z",
+      "side": 1,
+      "message": "There is `properties.driverVersion`, but I don\u0027t know which driver version fixed the issue the workaround was for.  The comment only mentions api level 28 (Android P) on a few devices.\n\nWhile this CL is also incorrect technically, it seems better to disable android-specific workarounds for non-Android builds by default.  We can re-enable them based on driver versions if we ever run into regressions.",
+      "parentUuid": "3185dfe0_7aa1e5e4",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
