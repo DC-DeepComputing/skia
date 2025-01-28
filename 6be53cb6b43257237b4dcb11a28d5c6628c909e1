@@ -16,6 +16,23 @@
       "message": "LGTM",
       "revId": "6be53cb6b43257237b4dcb11a28d5c6628c909e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e9ccb4_06b3597c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-01-28T20:28:55Z",
+      "side": 1,
+      "message": "Proxying LGTM from jzern@",
+      "revId": "6be53cb6b43257237b4dcb11a28d5c6628c909e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
