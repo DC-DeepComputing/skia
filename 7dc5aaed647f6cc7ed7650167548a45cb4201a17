@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7820678_62435586",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-28T14:09:28Z",
+      "side": 1,
+      "message": "Looks like you need to fill the rest of the struct values for here and below (https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/modules/skcms/src/skcms_public.h;drc\u003d27d34700b83f381c62e3a348de2e6dfdc08364b8;l\u003d46).",
+      "range": {
+        "startLine": 216,
+        "startChar": 55,
+        "endLine": 216,
+        "endChar": 66
+      },
+      "revId": "7dc5aaed647f6cc7ed7650167548a45cb4201a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c39a39b_95f21f0d",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-28T14:09:28Z",
+      "side": 1,
+      "message": "nit: Using namespace used above",
+      "range": {
+        "startLine": 646,
+        "startChar": 13,
+        "endLine": 646,
+        "endChar": 58
+      },
+      "revId": "7dc5aaed647f6cc7ed7650167548a45cb4201a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
