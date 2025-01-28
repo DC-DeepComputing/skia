@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e73fb695_9a513383",
+        "filename": "include/core/SkColorSpace.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2025-01-28T18:02:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7820678_62435586",
+      "range": {
+        "startLine": 216,
+        "startChar": 55,
+        "endLine": 216,
+        "endChar": 66
+      },
+      "revId": "7dc5aaed647f6cc7ed7650167548a45cb4201a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c39a39b_95f21f0d",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-28T14:09:28Z",
       "side": 1,
       "message": "nit: Using namespace used above",
+      "range": {
+        "startLine": 646,
+        "startChar": 13,
+        "endLine": 646,
+        "endChar": 58
+      },
+      "revId": "7dc5aaed647f6cc7ed7650167548a45cb4201a17",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7a25638_c4478467",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 15399
+      },
+      "writtenOn": "2025-01-28T18:02:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0c39a39b_95f21f0d",
       "range": {
         "startLine": 646,
         "startChar": 13,
