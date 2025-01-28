@@ -211,6 +211,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c542971_4b9caabc",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-01-28T18:35:38Z",
+      "side": 1,
+      "message": "\u003e Not sure how much difference that makes\n\nHow can I answer that question? Alternatively, are you leaning towards options 2, 3, or 4 for this?",
+      "parentUuid": "a3f4cdbe_ff6f14a2",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
