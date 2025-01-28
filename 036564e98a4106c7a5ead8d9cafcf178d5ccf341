@@ -16,6 +16,47 @@
       "message": "Hey Michael! Florin told me to add you to this CL",
       "revId": "036564e98a4106c7a5ead8d9cafcf178d5ccf341",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a2c94b4_88fc6933",
+        "filename": "src/shaders/gradients/SkGradientBaseShader.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T18:51:35Z",
+      "side": 1,
+      "message": "Looks like iwyu needs you to include `#include \"modules/skcms/skcms.h\"` here",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 34
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "eaaf1bfd_3816f524",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/shaders/gradients/SkGradientBaseShader.cpp",
+              "range": {
+                "startLine": 37,
+                "startChar": 0,
+                "endLine": 37,
+                "endChar": 0
+              },
+              "replacement": "#include \"modules/skcms/skcms.h\"\n"
+            }
+          ]
+        }
+      ],
+      "revId": "036564e98a4106c7a5ead8d9cafcf178d5ccf341",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
