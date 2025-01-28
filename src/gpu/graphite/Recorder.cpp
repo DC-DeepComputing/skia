@@ -219,6 +219,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     }
 
     // Remaining cleanup that must always happen regardless of success or failure
+    fResourceProvider->forceProcessReturnedResources();
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
     fTextureDataCache = std::make_unique<TextureDataCache>();
