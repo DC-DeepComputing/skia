@@ -22,6 +22,30 @@
       },
       "revId": "41cd92c0ae12e56b7eb8e2843b8c8de57bdbbfbe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1219738_720526e8",
+        "filename": "src/core/SkAutoBlitterChoose.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-28T16:32:23Z",
+      "side": 1,
+      "message": "Yes - I did a bit of a hack where I changed this to an arbitrary number (3337) and then filtered the logs that had the 3337 as their intial size. I couldn\u0027t think of a better way to track where an allocation had happened without more in-depth changes involving `__FILE__` and `__LINE__`",
+      "parentUuid": "e564a060_d8ca7a9d",
+      "range": {
+        "startLine": 54,
+        "startChar": 45,
+        "endLine": 54,
+        "endChar": 90
+      },
+      "revId": "41cd92c0ae12e56b7eb8e2843b8c8de57bdbbfbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
