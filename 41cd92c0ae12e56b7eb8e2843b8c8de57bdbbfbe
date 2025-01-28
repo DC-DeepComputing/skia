@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e564a060_d8ca7a9d",
+        "filename": "src/core/SkAutoBlitterChoose.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-28T16:29:52Z",
+      "side": 1,
+      "message": "Was the logging scoped to `SkAutoBlitterChoose` only?  There are other `SkSTArenaAlloc` users, but this is likely the largest allocator, so probably not critical to isolate.",
+      "range": {
+        "startLine": 54,
+        "startChar": 45,
+        "endLine": 54,
+        "endChar": 90
+      },
+      "revId": "41cd92c0ae12e56b7eb8e2843b8c8de57bdbbfbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
