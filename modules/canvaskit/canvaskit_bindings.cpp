@@ -59,6 +59,7 @@
 #include "include/encode/SkJpegEncoder.h"
 #include "include/encode/SkPngEncoder.h"
 #include "include/encode/SkWebpEncoder.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkOnce.h"
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
@@ -996,7 +997,7 @@ public:
         // WebGL 1, where Skia doesn't support mipmapping at all). Therefore, we ignore any request
         // for mipmapping here. See: b/338095525
         auto backendTexture = GrBackendTextures::MakeGL(
-                fInfo.width(), fInfo.height(), skgpu::Mipmapped::kNo, glInfo);
+                fInfo.width(), fInfo.height(), skgpu::Mipmapped::kYes, glInfo);
 
         // In order to bind the image source to the texture, makeTexture has changed which
         // texture is "in focus" for the WebGL context.
@@ -1344,7 +1345,8 @@ EMSCRIPTEN_BINDINGS(Skia) {
                                                                 const SkPaint* paint)->void {
             const SkRect* src = reinterpret_cast<const SkRect*>(srcPtr);
             const SkRect* dst = reinterpret_cast<const SkRect*>(dstPtr);
-            auto constraint = SkCanvas::kStrict_SrcRectConstraint;  // TODO: get from caller
+            auto constraint = SkCanvas::kFast_SrcRectConstraint;  // TODO: get from caller
+            SkDEBUGF("DOES IMAGE HAVE MIPMAPS? %s\n", image.get()->hasMipmaps(), "yes" : "no");
             self.drawImageRect(image.get(), *src, *dst, {filter, mipmap}, paint, constraint);
         }), allow_raw_pointers())
         .function("_drawLine", select_overload<void (SkScalar, SkScalar, SkScalar, SkScalar, const SkPaint&)>(&SkCanvas::drawLine))
@@ -2386,7 +2388,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
             auto releaseCtx = new TextureReleaseContext{webglHandle, texHandle};
             GrGLTextureInfo gti = {GR_GL_TEXTURE_2D, texHandle,
                                    GR_GL_RGBA8}; // TODO(kjlubick) look at ii for this
-            auto gbt = GrBackendTextures::MakeGL(ii.width, ii.height, skgpu::Mipmapped::kNo, gti);
+            auto gbt = GrBackendTextures::MakeGL(ii.width, ii.height, skgpu::Mipmapped::kYes, gti);
             auto dContext = GrAsDirectContext(self.getCanvas()->recordingContext());
 
             return SkImages::BorrowTextureFrom(dContext,

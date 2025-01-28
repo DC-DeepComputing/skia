@@ -278,6 +278,7 @@
         } else {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         }
+        glCtx.generateMipmap(glCtx.TEXTURE_2D);
         resetTexture(glCtx, info);
         this._resetContext();
         return this.makeImageFromTexture(newTex, info);
@@ -298,6 +299,7 @@
         } else {
           glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
         }
+        glCtx.generateMipmap(glCtx.TEXTURE_2D);
         resetTexture(glCtx, ii, srcIsPremul);
         // Tell Skia we messed with the currently bound texture.
         this._resetContext();
@@ -360,6 +362,7 @@
             } else {
               glCtx.texImage2D(glCtx.TEXTURE_2D, 0, glCtx.RGBA, glCtx.RGBA, glCtx.UNSIGNED_BYTE, src);
             }
+            glCtx.generateMipmap(glCtx.TEXTURE_2D);
             resetTexture(glCtx, info, srcIsPremul);
             return pushTexture(newTex);
           },
