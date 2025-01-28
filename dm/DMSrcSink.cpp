@@ -1751,11 +1751,11 @@ Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStr
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-GPUPrecompileTestingSink::GPUPrecompileTestingSink(const SkCommandLineConfigGpu* config,
-                                                   const GrContextOptions& grCtxOptions)
+    GPUPrecompileTestingSinkGanesh::GPUPrecompileTestingSinkGanesh(const SkCommandLineConfigGpu* config,
+                                                                   const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions) {}
 
-Result GPUPrecompileTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStream,
+Result GPUPrecompileTestingSinkGanesh::draw(const Src& src, SkBitmap* dst, SkWStream* wStream,
                                       SkString* log) const {
     // Three step process:
     // 1) Draw once with an SkSL cache, and store off the shader blobs.
@@ -2290,13 +2290,20 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
 
     SkASSERT(fRecorder && fPrecompileContext);
 
-    GlobalCache* globalCache = fPrecompileContext->priv().globalCache();
+    SkDEBUGCODE(GlobalCache* globalCache = fPrecompileContext->priv().globalCache();)
 
-    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
+//    RuntimeEffectDictionary* rteDict = fRecorder->priv().runtimeEffectDictionary();
 
     std::vector<skgpu::UniqueKey> origKeys;
 
     UniqueKeyUtils::FetchUniqueKeys(fPrecompileContext.get(), &origKeys);
+
+    std::vector<sk_sp<SkData>> androidStyleKeys;
+
+    fAndroidStyleCBHandler->retrieve(&androidStyleKeys);
+    fAndroidStyleCBHandler->reset1();
+
+    SkASSERT(origKeys.size() == androidStyleKeys.size());
 
     SkDEBUGCODE(int numBeforeReset = globalCache->numGraphicsPipelines();)
     SkASSERT(numBeforeReset == (int) origKeys.size());
@@ -2305,6 +2312,14 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
 
     SkASSERT(globalCache->numGraphicsPipelines() == 0);
 
+#if 1
+    for (sk_sp<SkData>& d : androidStyleKeys) {
+        bool result = fPrecompileContext->androidSpecificPrecompile(d);
+        SkAssertResult(result);
+    }
+#endif
+
+#if 0
     for (const skgpu::UniqueKey& k : origKeys) {
         // TODO: add a separate path that decomposes the keys into PaintOptions
         //  and uses them to Precompile
@@ -2319,6 +2334,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
         AndroidSpecificPrecompile(fPrecompileContext.get(), rteDict,
                                   pipelineDesc, renderPassDesc);
     }
+#endif
 
     SkDEBUGCODE(int postRecreate = globalCache->numGraphicsPipelines();)
 
@@ -2329,72 +2345,131 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines() const {
 
         UniqueKeyUtils::FetchUniqueKeys(fPrecompileContext.get(), &recreatedKeys);
 
-        for (const skgpu::UniqueKey& origKey : origKeys) {
-            if(std::find(recreatedKeys.begin(), recreatedKeys.end(), origKey) ==
-                         recreatedKeys.end()) {
-                sk_sp<GraphicsPipeline> pipeline = globalCache->findGraphicsPipeline(origKey);
-                SkASSERT(!pipeline);
-
 #ifdef SK_DEBUG
-                {
-                    GraphicsPipelineDesc originalPipelineDesc;
-                    RenderPassDesc originalRenderPassDesc;
-                    UniqueKeyUtils::ExtractKeyDescs(fPrecompileContext.get(), origKey,
-                                                    &originalPipelineDesc,
-                                                    &originalRenderPassDesc);
-
-                    SkDebugf("------- Missing key from rebuilt keys:\n");
-                    origKey.dump("original key:");
-                    UniqueKeyUtils::DumpDescs(fPrecompileContext.get(),
-                                              originalPipelineDesc,
-                                              originalRenderPassDesc);
-                }
-
-                SkDebugf("Have %d recreated keys -----------------\n", (int) recreatedKeys.size());
-                int count = 0;
-                for (const skgpu::UniqueKey& recreatedKey : recreatedKeys) {
-
-                    GraphicsPipelineDesc recreatedPipelineDesc;
-                    RenderPassDesc recreatedRenderPassDesc;
-                    UniqueKeyUtils::ExtractKeyDescs(fPrecompileContext.get(), recreatedKey,
-                                                    &recreatedPipelineDesc,
-                                                    &recreatedRenderPassDesc);
-
-                    SkDebugf("%d ----\n", count++);
-                    recreatedKey.dump("recreated key:");
-                    UniqueKeyUtils::DumpDescs(fPrecompileContext.get(),
-                                              recreatedPipelineDesc,
-                                              recreatedRenderPassDesc);
-                }
+        GraphitePrecompileTestingSink::compareKeys(fPrecompileContext.get(),
+                                                   origKeys, "original",
+                                                   recreatedKeys, "recreated");
 #endif
-
-                SK_ABORT("missing");
-            }
-        }
     }
 
     return Result::Ok();
+}
+
+
+#ifdef SK_DEBUG
+void GraphitePrecompileTestingSink::logMissingKey(
+        skgpu::graphite::PrecompileContext* precompileContext,
+        const skgpu::UniqueKey& k,
+        const char* kName,
+        const std::vector<skgpu::UniqueKey>& vB,
+        const char* bName) {
+    using namespace skgpu::graphite;
+
+    {
+        GraphicsPipelineDesc originalPipelineDesc;
+        RenderPassDesc originalRenderPassDesc;
+        UniqueKeyUtils::ExtractKeyDescs(precompileContext, k,
+                                        &originalPipelineDesc,
+                                        &originalRenderPassDesc);
+
+        SkDebugf("------- Key missing from %s keys:\n", bName);
+        k.dump("foo key:");//, kName);
+        UniqueKeyUtils::DumpDescs(precompileContext,
+                                  originalPipelineDesc,
+                                  originalRenderPassDesc);
+    }
+
+    SkDebugf("Have %d %s keys -----------------\n", (int) vB.size(), bName);
+    int count = 0;
+    for (const skgpu::UniqueKey& b : vB) {
+
+        GraphicsPipelineDesc recreatedPipelineDesc;
+        RenderPassDesc recreatedRenderPassDesc;
+        UniqueKeyUtils::ExtractKeyDescs(precompileContext, b,
+                                        &recreatedPipelineDesc,
+                                        &recreatedRenderPassDesc);
+
+        SkDebugf("%d ----\n", count++);
+        b.dump("recreated key:");
+        UniqueKeyUtils::DumpDescs(precompileContext,
+                                  recreatedPipelineDesc,
+                                  recreatedRenderPassDesc);
+    }
+
+}
+#endif
+
+void GraphitePrecompileTestingSink::compareKeys(skgpu::graphite::PrecompileContext* precompileContext,
+                                                const std::vector<skgpu::UniqueKey>& vA,
+                                                const char* aName,
+                                                const std::vector<skgpu::UniqueKey>& vB,
+                                                const char* bName) {
+
+    for (const skgpu::UniqueKey& a : vA) {
+        if (std::find(vB.begin(), vB.end(), a) == vB.end()) {
+#ifdef SK_DEBUG
+            GraphitePrecompileTestingSink::logMissingKey(precompileContext, a, aName, vB, bName);
+#endif
+
+            SK_ABORT("missing");
+        }
+    }
+}
+
+void GraphitePrecompileTestingSink::AndroidStyleCBHandler::add(sk_sp<SkData> payload) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    // TODO: should Skia provide its internal hash, obviating the need for this hash?
+    uint32_t hash = SkGoodHash()(payload.get());
+
+    sk_sp<SkData>* data = fMap.find(hash);
+    if (!data) {
+        fMap.set(hash, std::move(payload));
+    }
+}
+
+void GraphitePrecompileTestingSink::AndroidStyleCBHandler::retrieve(
+        std::vector<sk_sp<SkData>>* result) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    result->reserve(fMap.count());
+
+    fMap.foreach([result](int32_t hash, sk_sp<SkData> data) {
+        result->push_back(data);
+    });
+}
+
+void GraphitePrecompileTestingSink::AndroidStyleCBHandler::reset1() {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fMap.reset();
 }
 
 Result GraphitePrecompileTestingSink::draw(const Src& src,
                                            SkBitmap* dst,
                                            SkWStream* dstStream,
                                            SkString* log) const {
-    skiatest::graphite::TestOptions options = fOptions;
+    using namespace skgpu::graphite;
+    using namespace skiatest::graphite;
+
+    TestOptions options = fOptions;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
     SkASSERT(!options.fContextOptions.fOptionsPriv);
-    skgpu::graphite::ContextOptionsPriv optionsPriv;
+    ContextOptionsPriv optionsPriv;
     options.fContextOptions.fOptionsPriv = &optionsPriv;
 
     src.modifyGraphiteContextOptions(&options.fContextOptions);
 
-    skiatest::graphite::ContextFactory factory(options);
+    ContextFactory factory(options);
     skiatest::graphite::ContextInfo ctxInfo = factory.getContextInfo(fContextType);
-    skgpu::graphite::Context* context = ctxInfo.fContext;
+    Context* context = ctxInfo.fContext;
     if (!context) {
         return Result::Fatal("Could not create a context.");
     }
+
+    fAndroidStyleCBHandler.reset(new AndroidStyleCBHandler);
+    context->setAndroidStyleCallback(AndroidStyleCBHandler::CallBack, fAndroidStyleCBHandler.get());
 
     // First, clear out any miscellaneous Pipelines that might be cluttering up the global cache.
     context->priv().globalCache()->resetGraphicsPipelines();
@@ -2414,6 +2489,9 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
         return result;
     }
 
+    SkDEBUGCODE(GlobalCache* globalCache = fPrecompileContext->priv().globalCache();)
+    SkDEBUGCODE(int numBeforeSecondDraw = globalCache->numGraphicsPipelines();)
+
     // Draw the Src for the second time. This shouldn't create any new Pipelines since the ones
     // generated via Precompilation should be sufficient.
     result = this->drawSrc(src, context, ctxInfo.fTestContext);
@@ -2424,7 +2502,8 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
 
     fRecorder.reset();
 
-    // TODO: verify that no additional pipelines were created during the second 'drawSrc' call
+    SkASSERT(numBeforeSecondDraw == globalCache->numGraphicsPipelines());
+
     return Result::Ok();
 }
 #endif // SK_ENABLE_PRECOMPILE

@@ -56,6 +56,12 @@ public:
                               GraphicsPipelineDesc*,
                               RenderPassDesc*,
                               const RendererProvider*) const override;
+    bool deserialize(SkStream*,
+                     BackendApi,
+                     Mipmapped,
+                     Protected,
+                     uint32_t sampleCount,
+                     TextureInfo* out) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override;
     ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
     uint32_t channelMask(const TextureInfo&) const override;
