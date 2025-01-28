@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d170c31_79c1ecc0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1766,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T15:21:30Z",
+      "side": 1,
+      "message": "Done, fixed this one and the original from_10101010_xr.",
+      "parentUuid": "9f2b3de9_e0045ba1",
+      "range": {
+        "startLine": 1766,
+        "startChar": 46,
+        "endLine": 1766,
+        "endChar": 53
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dbedc48f_1fecec1f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-27T20:35:33Z",
       "side": 1,
       "message": "I thought alpha was always opaque for this format? Can\u0027t we just do `*a \u003d 1.f`?\n\nBy the spec \"Bits 30 and 31 are padding, and their value is 0.\" so this is always 0? That\u0027s the opposite of what I would expect for opaque.\n\nLooking elsewhere in the file, we seem to be storing alpha to the padding bits for 1010102_xr also. Are we out of spec?",
+      "range": {
+        "startLine": 1769,
+        "startChar": 56,
+        "endLine": 1769,
+        "endChar": 61
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c9d6c8_f061fcde",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1769,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T15:21:30Z",
+      "side": 1,
+      "message": "It looks like the raster pipeline stages for loading/storing are explicitly not treating those bits as padding, allowing the format to be generalized to a 1010102 format where it can have 2 bits of real alpha value (like the non-XR 1010102 encodings).\n\nBut in the actual handling of the kBGR_101010x_XR_SkColorType, additional stages are applied to coerce the alpha values to opaque. This makes sense for when we decode the color values, but does appear to be in conflict with the docs saying the bits should be 0. I am inclined to leave it for now as padding bits should in theory be allowed to be anything and we don\u0027t have any reports that this is causing a problem.",
+      "parentUuid": "dbedc48f_1fecec1f",
       "range": {
         "startLine": 1769,
         "startChar": 56,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6888b34e_6e13e7b5",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1771,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T15:21:30Z",
+      "side": 1,
+      "message": "In the color encoding namings, `x` is overloaded and used for a padding channel name, so it\u0027s 10 real bits + 6 padding bits.",
+      "parentUuid": "8b9f92c2_3e73e6dc",
+      "range": {
+        "startLine": 1771,
+        "startChar": 29,
+        "endLine": 1771,
+        "endChar": 34
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7c567b1_7d8a57b7",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f5458c2_1fd32972",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T15:21:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7c567b1_7d8a57b7",
+      "range": {
+        "startLine": 1776,
+        "startChar": 29,
+        "endLine": 1776,
+        "endChar": 30
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "287cb4e7_5cbabd5f",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-01-27T20:35:33Z",
       "side": 1,
       "message": "See comment above about just setting this to 0.\n\nhttps://developer.apple.com/documentation/metal/mtlpixelformat/bgr10_xr",
+      "range": {
+        "startLine": 3092,
+        "startChar": 13,
+        "endLine": 3092,
+        "endChar": 21
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb36e29d_071f80c3",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 3092,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T15:21:30Z",
+      "side": 1,
+      "message": "I clarified the comment in `from_1010102_xr` to callout that we were treating the 2 bits as real alpha, and just following the XR equation for RGB.",
+      "parentUuid": "287cb4e7_5cbabd5f",
       "range": {
         "startLine": 3092,
         "startChar": 13,
