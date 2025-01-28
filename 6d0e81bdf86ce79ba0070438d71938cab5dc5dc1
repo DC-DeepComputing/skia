@@ -22,6 +22,30 @@
       },
       "revId": "6d0e81bdf86ce79ba0070438d71938cab5dc5dc1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0204f7_758406f6",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1310,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-01-28T13:23:53Z",
+      "side": 1,
+      "message": "Ack. \nIt seems like this check is the exact use case it was meant for actually. See comment thread [1]. John opted against changing slotCount().\nI looked into re-overriding supportsConstantValues() to always return false but thought against it because I think in theory array casts should support constant values in general. \nI like the idea of changing it to check if it unsized, if there are other fuzzer crashes this seems like a good solution.\nAnother solution if more issues with unsized arrays persist as well as our support for them could be to make a new unsized array type. This was also mentioned in a past comment [2].\n[1] https://skia-review.googlesource.com/c/skia/+/538900/5..9/src/sksl/ir/SkSLType.cpp#b161\n[2] https://skia-review.googlesource.com/c/skia/+/538900/5..9/src/sksl/ir/SkSLType.h#b113",
+      "parentUuid": "60fe644f_4d9e048b",
+      "range": {
+        "startLine": 1310,
+        "startChar": 51,
+        "endLine": 1310,
+        "endChar": 86
+      },
+      "revId": "6d0e81bdf86ce79ba0070438d71938cab5dc5dc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
