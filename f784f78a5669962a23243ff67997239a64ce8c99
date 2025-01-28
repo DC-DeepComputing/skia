@@ -22,6 +22,30 @@
       },
       "revId": "f784f78a5669962a23243ff67997239a64ce8c99",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "221a4f02_156f9b31",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-01-28T15:16:11Z",
+      "side": 0,
+      "message": "GCC\n```\n  fcvtnu w0, s0\n  ret\n```\nClang\n```\n  frintn s0, s0\n  fcvtzu w0, s0\n  ret\n```",
+      "parentUuid": "9a8d2f62_ec17a845",
+      "range": {
+        "startLine": 125,
+        "startChar": 11,
+        "endLine": 125,
+        "endChar": 21
+      },
+      "revId": "f784f78a5669962a23243ff67997239a64ce8c99",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
