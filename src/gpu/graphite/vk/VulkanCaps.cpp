@@ -1603,10 +1603,28 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo&) const {
+DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
     // We know the graphite Vulkan backend does not support frame buffer fetch, so make sure it is
     // not marked as supported and skip checking for it.
     SkASSERT(!this->shaderCaps()->fFBFetchSupport);
+
+    // TODO(bug number): Add support for MSAA texture reading from input attachment.
+    if (info.numSamples() == 1) {
+        // Make sure the texture can be used as an input attachment.
+        VulkanTextureInfo vulkanTextureInfo;
+        bool supportsInputAttachmentUsage;
+        if (TextureInfos::GetVulkanTextureInfo(info, &vulkanTextureInfo)) {
+            supportsInputAttachmentUsage =
+                    vulkanTextureInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+        }
+#ifdef SK_BUILD_FOR_ANDROID
+        // We expect that all Android target textures to support input attachment usage.
+        SkASSERT(supportsInputAttachmentUsage);
+        // TODO(b/??????): Return kReadFromInput once supported by the Vulkan backend.
+        // return DstReadStrategy::kReadFromInput;
+#endif
+    }
+
     // TODO: Check sample count; attachment usage to determine dst read strategy.
     return DstReadStrategy::kTextureCopy;
 }
