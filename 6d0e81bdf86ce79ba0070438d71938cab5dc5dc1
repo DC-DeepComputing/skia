@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60fe644f_4d9e048b",
+        "filename": "src/sksl/ir/SkSLType.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-28T03:05:28Z",
+      "side": 1,
+      "message": "I\u0027m adding this comment mostly for posterity because I\u0027m unsure if any of these are better options than just checking the if here, but if other start needing to be guarded by the type not being an unsized array, we could:\n1. Update SkSLConstructorArrayCast to override supportsConstantValues() and check its type being unsized.\n2. Based on comments about array casts never being constant, maybe it should always return false (not sure if this would lead to unintended consequences, for instance if there are chained expressions that select a constant element out of a casted array).\n3. Is it risky that AnyConstructor returns true for supportsConstantValues()? There aren\u0027t overrides from subclasses that have it return false. There are however subclasses of AnyConstructor that re-override it to return true.\n4. Update slotCount() for array types to return 0 for unsized arrays instead of asserting. Also unclear what the blast radius is with such a change.",
+      "range": {
+        "startLine": 1310,
+        "startChar": 51,
+        "endLine": 1310,
+        "endChar": 86
+      },
+      "revId": "6d0e81bdf86ce79ba0070438d71938cab5dc5dc1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
