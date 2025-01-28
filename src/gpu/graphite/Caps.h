@@ -75,6 +75,7 @@ enum class DstReadStrategy {
     kNoneRequired,
     kTextureCopy,
     kTextureSample,
+    kReadFromInput,
     kFramebufferFetch,
 };
 
