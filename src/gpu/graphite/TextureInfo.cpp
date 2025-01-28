@@ -7,6 +7,9 @@
 
 #include "include/gpu/graphite/TextureInfo.h"
 
+#include "include/core/SkFourByteTag.h"
+#include "include/core/SkStream.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 
 namespace skgpu::graphite {
@@ -32,7 +35,7 @@ TextureInfo::TextureInfo(const TextureInfo& that)
 
     assert_is_supported_backend(fBackend);
     fTextureInfoData.reset();
-    that.fTextureInfoData->copyTo(fTextureInfoData);
+    that.fTextureInfoData->copyTo1(fTextureInfoData);
 }
 
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {
@@ -174,5 +177,55 @@ bool TextureInfo::isMemoryless() const {
 }
 
 TextureInfoData::~TextureInfoData(){};
+
+bool TextureInfoPriv::Serialize(SkWStream* stream,
+                                const TextureInfo& textureInfo) {
+    if (!stream->write32(
+            SkSetFourByteTag(static_cast<uint8_t>(textureInfo.backend()),
+                             static_cast<uint8_t>(textureInfo.isValid()),
+                             static_cast<uint8_t>(textureInfo.mipmapped()),
+                             static_cast<uint8_t>(textureInfo.isProtected())))) {
+        return false;
+    }
+
+    if (!stream->write32(textureInfo.numSamples())) { return false; }
+
+    if (!textureInfo.isValid()) {
+        // We don't bother serializing the textureInfoData is it isn't valid
+        return true;
+    }
+
+    if (!textureInfo.fTextureInfoData.get()->serialize(stream)) { return false; }
+
+    return true;
+}
+
+
+bool TextureInfoPriv::Deserialize(const Caps* caps,
+                                  SkStream* stream,
+                                  TextureInfo* textureInfo) {
+    uint32_t tag;
+    if (!stream->readU32(&tag)) {
+        return false;
+    }
+
+    BackendApi backendAPI = static_cast<BackendApi>(0xF & (tag >> 24));
+    bool isValid = SkToBool(0xF & (tag >> 16));
+    Mipmapped mipmapped = static_cast<Mipmapped>(0xF & (tag >> 8));
+    Protected isProtected = static_cast<Protected>(0xF & tag);
+
+    uint32_t sampleCount;
+    if (!stream->readU32(&sampleCount)) { return false; }
+
+    if (!isValid) {
+        // It is okay to have a serialized, invalid TextureInfo
+        return true;
+    }
+
+    if (!caps->deserialize(stream, backendAPI, mipmapped, isProtected,
+                           sampleCount, textureInfo)) { return false; }
+
+    return true;
+}
 
 } // namespace skgpu::graphite

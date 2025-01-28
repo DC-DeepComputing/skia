@@ -96,6 +96,8 @@ public:
     // purposes.
     SkString toString(const ShaderCodeDictionary* dict, bool includeData) const;
 
+    void dumpRaw(const char* label) const;
+
 #ifdef SK_DEBUG
     void dump(const ShaderCodeDictionary*, UniquePaintParamsID) const;
 #endif
@@ -115,6 +117,7 @@ public:
 private:
     friend class PaintParamsKeyBuilder;   // for the parented-data ctor
 
+public:
     constexpr PaintParamsKey(SkSpan<const uint32_t> span) : fData(span) {}
 
     // Returns null if the node or any of its children have an invalid snippet ID. Recursively
@@ -124,6 +127,7 @@ private:
                                  int* currentIndex,
                                  SkArenaAlloc* arena) const;
 
+public:
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // from the Builder, or clone() puts the span in an arena.
     SkSpan<const uint32_t> fData;
@@ -237,6 +241,7 @@ public:
     // Use as a PaintParamsKey
     const PaintParamsKey& operator*() const { return fKey; }
     const PaintParamsKey* operator->() const { return &fKey; }
+    const PaintParamsKey* foo() const { return &fKey; }
 
 private:
     PaintParamsKeyBuilder* fBuilder;

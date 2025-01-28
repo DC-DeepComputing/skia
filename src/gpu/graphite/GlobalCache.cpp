@@ -14,6 +14,9 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/precompile/BlobOStuff.h"
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -49,6 +52,45 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+}
+
+void GlobalCache::setAndroidStyleCallback(AndroidStyleCBFunc callback, void* callbackData) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fAndroidStyleCallback = callback;
+    fData = callbackData;
+}
+
+void GlobalCache::invokeCallback(SharedContext* sharedContext, const BlobOStuff& blob) {
+    AndroidStyleCBFunc tmpCB = nullptr;
+    void* tmpData = nullptr;
+
+    {
+        // We want to get a consistent callback/data pair but not invoke the callback
+        // w/in our lock.
+        SkAutoSpinlock lock{fSpinLock};
+
+        tmpCB = fAndroidStyleCallback;
+        tmpData = fData;
+    }
+
+    if (tmpCB) {
+        sk_sp<SkData> data = blob.snap1(sharedContext);
+
+        blob.dump("invokeCallback1", sharedContext->shaderCodeDictionary());
+
+        {
+            // Check that the Blob round trips through serialization
+            std::unique_ptr<BlobOStuff> tmp = BlobOStuff::MakeFromData(sharedContext->caps(),
+                                                                       sharedContext->shaderCodeDictionary(),
+                                                                       data.get());
+
+            tmp->dump("invokeCallback2", sharedContext->shaderCodeDictionary());
+            blob.compare(tmp.get());
+        }
+
+        tmpCB(tmpData, std::move(data));
+    }
 }
 
 void GlobalCache::deleteResources() {

@@ -13,6 +13,8 @@
 
 namespace skgpu::graphite {
 
+class ShaderCodeDictionary;
+
 /**
  * GraphicsPipelineDesc represents the state needed to create a backend specific GraphicsPipeline,
  * minus the target-specific properties that can be inferred from the DrawPass and RenderPassTask.
@@ -42,6 +44,8 @@ public:
     RenderStep::RenderStepID renderStepID() const { return fRenderStepID; }
     // UniqueID of the required PaintParams
     UniquePaintParamsID paintParamsID() const { return fPaintID; }
+
+    SkString toPipelineLabel(ShaderCodeDictionary* dict) const;
 
 private:
     // Each RenderStep defines a fixed set of attributes and rasterization state, as well as the

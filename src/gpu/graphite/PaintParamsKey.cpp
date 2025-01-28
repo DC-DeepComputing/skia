@@ -233,6 +233,15 @@ SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict, bool include
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
+void PaintParamsKey::dumpRaw(const char* label) const {
+    SkDebugf("%zu: ", fData.size());
+    for (size_t i = 0; i < fData.size(); ++i) {
+        SkDebugf("%d ", fData[i]);
+    }
+    SkDebugf("\n");
+}
+
+
 #ifdef SK_DEBUG
 
 void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID id) const {

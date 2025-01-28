@@ -388,6 +388,8 @@ skia_graphite_precompile_sources = [
   "$_src/AndroidSpecificPrecompile.h",
   "$_src/PrecompileInternal.h",
   "$_src/PublicPrecompile.cpp",
+  "$_src/precompile/BlobOStuff.cpp",
+  "$_src/precompile/BlobOStuff.h",
   "$_src/precompile/PaintOption.cpp",
   "$_src/precompile/PaintOption.h",
   "$_src/precompile/PaintOptions.cpp",
@@ -406,4 +408,6 @@ skia_graphite_precompile_sources = [
   "$_src/precompile/PrecompileShader.cpp",
   "$_src/precompile/PrecompileShaderPriv.h",
   "$_src/precompile/PrecompileShadersPriv.h",
+  "$_src/precompile/SerializationUtils.cpp",
+  "$_src/precompile/SerializationUtils.h",
 ]
