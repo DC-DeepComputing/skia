@@ -73,8 +73,8 @@ enum class BuiltInCodeSnippetID : int32_t {
     // Analytic clip for circular roundrect and AA rect shapes
     kCircularRRectClip,
 
-    // Atlas-based clip
-    kAtlasClip,
+    // Analytic plus atlas-based clip
+    kAnalyticAndAtlasClip,
 
     kCompose, // compose 2 children together: outer_1(inner_0(...))
     kBlendCompose, // compose 3 children together: outer_2(inner_0(...), inner_1(...))
