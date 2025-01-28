@@ -1187,6 +1187,15 @@ ShaderCodeDictionary::ShaderCodeDictionary(Layout layout)
                            { "invAtlasSize",   SkSLType::kFloat2 } }
     };
 
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kAtlasClip] = {
+            /*name=*/"AtlasClip",
+            /*staticFn=*/"sk_atlas_clip",
+            SnippetRequirementFlags::kLocalCoords,
+            /*uniforms=*/{ { "texCoordOffset", SkSLType::kHalf2 },
+                           { "maskBounds",     SkSLType::kHalf4 },
+                           { "invAtlasSize",   SkSLType::kFloat2 } }
+    };
+
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             /*name=*/"Compose",
             /*staticFn=*/nullptr,

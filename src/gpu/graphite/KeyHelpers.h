@@ -384,13 +384,17 @@ struct AtlasClipBlock {
     struct AtlasClipData {
         AtlasClipData(SkPoint texCoordOffset,
                       SkRect maskBounds,
-                      SkISize atlasSize)
+                      SkISize atlasSize,
+                      sk_sp<TextureProxy> atlasTexture)
                 : fTexCoordOffset(texCoordOffset)
                 , fMaskBounds(maskBounds)
-                , fAtlasSize(atlasSize) {}
+                , fAtlasSize(atlasSize)
+                , fAtlasTexture(std::move(atlasTexture)) {}
         SkPoint fTexCoordOffset;  // translation from fragCoords to unnormalized texel coords
         SkRect  fMaskBounds;      // bounds of mask area, in unnormalized texel coords
         SkISize fAtlasSize;       // size of atlas texture
+
+        sk_sp<TextureProxy> fAtlasTexture;
     };
 
     static void AddBlock(const KeyContext&,
