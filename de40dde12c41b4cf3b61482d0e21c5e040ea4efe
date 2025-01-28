@@ -106,6 +106,41 @@
       "parentUuid": "3185dfe0_7aa1e5e4",
       "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "597a7c78_9ce8744d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-28T13:32:26Z",
+      "side": 1,
+      "message": "Yeah you would need to work with the individual vendors to see if they have a stable system for changing the driverVersion. In the past we\u0027ve had bad luck assuming driverVersion is always incrementing and not jumping around.\n\nFrom Skia\u0027s POV there is nothing to suggest the drivers for a non-android device are any different from an android device. Thus without such edvidence its hard to support the lets remove all workarounds in Skia that this CL does.\n\nHowever, this is a decision that you and ChromeOS can make on your own. Like I said previously, if this is the route you want to go you can already do this without modifying Skia at all. Just set the public GrContextOptions::fDisableDriverCorrectnessWorkarounds to true when creating the Skia GrDirectContext, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/gpu/ganesh/GrContextOptions.h;l\u003d273.",
+      "parentUuid": "c63b6516_26e3cb69",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d2c0bf1_edacd509",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-28T13:32:26Z",
+      "side": 1,
+      "message": "Marking as -1 as there is already a public way to achieve the same result as this CL.",
+      "revId": "de40dde12c41b4cf3b61482d0e21c5e040ea4efe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
