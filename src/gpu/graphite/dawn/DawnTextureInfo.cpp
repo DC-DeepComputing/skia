@@ -12,6 +12,9 @@
 
 #include <cstdint>
 
+class SkStream;
+class SkWStream;
+
 namespace skgpu::graphite {
 
 class DawnTextureInfoData final : public TextureInfoData {
@@ -52,7 +55,7 @@ private:
                 "Dawn(f=%u,s=%u)", static_cast<unsigned int>(fDawnSpec.fFormat), sampleCount);
     }
 
-    void copyTo(AnyTextureInfoData& dstData) const override {
+    void copyTo1(AnyTextureInfoData& dstData) const override {
         // Don't assert that dstData has a Dawn type() because it could be
         // uninitialized and that assert would fail.
         dstData.emplace<DawnTextureInfoData>(fDawnSpec);
@@ -73,6 +76,14 @@ private:
         }
         return false;
     }
+
+    bool serialize(SkWStream* stream) const override {
+        return false;
+    }
+
+    static bool Deserialize(SkStream* stream) {
+        return false;
+    }
 };
 
 static const DawnTextureInfoData* get_and_cast_data(const TextureInfo& info) {
@@ -87,7 +98,7 @@ TextureInfo MakeDawn(const DawnTextureInfo& dawnInfo) {
                                  dawnInfo.fSampleCount,
                                  dawnInfo.fMipmapped,
                                  Protected::kNo,
-                                 DawnTextureInfoData(dawnInfo));
+                                 DawnTextureInfoData(dawnInfo), false); //$$ - ugh
 }
 
 bool GetDawnTextureInfo(const TextureInfo& info, DawnTextureInfo* out) {

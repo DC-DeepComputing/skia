@@ -49,6 +49,7 @@ private:
     friend class TextureInfoData;
     friend class TextureInfoPriv;
 
+public:
     // Size determined by looking at the TextureInfoData subclasses, then guessing-and-checking.
     // Compiler will complain if this is too small - in that case, just increase the number.
     inline constexpr static size_t kMaxSubclassSize = 112;
@@ -59,7 +60,8 @@ private:
                 uint32_t sampleCount,
                 skgpu::Mipmapped mipped,
                 skgpu::Protected isProtected,
-                const SomeTextureInfoData& textureInfoData)
+                const SomeTextureInfoData& textureInfoData,
+                bool)
             : fBackend(backend)
             , fValid(true)
             , fSampleCount(sampleCount)
@@ -79,6 +81,7 @@ private:
     Mipmapped fMipmapped = Mipmapped::kNo;
     Protected fProtected = Protected::kNo;
 
+public:
     AnyTextureInfoData fTextureInfoData;
 };
 

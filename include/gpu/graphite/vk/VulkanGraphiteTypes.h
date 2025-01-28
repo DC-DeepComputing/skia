@@ -63,6 +63,13 @@ namespace TextureInfos {
 SK_API TextureInfo MakeVulkan(const VulkanTextureInfo&);
 
 SK_API bool GetVulkanTextureInfo(const TextureInfo&, VulkanTextureInfo*);
+
+bool DeserializeVulkan(SkStream*,
+                       Mipmapped,
+                       Protected,
+                       uint32_t sampleCount,
+                       TextureInfo*);
+
 }  // namespace TextureInfos
 
 namespace BackendTextures {

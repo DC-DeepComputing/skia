@@ -32,7 +32,7 @@ TextureInfo::TextureInfo(const TextureInfo& that)
 
     assert_is_supported_backend(fBackend);
     fTextureInfoData.reset();
-    that.fTextureInfoData->copyTo(fTextureInfoData);
+    that.fTextureInfoData->copyTo1(fTextureInfoData);
 }
 
 TextureInfo& TextureInfo::operator=(const TextureInfo& that) {

@@ -373,6 +373,7 @@ skia_graphite_vello_sources = [
 ]
 
 skia_graphite_precompile_public = [
+  "$_include/precompile/BlobOStuff.h",
   "$_include/precompile/Precompile.h",
   "$_include/precompile/PrecompileBase.h",
   "$_include/precompile/PrecompileBlender.h",
@@ -388,6 +389,7 @@ skia_graphite_precompile_sources = [
   "$_src/AndroidSpecificPrecompile.h",
   "$_src/PrecompileInternal.h",
   "$_src/PublicPrecompile.cpp",
+  "$_src/precompile/BlobOStuff.cpp",
   "$_src/precompile/PaintOption.cpp",
   "$_src/precompile/PaintOption.h",
   "$_src/precompile/PaintOptions.cpp",

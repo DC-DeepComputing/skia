@@ -12,6 +12,9 @@
 
 #include <cstdint>
 
+class SkStream;
+class SkWStream;
+
 namespace skgpu::graphite {
 
 class TextureInfoData {
@@ -36,9 +39,12 @@ private:
     virtual SkString toString() const = 0;
     virtual SkString toRPAttachmentString(uint32_t sampleCount) const = 0;
 
-    virtual void copyTo(AnyTextureInfoData&) const = 0;
+    virtual void copyTo1(AnyTextureInfoData&) const = 0;
     virtual bool equal(const TextureInfoData* that) const = 0;
     virtual bool isCompatible(const TextureInfoData* that) const = 0;
+
+public:
+    virtual bool serialize(SkWStream*) const = 0;
 };
 
 class TextureInfoPriv {
@@ -48,8 +54,9 @@ public:
                             uint32_t sampleCount,
                             skgpu::Mipmapped mipped,
                             skgpu::Protected p,
-                            const SomeTextureInfoData& data) {
-        return TextureInfo(backend, sampleCount, mipped, p, data);
+                            const SomeTextureInfoData& data,
+                            bool foo) {
+        return TextureInfo(backend, sampleCount, mipped, p, data, foo);
     }
 
     static const TextureInfoData* GetData(const TextureInfo& info) {
