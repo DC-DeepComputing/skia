@@ -1616,16 +1616,15 @@ DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
         if (TextureInfos::GetVulkanTextureInfo(info, &vulkanTextureInfo)) {
             supportsInputAttachmentUsage =
                     vulkanTextureInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
-        }
 #ifdef SK_BUILD_FOR_ANDROID
-        // We expect that all Android target textures to support input attachment usage.
-        SkASSERT(supportsInputAttachmentUsage);
-        // TODO(b/??????): Return kReadFromInput once supported by the Vulkan backend.
-        // return DstReadStrategy::kReadFromInput;
+            // We expect that all Android target textures to support input attachment usage.
+            SkASSERT(supportsInputAttachmentUsage);
 #endif
+            if (supportsInputAttachmentUsage) {
+                return DstReadStrategy::kReadFromInput;
+            }
     }
 
-    // TODO: Check sample count; attachment usage to determine dst read strategy.
     return DstReadStrategy::kTextureCopy;
 }
 

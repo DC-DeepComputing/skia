@@ -200,7 +200,11 @@ private:
     // Track whether there is currently an active render pass (beginRenderPass has been called, but
     // not endRenderPass)
     bool fActiveRenderPass = false;
-
+    // TODO comment
+    // Keep ptr to renderpass target texture in order to have access to it when we bind a new
+    // pipeline. If that pipeline reading the dst texture as an input attachment, we need it in
+    // order to add an image memory barrier.
+    VulkanTexture* fTargetTexture = nullptr;
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;

@@ -127,6 +127,7 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     fBoundIndexBufferOffset = 0;
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
+    fTargetTexture = nullptr;
     fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
     fNumTextureSamplers = 0;
     fUniformBuffersToBind.fill({});
@@ -467,8 +468,10 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
 bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTexture& resolveTexture)
 {
     // Fetch a descriptor set that contains one input attachment
+    // TODO reconcile this w/ the input attach in uniform (same values but only coincidentally)
     STArray<1, DescriptorData> inputDescriptors =
             {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
             SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
     if (!set) {
@@ -570,9 +573,10 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
     // If we loaded the resolve attachment, then we would have set the image layout to be
     // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
     // input attachment. However, when we switched to the main subpass it will transition the
-    // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
+    // layout internally to VK_IMAGE_LAYOUT_GENERAL. Thus we need to update our
     // tracking of the layout to match the new layout.
-    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+    // TODO: Choose b/w VK_IMAGE_LAYOUT_GENERAL, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL.
+    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_GENERAL);
 
     // After using a distinct descriptor set layout for loading MSAA from resolve, we will need to
     // (re-)bind any descriptor sets.
@@ -588,12 +592,14 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                            VulkanTexture* depthStencilTexture,
                            bool loadMSAAFromResolve) {
     if (colorTexture) {
-        colorTexture->setImageLayout(cmdBuf,
-                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                     /*byRegion=*/false);
+        // The color texture is also used as an input attachment to support dst reads.
+        VkAccessFlags access = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
+                                          VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        colorTexture->setImageLayout(
+                cmdBuf, VK_IMAGE_LAYOUT_GENERAL, access, stageFlags, /*byRegion=*/false);
         if (resolveTexture) {
             if (loadMSAAFromResolve) {
                 // When loading MSAA from resolve, the texture is used in the first subpass as an
@@ -609,7 +615,7 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                                                /*byRegion=*/false);
             } else {
                 resolveTexture->setImageLayout(cmdBuf,
-                                               VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                                               VK_IMAGE_LAYOUT_GENERAL,
                                                VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
                                                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
                                                VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
@@ -734,12 +740,15 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                                           const Texture* resolveTexture,
                                           const Texture* depthStencilTexture) {
     // TODO: Check that Textures match RenderPassDesc
+    // TODO use member var instead of local var
     VulkanTexture* vulkanColorTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(colorTexture));
     VulkanTexture* vulkanResolveTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(resolveTexture));
     VulkanTexture* vulkanDepthStencilTexture =
             const_cast<VulkanTexture*>(static_cast<const VulkanTexture*>(depthStencilTexture));
+
+    fTargetTexture = vulkanColorTexture;
 
     SkASSERT(resolveTexture ? renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore
                             : true);
@@ -967,6 +976,32 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
         // up front in this case.
         this->recordTextureAndSamplerDescSet(/*drawPass=*/nullptr, /*command=*/nullptr);
     }
+
+    // Add image memory barrier
+    if (graphicsPipeline->dstReadStrategy() == DstReadStrategy::kReadFromInput) {
+        if (!this->updateAndBindLoadMSAAInputAttachment(*fTargetTexture)) {
+            SKGPU_LOG_E("Unable to update and bind an input attachment descriptor for performing "
+                        "dst read");
+        }
+        // Force image memory barrier here
+        VkImageMemoryBarrier imageMemoryBarrier = {
+                VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER,          // sType
+                nullptr,                                         // pNext
+                VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,            // srcAccessMask
+                VK_ACCESS_INPUT_ATTACHMENT_READ_BIT,             // dstAccessMask
+                VK_IMAGE_LAYOUT_GENERAL,                         // oldLayout
+                VK_IMAGE_LAYOUT_GENERAL,                         // newLayout
+                VK_QUEUE_FAMILY_IGNORED,                         // srcQueueFamilyIndex
+                VK_QUEUE_FAMILY_IGNORED,                         // dstQueueFamilyIndex
+                fTargetTexture->vkImage(),                       // image
+                { VK_IMAGE_ASPECT_COLOR_BIT, 0, 1, 0, 1 }        // subresourceRange
+        };
+        this->addImageMemoryBarrier(fTargetTexture,
+                                    VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                                    VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT,
+                                    /*byRegion=*/true,
+                                    &imageMemoryBarrier);
+    }
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
@@ -1017,6 +1052,11 @@ void VulkanCommandBuffer::bindUniformBuffers() {
     // Define a container with size reserved for up to kNumUniformBuffers descriptors. Only add
     // DescriptorData for uniforms that actually are used and need to be bound.
     STArray<VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> descriptors;
+
+    // TODO(nic) add comment
+    descriptors.push_back({DescriptorType::kInputAttachment, /*count=*/1,
+                           VulkanGraphicsPipeline::kDstReadInputAttachment,
+                           PipelineStageFlags::kFragmentShader});
 
     // Up to kNumUniformBuffers can be used and require rebinding depending upon render pass info.
     DescriptorType uniformBufferType =
