@@ -146,8 +146,7 @@ def RunSteps(api):
 
 
 TEST_BUILDERS = [
-  'Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm-Debug-All-Android_ASAN',
-  'Test-Android-Clang-Pixel2XL-GPU-Adreno540-arm64-Debug-All-Android',
+  'Test-Android12-Clang-Pixel5-GPU-Adreno620-arm64-Release-All-Android_Vulkan',
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Lottie',
   'Test-Win10-Clang-ShuttleC-GPU-GTX960-x86_64-Debug-All-ANGLE',
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-Fontations',

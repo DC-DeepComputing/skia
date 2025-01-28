@@ -232,19 +232,6 @@ test:GalaxyS7_G930FD --test_arg=Android
 test:GalaxyS7_G930FD --test_arg=--gpuName
 test:GalaxyS7_G930FD --test_arg=MaliT880
 
-test:GalaxyS9 --strategy=TestRunner=local
-test:GalaxyS9 --test_arg=--device-specific-bazel-config
-test:GalaxyS9 --test_arg=GalaxyS9
-test:GalaxyS9 --test_arg=--key
-test:GalaxyS9 --test_arg=arch
-test:GalaxyS9 --test_arg=arm64
-test:GalaxyS9 --test_arg=model
-test:GalaxyS9 --test_arg=GalaxyS9
-test:GalaxyS9 --test_arg=os
-test:GalaxyS9 --test_arg=Android
-test:GalaxyS9 --test_arg=--gpuName
-test:GalaxyS9 --test_arg=MaliG72
-
 test:Golo_wasm_Ubuntu18 --strategy=TestRunner=local
 test:Golo_wasm_Ubuntu18 --test_arg=--device-specific-bazel-config
 test:Golo_wasm_Ubuntu18 --test_arg=Golo_wasm_Ubuntu18
@@ -652,32 +639,6 @@ test:P30 --test_arg=Android
 test:P30 --test_arg=--gpuName
 test:P30 --test_arg=MaliG76
 
-test:Pixel2XL --strategy=TestRunner=local
-test:Pixel2XL --test_arg=--device-specific-bazel-config
-test:Pixel2XL --test_arg=Pixel2XL
-test:Pixel2XL --test_arg=--key
-test:Pixel2XL --test_arg=arch
-test:Pixel2XL --test_arg=arm64
-test:Pixel2XL --test_arg=model
-test:Pixel2XL --test_arg=Pixel2XL
-test:Pixel2XL --test_arg=os
-test:Pixel2XL --test_arg=Android
-test:Pixel2XL --test_arg=--gpuName
-test:Pixel2XL --test_arg=Adreno540
-
-test:Pixel3 --strategy=TestRunner=local
-test:Pixel3 --test_arg=--device-specific-bazel-config
-test:Pixel3 --test_arg=Pixel3
-test:Pixel3 --test_arg=--key
-test:Pixel3 --test_arg=arch
-test:Pixel3 --test_arg=arm64
-test:Pixel3 --test_arg=model
-test:Pixel3 --test_arg=Pixel3
-test:Pixel3 --test_arg=os
-test:Pixel3 --test_arg=Android
-test:Pixel3 --test_arg=--gpuName
-test:Pixel3 --test_arg=Adreno630
-
 test:Pixel4 --strategy=TestRunner=local
 test:Pixel4 --test_arg=--device-specific-bazel-config
 test:Pixel4 --test_arg=Pixel4
@@ -978,19 +939,6 @@ test:iPadPro --test_arg=os
 test:iPadPro --test_arg=iOS
 test:iPadPro --test_arg=--gpuName
 test:iPadPro --test_arg=PowerVRGT7800
-
-test:iPhone11 --strategy=TestRunner=local
-test:iPhone11 --test_arg=--device-specific-bazel-config
-test:iPhone11 --test_arg=iPhone11
-test:iPhone11 --test_arg=--key
-test:iPhone11 --test_arg=arch
-test:iPhone11 --test_arg=arm64
-test:iPhone11 --test_arg=model
-test:iPhone11 --test_arg=iPhone11
-test:iPhone11 --test_arg=os
-test:iPhone11 --test_arg=iOS
-test:iPhone11 --test_arg=--gpuName
-test:iPhone11 --test_arg=AppleA13
 
 test:iPhone7 --strategy=TestRunner=local
 test:iPhone7 --test_arg=--device-specific-bazel-config
