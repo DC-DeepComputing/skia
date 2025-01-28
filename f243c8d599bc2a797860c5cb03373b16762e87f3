@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "745b6463_02a9a8c4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 1769,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-28T15:25:24Z",
+      "side": 1,
+      "message": "I\u0027d personally prefer we conform to the spec, but if it\u0027s not broken now there\u0027s not pressure to change it.",
+      "parentUuid": "c0c9d6c8_f061fcde",
+      "range": {
+        "startLine": 1769,
+        "startChar": 56,
+        "endLine": 1769,
+        "endChar": 61
+      },
+      "revId": "f243c8d599bc2a797860c5cb03373b16762e87f3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b9f92c2_3e73e6dc",
