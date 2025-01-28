@@ -362,7 +362,13 @@ private:
     //
     // The cache should track the Resource based on this return value instead of re-checking the
     // ref counts as that would not be an atomic operation.
-    std::pair<bool, bool> unrefReturnQueue() const {
+    std::tuple<bool, bool, Resource*> unrefReturnQueue() const {
+        // We must reset the fNextInReturnQueue value *before* removing the
+        // return queue ref, but we need to return the old value to the
+        // ResourceCache so that it can continue iterating over the linked list.
+        Resource* next = fNextInReturnQueue;
+        fNextInReturnQueue = nullptr;
+
         uint64_t origRefs = this->removeRef<RefType::kReturnQueue>();
 
         // Since we should always have a cache ref when this is called, the Resource will never be
@@ -374,7 +380,8 @@ private:
         // to compare to the ref mask to detect the case when the actual reusable refs are all zero.
         // Since PurgeableMask() does not add the ReturnQueue ref mask, it *can* compare to zero.
         return {(origRefs & fReusableRefMask) == RefMask(RefType::kReturnQueue),
-                (origRefs & PurgeableMask()) == 0};
+                (origRefs & PurgeableMask()) == 0,
+                next};
     }
 
 #if defined(SK_DEBUG) || defined(GPU_TEST_UTILS)
@@ -570,6 +577,7 @@ private:
             if (needsReturn && !this->returnToCache()) {
                 // The cache rejected the resource, so we need to unset the "return queue" ref that
                 // we added above, which may be the last ref keeping the object alive.
+                SkASSERT(!fNextInReturnQueue);
                 origRefs = this->removeRef<RefType::kReturnQueue>();
                 // so do not access *this* after this point!
             }
@@ -607,6 +615,15 @@ private:
     // The resource key and return cache are both set at most once, during registerWithCache().
     /*const*/ GraphiteResourceKey  fKey;
     /*const*/ sk_sp<ResourceCache> fReturnCache;
+
+    // Resources added to their return cache's queue are tracked in a lock-free thread-safe
+    // singly-linked list whose head element is stored on the cache, and next elements are stored
+    // inline in Resource. This can only be modified by the thread that set the return queue ref,
+    // or by the thread that is removing said ref.
+    //
+    // A null value means the Resource is not in the return queue. A non-null value means it is
+    // in the queue, although a special sentinel value is used for the tail address.
+    mutable Resource* fNextInReturnQueue = nullptr;
 
     // The remaining fields are mutable state that is only modified by the ResourceCache on the
     // cache's thread, guarded by `fReturnCache::fSingleOwner`.
@@ -648,10 +665,6 @@ private:
 
     // String used to describe the current use of this Resource.
     std::string fLabel;
-
-    // An index into the return cache so we know whether or not the resource is already waiting to
-    // be returned or not. In release builds this is redundant with the return queue ref bit.
-    SkDEBUGCODE(mutable int fReturnIndex = -1;) // Guarded by `fReturnCache::fReturnMutex`
 };
 
 } // namespace skgpu::graphite
