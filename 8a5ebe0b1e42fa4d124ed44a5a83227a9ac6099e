@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff4c6b7_d0245c8a",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-01-28T19:56:15Z",
+      "side": 0,
+      "message": "This is being done in PopulateGainmapInfo.",
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
