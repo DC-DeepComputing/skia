@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80ce6927_571dea52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-01-28T20:16:44Z",
+      "side": 1,
+      "message": "PTAL - fixed presubmits and removed a few other machines that were dead.",
+      "revId": "e31001e6f33e8ae24647941055f75fbb3bccd0c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
