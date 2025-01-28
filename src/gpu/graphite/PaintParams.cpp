@@ -265,6 +265,7 @@ void PaintParams::handleClipping(const KeyContext& keyContext,
         SkPoint radiusPair = {(analyticClip.fInverted) ? radius : -radius, 1.0f/radius};
 
         const AtlasClip& atlasClip = fNonMSAAClip.fAtlasClip;
+
         skvx::float2 maskSize = atlasClip.fMaskBounds.size();
         SkRect texMaskBounds = SkRect::MakeXYWH(atlasClip.fOutPos.x(), atlasClip.fOutPos.y(),
                                                 maskSize.x(), maskSize.y());
