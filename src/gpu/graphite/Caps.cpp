@@ -140,6 +140,7 @@ skgpu::Swizzle Caps::getWriteSwizzle(SkColorType ct, const TextureInfo& info) co
 DstReadStrategy Caps::getDstReadStrategy(const TextureInfo& info) const {
     // TODO(nicolettep): Allow backends to ingest this textureinfo struct for analysis.
     // TODO(b/238757201): Currently this only supports dst reads by FB fetch and texture copy.
+    // TODO update comment
     if (this->shaderCaps()->fFBFetchSupport) {
         return DstReadStrategy::kFramebufferFetch;
     } else {

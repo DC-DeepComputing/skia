@@ -651,6 +651,29 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     bool wrotePaintColor = false;
+
+    // If Vulkan or other backend reads from the input attachment, add support for that here.
+    // See GrVkUniformHandler::addInputSampler(...) for example.
+
+    // TODO: Intake dst texture read swizzle.
+    // const skgpu::Swizzle& swizzle = dstView.swizzle();
+
+    // fDstTextureSamplerHandle = this->emitInputSampler(swizzle, "DstTextureInput");
+    // TODO: Assign or utilize existing variables for the "0" args below.
+    SkSL::String::appendf(&preamble, "vulkan, input_attachment_index=%d, set=%d, binding=%d",
+                          /*input attachment idx within set=*/0,
+                          /*input attachment set idx=*/0,
+                          /*binding=*/0);
+    // Set up an input attachment for the destination texture.
+
+    // Populate the _dstColor variable by loading from the input attachment at the top of the
+    // fragment shader.
+    // fFS.codeAppend("// Read color from input attachment\n");
+    SkSL::String::appendf(&preamble, "// Read color from input attachment\n");
+
+    // fFS.appendInputLoad(fDstTextureSamplerHandle);
+    // fFS.codeAppend(";\n");
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fPaintParamsBufferBinding,
                                                      fRootNodes,
@@ -745,13 +768,19 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (dstReadRequired) {
         // Get the current dst color into a local variable, it may be used later on for coverage
         // blending as well as the final blend.
+        // const char* dstColor = fFS.dstColor();
+        // SkString dstColorDecl = SkStringPrintf("half4 %s;", dstColor);
+        // fFS.definitionAppend(dstColorDecl.c_str());
+        // fFS.codeAppendf("%s = ", dstColor);
         mainBody += "half4 dstColor;";
         if (useDstSampler) {
             // dstReadBounds is in frag coords and already includes the replay translation. The
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
-        } else {
+        } else if (usesInputAttachmentForRead) {
+            mainBody += "dstColor = "
+        }else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
         }
