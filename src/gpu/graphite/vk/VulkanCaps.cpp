@@ -1603,9 +1603,18 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {
-    const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-            TextureInfos::GetVulkanYcbcrConversionInfo(textureInfo);
+DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo&) const {
+    // We know the graphite Vulkan backend does not support frame buffer fetch, so make sure it is
+    // not marked as supported and skip checking for it.
+    SkASSERT(!this->shaderCaps()->fFBFetchSupport);
+    // TODO: Check sample count; attachment usage to determine dst read strategy.
+    return DstReadStrategy::kTextureCopy;
+}
+
+ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
+    if (proxy) {
+        const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
+                TextureInfos::GetVulkanYcbcrConversionInfo(proxy->textureInfo());
 
     if (ycbcrConversionInfo.isValid()) {
         return VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);
