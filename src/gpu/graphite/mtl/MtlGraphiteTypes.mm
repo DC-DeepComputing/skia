@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkStream.h"
 #include "src/gpu/graphite/mtl/MtlGraphiteTypesPriv.h"
 
 #import <Metal/Metal.h>
@@ -39,6 +40,32 @@ MtlTextureInfo MtlTextureSpecToTextureInfo(const MtlTextureSpec& mtlSpec,
     info.fFramebufferOnly = mtlSpec.fFramebufferOnly;
 
     return info;
+}
+
+bool MtlTextureSpec::serialize(SkWStream* stream) const {
+    // TODO: not densely packed
+    if (!stream->write32(static_cast<uint32_t>(fFormat)))          { return false; }
+    if (!stream->write32(static_cast<uint32_t>(fUsage)))           { return false; }
+    if (!stream->write32(static_cast<uint32_t>(fStorageMode)))     { return false; }
+    if (!stream->write32(static_cast<uint32_t>(fFramebufferOnly))) { return false; }
+    return true;
+}
+
+bool MtlTextureSpec::Deserialize(SkStream* stream, MtlTextureSpec* out) {
+    uint32_t tmp;
+
+    if (!stream->readU32(&tmp)) { return false; }
+    out->fFormat = static_cast<MTLPixelFormat>(tmp);
+
+    if (!stream->readU32(&tmp)) { return false; }
+    out->fUsage = static_cast<MTLTextureUsage>(tmp);
+
+    if (!stream->readU32(&tmp)) { return false; }
+    out->fStorageMode = static_cast<MTLStorageMode>(tmp);
+
+    if (!stream->readU32(&tmp)) { return false; }
+    out->fFramebufferOnly = SkToBool(tmp);
+    return true;
 }
 
 }  // namespace skgpu::graphite
