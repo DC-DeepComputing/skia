@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fd53f21_caa8e3ec",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-29T14:45:17Z",
+      "side": 1,
+      "message": "For some reason IWYU wants it.",
+      "parentUuid": "f7c4291d_b912f198",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "bc63bb0d25733c2b3531a69d8df8f3ccd7149d54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ed3deeca_10674c73",
@@ -54,6 +78,24 @@
       "writtenOn": "2025-01-28T22:08:58Z",
       "side": 1,
       "message": "Unused?",
+      "revId": "bc63bb0d25733c2b3531a69d8df8f3ccd7149d54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39053b66_d8ebbc51",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-01-29T14:45:17Z",
+      "side": 1,
+      "message": "Needed for the ClipAtlasManager destructor def.",
+      "parentUuid": "ed3deeca_10674c73",
       "revId": "bc63bb0d25733c2b3531a69d8df8f3ccd7149d54",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
