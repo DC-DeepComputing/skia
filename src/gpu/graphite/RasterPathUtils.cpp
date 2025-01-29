@@ -189,7 +189,8 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
             int xformKeySize = 5;
             int keySize = 0;
             for (int i = 0; i < elementsForMask->size(); ++i) {
-                keySize += xformKeySize + (*elementsForMask)[i]->fShape.keySize();
+                auto element = (*elementsForMask)[i];
+                keySize += xformKeySize + element->fShape.keySize();
             }
             skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
                                               "Clip Path Mask");

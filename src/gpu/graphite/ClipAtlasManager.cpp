@@ -140,7 +140,9 @@ void draw_to_sw_mask(RasterMaskHelper* helper,
         inverted.setInverted(true);
         helper->drawClip(inverted, e.fLocalToDevice, alpha, resultBounds);
     } else {
-        helper->drawClip(e.fShape, e.fLocalToDevice, alpha, resultBounds);
+        Shape inverted(e.fShape);
+        inverted.setInverted(false);
+        helper->drawClip(inverted, e.fLocalToDevice, alpha, resultBounds);
     }
 }
 
