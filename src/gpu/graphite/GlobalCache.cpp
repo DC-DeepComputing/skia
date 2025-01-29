@@ -51,6 +51,13 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fStaticResource.empty());
 }
 
+void GlobalCache::setAndroidStyleCallback(AndroidStyleCBFunc callback, void* callbackData) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fAndroidStyleCallback = callback;
+    fData = callbackData;
+}
+
 void GlobalCache::deleteResources() {
     SkAutoSpinlock lock{ fSpinLock };
 
