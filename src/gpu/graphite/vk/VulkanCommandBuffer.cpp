@@ -1173,33 +1173,52 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         return;
     }
 
-    // Query resource provider to obtain a descriptor set for the texture/samplers
-    TArray<DescriptorData> descriptors(numTexSamplers);
-    if (command) {
-        for (int i = 0; i < command->fNumTexSamplers; i++) {
-            auto sampler = static_cast<const VulkanSampler*>(
-                    drawPass->getSampler(command->fSamplerIndices[i]));
-
-            const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
-                                                                                      : nullptr;
-            descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                                   /*count=*/1,
-                                   /*bindingIdx=*/i,
-                                   PipelineStageFlags::kFragmentShader,
-                                   immutableSampler});
+    sk_sp<VulkanDescriptorSet> set;
+    if (numTexSamplers == 1) {
+        const VulkanTexture* texture = nullptr;
+        const Sampler* sampler = nullptr;
+        if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
+            texture = static_cast<const VulkanTexture*>(fDstCopy.first);
+            sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+        } else {
+            SkASSERT(command);
+            texture = static_cast<const VulkanTexture*>(
+                    drawPass->getTexture(command->fTextureIndices[0]));
+            sampler = drawPass->getSampler(command->fSamplerIndices[0]);
         }
+        SkASSERT(texture && sampler);
+        set = texture->getCachedSingledTextureDescriptorSet(sampler);
     }
-    // If required the dst copy texture+sampler is the last one in the descriptor set
-    if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
-        descriptors.push_back({DescriptorType::kCombinedTextureSampler,
-                               /*count=*/1,
-                               /*bindingIdx=*/numTexSamplers-1,
-                               PipelineStageFlags::kFragmentShader,
-                               /*immutableSampler=*/nullptr});
+
+    if (!set) {
+        // Query resource provider to obtain a descriptor set for the texture/samplers
+        TArray<DescriptorData> descriptors(numTexSamplers);
+        if (command) {
+            for (int i = 0; i < command->fNumTexSamplers; i++) {
+                auto sampler = static_cast<const VulkanSampler*>(
+                                                                 drawPass->getSampler(command->fSamplerIndices[i]));
+
+                const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
+                : nullptr;
+                descriptors.push_back({DescriptorType::kCombinedTextureSampler,
+                    /*count=*/1,
+                    /*bindingIdx=*/i,
+                    PipelineStageFlags::kFragmentShader,
+                    immutableSampler});
+            }
+        }
+        // If required the dst copy texture+sampler is the last one in the descriptor set
+        if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
+            descriptors.push_back({DescriptorType::kCombinedTextureSampler,
+                /*count=*/1,
+                /*bindingIdx=*/numTexSamplers-1,
+                PipelineStageFlags::kFragmentShader,
+                /*immutableSampler=*/nullptr});
+        }
+        SkASSERT(descriptors.size() == numTexSamplers);
+        set = fResourceProvider->findOrCreateDescriptorSet(
+                SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
     }
-    SkASSERT(descriptors.size() == numTexSamplers);
-    sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
-            SkSpan<DescriptorData>{&descriptors.front(), descriptors.size()});
 
     if (!set) {
         SKGPU_LOG_E("Unable to find or create descriptor set");
@@ -1271,6 +1290,22 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                                                   &writeDescriptorSets[0],
                                                                   /*descriptorCopyCount=*/0,
                                                                   /*pDescriptorCopies=*/nullptr));
+
+    if (numTexSamplers == 1) {
+        const VulkanTexture* texture = nullptr;
+        const Sampler* sampler = nullptr;
+        if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
+            texture = static_cast<const VulkanTexture*>(fDstCopy.first);
+            sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
+        } else {
+            SkASSERT(command);
+            texture = static_cast<const VulkanTexture*>(
+                    drawPass->getTexture(command->fTextureIndices[0]));
+            sampler = drawPass->getSampler(command->fSamplerIndices[0]);
+        }
+        SkASSERT(texture && sampler);
+        texture->addCachedSingledTextureDescriptorSet(set, sampler);
+    }
 
     // Store the updated descriptor set to be actually bound later on. This avoids binding and
     // potentially having to re-bind in cases where earlier descriptor sets change while going
