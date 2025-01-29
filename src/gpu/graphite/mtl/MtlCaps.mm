@@ -24,6 +24,8 @@
 #include "src/gpu/graphite/mtl/MtlGraphiteUtilsPriv.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
+//#include "src/gpu/graphite/TextureInfoPriv.h"
+
 
 namespace skgpu::graphite {
 
@@ -1040,6 +1042,28 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
 
     *pipelineDesc = GraphicsPipelineDesc(renderStep->renderStepID(), paintID);
 
+    return true;
+}
+
+bool MtlCaps::deserialize(SkStream* stream,
+                          BackendApi backendApi,
+                          Mipmapped mipmapped,
+                          Protected isProtected,
+                          uint32_t sampleCount,
+                          TextureInfo* out) const {
+    SkASSERT(isProtected == Protected::kNo);
+
+    MtlTextureSpec spec;
+    if (!MtlTextureSpec::Deserialize(stream, &spec)) {
+        return false;
+    }
+
+    *out = TextureInfos::MakeMetal(MtlTextureInfo(sampleCount,
+                                                  mipmapped,
+                                                  spec.fFormat,
+                                                  spec.fUsage,
+                                                  spec.fStorageMode,
+                                                  spec.fFramebufferOnly));
     return true;
 }
 

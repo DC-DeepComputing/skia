@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypesUtils.h"
@@ -74,6 +75,10 @@ private:
             return fMtlSpec.isCompatible(otherMtl->fMtlSpec);
         }
         return false;
+    }
+
+    bool serialize(SkWStream* stream) const override {
+        return fMtlSpec.serialize(stream);
     }
 };
 
