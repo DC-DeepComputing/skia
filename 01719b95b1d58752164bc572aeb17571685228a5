@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64efae14_f9e12542",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-29T14:52:22Z",
+      "side": 1,
+      "message": "nit: should we move this out of the \"cleanup that must always happen\" section?",
+      "range": {
+        "startLine": 222,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 55
+      },
+      "revId": "01719b95b1d58752164bc572aeb17571685228a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
