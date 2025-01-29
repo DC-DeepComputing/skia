@@ -1043,6 +1043,28 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     return true;
 }
 
+bool MtlCaps::deserialize(SkStream* stream,
+                          BackendApi backendApi,
+                          Mipmapped mipmapped,
+                          Protected isProtected,
+                          uint32_t sampleCount,
+                          TextureInfo* out) const {
+    SkASSERT(isProtected == Protected::kNo);
+
+    MtlTextureSpec spec;
+    if (!MtlTextureSpec::Deserialize(stream, &spec)) {
+        return false;
+    }
+
+    *out = TextureInfos::MakeMetal(MtlTextureInfo(sampleCount,
+                                                  mipmapped,
+                                                  spec.fFormat,
+                                                  spec.fUsage,
+                                                  spec.fStorageMode,
+                                                  spec.fFramebufferOnly));
+    return true;
+}
+
 uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
     MtlTextureInfo colorInfo, depthStencilInfo;
     SkAssertResult(TextureInfos::GetMtlTextureInfo(renderPassDesc.fColorAttachment.fTextureInfo,
