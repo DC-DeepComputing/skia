@@ -20,8 +20,10 @@ namespace skgpu { class MutableTextureState; }
 
 namespace skgpu::graphite {
 
+class Sampler;
 class VulkanSharedContext;
 class VulkanCommandBuffer;
+class VulkanDescriptorSet;
 class VulkanResourceProvider;
 
 class VulkanTexture : public Texture {
@@ -50,7 +52,7 @@ public:
                                       const VulkanAlloc&,
                                       sk_sp<VulkanYcbcrConversion>);
 
-    ~VulkanTexture() override {}
+    ~VulkanTexture() override;
 
     VkImage vkImage() const { return fImage; }
 
@@ -85,6 +87,9 @@ public:
 
     bool supportsInputAttachmentUsage() const;
 
+    sk_sp<VulkanDescriptorSet> getCachedSingledTextureDescriptorSet(const Sampler*) const;
+    void addCachedSingledTextureDescriptorSet(sk_sp<VulkanDescriptorSet>, const Sampler*) const;
+
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
@@ -104,6 +109,16 @@ private:
     sk_sp<VulkanYcbcrConversion> fYcbcrConversion;
 
     mutable skia_private::STArray<2, std::unique_ptr<const VulkanImageView>> fImageViews;
+
+    // This caches the last descriptor set use when this Texture was the only Texture sampled on in
+    // Pipline.
+    // TODO: Currently we are only cache the last desc set that we used with this Texture. The
+    // thought is that a texture will rarely be switching which samplers it is used with especially
+    // within a single frame. If however we see that this actually does occur more often, it is
+    // straight forward to update this to store a list of cached desc sets instead.
+    mutable sk_sp<VulkanDescriptorSet> fLastUsedSingleTextureDescSet;
+    // SamplerID of Sampler object used with the last used singled texture descriptor set
+    mutable UniqueID fLastSamplerID;
 };
 
 } // namespace skgpu::graphite
