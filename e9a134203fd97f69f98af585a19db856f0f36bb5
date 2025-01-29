@@ -140,6 +140,30 @@
       },
       "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6525277_6c35ae32",
+        "filename": "src/pathops/SkPathOpsDispatch.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-29T15:24:01Z",
+      "side": 1,
+      "message": "After talking offline with Mike, I am not opposed to temporarily having global registration for something that is a fairly isolated component, particularly if there is follow up work to further remove dependencies from within Skia to pathops. This change is a step towards that decoupling, but it would be nice if this comment can suggest that direction and emphasize that runtime registration is not necessarily the end goal (e.g. perhaps we\u0027ll have a raster context object at some point, or we won\u0027t need pathops in core).",
+      "parentUuid": "66555a50_1fab12d0",
+      "range": {
+        "startLine": 21,
+        "startChar": 8,
+        "endLine": 21,
+        "endChar": 39
+      },
+      "revId": "e9a134203fd97f69f98af585a19db856f0f36bb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
