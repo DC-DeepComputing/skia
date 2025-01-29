@@ -14,6 +14,8 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include "src/gpu/graphite/SharedContext.h"
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -49,6 +51,13 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+}
+
+void GlobalCache::setAndroidStyleCallback(AndroidStyleCBFunc callback, void* callbackData) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fAndroidStyleCallback = callback;
+    fData = callbackData;
 }
 
 void GlobalCache::deleteResources() {
