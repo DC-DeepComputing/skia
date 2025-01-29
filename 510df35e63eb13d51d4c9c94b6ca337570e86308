@@ -16,6 +16,24 @@
       "message": "Nice find!",
       "revId": "510df35e63eb13d51d4c9c94b6ca337570e86308",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca40a24c_29524df9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 10154
+      },
+      "writtenOn": "2025-01-29T17:52:46Z",
+      "side": 1,
+      "message": "I actually noticed because of a memory leak warning I got from Emscripten after building CanvasKit in debug mode",
+      "parentUuid": "bdc96b6f_beef4b03",
+      "revId": "510df35e63eb13d51d4c9c94b6ca337570e86308",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
