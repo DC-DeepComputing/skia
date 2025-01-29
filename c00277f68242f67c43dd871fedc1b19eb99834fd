@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8172a4f4_746cde45",
+        "filename": "gm/compressed_textures.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-29T21:09:02Z",
+      "side": 1,
+      "message": "Do you want to delete this then ?",
+      "range": {
+        "startLine": 285,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 9
+      },
+      "revId": "c00277f68242f67c43dd871fedc1b19eb99834fd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
