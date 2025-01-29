@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "include/gpu/graphite/mtl/MtlGraphiteTypesUtils.h"
@@ -54,7 +55,7 @@ private:
                 "Metal(f=%u,s=%u)", static_cast<unsigned int>(fMtlSpec.fFormat), sampleCount);
     }
 
-    void copyTo(AnyTextureInfoData& dstData) const override {
+    void copyTo1(AnyTextureInfoData& dstData) const override {
         // Don't assert that dstData is a metal type because it could be
         // uninitialized and that assert would fail.
         dstData.emplace<MtlTextureInfoData>(fMtlSpec);
@@ -74,6 +75,10 @@ private:
             return fMtlSpec.isCompatible(otherMtl->fMtlSpec);
         }
         return false;
+    }
+
+    bool serialize(SkWStream* stream) const override {
+        return fMtlSpec.serialize(stream);
     }
 };
 
