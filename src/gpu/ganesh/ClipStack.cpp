@@ -1311,6 +1311,8 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
                                 GrAAType aa,
                                 GrAppliedClip* out,
                                 SkRect* bounds) const {
+    // bounds is op bounds with any AA or snap-to-grid bloat
+
     // TODO: Once we no longer store SW masks, we don't need to sneak the provider in like this
     if (!fProxyProvider) {
         fProxyProvider = rContext->priv().proxyProvider();
@@ -1388,6 +1390,10 @@ GrClip::Effect ClipStack::apply(GrRecordingContext* rContext,
     } else {
         scissorBounds = subtract(draw.outerBounds(), cs.innerBounds(), /* exact */ true);
     }
+
+    // scissorBounds is either the conservative bounds for all the clips (if intersect) or the
+    // draw conservative bounds minus the clip tight bounds. Basically the conservative non-clipped
+    // rect for the draw.
 
     // We mark this true once we have a coverage FP (since complex clipping is occurring), or we
     // have an element that wouldn't affect the scissored draw bounds, but does affect the regular
