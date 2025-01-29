@@ -477,10 +477,17 @@ static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                                     bool hasStepUniforms,
                                     bool hasPaintUniforms,
                                     bool hasGradientBuffer) {
+    // TODO(nicolette): Update the verbiage & variable names to account for new input attach desc
+
     // Define a container with size reserved for up to kNumUniformBuffers descriptors. Only add
     // DescriptorData for uniforms that actually are used and need to be included in the layout.
     skia_private::STArray<
             VulkanGraphicsPipeline::kNumUniformBuffers, DescriptorData> uniformDescriptors;
+
+     // TODO: Verify pipeline stage. VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT?
+    uniformDescriptors.push_back({DescriptorType::kInputAttachment, /*count=*/1,
+                                  VulkanGraphicsPipeline::kDstReadInputAttachmentUniformIndex,
+                                  PipelineStageFlags::kFragmentShader});
 
     DescriptorType uniformBufferType =
             sharedContext->caps()->storageBufferSupport() ? DescriptorType::kStorageBuffer

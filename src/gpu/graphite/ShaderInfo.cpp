@@ -651,6 +651,30 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     bool wrotePaintColor = false;
+
+    // If Vulkan or other backend reads from the input attachment, add support for that here.
+    // See GrVkUniformHandler::addInputSampler(...) for example.
+
+    // TODO: Intake dst texture read swizzle.
+    // const skgpu::Swizzle& swizzle = dstView.swizzle();
+
+    // fDstTextureSamplerHandle = this->emitInputSampler(swizzle, "DstTextureInput");\    SkString load;
+    // The above call does:
+    // load.appendf("subpassLoad(%s)", input);
+    // append_texture_swizzle(&load, fProgramBuilder->inputSamplerSwizzle(samplerHandle));
+    // this->codeAppend(load.c_str());
+
+    // TODO: Assign or utilize existing variables for the "0" args below.
+    SkSL::String::appendf(&preamble,
+                          "layout(vulkan, input_attachment_index=%d, set=%d, binding=%d) subpassInput DstTextureInput;\n",
+                          /*input attachment idx within set=*/0,
+                          /*input attachment set idx=*/0,
+                          /*binding=*/0);
+    // Set up an input attachment for the destination texture.
+
+    // fFS.appendInputLoad(fDstTextureSamplerHandle);
+    // fFS.codeAppend(";\n");
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fPaintParamsBufferBinding,
                                                      fRootNodes,
@@ -751,6 +775,21 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // Populate the _dstColor variable by loading from the input attachment at the top of
+            // the fragment shader.
+            // fFS.codeAppend("// Read color from input attachment\n");
+            // TODO: Get read swizzle from caps (getReadSwizzle(SkColorType, const TextureInfo&))
+            mainBody += "// Read color from input attachment\n";
+            mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
+
+            //fFS.appendInputLoad(fDstTextureSamplerHandle);
+            // The above call does:
+            // SkString load;
+            // load.appendf("subpassLoad(%s)", input);
+            // append_texture_swizzle(&load, fProgramBuilder->inputSamplerSwizzle(samplerHandle));
+            //fFS.codeAppend(";\n");
+
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";

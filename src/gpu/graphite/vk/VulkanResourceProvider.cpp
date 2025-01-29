@@ -337,12 +337,16 @@ VulkanResourceProvider::UniformBindGroupKey make_ubo_bind_group_key(
         // Unused entries will be assigned zero values.
         VulkanResourceProvider::UniformBindGroupKey::Builder builder(&uniqueKey);
 
-        for (uint32_t i = 0; i < VulkanGraphicsPipeline::kNumUniformBuffers; ++i) {
+        // TODO account for input attachment in a more elegant way
+        for (uint32_t i = 0; i < VulkanGraphicsPipeline::kNumUniformBuffers - 1; ++i) {
             builder[2 * i] = 0;
             builder[2 * i + 1] = 0;
         }
 
         for (uint32_t i = 0; i < requestedDescriptors.size(); ++i) {
+            // Skip the input attachment descriptor.
+            if (requestedDescriptors[i].fType != DescriptorType::kUniformBuffer) { continue; }
+
             int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
             SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
             SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) <
@@ -365,6 +369,9 @@ void update_uniform_descriptor_set(SkSpan<DescriptorData> requestedDescriptors,
                                    VkDescriptorSet descSet,
                                    const VulkanSharedContext* sharedContext) {
     for (size_t i = 0; i < requestedDescriptors.size(); i++) {
+        // Skip the input attachment descriptor.
+        if (requestedDescriptors[i].fType != DescriptorType::kUniformBuffer) { continue; }
+
         int descriptorBindingIndex = requestedDescriptors[i].fBindingIndex;
         SkASSERT(SkTo<unsigned long>(descriptorBindingIndex) < bindUniformBufferInfo.size());
         const auto& bindInfo = bindUniformBufferInfo[descriptorBindingIndex];
@@ -418,6 +425,7 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
         SkSpan<BindBufferInfo> bindUniformBufferInfo) {
     SkASSERT(requestedDescriptors.size() <= VulkanGraphicsPipeline::kNumUniformBuffers);
 
+    // TODO: Chop off the input attachment descriptor in some more elegant way.
     auto key = make_ubo_bind_group_key(requestedDescriptors, bindUniformBufferInfo);
     auto* existingDescSet = fUniformBufferDescSetCache.find(key);
     if (existingDescSet) {
@@ -428,11 +436,15 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
         return nullptr;
     }
 
-    update_uniform_descriptor_set(requestedDescriptors,
-                                  bindUniformBufferInfo,
-                                  *newDS->descriptorSet(),
-                                  this->vulkanSharedContext());
     return *fUniformBufferDescSetCache.insert(key, newDS);
+}
+
+void VulkanResourceProvider::updateUniformDescSet(SkSpan<DescriptorData> requestedDescriptors,
+                                                  SkSpan<BindBufferInfo> bindUniformBufferInfo,
+                                                  const VkDescriptorSet ds) {
+    // Is this safe to do once it's alredy in the cache?
+    update_uniform_descriptor_set(requestedDescriptors, bindUniformBufferInfo, ds,
+                                  this->vulkanSharedContext());
 }
 
 

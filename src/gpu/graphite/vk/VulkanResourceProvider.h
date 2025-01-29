@@ -45,7 +45,8 @@ public:
             VK_SHADER_STAGE_VERTEX_BIT;
 
 
-    using UniformBindGroupKey = FixedSizeKey<2 * VulkanGraphicsPipeline::kNumUniformBuffers>;
+    // TODO account for input attach in more elegant way
+    using UniformBindGroupKey = FixedSizeKey<2 * (VulkanGraphicsPipeline::kNumUniformBuffers)>;
 
     VulkanResourceProvider(SharedContext* sharedContext,
                            SingleOwner*,
@@ -95,6 +96,12 @@ private:
     sk_sp<VulkanDescriptorSet> findOrCreateUniformBuffersDescriptorSet(
             SkSpan<DescriptorData> requestedDescriptors,
             SkSpan<BindBufferInfo> bindUniformBufferInfo);
+
+    // Separate out the creation of the desc set from the updating of it since we need to update
+    // the input attachment as well. TODO: Consolidate this
+    void updateUniformDescSet(SkSpan<DescriptorData> requestedDescriptors,
+                              SkSpan<BindBufferInfo> bindUniformBufferInfo,
+                              const VkDescriptorSet);
 
     sk_sp<VulkanGraphicsPipeline> findOrCreateLoadMSAAPipeline(const RenderPassDesc&);
 

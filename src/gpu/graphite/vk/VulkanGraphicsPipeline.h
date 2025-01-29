@@ -35,13 +35,20 @@ class VulkanRenderPass;
 
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
-    inline static constexpr unsigned int kRenderStepUniformBufferIndex = 0;
-    inline static constexpr unsigned int kPaintUniformBufferIndex = 1;
-    inline static constexpr unsigned int kGradientBufferIndex = 2;
-    inline static constexpr unsigned int kNumUniformBuffers = 3;
+    // Always have the first index within the first descriptor set of uniforms be an input
+    // attachment descriptor. If a dst read is needed by any paints within a draw call, then
+    // we can assign & read from the target as an input attachment. Otherwise, it can just be
+    // unused/ignored. This allows us to avoid pipeline compiles during runtime if a dst read is
+    // encountered.
+    inline static constexpr unsigned int kDstReadInputAttachmentUniformIndex = 0;
+    inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
+    inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
+    inline static constexpr unsigned int kGradientBufferIndex = 3;
+    inline static constexpr unsigned int kNumUniformBuffers = 4;
 
-    // For now, rigidly assign all uniform buffer descriptors to be in set 0, all
-    // texture/samplers to be in set 1, and any input attachments to be in set 2.
+    // For now, rigidly assign all uniform buffer descriptors and the dst read input attachment
+    // descriptor to be in set 0, all texture/samplers to be in set 1, and any input attachments to
+    // be in set 2.
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
     inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
     inline static constexpr unsigned int kTextureBindDescSetIndex = 1;

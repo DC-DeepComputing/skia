@@ -52,7 +52,7 @@ public:
     // Override Caps's implementation in order to consult Vulkan-specific texture properties.
     DstReadStrategy getDstReadStrategy(const TextureInfo& info) const override;
 
-    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureProxy* proxy) const override;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo& info) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
