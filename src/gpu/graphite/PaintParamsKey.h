@@ -112,11 +112,15 @@ public:
         }
     };
 
+    const SkSpan<const uint32_t> data() const { return fData; }
+
 private:
     friend class PaintParamsKeyBuilder;   // for the parented-data ctor
 
+public:
     constexpr PaintParamsKey(SkSpan<const uint32_t> span) : fData(span) {}
 
+private:
     // Returns null if the node or any of its children have an invalid snippet ID. Recursively
     // creates a node and all of its children, incrementing 'currentIndex' by the total number of
     // nodes created.
