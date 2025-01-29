@@ -1616,28 +1616,25 @@ DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
         if (TextureInfos::GetVulkanTextureInfo(info, &vulkanTextureInfo)) {
             supportsInputAttachmentUsage =
                     vulkanTextureInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
-        }
 #ifdef SK_BUILD_FOR_ANDROID
-        // We expect that all Android target textures to support input attachment usage.
-        SkASSERT(supportsInputAttachmentUsage);
-        // TODO(b/??????): Return kReadFromInput once supported by the Vulkan backend.
-        // return DstReadStrategy::kReadFromInput;
+            // We expect that all Android target textures to support input attachment usage.
+            SkASSERT(supportsInputAttachmentUsage);
 #endif
+            if (supportsInputAttachmentUsage) {
+                return DstReadStrategy::kReadFromInput;
+            }
+        }
     }
 
-    // TODO: Check sample count; attachment usage to determine dst read strategy.
     return DstReadStrategy::kTextureCopy;
 }
 
-ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
-    if (proxy) {
-        const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-                TextureInfos::GetVulkanYcbcrConversionInfo(proxy->textureInfo());
-
+ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {
+    const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
+            TextureInfos::GetVulkanYcbcrConversionInfo(textureInfo);
     if (ycbcrConversionInfo.isValid()) {
         return VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);
     }
-
     // If the YCbCr conversion for the TextureInfo is invalid, then return a default
     // ImmutableSamplerInfo struct.
     return {};
