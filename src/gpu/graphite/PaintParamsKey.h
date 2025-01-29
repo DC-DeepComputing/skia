@@ -115,8 +115,10 @@ public:
 private:
     friend class PaintParamsKeyBuilder;   // for the parented-data ctor
 
+public:
     constexpr PaintParamsKey(SkSpan<const uint32_t> span) : fData(span) {}
 
+private:
     // Returns null if the node or any of its children have an invalid snippet ID. Recursively
     // creates a node and all of its children, incrementing 'currentIndex' by the total number of
     // nodes created.
@@ -124,6 +126,7 @@ private:
                                  int* currentIndex,
                                  SkArenaAlloc* arena) const;
 
+public:
     // The memory referenced in 'fData' is always owned by someone else. It either shares the span
     // from the Builder, or clone() puts the span in an arena.
     SkSpan<const uint32_t> fData;
