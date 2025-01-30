@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ca284ac_240ddbc6",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 368,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: Wrap comment lengths to full spcace available",
+      "range": {
+        "startLine": 366,
+        "startChar": 0,
+        "endLine": 368,
+        "endChar": 80
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc4338b6_1171e833",
+        "filename": "src/gpu/graphite/Resource.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 625,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: Perhaps point to where that sentinal value is defined? Like `although the ResourceCache assigns a special sentinel value for the tail address.`",
+      "range": {
+        "startLine": 625,
+        "startChar": 21,
+        "endLine": 625,
+        "endChar": 84
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47daae00_56caac3a",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: Wrap comment lengths to full spcace available",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 67
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ce1e917_9f5932ec",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: Wrap comment lengths to full spcace available",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08fbcbcd_9433a242",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: `/*gpuMemorySize\u003d*/0`",
+      "range": {
+        "startLine": 47,
+        "startChar": 54,
+        "endLine": 47,
+        "endChar": 55
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d060bb0_8933b788",
+        "filename": "src/gpu/graphite/ResourceCache.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-01-30T16:29:34Z",
+      "side": 1,
+      "message": "nit: Wrap comment lengths to full spcace available",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 257,
+        "endChar": 57
+      },
+      "revId": "e8e6a3bc5d7b54b27c06dc6bb9046694af5be68a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
