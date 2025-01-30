@@ -95,7 +95,7 @@ DrawContext::DrawContext(const Caps* caps,
         : fTarget(std::move(target))
         , fImageInfo(ii)
         , fSurfaceProps(props)
-        , fDstReadStrategy(caps->getDstReadStrategy())
+        , fDstReadStrategy(caps->getDstReadStrategy(fTarget->textureInfo()))
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
         , fPendingDraws(std::make_unique<DrawList>())
         , fPendingUploads(std::make_unique<UploadList>()) {
