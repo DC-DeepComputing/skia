@@ -19,6 +19,7 @@
 namespace skgpu::graphite {
 
 class Caps;
+enum class DstReadStrategy;
 
 struct AttachmentDesc {
     TextureInfo fTextureInfo;
@@ -27,6 +28,12 @@ struct AttachmentDesc {
 
     SkString toString() const;
 };
+
+enum class BarrierFlags {
+    kNone = 0,
+    kReadInputAttachmentBarrier,
+    kNonCoherentAdvBlend,
+}
 
 struct RenderPassDesc {
     static RenderPassDesc Make(const Caps* caps,
@@ -52,6 +59,8 @@ struct RenderPassDesc {
     // count. The only exceptional case is when multisampled render to single sampled is used. In
     // that case, the fColorAttachment's samples count will be 1 and fSampleCount will be > 1.
     uint32_t fSampleCount;
+
+    DstReadStrategy fDstReadStrategy;
 
     SkString toString() const;
     // Only includes fixed state relevant to pipeline creation
