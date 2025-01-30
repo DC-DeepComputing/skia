@@ -22,6 +22,30 @@
       },
       "revId": "91994f8acce2f74c5ad41774f6c4d863bce7ff51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a7f86b6_260c1be3",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-01-30T18:12:49Z",
+      "side": 1,
+      "message": "Ah, good point, getMinScale can fail.  There\u0027s no perfect answer in that case, might as well just use the constant?  Updated.",
+      "parentUuid": "7a8c43a0_5d772bba",
+      "range": {
+        "startLine": 161,
+        "startChar": 57,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "91994f8acce2f74c5ad41774f6c4d863bce7ff51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
