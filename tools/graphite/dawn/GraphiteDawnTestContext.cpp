@@ -17,6 +17,8 @@
 #include "tools/graphite/TestOptions.h"
 
 #include "dawn/dawn_proc.h"
+#include "third_party/externals/dawn/include/dawn/native/DawnNative.h"
+
 
 #define LOG_ADAPTER 0
 
@@ -57,7 +59,13 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     sOnce([&]{
         DawnProcTable backendProcs = dawn::native::GetProcs();
         dawnProcSetProcs(&backendProcs);
-        WGPUInstanceDescriptor desc{};
+
+        dawn::native::DawnInstanceDescriptor dawnInstanceDesc;
+        dawnInstanceDesc.backendValidationLevel = dawn::native::BackendValidationLevel::Full	;
+        dawnInstanceDesc.nextInChain = nullptr;
+
+        wgpu::InstanceDescriptor desc{};
+        desc.nextInChain = &dawnInstanceDesc;
         // need for WaitAny with timeout > 0
         desc.features.timedWaitAnyEnable = true;
         sInstance = std::make_unique<dawn::native::Instance>(&desc);
