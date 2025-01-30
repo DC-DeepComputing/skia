@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af03394_53edb26d",
+        "filename": "dm/DMSrcSink.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-30T16:54:04Z",
+      "side": 1,
+      "message": "This risks hash collisions since we are using the hash as a key, I think we should just have this be a THashSet\u003c\u003e and add the Hash/Compare trait to hash/memcmp the contents of SkData.",
+      "range": {
+        "startLine": 644,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 86
+      },
+      "revId": "e4f848833d7d284391a3e60a0f7564b5bfe38169",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ed48c5a_9f3fa694",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-01-30T16:54:04Z",
+      "side": 1,
+      "message": "Can this be on `ContextOptions` instead so it\u0027s only set once?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 89
+      },
+      "revId": "e4f848833d7d284391a3e60a0f7564b5bfe38169",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
