@@ -116,7 +116,8 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter
                                                                   renderStep,
                                                                   paintID,
                                                                   /*useStorageBuffers=*/false,
-                                                                  skgpu::Swizzle::RGBA());
+                                                                  skgpu::Swizzle::RGBA(),
+                                                                  DstReadStrategy::kNoneRequired);
 
         SkBlendMode expectedBM = static_cast<SkBlendMode>(bm);
         if (expectedBM == SkBlendMode::kPlus) {
