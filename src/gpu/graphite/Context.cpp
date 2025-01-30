@@ -100,6 +100,10 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 #endif
 }
 
+void Context::setPipelineCallback(PipelineCallback callback, PipelineCallbackContext context) {
+    fSharedContext->globalCache()->setPipelineCallback(callback, context);
+}
+
 Context::~Context() {
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
