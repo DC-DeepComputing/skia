@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a90c17_d3c9f3a8",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-30T17:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d66eacfb_56198e5f",
+      "range": {
+        "startLine": 132,
+        "startChar": 17,
+        "endLine": 132,
+        "endChar": 28
+      },
+      "revId": "0524b7f0ff3f4460de7309e2c02bf7d29657823e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "05ae468a_03c54a01",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e60167c_1fdb8225",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteTypes.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-30T17:37:35Z",
+      "side": 1,
+      "message": "I\u0027ve add skbug.com/393370598. For this particular case, though, I think I will pack all of these into one uint32_t and have to do manual validation.",
+      "parentUuid": "05ae468a_03c54a01",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 54
+      },
+      "revId": "0524b7f0ff3f4460de7309e2c02bf7d29657823e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5dbd8200_9f509813",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-01-30T16:45:21Z",
       "side": 1,
       "message": "nit: I don\u0027t think we need to introduce another namespace here. We can just have them be in `skgpu::graphite` and make the names like `SerializePipelineDesc`",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 30
+      },
+      "revId": "0524b7f0ff3f4460de7309e2c02bf7d29657823e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15f93629_621469f5",
+        "filename": "src/gpu/graphite/precompile/SerializationUtils.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-30T17:37:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5dbd8200_9f509813",
       "range": {
         "startLine": 26,
         "startChar": 0,
