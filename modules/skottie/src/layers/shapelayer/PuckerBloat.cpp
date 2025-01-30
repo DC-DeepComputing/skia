@@ -47,7 +47,7 @@ public:
     SG_ATTRIBUTE(Amount, float, fAmount)
 
 private:
-    SkPath onRevalidateEffect(const sk_sp<GeometryNode>& geo) override {
+    SkPath onRevalidateEffect(const sk_sp<GeometryNode>& geo, const SkMatrix&) override {
         struct CubicInfo {
             SkPoint ctrl0, ctrl1, pt; // corresponding to SkPath::cubicTo() params, respectively.
         };
