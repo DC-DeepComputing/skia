@@ -67,10 +67,28 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
 
+    VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT blendProps;
+    blendProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_PROPERTIES_EXT;
+    blendProps.pNext = nullptr;
+
     fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
-    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
+    fPhysicalDeviceMemoryProperties2.pNext = &blendProps;
     VULKAN_CALL(vkInterface,
                 GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
+
+    if (blendProps.advancedBlendAllOperations == VK_TRUE) {
+        VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT blendFeatures =
+                skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT>(
+                        features,
+                        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_FEATURES_EXT
+                );
+        if (blendFeatures && blendFeatures->advancedBlendCoherentOperations == VK_TRUE) {
+            fBlendEquationSupport = kAdvancedCoherent_BlendEquationSupport;
+        } else {
+            fBlendEquationSupport = kAdvanced_BlendEquationSupport;
+            fBarrierNeededForAdvancedBlendModes = true;
+        }
+    }
 
     // We could actually query and get a max size for each config, however maxImageDimension2D will
     // give the minimum max size across all configs. So for simplicity we will use that for now.

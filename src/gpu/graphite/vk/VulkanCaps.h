@@ -49,7 +49,7 @@ public:
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
-    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureInfo&) const override;
+    ImmutableSamplerInfo getImmutableSamplerInfo(const TextureProxy* proxy) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
                                       const RenderPassDesc&) const override;
@@ -100,6 +100,15 @@ public:
     bool isTransferDst(const VulkanTextureInfo&) const;
 
     bool mustLoadFullImageForMSAA() const { return fMustLoadFullImageForMSAA; }
+
+    // bool supportsAdvancedCoherentBlendEquations() {
+    //     return fBlendEquationSupport == kAdvancedCoherent_BlendEquationSupport;
+    // }
+
+    // bool supportsAdvancedBlendEquations() {
+    //     return fBlendEquationSupport == kAdvanced_BlendEquationSupport ||
+    //            fBlendEquationSupport == kAdvancedCoherent_BlendEquationSupport;
+    // }
 
 private:
     enum VkVendor {
@@ -237,6 +246,18 @@ private:
                                                         /*flags=*/0,
                                                         skgpu::Swizzle::RGBA(),
                                                         skgpu::Swizzle::RGBA()};
+
+    // Indicates capabilities of the fixed function blend unit.
+    // TODO(nep): Just make this use bool(s)? barrierNeededForAdvancedBlendModes only?
+    enum BlendEquationSupport {
+        // Support to select the operator that combines src and dst terms
+        kBasic_BlendEquationSupport,
+        // Additional fixed function support for specific blend modes. Requires blend barriers.
+        kAdvanced_BlendEquationSupport,
+        // Advanced blend equation support that does not require blend barriers & permits overlap.
+        kAdvancedCoherent_BlendEquationSupport,
+    };
+    BlendEquationSupport fBlendEquationSupport = kBasic_BlendEquationSupport;
 
     // Various bools to define whether certain Vulkan features are supported.
     bool fSupportsMemorylessAttachments = false;

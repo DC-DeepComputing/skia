@@ -244,6 +244,11 @@ struct DepthStencilSettings {
     bool fDepthWriteEnabled = false;
 };
 
+enum class BarrierType : uint8_t {
+    kReadFromInputAttachment,
+    kAdvNoncoherentBlend,
+}
+
 };  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_DrawTypes_DEFINED

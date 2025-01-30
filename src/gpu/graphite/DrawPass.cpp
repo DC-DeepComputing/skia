@@ -581,6 +581,10 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 geometryUniformDataCache, bufferMgr, key.geometryUniformIndex());
         const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
                 shadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
+        const bool drawRequiresBlendBarrier =
+                caps->barrierNeededForAdvancedBlendModes() &&
+                draw.fPaintParams.has_value() &&
+                draw.fPaintParams.usesNoncherentAdvBlend() ? true : false;
 
         // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
         // dst copy to the texture bind group/descriptor set automatically when processing a
@@ -599,6 +603,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const bool stateChange = geomBindingChange ||
                                  shadingBindingChange ||
                                  textureBindingsChange ||
+                                 // TODO(nep): mark as state change, or simply issue command for
+                                 // barrier?
+                                 // drawRequiresBlendBarrier ||
                                  SkToBool(newScissor);
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
@@ -631,6 +638,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 drawPass->fCommandList.setScissor(*newScissor);
                 lastScissor = *newScissor;
             }
+            // if drawRequiresBlendBarrier, add DrawPassCommand to list to add said barrier.
+            // if (drawRequiresBlendBarrier) {
+            // Would this be enough information for the command buffer to add the necessary barrier?
+            // Since it knows its render target?
+            //     drawPass->fCommandList.issueBarrier(BarrierType::AdvNoncoherentBlend);
+            // }
         }
 
         uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;

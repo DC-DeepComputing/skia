@@ -437,6 +437,8 @@ protected:
 
     bool fRequireOrderedRecordings = false;
 
+    bool fBarrierNeededForAdvancedBlendModes = false;
+
     bool fSetBackendLabels = false;
 
 private:
