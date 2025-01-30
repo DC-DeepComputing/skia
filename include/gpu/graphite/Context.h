@@ -44,6 +44,8 @@ class ResourceProvider;
 class SharedContext;
 class TextureProxy;
 
+typedef void (*AndroidStyleCBFunc)(void* data, sk_sp<SkData> payload);
+
 class SK_API Context final {
 public:
     Context(const Context&) = delete;
@@ -52,6 +54,8 @@ public:
     Context& operator=(Context&&) = delete;
 
     ~Context();
+
+    void setAndroidStyleCallback(AndroidStyleCBFunc cb, void* data);
 
     BackendApi backend() const;
 

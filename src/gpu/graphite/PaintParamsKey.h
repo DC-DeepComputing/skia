@@ -98,6 +98,8 @@ public:
     // purposes.
     SkString toString(const ShaderCodeDictionary* dict, bool includeData) const;
 
+    void dumpRaw(const char* label) const;
+
 #ifdef SK_DEBUG
     void dump(const ShaderCodeDictionary*, UniquePaintParamsID) const;
 #endif
@@ -239,6 +241,7 @@ public:
     // Use as a PaintParamsKey
     const PaintParamsKey& operator*() const { return fKey; }
     const PaintParamsKey* operator->() const { return &fKey; }
+    const PaintParamsKey* foo() const { return &fKey; }
 
 private:
     PaintParamsKeyBuilder* fBuilder;

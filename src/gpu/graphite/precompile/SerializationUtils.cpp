@@ -55,6 +55,8 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
                                                      const GraphicsPipelineDesc& pipelineDesc) {
     PaintParamsKey key = shaderCodeDictionary->lookup(pipelineDesc.paintParamsID());
 
+    key.dumpRaw("serialize"); //!!
+
     if (!stream->write32(static_cast<uint32_t>(pipelineDesc.renderStepID()))) {
         return false;
     }
@@ -102,6 +104,8 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
 
         PaintParamsKey ppk = PaintParamsKey(SkSpan<uint32_t>((uint32_t*) storage.get(), tmp));
+
+        ppk.dumpRaw("deserialize"); //!!
 
         paintParamsID = shaderCodeDictionary->findOrCreate(ppk);
     }

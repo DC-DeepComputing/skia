@@ -657,7 +657,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 				// Decoding transparent images to 1010102 just looks bad
 				skip("vk1010102", "image", ALL, ALL)
 			} else {
-				configs = append(configs, "gl1010102", "gltestpersistentcache", "gltestglslcache", "gltestprecompile")
+				configs = append(configs, "gl1010102", "gltestpersistentcache", "gltestglslcache", "gltestprecompile")  //$$ Ganesh
 				// Decoding transparent images to 1010102 just looks bad
 				skip("gl1010102", "image", ALL, ALL)
 				// These tests produce slightly different pixels run to run on NV.
@@ -686,12 +686,12 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 		// We also test the SkSL precompile config on Pixel2XL as a representative
 		// Android device - this feature is primarily used by Flutter.
 		if b.model("Pixel2XL") && !b.extraConfig("Vulkan") {
-			configs = append(configs, "glestestprecompile")
+			configs = append(configs, "glestestprecompile")      //$$ Ganesh
 		}
 
 		// Test SkSL precompile on iPhone 8 as representative iOS device
 		if b.model("iPhone8") && b.extraConfig("Metal") {
-			configs = append(configs, "mtltestprecompile")
+			configs = append(configs, "mtltestprecompile")                                    //$$ Ganesh
 			// avoid tests that can generate slightly different pixels per run
 			skip("mtltestprecompile", "gm", ALL, "atlastext")
 			skip("mtltestprecompile", "gm", ALL, "circular_arcs_hairline")

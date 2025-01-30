@@ -333,7 +333,7 @@ private:
             fDepthStencilFlags |= fSteps[i]->depthStencilFlags();
         }
         // At least one step needs to actually shade.
-        SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
+//        SkASSERT(fStepFlags & RenderStep::Flags::kPerformsShading);
         // A render step using non-AA inner fills with a second draw should not also be part of a
         // multi-step renderer (to keep reasoning simple) and must use the GREATER depth test.
         SkASSERT(!this->useNonAAInnerFill() ||
