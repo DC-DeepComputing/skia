@@ -130,14 +130,9 @@ void draw_to_sw_mask(RasterMaskHelper* helper,
 
     // Draw the shape; based on how we've initialized the buffer and chosen alpha+invert,
     // every element is drawn with the kReplace_Op
-    if (invert) {
-        // Must invert the path
-        SkASSERT(!e.fShape.inverted());
-        // TODO: this is an extra copy effectively, just so we can toggle inversion; would be
-        // better perhaps to just call a drawPath() since we know it'll use path rendering w/
-        // the inverse fill type.
+    if (invert != e.fShape.inverted()) {
         Shape inverted(e.fShape);
-        inverted.setInverted(true);
+        inverted.setInverted(invert);
         helper->drawClip(inverted, e.fLocalToDevice, alpha, resultBounds);
     } else {
         helper->drawClip(e.fShape, e.fLocalToDevice, alpha, resultBounds);
