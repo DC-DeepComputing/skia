@@ -46,6 +46,30 @@
       },
       "revId": "91994f8acce2f74c5ad41774f6c4d863bce7ff51",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3120a0a4_28a5d569",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-30T18:15:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a7f86b6_260c1be3",
+      "range": {
+        "startLine": 161,
+        "startChar": 57,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "91994f8acce2f74c5ad41774f6c4d863bce7ff51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
