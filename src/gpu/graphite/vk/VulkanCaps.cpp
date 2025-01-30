@@ -67,10 +67,28 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
 
+    VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT blendProps;
+    blendProps.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_PROPERTIES_EXT;
+    blendProps.pNext = nullptr;
+
     fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
-    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
+    fPhysicalDeviceMemoryProperties2.pNext = &blendProps;
     VULKAN_CALL(vkInterface,
                 GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
+
+    if (blendProps.advancedBlendAllOperations == VK_TRUE) {
+        VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT blendFeatures =
+                skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT>(
+                        features,
+                        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_FEATURES_EXT
+                );
+        if (blendFeatures && blendFeatures->advancedBlendCoherentOperations == VK_TRUE) {
+            fBlendEquationSupport = kAdvancedCoherent_BlendEquationSupport;
+        } else {
+            fBlendEquationSupport = kAdvanced_BlendEquationSupport;
+            fBarrierNeededForAdvancedBlendModes = true;
+        }
+    }
 
     // We could actually query and get a max size for each config, however maxImageDimension2D will
     // give the minimum max size across all configs. So for simplicity we will use that for now.
@@ -1603,9 +1621,36 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {
-    const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-            TextureInfos::GetVulkanYcbcrConversionInfo(textureInfo);
+DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
+    // We know the graphite Vulkan backend does not support frame buffer fetch, so make sure it is
+    // not marked as supported and skip checking for it.
+    SkASSERT(!this->shaderCaps()->fFBFetchSupport);
+
+    // TODO(bug number): Add support for MSAA texture reading from input attachment.
+    if (info.numSamples() == 1) {
+        // Make sure the texture can be used as an input attachment.
+        VulkanTextureInfo vulkanTextureInfo;
+        bool supportsInputAttachmentUsage;
+        if (TextureInfos::GetVulkanTextureInfo(info, &vulkanTextureInfo)) {
+            supportsInputAttachmentUsage =
+                    vulkanTextureInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
+        }
+#ifdef SK_BUILD_FOR_ANDROID
+        // We expect that all Android target textures to support input attachment usage.
+        SkASSERT(supportsInputAttachmentUsage);
+        // TODO(b/??????): Return kReadFromInput once supported by the Vulkan backend.
+        // return DstReadStrategy::kReadFromInput;
+#endif
+    }
+
+    // TODO: Check sample count; attachment usage to determine dst read strategy.
+    return DstReadStrategy::kTextureCopy;
+}
+
+ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureProxy* proxy) const {
+    if (proxy) {
+        const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
+                TextureInfos::GetVulkanYcbcrConversionInfo(proxy->textureInfo());
 
     if (ycbcrConversionInfo.isValid()) {
         return VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);
