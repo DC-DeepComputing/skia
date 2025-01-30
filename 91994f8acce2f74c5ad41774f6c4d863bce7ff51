@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a8c43a0_5d772bba",
+        "filename": "modules/sksg/src/SkSGGeometryEffect.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-30T17:51:59Z",
+      "side": 1,
+      "message": "What are we going to do if this fails and returns -1 ?",
+      "range": {
+        "startLine": 161,
+        "startChar": 57,
+        "endLine": 161,
+        "endChar": 68
+      },
+      "revId": "91994f8acce2f74c5ad41774f6c4d863bce7ff51",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
