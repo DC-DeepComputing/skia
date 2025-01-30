@@ -283,6 +283,24 @@ public:
 
     ContextID contextID() const { return fContextID; }
 
+    /** Client-provided context that is passed to client-provided PipelineCallback. */
+    using PipelineCallbackContext = void*;
+    /**  Client-provided callback that is called whenever Graphite encounters a new Pipeline. */
+    using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
+
+    /**
+        This entry point allows a client to register a callback that will be invoked
+        whenever Graphite encounters a new Pipeline. The callback will be passed an
+        sk_sp<SkData> that a client can take ownership of and serialize. The SkData
+        contains all the information Graphite requires to recreate the Pipeline at
+        a later date. The SkData is versioned however so must be regenerated and
+        re-serialized when it becomes out of date.
+
+        @param callback       function to call for new Pipelines
+        @param context        passed to callback
+     */
+    void setPipelineCallback(PipelineCallback callback, PipelineCallbackContext context);
+
 protected:
     Context(sk_sp<SharedContext>, std::unique_ptr<QueueManager>, const ContextOptions&);
 
