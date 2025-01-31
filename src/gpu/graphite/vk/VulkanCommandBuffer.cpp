@@ -1444,6 +1444,10 @@ bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
     SkASSERT(vkSrcBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_TRANSFER_SRC_BIT);
     SkASSERT(vkDstBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
 
+    vkSrcBuffer->setBufferAccess(this, VK_ACCESS_TRANSFER_READ_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+    vkDstBuffer->setBufferAccess(
+        this, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+
     VkBufferCopy region;
     memset(&region, 0, sizeof(VkBufferCopy));
     region.srcOffset = srcOffset;
@@ -1458,6 +1462,25 @@ bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
                               vkDstBuffer->vkBuffer(),
                               /*regionCount=*/1,
                               &region));
+
+    // TODO: We don't have currently track buffers that are used on a RenderPass in order to put in
+    // and needed barriers. If we did then we would make sure any buffers used in the render pass
+    // for reading would have the appropriate barrier if they were written to previously. Until we
+    // have such a system we need to do some hackyness here to put in a barrier with the assumption
+    // of how it may be used later. Also the only buffer types we allow to be the transfer dst right
+    // now is vertex and index buffers.
+    VkAccessFlags dstAccess = 0;
+    VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
+    VkBufferUsageFlags bufferUsageFlags = vkDstBuffer->bufferUsageFlags();
+    if (bufferUsageFlags & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT) {
+        dstAccess = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
+    } else if (bufferUsageFlags & VK_BUFFER_USAGE_INDEX_BUFFER_BIT) {
+        dstAccess = VK_ACCESS_INDEX_READ_BIT;
+    } else {
+        SkDEBUGFAIL("Trying to copy to non vertex or index buffer\n");
+        return false;
+    }
+    vkDstBuffer->setBufferAccess(this, dstAccess, dstStageMask);
 
     return true;
 }
@@ -1742,7 +1765,7 @@ void VulkanCommandBuffer::submitPipelineBarriers(bool forSelfDependency) {
         SkASSERT(!fActiveRenderPass || forSelfDependency);
         // TODO: Do we need to handle wrapped CommandBuffers?
         //  SkASSERT(!this->isWrapped());
-        SkASSERT(fSrcStageMask && fDstStageMask);
+   //     SkASSERT(fSrcStageMask && fDstStageMask);
 
         VkDependencyFlags dependencyFlags = fBarriersByRegion ? VK_DEPENDENCY_BY_REGION_BIT : 0;
         VULKAN_CALL(fSharedContext->interface(),
@@ -1762,31 +1785,6 @@ void VulkanCommandBuffer::submitPipelineBarriers(bool forSelfDependency) {
     SkASSERT(!fBarriersByRegion);
     SkASSERT(!fSrcStageMask);
     SkASSERT(!fDstStageMask);
-}
-
-void VulkanCommandBuffer::updateBuffer(const VulkanBuffer* buffer,
-                                       const void* data,
-                                       size_t dataSize,
-                                       size_t dstOffset) {
-    // vkCmdUpdateBuffer can only be called outside of a render pass.
-    SkASSERT(fActive && !fActiveRenderPass);
-    if (!buffer || buffer->vkBuffer() == VK_NULL_HANDLE) {
-        SKGPU_LOG_W("VulkanCommandBuffer::updateBuffer requires a valid VulkanBuffer pointer backed"
-                    "by a valid VkBuffer handle");
-        return;
-    }
-
-    // Per the spec, vkCmdUpdateBuffer is treated as a “transfer" operation for the purposes of
-    // synchronization barriers. Ensure this write operation occurs after any previous read
-    // operations and without clobbering any other write operations on the same memory in the cache.
-    buffer->setBufferAccess(this, VK_ACCESS_TRANSFER_WRITE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
-    this->submitPipelineBarriers();
-
-    VULKAN_CALL(fSharedContext->interface(), CmdUpdateBuffer(fPrimaryCommandBuffer,
-                                                             buffer->vkBuffer(),
-                                                             dstOffset,
-                                                             dataSize,
-                                                             data));
 }
 
 void VulkanCommandBuffer::nextSubpass() {
