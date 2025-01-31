@@ -14,8 +14,11 @@
 #include "include/core/SkPicture.h"
 #include "include/docs/SkMultiPictureDocument.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "src/gpu/graphite/precompile/BlobOStuff.h"
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/gpu/MemoryCache.h"
+
+#include "src/base/SkSpinlock.h"
 
 #include <functional>
 
@@ -26,6 +29,9 @@
 
 //#define TEST_VIA_SVG
 
+namespace skgpu {
+    class UniqueKey;
+}
 namespace skiagm::verifiers {
 class VerifierList;
 }
@@ -451,9 +457,9 @@ private:
     using INHERITED = GPUSink;
 };
 
-class GPUPrecompileTestingSink : public GPUSink {
+class GPUPrecompileTestingSinkGanesh : public GPUSink {
 public:
-    GPUPrecompileTestingSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
+    GPUPrecompileTestingSinkGanesh(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
     Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
 
@@ -614,13 +620,62 @@ public:
     }
 
 private:
+
+    // This is intended to be an example of a Precompilation Callback handler. For DM it collects
+    // all the Android-style keys that are used by a given source (e.g., gm, or skp) and uses
+    // them in resetAndRecreatePipelines to recreate the Pipelines.
+    class AndroidStyleCBHandler {
+    public:
+        static void CallBack(void* data, sk_sp<SkData> androidStyleKey) {
+            AndroidStyleCBHandler* b = reinterpret_cast<AndroidStyleCBHandler*>(data);
+
+            b->add(std::move(androidStyleKey));
+        }
+
+        // Add an Android-style key to the map
+        void add(sk_sp<SkData> androidStyleKey) SK_EXCLUDES(fSpinLock);
+
+        // Retrieve all the unique collected keys
+        void retrieve(std::vector<sk_sp<SkData>>*) SK_EXCLUDES(fSpinLock);
+
+        void reset1() SK_EXCLUDES(fSpinLock);
+    private:
+        mutable SkSpinlock fSpinLock;
+
+        struct SkDataKey {
+            static const SkDataKey GetKey(sk_sp<SkData>& e) { return { e.get() }; }
+            static uint32_t Hash(const SkDataKey& k) { return k.hash(); }
+
+            bool operator==(const SkDataKey& other) const { return fData->equals(other.fData); }
+            uint32_t hash() const { return SkChecksum::Hash32(fData->data(), fData->size()); }
+
+            const SkData* fData;
+        };
+
+        skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap SK_GUARDED_BY(fSpinLock);
+    };
+
     Result drawSrc(const Src&,
                    skgpu::graphite::Context*,
-                   skiatest::graphite::GraphiteTestContext*) const;
-    Result resetAndRecreatePipelines() const;
+                   skiatest::graphite::GraphiteTestContext*,
+                   skgpu::graphite::Recorder*) const;
+    Result resetAndRecreatePipelines(AndroidStyleCBHandler*,
+                                     skgpu::graphite::PrecompileContext*) const;
 
-    mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
-    mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
+#ifdef SK_DEBUG
+    static void logMissingKey(skgpu::graphite::PrecompileContext* precompileContext,
+                              const skgpu::UniqueKey& k,
+                              const char* kName,
+                              const std::vector<skgpu::UniqueKey>& b,
+                              const char* bName);
+#endif
+
+    static void compareKeys(skgpu::graphite::PrecompileContext* precompileContext,
+                            const std::vector<skgpu::UniqueKey>& vA, const char* aName,
+                            const std::vector<skgpu::UniqueKey>& vB, const char* bName);
+
+//    mutable std::unique_ptr<skgpu::graphite::Recorder> fRecorder;
+//    mutable std::unique_ptr<skgpu::graphite::PrecompileContext> fPrecompileContext;
 };
 #endif // SK_ENABLE_PRECOMPILE
 #endif // SK_GRAPHITE

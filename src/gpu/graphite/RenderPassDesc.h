@@ -38,6 +38,14 @@ struct RenderPassDesc {
                                bool requiresMSAA,
                                Swizzle writeSwizzle);
 
+    bool operator==(const RenderPassDesc& other) const {
+        return false;
+    }
+
+    bool operator!=(const RenderPassDesc& other) const {
+        return !(*this == other);
+    }
+
     AttachmentDesc fColorAttachment;
     std::array<float, 4> fClearColor;
     AttachmentDesc fColorResolveAttachment;

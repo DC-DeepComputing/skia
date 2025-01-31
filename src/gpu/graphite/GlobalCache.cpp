@@ -14,6 +14,11 @@
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Resource.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -49,6 +54,62 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+}
+
+void GlobalCache::setAndroidStyleCallback(AndroidStyleCBFunc callback, void* callbackData) {
+    SkAutoSpinlock lock{ fSpinLock };
+
+    fAndroidStyleCallback = callback;
+    fData = callbackData;
+}
+
+void GlobalCache::invokeCallback(SharedContext* sharedContext,
+                                 const GraphicsPipelineDesc& pipelineDesc,
+                                 const RenderPassDesc& renderPassDesc) {
+    AndroidStyleCBFunc tmpCB = nullptr;
+    void* tmpData = nullptr;
+
+    {
+        // We want to get a consistent callback/data pair but not invoke the callback
+        // w/in our lock.
+        SkAutoSpinlock lock{fSpinLock};
+
+        tmpCB = fAndroidStyleCallback;
+        tmpData = fData;
+    }
+
+    if (tmpCB) {
+        sk_sp<SkData> data = Snap1(sharedContext->shaderCodeDictionary(),
+                                   pipelineDesc,
+                                   renderPassDesc);
+
+#if defined(SK_DEBUG)
+        {
+            // Check that the Blob round trips through serialization
+            GraphicsPipelineDesc readBackPipelineDesc;
+            RenderPassDesc readBackRenderPassDesc;
+
+            SkAssertResult(MakeFromData1(sharedContext->caps(),
+                                         sharedContext->shaderCodeDictionary(),
+                                         data.get(),
+                                         &readBackPipelineDesc,
+                                         &readBackRenderPassDesc));
+
+            Dump1("invokeCallback - original", sharedContext->shaderCodeDictionary(),
+                  pipelineDesc, renderPassDesc); //!!
+
+            Dump1("invokeCallback - readback", sharedContext->shaderCodeDictionary(),
+                  readBackPipelineDesc, readBackRenderPassDesc); //!!
+
+            SkASSERT(Compare1(pipelineDesc, renderPassDesc,
+                              readBackPipelineDesc, readBackRenderPassDesc));
+        }
+#endif
+
+        if (data) {
+            tmpCB(tmpData, std::move(data));
+        }
+    }
 }
 
 void GlobalCache::deleteResources() {

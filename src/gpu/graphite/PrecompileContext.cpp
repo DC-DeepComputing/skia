@@ -10,6 +10,12 @@
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(&fSingleOwner)
@@ -36,5 +42,35 @@ void PrecompileContext::purgePipelinesNotUsedInMs(std::chrono::milliseconds msNo
     fSharedContext->globalCache()->purgePipelinesNotUsedSince(purgeTime);
 }
 
+
+bool PrecompileContext::androidSpecificPrecompile(sk_sp<SkData> androidStyleKey) {
+    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+
+    GraphicsPipelineDesc pipelineDesc;
+    RenderPassDesc renderPassDesc;
+
+    if (!MakeFromData1(fSharedContext->caps(),
+                      fSharedContext->shaderCodeDictionary(),
+                      androidStyleKey.get(),
+                      &pipelineDesc,
+                      &renderPassDesc)) {
+        return false;
+    }
+
+    Dump1("deserialized", fSharedContext->shaderCodeDictionary(),
+          pipelineDesc, renderPassDesc);
+
+    sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
+            rtEffectDict.get(),
+            pipelineDesc,
+            renderPassDesc,
+            PipelineCreationFlags::kForPrecompilation);
+    if (!pipeline) {
+        SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
+        return false;
+    }
+
+    return true;
+}
 
 } // namespace skgpu::graphite

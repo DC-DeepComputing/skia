@@ -25,6 +25,10 @@ class GraphicsPipeline;
 class Resource;
 class ShaderCodeDictionary;
 
+class BlobOStuff;
+
+typedef void (*AndroidStyleCBFunc)(void* data, sk_sp<SkData>);
+
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement
  * of these resources are they are static/read-only, have long lifetimes, and are likely to be used
@@ -40,6 +44,12 @@ class GlobalCache {
 public:
     GlobalCache();
     ~GlobalCache();
+
+    void setAndroidStyleCallback(AndroidStyleCBFunc callback, void* data) SK_EXCLUDES(fSpinLock);
+
+    void invokeCallback(SharedContext*,
+                        const GraphicsPipelineDesc&,
+                        const RenderPassDesc&);
 
     void deleteResources();
 
@@ -114,6 +124,8 @@ private:
 #if defined(GPU_TEST_UTILS)
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
 #endif
+    AndroidStyleCBFunc fAndroidStyleCallback SK_GUARDED_BY(fSpinLock) = nullptr;
+    void* fData SK_GUARDED_BY(fSpinLock) = nullptr;
 };
 
 }  // namespace skgpu::graphite

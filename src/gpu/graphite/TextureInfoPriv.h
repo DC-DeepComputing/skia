@@ -42,7 +42,7 @@ private:
     virtual SkString toString() const = 0;
     virtual SkString toRPAttachmentString(uint32_t sampleCount) const = 0;
 
-    virtual void copyTo(AnyTextureInfoData&) const = 0;
+    virtual void copyTo1(AnyTextureInfoData&) const = 0;
     virtual bool equal(const TextureInfoData* that) const = 0;
     virtual bool isCompatible(const TextureInfoData* that) const = 0;
 
