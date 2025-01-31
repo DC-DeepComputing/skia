@@ -16,6 +16,24 @@
       "message": "I\u0027ve just realized this links to Skia bugs. Is there a standardized way that I should note this is not such a link?",
       "revId": "aa443799f1c2c50ddadafe453187e4eb75fbf142",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b6397ec_0a374052",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-01-31T18:18:20Z",
+      "side": 1,
+      "message": "it all goes to the same bug database in the end. The link looks to go to the right place to me.",
+      "parentUuid": "510b5460_531a278d",
+      "revId": "aa443799f1c2c50ddadafe453187e4eb75fbf142",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
