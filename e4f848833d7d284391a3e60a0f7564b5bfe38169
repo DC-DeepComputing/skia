@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fb2c2a2_fcb2e919",
+        "filename": "dm/DMSrcSink.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-31T17:00:50Z",
+      "side": 1,
+      "message": "Done - does requires an extra wrapper (to map operator::\u003d\u003d to SkData::equals).",
+      "parentUuid": "4af03394_53edb26d",
+      "range": {
+        "startLine": 644,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 86
+      },
+      "revId": "e4f848833d7d284391a3e60a0f7564b5bfe38169",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ed48c5a_9f3fa694",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-01-30T16:54:04Z",
       "side": 1,
       "message": "Can this be on `ContextOptions` instead so it\u0027s only set once?",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 89
+      },
+      "revId": "e4f848833d7d284391a3e60a0f7564b5bfe38169",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c21c1f3_4685e744",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-01-31T17:00:50Z",
+      "side": 1,
+      "message": "Done.\n\nThis does make lifetime management of the callbackHandler a bit more involved (in GraphitePrecompileTestingSink::draw)",
+      "parentUuid": "8ed48c5a_9f3fa694",
       "range": {
         "startLine": 302,
         "startChar": 0,
