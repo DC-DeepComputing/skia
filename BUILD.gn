@@ -407,7 +407,7 @@ skia_source_set("fontscanner_tests") {
 
 optional("fontmgr_FontConfigInterface") {
   enabled = skia_enable_fontmgr_FontConfigInterface
-
+  public_defines = [ "SK_FONTMGR_FCI_AVAILABLE" ]
   deps = [
     ":typeface_freetype",
     "//third_party:fontconfig",
@@ -2632,6 +2632,7 @@ if (skia_enable_tools) {
         "modules/skottie:utils",
         "modules/skshaper",
         "modules/skunicode",
+        "tools/partition_alloc:test_support",
       ]
       if (skia_use_libpng_decode) {
         deps += [ "modules/svg" ]
