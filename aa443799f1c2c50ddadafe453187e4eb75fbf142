@@ -38,6 +38,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "2d8fe1e1_72de7c14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 22075
+      },
+      "writtenOn": "2025-02-01T03:49:44Z",
+      "side": 1,
+      "message": "Thanks. I saw an access denied page at first and thought it was a separate database.",
+      "parentUuid": "1b6397ec_0a374052",
+      "revId": "aa443799f1c2c50ddadafe453187e4eb75fbf142",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0b501572_d02bc274",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 1
@@ -66,6 +84,30 @@
       "writtenOn": "2025-01-31T18:21:45Z",
       "side": 1,
       "message": "ah so only these two bytes matter if the highlevel type? Can we just explicitly describe that in the comment here.",
+      "range": {
+        "startLine": 2104,
+        "startChar": 23,
+        "endLine": 2104,
+        "endChar": 29
+      },
+      "revId": "aa443799f1c2c50ddadafe453187e4eb75fbf142",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "be6b405d_4b3b9cee",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2104,
+      "author": {
+        "id": 22075
+      },
+      "writtenOn": "2025-02-01T03:49:44Z",
+      "side": 1,
+      "message": "Yes, generally only these two bytes matter. Exceptions are rare.",
+      "parentUuid": "4d3e1ee7_e0b5f6e9",
       "range": {
         "startLine": 2104,
         "startChar": 23,
