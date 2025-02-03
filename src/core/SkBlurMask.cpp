@@ -501,15 +501,6 @@ bool SkBlurMask::BlurRect(SkScalar sigma, SkMaskBuilder *dst,
     return true;
 }
 
-bool SkBlurMask::BlurRRect(SkScalar sigma, SkMaskBuilder *dst,
-                           const SkRRect &src, SkBlurStyle style,
-                           SkIPoint *margin, SkMaskBuilder::CreateMode createMode) {
-    // Temporary for now -- always fail, should cause caller to fall back
-    // to old path.  Plumbing just to land API and parallelize effort.
-
-    return false;
-}
-
 // The "simple" blur is a direct implementation of separable convolution with a discrete
 // gaussian kernel.  It's "ground truth" in a sense; too slow to be used, but very
 // useful for correctness comparisons.
