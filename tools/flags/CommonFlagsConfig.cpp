@@ -74,8 +74,8 @@ static const struct {
     { "glremoteslug",          "gpu", "api=gl,remoteSlug=true" },
     { "gltestpersistentcache", "gpu", "api=gl,testPersistentCache=1" },
     { "gltestglslcache",       "gpu", "api=gl,testPersistentCache=2" },
-    { "gltestprecompile",      "gpu", "api=gl,testPrecompile=true" },
-    { "glestestprecompile",    "gpu", "api=gles,testPrecompile=true" },
+    { "gltestprecompile",      "gpu", "api=gl,testPrecompileGanesh=true" },
+    { "glestestprecompile",    "gpu", "api=gles,testPrecompileGanesh=true" },
     { "glddl",                 "gpu", "api=gl,useDDLSink=true" },
     { "glreducedshaders",      "gpu", "api=gl,reducedShaders=true" },
     { "glesreducedshaders",    "gpu", "api=gles,reducedShaders=true" },
@@ -122,7 +122,7 @@ static const struct {
     { "mtlmsaa4",              "gpu", "api=metal,samples=4" },
     { "mtlmsaa8",              "gpu", "api=metal,samples=8" },
     { "mtlddl",                "gpu", "api=metal,useDDLSink=true" },
-    { "mtltestprecompile",     "gpu", "api=metal,testPrecompile=true" },
+    { "mtltestprecompile",     "gpu", "api=metal,testPrecompileGanesh=true" },
     { "mtlreducedshaders",     "gpu", "api=metal,reducedShaders=true" },
 #endif
 #ifdef SK_DIRECT3D
@@ -143,8 +143,8 @@ static const struct {
     { "grdawn_gl",             "graphite", "api=dawn_gl" },
     { "grdawn_gles",           "graphite", "api=dawn_gles" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grdawn_mtlprecompile",  "graphite", "api=dawn_mtl,precompile=true" },
-    { "grdawn_vkprecompile",   "graphite", "api=dawn_vk, precompile=true" },
+    { "grdawn_mtlprecompile",  "graphite", "api=dawn_mtl,testPrecompile=true" },
+    { "grdawn_vkprecompile",   "graphite", "api=dawn_vk, testPrecompile=true" },
 #endif
 #endif
 #ifdef SK_METAL
@@ -154,15 +154,15 @@ static const struct {
     { "grmtlsrgba",            "graphite", "api=metal,color=srgba"},
     { "grmtl1010102",          "graphite", "api=metal,color=1010102" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grmtlprecompile",       "graphite", "api=metal,precompile=true" },
-    { "grmtlprecompilef16",    "graphite", "api=metal,precompile=true,color=f16" },
-    { "grmtlprecompile1010102","graphite", "api=metal,precompile=true,color=1010102" },
+    { "grmtlprecompile",       "graphite", "api=metal,testPrecompile=true" },
+    { "grmtlprecompilef16",    "graphite", "api=metal,testPrecompile=true,color=f16" },
+    { "grmtlprecompile1010102","graphite", "api=metal,testPrecompile=true,color=1010102" },
 #endif
 #endif
 #ifdef SK_VULKAN
     { "grvk",                  "graphite", "api=vulkan" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grvkprecompile",        "graphite", "api=vulkan,precompile=true" },
+    { "grvkprecompile",        "graphite", "api=vulkan,testPrecompile=true" },
 #endif
 #endif
 #endif
@@ -574,13 +574,14 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&         tag,
                                                SkAlphaType             alphaType,
                                                bool                    useStencilBuffers,
                                                int                     testPersistentCache,
-                                               bool                    testPrecompile,
+                                               bool                    testPrecompileGanesh,
                                                bool                    useDDLSink,
                                                bool                    slug,
                                                bool                    serializeSlug,
                                                bool                    remoteSlug,
                                                bool                    reducedShaders,
-                                               SurfType                surfType)
+                                               SurfType                surfType,
+                                               bool isGanesh)
         : SkCommandLineConfig(tag, SkString("gpu"), viaParts)
         , fContextType(contextType)
         , fContextOverrides(ContextOverrides::kNone)
@@ -589,13 +590,14 @@ SkCommandLineConfigGpu::SkCommandLineConfigGpu(const SkString&         tag,
         , fColorType(colorType)
         , fAlphaType(alphaType)
         , fTestPersistentCache(testPersistentCache)
-        , fTestPrecompile(testPrecompile)
+        , fTestPrecompileGanesh(testPrecompileGanesh)
         , fUseDDLSink(useDDLSink)
         , fSlug(slug)
         , fSerializeSlug(serializeSlug)
         , fRemoteSlug(remoteSlug)
         , fReducedShaders(reducedShaders)
         , fSurfType(surfType) {
+    SkASSERT(isGanesh);
     if (!useStencilBuffers) {
         fContextOverrides |= ContextOverrides::kAvoidStencilBuffers;
     }
@@ -619,7 +621,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&         ta
     SkAlphaType                         alphaType           = kPremul_SkAlphaType;
     bool                                useStencils         = true;
     int                                 testPersistentCache = 0;
-    bool                                testPrecompile      = false;
+    bool                                testPrecompileGanesh      = false;
     bool                                useDDLs             = false;
     bool                                slug                = false;
     bool                                serializeSlug       = false;
@@ -642,7 +644,7 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&         ta
             extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
             extendedOptions.get_option_bool("stencils", &useStencils) &&
             extendedOptions.get_option_int("testPersistentCache", &testPersistentCache) &&
-            extendedOptions.get_option_bool("testPrecompile", &testPrecompile) &&
+            extendedOptions.get_option_bool("testPrecompile", &testPrecompileGanesh) &&
             extendedOptions.get_option_bool("useDDLSink", &useDDLs) &&
             extendedOptions.get_option_bool("slug", &slug) &&
             extendedOptions.get_option_bool("serializeSlug", &serializeSlug) &&
@@ -672,13 +674,14 @@ SkCommandLineConfigGpu* parse_command_line_config_gpu(const SkString&         ta
                                       alphaType,
                                       useStencils,
                                       testPersistentCache,
-                                      testPrecompile,
+                                      testPrecompileGanesh,
                                       useDDLs,
                                       slug,
                                       serializeSlug,
                                       remoteSlug,
                                       reducedShaders,
-                                      surfType);
+                                      surfType,
+                                      true);
 }
 
 #if defined(SK_GRAPHITE)
@@ -691,7 +694,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
     ContextType contextType    = skgpu::ContextType::kMetal;
     SkColorType colorType      = kRGBA_8888_SkColorType;
     SkAlphaType alphaType      = kPremul_SkAlphaType;
-    bool        testPrecompile = false;
+    bool        testPrecompileGraphite = false;
 
     bool parseSucceeded = false;
     ExtendedOptions extendedOptions(options, &parseSucceeded);
@@ -701,7 +704,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
 
     bool validOptions = extendedOptions.get_option_graphite_api("api", &contextType) &&
                         extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
-                        extendedOptions.get_option_bool("precompile", &testPrecompile);
+                        extendedOptions.get_option_bool("testPrecompile", &testPrecompileGraphite);
     if (!validOptions) {
         return nullptr;
     }
@@ -711,7 +714,8 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
                                            contextType,
                                            colorType,
                                            alphaType,
-                                           testPrecompile);
+                                           testPrecompileGraphite,
+                                           false);
 }
 
 #endif

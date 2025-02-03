@@ -12,6 +12,9 @@
 
 #include <cstdint>
 
+class SkStream;
+class SkWStream;
+
 namespace skgpu::graphite {
 
 class DawnTextureInfoData final : public TextureInfoData {
@@ -71,6 +74,14 @@ private:
         if (auto otherDawn = static_cast<const DawnTextureInfoData*>(that)) {
             return fDawnSpec.isCompatible(otherDawn->fDawnSpec);
         }
+        return false;
+    }
+
+    bool serialize(SkWStream* stream) const override {
+        return false;
+    }
+
+    static bool Deserialize(SkStream* stream) {
         return false;
     }
 };

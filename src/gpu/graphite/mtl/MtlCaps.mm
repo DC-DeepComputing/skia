@@ -25,6 +25,8 @@
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 #include "src/sksl/SkSLUtil.h"
 
+#include "src/gpu/graphite/TextureInfoPriv.h"
+
 namespace skgpu::graphite {
 
 MtlCaps::MtlCaps(const id<MTLDevice> device, const ContextOptions& options)

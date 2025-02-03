@@ -16,6 +16,8 @@
 
 #import <CoreFoundation/CoreFoundation.h>
 
+class SkStream;
+
 namespace skgpu::graphite {
 
 struct SK_API MtlTextureInfo;
@@ -23,6 +25,12 @@ struct SK_API MtlTextureInfo;
 namespace TextureInfos {
 SK_API TextureInfo MakeMetal(const MtlTextureInfo&);
 SK_API TextureInfo MakeMetal(CFTypeRef mtlTexture);
+
+bool DeserializeMetal(SkStream*,
+                      Mipmapped,
+                      Protected,
+                      uint32_t sampleCount,
+                      TextureInfo*);
 
 SK_API bool GetMtlTextureInfo(const TextureInfo&, MtlTextureInfo*);
 }  // namespace TextureInfos
