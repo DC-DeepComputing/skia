@@ -159,7 +159,6 @@ PRECOMPILE_FILES = [
     "FactoryFunctions.h",
     "PrecompileInternal.h",
     "PublicPrecompile.cpp",
-    "AndroidSpecificPrecompile.h",
 ]
 
 split_srcs_and_hdrs(

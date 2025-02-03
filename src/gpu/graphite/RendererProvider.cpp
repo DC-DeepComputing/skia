@@ -187,6 +187,19 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 #ifdef SK_ENABLE_VELLO_SHADERS
     fVelloRenderer = std::make_unique<VelloRenderer>(caps);
 #endif
+
+#if defined(SK_DEBUG)
+//    SkASSERT((int)RenderStep::RenderStepID2::kLast == (int)RenderStep::RenderStepID2::kLast);
+    for (auto&& rs : fRenderSteps) {
+        if (!rs) continue;
+//        const char* name1 = RenderStep::RenderStepName(rs->renderStepID1());
+//        SkASSERTF(!strcmp(rs->name(), name1), "%s != %s", rs->name(), name1);
+
+        SkDEBUGCODE(const char* name2 = RenderStep::RenderStepName(rs->renderStepID());)
+        SkASSERTF(!strcmp(rs->name(), name2), "%s != %s", rs->name(), name2);
+//        SkASSERTF(!strcmp(name1, name2), "%s != %s", name1, name2);
+    }
+#endif
 }
 
 } // namespace skgpu::graphite
