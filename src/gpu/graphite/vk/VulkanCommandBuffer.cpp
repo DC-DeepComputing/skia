@@ -1445,9 +1445,7 @@ bool VulkanCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
     SkASSERT(dstBuffer->bufferUsageFlags() & VK_BUFFER_USAGE_TRANSFER_DST_BIT);
 
     // Obtain the VkFormat of the source texture so we can determine bytes per block.
-    VulkanTextureInfo srcTextureInfo;
-    SkAssertResult(TextureInfos::GetVulkanTextureInfo(texture->textureInfo(), &srcTextureInfo));
-    size_t bytesPerBlock = VkFormatBytesPerBlock(srcTextureInfo.fFormat);
+    size_t bytesPerBlock = VkFormatBytesPerBlock(srcTexture->vulkanTextureInfo().fFormat);
 
     // Set up copy region
     VkBufferImageCopy region;
@@ -1492,8 +1490,7 @@ bool VulkanCommandBuffer::onCopyBufferToTexture(const Buffer* buffer,
     const VulkanTexture* dstTexture = static_cast<const VulkanTexture*>(texture);
 
     // Obtain the VkFormat of the destination texture so we can determine bytes per block.
-    VulkanTextureInfo dstTextureInfo;
-    SkAssertResult(TextureInfos::GetVulkanTextureInfo(dstTexture->textureInfo(), &dstTextureInfo));
+    const auto& dstTextureInfo = dstTexture->vulkanTextureInfo();
     size_t bytesPerBlock = VkFormatBytesPerBlock(dstTextureInfo.fFormat);
     SkISize oneBlockDims = CompressedDimensions(dstTexture->textureInfo().compressionType(),
                                                 {1, 1});

@@ -15,7 +15,7 @@
 
 namespace skgpu::graphite {
 struct ContextOptions;
-struct VulkanTextureInfo;
+class VulkanTextureInfo;
 
 class VulkanCaps final : public Caps {
 public:

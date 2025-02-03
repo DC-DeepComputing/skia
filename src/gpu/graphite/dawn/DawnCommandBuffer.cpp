@@ -11,6 +11,7 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -18,12 +19,11 @@
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/dawn/DawnQueueManager.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten/version.h>
@@ -405,7 +405,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
     if (depthStencilTexture) {
         const auto* dawnDepthStencilTexture = static_cast<const DawnTexture*>(depthStencilTexture);
-        auto format = TextureInfos::GetDawnViewFormat(dawnDepthStencilTexture->textureInfo());
+        auto format = dawnDepthStencilTexture->dawnTextureInfo().fFormat;
         SkASSERT(DawnFormatIsDepthOrStencil(format));
 
         // TODO: check Texture matches RenderPassDesc
@@ -756,7 +756,7 @@ void DawnCommandBuffer::bindTextureAndSamplers(
 #if !defined(__EMSCRIPTEN__)
     if (command.fNumTexSamplers == 1) {
         const wgpu::YCbCrVkDescriptor& ycbcrDesc =
-                TextureInfos::GetDawnTextureSpec(
+                TextureInfoPriv::Get<DawnTextureInfo>(
                         drawPass.getTexture(command.fTextureIndices[0])->textureInfo())
                         .fYcbcrVkDescriptor;
         usingSingleStaticSampler = DawnDescriptorIsValid(ycbcrDesc);
@@ -791,10 +791,8 @@ void DawnCommandBuffer::bindTextureAndSamplers(
             // 2 * i as base binding index of the sampler and texture.
             // TODO: https://b.corp.google.com/issues/259457090:
             // Better configurable way of assigning samplers and textures' bindings.
-
-            DawnTextureInfo dawnTextureInfo;
-            TextureInfos::GetDawnTextureInfo(texture->textureInfo(), &dawnTextureInfo);
-            const wgpu::YCbCrVkDescriptor& ycbcrDesc = dawnTextureInfo.fYcbcrVkDescriptor;
+            const wgpu::YCbCrVkDescriptor& ycbcrDesc =
+                    texture->dawnTextureInfo().fYcbcrVkDescriptor;
 
             // Only add a sampler as a bind group entry if it's a regular dynamic sampler. A valid
             // YCbCrVkDescriptor indicates the usage of a static sampler, which should not be
@@ -1111,7 +1109,7 @@ bool DawnCommandBuffer::onCopyTextureToBuffer(const Texture* texture,
     src.texture = wgpuTexture->dawnTexture();
     src.origin.x = srcRect.x();
     src.origin.y = srcRect.y();
-    src.aspect = TextureInfos::GetDawnAspect(wgpuTexture->textureInfo());
+    src.aspect = wgpuTexture->dawnTextureInfo().fAspect;
 
     wgpu::ImageCopyBuffer dst;
     dst.buffer = wgpuBuffer;

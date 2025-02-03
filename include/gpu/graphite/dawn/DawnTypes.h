@@ -10,17 +10,17 @@
 
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAPI.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
 namespace skgpu::graphite {
 class BackendTexture;
-class TextureInfo;
 
-struct DawnTextureInfo {
-    uint32_t fSampleCount = 1;
-    Mipmapped fMipmapped = Mipmapped::kNo;
+class DawnTextureInfo final : public TextureInfo::Data {
+public:
+    static constexpr skgpu::BackendApi kBackendApi = skgpu::BackendApi::kDawn;
 
     // wgpu::TextureDescriptor properties
     wgpu::TextureFormat fFormat = wgpu::TextureFormat::Undefined;
@@ -44,6 +44,14 @@ struct DawnTextureInfo {
     }
 
     DawnTextureInfo() = default;
+    DawnTextureInfo(const DawnTextureInfo&) = default;
+
+    DawnTextureInfo& operator=(const DawnTextureInfo& info) {
+        this->~DawnTextureInfo();
+        return *(new (this) DawnTextureInfo(info));
+    }
+
+    DawnTextureInfo(WGPUTexture texture);
 
     DawnTextureInfo(uint32_t sampleCount,
                     Mipmapped mipmapped,
@@ -65,8 +73,7 @@ struct DawnTextureInfo {
                     wgpu::TextureUsage usage,
                     wgpu::TextureAspect aspect,
                     uint32_t slice)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
+            : Data(sampleCount, mipmapped)
             , fFormat(format)
             , fViewFormat(viewFormat)
             , fUsage(usage)
@@ -82,8 +89,7 @@ struct DawnTextureInfo {
                     wgpu::TextureAspect aspect,
                     uint32_t slice,
                     wgpu::YCbCrVkDescriptor ycbcrVkDescriptor)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
+            : Data(sampleCount, mipmapped)
             , fFormat(format)
             , fViewFormat(viewFormat)
             , fUsage(usage)
@@ -91,6 +97,22 @@ struct DawnTextureInfo {
             , fSlice(slice)
             , fYcbcrVkDescriptor(ycbcrVkDescriptor) {}
 #endif
+
+private:
+    skgpu::BackendApi type() const override { return kBackendApi; }
+    Protected isProtected() const override { return Protected::kNo; }
+    uint32_t viewFormat() const override { return (uint32_t) this->getViewFormat(); }
+
+    size_t bytesPerPixel() const override;
+    SkTextureCompressionType compressionType() const override;
+    bool isMemoryless() const override;
+    SkString toBackendString() const override;
+
+    void copyTo(AnyTextureInfoData& dstData) const override {
+        dstData.emplace<DawnTextureInfo>(*this);
+    }
+    bool equals(const TextureInfo& that) const override;
+    bool isCompatible(const TextureInfo& that) const override;
 };
 
 namespace TextureInfos {
@@ -143,5 +165,3 @@ SK_API BackendTexture MakeDawn(SkISize dimensions,
 }  // namespace skgpu::graphite
 
 #endif // skgpu_graphite_DawnTypes_DEFINED
-
-

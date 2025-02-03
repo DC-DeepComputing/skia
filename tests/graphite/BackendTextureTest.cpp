@@ -15,13 +15,9 @@
 #include "include/gpu/graphite/Image.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/Surface.h"
-#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
-#include "include/gpu/vk/VulkanMutableTextureState.h"
-#include "include/gpu/vk/VulkanTypes.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/ResourceTypes.h"
-#include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
 
 using namespace skgpu;
 using namespace skgpu::graphite;
@@ -202,6 +198,12 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ImageBackendTextureTest, reporter, context,
 }
 
 #ifdef SK_VULKAN
+
+#include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
+#include "include/gpu/vk/VulkanMutableTextureState.h"
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+
 DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(VulkanBackendTextureMutableStateTest, reporter, context,
                                      CtsEnforcement::kApiLevel_V) {
     VulkanTextureInfo info(/*sampleCount=*/1,

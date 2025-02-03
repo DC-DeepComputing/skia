@@ -18,7 +18,7 @@
 
 namespace skgpu::graphite {
 
-struct SK_API MtlTextureInfo;
+class SK_API MtlTextureInfo; // Requires Object-C, hence it is in a separate header
 
 namespace TextureInfos {
 SK_API TextureInfo MakeMetal(const MtlTextureInfo&);

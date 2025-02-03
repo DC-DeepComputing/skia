@@ -14,9 +14,8 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 
 namespace skgpu::graphite {
 
@@ -31,7 +30,7 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
         return {};
     }
 
-    const DawnTextureSpec dawnSpec = TextureInfos::GetDawnTextureSpec(info);
+    const auto& dawnSpec = TextureInfoPriv::Get<DawnTextureInfo>(info);
 
     if (dawnSpec.fUsage & wgpu::TextureUsage::TextureBinding && !caps->isTexturable(info)) {
         return {};
@@ -100,7 +99,7 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
 // static
 std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
         const wgpu::Texture& texture, const TextureInfo& info) {
-    const DawnTextureSpec dawnSpec = TextureInfos::GetDawnTextureSpec(info);
+    const auto& dawnSpec = TextureInfoPriv::Get<DawnTextureInfo>(info);
     const auto aspect = dawnSpec.fAspect;
     if (aspect == wgpu::TextureAspect::All) {
         wgpu::TextureViewDescriptor viewDesc = {};

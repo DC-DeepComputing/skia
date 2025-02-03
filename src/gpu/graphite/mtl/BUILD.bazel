@@ -22,7 +22,6 @@ METAL_FILES = [
     "MtlComputePipeline.mm",
     "MtlGraphicsPipeline.h",
     "MtlGraphicsPipeline.mm",
-    "MtlGraphiteTypes.mm",
     "MtlGraphiteUtils.mm",
     "MtlGraphiteUtilsPriv.h",
     "MtlQueueManager.h",

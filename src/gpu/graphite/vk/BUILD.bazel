@@ -23,8 +23,6 @@ VULKAN_FILES = [
     "VulkanFramebuffer.h",
     "VulkanGraphicsPipeline.cpp",
     "VulkanGraphicsPipeline.h",
-    "VulkanGraphiteTypes.cpp",
-    "VulkanGraphiteTypesPriv.h",
     "VulkanGraphiteUtils.cpp",
     "VulkanGraphiteUtilsPriv.h",
     "VulkanImageView.cpp",

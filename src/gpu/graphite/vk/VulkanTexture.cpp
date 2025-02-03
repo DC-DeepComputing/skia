@@ -12,9 +12,9 @@
 #include "include/gpu/vk/VulkanMutableTextureState.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanCaps.h"
 #include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
-#include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanResourceProvider.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -47,7 +47,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
         return false;
     }
 
-    const VulkanTextureSpec spec = TextureInfos::GetVulkanTextureSpec(info);
+    const auto& spec = TextureInfoPriv::Get<VulkanTextureInfo>(info);
 
     bool isLinear = spec.fImageTiling == VK_IMAGE_TILING_LINEAR;
     VkImageLayout initialLayout = isLinear ? VK_IMAGE_LAYOUT_PREINITIALIZED
@@ -214,8 +214,7 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
     VkImageLayout currentLayout = this->currentLayout();
     uint32_t currentQueueIndex = this->currentQueueFamilyIndex();
 
-    VulkanTextureInfo textureInfo;
-    SkAssertResult(TextureInfos::GetVulkanTextureInfo(this->textureInfo(), &textureInfo));
+    const auto& textureInfo = this->vulkanTextureInfo();
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
 
     // Enable the following block on new devices to test that their lazy images stay at 0 memory use
@@ -403,15 +402,13 @@ const VulkanImageView* VulkanTexture::getImageView(VulkanImageView::Usage usage)
     }
 
     auto sharedContext = static_cast<const VulkanSharedContext*>(this->sharedContext());
-    VulkanTextureInfo vkTexInfo;
-    SkAssertResult(TextureInfos::GetVulkanTextureInfo(this->textureInfo(), &vkTexInfo));
     int miplevels = this->textureInfo().mipmapped() == Mipmapped::kYes
                     ? SkMipmap::ComputeLevelCount(this->dimensions().width(),
                                                   this->dimensions().height()) + 1
                     : 1;
     auto imageView = VulkanImageView::Make(sharedContext,
                                            fImage,
-                                           vkTexInfo.fFormat,
+                                           this->vulkanTextureInfo().fFormat,
                                            usage,
                                            miplevels,
                                            fYcbcrConversion);
@@ -419,8 +416,7 @@ const VulkanImageView* VulkanTexture::getImageView(VulkanImageView::Usage usage)
 }
 
 bool VulkanTexture::supportsInputAttachmentUsage() const {
-    return (TextureInfos::GetVkUsageFlags(this->textureInfo()) &
-            VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT);
+    return this->vulkanTextureInfo().fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
 }
 
 size_t VulkanTexture::onUpdateGpuMemorySize() {

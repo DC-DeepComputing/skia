@@ -12,7 +12,6 @@
 #include "include/gpu/graphite/mtl/MtlGraphiteTypes.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/mtl/MtlCaps.h"
-#include "src/gpu/graphite/mtl/MtlGraphiteTypesPriv.h"
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 #include "src/gpu/mtl/MtlUtilsPriv.h"
 
@@ -27,7 +26,7 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
         return nullptr;
     }
 
-    const MtlTextureSpec mtlSpec = TextureInfos::GetMtlTextureSpec(info);
+    const auto& mtlSpec = TextureInfoPriv::Get<MtlTextureInfo>(info);
     SkASSERT(!mtlSpec.fFramebufferOnly);
 
     if (mtlSpec.fUsage & MTLTextureUsageShaderRead && !caps->isTexturable(info)) {

@@ -15,18 +15,18 @@
 
 namespace skgpu::graphite {
 
-struct VulkanTextureInfo {
-    uint32_t fSampleCount = 1;
-    Mipmapped fMipmapped = Mipmapped::kNo;
+class VulkanTextureInfo final : public TextureInfo::Data {
+public:
+    static constexpr skgpu::BackendApi kBackendApi = skgpu::BackendApi::kVulkan;
 
     // VkImageCreateInfo properties
     // Currently the only supported flag is VK_IMAGE_CREATE_PROTECTED_BIT. Any other flag will not
     // be accepted
-    VkImageCreateFlags       fFlags = 0;
-    VkFormat                 fFormat = VK_FORMAT_UNDEFINED;
-    VkImageTiling            fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-    VkImageUsageFlags        fImageUsageFlags = 0;
-    VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    VkImageCreateFlags        fFlags = 0;
+    VkFormat                  fFormat = VK_FORMAT_UNDEFINED;
+    VkImageTiling             fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkImageUsageFlags         fImageUsageFlags = 0;
+    VkSharingMode             fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     // Properties related to the image view and sampling. These are less inherent properties of the
     // VkImage but describe how the VkImage should be used within Skia.
@@ -35,10 +35,17 @@ struct VulkanTextureInfo {
     // However, if the VkImage is a Ycbcr format, the client can pass a specific plan here to have
     // Skia directly sample a plane. In that case the client should also pass in a VkFormat that is
     // compatible with the plane as described by the Vulkan spec.
-    VkImageAspectFlags         fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-    VulkanYcbcrConversionInfo  fYcbcrConversionInfo;
+    VkImageAspectFlags        fAspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+    VulkanYcbcrConversionInfo fYcbcrConversionInfo;
 
     VulkanTextureInfo() = default;
+    VulkanTextureInfo(const VulkanTextureInfo&) = default;
+
+    VulkanTextureInfo& operator=(const VulkanTextureInfo& info) {
+        this->~VulkanTextureInfo();
+        return *(new (this) VulkanTextureInfo(info));
+    }
+
     VulkanTextureInfo(uint32_t sampleCount,
                       Mipmapped mipmapped,
                       VkImageCreateFlags flags,
@@ -48,8 +55,7 @@ struct VulkanTextureInfo {
                       VkSharingMode sharingMode,
                       VkImageAspectFlags aspectMask,
                       VulkanYcbcrConversionInfo ycbcrConversionInfo)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
+            : Data(sampleCount, mipmapped)
             , fFlags(flags)
             , fFormat(format)
             , fImageTiling(imageTiling)
@@ -57,6 +63,24 @@ struct VulkanTextureInfo {
             , fSharingMode(sharingMode)
             , fAspectMask(aspectMask)
             , fYcbcrConversionInfo(ycbcrConversionInfo) {}
+
+private:
+    skgpu::BackendApi type() const override { return kBackendApi; }
+    Protected isProtected() const override {
+        return fFlags & VK_IMAGE_CREATE_PROTECTED_BIT ? Protected::kYes : Protected::kNo;
+    }
+    uint32_t viewFormat() const override { return (uint32_t) fFormat; }
+
+    size_t bytesPerPixel() const override;
+    SkTextureCompressionType compressionType() const override;
+    bool isMemoryless() const override;
+    SkString toBackendString() const override;
+
+    void copyTo(AnyTextureInfoData& dstData) const override {
+        dstData.emplace<VulkanTextureInfo>(*this);
+    }
+    bool equals(const TextureInfo& that) const override;
+    bool isCompatible(const TextureInfo& that) const override;
 };
 
 namespace TextureInfos {
