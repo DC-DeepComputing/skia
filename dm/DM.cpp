@@ -49,6 +49,45 @@
 
 #include <stdlib.h>
 
+#include    <sys/types.h>
+#include    <dlfcn.h>
+#include    <stdio.h>
+
+// Convert a `size_t` into a binary string.
+std::array<char, 64> to_binary(size_t size) {
+    std::array<char, 64> binary;
+    for (int i = 0; i < 64; i++) {
+        binary[63 - i] = (size & (1 << i)) ? '1' : '0';
+    }
+    return binary;
+}
+
+// Only Linux, replace malloc/free/realloc with our own wrapper printing out the of large
+// allocations. The size must be printed in binary.
+//void* malloc(size_t size) {
+    //static void* (*malloc_ptr)(size_t) = nullptr;
+    //if (!malloc_ptr) {
+        //malloc_ptr = (void* (*)(size_t))dlsym(RTLD_NEXT, "malloc");
+    //}
+    //void* ptr = malloc_ptr(size);
+    //if (size > 1 << 20) {
+        //fprintf(stderr, "malloc, %p, %s\n", ptr, to_binary(size).data());
+    //}
+    //return ptr;
+//}
+
+void* realloc(void* ptr, size_t size) {
+    static void* (*realloc_ptr)(void*, size_t) = nullptr;
+    if (!realloc_ptr) {
+        realloc_ptr = (void* (*)(void*, size_t))dlsym(RTLD_NEXT, "realloc");
+    }
+    void* new_ptr = realloc_ptr(ptr, size);
+    if (size > 1 << 17) {
+        fprintf(stderr, "realloc, %p, %p, %s\r\n", ptr, new_ptr, to_binary(size).data());
+    }
+    return new_ptr;
+}
+
 #if defined(SK_GRAPHITE)
     #include "tools/flags/CommonFlagsGraphite.h"
 #endif
