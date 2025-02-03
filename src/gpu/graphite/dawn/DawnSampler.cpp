@@ -9,8 +9,8 @@
 
 #include "include/core/SkSamplingOptions.h"
 #include "src/gpu/graphite/dawn/DawnCaps.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
+#include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 
 #include <cfloat>
 

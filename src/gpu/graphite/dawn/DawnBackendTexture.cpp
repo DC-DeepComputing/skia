@@ -7,7 +7,6 @@
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/BackendTexturePriv.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 #include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -67,7 +66,7 @@ BackendTexture MakeDawn(WGPUTexture texture) {
                     static_cast<int32_t>(wgpuTextureGetWidth(texture)),
                     static_cast<int32_t>(wgpuTextureGetHeight(texture)),
             },
-            TextureInfos::MakeDawn(DawnTextureInfoFromWGPUTexture(texture)),
+            TextureInfos::MakeDawn(DawnTextureInfo(texture)),
             DawnBackendTextureData(texture, nullptr));
 }
 

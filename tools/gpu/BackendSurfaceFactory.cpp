@@ -18,7 +18,7 @@
 #include "include/gpu/graphite/Surface.h"
 #if defined(SK_DAWN)
 #include "include/gpu/graphite/dawn/DawnTypes.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
+#include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 #endif

@@ -27,7 +27,7 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
         return nullptr;
     }
 
-    const MtlTextureSpec mtlSpec = TextureInfos::GetMtlTextureSpec(info);
+    const auto& mtlSpec = TextureInfoPriv::Get<MtlTextureInfo>(info);
     SkASSERT(!mtlSpec.fFramebufferOnly);
 
     if (mtlSpec.fUsage & MTLTextureUsageShaderRead && !caps->isTexturable(info)) {

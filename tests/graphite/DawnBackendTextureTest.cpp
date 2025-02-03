@@ -11,7 +11,6 @@
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/gpu/graphite/dawn/DawnTypes.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 

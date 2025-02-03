@@ -19,7 +19,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
-#include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
 #include "src/gpu/graphite/vk/VulkanRenderPass.h"
 #include "src/gpu/graphite/vk/VulkanSharedContext.h"
@@ -304,11 +304,10 @@ TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType ct,
 
 TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo,
                                                      Mipmapped mipmapped) const {
-    VulkanTextureInfo info;
-    if (!TextureInfos::GetVulkanTextureInfo(textureInfo, &info)) {
-        return {};
-    }
+    const auto& spec = TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo);
 
+    VulkanTextureInfo info;
+    info.fFormat = spec.fFormat;
     info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
     info.fFlags =
@@ -368,7 +367,8 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
         return {};
     }
 
-    const VkFormat singleSpecFormat = TextureInfos::GetVkFormat(singleSampledInfo);
+    const VkFormat singleSpecFormat =
+            TextureInfoPriv::Get<VulkanTextureInfo>(singleSampledInfo).fFormat;
     const FormatInfo& formatInfo = this->getFormatInfo(singleSpecFormat);
     if ((singleSampledInfo.isProtected() == Protected::kYes && !this->protectedSupport()) ||
         !formatInfo.isRenderable(VK_IMAGE_TILING_OPTIMAL, fDefaultMSAASamples)) {
@@ -379,7 +379,7 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
     info.fSampleCount = fDefaultMSAASamples;
     info.fMipmapped = Mipmapped::kNo;
     info.fFlags = (singleSampledInfo.isProtected() == Protected::kYes) ?
-        VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+            VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = singleSpecFormat;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
 
@@ -450,7 +450,7 @@ TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) cons
 }
 
 uint32_t VulkanCaps::channelMask(const TextureInfo& textureInfo) const {
-    return skgpu::VkFormatChannels(TextureInfos::GetVkFormat(textureInfo));
+    return skgpu::VkFormatChannels(TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo).fFormat);
 }
 
 void VulkanCaps::initFormatTable(const skgpu::VulkanInterface* interface,
@@ -1318,17 +1318,15 @@ const VulkanCaps::DepthStencilFormatInfo& VulkanCaps::getDepthStencilFormatInfo(
 
 const Caps::ColorTypeInfo* VulkanCaps::getColorTypeInfo(SkColorType ct,
                                                         const TextureInfo& textureInfo) const {
-    VkFormat vkFormat = TextureInfos::GetVkFormat(textureInfo);
-    if (vkFormat == VK_FORMAT_UNDEFINED) {
+    const auto& spec = TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo);
+    if (spec.fFormat == VK_FORMAT_UNDEFINED) {
         // If VkFormat is undefined but there is a valid YCbCr conversion associated with the
         // texture, then we know we are using an external format and can return color type
         // info representative of external format color information.
-        return TextureInfos::GetVulkanYcbcrConversionInfo(textureInfo).isValid()
-                       ? &fExternalFormatColorTypeInfo
-                       : nullptr;
+        return spec.fYcbcrConversionInfo.isValid() ? &fExternalFormatColorTypeInfo : nullptr;
     }
 
-    const FormatInfo& info = this->getFormatInfo(vkFormat);
+    const FormatInfo& info = this->getFormatInfo(spec.fFormat);
     for (int i = 0; i < info.fColorTypeInfoCount; ++i) {
         const ColorTypeInfo& ctInfo = info.fColorTypeInfos[i];
         if (ctInfo.fColorType == ct) {
@@ -1541,7 +1539,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
                                     GraphiteResourceKey* key) const {
     SkASSERT(!dimensions.isEmpty());
 
-    const VulkanTextureSpec vkSpec = TextureInfos::GetVulkanTextureSpec(info);
+    const auto& vkSpec = TextureInfoPriv::Get<VulkanTextureInfo>(info);
     // We expect that the VkFormat enum is at most a 32-bit value.
     static_assert(VK_FORMAT_MAX_ENUM == 0x7FFFFFFF);
     // We should either be using a known VkFormat or have a valid ycbcr conversion.
@@ -1572,7 +1570,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     int num32DataCnt = kNum32DataCntNoYcbcr;
 
     // If a texture w/ an external format is being used, that information must also be appended.
-    const VulkanYcbcrConversionInfo& ycbcrInfo = TextureInfos::GetVulkanYcbcrConversionInfo(info);
+    const VulkanYcbcrConversionInfo& ycbcrInfo = vkSpec.fYcbcrConversionInfo;
     num32DataCnt += ycbcrInfo.isValid() ? kNum32DataCntYcbcr : 0;
 
     GraphiteResourceKey::Builder builder(key, type, num32DataCnt);
@@ -1605,7 +1603,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
 
 ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {
     const skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo =
-            TextureInfos::GetVulkanYcbcrConversionInfo(textureInfo);
+            TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo).fYcbcrConversionInfo;
 
     if (ycbcrConversionInfo.isValid()) {
         return VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);

@@ -13,7 +13,7 @@
 #include "include/core/SkTypes.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
-#include "include/gpu/graphite/mtl/MtlGraphiteTypesUtils.h"
+#include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAPI.h"
 
 #import <CoreFoundation/CoreFoundation.h>
@@ -21,16 +21,24 @@
 #import <TargetConditionals.h>
 
 namespace skgpu::graphite {
-struct SK_API MtlTextureInfo {
-    uint32_t fSampleCount = 1;
-    skgpu::Mipmapped fMipmapped = skgpu::Mipmapped::kNo;
 
-    MTLPixelFormat fFormat = MTLPixelFormatInvalid;
+class SK_API MtlTextureInfo final : public TextureInfo::Data {
+public:
+    static constexpr skgpu::BackendApi kBackendApi = skgpu::BackendApi::kMetal;
+
+    MTLPixelFormat  fFormat = MTLPixelFormatInvalid;
     MTLTextureUsage fUsage = MTLTextureUsageUnknown;
-    MTLStorageMode fStorageMode = MTLStorageModeShared;
+    MTLStorageMode  fStorageMode = MTLStorageModeShared;
     bool fFramebufferOnly = false;
 
     MtlTextureInfo() = default;
+    MtlTextureInfo(const MtlTextureInfo&) = default;
+
+    MtlTextureInfo& operator=(const MtlTextureInfo& info) {
+        this->~MtlTextureInfo();
+        return *(new (this) MtlTextureInfo(info));
+    }
+
     MtlTextureInfo(CFTypeRef mtlTexture);
     MtlTextureInfo(uint32_t sampleCount,
                    skgpu::Mipmapped mipmapped,
@@ -38,13 +46,29 @@ struct SK_API MtlTextureInfo {
                    MTLTextureUsage usage,
                    MTLStorageMode storageMode,
                    bool framebufferOnly)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
+            : Data(sampleCount, mipmapped)
             , fFormat(format)
             , fUsage(usage)
             , fStorageMode(storageMode)
             , fFramebufferOnly(framebufferOnly) {}
+
+private:
+    skgpu::BackendApi type() const override { return kBackendApi; }
+    Protected isProtected() const override { return Protected::kNo; }
+    uint32_t viewFormat() const override { return (uint32_t) fFormat; }
+
+    size_t bytesPerPixel() const override;
+    SkTextureCompressionType compressionType() const override;
+    bool isMemoryless() const override;
+    SkString toBackendString() const override;
+
+    void copyTo(AnyTextureInfoData& dstData) const override {
+        dstData.emplace<MtlTextureInfo>(*this);
+    }
+    bool equals(const TextureInfo&that) const override;
+    bool isCompatible(const TextureInfo& that) const override;
 };
+
 }  // namespace skgpu::graphite
 
 #endif  // __OBJC__

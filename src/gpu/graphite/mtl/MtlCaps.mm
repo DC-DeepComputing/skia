@@ -18,6 +18,7 @@
 #include "src/gpu/graphite/GraphiteResourceKey.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/mtl/MtlGraphicsPipeline.h"
 #include "src/gpu/graphite/mtl/MtlGraphiteTypesPriv.h"
@@ -844,7 +845,7 @@ TextureInfo MtlCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledI
     if (fDefaultMSAASamples <= 1) {
         return {};
     }
-    MTLPixelFormat format = TextureInfos::GetMTLPixelFormat(singleSampledInfo);
+    MTLPixelFormat format = TextureInfoPriv::Get<MtlTextureInfo>(singleSampledInfo).fFormat;
     if (!this->isRenderable(format, fDefaultMSAASamples)) {
         return {};
     }
@@ -925,7 +926,7 @@ TextureInfo MtlCaps::getDefaultStorageTextureInfo(SkColorType colorType) const {
 
 const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
         SkColorType ct, const TextureInfo& textureInfo) const {
-    MTLPixelFormat mtlFormat = TextureInfos::GetMTLPixelFormat(textureInfo);
+    MTLPixelFormat mtlFormat = TextureInfoPriv::Get<MtlTextureInfo>(textureInfo).fFormat;
     if (mtlFormat == MTLPixelFormatInvalid) {
         return nullptr;
     }
@@ -1044,11 +1045,11 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
 }
 
 uint64_t MtlCaps::getRenderPassDescKey(const RenderPassDesc& renderPassDesc) const {
-    MtlTextureInfo colorInfo, depthStencilInfo;
-    SkAssertResult(TextureInfos::GetMtlTextureInfo(renderPassDesc.fColorAttachment.fTextureInfo,
-                                                   &colorInfo));
-    SkAssertResult(TextureInfos::GetMtlTextureInfo(
-            renderPassDesc.fDepthStencilAttachment.fTextureInfo, &depthStencilInfo));
+    const auto& colorInfo =
+            TextureInfoPriv::Get<MtlTextureInfo>(renderPassDesc.fColorAttachment.fTextureInfo);
+    const auto& depthStencilInfo =
+            TextureInfoPriv::Get<MtlTextureInfo>(renderPassDesc.fDepthStencilAttachment.fTextureInfo);
+
     SkASSERT(colorInfo.fFormat < 65535 && depthStencilInfo.fFormat < 65535);
     uint32_t colorAttachmentKey = colorInfo.fFormat << 16 | colorInfo.fSampleCount;
     uint32_t dsAttachmentKey = depthStencilInfo.fFormat << 16 | depthStencilInfo.fSampleCount;
@@ -1073,20 +1074,21 @@ UniqueKey MtlCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDes
 }
 
 uint32_t MtlCaps::channelMask(const TextureInfo& info) const {
-    return skgpu::MtlFormatChannels(TextureInfos::GetMTLPixelFormat(info));
+    return skgpu::MtlFormatChannels(TextureInfoPriv::Get<MtlTextureInfo>(info).fFormat);
 }
 
 bool MtlCaps::onIsTexturable(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
     }
-    if (!(TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageShaderRead)) {
+    const auto& spec = TextureInfoPriv::Get<MtlTextureInfo>(info);
+    if (!(spec.fUsage & MTLTextureUsageShaderRead)) {
         return false;
     }
-    if (TextureInfos::GetMtlFramebufferOnly(info)) {
+    if (spec.fFramebufferOnly) {
         return false;
     }
-    return this->isTexturable(TextureInfos::GetMTLPixelFormat(info));
+    return this->isTexturable(spec.fFormat);
 }
 
 bool MtlCaps::isTexturable(MTLPixelFormat format) const {
@@ -1095,9 +1097,13 @@ bool MtlCaps::isTexturable(MTLPixelFormat format) const {
 }
 
 bool MtlCaps::isRenderable(const TextureInfo& info) const {
-    return info.isValid() &&
-           (TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageRenderTarget) &&
-           this->isRenderable(TextureInfos::GetMTLPixelFormat(info), info.numSamples());
+    if (info.isValid()) {
+        return false;
+    }
+
+    const auto& spec = TextureInfoPriv::Get<MtlTextureInfo>(info);
+    return (spec.fUsage & MTLTextureUsageRenderTarget) &&
+            this->isRenderable(spec.fFormat, info.numSamples());
 }
 
 bool MtlCaps::isRenderable(MTLPixelFormat format, uint32_t sampleCount) const {
@@ -1108,13 +1114,15 @@ bool MtlCaps::isStorage(const TextureInfo& info) const {
     if (!info.isValid()) {
         return false;
     }
-    if (!(TextureInfos::GetMTLTextureUsage(info) & MTLTextureUsageShaderWrite)) {
+
+    const auto& spec = TextureInfoPriv::Get<MtlTextureInfo>(info);
+    if (!(spec.fUsage & MTLTextureUsageShaderWrite)) {
         return false;
     }
-    if (TextureInfos::GetMtlFramebufferOnly(info)) {
+    if (spec.fFramebufferOnly) {
         return false;
     }
-    const FormatInfo& formatInfo = this->getFormatInfo(TextureInfos::GetMTLPixelFormat(info));
+    const FormatInfo& formatInfo = this->getFormatInfo(spec.fFormat);
     return info.numSamples() == 1 && SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
@@ -1215,7 +1223,7 @@ void MtlCaps::buildKeyForTexture(SkISize dimensions,
                                  const TextureInfo& info,
                                  ResourceType type,
                                  GraphiteResourceKey* key) const {
-    const MtlTextureSpec mtlSpec = TextureInfos::GetMtlTextureSpec(info);
+    const auto& mtlSpec = TextureInfoPriv::Get<MtlTextureInfo>(info);
 
     SkASSERT(!dimensions.isEmpty());
 

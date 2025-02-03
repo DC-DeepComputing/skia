@@ -49,6 +49,7 @@
     } while (false)
 namespace skgpu::graphite {
 
+class BackendTexture;
 class VulkanSharedContext;
 
 VkShaderModule createVulkanShaderModule(const VulkanSharedContext*,
@@ -63,6 +64,18 @@ void DescriptorDataToVkDescSetLayout(const VulkanSharedContext*,
 bool vkFormatIsSupported(VkFormat);
 
 VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
+
+namespace BackendTextures {
+
+VkImage GetVkImage(const BackendTexture&);
+VkImageLayout GetVkImageLayout(const BackendTexture&);
+uint32_t GetVkQueueFamilyIndex(const BackendTexture&);
+VulkanAlloc GetMemoryAlloc(const BackendTexture&);
+
+void SetMutableState(BackendTexture*, const skgpu::MutableTextureState&);
+sk_sp<skgpu::MutableTextureState> GetMutableState(const BackendTexture&);
+
+}  // namespace BackendTextures
 
 } // namespace skgpu::graphite
 

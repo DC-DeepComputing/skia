@@ -13,15 +13,16 @@
 #include "include/private/base/SkAlign.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/dawn/DawnBuffer.h"
 #include "src/gpu/graphite/dawn/DawnCommandBuffer.h"
 #include "src/gpu/graphite/dawn/DawnComputePipeline.h"
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
-#include "src/gpu/graphite/dawn/DawnGraphiteTypesPriv.h"
 #include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/gpu/graphite/dawn/DawnTexture.h"
+#include "src/gpu/graphite/dawn/DawnUtilsPriv.h"
 #include "src/sksl/SkSLCompiler.h"
 
 namespace skgpu::graphite {
@@ -391,19 +392,23 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
         auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
         auto fsModule = create_shader_module(dawnSharedContext()->device(), kFragmentShaderText);
 
+        const TextureInfo& colorInfo = renderPassDesc.fColorAttachment.fTextureInfo;
+        const TextureInfo& depthStencilInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
+
+        wgpu::TextureFormat colorFormat =
+                TextureInfoPriv::Get<DawnTextureInfo>(colorInfo).getViewFormat();
+        wgpu::TextureFormat depthStencilFormat = depthStencilInfo.isValid()
+                ? TextureInfoPriv::Get<DawnTextureInfo>(depthStencilInfo).getViewFormat()
+                : wgpu::TextureFormat::Undefined;
+
         pipeline = create_blit_render_pipeline(
                 dawnSharedContext(),
                 /*label=*/"BlitWithDraw",
                 std::move(vsModule),
                 std::move(fsModule),
-                /*renderPassColorFormat=*/
-                TextureInfos::GetDawnViewFormat(renderPassDesc.fColorAttachment.fTextureInfo),
-                /*renderPassDepthStencilFormat=*/
-                renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()
-                        ? TextureInfos::GetDawnViewFormat(
-                                  renderPassDesc.fDepthStencilAttachment.fTextureInfo)
-                        : wgpu::TextureFormat::Undefined,
-                /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+                /*renderPassColorFormat=*/colorFormat,
+                /*renderPassDepthStencilFormat=*/depthStencilFormat,
+                /*numSamples=*/colorInfo.numSamples());
 
         if (pipeline) {
             fBlitWithDrawPipelines.set(renderPassKey, pipeline);

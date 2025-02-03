@@ -9,7 +9,9 @@
 #define skgpu_DawnUtilsPriv_DEFINED
 
 #include "include/core/SkTextureCompressionType.h"
+#include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/SkSLToBackend.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/sksl/codegen/SkSLWGSLCodeGenerator.h"
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
@@ -24,6 +26,7 @@ struct ShaderCaps;
 
 namespace skgpu {
 
+class BackendTexture;
 class ShaderErrorHandler;
 
 inline bool SkSLToWGSL(const SkSL::ShaderCaps* caps,
@@ -46,6 +49,40 @@ size_t DawnFormatBytesPerBlock(wgpu::TextureFormat format);
 SkTextureCompressionType DawnFormatToCompressionType(wgpu::TextureFormat format);
 
 uint32_t DawnFormatChannels(wgpu::TextureFormat format);
+
+
+bool DawnFormatIsDepthOrStencil(wgpu::TextureFormat);
+bool DawnFormatIsDepth(wgpu::TextureFormat);
+bool DawnFormatIsStencil(wgpu::TextureFormat);
+
+wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags>);
+
+bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
+                                 const char* label,
+                                 const std::string& wgsl,
+                                 wgpu::ShaderModule* module,
+                                 ShaderErrorHandler*);
+
+#if !defined(__EMSCRIPTEN__)
+
+bool DawnDescriptorIsValid(const wgpu::YCbCrVkDescriptor&);
+
+bool DawnDescriptorUsesExternalFormat(const wgpu::YCbCrVkDescriptor&);
+
+bool DawnDescriptorsAreEquivalent(const wgpu::YCbCrVkDescriptor&, const wgpu::YCbCrVkDescriptor&);
+
+ImmutableSamplerInfo DawnDescriptorToImmutableSamplerInfo(const wgpu::YCbCrVkDescriptor&);
+wgpu::YCbCrVkDescriptor DawnDescriptorFromImmutableSamplerInfo(ImmutableSamplerInfo);
+
+#endif // !defined(__EMSCRIPTEN__)
+
+
+namespace BackendTextures {
+
+WGPUTexture GetDawnTexturePtr(const BackendTexture&);
+WGPUTextureView GetDawnTextureViewPtr(const BackendTexture&);
+
+}  // namespace BackendTextures
 
 }  // namespace graphite
 }  // namespace skgpu

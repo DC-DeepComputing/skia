@@ -9,7 +9,9 @@
 #define skgpu_graphite_DawnTexture_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/gpu/graphite/dawn/DawnTypes.h"
 #include "src/gpu/graphite/Texture.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
@@ -37,6 +39,10 @@ public:
                                       const wgpu::TextureView&);
 
     ~DawnTexture() override {}
+
+    const DawnTextureInfo& dawnTextureInfo() const {
+        return TextureInfoPriv::Get<DawnTextureInfo>(this->textureInfo());
+    }
 
     const wgpu::Texture& dawnTexture() const { return fTexture; }
     const wgpu::TextureView& sampleTextureView() const { return fSampleTextureView; }
