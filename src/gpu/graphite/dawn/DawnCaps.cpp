@@ -1126,6 +1126,15 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     return true;
 }
 
+bool DawnCaps::deserializeTextureInfo(SkStream*,
+                                      BackendApi,
+                                      Mipmapped,
+                                      Protected,
+                                      uint32_t sampleCount,
+                                      TextureInfo* out) const {
+    return false;
+}
+
 UniqueKey DawnCaps::makeComputePipelineKey(const ComputePipelineDesc& pipelineDesc) const {
     UniqueKey pipelineKey;
     {
