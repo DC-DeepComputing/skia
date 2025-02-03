@@ -39,6 +39,30 @@
       },
       "revId": "3df8ba7d94bad6845c11d56a057e11b4ccaab345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0541a6b7_f72d1a07",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 22075
+      },
+      "writtenOn": "2025-02-03T19:01:59Z",
+      "side": 1,
+      "message": "Thanks, I thought the log was saying this CL was adding array",
+      "parentUuid": "68f2b4b2_bb045143",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "3df8ba7d94bad6845c11d56a057e11b4ccaab345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
