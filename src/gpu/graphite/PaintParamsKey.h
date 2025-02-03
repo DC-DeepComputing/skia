@@ -98,6 +98,8 @@ public:
     // purposes.
     SkString toString(const ShaderCodeDictionary* dict, bool includeData) const;
 
+    void dumpRaw(const char* label) const;
+
 #ifdef SK_DEBUG
     void dump(const ShaderCodeDictionary*, UniquePaintParamsID) const;
 #endif
