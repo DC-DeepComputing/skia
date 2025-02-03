@@ -16,6 +16,29 @@
       "message": "The error log https://chromium-swarm.appspot.com/task?id\u003d6ee4cdf3dfd7b810\u0026w\u003dtrue doesn\u0027t seem at all related to this CL so I\u0027m going to re-run CQ at least once more.",
       "revId": "3df8ba7d94bad6845c11d56a057e11b4ccaab345",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68f2b4b2_bb045143",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-03T18:29:17Z",
+      "side": 1,
+      "message": "I think the failure is that we\u0027re still including array here, but we are no longer using it in the code. So removing this including should fix things",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 16
+      },
+      "revId": "3df8ba7d94bad6845c11d56a057e11b4ccaab345",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
