@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a05fa02_ac56eab6",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2471,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-03T14:35:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "321a3c5a_1b518fd3",
+      "range": {
+        "startLine": 2471,
+        "startChar": 0,
+        "endLine": 2471,
+        "endChar": 101
+      },
+      "revId": "eba67d0c94dca2ef40eb269a58dadc9c2c4303df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa385374_83c19848",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-03T14:19:40Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 2480,
+        "startChar": 0,
+        "endLine": 2480,
+        "endChar": 101
+      },
+      "revId": "eba67d0c94dca2ef40eb269a58dadc9c2c4303df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a389ad_31087a78",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2480,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-03T14:35:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa385374_83c19848",
       "range": {
         "startLine": 2480,
         "startChar": 0,
