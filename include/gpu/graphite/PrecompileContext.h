@@ -14,6 +14,8 @@
 #include <chrono>
 #include <memory>
 
+class SkData;
+
 namespace skgpu::graphite {
 
 class SharedContext;
@@ -32,9 +34,19 @@ public:
      */
     void purgePipelinesNotUsedInMs(std::chrono::milliseconds msNotUsed);
 
+    /**
+     * Precompile one specific Pipeline that has been previously serialized. Serialized pipeline
+     * keys can be acquired via the ContextOptions::PipelineCallbackContext.
+     *
+     * @param serializedPipelineKey   serialized Pipeline key.
+     * @return                        true if a Pipeline was created from the key; false otherwise
+     */
+    bool precompile(sk_sp<SkData> serializedPipelineKey);
+
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();
     const PrecompileContextPriv priv() const;  // NOLINT(readability-const-return-type)
+
 
 private:
     friend class PrecompileContextPriv;
