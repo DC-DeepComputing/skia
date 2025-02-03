@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 class SkRRect;
 
@@ -212,11 +213,11 @@ bool SkMaskFilterBase::filterRRect(const SkRRect& devRRect, const SkMatrix& matr
     // Attempt to speed up drawing by creating a nine patch. If a nine patch
     // cannot be used, return false to allow our caller to recover and perform
     // the drawing another way.
-    SkTLazy<NinePatch> patch;
+    std::optional<NinePatch> patch;
     if (FilterReturn::kTrue != this->filterRRectToNine(devRRect, matrix,
-                                                      clip.getBounds(),
-                                                      &patch)) {
-        SkASSERT(!patch.isValid());
+                                                       clip.getBounds(),
+                                                       &patch)) {
+        SkASSERT(!patch.has_value());
         return false;
     }
     draw_nine(patch->fMask, patch->fOuterRect, patch->fCenter, true, clip, blitter);
@@ -289,7 +290,7 @@ bool SkMaskFilterBase::filterPath(const SkPath& devPath, const SkMatrix& matrix,
 
 SkMaskFilterBase::FilterReturn
 SkMaskFilterBase::filterRRectToNine(const SkRRect&, const SkMatrix&,
-                                    const SkIRect& clipBounds, SkTLazy<NinePatch>*) const {
+                                    const SkIRect& clipBounds, std::optional<NinePatch>*) const {
     return FilterReturn::kUnimplemented;
 }
 
