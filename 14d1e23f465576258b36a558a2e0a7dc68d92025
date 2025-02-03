@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7d8792_73431776",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 339,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-03T16:42:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d198db86_6e0ce4a9",
+      "range": {
+        "startLine": 339,
+        "startChar": 8,
+        "endLine": 339,
+        "endChar": 10
+      },
+      "revId": "14d1e23f465576258b36a558a2e0a7dc68d92025",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37d646da_65b4cb58",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-03T15:43:49Z",
       "side": 1,
       "message": "Nit: might want to tidy up this comment",
+      "range": {
+        "startLine": 1466,
+        "startChar": 4,
+        "endLine": 1466,
+        "endChar": 6
+      },
+      "revId": "14d1e23f465576258b36a558a2e0a7dc68d92025",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a082a738_4625b946",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1466,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-03T16:42:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37d646da_65b4cb58",
       "range": {
         "startLine": 1466,
         "startChar": 4,
