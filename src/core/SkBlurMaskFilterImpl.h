@@ -52,11 +52,9 @@ private:
 
     FilterReturn filterRRectToNine(const SkRRect&, const SkMatrix&,
                                    const SkIRect& clipBounds,
-                                   SkTLazy<NinePatch>*) const override;
+                                   std::optional<NinePatch>*) const override;
 
     bool filterRectMask(SkMaskBuilder* dstM, const SkRect& r, const SkMatrix& matrix,
-                        SkIPoint* margin, SkMaskBuilder::CreateMode createMode) const;
-    bool filterRRectMask(SkMaskBuilder* dstM, const SkRRect& r, const SkMatrix& matrix,
                         SkIPoint* margin, SkMaskBuilder::CreateMode createMode) const;
 
     SK_FLATTENABLE_HOOKS(SkBlurMaskFilterImpl)
