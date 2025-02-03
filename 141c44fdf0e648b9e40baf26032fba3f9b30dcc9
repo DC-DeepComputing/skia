@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f90ba1a5_c47e61d9",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-03T20:27:42Z",
+      "side": 1,
+      "message": "The assert is the default case of the switch block.",
+      "parentUuid": "72fb17ba_360c9cad",
+      "range": {
+        "startLine": 271,
+        "startChar": 4,
+        "endLine": 273,
+        "endChar": 46
+      },
+      "revId": "141c44fdf0e648b9e40baf26032fba3f9b30dcc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ced80f28_6bf20b76",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-03T19:21:35Z",
       "side": 1,
       "message": "Is there an existing bug for this work that we could add to the TODO?",
+      "range": {
+        "startLine": 1466,
+        "startChar": 6,
+        "endLine": 1472,
+        "endChar": 70
+      },
+      "revId": "141c44fdf0e648b9e40baf26032fba3f9b30dcc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e0eb86_65fed38f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1472,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-03T20:27:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ced80f28_6bf20b76",
       "range": {
         "startLine": 1466,
         "startChar": 6,
