@@ -120,25 +120,25 @@ public:
                                 ContextType contextType,
                                 SkColorType colorType,
                                 SkAlphaType alphaType,
-                                bool testPrecompile)
+                                bool testPrecompileGraphite)
             : SkCommandLineConfig(tag, SkString("graphite"), viaParts)
             , fContextType(contextType)
             , fColorType(colorType)
             , fAlphaType(alphaType)
-            , fTestPrecompile(testPrecompile) {
+            , fTestPrecompileGraphite(testPrecompileGraphite) {
     }
     const SkCommandLineConfigGraphite* asConfigGraphite() const override { return this; }
 
     ContextType getContextType() const { return fContextType; }
     SkColorType getColorType() const { return fColorType; }
     SkAlphaType getAlphaType() const { return fAlphaType; }
-    bool        getTestPrecompile() const { return fTestPrecompile; }
+    bool        getTestPrecompile() const { return fTestPrecompileGraphite; }
 
 private:
     ContextType                     fContextType;
     SkColorType                     fColorType;
     SkAlphaType                     fAlphaType;
-    bool                            fTestPrecompile;
+    bool                            fTestPrecompileGraphite;
 };
 
 #endif // SK_GRAPHITE
