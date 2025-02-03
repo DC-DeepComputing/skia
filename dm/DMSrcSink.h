@@ -18,6 +18,8 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/gpu/MemoryCache.h"
 
+#include "src/base/SkSpinlock.h"
+
 #include <functional>
 
 #if !defined (SK_DISABLE_LEGACY_TESTS)

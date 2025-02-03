@@ -143,8 +143,8 @@ static const struct {
     { "grdawn_gl",             "graphite", "api=dawn_gl" },
     { "grdawn_gles",           "graphite", "api=dawn_gles" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grdawn_mtlprecompile",  "graphite", "api=dawn_mtl,precompile=true" },
-    { "grdawn_vkprecompile",   "graphite", "api=dawn_vk, precompile=true" },
+    { "grdawn_mtlprecompile",  "graphite", "api=dawn_mtl,testPrecompile=true" },
+    { "grdawn_vkprecompile",   "graphite", "api=dawn_vk, testPrecompile=true" },
 #endif
 #endif
 #ifdef SK_METAL
@@ -154,15 +154,15 @@ static const struct {
     { "grmtlsrgba",            "graphite", "api=metal,color=srgba"},
     { "grmtl1010102",          "graphite", "api=metal,color=1010102" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grmtlprecompile",       "graphite", "api=metal,precompile=true" },
-    { "grmtlprecompilef16",    "graphite", "api=metal,precompile=true,color=f16" },
-    { "grmtlprecompile1010102","graphite", "api=metal,precompile=true,color=1010102" },
+    { "grmtlprecompile",       "graphite", "api=metal,testPrecompile=true" },
+    { "grmtlprecompilef16",    "graphite", "api=metal,testPrecompile=true,color=f16" },
+    { "grmtlprecompile1010102","graphite", "api=metal,testPrecompile=true,color=1010102" },
 #endif
 #endif
 #ifdef SK_VULKAN
     { "grvk",                  "graphite", "api=vulkan" },
 #if defined(SK_ENABLE_PRECOMPILE)
-    { "grvkprecompile",        "graphite", "api=vulkan,precompile=true" },
+    { "grvkprecompile",        "graphite", "api=vulkan,testPrecompile=true" },
 #endif
 #endif
 #endif
@@ -701,7 +701,7 @@ SkCommandLineConfigGraphite* parse_command_line_config_graphite(const SkString& 
 
     bool validOptions = extendedOptions.get_option_graphite_api("api", &contextType) &&
                         extendedOptions.get_option_gpu_color("color", &colorType, &alphaType) &&
-                        extendedOptions.get_option_bool("precompile", &testPrecompile);
+                        extendedOptions.get_option_bool("testPrecompile", &testPrecompile);
     if (!validOptions) {
         return nullptr;
     }

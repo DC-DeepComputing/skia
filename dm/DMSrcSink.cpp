@@ -1751,8 +1751,8 @@ Result GPUPersistentCacheTestingSink::draw(const Src& src, SkBitmap* dst, SkWStr
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-GPUPrecompileTestingSink::GPUPrecompileTestingSink(const SkCommandLineConfigGpu* config,
-                                                   const GrContextOptions& grCtxOptions)
+    GPUPrecompileTestingSink::GPUPrecompileTestingSink(const SkCommandLineConfigGpu* config,
+                                                       const GrContextOptions& grCtxOptions)
     : INHERITED(config, grCtxOptions) {}
 
 Result GPUPrecompileTestingSink::draw(const Src& src, SkBitmap* dst, SkWStream* wStream,
@@ -2302,7 +2302,7 @@ Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
 
     SkASSERT(globalCache->numGraphicsPipelines() == 0);
 
-#if 0
+#if 1
     for (sk_sp<SkData>& d : androidStyleKeys) {
         bool result = precompileContext->androidSpecificPrecompile(d);
         SkAssertResult(result);
