@@ -122,15 +122,6 @@ bool SkBlurMaskFilterImpl::filterRectMask(SkMaskBuilder* dst, const SkRect& r,
     return SkBlurMask::BlurRect(sigma, dst, r, fBlurStyle, margin, createMode);
 }
 
-bool SkBlurMaskFilterImpl::filterRRectMask(SkMaskBuilder* dst, const SkRRect& r,
-                                           const SkMatrix& matrix,
-                                           SkIPoint* margin,
-                                           SkMaskBuilder::CreateMode createMode) const {
-    SkScalar sigma = computeXformedSigma(matrix);
-
-    return SkBlurMask::BlurRRect(sigma, dst, r, fBlurStyle, margin, createMode);
-}
-
 static bool prepare_to_draw_into_mask(const SkRect& bounds, SkMaskBuilder* mask) {
     SkASSERT(mask != nullptr);
 
@@ -245,7 +236,7 @@ static SkCachedData* add_cached_rects(SkMaskBuilder* mask, SkScalar sigma, SkBlu
 SkMaskFilterBase::FilterReturn
 SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& matrix,
                                         const SkIRect& clipBounds,
-                                        SkTLazy<NinePatch>* patch) const {
+                                        std::optional<NinePatch>* patch) const {
     SkASSERT(patch != nullptr);
     switch (rrect.getType()) {
         case SkRRect::kEmpty_Type:
@@ -283,16 +274,7 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
     SkIPoint margin;
     SkMaskBuilder srcM(nullptr, rrect.rect().roundOut(), 0, SkMask::kA8_Format), dstM;
 
-    // special case for fast round rect blur
-    // don't actually do the blur the first time, just compute the correct size
-    bool filterResult = this->filterRRectMask(&dstM, rrect, matrix, &margin,
-                                              SkMaskBuilder::kJustComputeBounds_CreateMode);
-
-    if (!filterResult) {
-        filterResult = this->filterMask(&dstM, srcM, matrix, &margin);
-    }
-
-    if (!filterResult) {
+    if (this->filterMask(&dstM, srcM, matrix, &margin)) {
         return FilterReturn::kFalse;
     }
 
@@ -340,20 +322,13 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
     SkTLazy<SkMask> cachedMask;
     SkCachedData* cache = find_cached_rrect(&cachedMask, sigma, fBlurStyle, smallRR);
     if (!cache) {
+        if (!draw_rrect_into_mask(smallRR, &srcM)) {
+            return FilterReturn::kFalse;
+        }
+        SkAutoMaskFreeImage amf(srcM.image());
         SkMaskBuilder filterM;
-        bool analyticBlurWorked =
-                this->filterRRectMask(&filterM, smallRR, matrix, &margin,
-                                      SkMaskBuilder::kComputeBoundsAndRenderImage_CreateMode);
-
-        if (!analyticBlurWorked) {
-            if (!draw_rrect_into_mask(smallRR, &srcM)) {
-                return FilterReturn::kFalse;
-            }
-            SkAutoMaskFreeImage amf(srcM.image());
-
-            if (!this->filterMask(&filterM, srcM, matrix, &margin)) {
-                return FilterReturn::kFalse;
-            }
+        if (!this->filterMask(&filterM, srcM, matrix, &margin)) {
+            return FilterReturn::kFalse;
         }
         cache = add_cached_rrect(&filterM, sigma, fBlurStyle, smallRR);
         cachedMask.init(filterM);
@@ -361,11 +336,11 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
 
     SkIRect bounds = cachedMask->fBounds;
     bounds.offsetTo(0, 0);
-    patch->init(SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
-                dstM.fBounds,
-                SkIPoint{SkScalarCeilToInt(leftUnstretched) + 1,
-                         SkScalarCeilToInt(topUnstretched) + 1},
-                cache); // transfer ownership to patch
+    patch->emplace(SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
+                   dstM.fBounds,
+                   SkIPoint{SkScalarCeilToInt(leftUnstretched) + 1,
+                            SkScalarCeilToInt(topUnstretched) + 1},
+                   cache); // transfer ownership to patch
     return FilterReturn::kTrue;
 }
 

@@ -144,7 +144,7 @@ protected:
      */
     virtual FilterReturn filterRRectToNine(const SkRRect&, const SkMatrix&,
                                            const SkIRect& clipBounds,
-                                           SkTLazy<NinePatch>*) const;
+                                           std::optional<NinePatch>*) const;
 
 private:
     friend class SkDraw;
@@ -164,8 +164,6 @@ private:
      */
     bool filterRRect(const SkRRect& devRRect, const SkMatrix& ctm, const SkRasterClip&,
                      SkBlitter*) const;
-
-    using INHERITED = SkFlattenable;
 };
 
 inline SkMaskFilterBase* as_MFB(SkMaskFilter* mf) {
