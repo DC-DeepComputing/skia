@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "321a3c5a_1b518fd3",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2471,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-03T14:19:40Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 2471,
+        "startChar": 0,
+        "endLine": 2471,
+        "endChar": 101
+      },
+      "revId": "eba67d0c94dca2ef40eb269a58dadc9c2c4303df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa385374_83c19848",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2480,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-03T14:19:40Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 2480,
+        "startChar": 0,
+        "endLine": 2480,
+        "endChar": 101
+      },
+      "revId": "eba67d0c94dca2ef40eb269a58dadc9c2c4303df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
