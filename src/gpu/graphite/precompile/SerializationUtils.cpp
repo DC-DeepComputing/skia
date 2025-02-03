@@ -55,6 +55,8 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
                                                      const GraphicsPipelineDesc& pipelineDesc) {
     PaintParamsKey key = shaderCodeDictionary->lookup(pipelineDesc.paintParamsID());
 
+//    key.dumpRaw("serialize"); //!!
+
     if (!stream->write32(static_cast<uint32_t>(pipelineDesc.renderStepID()))) {
         return false;
     }
@@ -102,6 +104,8 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
 
         PaintParamsKey ppk = PaintParamsKey(SkSpan<uint32_t>((uint32_t*) storage.get(), tmp));
+
+//        ppk.dumpRaw("deserialize"); //!!
 
         paintParamsID = shaderCodeDictionary->findOrCreate(ppk);
     }
@@ -317,5 +321,20 @@ bool DataToPipelineDesc(const Caps* caps,
 
     return true;
 }
+
+#if defined(SK_DEBUG)
+void DumpPipelineDesc(const char* label, ShaderCodeDictionary* shaderCodeDictionary,
+                      const GraphicsPipelineDesc& pipelineDesc,
+                      const RenderPassDesc& renderPassDesc) {
+    SkString str1 = pipelineDesc.toPipelineLabel(shaderCodeDictionary);
+    SkString str2 = renderPassDesc.toPipelineLabel();
+    SkDebugf("%s: %s - %s\n", label, str1.c_str(), str2.c_str());
+}
+
+bool ComparePipelineDescs(const GraphicsPipelineDesc& a1, const RenderPassDesc& b1,
+                          const GraphicsPipelineDesc& a2, const RenderPassDesc& b2) {
+    return (a1 == a2) && (b1 == b2);
+}
+#endif
 
 } // namespace skgpu::graphite

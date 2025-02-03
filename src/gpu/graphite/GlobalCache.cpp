@@ -17,6 +17,11 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/precompile/SerializationUtils.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+
 namespace {
 
 uint32_t next_compilation_id() {
@@ -80,6 +85,30 @@ void GlobalCache::invokePipelineCallback(ShaderCodeDictionary* shaderCodeDiction
         sk_sp<SkData> data = PipelineDescToData(shaderCodeDictionary,
                                                 pipelineDesc,
                                                 renderPassDesc);
+
+#if 0 // defined(SK_DEBUG)
+        {
+            // Check that the Blob round trips through serialization
+            GraphicsPipelineDesc readBackPipelineDesc;
+            RenderPassDesc readBackRenderPassDesc;
+
+            SkAssertResult(DataToPipelineDesc(sharedContext->caps(),
+                                              sharedContext->shaderCodeDictionary(),
+                                              data.get(),
+                                              &readBackPipelineDesc,
+                                              &readBackRenderPassDesc));
+
+            DumpPipelineDesc("invokeCallback - original", sharedContext->shaderCodeDictionary(),
+                             pipelineDesc, renderPassDesc); //!!
+
+            DumpPipelineDesc("invokeCallback - readback", sharedContext->shaderCodeDictionary(),
+                  readBackPipelineDesc, readBackRenderPassDesc); //!!
+
+            SkASSERT(ComparePipelineDescs(pipelineDesc, renderPassDesc,
+                                          readBackPipelineDesc, readBackRenderPassDesc));
+        }
+#endif
+
         if (data) {
             tmpCB(tmpContext, std::move(data));
         }

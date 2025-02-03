@@ -15,6 +15,12 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/precompile/SerializationUtils.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/RuntimeEffectDictionary.h"
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(&fSingleOwner)
@@ -55,6 +61,9 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
                             &renderPassDesc)) {
         return false;
     }
+
+//    Dump1("deserialized", fSharedContext->shaderCodeDictionary(),
+//          pipelineDesc, renderPassDesc);
 
     sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
             rtEffectDict.get(),
