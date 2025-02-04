@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fef423c_e18392f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-02-04T18:23:13Z",
+      "side": 1,
+      "message": "Ping. Any guidance on how you want to proceed on the SIMD patch? Alternatively, if you are unwilling to accept patches for 8.1, I could try other workarounds. Either way, let me know.",
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8cd7efe7_ec4bece7",
