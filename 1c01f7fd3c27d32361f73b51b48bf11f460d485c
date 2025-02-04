@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7d002e0_cd310250",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-04T14:57:55Z",
+      "side": 1,
+      "message": "At least two open questions off the top of my head: 1) is it ok to remove a safety check in SkWorkingFormatColorFilter to enable this object to be used in precompilation code, and 2) should we always require colorspace information from clients, or default to just precompiling everything if the information is not provided?",
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
