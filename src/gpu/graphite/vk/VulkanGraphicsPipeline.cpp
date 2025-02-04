@@ -472,6 +472,16 @@ static void destroy_desc_set_layouts(const VulkanSharedContext* sharedContext,
     }
 }
 
+static bool dst_as_input_attachment_desc_set_layout(VkDescriptorSetLayout& outLayout,
+                                                    const VulkanSharedContext* sharedContext) {
+    // We always define a descriptor set containing one input attachment descriptor. This allows for
+    // pipeline reuse in the case where draws within a RenderPass read from the target texture
+    // as the input attachment. In other cases, it can simply be ignored.
+    outLayout = descriptor_data_to_layout(sharedContext,
+                                          {VulkanGraphicsPipeline::kInputAttachmentDescriptor});
+    return outLayout != VK_NULL_HANDLE;
+}
+
 static bool uniform_desc_set_layout(VkDescriptorSetLayout& outLayout,
                                     const VulkanSharedContext* sharedContext,
                                     bool hasStepUniforms,
@@ -567,11 +577,11 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                                               int numTextureSamplers,
                                               int numInputAttachments,
                                               SkSpan<sk_sp<VulkanSampler>> immutableSamplers) {
-    // Create a container with the anticipated amount (kNumDescSets) of VkDescriptorSetLayout
+    // Create a container with the max anticipated amount (kMaxNumDescSets) of VkDescriptorSetLayout
     // handles which will be used to create the pipeline layout.
     skia_private::STArray<
-            VulkanGraphicsPipeline::kNumDescSets, VkDescriptorSetLayout> setLayouts;
-    setLayouts.push_back_n(VulkanGraphicsPipeline::kNumDescSets, VkDescriptorSetLayout());
+            VulkanGraphicsPipeline::kMaxNumDescSets, VkDescriptorSetLayout> setLayouts;
+    setLayouts.push_back_n(VulkanGraphicsPipeline::kMaxNumDescSets, VkDescriptorSetLayout());
 
     // Populate the container with actual descriptor set layout handles. Each index should contain
     // either a valid/real or a mock/placehodler layout handle. Mock VkDescriptorSetLayouts do not
@@ -581,7 +591,10 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     // the case for all targeted devices (see
     // VUID-VkPipelineLayoutCreateInfo-graphicsPipelineLibrary-06753). If any of the helpers
     // encounter an error (i.e., return false), return a null VkPipelineLayout.
-    if (!uniform_desc_set_layout(
+    if (!dst_as_input_attachment_desc_set_layout(
+                setLayouts[VulkanGraphicsPipeline::kDstAsInputDescSetIndex],
+                sharedContext) ||
+        !uniform_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kUniformBufferDescSetIndex],
                 sharedContext,
                 hasStepUniforms,
@@ -593,7 +606,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
                 numTextureSamplers,
                 immutableSamplers) ||
         !input_attachment_desc_set_layout(
-                setLayouts[VulkanGraphicsPipeline::kInputAttachmentDescSetIndex],
+                setLayouts[VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex],
                 sharedContext,
                 numInputAttachments)) {
         destroy_desc_set_layouts(sharedContext, setLayouts);
@@ -915,7 +928,7 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
     std::string fragShaderText;
     fragShaderText.append(
             "layout(vulkan, input_attachment_index=0, set=" +
-            std::to_string(VulkanGraphicsPipeline::kInputAttachmentDescSetIndex) +
+            std::to_string(VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex) +
             ", binding=0) subpassInput uInput;"
 
             "// MSAA Load Program FS\n"
