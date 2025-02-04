@@ -13,6 +13,9 @@
 
 namespace skgpu::graphite {
 
+class Context;
+struct ContextOptions;
+
 /**
  * WebGPU needs to allow the main thread loop to run to detect GPU progress. Dawn native has a
  * function wgpu::Instance::ProcessEvents, not (currently) present in WebGPU, that can be used to
@@ -62,6 +65,10 @@ struct SK_API DawnBackendContext {
             DawnNativeProcessEventsFunction;
 #endif
 };
+
+namespace ContextFactory {
+SK_API std::unique_ptr<Context> MakeDawn(const DawnBackendContext&, const ContextOptions&);
+} // namespace ContextFactory
 
 } // namespace skgpu::graphite
 
