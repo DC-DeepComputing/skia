@@ -64,7 +64,7 @@ private:
         for (int i = 0; i < 4; ++i) {
             SkPath rotatedClip = clip;
             rotatedClip.transform(SkMatrix::RotateDeg(30 * i + 128, {64, 70}));
-            rotatedClip.setIsVolatile(true);
+//            rotatedClip.setIsVolatile(true);
             canvas->clipPath(rotatedClip, SkClipOp::kDifference, true);
         }
         SkPath path = SkPath().moveTo(20, 0)

@@ -48,19 +48,19 @@ constexpr int kEntryPadding = 1;
 
 const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                                         const ClipStack::ElementList* elementList,
-                                                        const Rect& bounds,
+                                                        Rect* maskBounds,
                                                         skvx::half2* outPos) {
-    skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
+    skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList, maskBounds);
 
     MaskHashArray* cachedArray = fMaskCache.find(maskKey);
     if (cachedArray) {
         for (int i = 0; i < cachedArray->size(); ++i) {
             MaskHashEntry& entry = (*cachedArray)[i];
             // We can reuse a clip mask if has the same key and our bounds is contained in it
-            if (entry.fBounds.contains(bounds)) {
+            if (entry.fBounds.contains(*maskBounds)) {
                 SkIPoint topLeft = entry.fLocator.topLeft();
                 // We need to adjust the returned outPos to reflect the subset we're using
-                skvx::float2 subsetRelativePos = bounds.topLeft() - entry.fBounds.topLeft();
+                skvx::float2 subsetRelativePos = maskBounds->topLeft() - entry.fBounds.topLeft();
                 *outPos = skvx::half2(topLeft.x() + kEntryPadding + subsetRelativePos.x(),
                                       topLeft.y() + kEntryPadding + subsetRelativePos.y());
                 fDrawAtlas->setLastUseToken(entry.fLocator,
@@ -71,24 +71,27 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
     }
 
     AtlasLocator locator;
-    const TextureProxy* proxy = this->addToAtlas(elementList, bounds, outPos, &locator);
+    Rect drawBounds = *maskBounds;
+    drawBounds.setRight(drawBounds.right() + 1);
+    drawBounds.setBot(drawBounds.bot() + 1);
+    const TextureProxy* proxy = this->addToAtlas(elementList, drawBounds, outPos, &locator);
     if (!proxy) {
         return nullptr;
     }
 
     // Add locator and bounds to MaskCache.
     if (cachedArray) {
-        cachedArray->push_back({bounds, locator});
+        cachedArray->push_back({*maskBounds, locator});
     } else {
         MaskHashArray initialArray;
-        initialArray.push_back({bounds, locator});
+        initialArray.push_back({*maskBounds, locator});
         fMaskCache.set(maskKey, initialArray);
     }
     // Add key to Plot's MaskKeyList.
     uint32_t index = fDrawAtlas->getListIndex(locator.plotLocator());
     MaskKeyEntry* keyEntry = new MaskKeyEntry();
     keyEntry->fKey = maskKey;
-    keyEntry->fBounds = bounds;
+    keyEntry->fBounds = *maskBounds;
     fKeyLists[index].addToTail(keyEntry);
 
     return proxy;

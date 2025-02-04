@@ -280,6 +280,14 @@ void PaintParams::handleClipping(const KeyContext& keyContext,
         SkPoint texCoordOffset = {atlasClip.fOutPos.x() - atlasClip.fMaskBounds.left(),
                                   atlasClip.fOutPos.y() - atlasClip.fMaskBounds.top()};
 
+        SkDebugf("=== Paint Params ===\n");
+        SkDebugf("Mask size: %f %f\n", maskSize.x(), maskSize.y());
+        SkDebugf("Tex mask bounds: %f %f; %f %f\n",
+                 texMaskBounds.left(), texMaskBounds.top(),
+                 texMaskBounds.right(), texMaskBounds.bottom());
+        SkDebugf("Tex coord offset: %f %f\n",
+                 texCoordOffset.x(), texCoordOffset.y());
+
         NonMSAAClipBlock::NonMSAAClipData data(
                 analyticBounds,
                 radiusPair,
