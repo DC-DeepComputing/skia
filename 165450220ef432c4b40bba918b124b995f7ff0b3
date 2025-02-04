@@ -300,6 +300,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19c0abc9_9b0b201b",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-04T21:39:39Z",
+      "side": 1,
+      "message": "I mean, that\u0027s terrible. Of course, even the best ones like [headly](https://github.com/nemequ/hedley/blob/8fb0604a8095f6c907378cc3f0391520ae843f6f/hedley.h#L477) while much better than that are quite involved, essentially trying to detect if it is some other compiler pretending to support GNUC.",
+      "parentUuid": "fe27b271_2c5e1c74",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
