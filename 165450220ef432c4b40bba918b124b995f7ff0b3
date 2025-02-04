@@ -324,6 +324,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9851d20_842b0c93",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5970
+      },
+      "writtenOn": "2025-02-04T21:52:11Z",
+      "side": 1,
+      "message": "Whoa. Headly is cool. I\u0027ll definitely be using it for side project. Thanks for the tip.\n\nI\u0027m going to try to work around this using build rules. I agree this workaround is super icky.",
+      "parentUuid": "19c0abc9_9b0b201b",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
