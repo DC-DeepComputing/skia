@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de7f66af_d189457b",
+        "filename": "tools/SkSharingProc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-04T19:37:00Z",
+      "side": 1,
+      "message": "nit: all our data members start with f, so maybe fDirectContext",
+      "range": {
+        "startLine": 43,
+        "startChar": 21,
+        "endLine": 43,
+        "endChar": 29
+      },
+      "revId": "4accaa5fb4497903a12992710e6f74fbd951c118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd19d09_4f4a7636",
+        "filename": "tools/SkSharingProc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-04T19:37:00Z",
+      "side": 1,
+      "message": "Do we know that the DirectContext that we set here will be used on the same thread? GrDirectContext is not thread safe.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "4accaa5fb4497903a12992710e6f74fbd951c118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
