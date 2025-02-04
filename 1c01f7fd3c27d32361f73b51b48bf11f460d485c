@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "952b33c5_e119ed21",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-04T18:02:36Z",
+      "side": 1,
+      "message": "1) I\u0027m undecided\n2) Usually, if the client doesn\u0027t provide anything, we assume the worst and precompile all the combinations.",
+      "parentUuid": "e7d002e0_cd310250",
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08373e98_19e4e350",
