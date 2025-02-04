@@ -277,8 +277,17 @@ void PaintParams::handleClipping(const KeyContext& keyContext,
         skvx::float2 maskSize = atlasClip.fMaskBounds.size();
         SkRect texMaskBounds = SkRect::MakeXYWH(atlasClip.fOutPos.x(), atlasClip.fOutPos.y(),
                                                 maskSize.x(), maskSize.y());
+        texMaskBounds.outset(1.0f, 1.0f);
         SkPoint texCoordOffset = {atlasClip.fOutPos.x() - atlasClip.fMaskBounds.left(),
                                   atlasClip.fOutPos.y() - atlasClip.fMaskBounds.top()};
+
+        SkDebugf("=== Paint Params ===\n");
+        SkDebugf("Mask size: %f %f\n", maskSize.x(), maskSize.y());
+        SkDebugf("Tex mask bounds: %f %f; %f %f\n",
+                 texMaskBounds.left(), texMaskBounds.top(),
+                 texMaskBounds.right(), texMaskBounds.bottom());
+        SkDebugf("Tex coord offset: %f %f\n",
+                 texCoordOffset.x(), texCoordOffset.y());
 
         NonMSAAClipBlock::NonMSAAClipData data(
                 analyticBounds,
