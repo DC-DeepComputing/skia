@@ -22,6 +22,30 @@
       },
       "revId": "b0a44ddab908a906f122f2dd685791bff2e1a33e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93fc9cfb_7e79c606",
+        "filename": "src/core/SkMaskFilterBase.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-04T14:52:24Z",
+      "side": 1,
+      "message": "I wasn\u0027t sure of the difference between calling the constructor directly (by passing in the pointer) vs and calling the constructor and then the move constructor, but https://godbolt.org/z/s14PW3z4P shows that the compiler can do the smart thing. Returning the optional feels slightly cleaner to me, so done.\n\nI asked the same question about `filterRectsToNine`, but that does care about all three values of FilterReturn, so I\u0027m leaving it as is.",
+      "parentUuid": "ff7c7334_8e4df19b",
+      "range": {
+        "startLine": 217,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 61
+      },
+      "revId": "b0a44ddab908a906f122f2dd685791bff2e1a33e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
