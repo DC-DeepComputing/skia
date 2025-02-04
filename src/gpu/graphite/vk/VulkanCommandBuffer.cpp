@@ -588,14 +588,24 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                            VulkanTexture* colorTexture,
                            VulkanTexture* resolveTexture,
                            VulkanTexture* depthStencilTexture,
-                           bool loadMSAAFromResolve) {
+                           bool loadMSAAFromResolve,
+                           bool rpReadsFromDstAsInput) {
     if (colorTexture) {
-        colorTexture->setImageLayout(cmdBuf,
-                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                     /*byRegion=*/false);
+        VkAccessFlags access = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+
+        // If the render pass reads from the dst texture as an input attachment, then we must use
+        // a general image layout and add additional pipeline stage + access flags.
+        if (rpReadsFromDstAsInput) {
+            stageFlags |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+            access |= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+        }
+        VkImageLayout layout = rpReadsFromDstAsInput ? VK_IMAGE_LAYOUT_GENERAL
+                                                     : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        colorTexture->setImageLayout(cmdBuf, layout, access, stageFlags, /*byRegion=*/false);
+
         if (resolveTexture) {
             if (loadMSAAFromResolve) {
                 // When loading MSAA from resolve, the texture is used in the first subpass as an
@@ -610,15 +620,18 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                                                VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
                                                /*byRegion=*/false);
             } else {
-                resolveTexture->setImageLayout(cmdBuf,
-                                               VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                               /*byRegion=*/false);
+                resolveTexture->setImageLayout(
+                        cmdBuf,
+                        rpReadsFromDstAsInput ? VK_IMAGE_LAYOUT_GENERAL
+                                              : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+                        VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
+                        VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+                        VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+                        /*byRegion=*/false);
             }
         }
     }
+
     if (depthStencilTexture) {
         depthStencilTexture->setImageLayout(cmdBuf,
                                             VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
@@ -759,11 +772,15 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     // Before beginning a renderpass, set all textures to the appropriate image layout.
+    // TODO(b/?????????): Consult the renderPassDesc to determine whether or not the render pass
+    // will read from the dst texture. This would allow us to take advantage of image layouts
+    // optimized for specific purposes. For now, simply always assume it will.
     setup_texture_layouts(this,
                           vulkanColorTexture,
                           vulkanResolveTexture,
                           vulkanDepthStencilTexture,
-                          loadMSAAFromResolve);
+                          loadMSAAFromResolve,
+                          /*rpReadsFromDstAsInput=*/true);
 
     static constexpr int kMaxNumAttachments = 3;
     // Gather attachment views neeeded for frame buffer creation.
