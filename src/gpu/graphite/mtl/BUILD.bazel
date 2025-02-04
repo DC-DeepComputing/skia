@@ -22,10 +22,13 @@ METAL_FILES = [
     "MtlComputePipeline.mm",
     "MtlGraphicsPipeline.h",
     "MtlGraphicsPipeline.mm",
+<<<<<<< PATCH SET (061079 [graphite] Consolidate Utils/Types headers)
+=======
     "MtlGraphiteTypesPriv.h",
     "MtlGraphiteTypes.mm",
+>>>>>>> BASE      (68558e Remove redundant pis from src/)
     "MtlGraphiteUtils.mm",
-    "MtlGraphiteUtilsPriv.h",
+    "MtlGraphiteUtils.h",
     "MtlQueueManager.h",
     "MtlQueueManager.mm",
     "MtlRenderCommandEncoder.h",

@@ -1,3 +1,5 @@
+<<<<<<< PATCH SET (061079 [graphite] Consolidate Utils/Types headers)
+=======
 /*
  * Copyright 2022 Google LLC.
  *
@@ -105,3 +107,4 @@ sk_sp<skgpu::MutableTextureState> GetMutableState(const BackendTexture&);
 }  // namespace skgpu::graphite
 
 #endif  // skgpu_graphite_VulkanGraphiteTypesPriv_DEFINED
+>>>>>>> BASE      (68558e Remove redundant pis from src/)

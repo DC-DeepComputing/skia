@@ -5,8 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "include/gpu/graphite/vk/VulkanGraphiteUtils.h"
-#include "src/gpu/graphite/vk/VulkanGraphiteUtilsPriv.h"
+#include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
 
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/gpu/graphite/Context.h"
@@ -177,6 +176,20 @@ VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(
         vkStageFlags |= VK_SHADER_STAGE_COMPUTE_BIT;
     }
     return vkStageFlags;
+}
+
+VulkanTextureInfo VulkanTextureSpecToTextureInfo(const VulkanTextureSpec& vkSpec,
+                                                 uint32_t sampleCount,
+                                                 Mipmapped mipmapped) {
+    return VulkanTextureInfo(sampleCount,
+                             mipmapped,
+                             vkSpec.fFlags,
+                             vkSpec.fFormat,
+                             vkSpec.fImageTiling,
+                             vkSpec.fImageUsageFlags,
+                             vkSpec.fSharingMode,
+                             vkSpec.fAspectMask,
+                             vkSpec.fYcbcrConversionInfo);
 }
 
 } // namespace skgpu::graphite
