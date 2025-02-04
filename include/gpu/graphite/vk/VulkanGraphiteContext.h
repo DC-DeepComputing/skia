@@ -12,6 +12,9 @@
 
 #include "include/private/base/SkAPI.h"
 
+// NOTE: Because there is already a VulkanBackendContext header shared between Ganesh and Graphite,
+// this is named VulkanGraphiteContext.h to supply just the factory function (differing from the
+// public headers exposed by other backends).
 namespace skgpu { struct VulkanBackendContext; }
 
 namespace skgpu::graphite {
