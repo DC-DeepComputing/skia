@@ -18,6 +18,8 @@
 
 namespace skgpu::graphite {
 
+// MtlTextureInfo requires compiling with Objective-C, so this header is split to allow invoking
+// the various backend wrapping APIs from a C++-only compilation unit.
 struct SK_API MtlTextureInfo;
 
 namespace TextureInfos {
