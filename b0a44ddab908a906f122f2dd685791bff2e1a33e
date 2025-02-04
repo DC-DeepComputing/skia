@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff7c7334_8e4df19b",
+        "filename": "src/core/SkMaskFilterBase.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-04T13:58:52Z",
+      "side": 1,
+      "message": "WDYT about just having `filterRRectToNine` return `std::optional\u003cNinePatch\u003e` and use `has_value()` to determine what to return here?",
+      "range": {
+        "startLine": 217,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 61
+      },
+      "revId": "b0a44ddab908a906f122f2dd685791bff2e1a33e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
