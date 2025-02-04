@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cfebe07_40ace674",
+        "filename": "src/pdf/SkPDFFont.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-04T20:37:13Z",
+      "side": 1,
+      "message": "This is incorrect. This was written under the impression that the `miter-limit` value is a limit on how far the miter can extend (the `miter-length`). However, this is not the case as `miter-limit \u003d miter-length / stroke-width`. Since this is already a ratio (and `stroke-width` is being scaled) this value should not be scaled. This resulted in https://issues.chromium.org/issues/379510433 . Part of this is the terrible documentation around the miter limit and what it does.\n\nCreated https://skia-review.googlesource.com/c/skia/+/946917 to fix.",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 69
+      },
+      "revId": "8884cb1822618b0ce95a25e2ef1560c98fa8b081",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
