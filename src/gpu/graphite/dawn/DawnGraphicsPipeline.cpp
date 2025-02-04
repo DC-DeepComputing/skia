@@ -363,6 +363,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                                               paintID,
                                                               useStorageBuffers,
                                                               renderPassDesc.fWriteSwizzle,
+                                                              renderPassDesc.fDstReadStrategy,
                                                               samplerDescArrPtr);
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();

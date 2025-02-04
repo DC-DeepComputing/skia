@@ -53,6 +53,7 @@ public:
                                             UniquePaintParamsID,
                                             bool useStorageBuffers,
                                             skgpu::Swizzle writeSwizzle,
+                                            DstReadStrategy dstReadStrategy,
                                             skia_private::TArray<SamplerDesc>* outDescs = nullptr);
 
     const RuntimeEffectDictionary* runtimeEffectDictionary() const {
@@ -79,7 +80,7 @@ public:
     static constexpr char kGradientBufferName[] = "fsGradientBuffer";
 
 private:
-    ShaderInfo(const RuntimeEffectDictionary*, const char* ssboIndex);
+    ShaderInfo(const RuntimeEffectDictionary*, const char* ssboIndex, DstReadStrategy);
 
     void generateVertexSkSL(const Caps*,
                             const RenderStep*,
