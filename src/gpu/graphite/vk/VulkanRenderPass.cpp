@@ -113,6 +113,7 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
     // TODO: Query RenderPassDesc for subpass dependency information & populate the key accordingly.
     // For now, we know that the only subpass dependency will be that expected for loading MSAA from
     // resolve.
+    // TODO(nicolettep): Document why we choose to either include or omit self-dependency info here
     for (int i = 0; i < subpassDependencyCount; i++) {
         builder[builderIdx++] = 0 | (mainSubpassIdx << 8); // srcSubpass, dstSubpass
         builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMask
@@ -190,6 +191,7 @@ VulkanRenderPass::VulkanRenderPassMetaData::VulkanRenderPassMetaData(
     // TODO: Reference RenderPassDesc to determine number and makeup of subpasses and their
     // dependencies. For now, we only ever expect 1 (in most cases) or 2 (when loading MSAA).
     fSubpassCount = fLoadMSAAFromResolve ? 2 : 1;
+    // TODO(nicolettep): Document why we choose to either include or omit self-dependency info here
     fSubpassDependencyCount = fLoadMSAAFromResolve ? 1 : 0;
     fUint32DataCnt = determine_uint32_count(
             fAttachments.size(), fSubpassCount,  fSubpassDependencyCount);
@@ -264,6 +266,7 @@ void setup_vk_attachment_description(VkAttachmentDescription* outAttachment,
     outAttachment->finalLayout = finalLayout == VK_IMAGE_LAYOUT_UNDEFINED ? initialLayout
                                                                           : finalLayout;
 }
+// TODO(nicolettep): Use helper to populate subpass descriptions and dependencies?
 } // anonymous namespace
 
 sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedContext* context,
@@ -293,6 +296,15 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         auto& colorAttachDesc = renderPassDesc.fColorAttachment;
 
         colorRef.attachment = attachmentDescs.size();
+
+        // To enable using the color attachment as an input attachment for blending purposes, we
+        // need to use a general image layout rather than VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL.
+        // TODO(): Only do this when necessary?
+        bool requiresGeneralLayout = true;
+        VkImageLayout layout = requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
+                                                     : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        colorRef.layout = layout;
+
         VkAttachmentDescription& vkColorAttachDesc = attachmentDescs.push_back();
         memset(&vkColorAttachDesc, 0, sizeof(VkAttachmentDescription));
         setup_vk_attachment_description(
@@ -301,13 +313,25 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                 colorAttachDesc,
                 compatibleOnly ? LoadOp::kDiscard  : colorAttachDesc.fLoadOp,
                 compatibleOnly ? StoreOp::kDiscard : colorAttachDesc.fStoreOp,
-                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-        colorRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-
+                layout,
+                layout);
         if (hasColorResolveAttachment) {
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
+
+            VkImageLayout resolveLayout;
+
+            // TODO fix this logic for the assertion. For now, do confirm that we are doing only
+            // one or the other.
+            SkASSERT(!(requiresGeneralLayout && loadMSAAFromResolve));
+
+            if (requiresGeneralLayout) {
+                resolveLayout = VK_IMAGE_LAYOUT_GENERAL;
+            } else if (loadMSAAFromResolve) {
+                resolveLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+            } else {
+                resolveLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+            }
             VulkanTextureInfo resolveAttachTexInfo;
             SkAssertResult(TextureInfos::GetVulkanTextureInfo(colorResolveAttachmentTextureInfo,
                                                               &resolveAttachTexInfo));
@@ -322,10 +346,11 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                     resolveAttachDesc,
                     compatibleOnly ? LoadOp::kDiscard  : resolveAttachDesc.fLoadOp,
                     compatibleOnly ? StoreOp::kDiscard : resolveAttachDesc.fStoreOp,
-                    loadMSAAFromResolve ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
-                                        : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                    VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-            resolveRef.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                    resolveLayout,
+                    requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
+                                          : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+            resolveRef.layout = requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
+                                                      : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         } else {
             resolveRef.attachment = VK_ATTACHMENT_UNUSED;
             resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -371,8 +396,26 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     skia_private::TArray<VkSubpassDescription> subpassDescs(renderPassInfo.subpassCount);
     memset(subpassDescs.begin(), 0, renderPassInfo.subpassCount * sizeof(VkSubpassDescription));
 
-    // If we are loading MSAA from resolve, that subpass must always be first.
-    VkSubpassDependency dependency;
+    // Create a container to hold up to 2 subpass dependencies (one for all RenderPasses except
+    // those where we load MSAA from resolve, where two are required).
+    // Adding a single subpass self-dependency for color attachments is basically free, so apply one
+    // to every RenderPass. This is useful because it means that as we perform draw calls, if we
+    // encounter a blend operation that requires a dst read, then we can avoid having to use a
+    // different RenderPass, pipeline layout and pipeline, etc.
+    skia_private::STArray<2, VkSubpassDependency> dependencies;
+    const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
+
+    VkSubpassDependency& selfDependency = dependencies.push_back();
+    selfDependency.srcSubpass = mainSubpassIdx;
+    selfDependency.dstSubpass = mainSubpassIdx;
+    selfDependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+    selfDependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    selfDependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    selfDependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    selfDependency.dstAccessMask = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+
+    // If loading MSAA from resolve, add the additional subpass to do so and enforce that it must
+    // go first with a subpass dependency.
     if (loadMSAAFromResolve) {
         resolveLoadInputRef.attachment = resolveRef.attachment;
         resolveLoadInputRef.layout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -390,8 +433,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
         loadSubpassDesc.preserveAttachmentCount = 0;
         loadSubpassDesc.pPreserveAttachments = nullptr;
 
-        // Set up the subpass dependency
-        const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
+        VkSubpassDependency& dependency = dependencies.push_back();
         dependency.srcSubpass = 0;
         dependency.dstSubpass = mainSubpassIdx;
         dependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
@@ -406,8 +448,10 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     memset(&mainSubpassDesc, 0, sizeof(VkSubpassDescription));
     mainSubpassDesc.flags = 0;
     mainSubpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    mainSubpassDesc.inputAttachmentCount = 0; // TODO: Add input attachment support in main subpass
-    mainSubpassDesc.pInputAttachments = nullptr;
+    // Assign the main subpass's input attachment as the color attachment reference. This is needed
+    // in order to perform dst read operations which may be encountered throughout draw calls.
+    mainSubpassDesc.inputAttachmentCount = 1;
+    mainSubpassDesc.pInputAttachments = &colorRef;
     mainSubpassDesc.colorAttachmentCount = 1;
     mainSubpassDesc.pColorAttachments = &colorRef;
     mainSubpassDesc.pResolveAttachments = &resolveRef;
@@ -416,10 +460,10 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     mainSubpassDesc.pPreserveAttachments = nullptr;
 
     renderPassInfo.pSubpasses = subpassDescs.begin();
-    renderPassInfo.dependencyCount = loadMSAAFromResolve ? 1 : 0;
-    renderPassInfo.pDependencies = loadMSAAFromResolve ? &dependency : VK_NULL_HANDLE;
+    renderPassInfo.dependencyCount = dependencies.size();
+    renderPassInfo.pDependencies = dependencies.data();
     renderPassInfo.attachmentCount = attachmentDescs.size();
-    renderPassInfo.pAttachments = attachmentDescs.begin();
+    renderPassInfo.pAttachments = attachmentDescs.data();
 
     VkResult result;
     VULKAN_CALL_RESULT(context,
