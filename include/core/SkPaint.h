@@ -317,15 +317,18 @@ public:
     */
     SkScalar getStrokeMiter() const { return fMiterLimit; }
 
-    /** Sets the limit at which a sharp corner is drawn beveled.
-        Valid values are zero and greater.
-        Has no effect if miter is less than zero.
+    /** When stroking a sharp join with a miter, the miter may be very long (miterLength).
+        When miterLength > maxMiterLength the join will become a bevel.
+        miterLimit = maxMiterLength / strokeWidth or miterLimit = 1 / sin(joinAngle / 2).
+
+        This call has no effect if the miterLimit passed is less than zero.
+        Values less than one will be treated as bevel.
 
         @param miter  zero and greater miter limit
 
         example: https://fiddle.skia.org/c/@Paint_setStrokeMiter
     */
-    void setStrokeMiter(SkScalar miter);
+    void setStrokeMiter(SkScalar miterLimit);
 
     /** \enum SkPaint::Cap
         Cap draws at the beginning and end of an open path contour.
