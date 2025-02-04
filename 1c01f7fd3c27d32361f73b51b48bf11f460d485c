@@ -16,6 +16,52 @@
       "message": "At least two open questions off the top of my head: 1) is it ok to remove a safety check in SkWorkingFormatColorFilter to enable this object to be used in precompilation code, and 2) should we always require colorspace information from clients, or default to just precompiling everything if the information is not provided?",
       "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08373e98_19e4e350",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-04T17:41:07Z",
+      "side": 1,
+      "message": "I don\u0027t think these consts are buying us anything",
+      "range": {
+        "startLine": 228,
+        "startChar": 41,
+        "endLine": 228,
+        "endChar": 46
+      },
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e28ccd29_3e1dddbd",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-04T17:41:07Z",
+      "side": 1,
+      "message": "/* gamut\u003d */ ?",
+      "range": {
+        "startLine": 332,
+        "startChar": 35,
+        "endLine": 332,
+        "endChar": 42
+      },
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

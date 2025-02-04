@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93eac165_59225d9c",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-04T17:41:07Z",
+      "side": 0,
+      "message": "This is in the SkWorkingFormatColorFilter ctor - it seems a bit iffy to remove from here.",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b2fd3e_69519c3e",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-04T17:41:07Z",
+      "side": 0,
+      "message": "What happened to the premul/unpremul case ?",
+      "range": {
+        "startLine": 226,
+        "startChar": 32,
+        "endLine": 226,
+        "endChar": 39
+      },
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
