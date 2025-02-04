@@ -22,6 +22,30 @@
       },
       "revId": "3d95e42e216376692a01064f8fa021d82c5028eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691ae6af_64d5021f",
+        "filename": "include/core/SkPaint.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-04T21:06:27Z",
+      "side": 1,
+      "message": "I think anyone reading this (they got this far into using Skia) can now figure out what is going on and how to use this value, as opposed to before where there was essentially no documentation except \"this sets the value\". Also, this is enough information to figure out what the fiddle linked to below is doing, which I think is kind-of what you\u0027re asking for.\n\nIt would be nice to put the entire content of https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-miterlimit right here under a little twiddle or something, but I\u0027d prefer not to have random links like that we don\u0027t control.",
+      "parentUuid": "4bc1348f_22f956a0",
+      "range": {
+        "startLine": 320,
+        "startChar": 8,
+        "endLine": 322,
+        "endChar": 92
+      },
+      "revId": "3d95e42e216376692a01064f8fa021d82c5028eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
