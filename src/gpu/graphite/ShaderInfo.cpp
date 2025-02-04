@@ -651,6 +651,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     bool wrotePaintColor = false;
+
+    SkSL::String::appendf(&preamble,
+                          "layout(vulkan, input_attachment_index=%d, set=%d, binding=%d) subpassInput DstTextureInput;\n",
+                          /*input attachment idx within set=*/0,
+                          /*input attachment set idx=*/0,
+                          /*binding=*/0);
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fPaintParamsBufferBinding,
                                                      fRootNodes,
@@ -751,6 +758,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // TODO: Get read swizzle from caps (getReadSwizzle(SkColorType, const TextureInfo&))
+            mainBody += "// Read color from input attachment\n";
+            mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
