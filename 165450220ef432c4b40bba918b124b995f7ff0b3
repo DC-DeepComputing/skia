@@ -252,6 +252,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6ffb1d3d_bb268eb9",
+        "filename": "src/opts/SkSwizzler_opts.inc",
+        "patchSetId": 1
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-04T18:48:58Z",
+      "side": 1,
+      "message": "The least bad thing to do here is probably something like\n\n    #if GCC and GCC \u003c 8.5.0  // GCC lacked vrndns_f32 until 8.5.0\n        float32x4_t vN{n};\n        return vrndnq_f32(vN)[0];\n    #else\n        return vrndns_f32(n);\n    #endif\n    \nI\u0027m not sure if Skia already has a good \"this is GCC\" macro. If we were using autotools we\u0027d just add a feature check for the existence of `vrndns_f32` but we don\u0027t appear to have a nice thing like that already set up. Also, we do not want to test for places we know vrndns_f32 exists, we want to assume it exists and let builds fail where it doesn\u0027t and we haven\u0027t special cased that situation (vrndns_f32 use should always end up in the default case).",
+      "parentUuid": "1c542971_4b9caabc",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 124,
+        "endChar": 29
+      },
+      "revId": "165450220ef432c4b40bba918b124b995f7ff0b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6adbdd8c_82ef849e",
         "filename": "src/opts/SkSwizzler_opts.inc",
         "patchSetId": 1
