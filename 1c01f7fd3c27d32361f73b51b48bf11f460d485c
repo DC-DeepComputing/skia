@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3ba3dfa_0e641df8",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-04T17:52:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08373e98_19e4e350",
+      "range": {
+        "startLine": 228,
+        "startChar": 41,
+        "endLine": 228,
+        "endChar": 46
+      },
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5feb859d_d81c5591",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d923286_3ebdbf6b",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 247,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-04T17:52:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5feb859d_d81c5591",
+      "range": {
+        "startLine": 247,
+        "startChar": 4,
+        "endLine": 247,
+        "endChar": 9
+      },
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e28ccd29_3e1dddbd",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-02-04T17:41:07Z",
       "side": 1,
       "message": "/* gamut\u003d */ ?",
+      "range": {
+        "startLine": 332,
+        "startChar": 35,
+        "endLine": 332,
+        "endChar": 42
+      },
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e6db23d_72d3c077",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 332,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-04T17:52:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e28ccd29_3e1dddbd",
       "range": {
         "startLine": 332,
         "startChar": 35,
