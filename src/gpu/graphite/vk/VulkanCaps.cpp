@@ -13,6 +13,7 @@
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanExtensions.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/GraphiteResourceKey.h"
@@ -32,6 +33,20 @@
 #endif
 
 namespace skgpu::graphite {
+
+namespace {
+
+// Reserve 3 uint32s for the render step id, paint id, and write swizzle.
+static constexpr int kUint32sNeededForPipelineInfo = 3;
+
+skgpu::UniqueKey::Domain get_pipeline_domain() {
+    static const skgpu::UniqueKey::Domain kVulkanGraphicsPipelineDomain =
+            skgpu::UniqueKey::GenerateDomain();
+
+    return kVulkanGraphicsPipelineDomain;
+}
+
+} // anonymous namespace
 
 VulkanCaps::VulkanCaps(const ContextOptions& contextOptions,
                        const skgpu::VulkanInterface* vkInterface,
@@ -1506,17 +1521,12 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
                                               const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
-            UniqueKey::GenerateDomain();
-
         VulkanRenderPass::VulkanRenderPassMetaData rpMetaData {renderPassDesc};
 
-        // Reserve 3 uint32s for the render step id, paint id, and write swizzle.
-        static constexpr int kUint32sNeededForPipelineInfo = 3;
         // The uint32s needed for a RenderPass is variable number, so consult rpMetaData to
         // determine how many to reserve.
         UniqueKey::Builder builder(&pipelineKey,
-                                   kGraphicsPipelineDomain,
+                                   get_pipeline_domain(),
                                    kUint32sNeededForPipelineInfo + rpMetaData.fUint32DataCnt,
                                    "GraphicsPipeline");
 
@@ -1533,6 +1543,209 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
     }
 
     return pipelineKey;
+}
+
+bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
+                                      GraphicsPipelineDesc* pipelineDesc,
+                                      RenderPassDesc* renderPassDesc,
+                                      const RendererProvider* rendererProvider) const {
+    return false;
+#if 0
+    struct UnpackedKeyData {
+        // From the GraphicsPipelineDesc
+        RenderStep::RenderStepID fRenderStepID = RenderStep::RenderStepID::kInvalid;
+        UniquePaintParamsID fPaintParamsID;
+
+        // From the RenderPassDesc
+        Swizzle fWriteSwizzle;
+
+#if 0
+        MTLPixelFormat fColorFormat = MTLPixelFormatInvalid;
+        uint32_t fColorSampleCount = 1;
+
+        MTLPixelFormat fDSFormat = MTLPixelFormatInvalid;
+        uint32_t fDSSampleCount = 1;
+#endif
+    } keyData;
+
+    SkASSERT(key.domain() == get_pipeline_domain());
+    SkASSERT(key.dataSize() >= 4 * kUint32sNeededForPipelineInfo);
+
+    // From determine_uint32_count, 'dataCnt' is:
+    //     1 + (3 * rpAttachmentCount) + subpassCount + (6 * subpassDependencyCount)
+    int dataCnt = (key.dataSize() / 4) - kUint32sNeededForPipelineInfo;
+
+    const uint32_t* rawKeyData = key.data();
+
+    SkASSERT(RenderStep::IsValidRenderStepID(rawKeyData[0]));
+    keyData.fRenderStepID = static_cast<RenderStep::RenderStepID>(rawKeyData[0]);
+    keyData.fPaintParamsID = rawKeyData[1] ? UniquePaintParamsID(rawKeyData[1])
+                                           : UniquePaintParamsID::InvalidID();
+
+    keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[2]);
+
+    int numAttachments = rawKeyData[3] & 0xFF;
+    int subPassCount = (rawKeyData[3] >> 8) & 0xFF;
+    int subPassDependencyCount = (rawKeyData[3] >> 16) & 0xFFFF;
+
+    SkASSERT(dataCnt == 1 + 3*numAttachments + subPassCount + 6*subPassDependencyCount);
+
+    bool loadMSAAFromResolve = (subPassCount == 2);
+    SkASSERT(loadMSAAFromResolve == (subPassDependencyCount == 1));
+
+    const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
+
+    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
+    bool requiresMSAA = false;
+
+    struct Foo {
+        VkFormat fFormat;
+        uint32_t fSampleCount;
+        LoadOp fLoadOp;
+        StoreOp fStoreOp;
+    };
+
+    skia_private::AutoTArray<Foo> attachments(numAttachments);
+
+    int idx = 4;
+    for (int i = 0; i < numAttachments; ++i) {
+        attachments[i].fFormat = static_cast<VkFormat>(rawKeyData[idx++]);
+        if (VkFormatIsDepth(attachments[i].fFormat)) {
+            dsFlags |= DepthStencilFlags::kDepth;
+        }
+        if (VkFormatIsStencil(attachments[i].fFormat)) {
+            dsFlags |= DepthStencilFlags::kStencil;
+        }
+
+        attachments[i].fSampleCount = rawKeyData[idx++];
+        if (attachments[i].fSampleCount > 1) {
+            requiresMSAA = true;
+        }
+
+        attachments[i].fStoreOp = static_cast<StoreOp>(rawKeyData[idx] & 0xFF);
+        attachments[i].fLoadOp = static_cast<LoadOp>((rawKeyData[idx++] >> 8) & 0xFF);
+
+#if 0
+        attachments[i].fTextureInfo = VulkanTextureInfo(sampleCount,
+                      Mipmapped,
+                      VkImageCreateFlags,
+                      format,
+                      VkImageTiling,
+                      VkImageUsageFlags,
+                      VkSharingMode,
+                      VkImageAspectFlags,
+                      VulkanYcbcrConversionInfo);
+#endif
+    }
+
+    static constexpr int kAttachmentUnused = std::numeric_limits<uint8_t>::max();
+
+    for (int i = 0; i < subPassCount; ++i) {
+        uint32_t packed = rawKeyData[idx++];
+
+        [[maybe_unused]] int colorIndex   = packed & 0xFF;
+        [[maybe_unused]] bool hasColorAttachment = colorIndex != kAttachmentUnused;
+        [[maybe_unused]] int resolveIndex = (packed >> 8) & 0xFF;
+        [[maybe_unused]] bool hasColorResolveAttachment = resolveIndex != kAttachmentUnused;
+        [[maybe_unused]] int dsIndex      = (packed >> 16) & 0xFF;
+        [[maybe_unused]] bool hasDepthStencilAttachment = dsIndex != kAttachmentUnused;
+        [[maybe_unused]] int inputIndex   = (packed >> 24) & 0xFF;
+        SkASSERT(inputIndex == kAttachmentUnused);
+    }
+
+    for (int i = 0; i < subPassDependencyCount; ++i) {
+        [[maybe_unused]] int srcSubPassIdx = rawKeyData[idx] & 0xFF;
+        [[maybe_unused]] int dstSubPassIdx = (rawKeyData[idx++] >> 8) & 0xFF;
+        [[maybe_unused]] int srcStageMask = rawKeyData[idx++];
+        [[maybe_unused]] int dstStageMask = rawKeyData[idx++];
+        [[maybe_unused]] int srcAccessMask = rawKeyData[idx++];
+        [[maybe_unused]] int dstAccessMask = rawKeyData[idx++];
+        [[maybe_unused]] int dependencyFlags = rawKeyData[idx++];
+    }
+
+    // Recreate the RenderPassDesc
+    VulkanTextureInfo vkInfo(sampleCount,
+                             mipmapped,
+                            flags,
+                            VkFormat
+                            VkImageTiling
+                            VkImageUsageFlags
+                            VkSharingMode,
+                            VkImageAspectFlags,
+                            conversion);
+
+    TextureInfo info = TextureInfos::MakeVulkan(vkInfo);
+
+    *renderPassDesc = RenderPassDesc::Make(this,
+                                           info,
+                                           LoadOp::kClear,
+                                           StoreOp::kStore,
+                                           dsFlags,
+                                           /* clearColor= */ { .0f, .0f, .0f, .0f },
+                                           requiresMSAA,
+                                           keyData.fWriteSwizzle);
+
+    // Recreate the GraphicsPipelineDesc
+    const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
+
+    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
+                                                                : UniquePaintParamsID::InvalidID();
+
+    *pipelineDesc = GraphicsPipelineDesc(renderStep->renderStepID(), paintID);
+    return true;
+
+#if 0
+    SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
+
+    MTLPixelFormat dsFormat = keyData.fDSFormat;
+    SkEnumBitMask<DepthStencilFlags> dsFlags = DepthStencilFlags::kNone;
+    if (MtlFormatIsDepth(dsFormat)) {
+        dsFlags |= DepthStencilFlags::kDepth;
+    }
+    if (MtlFormatIsStencil(dsFormat)) {
+        dsFlags |= DepthStencilFlags::kStencil;
+    }
+
+    MtlTextureInfo mtlInfo(keyData.fColorSampleCount,
+                           skgpu::Mipmapped::kNo,
+                           keyData.fColorFormat,
+                           MTLTextureUsageShaderRead | MTLTextureUsageRenderTarget,
+                           MTLStorageModePrivate,
+                           /* framebufferOnly= */ false);
+    TextureInfo info = TextureInfos::MakeMetal(mtlInfo);
+#endif
+
+#endif
+}
+
+// c.f. VulkanTextureInfoData::serialize
+bool VulkanCaps::deserializeTextureInfo(SkStream* stream,
+                                        BackendApi backendAPI,
+                                        Mipmapped mipmapped,
+                                        Protected isProtected,
+                                        uint32_t sampleCount,
+                                        TextureInfo* out) const {
+    SkASSERT(backendAPI == BackendApi::kVulkan);
+    SkASSERT(isProtected == Protected::kNo);
+
+    VulkanTextureSpec spec;
+    if (!VulkanTextureSpec::Deserialize(stream, &spec)) {
+        return false;
+    }
+
+    SkASSERT((isProtected == Protected::kYes) ==
+             SkToBool(spec.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT));
+
+    *out = TextureInfos::MakeVulkan(VulkanTextureInfo(sampleCount,
+                                                      mipmapped,
+                                                      spec.fFlags,
+                                                      spec.fFormat,
+                                                      spec.fImageTiling,
+                                                      spec.fImageUsageFlags,
+                                                      spec.fSharingMode,
+                                                      spec.fAspectMask,
+                                                      spec.fYcbcrConversionInfo));
+    return true;
 }
 
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,
