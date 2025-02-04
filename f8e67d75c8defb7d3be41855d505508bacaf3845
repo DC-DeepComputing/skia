@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3985ea8d_ce6a9944",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-04T17:26:30Z",
+      "side": 1,
+      "message": "I\u0027m curious what triggers those asserts.  One subtle difference I see is the scope of this guy being increased to cover the cache ops.  It doesn\u0027t look like it would explain the issue, just something to rule out.",
+      "revId": "f8e67d75c8defb7d3be41855d505508bacaf3845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51aedbad_7b054330",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-04T17:26:30Z",
+      "side": 1,
+      "message": "nit: since we\u0027re touching the signature, it\u0027s a good opportunity to span-ify these inputs if you\u0027re so inclined :)",
+      "range": {
+        "startLine": 140,
+        "startChar": 43,
+        "endLine": 141,
+        "endChar": 52
+      },
+      "revId": "f8e67d75c8defb7d3be41855d505508bacaf3845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
