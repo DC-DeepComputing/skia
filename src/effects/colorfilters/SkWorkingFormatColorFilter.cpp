@@ -28,7 +28,6 @@ SkWorkingFormatColorFilter::SkWorkingFormatColorFilter(sk_sp<SkColorFilter> chil
                                                        const skcms_TransferFunction* tf,
                                                        const skcms_Matrix3x3* gamut,
                                                        const SkAlphaType* at) {
-    SkASSERT(child);
     fChild = std::move(child);
     if (tf) {
         fTF = *tf;
