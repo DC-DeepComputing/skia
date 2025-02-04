@@ -55,6 +55,18 @@ public:
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
 
+    bool extractGraphicsDescs(const UniqueKey&,
+                              GraphicsPipelineDesc*,
+                              RenderPassDesc*,
+                              const RendererProvider*) const override;
+
+    bool deserializeTextureInfo(SkStream*,
+                                BackendApi,
+                                Mipmapped,
+                                Protected,
+                                uint32_t sampleCount,
+                                TextureInfo* out) const override;
+
     uint32_t channelMask(const TextureInfo&) const override;
 
     bool isTexturable(const VulkanTextureInfo&) const;
