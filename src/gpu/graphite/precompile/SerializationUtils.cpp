@@ -230,8 +230,6 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     return true;
 }
 
-} // anonymous namespace
-
 #define SK_BLOB_END_TAG SkSetFourByteTag('e', 'n', 'd', ' ')
 
 bool SerializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
@@ -284,5 +282,55 @@ bool DeserializePipelineDesc(const Caps* caps,
 
     return true;
 }
+
+} // anonymous namespace
+
+sk_sp<SkData> PipelineDescToData(ShaderCodeDictionary* shaderCodeDictionary,
+                                 const GraphicsPipelineDesc& pipelineDesc,
+                                 const RenderPassDesc& renderPassDesc) {
+    SkDynamicMemoryWStream stream;
+
+    if (!SerializePipelineDesc(shaderCodeDictionary,
+                               &stream,
+                               pipelineDesc, renderPassDesc)) {
+        return nullptr;
+    }
+
+    return stream.detachAsData();
+}
+
+bool DataToPipelineDesc(const Caps* caps,
+                        ShaderCodeDictionary* shaderCodeDictionary,
+                        const SkData* data,
+                        GraphicsPipelineDesc* pipelineDesc,
+                        RenderPassDesc* renderPassDesc) {
+    if (!data) {
+        return false;
+    }
+    SkMemoryStream stream(data->data(), data->size());
+
+    if (!DeserializePipelineDesc(caps, shaderCodeDictionary, &stream,
+                                 pipelineDesc,
+                                 renderPassDesc)) {
+        return false;
+    }
+
+    return true;
+}
+
+#if defined(GPU_TEST_UTILS)
+void DumpPipelineDesc(const char* label, ShaderCodeDictionary* shaderCodeDictionary,
+                      const GraphicsPipelineDesc& pipelineDesc,
+                      const RenderPassDesc& renderPassDesc) {
+    SkString pipelineStr = pipelineDesc.toString(shaderCodeDictionary);
+    SkString renderPassStr = renderPassDesc.toPipelineLabel();
+    SkDebugf("%s: %s - %s\n", label, pipelineStr.c_str(), renderPassStr.c_str());
+}
+
+bool ComparePipelineDescs(const GraphicsPipelineDesc& a1, const RenderPassDesc& b1,
+                          const GraphicsPipelineDesc& a2, const RenderPassDesc& b2) {
+    return (a1 == a2) && (b1 == b2);
+}
+#endif
 
 } // namespace skgpu::graphite
