@@ -127,14 +127,14 @@ public:
     virtual bool extractGraphicsDescs(const UniqueKey&,
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,
-                                      const RendererProvider*) const { return false; }
+                                      const RendererProvider*) const = 0;
 
     virtual bool deserializeTextureInfo(SkStream*,
                                         BackendApi,
                                         Mipmapped,
                                         Protected,
                                         uint32_t sampleCount,
-                                        TextureInfo* out) const { return false; }
+                                        TextureInfo* out) const = 0;
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
     virtual uint32_t channelMask(const TextureInfo&) const = 0;
