@@ -44,10 +44,134 @@
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
-#include <memory>
+#include <atomic>
+#include <mutex>
+#include <thread>
 #include <vector>
-
 #include <stdlib.h>
+#include <dlfcn.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <cstdint>
+
+using MallocFunctionPtr = void* (*)(size_t);
+using ReallocFunctionPtr = void* (*)(void*, size_t);
+using FreeFunctionPtr = void (*)(void*);
+
+constexpr size_t kMaxAllocations = 1 << 20;
+constexpr size_t kMaxReallocHistory = 20; // Fixed size for history
+
+struct AllocationInfo {
+    void* ptr = nullptr;
+    size_t initial_size = 0;
+    size_t realloc_count = 0;
+    std::array<std::pair<size_t, size_t>, kMaxReallocHistory> realloc_history{};
+    std::atomic_flag in_use = ATOMIC_FLAG_INIT; // Atomic flag for in-use status
+    std::mutex history_mutex; // Mutex for realloc_history
+};
+
+std::array<AllocationInfo, kMaxAllocations> allocations{};
+
+// Function pointers to the real malloc, realloc, and free
+static MallocFunctionPtr real_malloc = nullptr;
+static ReallocFunctionPtr real_realloc = nullptr;
+static FreeFunctionPtr real_free = nullptr;
+
+// Initialization function (call this once before using the wrappers)
+void initialize_allocator_hooks() {
+    real_malloc = reinterpret_cast<MallocFunctionPtr>(dlsym(RTLD_NEXT, "malloc"));
+    real_realloc = reinterpret_cast<ReallocFunctionPtr>(dlsym(RTLD_NEXT, "realloc"));
+    real_free = reinterpret_cast<FreeFunctionPtr>(dlsym(RTLD_NEXT, "free"));
+
+    if (!real_malloc || !real_realloc || !real_free) {
+        fprintf(stdout, "Error: Could not resolve malloc/realloc/free\n");
+        exit(1);
+    }
+}
+
+__attribute__((visibility("default"), noinline))
+void* malloc(size_t size) {
+    if (!real_malloc) { initialize_allocator_hooks(); }
+
+    void* ptr = real_malloc(size);
+
+    for (size_t index = 0; index < kMaxAllocations; ++index) {
+        if (!allocations[index].in_use.test_and_set()) { // Try to acquire lock
+            allocations[index].ptr = ptr;
+            allocations[index].initial_size = size;
+            return ptr;
+        }
+    }
+
+    fprintf(stdout, "Out of memory (custom malloc)\n");
+    exit(1);
+}
+
+__attribute__((visibility("default"), noinline))
+void* realloc(void* ptr, size_t size) {
+   if (!real_realloc) { initialize_allocator_hooks(); }
+
+    for (size_t index = 0; index < kMaxAllocations; ++index) {
+        if (allocations[index].ptr == ptr) {
+            void* new_ptr = real_realloc(ptr, size);
+            if (new_ptr == nullptr) {
+                return nullptr; // Handle realloc failure
+            }
+
+            size_t increment = 0;
+            if (size > allocations[index].initial_size) {
+               increment = size - (allocations[index].realloc_history[0].first == 0 ? allocations[index].initial_size : allocations[index].realloc_history[allocations[index].realloc_count % kMaxReallocHistory].first); // Use modulo for circular buffer
+            }
+            {
+                std::lock_guard<std::mutex> lock(allocations[index].history_mutex);
+                allocations[index].realloc_history[allocations[index].realloc_count % kMaxReallocHistory] = {size, increment}; // Circular buffer
+                allocations[index].realloc_count++;
+
+                // If the realloc count exceeds the history size, print the
+                // history:
+                if (allocations[index].realloc_count > kMaxReallocHistory) {
+                    fprintf(stdout, "Pointer %p reallocated %zu times:\n", ptr, allocations[index].realloc_count);
+                    for (size_t i = 0; i < kMaxReallocHistory; ++i) {
+                        fprintf(stdout, "  Size: %zu, Increment: %zu\n", allocations[index].realloc_history[i].first, allocations[index].realloc_history[i].second);
+                    }
+                }
+            }
+            allocations[index].ptr = new_ptr;
+            return new_ptr;
+        }
+    }
+    return real_realloc(ptr, size);
+}
+
+__attribute__((visibility("default"), noinline))
+void free(void* ptr) {
+    if (!real_free) { initialize_allocator_hooks(); }
+
+    for (size_t index = 0; index < kMaxAllocations; ++index) {
+        if (allocations[index].ptr == ptr) {
+            real_free(ptr);
+
+            {
+                std::lock_guard<std::mutex> lock(allocations[index].history_mutex);
+                if (allocations[index].realloc_count > kMaxReallocHistory / 2) {
+                    fprintf(stderr, "Pointer %p reallocated %zu times:\n", ptr, allocations[index].realloc_count);
+                    for (size_t i = 0; i < std::min((size_t)kMaxReallocHistory, allocations[index].realloc_count); ++i) { // Print up to max history size
+                        fprintf(stderr, "  Size: %zu, Increment: %zu\n", allocations[index].realloc_history[i].first, allocations[index].realloc_history[i].second);
+                    }
+                }
+            }
+
+            allocations[index].ptr = nullptr;
+            allocations[index].initial_size = 0;
+            allocations[index].realloc_count = 0;
+            allocations[index].realloc_history.fill({0,0}); // Reset the history
+            allocations[index].in_use.clear(); // Release the lock
+            return;
+        }
+    }
+
+    //fprintf(stderr, "free called with unknown pointer\n");
+}
 
 #if defined(SK_GRAPHITE)
     #include "tools/flags/CommonFlagsGraphite.h"
