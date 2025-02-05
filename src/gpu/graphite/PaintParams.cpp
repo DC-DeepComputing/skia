@@ -277,6 +277,7 @@ void PaintParams::handleClipping(const KeyContext& keyContext,
         skvx::float2 maskSize = atlasClip.fMaskBounds.size();
         SkRect texMaskBounds = SkRect::MakeXYWH(atlasClip.fOutPos.x(), atlasClip.fOutPos.y(),
                                                 maskSize.x(), maskSize.y());
+        texMaskBounds.outset(0.5f, 0.5f);
         SkPoint texCoordOffset = {atlasClip.fOutPos.x() - atlasClip.fMaskBounds.left(),
                                   atlasClip.fOutPos.y() - atlasClip.fMaskBounds.top()};
 
