@@ -5,7 +5,9 @@
  * found in the LICENSE file.
  */
 
+#include "include/core/SkStream.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteTypesPriv.h"
+#include "src/gpu/vk/VulkanUtilsPriv.h"
 
 namespace skgpu::graphite {
 
@@ -23,5 +25,48 @@ VulkanTextureInfo VulkanTextureSpecToTextureInfo(const VulkanTextureSpec& vkSpec
                              vkSpec.fYcbcrConversionInfo);
 }
 
-} // namespace skgpu::graphite
 
+bool VulkanTextureSpec::serialize(SkWStream* stream) const {
+    SkASSERT(SkTFitsIn<uint64_t>(fFlags));
+    SkASSERT(SkTFitsIn<uint64_t>(fFormat));
+    SkASSERT(SkTFitsIn<uint64_t>(fImageTiling));
+    SkASSERT(SkTFitsIn<uint64_t>(fImageUsageFlags));
+    SkASSERT(SkTFitsIn<uint64_t>(fSharingMode));
+    SkASSERT(SkTFitsIn<uint64_t>(fAspectMask));
+
+    if (!stream->write64(static_cast<uint64_t>(fFlags)))           { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fFormat)))          { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fImageTiling)))     { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fImageUsageFlags))) { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fSharingMode)))     { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fAspectMask)))      { return false; }
+
+    return SerializeVkYCbCrInfo(stream, fYcbcrConversionInfo);
+}
+
+// TODO(robertphillips): add validity checks to deserialized values
+bool VulkanTextureSpec::Deserialize(SkStream* stream, VulkanTextureSpec* out) {
+    uint64_t tmp;
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fFlags = static_cast<VkImageCreateFlags>(tmp);
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fFormat = static_cast<VkFormat>(tmp);
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fImageTiling = static_cast<VkImageTiling>(tmp);
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fImageUsageFlags = static_cast<VkImageUsageFlags>(tmp);
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fSharingMode = static_cast<VkSharingMode>(tmp);
+
+    if (!stream->readU64(&tmp)) { return false; }
+    out->fAspectMask = static_cast<VkImageAspectFlags>(tmp);
+
+    return DeserializeVkYCbCrInfo(stream, &out->fYcbcrConversionInfo);
+}
+
+} // namespace skgpu::graphite

@@ -277,6 +277,9 @@ static constexpr const char* VkFormatToStr(VkFormat vkFormat) {
     }
 }
 
+[[nodiscard]] bool SerializeVkYCbCrInfo(SkWStream* stream, const VulkanYcbcrConversionInfo&);
+[[nodiscard]] bool DeserializeVkYCbCrInfo(SkStream* stream, VulkanYcbcrConversionInfo* out);
+
 #ifdef SK_BUILD_FOR_ANDROID
 /**
  * Vulkan AHardwareBuffer utility functions shared between graphite and ganesh
