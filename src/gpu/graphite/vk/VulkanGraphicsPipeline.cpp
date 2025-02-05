@@ -597,7 +597,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
         !input_attachment_desc_set_layout(
                 setLayouts[VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex],
                 sharedContext,
-                /*mockOnly=*/!loadMsaaFromResolve)) {
+                /*mockOnly=*/loadMsaaFromResolve)) {
         destroy_desc_set_layouts(sharedContext, setLayouts);
         return VK_NULL_HANDLE;
     }

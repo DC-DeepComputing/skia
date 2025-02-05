@@ -97,7 +97,15 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // TODO(b/374997389): Somehow convey & enforce Layout::kStd430 for push constants.
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
-    fResourceBindingReqs.fDistinctIndexRanges = false;
+
+    //fResourceBindingReqs.fDistinctIndexRanges = false;
+    fResourceBindingReqs.fDstReadInputAttachmentSetIdx =
+            VulkanGraphicsPipeline::kDstAsInputDescSetIndex;
+    fResourceBindingReqs.fUniformSetIdx = VulkanGraphicsPipeline::kUniformBufferDescSetIndex;
+    fResourceBindingReqs.fTextureSamplerSetIdx = VulkanGraphicsPipeline::kTextureBindDescSetIndex;
+    // fResourceBindingReqs.fLoadMSAAInputAttachmentSetIdx =
+            // VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex;
+
 
     // Vulkan uses push constants instead of an intrinsic UBO, so we do not need to assign
     // fResourceBindingReqs.fIntrinsicBufferBinding.
@@ -1625,7 +1633,7 @@ DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
 #endif
         if (supportsInputAttachmentUsage) {
             // TODO(b/383769988) Return kReadFromInput once supported by the Vulkan backend.
-            // return DstReadStrategy::kReadFromInput;
+            return DstReadStrategy::kReadFromInput;
         }
     }
 

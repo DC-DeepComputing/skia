@@ -22,10 +22,14 @@ namespace skgpu::graphite {
 
 namespace {
 
-std::string get_uniform_header(int bufferID, const char* name) {
+std::string get_uniform_header(int bufferID, const char* name, int nonDefaultSetIdx) {
     std::string result;
+    result = "layout (";
+    if (nonDefaultSetIdx) {
+        result.append("set=%d, ", nonDefaultSetIdx);
+    }
 
-    SkSL::String::appendf(&result, "layout (binding=%d) uniform %sUniforms {\n", bufferID, name);
+    SkSL::String::appendf(&result, "binding=%d) uniform %sUniforms {\n", bufferID, name);
 
     return result;
 }
@@ -163,7 +167,10 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
     if (bindingReqs.fUseVulkanPushConstantsForIntrinsicConstants) {
         result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
     } else {
-        result = get_uniform_header(bindingReqs.fIntrinsicBufferBinding, "Intrinsic");
+        // todo(nep) add idx here?
+        result = get_uniform_header(bindingReqs.fIntrinsicBufferBinding,
+                                    "Intrinsic",
+                                    bindingReqs.kUnassigned); // Use default value
     }
     result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
@@ -177,10 +184,11 @@ std::string emit_paint_params_uniforms(int bufferID,
                                        const Layout layout,
                                        SkSpan<const ShaderNode*> nodes,
                                        bool* hasUniforms,
-                                       bool* wrotePaintColor) {
+                                       bool* wrotePaintColor,
+                                       int nonDefaultSetIdx) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
-    std::string result = get_uniform_header(bufferID, "FS");
+    std::string result = get_uniform_header(bufferID, "FS", nonDefaultSetIdx);
     for (const ShaderNode* n : nodes) {
         result += get_node_uniforms(&offsetter, n, wrotePaintColor);
     }
@@ -197,10 +205,11 @@ std::string emit_paint_params_uniforms(int bufferID,
 
 std::string emit_render_step_uniforms(int bufferID,
                                       const Layout layout,
-                                      SkSpan<const Uniform> uniforms) {
+                                      SkSpan<const Uniform> uniforms,
+                                      int nonDefaultSetIdx) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
-    std::string result = get_uniform_header(bufferID, "Step");
+    std::string result = get_uniform_header(bufferID, "Step", nonDefaultSetIdx);
     result += get_uniforms(&offsetter, uniforms, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
 
@@ -653,7 +662,22 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
+
     preamble += emit_intrinsic_constants(bindingReqs);
+
+    if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+        // todo(nep): comment
+        SkASSERT(bindingReqs.fDstReadInputAttachmentSetIdx);
+        // todo (nep): format
+        SkSL::String::appendf(
+                &preamble,
+                "layout (vulkan, input_attachment_index=%d, set=%d, binding=%d) "
+                "subpassInput DstTextureInput;\n",
+                /*input attachment idx within set=*/0,
+                /*input attachment set idx=*/bindingReqs.fDstReadInputAttachmentSetIdx,
+                /*binding=*/0);
+    }
+
     if (hasStepUniforms) {
         if (useStepStorageBuffer) {
             preamble += emit_render_step_storage_buffer(bindingReqs.fRenderStepBufferBinding,
@@ -661,11 +685,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         } else {
             preamble += emit_render_step_uniforms(bindingReqs.fRenderStepBufferBinding,
                                                   bindingReqs.fUniformBufferLayout,
-                                                  step->uniforms());
+                                                  step->uniforms(),
+                                                  bindingReqs.fUniformSetIdx);
         }
     }
 
     bool wrotePaintColor = false;
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fPaintParamsBufferBinding,
                                                      fRootNodes,
@@ -677,7 +703,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                                bindingReqs.fUniformBufferLayout,
                                                fRootNodes,
                                                &fHasPaintUniforms,
-                                               &wrotePaintColor);
+                                               &wrotePaintColor,
+                                               bindingReqs.fUniformSetIdx);
     }
 
     if (useGradientStorageBuffer) {
@@ -766,6 +793,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // TODO: Get read swizzle from caps (getReadSwizzle(SkColorType, const TextureInfo&))
+            mainBody += "// Read color from input attachment\n";
+            mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
@@ -942,7 +973,8 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
         } else {
             sksl += emit_render_step_uniforms(bindingReqs.fRenderStepBufferBinding,
                                               bindingReqs.fUniformBufferLayout,
-                                              step->uniforms());
+                                              step->uniforms(),
+                                              bindingReqs.fUniformSetIdx);
         }
     }
 

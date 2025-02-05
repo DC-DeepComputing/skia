@@ -119,19 +119,30 @@ std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, in
     // If fDistinctIndexRanges is false, then texture and sampler indices may clash with other
     // resource indices. Graphite assumes that they will be placed in descriptor set (Vulkan) and
     // bind group (Dawn) index 1.
-    const char* distinctIndexRange = bindingReqs.fDistinctIndexRanges ? "" : "set=1, ";
+    // TODO update; for now hard-code for vulkan testing
+    // const char* distinctIndexRange =
+    //         bindingReqs.fTextureSamplerSetIdx ? "" : "set=%d, ", bindingReqs.fTextureSamplerSetIdx;
+
+    std::string distinctIndexRange = "";
+    if (bindingReqs.fTextureSamplerSetIdx) {
+        SkSL::String::appendf(&distinctIndexRange, "set=%d, ", bindingReqs.fTextureSamplerSetIdx);
+    }
+    // const char* distinctIndexRange =
+    //         bindingReqs.fTextureSamplerSetIdx == ResourceBindingRequirements::kUnassigned
+    //                 ? ""
+    //                 : "set=" + std::to_string(bindingReqs.fTextureSamplerSetIdx) + ", ";
 
     if (bindingReqs.fSeparateTextureAndSamplerBinding) {
         int samplerIndex = (*binding)++;
         int textureIndex = (*binding)++;
         result = SkSL::String::printf("layout(webgpu, %ssampler=%d, texture=%d)",
-                                      distinctIndexRange,
+                                      distinctIndexRange.empty() ? "" : distinctIndexRange.c_str(),
                                       samplerIndex,
                                       textureIndex);
     } else {
         int samplerIndex = (*binding)++;
         result = SkSL::String::printf("layout(%sbinding=%d)",
-                                      distinctIndexRange,
+                                      distinctIndexRange.empty() ? "" : distinctIndexRange.c_str(),
                                       samplerIndex);
     }
     return result;
@@ -157,7 +168,7 @@ std::string BuildComputeSkSL(const Caps* caps, const ComputeStep* step) {
                                  step->localDispatchSize().fDepth);
 
     const auto& bindingReqs = caps->resourceBindingRequirements();
-    bool distinctRanges = bindingReqs.fDistinctIndexRanges;
+    bool distinctRanges = bindingReqs.fDistinctIndexRanges; // TODO(nep) TAL here
     bool separateSampler = bindingReqs.fSeparateTextureAndSamplerBinding;
 
     int index = 0;
