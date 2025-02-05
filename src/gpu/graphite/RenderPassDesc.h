@@ -19,6 +19,7 @@
 namespace skgpu::graphite {
 
 class Caps;
+enum class DstReadStrategy;
 
 struct AttachmentDesc {
     TextureInfo fTextureInfo;
@@ -52,6 +53,10 @@ struct RenderPassDesc {
     // count. The only exceptional case is when multisampled render to single sampled is used. In
     // that case, the fColorAttachment's samples count will be 1 and fSampleCount will be > 1.
     uint32_t fSampleCount;
+
+    // Each shader/pipeline will need to independently determine whether a dst read is required.
+    // If so, it can consult RenderPassDesc's fDstReadStrategy to determine how to do so.
+    DstReadStrategy fDstReadStrategy;
 
     SkString toString() const;
     // Only includes fixed state relevant to pipeline creation

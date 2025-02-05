@@ -101,6 +101,10 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+    // Should a dst read be required later on, record what dst read strategy should be used based
+    // upon the target texture information.
+    desc.fDstReadStrategy = caps->getDstReadStrategy(targetInfo);
+
     return desc;
 }
 
