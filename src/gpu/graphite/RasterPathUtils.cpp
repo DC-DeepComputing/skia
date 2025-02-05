@@ -179,44 +179,69 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
 }
 
 skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
-                                     const ClipStack::ElementList* elementsForMask) {
+                                     const ClipStack::ElementList* elementsForMask,
+                                     Rect* maskBounds) {
     skgpu::UniqueKey maskKey;
     {
         static constexpr int kMaxShapeCountForKey = 2;
 
         static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
         // if the element list is too large we just use the stackRecordID
-        if (elementsForMask->size() > kMaxShapeCountForKey) {
-            skgpu::UniqueKey::Builder builder(&maskKey, kDomain, 1, "Clip Path Mask");
-            builder[0] = stackRecordID;
-        } else {
+        if (elementsForMask->size() <= kMaxShapeCountForKey) {
             int xformKeySize = 5;
             int keySize = 0;
+            bool canCreateKey = true;
             for (int i = 0; i < elementsForMask->size(); ++i) {
-                keySize += xformKeySize + (*elementsForMask)[i]->fShape.keySize();
+                int shapeKeySize = (*elementsForMask)[i]->fShape.keySize();
+                if (shapeKeySize < 0) {
+                    canCreateKey = false;
+                    break;
+                }
+                keySize += xformKeySize + shapeKeySize;
             }
-            skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
-                                              "Clip Path Mask");
-            int elementKeyIndex = 0;
-            for (int i = 0; i < elementsForMask->size(); ++i) {
-                // Add transform key and get packed fractional translation bits
-                uint32_t fracBits = add_transform_key(&builder,
-                                                      elementKeyIndex,
-                                                      (*elementsForMask)[i]->fLocalToDevice);
-                uint32_t opBits = static_cast<uint32_t>((*elementsForMask)[i]->fOp);
-                builder[elementKeyIndex + 4] = fracBits | (opBits << 16);
+            if (canCreateKey) {
+                skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
+                                                  "Clip Path Mask");
+                int elementKeyIndex = 0;
+                *maskBounds = {};
+                for (int i = 0; i < elementsForMask->size(); ++i) {
+                    const ClipStack::Element* element = (*elementsForMask)[i];
 
-                const Shape& shape = (*elementsForMask)[i]->fShape;
-                shape.writeKey(&builder[elementKeyIndex + xformKeySize], /*includeInverted=*/true);
+                    // Add transform key and get packed fractional translation bits
+                    uint32_t fracBits = add_transform_key(&builder,
+                                                          elementKeyIndex,
+                                                          element->fLocalToDevice);
+                    uint32_t opBits = static_cast<uint32_t>(element->fOp);
+                    builder[elementKeyIndex + 4] = fracBits | (opBits << 16);
 
-                elementKeyIndex += xformKeySize + shape.keySize();
+                    const Shape& shape = element->fShape;
+                    shape.writeKey(&builder[elementKeyIndex + xformKeySize],
+                                   /*includeInverted=*/true);
+
+                    elementKeyIndex += xformKeySize + shape.keySize();
+
+                    Rect bounds = element->fLocalToDevice.mapRect(shape.bounds());
+                    maskBounds->join(bounds);
+                }
+
+                maskBounds->roundOut();
+                return maskKey;
             }
         }
 
+        skgpu::UniqueKey::Builder builder(&maskKey, kDomain, 1, "Clip Path Mask");
+        builder[0] = stackRecordID;
+        // Still need to generate the bounds
+        *maskBounds = {};
+        for (int i = 0; i < elementsForMask->size(); ++i) {
+            const ClipStack::Element* element = (*elementsForMask)[i];
+            Rect bounds = element->fLocalToDevice.mapRect(element->fShape.bounds());
+            maskBounds->join(bounds);
+        }
+        maskBounds->roundOut();
     }
 
     return maskKey;
-
 }
 
 }  // namespace skgpu::graphite
