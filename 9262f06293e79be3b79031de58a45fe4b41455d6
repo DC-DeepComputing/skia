@@ -16,6 +16,24 @@
       "message": "I won\u0027t block this, but naively I\u0027m slightly cautious of making any potential further reverts of SkCrabbyAvifCodec more complicated (than a single CL) by removing this fallback.\n\nIs that caution warranted (in the short term), or do the benefits of cleanup outweigh it at this point? (Happy to discuss more internally if release timing is nuanced/involves dates).",
       "revId": "9262f06293e79be3b79031de58a45fe4b41455d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01403e84_f749ec8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-02-05T17:01:01Z",
+      "side": 1,
+      "message": "i was a bit wary of that too. there is no timeline for this clean up as such. \n\nso i don\u0027t mind letting crabbyavif soak in a bit longer before removing this. i will revisit this in a month or so maybe. how does that sound?",
+      "parentUuid": "71533a4f_1754e501",
+      "revId": "9262f06293e79be3b79031de58a45fe4b41455d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
