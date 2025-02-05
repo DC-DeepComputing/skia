@@ -17,6 +17,7 @@
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
 #include "include/private/SkEncodedInfo.h"
+#include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTemplates.h"
 #include "modules/skcms/skcms.h"
@@ -467,7 +468,7 @@ private:
         fDst = SkTAddOffset<void>(fDst, fRowBytes);
     }
 
-    void setRange(int firstRow, int lastRow, void* dst, size_t rowBytes) override {
+    Result setRange(int firstRow, int lastRow, void* dst, size_t rowBytes) override {
         png_set_progressive_read_fn(this->png_ptr(), this, nullptr, RowCallback, nullptr);
         fFirstRow = firstRow;
         fLastRow = lastRow;
@@ -475,6 +476,7 @@ private:
         fRowBytes = rowBytes;
         fRowsWrittenToOutput = 0;
         fRowsNeeded = fLastRow - fFirstRow + 1;
+        return kSuccess;
     }
 
     Result decode(int* rowsDecoded) override {
@@ -540,7 +542,8 @@ public:
             , fLastRow(0)
             , fLinesDecoded(0)
             , fInterlacedComplete(false)
-            , fPng_rowbytes(0) {}
+            , fPng_rowbytes(0)
+            , fInterlaceBuffer(nullptr, &sk_free) {}
 
     static void InterlacedRowCallback(png_structp png_ptr, png_bytep row, png_uint_32 rowNum, int pass) {
         auto decoder = static_cast<SkPngInterlacedDecoder*>(png_get_progressive_ptr(png_ptr));
@@ -556,7 +559,7 @@ private:
     int                     fLinesDecoded;
     bool                    fInterlacedComplete;
     size_t                  fPng_rowbytes;
-    AutoTMalloc<png_byte> fInterlaceBuffer;
+    std::unique_ptr<png_byte, decltype(&sk_free)> fInterlaceBuffer;
 
     // FIXME: Currently sharing interlaced callback for all rows and subset. It's not
     // as expensive as the subset version of non-interlaced, but it still does extra
@@ -621,15 +624,19 @@ private:
         return log_and_return_error(success);
     }
 
-    void setRange(int firstRow, int lastRow, void* dst, size_t rowBytes) override {
+    Result setRange(int firstRow, int lastRow, void* dst, size_t rowBytes) override {
         // FIXME: We could skip rows in the interlace buffer that we won't put in the output.
-        this->setUpInterlaceBuffer(lastRow - firstRow + 1);
+        Result res = this->setUpInterlaceBuffer(lastRow - firstRow + 1);
+        if (res != kSuccess) {
+          return res;
+        }
         png_set_progressive_read_fn(this->png_ptr(), this, nullptr, InterlacedRowCallback, nullptr);
         fFirstRow = firstRow;
         fLastRow = lastRow;
         fDst = dst;
         fRowBytes = rowBytes;
         fLinesDecoded = 0;
+        return kSuccess;
     }
 
     Result decode(int* rowsDecoded) override {
@@ -673,10 +680,18 @@ private:
         return log_and_return_error(success);
     }
 
-    void setUpInterlaceBuffer(int height) {
+    Result setUpInterlaceBuffer(int height) {
         fPng_rowbytes = png_get_rowbytes(this->png_ptr(), this->info_ptr());
-        fInterlaceBuffer.reset(fPng_rowbytes * height);
+        void* interlaceBufferRaw = nullptr;
+        if (fPng_rowbytes) {
+           interlaceBufferRaw = sk_malloc_canfail(fPng_rowbytes * height);
+           if (!interlaceBufferRaw) {
+             return kInternalError;
+           }
+        }
+        fInterlaceBuffer.reset(reinterpret_cast<png_byte*>(interlaceBufferRaw));
         fInterlacedComplete = false;
+        return kSuccess;
     }
 };
 
@@ -1006,8 +1021,7 @@ SkCodec::Result SkPngCodec::onStartIncrementalDecode(const SkImageInfo& dstInfo,
         firstRow = 0;
         lastRow = dstInfo.height() - 1;
     }
-    this->setRange(firstRow, lastRow, dst, rowBytes);
-    return kSuccess;
+    return this->setRange(firstRow, lastRow, dst, rowBytes);
 }
 
 SkCodec::Result SkPngCodec::onIncrementalDecode(int* rowsDecoded) {
