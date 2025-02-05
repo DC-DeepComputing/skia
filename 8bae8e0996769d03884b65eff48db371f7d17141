@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53779b85_35776bb8",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-05T14:40:36Z",
+      "side": 1,
+      "message": "You can also omit I think, the compiler should not generate a default in this case.",
+      "revId": "8bae8e0996769d03884b65eff48db371f7d17141",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
