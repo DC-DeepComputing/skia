@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa8e004c_395850d6",
+        "filename": "tools/SkSharingProc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-02-05T18:37:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "de7f66af_d189457b",
+      "range": {
+        "startLine": 43,
+        "startChar": 21,
+        "endLine": 43,
+        "endChar": 29
+      },
+      "revId": "4accaa5fb4497903a12992710e6f74fbd951c118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7bd19d09_4f4a7636",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-04T19:37:00Z",
       "side": 1,
       "message": "Do we know that the DirectContext that we set here will be used on the same thread? GrDirectContext is not thread safe.",
+      "range": {
+        "startLine": 50,
+        "startChar": 4,
+        "endLine": 50,
+        "endChar": 44
+      },
+      "revId": "4accaa5fb4497903a12992710e6f74fbd951c118",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7417362b_228bcb72",
+        "filename": "tools/SkSharingProc.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-02-05T18:37:51Z",
+      "side": 1,
+      "message": "Yes, as long as the capture happens while the app is open. If it gets closed and reopened, I\u0027 not sure, but if people are capturing that behavior, they probably want to capture through RenderEngine, not HWUI.",
+      "parentUuid": "7bd19d09_4f4a7636",
       "range": {
         "startLine": 50,
         "startChar": 4,
