@@ -150,13 +150,11 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
     }
 
     SkIRect iShapeBounds = SkIRect::MakeXYWH(0, 0, maskSize.x(), maskSize.y());
-    // Outset to take padding into account
-    SkIRect iAtlasBounds = iShapeBounds.makeOutset(kEntryPadding, kEntryPadding);
 
-    // Request space in DrawAtlas.
+    // Request space in DrawAtlas, including padding
     DrawAtlas::ErrorCode errorCode = fDrawAtlas->addRect(fRecorder,
-                                                         iAtlasBounds.width(),
-                                                         iAtlasBounds.height(),
+                                                         iShapeBounds.width() + 2*kEntryPadding,
+                                                         iShapeBounds.height() + 2*kEntryPadding,
                                                          locator);
     if (errorCode != DrawAtlas::ErrorCode::kSucceeded) {
         return nullptr;
@@ -173,11 +171,15 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
 
     // This will remove the base integer translation from each element's transform
     Rect iBounds = bounds.makeRoundOut();
+    // Translate the bounds relative to the outPos
+    iBounds.offset(skvx::float2(-kEntryPadding, -kEntryPadding));
     RasterMaskHelper helper(&dst);
     if (!helper.init(fDrawAtlas->plotSize(), iBounds.topLeft())) {
         return nullptr;
     }
 
+    // Outset to cover the padding as well (in case of inverse clip)
+    iShapeBounds.outset(kEntryPadding, kEntryPadding);
     // Offset to plot location and draw
     iShapeBounds.offset(renderPos.x() + kEntryPadding, renderPos.y() + kEntryPadding);
 
