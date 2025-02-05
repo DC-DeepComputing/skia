@@ -16,6 +16,24 @@
       "message": "You can also omit I think, the compiler should not generate a default in this case.",
       "revId": "8bae8e0996769d03884b65eff48db371f7d17141",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef82f6a0_3cb0463a",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-05T14:42:37Z",
+      "side": 1,
+      "message": "This is to prevent future Kaylee from trying to add a move constructor and then having things breaking. In other words, even though it\u0027s what the compiler is doing already (because of SkNonCopyable) I wanted to put a comment somewhere about *why* we can\u0027t move it (easily)",
+      "parentUuid": "53779b85_35776bb8",
+      "revId": "8bae8e0996769d03884b65eff48db371f7d17141",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
