@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23bf0036_68c26503",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-05T22:08:46Z",
+      "side": 1,
+      "message": "I think this happened because `SkRandomTypeface` (still) uses `fProxy` the wrong way.",
+      "revId": "61301c9a1b5b861920f247a0161df2a470d9356b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
