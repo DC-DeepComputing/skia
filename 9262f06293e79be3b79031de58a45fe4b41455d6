@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71533a4f_1754e501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-05T16:53:32Z",
+      "side": 1,
+      "message": "I won\u0027t block this, but naively I\u0027m slightly cautious of making any potential further reverts of SkCrabbyAvifCodec more complicated (than a single CL) by removing this fallback.\n\nIs that caution warranted (in the short term), or do the benefits of cleanup outweigh it at this point? (Happy to discuss more internally if release timing is nuanced/involves dates).",
+      "revId": "9262f06293e79be3b79031de58a45fe4b41455d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
