@@ -146,7 +146,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          rpp.fRequiresMSAA,
                                          writeSwizzle);
 
-            SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
+            SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, rpp.fDstCS);
             KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
