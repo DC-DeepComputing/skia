@@ -1625,7 +1625,7 @@ DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
 #endif
         if (supportsInputAttachmentUsage) {
             // TODO(b/383769988) Return kReadFromInput once supported by the Vulkan backend.
-            // return DstReadStrategy::kReadFromInput;
+            return DstReadStrategy::kReadFromInput;
         }
     }
 
