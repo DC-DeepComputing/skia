@@ -12,6 +12,7 @@ from . import android
 from . import chromebook
 from . import default
 from . import ios
+from . import ios_legacy
 from . import valgrind
 
 
@@ -43,7 +44,14 @@ def is_chromebook(vars_api):
   return ('Chromebook' in vars_api.extra_tokens or
           'ChromeOS' in vars_api.builder_cfg.get('os', ''))
 
+_NON_LEGACY_IOS_VERSIONS = [
+  'iOS18',
+]
+
 def is_ios(vars_api):
+  return vars_api.builder_cfg.get('os', '') in _NON_LEGACY_IOS_VERSIONS
+
+def is_ios_legacy(vars_api):
   return ('iOS' in vars_api.extra_tokens or
           'iOS' == vars_api.builder_cfg.get('os', ''))
 
@@ -60,6 +68,8 @@ class SkiaFlavorApi(recipe_api.RecipeApi):
       return android.AndroidFlavor(self, app_name)
     elif is_ios(vars_api):
       return ios.iOSFlavor(self, app_name)
+    elif is_ios_legacy(vars_api):
+      return ios_legacy.iOSFlavor(self, app_name)
     elif is_valgrind(vars_api):
       return valgrind.ValgrindFlavor(self, app_name)
     else:

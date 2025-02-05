@@ -100,6 +100,7 @@ TEST_BUILDERS = [
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-TSAN',
   'Test-Debian10-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader',
   'Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-Vulkan',
+  'Test-iOS18-Clang-iPhone15Pro-GPU-AppleA17-arm64-Debug-All',
   'Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-ASAN',
   ('Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All'
    '-Valgrind_AbandonGpuContext_SK_CPU_LIMIT_SSE41'),
