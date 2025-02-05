@@ -175,6 +175,12 @@ enum class StencilOp : uint8_t {
 };
 static constexpr int kStencilOpCount = 1 + (int)StencilOp::kDecClamp;
 
+// Nicolette note: this appeases the need for an arg as well when defining a draw pass command type
+enum class BarrierType : uint8_t {
+    kAdvancedNoncoherentBlend,
+    kReadDstFromInput,
+};
+
 struct DepthStencilSettings {
     // Per-face settings for stencil
     struct Face {
