@@ -34,23 +34,21 @@ PaintParamsKey create_key(const ShaderCodeDictionary* dict, int snippetID, SkAre
     return keyView->clone(arena);
 }
 
-// TODO(b/390458117): Once ShaderInfoDetectsFixedFunctionBlend is re-enabled, this can be restored
-// as well. Commenting it out so compilers do not complain about an unused function.
-// bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
-//     switch(skCoeff) {
-//         case SkBlendModeCoeff::kZero: return skgpu::BlendCoeff::kZero == gpuCoeff;
-//         case SkBlendModeCoeff::kOne:  return skgpu::BlendCoeff::kOne == gpuCoeff;
-//         case SkBlendModeCoeff::kSC:   return skgpu::BlendCoeff::kSC == gpuCoeff;
-//         case SkBlendModeCoeff::kISC:  return skgpu::BlendCoeff::kISC == gpuCoeff;
-//         case SkBlendModeCoeff::kDC:   return skgpu::BlendCoeff::kDC == gpuCoeff;
-//         case SkBlendModeCoeff::kIDC:  return skgpu::BlendCoeff::kIDC == gpuCoeff;
-//         case SkBlendModeCoeff::kSA:   return skgpu::BlendCoeff::kSA == gpuCoeff;
-//         case SkBlendModeCoeff::kISA:  return skgpu::BlendCoeff::kISA == gpuCoeff;
-//         case SkBlendModeCoeff::kDA:   return skgpu::BlendCoeff::kDA == gpuCoeff;
-//         case SkBlendModeCoeff::kIDA:  return skgpu::BlendCoeff::kIDA == gpuCoeff;
-//         default:                      return false;
-//     }
-// }
+bool coeff_equal(SkBlendModeCoeff skCoeff, skgpu::BlendCoeff gpuCoeff) {
+    switch(skCoeff) {
+        case SkBlendModeCoeff::kZero: return skgpu::BlendCoeff::kZero == gpuCoeff;
+        case SkBlendModeCoeff::kOne:  return skgpu::BlendCoeff::kOne == gpuCoeff;
+        case SkBlendModeCoeff::kSC:   return skgpu::BlendCoeff::kSC == gpuCoeff;
+        case SkBlendModeCoeff::kISC:  return skgpu::BlendCoeff::kISC == gpuCoeff;
+        case SkBlendModeCoeff::kDC:   return skgpu::BlendCoeff::kDC == gpuCoeff;
+        case SkBlendModeCoeff::kIDC:  return skgpu::BlendCoeff::kIDC == gpuCoeff;
+        case SkBlendModeCoeff::kSA:   return skgpu::BlendCoeff::kSA == gpuCoeff;
+        case SkBlendModeCoeff::kISA:  return skgpu::BlendCoeff::kISA == gpuCoeff;
+        case SkBlendModeCoeff::kDA:   return skgpu::BlendCoeff::kDA == gpuCoeff;
+        case SkBlendModeCoeff::kIDA:  return skgpu::BlendCoeff::kIDA == gpuCoeff;
+        default:                      return false;
+    }
+}
 
 } // anonymous namespace
 
@@ -100,52 +98,69 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(KeyEqualityChecksSnippetID, reporter, context
     REPORTER_ASSERT(reporter, !(keyA != keyB));
 }
 
-// TODO(390458117): Re-enable this test once the TextureInfo param is removed from
-// caps->getDstReadStrategy(). We could theoretically use reasonable render target texture info to
-// query Caps for the DstReadStrategy (should a dst read be required by any of the paints
-// encountered), but we then end up trying to bind a pipeline with a null dst target texture since
-// no actual copy is performed which fails assertions.
-// DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter, context,
-//                                    CtsEnforcement::kApiLevel_V) {
-//     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter, context,
+                                   CtsEnforcement::kApiLevel_V) {
+    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-//     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
-//         PaintParamsKeyBuilder builder(dict);
-//         // Use a solid color as the 1st root node; the 2nd root node represents the final blend.
-//         add_block(&builder, (int) BuiltInCodeSnippetID::kSolidColorShader);
-//         add_block(&builder, bm + kFixedBlendIDOffset);
-//         UniquePaintParamsID paintID = dict->findOrCreate(&builder);
+    // For determining the DstReadStrategy, pass in reasonable render target texture properties.
+    const Caps* caps = context->priv().caps();
 
-//         const RenderStep* renderStep = &context->priv().rendererProvider()->nonAABounds()->step(0);
-//         std::unique_ptr<ShaderInfo> shaderInfo = ShaderInfo::Make(context->priv().caps(),
-//                                                                   dict,
-//                                                                   /*rteDict=*/nullptr,
-//                                                                   renderStep,
-//                                                                   paintID,
-//                                                                   /*useStorageBuffers=*/false,
-//                                                                   skgpu::Swizzle::RGBA());
+    // Use reasonable render target texture information to query Caps for the DstReadStrategy to use
+    // should a dst read be required by any of the paints encountered.
+    // TODO(b/390458117): Once the TextureInfo argument is removed from getDstReadStrategy, this is
+    // no longer necessary.
+    DstReadStrategy dstReadStrategy = caps->getDstReadStrategy(
+            caps->getDefaultSampledTextureInfo(SkColorType::kRGBA_8888_SkColorType,
+                                               skgpu::Mipmapped::kNo,
+                                               skgpu::Protected::kNo,
+                                               skgpu::Renderable::kYes));
 
-//         SkBlendMode expectedBM = static_cast<SkBlendMode>(bm);
-//         if (expectedBM == SkBlendMode::kPlus) {
-//             // The kPlus "coefficient" blend mode always triggers shader blending to add a clamping
-//             // step that was originally elided in Porter-Duff due to automatic saturation to 8-bit
-//             // color values. Shader-based blending always uses kSrc HW blending.
-//             expectedBM = SkBlendMode::kSrc;
-//         }
-//         SkBlendModeCoeff expectedSrc, expectedDst;
-//         REPORTER_ASSERT(reporter, SkBlendMode_AsCoeff(expectedBM, &expectedSrc, &expectedDst));
-//         REPORTER_ASSERT(reporter, coeff_equal(expectedSrc, shaderInfo->blendInfo().fSrcBlend));
-//         REPORTER_ASSERT(reporter, coeff_equal(expectedDst, shaderInfo->blendInfo().fDstBlend));
+    for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
+        PaintParamsKeyBuilder builder(dict);
+        // Use a solid color as the 1st root node; the 2nd root node represents the final blend.
+        add_block(&builder, (int) BuiltInCodeSnippetID::kSolidColorShader);
+        add_block(&builder, bm + kFixedBlendIDOffset);
+        UniquePaintParamsID paintID = dict->findOrCreate(&builder);
 
-//         REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fEquation == skgpu::BlendEquation::kAdd);
-//         REPORTER_ASSERT(reporter,
-//                         shaderInfo->blendInfo().fBlendConstant == SK_PMColor4fTRANSPARENT);
+        const RenderStep* renderStep = &context->priv().rendererProvider()->nonAABounds()->step(0);
+        bool dstReadRequired =
+                IsDstReadRequired(caps, static_cast<SkBlendMode>(bm), renderStep->coverage());
 
-//         bool expectedWriteColor = BlendModifiesDst(skgpu::BlendEquation::kAdd,
-//                                                    shaderInfo->blendInfo().fSrcBlend,
-//                                                    shaderInfo->blendInfo().fDstBlend);
-//         REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fWritesColor == expectedWriteColor);
-//     }
-// }
+        // ShaderInfo expects to receive a concrete determination of dstReadStrategy based upon
+        // whether a dst read is needed. Therefore, we need to decide whether to pass in the
+        // dstReadStrategy reported by caps OR DstReadStrategy::kNoneRequired.
+        std::unique_ptr<ShaderInfo> shaderInfo =
+                ShaderInfo::Make(caps,
+                                 dict,
+                                 /*rteDict=*/nullptr,
+                                 renderStep,
+                                 paintID,
+                                 /*useStorageBuffers=*/false,
+                                 skgpu::Swizzle::RGBA(),
+                                 dstReadRequired ? dstReadStrategy
+                                                 : DstReadStrategy::kNoneRequired);
+
+        SkBlendMode expectedBM = static_cast<SkBlendMode>(bm);
+        if (expectedBM == SkBlendMode::kPlus) {
+            // The kPlus "coefficient" blend mode always triggers shader blending to add a clamping
+            // step that was originally elided in Porter-Duff due to automatic saturation to 8-bit
+            // color values. Shader-based blending always uses kSrc HW blending.
+            expectedBM = SkBlendMode::kSrc;
+        }
+        SkBlendModeCoeff expectedSrc, expectedDst;
+        REPORTER_ASSERT(reporter, SkBlendMode_AsCoeff(expectedBM, &expectedSrc, &expectedDst));
+        REPORTER_ASSERT(reporter, coeff_equal(expectedSrc, shaderInfo->blendInfo().fSrcBlend));
+        REPORTER_ASSERT(reporter, coeff_equal(expectedDst, shaderInfo->blendInfo().fDstBlend));
+
+        REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fEquation == skgpu::BlendEquation::kAdd);
+        REPORTER_ASSERT(reporter,
+                        shaderInfo->blendInfo().fBlendConstant == SK_PMColor4fTRANSPARENT);
+
+        bool expectedWriteColor = BlendModifiesDst(skgpu::BlendEquation::kAdd,
+                                                   shaderInfo->blendInfo().fSrcBlend,
+                                                   shaderInfo->blendInfo().fDstBlend);
+        REPORTER_ASSERT(reporter, shaderInfo->blendInfo().fWritesColor == expectedWriteColor);
+    }
+}
 
 // TODO: Add unit tests for converting a complex key to a ShaderInfo

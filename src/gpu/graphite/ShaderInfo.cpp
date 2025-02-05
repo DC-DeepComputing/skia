@@ -487,14 +487,21 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                              skia_private::TArray<SamplerDesc>* outDescs) {
     const char* shadingSsboIndex =
             useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
-    std::unique_ptr<ShaderInfo> result =
-            std::unique_ptr<ShaderInfo>(new ShaderInfo(rteDict, shadingSsboIndex, dstReadStrategy));
+
+    // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
+    const bool hasFragShader = paintID.isValid();
+
+    // Each ShaderInfo is responsible for determining whether or not a dst read is required. This
+    // generally occurs while generating the frag shader, but if we do not use one, then we know we
+    // do not need to read the dst texture and can assign the DstReadStrategy to kNoneRequired.
+    auto result = std::unique_ptr<ShaderInfo>(
+            new ShaderInfo(rteDict,
+                           shadingSsboIndex,
+                           hasFragShader ? dstReadStrategy : DstReadStrategy::kNoneRequired));
 
     // The fragment shader must be generated before the vertex shader, because we determine
     // properties of the entire program while generating the fragment shader.
-
-    // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
-    if (paintID.isValid()) {
+    if (hasFragShader) {
         result->generateFragmentSkSL(caps,
                                      dict,
                                      step,
@@ -643,6 +650,15 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                          /*emitSsboIndicesVarying=*/useShadingStorageBuffer,
                                          defineLocalCoordsVarying);
 
+    if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+        SkSL::String::appendf(&preamble,
+                              "layout (vulkan, input_attachment_index=%d, set=%d, binding=%d) "
+                              "subpassInput DstTextureInput;\n",
+                              /*input attachment idx within set=*/0,
+                              /*input attachment set idx=*/0,
+                              /*binding=*/0);
+    }
+
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     preamble += emit_intrinsic_constants(bindingReqs);
@@ -658,6 +674,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     }
 
     bool wrotePaintColor = false;
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fPaintParamsBufferBinding,
                                                      fRootNodes,
@@ -758,6 +775,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // TODO: Get read swizzle from caps (getReadSwizzle(SkColorType, const TextureInfo&))
+            mainBody += "// Read color from input attachment\n";
+            mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
