@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ff0fc29_7dfc109e",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-05T14:15:28Z",
+      "side": 0,
+      "message": "Added a SkWorkingFormatCalculator class, lmk what you think.",
+      "parentUuid": "08b51483_0aa36c66",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "88b2fd3e_69519c3e",
         "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
         "patchSetId": 1
@@ -85,6 +109,30 @@
       "side": 0,
       "message": "Every case previously enumerated here is a possibility from some combination of the given src and dst color spaces, since we make a decision about which snippet to use in `ColorSpaceTransformBlock::AddBlock` and that\u0027s called directly in `PrecompileColorSpaceXformColorFilter::addToKey`.",
       "parentUuid": "88b2fd3e_69519c3e",
+      "range": {
+        "startLine": 226,
+        "startChar": 32,
+        "endLine": 226,
+        "endChar": 39
+      },
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fff1dad6_b13808e9",
+        "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-05T14:15:28Z",
+      "side": 0,
+      "message": "Added a comment to clarify that the alpha type used in `addToKey` here is unused.",
+      "parentUuid": "7774f111_6aa0cf11",
       "range": {
         "startLine": 226,
         "startChar": 32,

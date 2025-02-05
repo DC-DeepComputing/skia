@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee3b33ca_71199b9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-05T14:15:28Z",
+      "side": 1,
+      "message": "Regarding (2), I changed the API to take in spans of color spaces as discussed offline; lmk if this is what you were thinking.",
+      "parentUuid": "952b33c5_e119ed21",
+      "revId": "1c01f7fd3c27d32361f73b51b48bf11f460d485c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "08373e98_19e4e350",
         "filename": "src/gpu/graphite/precompile/PrecompileColorFilter.cpp",
         "patchSetId": 1
