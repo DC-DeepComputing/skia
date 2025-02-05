@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "83918d6c_0fd87600",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 326,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-05T14:08:50Z",
+      "side": 1,
+      "message": "The solution was to create the NinePatch inplace the std::optional instead of (foolishly) trying to generate the move constructor to allow my first attempt to compile. As it was, the temporary NinePatch was being destroyed and then it\u0027s cache was getting set to holding a nullptr but the cache pointer had already been copied to the NinePatch inside the std::optional, which was no good.\n\nI\u0027ve made the move constructor explicitly deleted with a comment as to why and made use of the inplace std::optional constructor which is a better tool for the job here.",
+      "parentUuid": "3985ea8d_ce6a9944",
+      "revId": "f8e67d75c8defb7d3be41855d505508bacaf3845",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "51aedbad_7b054330",
         "filename": "src/core/SkMaskFilterBase.h",
         "patchSetId": 5
