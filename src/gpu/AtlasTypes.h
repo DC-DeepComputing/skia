@@ -462,9 +462,8 @@ public:
     bool addRect(int width, int height, AtlasLocator* atlasLocator);
     void* dataAt(const AtlasLocator& atlasLocator);
     void copySubImage(const AtlasLocator& atlasLocator, const void* image);
-    // Reset Pixmap to point to backing data for this Plot,
-    // and return render location specified by AtlasLocator but relative to this Plot.
-    SkIPoint prepForRender(const AtlasLocator&, SkAutoPixmapStorage*);
+    // Reset Pixmap to point to backing data for this Plot, at location specified by AtlasLocator
+    void prepForRender(const AtlasLocator&, SkAutoPixmapStorage*);
     // TODO: Utility method for Ganesh, consider removing
     bool addSubImage(int width, int height, const void* image, AtlasLocator* atlasLocator);
 

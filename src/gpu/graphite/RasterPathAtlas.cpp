@@ -103,14 +103,14 @@ bool RasterPathAtlas::RasterAtlasMgr::onAddToAtlas(const Shape& shape,
     // and hence the position we render at will be relative to that Plot.
     // The value of outPos is relative to the entire texture, to be used for texture coords.
     SkAutoPixmapStorage dst;
-    SkIPoint renderPos = fDrawAtlas->prepForRender(locator, &dst);
+    fDrawAtlas->prepForRender(locator, &dst);
 
     RasterMaskHelper helper(&dst);
     if (!helper.init(fDrawAtlas->plotSize(), transformedMaskOffset)) {
         return false;
     }
     // Offset to plot location and draw
-    shapeBounds.offset(renderPos.x()+kEntryPadding, renderPos.y()+kEntryPadding);
+    shapeBounds.offset(kEntryPadding, kEntryPadding);
     helper.drawShape(shape, localToDevice, strokeRec, shapeBounds);
 
     return true;

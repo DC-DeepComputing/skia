@@ -169,7 +169,7 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
     // and hence the position we render at will be relative to that Plot.
     // The value of outPos is relative to the entire texture, to be used for texture coords.
     SkAutoPixmapStorage dst;
-    SkIPoint renderPos = fDrawAtlas->prepForRender(*locator, &dst);
+    fDrawAtlas->prepForRender(*locator, &dst);
 
     // This will remove the base integer translation from each element's transform
     Rect iBounds = bounds.makeRoundOut();
@@ -179,7 +179,7 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
     }
 
     // Offset to plot location and draw
-    iShapeBounds.offset(renderPos.x() + kEntryPadding, renderPos.y() + kEntryPadding);
+    iShapeBounds.offset(kEntryPadding, kEntryPadding);
 
     SkASSERT(!elementsForMask->empty());
     for (int i = 0; i < elementsForMask->size(); ++i) {
