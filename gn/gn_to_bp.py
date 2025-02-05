@@ -275,7 +275,6 @@ cc_defaults {
     target: {
       android: {
         shared_libs: [
-            "libheif",
             "libmediandk", // Needed to link libcrabbyavif_ffi in some configurations.
         ],
         whole_static_libs: [
@@ -496,12 +495,11 @@ def generate_args(target_os, enable_gpu, renderengine = False):
     d['win_sdk_version'] = '"placeholder_version"'
     d['win_toolchain_version'] = '"placeholder_version"'
 
+  d['skia_use_libheif']  = 'false'
   if target_os == '"android"' and not renderengine:
-    d['skia_use_libheif']  = 'true'
     d['skia_use_crabbyavif'] = 'true'
     d['skia_use_jpeg_gainmaps'] = 'true'
   else:
-    d['skia_use_libheif']  = 'false'
     d['skia_use_crabbyavif'] = 'false'
 
   if renderengine:
