@@ -15,7 +15,7 @@ fi
 
 # Location on the ios device where all data are stored. This is
 # relative to the mount point.
-IOS_DOCS_DIR="Documents"
+IOS_DOCS_DIR="/Documents"
 
 # Directory with the Skia source.
 SKIA_SRC_DIR=$(cd "${SCRIPT_DIR}/../../.."; pwd)
@@ -49,13 +49,11 @@ ios_mkdir() {
 }
 
 ios_cat() {
-  local TARGET="$IOS_MOUNT_POINT/$IOS_DOCS_DIR/$1"
-  >&2 echo "target: '${TARGET}''"
-  ios_mount
-  RET="$( cat ${TARGET} )"
-  ios_umount
-  >&2 echo "Result: '${RET}'"
-  echo -e "${RET}"
+  local TARGET="$IOS_DOCS_DIR/$1"
+  TMP="$(mktemp)"
+  ios_pull "$TARGET" "$TMP"
+  cat "$TMP"
+  rm "$TMP"
 }
 
 # ios_mount: mounts the iOS device for reading or writing.
@@ -96,79 +94,23 @@ ios_restart() {
 # The path is relative to the 'Documents' folder on the device.
 ios_pull() {
   # read input params
-  local IOS_SRC="$IOS_MOUNT_POINT/$IOS_DOCS_DIR/$1"
+  local IOS_SRC="$IOS_DOCS_DIR/$1"
   local HOST_DST="$2"
 
-  ios_mount
-  if [[ -d "${HOST_DST}" ]]; then
-    cp -r "$IOS_SRC/." "$HOST_DST"
-  else
-    cp -r "$IOS_SRC" "$HOST_DST"
-  fi
-  ios_umount
+  idevicefs pull "$IOS_SRC" "$HOST_DST"
 }
 
 # ios_push(host_src, ios_dst)
 ios_push() {
   # read input params
   local HOST_SRC="$1"
-  local IOS_DST="$IOS_MOUNT_POINT/$IOS_DOCS_DIR/$2"
+  local IOS_DST="$IOS_DOCS_DIR/$2"
 
-  ios_mount
-  rm -rf $IOS_DST
-  mkdir -p "$(dirname $IOS_DST)"
-  cp -r -L "$HOST_SRC" "$IOS_DST"
-  ios_umount
+  idevicefs push "$HOST_SRC" "$IOS_DST"
 }
 
 ios_path_exists() {
-  local TARGET_PATH="$IOS_MOUNT_POINT/$IOS_DOCS_DIR/$1"
-  local RET=1
-  ios_mount
-  if [[ -e $TARGET_PATH ]]; then
-    RET=0
-  fi
-  ios_umount
-  return $RET
+  local TARGET_PATH="$IOS_DOCS_DIR/$1"
+  idevicefs ls "$TARGET_PATH" > /dev/null
+  return $?
 }
-
-#   ANDROID_LS=`$ADB $DEVICE_SERIAL shell ls -ld $ANDROID_DST`
-#   HOST_LS=`ls -ld $HOST_SRC`
-#   if [ "${ANDROID_LS:0:1}" == "d" -a "${HOST_LS:0:1}" == "-" ];
-#   then
-#     ANDROID_DST="${ANDROID_DST}/$(basename ${HOST_SRC})"
-#   fi
-
-
-#   ANDROID_LS=`$ADB $DEVICE_SERIAL shell ls -ld $ANDROID_DST`
-#   if [ "${ANDROID_LS:0:1}" == "-" ]; then
-#     #get the MD5 for dst and src
-#     ANDROID_MD5=`$ADB $DEVICE_SERIAL shell md5 $ANDROID_DST`
-#     if [ $(uname) == "Darwin" ]; then
-#       HOST_MD5=`md5 -q $HOST_SRC`
-#     else
-#       HOST_MD5=`md5sum $HOST_SRC`
-#     fi
-
-#     if [ "${ANDROID_MD5:0:32}" != "${HOST_MD5:0:32}" ]; then
-#       echo -n "$ANDROID_DST "
-#       $ADB $DEVICE_SERIAL push $HOST_SRC $ANDROID_DST
-#     fi
-#   elif [ "${ANDROID_LS:0:1}" == "d" ]; then
-#     for FILE_ITEM in `ls $HOST_SRC`; do
-#       adb_push_if_needed "${HOST_SRC}/${FILE_ITEM}" "${ANDROID_DST}/${FILE_ITEM}"
-#     done
-#   else
-#     HOST_LS=`ls -ld $HOST_SRC`
-#     if [ "${HOST_LS:0:1}" == "d" ]; then
-#       $ADB $DEVICE_SERIAL shell mkdir -p $ANDROID_DST
-#       adb_push_if_needed $HOST_SRC $ANDROID_DST
-#     else
-#       echo -n "$ANDROID_DST "
-#       $ADB $DEVICE_SERIAL shell mkdir -p "$(dirname "$ANDROID_DST")"
-#       $ADB $DEVICE_SERIAL push $HOST_SRC $ANDROID_DST
-#     fi
-#   fi
-# }
-
-# setup_device "${DEVICE_ID}"
