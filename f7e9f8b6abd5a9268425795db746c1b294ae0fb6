@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e67100c5_865494aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-05T19:08:40Z",
+      "side": 1,
+      "message": "Step 1 of having Vulkan intelligently decide whether or not to read from the dst texture as an input attachment.",
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
