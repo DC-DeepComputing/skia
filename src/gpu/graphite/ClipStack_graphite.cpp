@@ -1401,13 +1401,15 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         SkASSERT(clipAtlas);
         AtlasClip* atlasClip = &nonMSAAClip.fAtlasClip;
 
+        Rect maskBounds = cs.outerBounds();
+        maskBounds.roundOut();
         const TextureProxy* proxy = clipAtlas->findOrCreateEntry(cs.genID(),
                                                                  outEffectiveElements,
-                                                                 cs.outerBounds(),
+                                                                 maskBounds,
                                                                  &atlasClip->fOutPos);
         if (proxy) {
             // Add to Clip
-            atlasClip->fMaskBounds = scissor;
+            atlasClip->fMaskBounds = maskBounds;
             atlasClip->fAtlasTexture = sk_ref_sp(proxy);
 
             // Elements are represented in the clip atlas, discard.
