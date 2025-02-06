@@ -16,6 +16,24 @@
       "message": "This change has had a strange effect on NativeFonts_PDF blurSmallRadii (currently at https://gold.skia.org/search?left_filter\u003dextra_config%3DNativeFonts_PDF\u0026not_at_head\u003dtrue ). The blur appears to go missing at small text sizes, though I\u0027m not sure why the draw size of the canvas changed.\n\n\nbefore this change:\nhttps://gold.skia.org/detail?grouping\u003dname%3DblurSmallRadii%26source_type%3Dgm\u0026digest\u003d0346ff9d713e1ab2baa4f5f75bcf8011\nhttps://gold.skia.org/img/images/0346ff9d713e1ab2baa4f5f75bcf8011.png\n\n\nafter this change: https://gold.skia.org/detail?grouping\u003dname%3DblurSmallRadii%26source_type%3Dgm\u0026digest\u003d9d337fd1742826fb8264789309615ab4\nhttps://gold.skia.org/img/images/9d337fd1742826fb8264789309615ab4.png",
       "revId": "250db6adf0952bfaacd1d346ebda4564665209ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31c47507_15f2be8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-06T21:28:26Z",
+      "side": 1,
+      "message": "Ah, I see that this change modified blurSmallRadii to add the .25 case and changed the size fo the canvas. Gold just hadn\u0027t caught up yet to compare with the newer images being produced elsewhere.",
+      "parentUuid": "14e4af55_0b115bd1",
+      "revId": "250db6adf0952bfaacd1d346ebda4564665209ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
