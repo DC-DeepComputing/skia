@@ -16,6 +16,24 @@
       "message": "In general, we don\u0027t attempt to handle allocation failures in Skia, just treat them as critical failures and crash.  Mainly because recovery is infeasible when the allocator is truly running OOM, and the complexity of adding an error path is just not worth it if the client is about to crash anyway.  This is even more true for fuzzers, which will always find ways to trigger unreasonable allocations.\n\nThen again, codecs already have an error reporting mechanism and it doesn\u0027t hurt to pass control back to the client.",
       "revId": "fa81a91e3920c90d6b617f09de521558e83915b7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "564f5089_094b2ab8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-06T16:06:25Z",
+      "side": 1,
+      "message": "Ack. Will keep this in mind.",
+      "parentUuid": "f50fa3ee_ac2f53ac",
+      "revId": "fa81a91e3920c90d6b617f09de521558e83915b7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
