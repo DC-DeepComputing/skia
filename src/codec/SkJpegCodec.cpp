@@ -517,6 +517,10 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
         return kInternalError;
     }
 
+    // When we have a progressive image, emulate jpeg_start_decompress when buffered_image
+    // is false. We can do this because we never actually have a suspended data stream
+    // (we don't expect more data after calling getPixels), just want to avoid failing when
+    // there is no EOI marker.
     if (isProgressive) {
       // Keep consuming input until we can't anymore, and only output/read scanlines
       // if there is at least one valid output.
@@ -535,12 +539,15 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
         }
       }
       if (last_scan_completed >  0) {
+        // Call output_pass_setup
         jpeg_start_output(dinfo, last_scan_completed);
+        dinfo->global_state = /* DSTATE_SCANNING */ 205;
+        dinfo->buffered_image = FALSE;
+
         int rows = 0;
          SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
                                                      dstInfo.height(), options, &rows);
-         // Checks if scan was called too many times to not stall the decoder.
-         jpeg_finish_output(dinfo);
+         // readResult indicates if scan was called too many times to not stall the decoder.
          if (readResult != kSuccess) {
             return fDecoderMgr->returnFailure("readRows", readResult);
          }
