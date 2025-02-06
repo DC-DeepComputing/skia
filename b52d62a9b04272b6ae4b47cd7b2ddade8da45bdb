@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f251a9bf_b8488492",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 1652,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-06T16:53:16Z",
+      "side": 1,
+      "message": "Had to comment out more of this so we can avoid compiler warnings about unused variables.",
+      "range": {
+        "startLine": 1640,
+        "startChar": 0,
+        "endLine": 1652,
+        "endChar": 44
+      },
+      "revId": "b52d62a9b04272b6ae4b47cd7b2ddade8da45bdb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

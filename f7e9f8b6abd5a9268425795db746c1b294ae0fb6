@@ -64,6 +64,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29271d84_9cb8e2bf",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-06T16:53:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aade9e5f_524d2c18",
+      "range": {
+        "startLine": 106,
+        "startChar": 9,
+        "endLine": 106,
+        "endChar": 35
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f07184a_4fec2987",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-06T16:53:16Z",
+      "side": 1,
+      "message": "Yes `DrawContext` has already been determined at that point. In other areas where we call `RenderPassDesc::Make` (some Caps files, precompile etc.), we will simply be using caps \u0026 texture info to determine it when calling `Make` (which must be passed in regardless). It makes sense though that if it\u0027s already determined that we should be able to pass it in. Done",
+      "parentUuid": "e9bc9504_418c7f4f",
+      "range": {
+        "startLine": 106,
+        "startChar": 38,
+        "endLine": 106,
+        "endChar": 75
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d322ad4_fd494d1b",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-02-06T14:54:56Z",
       "side": 1,
       "message": "Use GetVkUsageFlags instead here. It avoids copying all the data into a TextureInfo",
+      "range": {
+        "startLine": 1617,
+        "startChar": 26,
+        "endLine": 1617,
+        "endChar": 46
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01df3cd2_e990f4fe",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1617,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-06T16:53:16Z",
+      "side": 1,
+      "message": "Good call; much cleaner.",
+      "parentUuid": "4d322ad4_fd494d1b",
       "range": {
         "startLine": 1617,
         "startChar": 26,
