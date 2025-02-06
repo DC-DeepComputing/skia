@@ -464,23 +464,23 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     return true;
 }
 
-bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTexture& resolveTexture)
-{
+bool VulkanCommandBuffer::updateAndBindInputAttachment(const VulkanTexture& texture,
+                                                       const int setIdx) {
     // Fetch a descriptor set that contains one input attachment
-    STArray<1, DescriptorData> inputDescriptors =
-            {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+    STArray<1, DescriptorData> inputDesc = {VulkanGraphicsPipeline::kInputAttachmentDescriptor};
     sk_sp<VulkanDescriptorSet> set = fResourceProvider->findOrCreateDescriptorSet(
-            SkSpan<DescriptorData>{&inputDescriptors.front(), inputDescriptors.size()});
+            SkSpan<DescriptorData>{&inputDesc.front(), inputDesc.size()});
     if (!set) {
         return false;
     }
 
+    // Update and write to the descriptor given the provided texture
     VkDescriptorImageInfo textureInfo;
     memset(&textureInfo, 0, sizeof(VkDescriptorImageInfo));
     textureInfo.sampler = VK_NULL_HANDLE;
     textureInfo.imageView =
-            resolveTexture.getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-    textureInfo.imageLayout = resolveTexture.currentLayout();
+            texture.getImageView(VulkanImageView::Usage::kAttachment)->imageView();
+    textureInfo.imageLayout = texture.currentLayout();
 
     VkWriteDescriptorSet writeInfo;
     memset(&writeInfo, 0, sizeof(VkWriteDescriptorSet));
@@ -502,11 +502,12 @@ bool VulkanCommandBuffer::updateAndBindLoadMSAAInputAttachment(const VulkanTextu
                                      /*descriptorCopyCount=*/0,
                                      /*pDescriptorCopies=*/nullptr));
 
+    // Finally, bind the descriptor
     VULKAN_CALL(fSharedContext->interface(),
                 CmdBindDescriptorSets(fPrimaryCommandBuffer,
                                       VK_PIPELINE_BIND_POINT_GRAPHICS,
                                       fActiveGraphicsPipeline->layout(),
-                                      VulkanGraphicsPipeline::kInputAttachmentDescSetIndex,
+                                      setIdx,
                                       /*setCount=*/1,
                                       set->descriptorSet(),
                                       /*dynamicOffsetCount=*/0,
@@ -558,7 +559,8 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
 
     this->setScissor(SkIRect::MakeXYWH(0, 0, dstDimensions.width(), dstDimensions.height()));
 
-    if (!this->updateAndBindLoadMSAAInputAttachment(resolveTexture)) {
+    if (!this->updateAndBindInputAttachment(
+                resolveTexture, VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex)) {
         SKGPU_LOG_E("Unable to update and bind an input attachment descriptor for loading MSAA "
                     "from resolve");
         return false;
@@ -1690,7 +1692,7 @@ void VulkanCommandBuffer::pipelineBarrier(const Resource* resource,
                                           VkPipelineStageFlags srcStageMask,
                                           VkPipelineStageFlags dstStageMask,
                                           bool byRegion,
-                                          BarrierType barrierType,
+                                          PipelineBarrierType barrierType,
                                           void* barrier) {
     // TODO: Do we need to handle wrapped command buffers?
     // SkASSERT(!this->isWrapped());
