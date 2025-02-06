@@ -96,13 +96,14 @@ def compile_fn(api, checkout_root, out_dir):
             cmd=['python3', skia_dir.joinpath('bin', 'fetch-ninja')],
             infra_step=True)
 
-  if os == 'Mac' or os == 'Mac10.15.7':
+  mac_os_versions = ('Mac', 'Mac10.15.7', 'Mac14')
+  if os in mac_os_versions:
     # XCode build is listed in parentheses after the version at
     # https://developer.apple.com/news/releases/, or on Wikipedia here:
     # https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
     # Use lowercase letters.
     # https://chrome-infra-packages.appspot.com/p/infra_internal/ios/xcode
-    XCODE_BUILD_VERSION = '16a242d' # Xcode 16.0
+    XCODE_BUILD_VERSION = '16c5032a' # Xcode 16.2
     extra_cflags.append(
         '-DREBUILD_IF_CHANGED_xcode_build_version=%s' % XCODE_BUILD_VERSION)
     mac_toolchain_cmd = api.vars.workdir.joinpath(
@@ -125,22 +126,24 @@ def compile_fn(api, checkout_root, out_dir):
       api.step('install xcode', install_xcode_cmd)
       api.step('select xcode', [
           'sudo', 'xcode-select', '-switch', xcode_app_path])
-      if 'iOS' in extra_tokens:
-        if 'iOS12' in extra_tokens:
-          # Ganesh has a lower minimum iOS version than Graphite but there are dedicated jobs that
-          # test with the lower SDK.
-          env['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-          args['ios_min_target'] = '"12.0"'
-        else:
-          env['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-          args['ios_min_target'] = '"13.0"'
+      if 'iOS12' in extra_tokens:
+        # Ganesh has a lower minimum iOS version than Graphite but there are dedicated jobs that
+        # test with the lower SDK.
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+        args['ios_min_target'] = '"12.0"'
+      elif 'iOS18' in extra_tokens:
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
+        args['ios_min_target'] = '"18.0"'
+      elif 'iOS' in extra_tokens:
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        args['ios_min_target'] = '"13.0"'
 
       else:
         # We have some machines on 10.15.
         env['MACOSX_DEPLOYMENT_TARGET'] = '10.15'
 
   # ccache + clang-tidy.sh chokes on the argument list.
-  if (api.vars.is_linux or os == 'Mac' or os == 'Mac10.15.5' or os == 'Mac10.15.7') and 'Tidy' not in extra_tokens:
+  if (api.vars.is_linux or os in ('Mac', 'Mac10.15.5', 'Mac10.15.7', 'Mac14')) and 'Tidy' not in extra_tokens:
     if api.vars.is_linux:
       ccache = api.vars.workdir.joinpath('ccache_linux', 'bin', 'ccache')
       # As of 2020-02-07, the sum of each Debian10-Clang-x86
@@ -318,7 +321,7 @@ def compile_fn(api, checkout_root, out_dir):
   if 'Metal' in extra_tokens and not 'Dawn' in extra_tokens:
     args['skia_use_metal'] = 'true'
     args['skia_use_gl'] = 'false'
-  if 'iOS' in extra_tokens:
+  if 'iOS' in extra_tokens or 'iOS18' in extra_tokens:  # TODO(borenet)
     # Bots use Chromium signing cert.
     args['skia_ios_identity'] = '".*83FNP.*"'
     # Get mobileprovision via the CIPD package.
@@ -352,7 +355,7 @@ def compile_fn(api, checkout_root, out_dir):
     'cxx': cxx,
     'sanitize': sanitize,
     'target_cpu': target_arch,
-    'target_os': 'ios' if 'iOS' in extra_tokens else '',
+    'target_os': 'ios' if ('iOS' in extra_tokens or 'iOS18' in extra_tokens) else '',
     'win_sdk': win_toolchain + '/win_sdk' if 'Win' in os else '',
     'win_vc': win_toolchain + '/VC' if 'Win' in os else '',
     'skia_dwritecore_sdk': dwritecore if 'DWriteCore' in extra_tokens else '',

@@ -100,6 +100,7 @@ TEST_BUILDERS = [
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-TSAN',
   'Test-Debian10-Clang-GCE-GPU-SwiftShader-x86_64-Debug-All-SwiftShader',
   'Test-Debian10-Clang-NUC7i5BNK-GPU-IntelIris640-x86_64-Debug-All-Vulkan',
+  'Test-iOS18-Clang-iPhone15Pro-GPU-AppleA17-arm64-Debug-All',
   'Test-Mac10.13-Clang-MacBookPro11.5-CPU-AVX2-x86_64-Debug-All-ASAN',
   ('Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Release-All'
    '-Valgrind_AbandonGpuContext_SK_CPU_LIMIT_SSE41'),
@@ -190,11 +191,23 @@ def GenTests(api):
       api.step_data(fail_step_name + ' (attempt 3)', retcode=1)
   )
 
-  builder = 'Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Release-All'
+  ios_builder = 'Test-iOS-Clang-iPhone7-GPU-PowerVRGT7600-arm64-Release-All'
   fail_step_name = 'install dm'
   yield (
       api.test('retry_ios_install') +
-      api.properties(buildername=builder,
+      api.properties(buildername=ios_builder,
+                     repository='https://skia.googlesource.com/skia.git',
+                     revision='abc123',
+                     path_config='kitchen',
+                     swarm_out_dir='[SWARM_OUT_DIR]') +
+      api.step_data(fail_step_name, retcode=1)
+  )
+
+  ios18_builder = 'Test-iOS18-Clang-iPhone15-GPU-PowerVRGT7600-arm64-Release-All'
+  fail_step_name = 'install dm'
+  yield (
+      api.test('retry_ios18_install') +
+      api.properties(buildername=ios18_builder,
                      repository='https://skia.googlesource.com/skia.git',
                      revision='abc123',
                      path_config='kitchen',
@@ -204,7 +217,7 @@ def GenTests(api):
 
   yield (
       api.test('retry_ios_install_retries_exhausted') +
-      api.properties(buildername=builder,
+      api.properties(buildername=ios_builder,
                      repository='https://skia.googlesource.com/skia.git',
                      revision='abc123',
                      path_config='kitchen',
@@ -215,7 +228,16 @@ def GenTests(api):
   fail_step_name = 'dm'
   yield (
       api.test('ios_rerun_with_debug') +
-      api.properties(buildername=builder,
+      api.properties(buildername=ios_builder,
+                     repository='https://skia.googlesource.com/skia.git',
+                     revision='abc123',
+                     path_config='kitchen',
+                     swarm_out_dir='[SWARM_OUT_DIR]') +
+      api.step_data(fail_step_name, retcode=1)
+  )
+  yield (
+      api.test('ios18_rerun_with_debug') +
+      api.properties(buildername=ios18_builder,
                      repository='https://skia.googlesource.com/skia.git',
                      revision='abc123',
                      path_config='kitchen',
