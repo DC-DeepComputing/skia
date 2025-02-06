@@ -108,13 +108,6 @@ public:
     }
 
     /**
-     *  Special method just to identify the null blitter, which is returned
-     *  from Choose() if the request cannot be fulfilled. Default impl
-     *  returns false.
-     */
-    virtual bool isNullBlitter() const;
-
-    /**
      * Special methods for blitters that can blit more than one row at a time.
      * This function returns the number of rows that this blitter could optimally
      * process at a time. It is still required to support blitting one scanline
@@ -168,12 +161,11 @@ protected:
 */
 class SkNullBlitter : public SkBlitter {
 public:
-    void blitH(int x, int y, int width) override;
-    void blitAntiH(int x, int y, const SkAlpha[], const int16_t runs[]) override;
-    void blitV(int x, int y, int height, SkAlpha alpha) override;
-    void blitRect(int x, int y, int width, int height) override;
-    void blitMask(const SkMask&, const SkIRect& clip) override;
-    bool isNullBlitter() const override;
+    void blitH(int x, int y, int width) override {}
+    void blitAntiH(int x, int y, const SkAlpha[], const int16_t runs[]) override {}
+    void blitV(int x, int y, int height, SkAlpha alpha) override {}
+    void blitRect(int x, int y, int width, int height) override {}
+    void blitMask(const SkMask&, const SkIRect& clip) override {}
 };
 
 /** Wraps another (real) blitter, and ensures that the real blitter is only
