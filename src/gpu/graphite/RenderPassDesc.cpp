@@ -41,7 +41,8 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     SkEnumBitMask<DepthStencilFlags> depthStencilFlags,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
-                                    Swizzle writeSwizzle) {
+                                    Swizzle writeSwizzle,
+                                    const DstReadStrategy targetReadStrategy) {
     RenderPassDesc desc;
     desc.fWriteSwizzle = writeSwizzle;
     desc.fSampleCount = 1;
@@ -100,6 +101,11 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fClearStencil = 0;
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
+
+    // Should a dst read be required later on, record what dst read strategy should be used. Must be
+    // a valid strategy.
+    SkASSERT(targetReadStrategy != DstReadStrategy::kNoneRequired);
+    desc.fDstReadStrategyIfRequired = targetReadStrategy;
 
     return desc;
 }

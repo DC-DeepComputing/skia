@@ -483,17 +483,26 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                              UniquePaintParamsID paintID,
                                              bool useStorageBuffers,
                                              skgpu::Swizzle writeSwizzle,
+                                             DstReadStrategy dstReadStrategyIfRequired,
                                              skia_private::TArray<SamplerDesc>* outDescs) {
     const char* shadingSsboIndex =
             useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
-    std::unique_ptr<ShaderInfo> result =
-            std::unique_ptr<ShaderInfo>(new ShaderInfo(rteDict, shadingSsboIndex));
+
+    // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
+    const bool hasFragShader = paintID.isValid();
+
+    // Each ShaderInfo is responsible for determining whether or not a dst read is required. This
+    // generally occurs while generating the frag shader, but if we do not use one, then we know we
+    // do not need to read the dst texture and can assign the DstReadStrategy to kNoneRequired.
+    auto result = std::unique_ptr<ShaderInfo>(
+            new ShaderInfo(rteDict,
+                           shadingSsboIndex,
+                           hasFragShader ? dstReadStrategyIfRequired
+                                         : DstReadStrategy::kNoneRequired));
 
     // The fragment shader must be generated before the vertex shader, because we determine
     // properties of the entire program while generating the fragment shader.
-
-    // If paintID is not valid this is a depth-only draw and there's no fragment shader to compile.
-    if (paintID.isValid()) {
+    if (hasFragShader) {
         result->generateFragmentSkSL(caps,
                                      dict,
                                      step,
@@ -510,8 +519,12 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     return result;
 }
 
-ShaderInfo::ShaderInfo(const RuntimeEffectDictionary* rteDict, const char* ssboIndex)
-        : fRuntimeEffectDictionary(rteDict), fSsboIndex(ssboIndex) {}
+ShaderInfo::ShaderInfo(const RuntimeEffectDictionary* rteDict,
+                       const char* ssboIndex,
+                       DstReadStrategy dstReadStrategy)
+        : fRuntimeEffectDictionary(rteDict)
+        , fSsboIndex(ssboIndex)
+        , fDstReadStrategy(dstReadStrategy) {}
 
 // The current, incomplete, model for shader construction is:
 //   - Static code snippets (which can have an arbitrary signature) live in the Graphite
@@ -602,11 +615,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         }
     }
 
+    // The passed-in dstReadStrategy should only be used iff it is determined one is needed. If not,
+    // then manually assign fDstReadStrategy to kNoneRequired. ShaderInfo's dst read strategy
+    // informs the pipeline's via PipelineInfo created w/ shader info.
     bool dstReadRequired = IsDstReadRequired(caps, finalBlendMode, finalCoverage);
-    // TODO(b/390457657): Consult a DstReadStrategy attribute rather than querying Caps. The method
-    // used to do so will eventually require target texture information which is not accessible here
-    fDstReadStrategy =
-            dstReadRequired ? caps->getDstReadStrategy() : DstReadStrategy::kNoneRequired;
+    if (!dstReadRequired) {
+        fDstReadStrategy = DstReadStrategy::kNoneRequired;
+    }
 
     // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild.
     SkASSERTF_RELEASE(finalBlendMode.has_value() || dstReadRequired,
