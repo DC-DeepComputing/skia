@@ -201,6 +201,11 @@ SkRuntimeEffect* make_matrix_conv_effect(MatrixConvolutionImpl impl,
 
 } // anonymous namespace
 
+bool IsSkiaKnownRuntimeEffect(uint32_t candidate) {
+    return (candidate >= static_cast<uint32_t>(StableKey::kStart) &&
+            candidate <= static_cast<uint32_t>(StableKey::kLast));
+}
+
 const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey stableKey) {
     SkRuntimeEffect::Options options;
     SkRuntimeEffectPriv::SetStableKey(&options, static_cast<uint32_t>(stableKey));
