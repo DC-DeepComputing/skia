@@ -444,6 +444,11 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 this->drawIndexedIndirect(draw->fType);
                 break;
             }
+            case DrawPassCommands::Type::kAddBarrier: {
+                // Graphite/Metal does not support the addition of barriers.
+                SkASSERT(false);
+                break;
+            }
         }
     }
 }

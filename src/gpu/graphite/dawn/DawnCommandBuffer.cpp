@@ -654,6 +654,11 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                 this->drawIndexedIndirect(draw->fType);
                 break;
             }
+            case DrawPassCommands::Type::kAddBarrier: {
+                // Graphite/Dawn does not support the addition of barriers.
+                SkASSERT(false);
+                break;
+            }
         }
     }
 
