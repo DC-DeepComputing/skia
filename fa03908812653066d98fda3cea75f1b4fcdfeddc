@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08a1e721_36c458d0",
+        "filename": "src/ports/SkFontMgr_fontconfig.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-06T18:54:17Z",
+      "side": 1,
+      "message": "That isn\u0027t right...",
+      "range": {
+        "startLine": 540,
+        "startChar": 28,
+        "endLine": 540,
+        "endChar": 63
+      },
+      "revId": "fa03908812653066d98fda3cea75f1b4fcdfeddc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
