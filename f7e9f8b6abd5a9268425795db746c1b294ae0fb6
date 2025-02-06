@@ -16,6 +16,75 @@
       "message": "Step 1 of having Vulkan intelligently decide whether or not to read from the dst texture as an input attachment.",
       "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9bc9504_418c7f4f",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-06T14:54:56Z",
+      "side": 1,
+      "message": "I see that we also make this caps query up in DrawContext and store it there. Should we just pass the value into the RenderPassDesc::make?",
+      "range": {
+        "startLine": 106,
+        "startChar": 38,
+        "endLine": 106,
+        "endChar": 75
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aade9e5f_524d2c18",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-06T14:54:56Z",
+      "side": 1,
+      "message": "Should we assert that this is never kNoneRequired?",
+      "range": {
+        "startLine": 106,
+        "startChar": 9,
+        "endLine": 106,
+        "endChar": 35
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d322ad4_fd494d1b",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 1617,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-06T14:54:56Z",
+      "side": 1,
+      "message": "Use GetVkUsageFlags instead here. It avoids copying all the data into a TextureInfo",
+      "range": {
+        "startLine": 1617,
+        "startChar": 26,
+        "endLine": 1617,
+        "endChar": 46
+      },
+      "revId": "f7e9f8b6abd5a9268425795db746c1b294ae0fb6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
