@@ -571,6 +571,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     const bool rebindTexturesOnPipelineChange =
             caps->getDstReadStrategy(target->textureInfo()) == DstReadStrategy::kTextureCopy;
 
+    // If reading from the dst texture as an input attachment, issue a draw command so backend
+    // command buffers can add the appropriate barrier.
+    if (caps->getDstReadStrategy(target->textureInfo()) == DstReadStrategy::kReadFromInput) {
+        drawPass->fCommandList.addBarrier(BarrierType::kReadDstFromInput);
+    }
+
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
@@ -595,6 +601,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                  key.textureBindingIndex() != TextureBindingCache::kInvalidIndex);
         const SkIRect* newScissor        = draw.fDrawParams.clip().scissor() != lastScissor ?
                 &draw.fDrawParams.clip().scissor() : nullptr;
+
+        // TODO(b/393382700): Check whether a draw uses an advanced noncoherent blend mode. If so,
+        // that draw must not be grouped with draws that read from the dst texture since those
+        // requirements are mutually exclusive. We would also need to issue append an addBarrier
+        // command to the command list with BarrierType::kAdvancedNoncoherentBlend.
 
         const bool stateChange = geomBindingChange ||
                                  shadingBindingChange ||
