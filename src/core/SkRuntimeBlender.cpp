@@ -15,6 +15,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkWriteBuffer.h"
@@ -31,21 +32,48 @@ using namespace skia_private;
     constexpr bool kLenientSkSLDeserialization = false;
 #endif
 
+void SkRuntimeBlender::flatten(SkWriteBuffer& buffer) const {
+    if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey)) {
+        // We only serialize Skia-internal stableKeys. First party stable keys are not serialized.
+        buffer.write32(fEffect->fStableKey);
+    } else {
+        buffer.write32(0);
+        buffer.writeString(fEffect->source().c_str());
+    }
+    buffer.writeDataAsByteArray(fUniforms.get());
+    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
+}
+
 sk_sp<SkFlattenable> SkRuntimeBlender::CreateProc(SkReadBuffer& buffer) {
     if (!buffer.validate(buffer.allowSkSL())) {
         return nullptr;
     }
 
-    SkString sksl;
-    buffer.readString(&sksl);
-    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
+    bool gotValidStableKey = false;
+    SkKnownRuntimeEffects::StableKey stableKey = SkKnownRuntimeEffects::StableKey::kInvalid;
+    if (!buffer.isVersionLT(SkPicturePriv::kSerializeStableKeys)) {
+        uint32_t tmp = buffer.readUInt();
+        if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(tmp)) {
+            stableKey = static_cast<SkKnownRuntimeEffects::StableKey>(tmp);
+            gotValidStableKey = true;
+        }
+    }
 
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForBlender, std::move(sksl));
+    sk_sp<SkRuntimeEffect> effect;
+    if (gotValidStableKey) {
+        effect = sk_ref_sp(GetKnownRuntimeEffect(stableKey));
+    } else {
+        SkString sksl;
+        buffer.readString(&sksl);
+        effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForBlender, std::move(sksl));
+    }
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {
             return nullptr;
         }
     }
+
+    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
     STArray<4, SkRuntimeEffect::ChildPtr> children;
     if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect.get(), &children)) {
@@ -83,10 +111,3 @@ bool SkRuntimeBlender::onAppendStages(const SkStageRec& rec) const {
     }
     return false;
 }
-
-void SkRuntimeBlender::flatten(SkWriteBuffer& buffer) const {
-    buffer.writeString(fEffect->source().c_str());
-    buffer.writeDataAsByteArray(fUniforms.get());
-    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
-}
-
