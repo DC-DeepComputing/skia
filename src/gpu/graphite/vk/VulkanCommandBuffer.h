@@ -17,11 +17,11 @@
 
 namespace skgpu::graphite {
 
+class Buffer;
 class VulkanBuffer;
 class VulkanDescriptorSet;
 class VulkanSharedContext;
 class VulkanTexture;
-class Buffer;
 
 class VulkanCommandBuffer final : public CommandBuffer {
 public:
@@ -96,6 +96,7 @@ private:
     void recordTextureAndSamplerDescSet(
             const DrawPass*, const DrawPassCommands::BindTexturesAndSamplers*);
 
+    bool updateAndBindInputAttachment(const VulkanTexture&, const int setIdx);
     void bindTextureSamplers();
     void bindUniformBuffers();
     void syncDescriptorSets();
@@ -182,7 +183,6 @@ private:
                              VulkanTexture& resolveTexture,
                              SkISize dstDimensions,
                              SkIRect nativeBounds);
-    bool updateAndBindLoadMSAAInputAttachment(const VulkanTexture& resolveTexture);
     void nextSubpass();
     void setViewport(SkIRect viewport);
 
