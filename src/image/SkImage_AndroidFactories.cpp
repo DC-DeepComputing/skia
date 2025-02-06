@@ -77,7 +77,7 @@ namespace SkImages {
 sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer, SkAlphaType at) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, nullptr,
                                                      kTopLeft_GrSurfaceOrigin);
-    return DeferredFromGenerator(std::move(gen));
+    return DeferredFromTextureGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer,
@@ -85,7 +85,7 @@ sk_sp<SkImage> DeferredFromAHardwareBuffer(AHardwareBuffer* graphicBuffer,
                                            sk_sp<SkColorSpace> cs,
                                            GrSurfaceOrigin surfaceOrigin) {
     auto gen = GrAHardwareBufferImageGenerator::Make(graphicBuffer, at, cs, surfaceOrigin);
-    return DeferredFromGenerator(std::move(gen));
+    return DeferredFromTextureGenerator(std::move(gen));
 }
 
 sk_sp<SkImage> TextureFromAHardwareBufferWithData(GrDirectContext* dContext,
