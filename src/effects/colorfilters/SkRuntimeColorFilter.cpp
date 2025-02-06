@@ -30,6 +30,8 @@
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
+#include "src/core/SkKnownRuntimeEffects.h"
+
 #include <string>
 #include <utility>
 
@@ -73,7 +75,13 @@ bool SkRuntimeColorFilter::onIsAlphaUnchanged() const {
 }
 
 void SkRuntimeColorFilter::flatten(SkWriteBuffer& buffer) const {
-    buffer.writeString(fEffect->source().c_str());
+    if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey)) {
+        // We only serialize Skia-internal stableKeys. First party stable keys are not serialized.
+        buffer.write32(fEffect->fStableKey);
+    } else {
+        buffer.write32(0);
+        buffer.writeString(fEffect->source().c_str());
+    }
     buffer.writeDataAsByteArray(fUniforms.get());
     SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
 }
@@ -85,16 +93,31 @@ sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
         return nullptr;
     }
 
-    SkString sksl;
-    buffer.readString(&sksl);
-    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
+    bool gotValidStableKey = false;
+    SkKnownRuntimeEffects::StableKey stableKey = SkKnownRuntimeEffects::StableKey::kInvalid;
+    if (!buffer.isVersionLT(SkPicturePriv::kSerializeStableKeys)) {
+        uint32_t tmp = buffer.readUInt();
+        if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(tmp)) {
+            stableKey = static_cast<SkKnownRuntimeEffects::StableKey>(tmp);
+            gotValidStableKey = true;
+        }
+    }
 
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
+    sk_sp<SkRuntimeEffect> effect;
+    if (gotValidStableKey) {
+        effect = sk_ref_sp(GetKnownRuntimeEffect(stableKey));
+    } else {
+        SkString sksl;
+        buffer.readString(&sksl);
+        effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
+    }
     if constexpr (!kLenientSkSLDeserialization) {
         if (!buffer.validate(effect != nullptr)) {
             return nullptr;
         }
     }
+
+    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
     skia_private::STArray<4, SkRuntimeEffect::ChildPtr> children;
     if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect.get(), &children)) {
