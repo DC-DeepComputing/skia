@@ -44,10 +44,147 @@
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
-#include <memory>
+#include <atomic>
+#include <mutex>
+#include <thread>
 #include <vector>
-
 #include <stdlib.h>
+#include <dlfcn.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <cstdint>
+
+using ReallocFunctionPtr = void* (*)(void*, size_t);
+using FreeFunctionPtr = void (*)(void*);
+
+constexpr size_t kMaxAllocations = 1 << 20;
+constexpr size_t kMaxReallocHistory = 30; // Fixed size for history
+
+struct AllocationInfo {
+    SkSpinlock history_mutex; // Spinlock for realloc_history
+    void* ptr = nullptr;
+    size_t realloc_count = 0;
+    std::array<size_t, kMaxReallocHistory> history{};
+};
+
+std::array<AllocationInfo, kMaxAllocations> allocations{};
+
+SkSpinlock max_realloc_count_mutex;
+size_t max_realloc_count = 0;
+
+static ReallocFunctionPtr real_realloc = nullptr;
+static FreeFunctionPtr real_free = nullptr;
+
+// Initialization function (call this once before using the wrappers)
+void initialize_allocator_hooks() {
+    real_realloc = reinterpret_cast<ReallocFunctionPtr>(dlsym(RTLD_NEXT, "realloc"));
+    real_free = reinterpret_cast<FreeFunctionPtr>(dlsym(RTLD_NEXT, "free"));
+
+    if (!real_realloc || !real_free) {
+        fprintf(stderr, "Failed to initialize allocator hooks.\r\n");
+        exit(1);
+    }
+}
+
+__attribute__((visibility("default"), noinline))
+void* realloc(void* ptr, size_t size) {
+   if (!real_realloc) { initialize_allocator_hooks(); }
+
+   // Skip reallocations from the nullptr.
+   if (!ptr) {
+       return real_realloc(nullptr, size);
+   }
+
+   if (size > 1 << 15) {
+       fprintf(stderr, "Realloc called with ptr=%p, size=%zu\r\n", ptr, size);
+   }
+
+    for (size_t index = 0; index < kMaxAllocations; ++index) {
+        if (allocations[index].ptr == ptr) {
+            {
+                SkAutoSpinlock lock(allocations[index].history_mutex);
+                if (allocations[index].ptr != ptr) {
+                    index = 0;
+                    continue;
+                }
+
+                void* new_ptr = real_realloc(ptr, size);
+                allocations[index].ptr = new_ptr;
+
+                if (!new_ptr) {
+                    allocations[index].ptr = nullptr;
+                    allocations[index].realloc_count = 0;
+                    allocations[index].history.fill(0);
+                    return nullptr;
+
+                }
+
+                // Ignore small reallocations.
+                if (size <= 1 << 10) {
+                    return new_ptr;
+                }
+
+                // Record the reallocation history in a circular buffer:
+                size_t history_position = allocations[index].realloc_count % kMaxReallocHistory;
+                allocations[index].history[history_position] = size;
+                allocations[index].realloc_count++;
+
+                // Increment the max realloc count if necessary:
+                bool update_max_realloc_count = false;
+                if (allocations[index].realloc_count > max_realloc_count) {
+                    SkAutoSpinlock lock2(max_realloc_count_mutex);
+                    if (allocations[index].realloc_count > max_realloc_count) {
+                        max_realloc_count = allocations[index].realloc_count;
+                        update_max_realloc_count = true;
+                    }
+                }
+
+                // Print the reallocation history if the max realloc count was
+                // updated:
+                if (update_max_realloc_count) {
+                    fprintf(stderr, "Max realloc count updated to %zu, index=%zu\r\n", max_realloc_count, index);
+                    for (size_t i = 0; i < std::min((size_t)kMaxReallocHistory, allocations[index].realloc_count); ++i) { // Print up to max history size
+                        fprintf(stderr, "  Size: %zu\r\n", allocations[index].history[i]);
+                    }
+                }
+                return new_ptr;
+            }
+        }
+    }
+
+    void* new_ptr = real_realloc(ptr, size);
+
+    // Not found, it must be a new one, create a new spot for it:
+    for(size_t index = 0; index < kMaxAllocations; ++index) {
+        if (!allocations[index].ptr) {
+            SkAutoSpinlock lock(allocations[index].history_mutex);
+            if (allocations[index].ptr) {
+                index = 0; // Another thread got there first, try again
+                continue;
+            }
+
+            allocations[index].ptr = new_ptr;
+            allocations[index].realloc_count = 0;
+            allocations[index].history.fill(0);
+        }
+    }
+    return new_ptr;
+}
+
+__attribute__((visibility("default"), noinline))
+void free(void* ptr) {
+    if (!real_free) { initialize_allocator_hooks(); }
+
+    for (size_t index = 0; index < kMaxAllocations; ++index) {
+        if (allocations[index].ptr == ptr) {
+            real_free(ptr);
+            allocations[index].ptr = nullptr;
+            return;
+        }
+    }
+
+    real_free(ptr);
+}
 
 #if defined(SK_GRAPHITE)
     #include "tools/flags/CommonFlagsGraphite.h"
