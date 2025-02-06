@@ -79,8 +79,8 @@ public:
         return effect.hash();
     }
 
-    static uint32_t StableKey(const SkRuntimeEffect& effect) {
-        return effect.fStableKey;
+    static uint32_t StableKey1(const SkRuntimeEffect& effect) {
+        return effect.fStableKey1;
     }
 
     static const SkSL::Program& Program(const SkRuntimeEffect& effect) {
@@ -97,8 +97,8 @@ public:
         options->allowPrivateAccess = true;
     }
 
-    static void SetStableKey(SkRuntimeEffect::Options* options, uint32_t stableKey) {
-        options->fStableKey = stableKey;
+    static void SetStableKey1(SkRuntimeEffect::Options* options, uint32_t stableKey) {
+        options->fStableKey2 = stableKey;
     }
 
     static SkRuntimeEffect::Uniform VarAsUniform(const SkSL::Variable&,

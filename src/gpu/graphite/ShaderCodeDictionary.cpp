@@ -693,9 +693,8 @@ ShaderSnippet ShaderCodeDictionary::convertRuntimeEffect(const SkRuntimeEffect* 
 int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) {
      SkAutoSpinlock lock{fSpinLock};
 
-    if (int stableKey = SkRuntimeEffectPriv::StableKey(*effect)) {
-        SkASSERT(stableKey >= kSkiaKnownRuntimeEffectsStart &&
-                 stableKey < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt);
+    if (int stableKey = SkRuntimeEffectPriv::StableKey1(*effect)) {
+        SkASSERT(IsSkiaKnownRuntimeEffect(stableKey));
 
         int index = stableKey - kSkiaKnownRuntimeEffectsStart;
 

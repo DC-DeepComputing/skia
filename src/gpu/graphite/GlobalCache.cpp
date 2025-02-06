@@ -87,7 +87,7 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
                                                 renderPassDesc);
 
         // Enable this to thoroughly test Pipeline serialization
-#if 0
+#if 1
         {
             // Check that the PipelineDesc round trips through serialization
             GraphicsPipelineDesc readBackPipelineDesc;

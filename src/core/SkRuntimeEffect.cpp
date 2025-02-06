@@ -746,7 +746,7 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                  std::vector<SkSL::SampleUsage>&& sampleUsages,
                                  uint32_t flags)
         : fHash(SkChecksum::Hash32(baseProgram->fSource->c_str(), baseProgram->fSource->size()))
-        , fStableKey(options.fStableKey)
+        , fStableKey1(options.fStableKey2)
         , fBaseProgram(std::move(baseProgram))
         , fMain(main)
         , fUniforms(std::move(uniforms))
@@ -770,8 +770,8 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                sizeof(options.forceUnoptimized), fHash);
     fHash = SkChecksum::Hash32(&options.allowPrivateAccess,
                                sizeof(options.allowPrivateAccess), fHash);
-    fHash = SkChecksum::Hash32(&options.fStableKey,
-                               sizeof(options.fStableKey), fHash);
+    fHash = SkChecksum::Hash32(&options.fStableKey2,
+                               sizeof(options.fStableKey2), fHash);
     fHash = SkChecksum::Hash32(&options.maxVersionAllowed,
                                sizeof(options.maxVersionAllowed), fHash);
 }

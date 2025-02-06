@@ -30,6 +30,8 @@
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/codegen/SkSLRasterPipelineBuilder.h"
 
+#include "src/core/SkKnownRuntimeEffects.h"
+
 #include <string>
 #include <utility>
 
@@ -73,7 +75,10 @@ bool SkRuntimeColorFilter::onIsAlphaUnchanged() const {
 }
 
 void SkRuntimeColorFilter::flatten(SkWriteBuffer& buffer) const {
-    buffer.writeString(fEffect->source().c_str());
+    buffer.write32(fEffect->fStableKey1);
+    if (!SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey1)) {
+        buffer.writeString(fEffect->source().c_str());
+    }
     buffer.writeDataAsByteArray(fUniforms.get());
     SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
 }
@@ -81,34 +86,52 @@ void SkRuntimeColorFilter::flatten(SkWriteBuffer& buffer) const {
 SkRuntimeEffect* SkRuntimeColorFilter::asRuntimeEffect() const { return fEffect.get(); }
 
 sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
+    //$$
     if (!buffer.validate(buffer.allowSkSL())) {
         return nullptr;
     }
 
-    SkString sksl;
-    buffer.readString(&sksl);
-    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
+    bool gotValidStableKey = false;
+    SkKnownRuntimeEffects::StableKey stableKey = SkKnownRuntimeEffects::StableKey::kInvalid;
+    if (!buffer.isVersionLT(SkPicturePriv::kSerializeStableKeys)) {
+        uint32_t tmp = buffer.readUInt();
+        if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(tmp)) {
+            stableKey = static_cast<SkKnownRuntimeEffects::StableKey>(tmp);
+            gotValidStableKey = true;
+        }
+    }
 
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
+    sk_sp<SkRuntimeEffect> effect1;
+    if (gotValidStableKey) {
+        effect1 = sk_ref_sp(GetKnownRuntimeEffect(stableKey));
+    } else {
+        SkString sksl;
+        buffer.readString(&sksl);
+        SkDebugf("CF SkSL:\n%s\n", sksl.c_str());
+
+        effect1 = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForColorFilter, std::move(sksl));
+    }
     if constexpr (!kLenientSkSLDeserialization) {
-        if (!buffer.validate(effect != nullptr)) {
+        if (!buffer.validate(effect1 != nullptr)) {
             return nullptr;
         }
     }
 
+    sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
+
     skia_private::STArray<4, SkRuntimeEffect::ChildPtr> children;
-    if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect.get(), &children)) {
+    if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect1.get(), &children)) {
         return nullptr;
     }
 
     if constexpr (kLenientSkSLDeserialization) {
-        if (!effect) {
+        if (!effect1) {
             SkDebugf("Serialized SkSL failed to compile. Ignoring/dropping SkSL color filter.\n");
             return nullptr;
         }
     }
 
-    return effect->makeColorFilter(std::move(uniforms), SkSpan(children));
+    return effect1->makeColorFilter(std::move(uniforms), SkSpan(children));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
