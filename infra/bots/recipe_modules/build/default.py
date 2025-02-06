@@ -96,13 +96,13 @@ def compile_fn(api, checkout_root, out_dir):
             cmd=['python3', skia_dir.joinpath('bin', 'fetch-ninja')],
             infra_step=True)
 
-  if os == 'Mac' or os == 'Mac10.15.7':
+  if os in ('Mac', 'Mac10.15.7', 'Mac14'):
     # XCode build is listed in parentheses after the version at
     # https://developer.apple.com/news/releases/, or on Wikipedia here:
     # https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
     # Use lowercase letters.
     # https://chrome-infra-packages.appspot.com/p/infra_internal/ios/xcode
-    XCODE_BUILD_VERSION = '16a242d' # Xcode 16.0
+    XCODE_BUILD_VERSION = '16c5032a' # Xcode 16.2
     extra_cflags.append(
         '-DREBUILD_IF_CHANGED_xcode_build_version=%s' % XCODE_BUILD_VERSION)
     mac_toolchain_cmd = api.vars.workdir.joinpath(
@@ -125,15 +125,17 @@ def compile_fn(api, checkout_root, out_dir):
       api.step('install xcode', install_xcode_cmd)
       api.step('select xcode', [
           'sudo', 'xcode-select', '-switch', xcode_app_path])
-      if 'iOS' in extra_tokens:
-        if 'iOS12' in extra_tokens:
-          # Ganesh has a lower minimum iOS version than Graphite but there are dedicated jobs that
-          # test with the lower SDK.
-          env['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-          args['ios_min_target'] = '"12.0"'
-        else:
-          env['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
-          args['ios_min_target'] = '"13.0"'
+      if 'iOS12' in extra_tokens:
+        # Ganesh has a lower minimum iOS version than Graphite but there are dedicated jobs that
+        # test with the lower SDK.
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+        args['ios_min_target'] = '"12.0"'
+      elif 'iOS18' in extra_tokens:
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
+        args['ios_min_target'] = '"18.0"'
+      elif 'iOS' in extra_tokens:
+        env['IPHONEOS_DEPLOYMENT_TARGET'] = '13.0'
+        args['ios_min_target'] = '"13.0"'
 
       else:
         # We have some machines on 10.15.
