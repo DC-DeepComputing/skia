@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium Authors. All rights reserved.
+# Copyright 2025 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -28,71 +28,40 @@ class iOSFlavor(default.DefaultFlavor):
   @property
   def env(self):
     return {
-      'IOS_BUNDLE_ID': 'com.google.%s' % self.app_name,
-      'IOS_MOUNT_POINT': self.m.vars.workdir.joinpath('mnt_iosdevice'),
+      #'IOS_BUNDLE_ID': 'com.google.%s' % self.app_name,
+      #'IOS_MOUNT_POINT': self.m.vars.workdir.joinpath('mnt_iosdevice'),
     }
 
   def context(self):
     return self.m.context(env=self.env)
 
-  def _run(self, title, *cmd, **kwargs):
-    def sleep(attempt):
-      self.m.step(
-          'sleep before attempt %d' % attempt,
-          cmd=['sleep', '2']) # pragma: nocover
-
-    return self.m.run.with_retry(self.m.step, title, 3, cmd=list(cmd),
-                                 between_attempts_fn=sleep, **kwargs)
-
   def install(self):
-    with self.context():
-      self._install()
-
-  def _install(self):
-    # We assume a single device is connected.
-
-    # Pair the device.
-    try:
-      self.m.run(self.m.step, 'check if device is paired',
-                 cmd=['idevicepair', 'validate'],
-                 infra_step=True, abort_on_failure=True,
-                 fail_build_on_failure=False)
-    except self.m.step.StepFailure:  # pragma: nocover
-      self._run('pair device', 'idevicepair', 'pair')  # pragma: nocover
-
-    # Mount developer image.
-    image_info = self._run('list mounted image',
-                           'ideviceimagemounter', '--list',
-                           stdout=self.m.raw_io.output())
-    image_info_out = (
-      image_info.stdout.decode('utf-8').strip() if image_info.stdout else '')
-
-    if 'ImageSignature' not in image_info_out:
-      image_pkgs = self.m.file.glob_paths('locate ios-dev-image package',
-                                          self.m.path.start_dir,
-                                          'ios-dev-image*',
-                                          test_data=['ios-dev-image-13.2'])
-      if len(image_pkgs) != 1:
-        raise Exception('glob for ios-dev-image* returned %s'
-                        % image_pkgs)  # pragma: nocover
-
-      image_pkg = image_pkgs[0]
-      contents = self.m.file.listdir(
-          'locate image and signature', image_pkg,
-          test_data=['DeveloperDiskImage.dmg',
-                     'DeveloperDiskImage.dmg.signature'])
-      image = None
-      sig = None
-      for f in contents:
-        if str(f).endswith('.dmg'):
-          image = f
-        if str(f).endswith('.dmg.signature'):
-          sig = f
-      if not image or not sig:
-        raise Exception('%s does not contain *.dmg and *.dmg.signature' %
-                        image_pkg)  # pragma: nocover
-
-      self._run('mount developer image', 'ideviceimagemounter', image, sig)
+    # XCode build is listed in parentheses after the version at
+    # https://developer.apple.com/news/releases/, or on Wikipedia here:
+    # https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
+    # Use lowercase letters.
+    # https://chrome-infra-packages.appspot.com/p/infra_internal/ios/xcode
+    XCODE_BUILD_VERSION = '16c5032a' # Xcode 16.2
+    mac_toolchain_cmd = self.m.vars.workdir.joinpath(
+        'mac_toolchain', 'mac_toolchain')
+    xcode_app_path = self.m.vars.cache_dir.joinpath('Xcode.app')
+    # Copied from
+    # https://chromium.googlesource.com/chromium/tools/build/+/e19b7d9390e2bb438b566515b141ed2b9ed2c7c2/scripts/slave/recipe_modules/ios/api.py#322
+    with self.m.step.nest('ensure xcode') as step_result:
+      step_result.step_summary_text = (
+          'Ensuring Xcode version %s in %s' % (
+              XCODE_BUILD_VERSION, xcode_app_path))
+      install_xcode_cmd = [
+          mac_toolchain_cmd, 'install',
+          # "ios" is needed for simulator builds
+          # (Build-Mac-Clang-x64-Release-iOS).
+          '-kind', 'ios',
+          '-xcode-version', XCODE_BUILD_VERSION,
+          '-output-dir', xcode_app_path,
+      ]
+      self.m.step('install xcode', install_xcode_cmd)
+      self.m.step('select xcode', [
+          'sudo', 'xcode-select', '-switch', xcode_app_path])
 
     # Install app (necessary before copying any resources to the device).
     if self.app_name:
@@ -118,11 +87,11 @@ class iOSFlavor(default.DefaultFlavor):
   def step(self, name, cmd, **kwargs):
     app_name = cmd[0]
     bundle_id = 'com.google.%s' % app_name
-    args = [bundle_id] + [str(ele) for ele in cmd[1:]]
+    args = ['--start', bundle_id, '--args'] + [str(ele) for ele in cmd[1:]]
     success = False
     with self.context():
       try:
-        self.m.run(self.m.step, name, cmd=['idevicedebug', 'run'] + args)
+        self.m.run(self.m.step, name, cmd=['idevice-app-runner'] + args)
         success = True
       finally:
         if not success:
