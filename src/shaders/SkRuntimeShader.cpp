@@ -19,6 +19,7 @@
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/base/SkTLazy.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkPicturePriv.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
@@ -100,12 +101,6 @@ bool SkRuntimeShader::appendStages(const SkStageRec& rec, const SkShaders::Matri
     return false;
 }
 
-void SkRuntimeShader::flatten(SkWriteBuffer& buffer) const {
-    buffer.writeString(fEffect->source().c_str());
-    buffer.writeDataAsByteArray(this->uniformData(nullptr).get());
-    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
-}
-
 sk_sp<const SkData> SkRuntimeShader::uniformData(const SkColorSpace* dstCS) const {
     if (fUniformData) {
         return fUniformData;
@@ -118,13 +113,47 @@ sk_sp<const SkData> SkRuntimeShader::uniformData(const SkColorSpace* dstCS) cons
     return uniforms;
 }
 
+void SkRuntimeShader::flatten(SkWriteBuffer& buffer) const {
+    buffer.write32(fEffect->fStableKey1);
+    if (!SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey1)) {
+        buffer.writeString(fEffect->source().c_str());
+    }
+    buffer.writeDataAsByteArray(this->uniformData(nullptr).get());
+    SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
+}
+
 sk_sp<SkFlattenable> SkRuntimeShader::CreateProc(SkReadBuffer& buffer) {
+    //$$
     if (!buffer.validate(buffer.allowSkSL())) {
         return nullptr;
     }
 
-    SkString sksl;
-    buffer.readString(&sksl);
+    bool gotValidStableKey = false;
+    SkKnownRuntimeEffects::StableKey stableKey = SkKnownRuntimeEffects::StableKey::kInvalid;
+    if (!buffer.isVersionLT(SkPicturePriv::kSerializeStableKeys)) {
+        uint32_t tmp = buffer.readUInt();
+        if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(tmp)) {
+            stableKey = static_cast<SkKnownRuntimeEffects::StableKey>(tmp);
+            gotValidStableKey = true;
+        }
+    }
+
+    sk_sp<SkRuntimeEffect> effect1;
+    if (gotValidStableKey) {
+        effect1 = sk_ref_sp(GetKnownRuntimeEffect(stableKey));
+    } else {
+        SkString sksl;
+        buffer.readString(&sksl);
+        SkDebugf("S SkSL:\n%s\n", sksl.c_str());
+
+        effect1 = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
+    }
+    if constexpr (!kLenientSkSLDeserialization) {
+        if (!buffer.validate(effect1 != nullptr)) {
+            return nullptr;
+        }
+    }
+
     sk_sp<SkData> uniforms = buffer.readByteArrayAsData();
 
     SkTLazy<SkMatrix> localM;
@@ -135,20 +164,13 @@ sk_sp<SkFlattenable> SkRuntimeShader::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
-    auto effect = SkMakeCachedRuntimeEffect(SkRuntimeEffect::MakeForShader, std::move(sksl));
-    if constexpr (!kLenientSkSLDeserialization) {
-        if (!buffer.validate(effect != nullptr)) {
-            return nullptr;
-        }
-    }
-
     skia_private::STArray<4, SkRuntimeEffect::ChildPtr> children;
-    if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect.get(), &children)) {
+    if (!SkRuntimeEffectPriv::ReadChildEffects(buffer, effect1.get(), &children)) {
         return nullptr;
     }
 
     if constexpr (kLenientSkSLDeserialization) {
-        if (!effect) {
+        if (!effect1) {
             // If any children were SkShaders, return the first one. This is a reasonable fallback.
             for (int i = 0; i < children.size(); i++) {
                 if (children[i].shader()) {
@@ -164,5 +186,5 @@ sk_sp<SkFlattenable> SkRuntimeShader::CreateProc(SkReadBuffer& buffer) {
         }
     }
 
-    return effect->makeShader(std::move(uniforms), SkSpan(children), localM.getMaybeNull());
+    return effect1->makeShader(std::move(uniforms), SkSpan(children), localM.getMaybeNull());
 }

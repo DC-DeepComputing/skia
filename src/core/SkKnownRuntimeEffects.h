@@ -107,6 +107,8 @@ static const int kStableKeyCnt = static_cast<int>(StableKey::kLast) -
 
 static_assert(static_cast<int>(StableKey::kLast) < kSkiaKnownRuntimeEffectsEnd);
 
+bool IsSkiaKnownRuntimeEffect(uint32_t candidate);
+
 const SkRuntimeEffect* GetKnownRuntimeEffect(StableKey);
 
 static_assert(static_cast<int>(StableKey::kInvalid)  == static_cast<int>(StableKey::kStart));
