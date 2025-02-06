@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c6c41ed_95305a11",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-06T16:21:06Z",
+      "side": 1,
+      "message": "We can also drop the explicit conversions, these will get promoted to float anyway.",
+      "range": {
+        "startLine": 287,
+        "startChar": 59,
+        "endLine": 287,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "b6d13921_aec6c22f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkBlurMaskFilterImpl.cpp",
+              "range": {
+                "startLine": 287,
+                "startChar": 0,
+                "endLine": 289,
+                "endChar": 0
+              },
+              "replacement": "    const float leftUnstretched \u003d std::max(UL.fX, LL.fX) + 2 * margin.fX;\n    const float rightUnstretched \u003d std::max(UR.fX, LR.fX) + 2 * margin.fX;\n"
+            },
+            {
+              "path": "src/core/SkBlurMaskFilterImpl.cpp",
+              "range": {
+                "startLine": 300,
+                "startChar": 0,
+                "endLine": 302,
+                "endChar": 0
+              },
+              "replacement": "    const float topUnstretched \u003d std::max(UL.fY, UR.fY) + 2 * margin.fY;\n    const float bottomUnstretched \u003d std::max(LL.fY, LR.fY) + 2 * margin.fY;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f12627006bdd9e473a91ae337d2cdcf10a4bff95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a1d17e5_8de8bfe5",
+        "filename": "src/core/SkMaskBlurFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-06T16:21:06Z",
+      "side": 1,
+      "message": "This is going to change pixel tests, require rebaselines, and may yield chromium bugs (if the prev threshold is based on some obscure web spec, or people just feel entitled to old behavior :).\n\nKeeping it at 1/3 would minimize those risks.",
+      "revId": "f12627006bdd9e473a91ae337d2cdcf10a4bff95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

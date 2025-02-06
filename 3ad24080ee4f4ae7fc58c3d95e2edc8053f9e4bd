@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7783cb83_1c5e6861",
+        "filename": "src/core/SkMaskBlurFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-06T16:21:06Z",
+      "side": 0,
+      "message": "But what if this one is special? 😄",
+      "revId": "3ad24080ee4f4ae7fc58c3d95e2edc8053f9e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
