@@ -598,7 +598,7 @@ void colorfilter_subtest(const KeyContext& keyContext,
 } // anonymous namespace
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
-                                   CtsEnforcement::kNextRelease) {
+                                   CtsEnforcement::kApiLevel_202504) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
