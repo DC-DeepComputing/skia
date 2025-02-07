@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ce114bb_ecd4c42d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-07T19:49:32Z",
+      "side": 1,
+      "message": "This looks to be adding a single barrier in the DrawPass. Instead we need a barrier before each draw that will read the dst.",
+      "range": {
+        "startLine": 577,
+        "startChar": 31,
+        "endLine": 577,
+        "endChar": 41
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b44fe67_a799f12f",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-07T19:49:32Z",
+      "side": 1,
+      "message": "can we use ERRORf instead (I think that\u0027s the name). It still ends up asserting in the same way but will have a better error message in the logs.",
+      "range": {
+        "startLine": 659,
+        "startChar": 16,
+        "endLine": 659,
+        "endChar": 32
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecd6483d_8de6a2cc",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 13
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-07T19:49:32Z",
+      "side": 1,
+      "message": "same as above about errorf",
+      "range": {
+        "startLine": 449,
+        "startChar": 16,
+        "endLine": 449,
+        "endChar": 32
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
