@@ -76,4 +76,8 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 #endif
 }
 
+void PrecompileContext::heyBuddy() {
+
+}
+
 } // namespace skgpu::graphite
