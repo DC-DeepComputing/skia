@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e16a372_e6bc61fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-07T15:19:39Z",
+      "side": 1,
+      "message": "Can you add the fuzz test case to our test suite? It seems like it would be good to catch regressions.",
+      "revId": "b00469cd2aaf3c6fb55be7da5246d1a4050d76a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
