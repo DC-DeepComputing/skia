@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05e20972_fbc77e13",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 362,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-07T19:38:21Z",
+      "side": 1,
+      "message": "To get around the release build unused errors, we just do a `(void) fSingleOwner` in the ctor here.",
+      "range": {
+        "startLine": 362,
+        "startChar": 0,
+        "endLine": 362,
+        "endChar": 1
+      },
+      "revId": "ba9a74100a3db60565e08a49ba2c4b7aa7987338",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
