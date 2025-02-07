@@ -16,6 +16,23 @@
       "message": "Trying to distribute the load here - Jim, would you TAL? CC\u0027ing Greg who is handling a lot of the other reviews.",
       "revId": "5d39e1c9dde8c431a10b98aa3cb5b9e540ce1032",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b18d1485_6c0aad52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-07T19:55:50Z",
+      "side": 1,
+      "message": "check the validation error from failing bot",
+      "revId": "5d39e1c9dde8c431a10b98aa3cb5b9e540ce1032",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
