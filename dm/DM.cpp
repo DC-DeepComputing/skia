@@ -44,10 +44,38 @@
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
 
-#include <memory>
 #include <vector>
-
 #include <stdlib.h>
+#include <dlfcn.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <cstdint>
+
+using ReallocFunctionPtr = void* (*)(void*, size_t);
+using FreeFunctionPtr = void (*)(void*);
+
+static ReallocFunctionPtr real_realloc = nullptr;
+
+// Initialization function (call this once before using the wrappers)
+void initialize_allocator_hooks() {
+    real_realloc = reinterpret_cast<ReallocFunctionPtr>(dlsym(RTLD_NEXT, "realloc"));
+
+    if (!real_realloc) {
+        fprintf(stderr, "Failed to initialize allocator hooks.\r\n");
+        exit(1);
+    }
+}
+
+__attribute__((visibility("default"), noinline))
+void* realloc(void* ptr, size_t size) {
+   if (!real_realloc) { initialize_allocator_hooks(); }
+   void *new_ptr = real_realloc(ptr, size);
+
+   if (size > (1<<16)) {
+       fprintf(stderr, "%p = realloc(%p, %zu)\r\n", new_ptr, ptr, size);
+   }
+   return new_ptr;
+}
 
 #if defined(SK_GRAPHITE)
     #include "tools/flags/CommonFlagsGraphite.h"
