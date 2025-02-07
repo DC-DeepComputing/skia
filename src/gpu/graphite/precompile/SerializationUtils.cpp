@@ -10,6 +10,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkStream.h"
 #include "src/base/SkAutoMalloc.h"
+#include "src/core/SkKnownRuntimeEffects.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
@@ -50,9 +51,70 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     return true;
 }
 
-[[nodiscard]]  bool serialize_graphics_pipeline_desc(ShaderCodeDictionary* shaderCodeDictionary,
-                                                     SkWStream* stream,
-                                                     const GraphicsPipelineDesc& pipelineDesc) {
+// check a single block and, recursively, all its children
+[[nodiscard]] bool is_block_valid(const ShaderCodeDictionary* dict,
+                                  SkSpan<const uint32_t> keyData,
+                                  int* currentIndex) {
+    if (*currentIndex >= SkTo<int>(keyData.size())) {
+        return false;
+    }
+
+    uint32_t id = keyData[(*currentIndex)++];
+    if (id >= kBuiltInCodeSnippetIDCount && !SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(id)) {
+        return false;
+    }
+
+    auto entry = dict->getEntry(id);
+    if (!entry) {
+        return false;
+    }
+
+    if (entry->storesSamplerDescData()) {
+        if (*currentIndex + 1 >= SkTo<int>(keyData.size())) {
+            return false;
+        }
+
+        const int dataLength = keyData[(*currentIndex)++];
+
+        if (*currentIndex + dataLength >= SkTo<int>(keyData.size())) {
+            return false;
+        }
+
+        *currentIndex += dataLength;
+    }
+
+    if (entry->fNumChildren > 0) {
+        for (int i = 0; i < entry->fNumChildren; ++i) {
+            if (!is_block_valid(dict, keyData, currentIndex)) {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+// This helper checks that a given key is viable for serialization and, also, that a deserialized
+// key is, at least, correctly formed. Other than that all the sizes make sense, this method also
+// checks that only Skia-internal shader code snippets appear in the key.
+[[nodiscard]] bool is_key_valid(const ShaderCodeDictionary* dict, PaintParamsKey key) {
+    SkSpan<const uint32_t> data = key.data();
+
+    const int keySize = SkTo<int>(data.size());
+
+    int currentIndex = 0;
+    while (currentIndex < keySize) {
+        if (!is_block_valid(dict, data, &currentIndex)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+[[nodiscard]] bool serialize_graphics_pipeline_desc(ShaderCodeDictionary* shaderCodeDictionary,
+                                                    SkWStream* stream,
+                                                    const GraphicsPipelineDesc& pipelineDesc) {
     PaintParamsKey key = shaderCodeDictionary->lookup(pipelineDesc.paintParamsID());
 
     if (!stream->write32(static_cast<uint32_t>(pipelineDesc.renderStepID()))) {
@@ -68,6 +130,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     }
 
     const SkSpan<const uint32_t> keySpan = key.data();
+
+    if (!is_key_valid(shaderCodeDictionary, key)) {
+        return false;
+    }
+
     if (!stream->write32(SkToU32(keySpan.size()))) {
         return false;
     }
@@ -94,7 +161,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    UniquePaintParamsID paintParamsID;
+    UniquePaintParamsID paintParamsID = UniquePaintParamsID::InvalidID();
     if (tmp) {
         SkAutoMalloc storage(4 * tmp);
         if (stream->read(storage.get(), 4 * tmp) != 4 * tmp) {
@@ -102,6 +169,10 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
 
         PaintParamsKey ppk = PaintParamsKey(SkSpan<uint32_t>((uint32_t*) storage.get(), tmp));
+
+        if (!is_key_valid(shaderCodeDictionary, ppk)) {
+            return false;
+        }
 
         paintParamsID = shaderCodeDictionary->findOrCreate(ppk);
     }
