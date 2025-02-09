@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67d43959_1a4fe974",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3858597
+      },
+      "writtenOn": "2025-02-09T12:39:21Z",
+      "side": 1,
+      "message": "There are still some implicit conversions in SkRasterPipeline_opts.h (LSX) that need to be wrapped with explicit cast and cause compilation failures.",
+      "revId": "32fc38a34ed6c8da7579cd0964939e80b91b6dc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
