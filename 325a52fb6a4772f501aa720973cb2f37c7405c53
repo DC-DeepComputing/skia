@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "220ecc4f_41331b5a",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T15:00:55Z",
+      "side": 1,
+      "message": "Can we add a static assert here that `StableKey::kStart !\u003d 0`?",
+      "range": {
+        "startLine": 204,
+        "startChar": 5,
+        "endLine": 204,
+        "endChar": 29
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "375bc7d8_a0d8484c",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T15:00:55Z",
+      "side": 1,
+      "message": "We should validate that this value is 0 for the expected regular runtime effect path and invalidate the buffer if we\u0027ve got something non-zero that\u0027s not a known runtime effect.",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 9
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9989573c_3d43a937",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T15:00:55Z",
+      "side": 1,
+      "message": "WDYT about just having this move inside the check for `IsSkiaKnownRuntimeEffect` and then when we get here, if `effect` is null we read the string?",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
