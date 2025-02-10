@@ -22,6 +22,30 @@
       },
       "revId": "9b202b339369e4833bd150a66966e979f2ec644b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23e83aab_9ea3a02a",
+        "filename": "src/gpu/graphite/precompile/SerializationUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-10T20:00:34Z",
+      "side": 1,
+      "message": "Done - renamed to isSerializable",
+      "parentUuid": "ffd0e47f_65ac6540",
+      "range": {
+        "startLine": 100,
+        "startChar": 19,
+        "endLine": 100,
+        "endChar": 31
+      },
+      "revId": "9b202b339369e4833bd150a66966e979f2ec644b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
