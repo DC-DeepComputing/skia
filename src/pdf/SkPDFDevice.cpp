@@ -1293,6 +1293,7 @@ static void populate_graphic_state_entry_from_paint(
             auto colorShader = static_cast<SkColorShader*>(shader);
             // We don't have to set a shader just for a color.
             color = colorShader->color();
+            color.fA *= paint.getAlphaf();
             entry->fColor = colorShader->color().makeOpaque();
         } else {
             // PDF positions patterns relative to the initial transform, so
