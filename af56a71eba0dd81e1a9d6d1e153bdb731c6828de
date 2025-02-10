@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e92ed83_b3510e52",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-02-10T16:41:47Z",
+      "side": 1,
+      "message": "Can SkTypeface be destroyed at some point without destroying SkScalerContext?",
+      "revId": "af56a71eba0dd81e1a9d6d1e153bdb731c6828de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
