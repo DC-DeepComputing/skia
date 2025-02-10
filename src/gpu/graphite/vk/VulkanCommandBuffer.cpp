@@ -345,6 +345,7 @@ bool VulkanCommandBuffer::isFinished() {
     VkResult err;
     VULKAN_CALL_RESULT_NOCHECK(fSharedContext->interface(), err,
                                GetFenceStatus(fSharedContext->device(), fSubmitFence));
+
     switch (err) {
         case VK_SUCCESS:
         case VK_ERROR_DEVICE_LOST:
@@ -627,29 +628,6 @@ void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
     }
 }
 
-void gather_attachment_views(skia_private::TArray<VkImageView>& attachmentViews,
-                             VulkanTexture* colorTexture,
-                             VulkanTexture* resolveTexture,
-                             VulkanTexture* depthStencilTexture) {
-    if (colorTexture) {
-        VkImageView& colorAttachmentView = attachmentViews.push_back();
-        colorAttachmentView =
-                colorTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-
-        if (resolveTexture) {
-            VkImageView& resolveView = attachmentViews.push_back();
-            resolveView =
-                    resolveTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-        }
-    }
-
-    if (depthStencilTexture) {
-        VkImageView& stencilView = attachmentViews.push_back();
-        stencilView =
-                depthStencilTexture->getImageView(VulkanImageView::Usage::kAttachment)->imageView();
-    }
-}
-
 void gather_clear_values(
         STArray<VulkanRenderPass::kMaxExpectedAttachmentCount, VkClearValue>& clearValues,
         const RenderPassDesc& renderPassDesc,
@@ -764,10 +742,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                           loadMSAAFromResolve);
 
     static constexpr int kMaxNumAttachments = 3;
-    // Gather attachment views neeeded for frame buffer creation.
-    skia_private::TArray<VkImageView> attachmentViews;
-    gather_attachment_views(
-            attachmentViews, vulkanColorTexture, vulkanResolveTexture, vulkanDepthStencilTexture);
+
 
     // Gather clear values needed for RenderPassBeginInfo. Indexed by attachment number.
     STArray<kMaxNumAttachments, VkClearValue> clearValues;
@@ -798,11 +773,14 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         frameBufferWidth = depthStencilTexture->dimensions().width();
         frameBufferHeight = depthStencilTexture->dimensions().height();
     }
-    sk_sp<VulkanFramebuffer> framebuffer = fResourceProvider->createFramebuffer(fSharedContext,
-                                                                                attachmentViews,
-                                                                                *vulkanRenderPass,
-                                                                                frameBufferWidth,
-                                                                                frameBufferHeight);
+    sk_sp<VulkanFramebuffer> framebuffer =
+            fResourceProvider->createFramebuffer(fSharedContext,
+                                                 vulkanColorTexture,
+                                                 vulkanResolveTexture,
+                                                 vulkanDepthStencilTexture,
+                                                 *vulkanRenderPass,
+                                                 frameBufferWidth,
+                                                 frameBufferHeight);
     if (!framebuffer) {
         SKGPU_LOG_W("Could not create Vulkan Framebuffer");
         return false;
