@@ -46,6 +46,30 @@
       },
       "revId": "43a3db176740a3cb3184965a55a132714bb5c945",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b7daadb_c727fce5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-10T16:09:59Z",
+      "side": 1,
+      "message": "A note to any future visitors: What happened here is that the strikes are \"prepared\" within a lock with the intention that the strike and its scaler context are only mutable within that lock (by locking and unlocking the strike). However, the actual drawing of the paths or strikes is done outside that lock. Using the masks, paths, or drawables is assumed to be thread safe (since it is supposed to be read only to use them). These shared objects are accessible because a reference to the strike is being held. So while the the mutable parts of the scaler context and strike are only called single threaded, the \"thread safe\" and \"read only\" results (including SkDrawables) need to be thread safe.",
+      "parentUuid": "30e75bd3_f919417a",
+      "range": {
+        "startLine": 402,
+        "startChar": 0,
+        "endLine": 405,
+        "endChar": 61
+      },
+      "revId": "43a3db176740a3cb3184965a55a132714bb5c945",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
