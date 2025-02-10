@@ -188,6 +188,30 @@
       },
       "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd541849_4e8c3007",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T17:33:09Z",
+      "side": 1,
+      "message": "Ah right, I was not thinking of that case.",
+      "parentUuid": "5f590a06_e8451c9f",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
