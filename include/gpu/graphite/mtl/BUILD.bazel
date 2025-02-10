@@ -11,8 +11,9 @@ skia_filegroup(
     srcs = [
         "MtlBackendContext.h",
         "MtlGraphiteTypes.h",
+        "MtlGraphiteTypes_cpp.h",
         "MtlGraphiteTypesUtils.h",
-        "MtlGraphiteUtils.h",
+        "MtlGraphiteUtils.h"
     ],
     visibility = [
         "//src/gpu/graphite/mtl:__pkg__",
