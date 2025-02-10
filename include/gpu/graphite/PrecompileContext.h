@@ -9,6 +9,7 @@
 #define skgpu_graphite_PrecompileContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SingleOwner.h"
 
 #include <chrono>
@@ -42,6 +43,20 @@ public:
      * @return                        true if a Pipeline was created from the key; false otherwise
      */
     bool precompile(sk_sp<SkData> serializedPipelineKey);
+
+    /**
+     * Register the provided SkSL code fragments as stable known code. This will result in
+     * IDs being written into serialized pipeline keys rather than raw SkSL.
+     *
+     * Warning: this does obligate users to clear out their caches of serialized pipeline
+     * keys if the provided SkSL ever changes in a meaningful way. This includes adding, removing
+     * or reordering the code provided in this call.
+     *
+     * @param sksl   span of client-specific, stable, SkSL code
+     * @return N/A
+     */
+    // TODO: should this also be a ContextOption????
+    void makeKnown(SkSpan<const char*> sksl);
 
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();
