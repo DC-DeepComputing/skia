@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfda8b08_73d2d3fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T14:52:40Z",
+      "side": 1,
+      "message": "I agree that this should be safe since the cache is the only one modifying that field of the Resource.",
+      "revId": "704a53171f232e1224463e14d47dd180c987bc37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
