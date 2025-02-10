@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d3b8f89_f51f2046",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-10T19:29:11Z",
+      "side": 1,
+      "message": "This was made more obvious when https://skia-review.googlesource.com/c/skia/+/936438 landed and fixed the color4f issues that were hiding this issue.",
+      "revId": "54d997318b765f599436d544685f9bc82964a7b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
