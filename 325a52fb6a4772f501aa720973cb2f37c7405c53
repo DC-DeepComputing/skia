@@ -164,6 +164,30 @@
       },
       "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f590a06_e8451c9f",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-10T17:17:56Z",
+      "side": 1,
+      "message": "Well - I think wrapping it in a function does make it cleaner and provides a place for the upcoming user-defined stable key resolution.",
+      "parentUuid": "bdf66247_2f205df1",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
