@@ -304,6 +304,13 @@ class AndroidFlavor(default.DefaultFlavor):
 
 
   def cleanup_steps(self):
+    script = self.module.resource('dump_adb_log.py')
+    self.m.run(self.m.step, 'dump log',
+        cmd=['python3', script, self.host_dirs.bin_dir, self.ADB_BINARY],
+        infra_step=True,
+        timeout=300,
+        abort_on_failure=False)
+
     self.m.run(self.m.step,
                 'adb reboot device',
                 cmd=[self.ADB_BINARY, 'reboot'],
@@ -339,7 +346,7 @@ class AndroidFlavor(default.DefaultFlavor):
 
     if self._ever_ran_adb:
       script = self.module.resource('dump_adb_log.py')
-      self.m.run(self.m.step, 'dump log',
+      self.m.run(self.m.step, 'dump reboot log',
           cmd=['python3', script, self.host_dirs.bin_dir, self.ADB_BINARY],
           infra_step=True,
           timeout=300,
