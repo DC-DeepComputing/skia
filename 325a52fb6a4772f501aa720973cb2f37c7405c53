@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18bc8359_3de4fb0e",
+        "filename": "src/core/SkKnownRuntimeEffects.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-10T16:28:01Z",
+      "side": 1,
+      "message": "Done - I added it over in SkKnownRuntimeEffects.h though - with a comment.",
+      "parentUuid": "220ecc4f_41331b5a",
+      "range": {
+        "startLine": 204,
+        "startChar": 5,
+        "endLine": 204,
+        "endChar": 29
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "375bc7d8_a0d8484c",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eee3a018_8cdbbd50",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-10T16:28:01Z",
+      "side": 1,
+      "message": "Done - here and the other two locations.",
+      "parentUuid": "375bc7d8_a0d8484c",
+      "range": {
+        "startLine": 140,
+        "startChar": 8,
+        "endLine": 140,
+        "endChar": 9
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9989573c_3d43a937",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-02-10T15:00:55Z",
       "side": 1,
       "message": "WDYT about just having this move inside the check for `IsSkiaKnownRuntimeEffect` and then when we get here, if `effect` is null we read the string?",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b83c7c93_b51c1be4",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-10T16:28:01Z",
+      "side": 1,
+      "message": "I need IsSkiaKnownRuntimeEffect for other stuff but I\u0027ve added a MaybeGetKnownRuntimeEffect call.",
+      "parentUuid": "9989573c_3d43a937",
       "range": {
         "startLine": 145,
         "startChar": 0,
