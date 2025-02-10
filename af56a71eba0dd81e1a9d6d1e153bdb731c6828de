@@ -16,6 +16,24 @@
       "message": "Can SkTypeface be destroyed at some point without destroying SkScalerContext?",
       "revId": "af56a71eba0dd81e1a9d6d1e153bdb731c6828de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccbca097_d1197dcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-10T18:27:29Z",
+      "side": 1,
+      "message": "Yes. So the way the system works, the SkStrike/SkScalerContexts are held by the SkStrikeCache. When a user uses an SkTypeface the unique id of the SkTypeface is used to lookup an exisiting SkStrike/SkScalerContext in the SkStrikeCache (or used to create a new SkStrike/SkScalerContext if there isn\u0027t one already). What this change is taking advantage of is that the SkScalerContext can only ever be used (created or pulled out of the strike cache) if the user provides the corresponding SkTypeface as part of the call. As a result there is no reason for the SkScalerContext to own a reference to the SkTypeface as the SkTypeface must still be alive for the SkScalerContext to be created or found in the cache. If the SkStrikeCache contains an Sk5trike/SkScalerContext associated with an SkTypeface and the user drops all references to that SkTyepface then the SkScalerContxt will have a dangling reference to that SkTypeface. However, it is no longer possible to reach that SkScalerContext in the strike cache, except to delete that SkScalerContext when it is purged from the strike cache and the delete does not need the SkTypeface reference.\n\nTo make this sort of thing more obvious, we can create an even larger change where each SkScalerContext method takes the SkTypeface by reference and everything is updated for this. Unfortunatly, due to the runtime virtual proxy support this is complicated. In the end we do want to move toward moving the reference out of SkScalerContext and instead pass the value to the methods (essentially as an additional \"this\"). However, with full proxy support the SkScalerContext will need four \"this\" parameters (the regular implicit \"this\", the top level proxy in the current SkScalerContext proxy chain, the assocaited implementation SkTypeface (the one that created this SkScalerContext) and the top level proxy in the current SkTypeface proxy chain.\n\nAll that to say, yes this is \"safe\" and needs to be done, but also there is an even bigger change that needs to happen after this.",
+      "parentUuid": "8e92ed83_b3510e52",
+      "revId": "af56a71eba0dd81e1a9d6d1e153bdb731c6828de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
