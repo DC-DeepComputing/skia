@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffd0e47f_65ac6540",
+        "filename": "src/gpu/graphite/precompile/SerializationUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T18:48:30Z",
+      "side": 1,
+      "message": "I\u0027d vote to have this and `is_block_valid` defined in PaintParamsKey, which has all the other nitty gritty block id iteration. Other sites that have a trusted key are ideally using the ShaderNode iteration instead, but that isn\u0027t applicable here.",
+      "range": {
+        "startLine": 100,
+        "startChar": 19,
+        "endLine": 100,
+        "endChar": 31
+      },
+      "revId": "9b202b339369e4833bd150a66966e979f2ec644b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
