@@ -140,6 +140,30 @@
       },
       "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdf66247_2f205df1",
+        "filename": "src/shaders/SkRuntimeShader.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-10T17:01:45Z",
+      "side": 1,
+      "message": "I didn\u0027t mean to suggest that it needed a whole new static, just that we\u0027d assign it inside the `if` that was calling `IsSkiaKnownRuntimeEffect`.",
+      "parentUuid": "b83c7c93_b51c1be4",
+      "range": {
+        "startLine": 145,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 61
+      },
+      "revId": "325a52fb6a4772f501aa720973cb2f37c7405c53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
