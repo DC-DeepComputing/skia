@@ -16,6 +16,24 @@
       "message": "Before this change, in the `gradients_no_texture` gm the type was `kColor4` so this test failed and the `else` case was taken. Then, in `SkPDFMakeShader` `asGradient` returns `kNone` (becasue a color shader is not a gradient shader, even if it could be) so a full bitmap of the shader was made to represent the shader in the PDF.\n\nWith this change this code is now running as would have been expected (and the output is much smaller since we\u0027re just emitting the color instead of a bitmap which is a solid color). On the other hand it shows that when we do go down this route Preview and Reader no longer apply the alpha (for some reason Pdfium never did the alpha). This was a pre-existing issue and this change is an improvement (asside from pointing out that this alpha issue exists). This comment is more about documenting what happened since it isn\u0027t obvious.",
       "revId": "cf47a26b74e6249ffdbdb2bb838be77230c2ee6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fd58584_261b71ec",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1292,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-02-10T19:28:21Z",
+      "side": 1,
+      "message": "Created https://skia-review.googlesource.com/c/skia/+/949616 to apply the paint alpha to the color shader alpha to get the final alpha.",
+      "parentUuid": "e3e25969_a4c35302",
+      "revId": "cf47a26b74e6249ffdbdb2bb838be77230c2ee6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
