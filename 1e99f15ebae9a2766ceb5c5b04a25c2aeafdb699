@@ -22,6 +22,29 @@
       },
       "revId": "1e99f15ebae9a2766ceb5c5b04a25c2aeafdb699",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "307ea811_ad46ddce",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-10T17:50:27Z",
+      "side": 1,
+      "message": "Should this be interlaceBufferSize * sizeof(png_byte) if png_byte size is ever not equal to 1?",
+      "range": {
+        "startLine": 692,
+        "startChar": 50,
+        "endLine": 692,
+        "endChar": 69
+      },
+      "revId": "1e99f15ebae9a2766ceb5c5b04a25c2aeafdb699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
