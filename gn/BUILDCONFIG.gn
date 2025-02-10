@@ -12,6 +12,7 @@ declare_args() {
   is_component_build = false
   use_libfuzzer = false
   ndk = ""
+  skia_pgo_stage = 0
 
   # Android 5.0, Lollipop
   ndk_api = 21

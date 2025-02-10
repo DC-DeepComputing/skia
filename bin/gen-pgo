@@ -1,0 +1,19 @@
+#!/bin/bash
+
+# Generate PGO profile data using nanobench
+#
+# Example usage:
+#  $ ninja -C out/Profile nanobench
+#  $ bin/gen-pgo out/Profile out/PGO
+
+profiler_path="$1"
+output_path="$2"
+
+echo "$1"
+echo "$2"
+
+LLVM_PROFILE_FILE="$1/code-1.profraw" $1/nanobench --benchType playback --config 'vk'
+LLVM_PROFILE_FILE="$1/code-2.profraw" $1/nanobench --benchType playback --config 'grvk'
+LLVM_PROFILE_FILE="$1/code-3.profraw" $1/nanobench --benchType playback --config 'grdawn_vk'
+
+llvm-profdata merge -o $2/profile.profdata $1/code-1.profraw $1/code-2.profraw $1/code-3.profraw

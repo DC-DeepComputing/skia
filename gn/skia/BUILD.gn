@@ -730,6 +730,15 @@ config("optimize") {
     } else {
       cflags = [ "-O3" ]
     }
+
+    if (skia_pgo_stage == 1) {
+      cflags += [ "-fprofile-generate" ]
+      ldflags += [ "-fprofile-generate" ]
+    } else if (skia_pgo_stage == 2) {
+      cflags += [ "-fprofile-use=profile.profdata" ]
+      ldflags += [ "-fprofile-use=profile.profdata" ]
+    }
+
     if (is_mac || is_ios) {
       ldflags += [ "-dead_strip" ]
     } else if (!is_wasm) {
