@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2589e1ba_f831ea1c",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-10T18:25:04Z",
+      "side": 1,
+      "message": "IIUC, the goal of setting this second parameter in `std::unique_ptr` is that we want to call `sk_free` on the buffer when the last reference is dropped.\n\nhttps://en.cppreference.com/w/cpp/memory/unique_ptr says \"Deleter must be [of type] FunctionObject...\" so I guess I\u0027m surprised this compiles without the `SkOverloadedFunctionObject` wrapper (which wraps a free function into a class, much like a lambda works (I think).",
+      "parentUuid": "f22114fb_d804db07",
+      "range": {
+        "startLine": 563,
+        "startChar": 4,
+        "endLine": 563,
+        "endChar": 67
+      },
+      "revId": "1e99f15ebae9a2766ceb5c5b04a25c2aeafdb699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "307ea811_ad46ddce",
         "filename": "src/codec/SkPngCodec.cpp",
         "patchSetId": 9
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-10T17:50:27Z",
       "side": 1,
       "message": "Should this be interlaceBufferSize * sizeof(png_byte) if png_byte size is ever not equal to 1?",
+      "range": {
+        "startLine": 692,
+        "startChar": 50,
+        "endLine": 692,
+        "endChar": 69
+      },
+      "revId": "1e99f15ebae9a2766ceb5c5b04a25c2aeafdb699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f25f4e9a_6ae70956",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-10T18:25:04Z",
+      "side": 1,
+      "message": "Yeah, that should be safe to do - sizeof is constexpr, so it\u0027ll be done at a compile time, so free to add in and be explicit.",
+      "parentUuid": "307ea811_ad46ddce",
       "range": {
         "startLine": 692,
         "startChar": 50,
