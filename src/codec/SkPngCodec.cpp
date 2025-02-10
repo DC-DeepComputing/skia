@@ -544,7 +544,7 @@ public:
             , fLinesDecoded(0)
             , fInterlacedComplete(false)
             , fPng_rowbytes(0)
-            , fInterlaceBuffer(nullptr, &sk_free) {}
+            , fInterlaceBuffer(nullptr) {}
 
     static void InterlacedRowCallback(png_structp png_ptr, png_bytep row, png_uint_32 rowNum, int pass) {
         auto decoder = static_cast<SkPngInterlacedDecoder*>(png_get_progressive_ptr(png_ptr));
@@ -560,7 +560,7 @@ private:
     int                     fLinesDecoded;
     bool                    fInterlacedComplete;
     size_t                  fPng_rowbytes;
-    std::unique_ptr<png_byte, decltype(&sk_free)> fInterlaceBuffer;
+    std::unique_ptr<png_byte, SkOverloadedFunctionObject<void(void*), sk_free>> fInterlaceBuffer;
 
     // FIXME: Currently sharing interlaced callback for all rows and subset. It's not
     // as expensive as the subset version of non-interlaced, but it still does extra
@@ -598,7 +598,10 @@ private:
 
     Result decodeAllRows(void* dst, size_t rowBytes, int* rowsDecoded) override {
         const int height = this->dimensions().height();
-        this->setUpInterlaceBuffer(height);
+        Result res = this->setUpInterlaceBuffer(height);
+        if (res != kSuccess) {
+          return res;
+        }
         png_set_progressive_read_fn(this->png_ptr(), this, nullptr, InterlacedRowCallback,
                                     nullptr);
 
@@ -683,14 +686,15 @@ private:
 
     Result setUpInterlaceBuffer(int height) {
         fPng_rowbytes = png_get_rowbytes(this->png_ptr(), this->info_ptr());
+        size_t interlaceBufferSize = fPng_rowbytes * height;
         void* interlaceBufferRaw = nullptr;
-        if (fPng_rowbytes) {
-           interlaceBufferRaw = sk_malloc_canfail(fPng_rowbytes * height);
+        if (interlaceBufferSize) {
+           interlaceBufferRaw = sk_malloc_canfail(interlaceBufferSize);
            if (!interlaceBufferRaw) {
              return kInternalError;
            }
         }
-        fInterlaceBuffer.reset(reinterpret_cast<png_byte*>(interlaceBufferRaw));
+        fInterlaceBuffer.reset(reinterpret_cast<png_byte*>(interlaceBufferRaw * sizeof(png_byte)));
         fInterlacedComplete = false;
         return kSuccess;
     }
