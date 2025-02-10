@@ -16,6 +16,24 @@
       "message": "Can you add the fuzz test case to our test suite? It seems like it would be good to catch regressions.",
       "revId": "b00469cd2aaf3c6fb55be7da5246d1a4050d76a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e563bde6_f3481f15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-10T17:06:15Z",
+      "side": 1,
+      "message": "My initial analysis of the fuzzer was wrong, but not checking for the full size for the interlace buffer was still a problem with the last CL. Found out this should be failing because of OOM when SK_BUILD_FOR_FUZZER defined [1], and I forgot to add an early exit. Before for the fuzzer, this malloc call would pass but then this data returns kIncompleteInput.\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/include/private/base/SkMalloc.h;drc\u003d14c99e9cdd960bc5e9bf6c7bcfcf8e17e804a493;l\u003d93",
+      "parentUuid": "8e16a372_e6bc61fb",
+      "revId": "b00469cd2aaf3c6fb55be7da5246d1a4050d76a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

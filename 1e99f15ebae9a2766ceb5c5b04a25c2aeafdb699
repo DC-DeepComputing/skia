@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f22114fb_d804db07",
+        "filename": "src/codec/SkPngCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-10T17:06:15Z",
+      "side": 1,
+      "message": "Should I make this `std::unique_ptr\u003cpng_byte, SkOverloadedFunctionObject\u003cvoid(void*), sk_free\u003e\u003e fInterlaceBuffer` like it is in SkTAutoMalloc?",
+      "range": {
+        "startLine": 563,
+        "startChar": 4,
+        "endLine": 563,
+        "endChar": 67
+      },
+      "revId": "1e99f15ebae9a2766ceb5c5b04a25c2aeafdb699",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
