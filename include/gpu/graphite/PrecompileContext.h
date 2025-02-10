@@ -9,6 +9,7 @@
 #define skgpu_graphite_PrecompileContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SingleOwner.h"
 
 #include <chrono>
@@ -42,6 +43,8 @@ public:
      * @return                        true if a Pipeline was created from the key; false otherwise
      */
     bool precompile(sk_sp<SkData> serializedPipelineKey);
+
+    void makeKnown(SkSpan<const char*> sksl);
 
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();

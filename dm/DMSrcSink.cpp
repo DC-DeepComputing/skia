@@ -123,6 +123,7 @@
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
 #include "tools/graphite/UniqueKeyUtils.h"
+#include "tools/graphite/precompile/PrecompileUtils.h"
 #endif // SK_ENABLE_PRECOMPILE
 
 #endif // SK_GRAPHITE
@@ -2276,7 +2277,7 @@ Result GraphitePrecompileTestingSink::drawSrc(
 }
 
 Result GraphitePrecompileTestingSink::resetAndRecreatePipelines(
-        PipelineCallBackHandler* handler,
+        skiatest::graphite::PipelineCallBackHandler* handler,
         skgpu::graphite::PrecompileContext* precompileContext) const {
     using namespace skgpu::graphite;
 
@@ -2388,32 +2389,6 @@ void GraphitePrecompileTestingSink::CompareKeys(
             SK_ABORT("missing");
         }
     }
-}
-
-void GraphitePrecompileTestingSink::PipelineCallBackHandler::add(sk_sp<SkData> payload) {
-    SkAutoSpinlock lock{ fSpinLock };
-
-    const sk_sp<SkData>* data = fMap.find({ payload.get() });
-    if (!data) {
-        fMap.set(std::move(payload));
-    }
-}
-
-void GraphitePrecompileTestingSink::PipelineCallBackHandler::retrieve(
-        std::vector<sk_sp<SkData>>* result) {
-    SkAutoSpinlock lock{ fSpinLock };
-
-    result->reserve(fMap.count());
-
-    fMap.foreach([result](sk_sp<SkData>* data) {
-        result->push_back(*data);
-    });
-}
-
-void GraphitePrecompileTestingSink::PipelineCallBackHandler::reset() {
-    SkAutoSpinlock lock{ fSpinLock };
-
-    fMap.reset();
 }
 
 Result GraphitePrecompileTestingSink::draw(const Src& src,
