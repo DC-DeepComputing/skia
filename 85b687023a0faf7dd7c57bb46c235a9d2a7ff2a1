@@ -1,0 +1,291 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fdc9eb06_60a6bc52",
+        "filename": "tests/F16DrawTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@jamesgk@google.com can you confirm that `F16DrawTest_Ganesh` and `F16DrawTest_Graphite` are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03db2187_f67c74f4",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1385,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com can you confirm that the Graphite variants of the tests in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 1385,
+        "startChar": 15,
+        "endLine": 1385,
+        "endChar": 26
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ba72ad3_079bd285",
+        "filename": "tests/GpuDrawPathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com in lieu of Brian, can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 150,
+        "startChar": 39,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8ae09fd_a54b4039",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "I\u0027d also be happy to fix this formatting in a separate CL, if preferred.",
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7332d6a6_e1f87f9f",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@robertphillips@google.com can you confirm that the 12 tests being updated in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 71
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "032b7e64_378c1cfc",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@egdaniel@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?\n\nFWIW it\u0027s only worth enforcing if we remove the `!Vulkan` check below, and it seems like we want to expand the other tests before enforcing them? In that case, maybe this should be punted too?\n\n(cc. @nicolettep@google.com for context on Vulkan backend status)",
+      "range": {
+        "startLine": 33,
+        "startChar": 35,
+        "endLine": 33,
+        "endChar": 53
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd3fc912_2a7b3307",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@jvanverth@google.com can you confirm that the two tests in this file are currently expected to be stable, unlikely to be expanded, and should be enforced for devices launching with Android 16?",
+      "range": {
+        "startLine": 62,
+        "startChar": 41,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01740c63_7dc87a65",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 793,
+        "startChar": 35,
+        "endLine": 793,
+        "endChar": 63
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4f246d9_0be7b766",
+        "filename": "tests/graphite/RecordingSurfacesTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@jamesgk@google.com can you confirm that the tests in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 129,
+        "startChar": 35,
+        "endLine": 129,
+        "endChar": 60
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3214b73f_9efeaa4d",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 891,
+        "startChar": 18,
+        "endLine": 891,
+        "endChar": 44
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "766b0c1c_c1461939",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com can you confirm that the 3 tests being updated in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 209,
+        "startChar": 18,
+        "endLine": 209,
+        "endChar": 56
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94e4b21d_521a19f5",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@egdaniel@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 235,
+        "startChar": 47,
+        "endLine": 235,
+        "endChar": 83
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59bd5c3f_9678e62f",
+        "filename": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-11T21:12:12Z",
+      "side": 1,
+      "message": "@robertphillips@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 600,
+        "startChar": 35,
+        "endLine": 600,
+        "endChar": 57
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
