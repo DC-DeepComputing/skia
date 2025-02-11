@@ -52,6 +52,24 @@
       "parentUuid": "b939e040_c6e2012e",
       "revId": "445bcd61b3c3f8a3638ad04c4172aae00a79a2c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87f1b945_011d1016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-11T23:12:26Z",
+      "side": 1,
+      "message": "Canary succeeded!",
+      "parentUuid": "c4c93fd0_f19f7302",
+      "revId": "445bcd61b3c3f8a3638ad04c4172aae00a79a2c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
