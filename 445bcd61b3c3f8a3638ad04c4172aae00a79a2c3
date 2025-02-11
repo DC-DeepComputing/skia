@@ -16,6 +16,24 @@
       "message": "lgtm % any conflict w/ client requirements",
       "revId": "445bcd61b3c3f8a3638ad04c4172aae00a79a2c3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b939e040_c6e2012e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-11T20:05:44Z",
+      "side": 1,
+      "message": "I\u0027m going to give it one more try to pick up the canary and then will check this on the tree instead.  I couldn\u0027t find any restriction mentioned in chromium\u0027s build docs but they are opaque, so could easily have missed something.",
+      "parentUuid": "d40bd429_7f7ea8c4",
+      "revId": "445bcd61b3c3f8a3638ad04c4172aae00a79a2c3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
