@@ -24,7 +24,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fOptimizeSampling(optimizeSampling)
         , fCaps(recorder->priv().caps()) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
-    fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
+    fRTEffectDict7aa7 = fRecorder->priv().runtimeEffectDictionary7aa7();
     fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
     fPaintColor.fA = paintColor.fA;
 }
@@ -34,7 +34,7 @@ KeyContext::KeyContext(const KeyContext& other)
         , fLocal2Dev(other.fLocal2Dev)
         , fLocalMatrix(other.fLocalMatrix)
         , fDictionary(other.fDictionary)
-        , fRTEffectDict(other.fRTEffectDict)
+        , fRTEffectDict7aa7(other.fRTEffectDict7aa7)
         , fDstColorInfo(other.fDstColorInfo)
         , fPaintColor(other.fPaintColor)
         , fScope(other.fScope)
