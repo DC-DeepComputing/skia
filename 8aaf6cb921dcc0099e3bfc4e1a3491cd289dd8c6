@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "254fda02_1e1f4884",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-11T19:59:48Z",
+      "side": 1,
+      "message": "can this be a const\u0026 ?",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 25
+      },
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "396cdabc_9c7fcae1",
         "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
         "patchSetId": 1
@@ -14,6 +37,23 @@
       "writtenOn": "2025-02-11T19:51:45Z",
       "side": 1,
       "message": "Do we want a dopey assert that \"entry\" contains what we expect ?",
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1177fcc2_1b34f4c0",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-11T19:59:48Z",
+      "side": 1,
+      "message": "Can this be a const\u0026 ?",
       "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
