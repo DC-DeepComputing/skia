@@ -1079,6 +1079,18 @@ bool SkPngCodec::onGetGainmapCodec(SkGainmapInfo* info, std::unique_ptr<SkCodec>
     bool hasInfo = codec->onGetGainmapInfo(info);
 
     if (hasInfo && gainmapCodec) {
+        // The ISO gainmap payload does not contain the actual alterative image
+        // primaries, so we need to query the ICC profile stored on the gainmap.
+        if (info->fGainmapMathColorSpace) {
+            const auto iccProfile = codec->getEncodedInfo().profile();
+            if (iccProfile) {
+                auto colorSpace = SkColorSpace::Make(*iccProfile);
+                if (colorSpace) {
+                    info->fGainmapMathColorSpace = std::move(colorSpace);
+                }
+            }
+        }
+
         *gainmapCodec = std::move(codec);
     }
 
