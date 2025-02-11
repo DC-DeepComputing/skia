@@ -115,7 +115,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                    SkSpan(childArray, entry->fNumChildren),
                                    id,
                                    index,
-                                   dataSpan);
+                                   dataSpan, true);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,

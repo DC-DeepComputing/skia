@@ -81,7 +81,13 @@ public:
     }
 
     static uint32_t StableKey(const SkRuntimeEffect& effect) {
-        return effect.fStableKey;
+        return effect.fStableKey1;
+    }
+
+    static void SetStableKey(SkRuntimeEffect* effect, uint32_t stableKey) {
+        SkASSERT(!effect->fStableKey1);
+//        SkASSERT(IsUserDefinedKnownRuntimeEffect(stableKey));
+        effect->fStableKey1 = stableKey;
     }
 
     static const SkSL::Program& Program(const SkRuntimeEffect& effect) {
