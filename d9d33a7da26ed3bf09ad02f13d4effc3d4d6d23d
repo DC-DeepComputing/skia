@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff8ac63a_7ad5042d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-11T03:57:11Z",
+      "side": 1,
+      "message": "I have just added myself to AUTHORS so the CQ job can be retried now. Sorry for the noise.",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
