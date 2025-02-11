@@ -22,6 +22,30 @@
       },
       "revId": "9d4ef56787da703cf1aca8239f80f5706ab2e574",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a5ad7bd_727a86d6",
+        "filename": "src/gpu/graphite/vk/VulkanFramebuffer.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-11T17:59:26Z",
+      "side": 1,
+      "message": "They keep the objects alive. If they were to go away then this framebuffer would no longer be valid.",
+      "parentUuid": "6747b876_db719194",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 24
+      },
+      "revId": "9d4ef56787da703cf1aca8239f80f5706ab2e574",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
