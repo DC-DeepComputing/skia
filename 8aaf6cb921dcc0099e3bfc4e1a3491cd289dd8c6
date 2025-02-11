@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ca76431_53a7cf33",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-11T20:27:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "254fda02_1e1f4884",
+      "range": {
+        "startLine": 58,
+        "startChar": 12,
+        "endLine": 58,
+        "endChar": 25
+      },
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "396cdabc_9c7fcae1",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-02-11T19:51:45Z",
       "side": 1,
       "message": "Do we want a dopey assert that \"entry\" contains what we expect ?",
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ddd9f9b_2343fb50",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-11T20:27:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "396cdabc_9c7fcae1",
       "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1dbf56a4_dcbff5bb",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-11T20:27:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1177fcc2_1b34f4c0",
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4b569a53_9a349aad",
@@ -71,6 +131,24 @@
       "writtenOn": "2025-02-11T19:51:45Z",
       "side": 1,
       "message": "Doesn\u0027t this need to go before the removeShuffle ?",
+      "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d58eab44_08eea88f",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-11T20:27:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b569a53_9a349aad",
       "revId": "8aaf6cb921dcc0099e3bfc4e1a3491cd289dd8c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
