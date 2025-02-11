@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a41d5161_529fe38c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-11T07:09:29Z",
+      "side": 1,
+      "message": "LGTM but I don\u0027t have review permissions. Thanks for helping with the loongarch porting work!",
+      "revId": "b36fa4c2de1c57fd8f704ae397338082022b4865",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
