@@ -16,6 +16,24 @@
       "message": "There are still some implicit conversions in SkRasterPipeline_opts.h (LSX) that need to be wrapped with explicit cast and cause compilation failures.",
       "revId": "32fc38a34ed6c8da7579cd0964939e80b91b6dc3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb0a08d9_4b714ac0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-11T04:45:23Z",
+      "side": 1,
+      "message": "I have uploaded a new revision fixing a bunch more implicit conversions. I have tested with Clang (GCC bails out with errors similar to \"*some lasx builtin* not enabled\" if compiling with -mno-lasx to trigger the LSX codepath); would you help double-checking?",
+      "parentUuid": "67d43959_1a4fe974",
+      "revId": "32fc38a34ed6c8da7579cd0964939e80b91b6dc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
