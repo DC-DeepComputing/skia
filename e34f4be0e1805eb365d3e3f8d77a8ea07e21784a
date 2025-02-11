@@ -16,6 +16,24 @@
       "message": "I\u0027m not sure how to go about testing this. It *looks* good to me, based on the python script invocation, it should give us what we want. I\u0027d appreciate your eyes on this.",
       "revId": "e34f4be0e1805eb365d3e3f8d77a8ea07e21784a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58bc658a_ef8c70d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-11T13:39:54Z",
+      "side": 1,
+      "message": "Recipes don\u0027t really have tests (one of their many flaws). The generated .json files show the commands that will be run and that seems to be in order. We can land this and see if it helps.",
+      "parentUuid": "88f20000_a18f1c03",
+      "revId": "e34f4be0e1805eb365d3e3f8d77a8ea07e21784a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
