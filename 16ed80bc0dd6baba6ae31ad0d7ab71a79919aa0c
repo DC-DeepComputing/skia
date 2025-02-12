@@ -70,6 +70,24 @@
       "parentUuid": "5300aa13_c4335241",
       "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6517d9f5_cfa4bc8b",
+        "filename": "tests/PngGainmapTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-02-12T14:26:31Z",
+      "side": 1,
+      "message": "thanks, seems to work locally!",
+      "parentUuid": "7c3fa1df_b0c71642",
+      "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
