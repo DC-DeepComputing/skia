@@ -34,6 +34,24 @@
       "parentUuid": "ec938bfe_5ccae992",
       "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5300aa13_c4335241",
+        "filename": "tests/PngGainmapTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 12520
+      },
+      "writtenOn": "2025-02-12T14:10:08Z",
+      "side": 1,
+      "message": "so these tests all intend to test the libpng impl. So I\u0027d probably rather guard inclusion of the whole file.\n\nwhat\u0027s the best way to do this? I guess adjust the list of tests here https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/BUILD.gn;l\u003d2480;drc\u003d84d9fd6e3b2311efc9e6ed41767dae1dff4f90ea to only include the test when skia_use_libpng_decode is true?",
+      "parentUuid": "4ea4ddd6_975c8c00",
+      "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
