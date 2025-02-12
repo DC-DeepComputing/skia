@@ -194,6 +194,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a941fa9b_cfb39705",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-12T19:57:15Z",
+      "side": 1,
+      "message": "This is an internal test and not really hitting the driver at all so I don\u0027t think it needs to be part of CTS.",
+      "parentUuid": "bd3fc912_2a7b3307",
+      "range": {
+        "startLine": 62,
+        "startChar": 41,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01740c63_7dc87a65",
         "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
         "patchSetId": 1
