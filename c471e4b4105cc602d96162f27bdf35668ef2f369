@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff24610a_f1652afb",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T15:12:55Z",
+      "side": 1,
+      "message": "Yes, I had addedf TODOs for this in a different CL which is now the parent to this one.",
+      "parentUuid": "3afd0aee_cc2e0659",
+      "range": {
+        "startLine": 140,
+        "startChar": 45,
+        "endLine": 140,
+        "endChar": 48
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "601535ac_9fa8d8a0",
@@ -118,6 +142,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f40388a_3062c96d",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T15:12:55Z",
+      "side": 1,
+      "message": "Heard, you\u0027re right - fixed",
+      "parentUuid": "d6fa6933_4d7dc652",
+      "range": {
+        "startLine": 256,
+        "startChar": 21,
+        "endLine": 256,
+        "endChar": 40
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4648fe24_b3879e01",
@@ -131,6 +179,30 @@
       "writtenOn": "2025-01-21T21:17:18Z",
       "side": 1,
       "message": "nit: extra space",
+      "range": {
+        "startLine": 268,
+        "startChar": 82,
+        "endLine": 268,
+        "endChar": 83
+      },
+      "revId": "c471e4b4105cc602d96162f27bdf35668ef2f369",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e9df9e8_49e1b893",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T15:12:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4648fe24_b3879e01",
       "range": {
         "startLine": 268,
         "startChar": 82,

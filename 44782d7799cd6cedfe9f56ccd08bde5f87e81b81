@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c6ed8be_77005c0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T15:12:55Z",
+      "side": 1,
+      "message": "Returning some comments then going to abandon this CL seeing as it is really future work (reading from input is the goal, not sampling directly from dst texture),",
+      "revId": "44782d7799cd6cedfe9f56ccd08bde5f87e81b81",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
