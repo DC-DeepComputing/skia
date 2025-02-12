@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5013603c_a14b79e4",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T16:36:58Z",
+      "side": 1,
+      "message": "Ah, yes - modified to have each `DrawList::Draw` store whether it reads from the dst so we can issue this barrier each time. \n\nIn an effort to make the logic a bit more clear, I defined a bool (similar to `rebindTexturesOnPipelineChange`) to specify whether draws reading from the dst do so via reading it as an input attachment (as determined by Caps\u0027s reported DstReadStrategy). That + IF a draw reads the dst now determine the barrier addition.",
+      "parentUuid": "8ce114bb_ecd4c42d",
+      "range": {
+        "startLine": 577,
+        "startChar": 31,
+        "endLine": 577,
+        "endChar": 41
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1b44fe67_a799f12f",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fb3c35f7_040be5e1",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T16:36:58Z",
+      "side": 1,
+      "message": "ERRORF is used w/ testing and requires a reporter. `SK_ABORT` seems potentially overkill, so I used `SKGPU_LOG_E` - LMKWYT.",
+      "parentUuid": "1b44fe67_a799f12f",
+      "range": {
+        "startLine": 659,
+        "startChar": 16,
+        "endLine": 659,
+        "endChar": 32
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ecd6483d_8de6a2cc",
         "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
         "patchSetId": 13
@@ -60,6 +108,30 @@
       "writtenOn": "2025-02-07T19:49:32Z",
       "side": 1,
       "message": "same as above about errorf",
+      "range": {
+        "startLine": 449,
+        "startChar": 16,
+        "endLine": 449,
+        "endChar": 32
+      },
+      "revId": "b71f1199a1ff594015b284f9b88a5bcb1f293559",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e833f34_d8e60942",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 13
+      },
+      "lineNbr": 449,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T16:36:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ecd6483d_8de6a2cc",
       "range": {
         "startLine": 449,
         "startChar": 16,
