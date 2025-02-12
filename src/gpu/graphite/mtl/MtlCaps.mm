@@ -149,7 +149,12 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kMetal;
     fResourceBindingReqs.fStorageBufferLayout = Layout::kMetal;
-    fResourceBindingReqs.fDistinctIndexRanges = true;
+
+    // Even though Metal does not use bind groups or descriptor sets, ResourceBindingRequirements
+    // still expects valid assignments of these indices to implicate the lack of groups (using 1
+    // group, essentially).
+    fResourceBindingReqs.fUniformsIdx = 0;
+    fResourceBindingReqs.fTextureSamplerIdx = 0;
 
     fResourceBindingReqs.fIntrinsicBufferBinding =
             MtlGraphicsPipeline::kIntrinsicUniformBufferIndex;
