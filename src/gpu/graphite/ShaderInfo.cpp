@@ -549,18 +549,18 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(fRootNodes.size() == 2 || fRootNodes.size() == 3);
     // First node produces the source color (all snippets return a half4), so we just require that
     // its signature takes no extra args or just local coords.
-    const ShaderSnippet* srcSnippet = dict->getEntry(fRootNodes[0]->codeSnippetId());
+    const ShaderSnippet* srcSnippet = dict->getEntry1(fRootNodes[0]->codeSnippetId());
     // TODO(b/349997190): Once SkEmptyShader doesn't use the passthrough snippet, we can assert
     // that srcSnippet->needsPriorStageOutput() is false.
     SkASSERT(!srcSnippet->needsBlenderDstColor());
     // Second node is the final blender, so it must take both the src color and dst color, and not
     // any local coordinate.
-    const ShaderSnippet* blendSnippet = dict->getEntry(fRootNodes[1]->codeSnippetId());
+    const ShaderSnippet* blendSnippet = dict->getEntry1(fRootNodes[1]->codeSnippetId());
     SkASSERT(blendSnippet->needsPriorStageOutput() && blendSnippet->needsBlenderDstColor());
     SkASSERT(!blendSnippet->needsLocalCoords());
 
     const ShaderSnippet* clipSnippet =
-            fRootNodes.size() > 2 ? dict->getEntry(fRootNodes[2]->codeSnippetId()) : nullptr;
+            fRootNodes.size() > 2 ? dict->getEntry1(fRootNodes[2]->codeSnippetId()) : nullptr;
     SkASSERT(!clipSnippet ||
              (!clipSnippet->needsPriorStageOutput() && !clipSnippet->needsBlenderDstColor()));
 #endif
