@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c99f11d5_fe324911",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-12T21:36:39Z",
+      "side": 1,
+      "message": "Do we need this if we are guarding against the creation of the bad DisplacementMap filter?\n\nThere is other logic that I\u0027d rather try and patch up to make sure we dont\u0027 even try to execute an image filter graph at all if it would lead to problematic transforms.\n\nAnd in this case, if the resulting layer-space transform is not invertible, the forward rendering operations should get dropped automatically. If that\u0027s not happening, I\u0027d vote to patch that.",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 5
+      },
+      "revId": "51b50d3e29852f3376e8d8b79cd0b8b769ab69a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
