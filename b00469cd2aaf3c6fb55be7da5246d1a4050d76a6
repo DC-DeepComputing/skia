@@ -34,6 +34,24 @@
       "parentUuid": "8e16a372_e6bc61fb",
       "revId": "b00469cd2aaf3c6fb55be7da5246d1a4050d76a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1b7e8bb_e4d13f68",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-12T14:15:34Z",
+      "side": 1,
+      "message": "This was a fuzzer specific failure and we have tests already that check behavior for 0 height so resolving this comment.",
+      "parentUuid": "e563bde6_f3481f15",
+      "revId": "b00469cd2aaf3c6fb55be7da5246d1a4050d76a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
