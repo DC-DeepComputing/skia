@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec938bfe_5ccae992",
+        "filename": "tests/PngGainmapTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-12T13:46:31Z",
+      "side": 1,
+      "message": "Kinda unexpected for the build error to only pop up with RustPNG, and I cannot repro locally - but I think the issue is `SkPngCodec::MakeFromStream` is not in our public APIs so the symbol not being exported.\n\nTry using `SkPngDecoder::Decode` instead.",
+      "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
