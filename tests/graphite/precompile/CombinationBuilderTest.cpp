@@ -601,10 +601,10 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(CombinationBuilderTest, reporter, context,
                                    CtsEnforcement::kNextRelease) {
     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    auto rtEffectDict7aaa7 = std::make_unique<RuntimeEffectDictionary>(true); //$$
 
     SkColorInfo ci(kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
-    KeyContext keyContext(context->priv().caps(), dict, rtEffectDict.get(), ci);
+    KeyContext keyContext(context->priv().caps(), dict, rtEffectDict7aaa7.get(), ci);
 
     PipelineDataGatherer gatherer(Layout::kMetal);
 

@@ -39,14 +39,14 @@ void PaintParamsKeyBuilder::pushStack(int32_t codeSnippetID) {
         SkASSERT(fStack.back().fNumActualChildren <= fStack.back().fNumExpectedChildren);
     }
 
-    const ShaderSnippet* snippet = fDict->getEntry(codeSnippetID);
+    const ShaderSnippet* snippet = fDict->getEntry1(codeSnippetID);
     fStack.push_back({codeSnippetID, snippet->fNumChildren});
 }
 
 void PaintParamsKeyBuilder::validateData(size_t dataSize) {
     SkASSERT(!fStack.empty()); // addData() called within code snippet block
     // Check that addData() is only called for snippets that support it and is only called once
-    const ShaderSnippet* snippet = fDict->getEntry(fStack.back().fCodeSnippetID);
+    const ShaderSnippet* snippet = fDict->getEntry1(fStack.back().fCodeSnippetID);
     SkASSERT(snippet->storesSamplerDescData());
     SkASSERT(fStack.back().fDataSize < 0);
 
@@ -56,7 +56,7 @@ void PaintParamsKeyBuilder::validateData(size_t dataSize) {
 void PaintParamsKeyBuilder::popStack() {
     SkASSERT(!fStack.empty());
     SkASSERT(fStack.back().fNumActualChildren == fStack.back().fNumExpectedChildren);
-    const bool expectsData = fDict->getEntry(fStack.back().fCodeSnippetID)->storesSamplerDescData();
+    const bool expectsData = fDict->getEntry1(fStack.back().fCodeSnippetID)->storesSamplerDescData();
     const bool hasData = fStack.back().fDataSize >= 0;
     SkASSERT(expectsData == hasData);
     fStack.pop_back();
@@ -81,7 +81,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
     const int32_t index = (*currentIndex)++;
     const int32_t id = fData[index];
 
-    const ShaderSnippet* entry = dict->getEntry(id);
+    const ShaderSnippet* entry = dict->getEntry1(id);
     if (!entry) {
         SKGPU_LOG_E("Unknown snippet ID in key: %d", id);
         return nullptr;
@@ -115,7 +115,7 @@ const ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                    SkSpan(childArray, entry->fNumChildren),
                                    id,
                                    index,
-                                   dataSpan);
+                                   dataSpan, true);
 }
 
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const ShaderCodeDictionary* dict,
@@ -158,7 +158,7 @@ static int key_to_string(SkString* str,
     }
 
     uint32_t id = keyData[currentIndex++];
-    auto entry = dict->getEntry(id);
+    auto entry = dict->getEntry1(id);
     if (!entry) {
         str->append("UnknownCodeSnippetID:");
         str->appendS32(id);
@@ -263,11 +263,13 @@ namespace {
     }
 
     uint32_t id = keyData[(*currentIndex)++];
-    if (id >= kBuiltInCodeSnippetIDCount && !SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(id)) {
+    if (id >= kBuiltInCodeSnippetIDCount &&
+        !SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(id) &&
+        !dict->isUserDefinedKnownRuntimeEffect(id)) {
         return false;
     }
 
-    auto entry = dict->getEntry(id);
+    auto entry = dict->getEntry1(id);
     if (!entry) {
         return false;
     }
