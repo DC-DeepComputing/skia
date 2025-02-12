@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "306c3536_545dade6",
+        "filename": "tests/F16DrawTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-12T18:42:56Z",
+      "side": 1,
+      "message": "Originally this test exercised about twice as many blend modes, but we removed them when the test failed on certain hardware + backend combinations. I guess it\u0027s possible that we would expand this test again if I ever get around to looking into why it was failing. I can\u0027t say how likely that is but personally I would lean towards keeping this at kNextRelease.",
+      "parentUuid": "fdc9eb06_60a6bc52",
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "03db2187_f67c74f4",
         "filename": "tests/FilterResultTest.cpp",
         "patchSetId": 1
@@ -210,6 +228,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@jamesgk@google.com can you confirm that the tests in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 129,
+        "startChar": 35,
+        "endLine": 129,
+        "endChar": 60
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "644093dc_b99af53a",
+        "filename": "tests/graphite/RecordingSurfacesTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-12T18:42:56Z",
+      "side": 1,
+      "message": "These tests are stable and unlikely to be expanded. IMO they are basically testing internal Graphite logic, though they do indirectly interact with GPU APIs.",
+      "parentUuid": "f4f246d9_0be7b766",
       "range": {
         "startLine": 129,
         "startChar": 35,
