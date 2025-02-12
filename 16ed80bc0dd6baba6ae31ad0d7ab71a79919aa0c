@@ -16,6 +16,24 @@
       "message": "Kinda unexpected for the build error to only pop up with RustPNG, and I cannot repro locally - but I think the issue is `SkPngCodec::MakeFromStream` is not in our public APIs so the symbol not being exported.\n\nTry using `SkPngDecoder::Decode` instead.",
       "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ea4ddd6_975c8c00",
+        "filename": "tests/PngGainmapTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-12T13:49:44Z",
+      "side": 1,
+      "message": "The issue is that the RustPNG build setup does not include the libpng implementation at all. So you will need to guard this test behind `#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)` (and Florin\u0027s suggestion of using `SkPngDecoder::Decode` is preferred also)",
+      "parentUuid": "ec938bfe_5ccae992",
+      "revId": "16ed80bc0dd6baba6ae31ad0d7ab71a79919aa0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
