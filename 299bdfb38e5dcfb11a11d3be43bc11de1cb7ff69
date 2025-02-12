@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a4ac264_69abc5e7",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 571,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-12T16:38:18Z",
+      "side": 1,
+      "message": "We *could* define a Caps flag to indicate whether or not this dst read strategy actually requires a barrier, but I did not do so given that I do not foresee other backends using this DstReadStrategy \u0026 not requiring a barrier.",
+      "range": {
+        "startLine": 571,
+        "startChar": 3,
+        "endLine": 571,
+        "endChar": 88
+      },
+      "revId": "299bdfb38e5dcfb11a11d3be43bc11de1cb7ff69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
