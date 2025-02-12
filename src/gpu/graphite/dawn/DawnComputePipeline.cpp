@@ -90,7 +90,10 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     // order.
     //
     // All resources get assigned to a single bind group at index 0.
-    SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fDistinctIndexRanges);
+    SkASSERT(sharedContext->caps()->resourceBindingRequirements().fUniformsIdx ==
+    sharedContext->caps()->resourceBindingRequirements().fTextureSamplerIdx ==
+    sharedContext->caps()->resourceBindingRequirements().fUniformsIdx ==
+    sharedContext->caps()->resourceBindingRequirements().fUniformsIdx == 0);
     std::vector<wgpu::BindGroupLayoutEntry> bindGroupLayoutEntries;
     auto resources = step->resources();
 

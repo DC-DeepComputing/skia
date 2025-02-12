@@ -97,7 +97,6 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // TODO(b/374997389): Somehow convey & enforce Layout::kStd430 for push constants.
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = false;
-    fResourceBindingReqs.fDistinctIndexRanges = false;
 
     // Vulkan uses push constants instead of an intrinsic UBO, so we do not need to assign
     // fResourceBindingReqs.fIntrinsicBufferBinding.
@@ -106,8 +105,11 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
             VulkanGraphicsPipeline::kRenderStepUniformBufferIndex;
     fResourceBindingReqs.fPaintParamsBufferBinding =
             VulkanGraphicsPipeline::kPaintUniformBufferIndex;
-    fResourceBindingReqs.fGradientBufferBinding =
-            VulkanGraphicsPipeline::kGradientBufferIndex;
+    fResourceBindingReqs.fGradientBufferBinding = VulkanGraphicsPipeline::kGradientBufferIndex;
+    fResourceBindingReqs.fUniformsIdx = VulkanGraphicsPipeline::kUniformBufferDescSetIndex;
+    fResourceBindingReqs.fTextureSamplerIdx = VulkanGraphicsPipeline::kTextureBindDescSetIndex;
+    fResourceBindingReqs.fInputAttachmentIdxForLoadingMSAA =
+            VulkanGraphicsPipeline::kInputAttachmentDescSetIndex;
 
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
     fStorageBufferSupport = false;

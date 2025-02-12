@@ -58,17 +58,25 @@ struct ResourceBindingRequirements {
     // separately and their binding indices explicitly specified in the shader text.
     bool fSeparateTextureAndSamplerBinding = false;
 
-    // Whether buffer, texture, and sampler resource bindings use distinct index ranges.
-    bool fDistinctIndexRanges = false;
-
     // Whether intrinsic constant information is stored as push constants (rather than normal UBO).
     // Currently only relevant or possibly true for Vulkan.
     bool fUseVulkanPushConstantsForIntrinsicConstants = false;
 
-    int fIntrinsicBufferBinding = -1;
-    int fRenderStepBufferBinding = -1;
-    int fPaintParamsBufferBinding = -1;
-    int fGradientBufferBinding = -1;
+    bool usesSingleBindGroup() const {
+        return fUniformsIdx == fTextureSamplerIdx == fInputAttachmentIdxForLoadingMSAA;
+    }
+
+    // Define default set indices. For now, we assume that even if textures and samplers must be
+    // bound separately, they still are within the same descriptor set/bind group.
+    static constexpr int kUnassigned = -1;
+    int fUniformsIdx                      = kUnassigned;
+    int fTextureSamplerIdx                = kUnassigned;
+    int fInputAttachmentIdxForLoadingMSAA = kUnassigned;
+    // Define uniform buffer bindings
+    int fIntrinsicBufferBinding           = kUnassigned;
+    int fRenderStepBufferBinding          = kUnassigned;
+    int fPaintParamsBufferBinding         = kUnassigned;
+    int fGradientBufferBinding            = kUnassigned;
 };
 
 enum class DstReadStrategy {

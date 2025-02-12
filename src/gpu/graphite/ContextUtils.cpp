@@ -116,22 +116,17 @@ void CollectIntrinsicUniforms(const Caps* caps,
 std::string EmitSamplerLayout(const ResourceBindingRequirements& bindingReqs, int* binding) {
     std::string result;
 
-    // If fDistinctIndexRanges is false, then texture and sampler indices may clash with other
-    // resource indices. Graphite assumes that they will be placed in descriptor set (Vulkan) and
-    // bind group (Dawn) index 1.
-    const char* distinctIndexRange = bindingReqs.fDistinctIndexRanges ? "" : "set=1, ";
-
     if (bindingReqs.fSeparateTextureAndSamplerBinding) {
         int samplerIndex = (*binding)++;
         int textureIndex = (*binding)++;
-        result = SkSL::String::printf("layout(webgpu, %ssampler=%d, texture=%d)",
-                                      distinctIndexRange,
+        result = SkSL::String::printf("layout(webgpu, set=%d, sampler=%d, texture=%d)",
+                                      bindingReqs.fTextureSamplerIdx,
                                       samplerIndex,
                                       textureIndex);
     } else {
         int samplerIndex = (*binding)++;
-        result = SkSL::String::printf("layout(%sbinding=%d)",
-                                      distinctIndexRange,
+        result = SkSL::String::printf("layout(set=%d, binding=%d)",
+                                      bindingReqs.fTextureSamplerIdx,
                                       samplerIndex);
     }
     return result;
@@ -157,7 +152,6 @@ std::string BuildComputeSkSL(const Caps* caps, const ComputeStep* step) {
                                  step->localDispatchSize().fDepth);
 
     const auto& bindingReqs = caps->resourceBindingRequirements();
-    bool distinctRanges = bindingReqs.fDistinctIndexRanges;
     bool separateSampler = bindingReqs.fSeparateTextureAndSamplerBinding;
 
     int index = 0;
@@ -186,16 +180,16 @@ std::string BuildComputeSkSL(const Caps* caps, const ComputeStep* step) {
                 break;
             case Type::kWriteOnlyStorageTexture:
                 SkSL::String::appendf(&sksl, "layout(binding=%d, rgba8) writeonly texture2D ",
-                                      distinctRanges ? texIdx++ : index++);
+                                      bindingReqs.usesSingleBindGroup() ? index++ : texIdx++);
                 sksl += r.fSkSL;
                 break;
             case Type::kReadOnlyTexture:
                 SkSL::String::appendf(&sksl, "layout(binding=%d, rgba8) readonly texture2D ",
-                                      distinctRanges ? texIdx++ : index++);
+                                      bindingReqs.usesSingleBindGroup() ? index++ : texIdx++);
                 sksl += r.fSkSL;
                 break;
             case Type::kSampledTexture:
-                if (distinctRanges) {
+                if (!bindingReqs.usesSingleBindGroup()) {
                     SkSL::String::appendf(&sksl, "layout(metal, binding=%d) ", texIdx++);
                 } else if (separateSampler) {
                     SkSL::String::appendf(
