@@ -106,6 +106,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a803b507_ecc0238d",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-12T16:22:28Z",
+      "side": 1,
+      "message": "I can confirm.",
+      "parentUuid": "7332d6a6_e1f87f9f",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 71
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "032b7e64_378c1cfc",
         "filename": "tests/graphite/BackendTextureTest.cpp",
         "patchSetId": 1
@@ -278,6 +302,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@robertphillips@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 600,
+        "startChar": 35,
+        "endLine": 600,
+        "endChar": 57
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "020fcf01_58ca7cb6",
+        "filename": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-12T16:22:28Z",
+      "side": 1,
+      "message": "I think this should change kNever since it is testing Skia\u0027s internal code.",
+      "parentUuid": "59bd5c3f_9678e62f",
       "range": {
         "startLine": 600,
         "startChar": 35,
