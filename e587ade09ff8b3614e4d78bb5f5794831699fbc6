@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f239c2a2_27a53ffc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-02-13T14:29:09Z",
+      "side": 1,
+      "message": "This should work, sorry for the confused previous CL.",
+      "revId": "e587ade09ff8b3614e4d78bb5f5794831699fbc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
