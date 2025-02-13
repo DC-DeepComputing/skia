@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf2b31eb_32c0ed21",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-13T14:16:18Z",
+      "side": 1,
+      "message": "After asserting on line 790 the Graphite_Native_Metal_TestPrecompile is dying here",
+      "revId": "b901ce9bd51832287859b3bd21d327d9c0f24c7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9143e341_c250dd58",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 790,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-13T14:16:18Z",
+      "side": 1,
+      "message": "The Graphite_Native_Metal_TestPrecompile is asserting here",
+      "revId": "b901ce9bd51832287859b3bd21d327d9c0f24c7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
