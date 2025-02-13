@@ -136,6 +136,7 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         "disable_robustness",
         // Must be last to correctly respond to `fUseTintIR` option.
         "use_tint_ir",
+        "disable_lazy_clear_for_mapped_at_creation_buffer",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
     togglesDesc.enabledToggleCount =

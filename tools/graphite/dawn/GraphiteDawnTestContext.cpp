@@ -47,6 +47,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
         "disable_robustness",
         // Must be last to correctly respond to `useTintIR` parameter.
         "use_tint_ir",
+        "disable_lazy_clear_for_mapped_at_creation_buffer",
     };
     wgpu::DawnTogglesDescriptor togglesDesc;
     togglesDesc.enabledToggleCount  = std::size(kToggles) - (useTintIR ? 0 : 1);
