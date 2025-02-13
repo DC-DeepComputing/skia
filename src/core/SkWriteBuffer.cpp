@@ -245,7 +245,7 @@ void SkBinaryWriteBuffer::writeTypeface(SkTypeface* obj) {
     //   0 -- empty font
     //  >0 -- index
     //  <0 -- custom (serial procs)
-
+    SkASSERT(fWriter);
     if (obj == nullptr) {
         fWriter.write32(0);
     } else if (fProcs.fTypefaceProc) {
