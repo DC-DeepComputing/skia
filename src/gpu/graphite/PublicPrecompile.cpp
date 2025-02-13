@@ -64,7 +64,7 @@ void compile(const RendererProvider* rendererProvider,
             GraphicsPipelineDesc pipelineDesc(s->renderStepID(), paintID);
 
             sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
-                    keyContext.rtEffectDict(),
+                    keyContext.rtEffectDict7aa7(),
                     pipelineDesc,
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);
@@ -88,7 +88,7 @@ void Precompile(PrecompileContext* precompileContext,
     ShaderCodeDictionary* dict = precompileContext->priv().shaderCodeDictionary();
     const Caps* caps = precompileContext->priv().caps();
 
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    auto rtEffectDict7aa7 = std::make_unique<RuntimeEffectDictionary>(true); //$$
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
         // TODO: Allow the client to pass in mipmapping and protection too?
@@ -128,7 +128,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          caps->getDstReadStrategy(info));
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, nullptr);
-            KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
+            KeyContext keyContext(caps, dict, rtEffectDict7aa7.get(), ci);
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
                 PrecompileCombinations(

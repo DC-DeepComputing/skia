@@ -166,6 +166,8 @@ public:
      */
     static sk_sp<SkData> MakeEmpty();
 
+    void dump(const char* label) const;
+
 private:
     friend class SkNVRefCnt<SkData>;
     ReleaseProc fReleaseProc;

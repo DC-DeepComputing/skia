@@ -81,7 +81,17 @@ public:
     }
 
     static uint32_t StableKey(const SkRuntimeEffect& effect) {
-        return effect.fStableKey;
+        return effect.fStableKey1;
+    }
+
+    static void SetStableKey(SkRuntimeEffect* effect, uint32_t stableKey) {
+        SkASSERT(!effect->fStableKey1);
+//        SkASSERT(IsUserDefinedKnownRuntimeEffect(stableKey));
+        effect->fStableKey1 = stableKey;
+    }
+
+    static void ResetStableKey(SkRuntimeEffect* effect, uint32_t stableKey) {
+        effect->fStableKey1 = 0;
     }
 
     static const SkSL::Program& Program(const SkRuntimeEffect& effect) {
@@ -163,7 +173,7 @@ inline sk_sp<SkRuntimeEffect> SkMakeCachedRuntimeEffect(
 
 // Internal API that assumes (and asserts) that the shader code is valid, but does no internal
 // caching. Used when the caller will cache the result in a static variable. Ownership is passed to
-// the caller; the effect will be leaked if it the pointer is not stored or explicitly deleted.
+// the caller; the effect will be leaked if the pointer is not stored or explicitly deleted.
 inline SkRuntimeEffect* SkMakeRuntimeEffect(
         SkRuntimeEffect::Result (*make)(SkString, const SkRuntimeEffect::Options&),
         const char* sksl,
