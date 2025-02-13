@@ -72,6 +72,7 @@ struct ResourceBindingRequirements {
     int fTextureSamplerIdx                = kUnassigned;
     // Define set indices that may only be used by some backends. This distinction matters for
     // determining whether only 1 bind group is used by a backend, which changes some SkSL logic.
+    int fInputAttachmentIdxForDstReads    = kUnassigned;
     int fInputAttachmentIdxForLoadingMSAA = kUnassigned;
     // Define uniform buffer bindings
     int fIntrinsicBufferBinding           = kUnassigned;
