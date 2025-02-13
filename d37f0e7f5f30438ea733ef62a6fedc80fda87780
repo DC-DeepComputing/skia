@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "528e5581_d3d38199",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-02-13T14:11:05Z",
+      "side": 1,
+      "message": "I think `go mod tidy` will fix the failing housekeeper.",
+      "revId": "d37f0e7f5f30438ea733ef62a6fedc80fda87780",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
