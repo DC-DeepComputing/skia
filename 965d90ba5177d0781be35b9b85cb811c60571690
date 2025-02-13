@@ -22,6 +22,30 @@
       },
       "revId": "965d90ba5177d0781be35b9b85cb811c60571690",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bd0b95_0cc3ebeb",
+        "filename": "bazel/external/dng_sdk/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-13T18:55:56Z",
+      "side": 0,
+      "message": "Yes, this is the proper fix for the Bazel build.",
+      "parentUuid": "102628f3_783b07d9",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 0
+      },
+      "revId": "965d90ba5177d0781be35b9b85cb811c60571690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
