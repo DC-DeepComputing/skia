@@ -40,6 +40,10 @@ void SkSharingSerialContext::collectNonTextureImagesFromPicture(
     pic->serialize(&ns, &tempProc);
 }
 
+void SkSharingSerialContext::setDirectContext(GrDirectContext* ctx) {
+    fDirectContext = ctx;
+}
+
 sk_sp<SkData> SkSharingSerialContext::serializeImage(SkImage* img, void* ctx) {
     SkSharingSerialContext* context = reinterpret_cast<SkSharingSerialContext*>(ctx);
     uint32_t id = img->uniqueID(); // get this process's id for the image. these are not hashes.
