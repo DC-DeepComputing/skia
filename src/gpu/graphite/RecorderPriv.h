@@ -33,11 +33,11 @@ public:
 
     ResourceProvider* resourceProvider() { return fRecorder->fResourceProvider; }
 
-    const RuntimeEffectDictionary* runtimeEffectDictionary() const {
-        return fRecorder->fRuntimeEffectDict.get();
+    const RuntimeEffectDictionary* runtimeEffectDictionary7aa7() const {
+        return fRecorder->fRuntimeEffectDict7aa7.get();
     }
-    RuntimeEffectDictionary* runtimeEffectDictionary() {
-        return fRecorder->fRuntimeEffectDict.get();
+    RuntimeEffectDictionary* runtimeEffectDictionary7aa7() {
+        return fRecorder->fRuntimeEffectDict7aa7.get();
     }
     const ShaderCodeDictionary* shaderCodeDictionary() const {
         return fRecorder->fSharedContext->shaderCodeDictionary();
