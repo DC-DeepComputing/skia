@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aef552fa_85e8eb97",
+        "filename": "src/gpu/graphite/vk/VulkanFramebuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-13T14:43:30Z",
+      "side": 1,
+      "message": "Please take a look at the updated changes here. First time through I was just checking the attachments themselves, but we also need to make sure the RenderPass is compatible as well (since we make the FB with one). Right now that only means checking if we\u0027ll loadMSAAFromResolve as that adds another subpass. but @nicolettep@google.com you\u0027ll need to update this with your input/dst read changes as well.",
+      "range": {
+        "startLine": 54,
+        "startChar": 35,
+        "endLine": 54,
+        "endChar": 71
+      },
+      "revId": "c3a1c688f70ea12a92a918759449d024825c58e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
