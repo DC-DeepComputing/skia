@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a7e43ff_db844e8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-13T14:53:02Z",
+      "side": 1,
+      "message": "Done, thanks for the reminder! I didn\u0027t notice those instructions before. I have changed your logical shifts to arithmetic ones though, because the data type is signed and it\u0027s more intuitive this way.",
+      "parentUuid": "184d9957_4daed417",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca564e3b_35d5ffc9",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-02-13T12:42:19Z",
       "side": 1,
       "message": "```suggestion\n    even \u003d (Vec\u003c8, int32_t\u003e)__lasx_xvsrlri_w((__m256i)even, 15);\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44b8a3cb_506d708c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5538,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-13T14:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca564e3b_35d5ffc9",
       "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbaa98ad_66bd1380",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5539,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-13T14:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8c86125_ad2502b1",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0aa6b5c5_dc15419e",
@@ -86,6 +140,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9841876b_482dbbc8",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5545,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-13T14:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0aa6b5c5_dc15419e",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37175ac6_ea9133b4",
@@ -99,6 +171,24 @@
       "writtenOn": "2025-02-13T12:42:19Z",
       "side": 1,
       "message": "```suggestion\n    odd \u003d (Vec\u003c4, int32_t\u003e)__lsx_vsrlri_w((__m128i)odd, 15);\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54b1cb2a_684f1bff",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5546,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-13T14:53:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37175ac6_ea9133b4",
       "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
