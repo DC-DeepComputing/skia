@@ -19,6 +19,8 @@ skia_cc_library(
         "TestOptions.h",
         "UniqueKeyUtils.cpp",
         "UniqueKeyUtils.h",
+        "precompile/PrecompileEffectFactories.cpp",
+        "precompile/PrecompileEffectFactories.h",
     ],
     hdrs = [
         "ContextFactory.h",
