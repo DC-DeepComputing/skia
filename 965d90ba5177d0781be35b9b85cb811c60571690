@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "102628f3_783b07d9",
+        "filename": "bazel/external/dng_sdk/BUILD.bazel",
+        "patchSetId": 6
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-13T18:52:59Z",
+      "side": 0,
+      "message": "This was deleted in presubmit upload check after running `buildifier --mode\u003dfix --lint\u003dfix --warnings -native-android,-native-cc,-native-py bazel/deps.bzl bazel/external/dng_sdk/BUILD.bazel`\nIs this okay?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 0
+      },
+      "revId": "965d90ba5177d0781be35b9b85cb811c60571690",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
