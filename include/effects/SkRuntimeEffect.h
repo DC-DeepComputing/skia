@@ -318,7 +318,7 @@ private:
 
     uint32_t fHash;
     // When not 0, this field holds a StableKey value (or, in the future, a first party stable key)
-    uint32_t fStableKey = 0;
+    uint32_t fStableKey1 = 0;
 
     std::unique_ptr<SkSL::Program> fBaseProgram;
     std::unique_ptr<SkSL::RP::Program> fRPProgram;

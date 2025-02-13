@@ -746,7 +746,7 @@ SkRuntimeEffect::SkRuntimeEffect(std::unique_ptr<SkSL::Program> baseProgram,
                                  std::vector<SkSL::SampleUsage>&& sampleUsages,
                                  uint32_t flags)
         : fHash(SkChecksum::Hash32(baseProgram->fSource->c_str(), baseProgram->fSource->size()))
-        , fStableKey(options.fStableKey)
+        , fStableKey1(options.fStableKey)
         , fBaseProgram(std::move(baseProgram))
         , fMain(main)
         , fUniforms(std::move(uniforms))

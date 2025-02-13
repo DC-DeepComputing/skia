@@ -125,10 +125,12 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    if (!stream->write32(SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fStoreOp),
-                                          static_cast<uint8_t>(attachmentDesc.fLoadOp),
-                                          0, 0))) {
-        return false;
+    if (attachmentDesc.fTextureInfo.isValid()) {
+        if (!stream->write32(SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fStoreOp),
+                                              static_cast<uint8_t>(attachmentDesc.fLoadOp),
+                                              0, 0))) {
+            return false;
+        }
     }
 
     return true;
@@ -141,18 +143,21 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    uint32_t tag;
-    if (!stream->readU32(&tag)) {
-        return false;
-    }
+    if (attachmentDesc->fTextureInfo.isValid()) {
+        uint32_t tag;
+        if (!stream->readU32(&tag)) {
+            return false;
+        }
 
-    attachmentDesc->fStoreOp = static_cast<StoreOp>(0xF & (tag >> 24));
-    attachmentDesc->fLoadOp  = static_cast<LoadOp> (0xF & (tag >> 16));
+        attachmentDesc->fStoreOp = static_cast<StoreOp>(0xF & (tag >> 24));
+        attachmentDesc->fLoadOp  = static_cast<LoadOp> (0xF & (tag >> 16));
+    }
     return true;
 }
 
 [[nodiscard]] bool serialize_render_pass_desc(SkWStream* stream,
                                               const RenderPassDesc& renderPassDesc) {
+    // later than here
     if (!serialize_attachment_desc(stream, renderPassDesc.fColorAttachment)) {
         return false;
     }
@@ -163,9 +168,21 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
+    stream->write8(0x7);
+    stream->write8(0x0);
+    stream->write8(0x0);
+    stream->write8(0x7);
+
     if (!serialize_attachment_desc(stream, renderPassDesc.fColorResolveAttachment)) {
         return false;
     }
+
+
+    stream->write8(0x9);
+    stream->write8(0x0);
+    stream->write8(0x0);
+    stream->write8(0x9);
+
     if (!serialize_attachment_desc(stream, renderPassDesc.fDepthStencilAttachment)) {
         return false;
     }
@@ -177,6 +194,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
+    // too late
     if (!stream->write32(SkSetFourByteTag(renderPassDesc.fWriteSwizzle[0],
                                           renderPassDesc.fWriteSwizzle[1],
                                           renderPassDesc.fWriteSwizzle[2],
@@ -204,9 +222,22 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
+
+    uint8_t tmp8;
+    bool foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+
     if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fColorResolveAttachment)) {
         return false;
     }
+
+    foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+    foo = stream->readU8(&tmp8);
+
     if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fDepthStencilAttachment)) {
         return false;
     }

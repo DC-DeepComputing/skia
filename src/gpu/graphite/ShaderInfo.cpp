@@ -487,7 +487,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     const char* shadingSsboIndex =
             useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
     std::unique_ptr<ShaderInfo> result =
-            std::unique_ptr<ShaderInfo>(new ShaderInfo(rteDict, shadingSsboIndex));
+            std::unique_ptr<ShaderInfo>(new ShaderInfo(dict, rteDict, shadingSsboIndex));
 
     // The fragment shader must be generated before the vertex shader, because we determine
     // properties of the entire program while generating the fragment shader.
@@ -510,8 +510,12 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     return result;
 }
 
-ShaderInfo::ShaderInfo(const RuntimeEffectDictionary* rteDict, const char* ssboIndex)
-        : fRuntimeEffectDictionary(rteDict), fSsboIndex(ssboIndex) {}
+ShaderInfo::ShaderInfo(const ShaderCodeDictionary* shaderCodeDictionary,
+                       const RuntimeEffectDictionary* rteDict,
+                       const char* ssboIndex)
+        : fShaderCodeDictionary(shaderCodeDictionary)
+        , fRuntimeEffectDictionary(rteDict)
+        , fSsboIndex(ssboIndex) {}
 
 // The current, incomplete, model for shader construction is:
 //   - Static code snippets (which can have an arbitrary signature) live in the Graphite
@@ -549,18 +553,18 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(fRootNodes.size() == 2 || fRootNodes.size() == 3);
     // First node produces the source color (all snippets return a half4), so we just require that
     // its signature takes no extra args or just local coords.
-    const ShaderSnippet* srcSnippet = dict->getEntry(fRootNodes[0]->codeSnippetId());
+    const ShaderSnippet* srcSnippet = dict->getEntry1(fRootNodes[0]->codeSnippetId());
     // TODO(b/349997190): Once SkEmptyShader doesn't use the passthrough snippet, we can assert
     // that srcSnippet->needsPriorStageOutput() is false.
     SkASSERT(!srcSnippet->needsBlenderDstColor());
     // Second node is the final blender, so it must take both the src color and dst color, and not
     // any local coordinate.
-    const ShaderSnippet* blendSnippet = dict->getEntry(fRootNodes[1]->codeSnippetId());
+    const ShaderSnippet* blendSnippet = dict->getEntry1(fRootNodes[1]->codeSnippetId());
     SkASSERT(blendSnippet->needsPriorStageOutput() && blendSnippet->needsBlenderDstColor());
     SkASSERT(!blendSnippet->needsLocalCoords());
 
     const ShaderSnippet* clipSnippet =
-            fRootNodes.size() > 2 ? dict->getEntry(fRootNodes[2]->codeSnippetId()) : nullptr;
+            fRootNodes.size() > 2 ? dict->getEntry1(fRootNodes[2]->codeSnippetId()) : nullptr;
     SkASSERT(!clipSnippet ||
              (!clipSnippet->needsPriorStageOutput() && !clipSnippet->needsBlenderDstColor()));
 #endif
