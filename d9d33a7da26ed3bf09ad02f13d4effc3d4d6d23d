@@ -16,6 +16,91 @@
       "message": "I have just added myself to AUTHORS so the CQ job can be retried now. Sorry for the noise.",
       "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "184d9957_4daed417",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3888908
+      },
+      "writtenOn": "2025-02-13T12:42:19Z",
+      "side": 1,
+      "message": "You can use the rounding shift instruction instead of manually adding a rounding term.",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca564e3b_35d5ffc9",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5538,
+      "author": {
+        "id": 3888908
+      },
+      "writtenOn": "2025-02-13T12:42:19Z",
+      "side": 1,
+      "message": "```suggestion\n    even \u003d (Vec\u003c8, int32_t\u003e)__lasx_xvsrlri_w((__m256i)even, 15);\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8c86125_ad2502b1",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5539,
+      "author": {
+        "id": 3888908
+      },
+      "writtenOn": "2025-02-13T12:42:19Z",
+      "side": 1,
+      "message": "```suggestion\n    odd \u003d (Vec\u003c8, int32_t\u003e)__lasx_xvsrlri_w((__m256i)odd, 15)\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0aa6b5c5_dc15419e",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5545,
+      "author": {
+        "id": 3888908
+      },
+      "writtenOn": "2025-02-13T12:42:19Z",
+      "side": 1,
+      "message": "```suggestion\n    even \u003d (Vec\u003c4, int32_t\u003e)__lsx_vsrlri_w((__m128i)even, 15);\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37175ac6_ea9133b4",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 5546,
+      "author": {
+        "id": 3888908
+      },
+      "writtenOn": "2025-02-13T12:42:19Z",
+      "side": 1,
+      "message": "```suggestion\n    odd \u003d (Vec\u003c4, int32_t\u003e)__lsx_vsrlri_w((__m128i)odd, 15);\n```",
+      "revId": "d9d33a7da26ed3bf09ad02f13d4effc3d4d6d23d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
