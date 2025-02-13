@@ -46,6 +46,30 @@
       },
       "revId": "51b50d3e29852f3376e8d8b79cd0b8b769ab69a6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12b5dfbf_24c6ee5c",
+        "filename": "src/effects/imagefilters/SkMatrixTransformImageFilter.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-13T20:53:53Z",
+      "side": 1,
+      "message": "At this point in the code, we know that the context\u0027s mapping\u0027s param-to-layer matrix is invertible (and asserted on inside the paramToLayer function), and we know that `fTransform` is invertible or the factory should have failed.\n\nIt\u0027s theoretically possible for the matrix multiplies to create a non-invertible matrix in `transform`, but what I\u0027d like to have happen there is that the `applyTransform` function returns an empty FilterResult.\n\nAny time we\u0027d render with a non-invertible matrix we should already be dropping it in SkCanvas. I\u0027d want to see exactly what the failure conditions you\u0027re hitting are to know for sure, but I\u0027m guessing something inside applyTransform should be adjusted instead.",
+      "parentUuid": "bc5cf02a_31bc9320",
+      "range": {
+        "startLine": 152,
+        "startChar": 0,
+        "endLine": 154,
+        "endChar": 5
+      },
+      "revId": "51b50d3e29852f3376e8d8b79cd0b8b769ab69a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
