@@ -946,7 +946,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if !ok {
 				log.Fatalf("Entry %q not found in iOS mapping.", b.parts["model"])
 			}
-			d["device_type"] = device
+			d["device"] = device
 		} else if b.cpu() || b.extraConfig("CanvasKit", "Docker", "SwiftShader") {
 			modelMapping, ok := map[string]map[string]string{
 				"AppleM1": {
@@ -1346,6 +1346,7 @@ func (b *jobBuilder) compile() string {
 				}
 			} else if b.matchOs("Mac") {
 				b.cipd(CIPD_PKGS_XCODE...)
+				b.dimension("device:none")
 				b.Spec.Caches = append(b.Spec.Caches, &specs.Cache{
 					Name: "xcode",
 					Path: "cache/Xcode.app",
