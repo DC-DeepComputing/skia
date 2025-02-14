@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c52444b_3e996e27",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1385,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "The Graphite tests aren\u0027t enabled yet, see line 1374 above, so keeping them on kNextRelease is probably the right thing for now.",
+      "parentUuid": "03db2187_f67c74f4",
+      "range": {
+        "startLine": 1385,
+        "startChar": 15,
+        "endLine": 1385,
+        "endChar": 26
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ba72ad3_079bd285",
         "filename": "tests/GpuDrawPathTest.cpp",
         "patchSetId": 1
@@ -108,6 +132,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@michaelludwig@google.com in lieu of Brian, can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 150,
+        "startChar": 39,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7295bce3_2a904975",
+        "filename": "tests/GpuDrawPathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "This test is stable, but it also falls into the category of internal Skia logic (it\u0027s all CPU checks/validations), so could also be `kNever`.",
+      "parentUuid": "8ba72ad3_079bd285",
       "range": {
         "startLine": 150,
         "startChar": 39,
@@ -277,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "11a3e3e4_18d03928",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "This is testing internal Graphite logic, not something about GPU behavior so can be `kNever`.",
+      "parentUuid": "01740c63_7dc87a65",
+      "range": {
+        "startLine": 793,
+        "startChar": 35,
+        "endLine": 793,
+        "endChar": 63
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f4f246d9_0be7b766",
         "filename": "tests/graphite/RecordingSurfacesTest.cpp",
         "patchSetId": 1
@@ -324,6 +396,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5ce37260_abb5f6ed",
+        "filename": "tests/graphite/RecordingSurfacesTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "Since it does include GPU rendering and readback for validation, I\u0027d keep it as enforced in SkQP",
+      "parentUuid": "644093dc_b99af53a",
+      "range": {
+        "startLine": 129,
+        "startChar": 35,
+        "endLine": 129,
+        "endChar": 60
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3214b73f_9efeaa4d",
         "filename": "tests/graphite/UniformManagerTest.cpp",
         "patchSetId": 1
@@ -347,6 +443,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "df075166_10b0c782",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "This is stable, but also not a GPU test, just internals so shouldn\u0027t be enforced.",
+      "parentUuid": "3214b73f_9efeaa4d",
+      "range": {
+        "startLine": 891,
+        "startChar": 18,
+        "endLine": 891,
+        "endChar": 44
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "766b0c1c_c1461939",
         "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
         "patchSetId": 1
@@ -358,6 +478,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@michaelludwig@google.com can you confirm that the 3 tests being updated in this file are currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 209,
+        "startChar": 18,
+        "endLine": 209,
+        "endChar": 56
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78b294fd_e1323fa1",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-14T15:30:25Z",
+      "side": 1,
+      "message": "This falls into the same category as the UniformManagerTest and should be kNever.",
+      "parentUuid": "766b0c1c_c1461939",
       "range": {
         "startLine": 209,
         "startChar": 18,
