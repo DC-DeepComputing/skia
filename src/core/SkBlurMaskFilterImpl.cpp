@@ -33,6 +33,7 @@
 #include "src/core/SkBlitter_A8.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkCachedData.h"
+#include "src/core/SkDebugUtils.h"
 #include "src/core/SkDrawBase.h"
 #include "src/core/SkMask.h"
 #include "src/core/SkMaskCache.h"
@@ -233,6 +234,9 @@ static SkCachedData* add_cached_rects(SkMaskBuilder* mask, SkScalar sigma, SkBlu
     return cache;
 }
 
+extern bool gTryPlus3Fix;
+bool gTryPlus3Fix = false;
+
 std::optional<SkMaskFilterBase::NinePatch>
 SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& matrix,
                                         const SkIRect& clipBounds) const {
@@ -272,6 +276,8 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
     SkIVector margin;
     SkMaskBuilder srcM(nullptr, rrect.rect().roundOut(), 0, SkMask::kA8_Format), dstM;
 
+    // This doesn't draw the mask (the mask's image is nullptr), but figures out how
+    // much margin needs to be.
     if (!this->filterMask(&dstM, srcM, matrix, &margin)) {
         return std::nullopt;
     }
@@ -323,23 +329,37 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
         if (!draw_rrect_into_mask(smallRR, &srcM)) {
             return std::nullopt;
         }
+        //SkDebugf("srcM dimensions (%d x %d)\n", srcM.fBounds.width(), srcM.fBounds.height());
+        //SkDumpBuffer(srcM.fImage, srcM.fBounds.width(), srcM.fBounds.height(), srcM.fRowBytes);
         SkAutoMaskFreeImage amf(srcM.image());
         SkMaskBuilder filterM;
-        if (!this->filterMask(&filterM, srcM, matrix, &margin)) {
+        if (!this->filterMask(&filterM, srcM, matrix, nullptr)) {
             return std::nullopt;
         }
+
+        //SkDebugf("filterM dimensions (%d x %d)\n", filterM.fBounds.width(), filterM.fBounds.height());
+        //SkDumpBuffer(filterM.fImage, filterM.fBounds.width(), filterM.fBounds.height(), filterM.fRowBytes);
         cache = add_cached_rrect(&filterM, sigma, fBlurStyle, smallRR);
         cachedMask.init(filterM);
     }
-
     SkIRect bounds = cachedMask->fBounds;
     bounds.offsetTo(0, 0);
-    return std::optional<SkMaskFilterBase::NinePatch>(
+    if (gTryPlus3Fix) {
+        return std::optional<SkMaskFilterBase::NinePatch>(
             std::in_place,
             SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
             dstM.fBounds,
-            SkIPoint{SkScalarCeilToInt(leftUnstretched) + 1, SkScalarCeilToInt(topUnstretched) + 1},
+            SkIPoint{SkScalarCeilToInt(leftUnstretched + stretchSize), SkScalarCeilToInt(topUnstretched + stretchSize)},
             cache);  // transfer ownership to patch
+    } else {
+        return std::optional<SkMaskFilterBase::NinePatch>(
+            std::in_place,
+            SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
+            dstM.fBounds,
+            SkIPoint{SkScalarCeilToInt(leftUnstretched + 1), SkScalarCeilToInt(topUnstretched + 1)},
+            cache);  // transfer ownership to patch
+    }
+
 }
 
 SkMaskFilterBase::FilterReturn

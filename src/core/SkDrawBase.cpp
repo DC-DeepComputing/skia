@@ -578,8 +578,9 @@ bool SkDrawBase::DrawToMask(const SkPath& devPath, const SkIRect& clipBounds,
         SkRect pathBounds = devPath.isInverseFillType() ? kInverseBounds
                                                         : devPath.getBounds();
         if (!ComputeMaskBounds(pathBounds, clipBounds, filter,
-                               filterMatrix, &dst->bounds()))
+                               filterMatrix, &dst->bounds())) {
             return false;
+        }
     }
 
     if (SkMaskBuilder::kComputeBoundsAndRenderImage_CreateMode == mode) {
