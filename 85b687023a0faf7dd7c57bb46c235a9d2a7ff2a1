@@ -183,6 +183,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "370b843e_409f6661",
+        "filename": "tests/SkSLTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1035,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-14T20:15:52Z",
+      "side": 1,
+      "message": "this is fine.",
+      "parentUuid": "a8ae09fd_a54b4039",
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7332d6a6_e1f87f9f",
@@ -243,6 +261,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@egdaniel@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?\n\nFWIW it\u0027s only worth enforcing if we remove the `!Vulkan` check below, and it seems like we want to expand the other tests before enforcing them? In that case, maybe this should be punted too?\n\n(cc. @nicolettep@google.com for context on Vulkan backend status)",
+      "range": {
+        "startLine": 33,
+        "startChar": 35,
+        "endLine": 33,
+        "endChar": 53
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c99717e_adbc7807",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-14T20:15:52Z",
+      "side": 1,
+      "message": "My guess is that we probably remove that Vulkan check, but would need to test it",
+      "parentUuid": "032b7e64_378c1cfc",
       "range": {
         "startLine": 33,
         "startChar": 35,
@@ -525,6 +567,30 @@
       "writtenOn": "2025-02-11T21:12:12Z",
       "side": 1,
       "message": "@egdaniel@google.com can you confirm that this test is currently expected to be stable, unlikely to be expanded, and should be enforced in CTS via SkQP for devices launching with Android 16?",
+      "range": {
+        "startLine": 235,
+        "startChar": 47,
+        "endLine": 235,
+        "endChar": 83
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc5f8c06_0b907b37",
+        "filename": "tests/graphite/UpdateBackendTextureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-14T20:15:52Z",
+      "side": 1,
+      "message": "Yes this is stable",
+      "parentUuid": "94e4b21d_521a19f5",
       "range": {
         "startLine": 235,
         "startChar": 47,
