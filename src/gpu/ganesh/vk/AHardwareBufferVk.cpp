@@ -23,6 +23,7 @@
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 
 #include <android/hardware_buffer.h>
+#include <vndk/hardware_buffer.h>
 
 #define VK_CALL(X) gpu->vkInterface()->fFunctions.f##X
 
@@ -73,6 +74,10 @@ GrBackendFormat GetVulkanBackendFormat(GrDirectContext* dContext, AHardwareBuffe
             break;
         }
 #endif
+        case AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM: {
+            bufferVkFormat = VK_FORMAT_B8G8R8A8_UNORM;
+            break;
+        }
         default: {
             if (requireKnownFormat) {
                 return GrBackendFormat();
