@@ -1038,6 +1038,11 @@ SkCodec::Result SkPngCodec::onIncrementalDecode(int* rowsDecoded) {
     return this->decode(rowsDecoded);
 }
 
+SkCodec::IsAnimated SkPngCodec::onIsAnimated() {
+    // `SkPngCodec` doesn't currently support APNG extensions.
+    return kIsAnimated_No;
+}
+
 std::unique_ptr<SkCodec> SkPngCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
                                                     Result* result, SkPngChunkReader* chunkReader) {
     SkASSERT(result);

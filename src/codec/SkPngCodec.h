@@ -82,6 +82,8 @@ protected:
             const SkCodec::Options&) override;
     Result onIncrementalDecode(int*) override;
 
+    IsAnimated onIsAnimated() override;
+
     sk_sp<SkPngCompositeChunkReader>     fPngChunkReader;
     voidp                                fPng_ptr;
     voidp                                fInfo_ptr;

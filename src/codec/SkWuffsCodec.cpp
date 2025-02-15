@@ -262,6 +262,7 @@ private:
     int                  onGetFrameCount() override;
     bool                 onGetFrameInfo(int, FrameInfo*) const override;
     int                  onGetRepetitionCount() override;
+    IsAnimated           onIsAnimated() override;
 
     // Two separate implementations of onStartIncrementalDecode and
     // onIncrementalDecode, named "one pass" and "two pass" decoding. One pass
@@ -879,6 +880,16 @@ int SkWuffsCodec::onGetRepetitionCount() {
     }
     n--;
     return n < INT_MAX ? n : INT_MAX;
+}
+
+SkCodec::IsAnimated SkWuffsCodec::onIsAnimated() {
+    if (fFrames.size() > 1) {
+        return kIsAnimated_Yes;
+    }
+
+    // If we only have encounted a single image frame so far, then we have an
+    // ambiguous situation - maybe more frames will come, but maybe not.
+    return fFramesComplete ? kIsAnimated_Yes : kIsAnimated_Unknown;
 }
 
 SkCodec::Result SkWuffsCodec::seekFrame(int frameIndex) {
