@@ -9,7 +9,6 @@
 
 #include "include/core/SkTraceMemoryDump.h"
 #include "include/gpu/MutableTextureState.h"
-#include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
 #include "src/core/SkMipmap.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/TextureUtils.h"
@@ -30,7 +29,7 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
         return {};
     }
 
-    const DawnTextureSpec dawnSpec = TextureInfos::GetDawnTextureSpec(info);
+    const auto& dawnSpec = TextureInfoPriv::Get<DawnTextureInfo>(info);
 
     if (dawnSpec.fUsage & wgpu::TextureUsage::TextureBinding && !caps->isTexturable(info)) {
         return {};
@@ -99,7 +98,7 @@ DawnTexture::DawnTexture(const DawnSharedContext* sharedContext,
 // static
 std::pair<wgpu::TextureView, wgpu::TextureView> DawnTexture::CreateTextureViews(
         const wgpu::Texture& texture, const TextureInfo& info) {
-    const DawnTextureSpec dawnSpec = TextureInfos::GetDawnTextureSpec(info);
+    const auto& dawnSpec = TextureInfoPriv::Get<DawnTextureInfo>(info);
     const auto aspect = dawnSpec.fAspect;
     if (aspect == wgpu::TextureAspect::All) {
         wgpu::TextureViewDescriptor viewDesc = {};

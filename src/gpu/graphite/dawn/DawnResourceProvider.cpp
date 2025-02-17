@@ -401,11 +401,10 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 std::move(vsModule),
                 std::move(fsModule),
                 /*renderPassColorFormat=*/
-                TextureInfos::GetDawnViewFormat(renderPassDesc.fColorAttachment.fTextureInfo),
+                TextureInfoPriv::Get<DawnTextureInfo>(renderPassDesc.fColorAttachment.fTextureInfo).getViewFormat(),
                 /*renderPassDepthStencilFormat=*/
                 renderPassDesc.fDepthStencilAttachment.fTextureInfo.isValid()
-                        ? TextureInfos::GetDawnViewFormat(
-                                  renderPassDesc.fDepthStencilAttachment.fTextureInfo)
+                        ? TextureInfoPriv::Get<DawnTextureInfo>(renderPassDesc.fDepthStencilAttachment.fTextureInfo).getViewFormat()
                         : wgpu::TextureFormat::Undefined,
                 /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
 
@@ -445,8 +444,7 @@ sk_sp<DawnTexture> DawnResourceProvider::findOrCreateDiscardableMSAALoadTexture(
     SkASSERT(msaaInfo.isValid());
 
     // Derive the load texture's info from MSAA texture's info.
-    DawnTextureInfo dawnMsaaLoadTextureInfo;
-    SkAssertResult(TextureInfos::GetDawnTextureInfo(msaaInfo, &dawnMsaaLoadTextureInfo));
+    DawnTextureInfo dawnMsaaLoadTextureInfo = TextureInfoPriv::Get<DawnTextureInfo>(msaaInfo);
     dawnMsaaLoadTextureInfo.fSampleCount = 1;
     dawnMsaaLoadTextureInfo.fUsage |= wgpu::TextureUsage::TextureBinding;
 
