@@ -27,19 +27,19 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
         return nullptr;
     }
 
-    const MtlTextureSpec mtlSpec = TextureInfos::GetMtlTextureSpec(info);
-    SkASSERT(!mtlSpec.fFramebufferOnly);
+    const auto& mtlInfo = TextureInfoPriv::Get<MtlTextureInfo>(info);
+    SkASSERT(!mtlInfo.fFramebufferOnly);
 
-    if (mtlSpec.fUsage & MTLTextureUsageShaderRead && !caps->isTexturable(info)) {
+    if (mtlInfo.fUsage & MTLTextureUsageShaderRead && !caps->isTexturable(info)) {
         return nullptr;
     }
 
-    if (mtlSpec.fUsage & MTLTextureUsageRenderTarget &&
-        !(caps->isRenderable(info) || MtlFormatIsDepthOrStencil(mtlSpec.fFormat))) {
+    if (mtlInfo.fUsage & MTLTextureUsageRenderTarget &&
+        !(caps->isRenderable(info) || MtlFormatIsDepthOrStencil(mtlInfo.fFormat))) {
         return nullptr;
     }
 
-    if (mtlSpec.fUsage & MTLTextureUsageShaderWrite && !caps->isStorage(info)) {
+    if (mtlInfo.fUsage & MTLTextureUsageShaderWrite && !caps->isStorage(info)) {
         return nullptr;
     }
 
@@ -50,15 +50,15 @@ sk_cfp<id<MTLTexture>> MtlTexture::MakeMtlTexture(const MtlSharedContext* shared
 
     sk_cfp<MTLTextureDescriptor*> desc([[MTLTextureDescriptor alloc] init]);
     (*desc).textureType = (info.numSamples() > 1) ? MTLTextureType2DMultisample : MTLTextureType2D;
-    (*desc).pixelFormat = mtlSpec.fFormat;
+    (*desc).pixelFormat = mtlInfo.fFormat;
     (*desc).width = dimensions.width();
     (*desc).height = dimensions.height();
     (*desc).depth = 1;
     (*desc).mipmapLevelCount = numMipLevels;
     (*desc).sampleCount = info.numSamples();
     (*desc).arrayLength = 1;
-    (*desc).usage = mtlSpec.fUsage;
-    (*desc).storageMode = mtlSpec.fStorageMode;
+    (*desc).usage = mtlInfo.fUsage;
+    (*desc).storageMode = mtlInfo.fStorageMode;
 
     sk_cfp<id<MTLTexture>> texture([sharedContext->device() newTextureWithDescriptor:desc.get()]);
     return texture;
