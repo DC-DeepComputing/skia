@@ -1,0 +1,17 @@
+load("//bazel:skia_rules.bzl", "skia_cc_library")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+skia_cc_library(
+    name = "test_support",
+    testonly = True,
+    srcs = ["TestSupport.cpp"],
+    hdrs = ["TestSupport.h"],
+    visibility = [
+        "//dm:__pkg__",
+    ],
+)
