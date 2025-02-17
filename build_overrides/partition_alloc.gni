@@ -27,6 +27,9 @@ assert_cpp20_default = false
 partition_alloc_remove_configs = [ "//gn/skia:strict_aliasing" ]
 partition_alloc_add_configs = [ "//gn/skia:no_strict_aliasing" ]
 
+partition_alloc_is_debug_default = false
+partition_alloc_dcheck_always_on_default = false
+
 # partition_alloc is performance critical and it should generally be optimized
 # for speed, even in debug mode.
 if (is_debug) {
@@ -73,3 +76,19 @@ can_unwind_with_frame_pointers = false
 dcheck_always_on = false
 dcheck_is_configurable = false
 enable_expensive_dchecks = false
+
+# When developers are repeatedly growing a buffer with `realloc`, they are
+# expected to request a new size that is larger than the current size by
+# some growth factor. This growth factor allows to amortize the cost of
+# memcpy. Unfortunately, some nVidia drivers have a bug where they repeatedly
+# increase the buffer by 4144 byte only.
+#
+# In particular, most Skia Linux bots are using the affected nVidia driver. So
+# this flag is used as a workaround for Skia standalone, not in production.
+#
+# External link:
+#   https://forums.developer.nvidia.com/t/550-54-14-very-bad-performance-due-to-bunch-of-reallocations-during-glcore-initialization/287027
+#
+# Internal discussion at @chrome-memory-safety:
+#   https://groups.google.com/a/google.com/d/msgid/chrome-memory-safety/CAAzos5HrexY2njz2YzWrffTq1xEfkx15GVpSvHUyQED6wBSXvA%40mail.gmail.com?utm_medium=email&utm_source=footer
+partition_alloc_realloc_growth_factor_mitigation = true
