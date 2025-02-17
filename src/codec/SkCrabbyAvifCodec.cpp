@@ -340,6 +340,13 @@ int SkCrabbyAvifCodec::onGetRepetitionCount() {
                                                : fAvifDecoder->repetitionCount;
 }
 
+SkCodec::IsAnimated SkCrabbyAvifCodec::onIsAnimated() {
+    if (!fUseAnimation || fAvifDecoder->imageCount <= 1) {
+        return kIsAnimated_No;
+    }
+    return kIsAnimated_Yes;
+}
+
 bool SkCrabbyAvifCodec::conversionSupported(const SkImageInfo& dstInfo,
                                             bool srcIsOpaque,
                                             bool needsColorXform) {

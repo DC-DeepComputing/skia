@@ -401,6 +401,20 @@ int SkHeifCodec::onGetRepetitionCount() {
     return kRepetitionCountInfinite;
 }
 
+SkCodec::IsAnimated SkHeifCodec::onIsAnimated() {
+    if (!fUseAnimation) {
+        return kIsAnimated_No;
+    }
+
+    size_t frameCount;
+    HeifFrameInfo frameInfo;
+    if (!fHeifDecoder->getSequenceInfo(&frameInfo, &frameCount)) {
+        return kIsAnimated_Unknown;
+    }
+
+    return (frameCount > 1) ? kIsAnimated_Yes : kIsAnimated_No;
+}
+
 /*
  * Performs the heif decode
  */

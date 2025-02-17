@@ -188,6 +188,13 @@ bool SkAvifCodec::onGetFrameInfo(int i, FrameInfo* frameInfo) const {
 
 int SkAvifCodec::onGetRepetitionCount() { return kRepetitionCountInfinite; }
 
+SkCodec::IsAnimated SkAvifCodec::onIsAnimated() {
+    if (!fUseAnimation || fAvifDecoder->imageCount <= 1) {
+        return kIsAnimated_No;
+    }
+    return kIsAnimated_Yes;
+}
+
 SkCodec::Result SkAvifCodec::onGetPixels(const SkImageInfo& dstInfo,
                                          void* dst,
                                          size_t dstRowBytes,
