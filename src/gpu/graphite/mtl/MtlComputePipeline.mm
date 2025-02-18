@@ -45,7 +45,9 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
         SkSL::ProgramSettings settings;
 
         SkSL::Compiler skslCompiler;
-        std::string sksl = BuildComputeSkSL(sharedContext->caps(), pipelineDesc.computeStep());
+        std::string sksl = BuildComputeSkSL(sharedContext->caps(),
+                                            pipelineDesc.computeStep(),
+                                            ComputeBackend::kMetal);
         if (!SkSLToMSL(sharedContext->caps()->shaderCaps(),
                        sksl,
                        SkSL::ProgramKind::kCompute,

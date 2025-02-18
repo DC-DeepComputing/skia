@@ -92,7 +92,22 @@ std::unique_ptr<Recording> submit_recording(Context* context,
 }
 
 bool is_dawn_or_metal_context_type(skiatest::GpuContextType ctxType) {
+#if defined (SK_METAL) && defined(SK_DAWN)
+    SkDebugf("NEP: Both Dawn and Metal defined\n");
     return skiatest::IsDawnContextType(ctxType) || skiatest::IsMetalContextType(ctxType);
+#endif
+
+#ifdef SK_METAL
+    SkDebugf("NEP: Metal-only context\n");
+    return skiatest::IsMetalContextType(ctxType);
+#endif
+
+#ifdef SK_DAWN
+    SkDebugf("NEP: Dawn-only context\n");
+    return skiatest::IsDawnContextType(ctxType);
+#endif
+
+    return false;
 }
 
 }  // namespace
