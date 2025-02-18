@@ -40,6 +40,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/partition_alloc/TestSupport.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -1573,6 +1574,10 @@ TestHarness CurrentTestHarness() {
 #endif // !SK_DISABLE_LEGACY_TESTS
 
 int main(int argc, char** argv) {
+    // If available, memory allocations will be handled by PartitionAlloc. It
+    // allow catching more memory corruption bugs and improves performance.
+    skiatest::InitializePartitionAllocForTesting();
+
 #if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && defined(SK_HAS_HEIF_LIBRARY)
     android::ProcessState::self()->startThreadPool();
 #endif
