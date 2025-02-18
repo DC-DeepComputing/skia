@@ -319,23 +319,29 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
 
-            VkImageLayout resolveLayout;
-
             // TODO fix this logic for the assertion. For now, do confirm that we are doing only
             // one or the other.
-            SkASSERT(!(requiresGeneralLayout && loadMSAAFromResolve));
+            // SkASSERT(!(requiresGeneralLayout && loadMSAAFromResolve));
 
+            VkImageLayout initialResolveLayout;
             if (requiresGeneralLayout) {
-                resolveLayout = VK_IMAGE_LAYOUT_GENERAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_GENERAL;
             } else if (loadMSAAFromResolve) {
-                resolveLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
             } else {
-                resolveLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
             }
+
+            VkImageLayout finalResolveLayout = requiresGeneralLayout
+                    ? VK_IMAGE_LAYOUT_GENERAL
+                    : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
             VulkanTextureInfo resolveAttachTexInfo;
             SkAssertResult(TextureInfos::GetVulkanTextureInfo(colorResolveAttachmentTextureInfo,
                                                               &resolveAttachTexInfo));
             auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;
+
+            // determine initial resolve layout VulkanTexture::currentLayout()
 
             resolveRef.attachment = attachmentDescs.size();
             VkAttachmentDescription& vkResolveAttachDesc = attachmentDescs.push_back();
@@ -346,11 +352,9 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                     resolveAttachDesc,
                     compatibleOnly ? LoadOp::kDiscard  : resolveAttachDesc.fLoadOp,
                     compatibleOnly ? StoreOp::kDiscard : resolveAttachDesc.fStoreOp,
-                    resolveLayout,
-                    requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
-                                          : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-            resolveRef.layout = requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
-                                                      : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                    initialResolveLayout,
+                    finalResolveLayout);
+            resolveRef.layout = finalResolveLayout;
         } else {
             resolveRef.attachment = VK_ATTACHMENT_UNUSED;
             resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
