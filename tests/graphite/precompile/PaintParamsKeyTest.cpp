@@ -2108,7 +2108,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict7aa7 = std::make_unique<RuntimeEffectDictionary>(true); //$$
 
 #if 1
     //----------------------
@@ -2145,7 +2145,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTestReduced,
              context,
              precompileContext.get(),
              testContext,
-             create_key_context(context, rtDict.get()),
+             create_key_context(context, rtDict7aa7.get()),
              shaderType,
              blenderType,
              colorFilterType,
@@ -2171,9 +2171,9 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                                                true,
                                                CtsEnforcement::kNever) {
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+    std::unique_ptr<RuntimeEffectDictionary> rtDict7aa7 = std::make_unique<RuntimeEffectDictionary>(true); //$$
 
-    KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
+    KeyContext precompileKeyContext(create_key_context(context, rtDict7aa7.get()));
 
     ShaderType shaders[] = {
             ShaderType::kBlend,

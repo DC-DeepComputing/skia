@@ -99,6 +99,16 @@ sk_sp<SkData> SkData::MakeEmpty() {
     return sk_ref_sp(empty);
 }
 
+void SkData::dump(const char* label) const {
+    SkDebugf("%s %d: ", label, (int) this->size());
+
+    for (size_t i = 0; i < this->size(); ++i) {
+        SkDebugf("%d ", this->bytes()[i]);
+    }
+    SkDebugf("\n");
+}
+
+
 // assumes fPtr was allocated via sk_malloc
 static void sk_free_releaseproc(const void* ptr, void*) {
     sk_free(const_cast<void*>(ptr));

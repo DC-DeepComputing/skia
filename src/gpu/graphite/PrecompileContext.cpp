@@ -47,7 +47,7 @@ void PrecompileContext::purgePipelinesNotUsedInMs(std::chrono::milliseconds msNo
 
 bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
 #if defined(SK_ENABLE_PRECOMPILE)
-    auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
+    auto rtEffectDict7aa7 = std::make_unique<RuntimeEffectDictionary>(true); //$$
 
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
@@ -61,7 +61,7 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
     }
 
     sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
-            rtEffectDict.get(),
+            rtEffectDict7aa7.get(),
             pipelineDesc,
             renderPassDesc,
             PipelineCreationFlags::kForPrecompilation);
@@ -69,6 +69,8 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
         return false;
     }
+
+    SkASSERT(rtEffectDict7aa7->empty());
 
     return true;
 #else
