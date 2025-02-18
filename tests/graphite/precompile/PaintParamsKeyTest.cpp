@@ -2014,13 +2014,14 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                                  kColorType,
                                                  /* requiresMSAA= */ false };
 
+    SkDebugf("precompile_vs_real_draws_subtest pre getDefaultSampledTextureInfo\n");
     TextureInfo textureInfo = caps->getDefaultSampledTextureInfo(kColorType,
                                                                  skgpu::Mipmapped::kNo,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);
-
+    SkDebugf("textureInfo is valid: %d\n", textureInfo.isValid());
     TextureInfo msaaTex = caps->getDefaultMSAATextureInfo(textureInfo, Discardable::kYes);
-
+    SkDebugf("msaaTex info is valid: %d\n", msaaTex.isValid());
     bool vello = false;
 #ifdef SK_ENABLE_VELLO_SHADERS
     vello = caps->computeSupport();
