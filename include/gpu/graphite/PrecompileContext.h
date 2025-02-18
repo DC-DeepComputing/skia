@@ -9,6 +9,7 @@
 #define skgpu_graphite_PrecompileContext_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SingleOwner.h"
 
 #include <chrono>
