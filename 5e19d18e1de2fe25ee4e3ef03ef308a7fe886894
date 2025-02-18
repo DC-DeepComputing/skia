@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7b075d7_6d4c2478",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-02-18T15:04:58Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  See the CL description for more details.\n\n/cc @danieldilan as FYI",
+      "revId": "5e19d18e1de2fe25ee4e3ef03ef308a7fe886894",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
