@@ -104,6 +104,7 @@ bool is_dawn_or_metal_context_type(skiatest::GpuContextType ctxType) {
                                    reporter,                      \
                                    graphite_context,              \
                                    test_context,                  \
+                                   /* options_filter= */ nullptr, \
                                    CtsEnforcement::kNever)
 
 // TODO(b/262427430, b/262429132): Enable this test on other backends once they all support

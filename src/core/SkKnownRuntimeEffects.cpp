@@ -207,6 +207,13 @@ bool IsSkiaKnownRuntimeEffect(uint32_t candidate) {
             candidate <= static_cast<uint32_t>(StableKey::kLast));
 }
 
+bool IsUserDefinedKnownRuntimeEffect(uint32_t candidate) {
+    // TODO(robertphillips): can this be tightened to only allow the user-defined effects
+    // that actually exist?
+    return candidate >= kUserDefinedKnownRuntimeEffectsStart &&
+           candidate < kUserDefinedKnownRuntimeEffectsEnd;
+}
+
 sk_sp<SkRuntimeEffect> MaybeGetKnownRuntimeEffect(uint32_t candidate) {
     if (IsSkiaKnownRuntimeEffect(candidate)) {
         SkKnownRuntimeEffects::StableKey stableKey =

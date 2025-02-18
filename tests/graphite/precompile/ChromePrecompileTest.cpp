@@ -181,7 +181,8 @@ bool is_dawn_metal_context_type(skgpu::ContextType type) {
 
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
-                               reporter, context, /* testContext */, CtsEnforcement::kNever) {
+                               reporter, context, /* testContext */,
+                               /* options_filter= */ nullptr, CtsEnforcement::kNever) {
 
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();

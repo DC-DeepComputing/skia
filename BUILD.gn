@@ -2258,6 +2258,8 @@ if (skia_enable_tools) {
         sources += [
           "tools/graphite/precompile/PrecompileEffectFactories.cpp",
           "tools/graphite/precompile/PrecompileEffectFactories.h",
+          "tools/graphite/precompile/PrecompileUtils.cpp",
+          "tools/graphite/precompile/PrecompileUtils.h",
         ]
       }
     }
