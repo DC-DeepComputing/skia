@@ -10,6 +10,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkStream.h"
 #include "src/base/SkAutoMalloc.h"
+#include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
@@ -121,7 +122,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
 
 [[nodiscard]] bool serialize_attachment_desc(SkWStream* stream,
                                              const AttachmentDesc& attachmentDesc) {
-    if (!TextureInfoPriv::Serialize(stream, attachmentDesc.fTextureInfo)) {
+    if (!TextureInfoPriv::Serialize(attachmentDesc.fTextureInfo, stream)) {
         return false;
     }
 
@@ -137,7 +138,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
 [[nodiscard]] bool deserialize_attachment_desc(const Caps* caps,
                                                SkStream* stream,
                                                AttachmentDesc* attachmentDesc) {
-    if (!TextureInfoPriv::Deserialize(caps, stream, &attachmentDesc->fTextureInfo)) {
+    if (!caps->deserializeTextureInfo(stream, &attachmentDesc->fTextureInfo)) {
         return false;
     }
 

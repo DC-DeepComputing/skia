@@ -15,18 +15,18 @@
 
 namespace skgpu::graphite {
 
-struct VulkanTextureInfo {
-    uint32_t fSampleCount = 1;
-    Mipmapped fMipmapped = Mipmapped::kNo;
+class VulkanTextureInfo final : public TextureInfo::Data {
+public:
+    static constexpr skgpu::BackendApi kBackend = skgpu::BackendApi::kVulkan;
 
     // VkImageCreateInfo properties
     // Currently the only supported flag is VK_IMAGE_CREATE_PROTECTED_BIT. Any other flag will not
     // be accepted
-    VkImageCreateFlags       fFlags = 0;
-    VkFormat                 fFormat = VK_FORMAT_UNDEFINED;
-    VkImageTiling            fImageTiling = VK_IMAGE_TILING_OPTIMAL;
-    VkImageUsageFlags        fImageUsageFlags = 0;
-    VkSharingMode            fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
+    VkImageCreateFlags  fFlags = 0;
+    VkFormat            fFormat = VK_FORMAT_UNDEFINED;
+    VkImageTiling       fImageTiling = VK_IMAGE_TILING_OPTIMAL;
+    VkImageUsageFlags   fImageUsageFlags = 0;
+    VkSharingMode       fSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
     // Properties related to the image view and sampling. These are less inherent properties of the
     // VkImage but describe how the VkImage should be used within Skia.
@@ -48,8 +48,7 @@ struct VulkanTextureInfo {
                       VkSharingMode sharingMode,
                       VkImageAspectFlags aspectMask,
                       VulkanYcbcrConversionInfo ycbcrConversionInfo)
-            : fSampleCount(sampleCount)
-            , fMipmapped(mipmapped)
+            : Data(sampleCount, mipmapped)
             , fFlags(flags)
             , fFormat(format)
             , fImageTiling(imageTiling)
@@ -57,6 +56,29 @@ struct VulkanTextureInfo {
             , fSharingMode(sharingMode)
             , fAspectMask(aspectMask)
             , fYcbcrConversionInfo(ycbcrConversionInfo) {}
+
+    Protected isProtected() const {
+        return fFlags & VK_IMAGE_CREATE_PROTECTED_BIT ? Protected::kYes : Protected::kNo;
+    }
+    bool isMemoryless() const {
+        return fImageUsageFlags & VK_IMAGE_USAGE_TRANSIENT_ATTACHMENT_BIT;
+    }
+
+private:
+    uint32_t viewFormat() const override { return (uint32_t) fFormat; }
+
+    size_t bytesPerPixel() const override;
+    SkTextureCompressionType compressionType() const override;
+    SkString toBackendString() const override;
+
+    bool serialize(SkWStream*) const override;
+    bool deserialize(SkStream*) override;
+
+    void copyTo(TextureInfo::AnyTextureInfoData& dstData) const override {
+        dstData.emplace<VulkanTextureInfo>(*this);
+    }
+    bool equals(const TextureInfo& that) const override;
+    bool isCompatible(const TextureInfo& that) const override;
 };
 
 namespace TextureInfos {
