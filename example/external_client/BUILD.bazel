@@ -325,3 +325,15 @@ cc_binary(
         "@skia//:skottie",
     ],
 )
+
+cc_binary(
+    name = "svg_bug_396611132",
+    srcs = ["src/svg_bug_396611132.cpp"],
+    linkopts = [
+        "-lpthread",
+    ],
+    deps = [
+        "@skia//:core",
+        "@skia//:svg_writer",
+    ],
+)
