@@ -149,7 +149,16 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
 
     fResourceBindingReqs.fUniformBufferLayout = Layout::kMetal;
     fResourceBindingReqs.fStorageBufferLayout = Layout::kMetal;
-    fResourceBindingReqs.fDistinctIndexRanges = true;
+
+    // Graphite/Metal does not group resources into different sets or bind groups at this time,
+    // though ResourceBindingRequirements still expects valid assignments of these indices.
+    // Assigning both to 0 conveys the usage of one single "set" for all resources.
+    fResourceBindingReqs.fUniformsIdx = 0;
+    fResourceBindingReqs.fTextureSamplerIdx = 0;
+
+    // SkSL Metal codegen always assigns the same binding index to a texture and its sampler, so
+    // specify that compute shaders should act accordingly.
+    fResourceBindingReqs.fComputeUsesDistinctIdxRangesForTextures = true;
 
     fResourceBindingReqs.fIntrinsicBufferBinding =
             MtlGraphicsPipeline::kIntrinsicUniformBufferIndex;

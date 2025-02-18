@@ -69,7 +69,14 @@ std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderStep* renderStep,
                              UniquePaintParamsID paintID);
 
-std::string BuildComputeSkSL(const Caps*, const ComputeStep*);
+// TODO(b/396420770): Right now, BuildComputeSkSL must consider the backend in order to make certain
+// decisions. It would be ideal if we could make this more backend-agnostic, perhaps by having a
+// compute-specific equivalent to ResourceBindingRequirements.
+enum ComputeBackend : uint8_t {
+    kMetal,
+    kDawn,
+};
+std::string BuildComputeSkSL(const Caps*, const ComputeStep*, ComputeBackend);
 
 std::string EmitSamplerLayout(const ResourceBindingRequirements&, int* binding);
 
