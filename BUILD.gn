@@ -3352,6 +3352,14 @@ if (skia_enable_tools) {
       deps = []
     }
 
+    libfuzzer_app("api_draw_rrect") {
+      sources = [
+        "fuzz/FuzzCanvas.cpp",
+        "fuzz/oss_fuzz/FuzzDrawRect.cpp",
+      ]
+      deps = []
+    }
+
     libfuzzer_app("api_ddl_threading") {
       sources = [
         "fuzz/FuzzDDLThreading.cpp",

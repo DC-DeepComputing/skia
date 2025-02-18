@@ -6,8 +6,10 @@
  */
 
 #include "gm/gm.h"
+#include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
@@ -16,6 +18,7 @@
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkGradientShader.h"
 #include "tools/ToolUtils.h"
 
 typedef void (*InsetProc)(const SkRRect&, SkScalar dx, SkScalar dy, SkRRect*);
@@ -165,9 +168,53 @@ protected:
             canvas->translate(0, 170);
         }
     }
-
-private:
-    using INHERITED = GM;
 };
 
 DEF_GM( return new RRectGM; )
+
+extern bool gUseFastPath;
+
+class RRectBlurGM : public skiagm::GM {
+public:
+    RRectBlurGM() {}
+
+protected:
+    SkString getName() const override { return SkString("rrect_blurs"); }
+
+    static constexpr int kWidth = 250;
+    static constexpr int kHeight = 250;
+
+    SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
+
+    void onDraw(SkCanvas* canvas) override {
+        SkColor backgroundColors[] = {
+            SkColorSetRGB(0xE4, 0x03, 0x03), // Red
+            SkColorSetRGB(0xFF, 0x8C, 0x00), // Orange
+            SkColorSetRGB(0xFF, 0xED, 0x00), // Yellow
+            SkColorSetRGB(0x00, 0x80, 0x26), // Green
+            SkColorSetRGB(0x00, 0x4D, 0xFF), // Blue
+            SkColorSetRGB(0x75, 0x07, 0x87)  // Violet
+        };
+        SkPoint backgroundPoints[] = {
+            {0, 0}, {0, kHeight},
+        };
+
+        SkPaint backgroundPaint;
+        backgroundPaint.setShader(SkGradientShader::MakeLinear(
+            backgroundPoints, backgroundColors, nullptr, std::size(backgroundColors), SkTileMode::kClamp));
+        canvas->clear(SK_ColorBLACK);
+        canvas->drawRect(SkRect::MakeWH(kWidth, kHeight), backgroundPaint);
+
+
+        gUseFastPath = true;
+        SkPaint rrectPaint;
+        rrectPaint.setColor(SK_ColorWHITE);
+        auto mf = SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 0.5, false/*=respectCTM*/);
+        rrectPaint.setMaskFilter(mf);
+
+        SkRRect rr = SkRRect::MakeRectXY({10, 10, 30, 29}, 2.3, 2.3);
+        canvas->drawRRect(rr, rrectPaint);
+    }
+};
+
+DEF_GM( return new RRectBlurGM; )
