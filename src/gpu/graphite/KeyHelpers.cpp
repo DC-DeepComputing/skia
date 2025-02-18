@@ -1258,19 +1258,24 @@ static void gather_runtime_effect_uniforms(const KeyContext& keyContext,
     }
 }
 
-void RuntimeEffectBlock::BeginBlock(const KeyContext& keyContext,
+void RuntimeEffectBlock::BeginBlock1(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
                                     const ShaderData& shaderData) {
     ShaderCodeDictionary* dict = keyContext.dict();
     int codeSnippetID = dict->findOrCreateRuntimeEffectSnippet(shaderData.fEffect.get());
 
-    if (codeSnippetID >= SkKnownRuntimeEffects::kUnknownRuntimeEffectIDStart) {
+    if (codeSnippetID < 0) {
+        builder->addBlock(BuiltInCodeSnippetID::kError);
+        return;  //!!!!
+    }
+
+    if (codeSnippetID >= SkKnownRuntimeEffects::kUnknownRuntimeEffectIDStart) {  // wrap this in a function?
         keyContext.rtEffectDict()->set(codeSnippetID, shaderData.fEffect);
     }
 
-    const ShaderSnippet* entry = dict->getEntry(codeSnippetID);
-    SkASSERT(entry);
+    const ShaderSnippet* entry = dict->getEntry1(codeSnippetID);
+    SkASSERT(entry);  //!!!!!
 
     gather_runtime_effect_uniforms(keyContext,
                                    shaderData.fEffect.get(),
@@ -1379,7 +1384,7 @@ void add_to_key(const KeyContext& keyContext,
             keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
 
-    RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+    RuntimeEffectBlock::BeginBlock1(keyContext, builder, gatherer,
                                    { effect, std::move(uniforms) });
 
     add_children_to_key(keyContext, builder, gatherer,
@@ -1523,7 +1528,7 @@ static void add_to_key(const KeyContext& keyContext,
             effect->uniforms(), filter->uniforms(), keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
 
-    RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, {effect, std::move(uniforms)});
+    RuntimeEffectBlock::BeginBlock1(keyContext, builder, gatherer, {effect, std::move(uniforms)});
 
     add_children_to_key(keyContext, builder, gatherer,
                         filter->children(), effect.get());
@@ -2283,7 +2288,7 @@ static void add_to_key(const KeyContext& keyContext,
             keyContext.dstColorInfo().colorSpace());
     SkASSERT(uniforms);
 
-    RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer,
+    RuntimeEffectBlock::BeginBlock1(keyContext, builder, gatherer,
                                    {effect, std::move(uniforms)});
 
     add_children_to_key(keyContext, builder, gatherer,

@@ -305,7 +305,7 @@ PaintParamsKey ShaderCodeDictionary::lookup(UniquePaintParamsID codeID) const {
     return fIDToPaintKey[codeID.asUInt()];
 }
 
-const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
+const ShaderSnippet* ShaderCodeDictionary::getEntry1(int codeSnippetID) const {
     if (codeSnippetID < 0) {
         return nullptr;
     }
@@ -316,8 +316,7 @@ const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
 
     SkAutoSpinlock lock{fSpinLock};
 
-    if (codeSnippetID >= kSkiaKnownRuntimeEffectsStart &&
-        codeSnippetID < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt) {
+    if (IsSkiaKnownRuntimeEffect(codeSnippetID)) {
         int knownRTECodeSnippetID = codeSnippetID - kSkiaKnownRuntimeEffectsStart;
 
         // TODO(b/238759147): if the snippet hasn't been initialized, get the SkRuntimeEffect and
@@ -326,13 +325,41 @@ const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
         return &fKnownRuntimeEffectCodeSnippets[knownRTECodeSnippetID];
     }
 
-    // TODO(b/238759147): handle Android and chrome known runtime effects
+    if (IsUserDefinedKnownRuntimeEffect(codeSnippetID)) {
+        int index = codeSnippetID - kUserDefinedKnownRuntimeEffectsStart;
+        if (index >= fXXUserDefinedKnownCodeSnippets1.size()) {
+            return nullptr;
+        }
+
+        SkASSERT(fXXUserDefinedKnownCodeSnippets1[index].fPreambleGenerator);
+        return &fXXUserDefinedKnownCodeSnippets1[index];
+    }
 
     if (codeSnippetID >= kUnknownRuntimeEffectIDStart) {
         int userDefinedCodeSnippetID = codeSnippetID - kUnknownRuntimeEffectIDStart;
         if (userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size())) {
             return &fUserDefinedCodeSnippets[userDefinedCodeSnippetID];
         }
+    }
+
+    return nullptr;
+}
+
+const SkRuntimeEffect* ShaderCodeDictionary::getRTE1(int codeSnippetID) const {
+    if (codeSnippetID < 0) {
+        return nullptr;
+    }
+
+    SkAutoSpinlock lock{fSpinLock};
+
+    if (IsUserDefinedKnownRuntimeEffect(codeSnippetID)) {
+        int index = codeSnippetID - kUserDefinedKnownRuntimeEffectsStart;
+        if (index >= fXXUserDefinedKnownRuntimeEffects.size()) {
+            return nullptr;
+        }
+
+        SkASSERT(fXXUserDefinedKnownRuntimeEffects[index]);
+        return fXXUserDefinedKnownRuntimeEffects[index].get();
     }
 
     return nullptr;
@@ -538,15 +565,20 @@ private:
 
 std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
                                           const ShaderNode* node) {
-    // Find this runtime effect in the runtime-effect dictionary.
+    // Find this runtime effect in the shader-code or runtime-effect dictionary.
     SkASSERT(node->codeSnippetId() >= kBuiltInCodeSnippetIDCount);
     const SkRuntimeEffect* effect;
+
     if (node->codeSnippetId() < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt) {
+        SkASSERT(IsSkiaKnownRuntimeEffect(node->codeSnippetId()));
         effect = GetKnownRuntimeEffect(static_cast<StableKey>(node->codeSnippetId()));
+    } else if (SkKnownRuntimeEffects::IsUserDefinedKnownRuntimeEffect(node->codeSnippetId())) {
+        effect = shaderInfo.shaderCodeDictionary()->getRTE1(node->codeSnippetId());
     } else {
         SkASSERT(node->codeSnippetId() >= kUnknownRuntimeEffectIDStart);
-        effect = shaderInfo.runtimeEffectDictionary()->find(node->codeSnippetId());
+        effect = shaderInfo.runtimeEffectDictionary7()->find(node->codeSnippetId());
     }
+    // TODO: handle failure!
     SkASSERT(effect);
 
     const SkSL::Program& program = SkRuntimeEffectPriv::Program(*effect);
@@ -572,8 +604,12 @@ bool ShaderCodeDictionary::isValidID(int snippetID) const {
     if (snippetID < kBuiltInCodeSnippetIDCount) {
         return true;
     }
-    if (snippetID >= kSkiaKnownRuntimeEffectsStart && snippetID < kSkiaKnownRuntimeEffectsEnd) {
-        return snippetID < kSkiaKnownRuntimeEffectsStart + kStableKeyCnt;
+    if (IsSkiaKnownRuntimeEffect(snippetID)) {
+        return true;
+    }
+
+    if (this->isUserDefinedKnownRuntimeEffect(snippetID)) {
+        return true;
     }
 
     SkAutoSpinlock lock{fSpinLock};
@@ -694,18 +730,25 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
      SkAutoSpinlock lock{fSpinLock};
 
     if (int stableKey = SkRuntimeEffectPriv::StableKey(*effect)) {
-        // TODO(robertphillips): This assert will need to be loosened when first party stable
-        // keys are allowed (and the following code updated too).
-        SkASSERT(IsSkiaKnownRuntimeEffect(stableKey));
+        if (IsSkiaKnownRuntimeEffect(stableKey)) {
+            int index = stableKey - kSkiaKnownRuntimeEffectsStart;
 
-        int index = stableKey - kSkiaKnownRuntimeEffectsStart;
+            if (!fKnownRuntimeEffectCodeSnippets[index].fPreambleGenerator) {
+                const char* name = get_known_rte_name(static_cast<StableKey>(stableKey));
+                fKnownRuntimeEffectCodeSnippets[index] = this->convertRuntimeEffect(effect, name);
+            }
 
-        if (!fKnownRuntimeEffectCodeSnippets[index].fPreambleGenerator) {
-            const char* name = get_known_rte_name(static_cast<StableKey>(stableKey));
-            fKnownRuntimeEffectCodeSnippets[index] = this->convertRuntimeEffect(effect, name);
+            return stableKey;
+        } else if (IsUserDefinedKnownRuntimeEffect(stableKey)) {
+            int index = stableKey - kUserDefinedKnownRuntimeEffectsStart;
+            if (index >= fXXUserDefinedKnownCodeSnippets1.size()) {
+                return -1; //!!!!
+            }
+
+            return stableKey;
         }
 
-        return stableKey;
+        return -1; //!!!!
     }
 
     // Use the combination of {SkSL program hash, uniform size} as our key.
@@ -715,7 +758,7 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
     key.fHash = SkRuntimeEffectPriv::Hash(*effect);
     key.fUniformSize = effect->uniformSize();
 
-    int32_t* existingCodeSnippetID = fRuntimeEffectMap.find(key);
+    int32_t* existingCodeSnippetID = fRuntimeEffectMap1.find(key);
     if (existingCodeSnippetID) {
         return *existingCodeSnippetID;
     }
@@ -726,8 +769,51 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
     fUserDefinedCodeSnippets.push_back(this->convertRuntimeEffect(effect, "RuntimeEffect"));
     int newCodeSnippetID = kUnknownRuntimeEffectIDStart + fUserDefinedCodeSnippets.size() - 1;
 
-    fRuntimeEffectMap.set(key, newCodeSnippetID);
+    fRuntimeEffectMap1.set(key, newCodeSnippetID);
     return newCodeSnippetID;
+}
+
+void ShaderCodeDictionary::registerUserDefinedStableEffects(
+        SkSpan<sk_sp<SkRuntimeEffect>> userDefinedStableEffects) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    for (auto u : userDefinedStableEffects) {
+        const char* kName = "UserDefinedStableEffect";
+        fXXUserDefinedKnownCodeSnippets1.push_back(this->convertRuntimeEffect(u.get(), kName));
+        int stableID = kUserDefinedKnownRuntimeEffectsStart + fXXUserDefinedKnownCodeSnippets1.size() - 1;
+
+        SkRuntimeEffectPriv::SetStableKey(u.get(), stableID);
+
+        fXXUserDefinedKnownRuntimeEffects.push_back(u);
+
+        RuntimeEffectKey key;
+        key.fHash = SkRuntimeEffectPriv::Hash(*u);
+        key.fUniformSize = u->uniformSize();
+
+#if defined (SK_DEBUG)
+        int32_t* existingCodeSnippetID = fRuntimeEffectMap1.find(key);
+        SkASSERT(!existingCodeSnippetID);
+#endif
+
+        fRuntimeEffectMap1.set(key, stableID);
+    }
+
+    SkASSERT(fXXUserDefinedKnownCodeSnippets1.size() == fXXUserDefinedKnownRuntimeEffects.size());
+}
+
+bool ShaderCodeDictionary::isUserDefinedKnownRuntimeEffect(int candidate) const {
+    if (!SkKnownRuntimeEffects::IsUserDefinedKnownRuntimeEffect(candidate)) {
+        return false;
+    }
+
+    SkAutoSpinlock lock{fSpinLock};
+
+    int index = candidate - kUserDefinedKnownRuntimeEffectsStart;
+    if (index >= fXXUserDefinedKnownCodeSnippets1.size()) {
+        return false;
+    }
+
+    return true;
 }
 
 #if defined(GPU_TEST_UTILS)
@@ -735,6 +821,12 @@ int ShaderCodeDictionary::numUserDefinedRuntimeEffects() const {
     SkAutoSpinlock lock{fSpinLock};
 
     return fUserDefinedCodeSnippets.size();
+}
+
+int ShaderCodeDictionary::numUserDefinedKnownRuntimeEffects() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    return fXXUserDefinedKnownCodeSnippets1.size();
 }
 #endif
 

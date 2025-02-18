@@ -53,8 +53,11 @@ public:
                                             DstReadStrategy dstReadStrategyIfRequired,
                                             skia_private::TArray<SamplerDesc>* outDescs = nullptr);
 
-    const RuntimeEffectDictionary* runtimeEffectDictionary() const {
-        return fRuntimeEffectDictionary;
+    const RuntimeEffectDictionary* runtimeEffectDictionary7() const {
+        return fRuntimeEffectDictionary7;
+    }
+    const ShaderCodeDictionary* shaderCodeDictionary() const {
+        return fShaderCodeDictionary;
     }
     const char* ssboIndex() const { return fSsboIndex; }
 
@@ -77,7 +80,10 @@ public:
     static constexpr char kGradientBufferName[] = "fsGradientBuffer";
 
 private:
-    ShaderInfo(const RuntimeEffectDictionary*, const char* ssboIndex, DstReadStrategy);
+    ShaderInfo(const ShaderCodeDictionary*,
+               const RuntimeEffectDictionary*,
+               const char* ssboIndex,
+               DstReadStrategy);
 
     void generateVertexSkSL(const Caps*,
                             const RenderStep*,
@@ -104,7 +110,8 @@ private:
     // All shader nodes and arrays of children pointers are held in this arena
     SkArenaAlloc fShaderNodeAlloc{256};
 
-    const RuntimeEffectDictionary* fRuntimeEffectDictionary;
+    const ShaderCodeDictionary* fShaderCodeDictionary;
+    const RuntimeEffectDictionary* fRuntimeEffectDictionary7;
     const char* fSsboIndex;
 
     // De-compressed shader tree from a PaintParamsKey. There can be 1 or 2 root nodes, the first
