@@ -149,6 +149,9 @@ skif::FilterResult SkMatrixTransformImageFilter::onFilterImage(const skif::Conte
             this->getChildOutput(0, context.withNewDesiredOutput(requiredInput));
 
     skif::LayerSpace<SkMatrix> transform = context.mapping().paramToLayer(fTransform);
+    if (!transform.invert(nullptr)) {
+        return {};
+    }
     return childOutput.applyTransform(context, transform, fSampling);
 }
 

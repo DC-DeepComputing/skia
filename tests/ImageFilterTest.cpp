@@ -2327,3 +2327,18 @@ DEF_TEST(DropShadowImageFilter_Huge, reporter) {
     surf->getCanvas()->saveLayer(nullptr, &paint);
     surf->getCanvas()->restore();
 }
+
+DEF_TEST(DisplacementImageFilter_InvalidInputs_ReturnsNullptr, reporter) {
+    sk_sp<SkImageFilter> valid(SkImageFilters::Shader(SkShaders::Color(SK_ColorGREEN)));
+    REPORTER_ASSERT(reporter, valid != nullptr);
+
+    REPORTER_ASSERT(reporter,
+        nullptr == SkImageFilters::DisplacementMap(
+                SkColorChannel::kR, SkColorChannel::kB, std::numeric_limits<float>::infinity(),
+                valid, valid));
+
+    REPORTER_ASSERT(reporter,
+        nullptr == SkImageFilters::DisplacementMap(
+                static_cast<SkColorChannel>(22), SkColorChannel::kB, 5.f,
+                valid, valid));
+}
