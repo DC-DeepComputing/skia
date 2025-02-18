@@ -96,7 +96,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
                    const Context* context)
         : fSharedContext(std::move(sharedContext))
-        , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
+        , fRuntimeEffectDict7aa7(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
         , fTextureDataCache(new TextureDataCache)
@@ -213,7 +213,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     // needs to be done in insertRecording(). However, we use nullptr as a failure signal, so
     // kDiscard will return a non-null Recording that has no tasks in it.
     valid &= recording->priv().taskList()->prepareResources(
-            fResourceProvider, &scratchManager, fRuntimeEffectDict.get()) != Task::Status::kFail;
+            fResourceProvider, &scratchManager, fRuntimeEffectDict7aa7.get()) != Task::Status::kFail;
     if (!valid) {
         recording = nullptr;
         fAtlasProvider->invalidateAtlases();
@@ -224,7 +224,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     fResourceProvider->forceProcessReturnedResources();
 
     // Remaining cleanup that must always happen regardless of success or failure
-    fRuntimeEffectDict->reset();
+    fRuntimeEffectDict7aa7->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
     fTextureDataCache = std::make_unique<TextureDataCache>();
     if (!this->priv().caps()->requireOrderedRecordings()) {

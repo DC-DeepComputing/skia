@@ -64,7 +64,7 @@ void compile(const RendererProvider* rendererProvider,
             GraphicsPipelineDesc pipelineDesc(s->renderStepID(), paintID);
 
             sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
-                    keyContext.rtEffectDict(),
+                    keyContext.rtEffectDict7aa7(),
                     pipelineDesc,
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);

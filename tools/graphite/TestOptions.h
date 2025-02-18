@@ -19,6 +19,10 @@ struct TestOptions {
     TestOptions& operator=(const TestOptions&) = default;
     TestOptions& operator=(TestOptions&&) = default;
 
+    TestOptions(const skgpu::graphite::ContextOptions& contextOptions)
+            : fContextOptions(contextOptions) {
+    }
+
     bool hasDawnOptions() const {
 #if defined(SK_DAWN)
         return fDisableTintSymbolRenaming ||

@@ -35,7 +35,7 @@ public:
                RuntimeEffectDictionary* rtEffectDict,
                const SkColorInfo& dstColorInfo)
             : fDictionary(dict)
-            , fRTEffectDict(rtEffectDict)
+            , fRTEffectDict7aa7(rtEffectDict)
             , fDstColorInfo(dstColorInfo)
             , fCaps(caps) {}
 
@@ -56,7 +56,7 @@ public:
     const SkMatrix* localMatrix() const { return fLocalMatrix; }
 
     ShaderCodeDictionary* dict() const { return fDictionary; }
-    RuntimeEffectDictionary* rtEffectDict() const { return fRTEffectDict; }
+    RuntimeEffectDictionary* rtEffectDict7aa7() const { return fRTEffectDict7aa7; }
 
     const SkColorInfo& dstColorInfo() const { return fDstColorInfo; }
 
@@ -75,7 +75,7 @@ protected:
     SkM44 fLocal2Dev;
     SkMatrix* fLocalMatrix = nullptr;
     ShaderCodeDictionary* fDictionary;
-    RuntimeEffectDictionary* fRTEffectDict;
+    RuntimeEffectDictionary* fRTEffectDict7aa7;
     SkColorInfo fDstColorInfo;
     // Although stored as premul the paint color is actually comprised of an opaque RGB portion
     // and a separate alpha portion. The two portions will never be used together but are stored

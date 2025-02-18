@@ -430,7 +430,7 @@ struct RuntimeEffectBlock {
         sk_sp<const SkData>          fUniforms;
     };
 
-    static void BeginBlock(const KeyContext&,
+    static void BeginBlock1(const KeyContext&,
                            PaintParamsKeyBuilder*,
                            PipelineDataGatherer*,
                            const ShaderData&);
