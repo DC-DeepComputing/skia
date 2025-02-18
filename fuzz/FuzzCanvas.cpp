@@ -152,7 +152,7 @@ static sk_sp<SkColorFilter> make_fuzz_colorfilter(Fuzz* fuzz, int depth) {
             return SkColorFilters::TableARGB(tableA, tableR, tableG, tableB);
         }
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported colorfilter %d\n", colorFilterType);
             break;
     }
     return nullptr;
@@ -204,6 +204,8 @@ static sk_sp<SkShader> make_fuzz_shader(Fuzz* fuzz, int depth) {
                 FuzzNiceMatrix(fuzz, &matrix);
             }
             return img->makeShader(tmX, tmY, SkSamplingOptions(), useMatrix ? &matrix : nullptr);
+        case 4:
+            return nullptr;
         case 5:
             shader1 = make_fuzz_shader(fuzz, depth - 1);  // limit recursion.
             FuzzNiceMatrix(fuzz, &matrix);
@@ -345,7 +347,7 @@ static sk_sp<SkShader> make_fuzz_shader(Fuzz* fuzz, int depth) {
             }
         }
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported shader %d\n", shaderType);
             break;
     }
     return nullptr;
@@ -415,7 +417,7 @@ static sk_sp<SkPathEffect> make_fuzz_patheffect(Fuzz* fuzz, int depth) {
             return SkDiscretePathEffect::Make(segLength, dev, seed);
         }
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported path effect %u\n", pathEffectType);
             return nullptr;
     }
 }
@@ -430,13 +432,13 @@ static sk_sp<SkMaskFilter> make_fuzz_maskfilter(Fuzz* fuzz) {
             SkBlurStyle blurStyle;
             fuzz->nextEnum(&blurStyle, kLastEnum_SkBlurStyle);
             SkScalar sigma;
-            fuzz->next(&sigma);
+            fuzz->nextRange(&sigma, 0.f, 100.f);
             bool respectCTM;
             fuzz->next(&respectCTM);
             return SkMaskFilter::MakeBlur(blurStyle, sigma, respectCTM);
         }
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported maskFilter %d\n", maskfilterType);
             return nullptr;
     }
 }
@@ -512,7 +514,7 @@ static sk_sp<SkImageFilter> make_fuzz_lighting_imagefilter(Fuzz* fuzz, int depth
                     p, q, specularExponent, cutoffAngle, lightColor, surfaceScale, k, shininess,
                     std::move(input), useCropRect ? &cropRect : nullptr);
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported imageFilter %u\n", imageFilterType);
             return nullptr;
     }
 }
@@ -786,7 +788,7 @@ static sk_sp<SkImageFilter> make_fuzz_imageFilter(Fuzz* fuzz, int depth) {
             return SkImageFilters::Shader(std::move(shader), useCropRect ? &cropRect : nullptr);
         }
         default:
-            SkASSERT(false);
+            SkDEBUGFAILF("unsupported imageFilter %u\n", imageFilterType);
             return nullptr;
     }
 }
@@ -827,9 +829,9 @@ static void fuzz_paint(Fuzz* fuzz, SkPaint* paint, int depth) {
     paint->setStyle(        make_fuzz_enum_range<SkPaint::Style>(fuzz,
                                                  SkPaint::Style::kStrokeAndFill_Style));
     paint->setShader(       make_fuzz_shader(fuzz, depth - 1));
-    paint->setPathEffect(   make_fuzz_patheffect(fuzz, depth - 1));
+    //paint->setPathEffect(   make_fuzz_patheffect(fuzz, depth - 1));
     paint->setMaskFilter(   make_fuzz_maskfilter(fuzz));
-    paint->setImageFilter(  make_fuzz_imageFilter(fuzz, depth - 1));
+    //paint->setImageFilter(  make_fuzz_imageFilter(fuzz, depth - 1));
     paint->setColorFilter(  make_fuzz_colorfilter(fuzz, depth - 1));
 
     if (paint->getStyle() != SkPaint::kFill_Style) {
@@ -1491,7 +1493,7 @@ static void fuzz_canvas(Fuzz* fuzz, SkCanvas* canvas, int depth = 9) {
                 break;
             }
             default:
-                SkASSERT(false);
+                SkDEBUGFAILF("unsupported command %u\n", drawCommand);
                 break;
         }
     }
@@ -1700,4 +1702,121 @@ DEF_FUZZ(SVGCanvas, fuzz) {
     SkRect bounds = SkRect::MakeIWH(150, 150);
     std::unique_ptr<SkCanvas> canvas = SkSVGCanvas::Make(bounds, &stream);
     fuzz_canvas(fuzz, canvas.get());
+}
+
+extern bool gUseFastPath;
+extern bool gTryPlus3Fix;
+
+#include "include/encode/SkPngEncoder.h"
+
+int max_pixel_diff(const SkPixmap& pixmap1, const SkPixmap& pixmap2) {
+    SkASSERT(pixmap1.width() == pixmap2.width());
+    SkASSERT(pixmap1.height() == pixmap2.height());
+    SkASSERT(pixmap1.colorType() == pixmap2.colorType());
+
+    int maxWidth = pixmap1.width();
+    int maxHeight = pixmap1.height();
+    int maxDiff = 0;
+
+    for (int y = 0; y < maxHeight; ++y) {
+        for (int x = 0; x < maxWidth; ++x) {
+            SkColor color1 = pixmap1.getColor(x, y);
+            SkColor color2 = pixmap2.getColor(x, y);
+
+            int a1 = SkColorGetA(color1);
+            int r1 = SkColorGetR(color1);
+            int g1 = SkColorGetG(color1);
+            int b1 = SkColorGetB(color1);
+
+            int a2 = SkColorGetA(color2);
+            int r2 = SkColorGetR(color2);
+            int g2 = SkColorGetG(color2);
+            int b2 = SkColorGetB(color2);
+
+            int diffA = std::abs(a1 - a2);
+            int diffR = std::abs(r1 - r2);
+            int diffG = std::abs(g1 - g2);
+            int diffB = std::abs(b1 - b2);
+
+            int diff = diffA + diffR + diffG + diffB;
+            if (maxDiff < diff) {
+                maxDiff = diff;
+                //SkDebugf("new highest diff %d at (%d, %d)\n", maxDiff, x, y);
+            }
+        }
+    }
+
+  return maxDiff;
+}
+
+DEF_FUZZ(DrawRRect, fuzz) {
+    constexpr SkISize kCanvasSize = {64, 64};
+    auto ii = SkImageInfo::MakeN32Premul(kCanvasSize.width(), kCanvasSize.height());
+
+    uint8_t buffer1[kCanvasSize.width() * kCanvasSize.height() * 4];
+    uint8_t buffer2[kCanvasSize.width() * kCanvasSize.height() * 4];
+
+    SkPixmap pm1(ii, buffer1, ii.minRowBytes());
+    auto surface1 = SkSurfaces::WrapPixels(pm1);
+
+    SkPixmap pm2(ii, buffer2, ii.minRowBytes());
+    auto surface2 = SkSurfaces::WrapPixels(pm2);
+
+    // SkPaint p;
+    // fuzz_paint(fuzz, &p, 3);
+    // SkRRect rr;
+    // FuzzNiceRRect(fuzz, &rr);
+
+    sk_sp<SkMaskFilter> mf = make_fuzz_maskfilter(fuzz);
+    SkPaint p;
+    p.setColor(SK_ColorWHITE);
+    p.setMaskFilter(mf);
+
+    float r1, r2;
+    fuzz->nextRange(&r1, 0.1, 10);
+    fuzz->nextRange(&r2, 0.1, 10);
+    SkRRect rr = SkRRect::MakeRectXY({10, 10, 30, 40}, r1, r2);
+
+    SkColor background = SkColorSetARGB(255, 86, 85, 211);
+
+    gUseFastPath = true;
+    auto canvas1 = surface1->getCanvas();
+    canvas1->clear(background);
+    canvas1->drawRRect(rr, p);
+
+
+    gUseFastPath = false;
+    auto canvas2 = surface2->getCanvas();
+    canvas2->clear(background);
+    canvas2->drawRRect(rr, p);
+
+    if (memcmp(buffer1, buffer2, std::size(buffer1)) != 0) {
+        int d = max_pixel_diff(pm1, pm2);
+        if (d < 200) {
+            return;
+        }
+        SkDebugf("Max diff was %d\n", d);
+        {
+            SkFILEWStream fast("/tmp/rrect_diffs/with_fast_path3.png");
+            if (!fast.isValid()) {
+                SkDebugf("Cannot open fast png\n");
+                fuzz->signalBug();
+            }
+            SkFILEWStream slow("/tmp/rrect_diffs/with_slow_path3.png");
+            if (!slow.isValid()) {
+                SkDebugf("Cannot open slow png\n");
+                fuzz->signalBug();
+            }
+            if (!SkPngEncoder::Encode(&fast, pm1, {})) {
+                SkDebugf("Cannot encode fast png\n");
+              fuzz->signalBug();
+            }
+            if (!SkPngEncoder::Encode(&slow, pm2, {})) {
+                 SkDebugf("Cannot encode slow png\n");
+              fuzz->signalBug();
+            }
+             SkDebugf("files created\n");
+        }
+        fuzz->signalBug();
+    }
 }

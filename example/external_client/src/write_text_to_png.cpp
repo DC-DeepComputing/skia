@@ -10,9 +10,12 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkFont.h"
 #include "include/core/SkFontStyle.h"
+#include "include/core/SkBlurTypes.h"
 #include "include/core/SkFontMgr.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSurface.h"
@@ -59,6 +62,16 @@ int main(int argc, char** argv) {
     paint.setColor(SK_ColorGREEN);
     canvas->clear(SK_ColorYELLOW);
     canvas->drawString("Hello world!", 10, 25, font, paint);
+
+    {
+        SkPaint paint;
+        paint.setColor(SK_ColorRED);
+        paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0));
+        SkRRect rrect = SkRRect::MakeRectXY({40, 20, 100, 50}, 5, 5);
+        canvas->drawRRect(rrect, paint);
+    }
+
+
     SkPixmap pixmap;
     if (surface->peekPixels(&pixmap)) {
         if (!SkPngEncoder::Encode(&output, pixmap, {})) {
