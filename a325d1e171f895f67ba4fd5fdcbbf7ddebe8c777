@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1467688_1bde947d",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-18T16:27:59Z",
+      "side": 0,
+      "message": "I think we should keep this comment until we update the use of `bool` below to use `wgpu::Status` instead. Maybe we can update the comment since it has a typo and this isn\u0027t very clear.",
+      "revId": "a325d1e171f895f67ba4fd5fdcbbf7ddebe8c777",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
