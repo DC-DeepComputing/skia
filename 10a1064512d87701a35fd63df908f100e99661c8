@@ -81,6 +81,24 @@
       "parentUuid": "0cc3c5e7_a5781eb6",
       "revId": "10a1064512d87701a35fd63df908f100e99661c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c143fb39_f9198286",
+        "filename": "include/docs/SkPDFJpegHelpers.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-18T16:54:29Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d7b1f369_ef32f770",
+      "revId": "10a1064512d87701a35fd63df908f100e99661c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
