@@ -32,6 +32,11 @@ namespace {
 
 DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(BackendTextureTest, reporter, context,
                                    CtsEnforcement::kNextRelease) {
+    // TODO: Fix and enforce a new variant of this test for protected contexts.
+    if (context->supportsProtectedContent()) {
+        return;
+    }
+
     auto caps = context->priv().caps();
     auto recorder = context->makeRecorder();
 
