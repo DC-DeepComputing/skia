@@ -75,9 +75,9 @@ bool SkRuntimeColorFilter::onIsAlphaUnchanged() const {
 }
 
 void SkRuntimeColorFilter::flatten(SkWriteBuffer& buffer) const {
-    if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey)) {
+    if (SkKnownRuntimeEffects::IsSkiaKnownRuntimeEffect(fEffect->fStableKey1)) {
         // We only serialize Skia-internal stableKeys. First party stable keys are not serialized.
-        buffer.write32(fEffect->fStableKey);
+        buffer.write32(fEffect->fStableKey1);
     } else {
         buffer.write32(0);
         buffer.writeString(fEffect->source().c_str());

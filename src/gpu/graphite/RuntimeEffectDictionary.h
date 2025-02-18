@@ -21,17 +21,20 @@ namespace skgpu::graphite {
 // paint, and gives us a way to retrieve their shader text when we see their code-snippet ID.
 class RuntimeEffectDictionary {
 public:
-    const SkRuntimeEffect* find(int codeSnippetID) const {
+    RuntimeEffectDictionary(bool foo) : fFoo(foo) {}
+
+    const SkRuntimeEffect* find888(int codeSnippetID) const {
         sk_sp<const SkRuntimeEffect>* effect = fDict.find(codeSnippetID);
         return effect ? effect->get() : nullptr;
     }
 
-    void set(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
+    void set888(int codeSnippetID, sk_sp<const SkRuntimeEffect> effect);
 
-    void reset() { fDict.reset(); }
+    void reset888() { fDict.reset(); }
 
 private:
     skia_private::THashMap<int, sk_sp<const SkRuntimeEffect>> fDict;
+    bool fFoo;
 };
 
 } // namespace skgpu::graphite
