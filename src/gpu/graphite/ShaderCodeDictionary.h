@@ -21,6 +21,8 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include "include/effects/SkRuntimeEffect.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -222,16 +224,21 @@ public:
 #endif
 
     // This method can return nullptr
-    const ShaderSnippet* getEntry(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
+    const ShaderSnippet* getEntry1(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
     const ShaderSnippet* getEntry(BuiltInCodeSnippetID codeSnippetID) const {
         // Built-in code snippets are initialized once so there is no need to take a lock
         return &fBuiltInCodeSnippets[SkTo<int>(codeSnippetID)];
     }
+    const SkRuntimeEffect* getRTE1(int codeSnippetID) const SK_EXCLUDES(fSpinLock);
 
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) SK_EXCLUDES(fSpinLock);
 
+    void registerUserDefinedStableEffects(SkSpan<sk_sp<SkRuntimeEffect>>) SK_EXCLUDES(fSpinLock);
+
+    bool isUserDefinedKnownRuntimeEffect(int candidate) const SK_EXCLUDES(fSpinLock);
 #if defined(GPU_TEST_UTILS)
     int numUserDefinedRuntimeEffects() const SK_EXCLUDES(fSpinLock);
+    int numUserDefinedKnownRuntimeEffects() const SK_EXCLUDES(fSpinLock);
 #endif
 
 private:
@@ -247,9 +254,13 @@ private:
     using KnownRuntimeEffectArray = std::array<ShaderSnippet, SkKnownRuntimeEffects::kStableKeyCnt>;
     KnownRuntimeEffectArray fKnownRuntimeEffectCodeSnippets SK_GUARDED_BY(fSpinLock);
 
+    using RuntimeEffectArray = skia_private::TArray<ShaderSnippet>;
+    RuntimeEffectArray fXXUserDefinedKnownCodeSnippets1 SK_GUARDED_BY(fSpinLock);
+    using RuntimeEffectArray2 = skia_private::TArray<sk_sp<SkRuntimeEffect>>;
+    RuntimeEffectArray2 fXXUserDefinedKnownRuntimeEffects SK_GUARDED_BY(fSpinLock);
+
     // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
     // entries as pointers.
-    using RuntimeEffectArray = skia_private::TArray<ShaderSnippet>;
     RuntimeEffectArray fUserDefinedCodeSnippets SK_GUARDED_BY(fSpinLock);
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
@@ -280,7 +291,7 @@ private:
     // the context is discarded, which takes the ShaderCodeDictionary along with it. However, they
     // are extremely small (< 20 bytes) so the memory footprint should be unnoticeable.
     using RuntimeEffectMap = skia_private::THashMap<RuntimeEffectKey, int32_t>;
-    RuntimeEffectMap fRuntimeEffectMap SK_GUARDED_BY(fSpinLock);
+    RuntimeEffectMap fRuntimeEffectMap1 SK_GUARDED_BY(fSpinLock);
 
     // This arena holds:
     //   - the backing data for PaintParamsKeys in `fPaintKeyToID` and `fIDToPaintKey`

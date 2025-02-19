@@ -9,12 +9,14 @@
 #define skgpu_graphite_ContextOptions_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkMath.h"
 
 #include <optional>
 
 class SkData;
+class SkRuntimeEffect;
 namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
@@ -23,6 +25,9 @@ struct ContextOptionsPriv;
 
 struct SK_API ContextOptions {
     ContextOptions() {}
+    ContextOptions(const ContextOptions&) = default;
+
+    ~ContextOptions();
 
     /**
      * Disables correctness workarounds that are enabled for particular GPUs, OSes, or drivers.
@@ -135,6 +140,20 @@ struct SK_API ContextOptions {
      */
     PipelineCallbackContext fPipelineCallbackContext = nullptr;
     PipelineCallback fPipelineCallback = nullptr;
+
+    /**
+     * Register the provided SkSL code fragments as stable known code. This will result in
+     * IDs being written into serialized pipeline keys rather than raw SkSL.
+     *
+     * Warning: this does obligate users to clear out their caches of serialized pipeline
+     * keys if the provided SkSL ever changes in a meaningful way. This includes adding, removing
+     * or reordering the code provided in this call.
+     *
+     * @param sksl   span of client-specific, stable, SkSL code
+     * @return N/A
+     */
+     // Graphite will take a ref!
+    SkSpan<sk_sp<SkRuntimeEffect>> fSpecial;
 
     /**
      * Private options that are only meant for testing within Skia's tools.

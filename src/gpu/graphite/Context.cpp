@@ -63,6 +63,8 @@
 
 namespace skgpu::graphite {
 
+ContextOptions::~ContextOptions() {}
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
 Context::ContextID Context::ContextID::Next() {
@@ -101,6 +103,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 
     fSharedContext->globalCache()->setPipelineCallback(options.fPipelineCallback,
                                                        options.fPipelineCallbackContext);
+
+    fSharedContext->shaderCodeDictionary()->registerUserDefinedStableEffects(options.fSpecial);
 }
 
 Context::~Context() {
