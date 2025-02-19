@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efec9dbb_7e2be65b",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T02:45:35Z",
+      "side": 1,
+      "message": "My bad, `LayerSpace\u003cSkMatrix\u003e::invert()` needs to be updated to handle the nullptr convention. `\u0026inverse-\u003efData` is technically UB, although in reality, since fData is at offset 0 it shouldn\u0027t change a nullptr anyways.",
+      "range": {
+        "startLine": 1076,
+        "startChar": 26,
+        "endLine": 1076,
+        "endChar": 33
+      },
+      "revId": "b1fe51338c60dde641810d8b3a57347596950af7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
