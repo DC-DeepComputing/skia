@@ -898,7 +898,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			d["os"] = "Windows-10-19045"
 		}
 		if strings.Contains(os, "iOS") {
-			d["pool"] = "SkiaIOS"
+			//d["pool"] = "SkiaIOS"
 		}
 		if b.parts["model"] == "iPadPro" {
 			d["os"] = "iOS-13.6"
@@ -949,7 +949,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if !ok {
 				log.Fatalf("Entry %q not found in iOS mapping.", b.parts["model"])
 			}
-			d["device_type"] = device
+			d["device"] = device
 		} else if b.cpu() || b.extraConfig("CanvasKit", "Docker", "SwiftShader") {
 			modelMapping, ok := map[string]map[string]string{
 				"AppleM1": {

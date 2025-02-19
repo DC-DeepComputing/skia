@@ -40583,9 +40583,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -40668,9 +40668,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -40753,9 +40753,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -40838,9 +40838,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -40923,9 +40923,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -41008,9 +41008,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -41093,9 +41093,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -41178,9 +41178,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70518,9 +70518,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70610,9 +70610,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70702,9 +70702,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70794,9 +70794,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPad6,3",
+        "device:iPad6,3",
         "os:iOS-13.6",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70886,9 +70886,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -70978,9 +70978,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71070,9 +71070,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71162,9 +71162,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone9,1",
+        "device:iPhone9,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71254,9 +71254,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71346,9 +71346,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71438,9 +71438,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71530,9 +71530,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71622,9 +71622,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71714,9 +71714,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71806,9 +71806,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
@@ -71898,9 +71898,9 @@
         "Housekeeper-PerCommit-IsolateSkImage"
       ],
       "dimensions": [
-        "device_type:iPhone10,1",
+        "device:iPhone10,1",
         "os:iOS-13.3.1",
-        "pool:SkiaIOS"
+        "pool:Skia"
       ],
       "environment": {
         "RECIPES_USE_PY3": "true",
