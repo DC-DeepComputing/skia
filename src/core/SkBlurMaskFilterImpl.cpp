@@ -289,23 +289,24 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
     const SkVector& LR = rrect.radii(SkRRect::kLowerRight_Corner);
     const SkVector& LL = rrect.radii(SkRRect::kLowerLeft_Corner);
 
-    const float leftUnstretched = std::max(UL.fX, LL.fX) + 2 * margin.fX;
-    const float rightUnstretched = std::max(UR.fX, LR.fX) + 2 * margin.fX;
+    // Use ceiling to account for fractional part.
+    const int32_t leftUnstretched  = SkScalarCeilToInt(std::max(UL.fX, LL.fX)) + 2 * margin.fX;
+    const int32_t rightUnstretched = SkScalarCeilToInt(std::max(UR.fX, LR.fX)) + 2 * margin.fX;
 
     // Extra space in the middle to ensure an unchanging piece for stretching. Use 3 to cover
     // any fractional space on either side plus 1 for the part to stretch.
-    const float stretchSize = 3.f;
+    const int32_t stretchSize = 1;
 
-    const float totalSmallWidth = leftUnstretched + rightUnstretched + stretchSize;
+    const int32_t totalSmallWidth = leftUnstretched + rightUnstretched + stretchSize;
     if (totalSmallWidth >= rrect.rect().width()) {
         // There is no valid piece to stretch.
         return std::nullopt;
     }
 
-    const float topUnstretched = std::max(UL.fY, UR.fY) + SkIntToScalar(2 * margin.fY);
-    const float bottomUnstretched = std::max(LL.fY, LR.fY) + SkIntToScalar(2 * margin.fY);
+    const int32_t topUnstretched = SkScalarCeilToInt(std::max(UL.fY, UR.fY)) + 2 * margin.fY;
+    const int32_t botUnstretched = SkScalarCeilToInt(std::max(LL.fY, LR.fY)) + 2 * margin.fY;
 
-    const float totalSmallHeight = topUnstretched + bottomUnstretched + stretchSize;
+    const int32_t totalSmallHeight = topUnstretched + botUnstretched + stretchSize;
     if (totalSmallHeight >= rrect.rect().height()) {
         // There is no valid piece to stretch.
         return std::nullopt;
@@ -343,7 +344,7 @@ SkBlurMaskFilterImpl::filterRRectToNine(const SkRRect& rrect, const SkMatrix& ma
             std::in_place,
             SkMask{cachedMask->fImage, bounds, cachedMask->fRowBytes, cachedMask->fFormat},
             dstM.fBounds,
-            SkIPoint{SkScalarCeilToInt(leftUnstretched) + 1, SkScalarCeilToInt(topUnstretched) + 1},
+            SkIPoint{leftUnstretched + 1, topUnstretched + 1},
             cache);  // transfer ownership to patch
 }
 
