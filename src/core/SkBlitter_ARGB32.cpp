@@ -1492,7 +1492,7 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
             if ((opaqueMask & aa) == 255) {
                 SkOpts::memset32(device, color, count);
             } else {
-                uint32_t sc = SkAlphaMulQ(color, SkAlpha255To256(aa));
+                uint32_t sc = SkAlphaMulQ(color, aa);
                 SkBlitRow::Color32(device, count, sc);
             }
         }
