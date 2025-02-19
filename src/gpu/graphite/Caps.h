@@ -68,6 +68,7 @@ struct ResourceBindingRequirements {
     // Define set indices. We assume that even if textures and samplers must be bound separately,
     // they will still be contained within the same set/group.
     static constexpr int kUnassigned      = -1;
+    int fInputAttachmentIdxForDstReads    = kUnassigned;
     int fUniformsIdx                      = kUnassigned;
     int fTextureSamplerIdx                = kUnassigned;
     int fInputAttachmentIdxForLoadingMSAA = kUnassigned;
