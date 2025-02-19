@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "826202f5_b089d660",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T15:07:07Z",
+      "side": 1,
+      "message": "nit: Add [graphite] tag to CL",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 69
+      },
+      "revId": "ceb6cf6d29f9729ea9c26a829b2a457a9493c93a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c5f9ea73_913aa49c",
@@ -14,6 +37,74 @@
       "writtenOn": "2025-02-19T00:01:42Z",
       "side": 1,
       "message": "PTAL",
+      "revId": "ceb6cf6d29f9729ea9c26a829b2a457a9493c93a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c07a8cf_3b4a099a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T15:07:07Z",
+      "side": 1,
+      "message": "The red try jobs are from failures on our tree, lgtm. Thanks for this sneaky fix, I didn\u0027t realize the default ctor forced zero initialization even if every member had an initializer.",
+      "revId": "ceb6cf6d29f9729ea9c26a829b2a457a9493c93a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d62d01f0_81627f96",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T15:07:07Z",
+      "side": 1,
+      "message": "nit: can you move this just above `recordDraw()`?",
+      "range": {
+        "startLine": 59,
+        "startChar": 0,
+        "endLine": 60,
+        "endChar": 17
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "3d24f0c3_98b2e7b9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawList.h",
+              "range": {
+                "startLine": 59,
+                "startChar": 0,
+                "endLine": 62,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/gpu/graphite/DrawList.h",
+              "range": {
+                "startLine": 73,
+                "startChar": 0,
+                "endLine": 73,
+                "endChar": 0
+              },
+              "replacement": "\n    // Add a construtor to prevent default zero initialization of SkTBlockList members\u0027 storage.\n    DrawList() {}\n"
+            }
+          ]
+        }
+      ],
       "revId": "ceb6cf6d29f9729ea9c26a829b2a457a9493c93a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
