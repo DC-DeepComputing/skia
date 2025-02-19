@@ -1446,7 +1446,7 @@ static void SkARGB32_Blit32(const SkPixmap& device, const SkMask& mask,
 //////////////////////////////////////////////////////////////////////////////////////
 
 SkARGB32_Blitter::SkARGB32_Blitter(const SkPixmap& device, const SkPaint& paint)
-        : INHERITED(device) {
+        : SkRasterBlitter(device) {
     SkColor color = paint.getColor();
     fColor = color;
 
@@ -1493,6 +1493,7 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
                 SkOpts::memset32(device, color, count);
             } else {
                 uint32_t sc = SkAlphaMulQ(color, SkAlpha255To256(aa));
+                // uint32_t sc = SkAlphaMulQ(color, aa);
                 SkBlitRow::Color32(device, count, sc);
             }
         }
@@ -1720,9 +1721,9 @@ void SkARGB32_Black_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkARGB32_Shader_Blitter::SkARGB32_Shader_Blitter(const SkPixmap& device,
-        const SkPaint& paint, SkShaderBase::Context* shaderContext)
-    : INHERITED(device, paint, shaderContext)
-{
+                                                 const SkPaint& paint,
+                                                 SkShaderBase::Context* shaderContext)
+        : SkShaderBlitter(device, paint, shaderContext) {
     fBuffer = (SkPMColor*)sk_malloc_throw(device.width() * (sizeof(SkPMColor)));
 
     SkASSERT(paint.isSrcOver());
@@ -1973,7 +1974,7 @@ void SkARGB32_Shader_Blitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     } else if (mask.fFormat == SkMask::kLCD16_Format) {
         blend_row = blend_row_lcd16;
     } else {
-        this->INHERITED::blitMask(mask, clip);
+        this->SkShaderBlitter::blitMask(mask, clip);
         return;
     }
 
