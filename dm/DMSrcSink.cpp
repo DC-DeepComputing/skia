@@ -2441,6 +2441,7 @@ Result GraphitePrecompileTestingSink::draw(const Src& src,
             return result;
         }
 
+        // Note: this is different from numUserDefinedKnownRuntimeEffects - which are allowed
         if (shaderCodeDictionary->numUserDefinedRuntimeEffects()) {
             return Result::Skip("User-defined runtime effects cannot be serialized");
         }

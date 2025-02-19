@@ -21,6 +21,8 @@
 #include "src/gpu/graphite/Uniform.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#include "include/effects/SkRuntimeEffect.h"
+
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -203,7 +205,8 @@ private:
 // SkRuntimeEffect, including de-duplicating equivalent SkRuntimeEffect objects.
 class ShaderCodeDictionary {
 public:
-    ShaderCodeDictionary(Layout layout);
+    ShaderCodeDictionary(Layout layout,
+                         SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     UniquePaintParamsID findOrCreate(const PaintParamsKey&);
 
@@ -228,10 +231,19 @@ public:
         return &fBuiltInCodeSnippets[SkTo<int>(codeSnippetID)];
     }
 
+    // getEntry can be used to retrieve the ShaderSnippet for a user-defined known runtime effect
+    // but, since the ShaderCodeDictionary owns those runtime effects, we need another entry
+    // point to retrieve the actual effect. For unknown runtime effects this is handled by the
+    // RuntimeEffectDictionary which, transiently, holds a ref on the encountered runtime effects.
+    const SkRuntimeEffect* getUserDefinedKnownRuntimeEffect(int codeSnippetID) const;
+
+    // Returns -1 on failure
     int findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect* effect) SK_EXCLUDES(fSpinLock);
 
+    bool isUserDefinedKnownRuntimeEffect(int candidate) const;
 #if defined(GPU_TEST_UTILS)
     int numUserDefinedRuntimeEffects() const SK_EXCLUDES(fSpinLock);
+    int numUserDefinedKnownRuntimeEffects() const;
 #endif
 
 private:
@@ -240,6 +252,8 @@ private:
     SkSpan<const Uniform> convertUniforms(const SkRuntimeEffect* effect);
     ShaderSnippet convertRuntimeEffect(const SkRuntimeEffect* effect, const char* name);
 
+    void registerUserDefinedKnownRuntimeEffects1(SkSpan<sk_sp<SkRuntimeEffect>>);
+
     const Layout fLayout;
 
     std::array<ShaderSnippet, kBuiltInCodeSnippetIDCount> fBuiltInCodeSnippets;
@@ -247,9 +261,14 @@ private:
     using KnownRuntimeEffectArray = std::array<ShaderSnippet, SkKnownRuntimeEffects::kStableKeyCnt>;
     KnownRuntimeEffectArray fKnownRuntimeEffectCodeSnippets SK_GUARDED_BY(fSpinLock);
 
+    // These two arrays are not guarded by a lock since they are only initialized in the ctor
+    using RuntimeEffectArray = skia_private::TArray<ShaderSnippet>;
+    RuntimeEffectArray fXXUserDefinedKnownCodeSnippets1;
+    using RuntimeEffectArray2 = skia_private::TArray<sk_sp<SkRuntimeEffect>>;
+    RuntimeEffectArray2 fXXUserDefinedKnownRuntimeEffects;
+
     // The value returned from 'getEntry' must be stable so, hold the user-defined code snippet
     // entries as pointers.
-    using RuntimeEffectArray = skia_private::TArray<ShaderSnippet>;
     RuntimeEffectArray fUserDefinedCodeSnippets SK_GUARDED_BY(fSpinLock);
 
     // TODO: can we do something better given this should have write-seldom/read-often behavior?
