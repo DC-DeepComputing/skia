@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "667f8ad2_e7bfb0c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-19T14:35:49Z",
+      "side": 1,
+      "message": "PTAL (need +1 for this old revert)",
+      "revId": "8c1d1c08f8fe4df111e964bc7cdad19746cb7649",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
