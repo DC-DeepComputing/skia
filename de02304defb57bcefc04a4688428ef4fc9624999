@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "092f2013_bdd25f27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3888902
+      },
+      "writtenOn": "2025-02-19T23:21:31Z",
+      "side": 1,
+      "message": "Looks like the go_repositories.bzl bazel file had to be updated to match the versions in go.mod. Updated by running `make -C bazel gazelle_update_repo` per the header in that file. @kjlubick@google.com, can you please send to CQ again? Thank you!",
+      "revId": "de02304defb57bcefc04a4688428ef4fc9624999",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
