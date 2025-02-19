@@ -367,9 +367,9 @@ using skiatest::Test;
                                                ctsEnforcement)
 
 #define DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, context_filter, reporter, graphite_ctx,         \
-                                       test_ctx, ctsEnforcement)                             \
+                                       test_ctx, options_filter, ctsEnforcement)             \
     DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(name, context_filter, reporter, graphite_ctx, \
-                                               test_ctx, nullptr, true, ctsEnforcement)
+                                               test_ctx, options_filter, true, ctsEnforcement)
 
 #define DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(name, reporter, graphite_ctx, ctsEnforcement)         \
     DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(name, reporter, graphite_ctx,                 \
@@ -381,15 +381,16 @@ using skiatest::Test;
 
 #define DEF_GRAPHITE_TEST_FOR_VULKAN_CONTEXT(name, reporter, graphite_context, ctsEnforcement) \
     DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, skiatest::IsVulkanContextType, reporter,              \
-                                   graphite_context, /*anonymous test_ctx*/, ctsEnforcement)
+                                   graphite_context, /*anonymous test_ctx*/,                   \
+                                   /* options_filter= */ nullptr, ctsEnforcement)
 
 #define DEF_GRAPHITE_TEST_FOR_METAL_CONTEXT(name, reporter, graphite_context, test_context)        \
     DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, skiatest::IsMetalContextType, reporter, graphite_context, \
-                                   test_context, CtsEnforcement::kNever)
+                                   test_context, /* options_filter= */ nullptr, CtsEnforcement::kNever)
 
 #define DEF_GRAPHITE_TEST_FOR_DAWN_CONTEXT(name, reporter, graphite_context, test_context) \
     DEF_GRAPHITE_TEST_FOR_CONTEXTS(name, skiatest::IsDawnContextType, reporter, graphite_context, \
-                                   test_context, CtsEnforcement::kNever)
+                                   test_context, /* options_filter= */ nullptr, CtsEnforcement::kNever)
 
 #define DEF_GANESH_TEST(name, reporter, options, ctsEnforcement)            \
     static void test_##name(skiatest::Reporter*, const GrContextOptions&);  \
