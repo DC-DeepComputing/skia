@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01c9b1cc_8faa268a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T21:34:28Z",
+      "side": 1,
+      "message": "Tested this in viewer by adding the flag with cases that hit the inaccurate sigmas as well as the box-blur identity case and things worked. Also tested by patching it into chrome and confirming the sites perform adequately again.",
+      "revId": "9685276c13f3ca8f02feeef017d5bde2587a95d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
