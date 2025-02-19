@@ -27,37 +27,15 @@
 SkWorkingFormatColorFilter::SkWorkingFormatColorFilter(sk_sp<SkColorFilter> child,
                                                        const skcms_TransferFunction* tf,
                                                        const skcms_Matrix3x3* gamut,
-                                                       const SkAlphaType* at) {
+                                                       const SkAlphaType* at)
+        : fWorkingFormatCalculator(tf, gamut, at) {
     SkASSERT(child);
     fChild = std::move(child);
-    if (tf) {
-        fTF = *tf;
-        fUseDstTF = false;
-    }
-    if (gamut) {
-        fGamut = *gamut;
-        fUseDstGamut = false;
-    }
-    if (at) {
-        fAT = *at;
-        fUseDstAT = false;
-    }
 }
 
 sk_sp<SkColorSpace> SkWorkingFormatColorFilter::workingFormat(const sk_sp<SkColorSpace>& dstCS,
                                                               SkAlphaType* at) const {
-    skcms_TransferFunction tf = fTF;
-    skcms_Matrix3x3 gamut = fGamut;
-
-    if (fUseDstTF) {
-        SkAssertResult(dstCS->isNumericalTransferFn(&tf));
-    }
-    if (fUseDstGamut) {
-        SkAssertResult(dstCS->toXYZD50(&gamut));
-    }
-
-    *at = fUseDstAT ? kPremul_SkAlphaType : fAT;
-    return SkColorSpace::MakeRGB(tf, gamut);
+    return fWorkingFormatCalculator.workingFormat(dstCS, at);
 }
 
 bool SkWorkingFormatColorFilter::appendStages(const SkStageRec& rec, bool shaderIsOpaque) const {
@@ -129,18 +107,7 @@ bool SkWorkingFormatColorFilter::onAsAColorMatrix(float matrix[20]) const {
 
 void SkWorkingFormatColorFilter::flatten(SkWriteBuffer& buffer) const {
     buffer.writeFlattenable(fChild.get());
-    buffer.writeBool(fUseDstTF);
-    buffer.writeBool(fUseDstGamut);
-    buffer.writeBool(fUseDstAT);
-    if (!fUseDstTF) {
-        buffer.writeScalarArray(&fTF.g, 7);
-    }
-    if (!fUseDstGamut) {
-        buffer.writeScalarArray(&fGamut.vals[0][0], 9);
-    }
-    if (!fUseDstAT) {
-        buffer.writeInt(fAT);
-    }
+    fWorkingFormatCalculator.flatten(buffer);
 }
 
 sk_sp<SkFlattenable> SkWorkingFormatColorFilter::CreateProc(SkReadBuffer& buffer) {
@@ -184,4 +151,52 @@ sk_sp<SkColorFilter> SkColorFilterPriv::WithWorkingFormat(sk_sp<SkColorFilter> c
 
 void SkRegisterWorkingFormatColorFilterFlattenable() {
     SK_REGISTER_FLATTENABLE(SkWorkingFormatColorFilter);
+}
+
+SkWorkingFormatCalculator::SkWorkingFormatCalculator(const skcms_TransferFunction* tf,
+                                                     const skcms_Matrix3x3* gamut,
+                                                     const SkAlphaType* at) {
+    if (tf) {
+        fTF = *tf;
+        fUseDstTF = false;
+    }
+    if (gamut) {
+        fGamut = *gamut;
+        fUseDstGamut = false;
+    }
+    if (at) {
+        fAT = *at;
+        fUseDstAT = false;
+    }
+}
+
+sk_sp<SkColorSpace> SkWorkingFormatCalculator::workingFormat(const sk_sp<SkColorSpace>& dstCS,
+                                                             SkAlphaType* at) const {
+    skcms_TransferFunction tf = fTF;
+    skcms_Matrix3x3 gamut = fGamut;
+
+    if (fUseDstTF) {
+        SkAssertResult(dstCS->isNumericalTransferFn(&tf));
+    }
+    if (fUseDstGamut) {
+        SkAssertResult(dstCS->toXYZD50(&gamut));
+    }
+
+    *at = fUseDstAT ? kPremul_SkAlphaType : fAT;
+    return SkColorSpace::MakeRGB(tf, gamut);
+}
+
+void SkWorkingFormatCalculator::flatten(SkWriteBuffer& buffer) const {
+    buffer.writeBool(fUseDstTF);
+    buffer.writeBool(fUseDstGamut);
+    buffer.writeBool(fUseDstAT);
+    if (!fUseDstTF) {
+        buffer.writeScalarArray(&fTF.g, 7);
+    }
+    if (!fUseDstGamut) {
+        buffer.writeScalarArray(&fGamut.vals[0][0], 9);
+    }
+    if (!fUseDstAT) {
+        buffer.writeInt(fAT);
+    }
 }
