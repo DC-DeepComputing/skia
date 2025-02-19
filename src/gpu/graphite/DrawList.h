@@ -56,6 +56,9 @@ class Renderer;
  */
 class DrawList {
 public:
+    // Add a construtor to prevent default zero initialization of SkTBlockList members' storage.
+    DrawList() {}
+
     // The maximum number of render steps that can be recorded into a DrawList before it must be
     // converted to a DrawPass. The true fundamental limit is imposed by the limits of the depth
     // attachment and precision of CompressedPaintersOrder and PaintDepth. These values can be
