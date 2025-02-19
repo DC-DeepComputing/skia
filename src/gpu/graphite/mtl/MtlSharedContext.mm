@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/mtl/MtlSharedContext.h"
 
 #include "include/gpu/graphite/BackendTexture.h"
+#include "include/gpu/graphite/ContextOptions.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/GlobalCache.h"
@@ -16,6 +17,7 @@
 #include "src/gpu/graphite/mtl/MtlResourceProvider.h"
 #include "src/gpu/graphite/mtl/MtlTexture.h"
 #include "src/gpu/mtl/MtlMemoryAllocatorImpl.h"
+
 
 namespace skgpu::graphite {
 
@@ -46,13 +48,15 @@ sk_sp<skgpu::graphite::SharedContext> MtlSharedContext::Make(const MtlBackendCon
 
     return sk_sp<skgpu::graphite::SharedContext>(new MtlSharedContext(std::move(device),
                                                                       std::move(memoryAllocator),
-                                                                      std::move(caps)));
+                                                                      std::move(caps),
+                                                                      options.fSpecial));
 }
 
 MtlSharedContext::MtlSharedContext(sk_cfp<id<MTLDevice>> device,
                                    sk_sp<skgpu::MtlMemoryAllocator> memoryAllocator,
-                                   std::unique_ptr<const MtlCaps> caps)
-        : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kMetal)
+                                   std::unique_ptr<const MtlCaps> caps,
+                                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects)
+        : skgpu::graphite::SharedContext(std::move(caps), BackendApi::kMetal, userDefinedKnownRuntimeEffects)
         , fMemoryAllocator(std::move(memoryAllocator))
         , fDevice(std::move(device)) {}
 
