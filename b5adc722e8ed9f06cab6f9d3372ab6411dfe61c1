@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15e30b60_87b07d4f",
+        "filename": "include/codec/SkCodec.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 820,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-19T20:23:19Z",
+      "side": 1,
+      "message": "nit: let\u0027s use an `enum class IsAnimated` with `kYes` etc.",
+      "fixSuggestions": [
+        {
+          "fixId": "679b8aea_527df819",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/codec/SkCodec.h",
+              "range": {
+                "startLine": 820,
+                "startChar": 0,
+                "endLine": 824,
+                "endChar": 0
+              },
+              "replacement": "    enum class IsAnimated {\n        kYes,\n        kNo,\n        kUnknown,\n"
+            },
+            {
+              "path": "include/codec/SkCodec.h",
+              "range": {
+                "startLine": 975,
+                "startChar": 0,
+                "endLine": 976,
+                "endChar": 0
+              },
+              "replacement": "        return IsAnimated::kNo;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "b5adc722e8ed9f06cab6f9d3372ab6411dfe61c1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
