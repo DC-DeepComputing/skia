@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fc3494_5717ddda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "```\nTest-Android-Clang-Pixel7-GPU-MaliG710-arm64-Debug-All-Android_Graphite_Native_Vulkan_Protected\n```\nwas one of the jobs that started failing after landing the prior attempt, which is now passing.",
+      "revId": "a2cbe9adae297a21db8f860ce18058894ae9dd66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
