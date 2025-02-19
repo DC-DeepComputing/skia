@@ -16,6 +16,47 @@
       "message": "Added nullptr check to avoid UB",
       "revId": "bd42da31c1632d83d6b096d219ba44f734b5e562",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "370337eb_2d23c873",
+        "filename": "src/core/SkImageFilterTypes.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-19T21:26:35Z",
+      "side": 1,
+      "message": "I think a ternary is a little nicer here:\n\n    return fData.invert(inverse ? \u0026inverse-\u003efData : nullptr);",
+      "range": {
+        "startLine": 529,
+        "startChar": 28,
+        "endLine": 529,
+        "endChar": 43
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "df8fb849_f6fa34d8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkImageFilterTypes.h",
+              "range": {
+                "startLine": 526,
+                "startChar": 0,
+                "endLine": 530,
+                "endChar": 0
+              },
+              "replacement": "        return fData.invert(inverse ? \u0026inverse-\u003efData : nullptr);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd42da31c1632d83d6b096d219ba44f734b5e562",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
