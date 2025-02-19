@@ -14,8 +14,10 @@
 
 #import <Metal/Metal.h>
 
-namespace skgpu::graphite {
+namespace skgpu {
+enum class BackendApi : unsigned int;
 
+namespace graphite {
 class ComputePipelineDesc;
 class ResourceProvider;
 class MtlSharedContext;
@@ -38,6 +40,7 @@ private:
     sk_cfp<id<MTLComputePipelineState>> fPipelineState;
 };
 
-}  // namespace skgpu::graphite
+}  // namespace graphite
+}  // namespace skgpu
 
 #endif  // skgpu_graphite_MtlComputePipeline_DEFINED

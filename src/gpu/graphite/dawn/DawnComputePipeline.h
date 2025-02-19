@@ -13,8 +13,10 @@
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
 
-namespace skgpu::graphite {
+namespace skgpu {
+enum class BackendApi : unsigned int;
 
+namespace graphite {
 class ComputePipelineDesc;
 class DawnComputePipelineDesc;
 class DawnSharedContext;
@@ -36,6 +38,7 @@ private:
     wgpu::BindGroupLayout fGroupLayout;
 };
 
-}  // namespace skgpu::graphite
+}  // namespace graphite
+}  // namespace skgpu
 
 #endif  // skgpu_graphite_DawnComputePipeline_DEFINED
