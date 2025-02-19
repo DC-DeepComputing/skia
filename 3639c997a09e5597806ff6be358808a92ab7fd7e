@@ -16,6 +16,97 @@
       "message": "Adding both Michael and James as reviewers since I\u0027ve spoken w/ both of them regarding this general change.",
       "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea9aa515_4507e19a",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "Nit: I would slightly prefer to say \"SetIdx\" in these new fields.",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "455e4fd1_68eceab2",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "I think this comment is no longer true, since if we do not use separate samplers with webgpu, the above check will be false.",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252b4aba_d2995120",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "Unused?",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac220e3c_5ad253fc",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "Now that we\u0027re always outputting a set index, I wonder if this is only tangentially related to the fact that we use distinct index ranges for textures, in which case it may be more confusing than not to mention here",
+      "range": {
+        "startLine": 159,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 92
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fa2aaf8_944d2867",
+        "filename": "src/gpu/graphite/mtl/MtlComputePipeline.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-19T17:53:54Z",
+      "side": 1,
+      "message": "Unused?",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
