@@ -52,21 +52,29 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                                         SkIPoint* outPos) {
     skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
 
-    MaskHashArray* cachedArray = fMaskCache.find(maskKey);
-    if (cachedArray) {
-        for (int i = 0; i < cachedArray->size(); ++i) {
-            MaskHashEntry& entry = (*cachedArray)[i];
-            // We can reuse a clip mask if has the same key and our bounds is contained in it
-            if (entry.fBounds.contains(iBounds)) {
-                SkIPoint topLeft = entry.fLocator.topLeft();
+    SkDebugf("%p Looking for key %d and bounds [%d %d %d %d]\n",
+             this, maskKey.hash(),
+             iBounds.fLeft, iBounds.fTop, iBounds.fRight, iBounds.fBottom);
+
+    MaskHashEntry* entryList = fMaskCache.find(maskKey);
+    if (entryList) {
+        SkDebugf("%p Found hashtable entry\n", this);
+        MaskHashEntry* entry = entryList;
+        while (entry) {
+            if (entry->fBounds.contains(iBounds)) {
+                const SkIRect& bounds = entry->fBounds;
+                SkDebugf("%p Found containing bounds: [%d %d %d %d]\n", this,
+                         bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+                SkIPoint topLeft = entry->fLocator.topLeft();
                 // We need to adjust the returned outPos to reflect the subset we're using
-                SkIPoint subsetRelativePos = iBounds.topLeft() - entry.fBounds.topLeft();
+                SkIPoint subsetRelativePos = iBounds.topLeft() - entry->fBounds.topLeft();
                 *outPos = SkIPoint::Make(topLeft.x() + kEntryPadding + subsetRelativePos.x(),
                                          topLeft.y() + kEntryPadding + subsetRelativePos.y());
-                fDrawAtlas->setLastUseToken(entry.fLocator,
+                fDrawAtlas->setLastUseToken(entry->fLocator,
                                             fRecorder->priv().tokenTracker()->nextFlushToken());
-                return fDrawAtlas->getProxies()[entry.fLocator.pageIndex()].get();
+                return fDrawAtlas->getProxies()[entry->fLocator.pageIndex()].get();
             }
+            entry = entry->fNext;
         }
     }
 
@@ -76,19 +84,40 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
         return nullptr;
     }
 
-    // Add locator and bounds to MaskCache.
-    if (cachedArray) {
-        cachedArray->push_back({iBounds, locator});
-    } else {
-        MaskHashArray initialArray;
-        initialArray.push_back({iBounds, locator});
-        fMaskCache.set(maskKey, initialArray);
-    }
-    // Add key to Plot's MaskKeyList.
     uint32_t index = fDrawAtlas->getListIndex(locator.plotLocator());
-    MaskKeyEntry* keyEntry = new MaskKeyEntry();
-    keyEntry->fKey = maskKey;
-    keyEntry->fBounds = iBounds;
+    // Add locator and bounds to MaskCache.
+    if (entryList) {
+        SkDebugf("%p Adding new hashlist entry: key %d plot %d bounds [%d %d %d %d]\n", this,
+                 maskKey.hash(), index, iBounds.fLeft, iBounds.fTop, iBounds.fRight, iBounds.fBottom);
+        MaskHashEntry* newEntry = new MaskHashEntry{iBounds, locator, nullptr};
+        newEntry->fNext = entryList->fNext;
+        entryList->fNext = newEntry;
+    } else {
+        SkDebugf("%p Adding new hashtable entry: key %d plot %d bounds [%d %d %d %d]\n", this,
+                 maskKey.hash(), index, iBounds.fLeft, iBounds.fTop, iBounds.fRight, iBounds.fBottom);
+        MaskHashEntry newEntry{iBounds, locator, nullptr};
+        MaskHashEntry* pEntry = fMaskCache.set(maskKey, newEntry);
+        // Validate that we actually added an entry
+        if (!pEntry) {
+            SkDebugf("%p **** ClipAtlasERROR ****\n", this);
+            SkDebugf("%p Didn't actually add an entry!\n", this);
+        } else {
+            if (pEntry->fBounds != iBounds ||
+                pEntry->fLocator.plotLocator() == locator.plotLocator()) {
+                SkDebugf("%p **** ClipAtlasERROR ****\n", this);
+                const SkIRect& entryBounds = pEntry->fBounds;
+                index = fDrawAtlas->getListIndex(pEntry->fLocator.plotLocator());
+                SkDebugf("%p Entry contents are wrong! plot %d bounds [%d %d %d %d]\n", this,
+                         index, entryBounds.fLeft, entryBounds.fTop,
+                         entryBounds.fRight, entryBounds.fBottom);
+            }
+        }
+    }
+
+    // Add key to Plot's MaskKeyList.
+    SkDebugf("%p Adding new plotlist entry: key %d plot %d bounds [%d %d %d %d]\n", this,
+             maskKey.hash(), index, iBounds.fLeft, iBounds.fTop, iBounds.fRight, iBounds.fBottom);
+    MaskKeyEntry* keyEntry = new MaskKeyEntry{maskKey, iBounds};
     fKeyLists[index].addToTail(keyEntry);
 
     return proxy;
@@ -200,28 +229,75 @@ bool ClipAtlasManager::recordUploads(DrawContext* dc) {
 }
 
 void ClipAtlasManager::evict(PlotLocator plotLocator) {
+    SkDebugf("%p Evicting...\n", this);
     // Remove all entries for this Plot from the MaskCache
     uint32_t index = fDrawAtlas->getListIndex(plotLocator);
     MaskKeyList::Iter iter;
     iter.init(fKeyLists[index], MaskKeyList::Iter::kHead_IterStart);
-    MaskKeyEntry* currEntry;
-    while ((currEntry = iter.get())) {
+    MaskKeyEntry* currKeyEntry;
+    while ((currKeyEntry = iter.get())) {
         iter.next();
-        MaskHashArray* cachedArray = fMaskCache.find(currEntry->fKey);
-        // Remove this entry from the hashed array
-        for (int i = cachedArray->size()-1; i >=0 ; --i) {
-            MaskHashEntry& entry = (*cachedArray)[i];
-            if (entry.fBounds == currEntry->fBounds) {
-                (*cachedArray).removeShuffle(i);
+        const SkIRect& bounds = currKeyEntry->fBounds;
+        SkDebugf("%p Preparing to remove plotlist entry: key %d plot %d bounds [%d %d %d %d]\n", this,
+                 currKeyEntry->fKey.hash(), index, bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+        MaskHashEntry* currHashEntry = fMaskCache.find(currKeyEntry->fKey);
+        MaskHashEntry* prevHashEntry = nullptr;
+        if (!currHashEntry) {
+            SkDebugf("%p ****** ClipAtlasERROR ******\n", this);
+            SkDebugf("%p Found no hash entry!\n", this);
+        }
+        while (currHashEntry) {
+            const SkIRect& hashBounds = currHashEntry->fBounds;
+            uint32_t hashIndex = fDrawAtlas->getListIndex(currHashEntry->fLocator.plotLocator());
+            SkDebugf("%p Checking against hashlist entry: plot %d bounds [%d %d %d %d]\n", this,
+                     hashIndex, hashBounds.fLeft, hashBounds.fTop, hashBounds.fRight, hashBounds.fBottom);
+
+            if (currHashEntry->fBounds == currKeyEntry->fBounds) {
+                SkDebugf("%p Found match\n", this);
+                // Validate that this entry is for this plot
+                uint32_t entryIndex = fDrawAtlas->getListIndex(currHashEntry->fLocator.plotLocator());
+                if (entryIndex != index) {
+                    SkDebugf("%p ****** ClipAtlasERROR ******\n", this);
+                    SkDebugf("%p Hash entry has wrong index! plot %d\n", this, entryIndex);
+                }
+                if (prevHashEntry) {
+                    prevHashEntry->fNext = currHashEntry->fNext;
+                    delete currHashEntry;
+                } else if (currHashEntry->fNext) {
+                    MaskHashEntry* next = currHashEntry->fNext;
+                    currHashEntry->fBounds = next->fBounds;
+                    currHashEntry->fLocator = next->fLocator;
+                    currHashEntry->fNext = next->fNext;
+                    delete next;
+                } else {
+                    SkDebugf("%p Removing last entry\n", this);
+                    // Validate that this hash entry is in no other list
+                    for (int i = 0; i < fKeyLists.size(); ++i) {
+                        if ((uint32_t)i != index) {
+                            MaskKeyList::Iter validateIter;
+                            validateIter.init(fKeyLists[i], MaskKeyList::Iter::kHead_IterStart);
+                            MaskKeyEntry* currValidateEntry;
+                            while ((currValidateEntry = validateIter.get())) {
+                                if (currValidateEntry->fKey == currKeyEntry->fKey) {
+                                    SkDebugf("%p ****** ClipAtlasERROR ******\n", this);
+                                    SkDebugf("%p Extra plotlist entry: plot %d\n", this, i);
+                                }
+//                                SkASSERT_RELEASE(currValidateEntry->fKey != currKeyEntry->fKey);
+                            }
+                        }
+                    }
+                    // Remove
+                    fMaskCache.remove(currKeyEntry->fKey);
+                }
                 break;
             }
+            prevHashEntry = currHashEntry;
+            currHashEntry = currHashEntry->fNext;
         }
-        // If we removed the last one, remove the hash entry
-        if (cachedArray->empty()) {
-            fMaskCache.remove(currEntry->fKey);
-        }
-        fKeyLists[index].remove(currEntry);
-        delete currEntry;
+        SkDebugf("%p Removing plotlist entry: key %d plot %d bounds [%d %d %d %d]\n", this,
+                 currKeyEntry->fKey.hash(), index, bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
+        fKeyLists[index].remove(currKeyEntry);
+        delete currKeyEntry;
     }
 }
 
