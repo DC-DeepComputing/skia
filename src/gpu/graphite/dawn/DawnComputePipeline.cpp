@@ -52,7 +52,7 @@ static ShaderInfo compile_shader_module(const DawnSharedContext* sharedContext,
         SkSL::Program::Interface interface;
         SkSL::ProgramSettings settings;
 
-        std::string sksl = BuildComputeSkSL(caps, step);
+        std::string sksl = BuildComputeSkSL(caps, step, ComputeBackend::kDawn);
         if (skgpu::SkSLToWGSL(caps->shaderCaps(),
                               sksl,
                               SkSL::ProgramKind::kCompute,
@@ -87,8 +87,9 @@ sk_sp<DawnComputePipeline> DawnComputePipeline::Make(const DawnSharedContext* sh
     // backend-specific semantics. The semantics on Dawn is to assign the index number in increasing
     // order.
     //
-    // All resources get assigned to a single bind group at index 0.
-    SkASSERT(!sharedContext->caps()->resourceBindingRequirements().fDistinctIndexRanges);
+    // For compute pipelines, all resources get assigned to a single bind group at index 0 (ignoring
+    // bind group indices assigned in by DawnCaps's ResourceBindingRequirements, which are for
+    // non-compute shaders).
     std::vector<wgpu::BindGroupLayoutEntry> bindGroupLayoutEntries;
     auto resources = step->resources();
 
