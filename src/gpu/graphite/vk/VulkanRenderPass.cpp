@@ -289,20 +289,20 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     VkAttachmentReference depthStencilRef;
 
     bool loadMSAAFromResolve = false;
+    bool mustSupportReadingDstAsInput =
+            renderPassDesc.fDstReadStrategyIfRequired == DstReadStrategy::kReadFromInput;
+    // To enable using the color attachment as an input attachment for blending purposes, we
+    // need to use a general image layout rather than VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL.
+    bool requiresGeneralLayout = mustSupportReadingDstAsInput;
     if (hasColorAttachment) {
         VulkanTextureInfo colorAttachTexInfo;
         SkAssertResult(TextureInfos::GetVulkanTextureInfo(colorAttachmentTextureInfo,
                                                           &colorAttachTexInfo));
         auto& colorAttachDesc = renderPassDesc.fColorAttachment;
-
-        colorRef.attachment = attachmentDescs.size();
-
-        // To enable using the color attachment as an input attachment for blending purposes, we
-        // need to use a general image layout rather than VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL.
-        // TODO(): Only do this when necessary?
-        bool requiresGeneralLayout = true;
         VkImageLayout layout = requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
                                                      : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+        colorRef.attachment = attachmentDescs.size();
         colorRef.layout = layout;
 
         VkAttachmentDescription& vkColorAttachDesc = attachmentDescs.push_back();
@@ -319,24 +319,26 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
             loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
             SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
 
-            VkImageLayout resolveLayout;
-
-            // TODO fix this logic for the assertion. For now, do confirm that we are doing only
-            // one or the other.
-            SkASSERT(!(requiresGeneralLayout && loadMSAAFromResolve));
-
+            // Initial image layout is first determined by whether the usage of a general layout
+            // is required. If not, then we decide based upon whether we are loading MSAA from
+            // resolve.
+            VkImageLayout initialResolveLayout;
             if (requiresGeneralLayout) {
-                resolveLayout = VK_IMAGE_LAYOUT_GENERAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_GENERAL;
             } else if (loadMSAAFromResolve) {
-                resolveLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
             } else {
-                resolveLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                initialResolveLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
             }
+
+            VkImageLayout finalResolveLayout = requiresGeneralLayout
+                    ? VK_IMAGE_LAYOUT_GENERAL
+                    : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
             VulkanTextureInfo resolveAttachTexInfo;
             SkAssertResult(TextureInfos::GetVulkanTextureInfo(colorResolveAttachmentTextureInfo,
                                                               &resolveAttachTexInfo));
             auto& resolveAttachDesc = renderPassDesc.fColorResolveAttachment;
-
             resolveRef.attachment = attachmentDescs.size();
             VkAttachmentDescription& vkResolveAttachDesc = attachmentDescs.push_back();
             memset(&vkResolveAttachDesc, 0, sizeof(VkAttachmentDescription));
@@ -346,11 +348,9 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
                     resolveAttachDesc,
                     compatibleOnly ? LoadOp::kDiscard  : resolveAttachDesc.fLoadOp,
                     compatibleOnly ? StoreOp::kDiscard : resolveAttachDesc.fStoreOp,
-                    resolveLayout,
-                    requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
-                                          : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
-            resolveRef.layout = requiresGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
-                                                      : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+                    initialResolveLayout,
+                    finalResolveLayout);
+            resolveRef.layout = finalResolveLayout;
         } else {
             resolveRef.attachment = VK_ATTACHMENT_UNUSED;
             resolveRef.layout = VK_IMAGE_LAYOUT_UNDEFINED;
@@ -448,10 +448,10 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
     memset(&mainSubpassDesc, 0, sizeof(VkSubpassDescription));
     mainSubpassDesc.flags = 0;
     mainSubpassDesc.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    // Assign the main subpass's input attachment as the color attachment reference. This is needed
-    // in order to perform dst read operations which may be encountered throughout draw calls.
-    mainSubpassDesc.inputAttachmentCount = 1;
-    mainSubpassDesc.pInputAttachments = &colorRef;
+    // If this render pass must support reading the dst texture as an input attachment, then assign
+    // the main subpass's pInputAttachments as the color attachment reference.
+    mainSubpassDesc.inputAttachmentCount = mustSupportReadingDstAsInput ? 1 : 0;
+    mainSubpassDesc.pInputAttachments = mustSupportReadingDstAsInput ? &colorRef : nullptr;
     mainSubpassDesc.colorAttachmentCount = 1;
     mainSubpassDesc.pColorAttachments = &colorRef;
     mainSubpassDesc.pResolveAttachments = &resolveRef;
