@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7fd9ef9e_e04d4a64",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:30:44Z",
+      "side": 1,
+      "message": "This is a bit odd since fTF could be uninitialized (i.e., if fUseDstTF is true). How about just defining them w/o initialization and the having an:\nelse {\n   tf \u003d fTF;\n}\non line 180? Same for \u0027gamut\u0027",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3946a6_58c33a17",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:30:44Z",
+      "side": 1,
+      "message": "Do we have a static_assert around to guarantee the \u00277\u0027 ?",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d673f787_1bb350a4",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:30:44Z",
+      "side": 1,
+      "message": "A similar static_assert for \u00279\u0027 is probably in order too",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3ba5db5_cb492eb4",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:30:44Z",
+      "side": 1,
+      "message": "Maybe rename this \u0027outAT\u0027 to clarify that it is an out parameter vs. an optional input ?",
+      "range": {
+        "startLine": 31,
+        "startChar": 87,
+        "endLine": 31,
+        "endChar": 88
+      },
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
