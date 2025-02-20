@@ -28,6 +28,7 @@ class VulkanCaps;
 class VulkanSharedContext final : public SharedContext {
 public:
     static sk_sp<SharedContext> Make(const VulkanBackendContext&, const ContextOptions&);
+
     ~VulkanSharedContext() override;
 
     const VulkanCaps& vulkanCaps() const { return static_cast<const VulkanCaps&>(*this->caps()); }
@@ -55,7 +56,8 @@ private:
     VulkanSharedContext(const VulkanBackendContext&,
                         sk_sp<const skgpu::VulkanInterface> interface,
                         sk_sp<skgpu::VulkanMemoryAllocator> memoryAllocator,
-                        std::unique_ptr<const VulkanCaps> caps);
+                        std::unique_ptr<const VulkanCaps> caps,
+			SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
     sk_sp<const skgpu::VulkanInterface> fInterface;
     sk_sp<skgpu::VulkanMemoryAllocator> fMemoryAllocator;
