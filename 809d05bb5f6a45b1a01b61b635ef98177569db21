@@ -1,0 +1,111 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecfa5124_3a2c4719",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2025-02-20T18:14:57Z",
+      "side": 1,
+      "message": "Not sure if you were intending to land this, but I think it might be worth doing, so I gave it a review :)",
+      "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20bdc6e_4fba3aa0",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4365,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2025-02-20T18:14:57Z",
+      "side": 1,
+      "message": "ParagraphHangingWhitespaces",
+      "fixSuggestions": [
+        {
+          "fixId": "d7fd67c8_e7eb87dd",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/slides/ParagraphSlide.cpp",
+              "range": {
+                "startLine": 4365,
+                "startChar": 0,
+                "endLine": 4366,
+                "endChar": 0
+              },
+              "replacement": "class ParagraphHangingWhitespaces : public ParagraphSlide_Base {\n"
+            },
+            {
+              "path": "modules/skparagraph/slides/ParagraphSlide.cpp",
+              "range": {
+                "startLine": 4367,
+                "startChar": 0,
+                "endLine": 4368,
+                "endChar": 0
+              },
+              "replacement": "    ParagraphHangingWhitespaces() { fName \u003d \"ParagraphHangingWhitespaces\"; }\n"
+            },
+            {
+              "path": "modules/skparagraph/slides/ParagraphSlide.cpp",
+              "range": {
+                "startLine": 4523,
+                "startChar": 0,
+                "endLine": 4524,
+                "endChar": 0
+              },
+              "replacement": "DEF_SLIDE(return new ParagraphHangingWhitespaces();)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "75ee7767_ce6902fd",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4401,
+      "author": {
+        "id": 3607294
+      },
+      "writtenOn": "2025-02-20T18:14:57Z",
+      "side": 1,
+      "message": "I think this can be deleted, as the paragraph was drawn 3 lines above",
+      "fixSuggestions": [
+        {
+          "fixId": "a5a1ce5f_d0637c6e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/slides/ParagraphSlide.cpp",
+              "range": {
+                "startLine": 4401,
+                "startChar": 0,
+                "endLine": 4402,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
