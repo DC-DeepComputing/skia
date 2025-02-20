@@ -567,14 +567,17 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
     }
 
     this->draw(PrimitiveType::kTriangleStrip, /*baseVertex=*/0, /*vertexCount=*/4);
-    this->nextSubpass();
 
-    // If we loaded the resolve attachment, then we would have set the image layout to be
-    // VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL so that it could be used at the start as an
-    // input attachment. However, when we switched to the main subpass it will transition the
-    // layout internally to VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL. Thus we need to update our
-    // tracking of the layout to match the new layout.
-    resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
+    // After loading the resolve attachment, proceed to the next subpass.
+    this->nextSubpass();
+    // While transitioning to the next subpass, the layout of the resolve texture gets changed
+    // internally to accommodate its usage within the following subpass. Thus, we need  to update
+    // our tracking of the layout to match the new/final layout, which is determined by whether or
+    // not the renderpass must support reading the dst texture as an input attachment.
+    bool useGeneralLayout =
+            renderPassDesc.fDstReadStrategyIfRequired == DstReadStrategy::kReadFromInput;
+    resolveTexture.updateImageLayout(useGeneralLayout ? VK_IMAGE_LAYOUT_GENERAL
+                                                      : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
 
     // After using a distinct descriptor set layout for loading MSAA from resolve, we will need to
     // (re-)bind any descriptor sets.
@@ -584,41 +587,66 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& renderPassDe
 }
 
 namespace {
+// Helpers for determining + updating texture layouts.
+void assign_color_texture_layout(VulkanCommandBuffer* cmdBuf,
+                                 VulkanTexture* colorTexture,
+                                 bool mustSupportReadingAsInput) {
+    VkAccessFlags access =
+            VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+
+    // If the render pass needs to support reading from the dst color texture as an input attachment
+    // then we must use a general image layout and add additional pipeline stage + access flags.
+    if (mustSupportReadingAsInput) {
+        stageFlags |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        access |= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+    }
+    VkImageLayout layout = mustSupportReadingAsInput ? VK_IMAGE_LAYOUT_GENERAL
+                                                     : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    colorTexture->setImageLayout(cmdBuf, layout, access, stageFlags, /*byRegion=*/false);
+}
+
+void assign_resolve_texture_layout(VulkanCommandBuffer* cmdBuf,
+                                   VulkanTexture* resolveTexture,
+                                   bool loadMSAAFromResolve,
+                                   bool mustSupportReadingAsInput) {
+    VkPipelineStageFlags stageFlags = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    VkAccessFlags access = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT;
+    // The resolve texture layout depends on whether the renderpass must later support reading the
+    // dst texture as an input attachment (which requires a general image layout). If not, then we
+    // can select an optimal layout based upon whether we are loading MSAA from resolve or not.
+    VkImageLayout layout = mustSupportReadingAsInput ? VK_IMAGE_LAYOUT_GENERAL :
+                                 loadMSAAFromResolve ? VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL
+                                                     : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+
+    // If loading MSAA from resolve, then the resolve texture is used in the first subpass
+    // as an input attachment and is referenced within the fragment shader. Add to the access and
+    // pipeline stage flags accordingly.
+    if (loadMSAAFromResolve) {
+        access |= VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+        stageFlags |= VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    } else {
+        // Otherwise, add write access.
+        access |= VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    }
+
+    resolveTexture->setImageLayout(cmdBuf, layout, access, stageFlags, /*byRegion=*/false);
+}
+
 void setup_texture_layouts(VulkanCommandBuffer* cmdBuf,
                            VulkanTexture* colorTexture,
                            VulkanTexture* resolveTexture,
                            VulkanTexture* depthStencilTexture,
-                           bool loadMSAAFromResolve) {
+                           bool loadMSAAFromResolve,
+                           bool rpMustSupportReadingDstAsInput) {
     if (colorTexture) {
-        colorTexture->setImageLayout(cmdBuf,
-                                     VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                     VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                     VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                     VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                     /*byRegion=*/false);
+        assign_color_texture_layout(cmdBuf, colorTexture, rpMustSupportReadingDstAsInput);
         if (resolveTexture) {
-            if (loadMSAAFromResolve) {
-                // When loading MSAA from resolve, the texture is used in the first subpass as an
-                // input attachment. Subsequent subpass(es) need the resolve texture to provide read
-                // access to the color attachment (for use cases such as blending), so add access
-                // and pipeline stage flags for both usages.
-                resolveTexture->setImageLayout(cmdBuf,
-                                               VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
-                                               VK_ACCESS_INPUT_ATTACHMENT_READ_BIT |
-                                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT,
-                                               VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT |
-                                               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                               /*byRegion=*/false);
-            } else {
-                resolveTexture->setImageLayout(cmdBuf,
-                                               VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
-                                               VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |
-                                               VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
-                                               VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-                                               /*byRegion=*/false);
-            }
+            assign_resolve_texture_layout(
+                    cmdBuf, resolveTexture, loadMSAAFromResolve, rpMustSupportReadingDstAsInput);
         }
     }
+
     if (depthStencilTexture) {
         depthStencilTexture->setImageLayout(cmdBuf,
                                             VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
@@ -735,12 +763,31 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         return false;
     }
 
+    // Check whether this RP needs to support reading the dst as an input attachment as this impacts
+    // how we set up certain textures.
+    //
+    // In practice, it will nearly always need to do so. This is for 2 reasons:
+    // 1) RenderPassDesc reports what strategy *may* be used in order to read from the dst (not
+    //    whether any pipelines that will be bound will actually do so)
+    // 2) Vulkan will assign DstReadStrategy::kReadFromInput for most encountereted target textures.
+    //
+    // Even if we have an active graphics pipeline (which can report whether or not it actually
+    // performs a dst read), we are not guaranteed that any subsequent bind pipeline commands
+    // encountered during the same RP will not. Therefore, we must operate as though any RP with
+    // DstReadStrategy::kReadFromInput will need to support actually doing so. If we were able to
+    // determine when binding a renderpass that *none* of its associated pipelines will need to read
+    // the dst as an input attachment, then we could take advantage of image layouts optimized for
+    // specific purposes.
+    bool rpMustSupportReadingDstAsInput =
+            renderPassDesc.fDstReadStrategyIfRequired == DstReadStrategy::kReadFromInput;
+
     // Before beginning a renderpass, set all textures to the appropriate image layout.
     setup_texture_layouts(this,
                           vulkanColorTexture,
                           vulkanResolveTexture,
                           vulkanDepthStencilTexture,
-                          loadMSAAFromResolve);
+                          loadMSAAFromResolve,
+                          rpMustSupportReadingDstAsInput);
 
     static constexpr int kMaxNumAttachments = 3;
 
