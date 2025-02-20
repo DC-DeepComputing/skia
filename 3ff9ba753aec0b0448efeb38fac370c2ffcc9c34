@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f185a47e_97f75d64",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T15:01:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3900ff92_e3878f47",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 15
+      },
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5584b35b_f41363f0",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-19T22:08:14Z",
       "side": 1,
       "message": "nit: this const doesn\u0027t do anything in the declaration",
+      "range": {
+        "startLine": 72,
+        "startChar": 56,
+        "endLine": 72,
+        "endChar": 61
+      },
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4b9e5d5_2847b0fc",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T15:01:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5584b35b_f41363f0",
       "range": {
         "startLine": 72,
         "startChar": 56,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6c6835f_8f53d555",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T15:01:48Z",
+      "side": 1,
+      "message": "Done, thanks for the tip!",
+      "parentUuid": "94e3d28e_35a36f15",
+      "range": {
+        "startLine": 89,
+        "startChar": 9,
+        "endLine": 89,
+        "endChar": 23
+      },
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d89e404f_d972bd91",
@@ -100,6 +172,24 @@
       "writtenOn": "2025-02-19T22:08:14Z",
       "side": 1,
       "message": "Maybe add an assert that numComponents is non zero (since it was initialized to 0 but we expect it to get set on all code paths that make it this far)",
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "434b7448_2a68621d",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T15:01:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d89e404f_d972bd91",
       "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
