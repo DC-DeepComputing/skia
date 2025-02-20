@@ -37,6 +37,47 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7abce95e_bad966c8",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T14:06:51Z",
+      "side": 1,
+      "message": "Assuming this maps to `fUniformsSetIdx` and `fTextureSamplerSetIdx` then I agree.",
+      "parentUuid": "ea9aa515_4507e19a",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dbed019_e825364d",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T14:06:51Z",
+      "side": 1,
+      "message": "I think we can just call this `fInputAttachmentIdx`? It\u0027s possibly used for loading MSAA right now with a special pipeline that doesn\u0027t go through the normal SkSL flow, but it\u0027ll presumably be used for the input attachment-based dst read path.",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "455e4fd1_68eceab2",
         "filename": "src/gpu/graphite/ContextUtils.cpp",
         "patchSetId": 18
@@ -48,6 +89,47 @@
       "writtenOn": "2025-02-19T17:53:54Z",
       "side": 1,
       "message": "I think this comment is no longer true, since if we do not use separate samplers with webgpu, the above check will be false.",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ff42200_3de8c964",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T14:06:51Z",
+      "side": 1,
+      "message": "We could have the if just check for the dawn backend, and then assert that `separateSamplers` is true. This assert is redundandt with the large one at the start of the function, but it\u0027s nice to have it close to where its relying on that fact.",
+      "parentUuid": "455e4fd1_68eceab2",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6a33af3_b281e607",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T14:06:51Z",
+      "side": 1,
+      "message": "Stylistically, when chaining ternary operators, I find it more readable to do something like:\n\n    int bindingIndex \u003d texturesUseDistinctIdxRanges ? texIndex :\n                                    separateSampler ? bufferOrGlobalIndex++\n                                                    : bufferOrGlobalIndex;",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 96
+      },
       "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
