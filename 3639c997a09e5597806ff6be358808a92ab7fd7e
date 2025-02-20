@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1951d743_6a8efdbb",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7abce95e_bad966c8",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7dbed019_e825364d",
@@ -66,6 +84,30 @@
       "writtenOn": "2025-02-20T14:06:51Z",
       "side": 1,
       "message": "I think we can just call this `fInputAttachmentIdx`? It\u0027s possibly used for loading MSAA right now with a special pipeline that doesn\u0027t go through the normal SkSL flow, but it\u0027ll presumably be used for the input attachment-based dst read path.",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "291b6dce_1a3ebc4d",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "While the set index is different in Vulkan for reading the dst from input vs. loading msaa from resolve(* see note for why), the loading MSAA SkSL is indeed custom-defined within backends \u0026 we can reference backend-specific static definitions of input attachment indices from pipelines at the time we need them from the command buffer. So we can in fact do that. Yay for conciseness!\n\nI actually went ahead and removed the definition `fInputAttachmentSetIdx` seeing as it can\u0027t be used yet (seeing as SkSL generation does not reference it and Vulkan does not yet have the concept of using input attachments for dst reading until las ter), so I imagine some compilers would complain.\n\n*Dst reads from the input attachment descriptors only need to be updated once per renderpass (less frequently than other descriptors), so having them earlier on in the container of sets is ideal such that changes to other descriptors or sets do not \"disturb\" this set and trigger the need to re-bind.",
+      "parentUuid": "7dbed019_e825364d",
       "range": {
         "startLine": 73,
         "startChar": 8,
@@ -113,6 +155,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "10aff155_9d2f091f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "Yeah, I went back and forth about having the check for valid combinations of arguments at the top v. checking explicitly before each SkSL addition here for the underlying assumption v. doing both redundantly. \n\nTook a stab at reorganizing - LMKWY\u0027allT!",
+      "parentUuid": "5ff42200_3de8c964",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6a33af3_b281e607",
         "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
         "patchSetId": 18
@@ -124,6 +184,30 @@
       "writtenOn": "2025-02-20T14:06:51Z",
       "side": 1,
       "message": "Stylistically, when chaining ternary operators, I find it more readable to do something like:\n\n    int bindingIndex \u003d texturesUseDistinctIdxRanges ? texIndex :\n                                    separateSampler ? bufferOrGlobalIndex++\n                                                    : bufferOrGlobalIndex;",
+      "range": {
+        "startLine": 213,
+        "startChar": 0,
+        "endLine": 215,
+        "endChar": 96
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8fac86_348cb9c9",
+        "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "I am unopposed to that. Done!",
+      "parentUuid": "c6a33af3_b281e607",
       "range": {
         "startLine": 213,
         "startChar": 0,
@@ -147,6 +231,24 @@
       "writtenOn": "2025-02-19T17:53:54Z",
       "side": 1,
       "message": "Unused?",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13fd11fd_3ef60eba",
+        "filename": "src/gpu/graphite/dawn/DawnComputePipeline.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "252b4aba_d2995120",
       "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -176,6 +278,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6e9fba6b_e9f09c07",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "As in, you think the comment should be removed (since there\u0027s comments elsewhere explaining what the setting of this variable means)? If so, I did that; LMK if I misunderstood or just mark this as resolved.",
+      "parentUuid": "ac220e3c_5ad253fc",
+      "range": {
+        "startLine": 159,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 92
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2fa2aaf8_944d2867",
         "filename": "src/gpu/graphite/mtl/MtlComputePipeline.h",
         "patchSetId": 18
@@ -187,6 +313,24 @@
       "writtenOn": "2025-02-19T17:53:54Z",
       "side": 1,
       "message": "Unused?",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c952264a_220f2cbd",
+        "filename": "src/gpu/graphite/mtl/MtlComputePipeline.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T15:30:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fa2aaf8_944d2867",
       "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
