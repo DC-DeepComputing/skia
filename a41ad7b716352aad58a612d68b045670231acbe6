@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "434ed173_273ecfbc",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:48:30Z",
+      "side": 1,
+      "message": "I guess we should also create a kTransferFunctionSize somewhere and reuse it in SkWorkingFormatColorFilter::CreateProc",
+      "parentUuid": "ca3946a6_58c33a17",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d673f787_1bb350a4",
         "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
         "patchSetId": 4
@@ -70,6 +88,29 @@
         "startChar": 87,
         "endLine": 31,
         "endChar": 88
+      },
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c47c7ec_e276f0af",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T15:48:30Z",
+      "side": 1,
+      "message": "Do you think we should make random_xfer_function and random_gamut return a pointer (instead of a const\u0026) and then add the possibility that it returns nullptr?",
+      "range": {
+        "startLine": 1291,
+        "startChar": 40,
+        "endLine": 1291,
+        "endChar": 60
       },
       "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
