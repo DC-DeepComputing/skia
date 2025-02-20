@@ -250,6 +250,7 @@ bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
                                       int srcX,
                                       int srcY,
                                       CachingHint) const {
+    SkDebugf("***MSKP*** onReadPixels GaneshBase");
     if (!fContext->priv().matches(dContext) ||
         !SkImageInfoValidConversion(dstInfo, this->imageInfo())) {
         return false;

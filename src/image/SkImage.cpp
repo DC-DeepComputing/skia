@@ -296,8 +296,12 @@ sk_sp<SkImage> SkImage::makeRasterImage(GrDirectContext* dContext, CachingHint c
     }
 
     if (!dContext) {
+        SkDebugf("***MSKP*** grabbing dContext");
         // Try to get the saved context if the client didn't pass it in (but they really should).
         dContext = as_IB(this)->directContext();
+    }
+    if (!dContext) {
+        SkDebugf("***MSKP*** no dContext");
     }
     sk_sp<SkData> data = SkData::MakeUninitialized(size);
     pm = {fInfo.makeColorSpace(nullptr), data->writable_data(), fInfo.minRowBytes()};
