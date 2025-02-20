@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1c5897d_9eb49980",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7fd9ef9e_e04d4a64",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca3946a6_58c33a17",
@@ -53,6 +71,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f8db6b2_e68a2bd1",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 1,
+      "message": "Ended up calculating these values statically",
+      "parentUuid": "434ed173_273ecfbc",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d673f787_1bb350a4",
@@ -66,6 +102,24 @@
       "writtenOn": "2025-02-20T15:30:44Z",
       "side": 1,
       "message": "A similar static_assert for \u00279\u0027 is probably in order too",
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac598094_01e9186c",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d673f787_1bb350a4",
       "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -93,6 +147,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "829925b3_c16cfd1f",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3ba5db5_cb492eb4",
+      "range": {
+        "startLine": 31,
+        "startChar": 87,
+        "endLine": 31,
+        "endChar": 88
+      },
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c47c7ec_e276f0af",
@@ -106,6 +184,30 @@
       "writtenOn": "2025-02-20T15:48:30Z",
       "side": 1,
       "message": "Do you think we should make random_xfer_function and random_gamut return a pointer (instead of a const\u0026) and then add the possibility that it returns nullptr?",
+      "range": {
+        "startLine": 1291,
+        "startChar": 40,
+        "endLine": 1291,
+        "endChar": 60
+      },
+      "revId": "a41ad7b716352aad58a612d68b045670231acbe6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ddb9963_77d01b41",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1291,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 1,
+      "message": "random_xfer_function is used for input to SkColorSpace::MakeRGB, where the xfer function is required, but I changed this line to randomly set `tf` to nullptr directly.",
+      "parentUuid": "2c47c7ec_e276f0af",
       "range": {
         "startLine": 1291,
         "startChar": 40,

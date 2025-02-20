@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75c2210b_1727dd98",
+        "filename": "src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T16:56:05Z",
+      "side": 0,
+      "message": "Resolved",
+      "parentUuid": "7ff0fc29_7dfc109e",
+      "range": {
+        "startLine": 31,
+        "startChar": 4,
+        "endLine": 31,
+        "endChar": 12
+      },
+      "revId": "8a5ebe0b1e42fa4d124ed44a5a83227a9ac6099e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88b2fd3e_69519c3e",
