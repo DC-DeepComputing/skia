@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "20325a88fdcb754b7fddc7de487632fd9af683de",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ae3e492_b8b4ecf6",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T15:00:31Z",
+      "side": 1,
+      "message": "I get it because we want to keep the top entry in the LL as the thing that the hash finds so we don\u0027t have to update the hash table, but I just find the concept of pushing an item onto a linked list ns the second position funny. Anyways nothing to do here, just commenting.",
+      "range": {
+        "startLine": 80,
+        "startChar": 9,
+        "endLine": 82,
+        "endChar": 35
+      },
+      "revId": "20325a88fdcb754b7fddc7de487632fd9af683de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
