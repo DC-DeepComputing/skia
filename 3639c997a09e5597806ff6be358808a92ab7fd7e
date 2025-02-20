@@ -173,6 +173,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0a7f540_ad0ae91f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T15:44:20Z",
+      "side": 1,
+      "message": "LGTM",
+      "parentUuid": "10aff155_9d2f091f",
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c6a33af3_b281e607",
         "filename": "src/gpu/graphite/compute/DispatchGroup.cpp",
         "patchSetId": 18
@@ -314,6 +332,30 @@
       "side": 1,
       "message": "(Since we only always output `set\u003d` for non-compute shaaders now)",
       "parentUuid": "6e9fba6b_e9f09c07",
+      "range": {
+        "startLine": 159,
+        "startChar": 7,
+        "endLine": 159,
+        "endChar": 92
+      },
+      "revId": "3639c997a09e5597806ff6be358808a92ab7fd7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c39bb07_02b45382",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 18
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T15:44:20Z",
+      "side": 1,
+      "message": "Ah yep sorry, that is what I meant!",
+      "parentUuid": "3790a233_100fbe06",
       "range": {
         "startLine": 159,
         "startChar": 7,
