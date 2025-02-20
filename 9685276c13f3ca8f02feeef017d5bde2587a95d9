@@ -16,6 +16,29 @@
       "message": "Tested this in viewer by adding the flag with cases that hit the inaccurate sigmas as well as the box-blur identity case and things worked. Also tested by patching it into chrome and confirming the sites perform adequately again.",
       "revId": "9685276c13f3ca8f02feeef017d5bde2587a95d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8094dad_d561a770",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-20T12:38:28Z",
+      "side": 1,
+      "message": "Should we define this locally so we\u0027re testing what Chrome is running?",
+      "range": {
+        "startLine": 866,
+        "startChar": 12,
+        "endLine": 866,
+        "endChar": 47
+      },
+      "revId": "9685276c13f3ca8f02feeef017d5bde2587a95d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
