@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db3dec15_20a42480",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T18:17:50Z",
+      "side": 1,
+      "message": "Sure, makes sense then.",
+      "parentUuid": "442974da_b8bcfa48",
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e46ce3d0_c7812e4f",
