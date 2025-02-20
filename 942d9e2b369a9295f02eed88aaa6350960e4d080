@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bc27247_d6dafe47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T14:38:05Z",
+      "side": 1,
+      "message": "public API comments",
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "065f24ec_3f25cdf5",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T14:38:05Z",
+      "side": 1,
+      "message": "This is certainly convient for our one use internal, but I kind of question whether this should be a public query on a public object. Like what do we expect the client to do with it? Especially because what its meaning is per backed varies. Also its not like we have public APIs for the client to ask us for a memoryless thing",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 21
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "505ef952_b8d59ca7",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T14:38:05Z",
+      "side": 1,
+      "message": "I feel like this should be a more specific name. Like isCompatibleForPromiseImage or isValidInfoSuperset or any other name that is a little more specific.",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 21
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d659efe6_2ea4c75f",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T14:38:05Z",
+      "side": 1,
+      "message": "going back to my comment on the public isMemoryless, this check here is just really returning if we requested a transient image. It has nothing to do with whether the object is actually memoryless or not. To be honest I think the isMemoryless name should change to something more specific about what we want it to be, but that can wait until a different CL. This one I think we just should hide it from public.",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 74,
+        "endChar": 74
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
