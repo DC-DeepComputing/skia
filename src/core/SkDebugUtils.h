@@ -31,7 +31,7 @@ static constexpr const char* SkTileModeToStr(SkTileMode tm) {
 inline void SkDumpBuffer(uint8_t const* const buffer, int w, int h, int rowBytes) {
     SkASSERT(buffer);
 
-    const std::string shades = " .:-=+*%#@";
+    const std::string shades = "0123456789ABCDEF";
 
     for (int y = 0; y < h; ++y) {
         SkString line;

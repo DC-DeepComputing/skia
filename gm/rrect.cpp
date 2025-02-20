@@ -191,7 +191,7 @@ protected:
     static constexpr int kHeight = 400;
     // how much to exagerate the diffs
     static constexpr int kDiffMaginification = 16;
-    static constexpr bool kPrintDiffMetrics = false;
+    static constexpr bool kPrintDiffMetrics = true;
 
     SkISize getISize() override { return SkISize::Make(kWidth, kHeight); }
 
@@ -271,15 +271,15 @@ protected:
         canvas->resetMatrix();
         canvas->clear(SK_ColorDKGRAY);
 
-        draw_blurry_rrect(canvas, 0,
-                          SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f, false /*=respectCTM*/),
-                          SK_ColorWHITE,
-                          SkRRect::MakeRectXY(SkRect::MakeWH(50, 50), 10, 15));
+        // draw_blurry_rrect(canvas, 0,
+        //                   SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f, false /*=respectCTM*/),
+        //                   SK_ColorWHITE,
+        //                   SkRRect::MakeRectXY(SkRect::MakeWH(50, 50), 10, 15));
 
-        draw_blurry_rrect(canvas, 100,
-                          SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 0.5f, false /*=respectCTM*/),
-                          SK_ColorYELLOW,
-                          SkRRect::MakeRectXY(SkRect::MakeWH(60, 80), 3.1f, 1.5f));
+        // draw_blurry_rrect(canvas, 100,
+        //                   SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 0.5f, false /*=respectCTM*/),
+        //                   SK_ColorYELLOW,
+        //                   SkRRect::MakeRectXY(SkRect::MakeWH(60, 80), 3.1f, 1.5f));
 
         SkRRect rr;
         rr.setNinePatch(SkRect::MakeWH(70, 80),
@@ -292,12 +292,12 @@ protected:
                           SkColorSetARGB(255, 200, 100, 30),
                           rr);
 
-        SkVector radii[4] = {{0, 0}, {20, 1}, {10, 30}, {30, 30}};
-        rr.setRectRadii(SkRect::MakeWH(90, 90), radii);
-        draw_blurry_rrect(canvas, 300,
-                          SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.1f, false /*=respectCTM*/),
-                          SkColorSetARGB(255, 35, 120, 220),
-                          rr);
+        // SkVector radii[4] = {{0, 0}, {20, 1}, {10, 30}, {30, 30}};
+        // rr.setRectRadii(SkRect::MakeWH(90, 90), radii);
+        // draw_blurry_rrect(canvas, 300,
+        //                   SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.1f, false /*=respectCTM*/),
+        //                   SkColorSetARGB(255, 35, 120, 220),
+        //                   rr);
 
         // labels after to avoid contaminating the diffs
         SkPaint labelPaint;
