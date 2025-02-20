@@ -85,6 +85,29 @@
       },
       "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31d3126f_a9ac1b5e",
+        "filename": "src/gpu/graphite/TextureInfoPriv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T14:51:07Z",
+      "side": 1,
+      "message": "IIUC the reason we are using a class here and not just a namespace (since this is all static functions) is so that we can friend it right? If that\u0027s the case can we add a comment above this class explaining that",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
