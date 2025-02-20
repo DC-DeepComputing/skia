@@ -63,6 +63,8 @@
 
 namespace skgpu::graphite {
 
+ContextOptions::~ContextOptions() {}
+
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
 
 Context::ContextID Context::ContextID::Next() {
