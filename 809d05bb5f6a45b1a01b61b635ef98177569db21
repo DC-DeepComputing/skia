@@ -73,6 +73,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4db97d1_03081c2d",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4365,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-02-20T18:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c20bdc6e_4fba3aa0",
+      "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "75ee7767_ce6902fd",
@@ -104,6 +122,24 @@
           ]
         }
       ],
+      "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f5d44b1_c8b3e136",
+        "filename": "modules/skparagraph/slides/ParagraphSlide.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 4401,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-02-20T18:19:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "75ee7767_ce6902fd",
       "revId": "809d05bb5f6a45b1a01b61b635ef98177569db21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
