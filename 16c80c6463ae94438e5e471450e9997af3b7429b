@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8cd0216f_2fb78f92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T21:51:47Z",
+      "side": 1,
+      "message": "Sending this to both Jim and Greg - feel free to draw straws on who the lucky reviewer shall be. \n\nThe main logic changes can be isolated by examining areas of code referencing `rp_must_support_reading_dst_as_input` within `VulkanCommandBuffer` and `mustSupportReadingDstAsInput` within `VulkanRenderPass`.",
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

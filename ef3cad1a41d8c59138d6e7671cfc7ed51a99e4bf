@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eec4eda_9230ac7a",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T21:51:47Z",
+      "side": 1,
+      "message": "Note: Besides the addition of the new rpMustSupportReadingDstAsInput bool and its resultant usage to alter a few key decisions, this does the same things as before but is simply broken up into helpers.",
+      "range": {
+        "startLine": 606,
+        "startChar": 0,
+        "endLine": 665,
+        "endChar": 0
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f160e06_cc0a32b9",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T21:51:47Z",
+      "side": 1,
+      "message": "Note: Changed this param name to be consistent w/ other methods that now use this shorter variable name.",
+      "range": {
+        "startLine": 678,
+        "startChar": 30,
+        "endLine": 678,
+        "endChar": 36
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9be0c2c2_7ad324d3",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T21:51:47Z",
+      "side": 1,
+      "message": "Note: Besides the addition of this new param and its impact on layout selection, this logic is the same as before but is just in its own helper.",
+      "range": {
+        "startLine": 278,
+        "startChar": 30,
+        "endLine": 278,
+        "endChar": 64
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3043045_24f40c48",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-20T21:51:47Z",
+      "side": 1,
+      "message": "Note: Just calling out that this self-dependency addition is an actual change of substance within one of the new helpers.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 386,
+        "endChar": 71
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
