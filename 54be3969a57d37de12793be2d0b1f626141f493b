@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae11aa56_89cc240e",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T16:14:08Z",
+      "side": 1,
+      "message": "Oh, `SkColorTypeChannelFlags` filters the input domain, so we can still get these values but not anything else.",
+      "parentUuid": "e46ce3d0_c7812e4f",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 55
+      },
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad41a08e_1d415e10",
