@@ -97,6 +97,24 @@
       "message": "nit: this is only called in one place, can we inline?",
       "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3ebd127_02b364da",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:59:42Z",
+      "side": 1,
+      "message": "nvm, I see the caller is external and does not have access to the fields.",
+      "parentUuid": "22f00749_1773b683",
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

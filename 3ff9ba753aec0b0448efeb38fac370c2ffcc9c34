@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7530aa8_6fe3b01b",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:59:42Z",
+      "side": 1,
+      "message": "`srcInfo` comes from the public API, I don\u0027t think there\u0027s anything preventing clients from passing in arbitrary color types?",
+      "parentUuid": "f185a47e_97f75d64",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 15
+      },
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5584b35b_f41363f0",
