@@ -1,0 +1,102 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60a58db8_2d24fa32",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:42:09Z",
+      "side": 1,
+      "message": "nit: if this is only used locally, we could move it to SkJpegEncoderImpl.cpp.",
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e46ce3d0_c7812e4f",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:42:09Z",
+      "side": 1,
+      "message": "I don\u0027t see these being handled in the switch - any reason to not let them default below?",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 55
+      },
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad41a08e_1d415e10",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:42:09Z",
+      "side": 1,
+      "message": "nit: you can omit these, default initialization does the expected thing.",
+      "range": {
+        "startLine": 89,
+        "startChar": 40,
+        "endLine": 89,
+        "endChar": 54
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "65e39d1a_351aaa5b",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkJpegEncoderImpl.cpp",
+              "range": {
+                "startLine": 89,
+                "startChar": 0,
+                "endLine": 91,
+                "endChar": 0
+              },
+              "replacement": "    std::optional\u003cSkImageInfo\u003e fSrcInfo;\n    std::optional\u003cSkImageInfo\u003e fDstInfo;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f00749_1773b683",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T15:42:09Z",
+      "side": 1,
+      "message": "nit: this is only called in one place, can we inline?",
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
