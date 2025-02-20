@@ -16,6 +16,29 @@
       "message": "Sending this to both Jim and Greg - feel free to draw straws on who the lucky reviewer shall be. \n\nThe main logic changes can be isolated by examining areas of code referencing `rp_must_support_reading_dst_as_input` within `VulkanCommandBuffer` and `mustSupportReadingDstAsInput` within `VulkanRenderPass`.",
       "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a1741fc_728b7f9b",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-20T21:58:14Z",
+      "side": 1,
+      "message": "Caveat: I haven\u0027t read the cpp files all yet so not sure the details of how this is used, so maybe this is needed.\n\nI\u0027m wondering if we actually want this bool or not (and maybe the same for fLoadMSAAFromResolve). Like if instead we added inputAttachemnts to our list of attachments between that and know the subpass dependencies doesn\u0027t that give us all the information we need? Like for the VulkanRenderPass itself we don\u0027t really care that the input is being used to read the dst or not.",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
