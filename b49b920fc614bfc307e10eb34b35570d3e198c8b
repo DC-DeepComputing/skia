@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74b318b1_535f4c9b",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T20:38:57Z",
+      "side": 1,
+      "message": "Outstanding todo here",
+      "revId": "b49b920fc614bfc307e10eb34b35570d3e198c8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8423b2e1_75ecf8ae",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 655,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-20T20:38:57Z",
+      "side": 1,
+      "message": "Note: this value isn\u0027t actually going up with this CL, it\u0027s just out of date",
+      "revId": "b49b920fc614bfc307e10eb34b35570d3e198c8b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
