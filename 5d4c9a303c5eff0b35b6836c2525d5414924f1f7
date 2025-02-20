@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2b32259_9eb58310",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-20T18:52:28Z",
+      "side": 1,
+      "message": "PTAL (had to add some skips because writePixels does not appear to work well in the serialize-8888 or pic-8888 configs)",
+      "revId": "5d4c9a303c5eff0b35b6836c2525d5414924f1f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
