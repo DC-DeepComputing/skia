@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "442974da_b8bcfa48",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T16:32:47Z",
+      "side": 1,
+      "message": "I am going to try to do a similar CL with SkPNGEncoder, so is it okay to keep here for now?",
+      "parentUuid": "60a58db8_2d24fa32",
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e46ce3d0_c7812e4f",
         "filename": "src/core/SkImageInfoPriv.h",
         "patchSetId": 5
@@ -102,6 +120,30 @@
           ]
         }
       ],
+      "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c75cbb6d_04459b8b",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T16:32:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad41a08e_1d415e10",
+      "range": {
+        "startLine": 89,
+        "startChar": 40,
+        "endLine": 89,
+        "endChar": 54
+      },
       "revId": "54be3969a57d37de12793be2d0b1f626141f493b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },

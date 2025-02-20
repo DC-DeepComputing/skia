@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e361f94c_436cecda",
+        "filename": "src/core/SkImageInfoPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-20T16:32:47Z",
+      "side": 1,
+      "message": "SkColorTypeChannelFlags can return 0 from a kUnknown_SkColorType, so adding a case for that and keeping default as SkDEBUGFAIL",
+      "parentUuid": "f7530aa8_6fe3b01b",
+      "range": {
+        "startLine": 57,
+        "startChar": 8,
+        "endLine": 57,
+        "endChar": 15
+      },
+      "revId": "3ff9ba753aec0b0448efeb38fac370c2ffcc9c34",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5584b35b_f41363f0",
