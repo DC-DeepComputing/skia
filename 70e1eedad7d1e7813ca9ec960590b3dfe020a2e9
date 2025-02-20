@@ -16,6 +16,87 @@
       "message": "http://screen/7tSgaQDQYUoKrs6 is how it looks with the CPU backend (as of PS 3)",
       "revId": "70e1eedad7d1e7813ca9ec960590b3dfe020a2e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf17d566_ed5f08ee",
+        "filename": "gm/rrect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T18:15:20Z",
+      "side": 1,
+      "message": "nit: `const U8CPU grey \u003d std::min(diff * kDiffMaginification, 255);`?",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 258,
+        "endChar": 17
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7f805a44_4b9d13bc",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "gm/rrect.cpp",
+              "range": {
+                "startLine": 253,
+                "startChar": 0,
+                "endLine": 259,
+                "endChar": 0
+              },
+              "replacement": "                const U8CPU grey \u003d std::min(diff * kDiffMaginification, 255);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "70e1eedad7d1e7813ca9ec960590b3dfe020a2e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86e5639c_f0521c9d",
+        "filename": "gm/rrect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T18:15:20Z",
+      "side": 1,
+      "message": "We could either draw into separate buffers/surfaces or adjust the readpixels bounds to avoid this issue, but prolly not that important to support zoom.",
+      "revId": "70e1eedad7d1e7813ca9ec960590b3dfe020a2e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c836831_d0d77864",
+        "filename": "gm/rrect.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-20T18:15:20Z",
+      "side": 1,
+      "message": "nit: 1.0f etc",
+      "range": {
+        "startLine": 278,
+        "startChar": 70,
+        "endLine": 278,
+        "endChar": 73
+      },
+      "revId": "70e1eedad7d1e7813ca9ec960590b3dfe020a2e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
