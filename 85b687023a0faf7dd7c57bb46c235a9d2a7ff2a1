@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a653b9a1_4d681502",
+        "filename": "tests/F16DrawTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2ef5b1cb_6ab573d6",
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03db2187_f67c74f4",
@@ -119,6 +137,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf6e2c6_4201a71e",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1385,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Ooop yep, reverted to `kNextRelease`. Thanks!",
+      "parentUuid": "1c52444b_3e996e27",
+      "range": {
+        "startLine": 1385,
+        "startChar": 15,
+        "endLine": 1385,
+        "endChar": 26
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ba72ad3_079bd285",
@@ -156,6 +198,30 @@
       "side": 1,
       "message": "This test is stable, but it also falls into the category of internal Skia logic (it\u0027s all CPU checks/validations), so could also be `kNever`.",
       "parentUuid": "8ba72ad3_079bd285",
+      "range": {
+        "startLine": 150,
+        "startChar": 39,
+        "endLine": 150,
+        "endChar": 64
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "181b8577_ff35bdc4",
+        "filename": "tests/GpuDrawPathTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7295bce3_2a904975",
       "range": {
         "startLine": 150,
         "startChar": 39,
@@ -248,6 +314,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c27a7aeb_26d9f9b0",
+        "filename": "tests/VkProtectedContextTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a803b507_ecc0238d",
+      "range": {
+        "startLine": 74,
+        "startChar": 18,
+        "endLine": 74,
+        "endChar": 71
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "032b7e64_378c1cfc",
@@ -285,6 +375,30 @@
       "side": 1,
       "message": "My guess is that we probably remove that Vulkan check, but would need to test it",
       "parentUuid": "032b7e64_378c1cfc",
+      "range": {
+        "startLine": 33,
+        "startChar": 35,
+        "endLine": 33,
+        "endChar": 53
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "220e7ce8_2dc3e843",
+        "filename": "tests/graphite/BackendTextureTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Enabled (and fixed) with I6086944105290933a23844e1f9c5560daf852fc9 -- enforcing `BackendTextureTest` here but leaving the others for now.",
+      "parentUuid": "5c99717e_adbc7807",
       "range": {
         "startLine": 33,
         "startChar": 35,
@@ -342,6 +456,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f651642_69d75887",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a941fa9b_cfb39705",
+      "range": {
+        "startLine": 62,
+        "startChar": 41,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01740c63_7dc87a65",
@@ -379,6 +517,30 @@
       "side": 1,
       "message": "This is testing internal Graphite logic, not something about GPU behavior so can be `kNever`.",
       "parentUuid": "01740c63_7dc87a65",
+      "range": {
+        "startLine": 793,
+        "startChar": 35,
+        "endLine": 793,
+        "endChar": 63
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b801f32_c363d4b7",
+        "filename": "tests/graphite/GraphiteResourceCacheTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11a3e3e4_18d03928",
       "range": {
         "startLine": 793,
         "startChar": 35,
@@ -460,6 +622,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c673d78_ec4d4bda",
+        "filename": "tests/graphite/RecordingSurfacesTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "5ce37260_abb5f6ed",
+      "range": {
+        "startLine": 129,
+        "startChar": 35,
+        "endLine": 129,
+        "endChar": 60
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3214b73f_9efeaa4d",
@@ -507,6 +693,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea17e2cd_7b912e8d",
+        "filename": "tests/graphite/UniformManagerTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df075166_10b0c782",
+      "range": {
+        "startLine": 891,
+        "startChar": 18,
+        "endLine": 891,
+        "endChar": 44
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "766b0c1c_c1461939",
@@ -544,6 +754,30 @@
       "side": 1,
       "message": "This falls into the same category as the UniformManagerTest and should be kNever.",
       "parentUuid": "766b0c1c_c1461939",
+      "range": {
+        "startLine": 209,
+        "startChar": 18,
+        "endLine": 209,
+        "endChar": 56
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73d1ff2d_985aca4e",
+        "filename": "tests/graphite/UniformOffsetCalculatorTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78b294fd_e1323fa1",
       "range": {
         "startLine": 209,
         "startChar": 18,
@@ -638,6 +872,30 @@
       "side": 1,
       "message": "I think this should change kNever since it is testing Skia\u0027s internal code.",
       "parentUuid": "59bd5c3f_9678e62f",
+      "range": {
+        "startLine": 600,
+        "startChar": 35,
+        "endLine": 600,
+        "endChar": 57
+      },
+      "revId": "85b687023a0faf7dd7c57bb46c235a9d2a7ff2a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45aa13ee_1b5cca78",
+        "filename": "tests/graphite/precompile/CombinationBuilderTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 600,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-20T17:10:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "020fcf01_58ca7cb6",
       "range": {
         "startLine": 600,
         "startChar": 35,
