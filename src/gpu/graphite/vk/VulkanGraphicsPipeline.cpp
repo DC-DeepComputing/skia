@@ -242,8 +242,8 @@ static void setup_depth_stencil_state(const DepthStencilSettings& stencilSetting
     stencilInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
     stencilInfo->pNext = nullptr;
     stencilInfo->flags = 0;
-    stencilInfo->depthTestEnable = stencilSettings.fDepthTestEnabled;
-    stencilInfo->depthWriteEnable = stencilSettings.fDepthWriteEnabled;
+    stencilInfo->depthTestEnable = false;//stencilSettings.fDepthTestEnabled;
+    stencilInfo->depthWriteEnable = false;//stencilSettings.fDepthWriteEnabled;
     stencilInfo->depthCompareOp = compare_op_to_vk_compare_op(stencilSettings.fDepthCompareOp);
     stencilInfo->depthBoundsTestEnable = VK_FALSE; // Default value TODO - Confirm
     stencilInfo->stencilTestEnable = stencilSettings.fStencilTestEnabled;
