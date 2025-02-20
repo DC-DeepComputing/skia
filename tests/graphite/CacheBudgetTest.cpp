@@ -18,12 +18,13 @@ static void set_context_budget(skgpu::graphite::ContextOptions* options) {
 }
 
 DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(CacheBudgetTest,
-                                           nullptr,
+                                           /* context_filter= */ nullptr,
                                            reporter,
                                            context,
                                            testContext,
+                                           /* anonymous options */,
                                            set_context_budget,
-                                           true,
+                                           /* cond= */ true,
                                            CtsEnforcement::kApiLevel_202404) {
     REPORTER_ASSERT(reporter, context->maxBudgetedBytes() == kContextBudget);
 
