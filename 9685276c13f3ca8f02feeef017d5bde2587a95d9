@@ -39,6 +39,30 @@
       },
       "revId": "9685276c13f3ca8f02feeef017d5bde2587a95d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbef44c4_9320fb0c",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T13:46:36Z",
+      "side": 1,
+      "message": "If this were to be a long-lived flag I\u0027d agree, but this is only to let us avoid the perf hit in m134 which requires a cherry pick. I\u0027ll have the faster accurate algorithm done before m135 is out so this flag can go away.",
+      "parentUuid": "c8094dad_d561a770",
+      "range": {
+        "startLine": 866,
+        "startChar": 12,
+        "endLine": 866,
+        "endChar": 47
+      },
+      "revId": "9685276c13f3ca8f02feeef017d5bde2587a95d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
