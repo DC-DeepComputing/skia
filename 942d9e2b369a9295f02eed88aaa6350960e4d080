@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77f190a4_5d4f7766",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T15:30:58Z",
+      "side": 1,
+      "message": "So isMemoryless() was used in very few places, basically to calculate the initial gpu size for a Texture. This made it very easy to remove this function entirely.",
+      "parentUuid": "065f24ec_3f25cdf5",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 21
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "505ef952_b8d59ca7",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-20T14:38:05Z",
       "side": 1,
       "message": "I feel like this should be a more specific name. Like isCompatibleForPromiseImage or isValidInfoSuperset or any other name that is a little more specific.",
+      "range": {
+        "startLine": 105,
+        "startChar": 9,
+        "endLine": 105,
+        "endChar": 21
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da18fe47_304a1393",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T15:30:58Z",
+      "side": 1,
+      "message": "I went with `canBeFulfilledBy`, wdyt?",
+      "parentUuid": "505ef952_b8d59ca7",
       "range": {
         "startLine": 105,
         "startChar": 9,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d2a51d5_d2c8533a",
+        "filename": "include/gpu/graphite/vk/VulkanGraphiteTypes.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T15:30:58Z",
+      "side": 1,
+      "message": "The backend TextureInfo isMemoryless() functions ended up going into static internal functions in FooTexture, named `has_transient_usage()` with an added param to the base `Texture` constructor to pass that value up. When that\u0027s true it just skips `ComputeSize`. `ComputeSize` is now updated to assume non-transient (or worst-case scenario for transient).",
+      "parentUuid": "d659efe6_2ea4c75f",
+      "range": {
+        "startLine": 74,
+        "startChar": 15,
+        "endLine": 74,
+        "endChar": 74
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "31d3126f_a9ac1b5e",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-02-20T14:51:07Z",
       "side": 1,
       "message": "IIUC the reason we are using a class here and not just a namespace (since this is all static functions) is so that we can friend it right? If that\u0027s the case can we add a comment above this class explaining that",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "942d9e2b369a9295f02eed88aaa6350960e4d080",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d877c44_6808c8da",
+        "filename": "src/gpu/graphite/TextureInfoPriv.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T15:30:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "31d3126f_a9ac1b5e",
       "range": {
         "startLine": 20,
         "startChar": 0,

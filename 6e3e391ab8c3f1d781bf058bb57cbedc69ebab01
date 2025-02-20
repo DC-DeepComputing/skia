@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "88ae7108_ffe8eb26",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-20T15:30:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "24c9375c_b7422b9b",
+      "range": {
+        "startLine": 27,
+        "startChar": 1,
+        "endLine": 27,
+        "endChar": 4
+      },
+      "revId": "6e3e391ab8c3f1d781bf058bb57cbedc69ebab01",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9aeee3ad_3910785b",
