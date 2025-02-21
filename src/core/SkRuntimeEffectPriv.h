@@ -90,7 +90,7 @@ public:
         effect->fStableKey = stableKey;
     }
 
-    static void ResetStableKey(SkRuntimeEffect* effect, uint32_t stableKey) {
+    static void ResetStableKey(SkRuntimeEffect* effect) {
         effect->fStableKey = 0;
     }
 
