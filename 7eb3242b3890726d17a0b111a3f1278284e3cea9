@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6920630_657d895d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-21T14:53:02Z",
+      "side": 1,
+      "message": "FYI Changing DawnTextureInfo from a struct to a class broke Chromium (they have at least one forward declare of DawnTextureInfo being a struct). I\u0027m going to try to spin up a CL to fix that on Chromium\u0027s side\nhttps://ci.chromium.org/ui/p/chromium/builders/try/linux-rel/2126688/overview",
+      "revId": "7eb3242b3890726d17a0b111a3f1278284e3cea9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
