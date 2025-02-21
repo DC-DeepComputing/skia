@@ -136,13 +136,14 @@ protected:
         }
 
         SkFont font(fTestTypeface);
-        const char32_t testText[] = U"abc";
-        size_t testTextBytesize = std::char_traits<char32_t>::length(testText) * sizeof(char32_t);
+        const char16_t testGlyphs[] = {13,235,33,966,305,255,966,304,11,233,29,218,3,233,243,218,3,1266,227,580,15,371,1266,966,277};
+        size_t testTextBytesize = std::char_traits<char16_t>::length(testGlyphs) * sizeof(char16_t);
         SkScalar x = 100;
         SkScalar y = 150;
 
         for (SkScalar textSize : kTextSizes) {
             font.setSize(textSize);
+            font.setHinting(SkFontHinting::kSlight);
             y += font.getSpacing();
 
             /* Draw origin marker as a green dot. */
@@ -151,7 +152,7 @@ protected:
             paint.setColor(SK_ColorBLACK);
 
             canvas->drawSimpleText(
-                    testText, testTextBytesize, SkTextEncoding::kUTF32, x, y, font, paint);
+                    testGlyphs, testTextBytesize, SkTextEncoding::kGlyphID, x, y, font, paint);
         }
 
         canvas->translate(100, 470);
@@ -192,5 +193,9 @@ DEF_GM(return new FontationsTypefaceGM(
         "fonts/Distortable.ttf",
         {{"wght"_t, 2.0f}},
         FontationsTypefaceGM::TypefaceConstruction::kCloneWithFontArguments);)
+
+DEF_GM(return new FontationsTypefaceGM("nasta", "fonts/NotoNastaliqUrdu-Regular-v3.007.ttf", {});)
+
+        
 
 }  // namespace skiagm
