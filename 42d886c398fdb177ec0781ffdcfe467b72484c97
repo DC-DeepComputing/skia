@@ -16,6 +16,24 @@
       "message": "This is just something that framework needs to support, not any app, so given that constraint LGTM.",
       "revId": "42d886c398fdb177ec0781ffdcfe467b72484c97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "247c08b5_1223a4a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-02-21T18:20:57Z",
+      "side": 1,
+      "message": "FWIW `SK_BUILD_FOR_ANDROID_FRAMEWORK` is defined for both HWUI and RenderEngine. For clarity of intent, should this be further constrained by:\n```\n#if defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) \u0026\u0026 defined(SK_IN_RENDERENGINE)\n```\nOr is it sufficient as is?",
+      "parentUuid": "4292290f_30d40b99",
+      "revId": "42d886c398fdb177ec0781ffdcfe467b72484c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
