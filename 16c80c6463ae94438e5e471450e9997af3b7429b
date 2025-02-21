@@ -18,6 +18,52 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87a0f3bc_ba1ce214",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-21T19:21:40Z",
+      "side": 1,
+      "message": "Note: Theoretically, we could skip the addition of the self-dependency for renderpasses which do not need to support reading the dst as an input attachment (`!fSupportReadingDstAsInput`, which can be encountered when the render target does not have input attachment usage). This would be similar to how we opt for layouts optimized for specific usages when `!fSupportReadingDstAsInput`. But if it\u0027s free, including it anyways streamlines some logic / reduces key size. \n\nsidebar: Of course, the key *could* theoretically just have 1 bit to indicate this, but that circumvents all the work here to have this key generation be more generalized for future render pass description structure.",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 62
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "242225d4_dae189f3",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-21T19:21:40Z",
+      "side": 1,
+      "message": "Note that it is still useful to determine this and behave accordingly rather than just always trying to support this because \n1) renderpasses cannot be shared anyhow if one uses DstReadStrategy::kReadFromInput and another does not (which can happen if a render target is not usable as an input attachment, resulting in the usage of DstReadStrategy::kDstCopy) \n2) it enables us to use optimized layouts (like for color attachments) over general layouts",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 461,
+        "endChar": 89
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a1741fc_728b7f9b",
@@ -31,6 +77,30 @@
       "writtenOn": "2025-02-20T21:58:14Z",
       "side": 1,
       "message": "Caveat: I haven\u0027t read the cpp files all yet so not sure the details of how this is used, so maybe this is needed.\n\nI\u0027m wondering if we actually want this bool or not (and maybe the same for fLoadMSAAFromResolve). Like if instead we added inputAttachemnts to our list of attachments between that and know the subpass dependencies doesn\u0027t that give us all the information we need? Like for the VulkanRenderPass itself we don\u0027t really care that the input is being used to read the dst or not.",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42d09bef_20c50176",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-21T19:21:40Z",
+      "side": 1,
+      "message": "These are mostly for convenience to cut down on the number of places/times we make these determinations. For now, I think I would advocate for either keeping them or, if we do remove them, instead opting to simply pass in these bools into key creation helpers.\n\nBasically, `VulkanRenderPassMetaData` exists to more closely mimic future `RenderPassDesc` structure which could provide more granular control over things such as subpass structure. Currently, `RenderPassDesc` data gets taken in by methods responsible for creating indepedent rp keys (like for caching) or adding rp info to existing keys (as a part of a graphics pipeline key), and any necessary info is accumulated into this metadata struct which then gets passed around. So, to remove these bools as member attributes, we could:\n\nA) Pass in `RenderPassDesc` (or just its relevant properties such as dstreadstrategy) along with the `VulkanRenderPassMetaData` we currently pass in to key helpers (`populate_key` which kicks off a cascade of key addition functions), allowing us to make these determinations later and not store them.\n\nB) If we go the route you asked about re: adding input attachments we could add an input attachment to `VulkanRenderPassMetaData::fAttachments` that either consists of the color (in case of dst reads) / the color resolve texture information (in case of loading msaa from resolve), then I think we could examine the load/store op to make determinations. Playing around w/ this some locally, I think it would make sense to go ahead and create + use a `SubpassDesc` struct at least w/ Vulkan to more easily represent how input attachments are used differently in the different subpasses. More work, but seems more future-thinking.\n\nAnyhow, just some intial thoughts before this gets too long. Happy to hop on a call or have a magical hallway convo about it :)",
+      "parentUuid": "8a1741fc_728b7f9b",
       "range": {
         "startLine": 68,
         "startChar": 8,
