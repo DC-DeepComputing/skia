@@ -250,8 +250,10 @@ bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
                                       int srcX,
                                       int srcY,
                                       CachingHint) const {
+    SkDebugf("***MSKP*** onReadPixels GaneshBase");
     if (!fContext->priv().matches(dContext) ||
         !SkImageInfoValidConversion(dstInfo, this->imageInfo())) {
+        SkDebugf("***SKIA MSKP*** onReadPixels returns f");
         return false;
     }
 
@@ -261,10 +263,12 @@ bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
     GrColorInfo colorInfo(ct, this->alphaType(), this->refColorSpace());
     auto sContext = dContext->priv().makeSC(std::move(view), colorInfo);
     if (!sContext) {
+        SkDebugf("***SKIA MSKP*** onReadPixels returns false no SC");
         return false;
     }
-
-    return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
+    auto retVal = sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
+    SkDebugf("***SKIA MSKP*** readPixels was a success");
+    return retVal;
 }
 
 bool SkImage_GaneshBase::isValid(GrRecordingContext* context) const {
