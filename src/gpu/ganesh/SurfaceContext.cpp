@@ -95,6 +95,7 @@ static bool alpha_types_compatible(SkAlphaType srcAlphaType, SkAlphaType dstAlph
 }
 
 bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoint pt) {
+    SkDebugf("***SKIA MSKP*** SC readPixels");
     ASSERT_SINGLE_OWNER
     RETURN_FALSE_IF_ABANDONED
     SkDEBUGCODE(this->validate();)
@@ -300,6 +301,7 @@ bool SurfaceContext::readPixels(GrDirectContext* dContext, GrPixmap dst, SkIPoin
     if (tmp.hasPixels()) {
         return GrConvertPixels(dst, tmp, flip);
     }
+    SkDebugf("***SKIA MSKP*** SC readPixels success");
     return true;
 }
 
