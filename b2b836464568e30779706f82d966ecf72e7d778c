@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab597fe9_1c43ff25",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-21T21:06:28Z",
+      "side": 1,
+      "message": "Can you add the note about it being important to update `go_rules`?",
+      "revId": "b2b836464568e30779706f82d966ecf72e7d778c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "4783a762_75df4926",
