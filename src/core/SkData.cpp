@@ -17,6 +17,15 @@
 #include <cstring>
 #include <new>
 
+void SkData::dump(const char* label) {
+    SkDebugf("%s (%zu): ", label, fSize);
+    const char* data = (const char*) fPtr;
+    for (size_t i = 0; i < fSize; ++i) {
+        SkDebugf("%d,", data[i]);
+    }
+    SkDebugf("\n");
+}
+
 SkData::SkData(const void* ptr, size_t size, ReleaseProc proc, void* context)
     : fReleaseProc(proc)
     , fReleaseProcContext(context)
