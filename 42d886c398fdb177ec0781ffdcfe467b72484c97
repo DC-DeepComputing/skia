@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4292290f_30d40b99",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-02-21T18:15:08Z",
+      "side": 1,
+      "message": "This is just something that framework needs to support, not any app, so given that constraint LGTM.",
+      "revId": "42d886c398fdb177ec0781ffdcfe467b72484c97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
