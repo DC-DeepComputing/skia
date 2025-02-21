@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9862b6c5_98a10ed7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-02-21T19:43:36Z",
+      "side": 1,
+      "message": "Looking into some Skia Gold GM\u0027s that look slightly different after this change. Could be tangentially related to this bug: b/370063145 (skcms doing alpha math differently than raster pipeline?)",
+      "revId": "e7d3fa10442eba87b5ff1c385a1ba750bebea7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
