@@ -263,7 +263,6 @@ bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
     if (!sContext) {
         return false;
     }
-
     return sContext->readPixels(dContext, {dstInfo, dstPixels, dstRB}, {srcX, srcY});
 }
 

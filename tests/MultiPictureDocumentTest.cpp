@@ -341,12 +341,13 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     if (!context->priv().caps()->supportsAHardwareBufferImages()) {
         return;
     }
-
+    SkDebugf("***SKIA MSKP*** breakpoint 1");
     // Create the stream we will serialize into.
     SkDynamicMemoryWStream stream;
 
     // Create the image sharing proc.
     SkSharingSerialContext ctx;
+    ctx.setDirectContext(context);
     SkSerialProcs procs;
     procs.fImageProc = SkSharingSerialContext::serializeImage;
     procs.fImageCtx = &ctx;
@@ -357,6 +358,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
         [sharingCtx = &ctx](const SkPicture* pic) {
             SkSharingSerialContext::collectNonTextureImagesFromPicture(pic, sharingCtx);
         });
+    SkDebugf("***SKIA MSKP*** breakpoint 2");
 
     static const int WIDTH = 256;
     static const int HEIGHT = 256;
@@ -364,50 +366,62 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
     // Make an image to be used in a later step.
     AHardwareBuffer* ahbuffer = nullptr;
     sk_sp<SkImage> image = makeAHardwareBufferTestImage(reporter, context, ahbuffer);
+    SkDebugf("***SKIA MSKP*** breakpoint 3");
 
     const SkImageInfo info = SkImageInfo::MakeN32Premul(WIDTH, HEIGHT);
     std::vector<sk_sp<SkImage>> expectedImages;
 
     // Record single frame
+    SkDebugf("***SKIA MSKP*** breakpoint 4");
     SkCanvas* pictureCanvas = multipic->beginPage(WIDTH, HEIGHT);
+    SkDebugf("***SKIA MSKP*** breakpoint 4a");
     draw_basic(pictureCanvas, 0, image);
+    SkDebugf("***SKIA MSKP*** breakpoint 4b");
     multipic->endPage();
+    SkDebugf("***SKIA MSKP*** breakpoint 5");
     // Also draw the picture to an image for later comparison
     auto surf = SkSurfaces::Raster(info);
     draw_basic(surf->getCanvas(), 0, image);
     expectedImages.push_back(surf->makeImageSnapshot());
+    SkDebugf("***SKIA MSKP*** breakpoint 6");
 
     // Release Ahardwarebuffer. If the code under test has not copied it already,
     // close() will fail.
     // Note that this only works because we're doing one frame only. If this test were recording
     // two or more frames, it would have change the buffer contents instead.
     cleanup_resources(ahbuffer);
+    SkDebugf("***SKIA MSKP*** breakpoint 7");
 
     // Finalize
     multipic->close();
+    SkDebugf("***SKIA MSKP*** breakpoint 8");
 
     // Confirm written data is at least as large as the magic word
     std::unique_ptr<SkStreamAsset> writtenStream = stream.detachAsStream();
     REPORTER_ASSERT(reporter, writtenStream->getLength() > 24,
         "Written data length too short (%zu)", writtenStream->getLength());
+    SkDebugf("***SKIA MSKP*** breakpoint 9");
 
     // Set up deserialization
     SkSharingDeserialContext deserialContext;
     SkDeserialProcs dprocs;
     dprocs.fImageProc = SkSharingDeserialContext::deserializeImage;
     dprocs.fImageCtx = &deserialContext;
+    SkDebugf("***SKIA MSKP*** breakpoint 10");
 
     // Confirm data is a MultiPictureDocument
     int frame_count = SkMultiPictureDocument::ReadPageCount(writtenStream.get());
     REPORTER_ASSERT(reporter, frame_count == 1,
         "Expected 1 frame, got %d. \n 0 frames may indicate the written file was not a "
         "MultiPictureDocument.", frame_count);
+    SkDebugf("***SKIA MSKP*** breakpoint 11");
 
     // Deserialize
     std::vector<SkDocumentPage> frames(frame_count);
     REPORTER_ASSERT(reporter,
         SkMultiPictureDocument::Read(writtenStream.get(), frames.data(), frame_count, &dprocs),
         "Failed while reading MultiPictureDocument");
+    SkDebugf("***SKIA MSKP*** breakpoint 12");
 
     // Examine frame.
     SkRect bounds = frames[0].fPicture->cullRect();
@@ -415,6 +429,7 @@ DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(SkMultiPictureDocument_AHardwarebuffer,
         "Page width: expected (%d) got (%d)", WIDTH, (int)bounds.width());
     REPORTER_ASSERT(reporter, bounds.height() == HEIGHT,
         "Page height: expected (%d) got (%d)", HEIGHT, (int)bounds.height());
+    SkDebugf("***SKIA MSKP*** breakpoint 12");
 
     auto surf2 = SkSurfaces::Raster(info);
     surf2->getCanvas()->drawPicture(frames[0].fPicture);
