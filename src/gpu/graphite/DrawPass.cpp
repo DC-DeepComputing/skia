@@ -434,6 +434,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     static_assert(sizeof(DrawPass::SortKey) ==
                   SkAlignTo(16 + sizeof(void*), alignof(DrawPass::SortKey)));
 
+    SkDebugf("DrawPass::Make: load %d store %d\n", (int) ops.first, (int) ops.second);
+
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
 
     // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass

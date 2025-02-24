@@ -114,6 +114,7 @@ DrawContext::~DrawContext() = default;
 void DrawContext::clear(const SkColor4f& clearColor) {
     this->discard();
 
+    SkDebugf("DrawContext:clear: to Clear\n");
     fPendingLoadOp = LoadOp::kClear;
     SkPMColor4f pmColor = clearColor.premul();
     fPendingClearColor = pmColor.array();
@@ -143,8 +144,10 @@ void DrawContext::discard() {
         // the discard should not inherit it.
         fPendingClearColor = {0.f, 0.f, 0.f, 0.f};
         fPendingLoadOp = LoadOp::kClear;
+        SkDebugf("DrawContext:discard: to Clear\n");
     } else {
         fPendingLoadOp = LoadOp::kDiscard;
+        SkDebugf("DrawContext:discard: to Discard\n");
     }
 }
 
@@ -244,6 +247,8 @@ void DrawContext::flush(Recorder* recorder) {
     // render pass.
     fPendingLoadOp = LoadOp::kLoad;
     fPendingStoreOp = StoreOp::kStore;
+
+    SkDebugf("DrawContext::flush: to Load\n");
 
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
