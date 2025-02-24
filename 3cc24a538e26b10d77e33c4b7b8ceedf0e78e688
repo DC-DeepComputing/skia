@@ -34,6 +34,24 @@
       "parentUuid": "58f1de42_caa22c24",
       "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8557b99_d1708b80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-24T19:07:26Z",
+      "side": 1,
+      "message": "If you really feel a struct is a better fit than class I won\u0027t block this. But the dance with chrome flags doesn\u0027t seem that difficult or much different from what we do for every renaming.\n\n1) Land flag in chrome\n2) Land Skia change with flag guarding old vs new cases (at this point skia is unblocked on follow on changes can start landing)\n3) Update chrome to use class, remove flag define\n4) Remove old code in Skia.",
+      "parentUuid": "23aa18ca_e485bc56",
+      "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
