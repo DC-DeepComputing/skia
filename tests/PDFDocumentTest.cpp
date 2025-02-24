@@ -182,7 +182,7 @@ DEF_TEST(SkPDF_pdfa_document, r) {
         "<dc:title><rdf:Alt><rdf:li xml:lang=\"x-default\">test document",
         "<xmp:CreateDate>1999-12-31T23:59:59+00:00</xmp:CreateDate>",
         "/Subtype /XML",
-        "/CreationDate (D:19991231235959+00'00')>>",
+        "/CreationDate (D:19991231235959+00'00)>>",
     };
     for (const char* expectation : expectations) {
         if (!contains(data->bytes(), data->size(), expectation)) {

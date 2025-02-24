@@ -43,7 +43,7 @@ static SkString pdf_date(const SkPDF::DateTime& dt) {
     int timeZoneHours = SkTAbs(timeZoneMinutes) / 60;
     timeZoneMinutes = SkTAbs(timeZoneMinutes) % 60;
     return SkStringPrintf(
-            "D:%04u%02u%02u%02u%02u%02u%c%02d'%02d'",
+            "D:%04u%02u%02u%02u%02u%02u%c%02d'%02d",
             static_cast<unsigned>(dt.fYear), static_cast<unsigned>(dt.fMonth),
             static_cast<unsigned>(dt.fDay), static_cast<unsigned>(dt.fHour),
             static_cast<unsigned>(dt.fMinute),
