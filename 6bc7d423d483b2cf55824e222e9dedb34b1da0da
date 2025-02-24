@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b174090_81dae39a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-24T16:22:41Z",
+      "side": 1,
+      "message": "So, if there are too many user-defined known runtime effects, the surplus just don\u0027t become stably keyed and will act like normal runtime effects. This does mean that they won\u0027t appear in serialized pipeline keys but nothing will break.\n\nI have added a warning log.",
+      "parentUuid": "626f1dd7_43905d5a",
+      "range": {
+        "startLine": 788,
+        "startChar": 0,
+        "endLine": 788,
+        "endChar": 58
+      },
+      "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37e96862_40cd615d",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-24T15:50:39Z",
       "side": 1,
       "message": "WDYT about either adding a name option to `SkRuntimeEffect` so all effects can have a more useful name in the key labels, or having this take a span of effects and names?",
+      "range": {
+        "startLine": 801,
+        "startChar": 0,
+        "endLine": 801,
+        "endChar": 60
+      },
+      "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "254cdc53_d122ab63",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-24T16:22:41Z",
+      "side": 1,
+      "message": "lol - yeah - I have that feature in the Omnibus (specified in SkRuntimeEffect::Options) but haven\u0027t split it out yet. I think it is kinda necessary for the feature that converts the serialized keys to strings.\n\nWill be in an upcoming CL.",
+      "parentUuid": "37e96862_40cd615d",
       "range": {
         "startLine": 801,
         "startChar": 0,
