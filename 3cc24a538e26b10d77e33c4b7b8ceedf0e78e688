@@ -52,6 +52,24 @@
       "parentUuid": "23aa18ca_e485bc56",
       "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8726964_4f01ff53",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-24T19:36:34Z",
+      "side": 1,
+      "message": "I switched back to classes, MtlTextureInfo and VulkanTextureInfo are updated w/o guard. DawnTextureInfo is a struct when SK_DAWN_TEXTURE_INFO_IS_STRUCT is defined.",
+      "parentUuid": "d8557b99_d1708b80",
+      "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
