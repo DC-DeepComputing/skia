@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe2ce782_5ae43948",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-24T16:20:39Z",
+      "side": 1,
+      "message": "static constexpr char shades[] \u003d {\u00270\u0027, \u00271\u0027, ... };",
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83885751_00eccafc",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-24T16:20:39Z",
+      "side": 1,
+      "message": "Would it make more sense to format these in hex?  Maybe also keep fixed-length: `%.2X`",
+      "range": {
+        "startLine": 41,
+        "startChar": 27,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "5f17f26e_39a3e957",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkDebugUtils.h",
+              "range": {
+                "startLine": 41,
+                "startChar": 0,
+                "endLine": 42,
+                "endChar": 0
+              },
+              "replacement": "                SkDebugf(\"%.2X\\t\", pixelValue);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9a901a_982e221f",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-24T16:20:39Z",
+      "side": 1,
+      "message": "nit: looks like this doesn\u0027t do anything, maybe replace with an assert.",
+      "range": {
+        "startLine": 44,
+        "startChar": 22,
+        "endLine": 44,
+        "endChar": 64
+      },
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
