@@ -114,6 +114,7 @@ DrawContext::~DrawContext() = default;
 void DrawContext::clear(const SkColor4f& clearColor) {
     this->discard();
 
+    SkDebugf("DrawContext:clear: to Clear\n");
     fPendingLoadOp = LoadOp::kClear;
     SkPMColor4f pmColor = clearColor.premul();
     fPendingClearColor = pmColor.array();
@@ -143,8 +144,10 @@ void DrawContext::discard() {
         // the discard should not inherit it.
         fPendingClearColor = {0.f, 0.f, 0.f, 0.f};
         fPendingLoadOp = LoadOp::kClear;
+        SkDebugf("DrawContext:discard: to Clear\n");
     } else {
         fPendingLoadOp = LoadOp::kDiscard;
+        SkDebugf("DrawContext:discard: to Discard\n");
     }
 }
 
@@ -193,7 +196,7 @@ PathAtlas* DrawContext::getComputePathAtlas(Recorder* recorder) {
     return fComputePathAtlas.get();
 }
 
-void DrawContext::flush(Recorder* recorder) {
+void DrawContext::flush1(Recorder* recorder) {
     if (fPendingUploads->size() > 0) {
         TRACE_EVENT_INSTANT1("skia.gpu", TRACE_FUNC, TRACE_EVENT_SCOPE_THREAD,
                              "# uploads", fPendingUploads->size());
@@ -233,7 +236,7 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
-    std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
+    std::unique_ptr<DrawPass> pass = DrawPass::Make1(recorder,
                                                     std::move(fPendingDraws),
                                                     fTarget,
                                                     this->imageInfo(),
@@ -244,6 +247,8 @@ void DrawContext::flush(Recorder* recorder) {
     // render pass.
     fPendingLoadOp = LoadOp::kLoad;
     fPendingStoreOp = StoreOp::kStore;
+
+    SkDebugf("DrawContext::flush: to Load\n");
 
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
@@ -300,7 +305,7 @@ void DrawContext::flush(Recorder* recorder) {
 sk_sp<Task> DrawContext::snapDrawTask(Recorder* recorder) {
     // If flush() was explicitly called earlier and no new work was recorded, this call to flush()
     // is a no-op and shouldn't hurt performance.
-    this->flush(recorder);
+    this->flush1(recorder);
 
     if (!fCurrentDrawTask->hasTasks()) {
         return nullptr;

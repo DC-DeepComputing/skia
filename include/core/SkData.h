@@ -36,6 +36,8 @@ public:
      */
     const void* data() const { return fPtr; }
 
+    void dump(const char* label);
+
     /**
      *  Like data(), returns a read-only ptr into the data, but in this case
      *  it is cast to uint8_t*, to make it easy to add an offset to it.
