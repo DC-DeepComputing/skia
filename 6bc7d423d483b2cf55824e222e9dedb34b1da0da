@@ -16,6 +16,52 @@
       "message": "Ping",
       "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "626f1dd7_43905d5a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-24T15:50:39Z",
+      "side": 1,
+      "message": "I\u0027m right in understanding that if we have more than ReservedCnt, then all later occurrences of the SkRuntimeEffect will have `IsViableUserDefinedKnownRuntimeEffect` be false. If we update `findOrCreateRuntimeEffectSnippet` to fall through in this case (right now I think it returns -1) to the generic runtime effect then I think it makes sense to log a warning and but otherwise proceed w/o failing.\n\nIf not, I think we should log an error and crash to avoid a bad state when they try and draw with the too-many runtime effect.",
+      "range": {
+        "startLine": 788,
+        "startChar": 0,
+        "endLine": 788,
+        "endChar": 58
+      },
+      "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37e96862_40cd615d",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 801,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-24T15:50:39Z",
+      "side": 1,
+      "message": "WDYT about either adding a name option to `SkRuntimeEffect` so all effects can have a more useful name in the key labels, or having this take a span of effects and names?",
+      "range": {
+        "startLine": 801,
+        "startChar": 0,
+        "endLine": 801,
+        "endChar": 60
+      },
+      "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
