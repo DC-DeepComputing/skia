@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4a6580e_a1ca5b40",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-24T14:06:44Z",
+      "side": 1,
+      "message": "just for sanity, can we put an assert here for prevEntry. It\u0027s clear reading the code it is true, but just incase things ever get refactored later.",
+      "range": {
+        "startLine": 88,
+        "startChar": 8,
+        "endLine": 88,
+        "endChar": 17
+      },
+      "revId": "ee63d44c93ad58608b29536a47878ea87a36e453",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
