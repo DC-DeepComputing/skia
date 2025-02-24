@@ -504,7 +504,6 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // SSBOs, we can enable this again.
     fStorageBufferSupport = info.backendType != wgpu::BackendType::OpenGL &&
                             info.backendType != wgpu::BackendType::OpenGLES &&
-                            info.backendType != wgpu::BackendType::Vulkan &&
                             info.compatibilityMode == false;
 #else
     // WASM doesn't provide a way to query the backend, so can't tell if we are on a backend that
