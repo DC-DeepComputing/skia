@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "582dedbd_350ffe43",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-24T18:48:03Z",
+      "side": 0,
+      "message": "The only thing I can think of is that this break isn\u0027t firing, so I replaced it with a boolean that is checked in the loop conditional. Still should only remove one hash list entry at a time though so I doubt this is the issue.",
+      "range": {
+        "startLine": 228,
+        "startChar": 16,
+        "endLine": 228,
+        "endChar": 21
+      },
+      "revId": "994168b1ba10358a66a53658589d27ac2977618c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
