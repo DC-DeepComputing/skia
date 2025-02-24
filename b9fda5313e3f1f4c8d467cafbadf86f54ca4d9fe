@@ -33,6 +33,24 @@
       "message": "Looks like this passes the Canary.",
       "revId": "b9fda5313e3f1f4c8d467cafbadf86f54ca4d9fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba89e086_a535d69b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-24T19:27:11Z",
+      "side": 1,
+      "message": "Or, at least, the Graphite parts of Canary. Not sure why Android is failing, Graphite is disabled.",
+      "parentUuid": "662af8ef_98799799",
+      "revId": "b9fda5313e3f1f4c8d467cafbadf86f54ca4d9fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
