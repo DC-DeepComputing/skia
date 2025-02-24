@@ -94,7 +94,7 @@ public:
 
     // Moves all accumulated pending recorded operations (draws and uploads), and any other
     // dependent tasks into the DrawTask currently being built.
-    void flush(Recorder*);
+    void flush1(Recorder*);
 
     // Flushes (if needed) and completes the current DrawTask, returning it to the caller.
     // Subsequent recorded operations will be added to a new DrawTask.
