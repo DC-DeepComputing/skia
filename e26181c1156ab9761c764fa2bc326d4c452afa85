@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9142288_4298ebf1",
+        "filename": "dm/DMSrcSink.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 2444,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-24T19:37:16Z",
+      "side": 1,
+      "message": "One post-submit comment: Maybe rename one or the other so it\u0027s less confusing?",
+      "range": {
+        "startLine": 2444,
+        "startChar": 40,
+        "endLine": 2444,
+        "endChar": 73
+      },
+      "revId": "e26181c1156ab9761c764fa2bc326d4c452afa85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
