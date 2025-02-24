@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85f46688_7312fcac",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-24T17:45:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe2ce782_5ae43948",
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83885751_00eccafc",
@@ -59,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "801a5773_b86b6419",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-24T17:45:23Z",
+      "side": 1,
+      "message": "I actually prefer non-hex, because I can dump these in a spreadsheet with conditional formatting if they are in decimal. The tab seperation makes the copy-paste into spreadsheet work easily.",
+      "parentUuid": "83885751_00eccafc",
+      "range": {
+        "startLine": 41,
+        "startChar": 27,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c9a901a_982e221f",
@@ -72,6 +114,30 @@
       "writtenOn": "2025-02-24T16:20:39Z",
       "side": 1,
       "message": "nit: looks like this doesn\u0027t do anything, maybe replace with an assert.",
+      "range": {
+        "startLine": 44,
+        "startChar": 22,
+        "endLine": 44,
+        "endChar": 64
+      },
+      "revId": "7acb8a6500f500a190a0ab3eb4f80b7649282277",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e9e8a45_04dba050",
+        "filename": "src/core/SkDebugUtils.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-24T17:45:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c9a901a_982e221f",
       "range": {
         "startLine": 44,
         "startChar": 22,
