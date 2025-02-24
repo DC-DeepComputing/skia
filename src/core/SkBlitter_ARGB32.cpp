@@ -1446,7 +1446,7 @@ static void SkARGB32_Blit32(const SkPixmap& device, const SkMask& mask,
 //////////////////////////////////////////////////////////////////////////////////////
 
 SkARGB32_Blitter::SkARGB32_Blitter(const SkPixmap& device, const SkPaint& paint)
-        : INHERITED(device) {
+        : SkRasterBlitter(device) {
     SkColor color = paint.getColor();
     fColor = color;
 
@@ -1477,9 +1477,8 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
         return;
     }
 
-    uint32_t    color = fPMColor;
     uint32_t*   device = fDevice.writable_addr32(x, y);
-    unsigned    opaqueMask = fSrcA; // if fSrcA is 0xFF, then we will catch the fast opaque case
+    const unsigned opaqueMask = fSrcA; // if fSrcA is 0xFF, then we will catch the fast opaque case
 
     for (;;) {
         int count = runs[0];
@@ -1490,9 +1489,9 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
         unsigned aa = antialias[0];
         if (aa) {
             if ((opaqueMask & aa) == 255) {
-                SkOpts::memset32(device, color, count);
+                SkOpts::memset32(device, fPMColor, count);
             } else {
-                uint32_t sc = SkAlphaMulQ(color, SkAlpha255To256(aa));
+                SkPMColor sc = SkAlphaMulQ(fPMColor, SkAlpha255To256(aa));
                 SkBlitRow::Color32(device, count, sc);
             }
         }
@@ -1650,14 +1649,13 @@ void SkARGB32_Blitter::blitRect(int x, int y, int width, int height) {
     }
 
     uint32_t*   device = fDevice.writable_addr32(x, y);
-    uint32_t    color = fPMColor;
     size_t      rowBytes = fDevice.rowBytes();
 
     if (SkGetPackedA32(fPMColor) == 0xFF) {
-        SkOpts::rect_memset32(device, color, width, rowBytes, height);
+        SkOpts::rect_memset32(device, fPMColor, width, rowBytes, height);
     } else {
         while (height --> 0) {
-            SkBlitRow::Color32(device, width, color);
+            SkBlitRow::Color32(device, width, fPMColor);
             device = (uint32_t*)((char*)device + rowBytes);
         }
     }
@@ -1720,9 +1718,9 @@ void SkARGB32_Black_Blitter::blitAntiV2(int x, int y, U8CPU a0, U8CPU a1) {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkARGB32_Shader_Blitter::SkARGB32_Shader_Blitter(const SkPixmap& device,
-        const SkPaint& paint, SkShaderBase::Context* shaderContext)
-    : INHERITED(device, paint, shaderContext)
-{
+                                                 const SkPaint& paint,
+                                                 SkShaderBase::Context* shaderContext)
+        : SkShaderBlitter(device, paint, shaderContext) {
     fBuffer = (SkPMColor*)sk_malloc_throw(device.width() * (sizeof(SkPMColor)));
 
     SkASSERT(paint.isSrcOver());
@@ -1973,7 +1971,7 @@ void SkARGB32_Shader_Blitter::blitMask(const SkMask& mask, const SkIRect& clip) 
     } else if (mask.fFormat == SkMask::kLCD16_Format) {
         blend_row = blend_row_lcd16;
     } else {
-        this->INHERITED::blitMask(mask, clip);
+        this->SkShaderBlitter::blitMask(mask, clip);
         return;
     }
 
