@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7bf702f_1e3fe90a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-24T16:27:55Z",
+      "side": 1,
+      "message": "Gotcha, I had missed that the runtime effect\u0027s stable key was being set within this loop, and not beforehand by the client, so I agree everything seems right to just fallback to normal runtime effects.",
+      "parentUuid": "8b174090_81dae39a",
+      "range": {
+        "startLine": 788,
+        "startChar": 0,
+        "endLine": 788,
+        "endChar": 58
+      },
+      "revId": "6bc7d423d483b2cf55824e222e9dedb34b1da0da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37e96862_40cd615d",
