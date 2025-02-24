@@ -81,7 +81,7 @@ public:
     [[nodiscard]] bool readS32(int32_t*);
     [[nodiscard]] bool readS64(int64_t*);
 
-    [[nodiscard]] bool readU8(uint8_t* i)   { return this->readS8((int8_t*)i); }
+    bool readU8(uint8_t* i)   { return this->readS8((int8_t*)i); }
     [[nodiscard]] bool readU16(uint16_t* i) { return this->readS16((int16_t*)i); }
     [[nodiscard]] bool readU32(uint32_t* i) { return this->readS32((int32_t*)i); }
     [[nodiscard]] bool readU64(uint64_t* i) { return this->readS64((int64_t*)i); }

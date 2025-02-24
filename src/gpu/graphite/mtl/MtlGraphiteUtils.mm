@@ -129,16 +129,33 @@ bool MtlTextureSpec::serialize(SkWStream* stream) const {
     SkASSERT(fStorageMode                               < (1u << 2));
     SkASSERT(static_cast<uint32_t>(fFramebufferOnly)    < (1u << 1));
 
+    stream->write8(64);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(64);
+
     // TODO(robertphillips): not densely packed (see above asserts)
     if (!stream->write32(static_cast<uint32_t>(fFormat)))        { return false; }
     if (!stream->write16(static_cast<uint16_t>(fUsage)))         { return false; }
     if (!stream->write8(static_cast<uint8_t>(fStorageMode)))     { return false; }
     if (!stream->write8(static_cast<uint8_t>(fFramebufferOnly))) { return false; }
+
+    stream->write8(63);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(63);
+
     return true;
 }
 
 bool MtlTextureSpec::Deserialize(SkStream* stream, MtlTextureSpec* out) {
     uint32_t tmp32;
+
+    uint8_t tmp;
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
 
     if (!stream->readU32(&tmp32)) {
         return false;
@@ -162,6 +179,12 @@ bool MtlTextureSpec::Deserialize(SkStream* stream, MtlTextureSpec* out) {
         return false;
     }
     out->fFramebufferOnly = SkToBool(tmp8);
+
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+
     return true;
 }
 

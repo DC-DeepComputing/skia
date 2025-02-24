@@ -56,7 +56,7 @@ public:
 
     // Create a DrawPass that renders the DrawList into `target` with the given load/store ops and
     // clear color.
-    static std::unique_ptr<DrawPass> Make(Recorder*,
+    static std::unique_ptr<DrawPass> Make1(Recorder*,
                                           std::unique_ptr<DrawList>,
                                           sk_sp<TextureProxy> target,
                                           const SkImageInfo& targetInfo,
