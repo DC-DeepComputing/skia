@@ -42,7 +42,7 @@ ClipAtlasManager::ClipAtlasManager(Recorder* recorder) : fRecorder(recorder) {
 }
 
 namespace {
-// TODO: is this necessary for clips?
+// Needed to ensure that we have surrounding context, e.g. for inverse clips this would be solid.
 constexpr int kEntryPadding = 1;
 }  // namespace
 
@@ -52,9 +52,12 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                                         SkIPoint* outPos) {
     skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
     MaskHashEntry* entryList = fMaskCache.find(maskKey);
+    // Track previous list entry so we can place any new list entries at the end
+    MaskHashEntry* prevEntry = nullptr;
     if (entryList) {
         MaskHashEntry* entry = entryList;
         do {
+            // If this entry is large enough to contain the clip, use it
             if (entry->fBounds.contains(iBounds)) {
                 SkIPoint topLeft = entry->fLocator.topLeft();
                 // We need to adjust the returned outPos to reflect the subset we're using
@@ -65,6 +68,7 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                             fRecorder->priv().tokenTracker()->nextFlushToken());
                 return fDrawAtlas->getProxies()[entry->fLocator.pageIndex()].get();
             }
+            prevEntry = entry;
             entry = entry->fNext;
         } while (entry);
     }
@@ -77,9 +81,13 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
 
     // Add locator and bounds to MaskCache.
     if (entryList) {
+        // Add new list entry to the end. This will sort them from smallest bounds to largest,
+        // so that when we search above we'll pick the one with the smallest bounds that contains
+        // the clip.
+        SkASSERT(prevEntry);
+        SkASSERT(prevEntry->fNext == nullptr); // Should be at the end
         MaskHashEntry* newEntry = new MaskHashEntry{iBounds, locator, nullptr};
-        newEntry->fNext = entryList->fNext;
-        entryList->fNext = newEntry;
+        prevEntry->fNext = newEntry;
     } else {
         MaskHashEntry newEntry{iBounds, locator, nullptr};
         fMaskCache.set(maskKey, newEntry);
