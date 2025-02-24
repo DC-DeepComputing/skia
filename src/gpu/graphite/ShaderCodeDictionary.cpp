@@ -786,7 +786,7 @@ void ShaderCodeDictionary::registerUserDefinedKnownRuntimeEffects(
         }
 
         if (fUserDefinedKnownCodeSnippets.size() >= kUserDefinedKnownRuntimeEffectsReservedCnt) {
-            SKGPU_LOG_W("Too many user-defined known runtime effects. Only %d out of %d "
+            SKGPU_LOG_W("Too many user-defined known runtime effects. Only %d out of %zu "
                         "will be known.\n",
                         kUserDefinedKnownRuntimeEffectsReservedCnt,
                         userDefinedKnownRuntimeEffects.size());
