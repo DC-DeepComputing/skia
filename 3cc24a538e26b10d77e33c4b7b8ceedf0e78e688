@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58f1de42_caa22c24",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-24T18:33:30Z",
+      "side": 1,
+      "message": "I know it is a pain to stage things in Chrome, but do we really want these objects to be structs? Generally we\u0027ve used structs for very simple objects that are mostly just containing data members. These seem more complex than that and would normallly fall into our class bucket. Though there is certainly lots of gray area.\n\nI want to make sure we think this is the right change for the code health of Skia vs just doing what is the convenient thing right now.",
+      "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
