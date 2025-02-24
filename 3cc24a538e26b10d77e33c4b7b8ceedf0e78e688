@@ -16,6 +16,24 @@
       "message": "I know it is a pain to stage things in Chrome, but do we really want these objects to be structs? Generally we\u0027ve used structs for very simple objects that are mostly just containing data members. These seem more complex than that and would normallly fall into our class bucket. Though there is certainly lots of gray area.\n\nI want to make sure we think this is the right change for the code health of Skia vs just doing what is the convenient thing right now.",
       "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23aa18ca_e485bc56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-24T18:38:51Z",
+      "side": 1,
+      "message": "I\u0027d originally changed them to classes because of the private functionality being added to them, and that\u0027s not going away. \n\nI\u0027d thought about changing chrome code to just include our headers, but that didn\u0027t seem ideal. Then I explored having their headers operate on just `TextureInfo` instead of `DawnTextureInfo`, but that ends up causing problems with our `BackendTextures::Make` APIs that currently take the matching backend info object, not the generic wrapper.  That seems like a model we should keep, so staging would require a multipart build flag.\n\nSo then I convinced myself that from a client\u0027s POV, w/o having access to the functions, these do behave like structs since they put them on the stack and assign public fields.",
+      "parentUuid": "58f1de42_caa22c24",
+      "revId": "3cc24a538e26b10d77e33c4b7b8ceedf0e78e688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
