@@ -16,6 +16,23 @@
       "message": "PTAL",
       "revId": "b9fda5313e3f1f4c8d467cafbadf86f54ca4d9fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "662af8ef_98799799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-24T19:10:24Z",
+      "side": 1,
+      "message": "Looks like this passes the Canary.",
+      "revId": "b9fda5313e3f1f4c8d467cafbadf86f54ca4d9fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
