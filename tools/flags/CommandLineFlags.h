@@ -185,6 +185,7 @@ public:
     private:
         void reset() { fStrings.clear(); }
 
+    public:
         void append(const char* string) { fStrings.push_back().set(string); }
 
         void append(const char* string, size_t length) { fStrings.push_back().set(string, length); }

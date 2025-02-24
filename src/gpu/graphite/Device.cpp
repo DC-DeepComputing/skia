@@ -1341,6 +1341,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             // Otherwise we may end up with outstanding draws that depend on past atlas state.
             fRecorder->priv().flushTrackedDevices();
         } else {
+            SkDebugf("-------1 %d\n", dstReadRequired);
             this->flushPendingWorkToRecorder();
         }
     }
@@ -1756,6 +1757,7 @@ void Device::flushPendingWorkToRecorder() {
         fIsFlushing = true;
     }
 
+    SkDebugf("why %d\n", this->isScratchDevice());
     this->internalFlush();
     sk_sp<Task> drawTask = fDC->snapDrawTask(fRecorder);
     if (this->isScratchDevice()) {
@@ -1803,7 +1805,7 @@ void Device::internalFlush() {
     fClip.recordDeferredClipDraws();
 
     // Flush all pending items to the internal task list and reset Device tracking state
-    fDC->flush(fRecorder);
+    fDC->flush1(fRecorder);
 
     fColorDepthBoundsManager->reset();
     fDisjointStencilSet->reset();

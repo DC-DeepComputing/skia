@@ -90,6 +90,8 @@ void Precompile(PrecompileContext* precompileContext,
 
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
+    SkDebugf("Precompile-----------------\n");
+
     for (const RenderPassProperties& rpp : renderPassProperties) {
         // TODO: Allow the client to pass in mipmapping and protection too?
         TextureInfo info = caps->getDefaultSampledTextureInfo(rpp.fDstCT,
@@ -114,6 +116,12 @@ void Precompile(PrecompileContext* precompileContext,
             caps->loadOpAffectsMSAAPipelines()) {
             numLoadOps = 2;
         }
+//        if (!options.getBlenders().empty()) {
+            // Runtime blenders are always going to incur a destRead. This will, in turn,
+            // case a kLoad.
+//            numLoadOps = 2;
+//        }
+
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
             const RenderPassDesc renderPassDesc =

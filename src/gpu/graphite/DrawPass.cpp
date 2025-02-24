@@ -411,7 +411,7 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
-std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
+std::unique_ptr<DrawPass> DrawPass::Make1(Recorder* recorder,
                                          std::unique_ptr<DrawList> draws,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
@@ -433,6 +433,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // than an 8 byte key and unmodified pointer.
     static_assert(sizeof(DrawPass::SortKey) ==
                   SkAlignTo(16 + sizeof(void*), alignof(DrawPass::SortKey)));
+
+    SkDebugf("DrawPass::Make: load %d store %d\n", (int) ops.first, (int) ops.second);
 
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
 
