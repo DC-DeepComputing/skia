@@ -121,9 +121,20 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
 
 [[nodiscard]] bool serialize_attachment_desc(SkWStream* stream,
                                              const AttachmentDesc& attachmentDesc) {
+
+    stream->write8(128);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(128);
+
     if (!TextureInfoPriv::Serialize(stream, attachmentDesc.fTextureInfo)) {
         return false;
     }
+
+    stream->write8(127);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(127);
 
     if (attachmentDesc.fTextureInfo.isValid()) {
         if (!stream->write32(SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fStoreOp),
@@ -133,15 +144,32 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
+    stream->write8(126);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(126);
+
     return true;
 }
 
 [[nodiscard]] bool deserialize_attachment_desc(const Caps* caps,
                                                SkStream* stream,
                                                AttachmentDesc* attachmentDesc) {
+
+    uint8_t tmp;
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+
     if (!TextureInfoPriv::Deserialize(caps, stream, &attachmentDesc->fTextureInfo)) {
         return false;
     }
+
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
 
     if (attachmentDesc->fTextureInfo.isValid()) {
         uint32_t tag;
@@ -153,6 +181,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         attachmentDesc->fLoadOp  = static_cast<LoadOp> (0xF & (tag >> 16));
     }
 
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+
     return true;
 }
 
@@ -161,6 +194,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     if (!serialize_attachment_desc(stream, renderPassDesc.fColorAttachment)) {
         return false;
     }
+
+    stream->write8(254);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(254);
 
     for (int i = 0; i < 4; ++i) {
         if (!stream->writeScalar(renderPassDesc.fClearColor[i])) {
@@ -171,6 +209,12 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     if (!serialize_attachment_desc(stream, renderPassDesc.fColorResolveAttachment)) {
         return false;
     }
+
+    stream->write8(253);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(253);
+
     if (!serialize_attachment_desc(stream, renderPassDesc.fDepthStencilAttachment)) {
         return false;
     }
@@ -181,6 +225,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     if (!stream->write32(renderPassDesc.fClearStencil)) {
         return false;
     }
+
+    stream->write8(252);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(252);
 
     if (!stream->write32(SkSetFourByteTag(renderPassDesc.fWriteSwizzle[0],
                                           renderPassDesc.fWriteSwizzle[1],
@@ -207,6 +256,12 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
+    uint8_t tmp;
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+
     for (int i = 0; i < 4; ++i) {
         if (!stream->readScalar(&renderPassDesc->fClearColor[i])) {
             return false;
@@ -216,6 +271,12 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fColorResolveAttachment)) {
         return false;
     }
+
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+
     if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fDepthStencilAttachment)) {
         return false;
     }
@@ -226,6 +287,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     if (!stream->readU32(&renderPassDesc->fClearStencil)) {
         return false;
     }
+
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
 
     uint32_t tag;
     if (!stream->readU32(&tag)) {
@@ -269,6 +335,11 @@ bool SerializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
         return false;
     }
 
+    stream->write8(255);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(255);
+
     if (!serialize_render_pass_desc(stream, renderPassDesc)) {
         return false;
     }
@@ -291,6 +362,12 @@ bool DeserializePipelineDesc(const Caps* caps,
     if (!deserialize_graphics_pipeline_desc(shaderCodeDictionary, stream, pipelineDesc)) {
         return false;
     }
+
+    uint8_t tmp;
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
+    stream->readU8(&tmp);
 
     if (!deserialize_render_pass_desc(caps, stream, renderPassDesc)) {
         return false;
