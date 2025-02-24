@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de55d40a_412f15dd",
+        "filename": "src/gpu/graphite/Caps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-24T18:34:22Z",
+      "side": 1,
+      "message": "debugging creep in here?",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 64
+      },
+      "revId": "468299ad47785e30463484e142d14cd5d8cd15af",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
