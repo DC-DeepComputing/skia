@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bafce371_964a0c48",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2102,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-25T17:44:18Z",
+      "side": 1,
+      "message": "Ended up pulling additional checks out of attemptBlurredRRectDraw and into can_attempt_blurred_rrect_draw.",
+      "parentUuid": "f009e29a_fc66d88e",
+      "range": {
+        "startLine": 2102,
+        "startChar": 0,
+        "endLine": 2102,
+        "endChar": 95
+      },
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ccdb8384_8fbfe1ba",
@@ -143,6 +167,24 @@
       "side": 1,
       "message": "Hmm, that does seem like the case.\n\nBut for this check in SkCanvas, we only care about kFill_Style and not stroked arcs since `attemptBlurredRRectDraw()` requires fills.",
       "parentUuid": "c53713f0_1a12457c",
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77635d06_c696e6de",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-25T17:44:18Z",
+      "side": 1,
+      "message": "Removed, but updated copied-from comment in graphite\u0027s Device.cpp",
+      "parentUuid": "bc1f6981_473ecd5d",
       "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
