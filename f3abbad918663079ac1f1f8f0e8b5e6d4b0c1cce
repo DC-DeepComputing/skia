@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1868bf4_2726932b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1999,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T18:40:09Z",
+      "side": 1,
+      "message": "Add `SkASSERT(blurMaskFilter \u0026\u0026 blurMaskFilter \u003d\u003d this-\u003ecanAttemptBlurredRRectDraw(paint));`?",
+      "range": {
+        "startLine": 1999,
+        "startChar": 0,
+        "endLine": 1999,
+        "endChar": 64
+      },
+      "revId": "f3abbad918663079ac1f1f8f0e8b5e6d4b0c1cce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
