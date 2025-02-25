@@ -16,6 +16,24 @@
       "message": "Isn\u0027t this, and all of the below, not going to compile when SK_IGNORE_RENDER_PASS_PROPERTIES_COLOR_SPACE is defined ?",
       "revId": "5cb9614a3edc010f94059128380f2255df19ab5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a40f9e8e_37dacf4b",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-25T21:17:38Z",
+      "side": 1,
+      "message": "Yea. I had figured we could make certain assumptions about what flags are defined when we build our tests, but anyhow I\u0027ve added the check to the tests.",
+      "parentUuid": "a9c79d41_c71d37a3",
+      "revId": "5cb9614a3edc010f94059128380f2255df19ab5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
