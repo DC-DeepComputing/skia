@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f009e29a_fc66d88e",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T17:01:23Z",
+      "side": 1,
+      "message": "Per offline discussion, the `can_attempt_blurred_rrect_draw` function will be used to check if we should take `attemptBlurredRRectDraw()`, which will be updated to take in the blur mask filter returned by `can_attempt_blurred_rrect_draw`.\n\nAnd my original comment should have read `if (paint.getMaskFilter() \u0026\u0026 ...)`, although all of that is handled by the existing utility function.",
+      "parentUuid": "7006ceb5_c59aeaee",
+      "range": {
+        "startLine": 2102,
+        "startChar": 0,
+        "endLine": 2102,
+        "endChar": 95
+      },
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ccdb8384_8fbfe1ba",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-25T15:44:45Z",
       "side": 1,
       "message": "Copy pasta `!` here",
+      "range": {
+        "startLine": 2121,
+        "startChar": 8,
+        "endLine": 2121,
+        "endChar": 9
+      },
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77786ea3_2d3d7da8",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T17:01:23Z",
+      "side": 1,
+      "message": "Brain fart on my part, I was thinking of getMaskFilter().",
+      "parentUuid": "ccdb8384_8fbfe1ba",
       "range": {
         "startLine": 2121,
         "startChar": 8,
