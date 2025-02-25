@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a922f28_05ee9368",
+        "filename": "src/core/SkCoreBlitters.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-25T18:02:46Z",
+      "side": 1,
+      "message": "It\u0027s easy to forget all the related dependency rules, let\u0027s be explicit and also declare the copy constructor/assignment operator as deleted.\n\nAlso, we can hoist the deletion to the base class (SkBlitter) - then we don\u0027t have to declare them in each subclass.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 51,
+        "endChar": 59
+      },
+      "revId": "18493bd77052e0d4402d9cdfa0606348c484a940",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
