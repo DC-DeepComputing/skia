@@ -97,9 +97,12 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
             attachmentIdxKeyInfo |=
                     (hasDepthStencilAttachment ? VulkanRenderPass::kDepthStencilAttachmentIdx
                                                : kAttachmentUnused) << 16;
+            // If this RP supports reading the dst as an input attachment, then the input attachment
+            // for the main subpass is the color texture.
             attachmentIdxKeyInfo |=
                     (supportReadingDstAsInput ? VulkanRenderPass::kColorAttachmentIdx
                                               : kAttachmentUnused) << 24;
+
             builder[builderIdx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
             builder[builderIdx++] =
@@ -368,8 +371,8 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
                 &vkDepthStencilAttachDesc,
                 depthStencilTexInfo,
                 depthStencilAttachDesc,
-                compatibleOnly ? LoadOp::kDiscard   : depthStencilAttachDesc.fLoadOp,
-                compatibleOnly ? StoreOp::kDiscard  : depthStencilAttachDesc.fStoreOp,
+                compatibleOnly ? LoadOp::kDiscard   : rpDesc.fDepthStencilAttachment.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard  : rpDesc.fDepthStencilAttachment.fStoreOp,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
     } else {

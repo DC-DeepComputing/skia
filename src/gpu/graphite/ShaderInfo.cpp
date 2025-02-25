@@ -179,7 +179,8 @@ std::string emit_paint_params_uniforms(int set,
                                        const Layout layout,
                                        SkSpan<const ShaderNode*> nodes,
                                        bool* hasUniforms,
-                                       bool* wrotePaintColor) {
+                                       bool* wrotePaintColor,
+                                       int nonDefaultSetIdx) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
     std::string result = get_uniform_header(set, bufferID, "FS");
@@ -200,7 +201,8 @@ std::string emit_paint_params_uniforms(int set,
 std::string emit_render_step_uniforms(int set,
                                       int bufferID,
                                       const Layout layout,
-                                      SkSpan<const Uniform> uniforms) {
+                                      SkSpan<const Uniform> uniforms,
+                                      int nonDefaultSetIdx) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
     std::string result = get_uniform_header(set, bufferID, "Step");
@@ -681,7 +683,22 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
+
     preamble += emit_intrinsic_constants(bindingReqs);
+
+    if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+        // todo(nep): comment
+        SkASSERT(bindingReqs.fInputAttachmentSetIdx);
+        // todo (nep): format
+        SkSL::String::appendf(
+                &preamble,
+                "layout (vulkan, input_attachment_index=%d, set=%d, binding=%d) "
+                "subpassInput DstTextureInput;\n",
+                /*input attachment idx within set=*/0,
+                /*input attachment set idx=*/bindingReqs.fInputAttachmentSetIdx,
+                /*binding=*/0);
+    }
+
     if (hasStepUniforms) {
         if (useStepStorageBuffer) {
             preamble += emit_render_step_storage_buffer(bindingReqs.fUniformsSetIdx,
@@ -691,11 +708,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             preamble += emit_render_step_uniforms(bindingReqs.fUniformsSetIdx,
                                                   bindingReqs.fRenderStepBufferBinding,
                                                   bindingReqs.fUniformBufferLayout,
-                                                  step->uniforms());
+                                                  step->uniforms(),
+                                                  bindingReqs.fUniformsSetIdx);
         }
     }
 
     bool wrotePaintColor = false;
+
     if (useShadingStorageBuffer) {
         preamble += emit_paint_params_storage_buffer(bindingReqs.fUniformsSetIdx,
                                                      bindingReqs.fPaintParamsBufferBinding,
@@ -709,7 +728,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                                bindingReqs.fUniformBufferLayout,
                                                fRootNodes,
                                                &fHasPaintUniforms,
-                                               &wrotePaintColor);
+                                               &wrotePaintColor,
+                                               bindingReqs.fUniformsSetIdx);
     }
 
     if (useGradientStorageBuffer) {
@@ -799,6 +819,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // TODO: Get read swizzle from caps (getReadSwizzle(SkColorType, const TextureInfo&))
+            mainBody += "// Read color from input attachment\n";
+            mainBody += "dstColor = subpassLoad(DstTextureInput);\n";
         } else {
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
@@ -982,7 +1006,8 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
             sksl += emit_render_step_uniforms(bindingReqs.fUniformsSetIdx,
                                               bindingReqs.fRenderStepBufferBinding,
                                               bindingReqs.fUniformBufferLayout,
-                                              step->uniforms());
+                                              step->uniforms(),
+                                              bindingReqs.fUniformsSetIdx);
         }
     }
 
