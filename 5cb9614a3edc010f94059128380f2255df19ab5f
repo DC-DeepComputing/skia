@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9c79d41_c71d37a3",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-25T21:09:30Z",
+      "side": 1,
+      "message": "Isn\u0027t this, and all of the below, not going to compile when SK_IGNORE_RENDER_PASS_PROPERTIES_COLOR_SPACE is defined ?",
+      "revId": "5cb9614a3edc010f94059128380f2255df19ab5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
