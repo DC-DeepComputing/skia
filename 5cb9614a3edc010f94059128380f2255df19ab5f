@@ -34,6 +34,24 @@
       "parentUuid": "a9c79d41_c71d37a3",
       "revId": "5cb9614a3edc010f94059128380f2255df19ab5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36a5086b_3b1f1a7e",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-25T21:47:03Z",
+      "side": 1,
+      "message": "Oh - you\u0027re actually correct. Since all the uses were in the tests (which Chrome doesn\u0027t compile) the earlier patch would\u0027ve been fine. Sorry!",
+      "parentUuid": "a40f9e8e_37dacf4b",
+      "revId": "5cb9614a3edc010f94059128380f2255df19ab5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
