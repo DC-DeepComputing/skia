@@ -2114,7 +2114,24 @@ void SkCanvas::onDrawArc(const SkRect& oval, SkScalar startAngle,
         return;
     }
 
-    auto layer = this->aboutToDraw(paint, &oval);
+    std::optional<AutoLayerForImageFilter> layer;
+
+    // For sweeps >= 360°, simple fills and simple strokes without the center point or square caps
+    // are ovals. In this case, attempt a specialized blurred draw.
+    if (!paint.getPathEffect() &&
+        SkScalarAbs(sweepAngle) >= 360.f &&
+        (paint.getStyle() == SkPaint::kFill_Style ||
+         (paint.getStyle() == SkPaint::kStroke_Style &&
+          // square caps can stick out from the shape so we can't do this with an rrect draw
+          paint.getStrokeCap() != SkPaint::kSquare_Cap &&
+          // non-wedge cases with strokes will draw lines to the center
+          !useCenter))) {
+        layer = this->attemptBlurredRRectDraw(SkRRect::MakeOval(oval), paint, PredrawFlags::kNone);
+
+    } else {
+        layer = this->aboutToDraw(paint, &oval);
+    }
+
     if (layer) {
         this->topDevice()->drawArc(SkArc::Make(oval, startAngle, sweepAngle, useCenter),
                                    layer->paint());
