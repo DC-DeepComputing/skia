@@ -337,7 +337,6 @@ void test_get_pipeline_label_api(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, std::string::npos != label.find("UserDefinedKnownRuntimeEffect"));
 }
 
-
 } // anonymous namespace
 
 // This test adds some user-defined stably-keyed runtime effects and then verifies that

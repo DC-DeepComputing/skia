@@ -94,6 +94,8 @@ public:
 
     // This method is only used on user-defined known runtime effects
     static void SetStableKey(SkRuntimeEffect* effect, uint32_t stableKey) {
+        // The stable keys for Skia's internal known runtime effects are assigned via the
+        // other SetStableKey entry point.
         SkASSERT(!effect->fStableKey);
         SkASSERT(SkKnownRuntimeEffects::IsViableUserDefinedKnownRuntimeEffect(stableKey));
         effect->fStableKey = stableKey;
