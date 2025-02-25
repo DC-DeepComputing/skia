@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c8b4907_5dd35c5f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-25T15:35:45Z",
+      "side": 1,
+      "message": "This is copied from gpu/graphite/Device.cpp, so we end up with some annoying duplicated logic.",
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c53713f0_1a12457c",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-25T15:35:45Z",
+      "side": 1,
+      "message": "Does this have a typo? It seems to me like this is describing the \"wedge case\", not the \"non-wedge case\".",
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
