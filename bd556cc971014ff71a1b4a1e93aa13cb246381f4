@@ -20,6 +20,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7006ceb5_c59aeaee",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T15:44:45Z",
+      "side": 1,
+      "message": "Can we add a similar `if(paint.getPathEffect() \u0026\u0026 paint.getStyle() \u003d\u003d SkPaint::kFill_Style)` here to avoid constructing an unnecessary SkRRect in the non-maskfilter case?",
+      "range": {
+        "startLine": 2102,
+        "startChar": 0,
+        "endLine": 2102,
+        "endChar": 95
+      },
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccdb8384_8fbfe1ba",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T15:44:45Z",
+      "side": 1,
+      "message": "Copy pasta `!` here",
+      "range": {
+        "startLine": 2121,
+        "startChar": 8,
+        "endLine": 2121,
+        "endChar": 9
+      },
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c53713f0_1a12457c",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 1
@@ -31,6 +77,24 @@
       "writtenOn": "2025-02-25T15:35:45Z",
       "side": 1,
       "message": "Does this have a typo? It seems to me like this is describing the \"wedge case\", not the \"non-wedge case\".",
+      "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc1f6981_473ecd5d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-25T15:44:45Z",
+      "side": 1,
+      "message": "Hmm, that does seem like the case.\n\nBut for this check in SkCanvas, we only care about kFill_Style and not stroked arcs since `attemptBlurredRRectDraw()` requires fills.",
+      "parentUuid": "c53713f0_1a12457c",
       "revId": "bd556cc971014ff71a1b4a1e93aa13cb246381f4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
