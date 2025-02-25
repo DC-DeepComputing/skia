@@ -47,6 +47,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dd79961_8dbf32cb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-25T18:15:48Z",
+      "side": 1,
+      "message": "I didn\u0027t see any mention of the intentional no-rounding in the original code, nor the \"tolerance range\". If performance is that sensitive, would you suggest a test case so I can measure the performance impact?\n\nIn addition, such minute rendering differences could enable digital fingerprinting, and make comparison results with other architectures unnecessarily noisy. With this change applied loong64 actually produces mostly identical output as amd64 for the dm test suite.",
+      "parentUuid": "5c7672fa_c0225dcf",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "3c6d414cd3e274d08a6659561a46a936681e6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2608cda8_98e0c851",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-25T18:15:48Z",
+      "side": 1,
+      "message": "Sorry I don\u0027t think it\u0027s an acceptable compromise, because doing so makes reasoning about compiled code a lot harder due to all the optimizations. At the very least, we should probably remove the assertion on loong64 and other platforms without the x86-and-arm-like rounding (if there are any); I doubt that would be feasible either.",
+      "parentUuid": "ca78b82c_8a1fb26d",
+      "range": {
+        "startLine": 10,
+        "startChar": 61,
+        "endLine": 10,
+        "endChar": 69
+      },
+      "revId": "3c6d414cd3e274d08a6659561a46a936681e6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6b8583bc_76477e8b",
