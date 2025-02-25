@@ -336,7 +336,7 @@ const ShaderSnippet* ShaderCodeDictionary::getEntry(int codeSnippetID) const {
         return &fUserDefinedKnownCodeSnippets[index];
     }
 
-    if (codeSnippetID >= kUnknownRuntimeEffectIDStart) {
+    if (IsUserDefinedRuntimeEffect(codeSnippetID)) {
         int userDefinedCodeSnippetID = codeSnippetID - kUnknownRuntimeEffectIDStart;
         if (userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size())) {
             return &fUserDefinedCodeSnippets[userDefinedCodeSnippetID];
@@ -576,7 +576,7 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
         effect = shaderInfo.shaderCodeDictionary()->getUserDefinedKnownRuntimeEffect(
                 node->codeSnippetId());
     } else {
-        SkASSERT(node->codeSnippetId() >= kUnknownRuntimeEffectIDStart);
+        SkASSERT(IsUserDefinedRuntimeEffect(node->codeSnippetId()));
         effect = shaderInfo.runtimeEffectDictionary()->find(node->codeSnippetId());
     }
     // This should always be true given the circumstances in which we call convertRuntimeEffect
@@ -615,7 +615,7 @@ bool ShaderCodeDictionary::isValidID(int snippetID) const {
 
     SkAutoSpinlock lock{fSpinLock};
 
-    if (snippetID >= kUnknownRuntimeEffectIDStart) {
+    if (IsUserDefinedRuntimeEffect(snippetID)) {
         int userDefinedCodeSnippetID = snippetID - kUnknownRuntimeEffectIDStart;
         return userDefinedCodeSnippetID < SkTo<int>(fUserDefinedCodeSnippets.size());
     }
@@ -767,7 +767,10 @@ int ShaderCodeDictionary::findOrCreateRuntimeEffectSnippet(const SkRuntimeEffect
     // TODO: the memory for user-defined entries could go in the dictionary's arena but that
     // would have to be a thread safe allocation since the arena also stores entries for
     // 'fHash' and 'fEntryVector'
-    fUserDefinedCodeSnippets.push_back(this->convertRuntimeEffect(effect, "RuntimeEffect"));
+    static const char* kDefaultName = "RuntimeEffect";
+    fUserDefinedCodeSnippets.push_back(this->convertRuntimeEffect(effect,
+      SkRuntimeEffectPriv::FooName(*effect).isEmpty() ? kDefaultName
+                                                      : SkRuntimeEffectPriv::FooName(*effect).c_str()));
     int newCodeSnippetID = kUnknownRuntimeEffectIDStart + fUserDefinedCodeSnippets.size() - 1;
 
     fRuntimeEffectMap.set(key, newCodeSnippetID);
@@ -803,8 +806,11 @@ void ShaderCodeDictionary::registerUserDefinedKnownRuntimeEffects(
             continue;           // This is a duplicate
         }
 
-        const char* kName = "UserDefinedKnownRuntimeEffect";
-        fUserDefinedKnownCodeSnippets.push_back(this->convertRuntimeEffect(u.get(), kName));
+        static const char* kDefaultName = "UserDefinedKnownRuntimeEffect";
+        fUserDefinedKnownCodeSnippets.push_back(this->convertRuntimeEffect(
+                    u.get(),
+                    SkRuntimeEffectPriv::FooName(*u).isEmpty() ? kDefaultName
+                                                               : SkRuntimeEffectPriv::FooName(*u).c_str()));
         int stableID = kUserDefinedKnownRuntimeEffectsStart +
                        fUserDefinedKnownCodeSnippets.size() - 1;
 
