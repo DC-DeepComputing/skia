@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03076649_1b724d1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-26T08:14:18Z",
+      "side": 1,
+      "message": "Due to unresolved concerns on CL 908136, I\u0027ve rebased and reordered this CL to precede that one, to allow this part to mainline sooner.",
+      "revId": "b99a08e1d837d28160b2dc81015fc37fcc61e17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
