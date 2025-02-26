@@ -199,6 +199,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
 
     RenderPassProperties renderPassProps;
     renderPassProps.fDSFlags = DepthStencilFlags::kDepth;
+    renderPassProps.fIsProtected = skgpu::Protected(context->supportsProtectedContent());
 
     Precompile(precompileContext,
                paintOptions,
