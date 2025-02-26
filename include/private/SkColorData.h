@@ -277,15 +277,15 @@ static inline SkPMColor SkBlendARGB32(SkPMColor src, SkPMColor dst, U8CPU aa) {
     unsigned src_scale = SkAlpha255To256(aa);
     unsigned dst_scale = SkAlphaMulInv256(SkGetPackedA32(src), src_scale);
 
-    const uint32_t mask = 0xFF00FF;
+    static constexpr uint32_t kMask = 0xFF00FF;
 
-    uint32_t src_rb = (src & mask) * src_scale;
-    uint32_t src_ag = ((src >> 8) & mask) * src_scale;
+    uint32_t src_rb = (src & kMask) * src_scale;
+    uint32_t src_ag = ((src >> 8) & kMask) * src_scale;
 
-    uint32_t dst_rb = (dst & mask) * dst_scale;
-    uint32_t dst_ag = ((dst >> 8) & mask) * dst_scale;
+    uint32_t dst_rb = (dst & kMask) * dst_scale;
+    uint32_t dst_ag = ((dst >> 8) & kMask) * dst_scale;
 
-    return (((src_rb + dst_rb) >> 8) & mask) | ((src_ag + dst_ag) & ~mask);
+    return (((src_rb + dst_rb) >> 8) & kMask) | ((src_ag + dst_ag) & ~kMask);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////

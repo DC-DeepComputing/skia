@@ -1449,14 +1449,8 @@ SkARGB32_Blitter::SkARGB32_Blitter(const SkPixmap& device, const SkPaint& paint)
         : SkRasterBlitter(device) {
     SkColor color = paint.getColor();
     fColor = color;
-
     fSrcA = SkColorGetA(color);
-    unsigned scale = SkAlpha255To256(fSrcA);
-    fSrcR = SkAlphaMul(SkColorGetR(color), scale);
-    fSrcG = SkAlphaMul(SkColorGetG(color), scale);
-    fSrcB = SkAlphaMul(SkColorGetB(color), scale);
-
-    fPMColor = SkPackARGB32(fSrcA, fSrcR, fSrcG, fSrcB);
+    fPMColor = SkPreMultiplyColor(fColor);
 }
 
 #if defined _WIN32  // disable warning : local variable used without having been initialized
@@ -1473,12 +1467,12 @@ void SkARGB32_Blitter::blitH(int x, int y, int width) {
 
 void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
                                  const int16_t runs[]) {
+    SkASSERT(fSrcA != 0xFF);  // There is an opaque specialization
     if (fSrcA == 0) {
         return;
     }
 
-    uint32_t*   device = fDevice.writable_addr32(x, y);
-    const unsigned opaqueMask = fSrcA;  // if fSrcA is 0xFF, then we will catch the fast opaque case
+    uint32_t* device = fDevice.writable_addr32(x, y);
 
     for (;;) {
         int count = runs[0];
@@ -1486,14 +1480,10 @@ void SkARGB32_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
         if (count <= 0) {
             return;
         }
-        unsigned aa = antialias[0];
+        SkAlpha aa = antialias[0];
         if (aa) {
-            if ((opaqueMask & aa) == 255) {
-                SkOpts::memset32(device, fPMColor, count);
-            } else {
-                SkPMColor sc = SkAlphaMulQ(fPMColor, SkAlpha255To256(aa));
-                SkBlitRow::Color32(device, count, sc);
-            }
+            SkPMColor sc = SkAlphaMulQ(fPMColor, SkAlpha255To256(aa));
+            SkBlitRow::Color32(device, count, sc);
         }
         runs += count;
         antialias += count;
@@ -1584,6 +1574,7 @@ void SkARGB32_Blitter::blitMask(const SkMask& mask, const SkIRect& clip) {
 
 void SkARGB32_Opaque_Blitter::blitMask(const SkMask& mask,
                                        const SkIRect& clip) {
+    SkASSERT(fSrcA == 0xFF);
     SkASSERT(mask.fBounds.contains(clip));
 
     if (blit_color(fDevice, mask, clip, fColor)) {
@@ -1599,6 +1590,30 @@ void SkARGB32_Opaque_Blitter::blitMask(const SkMask& mask,
             break;
         default:
             SK_ABORT("Mask format not handled.");
+    }
+}
+
+void SkARGB32_Opaque_Blitter::blitAntiH(int x, int y, const SkAlpha antialias[],
+                                        const int16_t runs[]) {
+    SkASSERT(fSrcA == 0xFF);
+
+    uint32_t* device = fDevice.writable_addr32(x, y);
+    for (;;) {
+        int count = runs[0];
+        SkASSERT(count >= 0);
+        if (count <= 0) {
+            return;
+        }
+        SkAlpha aa = antialias[0];
+        if (aa == 255) {
+            SkOpts::memset32(device, fPMColor, count);
+        } else if (aa > 0) {
+            SkPMColor sc = SkAlphaMulQ(fPMColor, SkAlpha255To256(aa));
+            SkBlitRow::Color32(device, count, sc);
+        }
+        runs += count;
+        antialias += count;
+        device += count;
     }
 }
 
