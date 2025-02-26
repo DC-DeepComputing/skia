@@ -199,6 +199,7 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
 
     RenderPassProperties renderPassProps;
     renderPassProps.fDSFlags = DepthStencilFlags::kDepth;
+    renderPassProps.fIsProtected = skgpu::Protected(context->supportsProtectedContent());
 
     Precompile(precompileContext,
                paintOptions,
@@ -347,7 +348,7 @@ void test_get_pipeline_label_api(skiatest::Reporter* reporter,
 //    4) the normal (non-serialized-key) Precompile API generates the same keys.
 //    5) if the blessed stable runtime-effects aren't used, the free-range runtime-effects are
 //       mapped back to the stable runtime-effects (clients really shouldn't do this though!)
-DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest,
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserAADefinedStableKeyTest,
                                            skgpu::IsRenderingContext,
                                            reporter,
                                            origContext,
