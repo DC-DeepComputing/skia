@@ -223,8 +223,10 @@ void reset_and_recreate_pipelines_with_normal_precompile_api(
         REPORTER_ASSERT(reporter, foundIt);
     }
     {
+        androidStyleKeys[0]->dump("needle:");
         bool foundIt = false;
         for (const sk_sp<SkData>& k : recreatedAndroidStyleKeys) {
+            k->dump("haystack:");
             if (androidStyleKeys[0]->equals(k.get())) {
                 foundIt = true;
                 break;
@@ -314,7 +316,7 @@ void test_sksl_reuse(skiatest::Reporter* reporter,
 //    4) the normal (non-serialized-key) Precompile API generates the same keys.
 //    5) if the blessed stable runtime-effects aren't used, the free-range runtime-effects are
 //       mapped back to the stable runtime-effects (clients really shouldn't do this though!)
-DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest,
+DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserAADefinedStableKeyTest,
                                            skgpu::IsRenderingContext,
                                            reporter,
                                            origContext,

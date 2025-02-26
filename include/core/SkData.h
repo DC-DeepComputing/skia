@@ -24,6 +24,7 @@ class SkStream;
  */
 class SK_API SkData final : public SkNVRefCnt<SkData> {
 public:
+    void dump(const char* label);
     /**
      *  Returns the number of bytes stored.
      */
