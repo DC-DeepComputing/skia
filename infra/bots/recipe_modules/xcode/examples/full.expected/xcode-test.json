@@ -1,0 +1,40 @@
+[
+  {
+    "cmd": [],
+    "name": "ensure xcode",
+    "~followup_annotations": [
+      "@@@STEP_SUMMARY_TEXT@Ensuring Xcode version 16a242d in [START_DIR]/cache/Xcode.app@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "[START_DIR]/mac_toolchain/mac_toolchain",
+      "install",
+      "-kind",
+      "ios",
+      "-xcode-version",
+      "16a242d",
+      "-output-dir",
+      "[START_DIR]/cache/Xcode.app"
+    ],
+    "name": "ensure xcode.install xcode",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "cmd": [
+      "sudo",
+      "xcode-select",
+      "-switch",
+      "[START_DIR]/cache/Xcode.app"
+    ],
+    "name": "ensure xcode.select xcode",
+    "~followup_annotations": [
+      "@@@STEP_NEST_LEVEL@1@@@"
+    ]
+  },
+  {
+    "name": "$result"
+  }
+]
