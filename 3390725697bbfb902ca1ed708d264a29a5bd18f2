@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc24fe9_49363855",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3912977
+      },
+      "writtenOn": "2025-02-26T20:46:17Z",
+      "side": 1,
+      "message": "I\u0027m entirely new to every aspect of this, but trying to help with C2PA.  Thanks!",
+      "revId": "3390725697bbfb902ca1ed708d264a29a5bd18f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
