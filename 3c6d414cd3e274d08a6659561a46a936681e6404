@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d61d8a59_ef787c40",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2025-02-26T01:44:56Z",
+      "side": 1,
+      "message": "For skia correctness testing, please refes as https://skia.org/docs/dev/testing/testing/.  And the \u0027dm --src gm\u0027  tests is mainly tested for the SIMD-opt snippets. You can use \u0027-w\u0027 option to view the image outputs.  And also you can find there is some tolerance with C/SSE switches in X64. If no discernible visual differences are introduced to the output image, the optimizations may be acceptable.\n\nAs for skia performance tests， we don\u0027t use the skia nonebench tests. We found that Skia has a significant impact on Chromium(no-gpu or disable gpu accelerate) rendering, scrolling and so on. So if it\u0027s interest for you, you can port this CL to chromium and do tests.",
+      "parentUuid": "9dd79961_8dbf32cb",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "3c6d414cd3e274d08a6659561a46a936681e6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6b8583bc_76477e8b",
