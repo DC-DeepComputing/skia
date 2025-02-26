@@ -94,7 +94,7 @@ void Precompile(PrecompileContext* precompileContext,
         // TODO: Allow the client to pass in mipmapping and protection too?
         TextureInfo info = caps->getDefaultSampledTextureInfo(rpp.fDstCT,
                                                               Mipmapped::kNo,
-                                                              Protected::kNo,
+                                                              rpp.fIsProtected,
                                                               Renderable::kYes);
 
         Swizzle writeSwizzle = caps->getWriteSwizzle(rpp.fDstCT, info);

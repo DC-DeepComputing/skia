@@ -121,9 +121,20 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
 
 [[nodiscard]] bool serialize_attachment_desc(SkWStream* stream,
                                              const AttachmentDesc& attachmentDesc) {
+
+    stream->write8(255);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(255);
+
     if (!TextureInfoPriv::Serialize(stream, attachmentDesc.fTextureInfo)) {
         return false;
     }
+
+    stream->write8(254);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(254);
 
     if (attachmentDesc.fTextureInfo.isValid()) {
         if (!stream->write32(SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fStoreOp),
@@ -133,15 +144,31 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
+    stream->write8(253);
+    stream->write8(0);
+    stream->write8(0);
+    stream->write8(253);
+
     return true;
 }
 
 [[nodiscard]] bool deserialize_attachment_desc(const Caps* caps,
                                                SkStream* stream,
                                                AttachmentDesc* attachmentDesc) {
+    uint8_t tmp;
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+
     if (!TextureInfoPriv::Deserialize(caps, stream, &attachmentDesc->fTextureInfo)) {
         return false;
     }
+
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
 
     if (attachmentDesc->fTextureInfo.isValid()) {
         uint32_t tag;
@@ -152,6 +179,11 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         attachmentDesc->fStoreOp = static_cast<StoreOp>(0xF & (tag >> 24));
         attachmentDesc->fLoadOp  = static_cast<LoadOp> (0xF & (tag >> 16));
     }
+
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
+    (void) stream->readU8(&tmp);
 
     return true;
 }
