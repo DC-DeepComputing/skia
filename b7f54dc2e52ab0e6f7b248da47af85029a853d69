@@ -16,6 +16,98 @@
       "message": "Marking my note comments as unresolved so they show up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
       "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b850597d_4f90c376",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-26T16:32:24Z",
+      "side": 1,
+      "message": "I don\u0027t think we\u0027ll ever read the resolve as our dst input attachment. Either we\u0027ll be single sampled and thus not have a resolve. Or, once we support msaa dst reads, will be reading from the color attachment. So we may need some logic about what layout the color attachment ends up. On that end you should look at the spec for all the things involving VK_IMAGE_LAYOUT_ATTACHMENT_FEEDBACK_LOOP_OPTIMAL_EXT and see how supported that is and if that is a more useful layout for us.",
+      "range": {
+        "startLine": 594,
+        "startChar": 4,
+        "endLine": 595,
+        "endChar": 37
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f09e4b40_95d32c20",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-26T16:32:24Z",
+      "side": 1,
+      "message": "not true and described above",
+      "range": {
+        "startLine": 632,
+        "startChar": 7,
+        "endLine": 632,
+        "endChar": 41
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f7e50eb_67198508",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-26T16:32:24Z",
+      "side": 1,
+      "message": "again shouldn\u0027t be needed for resolve",
+      "range": {
+        "startLine": 324,
+        "startChar": 49,
+        "endLine": 324,
+        "endChar": 77
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b25983a_55f3cfd7",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-26T16:32:24Z",
+      "side": 1,
+      "message": "Do we want to put in this dependency all the time even without an input attachment or should it just be every time there is an input attachment?",
+      "range": {
+        "startLine": 388,
+        "startChar": 5,
+        "endLine": 395,
+        "endChar": 71
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
