@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3dee440f_54d612e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-26T18:25:03Z",
+      "side": 1,
+      "message": "CC\u0027ing Greg and Nicolette to weigh in on protected-ness requirements for pipeline creation.",
+      "revId": "dafd32b2fcc19cd485fc6776da67f49cb0074c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9960ef3_94974583",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-26T18:25:03Z",
+      "side": 1,
+      "message": "nit: out of date.",
+      "range": {
+        "startLine": 94,
+        "startChar": 60,
+        "endLine": 94,
+        "endChar": 70
+      },
+      "revId": "dafd32b2fcc19cd485fc6776da67f49cb0074c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "220e97e9_11e67728",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-02-26T18:25:03Z",
+      "side": 1,
+      "message": "Do we really need to pass in protected for compilation?\n\nLooking through the vulkan graphics pipeline and renderpass code, there are currently no references to an attachment\u0027s TextureInfo being protected (or being memoryless for that matter).  I don\u0027t know if this is a bug in the pipeline creation code, or if we don\u0027t actually require protectedness to be set when creating the pipelines.\n\nIf the latter is true, then we presumably are only hitting protected issues here because RenderPassDescs require a full TextureInfo instead of just format+sampleCount, and we assert that protectedness matches what was set on the Caps?  With my proposal to simplify attachments to be just a generic TextureFormat enum value + samplecount, then maybe the need for this change goes away?",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 79
+      },
+      "revId": "dafd32b2fcc19cd485fc6776da67f49cb0074c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
