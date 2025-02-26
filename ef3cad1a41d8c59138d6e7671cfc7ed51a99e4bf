@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c02889e_cbde2175",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "8eec4eda_9230ac7a",
+      "range": {
+        "startLine": 606,
+        "startChar": 0,
+        "endLine": 665,
+        "endChar": 0
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "0f160e06_cc0a32b9",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-20T21:51:47Z",
       "side": 1,
       "message": "Note: Changed this param name to be consistent w/ other methods that now use this shorter variable name.",
+      "range": {
+        "startLine": 678,
+        "startChar": 30,
+        "endLine": 678,
+        "endChar": 36
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5972ac81_64e9d1da",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 678,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "0f160e06_cc0a32b9",
       "range": {
         "startLine": 678,
         "startChar": 30,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b4d5dfd_74d1b503",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "9be0c2c2_7ad324d3",
+      "range": {
+        "startLine": 278,
+        "startChar": 30,
+        "endLine": 278,
+        "endChar": 64
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "b3043045_24f40c48",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-02-20T21:51:47Z",
       "side": 1,
       "message": "Note: Just calling out that this self-dependency addition is an actual change of substance within one of the new helpers.",
+      "range": {
+        "startLine": 375,
+        "startChar": 0,
+        "endLine": 386,
+        "endChar": 71
+      },
+      "revId": "ef3cad1a41d8c59138d6e7671cfc7ed51a99e4bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a072a252_a21738da",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "b3043045_24f40c48",
       "range": {
         "startLine": 375,
         "startChar": 0,

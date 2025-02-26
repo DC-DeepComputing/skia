@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "523ee022_012e227c",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "87a0f3bc_ba1ce214",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 62
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "242225d4_dae189f3",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-21T19:21:40Z",
       "side": 1,
       "message": "Note that it is still useful to determine this and behave accordingly rather than just always trying to support this because \n1) renderpasses cannot be shared anyhow if one uses DstReadStrategy::kReadFromInput and another does not (which can happen if a render target is not usable as an input attachment, resulting in the usage of DstReadStrategy::kDstCopy) \n2) it enables us to use optimized layouts (like for color attachments) over general layouts",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 461,
+        "endChar": 89
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "327bc6c8_f15e8027",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-26T16:15:16Z",
+      "side": 1,
+      "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
+      "parentUuid": "242225d4_dae189f3",
       "range": {
         "startLine": 460,
         "startChar": 0,
