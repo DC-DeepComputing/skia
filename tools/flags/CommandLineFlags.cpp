@@ -392,8 +392,12 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 }  // namespace
 
 bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    SkTDArray<const char*> tmp;
+    tmp.push_back("UserAADefinedStableKeyTest");
+    return ShouldSkipImpl(tmp, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    StringArray tmp;
+    tmp.append("UserAADefinedStableKeyTest");
+    return ShouldSkipImpl(tmp, name);
 }

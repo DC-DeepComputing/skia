@@ -58,12 +58,19 @@ bool VulkanTextureInfo::serialize(SkWStream* stream) const {
     SkASSERT(SkTFitsIn<uint8_t>(fSharingMode));
     SkASSERT(SkTFitsIn<uint32_t>(fAspectMask));
 
+    stream->write8(77);
     if (!stream->write64(static_cast<uint64_t>(fFlags)))           { return false; }
+    stream->write8(77);
     if (!stream->write64(static_cast<uint64_t>(fFormat)))          { return false; }
+    stream->write8(77);
     if (!stream->write64(static_cast<uint64_t>(fImageUsageFlags))) { return false; }
+    stream->write8(77);
     if (!stream->write8(static_cast<uint8_t>(fImageTiling)))       { return false; }
+    stream->write8(77);
     if (!stream->write8(static_cast<uint8_t>(fSharingMode)))       { return false; }
+    stream->write8(77);
     if (!stream->write32(static_cast<uint32_t>(fAspectMask)))      { return false; }
+    stream->write8(77);
 
     return SerializeVkYCbCrInfo(stream, fYcbcrConversionInfo);
 }
@@ -71,27 +78,35 @@ bool VulkanTextureInfo::serialize(SkWStream* stream) const {
 // TODO(robertphillips): add validity checks to deserialized values
 bool VulkanTextureInfo::deserialize(SkStream* stream) {
     uint64_t tmp64;
+    uint8_t tmp;
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU64(&tmp64)) { return false; }
     fFlags = static_cast<VkImageCreateFlags>(tmp64);
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU64(&tmp64)) { return false; }
     fFormat = static_cast<VkFormat>(tmp64);
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU64(&tmp64)) { return false; }
     fImageUsageFlags = static_cast<VkImageUsageFlags>(tmp64);
 
     uint32_t tmp32;
     uint8_t tmp8;
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU8(&tmp8)) { return false; }
     fImageTiling = static_cast<VkImageTiling>(tmp8);
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU8(&tmp8)) { return false; }
     fSharingMode = static_cast<VkSharingMode>(tmp8);
 
+    (void) stream->readU8(&tmp);
     if (!stream->readU32(&tmp32)) { return false; }
     fAspectMask = static_cast<VkImageAspectFlags>(tmp32);
+    (void) stream->readU8(&tmp);
 
     return DeserializeVkYCbCrInfo(stream, &fYcbcrConversionInfo);
 }
