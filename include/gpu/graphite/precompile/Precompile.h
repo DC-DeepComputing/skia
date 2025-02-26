@@ -29,6 +29,7 @@ struct SK_API RenderPassProperties {
     sk_sp<SkColorSpace> fDstCS        = nullptr;
 #endif
     bool                fRequiresMSAA = false;
+    Protected           fIsProtected  = Protected::kNo;
 };
 
 /**
