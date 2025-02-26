@@ -1526,7 +1526,8 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         builder[idx++] = static_cast<uint32_t>(pipelineDesc.renderStepID());
         builder[idx++] = pipelineDesc.paintParamsID().asUInt();
         // Add RenderPass info relevant for pipeline creation that's not captured in RenderPass keys
-        builder[idx++] = renderPassDesc.fWriteSwizzle.asKey();
+        builder[idx++] = renderPassDesc.fWriteSwizzle.asKey() |
+                         ((uint8_t)renderPassDesc.fDstReadStrategy >> 16);
         // Add RenderPassDesc information
         VulkanRenderPass::AddRenderPassInfoToKey(rpMetaData, builder, idx, /*compatibleOnly=*/true);
 

@@ -43,7 +43,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
                                     Swizzle writeSwizzle,
-                                    const DstReadStrategy targetReadStrategy) {
+                                    const DstReadStrategy targetReadStrategyIfRequired) {
     RenderPassDesc desc;
     desc.fWriteSwizzle = writeSwizzle;
     desc.fSampleCount = 1;
@@ -103,16 +103,15 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
-    // Should a dst read be required later on, record what dst read strategy should be used. Must be
-    // a valid strategy.
-    SkASSERT(targetReadStrategy != DstReadStrategy::kNoneRequired);
-    desc.fDstReadStrategyIfRequired = targetReadStrategy;
+    desc.fDstReadStrategy = targetReadStrategyIfRequired;
 
     return desc;
 }
 
 SkString RenderPassDesc::toString() const {
-    // Note: Purposefully omitting the fDstReadStrategyIfRequired attribute. Since the shader /
+    // TODO(nep): add here
+
+    // Note: Purposefully omitting the fDstReadStrategy attribute. Since the shader /
     // pipeline actually determines whether a dst read is needed, it would make more sense to
     // report the actual used dst read strategy there.
     return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
