@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7f865ba_614a1d0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3649608
+      },
+      "writtenOn": "2025-02-26T05:29:44Z",
+      "side": 1,
+      "message": "I have checked the source again and it seems nontrivial to keep *both* the current scaled_mult implementation *and* the SkASSERT in constrained_add, because the assertion is there exactly for guaranteeing the invariant that the current scaled_mult is breaking, and there\u0027s no way with the current LoongArch hardware to do exactly \"mulhrs\" with \u003c5 insns.\n\nIf we are to keep the current scaled_mult implementation on LoongArch, we\u0027d effectively lose the ability to test debug builds on LoongArch. Or we\u0027d have to disable the checks in constrained_add in case of LSX or LASX, and keep rendering slightly differently (thus leaking information that the user is using this niche platform -- pretty high entropy for canvas fingerprinting techniques).\n\nP.S. I just calculated exact costs for the old vs new implementation, based on uarch information on https://jia.je/unofficial-loongarch-intrinsics-guide.\n\nlatency before: xvmuh.h 4 + xvslli.h 1 \u003d 5 ticks (LA464 and LA664)\nlatency after:  xvmulw{ev,od}.w.h 4 + xvsrari.w 3 + xvpackev.h 1 \u003d 8 ticks (LA464 and LA664)\n\nAlthough the cost is going up 60%, depending on the use case this may or may not be a problem. I\u0027d strongly prefer correctness over performance unless concrete numbers prove otherwise (10%+ FPS drop for real-world use cases IMO).",
+      "parentUuid": "d61d8a59_ef787c40",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 37
+      },
+      "revId": "3c6d414cd3e274d08a6659561a46a936681e6404",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "6b8583bc_76477e8b",
