@@ -4,6 +4,7 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkStream.h"
 #include "include/core/SkString.h"
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
@@ -51,6 +52,48 @@ bool DawnTextureInfo::isCompatible(const TextureInfo& that, bool requireExact) c
             DawnDescriptorsAreEquivalent(fYcbcrVkDescriptor, dt.fYcbcrVkDescriptor) &&
 #endif
             (fAspect == dt.fAspect || (!requireExact && fAspect == wgpu::TextureAspect::All));
+}
+
+bool DawnTextureInfo::serialize(SkWStream* stream) const {
+
+    if (!stream->write32(static_cast<uint32_t>(fFormat)))     { return false; }
+    if (!stream->write32(static_cast<uint32_t>(fViewFormat))) { return false; }
+    if (!stream->write64(static_cast<uint64_t>(fUsage)))      { return false; }
+    if (!stream->write32(static_cast<uint32_t>(fAspect)))     { return false; }
+    if (!stream->write32(fSlice))                             { return false; }
+    return true;
+}
+
+bool DawnTextureInfo::deserialize(SkStream* stream) {
+    uint32_t tmp32;
+
+    if (!stream->readU32(&tmp32)) {
+        return false;
+    }
+    // TODO(robertphillips): add validity checks to deserialized values
+    fFormat = static_cast<wgpu::TextureFormat>(tmp32);
+
+    if (!stream->readU32(&tmp32)) {
+        return false;
+    }
+    fViewFormat = static_cast<wgpu::TextureFormat>(tmp32);
+
+    uint64_t tmp64;
+    if (!stream->readU64(&tmp64)) {
+        return false;
+    }
+    fUsage = static_cast<wgpu::TextureUsage>(tmp64);
+
+    if (!stream->readU32(&tmp32)) {
+        return false;
+    }
+    fAspect = static_cast<wgpu::TextureAspect>(tmp32);
+
+    if (!stream->readU32(&fSlice)) {
+        return false;
+    }
+
+    return true;
 }
 
 namespace TextureInfos {
