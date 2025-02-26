@@ -50,7 +50,7 @@ namespace SK_OPTS_NS {
     static void D32_A8_Opaque_Color_neon(void* SK_RESTRICT dst, size_t dstRB,
                                          const void* SK_RESTRICT maskPtr, size_t maskRB,
                                          SkColor color, int width, int height) {
-        SkPMColor pmc = SkPreMultiplyColor(color);
+        const SkPMColor pmc = SkPreMultiplyColor(color);
         SkPMColor* SK_RESTRICT device = (SkPMColor*)dst;
         const uint8_t* SK_RESTRICT mask = (const uint8_t*)maskPtr;
         uint8x8x4_t vpmc;
