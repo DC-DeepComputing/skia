@@ -62,6 +62,30 @@
       },
       "revId": "dafd32b2fcc19cd485fc6776da67f49cb0074c32",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c9f0ca5_b3c4cb8b",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-02-26T20:17:00Z",
+      "side": 1,
+      "message": "\"When the protectedMemory feature is enabled, all pipelines may be recorded in either protected or unprotected command buffers (or both), which may incur an extra cost on some implementations. This can be mitigated by enabling the pipelineProtectedAccess feature, in which case pipelines created with VK_PIPELINE_CREATE_PROTECTED_ACCESS_ONLY_BIT may only be recorded in protected command buffers, and pipelines created with VK_PIPELINE_CREATE_NO_PROTECTED_ACCESS_BIT may only be recorded in unprotected command buffers.\"",
+      "parentUuid": "220e97e9_11e67728",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 79
+      },
+      "revId": "dafd32b2fcc19cd485fc6776da67f49cb0074c32",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
