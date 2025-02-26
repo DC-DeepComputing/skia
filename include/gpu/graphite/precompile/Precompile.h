@@ -26,6 +26,7 @@ struct SK_API RenderPassProperties {
     DepthStencilFlags fDSFlags      = DepthStencilFlags::kNone;
     SkColorType       fDstCT        = kRGBA_8888_SkColorType;
     bool              fRequiresMSAA = false;
+    Protected         fIsProtected  = Protected::kNo;
 };
 
 /**
