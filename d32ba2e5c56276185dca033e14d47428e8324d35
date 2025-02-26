@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0206c5d2_4ca4ae9c",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 7839
+      },
+      "writtenOn": "2025-02-26T00:35:33Z",
+      "side": 1,
+      "message": "Sorry for the random drive-by egdaniel@. I might be misunderstanding the logic here, but should this possibly be \u003d\u003d ?",
+      "fixSuggestions": [
+        {
+          "fixId": "6581877e_37726151",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+              "range": {
+                "startLine": 354,
+                "startChar": 0,
+                "endLine": 355,
+                "endChar": 0
+              },
+              "replacement": "    if (srcStageMask \u003d\u003d VK_PIPELINE_STAGE_HOST_BIT) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d32ba2e5c56276185dca033e14d47428e8324d35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
