@@ -121,7 +121,7 @@ skia_component("window") {
     if (is_android) {
       sources += [ "android/VulkanWindowContext_android.cpp" ]
       if (skia_enable_graphite) {
-        sources += [ "android/GraphiteVulkanWindowContext_android.cpp" ]
+        sources += ["android/GraphiteVulkanWindowContext_android.cpp" ]
       }
     } else if (is_linux) {
       sources += [
@@ -209,6 +209,16 @@ skia_component("window") {
             "GraphiteDawnWindowContext.h",
             "mac/GraphiteDawnMetalWindowContext_mac.h",
             "mac/GraphiteDawnMetalWindowContext_mac.mm",
+          ]
+        }
+      }
+    } else if (is_android) {
+      if (dawn_enable_vulkan) {
+        if (skia_enable_graphite) {
+          sources += [
+            "GraphiteDawnWindowContext.cpp",
+            "GraphiteDawnWindowContext.h",
+            "android/GraphiteDawnVulkanWindowContext_android.cpp",
           ]
         }
       }

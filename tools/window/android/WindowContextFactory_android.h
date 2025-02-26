@@ -23,6 +23,10 @@ std::unique_ptr<WindowContext> MakeVulkanForAndroid(ANativeWindow*,
 std::unique_ptr<WindowContext> MakeGraphiteVulkanForAndroid(ANativeWindow*,
                                                             std::unique_ptr<const DisplayParams>);
 
+
+std::unique_ptr<WindowContext> MakeGraphiteDawnVulkanForAndroid(ANativeWindow*,
+                                                                std::unique_ptr<const DisplayParams>);
+
 std::unique_ptr<WindowContext> MakeGLForAndroid(ANativeWindow*,
                                                 std::unique_ptr<const DisplayParams>);
 

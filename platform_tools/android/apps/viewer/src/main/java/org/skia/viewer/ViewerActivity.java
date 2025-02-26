@@ -9,6 +9,7 @@ package org.skia.viewer;
 
 import android.app.Activity;
 import android.content.res.Configuration;
+import android.graphics.PixelFormat;
 import android.os.Bundle;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,6 +23,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.ListView;
+
 
 public class ViewerActivity
         extends Activity implements SurfaceHolder.Callback, View.OnTouchListener {
@@ -75,6 +77,7 @@ public class ViewerActivity
 
         SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surfaceView);
         surfaceView.getHolder().addCallback(this);
+        surfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
         surfaceView.setOnTouchListener(this);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);

@@ -102,7 +102,9 @@ sk_sp<SkSurface> GraphiteDawnWindowContext::getBackbufferSurface() {
     SkASSERT(this->graphiteRecorder());
     auto surface = SkSurfaces::WrapBackendTexture(this->graphiteRecorder(),
                                                   backendTex,
-                                                  kBGRA_8888_SkColorType,
+                                                  fSurfaceFormat == wgpu::TextureFormat::BGRA8Unorm
+                                                          ? kBGRA_8888_SkColorType
+                                                          : kRGBA_8888_SkColorType,
                                                   fDisplayParams->colorSpace(),
                                                   &fDisplayParams->surfaceProps());
     SkASSERT(surface);
@@ -133,7 +135,8 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
         "use_user_defined_labels_in_backend",
         // Robustness impacts performance and is always disabled when running Graphite in Chrome,
         // so this keeps Skia's tests operating closer to real-use behavior.
-        "disable_robustness",
+        //"disable_robustness",
+        "disable_symbol_renaming",
         // Must be last to correctly respond to `fUseTintIR` option.
         "use_tint_ir",
     };

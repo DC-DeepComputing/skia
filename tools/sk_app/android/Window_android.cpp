@@ -63,6 +63,12 @@ void Window_android::initDisplay(ANativeWindow* window) {
             fWindowContext =
                     skwindow::MakeRasterForAndroid(window, fRequestedDisplayParams->clone());
             break;
+#if defined(SK_GRAPHITE) && defined(SK_DAWN)
+        case kGraphiteDawn_BackendType:
+            fWindowContext = skwindow::MakeGraphiteDawnVulkanForAndroid(
+                    window, fRequestedDisplayParams->clone());
+            break;
+#endif
 #ifdef SK_VULKAN
         case kVulkan_BackendType:
             fWindowContext =
