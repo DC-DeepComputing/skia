@@ -142,7 +142,8 @@ CanvasKit._extraInitializations.push(function() {
     return fm;
   };
 
-  CanvasKit.Typeface.MakeTypefaceFromData = function(fontData) {
+  CanvasKit.Typeface["MakeTypefaceFromData"] = function(fontData) {
+  //CanvasKit.Typeface.MakeTypefaceFromData = function(fontData) {
     var data = new Uint8Array(fontData);
 
     var fptr = copy1dArray(data, 'HEAPU8');
