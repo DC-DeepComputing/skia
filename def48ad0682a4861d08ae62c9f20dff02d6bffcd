@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca32eb6_3df16b9e",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-27T17:58:53Z",
+      "side": 1,
+      "message": "Will this burrow through and also get all the src/gpu/graphite/precompile files?",
+      "revId": "def48ad0682a4861d08ae62c9f20dff02d6bffcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
