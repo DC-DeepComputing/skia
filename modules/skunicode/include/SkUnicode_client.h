@@ -20,6 +20,7 @@ SKUNICODE_API sk_sp<SkUnicode> Make(
                 std::vector<SkUnicode::Position> words,
                 std::vector<SkUnicode::Position> graphemeBreaks,
                 std::vector<SkUnicode::LineBreakBefore> lineBreaks);
+SKUNICODE_API sk_sp<SkUnicode> Make(); // It's used for bidi only (and possibly some hardcode)
 }
 
 #endif // SkUnicode_client_DEFINED

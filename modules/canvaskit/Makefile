@@ -6,7 +6,7 @@ clean:
 
 release:
 	# Does an incremental build where possible.
-	./compile.sh
+	./compile.sh client_unicode no_paragraph
 	- rm -rf build/
 	mkdir build
 	cp ../../out/canvaskit_wasm/canvaskit.js   ./build/
@@ -122,6 +122,10 @@ local-example:
 
 local-extra:
 	echo "Go check out http://localhost:8000/npm_build/extra.html"
+	python3 ../../tools/serve_wasm.py
+
+local-bidi:
+	echo "Go check out http://localhost:8000/npm_build/bidi.html"
 	python3 ../../tools/serve_wasm.py
 
 test-continuous:

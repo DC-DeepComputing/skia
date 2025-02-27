@@ -257,7 +257,13 @@ sk_sp<SkUnicode> Make(
                                         std::move(words),
                                         std::move(graphemeBreaks),
                                         std::move(lineBreaks));
-}
+    }
+    sk_sp<SkUnicode> Make() {
+    return sk_make_sp<SkUnicode_client>(SkString(),
+                                        std::vector<SkUnicode::Position>(),
+                                        std::vector<SkUnicode::Position>(),
+                                        std::vector<SkUnicode::LineBreakBefore>());
+    }
 }
 
 

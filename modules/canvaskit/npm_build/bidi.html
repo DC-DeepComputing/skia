@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<title>CanvasKit Paragraph (with & without ICU)</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script type="text/javascript" src="/build/canvaskit.js"></script>
+
+<style>
+  canvas {
+    border: 1px dashed #AAA;
+  }
+  #withICU {
+    border-color: red;
+  }
+  #withoutICU {
+    border-color: green;
+  }
+  #sampleText {
+    width: 400px;
+    height: 200px;
+  }
+</style>
+
+<canvas id="bidiRegions" width=600 height=600></canvas>
+<canvas id="bidiReshuffling" width=600 height=600></canvas>
+
+<textarea id="sampleText">World domination is such an ugly phrase - I prefer to call it world optimisation</textarea>
+
+<script type="text/javascript" charset="utf-8">
+
+    var CanvasKit = null;
+    var robotoData = null;
+    var sampleText = null;
+
+    var cdn = 'https://storage.googleapis.com/skia-cdn/misc/';
+
+    const ckLoaded = CanvasKitInit({locateFile: (file) => '/build/'+file});
+    const loadRoboto = fetch(cdn + 'Roboto-Regular.ttf').then((response) => response.arrayBuffer());
+    Promise.all([ckLoaded, loadRoboto]).then((results) => {DrawingExample(...results)});
+    function DrawingExample(_CanvasKit, _robotoData) {
+        CanvasKit = _CanvasKit;
+        robotoData = _robotoData;
+        if (!robotoData || !CanvasKit) {
+            return;
+        }
+        const textarea = document.getElementById('sampleText');
+        sampleText = textarea.value;
+        const roboto = CanvasKit.Typeface.MakeTypefaceFromData(robotoData);
+        const textPaint = new CanvasKit.Paint();
+        textPaint.setColor(CanvasKit.RED);
+        textPaint.setAntiAlias(true);
+        const textFont = new CanvasKit.Font(roboto, 30);
+
+        function drawFrame(canvas) {
+            canvas.drawText(sampleText, 100, 100, textPaint, textFont);
+
+            var bidi = CanvasKit.Bidi.Make();
+            const regions = bidi.getBidiRegions(sampleText, CanvasKit.TextDirection.LTR);
+            var result = '';
+            for (var i = 0; i < regions.length; ++i) {
+                const region = regions[i];
+                result += '[' + region.start.toString() + ':' + region.end.toString() + '): ' + region.level.toString() + ' ';
+            }
+            canvas.drawText(result, 100, 200, textPaint, textFont);
+
+            surface.requestAnimationFrame(drawFrame);
+        }
+        surface.requestAnimationFrame(drawFrame);
+    }
+</script>

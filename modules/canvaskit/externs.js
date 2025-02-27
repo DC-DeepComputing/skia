@@ -229,13 +229,23 @@ var CanvasKit = {
     _pushStyle: function() {},
     _pushPaintStyle: function() {},
     _addPlaceholder: function() {},
-
     _setWordsUtf8: function() {},
     _setWordsUtf16: function() {},
     _setGraphemeBreaksUtf8: function() {},
     _setGraphemeBreaksUtf16: function() {},
     _setLineBreaksUtf8: function() {},
     _setLineBreaksUtf16: function() {},
+  },
+
+  Bidi: {
+    Make: function() {},
+    getBidiRegions: function() {},
+    reorderVisual: function() {},
+
+    // private API
+    _make: function() {},
+    _getBidiRegions: function() {},
+    _reorderVisual: function() {},
   },
 
   RuntimeEffect: {
@@ -1178,6 +1188,9 @@ CanvasKit.Paragraph.prototype.getRectsForRange = function() {};
 CanvasKit.Paragraph.prototype.getRectsForPlaceholders = function() {};
 CanvasKit.Paragraph.prototype.getClosestGlyphInfoAtCoordinate = function() {};
 CanvasKit.Paragraph.prototype.getGlyphInfoAt = function() {};
+
+CanvasKit.Bidi.prototype.getBidiRegions = function() {};
+CanvasKit.Bidi.prototype.reorderVisual = function() {};
 
 CanvasKit.Surface.prototype.dispose = function() {};
 CanvasKit.Surface.prototype.flush = function() {};
