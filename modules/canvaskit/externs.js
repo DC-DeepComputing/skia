@@ -238,6 +238,19 @@ var CanvasKit = {
     _setLineBreaksUtf16: function() {},
   },
 
+  Bidi: {
+    Make: function() {},
+    prototype: {
+      getBidiRegions: function () {},
+      reorderVisual: function () {},
+      computeCodeUnitFlags: function() {},
+    },
+    // private API
+    _getBidiRegions: function() {},
+    _reorderVisual: function() {},
+    _computeCodeUnitFlags: function() {},
+  },
+
   RuntimeEffect: {
     // public API (from JS bindings)
     Make: function() {},
@@ -1131,6 +1144,14 @@ var CanvasKit = {
     FirstPass: {},
   },
 
+  CodeUnitFlags: {
+    NoCodeUnitFlag: {},
+    Whitespace: {},
+    Space: {},
+    Control: {},
+    Ideographic: {},
+  },
+
   // Things Enscriptem adds for us
 
   /**
@@ -1178,6 +1199,10 @@ CanvasKit.Paragraph.prototype.getRectsForRange = function() {};
 CanvasKit.Paragraph.prototype.getRectsForPlaceholders = function() {};
 CanvasKit.Paragraph.prototype.getClosestGlyphInfoAtCoordinate = function() {};
 CanvasKit.Paragraph.prototype.getGlyphInfoAt = function() {};
+
+CanvasKit.Bidi.prototype.getBidiRegions = function() {};
+CanvasKit.Bidi.prototype.reorderVisual = function() {};
+CanvasKit.Bidi.prototype.computeCodeUnitFlags = function() {};
 
 CanvasKit.Surface.prototype.dispose = function() {};
 CanvasKit.Surface.prototype.flush = function() {};

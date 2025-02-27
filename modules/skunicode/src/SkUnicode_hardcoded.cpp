@@ -128,3 +128,5 @@ bool SkUnicodeHardCodedCharProperties::isIdeographic(SkUnichar unichar) {
     }
     return false;
 }
+
+
