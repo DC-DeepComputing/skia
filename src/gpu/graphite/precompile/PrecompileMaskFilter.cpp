@@ -52,7 +52,6 @@ private:
                                                               Mipmapped::kNo,
                                                               Protected::kNo,
                                                               Renderable::kYes);
-
         RenderPassDesc coverageRenderPassDesc = RenderPassDesc::Make(
                 caps,
                 info,
@@ -62,7 +61,7 @@ private:
                 { 0.0f, 0.0f, 0.0f, 0.0f },
                 /* requiresMSAA= */ false,
                 skgpu::Swizzle("a000"),
-                caps->getDstReadStrategy(info));
+                renderPassDescIn.fDstReadStrategy);
 
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
                                                                    coverageRenderPassDesc,
