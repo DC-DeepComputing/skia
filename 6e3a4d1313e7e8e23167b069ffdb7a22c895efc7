@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d15aaf5_611bed33",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-27T17:49:34Z",
+      "side": 1,
+      "message": "Isolated the change to inform RenderPassDesc if *no* dst reads are required. Adding Rob for his opinion on the serialization + precompilation changes.",
+      "revId": "6e3a4d1313e7e8e23167b069ffdb7a22c895efc7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
