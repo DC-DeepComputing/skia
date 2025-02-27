@@ -100,8 +100,10 @@ public:
     // Subsequent recorded operations will be added to a new DrawTask.
     sk_sp<Task> snapDrawTask(Recorder*);
 
-    // Returns the dst read strategy to use when/if a paint requires a dst read
-    DstReadStrategy dstReadStrategy() const { return fDstReadStrategy; }
+    // Returns the dst read strategy to use when/if a paint requires a dst read. Must be a valid
+    // strategy since we do not know whether or not we will encounter a draw that reads from the
+    // dst texture until all draws are recorded.
+    DstReadStrategy targetDstReadStrategy() const { return fTargetDstReadStrategy; }
 
 private:
     DrawContext(const Caps*, sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
@@ -113,7 +115,7 @@ private:
 
     // Does *not* reflect whether a dst read is needed by the DrawLists - simply specifies the
     // strategy to use should any encountered paint require it.
-    DstReadStrategy fDstReadStrategy;
+    DstReadStrategy fTargetDstReadStrategy;
 
     // The in-progress DrawTask that will be snapped and returned when some external requirement
     // must depend on the contents of this DrawContext's target. As higher-level Skia operations

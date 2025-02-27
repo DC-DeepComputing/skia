@@ -70,7 +70,6 @@ public:
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
     std::array<float, 4> clearColor() const { return fClearColor; }
 
-    bool requiresDstTexture() const { return false;            }
     bool requiresMSAA()       const { return fRequiresMSAA;    }
 
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }

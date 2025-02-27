@@ -1060,7 +1060,8 @@ UniqueKey DawnCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeline
         // because it is applied in the program writing to the target, and is not actually part of
         // the underlying GPU render pass config).
         builder[2] = this->getRenderPassDescKeyForPipeline(renderPassDesc);
-        builder[3] = renderPassDesc.fWriteSwizzle.asKey();
+        builder[3] = renderPassDesc.fWriteSwizzle.asKey() |
+                     renderPassDesc.fDstReadStrategy >> 16;
         builder.finish();
     }
 
@@ -1121,7 +1122,9 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
         loadOp = LoadOp::kLoad;
     }
 
-    Swizzle writeSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
+    Swizzle writeSwizzle = SwizzleCtorAccessor::Make((uint16_t)rawKeyData[3]);
+    DstReadStrategy rpDstReadStrategy = (rawKeyData[3] << 16) & 0xFFFF;
+
     TextureInfo targetTexInfo = TextureInfos::MakeDawn(dawnInfo);
     *renderPassDesc = RenderPassDesc::Make(this,
                                            targetTexInfo,
@@ -1131,7 +1134,7 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                            /* clearColor= */ { .0f, .0f, .0f, .0f },
                                            requiresMSAA,
                                            writeSwizzle,
-                                           this->getDstReadStrategy(targetTexInfo));
+                                           rpDstReadStrategy);
 
     return true;
 }
