@@ -16,6 +16,98 @@
       "message": "This is finally ready for review.",
       "revId": "11ed447d686f57a75360c388d65a09b433492526",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "908921d4_373be33e",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-27T18:12:44Z",
+      "side": 1,
+      "message": "I guess, could this go in a static helper function that returns an sk_sp\u003cSkColorSpace\u003e ?",
+      "range": {
+        "startLine": 531,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 89
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1d6a1f8_40606b37",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-27T18:12:44Z",
+      "side": 1,
+      "message": "/* colorSpace\u003d */ here and in following ?",
+      "range": {
+        "startLine": 746,
+        "startChar": 53,
+        "endLine": 746,
+        "endChar": 54
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d93b0af_dcbb14a1",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-27T18:12:44Z",
+      "side": 1,
+      "message": "48",
+      "range": {
+        "startLine": 401,
+        "startChar": 11,
+        "endLine": 401,
+        "endChar": 14
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdf1c8c0_c6fa5f79",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-02-27T18:12:44Z",
+      "side": 1,
+      "message": "Why didn\u0027t this become 32?",
+      "range": {
+        "startLine": 551,
+        "startChar": 87,
+        "endLine": 551,
+        "endChar": 89
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
