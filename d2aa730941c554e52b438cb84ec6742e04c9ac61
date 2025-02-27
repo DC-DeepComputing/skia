@@ -22,6 +22,30 @@
       },
       "revId": "d2aa730941c554e52b438cb84ec6742e04c9ac61",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4673b95_fd0f7fe8",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-27T19:58:08Z",
+      "side": 1,
+      "message": "That is, in Metal and Vulkan.",
+      "parentUuid": "bf3d9c92_2ae9cbdf",
+      "range": {
+        "startLine": 149,
+        "startChar": 75,
+        "endLine": 149,
+        "endChar": 79
+      },
+      "revId": "d2aa730941c554e52b438cb84ec6742e04c9ac61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
