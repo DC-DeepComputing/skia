@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "a4c9cd13_27fcbc60",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-27T16:21:27Z",
+      "side": 1,
+      "message": "nit: add 2 line breaks after metadata. That\u0027s the (short) git subject and then you can have a more detailed body",
+      "revId": "3390725697bbfb902ca1ed708d264a29a5bd18f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ebc24fe9_49363855",
