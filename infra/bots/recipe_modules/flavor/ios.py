@@ -1,4 +1,4 @@
-# Copyright 2017 The Chromium Authors. All rights reserved.
+# Copyright 2025 The Chromium Authors. All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
@@ -141,6 +141,42 @@ class iOSFlavor(default.DefaultFlavor):
             self.m.run(
                 self.m.step, '%s with full debug output' % name,
                 cmd=['python3', self.module.resource('ios_debug_cmd.py')] + args)
+
+    # Install app (necessary before copying any resources to the device).
+    if self.app_name:
+      app_package = self.host_dirs.bin_dir.joinpath('%s.app' % self.app_name)
+
+      def uninstall_app(attempt):
+        # If app ID changes, upgrade will fail, so try uninstalling.
+        self.m.run(self.m.step,
+                   'uninstall %s' % self.app_name,
+                   cmd=['ideviceinstaller', '-U',
+                        'com.google.%s' % self.app_name],
+                   infra_step=True,
+                   # App may not be installed.
+                   abort_on_failure=False, fail_build_on_failure=False)
+
+      num_attempts = 2
+      self.m.run.with_retry(self.m.step, 'install %s' % self.app_name,
+                            num_attempts,
+                            cmd=['ideviceinstaller', '-i', app_package],
+                            between_attempts_fn=uninstall_app,
+                            infra_step=True)
+
+  def step(self, name, cmd, **kwargs):
+    app_name = cmd[0]
+    bundle_id = 'com.google.%s' % app_name
+    args = ['--start', bundle_id, '--args'] + [str(ele) for ele in cmd[1:]]
+    success = False
+    with self.context():
+      try:
+        self.m.run(self.m.step, name, cmd=['idevice-app-runner'] + args)
+        success = True
+      finally:
+        if not success:
+          self.m.run(
+              self.m.step, '%s with full debug output' % name,
+              cmd=['python3', self.module.resource('ios_debug_cmd.py')] + args)
 
   def _run_ios_script(self, script, first, *rest):
     with self.context():
