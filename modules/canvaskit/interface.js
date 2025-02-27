@@ -49,6 +49,11 @@ CanvasKit.onRuntimeInitialized = function() {
     'IsWhiteSpace': CanvasKit['_GlyphRunFlags_isWhiteSpace'],
   };
 
+  CanvasKit['TextDirection'] = {
+    'LTR': 1,
+    'RTL': 0,
+  }
+
   CanvasKit.Path.MakeFromCmds = function(cmds) {
     var cmdPtr = copy1dArray(cmds, 'HEAPF32');
     var path = CanvasKit.Path._MakeFromCmds(cmdPtr, cmds.length);
