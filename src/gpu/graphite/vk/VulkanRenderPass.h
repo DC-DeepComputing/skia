@@ -65,6 +65,8 @@ public:
         VulkanRenderPassMetaData(const RenderPassDesc& renderPassDesc);
 
         bool fLoadMSAAFromResolve;
+        bool fSupportReadingDstAsInput;
+
         bool fHasColorAttachment;
         bool fHasColorResolveAttachment;
         bool fHasDepthStencilAttachment;
