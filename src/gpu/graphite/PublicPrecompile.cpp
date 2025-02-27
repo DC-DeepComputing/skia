@@ -116,6 +116,7 @@ void Precompile(PrecompileContext* precompileContext,
         }
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
+            // TODO determine if dst read needed
             const RenderPassDesc renderPassDesc =
                     RenderPassDesc::Make(caps,
                                          info,

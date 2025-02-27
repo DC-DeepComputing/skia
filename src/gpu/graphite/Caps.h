@@ -80,8 +80,8 @@ struct ResourceBindingRequirements {
     int fGradientBufferBinding       = kUnassigned;
 };
 
-enum class DstReadStrategy {
-    kNoneRequired,
+enum class DstReadStrategy : uint8_t {
+    kNoneRequired = 0,
     kTextureCopy,
     kTextureSample,
     kReadFromInput,
