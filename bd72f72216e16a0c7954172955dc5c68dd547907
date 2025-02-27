@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1380fdb1_73d57923",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-02-27T18:10:08Z",
+      "side": 1,
+      "message": "Question for Rob:\n\nI started going through the precompilation work to determine the best way to know at `RenderPassDesc` definition time whether any blend mode + coverage combinations (`PaintOption`s) within `PaintOptions` will require a dst texture read, but got a little lost. Do you have suggestions?\n\nI initially created a bool attribute within `PaintOptions` that would be assigned to true if any `PaintOption`s created during `PaintOptions::createKey` required a dst read (since at that point we have all the information we need to call `IsDstReadRequired`), but the `const` qualifier on certain references and on certain methods goes pretty deep and seems quite intentional.\n\nAnyway, LMKWYT, happy to hop on a call if that\u0027s easier!",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 48
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
