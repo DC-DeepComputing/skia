@@ -86,6 +86,9 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
     // The following key structure assumes that we only have up to one reference of each type per
     // subpass and that attachments are indexed in order of color, resolve, depth/stencil, then
     // input attachments. These indices are statically defined in the VulkanRenderPass header file.
+
+    // TODO nep assert that color attach present if supporting this is passed in
+
     for (int j = 0; j < subpassCount; j++) {
         if (j == mainSubpassIdx) {
             uint32_t attachmentIdxKeyInfo;
@@ -97,9 +100,12 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
             attachmentIdxKeyInfo |=
                     (hasDepthStencilAttachment ? VulkanRenderPass::kDepthStencilAttachmentIdx
                                                : kAttachmentUnused) << 16;
+            // If this RP supports reading the dst as an input attachment, then the input attachment
+            // for the main subpass is the color texture.
             attachmentIdxKeyInfo |=
                     (supportReadingDstAsInput ? VulkanRenderPass::kColorAttachmentIdx
                                               : kAttachmentUnused) << 24;
+
             builder[builderIdx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
             builder[builderIdx++] =
@@ -290,6 +296,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
         const auto& vkColorAttachInfo =
                 TextureInfoPriv::Get<VulkanTextureInfo>(colorAttachmentTextureInfo);
         auto& colorAttachDesc = rpDesc.fColorAttachment;
+
         colorRef.attachment = descs.size();
         // If this renderpass must support reading the dst as an input attachment, then that
         // necessitates the usage of general layouts for color attachments.
@@ -365,8 +372,8 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
                 &vkDepthStencilAttachDesc,
                 vkDepthStencilInfo,
                 depthStencilAttachDesc,
-                compatibleOnly ? LoadOp::kDiscard   : depthStencilAttachDesc.fLoadOp,
-                compatibleOnly ? StoreOp::kDiscard  : depthStencilAttachDesc.fStoreOp,
+                compatibleOnly ? LoadOp::kDiscard   : rpDesc.fDepthStencilAttachment.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard  : rpDesc.fDepthStencilAttachment.fStoreOp,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
     } else {
