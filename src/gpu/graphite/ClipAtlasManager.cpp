@@ -17,23 +17,56 @@
 
 namespace skgpu::graphite {
 
-ClipAtlasManager::ClipAtlasManager(Recorder* recorder) : fRecorder(recorder) {
-    static constexpr SkColorType kColorType = kAlpha_8_SkColorType;
-    static constexpr int kWidth = 4096;
-    static constexpr int kHeight = 4096;
+static constexpr int kClipAtlasWidth = 4096;
+static constexpr int kClipAtlasHeight = 4096;
 
-    const Caps* caps = recorder->priv().caps();
+ClipAtlasManager::ClipAtlasManager(Recorder* recorder)
+        : fRecorder(recorder)
+        , fDrawAtlasMgr(kClipAtlasWidth, kClipAtlasHeight,
+                        /*plotWidth=*/kClipAtlasWidth, /*plotHeight=*/kClipAtlasHeight,
+                        DrawAtlas::UseStorageTextures::kNo,
+                        "ClipAtlas", recorder->priv().caps()) {
+    SkASSERT(recorder);
+}
+
+const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
+                                                        const ClipStack::ElementList* elementList,
+                                                        SkIRect iBounds,
+                                                        SkIPoint* outPos) {
+    skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
+    return fDrawAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList, iBounds, outPos);
+}
+
+bool ClipAtlasManager::recordUploads(DrawContext* dc) {
+    return fDrawAtlasMgr.recordUploads(dc, fRecorder);
+}
+
+void ClipAtlasManager::compact(bool forceCompact) {
+    fDrawAtlasMgr.compact(fRecorder, forceCompact);
+}
+
+void ClipAtlasManager::evictAtlases() {
+    fDrawAtlasMgr.evictAll();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+ClipAtlasManager::DrawAtlasMgr::DrawAtlasMgr(size_t width, size_t height,
+                                             size_t plotWidth, size_t plotHeight,
+                                             DrawAtlas::UseStorageTextures useStorageTextures,
+                                             std::string_view label, const Caps* caps) {
+    static constexpr SkColorType kColorType = kAlpha_8_SkColorType;
     fDrawAtlas = DrawAtlas::Make(kColorType,
                                  SkColorTypeBytesPerPixel(kColorType),
-                                 kWidth, kHeight,
-                                 /*plotWidth=*/kWidth, /*plotHeight=*/kHeight,
+                                 width, height,
+                                 plotWidth, plotHeight,
                                  /*generationCounter=*/this,
                                  caps->allowMultipleAtlasTextures() ?
                                          DrawAtlas::AllowMultitexturing::kYes :
                                          DrawAtlas::AllowMultitexturing::kNo,
-                                 DrawAtlas::UseStorageTextures::kNo,
+                                 useStorageTextures,
                                  /*evictor=*/this,
-                                 "ClipAtlas");
+                                 label);
     SkASSERT(fDrawAtlas);
     fKeyLists.resize(fDrawAtlas->numPlots() * fDrawAtlas->maxPages());
     for (int i = 0; i < fKeyLists.size(); ++i) {
@@ -46,11 +79,12 @@ namespace {
 constexpr int kEntryPadding = 1;
 }  // namespace
 
-const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
-                                                        const ClipStack::ElementList* elementList,
-                                                        SkIRect iBounds,
-                                                        SkIPoint* outPos) {
-    skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
+const TextureProxy* ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
+            Recorder* recorder,
+            const skgpu::UniqueKey& maskKey,
+            const ClipStack::ElementList* elementList,
+            SkIRect iBounds,
+            SkIPoint* outPos) {
     MaskHashEntry* entryList = fMaskCache.find(maskKey);
     if (entryList) {
         MaskHashEntry* entry = entryList;
@@ -62,7 +96,7 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                 *outPos = SkIPoint::Make(topLeft.x() + kEntryPadding + subsetRelativePos.x(),
                                          topLeft.y() + kEntryPadding + subsetRelativePos.y());
                 fDrawAtlas->setLastUseToken(entry->fLocator,
-                                            fRecorder->priv().tokenTracker()->nextFlushToken());
+                                            recorder->priv().tokenTracker()->nextFlushToken());
                 return fDrawAtlas->getProxies()[entry->fLocator.pageIndex()].get();
             }
             entry = entry->fNext;
@@ -70,7 +104,7 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
     }
 
     AtlasLocator locator;
-    const TextureProxy* proxy = this->addToAtlas(elementList, iBounds, outPos, &locator);
+    const TextureProxy* proxy = this->addToAtlas(recorder, elementList, iBounds, outPos, &locator);
     if (!proxy) {
         return nullptr;
     }
@@ -148,10 +182,12 @@ void draw_to_sw_mask(RasterMaskHelper* helper,
     }
 }
 
-const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* elementsForMask,
-                                                 SkIRect iBounds,
-                                                 SkIPoint* outPos,
-                                                 AtlasLocator* locator) {
+const TextureProxy* ClipAtlasManager::DrawAtlasMgr::addToAtlas(
+            Recorder* recorder,
+            const ClipStack::ElementList* elementsForMask,
+            SkIRect iBounds,
+            SkIPoint* outPos,
+            AtlasLocator* locator) {
     // Render mask.
     SkISize maskSize = iBounds.size();
     if (maskSize.isEmpty()) {
@@ -165,7 +201,7 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
                                              maskSize.height() + 2*kEntryPadding);
 
     // Request space in DrawAtlas, including padding
-    DrawAtlas::ErrorCode errorCode = fDrawAtlas->addRect(fRecorder,
+    DrawAtlas::ErrorCode errorCode = fDrawAtlas->addRect(recorder,
                                                          iShapeBounds.width(),
                                                          iShapeBounds.height(),
                                                          locator);
@@ -199,16 +235,16 @@ const TextureProxy* ClipAtlasManager::addToAtlas(const ClipStack::ElementList* e
     }
 
     fDrawAtlas->setLastUseToken(*locator,
-                                fRecorder->priv().tokenTracker()->nextFlushToken());
+                                recorder->priv().tokenTracker()->nextFlushToken());
 
     return fDrawAtlas->getProxies()[locator->pageIndex()].get();
 }
 
-bool ClipAtlasManager::recordUploads(DrawContext* dc) {
-    return (fDrawAtlas && !fDrawAtlas->recordUploads(dc, fRecorder));
+bool ClipAtlasManager::DrawAtlasMgr::recordUploads(DrawContext* dc, Recorder* recorder) {
+    return (fDrawAtlas && !fDrawAtlas->recordUploads(dc, recorder));
 }
 
-void ClipAtlasManager::evict(PlotLocator plotLocator) {
+void ClipAtlasManager::DrawAtlasMgr::evict(PlotLocator plotLocator) {
     // Remove all entries for this Plot from the MaskCache
     uint32_t index = fDrawAtlas->getListIndex(plotLocator);
     MaskKeyList::Iter iter;
@@ -254,13 +290,13 @@ void ClipAtlasManager::evict(PlotLocator plotLocator) {
     }
 }
 
-void ClipAtlasManager::evictAtlases() {
+void ClipAtlasManager::DrawAtlasMgr::evictAll() {
     fDrawAtlas->evictAllPlots();
     SkASSERT(fMaskCache.empty());
 }
 
-void ClipAtlasManager::compact(bool forceCompact) {
-    auto tokenTracker = fRecorder->priv().tokenTracker();
+void ClipAtlasManager::DrawAtlasMgr::compact(Recorder* recorder, bool forceCompact) {
+    auto tokenTracker = recorder->priv().tokenTracker();
     if (fDrawAtlas) {
         fDrawAtlas->compact(tokenTracker->nextFlushToken(), forceCompact);
     }
