@@ -52,12 +52,14 @@ void DumpDescs(PrecompileContext* precompileContext,
              "   clearDepth: %.2f\n"
              "   stencilClear: %u\n"
              "   writeSwizzle: %s\n"
-             "   sampleCount: %u\n",
+             "   sampleCount: %u\n"
+             "   dstReadStrategy: %u\n",
              rpd.fClearColor[0], rpd.fClearColor[1], rpd.fClearColor[2], rpd.fClearColor[3],
              rpd.fClearDepth,
              rpd.fClearStencil,
              rpd.fWriteSwizzle.asString().c_str(),
-             rpd.fSampleCount);
+             rpd.fSampleCount,
+             (unsigned)rpd.fDstReadStrategy);
 
 }
 #endif // SK_DEBUG

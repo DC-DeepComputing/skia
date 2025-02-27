@@ -86,8 +86,10 @@ public:
 
     int renderStepCount() const { return fRenderStepCount; }
 
-    // Bounds for a dst read required by this DrawList.
+    // Bounds for a dst read required by this DrawList. Invalid ones mean no dst read is required
+    // by any draws contained in the list.
     const Rect& dstReadBounds() const { return fDstReadBounds; }
+    bool drawWithinListReadsDst() const { return !fDstReadBounds.isEmptyNegativeOrNaN(); }
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
