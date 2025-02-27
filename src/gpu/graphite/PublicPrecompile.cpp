@@ -91,10 +91,10 @@ void Precompile(PrecompileContext* precompileContext,
     auto rtEffectDict = std::make_unique<RuntimeEffectDictionary>();
 
     for (const RenderPassProperties& rpp : renderPassProperties) {
-        // TODO: Allow the client to pass in mipmapping and protection too?
+        // TODO(robertphillips): Allow the client to pass in mipmapping too?
         TextureInfo info = caps->getDefaultSampledTextureInfo(rpp.fDstCT,
                                                               Mipmapped::kNo,
-                                                              Protected::kNo,
+                                                              rpp.fIsProtected,
                                                               Renderable::kYes);
 
         Swizzle writeSwizzle = caps->getWriteSwizzle(rpp.fDstCT, info);
