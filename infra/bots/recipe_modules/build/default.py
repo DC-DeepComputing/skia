@@ -295,6 +295,7 @@ def compile_fn(api, checkout_root, out_dir):
   elif configuration != 'OptimizeForSize':
     args.update({
       'skia_use_client_icu': 'true',
+      'skia_use_bidi': 'true',
       'skia_use_libgrapheme': 'true',
     })
 
