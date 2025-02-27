@@ -23,14 +23,16 @@ pkg,identstr,profile = sys.argv[1:]
 
 # Find the signing identity.
 identity = None
-for line in subprocess.check_output([
-    'security', 'find-identity']).decode('utf-8').split('\n'):
+output = subprocess.check_output(['security', 'find-identity']).decode('utf-8')
+for line in output.split('\n'):
   m = re.match(r'''.*\) (.*) "''' + identstr + '"', line)
   if m:
     identity = m.group(1)
 if identity is None:
   print("Signing identity matching '" + identstr + "' not found.")
   print("Please verify by running 'security find-identity' or checking your keychain.")
+  # TODO(borenet): Remove this.
+  print(output)
   sys.exit(1)
 
 # Find the mobile provisioning profile.

@@ -178,7 +178,6 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "50G",
       "CHROME_HEADLESS": "1",
-      "MACOSX_DEPLOYMENT_TARGET": "10.15",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
       "PYTHONPATH": "[START_DIR]/cache/work/skia/third_party/externals:%(PYTHONPATH)s"
     },
@@ -198,7 +197,6 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "50G",
       "CHROME_HEADLESS": "1",
-      "MACOSX_DEPLOYMENT_TARGET": "10.15",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
       "PYTHONPATH": "[START_DIR]/cache/work/skia/third_party/externals:%(PYTHONPATH)s"
     },
@@ -217,7 +215,6 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "50G",
       "CHROME_HEADLESS": "1",
-      "MACOSX_DEPLOYMENT_TARGET": "10.15",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
       "PYTHONPATH": "[START_DIR]/cache/work/skia/third_party/externals:%(PYTHONPATH)s"
     },
@@ -235,7 +232,6 @@
       "CCACHE_MAXFILES": "0",
       "CCACHE_MAXSIZE": "50G",
       "CHROME_HEADLESS": "1",
-      "MACOSX_DEPLOYMENT_TARGET": "10.15",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
       "PYTHONPATH": "[START_DIR]/cache/work/skia/third_party/externals:%(PYTHONPATH)s"
     },
