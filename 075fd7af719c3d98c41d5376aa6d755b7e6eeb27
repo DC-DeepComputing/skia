@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a82345_b3f0caf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-27T15:06:09Z",
+      "side": 1,
+      "message": "PTAL, encore. I had to change how this works with the ClipAtlas crash bugfix, plus I accidentally changed Caps.cpp again so I need a new \u0027plus one\u0027 regardless.",
+      "revId": "075fd7af719c3d98c41d5376aa6d755b7e6eeb27",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
