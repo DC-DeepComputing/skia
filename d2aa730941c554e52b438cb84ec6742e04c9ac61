@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf3d9c92_2ae9cbdf",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-27T19:57:43Z",
+      "side": 1,
+      "message": "I assume these are already overridden elsewhere?",
+      "range": {
+        "startLine": 149,
+        "startChar": 75,
+        "endLine": 149,
+        "endChar": 79
+      },
+      "revId": "d2aa730941c554e52b438cb84ec6742e04c9ac61",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
