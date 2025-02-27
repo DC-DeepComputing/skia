@@ -961,7 +961,8 @@ UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineD
         uint64_t renderPassKey = this->getRenderPassDescKey(renderPassDesc);
         builder[2] = renderPassKey & 0xFFFFFFFF;
         builder[3] = (renderPassKey >> 32) & 0xFFFFFFFF;
-        builder[4] = renderPassDesc.fWriteSwizzle.asKey();
+        builder[4] = renderPassDesc.fWriteSwizzle.asKey() |
+                     (uint32_t)renderPassDesc.fDstReadStrategy >> 16;
 
         builder.finish();
     }
@@ -986,6 +987,7 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
         uint32_t fDSSampleCount = 1;
 
         Swizzle fWriteSwizzle;
+        DstReadStrategy fDstReadStrategy;
     } keyData;
 
     SkASSERT(key.domain() == get_domain());
@@ -1004,7 +1006,8 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     keyData.fColorFormat = static_cast<MTLPixelFormat>((rawKeyData[3] >> 16) & 0xFFFF);
     keyData.fColorSampleCount = rawKeyData[3] & 0xFFFF;
 
-    keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[4]);
+    keyData.fWriteSwizzle = SwizzleCtorAccessor::Make((uint16_t)rawKeyData[4]);
+    keyData.fDstReadStrategy = (rawKeyData[3] << 16) & 0xFFFF;
 
     // Recreate the RenderPassDesc
     SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);
@@ -1034,7 +1037,7 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
                                            /* clearColor= */ { .0f, .0f, .0f, .0f },
                                            /* requiresMSAA= */ keyData.fColorSampleCount > 1,
                                            keyData.fWriteSwizzle,
-                                           this->getDstReadStrategy(info));
+                                           keyData.fDstReadStrategy);
 
     // Recreate the GraphicsPipelineDesc
     const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
