@@ -119,7 +119,7 @@ private:
               std::enable_if_t<std::is_base_of_v<Data, BackendTextureData>, bool> = true>
     explicit TextureInfo(const BackendTextureData& data)
             : fBackend(BackendTextureData::kBackend)
-            , fProtected(data.isProtected()) {
+            , fProtected(data.isProtected1()) {
         fData.emplace<BackendTextureData>(data);
     }
 

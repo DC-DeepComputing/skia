@@ -298,7 +298,7 @@ TextureInfo VulkanCaps::getDefaultSampledTextureInfo(SkColorType ct,
     VulkanTextureInfo info;
     info.fSampleCount = defaultSampleCount;
     info.fMipmapped = mipmapped;
-    info.fFlags = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+    info.fFlags1 = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = format;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -322,7 +322,7 @@ TextureInfo VulkanCaps::getTextureInfoForSampledCopy(const TextureInfo& textureI
     info.fSampleCount = 1;
     info.fMipmapped = mipmapped;
     info.fFormat = TextureInfoPriv::Get<VulkanTextureInfo>(textureInfo).fFormat;
-    info.fFlags = (textureInfo.isProtected() == Protected::kYes) ?
+    info.fFlags1 = (textureInfo.isProtected() == Protected::kYes) ?
             VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -362,7 +362,7 @@ TextureInfo VulkanCaps::getDefaultCompressedTextureInfo(SkTextureCompressionType
     VulkanTextureInfo info;
     info.fSampleCount = defaultSampleCount;
     info.fMipmapped = mipmapped;
-    info.fFlags = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+    info.fFlags1 = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = format;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     info.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT |
@@ -391,7 +391,7 @@ TextureInfo VulkanCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampl
     VulkanTextureInfo info;
     info.fSampleCount = fDefaultMSAASamples;
     info.fMipmapped = Mipmapped::kNo;
-    info.fFlags = (singleSampledInfo.isProtected() == Protected::kYes) ?
+    info.fFlags1 = (singleSampledInfo.isProtected() == Protected::kYes) ?
             VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = singleSpecFormat;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
@@ -428,7 +428,7 @@ TextureInfo VulkanCaps::getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthSte
     VulkanTextureInfo info;
     info.fSampleCount = sampleCount;
     info.fMipmapped = Mipmapped::kNo;
-    info.fFlags = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+    info.fFlags1 = (isProtected == Protected::kYes) ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     info.fFormat = format;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     // TODO: Passing in a discardable flag to this method, and if true, add the TRANSIENT bit.
@@ -454,7 +454,7 @@ TextureInfo VulkanCaps::getDefaultStorageTextureInfo(SkColorType colorType) cons
     VulkanTextureInfo info;
     info.fSampleCount = 1;
     info.fMipmapped = Mipmapped::kNo;
-    info.fFlags = 0;
+    info.fFlags1 = 0;
     info.fFormat = format;
     info.fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     // Storage textures are currently always sampleable from a shader
@@ -1601,7 +1601,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
         builder[i++] = format;
     }
 
-    builder[i++] = (static_cast<uint32_t>(vkInfo.fFlags));
+    builder[i++] = (static_cast<uint32_t>(vkInfo.fFlags1));
     builder[i++] = (samples                                            << 0 ) |
                    (static_cast<uint32_t>(isMipped)                    << 3 ) |
                    (static_cast<uint32_t>(isProtected)                 << 4 ) |

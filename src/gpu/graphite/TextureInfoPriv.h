@@ -51,10 +51,12 @@ public:
 
     template <typename BackendTextureInfo>
     static bool Serialize(const TextureInfo& info, SkWStream* out) {
+        out->write8(77);
         if (info.isValid()) {
             if (!out->write32(GetInfoTag(info))) {
                 return false;
             }
+            out->write8(77);
             return Get<BackendTextureInfo>(info).serialize(out);
         } else {
             // Write a 0 to signal an empty TextureInfo
@@ -64,7 +66,9 @@ public:
 
     template <typename BackendTextureInfo>
     static bool Deserialize(SkStream* in, TextureInfo* out) {
+        uint8_t tmp;
         uint32_t tag;
+        (void) in->readU8(&tmp);
         if (!in->readU32(&tag)) {
             return false;
         }
@@ -73,6 +77,8 @@ public:
             *out = TextureInfo();
             return true;
         }
+
+        (void) in->readU8(&tmp);
 
         auto [backend, mipmapped, sampleCount] = ParseInfoTag(tag);
         if (backend != BackendTextureInfo::kBackend) {

@@ -192,7 +192,7 @@ void create_backend_texture_graphite(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, helper->isValid());
 
     VulkanTextureInfo vkTextureInfo;
-    vkTextureInfo.fFlags = beTexIsProtected ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
+    vkTextureInfo.fFlags1 = beTexIsProtected ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     vkTextureInfo.fFormat = VK_FORMAT_R8G8B8A8_UNORM;
     vkTextureInfo.fImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT |
                                      VK_IMAGE_USAGE_TRANSFER_SRC_BIT |
