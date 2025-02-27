@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27dd3206_33da770b",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-27T19:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "908921d4_373be33e",
+      "range": {
+        "startLine": 531,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 89
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b1d6a1f8_40606b37",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-27T18:12:44Z",
       "side": 1,
       "message": "/* colorSpace\u003d */ here and in following ?",
+      "range": {
+        "startLine": 746,
+        "startChar": 53,
+        "endLine": 746,
+        "endChar": 54
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08eda949_98cff673",
+        "filename": "tests/graphite/precompile/PaintParamsKeyTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 746,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-27T19:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b1d6a1f8_40606b37",
       "range": {
         "startLine": 746,
         "startChar": 53,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "37688d4c_7a41afb0",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-27T19:32:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d93b0af_dcbb14a1",
+      "range": {
+        "startLine": 401,
+        "startChar": 11,
+        "endLine": 401,
+        "endChar": 14
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdf1c8c0_c6fa5f79",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-02-27T18:12:44Z",
       "side": 1,
       "message": "Why didn\u0027t this become 32?",
+      "range": {
+        "startLine": 551,
+        "startChar": 87,
+        "endLine": 551,
+        "endChar": 89
+      },
+      "revId": "11ed447d686f57a75360c388d65a09b433492526",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b430b038_9254aa18",
+        "filename": "tests/graphite/precompile/ThreadedPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-02-27T19:32:28Z",
+      "side": 1,
+      "message": "It includes normal-compiles as well as precompiles, and only the precompiles are reduced by a factor of three.",
+      "parentUuid": "cdf1c8c0_c6fa5f79",
       "range": {
         "startLine": 551,
         "startChar": 87,
