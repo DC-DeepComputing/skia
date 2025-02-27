@@ -95,10 +95,13 @@ DrawContext::DrawContext(const Caps* caps,
         : fTarget(std::move(target))
         , fImageInfo(ii)
         , fSurfaceProps(props)
-        , fDstReadStrategy(caps->getDstReadStrategy(fTarget->textureInfo()))
+        , fTargetDstReadStrategy(caps->getDstReadStrategy(fTarget->textureInfo()))
         , fCurrentDrawTask(sk_make_sp<DrawTask>(fTarget))
         , fPendingDraws(std::make_unique<DrawList>())
         , fPendingUploads(std::make_unique<UploadList>()) {
+    // Must determine a valid strategy to use should a dst texture read be required.
+    SkASSERT(fTargetDstReadStrategy != DstReadStrategy::kNoneRequired);
+
     if (!caps->isTexturable(fTarget->textureInfo())) {
         fReadView = {}; // Presumably this DrawContext is rendering into a swap chain
     } else {
@@ -233,6 +236,7 @@ void DrawContext::flush(Recorder* recorder) {
     // subpasses are implemented, they will either be collected alongside fPendingDraws or added
     // to the RenderPassTask separately.
     SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
+    const bool drawWithinListReadsDst = fPendingDraws->drawWithinListReadsDst();
     std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
                                                     std::move(fPendingDraws),
                                                     fTarget,
@@ -251,7 +255,7 @@ void DrawContext::flush(Recorder* recorder) {
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.
         sk_sp<TextureProxy> dstCopy;
-        if (!dstReadPixelBounds.isEmpty() && fDstReadStrategy == DstReadStrategy::kTextureCopy) {
+        if (drawWithinListReadsDst && fTargetDstReadStrategy == DstReadStrategy::kTextureCopy) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
 
@@ -280,12 +284,16 @@ void DrawContext::flush(Recorder* recorder) {
         auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
                                                   fTarget->textureInfo());
 
-        RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
-                                                   pass->depthStencilFlags(),
-                                                   pass->clearColor(),
-                                                   pass->requiresMSAA(),
-                                                   writeSwizzle,
-                                                   fDstReadStrategy);
+        RenderPassDesc desc = RenderPassDesc::Make(
+                caps,
+                fTarget->textureInfo(),
+                loadOp,
+                storeOp,
+                pass->depthStencilFlags(),
+                pass->clearColor(),
+                pass->requiresMSAA(),
+                writeSwizzle,
+                drawWithinListReadsDst ? fTargetDstReadStrategy : DstReadStrategy::kNoneRequired);
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
