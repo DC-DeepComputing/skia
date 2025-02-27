@@ -238,6 +238,17 @@ var CanvasKit = {
     _setLineBreaksUtf16: function() {},
   },
 
+  Bidi: {
+    Make: function() {},
+    prototype: {
+      getBidiRegions: function () {},
+      reorderVisual: function () {},
+    },
+    // private API
+    _getBidiRegions: function() {},
+    _reorderVisual: function() {},
+  },
+
   RuntimeEffect: {
     // public API (from JS bindings)
     Make: function() {},
@@ -1178,6 +1189,9 @@ CanvasKit.Paragraph.prototype.getRectsForRange = function() {};
 CanvasKit.Paragraph.prototype.getRectsForPlaceholders = function() {};
 CanvasKit.Paragraph.prototype.getClosestGlyphInfoAtCoordinate = function() {};
 CanvasKit.Paragraph.prototype.getGlyphInfoAt = function() {};
+
+CanvasKit.Bidi.prototype.getBidiRegions = function() {};
+CanvasKit.Bidi.prototype.reorderVisual = function() {};
 
 CanvasKit.Surface.prototype.dispose = function() {};
 CanvasKit.Surface.prototype.flush = function() {};
