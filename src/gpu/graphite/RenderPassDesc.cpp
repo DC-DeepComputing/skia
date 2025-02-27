@@ -119,7 +119,7 @@ SkString RenderPassDesc::toString() const {
                           fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
                           fClearDepth,
                           fClearStencil,
-                          fDstReadStrategy);
+                          (unsigned)fDstReadStrategy);
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {

@@ -1007,7 +1007,7 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     keyData.fColorSampleCount = rawKeyData[3] & 0xFFFF;
 
     keyData.fWriteSwizzle = SwizzleCtorAccessor::Make((uint16_t)rawKeyData[4]);
-    keyData.fDstReadStrategy = (rawKeyData[3] << 16) & 0xFFFF;
+    keyData.fDstReadStrategy = (DstReadStrategy)(rawKeyData[3] << 16);
 
     // Recreate the RenderPassDesc
     SkASSERT(keyData.fColorSampleCount == keyData.fDSSampleCount);

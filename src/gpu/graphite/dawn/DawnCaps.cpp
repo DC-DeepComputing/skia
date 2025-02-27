@@ -1123,7 +1123,7 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
     }
 
     Swizzle writeSwizzle = SwizzleCtorAccessor::Make((uint16_t)rawKeyData[3]);
-    DstReadStrategy rpDstReadStrategy = (rawKeyData[3] << 16) & 0xFFFF;
+    DstReadStrategy rpDstReadStrategy = (DstReadStrategy)(rawKeyData[3] << 16);
 
     TextureInfo targetTexInfo = TextureInfos::MakeDawn(dawnInfo);
     *renderPassDesc = RenderPassDesc::Make(this,
