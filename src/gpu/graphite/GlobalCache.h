@@ -48,7 +48,8 @@ public:
     // associated with the key, that pipeline is returned and the passed-in pipeline is discarded.
     // Otherwise, the passed-in pipeline is held by the GlobalCache and also returned back.
     sk_sp<GraphicsPipeline> addGraphicsPipeline(const UniqueKey&,
-                                                sk_sp<GraphicsPipeline>) SK_EXCLUDES(fSpinLock);
+                                                sk_sp<GraphicsPipeline>,
+                                                const std::string& str) SK_EXCLUDES(fSpinLock);
 
 #if defined(GRAPHITE_TEST_UTILS)
     int numGraphicsPipelines() const SK_EXCLUDES(fSpinLock);

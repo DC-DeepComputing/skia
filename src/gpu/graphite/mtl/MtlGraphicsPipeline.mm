@@ -263,7 +263,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                                                      uint32_t stencilRefValue,
                                                      const BlendInfo& blendInfo,
                                                      const RenderPassDesc& renderPassDesc,
-                                                     PipelineInfo* pipelineInfo) {
+                                                     PipelineInfo* pipelineInfo,
+                                                     const std::string& label1) {
     id<MTLLibrary> vsLibrary = std::get<0>(vertexMain);
     id<MTLLibrary> fsLibrary = std::get<0>(fragmentMain);
     if (!vsLibrary || !fsLibrary) {
@@ -319,15 +320,17 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(const MtlSharedContext* sha
                                                               pipelineInfo,
                                                               std::move(pso),
                                                               std::move(dss),
-                                                              stencilRefValue));
+                                                              stencilRefValue,
+                                                              label1));
 }
 
 MtlGraphicsPipeline::MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                                          PipelineInfo* pipelineInfo,
                                          sk_cfp<id<MTLRenderPipelineState>> pso,
                                          sk_cfp<id<MTLDepthStencilState>> dss,
-                                         uint32_t refValue)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+                                         uint32_t refValue,
+                                         const std::string& label)
+        : GraphicsPipeline(sharedContext, pipelineInfo, label)
         , fPipelineState(std::move(pso))
         , fDepthStencilState(std::move(dss))
         , fStencilReferenceValue(refValue) {}

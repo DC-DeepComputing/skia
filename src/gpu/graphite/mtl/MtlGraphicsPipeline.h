@@ -48,7 +48,8 @@ public:
                                            uint32_t stencilRefValue,
                                            const BlendInfo& blendInfo,
                                            const RenderPassDesc&,
-                                           PipelineInfo* pipelineInfo);
+                                           PipelineInfo* pipelineInfo,
+                                           const std::string& label1);
 
     ~MtlGraphicsPipeline() override {}
 
@@ -61,7 +62,8 @@ private:
                         PipelineInfo* pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
-                        uint32_t refValue);
+                        uint32_t refValue,
+                        const std::string& label);
 
     void freeGpuData() override;
 

@@ -10,12 +10,15 @@
 
 namespace skgpu::graphite {
 
-GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext, PipelineInfo* pipelineInfo)
+GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
+                                   PipelineInfo* pipelineInfo,
+                                   const std::string& label)
         : Resource(sharedContext,
                    Ownership::kOwned,
                    skgpu::Budgeted::kYes,
                    /*gpuMemorySize=*/0,
-                   /*label=*/"GraphicsPipeline") {
+                   /*label=*/"GraphicsPipeline")
+        , fLabel(label) {
 #if defined(GRAPHITE_TEST_UTILS)
     if (pipelineInfo) {
         fPipelineInfo.fRenderStepID = pipelineInfo->fRenderStepID;

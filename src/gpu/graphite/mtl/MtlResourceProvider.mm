@@ -100,7 +100,8 @@ sk_sp<MtlGraphicsPipeline> MtlResourceProvider::findOrCreateLoadMSAAPipeline(
                                              /*stencilRefValue=*/0,
                                              noBlend,
                                              renderPassDesc,
-                                             /*pipelineInfo=*/nullptr);
+                                             /*pipelineInfo=*/nullptr,
+                                             "//$$");
         if (pipeline) {
             fLoadMSAAPipelines.set(renderPassKey, pipeline);
         }
@@ -193,7 +194,8 @@ sk_sp<GraphicsPipeline> MtlResourceProvider::createGraphicsPipeline(
                                      step->depthStencilSettings().fStencilReferenceValue,
                                      blendInfo,
                                      renderPassDesc,
-                                     pipelineInfoPtr);
+                                     pipelineInfoPtr,
+                                     pipelineLabel);
 }
 
 sk_sp<ComputePipeline> MtlResourceProvider::createComputePipeline(

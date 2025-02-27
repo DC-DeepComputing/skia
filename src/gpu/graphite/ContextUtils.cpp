@@ -585,9 +585,9 @@ std::string GetPipelineLabel(const ShaderCodeDictionary* dict,
                              const RenderStep* renderStep,
                              UniquePaintParamsID paintID) {
     std::string label = renderPassDesc.toString().c_str(); // includes the write swizzle
-    label += " + ";
+    label += " +\n";
     label += renderStep->name();
-    label += " + ";
+    label += " +\n";
     label += dict->idToString(paintID).c_str(); // will be "(empty)" for depth-only draws
     return label;
 }

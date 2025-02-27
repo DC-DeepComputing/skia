@@ -48,10 +48,14 @@ public:
     struct PipelineInfo;
 #endif
 
+    int fHits = 0;
+
 protected:
-    GraphicsPipeline(const SharedContext*, PipelineInfo*);
+    GraphicsPipeline(const SharedContext*, PipelineInfo*, const std::string& label);
 
 private:
+    std::string fLabel;
+
 #if defined(GRAPHITE_TEST_UTILS)
     PipelineInfo fPipelineInfo;
 #endif
