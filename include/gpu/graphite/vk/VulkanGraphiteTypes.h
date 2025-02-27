@@ -23,7 +23,7 @@ public:
     // VkImageCreateInfo properties
     // Currently the only supported flag is VK_IMAGE_CREATE_PROTECTED_BIT. Any other flag will not
     // be accepted
-    VkImageCreateFlags fFlags = 0;
+    VkImageCreateFlags fFlags1 = 0;
     VkFormat           fFormat = VK_FORMAT_UNDEFINED;
     VkImageTiling      fImageTiling = VK_IMAGE_TILING_OPTIMAL;
     VkImageUsageFlags  fImageUsageFlags = 0;
@@ -50,7 +50,7 @@ public:
                       VkImageAspectFlags aspectMask,
                       VulkanYcbcrConversionInfo ycbcrConversionInfo)
             : Data(sampleCount, mipmapped)
-            , fFlags(flags)
+            , fFlags1(flags)
             , fFormat(format)
             , fImageTiling(imageTiling)
             , fImageUsageFlags(imageUsageFlags)
@@ -65,8 +65,8 @@ private:
     // Non-virtual template API for TextureInfo::Data accessed directly when backend type is known.
     static constexpr skgpu::BackendApi kBackend = skgpu::BackendApi::kVulkan;
 
-    Protected isProtected() const {
-        return fFlags & VK_IMAGE_CREATE_PROTECTED_BIT ? Protected::kYes : Protected::kNo;
+    Protected isProtected1() const {
+        return fFlags1 & VK_IMAGE_CREATE_PROTECTED_BIT ? Protected::kYes : Protected::kNo;
     }
     bool serialize(SkWStream*) const;
     bool deserialize(SkStream*);
