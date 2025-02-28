@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d707f52f_9b3429fc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-02-28T20:47:29Z",
+      "side": 1,
+      "message": "A prototype of something that I think will clear out the stale DrawAtlas data without breaking pending uploads and draws. We can probably ignore the pending uploads, though we could use those to delete the backing data from Plots even if there are pending draws. I\u0027ve tested it in Chrome and it does purge the Page when idle.",
+      "revId": "38983e976d37356b7c2ba815a5b5adf11473d382",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
