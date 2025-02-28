@@ -44,6 +44,24 @@
       ],
       "revId": "be09756d0cc3d2b2047bb9ab1eb8ebfa3a37e579",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fed7a02_68dcf29c",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-02-28T22:08:24Z",
+      "side": 1,
+      "message": "Yes. The follow-on CL uses it in the fixed/changed tail pixels code.",
+      "parentUuid": "4480fffd_003a8007",
+      "revId": "be09756d0cc3d2b2047bb9ab1eb8ebfa3a37e579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
