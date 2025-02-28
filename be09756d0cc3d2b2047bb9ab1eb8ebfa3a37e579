@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4480fffd_003a8007",
+        "filename": "src/opts/SkBlitMask_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-02-28T22:05:13Z",
+      "side": 1,
+      "message": "Any reason to have a named local since it\u0027s only used once?",
+      "fixSuggestions": [
+        {
+          "fixId": "f3bbef6b_f00428c1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/opts/SkBlitMask_opts.h",
+              "range": {
+                "startLine": 54,
+                "startChar": 0,
+                "endLine": 55,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/opts/SkBlitMask_opts.h",
+              "range": {
+                "startLine": 64,
+                "startChar": 0,
+                "endLine": 65,
+                "endChar": 0
+              },
+              "replacement": "            vpmc.val[NEON_A] \u003d vdup_n_u8(SkGetPackedA32(pmc));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "be09756d0cc3d2b2047bb9ab1eb8ebfa3a37e579",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
