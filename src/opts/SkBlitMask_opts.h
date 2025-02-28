@@ -96,14 +96,19 @@ namespace SK_OPTS_NS {
                 w -= 8;
             }
 
-            while (w--) {
-                unsigned aa = *mask++;
+            while (w-- > 0) {
+                // These variables aren't actually vectors, but the names are consistent with
+                // the above to make it easier to compare the operations.
+                const U8CPU vmask = *mask++;
+                const U16CPU vmask256 = SkAlpha255To256(vmask);
+                U16CPU vscale;
                 if constexpr (isTranslucent) {
-                    *device = SkBlendARGB32(pmc, *device, aa);
+                    vscale = 256 - SkAlphaMulQ(colorAlpha, vmask256);
                 } else {
-                    *device = SkAlphaMulQ(pmc, SkAlpha255To256(aa))
-                        + SkAlphaMulQ(*device, SkAlpha255To256(255 - aa));
+                    vscale = 256 - vmask;
                 }
+                *device = SkAlphaMulQ(pmc, vmask256)
+                        + SkAlphaMulQ(*device, vscale);
                 device += 1;
             }
 
