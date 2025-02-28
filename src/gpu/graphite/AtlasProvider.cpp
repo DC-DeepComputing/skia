@@ -90,6 +90,7 @@ sk_sp<TextureProxy> AtlasProvider::getAtlasTexture(Recorder* recorder,
 }
 
 void AtlasProvider::freeGpuResources() {
+    fTextAtlasManager->freeGpuResources();
     // Only compact the atlases, not fully free the atlases. freeGpuResources() can be called while
     // there is pending work on the Recorder that refers to pages. In the event this is called right
     // after a snap(), all pages would eligible for cleanup during compaction anyways.
