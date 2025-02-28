@@ -31,7 +31,7 @@ if (is_ios && xcode_sysroot == "") {
       sdk = "appletvsimulator"
     }
   } else {
-    sdk = "iphoneos"
+    sdk = "iOS"
     if (ios_use_simulator) {
       sdk = "iphonesimulator"
     }
