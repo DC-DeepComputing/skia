@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34d5455e_ac6f3708",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-02-28T19:09:20Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  I\u0027ve realized that some still-valid-TODOs were pointing to closed bugs, so let me refresh a few TODO comments in this CL...\n\n/cc @danieldilan as FYI",
+      "revId": "15131a3cd922d568dc2e14f354895a7f75df86d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
