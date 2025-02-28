@@ -1449,14 +1449,8 @@ SkARGB32_Blitter::SkARGB32_Blitter(const SkPixmap& device, const SkPaint& paint)
         : SkRasterBlitter(device) {
     SkColor color = paint.getColor();
     fColor = color;
-
     fSrcA = SkColorGetA(color);
-    unsigned scale = SkAlpha255To256(fSrcA);
-    fSrcR = SkAlphaMul(SkColorGetR(color), scale);
-    fSrcG = SkAlphaMul(SkColorGetG(color), scale);
-    fSrcB = SkAlphaMul(SkColorGetB(color), scale);
-
-    fPMColor = SkPackARGB32(fSrcA, fSrcR, fSrcG, fSrcB);
+    fPMColor = SkPreMultiplyColor(fColor);
 }
 
 #if defined _WIN32  // disable warning : local variable used without having been initialized
