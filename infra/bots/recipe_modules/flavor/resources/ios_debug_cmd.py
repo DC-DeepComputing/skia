@@ -8,14 +8,13 @@ import sys
 import threading
 import time
 
-# Usage: ios_debug_cmd.py <bundle_id> <args...>
+# Usage: ios_debug_cmd.py <args...>
 # Runs the given app with the given args with full debug output enabled, then
 # outputs syslog for the period when the command was running. Exits with the
 # exit code of idevicedebug.
 
 
-bundle_id = sys.argv[1]
-args = sys.argv[2:]
+args = sys.argv[1:]
 
 logp = subprocess.Popen(['idevicesyslog'], stdout=subprocess.PIPE, bufsize=-1)
 log = ''
@@ -31,7 +30,7 @@ def collect_log():
 logt = threading.Thread(target=collect_log)
 logt.start()
 
-rv = subprocess.call(['idevicedebug', '--debug', 'run', bundle_id] + args)
+rv = subprocess.call(['idevice-app-runner', '--debug'] + args)
 
 print('\n\nreturned %d' % rv)
 
