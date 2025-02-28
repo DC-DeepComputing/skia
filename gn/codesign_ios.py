@@ -23,8 +23,8 @@ pkg,identstr,profile = sys.argv[1:]
 
 # Find the signing identity.
 identity = None
-for line in subprocess.check_output([
-    'security', 'find-identity']).decode('utf-8').split('\n'):
+output = subprocess.check_output(['security', 'find-identity']).decode('utf-8')
+for line in output.split('\n'):
   m = re.match(r'''.*\) (.*) "''' + identstr + '"', line)
   if m:
     identity = m.group(1)
