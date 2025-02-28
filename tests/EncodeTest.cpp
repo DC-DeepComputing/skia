@@ -30,6 +30,7 @@
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTemplates.h"
 #include "modules/skcms/src/skcms_public.h"
+#include "src/core/SkConvertPixels.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "tests/Test.h"
 #include "tools/DecodeUtils.h"
@@ -162,7 +163,7 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
     SkBitmap originalBitmapRgba8;
     {
         const char* resource = (kOpaque_SkAlphaType == alphaType) ? "images/color_wheel.jpg"
-                                                                  : "images/color_wheel.png";
+                                : "images/color_wheel.png";
         sk_sp<SkData> data = GetResourceAsData(resource);
         if (!data) {
             return;
@@ -258,7 +259,7 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
             return;
         }
         SkDynamicMemoryWStream buf;
-        success = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
+          success = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
         REPORTER_ASSERT(r, success);
         if (!success) {
             return;
@@ -749,4 +750,111 @@ DEF_TEST(Encode_Alpha, r) {
             }
         }
     }
+}
+
+DEF_TEST(Encode_jpeg_blend_to_black, r) {
+   SkBitmap originalBitmap;
+   const char* resource = "images/rainbow-gradient.png";
+   sk_sp<SkData> data = GetResourceAsData(resource);
+   REPORTER_ASSERT(r, data);
+   if (!data) {
+     return;
+   }
+
+   for (SkColorType colorType : {kRGBA_8888_SkColorType,
+                                 kBGRA_8888_SkColorType,
+                                 kRGBA_F16_SkColorType}) {
+    for (SkAlphaType alphaType : {kUnpremul_SkAlphaType,
+                                  kPremul_SkAlphaType}) {
+      for (bool blendOnBlack : {true, false}) {
+        ///////////////////////////////////////////////////
+        // Decode the test image into `originalBitmap` into correct alpha and color type.
+        std::unique_ptr<SkCodec> codec = SkCodec::MakeFromData(data);
+        SkImageInfo dstInfo = codec->getInfo().makeAlphaType(alphaType).makeColorType(colorType);
+        originalBitmap.allocPixels(dstInfo);
+        SkCodec::Result result = codec->getPixels(
+          dstInfo, originalBitmap.getPixels(), originalBitmap.rowBytes());
+        REPORTER_ASSERT(r,
+                   result == SkCodec::kSuccess,
+                   "result=%s", SkCodec::ResultToString(result));
+         if (result != SkCodec::kSuccess) {
+            SkDebugf("%d, %d || %d, %d\n", alphaType, colorType, alphaType, colorType);
+            return;
+         }
+
+        ///////////////////////////////////////////////////
+        // Blend 'originalBitmap' onto a black background if needed, otherwise disregard alpha
+        // and store in 'referenceBM'. This is the bitmap we will be comparing to.
+         SkBitmap referenceBM;
+         bool success;
+         if (blendOnBlack) {
+            SkImageInfo& referenceImageInfo = dstInfo;
+            referenceBM.allocPixels(referenceImageInfo);
+            referenceBM.eraseColor(SK_ColorBLACK);
+            SkCanvas blackCanvas(referenceBM);
+            blackCanvas.drawImage(originalBitmap.asImage(), 0, 0);
+         } else {
+            SkImageInfo opaqueInfo = dstInfo.makeAlphaType(kOpaque_SkAlphaType).makeColorType(kRGB_888x_SkColorType);
+            referenceBM.allocPixels(opaqueInfo);
+            success = SkConvertPixels(opaqueInfo, referenceBM.getAddr(0,0), opaqueInfo.minRowBytes(),
+                            dstInfo, originalBitmap.getAddr(0, 0), dstInfo.minRowBytes());
+            REPORTER_ASSERT(r, success);
+            if (!success) { return; }
+         }
+
+         ///////////////////////////////////////////////////
+         // Encode 'originalBitmap' into JPEG. Then decode it into 'roundtripBitmap'.
+         SkPixmap src;
+         success = originalBitmap.peekPixels(&src);
+         REPORTER_ASSERT(r, success);
+         if (!success) { return; }
+
+         SkDynamicMemoryWStream buf;
+         SkJpegEncoder::Options options;
+         options.fAlphaOption = blendOnBlack ? SkJpegEncoder::AlphaOption::kBlendOnBlack
+                                             : SkJpegEncoder::AlphaOption::kIgnore;
+         success = SkJpegEncoder::Encode(&buf, src, options);
+         REPORTER_ASSERT(r, success);
+         if (!success) { return; }
+         sk_sp<SkData> roundtripData = buf.detachAsData();
+         sk_sp<SkImage> image = SkImages::DeferredFromEncodedData(roundtripData);
+
+         SkBitmap roundtripBitmap;
+         std::unique_ptr<SkCodec> roundtripCodec = SkCodec::MakeFromData(roundtripData);
+         SkImageInfo roundtripInfo = roundtripCodec->getInfo();
+         roundtripBitmap.allocPixels(roundtripInfo);
+         roundtripCodec->getPixels(
+           roundtripInfo, roundtripBitmap.getPixels(), roundtripBitmap.rowBytes());
+          ///////////////////////////////////////////////////
+          // Ensure that `referenceBM` and `roundtripBitmap` are (almost) equal.
+          // We give a certain tolerance due to lossyness.
+         if (referenceBM.dimensions() != roundtripBitmap.dimensions()) {
+             REPORTER_ASSERT(r, false);
+             return;
+         }
+         for (int y = 0; y < referenceBM.height(); y++) {
+            for (int x = 0; x < referenceBM.width(); x++) {
+              SkColor originalColor = referenceBM.getColor(x, y);
+              SkColor roundtripColor = roundtripBitmap.getColor(x, y);
+              SkPMColor originalPremulColor = SkPreMultiplyColor(originalColor);
+              SkPMColor roundtripPremulColor = SkPreMultiplyColor(roundtripColor);
+              // bool almost_same = almost_equals(originalPremulColor, roundtripPremulColor, tolerance);
+              bool almost_same = almost_equals(originalColor, roundtripColor, /*tolerance=*/60);
+              REPORTER_ASSERT(r,
+                              almost_same,
+                              "x=%d, y=%d, original=0x%08x, roundtrip=0x%08x, color=%d, alpha=%d",
+                              x,
+                              y,
+                              originalPremulColor,
+                              roundtripPremulColor,
+                              static_cast<int>(colorType),
+                              static_cast<int>(alphaType));
+              if (!almost_same) {
+                return;
+              }
+            }
+         }
+      }
+    }
+   }
 }
