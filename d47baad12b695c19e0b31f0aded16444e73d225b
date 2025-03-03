@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9011c5fa_ec584ca5",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T15:24:02Z",
+      "side": 1,
+      "message": "nit: extra indentation\n\nHave you set up clang-format to be able to be run?",
+      "range": {
+        "startLine": 376,
+        "startChar": 16,
+        "endLine": 376,
+        "endChar": 18
+      },
+      "revId": "d47baad12b695c19e0b31f0aded16444e73d225b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
