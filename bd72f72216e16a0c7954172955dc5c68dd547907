@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d88a6482_86126ba6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T20:56:45Z",
+      "side": 1,
+      "message": "Despite resolving this offline, posting what I had drafted up:\n\nGood question - yes, originally I had it such that all render passes could potentially support reading from the dst as an input attachment.\n\nHowever, we can determine upfront if *no* draws in the DrawList need a dst read at renderpassdesc creation time. If that is the case, then we can take advantage of Vulkan image layouts optimized for different usages (i.e. `VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL`, `VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL`, ...). This is as opposed to enforcing the usage of `VK_IMAGE_LAYOUT_GENERAL` for the dst texture to accomodate being used as both the color attachment *and* as an input attachment.\n\nThis means renderpasses that **never** read from the dst can be optimized to use those layouts, but **renderpasses where ANY nonzero amount of draws read from the dst** can still be shared.\n\nThis still, however, enables us to compile the appropriate graphics pipeline when calling `DrawPass:prepareResources()` and will not lead to the \"surprise\" runtime creation of a pipeline when the cmd buffer issues draw commands. The RenderPass will know some draws read from the dst and some do not, so a pipeline for both will be created; though it would require a rebind which is unideal.",
+      "parentUuid": "9b197258_ec902181",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 263
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e716b88_31bcadc6",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-02-27T18:18:27Z",
       "side": 1,
       "message": "Could we instead reward this to:\n\n\"These bounds are only valid if drawWithinListReadsDst returns true.\"",
+      "range": {
+        "startLine": 89,
+        "startChar": 56,
+        "endLine": 90,
+        "endChar": 42
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "360b2bf9_c1a5bb44",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T20:56:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e716b88_31bcadc6",
       "range": {
         "startLine": 89,
         "startChar": 56,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a67db9a_3488345a",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T20:56:45Z",
+      "side": 1,
+      "message": "Acknowledged; abandoning change though so no update issued",
+      "parentUuid": "9e28d7d8_3764c347",
+      "range": {
+        "startLine": 92,
+        "startChar": 9,
+        "endLine": 92,
+        "endChar": 31
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1380fdb1_73d57923",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f14093e6_10fcd6c7",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T20:56:45Z",
+      "side": 1,
+      "message": "Talked offline, but this change shall be abandoned since we want more RP reusability.",
+      "parentUuid": "1380fdb1_73d57923",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 48
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77f2125c_379a03c8",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-02-27T18:18:27Z",
       "side": 1,
       "message": "why the IfRequired here? In DrawContext where we make one of these it looks like we\u0027re already checking if there are any draws that will read the dst. So this looks like it should be the definitive dst read strategy. Additionally we aren\u0027t doing any logic futher down on this value to check if there are actual draws.",
+      "range": {
+        "startLine": 51,
+        "startChar": 53,
+        "endLine": 51,
+        "endChar": 81
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce84d0c_23bc7c7f",
+        "filename": "src/gpu/graphite/RenderPassDesc.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T20:56:45Z",
+      "side": 1,
+      "message": "The idea was that it is possible that no read is required, but that is still *a* strategy so I agree this can be changed.",
+      "parentUuid": "77f2125c_379a03c8",
       "range": {
         "startLine": 51,
         "startChar": 53,
