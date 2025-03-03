@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "986fbd16_3b6a877c",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-03T15:10:48Z",
+      "side": 1,
+      "message": "I found this hard to parse, maybe:\n```, fColorInfos(!colorInfos.empty()\n                 ? std::vector\u003cSkColorInfo\u003e(colorInfos.begin(), colorInfos.end())\n                 : raw ? kRawImageDefaultColorInfos\n                       : (flags \u0026 PrecompileImageShaderFlags::kExcludeAlpha)\n                                  ? kNonAlphaOnlyDefaultColorInfos\n                                  : kDefaultColorInfos)```\n\nWith all the ?: pairs vertically aligned I can see the nesting",
+      "range": {
+        "startLine": 243,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 55
+      },
+      "revId": "963f463dc36756e09f3c480be9ffb74bb9af3a08",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
