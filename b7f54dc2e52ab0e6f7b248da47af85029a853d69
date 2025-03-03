@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "417b2e2b_0b0c3d32",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T22:02:39Z",
+      "side": 1,
+      "message": "Good idea! Added a TODO for now and also eliminated a bool for whether or not a RP should support dst reads, since that should always be true unless we are loading MSAA from resolve for reusability reasons.",
+      "parentUuid": "b850597d_4f90c376",
+      "range": {
+        "startLine": 594,
+        "startChar": 4,
+        "endLine": 595,
+        "endChar": 37
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f09e4b40_95d32c20",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-02-26T16:32:24Z",
       "side": 1,
       "message": "not true and described above",
+      "range": {
+        "startLine": 632,
+        "startChar": 7,
+        "endLine": 632,
+        "endChar": 41
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "812e4294_3fed0806",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T22:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f09e4b40_95d32c20",
       "range": {
         "startLine": 632,
         "startChar": 7,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef9aed88_b1737e78",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T22:02:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f7e50eb_67198508",
+      "range": {
+        "startLine": 324,
+        "startChar": 49,
+        "endLine": 324,
+        "endChar": 77
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b25983a_55f3cfd7",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-02-26T16:32:24Z",
       "side": 1,
       "message": "Do we want to put in this dependency all the time even without an input attachment or should it just be every time there is an input attachment?",
+      "range": {
+        "startLine": 388,
+        "startChar": 5,
+        "endLine": 395,
+        "endChar": 71
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf0a9da8_0991845b",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T22:02:39Z",
+      "side": 1,
+      "message": "Yeah, I think we should only do this when we have an input attachment on the main subpass (aka not loading MSAA from resolve). Done",
+      "parentUuid": "7b25983a_55f3cfd7",
       "range": {
         "startLine": 388,
         "startChar": 5,

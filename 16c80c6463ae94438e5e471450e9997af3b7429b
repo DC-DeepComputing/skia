@@ -181,6 +181,30 @@
       },
       "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5867d4b6_170e50d4",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-03T22:02:39Z",
+      "side": 1,
+      "message": "Ended up removing the bool for whether or not we must use general layout and assume we always want to *unless* we are loading MSAA from resolve. Added the proposed comment. \n\nHowever, the `fHasInputAttachment` would basically just be the equivalent of (!`fLoadMSAAFromResolve`) since renderpasses assume support for reading dst as input unless we are loading msaa from resolve (since the bool refers to main subpass), so I kept as-is for now. LMK if you think that logic is flawed or would prefer bool `fHasInputAttachment` and remove `fLoadMSAAFromResolve` - I could see an argument for either way.",
+      "parentUuid": "5aec8267_361ca62f",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
