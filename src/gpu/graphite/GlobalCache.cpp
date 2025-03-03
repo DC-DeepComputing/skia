@@ -44,6 +44,8 @@ constexpr int kGlobalComputePipelineCacheSizeLimit = 256;
 
 } // anonymous namespce
 
+extern FILE* gFile;
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
@@ -218,6 +220,16 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
+    if (!gFile) {
+        gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+    }
+    if (gFile) {
+        fprintf(gFile, "------------------------------- addGraphicsPipeline:\n dsfdj\n");
+        fflush(gFile);
+    } else {
+        printf("----------------------- gFile Open failed dtor\n");
+    }
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);
