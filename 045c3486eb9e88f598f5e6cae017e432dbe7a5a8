@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "665f80b1_a8b494b2",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-03T20:46:33Z",
+      "side": 1,
+      "message": "given that we don\u0027t register wrapped images or report their size right now, do we even need to do this in Graphite?",
+      "range": {
+        "startLine": 122,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 21
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba9e9395_df7c44a1",
         "filename": "src/gpu/graphite/TextureFormat.cpp",
         "patchSetId": 13
@@ -95,6 +118,30 @@
       "writtenOn": "2025-03-03T20:18:58Z",
       "side": 1,
       "message": "This will be converted to the new style at some point too, right ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 21,
+        "endLine": 128,
+        "endChar": 40
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6239e1b5_8e5a17fd",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-03T20:46:33Z",
+      "side": 1,
+      "message": "This is probably still used by Ganesh (along with other helpers in this file). I guess we considering moving these out of the generic vk utils and into ganesh vk utils instead",
+      "parentUuid": "b98b22f8_8dd1703f",
       "range": {
         "startLine": 128,
         "startChar": 21,
