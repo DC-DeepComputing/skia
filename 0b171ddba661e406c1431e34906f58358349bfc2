@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32a05196_09aa6d36",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 791,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T16:48:03Z",
+      "side": 1,
+      "message": "@kjlubick@google.com FYI adding this guard so that the RUSTPNG build setup compiles properly.",
+      "range": {
+        "startLine": 787,
+        "startChar": 0,
+        "endLine": 791,
+        "endChar": 6
+      },
+      "revId": "0b171ddba661e406c1431e34906f58358349bfc2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
