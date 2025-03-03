@@ -63,7 +63,8 @@ private:
                         const PipelineInfo& pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,
                         sk_cfp<id<MTLDepthStencilState>> dss,
-                        uint32_t refValue);
+                        uint32_t refValue,
+                        const std::string& label);
 
     using MSLFunction = std::pair<id<MTLLibrary>, std::string>;
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,

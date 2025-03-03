@@ -97,7 +97,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
-            pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
+            pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline), label);
         }
     }
     return pipeline;
