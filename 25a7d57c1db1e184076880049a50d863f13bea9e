@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6015ee5_35777ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-03T17:00:51Z",
+      "side": 1,
+      "message": "To address the chrome pixel test failures, https://chromium-review.googlesource.com/c/chromium/src/+/6316993 will need to land first.",
+      "revId": "25a7d57c1db1e184076880049a50d863f13bea9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
