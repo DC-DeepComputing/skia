@@ -1,0 +1,148 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df776e17_2ff4a14a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 27
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 56,
+        "startChar": 12,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9212a0a_3c4a390a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "Looks good, with some nits.",
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ffbe2ed_6ed3cd8e",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "naming nit: I find the original naming more natural (and better aligned with the other blending code)\n\n  src -\u003e input\n  dst -\u003e output\n\nNow it so happens that in the loops below we\u0027re loading src from the same dst buffer, but as far as the kernel is concerned the argument is still an input and the result is the output - so src/dst still makes sense.",
+      "range": {
+        "startLine": 250,
+        "startChar": 30,
+        "endLine": 250,
+        "endChar": 33
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44162e4d_48fcdac2",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "nit: we can skip this",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "39fbb64e_c1332331",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/CoreBlittersTest.cpp",
+              "range": {
+                "startLine": 20,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fde1b6af_d4315ed1",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "Not critical for a test, but these will be elided in the early returns above.  We should have the factories return `std::unique_ptr\u003cSkBlitter\u003e` instead.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e82c842c_8ceefb60",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-03T20:24:57Z",
+      "side": 1,
+      "message": "`std::make_unique(...)`",
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
