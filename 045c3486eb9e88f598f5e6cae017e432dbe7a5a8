@@ -80,6 +80,29 @@
       "parentUuid": "d2a319f9_083806a7",
       "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b98b22f8_8dd1703f",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-03T20:18:58Z",
+      "side": 1,
+      "message": "This will be converted to the new style at some point too, right ?",
+      "range": {
+        "startLine": 128,
+        "startChar": 21,
+        "endLine": 128,
+        "endChar": 40
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
