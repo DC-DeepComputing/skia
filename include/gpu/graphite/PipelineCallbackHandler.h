@@ -14,9 +14,15 @@
 #include "src/core/SkChecksum.h"
 #include "src/core/SkTHash.h"
 
+#include "include/gpu/graphite/PrecompileContext.h"
+
 #include <vector>
 
 class SkData;
+
+namespace skgpu::graphite {
+    class PrecompileContext;
+}
 
 namespace skiatools::graphite {
 
@@ -24,12 +30,19 @@ namespace skiatools::graphite {
 // This is intended to be an example of a Precompilation Callback handler. For DM it collects
 // all the Android-style keys that are used by a given source (e.g., gm, or skp) and uses
 // them in resetAndRecreatePipelines to recreate the Pipelines.
-class PipelineCallBackHandler {
+class SK_API PipelineCallBackHandler {
 public:
+    PipelineCallBackHandler();
+    ~PipelineCallBackHandler();
+
     static void CallBack(void* data, sk_sp<SkData> androidStyleKey) {
         PipelineCallBackHandler* handler = reinterpret_cast<PipelineCallBackHandler*>(data);
 
         handler->add(std::move(androidStyleKey));
+    }
+
+    void setFoo(std::unique_ptr<skgpu::graphite::PrecompileContext> foo) {
+        fPCC = std::move(foo);
     }
 
     // Add an Android-style key to the map
@@ -59,6 +72,8 @@ private:
     };
 
     skia_private::THashTable<sk_sp<SkData>, SkDataKey, SkDataKey> fMap SK_GUARDED_BY(fSpinLock);
+    std::unique_ptr<skgpu::graphite::PrecompileContext> fPCC;
+    FILE* fFile;
 };
 
 }  // namespace skiatools::graphite

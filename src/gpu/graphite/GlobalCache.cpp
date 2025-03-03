@@ -44,6 +44,8 @@ constexpr int kGlobalComputePipelineCacheSizeLimit = 256;
 
 } // anonymous namespce
 
+extern FILE* gFile;
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
@@ -81,11 +83,14 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
         tmpContext = fPipelineCallbackContext;
     }
 
+//    printf("---------- invokePipelineCallback: %p\n", tmpContext);
+
     if (tmpCB) {
         sk_sp<SkData> data = PipelineDescToData(sharedContext->caps(),
                                                 sharedContext->shaderCodeDictionary(),
                                                 pipelineDesc,
                                                 renderPassDesc);
+        printf("-------- %zu\n", data->size());
 
         // Enable this to thoroughly test Pipeline serialization
 #if 0
@@ -218,6 +223,18 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
+#if 0
+    if (!gFile) {
+        gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+    }
+    if (gFile) {
+        fprintf(gFile, "------------------------------- addGraphicsPipeline:\n dsfdj\n");
+        fflush(gFile);
+    } else {
+        printf("----------------------- gFile Open failed dtor\n");
+    }
+#endif
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);

@@ -270,10 +270,12 @@ bool SerializePipelineDesc(const Caps* caps,
     stream->write32(kCurrent_Version);
 
     if (!serialize_graphics_pipeline_desc(shaderCodeDictionary, stream, pipelineDesc)) {
+        printf("------------ failed on pipeline_desc\n");
         return false;
     }
 
     if (!serialize_render_pass_desc(caps, stream, renderPassDesc)) {
+        printf("------------ failed on render_pass_desc\n");
         return false;
     }
 
@@ -289,23 +291,28 @@ bool DeserializePipelineDesc(const Caps* caps,
     SkASSERT(stream);
 
     if (!stream_is_pipeline(stream)) {
+        printf("----- failure a\n");
         return false;
     }
 
     if (!deserialize_graphics_pipeline_desc(shaderCodeDictionary, stream, pipelineDesc)) {
+        printf("----- failure b\n");
         return false;
     }
 
     if (!deserialize_render_pass_desc(caps, stream, renderPassDesc)) {
+        printf("----- failure c\n");
         return false;
     }
 
     uint32_t tag;
     if (!stream->readU32(&tag)) {
+        printf("----- failure d\n");
         return false;
     }
 
     if (tag != SK_BLOB_END_TAG) {
+        printf("----- failure e\n");
         return false;
     }
 
@@ -324,6 +331,7 @@ sk_sp<SkData> PipelineDescToData(const Caps* caps,
                                shaderCodeDictionary,
                                &stream,
                                pipelineDesc, renderPassDesc)) {
+        printf("----- failure z\n");
         return nullptr;
     }
 
@@ -336,6 +344,7 @@ bool DataToPipelineDesc(const Caps* caps,
                         GraphicsPipelineDesc* pipelineDesc,
                         RenderPassDesc* renderPassDesc) {
     if (!data) {
+        printf("----- failure q\n");
         return false;
     }
     SkMemoryStream stream(data->data(), data->size());
@@ -343,6 +352,7 @@ bool DataToPipelineDesc(const Caps* caps,
     if (!DeserializePipelineDesc(caps, shaderCodeDictionary, &stream,
                                  pipelineDesc,
                                  renderPassDesc)) {
+        printf("----- failure p\n");
         return false;
     }
 

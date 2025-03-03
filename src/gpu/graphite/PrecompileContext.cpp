@@ -90,6 +90,7 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
                             serializedPipelineKey.get(),
                             &pipelineDesc,
                             &renderPassDesc)) {
+        printf("------ failure 1\n");
         return "";
     }
 
@@ -97,6 +98,7 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
 
     const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
     if (!renderStep) {
+        printf("------ failure 2\n");
         return "";
     }
 

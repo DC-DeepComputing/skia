@@ -14,6 +14,7 @@
 #include "include/core/SkString.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/PipelineCallbackHandler.h"
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/precompile/PaintOptions.h"
@@ -29,7 +30,6 @@
 #include "tools/graphite/ContextFactory.h"
 #include "tools/graphite/GraphiteToolUtils.h"
 #include "tools/graphite/UniqueKeyUtils.h"
-#include "tools/graphite/precompile/PipelineCallbackHandler.h"
 #include "tools/graphite/precompile/PrecompileEffectFactories.h"
 
 using namespace::skgpu::graphite;
@@ -357,7 +357,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_CONTEXTS(UserDefinedStableKeyTest,
                                            /* condition= */ true,
                                            CtsEnforcement::kNever) {
 
-    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler);
+    std::unique_ptr<PipelineCallBackHandler> pipelineHandler(new PipelineCallBackHandler());
 
     TestOptions newOptions(origOptions);
     newOptions.fContextOptions.fPipelineCallbackContext = pipelineHandler.get();
