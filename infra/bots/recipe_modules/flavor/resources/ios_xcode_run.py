@@ -37,6 +37,17 @@ contents = {
     'TestingEnvironmentVariables': {},
     'EnvironmentVariables': {},
     'CommandLineArguments': args,
+    # TODO(borenet): These aren't required for other devices but might be for
+    # the iPhone 15 Pros?
+    'IsUITestBundle': True,
+    'IsXCTRunnerHostedTestBundle': True,
+    'OnlyTestIdentifiers': [
+      'Placeholder',
+    ],
+    'PreferredScreenCaptureFormat': 'video',
+    'SystemAttachmentLifetime': 'keepAlways',
+    'UITargetAppBundleIdentifier': bundle_id,
+    'UITargetAppPath': app_path,
   },
 }
 with open(xctestrun_path, 'wb') as f:
