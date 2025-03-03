@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5d98d1e_40c96224",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-03T19:23:41Z",
+      "side": 1,
+      "message": "Do you think there is any advantage to just making these simple arrays (rather than using a std::vector ?",
+      "revId": "f4092a72af1ed8141b353bea8077b634a00aeeac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
