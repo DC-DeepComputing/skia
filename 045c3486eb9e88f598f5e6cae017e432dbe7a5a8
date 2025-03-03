@@ -62,6 +62,24 @@
       "message": "Maybe document that this is returning a bitmask of kRGB_SkColorChannelFlags ?",
       "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d08792c2_3c3e04d4",
+        "filename": "src/gpu/graphite/TextureFormat.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-03T19:59:22Z",
+      "side": 1,
+      "message": "I guess we could name it TextureFormatChannelMask",
+      "parentUuid": "d2a319f9_083806a7",
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
