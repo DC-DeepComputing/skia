@@ -16,6 +16,138 @@
       "message": "This change is ready for review.",
       "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91682679_3d040b49",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "nit: extra indentation",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 6
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f8fc048_fcb1bc01",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "Sometimes, with these deeply nested for loops, it can be hard to tell what the failure is (e.g. which combination). To help future debugging, consider adding something like\n`ReporterContext rc(r, SkStringPrintf(\"colorType\u003d0x%x alphaType\u003d0x%x blendOnBlack\u003d%d\", colorType, alphaType, blendOnBlack);`\nand then that extra context will show up on all future failed assertions.",
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8addcc2_3c1d44b8",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "Avoid using this API, as it\u0027s less clear which codec is actually being used (and it relies on some compile-time hacks that are not Bazel compatible). Go for `SkJpegDecoder::Decode` instead",
+      "range": {
+        "startLine": 773,
+        "startChar": 58,
+        "endLine": 773,
+        "endChar": 70
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa3e563b_d42902e2",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "Do we want to bail out on the first failure or just continue to the next settings?",
+      "range": {
+        "startLine": 783,
+        "startChar": 20,
+        "endLine": 783,
+        "endChar": 26
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da87c187_c97fc83f",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "suggestion: make this a self-documenting constant defined at the top of the function",
+      "range": {
+        "startLine": 851,
+        "startChar": 71,
+        "endLine": 851,
+        "endChar": 73
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4bdf801_50a4052d",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-03T13:51:23Z",
+      "side": 1,
+      "message": "Same question as above, if there\u0027s a failure here, should we bail out or keep trying all the possibilities?",
+      "range": {
+        "startLine": 862,
+        "startChar": 28,
+        "endLine": 862,
+        "endChar": 34
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
