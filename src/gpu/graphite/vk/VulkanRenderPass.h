@@ -65,6 +65,9 @@ public:
         VulkanRenderPassMetaData(const RenderPassDesc& renderPassDesc);
 
         bool fLoadMSAAFromResolve;
+
+        // These bools apply to the *main* subpass (not the subpass used when loading MSAA
+        // from resolve).
         bool fHasColorAttachment;
         bool fHasColorResolveAttachment;
         bool fHasDepthStencilAttachment;
