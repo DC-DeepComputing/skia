@@ -90,7 +90,6 @@ public:
 
     png_structp pngPtr() { return fPngPtr; }
     png_infop infoPtr() { return fInfoPtr; }
-    transform_scanline_proc proc() const { return fProc; }
 
     ~SkPngEncoderMgr() { png_destroy_write_struct(&fPngPtr, &fInfoPtr); }
 
@@ -99,7 +98,6 @@ private:
 
     png_structp fPngPtr;
     png_infop fInfoPtr;
-    transform_scanline_proc fProc = nullptr;
 };
 
 std::unique_ptr<SkPngEncoderMgr> SkPngEncoderMgr::Make(SkWStream* stream) {
@@ -405,6 +403,12 @@ bool SkPngEncoderImpl::onEncodeRow(SkSpan<const uint8_t> row) {
 
     // `png_bytep` is `uint8_t*` rather than `const uint8_t*`.
     png_bytep rowPtr = const_cast<png_bytep>(row.data());
+
+    // Swap to big endian if we are storing more than a byte per color channel
+    // (SkColorTypes are little endian by default).
+    if (png_get_bit_depth(fEncoderMgr->pngPtr(), fEncoderMgr->infoPtr()) == 16) {
+      png_set_swap(fEncoderMgr->pngPtr());
+    }
 
     png_write_rows(fEncoderMgr->pngPtr(), &rowPtr, 1);
     return true;

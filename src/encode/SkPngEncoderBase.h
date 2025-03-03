@@ -25,8 +25,10 @@ template <typename T> class SkSpan;
 class SkPngEncoderBase : public SkEncoder {
 public:
     struct TargetInfo {
+        std::optional<SkImageInfo> fSrcRowInfo;
+        std::optional<SkImageInfo> fDstRowInfo;
+
         SkEncodedInfo fDstInfo;
-        transform_scanline_proc fTransformProc;
         size_t fDstRowSize;
     };
 
