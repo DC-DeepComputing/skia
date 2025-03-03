@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84279559_e676274d",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 11
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-03T16:00:56Z",
+      "side": 1,
+      "message": "An alternate way that we could define these mappings would be for every backend to declare a constant array that is indexed by `skgpu::TextureFormat` and holds the backend format it\u0027s equivalent with.   Going from `skgpu::TextureFormat` to backend is constant time, going from the reverse is a linear search (which we already sort of do in some of the backends to map from a format value to a smaller-ranged index value).\n\nA second alternate would be for each backend to provide a list of pairs between backend format and core TextureFormat, and mapping from one to another is a linear search regardless of the direction.\n\nBoth of these have the benefit of defining the bidirectional mapping in one block, vs. having to later add a `TextureFormatToMTLPixelFormat`, etc. that would hopefully have no typos.  On the other hand, if it turns out there won\u0027t be any need to map from the generic format back to the backend format, then this approach gives us a constant time mapping.\n\nAny immediate preferences, or should it be a wait and see?",
+      "range": {
+        "startLine": 96,
+        "startChar": 14,
+        "endLine": 96,
+        "endChar": 43
+      },
+      "revId": "214eb9e4519181c993ebc28f3fd685ad3f86914f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
