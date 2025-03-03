@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9b197258_ec902181",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-03T16:23:09Z",
+      "side": 1,
+      "message": "What are the optimizations that this enables? I thought we were going to be able to always include the input attachment even if it wasn\u0027t used so we wouldn\u0027t have to have duplicate pipelines for a non-dst-read draw being included in a renderpass that had other dst-read-requiring draws.\n\nIf it enables optimizations that affect other logic, but don\u0027t change how the pipeline is compiled, then we shouldn\u0027t put it in the pipeline key.",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 263
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e716b88_31bcadc6",
         "filename": "src/gpu/graphite/DrawList.h",
         "patchSetId": 9
@@ -19,6 +42,29 @@
         "startChar": 56,
         "endLine": 90,
         "endChar": 42
+      },
+      "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e28d7d8_3764c347",
+        "filename": "src/gpu/graphite/DrawList.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-03T16:23:09Z",
+      "side": 1,
+      "message": "nit: `withinList` is somewhat redundant with a member function on DrawList, which can pretty much assume it reflects the draws in that list.\n\nSomething like `drawsReadDst` or `willReadDst` conveys the same info but is more compact IMO.",
+      "range": {
+        "startLine": 92,
+        "startChar": 9,
+        "endLine": 92,
+        "endChar": 31
       },
       "revId": "bd72f72216e16a0c7954172955dc5c68dd547907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
