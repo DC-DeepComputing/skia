@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0cd6c19_62bba76b",
+        "filename": "src/encode/SkJpegEncoderImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91682679_3d040b49",
+      "range": {
+        "startLine": 109,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 6
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f8fc048_fcb1bc01",
@@ -58,6 +82,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3729595_0224a9f5",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f8fc048_fcb1bc01",
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8addcc2_3c1d44b8",
@@ -71,6 +113,30 @@
       "writtenOn": "2025-03-03T13:51:23Z",
       "side": 1,
       "message": "Avoid using this API, as it\u0027s less clear which codec is actually being used (and it relies on some compile-time hacks that are not Bazel compatible). Go for `SkJpegDecoder::Decode` instead",
+      "range": {
+        "startLine": 773,
+        "startChar": 58,
+        "endLine": 773,
+        "endChar": 70
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61d8b405_f54cdcfb",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 773,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Done. Using png decoder becuase I want lossless decoding when getting the original bitmap.",
+      "parentUuid": "c8addcc2_3c1d44b8",
       "range": {
         "startLine": 773,
         "startChar": 58,
@@ -104,6 +170,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "072ec212_4e30f101",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 783,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Ah good idea, I\u0027ll make it so we continue on in all the early failures",
+      "parentUuid": "fa3e563b_d42902e2",
+      "range": {
+        "startLine": 783,
+        "startChar": 20,
+        "endLine": 783,
+        "endChar": 26
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da87c187_c97fc83f",
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ff49f62_d857be86",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 851,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da87c187_c97fc83f",
+      "range": {
+        "startLine": 851,
+        "startChar": 71,
+        "endLine": 851,
+        "endChar": 73
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f4bdf801_50a4052d",
@@ -140,6 +254,30 @@
       "writtenOn": "2025-03-03T13:51:23Z",
       "side": 1,
       "message": "Same question as above, if there\u0027s a failure here, should we bail out or keep trying all the possibilities?",
+      "range": {
+        "startLine": 862,
+        "startChar": 28,
+        "endLine": 862,
+        "endChar": 34
+      },
+      "revId": "56c281244012703f492947cd5e84a8a12f4cdc85",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85b9235_b3ff4a7b",
+        "filename": "tests/EncodeTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 862,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-03T14:54:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f4bdf801_50a4052d",
       "range": {
         "startLine": 862,
         "startChar": 28,
