@@ -87,6 +87,8 @@ public:
     void markUsed() { fPipelineInfo.fWasUsed = true; }
     bool wasUsed() const { return fPipelineInfo.fWasUsed; }
 
+    int fHits = 0;
+
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
 
