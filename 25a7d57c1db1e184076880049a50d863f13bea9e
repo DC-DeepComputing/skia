@@ -39,6 +39,30 @@
       },
       "revId": "25a7d57c1db1e184076880049a50d863f13bea9e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22b0b5e_05857602",
+        "filename": "tests/ImageFilterTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 578,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-03T18:35:43Z",
+      "side": 1,
+      "message": "I marked `negativeScale` and `expectedMatrix` as const. The `Scale` ctor is not currently marked `constexpr`.  The `mirrorX/Y` variables cannot be const because they require calling `preScale()` to combine the translate and scale transforms.",
+      "parentUuid": "df0057e7_33014071",
+      "range": {
+        "startLine": 578,
+        "startChar": 4,
+        "endLine": 578,
+        "endChar": 9
+      },
+      "revId": "25a7d57c1db1e184076880049a50d863f13bea9e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
