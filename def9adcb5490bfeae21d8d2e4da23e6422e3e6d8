@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58930013_0722f2d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-04T21:55:05Z",
+      "side": 1,
+      "message": "@kjlubick, could you please run those commands?",
+      "range": {
+        "startLine": 25,
+        "startChar": 22,
+        "endLine": 25,
+        "endChar": 24
+      },
+      "revId": "def9adcb5490bfeae21d8d2e4da23e6422e3e6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "566a6217_78e71f38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-04T21:55:05Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?",
+      "revId": "def9adcb5490bfeae21d8d2e4da23e6422e3e6d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
