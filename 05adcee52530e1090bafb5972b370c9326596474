@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9236d6ab_13a40040",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 27
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T14:29:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df776e17_2ff4a14a",
+      "range": {
+        "startLine": 56,
+        "startChar": 12,
+        "endLine": 56,
+        "endChar": 15
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a9212a0a_3c4a390a",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 27
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-03T20:24:57Z",
       "side": 1,
       "message": "naming nit: I find the original naming more natural (and better aligned with the other blending code)\n\n  src -\u003e input\n  dst -\u003e output\n\nNow it so happens that in the loops below we\u0027re loading src from the same dst buffer, but as far as the kernel is concerned the argument is still an input and the result is the output - so src/dst still makes sense.",
+      "range": {
+        "startLine": 250,
+        "startChar": 30,
+        "endLine": 250,
+        "endChar": 33
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc9fcf1_c66ff612",
+        "filename": "src/opts/SkBlitRow_opts.h",
+        "patchSetId": 27
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T14:29:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ffbe2ed_6ed3cd8e",
       "range": {
         "startLine": 250,
         "startChar": 30,
@@ -105,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3772ce8c_a57885dd",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T14:29:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44162e4d_48fcdac2",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 5
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fde1b6af_d4315ed1",
@@ -128,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dcee346_b5d2294d",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T14:29:57Z",
+      "side": 1,
+      "message": "Good suggestion, thanks!",
+      "parentUuid": "fde1b6af_d4315ed1",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 20
+      },
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e82c842c_8ceefb60",
@@ -141,6 +237,24 @@
       "writtenOn": "2025-03-03T20:24:57Z",
       "side": 1,
       "message": "`std::make_unique(...)`",
+      "revId": "05adcee52530e1090bafb5972b370c9326596474",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ae8a736_ffa774a4",
+        "filename": "tests/CoreBlittersTest.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T14:29:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e82c842c_8ceefb60",
       "revId": "05adcee52530e1090bafb5972b370c9326596474",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
