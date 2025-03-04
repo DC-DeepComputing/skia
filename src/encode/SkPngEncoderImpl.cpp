@@ -86,11 +86,10 @@ public:
                    const SkPngEncoder::Options& options);
     bool setColorSpace(const SkImageInfo& info, const SkPngEncoder::Options& options);
     bool setV0Gainmap(const SkPngEncoder::Options& options);
-    bool writeInfo(const SkImageInfo& srcInfo);
+    bool writeInfo(const SkImageInfo& srcInfo, const SkEncodedInfo& dstInfo);
 
     png_structp pngPtr() { return fPngPtr; }
     png_infop infoPtr() { return fInfoPtr; }
-    transform_scanline_proc proc() const { return fProc; }
 
     ~SkPngEncoderMgr() { png_destroy_write_struct(&fPngPtr, &fInfoPtr); }
 
@@ -99,7 +98,6 @@ private:
 
     png_structp fPngPtr;
     png_infop fInfoPtr;
-    transform_scanline_proc fProc = nullptr;
 };
 
 std::unique_ptr<SkPngEncoderMgr> SkPngEncoderMgr::Make(SkWStream* stream) {
@@ -382,12 +380,15 @@ bool SkPngEncoderMgr::setV0Gainmap(const SkPngEncoder::Options& options) {
     return true;
 }
 
-bool SkPngEncoderMgr::writeInfo(const SkImageInfo& srcInfo) {
+bool SkPngEncoderMgr::writeInfo(const SkImageInfo& srcInfo, const SkEncodedInfo& dstInfo) {
     if (setjmp(png_jmpbuf(fPngPtr))) {
         return false;
     }
-
     png_write_info(fPngPtr, fInfoPtr);
+    // Strip input data that has 4 or 8 bytes per pixel down to 3 or 6 bytes if we don't want alpha.
+    if (dstInfo.color() == SkEncodedInfo::kRGB_Color) {
+        png_set_filler(fPngPtr, 0, PNG_FILLER_AFTER);
+    }
     return true;
 }
 
@@ -405,6 +406,12 @@ bool SkPngEncoderImpl::onEncodeRow(SkSpan<const uint8_t> row) {
 
     // `png_bytep` is `uint8_t*` rather than `const uint8_t*`.
     png_bytep rowPtr = const_cast<png_bytep>(row.data());
+
+    // Swap to big endian if we are storing more than a byte per color channel
+    // (SkColorTypes are little endian by default).
+    if (png_get_bit_depth(fEncoderMgr->pngPtr(), fEncoderMgr->infoPtr()) == 16) {
+      png_set_swap(fEncoderMgr->pngPtr());
+    }
 
     png_write_rows(fEncoderMgr->pngPtr(), &rowPtr, 1);
     return true;
@@ -448,7 +455,7 @@ std::unique_ptr<SkEncoder> Make(SkWStream* dst, const SkPixmap& src, const Optio
         return nullptr;
     }
 
-    if (!encoderMgr->writeInfo(src.info())) {
+    if (!encoderMgr->writeInfo(src.info(), targetInfo->fDstInfo)) {
         return nullptr;
     }
 
