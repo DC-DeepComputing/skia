@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5221d537_104aa9c4",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:48:41Z",
+      "side": 1,
+      "message": "Update: I now add comments in relevant areas as to why we can forego the usage of a general image layout for the resolve texture. \n\nI had made this change initially due to a VVL error encountered while testing, though I have not recreated that yet and will see if it comes back up (on bots or my local testing). That implies we ended up doing this somewhere, and if that\u0027s the case, I\u0027ll find out which test/GM led to that behavior.\n\nI think I will have another CL that adds a unit test which confirms whether a RP is reused when we expect it to be.",
+      "parentUuid": "417b2e2b_0b0c3d32",
+      "range": {
+        "startLine": 594,
+        "startChar": 4,
+        "endLine": 595,
+        "endChar": 37
+      },
+      "revId": "b7f54dc2e52ab0e6f7b248da47af85029a853d69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f09e4b40_95d32c20",

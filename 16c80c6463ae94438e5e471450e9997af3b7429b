@@ -253,6 +253,30 @@
       },
       "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b30e590d_38890c57",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:48:41Z",
+      "side": 1,
+      "message": "Update: Per offline discussion, a RP may want to support loading MSAA from resolve and reading from dst texture as an input attachment, so I have returned to having these be non-mutually-exclusive properties. \n\nI have kept `fLoadMSAAFromResolve` and added `fHasInputAttachment` for more generic wording here. However, in some areas, I found it more clear to have a \"readsdst\" bool since that is the part that means we must a general layout (not just the presence of an input attachment on the main subpass, though for now those always share a value since the only way we expect an input attachment on the main subpass is to read from the dst texture). I hope this makes sense - LMKWYT.",
+      "parentUuid": "5867d4b6_170e50d4",
+      "range": {
+        "startLine": 68,
+        "startChar": 8,
+        "endLine": 68,
+        "endChar": 39
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

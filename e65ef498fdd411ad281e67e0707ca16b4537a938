@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "170ad551_1c4f0a4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:48:41Z",
+      "side": 1,
+      "message": "Removing Jim as reviewer since he\u0027s OOO all week; commented re: some updates per offline discussions",
+      "revId": "e65ef498fdd411ad281e67e0707ca16b4537a938",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
