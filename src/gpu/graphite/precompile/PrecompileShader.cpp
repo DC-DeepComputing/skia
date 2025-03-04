@@ -241,11 +241,19 @@ public:
                                                ? 2
                                                : kNumSamplingTilingCombos)
             , fColorInfos(!colorInfos.empty()
-                            ? std::vector<SkColorInfo>(colorInfos.begin(), colorInfos.end())
-                            : raw ? kRawImageDefaultColorInfos
-                                  : (flags & PrecompileImageShaderFlags::kExcludeAlpha)
-                                             ? kNonAlphaOnlyDefaultColorInfos
-                                             : kDefaultColorInfos)
+                                  ? std::vector<SkColorInfo>(colorInfos.begin(), colorInfos.end())
+                          : raw ? std::vector<SkColorInfo>(
+                                          kRawImageDefaultColorInfos,
+                                          kRawImageDefaultColorInfos +
+                                                  std::size(kRawImageDefaultColorInfos))
+                          : (flags & PrecompileImageShaderFlags::kExcludeAlpha)
+                                  ? std::vector<SkColorInfo>(
+                                            kNonAlphaOnlyDefaultColorInfos,
+                                            kNonAlphaOnlyDefaultColorInfos +
+                                                    std::size(kNonAlphaOnlyDefaultColorInfos))
+                                  : std::vector<SkColorInfo>(
+                                            kDefaultColorInfos,
+                                            kDefaultColorInfos + std::size(kDefaultColorInfos)))
             , fUseDstColorSpace(!colorInfos.empty())
             , fRaw(raw) {}
 
@@ -268,16 +276,16 @@ private:
 
     // A fixed list of SkColorInfos that will trigger each possible combination of alpha-only
     // handling and color space transform variants, when drawn to an sRGB destination.
-    static const std::vector<SkColorInfo> kDefaultColorInfos;
+    static const SkColorInfo kDefaultColorInfos[4];
 
     // A fixed list of SkColorInfos that will trigger each color space transform shader variant when
     // drawn to an sRGB destination.
-    static const std::vector<SkColorInfo> kNonAlphaOnlyDefaultColorInfos;
+    static const SkColorInfo kNonAlphaOnlyDefaultColorInfos[3];
 
     // A fixed list of SkColorInfos that will trigger each color space transform shader variant
     // possible from a raw image draw. The general shader is still required if the image is
     // alpha-only, because the read swizzle is implemented as a gamut transformation.
-    static const std::vector<SkColorInfo> kRawImageDefaultColorInfos;
+    static const SkColorInfo kRawImageDefaultColorInfos[2];
 
     const int fNumSamplingTilingCombos;
 
@@ -396,12 +404,12 @@ const SkColorInfo PrecompileImageShader::kDefaultColorInfoGeneral = {
 const SkColorInfo PrecompileImageShader::kDefaultColorInfoAlphaOnly = {
         kAlpha_8_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGBLinear()};
 
-const std::vector<SkColorInfo> PrecompileImageShader::kDefaultColorInfos = {
+const SkColorInfo PrecompileImageShader::kDefaultColorInfos[4] = {
         kDefaultColorInfoPremul, kDefaultColorInfoSRGB, kDefaultColorInfoGeneral,
         kDefaultColorInfoAlphaOnly};
-const std::vector<SkColorInfo> PrecompileImageShader::kNonAlphaOnlyDefaultColorInfos = {
+const SkColorInfo PrecompileImageShader::kNonAlphaOnlyDefaultColorInfos[3] = {
         kDefaultColorInfoPremul, kDefaultColorInfoSRGB, kDefaultColorInfoGeneral};
-const std::vector<SkColorInfo> PrecompileImageShader::kRawImageDefaultColorInfos = {
+const SkColorInfo PrecompileImageShader::kRawImageDefaultColorInfos[2] = {
         kDefaultColorInfoPremul, kDefaultColorInfoAlphaOnly};
 
 sk_sp<PrecompileShader> PrecompileShaders::Image(SkSpan<const SkColorInfo> colorInfos) {
