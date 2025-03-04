@@ -129,6 +129,7 @@ skia_cc_library(
         "//:core",
         "//src/base",
         "//src/codec:any_decoder",
+        "//src/core:core_priv",
     ],
 )
 
