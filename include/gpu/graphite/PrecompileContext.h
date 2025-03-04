@@ -13,6 +13,7 @@
 
 #include <chrono>
 #include <memory>
+#include <vector>
 
 class SkData;
 
@@ -50,6 +51,8 @@ public:
      * @return                        A human-readable version of the provided key; "" on failure.
      */
     std::string getPipelineLabel(sk_sp<SkData> serializedPipelineKey);
+
+    void dumpAll(std::vector<sk_sp<SkData>>&);
 
     // Provides access to functions that aren't part of the public API.
     PrecompileContextPriv priv();

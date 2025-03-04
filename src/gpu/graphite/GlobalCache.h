@@ -88,12 +88,13 @@ public:
     void addStaticResource(sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
 
     using PipelineCallbackContext = void*;
-    using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
+    using PipelineCallback = void (*)(PipelineCallbackContext context,
+                                      sk_sp<SkData> pipelineData,
+                                      const std::string& label);
     void setPipelineCallback(PipelineCallback, PipelineCallbackContext) SK_EXCLUDES(fSpinLock);
 
     void invokePipelineCallback(SharedContext*,
-                                const GraphicsPipelineDesc&,
-                                const RenderPassDesc&);
+                                sk_sp<SkData>, const std::string&);
 private:
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }

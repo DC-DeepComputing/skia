@@ -29,6 +29,10 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#if defined(SK_ENABLE_PRECOMPILE)
+#include "src/gpu/graphite/precompile/SerializationUtils.h"
+#endif
+
 namespace skgpu::graphite {
 
 // This is only used when tracing is enabled at compile time.
@@ -94,12 +98,36 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                                                 pipelineCreationFlags,
                                                 compilationID);
         if (pipeline) {
-            globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
+            sk_sp<SkData> data = PipelineDescToData(fSharedContext->caps(),
+                                                    fSharedContext->shaderCodeDictionary(),
+                                                    pipelineDesc,
+                                                    renderPassDesc);
+
+            const RendererProvider* rendererProvider = fSharedContext->rendererProvider();
+
+            std::string label;
+
+            const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
+            if (renderStep) {
+                label = GetPipelineLabel(fSharedContext->shaderCodeDictionary(),
+                                         renderPassDesc,
+                                         renderStep,
+                                         pipelineDesc.paintParamsID());
+            }
+
+            pipeline->setData1(data);
+            pipeline->setLabel2(label);
+
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
         }
     }
+
+    if (pipeline) {
+        globalCache->invokePipelineCallback(fSharedContext, pipeline->getData1(), pipeline->getLabel2());
+    }
+
     return pipeline;
 }
 

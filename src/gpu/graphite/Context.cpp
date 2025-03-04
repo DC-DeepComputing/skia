@@ -61,6 +61,8 @@
 #include "src/gpu/graphite/ContextOptionsPriv.h"
 #endif
 
+FILE* gFile = nullptr;
+
 namespace skgpu::graphite {
 
 #define ASSERT_SINGLE_OWNER SKGPU_ASSERT_SINGLE_OWNER(this->singleOwner())
@@ -87,6 +89,18 @@ Context::Context(sk_sp<SharedContext> sharedContext,
     static SkOnce once;
     once([] { SkSL::Loader::SetGraphiteModuleData(SkSL::Loader::GetGraphiteModules()); });
 
+#if 0
+    if (!gFile) {
+        gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+    }
+    if (gFile) {
+        fprintf(gFile, "----------------------------------- Graphite Context ctor\n");
+        fflush(gFile);
+    } else {
+        printf("----------------------- gFile Open failed ctor\n");
+    }
+#endif
+
     // We have to create this outside the initializer list because we need to pass in the Context's
     // SingleOwner object and it is declared last
     fResourceProvider = fSharedContext->makeResourceProvider(&fSingleOwner,
@@ -104,6 +118,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 }
 
 Context::~Context() {
+    printf("+++++++++++++++++++++++++++++++++++++ killing context\n");
+
 #if defined(GPU_TEST_UTILS)
     SkAutoMutexExclusive lock(fTestingLock);
     for (auto& recorder : fTrackedRecorders) {

@@ -125,7 +125,9 @@ struct SK_API ContextOptions {
     /** Client-provided context that is passed to client-provided PipelineCallback. */
     using PipelineCallbackContext = void*;
     /**  Client-provided callback that is called whenever Graphite encounters a new Pipeline. */
-    using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
+    using PipelineCallback = void (*)(PipelineCallbackContext context,
+                                      sk_sp<SkData> pipelineData,
+                                      const std::string& label);
 
     /**
      *  These two members allow a client to register a callback that will be invoked

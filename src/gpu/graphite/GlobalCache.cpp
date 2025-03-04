@@ -44,6 +44,8 @@ constexpr int kGlobalComputePipelineCacheSizeLimit = 256;
 
 } // anonymous namespce
 
+extern FILE* gFile;
+
 namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
@@ -56,6 +58,8 @@ GlobalCache::~GlobalCache() {
     SkASSERT(fGraphicsPipelineCache.count() == 0);
     SkASSERT(fComputePipelineCache.count() == 0);
     SkASSERT(fStaticResource.empty());
+
+    printf("+++++++++++++++++++++++++++++++++++++ killing cache\n");
 }
 
 void GlobalCache::setPipelineCallback(PipelineCallback callback, PipelineCallbackContext context) {
@@ -66,8 +70,8 @@ void GlobalCache::setPipelineCallback(PipelineCallback callback, PipelineCallbac
 }
 
 void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
-                                         const GraphicsPipelineDesc& pipelineDesc,
-                                         const RenderPassDesc& renderPassDesc) {
+                                         sk_sp<SkData> data,
+                                         const std::string& label) {
 #if defined(SK_ENABLE_PRECOMPILE)
     PipelineCallback tmpCB = nullptr;
     PipelineCallbackContext tmpContext = nullptr;
@@ -82,10 +86,10 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
     }
 
     if (tmpCB) {
-        sk_sp<SkData> data = PipelineDescToData(sharedContext->caps(),
-                                                sharedContext->shaderCodeDictionary(),
-                                                pipelineDesc,
-                                                renderPassDesc);
+//        sk_sp<SkData> data = PipelineDescToData(sharedContext->caps(),
+//                                                sharedContext->shaderCodeDictionary(),
+//                                                pipelineDesc,
+//                                                renderPassDesc);
 
         // Enable this to thoroughly test Pipeline serialization
 #if 0
@@ -112,7 +116,7 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
 #endif
 
         if (data) {
-            tmpCB(tmpContext, std::move(data));
+            tmpCB(tmpContext, std::move(data), label);
         }
     }
 #endif
@@ -218,6 +222,18 @@ enum class PipelineCreationRace {
 
 sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                                                          sk_sp<GraphicsPipeline> pipeline) {
+#if 0
+    if (!gFile) {
+        gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+    }
+    if (gFile) {
+        fprintf(gFile, "------------------------------- addGraphicsPipeline:\n dsfdj\n");
+        fflush(gFile);
+    } else {
+        printf("----------------------- gFile Open failed dtor\n");
+    }
+#endif
+
     SkAutoSpinlock lock{fSpinLock};
 
     sk_sp<GraphicsPipeline>* entry = fGraphicsPipelineCache.find(key);

@@ -77,6 +77,9 @@ public:
         const uint32_t fCompilationID = 0;
         const bool fFromPrecompile = false;
         bool fWasUsed = false;
+
+        sk_sp<SkData> fData;
+        std::string fLabel2;
     };
 
     const PipelineInfo& getPipelineInfo() const {
@@ -86,6 +89,12 @@ public:
 
     void markUsed() { fPipelineInfo.fWasUsed = true; }
     bool wasUsed() const { return fPipelineInfo.fWasUsed; }
+
+    void setData1(sk_sp<SkData> data) { fPipelineInfo.fData = data; }
+    sk_sp<SkData> getData1() const { return fPipelineInfo.fData; }
+
+    void setLabel2(const std::string& label) { fPipelineInfo.fLabel2 = label; }
+    std::string getLabel2() const { return fPipelineInfo.fLabel2; }
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);
