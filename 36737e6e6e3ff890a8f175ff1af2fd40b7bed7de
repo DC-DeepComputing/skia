@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f7c32ae_2621ce58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-04T17:45:41Z",
+      "side": 1,
+      "message": "iOS build is fixed, looks like I need another stamp.",
+      "revId": "36737e6e6e3ff890a8f175ff1af2fd40b7bed7de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
