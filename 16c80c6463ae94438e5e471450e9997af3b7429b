@@ -67,6 +67,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "39b00e02_0b9e3ba7",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 198,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:23:31Z",
+      "side": 1,
+      "message": "Marking as resolved since the original comment position is lost anyways and Greg has already given this a look-over.",
+      "parentUuid": "523ee022_012e227c",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 198,
+        "endChar": 62
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "242225d4_dae189f3",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 19
@@ -102,6 +126,30 @@
       "side": 1,
       "message": "Marking as unresolved so comment shows up for reviewers on all patchsets. Reviewers or myself can later mark as resolved.",
       "parentUuid": "242225d4_dae189f3",
+      "range": {
+        "startLine": 460,
+        "startChar": 0,
+        "endLine": 461,
+        "endChar": 89
+      },
+      "revId": "16c80c6463ae94438e5e471450e9997af3b7429b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f97113c4_79def2a7",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:23:31Z",
+      "side": 1,
+      "message": "Marking as resolved since the original comment position is lost anyways and Greg has already given this a look-over.",
+      "parentUuid": "327bc6c8_f15e8027",
       "range": {
         "startLine": 460,
         "startChar": 0,

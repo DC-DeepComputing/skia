@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c1ee237_e5027c31",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 26
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-04T18:23:31Z",
+      "side": 1,
+      "message": "Marking many notes as resolved since the original comment position is lost anyways and Greg has already given this a look-over.",
+      "revId": "3260a9f5ace67dc0722b1318de337f1e16a78d6a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
