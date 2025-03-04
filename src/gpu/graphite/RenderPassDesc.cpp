@@ -43,7 +43,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                     const std::array<float, 4>& clearColor,
                                     bool requiresMSAA,
                                     Swizzle writeSwizzle,
-                                    const DstReadStrategy targetReadStrategy) {
+                                    const DstReadStrategy targetReadStrategyIfRequired) {
     RenderPassDesc desc;
     desc.fWriteSwizzle = writeSwizzle;
     desc.fSampleCount = 1;
@@ -103,10 +103,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
-    // Should a dst read be required later on, record what dst read strategy should be used. Must be
-    // a valid strategy.
-    SkASSERT(targetReadStrategy != DstReadStrategy::kNoneRequired);
-    desc.fDstReadStrategyIfRequired = targetReadStrategy;
+    desc.fDstReadStrategyIfRequired = targetReadStrategyIfRequired;
 
     return desc;
 }
