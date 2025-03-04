@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "24d84dc3_88b3e762",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-04T22:07:57Z",
+      "side": 1,
+      "message": "The bug describes what breaking changes happened between 0.17 and 0.18 - most (all?) changes in this CL are directly addressing these breaking changes.",
+      "range": {
+        "startLine": 13,
+        "startChar": 14,
+        "endLine": 13,
+        "endChar": 23
+      },
+      "revId": "5e63db1f275d4f0cfdf6908d41f95fe139432d67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "aeec0dc8_58016bf2",
