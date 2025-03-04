@@ -51,6 +51,24 @@
       "message": "I used clang-format to format this, and it\u0027s back to the indentation you didn\u0027t prefer in an earlier patch of http://review.skia.org/953597. Personally I think it\u0027s ok because this pattern highlights that there are three distinct cases: `!colorInfos.empty()`, `raw`, and `flags \u0026 PrecompileImageShaderFlags::kExcludeAlpha`, which are all aligned vertically. At least, that\u0027s how I see it. But lmk if you\u0027re ok with this!",
       "revId": "06a0cfff9632768e42e8a2675905e9d59f80a316",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c037460_f2144583",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-04T22:09:18Z",
+      "side": 1,
+      "message": "No longer relevant with latest patchset",
+      "parentUuid": "a2507ca3_4da1317e",
+      "revId": "06a0cfff9632768e42e8a2675905e9d59f80a316",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
