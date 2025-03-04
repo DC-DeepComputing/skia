@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88255a71_3a23223c",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-04T18:43:58Z",
+      "side": 1,
+      "message": "Chromium does not appear to like these static initializers\n\nhttps://logs.chromium.org/logs/chromium/buildbucket/cr-buildbucket/8721306424006918865/+/u/check_static_initializers__with_patch_/stdout",
+      "revId": "20266c9ca4c05257bd87e9d7f8edcc25b0ad042d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
