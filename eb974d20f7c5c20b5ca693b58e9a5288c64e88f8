@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5317d150_cd4a72d3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-04T20:32:17Z",
+      "side": 1,
+      "message": "this doesn\u0027t look to be used?",
+      "range": {
+        "startLine": 607,
+        "startChar": 38,
+        "endLine": 607,
+        "endChar": 57
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b44048e9_cda7f084",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 622,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-04T20:32:17Z",
+      "side": 1,
+      "message": "instaed of adding the ternary here, lets just set a default `VkImageLayout layout \u003d COLOR_ATTACHMENT_OPTIMAL` at the start of this function, then set it to GENERAL in the if block above",
+      "range": {
+        "startLine": 622,
+        "startChar": 27,
+        "endLine": 622,
+        "endChar": 46
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18335a48_b8c81bc2",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-04T20:32:17Z",
+      "side": 1,
+      "message": "is this actually needed in the key? Are we not forcing there to always be an input attachment?",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f88a59a4_9b3e8299",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-04T20:32:17Z",
+      "side": 1,
+      "message": "Is this every false?",
+      "range": {
+        "startLine": 369,
+        "startChar": 8,
+        "endLine": 369,
+        "endChar": 26
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
