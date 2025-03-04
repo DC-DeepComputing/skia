@@ -16,6 +16,24 @@
       "message": "Do you think there is any advantage to just making these simple arrays (rather than using a std::vector ?",
       "revId": "f4092a72af1ed8141b353bea8077b634a00aeeac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94685b9b_9306fea8",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 399,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-04T14:30:06Z",
+      "side": 1,
+      "message": "Generally I would prefer to do that but in this case it makes the initialization of `PrecompileImageShader::fColorInfos` even messier, having to construct vectors out of C-style arrays. Unless there\u0027s an easy way to do that that I\u0027m not aware of.",
+      "parentUuid": "f5d98d1e_40c96224",
+      "revId": "f4092a72af1ed8141b353bea8077b634a00aeeac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
