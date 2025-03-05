@@ -601,6 +601,17 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkTo<int>(imgData.fSampling.filter));
 }
 
+void add_clamp_image_uniform_data(const ShaderCodeDictionary* dict,
+                                  const ImageShaderBlock::ImageData& imgData,
+                                  PipelineDataGatherer* gatherer) {
+    SkASSERT(!imgData.fSampling.useCubic);
+    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kImageShaderClamp)
+
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
+    gatherer->write(imgData.fSubset);
+    gatherer->write(SkTo<int>(imgData.fSampling.filter));
+}
+
 void add_cubic_image_uniform_data(const ShaderCodeDictionary* dict,
                                   const ImageShaderBlock::ImageData& imgData,
                                   PipelineDataGatherer* gatherer) {
@@ -671,6 +682,10 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     if (doTilingInHw) {
         add_hw_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kHWImageShader);
+    } else if (!imgData.fSampling.useCubic && imgData.fTileModes.first == SkTileMode::kClamp &&
+               imgData.fTileModes.second == SkTileMode::kClamp) {
+        add_clamp_image_uniform_data(keyContext.dict(), imgData, gatherer);
+        builder->beginBlock(BuiltInCodeSnippetID::kImageShaderClamp);
     } else if (imgData.fSampling.useCubic) {
         add_cubic_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);

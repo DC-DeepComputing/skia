@@ -373,6 +373,27 @@ $pure half4 $sample_image_subset(float2 pos,
     return color;
 }
 
+$pure half4 $sample_image_subset_clamp(float2 pos,
+                                       float2 invImgSize,
+                                       float4 subset,
+                                       int filterMode,
+                                       float2 linearFilterInset,
+                                       sampler2D s) {
+    pos = clamp(pos, subset.xy, subset.zw);
+
+    // Clamp to an inset subset to prevent sampling neighboring texels when coords fall exactly at
+    // texel boundaries.
+    float4 insetClamp;
+    if (filterMode == $kFilterModeNearest) {
+        insetClamp = float4(floor(subset.xy) + $kLinearInset, ceil(subset.zw) - $kLinearInset);
+    } else {
+        insetClamp = float4(subset.xy + linearFilterInset.x, subset.zw - linearFilterInset.y);
+    }
+    float2 clampedPos = clamp(pos, insetClamp.xy, insetClamp.zw);
+
+    return $sample_image(clampedPos, invImgSize, s);
+}
+
 $pure half4 $cubic_filter_image(float2 pos,
                                 float2 invImgSize,
                                 float4 subset,
@@ -414,6 +435,15 @@ $pure half4 sk_image_shader(float2 coords,
                             sampler2D s) {
     return $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
                                 filterMode, float2($kLinearInset), s);
+}
+
+$pure half4 sk_image_shader_clamp(float2 coords,
+                                  float2 invImgSize,
+                                  float4 subset,
+                                  int filterMode,
+                                  sampler2D s) {
+    return $sample_image_subset_clamp(coords, invImgSize, subset, filterMode, float2($kLinearInset),
+                                      s);
 }
 
 $pure half4 sk_cubic_image_shader(float2 coords,
