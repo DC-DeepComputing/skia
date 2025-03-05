@@ -87,7 +87,7 @@ struct RenderPassDesc {
 
     SkString toString() const;
     // Only includes fixed state relevant to pipeline creation
-    SkString toPipelineLabel() const;
+    SkString toPipelineLabel(const Caps*) const;
 
     // TODO:
     // * bounds (TBD whether exact bounds vs. granular)
