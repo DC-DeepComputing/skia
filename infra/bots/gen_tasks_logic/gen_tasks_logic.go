@@ -58,17 +58,14 @@ const (
 	ISOLATE_SDK_LINUX_NAME     = "Housekeeper-PerCommit-IsolateAndroidSDKLinux"
 	ISOLATE_WIN_TOOLCHAIN_NAME = "Housekeeper-PerCommit-IsolateWinToolchain"
 
-	DEBIAN_11_OS                   = "Debian-11.5"
-	DEFAULT_OS_DEBIAN              = "Debian-10.10"
-	DEFAULT_OS_LINUX_GCE           = "Debian-10.3"
-	OLD_OS_LINUX_GCE               = "Debian-9.8"
-	COMPILE_TASK_NAME_OS_LINUX     = "Debian10"
-	COMPILE_TASK_NAME_OS_LINUX_OLD = "Debian9"
-	DEFAULT_OS_MAC                 = "Mac-14.5"
-	DEFAULT_OS_WIN_GCE             = "Windows-Server-17763"
-	UBUNTU_20_04_OS                = "Ubuntu-20.04"
-	UBUNTU_22_04_OS                = "Ubuntu-22.04"
-	UBUNTU_24_04_OS                = "Ubuntu-24.04"
+	DEBIAN_11_OS         = "Debian-11.5"
+	DEFAULT_OS_DEBIAN    = "Debian-10.10"
+	DEFAULT_OS_LINUX_GCE = UBUNTU_24_04_OS
+	DEFAULT_OS_MAC       = "Mac-14.5"
+	DEFAULT_OS_WIN_GCE   = "Windows-Server-17763"
+	UBUNTU_20_04_OS      = "Ubuntu-20.04"
+	UBUNTU_22_04_OS      = "Ubuntu-22.04"
+	UBUNTU_24_04_OS      = "Ubuntu-24.04"
 
 	// Small is a 2-core machine.
 	// TODO(dogben): Would n1-standard-1 or n1-standard-2 be sufficient?
@@ -97,9 +94,8 @@ const (
 
 	// bazelCacheDirOnGCELinux is the path where Bazel should write its cache on Linux GCE machines.
 	// The Bazel cache can grow large (>10GB), so this should be in a partition with enough free
-	// space. On Linux GCE machines, the partition mounted at /mnt/pd0 is significantly larger than
-	// the partition mounted at /.
-	bazelCacheDirOnGCELinux = "/mnt/pd0/bazel_cache"
+	// space.
+	bazelCacheDirOnGCELinux = "/home/chrome-bot/bazel_cache"
 
 	// bazelCacheDirOnSkoloLinux is like bazelCacheDirOnGCELinux for Skolo Linux machines. Unlike GCE
 	// Linux machines, the partition mounted at / on Skolo Linux machines is large enough. While
@@ -755,10 +751,10 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 			if !In("Android", ec) {
 				ec = append([]string{"Android"}, ec...)
 			}
-			task_os = COMPILE_TASK_NAME_OS_LINUX
+			task_os = DEFAULT_OS_LINUX_GCE
 		} else if b.os("ChromeOS") {
 			ec = append([]string{"Chromebook", "GLES"}, ec...)
-			task_os = COMPILE_TASK_NAME_OS_LINUX
+			task_os = DEFAULT_OS_LINUX_GCE
 		} else if b.matchOs("iOS") {
 			ec = append([]string{task_os}, ec...)
 			if b.parts["compiler"] == "Xcode11.4.1" {
@@ -775,14 +771,18 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 		} else if b.matchOs("Debian11") {
 			// We compile using the Debian11 machines in the skolo.
 			task_os = "Debian11"
-		} else if b.matchOs("Ubuntu", "Debian") {
-			task_os = COMPILE_TASK_NAME_OS_LINUX
+		} else if b.matchOs("Debian12") {
+			task_os = "Debian12"
+		} else if b.matchOs("Debian") {
+			task_os = DEFAULT_OS_LINUX_GCE
+		} else if b.matchOs("Ubuntu") {
+			// Run the build on the same OS version as the task which uses it.
 		} else if b.matchOs("Mac") {
 			task_os = "Mac"
 		}
 		jobNameMap := map[string]string{
 			"role":          "Build",
-			"os":            task_os,
+			"os":            strings.ReplaceAll(task_os, "-", ""),
 			"compiler":      b.parts["compiler"],
 			"target_arch":   b.parts["arch"],
 			"configuration": b.parts["configuration"],
@@ -790,7 +790,7 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 		if b.extraConfig("PathKit") {
 			ec = []string{"PathKit"}
 			// We prefer to compile this in the cloud because we have more resources there
-			jobNameMap["os"] = "Debian10"
+			jobNameMap["os"] = strings.ReplaceAll(DEFAULT_OS_LINUX_GCE, "-", "")
 		}
 		if b.extraConfig("CanvasKit", "SkottieWASM", "Puppeteer") {
 			if b.cpu() {
@@ -799,7 +799,7 @@ func (b *jobBuilder) deriveCompileTaskName() string {
 				ec = []string{"CanvasKit"}
 			}
 			// We prefer to compile this in the cloud because we have more resources there
-			jobNameMap["os"] = "Debian10"
+			jobNameMap["os"] = strings.ReplaceAll(DEFAULT_OS_LINUX_GCE, "-", "")
 		}
 		if len(ec) > 0 {
 			jobNameMap["extra_config"] = strings.Join(ec, "_")
@@ -983,7 +983,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					"Golo": "Intel64_Family_6_Model_85_Stepping_7__GenuineIntel",
 				},
 				"Rome": {
-					"GCE": "x86-64-AMD_Rome_GCE",
+					"GCE": "x86-64",
 				},
 				"SwiftShader": {
 					"GCE": "x86-64-Haswell_GCE",
@@ -1002,6 +1002,9 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 			if b.model("GCE") && d["cpu"] == "x86-64-Haswell_GCE" {
 				d["machine_type"] = MACHINE_TYPE_MEDIUM
+			}
+			if b.model("GCE") && b.cpu("Rome") {
+				d["machine_type"] = "n2d-standard-16"
 			}
 		} else {
 			// It's a GPU job.
@@ -1043,8 +1046,13 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 
 				if b.matchOs("Debian11") {
 					d["os"] = DEBIAN_11_OS
+				} else if b.matchOs("Ubuntu20.04") {
+					d["os"] = UBUNTU_20_04_OS
+				} else if b.matchOs("Ubuntu22.04") {
+					d["os"] = UBUNTU_22_04_OS
+				} else if b.matchOs("Ubuntu24.04") {
+					d["os"] = UBUNTU_24_04_OS
 				} else if b.matchOs("Debian") {
-					// The Debian10 machines in the skolo are 10.10, not 10.3.
 					d["os"] = DEFAULT_OS_DEBIAN
 				}
 				if b.parts["cpu_or_gpu_value"] == "IntelIrisXe" {
@@ -1404,7 +1412,7 @@ func (b *jobBuilder) recreateSKPs() {
 		}
 
 		b.cas(CAS_RECREATE_SKPS)
-		b.dep("Build-Debian10-Clang-x86_64-Release") // To get DM.
+		b.dep("Build-Ubuntu24.04-Clang-x86_64-Release") // To get DM.
 		b.cmd(cmd...)
 		b.usesLUCIAuth()
 		b.serviceAccount(b.cfg.ServiceAccountRecreateSKPs)
