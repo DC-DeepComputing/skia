@@ -16,6 +16,483 @@
       "message": "This is the very first version of SkUnicode/bidi API...  I am sure I missed lots of things.",
       "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88228db7_0460272f",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "As mentioned elsewhere, this only works if the client ICU is specified, right?",
+      "range": {
+        "startLine": 105,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c216f65c_4bd7a13c",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Should this be in the release build or should there be a new target?",
+      "range": {
+        "startLine": 9,
+        "startChar": 14,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d971670_ef5b3e2f",
+        "filename": "modules/canvaskit/bidi.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "I\u0027m pretty sure this is not actually a typed array, so freeing this does nothing",
+      "range": {
+        "startLine": 16,
+        "startChar": 33,
+        "endLine": 16,
+        "endChar": 43
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaba2825_af9b547d",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "I think returning an SkUnicode and calling it something else is potentially confusing down the line. I think it might be better to have a placeholder class and make _getBidiRegions be a static function (using a cached SkUnicodes::Client::Make()).",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 20
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bab50cd0_1dcaff25",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Won\u0027t this fail to build if client ICU is not an option it was built with? Does that mean this whole bidi file is only available if client ICU is on? If so, please add an #if and #error at the top to help enforce that.",
+      "range": {
+        "startLine": 50,
+        "startChar": 47,
+        "endLine": 50,
+        "endChar": 53
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec5ef477_fe6ae06e",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "`JSArray`. Int32Array refers to a typed array. Same below",
+      "range": {
+        "startLine": 54,
+        "startChar": 84,
+        "endLine": 54,
+        "endChar": 94
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97c84bf_ba3b6490",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "This probably could easily return a typed array `Int32Array` if you wanted - see `TextBoxesToFloat32Array` in ParagraphBindings for how that\u0027s done (I forget if that makes a copy of the data or not, tbh)",
+      "range": {
+        "startLine": 85,
+        "startChar": 20,
+        "endLine": 85,
+        "endChar": 27
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be482c8_7fc541bc",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Same advice as above, let\u0027s make this be a class_function and have this call the creation of the SkUnicode (or, if we can, share the singleton)",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 17
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46895265_7780c81e",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "We should be able to wrap a TArray\u0027s data in an Int32Array if we want - see above advice.",
+      "range": {
+        "startLine": 107,
+        "startChar": 28,
+        "endLine": 107,
+        "endChar": 34
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89e3da01_6ff8d0bc",
+        "filename": "modules/canvaskit/font.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Did the above line end up being necessary? In any case, remove the commented out line",
+      "range": {
+        "startLine": 146,
+        "startChar": 4,
+        "endLine": 146,
+        "endChar": 13
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59f9ddef_2a4c1272",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Why do you hide these? If the goal is to make this editable, that might be useful, just be sure you are requesting animation frames to update the canvases every frame. Otherwise, could these textareas just be JS constants?",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ed0d2f_d81bc9fa",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "I notice this isn\u0027t being used in any example. Intentional?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7aad8eb_ad47eaf7",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "`cdn + \u0027NotoEmoji.v26.ttf\u0027`",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 124
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "273e90b4_ce781c65",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "`cdn + \u0027NotoSansArabic.v18.ttf\u0027`",
+      "range": {
+        "startLine": 38,
+        "startChar": 30,
+        "endLine": 38,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ff58204_65f56b0e",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "nit: `let` (and below)\n\nhttps://google.github.io/styleguide/tsguide.html#use-const-and-let",
+      "range": {
+        "startLine": 68,
+        "startChar": 12,
+        "endLine": 68,
+        "endChar": 15
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d76ffe_b77faf15",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "nit: `const` (and below)",
+      "range": {
+        "startLine": 72,
+        "startChar": 12,
+        "endLine": 72,
+        "endChar": 15
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bd5aa71_f4fc1f0e",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "If you aren\u0027t drawing to the canvas, just do a unit test:\n\n```\nit(\u0027should provide correct level data from getBidiRegions\u0027, () \u003d\u003e {\n```\n\nSame below",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 6
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72bcf367_93f7aa50",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feaefa1e_6211bae4",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "nit: let",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "defea84b_88960824",
+        "filename": "modules/skunicode/include/SkUnicode_client.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "Does this have to go in the public API or is it just for CanvasKit? If the latter, let\u0027s put it in a more private header",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07be3454_55a423c6",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-05T21:41:19Z",
+      "side": 1,
+      "message": "remove extra lines?",
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
