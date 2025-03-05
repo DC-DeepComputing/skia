@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68511459_e1395ec2",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 29
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-05T15:42:07Z",
+      "side": 1,
+      "message": "Note: gpuinfo showed that only about 4-5% of android devices support `VK_EXT_attachment_feedback_loop_layout` / `VkPhysicalDeviceAttachmentFeedbackLoopLayoutFeaturesEXT`. The Pixel 4a was included but none of the newer Pixel devices.",
+      "range": {
+        "startLine": 618,
+        "startChar": 0,
+        "endLine": 619,
+        "endChar": 46
+      },
+      "revId": "e2bc2b7997453f0619303856e8f47979801d9347",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
