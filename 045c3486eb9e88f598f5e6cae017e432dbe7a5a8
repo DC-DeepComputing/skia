@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "16f0ce81_9d206139",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T22:03:56Z",
+      "side": 1,
+      "message": "I will keep this for now, and if need-be we can remove the case in a follow-up CL.",
+      "parentUuid": "a57c6e7d_c1d03694",
+      "range": {
+        "startLine": 122,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 21
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba9e9395_df7c44a1",
