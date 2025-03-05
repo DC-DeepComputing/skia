@@ -16,6 +16,24 @@
       "message": "Why do we remove this here (and for Vulkan) while Dawn still prints it out?",
       "revId": "4005ba3ca7b67e56e279cfc6e4a71287d84a1f58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7c72d05_a0c4a6f8",
+        "filename": "src/gpu/graphite/mtl/MtlTextureInfo.mm",
+        "patchSetId": 13
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 0,
+      "message": "Dawn is the only backend that currently has a view format that can be different from the main format, so I kept it in DawnTextureInfo\u0027s backend string but its redundant with the view format label that the base TextureInfo adds for Mtl and Vulkan.",
+      "parentUuid": "ac600b28_3b08176a",
+      "revId": "4005ba3ca7b67e56e279cfc6e4a71287d84a1f58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

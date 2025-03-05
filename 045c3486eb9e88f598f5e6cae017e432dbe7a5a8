@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d4c09f0_f7233bbb",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e38c39dd_5752f374",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 1
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "665f80b1_a8b494b2",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a57c6e7d_c1d03694",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 1,
+      "message": "We do report their size eventually if someone calls `SkImage::textureSize()`, so I\u0027m inclined to leave it as an estimate vs. either asserting or returning 0.",
+      "parentUuid": "665f80b1_a8b494b2",
+      "range": {
+        "startLine": 122,
+        "startChar": 5,
+        "endLine": 126,
+        "endChar": 21
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ba9e9395_df7c44a1",
         "filename": "src/gpu/graphite/TextureFormat.cpp",
         "patchSetId": 13
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-03T19:50:21Z",
       "side": 1,
       "message": "Maybe make a bug for this ?",
+      "range": {
+        "startLine": 127,
+        "startChar": 0,
+        "endLine": 129,
+        "endChar": 95
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c3e007_3540edd2",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba9e9395_df7c44a1",
       "range": {
         "startLine": 127,
         "startChar": 0,
@@ -105,6 +177,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e882c1c4_c6852867",
+        "filename": "src/gpu/graphite/TextureFormat.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 1,
+      "message": "Done, and added a comment saying it was a mask of SkColorFormatChannelFlag values.",
+      "parentUuid": "d08792c2_3c3e04d4",
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b98b22f8_8dd1703f",
@@ -142,6 +232,30 @@
       "side": 1,
       "message": "This is probably still used by Ganesh (along with other helpers in this file). I guess we considering moving these out of the generic vk utils and into ganesh vk utils instead",
       "parentUuid": "b98b22f8_8dd1703f",
+      "range": {
+        "startLine": 128,
+        "startChar": 21,
+        "endLine": 128,
+        "endChar": 40
+      },
+      "revId": "045c3486eb9e88f598f5e6cae017e432dbe7a5a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "750d1cbe_30cd6f5c",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T20:40:34Z",
+      "side": 1,
+      "message": "Yes, my thinking would be functions like this (and some in srg/gpu/mt/MtlUtlisPriv) could be made Ganesh only, but some of that will shake out as graphite is updated to use more TextureFormat values instead of backend-specific values.",
+      "parentUuid": "6239e1b5_8e5a17fd",
       "range": {
         "startLine": 128,
         "startChar": 21,
