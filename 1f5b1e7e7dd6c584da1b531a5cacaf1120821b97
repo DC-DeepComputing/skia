@@ -22,6 +22,30 @@
       },
       "revId": "1f5b1e7e7dd6c584da1b531a5cacaf1120821b97",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ebc443_a48f603c",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-05T19:43:50Z",
+      "side": 1,
+      "message": "Personally I\u0027m okay to leave it with this comment. It might be good to add a comment directly on the `kReadFromInput` value that it\u0027s currently only supported on Vulkan.  In theory Dawn could expand to support it, but since we don\u0027t even know what that would look like for wgsl, there\u0027d be other work we\u0027d need to do to support it in sksl first.",
+      "parentUuid": "79895378_0a13e5a8",
+      "range": {
+        "startLine": 691,
+        "startChar": 0,
+        "endLine": 693,
+        "endChar": 44
+      },
+      "revId": "1f5b1e7e7dd6c584da1b531a5cacaf1120821b97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
