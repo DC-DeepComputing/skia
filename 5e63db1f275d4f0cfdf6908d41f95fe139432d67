@@ -39,6 +39,29 @@
       "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
       "revId": "5e63db1f275d4f0cfdf6908d41f95fe139432d67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7939e00c_c62f5c44",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-05T14:39:14Z",
+      "side": 1,
+      "message": "Is there a way to guard on feature \u003c png_0_18?  It\u0027d be more robust in case the versions diverge further, but I suspect it\u0027s not doable if feature is just a string.",
+      "range": {
+        "startLine": 267,
+        "startChar": 10,
+        "endLine": 267,
+        "endChar": 35
+      },
+      "revId": "5e63db1f275d4f0cfdf6908d41f95fe139432d67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
