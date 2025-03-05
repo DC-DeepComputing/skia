@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eac50715_791d944d",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-05T18:48:44Z",
+      "side": 1,
+      "message": "I think our end goal is that all color attachments we use (created by us or wrapped from client) will require input usage. So in an ideal world we would just always bind an input attachment and the depenedecy every time. Also our only real focus for this in Android, though having other platforms work is nice for testing purposes.\n\nI guess there is an open question if there are platforms where you explicitly cannot set input usage on an msaa texture.",
+      "parentUuid": "4fefed2d_2ff28e87",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f88a59a4_9b3e8299",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 28
