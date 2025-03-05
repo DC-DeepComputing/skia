@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79895378_0a13e5a8",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 693,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-05T15:50:26Z",
+      "side": 1,
+      "message": "Want to pick your brain as to how this could be more agnostic. I could add a Caps method which returns SkSL for reading from the input attachment that backends could implement, with a debug statement or failed assertion for backends that do not support it. WDYT?",
+      "range": {
+        "startLine": 691,
+        "startChar": 0,
+        "endLine": 693,
+        "endChar": 44
+      },
+      "revId": "1f5b1e7e7dd6c584da1b531a5cacaf1120821b97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
