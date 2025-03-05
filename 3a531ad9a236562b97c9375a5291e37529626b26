@@ -16,6 +16,29 @@
       "message": "The precompilation situation is not necessarily ideal -- it adds a SkTileMode[] parameter to PrecompileImageShader objects, but since the shader variants for hardware tiling and cubic filtering depend on image size and sampling options, which are independent of tile mode, we still always have to precompile at least a couple of variations.",
       "revId": "3a531ad9a236562b97c9375a5291e37529626b26",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc1e528_369c2820",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-05T18:47:58Z",
+      "side": 1,
+      "message": "// just kHWTiled\n ?",
+      "range": {
+        "startLine": 242,
+        "startChar": 54,
+        "endLine": 242,
+        "endChar": 55
+      },
+      "revId": "3a531ad9a236562b97c9375a5291e37529626b26",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
