@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67b93969_b62a2725",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-06T16:40:48Z",
+      "side": 1,
+      "message": "Do we need to do the intersection between the integer rect + inset and the original {ltrb}? In cases where the min/max\u0027s would select the original values, nearest sampling will still be picking the same texel center as what would have been selected if we just clamped the coord to the int rect + inset, right?",
+      "range": {
+        "startLine": 623,
+        "startChar": 47,
+        "endLine": 626,
+        "endChar": 87
+      },
+      "revId": "aaca34c5c082d7568da35aca84715ae8d39da1ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
