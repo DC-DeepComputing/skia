@@ -373,6 +373,13 @@ $pure half4 $sample_image_subset(float2 pos,
     return color;
 }
 
+$pure half4 $sample_image_subset_clamp(float2 pos,
+                                       float2 invImgSize,
+                                       float4 subsetInsetClamp,
+                                       sampler2D s) {
+    return $sample_image(clamp(pos, subsetInsetClamp.xy, subsetInsetClamp.zw), invImgSize, s);
+}
+
 $pure half4 $cubic_filter_image(float2 pos,
                                 float2 invImgSize,
                                 float4 subset,
@@ -414,6 +421,13 @@ $pure half4 sk_image_shader(float2 coords,
                             sampler2D s) {
     return $sample_image_subset(coords, invImgSize, subset, tileModeX, tileModeY,
                                 filterMode, float2($kLinearInset), s);
+}
+
+$pure half4 sk_image_shader_clamp(float2 coords,
+                                  float2 invImgSize,
+                                  float4 subsetInsetClamp,
+                                  sampler2D s) {
+    return $sample_image_subset_clamp(coords, invImgSize, subsetInsetClamp, s);
 }
 
 $pure half4 sk_cubic_image_shader(float2 coords,
