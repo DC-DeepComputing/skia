@@ -16,6 +16,23 @@
       "message": "Having James as primary reviewer to distribute the load. CC-ing Michael who I\u0027ve discussed this with some offline.",
       "revId": "adb3a4232d16c9a2ea56e493d2ef08f2e806412a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f4b9429_b9e79eb4",
+        "filename": "tests/graphite/VulkanDstReadRenderpassReuseTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-06T19:36:08Z",
+      "side": 1,
+      "message": "Super-nit: the style guide prefers `int` for integers that don\u0027t need to be a specific size: https://skia.org/docs/dev/contrib/style/#integer-types\n(then we can just use `%d` and avoid casting when printing at the end of the test)",
+      "revId": "adb3a4232d16c9a2ea56e493d2ef08f2e806412a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
