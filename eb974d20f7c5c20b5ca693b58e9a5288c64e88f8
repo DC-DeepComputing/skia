@@ -168,6 +168,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "060465f0_0da91395",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-06T20:11:23Z",
+      "side": 1,
+      "message": "My initial digging doesn\u0027t point towards such a limitation existing. \n\nWith that being the case, I now have every renderpass support reading the dst as an input attachment even if the rp\u0027s dst read strategy is not `kReadFromInput`. The command buffer now assumes this as well for texture layout purposes, though will still only update + bind a real input attachment descriptor for this usage when the *pipeline* reports it will be used (at which point we know definitively that one will actually be used). That last bit of work is in the follow-on CL.\n\nThe only \"con\" to this is that this will technically be doing a small amount of extra work for such cases until we can read from msaa textures as input attachments as well (b/390458117). Added a comment note for this (wasn\u0027t sure of the best placement though).",
+      "parentUuid": "eac50715_791d944d",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f88a59a4_9b3e8299",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 28
