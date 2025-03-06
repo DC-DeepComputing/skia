@@ -62,12 +62,20 @@ public:
 
     // Struct to store Vulkan information surrounding a RenderPassDesc
     struct VulkanRenderPassMetaData {
-        VulkanRenderPassMetaData(const RenderPassDesc& renderPassDesc);
+        VulkanRenderPassMetaData(const RenderPassDesc&);
 
         bool fLoadMSAAFromResolve;
+
+        // These bools apply to the *main* subpass (not the subpass used when loading MSAA
+        // from resolve).
         bool fHasColorAttachment;
         bool fHasColorResolveAttachment;
         bool fHasDepthStencilAttachment;
+        // No attribute needed for input attachments because all renderpasses have one on the main
+        // subpass to support dst reads. NOTE: Until we can read from MSAA textures as input
+        // attachments (b/390458117), the VulkanRenderPass is technically doing a small amount of
+        // extra work to have this support in cases where the RenderPassDesc's DstReadStrategy is
+        // not kReadFromInput.
 
         int fNumColorAttachments;
         int fNumResolveAttachments;
@@ -80,7 +88,7 @@ public:
         skia_private::TArray<const AttachmentDesc*> fAttachments;
     };
 
-    static void AddRenderPassInfoToKey(VulkanRenderPassMetaData& rpMetaData,
+    static void AddRenderPassInfoToKey(const VulkanRenderPassMetaData& rpMetaData,
                                        ResourceKey::Builder& builder,
                                        int& builderIdx,
                                        bool compatibleOnly);
