@@ -22,6 +22,30 @@
       },
       "revId": "aaca34c5c082d7568da35aca84715ae8d39da1ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "12b7a94e_e55be956",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-06T17:05:47Z",
+      "side": 1,
+      "message": "Yea that makes sense. I also updated this to just use SkRect methods, PTAL.",
+      "parentUuid": "67b93969_b62a2725",
+      "range": {
+        "startLine": 623,
+        "startChar": 47,
+        "endLine": 626,
+        "endChar": 87
+      },
+      "revId": "aaca34c5c082d7568da35aca84715ae8d39da1ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
