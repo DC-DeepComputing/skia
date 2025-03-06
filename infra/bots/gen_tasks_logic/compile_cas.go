@@ -65,6 +65,8 @@ var (
 		"infra/bots/assets/android_ndk_windows/VERSION",
 		"infra/bots/assets/cast_toolchain/VERSION",
 		"infra/bots/assets/clang_linux/VERSION",
+		"infra/bots/assets/clang_ubuntu_noble/VERSION",
+		"infra/bots/assets/clang_ubuntu_bionic/VERSION",
 		"infra/bots/assets/clang_win/VERSION",
 		"infra/bots/run_recipe.py",
 		"infra/bots/task_drivers",
