@@ -601,6 +601,33 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->write(SkTo<int>(imgData.fSampling.filter));
 }
 
+void add_clamp_image_uniform_data(const ShaderCodeDictionary* dict,
+                                  const ImageShaderBlock::ImageData& imgData,
+                                  PipelineDataGatherer* gatherer) {
+    SkASSERT(!imgData.fSampling.useCubic);
+    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kImageShaderClamp)
+
+    gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
+
+    // Matches GrTextureEffect::kLinearInset, to make sure we don't touch an outer row or column
+    // with a weight of 0 when linear filtering.
+    const float kLinearInset = 0.5f + 0.00001f;
+
+    // The subset should clamp texel coordinates to an inset subset to prevent sampling neighboring
+    // texels when coords fall exactly at texel boundaries.
+    const float l = imgData.fSubset.left();
+    const float t = imgData.fSubset.top();
+    const float r = imgData.fSubset.right();
+    const float b = imgData.fSubset.bottom();
+    gatherer->write((imgData.fSampling.filter == SkFilterMode::kNearest)
+                            ? SkRect::MakeLTRB(std::max(std::floor(l) + kLinearInset, l),
+                                               std::max(std::floor(t) + kLinearInset, t),
+                                               std::min(std::ceil(r) - kLinearInset, r),
+                                               std::min(std::ceil(b) - kLinearInset, b))
+                            : SkRect::MakeLTRB(l + kLinearInset, t + kLinearInset,
+                                               r - kLinearInset, b - kLinearInset));
+}
+
 void add_cubic_image_uniform_data(const ShaderCodeDictionary* dict,
                                   const ImageShaderBlock::ImageData& imgData,
                                   PipelineDataGatherer* gatherer) {
@@ -674,6 +701,10 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     } else if (imgData.fSampling.useCubic) {
         add_cubic_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);
+    } else if (imgData.fTileModes.first == SkTileMode::kClamp &&
+               imgData.fTileModes.second == SkTileMode::kClamp) {
+        add_clamp_image_uniform_data(keyContext.dict(), imgData, gatherer);
+        builder->beginBlock(BuiltInCodeSnippetID::kImageShaderClamp);
     } else {
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
