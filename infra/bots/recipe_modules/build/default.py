@@ -42,7 +42,7 @@ def compile_swiftshader(api, extra_tokens, swiftshader_root, ninja_root, cc, cxx
 
   if san:
     short,full = san
-    clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
+    clang_linux = str(api.vars.workdir.joinpath('clang_ubuntu_noble'))
     libcxx = clang_linux + '/' + short
     cflags = ' '.join([
       '-fsanitize=' + full,
@@ -77,7 +77,7 @@ def compile_fn(api, checkout_root, out_dir):
   os            = api.vars.builder_cfg.get('os',            '')
   target_arch   = api.vars.builder_cfg.get('target_arch',   '')
 
-  clang_linux      = str(api.vars.workdir.joinpath('clang_linux'))
+  clang_linux      = str(api.vars.workdir.joinpath('clang_ubuntu_noble'))
   win_toolchain    = str(api.vars.workdir.joinpath('win_toolchain'))
   dwritecore       = str(api.vars.workdir.joinpath('dwritecore'))
 
@@ -145,7 +145,7 @@ def compile_fn(api, checkout_root, out_dir):
     extra_ldflags.append('-B%s/bin' % clang_linux)
     extra_ldflags.append('-fuse-ld=lld')
     extra_cflags.append('-DPLACEHOLDER_clang_linux_version=%s' %
-                        api.run.asset_version('clang_linux', skia_dir))
+                        api.run.asset_version('clang_ubuntu_noble', skia_dir))
     if 'Static' in extra_tokens:
       extra_ldflags.extend(['-static-libstdc++', '-static-libgcc'])
 
