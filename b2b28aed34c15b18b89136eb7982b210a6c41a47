@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b6957ff_2eb5f0ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "ALMOST everything is working.\nCanvasKit.TextDirection.LTR is undefined and that I have no idea why.\nSomething related to no_paragraph I think.",
+      "revId": "b2b28aed34c15b18b89136eb7982b210a6c41a47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

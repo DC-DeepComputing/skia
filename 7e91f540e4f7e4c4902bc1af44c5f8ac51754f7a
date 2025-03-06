@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52df1973_a3d857fd",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Right. Do I have to do anythying here or #error would do it for me?",
+      "parentUuid": "88228db7_0460272f",
+      "range": {
+        "startLine": 105,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c216f65c_4bd7a13c",
         "filename": "modules/canvaskit/Makefile",
         "patchSetId": 4
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "Should this be in the release build or should there be a new target?",
+      "range": {
+        "startLine": 9,
+        "startChar": 14,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f95be64b_9413969c",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c216f65c_4bd7a13c",
       "range": {
         "startLine": 9,
         "startChar": 14,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db9137e4_97259657",
+        "filename": "modules/canvaskit/bidi.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d971670_ef5b3e2f",
+      "range": {
+        "startLine": 16,
+        "startChar": 33,
+        "endLine": 16,
+        "endChar": 43
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aaba2825_af9b547d",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "I think returning an SkUnicode and calling it something else is potentially confusing down the line. I think it might be better to have a placeholder class and make _getBidiRegions be a static function (using a cached SkUnicodes::Client::Make()).",
+      "range": {
+        "startLine": 46,
+        "startChar": 11,
+        "endLine": 46,
+        "endChar": 20
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4dfb3576_132fa308",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aaba2825_af9b547d",
       "range": {
         "startLine": 46,
         "startChar": 11,
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83c2b1f1_8f1b1854",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bab50cd0_1dcaff25",
+      "range": {
+        "startLine": 50,
+        "startChar": 47,
+        "endLine": 50,
+        "endChar": 53
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec5ef477_fe6ae06e",
@@ -146,6 +266,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "`JSArray`. Int32Array refers to a typed array. Same below",
+      "range": {
+        "startLine": 54,
+        "startChar": 84,
+        "endLine": 54,
+        "endChar": 94
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0c1361a_5f047578",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec5ef477_fe6ae06e",
       "range": {
         "startLine": 54,
         "startChar": 84,
@@ -181,6 +325,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "55422464_0041e835",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Do I need Int32Array? I have no idea.",
+      "parentUuid": "b97c84bf_ba3b6490",
+      "range": {
+        "startLine": 85,
+        "startChar": 20,
+        "endLine": 85,
+        "endChar": 27
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1be482c8_7fc541bc",
         "filename": "modules/canvaskit/bidi_bindings.cpp",
         "patchSetId": 4
@@ -192,6 +360,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "Same advice as above, let\u0027s make this be a class_function and have this call the creation of the SkUnicode (or, if we can, share the singleton)",
+      "range": {
+        "startLine": 101,
+        "startChar": 9,
+        "endLine": 101,
+        "endChar": 17
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d12ffb1_c4a8ce89",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1be482c8_7fc541bc",
       "range": {
         "startLine": 101,
         "startChar": 9,
@@ -227,6 +419,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6674aaed_3a9d53ba",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "That is a question - I don\u0027t know if we want (why?).",
+      "parentUuid": "46895265_7780c81e",
+      "range": {
+        "startLine": 107,
+        "startChar": 28,
+        "endLine": 107,
+        "endChar": 34
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89e3da01_6ff8d0bc",
         "filename": "modules/canvaskit/font.js",
         "patchSetId": 4
@@ -238,6 +454,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "Did the above line end up being necessary? In any case, remove the commented out line",
+      "range": {
+        "startLine": 146,
+        "startChar": 4,
+        "endLine": 146,
+        "endChar": 13
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f54a6631_ca38618c",
+        "filename": "modules/canvaskit/font.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "89e3da01_6ff8d0bc",
       "range": {
         "startLine": 146,
         "startChar": 4,
@@ -271,6 +511,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45adfc6c_8d490876",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "59f9ddef_2a4c1272",
+      "range": {
+        "startLine": 17,
+        "startChar": 18,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7ed0d2f_d81bc9fa",
@@ -284,6 +548,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "I notice this isn\u0027t being used in any example. Intentional?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 45
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd0fd4c4_52c68f24",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a7ed0d2f_d81bc9fa",
       "range": {
         "startLine": 27,
         "startChar": 0,
@@ -317,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9dd66c0_343d6d1c",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7aad8eb_ad47eaf7",
+      "range": {
+        "startLine": 37,
+        "startChar": 28,
+        "endLine": 37,
+        "endChar": 124
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "273e90b4_ce781c65",
@@ -330,6 +642,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "`cdn + \u0027NotoSansArabic.v18.ttf\u0027`",
+      "range": {
+        "startLine": 38,
+        "startChar": 30,
+        "endLine": 38,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779d4980_0884a5a3",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "273e90b4_ce781c65",
       "range": {
         "startLine": 38,
         "startChar": 30,
@@ -363,6 +699,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5700560f_db9d5289",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ff58204_65f56b0e",
+      "range": {
+        "startLine": 68,
+        "startChar": 12,
+        "endLine": 68,
+        "endChar": 15
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d3d76ffe_b77faf15",
@@ -376,6 +736,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "nit: `const` (and below)",
+      "range": {
+        "startLine": 72,
+        "startChar": 12,
+        "endLine": 72,
+        "endChar": 15
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a26023bb_d72abd75",
+        "filename": "modules/canvaskit/npm_build/bidi.html",
+        "patchSetId": 4
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3d76ffe_b77faf15",
       "range": {
         "startLine": 72,
         "startChar": 12,
@@ -409,6 +793,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "660c5cae_135f14a7",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bd5aa71_f4fc1f0e",
+      "range": {
+        "startLine": 23,
+        "startChar": 4,
+        "endLine": 23,
+        "endChar": 6
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72bcf367_93f7aa50",
@@ -422,6 +830,30 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "nit: const",
+      "range": {
+        "startLine": 25,
+        "startChar": 8,
+        "endLine": 25,
+        "endChar": 11
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "534c31ed_426e4818",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Irrelevant.",
+      "parentUuid": "72bcf367_93f7aa50",
       "range": {
         "startLine": 25,
         "startChar": 8,
@@ -455,6 +887,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb1ac3d9_9ca3d36b",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feaefa1e_6211bae4",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "defea84b_88960824",
@@ -478,6 +934,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e9be24c_9a1807d9",
+        "filename": "modules/skunicode/include/SkUnicode_client.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "defea84b_88960824",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07be3454_55a423c6",
@@ -491,6 +971,24 @@
       "writtenOn": "2025-03-05T21:41:19Z",
       "side": 1,
       "message": "remove extra lines?",
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "69c859fe_f6dcfd8a",
+        "filename": "modules/skunicode/src/SkUnicode_hardcoded.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-06T22:20:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07be3454_55a423c6",
       "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
