@@ -23,6 +23,7 @@
 #include "src/base/SkTSearch.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkOSFile.h"
+#include "src/core/SkTHash.h"
 #include "src/core/SkTypefaceCache.h"
 #include "src/ports/SkFontMgr_android_parser.h"
 #include "src/ports/SkTypeface_proxy.h"
@@ -37,60 +38,35 @@ class SkData;
 namespace {
 class SkTypeface_AndroidSystem : public SkTypeface_proxy {
 public:
+    static sk_sp<SkTypeface_AndroidSystem> Make(sk_sp<SkTypeface> realTypeface,
+                                                const SkFontStyle& style,
+                                                bool isFixedPitch,
+                                                const SkString& familyName,
+                                                const TArray<SkLanguage, true>& lang,
+                                                FontVariant variantStyle) {
+        return sk_sp(new SkTypeface_AndroidSystem(std::move(realTypeface),
+                                                  style, isFixedPitch,
+                                                  familyName, lang, variantStyle));
+    }
+
+    const SkString fFamilyName;
+    const STArray<4, SkFixed, true> fAxes;
+    const STArray<4, SkLanguage, true> fLang;
+    const FontVariant fVariantStyle;
+
+protected:
     SkTypeface_AndroidSystem(sk_sp<SkTypeface> realTypeface,
-                             const SkString& pathName,
-                             const bool cacheFontFiles,
-                             int index,
                              const SkFontStyle& style,
                              bool isFixedPitch,
                              const SkString& familyName,
                              const TArray<SkLanguage, true>& lang,
                              FontVariant variantStyle)
             : SkTypeface_proxy(std::move(realTypeface), style, isFixedPitch)
-            , fPathName(pathName)
             , fFamilyName(familyName)
-            , fIndex(index)
             , fLang(lang)
             , fVariantStyle(variantStyle)
-            , fFile(cacheFontFiles ? sk_fopen(fPathName.c_str(), kRead_SkFILE_Flag) : nullptr)
     {}
-    static sk_sp<SkTypeface_AndroidSystem> Make(sk_sp<SkTypeface> realTypeface,
-                                                const SkString& pathName,
-                                                const bool cacheFontFiles,
-                                                int index,
-                                                const SkFontStyle& style,
-                                                bool isFixedPitch,
-                                                const SkString& familyName,
-                                                const TArray<SkLanguage, true>& lang,
-                                                FontVariant variantStyle) {
-        return sk_sp<SkTypeface_AndroidSystem>(new SkTypeface_AndroidSystem(std::move(realTypeface),
-                                                                            pathName,
-                                                                            cacheFontFiles,
-                                                                            index,
-                                                                            style,
-                                                                            isFixedPitch,
-                                                                            familyName,
-                                                                            lang,
-                                                                            variantStyle));
-    }
 
-    std::unique_ptr<SkStreamAsset> makeStream() const {
-        if (fFile) {
-            sk_sp<SkData> data(SkData::MakeFromFILE(fFile));
-            return data ? std::make_unique<SkMemoryStream>(std::move(data)) : nullptr;
-        }
-        return SkStream::MakeFromFile(fPathName.c_str());
-    }
-
-    const SkString fPathName;
-    const SkString fFamilyName;
-    int fIndex;
-    const STArray<4, SkFixed, true> fAxes;
-    const STArray<4, SkLanguage, true> fLang;
-    const FontVariant fVariantStyle;
-    SkAutoTCallVProc<FILE, sk_fclose> fFile;
-
-protected:
     void onGetFamilyName(SkString* familyName) const override {
         *familyName = fFamilyName;
     }
@@ -100,16 +76,9 @@ protected:
         if (proxy == nullptr) {
             return nullptr;
         }
-        return SkTypeface_AndroidSystem::Make(
-                std::move(proxy),
-                fPathName,
-                fFile,
-                fIndex,
-                this->fontStyle(),
-                this->isFixedPitch(),
-                fFamilyName,
-                fLang,
-                fVariantStyle);
+        return SkTypeface_AndroidSystem::Make(std::move(proxy),
+                                              this->fontStyle(), this->isFixedPitch(),
+                                              fFamilyName, fLang, fVariantStyle);
     }
 
     void onGetFontDescriptor(SkFontDescriptor* desc, bool* serialize) const override {
@@ -120,11 +89,6 @@ protected:
         desc->setFamilyName(fFamilyName.c_str());
         desc->setStyle(this->fontStyle());
         *serialize = false;
-    }
-
-    std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override {
-        *ttcIndex = fIndex;
-        return this->makeStream();
     }
 
     SkFontStyle onGetFontStyle() const override {
@@ -150,6 +114,8 @@ public:
         }
         fFallbackFor = family.fFallbackFor;
 
+        skia_private::THashMap<SkString, std::unique_ptr<SkStreamAsset>> streamForPath;
+
         // TODO? make this lazy
         for (int i = 0; i < family.fFonts.size(); ++i) {
             const FontFileInfo& fontFile = family.fFonts[i];
@@ -157,7 +123,11 @@ public:
             SkString pathName(family.fBasePath);
             pathName.append(fontFile.fFileName);
 
-            std::unique_ptr<SkStreamAsset> stream = SkStream::MakeFromFile(pathName.c_str());
+            std::unique_ptr<SkStreamAsset>* streamCached = streamForPath.find(pathName);
+            if (!streamCached) {
+                streamCached = streamForPath.set(pathName, SkStream::MakeFromFile(pathName.c_str()));
+            }
+            std::unique_ptr<SkStreamAsset> stream = (*streamCached)->duplicate();
             if (!stream) {
                 SkDEBUGF("Requested font file %s does not exist or cannot be opened.\n",
                          pathName.c_str());
@@ -168,6 +138,7 @@ public:
                     fontFile.fVariationDesignPosition.begin(),
                     fontFile.fVariationDesignPosition.size()
             };
+            // TODO: this creates the proxy with the given stream, so always cacheFontFiles.
             auto proxy = scanner->MakeFromStream(
                 std::move(stream),
                 SkFontArguments().setCollectionIndex(fontFile.fIndex)
@@ -203,16 +174,10 @@ public:
             }
             fontStyle = SkFontStyle(weight, fontStyle.width(), slant);
 
-            fStyles.push_back().reset(
-                new SkTypeface_AndroidSystem(proxy,
-                                             pathName,
-                                             cacheFontFiles,
-                                             fontFile.fIndex,
-                                             fontStyle,
-                                             proxy->isFixedPitch(),
-                                             familyName,
-                                             family.fLanguages,
-                                             variant));
+            fStyles.push_back(
+                SkTypeface_AndroidSystem::Make(proxy,
+                                               fontStyle, proxy->isFixedPitch(),
+                                               familyName, family.fLanguages, variant));
         }
     }
 
