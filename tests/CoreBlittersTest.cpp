@@ -87,8 +87,8 @@ static void compare_mask_and_antiH(skiatest::Reporter* reporter,
             REPORT_FAILURE(reporter,
                            "blitAntiH was not the same for all pixels",
                            SkStringPrintf("background=%08x, paint=%08x, alpha=%d",
-                                          backgroundColor,
-                                          paintColor,
+                                          unsigned(backgroundColor),
+                                          unsigned(paintColor),
                                           alpha));
             return;
         }
@@ -96,8 +96,8 @@ static void compare_mask_and_antiH(skiatest::Reporter* reporter,
             REPORT_FAILURE(reporter,
                            "blitMask was not the same for all pixels",
                            SkStringPrintf("background=%08x, paint=%08x, alpha=%d",
-                                          backgroundColor,
-                                          paintColor,
+                                          unsigned(backgroundColor),
+                                          unsigned(paintColor),
                                           alpha));
             return;
         }
@@ -110,8 +110,8 @@ static void compare_mask_and_antiH(skiatest::Reporter* reporter,
                         "background=%08x, paint=%08x, alpha=%d, "
                         "blitAntiH=%08x, blitMask=%08x, "
                         "diff=%02x %02x %02x %02x",
-                        backgroundColor, paintColor, alpha,
-                        antiHColor, maskColor,
+                        unsigned(backgroundColor), unsigned(paintColor), alpha,
+                        unsigned(antiHColor), unsigned(maskColor),
                         abs((int)(SkColorGetA(antiHColor) - SkColorGetA(maskColor))),
                         abs((int)(SkColorGetR(antiHColor) - SkColorGetR(maskColor))),
                         abs((int)(SkColorGetG(antiHColor) - SkColorGetG(maskColor))),
