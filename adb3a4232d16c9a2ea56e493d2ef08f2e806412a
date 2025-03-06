@@ -37,6 +37,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29d22c05_c901c43f",
+        "filename": "include/core/SkTraceMemoryDump.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-06T19:52:56Z",
+      "side": 1,
+      "message": "We should clarify that this is for sizeless, non-texture objects, since transient textures are dumped regardless.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 99
+      },
+      "revId": "adb3a4232d16c9a2ea56e493d2ef08f2e806412a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cb62505_350e8e0b",
+        "filename": "include/core/SkTraceMemoryDump.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-06T19:52:56Z",
+      "side": 1,
+      "message": "nit: `shouldDumpZeroSizedObjects()` or `shouldDumpSizelessObjects()`",
+      "range": {
+        "startLine": 111,
+        "startChar": 17,
+        "endLine": 111,
+        "endChar": 39
+      },
+      "revId": "adb3a4232d16c9a2ea56e493d2ef08f2e806412a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9f4b9429_b9e79eb4",
         "filename": "tests/graphite/VulkanDstReadRenderpassReuseTest.cpp",
         "patchSetId": 6
