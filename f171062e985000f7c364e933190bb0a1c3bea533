@@ -22,6 +22,30 @@
       },
       "revId": "f171062e985000f7c364e933190bb0a1c3bea533",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "572e8f0d_cf18554d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-07T17:04:34Z",
+      "side": 1,
+      "message": "I manually minimized a couple of the problematic internal assets.",
+      "parentUuid": "0003d77e_c1cfb571",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 2
+      },
+      "revId": "f171062e985000f7c364e933190bb0a1c3bea533",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
