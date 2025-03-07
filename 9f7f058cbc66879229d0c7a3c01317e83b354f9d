@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d01c579_69ca5693",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "Thanks for updating these docs, this process can be arduous. Mostly some line wrapping cleanup and a few extra points to call out would be good to include.",
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f692fa00_e7e502bd",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "I\u0027m not entirely sure where we\u0027d place it, but we should emphasize that if this kind of layout test fails, you can\u0027t rebaseline it. You have to either update the reference html file or update the fuzziness level.",
+      "range": {
+        "startLine": 14,
+        "startChar": 37,
+        "endLine": 14,
+        "endChar": 57
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a85987f6_17aca41d",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "range": {
+        "startLine": 20,
+        "startChar": 2,
+        "endLine": 22,
+        "endChar": 33
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac027369_8fe021ed",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "These are often called pixel tests by chrome",
+      "range": {
+        "startLine": 31,
+        "startChar": 7,
+        "endLine": 31,
+        "endChar": 23
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8933a8b6_d7ab9577",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "range": {
+        "startLine": 25,
+        "startChar": 1,
+        "endLine": 33,
+        "endChar": 107
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bde0c7f_53e7533f",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "nit: line wrapping",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 35
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be4738cb_8add68d4",
+        "filename": "site/docs/dev/chrome/blink.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-07T15:26:27Z",
+      "side": 1,
+      "message": "There is a section in `TestExpectations` that is reserved for these skia roll suppressions:\n\n    # --- Skia roll test suppressions\n\n    # --- END Skia roll test suppresions",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 62
+      },
+      "revId": "9f7f058cbc66879229d0c7a3c01317e83b354f9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
