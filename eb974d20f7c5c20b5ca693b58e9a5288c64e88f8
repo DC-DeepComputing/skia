@@ -192,6 +192,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "60c88e60_b2d3c551",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-07T18:37:24Z",
+      "side": 1,
+      "message": "Per offline discussion - I returned to considering whether may read from the dst (as in, we use an input attachment on the main subpass) for layout decisions.\n\nAs it is right now, the subpass dependency regardless / in all cases. Though TBH that doesn\u0027t provide us much of anything, seeing as whether or not we have an input attachment on the main subpass (i.e., when a render target can be sampled from as an input attachment) already makes those RP keys different from other ones. That being said, it always being present is convenient for some logic I suppose (and is basically free as discussed). **LMK if you have thoughts on whether the addition of that self-dependency should also be determined by whether or not the dst can be read as input attachment.** I could see an argument for returning to having this be conditional.\n\nSo, as it stands, any renderpass that *can* read from the dst as an input attachment can be shared for draws that do read from the dst and those that do not. Though RPs that cannot use the dst texture as an input attachment will be distinct (since the attachment indices differ at the subpass level which is part of the key - we can\u0027t point the main subpass\u0027s input attachment to the color attachment if it does not have the proper usage). Does this align with your expectations?",
+      "parentUuid": "060465f0_0da91395",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f88a59a4_9b3e8299",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 28
