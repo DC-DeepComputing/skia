@@ -104,6 +104,12 @@ public:
      */
     virtual void dumpBudgetedState(const char* /*dumpName*/, bool /*isBudgeted*/) {}
 
+    /**
+     * Returns true if we should dump zero-sized objects (e.g. Samplers, pipelines, etc). This call
+     * is only used when dumping Graphite memory statistics.
+     */
+    virtual bool shouldDump0SizeObjects() const { return false; }
+
 protected:
     virtual ~SkTraceMemoryDump() = default;
     SkTraceMemoryDump() = default;

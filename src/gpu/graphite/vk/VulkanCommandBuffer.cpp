@@ -779,7 +779,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
 
     // Before beginning a renderpass, set all textures to the appropriate image layout. Whether a RP
     // must support reading from the dst as an input attachment affects some layout selections.
-    setup_texture_layouts(this, vulkanColorTexture, vulkanResolveTexture, vulkanDepthStencilTexture,
+    setup_texture_layouts(this, fTargetTexture, vulkanResolveTexture, vulkanDepthStencilTexture,
                           loadMSAAFromResolve, rp_must_support_reading_dst_as_input(rpDesc));
 
     static constexpr int kMaxNumAttachments = 3;
