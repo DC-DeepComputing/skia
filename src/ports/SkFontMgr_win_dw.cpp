@@ -29,6 +29,7 @@
 #include <dwrite.h>
 #include <dwrite_2.h>
 #include <dwrite_3.h>
+#include <map>
 
 using namespace skia_private;
 
@@ -57,12 +58,51 @@ bool HasBitmapStrikes(const SkTScopedComPtr<IDWriteFont>& font) {
 // we won't have a matching IDWriteFont which is still used in get_style().
 HRESULT FirstMatchingFontWithoutSimulations(const SkTScopedComPtr<IDWriteFontFamily>& family,
                                             DWriteStyle dwStyle,
-                                            SkTScopedComPtr<IDWriteFont>& font) {
+                                            SkTScopedComPtr<IDWriteFont>& rendered_font) {
     bool noSimulations = false;
     while (!noSimulations) {
         SkTScopedComPtr<IDWriteFont> searchFont;
-        HR(family->GetFirstMatchingFont(
-                dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &searchFont));
+        SkTScopedComPtr<IDWriteFontList> matchingFonts;
+        HR(family->GetMatchingFonts(
+                dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &matchingFonts));
+        UINT32 fontCount = matchingFonts->GetFontCount();
+        std::map<int, int> fontPriorityList;
+        for (int i = 0; i < fontCount; i++) {
+            SkTScopedComPtr<IDWriteFont> font;
+            HR(matchingFonts->GetFont(i, &font));
+            if (fontPriorityList.find(font->GetWeight()) == fontPriorityList.end()) {
+                fontPriorityList[font->GetWeight()] = i;
+            }
+        }
+
+        auto it = fontPriorityList.lower_bound(dwStyle.fWeight);
+        if (dwStyle.fWeight >= DWRITE_FONT_WEIGHT_REGULAR &&
+            dwStyle.fWeight <= DWRITE_FONT_WEIGHT_MEDIUM) {
+            if (it != fontPriorityList.end() && it->first <= DWRITE_FONT_WEIGHT_MEDIUM) {
+                matchingFonts->GetFont(it->second, &searchFont);
+            } else if (it != fontPriorityList.begin()) {
+                --it;
+                if (it->first >= DWRITE_FONT_WEIGHT_REGULAR) {
+                    matchingFonts->GetFont(it->second, &searchFont);
+                } else {
+                    ++it;
+                    matchingFonts->GetFont(it->second, &searchFont);
+                }
+            }
+        } else if (dwStyle.fWeight < DWRITE_FONT_WEIGHT_REGULAR) {
+            if (it != fontPriorityList.begin() && it->first > dwStyle.fWeight) {
+                --it;
+            }
+            matchingFonts->GetFont(it->second, &searchFont);
+        } else if (dwStyle.fWeight > DWRITE_FONT_WEIGHT_MEDIUM) {
+            if (it != fontPriorityList.end() && it->first < dwStyle.fWeight) {
+                ++it;
+            }
+            matchingFonts->GetFont(it->second, &searchFont);
+        }
+
+        // HR(family->GetFirstMatchingFont(
+        //         dwStyle.fWeight, dwStyle.fWidth, dwStyle.fSlant, &searchFont));
         DWRITE_FONT_SIMULATIONS simulations = searchFont->GetSimulations();
         // If we still get simulations even though we're not asking for bold or
         // italic, we can't help it and exit the loop.
@@ -76,7 +116,7 @@ HRESULT FirstMatchingFontWithoutSimulations(const SkTScopedComPtr<IDWriteFontFam
         noSimulations = true;
 #endif
         if (noSimulations) {
-            font = std::move(searchFont);
+            rendered_font = std::move(searchFont);
             break;
         }
         if (simulations & DWRITE_FONT_SIMULATIONS_BOLD) {
