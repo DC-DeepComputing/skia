@@ -62,6 +62,30 @@
       },
       "revId": "5e63db1f275d4f0cfdf6908d41f95fe139432d67",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32f256a1_e0fa1b87",
+        "filename": "experimental/rust_png/ffi/FFI.rs",
+        "patchSetId": 3
+      },
+      "lineNbr": 267,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-07T15:25:55Z",
+      "side": 1,
+      "message": "Ooops... sorry for missing the question earlier.  Yeah - crate features are simple/opaque strings.  I tried to search and I don\u0027t see a way to compare versions like this.",
+      "parentUuid": "7939e00c_c62f5c44",
+      "range": {
+        "startLine": 267,
+        "startChar": 10,
+        "endLine": 267,
+        "endChar": 35
+      },
+      "revId": "5e63db1f275d4f0cfdf6908d41f95fe139432d67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
