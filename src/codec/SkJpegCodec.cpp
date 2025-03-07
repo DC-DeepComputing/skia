@@ -33,6 +33,7 @@
 #include "include/private/SkGainmapInfo.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
+#include <jmorecfg.h>
 #include <array>
 #include <csetjmp>
 #include <cstring>
@@ -435,6 +436,10 @@ SkCodec::Result SkJpegCodec::readRows(const SkImageInfo& dstInfo, void* dst, siz
     }
 
     for (int y = 0; y < count; y++) {
+      // SkDebugf("%d\n", y);
+      // if (y==14) {
+      //   SkDebugf("poop\n");
+      // }
         uint32_t lines = jpeg_read_scanlines(fDecoderMgr->dinfo(), &decodeDst, 1);
         if (0 == lines) {
             *rowsDecoded = y;
@@ -516,7 +521,6 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
     if (!this->allocateStorage(dstInfo)) {
         return kInternalError;
     }
-
     if (isProgressive) {
       // Keep consuming input until we can't anymore, and only output/read scanlines
       // if there is at least one valid output.
@@ -560,6 +564,52 @@ SkCodec::Result SkJpegCodec::onGetPixels(const SkImageInfo& dstInfo,
           return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
       }
   }
+
+  //    if (isProgressive) {
+  //     int output_passes = 0;
+  //     while (!jpeg_input_complete(dinfo)) {
+  //        // This call is balanced with jpeg_finish_output at all early exits below.
+  //        jpeg_start_output(dinfo, dinfo->input_scan_number);
+
+  //        int rows = 0;
+  //        SkCodec::Result readResult = this->readRows(dstInfo, dst, dstRowBytes,
+  //                                                    dstInfo.height(), options, &rows);
+  //        // Checks if scan was called too many times to not stall the decoder.
+  //        if (readResult != kSuccess) {
+  //          jpeg_finish_output(dinfo);
+  //          return fDecoderMgr->returnFailure("readRows", readResult);
+  //        }
+  //       if (rows < dstInfo.height()) {
+  //           // Progressive images with at least one output pass can be shown and return success
+  //           // even if it is missing an EOF marker.
+  //           SkDebugf("rows %d %d\n", rows, output_passes);
+  //          jpeg_finish_output(dinfo);
+  //          if (output_passes > 0) {
+  //              break;
+  //          }
+  //          *rowsDecoded = rows;
+  //          return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+  //       }
+
+  //       // If a progressive image fails to find EOF on the first output pass, return a failure.
+  //       if (!jpeg_finish_output(dinfo)) {
+  //          if (output_passes > 0) {
+  //             break;
+  //          }
+  //          return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+  //       }
+  //       output_passes++;
+  //     }
+  //   } else {
+  //     // Baseline image
+  //     int rows = 0;
+  //     this->readRows(dstInfo, dst, dstRowBytes, dstInfo.height(), options, &rows);
+  //     if (rows < dstInfo.height()) {
+  //         *rowsDecoded = rows;
+  //         return fDecoderMgr->returnFailure("Incomplete image data", kIncompleteInput);
+  //     }
+  // }
+
 
     return kSuccess;
 }

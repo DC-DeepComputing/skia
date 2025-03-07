@@ -33,6 +33,7 @@
 #include "src/encode/SkJPEGWriteUtility.h"
 #include "src/image/SkImage_Base.h"
 
+#include <jmorecfg.h>
 #include <csetjmp>
 #include <cstdint>
 #include <cstring>
