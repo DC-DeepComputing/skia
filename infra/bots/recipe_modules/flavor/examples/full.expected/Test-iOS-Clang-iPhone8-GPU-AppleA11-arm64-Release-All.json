@@ -100,30 +100,6 @@
   },
   {
     "cmd": [
-      "sudo",
-      "/usr/bin/killall",
-      "-v",
-      "usbmuxd"
-    ],
-    "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
-      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
-    },
-    "name": "killall usbmuxd"
-  },
-  {
-    "cmd": [
-      "sleep",
-      "10"
-    ],
-    "env": {
-      "IOS_BUNDLE_ID": "com.google.dm",
-      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice"
-    },
-    "name": "sleep 10"
-  },
-  {
-    "cmd": [
       "idevicepair",
       "validate"
     ],
@@ -775,6 +751,22 @@
     },
     "infra_step": true,
     "name": "push_file [START_DIR]/tmp/SVG_VERSION"
+  },
+  {
+    "cmd": [
+      "sudo",
+      "/usr/bin/killall",
+      "-v",
+      "usbmuxd"
+    ],
+    "name": "killall usbmuxd"
+  },
+  {
+    "cmd": [
+      "sleep",
+      "10"
+    ],
+    "name": "sleep 10"
   },
   {
     "cmd": [
