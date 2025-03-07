@@ -573,6 +573,12 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // bound separately from the rest of the textures.
     const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
 
+    // If reading from the dst texture as an input attachment, issue a draw command so backend
+    // command buffers can add the appropriate barrier.
+    if (caps->getDstReadStrategy(target->textureInfo()) == DstReadStrategy::kReadFromInput) {
+        drawPass->fCommandList.addBarrier(BarrierType::kReadDstFromInput);
+    }
+
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();

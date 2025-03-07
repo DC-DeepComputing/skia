@@ -70,9 +70,9 @@ struct ResourceBindingRequirements {
     // Define set indices. We assume that even if textures and samplers must be bound separately,
     // they will still be contained within the same set/group.
     static constexpr int kUnassigned = -1;
+    int fInputAttachmentSetIdx       = kUnassigned;
     int fUniformsSetIdx              = kUnassigned;
     int fTextureSamplerSetIdx        = kUnassigned;
-    int fInputAttachmentSetIdx       = kUnassigned;
     // Define uniform buffer bindings
     int fIntrinsicBufferBinding      = kUnassigned;
     int fRenderStepBufferBinding     = kUnassigned;
