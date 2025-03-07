@@ -1121,6 +1121,52 @@ DEF_GANESH_TEST_FOR_GL_CONTEXT(SurfaceAttachStencil_Gpu,
     }
 }
 
+// This test makes a snapshot of a wrapped surface then draws the snapshot back into the surface.
+// This test is considered passed if we don't hit any of our internal asserts about reading and
+// writting the same texture in a single draw.
+DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(DrawSnapshotBackIntoWappedSurface,
+                                       reporter,
+                                       ctxInfo,
+                                       CtsEnforcement::kNextRelease) {
+    auto context = ctxInfo.directContext();
+
+    auto ii = SkImageInfo::Make(10, 10, kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr);
+    auto mbet = sk_gpu_test::ManagedBackendTexture::MakeFromInfo(
+            context, ii, skgpu::Mipmapped::kNo, GrRenderable::kYes);
+    REPORTER_ASSERT(reporter, mbet);
+
+    if (!mbet) {
+        return;
+    }
+    auto surf = SkSurfaces::WrapBackendTexture(context,
+                                               mbet->texture(),
+                                               kTopLeft_GrSurfaceOrigin,
+                                               1,
+                                               kRGBA_8888_SkColorType,
+                                               ii.refColorSpace(),
+                                               nullptr);
+    REPORTER_ASSERT(reporter, surf);
+    if (!surf) {
+        return;
+    }
+
+    auto tcanvas = surf->getCanvas();
+    tcanvas->clear(SK_ColorRED);
+    SkPaint p;
+    p.setColor(SK_ColorBLUE);
+    p.setAntiAlias(true);
+    p.setStyle(SkPaint::kStroke_Style);
+    p.setStrokeWidth(10);
+    tcanvas->drawLine(20, 20, 100, 100, p);
+    auto img = surf->makeImageSnapshot();
+    SkPaint paint;
+    // paint with color filter
+    tcanvas->drawImage(img, 0,0, SkSamplingOptions(), &paint);
+
+    // This test passes
+    context->flushAndSubmit(GrSyncCpu::kYes);
+}
+
 DEF_GANESH_TEST_FOR_RENDERING_CONTEXTS(ReplaceSurfaceBackendTexture,
                                        reporter,
                                        ctxInfo,
