@@ -74,8 +74,10 @@
  */
 #if defined(__clang__)
   #define SK_NO_SANITIZE_CFI SK_NO_SANITIZE("cfi")
+  #define SK_NO_SANITIZE_CFI_ICALL SK_NO_SANITIZE("cfi-icall")
 #else
   #define SK_NO_SANITIZE_CFI
+  #define SK_NO_SANITIZE_CFI_ICALL
 #endif
 
 /**

@@ -23,6 +23,9 @@ class SkStream;
 /*
  * Print information, warning, and error messages
  */
+#if defined(USE_SYSTEM_LIBJPEG)
+SK_NO_SANITIZE_CFI_ICALL
+#endif
 static void print_message(const j_common_ptr info, const char caller[]) {
     char buffer[JMSG_LENGTH_MAX];
     info->err->format_message(info, buffer);
