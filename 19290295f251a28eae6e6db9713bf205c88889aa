@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "14b15297_45385c6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3934430
+      },
+      "writtenOn": "2025-03-09T19:34:31Z",
+      "side": 1,
+      "message": "This addresses a downstream issue reported here: https://gitlab.archlinux.org/archlinux/packaging/packages/chromium/-/issues/13\n\nI\u0027m not sure if checking for USE_SYSTEM_LIBJPEG is okay in Skia\u0027s codebase. Otherwise, it would be similar to a similar older issue and I\u0027d be more confident to add it to Chromium\u0027s code: https://issues.chromium.org/issues/41403145",
+      "revId": "19290295f251a28eae6e6db9713bf205c88889aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
