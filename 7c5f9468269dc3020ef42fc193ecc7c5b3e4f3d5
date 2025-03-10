@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "464edec9_d39a7cf8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11104
+      },
+      "writtenOn": "2025-03-10T20:50:42Z",
+      "side": 1,
+      "message": "Related webgpu spec change: https://github.com/gpuweb/gpuweb/pull/5036",
+      "revId": "7c5f9468269dc3020ef42fc193ecc7c5b3e4f3d5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
