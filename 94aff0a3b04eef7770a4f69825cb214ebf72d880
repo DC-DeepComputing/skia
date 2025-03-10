@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6a7d336_e7b68e0e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T15:44:03Z",
+      "side": 1,
+      "message": "I had to force TextDirection to avoid minifying. If there is another way around it I would be happy to change it so far I only found this...\nTests are working.",
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
