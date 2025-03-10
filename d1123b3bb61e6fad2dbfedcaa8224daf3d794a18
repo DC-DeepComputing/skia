@@ -16,6 +16,23 @@
       "message": "Please take a look. Android canary and s20 protected try jobs have both passed",
       "revId": "d1123b3bb61e6fad2dbfedcaa8224daf3d794a18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea73eacd_3688638f",
+        "filename": "src/gpu/ganesh/image/SkImage_Ganesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-10T16:23:57Z",
+      "side": 1,
+      "message": "I think we should add a comment here explaining what is going on.",
+      "revId": "d1123b3bb61e6fad2dbfedcaa8224daf3d794a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
