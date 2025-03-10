@@ -6,16 +6,8 @@
 using namespace metal;
 constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
 constant const half sk_PrivkMinNormalHalf = 6.10351562e-05h;
-struct Uniforms {
-    half4 src;
-    half4 dst;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-half blend_color_saturation_Qhh3(half3 color);
+struct Uniforms { half4 src; half4 dst;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};half blend_color_saturation_Qhh3(half3 color);
 half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst);
 half blend_color_saturation_Qhh3(half3 color) {
     return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);

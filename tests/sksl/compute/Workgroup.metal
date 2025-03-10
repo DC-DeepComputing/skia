@@ -4,8 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Inputs {
-    uint3 sk_GlobalInvocationID;
+struct Inputs { uint3 sk_GlobalInvocationID;
 };
 struct inputs {
     float in_data[1];
@@ -13,13 +12,8 @@ struct inputs {
 struct outputs {
     float out_data[1];
 };
-struct Globals {
-    const device inputs* _anonInterface0;
-    device outputs* _anonInterface1;
-};
-struct Threadgroups {
-    array<float, 512> shared_data;
-};
+struct Globals { const device inputs* _anonInterface0; device outputs* _anonInterface1;};
+struct Threadgroups { array<float, 512> shared_data;};
 void store_vIf(threadgroup Threadgroups& _threadgroups, uint i, float value) {
     _threadgroups.shared_data[i] = value;
 }

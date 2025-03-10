@@ -10,17 +10,9 @@ struct S {
     half4 h4;
     array<half4, 5> ah4;
 };
-struct Uniforms {
-    half4 colorGreen;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    half4 globalVar;
-    S globalStruct;
+struct Uniforms { half4 colorGreen;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { half4 globalVar;
+ S globalStruct;
 };
 void keepAlive_vh(thread half& h) {
 }

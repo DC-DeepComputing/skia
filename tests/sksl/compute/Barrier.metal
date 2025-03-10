@@ -4,8 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Inputs {
-};
+struct Inputs {};
 kernel void computeMain() {
     Inputs _in = {  };
     threadgroup_barrier(mem_flags::mem_threadgroup);

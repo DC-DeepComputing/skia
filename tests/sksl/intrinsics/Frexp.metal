@@ -4,16 +4,8 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-bool checkIntrinsicAsFunctionArg_bf3i3(float3 f3, int3 e3) {
+struct Uniforms { half4 colorGreen; half4 colorRed;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};bool checkIntrinsicAsFunctionArg_bf3i3(float3 f3, int3 e3) {
     return all(f3 == float3(0.75)) && all(e3 == int3(3));
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {

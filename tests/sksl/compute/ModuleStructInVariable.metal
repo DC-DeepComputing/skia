@@ -9,13 +9,8 @@ struct IndirectDispatchArgs {
     int y;
     int z;
 };
-struct Inputs {
-};
-struct Threadgroups {
-    int outX;
-    int outY;
-    int outZ;
-};
+struct Inputs {};
+struct Threadgroups { int outX; int outY; int outZ;};
 kernel void computeMain() {
     threadgroup Threadgroups _threadgroups{{}, {}, {}};
     (void)_threadgroups;

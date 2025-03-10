@@ -4,16 +4,8 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-bool test_return_b() {
+struct Uniforms { half4 colorGreen; half4 colorRed;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};bool test_return_b() {
     do {
         return true;
     } while (false);

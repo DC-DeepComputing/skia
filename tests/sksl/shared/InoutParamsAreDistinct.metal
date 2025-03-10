@@ -4,16 +4,8 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-bool inout_params_are_distinct_bhh(thread half& x, thread half& y) {
+struct Uniforms { half4 colorGreen; half4 colorRed;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};bool inout_params_are_distinct_bhh(thread half& x, thread half& y) {
     x = 1.0h;
     y = 2.0h;
     return x == 1.0h && y == 2.0h;

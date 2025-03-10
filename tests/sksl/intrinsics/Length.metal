@@ -4,17 +4,8 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    float4 testMatrix2x2;
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
+struct Uniforms { float4 testMatrix2x2; half4 colorGreen; half4 colorRed;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
     float4 inputVal = _uniforms.testMatrix2x2 + float4(2.0, -2.0, 1.0, 8.0);

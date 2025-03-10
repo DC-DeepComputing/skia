@@ -5,16 +5,8 @@
 #endif
 using namespace metal;
 constant const half sk_PrivkGuardedDivideEpsilon = half(false ? 1e-08 : 0.0);
-struct Uniforms {
-    half4 src;
-    half4 dst;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-half soft_light_component_Qhh2h2(half2 s, half2 d);
+struct Uniforms { half4 src; half4 dst;};struct Inputs {};
+struct Outputs {half4 sk_FragColor [[color(0)]];};half soft_light_component_Qhh2h2(half2 s, half2 d);
 half soft_light_component_Qhh2h2(half2 s, half2 d) {
     if (2.0h * s.x <= s.y) {
         return (((d.x * d.x) * (s.y - 2.0h * s.x)) / (d.y + sk_PrivkGuardedDivideEpsilon) + (1.0h - d.y) * s.x) + d.x * ((-s.y + 2.0h * s.x) + 1.0h);

@@ -9,19 +9,12 @@ struct IndirectDispatchArgs {
     int y;
     int z;
 };
-struct Inputs {
-};
+struct Inputs {};
 struct InputBuffer {
     IndirectDispatchArgs args;
 };
-struct Globals {
-    device InputBuffer* _anonInterface0;
-};
-struct Threadgroups {
-    int outX;
-    int outY;
-    int outZ;
-};
+struct Globals { device InputBuffer* _anonInterface0;};
+struct Threadgroups { int outX; int outY; int outZ;};
 kernel void computeMain(device InputBuffer& _anonInterface0 [[buffer(0)]]) {
     Globals _globals{&_anonInterface0};
     (void)_globals;
