@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b276fac_99477440",
+        "filename": "tools/SkSharingProc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T20:20:14Z",
+      "side": 1,
+      "message": "suggestion: Avoid using N32 where possible, because it makes it harder to determine statically if this is BGRA or RGBA.",
+      "range": {
+        "startLine": 64,
+        "startChar": 40,
+        "endLine": 64,
+        "endChar": 53
+      },
+      "revId": "c4393375d29dc5fc8f69dc49c65f1c6bd6a7dce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
