@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dad33322_76b3a3d7",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Not anymore. We do not need client ICU. client BIDI works alone just fine.",
+      "parentUuid": "52df1973_a3d857fd",
+      "range": {
+        "startLine": 105,
+        "startChar": 6,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c216f65c_4bd7a13c",
@@ -983,6 +1007,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eeb36e5f_6ab53c2e",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e4baa08_08095b3e",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "defea84b_88960824",
@@ -1044,6 +1092,30 @@
       "side": 1,
       "message": "We can get rid of this, right?",
       "parentUuid": "8e9be24c_9a1807d9",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac27a73_6db7bf2f",
+        "filename": "modules/skunicode/include/SkUnicode_client.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d04f6ced_d6b3c54a",
       "range": {
         "startLine": 23,
         "startChar": 31,

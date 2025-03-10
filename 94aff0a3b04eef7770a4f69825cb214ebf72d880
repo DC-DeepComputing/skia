@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc2cc2dc_351a3c0b",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8aa25cda_d26eca4d",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5cf8cc3_1d77d18c",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-10T16:07:35Z",
       "side": 1,
       "message": "This isn\u0027t needed, right? If BIDI is not set, the error on line 14 will stop compilation, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 42
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd50407d_fc942246",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5cf8cc3_1d77d18c",
       "range": {
         "startLine": 40,
         "startChar": 12,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b888dbf6_02bd616c",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76ffdb11_6e614b48",
+      "range": {
+        "startLine": 52,
+        "startChar": 9,
+        "endLine": 52,
+        "endChar": 18
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6dba8d5_6f94a8e1",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-03-10T16:07:35Z",
       "side": 1,
       "message": "This should probably be a different message than the one above (which I now notice has a typo `harfbuz`)",
+      "range": {
+        "startLine": 156,
+        "startChar": 53,
+        "endLine": 156,
+        "endChar": 60
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64ca8869_e70c5f45",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6dba8d5_6f94a8e1",
       "range": {
         "startLine": 156,
         "startChar": 53,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0634f169_5a33f086",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Not sure I understand what you mean... It\u0027s not cpp definition that is missing, it\u0027s js.",
+      "parentUuid": "92c75da8_98620798",
+      "range": {
+        "startLine": 52,
+        "startChar": 2,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1037df59_2be778e6",
         "filename": "modules/skunicode/src/SkUnicode_bidi.cpp",
         "patchSetId": 7
@@ -146,6 +266,30 @@
       "writtenOn": "2025-03-10T16:07:35Z",
       "side": 1,
       "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 24,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad9a1599_90be1ec8",
+        "filename": "modules/skunicode/src/SkUnicode_bidi.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1037df59_2be778e6",
       "range": {
         "startLine": 2,
         "startChar": 24,
@@ -169,6 +313,24 @@
       "writtenOn": "2025-03-10T16:07:35Z",
       "side": 1,
       "message": "nit: extra newlines",
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8899817_c380e14c",
+        "filename": "modules/skunicode/src/SkUnicode_bidi.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ca95db5_d1745188",
       "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

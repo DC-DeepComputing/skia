@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "280e9ead_3638f25b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-10T17:54:07Z",
+      "side": 1,
+      "message": "In addition I have a question about testing: how can I exclude paragraph tests from bidi build?",
+      "revId": "e0d5c0265f2d9564c3b2122649369cc00f354688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
