@@ -338,7 +338,8 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
 #endif
 
     std::string pipelineLabel =
-            GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
+            GetPipelineLabel(sharedContext->caps(),
+                             sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
     return Make(sharedContext,
                 pipelineLabel,
                 pipelineInfo,

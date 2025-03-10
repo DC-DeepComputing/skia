@@ -100,7 +100,8 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
         return "";
     }
 
-    return GetPipelineLabel(fSharedContext->shaderCodeDictionary(),
+    return GetPipelineLabel(fSharedContext->caps(),
+                            fSharedContext->shaderCodeDictionary(),
                             renderPassDesc,
                             renderStep,
                             pipelineDesc.paintParamsID());

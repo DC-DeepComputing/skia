@@ -23,6 +23,13 @@ class PrecompileContext;
  *  a pipeline.
  */
 struct SK_API RenderPassProperties {
+    bool operator==(const RenderPassProperties& other) {
+        return fDSFlags == other.fDSFlags &&
+               fDstCT == other.fDstCT &&
+               fDstCS == other.fDstCS &&
+               fRequiresMSAA == other.fRequiresMSAA;
+    }
+
     DepthStencilFlags   fDSFlags      = DepthStencilFlags::kNone;
     SkColorType         fDstCT        = kRGBA_8888_SkColorType;
     sk_sp<SkColorSpace> fDstCS        = nullptr;
