@@ -11,6 +11,8 @@
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 
+#include "include/core/SkColorSpace.h"
+
 namespace skgpu::graphite {
 
 class Context;
@@ -23,6 +25,13 @@ class PrecompileContext;
  *  a pipeline.
  */
 struct SK_API RenderPassProperties {
+    bool operator==(const RenderPassProperties& other) {
+        return fDSFlags == other.fDSFlags &&
+               fDstCT == other.fDstCT &&
+               fRequiresMSAA == other.fRequiresMSAA &&
+               SkColorSpace::Equals(fDstCS.get(), other.fDstCS.get());
+    }
+
     DepthStencilFlags   fDSFlags      = DepthStencilFlags::kNone;
     SkColorType         fDstCT        = kRGBA_8888_SkColorType;
     sk_sp<SkColorSpace> fDstCS        = nullptr;
