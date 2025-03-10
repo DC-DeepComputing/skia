@@ -18,6 +18,7 @@ extern "C" {
     #include "jpeglib.h"  // NO_G3_REWRITE
 }
 
+#include <jmorecfg.h>
 #include <memory>
 
 class SkStream;

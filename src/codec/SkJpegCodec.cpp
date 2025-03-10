@@ -33,6 +33,7 @@
 #include "include/private/SkGainmapInfo.h"
 #endif  // SK_CODEC_DECODES_JPEG_GAINMAPS
 
+#include <jmorecfg.h>
 #include <array>
 #include <csetjmp>
 #include <cstring>
