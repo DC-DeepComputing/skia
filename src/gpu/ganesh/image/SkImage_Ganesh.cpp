@@ -109,10 +109,17 @@ inline sk_sp<GrSurfaceProxy> SkImage_Ganesh::ProxyChooser::makeVolatileProxyStab
     return fStableProxy;
 }
 
-inline bool SkImage_Ganesh::ProxyChooser::surfaceMustCopyOnWrite(
-        GrSurfaceProxy* surfaceProxy) const {
+inline bool SkImage_Ganesh::ProxyChooser::surfaceMustCopyOnWrite(GrSurfaceProxy* surfaceProxy) {
     SkAutoSpinlock hold(fLock);
-    return surfaceProxy->underlyingUniqueID() == fStableProxy->underlyingUniqueID();
+    auto surfaceID = surfaceProxy->underlyingUniqueID();
+
+    if (fVolatileProxy && surfaceID == fVolatileProxy->underlyingUniqueID()) {
+        fVolatileProxy.reset();
+        fVolatileToStableCopyTask.reset();
+        return false;
+    }
+
+    return surfaceID == fStableProxy->underlyingUniqueID();
 }
 
 inline size_t SkImage_Ganesh::ProxyChooser::gpuMemorySize() const {
