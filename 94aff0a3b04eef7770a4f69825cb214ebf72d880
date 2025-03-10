@@ -16,6 +16,161 @@
       "message": "I had to force TextDirection to avoid minifying. If there is another way around it I would be happy to change it so far I only found this...\nTests are working.",
       "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa25cda_d26eca4d",
+        "filename": "modules/canvaskit/Makefile",
+        "patchSetId": 7
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "Get rid of this target. We shouldn\u0027t need it anymore, now that we know what the compilation issue was",
+      "range": {
+        "startLine": 15,
+        "startChar": 0,
+        "endLine": 15,
+        "endChar": 10
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5cf8cc3_1d77d18c",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "This isn\u0027t needed, right? If BIDI is not set, the error on line 14 will stop compilation, right?",
+      "range": {
+        "startLine": 40,
+        "startChar": 12,
+        "endLine": 40,
+        "endChar": 42
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76ffdb11_6e614b48",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "If you remove this line, you can remove the inheritance from SkRefCnt above. Clients won\u0027t be constructing objects of this type, so there doesn\u0027t have to be smart pointer things",
+      "range": {
+        "startLine": 52,
+        "startChar": 9,
+        "endLine": 52,
+        "endChar": 18
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6dba8d5_6f94a8e1",
+        "filename": "modules/canvaskit/compile.sh",
+        "patchSetId": 7
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "This should probably be a different message than the one above (which I now notice has a typo `harfbuz`)",
+      "range": {
+        "startLine": 156,
+        "startChar": 53,
+        "endLine": 156,
+        "endChar": 60
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c75da8_98620798",
+        "filename": "modules/canvaskit/interface.js",
+        "patchSetId": 7
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "This was being set in `paragraph_bindings_gen.cpp` - should we remove it from there or put it in canvaskit_bindings.cpp to do it properly?",
+      "range": {
+        "startLine": 52,
+        "startChar": 2,
+        "endLine": 52,
+        "endChar": 11
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1037df59_2be778e6",
+        "filename": "modules/skunicode/src/SkUnicode_bidi.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "LLC",
+      "range": {
+        "startLine": 2,
+        "startChar": 24,
+        "endLine": 2,
+        "endChar": 27
+      },
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ca95db5_d1745188",
+        "filename": "modules/skunicode/src/SkUnicode_bidi.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "nit: extra newlines",
+      "revId": "94aff0a3b04eef7770a4f69825cb214ebf72d880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

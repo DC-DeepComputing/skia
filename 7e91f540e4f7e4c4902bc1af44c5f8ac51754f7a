@@ -347,6 +347,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "58edf097_22213f74",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "Let\u0027s start with a normal JS array, like you have because it\u0027s easier.",
+      "parentUuid": "55422464_0041e835",
+      "range": {
+        "startLine": 85,
+        "startChar": 20,
+        "endLine": 85,
+        "endChar": 27
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1be482c8_7fc541bc",
@@ -431,6 +455,30 @@
       "side": 1,
       "message": "That is a question - I don\u0027t know if we want (why?).",
       "parentUuid": "46895265_7780c81e",
+      "range": {
+        "startLine": 107,
+        "startChar": 28,
+        "endLine": 107,
+        "endChar": 34
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c269ad2_e4638bda",
+        "filename": "modules/canvaskit/bidi_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "We would want it if it\u0027s a hotspot in performance measuring.",
+      "parentUuid": "6674aaed_3a9d53ba",
       "range": {
         "startLine": 107,
         "startChar": 28,
@@ -913,6 +961,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9e4baa08_08095b3e",
+        "filename": "modules/canvaskit/tests/bidi_test.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "I still see some vars in here that should be `let` or `const`",
+      "parentUuid": "fb1ac3d9_9ca3d36b",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 16
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "defea84b_88960824",
         "filename": "modules/skunicode/include/SkUnicode_client.h",
         "patchSetId": 4
@@ -948,6 +1020,30 @@
       "side": 1,
       "message": "Done",
       "parentUuid": "defea84b_88960824",
+      "range": {
+        "startLine": 23,
+        "startChar": 31,
+        "endLine": 23,
+        "endChar": 35
+      },
+      "revId": "7e91f540e4f7e4c4902bc1af44c5f8ac51754f7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04f6ced_d6b3c54a",
+        "filename": "modules/skunicode/include/SkUnicode_client.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-10T16:07:35Z",
+      "side": 1,
+      "message": "We can get rid of this, right?",
+      "parentUuid": "8e9be24c_9a1807d9",
       "range": {
         "startLine": 23,
         "startChar": 31,
