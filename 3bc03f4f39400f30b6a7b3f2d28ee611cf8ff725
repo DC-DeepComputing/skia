@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8012d43_b3aa5ee1",
+        "filename": "third_party/libjpeg-turbo/BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-10T21:22:07Z",
+      "side": 0,
+      "message": "Huh, are we only using simd for arm targets?  We should look into turning on for more platforms (not in this CL).",
+      "revId": "3bc03f4f39400f30b6a7b3f2d28ee611cf8ff725",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
