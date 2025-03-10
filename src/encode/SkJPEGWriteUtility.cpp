@@ -11,6 +11,7 @@
 #include "include/core/SkStream.h"
 #include "src/codec/SkJpegPriv.h"
 
+#include <jmorecfg.h>
 #include <csetjmp>
 #include <cstddef>
 

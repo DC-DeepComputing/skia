@@ -12,6 +12,7 @@
 #include "src/codec/SkCodecPriv.h"
 #include "src/codec/SkJpegPriv.h"
 
+#include <jmorecfg.h>
 #include <csetjmp>
 #include <cstddef>
 
