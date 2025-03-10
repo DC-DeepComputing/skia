@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde3daad_4d86b002",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-10T16:04:57Z",
+      "side": 1,
+      "message": "Please take a look. Android canary and s20 protected try jobs have both passed",
+      "revId": "d1123b3bb61e6fad2dbfedcaa8224daf3d794a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
