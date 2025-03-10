@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce21105_45997a04",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-10T19:16:53Z",
+      "side": 1,
+      "message": "This now matches the logic in DawnCaps::getRenderPassDescKeyForPipeline and DawnGraphicsPipeline::Make",
+      "revId": "51325264c0af65b40658109ca2841163429766b6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
