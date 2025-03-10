@@ -51,6 +51,24 @@
       "parentUuid": "ea73eacd_3688638f",
       "revId": "d1123b3bb61e6fad2dbfedcaa8224daf3d794a18",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f6dcfde_814794f9",
+        "filename": "src/gpu/ganesh/image/SkImage_Ganesh.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-10T16:34:59Z",
+      "side": 1,
+      "message": "comment added.",
+      "parentUuid": "857c9fdc_f1009d4e",
+      "revId": "d1123b3bb61e6fad2dbfedcaa8224daf3d794a18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
