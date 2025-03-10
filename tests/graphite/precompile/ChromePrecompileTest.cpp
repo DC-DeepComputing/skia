@@ -123,6 +123,7 @@ void run_test(PrecompileContext* precompileContext,
 
     precompileContext->priv().globalCache()->resetGraphicsPipelines();
 
+    const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
     Precompile(precompileContext, paintOptions, drawType, { &renderPassSettings, 1 });
 
     std::vector<std::string> generated;
@@ -141,7 +142,7 @@ void run_test(PrecompileContext* precompileContext,
             UniqueKeyUtils::ExtractKeyDescs(precompileContext, key, &pipelineDesc, &renderPassDesc);
 
             const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
-            generated.push_back(GetPipelineLabel(dict, renderPassDesc, renderStep,
+            generated.push_back(GetPipelineLabel(caps, dict, renderPassDesc, renderStep,
                                                  pipelineDesc.paintParamsID()));
         }
     }

@@ -35,9 +35,10 @@ namespace skgpu::graphite {
 [[maybe_unused]] static std::string to_str(const SharedContext* ctx,
                                            const GraphicsPipelineDesc& gpDesc,
                                            const RenderPassDesc& rpDesc) {
+    const Caps* caps = ctx->caps();
     const ShaderCodeDictionary* dict = ctx->shaderCodeDictionary();
     const RenderStep* step = ctx->rendererProvider()->lookup(gpDesc.renderStepID());
-    return GetPipelineLabel(dict, rpDesc, step, gpDesc.paintParamsID());
+    return GetPipelineLabel(caps, dict, rpDesc, step, gpDesc.paintParamsID());
 }
 
 ResourceProvider::ResourceProvider(SharedContext* sharedContext,\
