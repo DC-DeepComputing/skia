@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30b98f1_13a180f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-10T18:03:33Z",
+      "side": 1,
+      "message": "Do you already happen to know if this is the only problematic (to CFI) call Skia is currently making? I assume if there were more you would also have proposed patching those as well.",
+      "revId": "8aa11efe05a0c24228068f99ad66ff63c9a167f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a8477372_c3d19638",
@@ -37,6 +54,24 @@
       "writtenOn": "2025-03-10T14:40:19Z",
       "side": 1,
       "message": "The entirety of the body of this fuction should be inside a `#ifdef SK_PRINT_CODEC_MESSAGES` (or better an equivelent `if constexpr`). The `SK_PRINT_CODEC_MESSAGES` define is never set by the build, this is \"developer code\", which really only exists for developer builds when debugging. So Skia is currently getting here, making the call through this function pointer (which in this case is set by an external library to point at a function in an external library, see [icall documentation](https://clang.llvm.org/docs/ControlFlowIntegrity.html#indirect-function-call-checking)) to set up a message, and then not doing anything with the result.",
+      "revId": "8aa11efe05a0c24228068f99ad66ff63c9a167f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f30fd685_219ac14d",
+        "filename": "src/codec/SkJpegDecoderMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-10T18:03:33Z",
+      "side": 1,
+      "message": "Created https://skia-review.googlesource.com/c/skia/+/961356 to make sure we aren\u0027t making this call and doing the work just to throw it away in any non-developer debugging build.",
+      "parentUuid": "c38d91c9_6a431ece",
       "revId": "8aa11efe05a0c24228068f99ad66ff63c9a167f5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
