@@ -63,6 +63,30 @@
       },
       "revId": "98a1d45398894e64dc99b7d66ba41730d1ed8951",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea1ed9f1_b7297ed7",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-10T16:35:09Z",
+      "side": 1,
+      "message": ".",
+      "parentUuid": "80bd7d0a_e845dabc",
+      "range": {
+        "startLine": 541,
+        "startChar": 0,
+        "endLine": 541,
+        "endChar": 9
+      },
+      "revId": "98a1d45398894e64dc99b7d66ba41730d1ed8951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
