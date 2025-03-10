@@ -127,13 +127,17 @@ SkString RenderPassDesc::toString() const {
                           fClearStencil);
 }
 
-SkString RenderPassDesc::toPipelineLabel() const {
+SkString RenderPassDesc::toPipelineLabel(const Caps* caps) const {
     // This intentionally only includes the fixed state that impacts pipeline compilation.
     // We include the load op of the color attachment when there is a resolve attachment because
     // the load may trigger a different renderpass description.
     const char* colorLoadStr = "";
-    if (fColorAttachment.fLoadOp == LoadOp::kLoad &&
-        (fColorResolveAttachment.fTextureInfo.isValid() || fSampleCount > 1)) {
+
+    const bool loadMsaaFromResolve =
+            fColorResolveAttachment.fTextureInfo.isValid() &&
+            fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
+    if (loadMsaaFromResolve && caps->loadOpAffectsMSAAPipelines()) {
         colorLoadStr = " w/ msaa load";
     }
 
