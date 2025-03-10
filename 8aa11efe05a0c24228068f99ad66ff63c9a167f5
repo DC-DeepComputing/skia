@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8477372_c3d19638",
+        "filename": "src/codec/SkJpegDecoderMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-10T14:40:19Z",
+      "side": 1,
+      "message": "`USE_SYSTEM_LIBJPEG` isn\u0027t a thing that exists in a Skia build, so it doesn\u0027t look like this ever does anything? Even if it did do something in a Chromium build, this might get removed because Skia never sets the macro in its own builds.\n\nIn theory it could be possible to add a `SKIA_USE_SYSTEM_LIBJPEG` and add it to the build in `third_party/libjpeg-turbo/BUILD.gn` and also set it appropriately in Chromium\u0027s Skia build. (I\u0027m not sure the bazel based build supports using system libraries yet?)",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 30
+      },
+      "revId": "8aa11efe05a0c24228068f99ad66ff63c9a167f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c38d91c9_6a431ece",
+        "filename": "src/codec/SkJpegDecoderMgr.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-10T14:40:19Z",
+      "side": 1,
+      "message": "The entirety of the body of this fuction should be inside a `#ifdef SK_PRINT_CODEC_MESSAGES` (or better an equivelent `if constexpr`). The `SK_PRINT_CODEC_MESSAGES` define is never set by the build, this is \"developer code\", which really only exists for developer builds when debugging. So Skia is currently getting here, making the call through this function pointer (which in this case is set by an external library to point at a function in an external library, see [icall documentation](https://clang.llvm.org/docs/ControlFlowIntegrity.html#indirect-function-call-checking)) to set up a message, and then not doing anything with the result.",
+      "revId": "8aa11efe05a0c24228068f99ad66ff63c9a167f5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
