@@ -16,6 +16,29 @@
       "message": "Should be ready to go, PTAL.",
       "revId": "98a1d45398894e64dc99b7d66ba41730d1ed8951",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ba7cd6b_71152b1d",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-10T14:49:02Z",
+      "side": 1,
+      "message": "Could we do:\n} else {\n    break;  // an unfreeable page blocks all the rest\n}\n\n?",
+      "range": {
+        "startLine": 541,
+        "startChar": 0,
+        "endLine": 541,
+        "endChar": 9
+      },
+      "revId": "98a1d45398894e64dc99b7d66ba41730d1ed8951",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
