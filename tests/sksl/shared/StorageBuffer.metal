@@ -9,22 +9,16 @@ struct SomeData {
     float2 b;
 };
 struct Inputs {
-    int bufferIndex [[user(locn2) flat]];
+ int bufferIndex [[user(locn2) flat]];
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct storageBuffer {
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct storageBuffer {
     uint offset;
     SomeData inputData[1];
 };
 struct outputBuffer {
     SomeData outputData[1];
 };
-struct Globals {
-    const device storageBuffer* _anonInterface0;
-    device outputBuffer* _anonInterface1;
-};
+struct Globals { const device storageBuffer* _anonInterface0; device outputBuffer* _anonInterface1;};
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], const device storageBuffer& _anonInterface0 [[buffer(0)]], device outputBuffer& _anonInterface1 [[buffer(1)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Globals _globals{&_anonInterface0, &_anonInterface1};
     (void)_globals;

@@ -6,11 +6,7 @@
 using namespace metal;
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    half2 glob;
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { half2 glob;
 };
 half4 fn_h4hh2h2h3(thread Globals& _globals, half a, thread half2& b, thread half2& c, thread half3& d) {
     a = _out.sk_FragColor.x + a;

@@ -5,12 +5,9 @@
 #endif
 using namespace metal;
 struct Inputs {
-    uint3 sk_GlobalInvocationID;
+ uint3 sk_GlobalInvocationID;
 };
-struct Globals {
-    texture2d<half, access::read> src;
-    texture2d<half, access::write> dest;
-};
+struct Globals { texture2d<half, access::read> src; texture2d<half, access::write> dest;};
 void desaturate_vTT(Inputs _in, texture2d<half, access::read> src, texture2d<half, access::write> dest) {
     half4 color = src.read(_in.sk_GlobalInvocationID.xy);
     color.xyz = half3(dot(color.xyz, half3(0.22h, 0.67h, 0.11h)));

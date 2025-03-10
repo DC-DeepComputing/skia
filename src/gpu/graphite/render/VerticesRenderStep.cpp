@@ -122,37 +122,33 @@ VerticesRenderStep::~VerticesRenderStep() {}
 
 std::string VerticesRenderStep::vertexSkSL() const {
     if (fHasColor && fHasTexCoords) {
-        return R"(
-            color = half4(vertColor.bgr * vertColor.a, vertColor.a);
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = texCoords;
-        )";
+        return
+            "color = half4(vertColor.bgr * vertColor.a, vertColor.a);"
+            "float4 devPosition = localToDevice * float4(position, 0.0, 1.0);"
+            "devPosition.z = depth;"
+            "stepLocalCoords = texCoords;";
     } else if (fHasTexCoords) {
-        return R"(
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = texCoords;
-        )";
+        return
+            "float4 devPosition = localToDevice * float4(position, 0.0, 1.0);"
+            "devPosition.z = depth;"
+            "stepLocalCoords = texCoords;";
     } else if (fHasColor) {
-        return R"(
-            color = half4(vertColor.bgr * vertColor.a, vertColor.a);
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = position;
-        )";
+        return
+            "color = half4(vertColor.bgr * vertColor.a, vertColor.a);"
+            "float4 devPosition = localToDevice * float4(position, 0.0, 1.0);"
+            "devPosition.z = depth;"
+            "stepLocalCoords = position;";
     } else {
-        return R"(
-            float4 devPosition = localToDevice * float4(position, 0.0, 1.0);
-            devPosition.z = depth;
-            stepLocalCoords = position;
-        )";
+        return
+            "float4 devPosition = localToDevice * float4(position, 0.0, 1.0);"
+            "devPosition.z = depth;"
+            "stepLocalCoords = position;";
     }
 }
 
 const char* VerticesRenderStep::fragmentColorSkSL() const {
     if (fHasColor) {
-        return "primitiveColor = color;\n";
+        return "primitiveColor = color;";
     } else {
         return "";
     }

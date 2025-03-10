@@ -4,18 +4,13 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half2 ah;
-    half2 bh;
-    float2 af;
-    float2 bf;
+struct Uniforms { half2 ah;
+ half2 bh;
+ float2 af;
+ float2 bf;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-float cross_length_2d_ff2f2(float2 a, float2 b);
+struct Outputs {half4 sk_FragColor [[color(0)]];};float cross_length_2d_ff2f2(float2 a, float2 b);
 half cross_length_2d_hh2h2(half2 a, half2 b);
 float cross_length_2d_ff2f2(float2 a, float2 b) {
     return determinant(float2x2(a, b));

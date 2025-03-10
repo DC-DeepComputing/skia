@@ -5,11 +5,9 @@
 #endif
 using namespace metal;
 struct Inputs {
-    uint3 sk_GlobalInvocationID;
+ uint3 sk_GlobalInvocationID;
 };
-struct Globals {
-    texture2d<half, access::write> dest;
-};
+struct Globals { texture2d<half, access::write> dest;};
 kernel void computeMain(uint3 sk_GlobalInvocationID [[thread_position_in_grid]], texture2d<half, access::write> dest [[texture(0)]]) {
     Globals _globals{dest};
     (void)_globals;

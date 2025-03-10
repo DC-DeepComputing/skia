@@ -4,17 +4,11 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
+struct Uniforms { half4 colorGreen;
+ half4 colorRed;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    half x;
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { half x;
 };
 bool out_params_are_distinct_from_global_bh(thread Globals& _globals, thread half& y) {
     y = 2.0h;

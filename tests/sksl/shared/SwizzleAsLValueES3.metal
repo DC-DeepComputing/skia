@@ -4,17 +4,11 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
+struct Uniforms { half4 colorGreen;
+ half4 colorRed;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    int gAccessCount;
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { int gAccessCount;
 };
 int Z_i(thread Globals& _globals) {
     ++_globals.gAccessCount;

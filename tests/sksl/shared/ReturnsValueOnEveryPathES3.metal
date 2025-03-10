@@ -4,17 +4,12 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-    half unknownInput;
+struct Uniforms { half4 colorGreen;
+ half4 colorRed;
+ half unknownInput;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-bool inside_while_loop_b(Uniforms _uniforms) {
+struct Outputs {half4 sk_FragColor [[color(0)]];};bool inside_while_loop_b(Uniforms _uniforms) {
     while (_uniforms.unknownInput == 123.0h) {
         return false;
     }

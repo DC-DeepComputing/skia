@@ -9,19 +9,13 @@ struct S {
 };
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct testStorageBuffer {
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct testStorageBuffer {
     float testArr[1];
 };
 struct testStorageBufferStruct {
     S testArrStruct[1];
 };
-struct Globals {
-    const device testStorageBuffer* _anonInterface0;
-    const device testStorageBufferStruct* _anonInterface1;
-};
+struct Globals { const device testStorageBuffer* _anonInterface0; const device testStorageBufferStruct* _anonInterface1;};
 float unsizedInParameterA_ff(const device float* x) {
     return x[0];
 }

@@ -6,10 +6,7 @@
 using namespace metal;
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-void out_half_vh(thread half& v) {
+struct Outputs {half4 sk_FragColor [[color(0)]];};void out_half_vh(thread half& v) {
     v = 1.0h;
 }
 void out_half2_vh2(thread half2& v) {

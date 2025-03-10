@@ -9,11 +9,7 @@ constant const half2 globalVector = half2(1.0h);
 constant const half2x2 globalMatrix = half2x2(half2(1.0h, 1.0h), half2(1.0h, 1.0h));
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    int zero;
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { int zero;
 };
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Globals _globals{0};

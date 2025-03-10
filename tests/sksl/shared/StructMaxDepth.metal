@@ -54,6 +54,4 @@ struct SA8 {
 };
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
+struct Outputs {half4 sk_FragColor [[color(0)]];};

@@ -20,14 +20,8 @@ struct ssbo {
     array<S, 2> ssboStructWithAtomicMemberArray;
     NestedS ssboNestedStructWithAtomicMember;
 };
-struct Globals {
-    device ssbo* _anonInterface0;
-};
-struct Threadgroups {
-    atomic_uint wgAtomic;
-    array<atomic_uint, 2> wgAtomicArray;
-    NestedS wgNestedStructWithAtomicMember;
-};
+struct Globals { device ssbo* _anonInterface0;};
+struct Threadgroups { atomic_uint wgAtomic; array<atomic_uint, 2> wgAtomicArray; NestedS wgNestedStructWithAtomicMember;};
 kernel void computeMain(device ssbo& _anonInterface0 [[buffer(0)]]) {
     Globals _globals{&_anonInterface0};
     (void)_globals;

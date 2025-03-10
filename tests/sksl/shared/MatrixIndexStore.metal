@@ -4,41 +4,13 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-    float3x3 testMatrix3x3;
-    float4x4 testMatrix4x4;
+struct Uniforms { half4 colorGreen;
+ half4 colorRed;
+ float3x3 testMatrix3x3;
+ float4x4 testMatrix4x4;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-
-thread bool operator==(const float3x3 left, const float3x3 right);
-thread bool operator!=(const float3x3 left, const float3x3 right);
-
-thread bool operator==(const float4x4 left, const float4x4 right);
-thread bool operator!=(const float4x4 left, const float4x4 right);
-thread bool operator==(const float3x3 left, const float3x3 right) {
-    return all(left[0] == right[0]) &&
-           all(left[1] == right[1]) &&
-           all(left[2] == right[2]);
-}
-thread bool operator!=(const float3x3 left, const float3x3 right) {
-    return !(left == right);
-}
-thread bool operator==(const float4x4 left, const float4x4 right) {
-    return all(left[0] == right[0]) &&
-           all(left[1] == right[1]) &&
-           all(left[2] == right[2]) &&
-           all(left[3] == right[3]);
-}
-thread bool operator!=(const float4x4 left, const float4x4 right) {
-    return !(left == right);
-}
-bool test3x3_b(Uniforms _uniforms) {
+struct Outputs {half4 sk_FragColor [[color(0)]];};thread bool operator==(const float3x3 left, const float3x3 right);thread bool operator!=(const float3x3 left, const float3x3 right);thread bool operator==(const float4x4 left, const float4x4 right);thread bool operator!=(const float4x4 left, const float4x4 right);thread bool operator==(const float3x3 left, const float3x3 right) {return all(left[0] == right[0]) && all(left[1] == right[1]) && all(left[2] == right[2]);}thread bool operator!=(const float3x3 left, const float3x3 right) {return !(left == right);}thread bool operator==(const float4x4 left, const float4x4 right) {return all(left[0] == right[0]) && all(left[1] == right[1]) && all(left[2] == right[2]) && all(left[3] == right[3]);}thread bool operator!=(const float4x4 left, const float4x4 right) {return !(left == right);}bool test3x3_b(Uniforms _uniforms) {
     float3x3 matrix;
     float3 values = float3(1.0, 2.0, 3.0);
     for (int index = 0;index < 3; ++index) {

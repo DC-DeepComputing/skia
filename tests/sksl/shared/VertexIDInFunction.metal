@@ -6,12 +6,8 @@
 using namespace metal;
 struct Inputs {
 };
-struct Outputs {
-    float4 sk_Position [[position]];
-    int id [[user(locn1)]];
-    float sk_PointSize [[point_size]];
-};
-int fn_i(uint sk_VertexID) {
+struct Outputs {float4 sk_Position [[position]]; int id [[user(locn1)]];
+float sk_PointSize [[point_size]];};int fn_i(uint sk_VertexID) {
     return sk_VertexID;
 }
 vertex Outputs vertexMain(Inputs _in [[stage_in]], uint sk_VertexID [[vertex_id]], uint sk_InstanceID [[instance_id]]) {

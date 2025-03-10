@@ -5,7 +5,7 @@
 #endif
 using namespace metal;
 struct Inputs {
-    uint3 sk_GlobalInvocationID;
+ uint3 sk_GlobalInvocationID;
 };
 struct constants {
     int x;
@@ -13,10 +13,7 @@ struct constants {
 struct outputBuffer {
     int results[1];
 };
-struct Globals {
-    constant constants* _anonInterface0;
-    device outputBuffer* _anonInterface1;
-};
+struct Globals { constant constants* _anonInterface0; device outputBuffer* _anonInterface1;};
 kernel void computeMain(uint3 sk_GlobalInvocationID [[thread_position_in_grid]], constant constants& _anonInterface0 [[buffer(0)]], device outputBuffer& _anonInterface1 [[buffer(1)]]) {
     Globals _globals{&_anonInterface0, &_anonInterface1};
     (void)_globals;

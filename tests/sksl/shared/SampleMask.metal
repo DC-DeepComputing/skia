@@ -6,11 +6,7 @@
 using namespace metal;
 struct Inputs {
 };
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-    uint sk_SampleMask [[sample_mask]];
-};
-half4 samplemaskin_as_color_h4(uint sk_SampleMaskIn) {
+struct Outputs {half4 sk_FragColor [[color(0)]];uint sk_SampleMask [[sample_mask]];};half4 samplemaskin_as_color_h4(uint sk_SampleMaskIn) {
     return half4(half(sk_SampleMaskIn));
 }
 void clear_samplemask_v(thread Outputs& _out) {

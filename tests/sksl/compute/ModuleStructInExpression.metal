@@ -11,11 +11,7 @@ struct IndirectDispatchArgs {
 };
 struct Inputs {
 };
-struct Threadgroups {
-    int outX;
-    int outY;
-    int outZ;
-};
+struct Threadgroups { int outX; int outY; int outZ;};
 int one_i() {
     return 1;
 }

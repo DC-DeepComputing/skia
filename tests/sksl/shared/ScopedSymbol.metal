@@ -7,17 +7,11 @@ using namespace metal;
 struct S {
     int i;
 };
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
+struct Uniforms { half4 colorGreen;
+ half4 colorRed;
+};struct Inputs {
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    int glob;
+struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { int glob;
 };
 bool block_variable_hides_global_variable_b(thread Globals& _globals) {
     return _globals.glob == 2;
