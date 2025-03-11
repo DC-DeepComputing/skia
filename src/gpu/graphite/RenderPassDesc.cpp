@@ -132,8 +132,12 @@ SkString RenderPassDesc::toPipelineLabel() const {
     // We include the load op of the color attachment when there is a resolve attachment because
     // the load may trigger a different renderpass description.
     const char* colorLoadStr = "";
-    if (fColorAttachment.fLoadOp == LoadOp::kLoad &&
-        (fColorResolveAttachment.fTextureInfo.isValid() || fSampleCount > 1)) {
+
+    const bool loadMsaaFromResolve =
+            fColorResolveAttachment.fTextureInfo.isValid() &&
+            fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+
+    if (loadMsaaFromResolve /* && Caps::loadOpAffectsMSAAPipelines() */) {
         colorLoadStr = " w/ msaa load";
     }
 

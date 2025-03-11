@@ -1012,7 +1012,8 @@ public:
 
 private:
     // 6 known 1D blur effects + 6 known 2D blur effects
-    inline static constexpr int kNumIntrinsicCombinations = 12;
+//    inline static constexpr int kNumIntrinsicCombinations = 12;
+    inline static constexpr int kNumIntrinsicCombinations = 2;
 
     int numIntrinsicCombinations() const override { return kNumIntrinsicCombinations; }
 
@@ -1031,11 +1032,12 @@ private:
         SkASSERT(desiredWrappedCombination < fNumWrappedCombos);
 
         static const StableKey kIDs[kNumIntrinsicCombinations] = {
-                StableKey::k1DBlur4,  StableKey::k1DBlur8,  StableKey::k1DBlur12,
-                StableKey::k1DBlur16, StableKey::k1DBlur20, StableKey::k1DBlur28,
+                StableKey::k1DBlur8,  StableKey::k1DBlur12,
+//                StableKey::k1DBlur4,  StableKey::k1DBlur8,  StableKey::k1DBlur12,
+//                StableKey::k1DBlur16, StableKey::k1DBlur20, StableKey::k1DBlur28,
 
-                StableKey::k2DBlur4,  StableKey::k2DBlur8,  StableKey::k2DBlur12,
-                StableKey::k2DBlur16, StableKey::k2DBlur20, StableKey::k2DBlur28,
+//                StableKey::k2DBlur4,  StableKey::k2DBlur8,  StableKey::k2DBlur12,
+//                StableKey::k2DBlur16, StableKey::k2DBlur20, StableKey::k2DBlur28,
         };
 
         const SkRuntimeEffect* fEffect = GetKnownRuntimeEffect(kIDs[desiredBlurCombination]);
