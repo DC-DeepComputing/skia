@@ -12,7 +12,7 @@ void draw(SkCanvas* canvas) {
         SkDebugf("(0, %d) ", y);
         for (int x = 0; x < w; ++x) {
             int a = 0xFF * (x + y) / (w - 1 + h - 1);
-            storage[x + y * w] = SkPackARGB32(a, a * x / (w - 1), a * y / (h - 1), a);
+            storage[x + y * w] = SkPreMultiplyColor(SkColorSetARGB(a, a * x / (w - 1), a * y / (h - 1), a));
             SkDebugf("0x%08x%c", storage[x + y * w], x == w - 1 ? '\n' : ' ');
         }
     }
