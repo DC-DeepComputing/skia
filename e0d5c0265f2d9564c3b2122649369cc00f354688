@@ -16,6 +16,24 @@
       "message": "In addition I have a question about testing: how can I exclude paragraph tests from bidi build?",
       "revId": "e0d5c0265f2d9564c3b2122649369cc00f354688",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3edfa15_580de1fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T13:27:13Z",
+      "side": 1,
+      "message": "You could either do a per-test guard like https://github.com/google/skia/blob/9c42f62925a75e2fd920bb725da6f19c3cd2f621/modules/canvaskit/tests/skottie_test.js#L73-L76\n\nor use that sort of if statement and wrap the entire contents of bidi_test.js in it",
+      "parentUuid": "280e9ead_3638f25b",
+      "revId": "e0d5c0265f2d9564c3b2122649369cc00f354688",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
