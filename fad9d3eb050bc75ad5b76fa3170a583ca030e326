@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d6cca64_dfc2f539",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T16:59:35Z",
+      "side": 1,
+      "message": "You need to add a flag here for `enable_bidi`",
+      "revId": "fad9d3eb050bc75ad5b76fa3170a583ca030e326",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
