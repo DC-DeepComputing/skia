@@ -116,6 +116,7 @@ void Precompile(PrecompileContext* precompileContext,
         }
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
+            // Assume no dst read is required becuase [TODO NEP]
             const RenderPassDesc renderPassDesc =
                     RenderPassDesc::Make(caps,
                                          info,
@@ -125,7 +126,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          /* clearColor= */ { .0f, .0f, .0f, .0f },
                                          rpp.fRequiresMSAA,
                                          writeSwizzle,
-                                         caps->getDstReadStrategy(info));
+                                         DstReadStrategy::kNoneRequired);
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, rpp.fDstCS);
             KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);

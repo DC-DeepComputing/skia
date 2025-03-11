@@ -90,11 +90,10 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
                     ? VulkanRenderPass::kColorResolveAttachmentIdx : kAttachmentUnused) << 8;
             attachmentIdxKeyInfo |= (rpData.fHasDepthStencilAttachment
                     ? VulkanRenderPass::kDepthStencilAttachmentIdx : kAttachmentUnused) << 16;
-            // We know that if this RP has an input attachment on the main subpass that this would
-            // be to support reading the dst as an input attachment, so if we do have one, assign
-            // this subpass's input attachment to be the color attachment (dst).
-            attachmentIdxKeyInfo |= (rpData.fHasInputAttachment
-                    ? VulkanRenderPass::kColorAttachmentIdx : kAttachmentUnused) << 24;
+            // Always have the input attachment for the main subpass point to the dst texture (color
+            // attachment) so renderpasses that include draws which do and do not read from the dst
+            // can be shared.
+            attachmentIdxKeyInfo |= VulkanRenderPass::kColorAttachmentIdx << 24;
 
             builder[builderIdx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
@@ -154,8 +153,7 @@ VulkanRenderPass::VulkanRenderPassMetaData::VulkanRenderPassMetaData(const Rende
     fHasDepthStencilAttachment = rpDesc.fDepthStencilAttachment.fTextureInfo.isValid();
     // If the target texture may be read as an input attachment, then the main subpass will have an
     // input attachment.
-    fHasInputAttachment        = rpDesc.fDstReadStrategyIfRequired ==
-                                 DstReadStrategy::kReadFromInput;
+    // fHasInputAttachment        = rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput;
 
     // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
     // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
@@ -269,7 +267,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
     const auto& colorAttachmentTextureInfo        = rpDesc.fColorAttachment.fTextureInfo;
     const auto& colorResolveAttachmentTextureInfo = rpDesc.fColorResolveAttachment.fTextureInfo;
     const auto& depthStencilAttachmentTextureInfo = rpDesc.fDepthStencilAttachment.fTextureInfo;
-    const bool supportReadingDstAsInput  = rpDesc.fDstReadStrategyIfRequired ==
+    const bool supportReadingDstAsInput  = rpDesc.fDstReadStrategy ==
                                            DstReadStrategy::kReadFromInput;
     const bool hasColorAttachment        = colorAttachmentTextureInfo.isValid();
     const bool hasColorResolveAttachment = colorResolveAttachmentTextureInfo.isValid();
@@ -279,7 +277,9 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
         const auto& vkColorAttachInfo =
                 TextureInfoPriv::Get<VulkanTextureInfo>(colorAttachmentTextureInfo);
         auto& colorAttachDesc = rpDesc.fColorAttachment;
+
         colorRef.attachment = descs.size();
+        // Does compatibleOnly come into play here?
         VkImageLayout layout = supportReadingDstAsInput ? VK_IMAGE_LAYOUT_GENERAL
                                                         : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
         colorRef.layout = layout;
@@ -350,8 +350,8 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
                 &vkDepthStencilAttachDesc,
                 vkDepthStencilInfo,
                 depthStencilAttachDesc,
-                compatibleOnly ? LoadOp::kDiscard   : depthStencilAttachDesc.fLoadOp,
-                compatibleOnly ? StoreOp::kDiscard  : depthStencilAttachDesc.fStoreOp,
+                compatibleOnly ? LoadOp::kDiscard   : rpDesc.fDepthStencilAttachment.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard  : rpDesc.fDepthStencilAttachment.fStoreOp,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
     } else {
@@ -446,7 +446,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::MakeRenderPass(const VulkanSharedConte
             renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
             renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
     const bool dstMayBeReadAsInput =
-            renderPassDesc.fDstReadStrategyIfRequired == DstReadStrategy::kReadFromInput;
+            renderPassDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput;
 
     // Set up attachment descriptions + references. Declare them before having a helper populate
     // their values so we can reference them later during RP creation.

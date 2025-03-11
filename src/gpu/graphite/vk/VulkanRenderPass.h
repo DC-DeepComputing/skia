@@ -71,7 +71,7 @@ public:
         bool fHasColorAttachment;
         bool fHasColorResolveAttachment;
         bool fHasDepthStencilAttachment;
-        bool fHasInputAttachment;
+        // bool fHasInputAttachment;
 
         int fNumColorAttachments;
         int fNumResolveAttachments;
