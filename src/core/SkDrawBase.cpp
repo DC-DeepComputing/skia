@@ -27,6 +27,7 @@
 #include "src/core/SkAutoBlitterChoose.h"
 #include "src/core/SkBlendModePriv.h"
 #include "src/core/SkBlitter_A8.h"
+#include "src/core/SkDebugUtils.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkDrawBase.h"
 #include "src/core/SkDrawProcs.h"

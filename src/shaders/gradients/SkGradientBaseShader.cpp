@@ -329,6 +329,7 @@ static void init_stop_evenly(SkRasterPipeline_GradientCtx* ctx,
                              size_t stop,
                              SkPMColor4f c_l,
                              SkPMColor4f c_r) {
+    kjlubick - can we use use SkVx here?
     // Clankium's GCC 4.9 targeting ARMv7 is barfing when we use Sk4f math here, so go scalar...
     SkPMColor4f Fs = {
             (c_r.fR - c_l.fR) * gapCount,
