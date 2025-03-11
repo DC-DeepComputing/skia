@@ -80,6 +80,30 @@
       },
       "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0549cd9b_ea71d832",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-11T20:15:22Z",
+      "side": 1,
+      "message": "Yeah I vote newlines at minimal cost for big readability win 😊",
+      "parentUuid": "e87d2917_4f782b7a",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 44
+      },
+      "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
