@@ -105,18 +105,16 @@ std::string TessellateStrokesRenderStep::vertexSkSL() const {
     // TODO: Assumes vertex ID support for now, max edges must equal
     // skgpu::tess::FixedCountStrokes::kMaxEdges -> (2^14 - 1) -> 16383
     return SkSL::String::printf(
-            R"(
-                float edgeID = float(sk_VertexID >> 1);
-                if ((sk_VertexID & 1) != 0) {
-                    edgeID = -edgeID;
-                }
-                float2x2 affine = float2x2(affineMatrix.xy, affineMatrix.zw);
-                float4 devAndLocalCoords = tessellate_stroked_curve(
-                        edgeID, 16383, affine, translate, maxScale, p01, p23, prevPoint,
-                        stroke, %s);
-                float4 devPosition = float4(devAndLocalCoords.xy, depth, 1.0);
-                stepLocalCoords = devAndLocalCoords.zw;
-            )",
+            "float edgeID = float(sk_VertexID >> 1);"
+            "if ((sk_VertexID & 1) != 0) {"
+                "edgeID = -edgeID;"
+            "}"
+            "float2x2 affine = float2x2(affineMatrix.xy, affineMatrix.zw);"
+            "float4 devAndLocalCoords = tessellate_stroked_curve("
+                    "edgeID, 16383, affine, translate, maxScale, p01, p23, prevPoint,"
+                    "stroke, %s);"
+            "float4 devPosition = float4(devAndLocalCoords.xy, depth, 1.0);"
+            "stepLocalCoords = devAndLocalCoords.zw;",
             fInfinitySupport ? "curve_type_using_inf_support(p23)" : "curveType");
 }
 
