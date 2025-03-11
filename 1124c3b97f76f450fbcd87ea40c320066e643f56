@@ -16,6 +16,23 @@
       "message": "LGTM fwiw but I\u0027m not an OWNER",
       "revId": "1124c3b97f76f450fbcd87ea40c320066e643f56",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b52c20e1_848984fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-11T09:16:56Z",
+      "side": 1,
+      "message": "LGTM. I\u0027m not an owner either. Adding @michaelludwig@google.com",
+      "revId": "1124c3b97f76f450fbcd87ea40c320066e643f56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
