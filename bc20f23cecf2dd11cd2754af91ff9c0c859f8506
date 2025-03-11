@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fbcb1486_801687c6",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6060,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T14:24:48Z",
+      "side": 1,
+      "message": "Can you reference the fuzz bug in a comment?",
+      "range": {
+        "startLine": 6060,
+        "startChar": 0,
+        "endLine": 6060,
+        "endChar": 8
+      },
+      "revId": "bc20f23cecf2dd11cd2754af91ff9c0c859f8506",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "921126eb_0f48c1bc",
+        "filename": "tests/PathTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 6061,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T14:24:48Z",
+      "side": 1,
+      "message": "Does the surface need to be this big to repro? If so, maybe add a small comment about why the size is important. If not, make it smaller (less memory)",
+      "revId": "bc20f23cecf2dd11cd2754af91ff9c0c859f8506",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
