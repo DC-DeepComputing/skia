@@ -56,6 +56,30 @@
       },
       "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e87d2917_4f782b7a",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T19:46:45Z",
+      "side": 1,
+      "message": "At the moment, there is nothing between these lines - no spaces, no nothing. So if one printed this out, it would be\n```\"float2x2 vectorXform \u003d float2x2(localToDevice[0].xy, localToDevice[1].xy);float2 localCoord \u003d tessellate_filled_curve(vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);float4 devPosition \u003d localToDevice * float4(localCoord, 0.0, 1.0);devPosition.z \u003d depth;stepLocalCoords \u003d localCoord;\"```\n\nThe old string had a bunch of (useless) leading spaces, comments, and newlines, so it was:\n```\n\"\n                // TODO: Approximate perspective scaling to match how PatchWriter is configured (or\n                // provide explicit tessellation level in instance data instead of replicating\n                // work).\n                float2x2 vectorXform \u003d float2x2(localToDevice[0].xy, localToDevice[1].xy);\n                float2 localCoord \u003d tessellate_filled_curve(\n                        vectorXform, resolveLevel_and_idx.x, resolveLevel_and_idx.y, p01, p23, %s);\n                float4 devPosition \u003d localToDevice * float4(localCoord, 0.0, 1.0);\n                devPosition.z \u003d depth;\n                stepLocalCoords \u003d localCoord;\n                \"\n```\n\nIf maintaining readability is important, we can stick trailing newlines on these to at least break it up a little bit with minimal extra cost. WDYT?",
+      "parentUuid": "b2570bb7_47bdb1ca",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 44
+      },
+      "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
