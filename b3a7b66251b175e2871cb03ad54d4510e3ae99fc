@@ -22,6 +22,30 @@
       },
       "revId": "b3a7b66251b175e2871cb03ad54d4510e3ae99fc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eef87461_fc5a0a32",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-11T15:11:08Z",
+      "side": 1,
+      "message": "True, the situation is a bit different here than in `make_data_avoiding_copy` in the Fontations font scanner. Moved to `SkData::MakeWithCopy`.",
+      "parentUuid": "6d62d566_aa20162b",
+      "range": {
+        "startLine": 40,
+        "startChar": 23,
+        "endLine": 40,
+        "endChar": 38
+      },
+      "revId": "b3a7b66251b175e2871cb03ad54d4510e3ae99fc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
