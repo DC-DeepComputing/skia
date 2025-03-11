@@ -16,6 +16,29 @@
       "message": "+ Jorge for general SkSL FYI",
       "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2570bb7_47bdb1ca",
+        "filename": "src/gpu/graphite/render/TessellateCurvesRenderStep.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-11T19:03:26Z",
+      "side": 1,
+      "message": "I am thinking these *should* probably be on separate lines as opposed to concatenating them together for readability (along with other SkSL areas within this CL that do this; like in `vertexSkSL()` implementations) as opposed to just spaces. I get that spaces are smaller so better for parsing - if using spaces as opposed to new lines is really that big of a win, then can you confirm that when printing out the shaders we still separate on to new lines then (like when pretty printing)?",
+      "range": {
+        "startLine": 119,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 44
+      },
+      "revId": "79a02028b2bc3739e83d82da8a5e2f9cb9e6d340",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
