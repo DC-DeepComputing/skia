@@ -6056,3 +6056,18 @@ DEF_TEST(path_walk_simple_edges_1154864, r) {
     paint.setAntiAlias(true);
     surface->getCanvas()->drawPath(path, paint);
 }
+
+DEF_TEST(path_walk_edges_concave_large_dx, r) {
+    auto surface = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(1000, 1000));
+
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.lineTo(100, 400);
+    path.lineTo(90, 600);
+    path.quadTo(35000, 200, 35000, 200);
+
+    SkPaint paint;
+    paint.setAntiAlias(true);
+    paint.setStyle(SkPaint::kFill_Style);
+    surface->getCanvas()->drawPath(path, paint);
+}
