@@ -51,6 +51,24 @@
       ],
       "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72e47f9d_2abb38ec",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-11T14:41:09Z",
+      "side": 1,
+      "message": "Hmm building bazel with `bazelisk build //tools:full_build --config\u003denforce_iwyu` gives me the error that I should specifically have this include (and jpeglib.h is already included in this file and the others.) WDYT?",
+      "parentUuid": "5c0ae9c6_da810b48",
+      "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
