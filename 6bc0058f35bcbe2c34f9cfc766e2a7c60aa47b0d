@@ -69,6 +69,24 @@
       "parentUuid": "5c0ae9c6_da810b48",
       "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7421496e_530aa9b3",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-11T15:21:36Z",
+      "side": 1,
+      "message": "We can add another entry like https://github.com/google/skia/blob/9c42f62925a75e2fd920bb725da6f19c3cd2f621/toolchain/linux_trampolines/IWYU_mapping.imp#L638 to tell IWYU not to suggest this header in favor of jpeglib.h",
+      "parentUuid": "72e47f9d_2abb38ec",
+      "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
