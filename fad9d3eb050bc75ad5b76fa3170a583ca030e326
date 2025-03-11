@@ -16,6 +16,24 @@
       "message": "You need to add a flag here for `enable_bidi`",
       "revId": "fad9d3eb050bc75ad5b76fa3170a583ca030e326",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2c715eb_f8039390",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 9
+      },
+      "lineNbr": 381,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-11T17:02:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d6cca64_dfc2f539",
+      "revId": "fad9d3eb050bc75ad5b76fa3170a583ca030e326",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
