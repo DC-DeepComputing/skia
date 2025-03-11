@@ -109,10 +109,9 @@ std::string CoverageMaskRenderStep::texturesAndSamplersSkSL(
 }
 
 const char* CoverageMaskRenderStep::fragmentCoverageSkSL() const {
-    return R"(
-        half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;
-        outputCoverage = half4(mix(c, 1 - c, invert));
-    )";
+    return
+        "half c = sample(pathAtlas, clamp(textureCoords, maskBounds.LT, maskBounds.RB)).r;"
+        "outputCoverage = half4(mix(c, 1 - c, invert));";
 }
 
 void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
