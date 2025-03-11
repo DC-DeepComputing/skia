@@ -4,16 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-half4 unpremul_h4h4(half4 color);
+struct Uniforms { half4 colorGreen; half4 colorRed;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};half4 unpremul_h4h4(half4 color);
 half4 unpremul_h4h4(half4 color) {
     return half4(color.xyz / max(color.w, 0.0001h), color.w);
 }

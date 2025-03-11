@@ -4,19 +4,10 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Inputs {
-    uint3 sk_GlobalInvocationID;
-    uint3 sk_LocalInvocationID;
-    uint sk_LocalInvocationIndex;
-    uint3 sk_NumWorkgroups;
-    uint3 sk_WorkgroupID;
-};
-struct outputs {
+struct Inputs { uint3 sk_GlobalInvocationID; uint3 sk_LocalInvocationID; uint sk_LocalInvocationIndex; uint3 sk_NumWorkgroups; uint3 sk_WorkgroupID;};struct outputs {
     uint outputBuffer[1];
 };
-struct Globals {
-    device outputs* _anonInterface0;
-};
+struct Globals { device outputs* _anonInterface0;};
 uint helper_I(Inputs _in) {
     return ((_in.sk_NumWorkgroups.x + _in.sk_WorkgroupID.x) + _in.sk_LocalInvocationID.x) + _in.sk_GlobalInvocationID.x;
 }

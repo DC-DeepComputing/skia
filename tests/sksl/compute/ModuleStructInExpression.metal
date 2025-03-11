@@ -9,13 +9,7 @@ struct IndirectDispatchArgs {
     int y;
     int z;
 };
-struct Inputs {
-};
-struct Threadgroups {
-    int outX;
-    int outY;
-    int outZ;
-};
+struct Inputs {};struct Threadgroups { int outX; int outY; int outZ;};
 int one_i() {
     return 1;
 }

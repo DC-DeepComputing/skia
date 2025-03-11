@@ -4,15 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-void outParameterWrite_vh4(Uniforms _uniforms, thread half4& x) {
+struct Uniforms { half4 colorGreen;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};void outParameterWrite_vh4(Uniforms _uniforms, thread half4& x) {
     x = _uniforms.colorGreen;
 }
 void outParameterWriteIndirect_vh4(Uniforms _uniforms, thread half4& c) {

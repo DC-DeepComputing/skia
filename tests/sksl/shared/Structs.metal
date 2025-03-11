@@ -13,14 +13,8 @@ struct B {
     array<float, 2> y;
     A z;
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct Globals {
-    A a1;
-    B b1;
+struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};struct Globals { A a1;
+ B b1;
 };
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Globals _globals{{}, {}};

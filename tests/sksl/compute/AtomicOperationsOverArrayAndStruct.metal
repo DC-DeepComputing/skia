@@ -8,18 +8,11 @@ struct GlobalCounts {
     atomic_uint firstHalfCount;
     atomic_uint secondHalfCount;
 };
-struct Inputs {
-    uint3 sk_LocalInvocationID;
-};
-struct ssbo {
+struct Inputs { uint3 sk_LocalInvocationID;};struct ssbo {
     GlobalCounts globalCounts;
 };
-struct Globals {
-    device ssbo* _anonInterface0;
-};
-struct Threadgroups {
-    array<atomic_uint, 2> localCounts;
-};
+struct Globals { device ssbo* _anonInterface0;};
+struct Threadgroups { array<atomic_uint, 2> localCounts;};
 kernel void computeMain(uint3 sk_LocalInvocationID [[thread_position_in_threadgroup]], device ssbo& _anonInterface0 [[buffer(0)]]) {
     Globals _globals{&_anonInterface0};
     (void)_globals;

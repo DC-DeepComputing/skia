@@ -7,12 +7,7 @@ using namespace metal;
 struct S {
     float2 v;
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-void initialize_vS(thread array<S, 2>& z) {
+struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};void initialize_vS(thread array<S, 2>& z) {
     z[0].v = float2(0.0, 1.0);
     z[1].v = float2(2.0, 1.0);
 }

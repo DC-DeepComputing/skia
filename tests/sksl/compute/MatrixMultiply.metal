@@ -4,10 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Inputs {
-    uint3 sk_GlobalInvocationID;
-};
-struct sizeBuffer {
+struct Inputs { uint3 sk_GlobalInvocationID;};struct sizeBuffer {
     int2 sizes[1];
 };
 struct inputs1 {
@@ -19,12 +16,7 @@ struct inputs2 {
 struct result {
     float resultData[1];
 };
-struct Globals {
-    device sizeBuffer* _anonInterface0;
-    const device inputs1* _anonInterface1;
-    const device inputs2* _anonInterface2;
-    device result* _anonInterface3;
-};
+struct Globals { device sizeBuffer* _anonInterface0; const device inputs1* _anonInterface1; const device inputs2* _anonInterface2; device result* _anonInterface3;};
 kernel void computeMain(uint3 sk_GlobalInvocationID [[thread_position_in_grid]], device sizeBuffer& _anonInterface0 [[buffer(0)]], const device inputs1& _anonInterface1 [[buffer(1)]], const device inputs2& _anonInterface2 [[buffer(2)]], device result& _anonInterface3 [[buffer(3)]]) {
     Globals _globals{&_anonInterface0, &_anonInterface1, &_anonInterface2, &_anonInterface3};
     (void)_globals;

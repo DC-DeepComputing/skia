@@ -52,8 +52,4 @@ struct SA7 {
 struct SA8 {
     array<SA7, 2> x;
 };
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
+struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};

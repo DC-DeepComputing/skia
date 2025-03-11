@@ -4,28 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-
-struct sampler2D {
-    texture2d<half> tex;
-    sampler smp;
-};
-half4 sample(sampler2D i, float2 p, float b=0) { return i.tex.sample(i.smp, p, bias(b)); }
-half4 sample(sampler2D i, float3 p, float b=0) { return i.tex.sample(i.smp, p.xy / p.z, bias(b)); }
-half4 sampleLod(sampler2D i, float2 p, float lod) { return i.tex.sample(i.smp, p, level(lod)); }
-half4 sampleLod(sampler2D i, float3 p, float lod) {
-    return i.tex.sample(i.smp, p.xy / p.z, level(lod));
-}
-half4 sampleGrad(sampler2D i, float2 p, float2 dPdx, float2 dPdy) {
-    return i.tex.sample(i.smp, p, gradient2d(dPdx, dPdy));
-}
-
-struct Inputs {
-    float2 vLocalCoord_Stage0 [[user(locn0)]];
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-struct uniformBuffer {
+struct sampler2D {texture2d<half> tex;sampler smp;};half4 sample(sampler2D i, float2 p, float b=0) { return i.tex.sample(i.smp, p, bias(b)); }half4 sample(sampler2D i, float3 p, float b=0) { return i.tex.sample(i.smp, p.xy / p.z, bias(b)); }half4 sampleLod(sampler2D i, float2 p, float lod) { return i.tex.sample(i.smp, p, level(lod)); }half4 sampleLod(sampler2D i, float3 p, float lod) {return i.tex.sample(i.smp, p.xy / p.z, level(lod));}half4 sampleGrad(sampler2D i, float2 p, float2 dPdx, float2 dPdy) {return i.tex.sample(i.smp, p, gradient2d(dPdx, dPdy));}struct Inputs { float2 vLocalCoord_Stage0 [[user(locn0)]];};struct Outputs {half4 sk_FragColor [[color(0)]];};struct uniformBuffer {
     float4 sk_RTAdjust;
     half2 uIncrement_Stage1_c0;
     char pad0[12];
@@ -37,10 +16,7 @@ struct uniformBuffer {
     float4 usubset_Stage1_c0_c0_c0;
     float4 unorm_Stage1_c0_c0_c0;
 };
-struct Globals {
-    sampler2D uTextureSampler_0_Stage1;
-    constant uniformBuffer* _anonInterface0;
-};
+struct Globals { sampler2D uTextureSampler_0_Stage1; constant uniformBuffer* _anonInterface0;};
 half4 MatrixEffect_Stage1_c0_c0_h4h4f2(thread Globals& _globals, half4 _input, float2 _coords) {
     float2 _1_inCoord = (_globals._anonInterface0->umatrix_Stage1_c0_c0 * float3(_coords, 1.0)).xy;
     _1_inCoord *= _globals._anonInterface0->unorm_Stage1_c0_c0_c0.xy;

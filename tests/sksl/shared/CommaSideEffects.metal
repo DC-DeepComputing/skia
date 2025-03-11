@@ -4,18 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorRed;
-    half4 colorGreen;
-    half4 colorWhite;
-    half4 colorBlack;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-void setToColorBlack_vh4(Uniforms _uniforms, thread half4& x) {
+struct Uniforms { half4 colorRed; half4 colorGreen; half4 colorWhite; half4 colorBlack;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};void setToColorBlack_vh4(Uniforms _uniforms, thread half4& x) {
     x = _uniforms.colorBlack;
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {

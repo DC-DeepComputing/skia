@@ -4,16 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 src;
-    half4 dst;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-half blend_overlay_component_Qhh2h2(half2 s, half2 d);
+struct Uniforms { half4 src; half4 dst;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};half blend_overlay_component_Qhh2h2(half2 s, half2 d);
 half4 blend_overlay_h4h4h4(half4 src, half4 dst);
 half blend_overlay_component_Qhh2h2(half2 s, half2 d) {
     return 2.0h * d.x <= d.y ? (2.0h * s.x) * d.x : s.y * d.y - (2.0h * (d.y - d.x)) * (s.y - s.x);

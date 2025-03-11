@@ -4,15 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorWhite;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-bool IsEqual_bh4h4(half4 x, half4 y) {
+struct Uniforms { half4 colorWhite;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};bool IsEqual_bh4h4(half4 x, half4 y) {
     return all(x == y);
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {

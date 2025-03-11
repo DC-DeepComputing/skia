@@ -4,16 +4,7 @@
 #pragma clang diagnostic ignored "-Wall"
 #endif
 using namespace metal;
-struct Uniforms {
-    half4 colorGreen;
-    half4 colorRed;
-};
-struct Inputs {
-};
-struct Outputs {
-    half4 sk_FragColor [[color(0)]];
-};
-half2 swizzle_lvalue_h2hhh2h(half x, half y, thread half2& color, half z) {
+struct Uniforms { half4 colorGreen; half4 colorRed;};struct Inputs {};struct Outputs {half4 sk_FragColor [[color(0)]];};half2 swizzle_lvalue_h2hhh2h(half x, half y, thread half2& color, half z) {
     color.yx = color;
     return half2(x + y, z);
 }
