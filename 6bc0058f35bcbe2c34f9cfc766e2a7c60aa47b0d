@@ -87,6 +87,24 @@
       "parentUuid": "72e47f9d_2abb38ec",
       "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a6bac17_daea6998",
+        "filename": "src/codec/SkJpegCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-11T15:39:41Z",
+      "side": 1,
+      "message": "Nice that we already have that - isn\u0027t it supposed to suppress exactly these warnings though (missing `jmorecfg.h`)?",
+      "parentUuid": "7421496e_530aa9b3",
+      "revId": "6bc0058f35bcbe2c34f9cfc766e2a7c60aa47b0d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
