@@ -279,6 +279,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
         const auto& vkColorAttachInfo =
                 TextureInfoPriv::Get<VulkanTextureInfo>(colorAttachmentTextureInfo);
         auto& colorAttachDesc = rpDesc.fColorAttachment;
+
         colorRef.attachment = descs.size();
         VkImageLayout layout = supportReadingDstAsInput ? VK_IMAGE_LAYOUT_GENERAL
                                                         : VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
@@ -350,8 +351,8 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
                 &vkDepthStencilAttachDesc,
                 vkDepthStencilInfo,
                 depthStencilAttachDesc,
-                compatibleOnly ? LoadOp::kDiscard   : depthStencilAttachDesc.fLoadOp,
-                compatibleOnly ? StoreOp::kDiscard  : depthStencilAttachDesc.fStoreOp,
+                compatibleOnly ? LoadOp::kDiscard   : rpDesc.fDepthStencilAttachment.fLoadOp,
+                compatibleOnly ? StoreOp::kDiscard  : rpDesc.fDepthStencilAttachment.fStoreOp,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL,
                 VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
     } else {
