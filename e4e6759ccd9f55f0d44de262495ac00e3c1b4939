@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ef96fff_8df836d6",
+        "filename": "src/core/SkAnalyticEdge.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-12T12:48:19Z",
+      "side": 1,
+      "message": "We usually put this on the prior line",
+      "range": {
+        "startLine": 314,
+        "startChar": 16,
+        "endLine": 314,
+        "endChar": 19
+      },
+      "revId": "e4e6759ccd9f55f0d44de262495ac00e3c1b4939",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
