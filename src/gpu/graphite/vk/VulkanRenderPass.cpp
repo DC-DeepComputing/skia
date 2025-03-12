@@ -68,7 +68,8 @@ void add_attachment_description_info_to_key(ResourceKey::Builder& builder,
 
 void add_subpass_info_to_key(ResourceKey::Builder& builder,
                              int& builderIdx,
-                             const VulkanRenderPass::VulkanRenderPassMetaData& rpData) {
+                             const VulkanRenderPass::VulkanRenderPassMetaData& rpData,
+                             bool compatibleOnly) {
     SkASSERT(rpData.fHasColorAttachment); // We expect to always have a valid color attachment
 
     // TODO: Fetch actual attachment reference and index information for each
@@ -90,10 +91,16 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
                     ? VulkanRenderPass::kColorResolveAttachmentIdx : kAttachmentUnused) << 8;
             attachmentIdxKeyInfo |= (rpData.fHasDepthStencilAttachment
                     ? VulkanRenderPass::kDepthStencilAttachmentIdx : kAttachmentUnused) << 16;
-            // For keying purposes, always assume the input attachment for the main subpass will
-            // point to the dst texture (color attachment). This allows renderpasses that include
-            // draws which do and do not read from the dst can be shared.
-            attachmentIdxKeyInfo |= VulkanRenderPass::kColorAttachmentIdx << 24;
+            // Renderpasses that are used for draws which read from the dst require the usage
+            // of general, less optimized image layouts. However, attachment image layouts are not
+            // a part of RP compatibility. Therefore, for keying purposes, assign the input
+            // attachment on the main subpass to point to the color attachment iff compatibleOnly is
+            // false and the main subpass has an input attachment. This way, when a "full" (not just
+            // compatible) RP is fetched from the cache by a key, we know the optimal image layouts
+            // are being used as expected.
+            attachmentIdxKeyInfo |= ((compatibleOnly || !rpData.fHasInputAttachment)
+                    ? kAttachmentUnused
+                    : VulkanRenderPass::kColorAttachmentIdx) << 24;
 
             builder[builderIdx++] = attachmentIdxKeyInfo;
         } else { // Loading MSAA from resolve subpass
@@ -140,7 +147,7 @@ void populate_key(const VulkanRenderPass::VulkanRenderPassMetaData& rpMetaData,
                 compatibleOnly ? StoreOp::kStore : rpMetaData.fAttachments[i]->fStoreOp);
     }
 
-    add_subpass_info_to_key(builder, builderIdx, rpMetaData);
+    add_subpass_info_to_key(builder, builderIdx, rpMetaData, compatibleOnly);
 }
 
 } // anonymous namespace
@@ -151,6 +158,7 @@ VulkanRenderPass::VulkanRenderPassMetaData::VulkanRenderPassMetaData(const Rende
     fHasColorAttachment        = rpDesc.fColorAttachment.fTextureInfo.isValid();
     fHasColorResolveAttachment = rpDesc.fColorResolveAttachment.fTextureInfo.isValid();
     fHasDepthStencilAttachment = rpDesc.fDepthStencilAttachment.fTextureInfo.isValid();
+    fHasInputAttachment        = rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput;
 
     // TODO: Query for more attachments once the RenderPassDesc struct contains that information.
     // For now, we only ever expect to see 0 or 1 of each attachment type (color, resolve, and
@@ -203,7 +211,7 @@ void VulkanRenderPass::AddRenderPassInfoToKey(const VulkanRenderPassMetaData& rp
                                               ResourceKey::Builder& builder,
                                               int& builderIdx,
                                               bool compatibleOnly) {
-    populate_key(rpMetaData, builder, builderIdx, /*compatibleOnly=*/true);
+    populate_key(rpMetaData, builder, builderIdx, compatibleOnly);
 }
 
 namespace { // anonymous namespace
@@ -274,6 +282,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
         const auto& vkColorAttachInfo =
                 TextureInfoPriv::Get<VulkanTextureInfo>(colorAttachmentTextureInfo);
         auto& colorAttachDesc = rpDesc.fColorAttachment;
+
         colorRef.attachment = descs.size();
         // If any draw within this renderpass reads from the dst texture as an input attachment,
         // we must use a general image layout.
