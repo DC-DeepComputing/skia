@@ -140,31 +140,39 @@ enum class DepthStencilFlags : int {
  */
 enum DrawTypeFlags : uint16_t {
 
-    kNone             = 0b000000000,
+    kNone             = 0b0000000000,
 
     // kBitmapText_Mask should be used for the BitmapTextRenderStep[mask] RenderStep
-    kBitmapText_Mask  = 0b00000001,
+    kBitmapText_Mask  = 0b0000000001,
     // kBitmapText_LCD should be used for the BitmapTextRenderStep[LCD] RenderStep
-    kBitmapText_LCD   = 0b00000010,
+    kBitmapText_LCD   = 0b0000000010,
     // kBitmapText_Color should be used for the BitmapTextRenderStep[color] RenderStep
-    kBitmapText_Color = 0b00000100,
+    kBitmapText_Color = 0b0000000100,
     // kSDFText should be used for the SDFTextRenderStep RenderStep
-    kSDFText          = 0b00001000,
+    kSDFText          = 0b0000001000,
     // kSDFText_LCD should be used for the SDFTextLCDRenderStep RenderStep
-    kSDFText_LCD      = 0b00010000,
+    kSDFText_LCD      = 0b0000010000,
 
     // kDrawVertices should be used to generate Pipelines that use the following RenderSteps:
     //    VerticesRenderStep[*] for:
     //        [tris], [tris-texCoords], [tris-color], [tris-color-texCoords],
     //        [tristrips], [tristrips-texCoords], [tristrips-color], [tristrips-color-texCoords]
-    kDrawVertices     = 0b00100000,
+    kDrawVertices     = 0b0000100000,
+
+    // kAnalyticBlur can perform an analytic blur for rects, rrects, and circles. It corresponds
+    // to the AnalyticBlurRenderStep.
+    kAnalyticBlur     = 0b0001000000,
+
+    // kCircularArc renders filled circular arcs, with or without the center included, and
+    // stroked circular arcs with butt or round caps that don't include the center point.
+    // It corresponds to the CircularArcRenderStep.
+    kCircularArc      = 0b0010000000,
 
     // kSimpleShape should be used to generate Pipelines that use the following RenderSteps:
-    //    AnalyticBlurRenderStep
     //    AnalyticRRectRenderStep
     //    PerEdgeAAQuadRenderStep
     //    CoverBoundsRenderStep[non-aa-fill]
-    kSimpleShape      = 0b01000000,
+    kSimpleShape      = 0b0100000000,
 
     // kNonSimpleShape should be used to generate Pipelines that use the following RenderSteps:
     //    CoverageMaskRenderStep
@@ -173,7 +181,7 @@ enum DrawTypeFlags : uint16_t {
     //    TessellateWedgesRenderStep[*] for [convex], [evenodd], [winding]
     //    TessellateCurvesRenderStep[*] for [even-odd], [winding]
     //    MiddleOutFanRenderStep[*] for [even-odd], [winding]
-    kNonSimpleShape   = 0b10000000,
+    kNonSimpleShape   = 0b1000000000,
 
     kLast = kNonSimpleShape,
 };
