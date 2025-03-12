@@ -432,6 +432,9 @@ public:
         auto realTypeface = scanner->MakeFromStream(SkStream::MakeFromFile(filename),
                                                     SkFontArguments().setCollectionIndex(ttcIndex));
         if (!realTypeface) {
+            // Hold the lock while unrefing the pattern.
+            FCLocker lock;
+            pattern.reset();
             return nullptr;
         }
 
@@ -688,9 +691,10 @@ class SkFontMgr_fontconfig : public SkFontMgr {
             return face;
         }();
         if (!face) {
+            // Cannot hold FCLocker around Make; may need to destory pattern.
             face = SkTypeface_fontconfig::Make(std::move(pattern), fSysroot, fScanner.get());
             if (face) {
-                // Cannot hold FCLocker in fTFCache.add; evicted typefaces may need to lock.
+                // Cannot hold FCLocker around fTFCache.add; evicted typefaces may need to lock.
                 fTFCache.add(face);
             }
         }
