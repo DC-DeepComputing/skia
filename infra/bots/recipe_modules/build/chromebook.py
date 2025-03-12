@@ -12,7 +12,7 @@ def compile_fn(api, checkout_root, out_dir):
 
   top_level = str(api.vars.workdir)
 
-  clang_linux = os.path.join(top_level, 'clang_linux')
+  clang_linux = os.path.join(top_level, 'clang_ubuntu_noble')
   # This is a pretty typical arm-linux-gnueabihf sysroot
   sysroot_dir = os.path.join(top_level, 'armhf_sysroot')
 
@@ -81,7 +81,7 @@ def compile_fn(api, checkout_root, out_dir):
     ]
 
   args['extra_cflags'].append('-DREBUILD_IF_CHANGED_clang_linux_version=%s' %
-                      api.run.asset_version('clang_linux', skia_dir))
+                      api.run.asset_version('clang_ubuntu_noble', skia_dir))
 
   if configuration != 'Debug':
     args['is_debug'] = False

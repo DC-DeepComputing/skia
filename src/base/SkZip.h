@@ -178,15 +178,17 @@ class SkMakeZipDetail {
 public:
     template<typename... Ts>
     static constexpr auto MakeZip(Ts&& ... ts) {
+        // Capture forwarded values into a tuple.
+        auto forwarded_ts = std::forward_as_tuple(std::forward<Ts>(ts)...);
 
         // Pick the first collection that has a size, and use that for the size.
-        size_t size = PickOneSize<DecayPointerT<Ts>...>::Size(std::forward<Ts>(ts)...);
+        size_t size = PickOneSize<DecayPointerT<Ts>...>::Size(std::get<Ts>(forwarded_ts)...);
 
 #ifdef SK_DEBUG
         // Check that all sizes are the same.
         size_t minSize = SIZE_MAX;
         size_t maxSize = 0;
-        size_t sizes[sizeof...(Ts)] = {Span<Ts>::Size(std::forward<Ts>(ts))...};
+        size_t sizes[sizeof...(Ts)] = {Span<std::decay_t<Ts>>::Size(std::get<Ts>(forwarded_ts)...)};
         for (size_t s : sizes) {
             if (s != SIZE_MAX) {
                 minSize = std::min(minSize, s);
@@ -196,7 +198,7 @@ public:
         SkASSERT(minSize == maxSize);
 #endif
 
-        return SkZip<ValueType<Ts>...>(size, Span<Ts>::Data(std::forward<Ts>(ts))...);
+        return SkZip<ValueType<Ts>...>(size, Span<std::decay_t<Ts>>(std::get<Ts>(forwarded_ts)).Data()...);
     }
 };
 
