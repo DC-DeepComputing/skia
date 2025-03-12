@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc3c1c28_022cc953",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-12T21:15:14Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
+      "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7e1910b_53179d04",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-12T21:15:14Z",
+      "side": 1,
+      "message": "In theory we could split this CL into 2 CLs: 1) changing how `kLow` works (fixing https://crbug.com/402587902), and then 2) changing how `kMedium` works (addressing the regression observed on some platforms in the Canary+Dev field trials).  But I think it\u0027s okay to land those together - we wouldn\u0027t be able to differentiate their impact in field trials anyway.",
+      "range": {
+        "startLine": 49,
+        "startChar": 42,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
