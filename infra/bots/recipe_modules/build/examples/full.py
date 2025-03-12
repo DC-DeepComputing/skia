@@ -99,6 +99,9 @@ TEST_BUILDERS = [
   'Build-Win-MSVC-x86_64-Release-Graphite_Dawn_D3D11',
   'Build-Win-MSVC-x86_64-Release-Graphite_Dawn_D3D12',
   'Build-Debian10-Clang-x86_64-Release-SK_USE_PADDED_BLUR_UPSCALE',
+  'Build-Ubuntu20.04-Clang-x86_64-Debug-SwiftShader_MSAN',
+  'Build-Ubuntu22.04-Clang-x86_64-Debug-SwiftShader_MSAN',
+  'Build-Ubuntu24.04-Clang-x86_64-Debug-SwiftShader_MSAN',
 ]
 
 # Default properties used for TEST_BUILDERS.
