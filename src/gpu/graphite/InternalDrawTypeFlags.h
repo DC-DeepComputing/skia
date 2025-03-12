@@ -17,7 +17,11 @@ namespace skgpu::graphite {
  * to Graphite.
  */
 enum InternalDrawTypeFlags : uint16_t {
+    // Corresponds to the CoverageMaskRenderStep. Used when creating Blur filter
+    // precompile pipelines.
     kCoverageMask  = DrawTypeFlags::kLast << 1,
+    // Corresponds to the AnalyticRRectRenderStep. Used when creating Blur filter
+    // precompile pipelines.
     kAnalyticRRect = DrawTypeFlags::kLast << 2,
 
     kLastInternal = kAnalyticRRect,
