@@ -103,17 +103,14 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
-    desc.fDstReadStrategyIfRequired = targetReadStrategyIfRequired;
+    desc.fDstReadStrategy = targetReadStrategyIfRequired;
 
     return desc;
 }
 
 SkString RenderPassDesc::toString() const {
-    // Note: Purposefully omitting the fDstReadStrategyIfRequired attribute. Since the shader /
-    // pipeline actually determines whether a dst read is needed, it would make more sense to
-    // report the actual used dst read strategy there.
     return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
-                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x))",
+                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
                           fColorAttachment.toString().c_str(),
                           fColorResolveAttachment.toString().c_str(),
                           fDepthStencilAttachment.toString().c_str(),
@@ -121,7 +118,8 @@ SkString RenderPassDesc::toString() const {
                           fWriteSwizzle.asString().c_str(),
                           fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
                           fClearDepth,
-                          fClearStencil);
+                          fClearStencil,
+                          (unsigned)fDstReadStrategy);
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {
