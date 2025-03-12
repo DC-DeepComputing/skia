@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19e6d60a_823d5bc3",
+        "filename": "src/core/SkAnalyticEdge.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-12T13:07:06Z",
+      "side": 1,
+      "message": "You don\u0027t need this",
+      "range": {
+        "startLine": 314,
+        "startChar": 59,
+        "endLine": 314,
+        "endChar": 68
+      },
+      "revId": "36a750f1365572e45dfaf40d62e8051fa2279e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
