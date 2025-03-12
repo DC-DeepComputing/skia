@@ -22,6 +22,30 @@
       },
       "revId": "36a750f1365572e45dfaf40d62e8051fa2279e43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b25f8f2b_0bfa4324",
+        "filename": "src/core/SkAnalyticEdge.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-12T13:10:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "19e6d60a_823d5bc3",
+      "range": {
+        "startLine": 314,
+        "startChar": 59,
+        "endLine": 314,
+        "endChar": 68
+      },
+      "revId": "36a750f1365572e45dfaf40d62e8051fa2279e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
