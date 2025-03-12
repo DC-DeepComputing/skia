@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a7035ca_188d5e7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-12T22:12:26Z",
+      "side": 1,
+      "message": "This was discovered while making a change to test Fontations with FontConfig. The issue is that FontConfig recognizes fonts using FreeType which supports more formats than Fontations. Should such a font exist on the system it will show up in the \"list of system fonts\" but the may fail to work with Fontations. Chromium attempts to protect against this by attempting to exclude any non-OpenType fonts.",
+      "revId": "8aa1b73ad107af757d19c6b9547d4d6a7ac651ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
