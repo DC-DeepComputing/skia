@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71dcc31d_6ba71481",
+        "filename": "src/core/SkAnalyticEdge.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-12T13:12:35Z",
+      "side": 1,
+      "message": "from @robertphillips@google.com offline: Another way to do this is to right shift dx.",
+      "range": {
+        "startLine": 314,
+        "startChar": 16,
+        "endLine": 314,
+        "endChar": 68
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "63fdba2d_4208a00f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkAnalyticEdge.cpp",
+              "range": {
+                "startLine": 314,
+                "startChar": 0,
+                "endLine": 315,
+                "endChar": 0
+              },
+              "replacement": "                SkAbs32(dy) \u003e\u003e 6 \u003e SkAbs32(dx)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1de603e84287d722bb2924b3ce3f59e00acf565c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
