@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9247f1c_37d16dea",
+        "filename": "docs/examples/Pixmap_getColor.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-12T13:12:24Z",
+      "side": 1,
+      "message": "We should drop the alpha factor from rgb if we\u0027re pre-multiplying explicitly:\n\n```\n    int r \u003d 0xFF * x / (w - 1),\n        g \u003d 0xFF * y / (h - 1),\n        b \u003d 0xFF;\n    storage[x + y * w] \u003d SkPreMultiplyColor(SkColorSetARGB(a, r, g, b));\n```",
+      "range": {
+        "startLine": 15,
+        "startChar": 70,
+        "endLine": 15,
+        "endChar": 73
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2aee855b_4c02ee0a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "docs/examples/Pixmap_getColor.cpp",
+              "range": {
+                "startLine": 15,
+                "startChar": 0,
+                "endLine": 16,
+                "endChar": 0
+              },
+              "replacement": "            storage[x + y * w] \u003d SkPreMultiplyColor(SkColorSetARGB(a, x / (w - 1), y / (h - 1), 0));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "62943f7e5e60d550ccb9cf3abe8a19d5f712370f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
