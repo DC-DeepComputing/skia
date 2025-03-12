@@ -23,9 +23,13 @@
 #include "src/gpu/graphite/RendererProvider.h"
 #include "tools/graphite/UniqueKeyUtils.h"
 
-using namespace::skgpu::graphite;
-
+/******** From here to the matching banner can be cut and pasted into Chrome's precompile.cc ******/
 namespace {
+
+using ::skgpu::graphite::DepthStencilFlags;
+using ::skgpu::graphite::DrawTypeFlags;
+using ::skgpu::graphite::PaintOptions;
+using ::skgpu::graphite::RenderPassProperties;
 
 // "SolidColor SrcOver"
 PaintOptions solid_srcover() {
@@ -48,7 +52,7 @@ PaintOptions solid_clear_src_srcover() {
 PaintOptions image_premul_srcover() {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     PaintOptions paintOptions;
-    paintOptions.setShaders({ PrecompileShaders::Image({ &ci, 1 }) });
+    paintOptions.setShaders({ skgpu::graphite::PrecompileShaders::Image({ &ci, 1 }) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -59,7 +63,7 @@ PaintOptions image_premul_srcover() {
 PaintOptions image_premul_src_srcover() {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     PaintOptions paintOptions;
-    paintOptions.setShaders({ PrecompileShaders::Image({ &ci, 1 }) });
+    paintOptions.setShaders({ skgpu::graphite::PrecompileShaders::Image({ &ci, 1 }) });
     paintOptions.setBlendModes({ SkBlendMode::kSrc, SkBlendMode::kSrcOver });
     return paintOptions;
 }
@@ -69,7 +73,7 @@ PaintOptions image_srgb_src() {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType,
                      SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB) };
     PaintOptions paintOptions;
-    paintOptions.setShaders({ PrecompileShaders::Image({ &ci, 1 }) });
+    paintOptions.setShaders({ skgpu::graphite::PrecompileShaders::Image({ &ci, 1 }) });
     paintOptions.setBlendModes({ SkBlendMode::kSrc });
     return paintOptions;
 }
@@ -78,46 +82,76 @@ PaintOptions image_srgb_src() {
 PaintOptions blend_porter_duff_color_filter_srcover() {
     PaintOptions paintOptions;
     // kSrcOver will trigger the PorterDuffBlender
-    paintOptions.setColorFilters({ PrecompileColorFilters::Blend({ SkBlendMode::kSrcOver }) });
+    paintOptions.setColorFilters(
+            { skgpu::graphite::PrecompileColorFilters::Blend({ SkBlendMode::kSrcOver }) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
 
     return paintOptions;
 }
 
+
 // "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000)",
 // Single sampled R w/ just depth
-static const RenderPassProperties kR_1_Depth { DepthStencilFlags::kDepth,
-                                               kAlpha_8_SkColorType,
-                                               /* fDstCS= */ nullptr,
-                                               /* fRequiresMSAA= */ false };
+const RenderPassProperties kR_1_D { DepthStencilFlags::kDepth,
+                                    kAlpha_8_SkColorType,
+                                    /* fDstCS= */ nullptr,
+                                    /* fRequiresMSAA= */ false };
 
 // "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000)",
 // MSAA R w/ depth and stencil
-static const RenderPassProperties kR_4_DepthStencil { DepthStencilFlags::kDepthStencil,
-                                                      kAlpha_8_SkColorType,
-                                                      /* fDstCS= */ nullptr,
-                                                      /* fRequiresMSAA= */ true };
+const RenderPassProperties kR_4_DS { DepthStencilFlags::kDepthStencil,
+                                     kAlpha_8_SkColorType,
+                                     /* fDstCS= */ nullptr,
+                                     /* fRequiresMSAA= */ true };
 
 // "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba)"
 // Single sampled BGRA w/ just depth
-static const RenderPassProperties kBGRA_1_Depth { DepthStencilFlags::kDepth,
-                                                  kBGRA_8888_SkColorType,
-                                                  /* fDstCS= */ nullptr,
-                                                  /* fRequiresMSAA= */ false };
+const RenderPassProperties kBGRA_1_D { DepthStencilFlags::kDepth,
+                                       kBGRA_8888_SkColorType,
+                                       /* fDstCS= */ nullptr,
+                                       /* fRequiresMSAA= */ false };
 
 // "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba)"
 // MSAA BGRA w/ just depth
-static const RenderPassProperties kBGRA_4_Depth { DepthStencilFlags::kDepth,
-                                                  kBGRA_8888_SkColorType,
-                                                  /* fDstCS= */ nullptr,
-                                                  /* fRequiresMSAA= */ true };
+const RenderPassProperties kBGRA_4_D { DepthStencilFlags::kDepth,
+                                       kBGRA_8888_SkColorType,
+                                       /* fDstCS= */ nullptr,
+                                       /* fRequiresMSAA= */ true };
 
 // "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba)"
 // MSAA BGRA w/ depth and stencil
-static const RenderPassProperties kBGRA_4_DepthStencil { DepthStencilFlags::kDepthStencil,
-                                                         kBGRA_8888_SkColorType,
-                                                         /* fDstCS= */ nullptr,
-                                                         /* fRequiresMSAA= */ true };
+const RenderPassProperties kBGRA_4_DS { DepthStencilFlags::kDepthStencil,
+                                        kBGRA_8888_SkColorType,
+                                        /* fDstCS= */ nullptr,
+                                        /* fRequiresMSAA= */ true };
+
+// The same as kBGRA_1_D but w/ and SRGB colorSpace
+const RenderPassProperties kBGRA_1_D_SRGB{ DepthStencilFlags::kDepth,
+                                           kBGRA_8888_SkColorType,
+                                           SkColorSpace::MakeSRGB(),
+                                           /* fRequiresMSAA= */ false };
+
+const struct PrecompileSettings {
+    PaintOptions fPaintOptions;
+    DrawTypeFlags fDrawTypeFlags = DrawTypeFlags::kNone;
+    RenderPassProperties fRenderPassProps;
+} kPrecompileCases[] = {
+    /* 0 */ { blend_porter_duff_color_filter_srcover(), DrawTypeFlags::kAnalyticBlur, kBGRA_1_D }, // 4
+    /* 1 */ { blend_porter_duff_color_filter_srcover(), DrawTypeFlags::kNonSimpleShape, kBGRA_1_D },  // 13
+    /* 2 */ { solid_srcover(), DrawTypeFlags::kNonSimpleShape,  kR_4_DS },                                                // 2,3
+    /* 3 */ { solid_srcover(), DrawTypeFlags::kBitmapText_Mask, kBGRA_1_D },  // 7
+    /* 4 */ { solid_srcover(), DrawTypeFlags::kBitmapText_Mask, kBGRA_4_DS },  // 24
+    /* 5 */ { solid_srcover(), DrawTypeFlags::kNonSimpleShape,  kBGRA_4_D },  // 21,22
+    /* 6 */ { solid_srcover(), DrawTypeFlags::kNonSimpleShape,  kBGRA_4_DS },  // 28,34,35,57,58,61,62,65
+    /* 7 */ { solid_srcover(), DrawTypeFlags::kCircularArc,     kBGRA_4_DS }, //26
+    /* 8 */ { solid_clear_src_srcover(), DrawTypeFlags::kSimpleShape, kBGRA_1_D },  // 6,8,9,10,15
+    /* 9 */ { solid_clear_src_srcover(), DrawTypeFlags::kSimpleShape, kBGRA_4_DS },  // 23,30,31,53
+    /* 10 */ { image_premul_src_srcover(), DrawTypeFlags::kSimpleShape, kBGRA_1_D },  // 11,16,17,19,38
+    /* 11 */ { image_premul_srcover(), DrawTypeFlags::kSimpleShape, kBGRA_4_DS },  // 32,33,60
+    /* 12 */ { image_srgb_src(), DrawTypeFlags::kSimpleShape, kBGRA_1_D_SRGB },  // 18
+};
+
+/**************** Here ends the part that can be pasted into Chrome's precompile.cc ***************/
 
 // This helper maps from the RenderPass string in the Pipeline label to the
 // RenderPassProperties needed by the Precompile system
@@ -129,15 +163,15 @@ RenderPassProperties get_render_pass_properties(const char* str) {
         RenderPassProperties fRenderPassProperties;
     } kRenderPassPropertiesMapping[] = {
         { "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000)",
-          kR_1_Depth },
+          kR_1_D },
         { "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000)",
-          kR_4_DepthStencil},
+          kR_4_DS },
         { "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba)",
-          kBGRA_1_Depth },
+          kBGRA_1_D },
         { "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba)",
-          kBGRA_4_Depth },
+          kBGRA_4_D },
         { "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba)",
-           kBGRA_4_DepthStencil },
+           kBGRA_4_DS },
     };
 
     for (const auto& rppm : kRenderPassPropertiesMapping) {
@@ -210,19 +244,22 @@ DrawTypeFlags get_draw_type_flags(const char* str) {
 // the expected string is in the generated set.
 // Additionally, verify that overgeneration is within expected tolerances.
 // If you add an additional RenderStep you may need to increase the tolerance values.
-void run_test(PrecompileContext* precompileContext,
+void run_test(skgpu::graphite::PrecompileContext* precompileContext,
               skiatest::Reporter* reporter,
               SkSpan<const char*> cases,
               size_t caseID,
-              const PaintOptions& paintOptions,
-              DrawTypeFlags drawType,
-              const RenderPassProperties& renderPassSettings,
+              const PrecompileSettings& settings,
               unsigned int expectedNumPipelines) {
+    using namespace skgpu::graphite;
+
     const char* expectedString = cases[caseID];
 
     precompileContext->priv().globalCache()->resetGraphicsPipelines();
 
-    Precompile(precompileContext, paintOptions, drawType, { &renderPassSettings, 1 });
+    Precompile(precompileContext,
+               settings.fPaintOptions,
+               settings.fDrawTypeFlags,
+               { &settings.fRenderPassProps, 1 });
 
     std::vector<std::string> generated;
 
@@ -290,6 +327,7 @@ bool is_dawn_metal_context_type(skgpu::ContextType type) {
 
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
+    using namespace skgpu::graphite;
 
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
@@ -323,7 +361,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     //    wikipedia_2018
     //
     const char* kCases[] = {
-          //---- Single-sample - R8Unorm/Depth16Unorm --> kR_1_Depth
+          //---- Single-sample - R8Unorm/Depth16Unorm --> kR_1_D
 /* 0 */  "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "KnownRuntimeEffect_1DBlur12 [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
@@ -332,7 +370,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "CoverBoundsRenderStep[NonAAFill] + "
          "KnownRuntimeEffect_1DBlur8  [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
 
-          //---- MSAA4 - R8Unorm/Depth24PlusStencil8 --> kR_4_DepthStencil
+          //---- MSAA4 - R8Unorm/Depth24PlusStencil8 --> kR_4_DS
 /* 2 */  "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000) + "
          "TessellateWedgesRenderStep[EvenOdd] + "
          "(empty)",
@@ -341,7 +379,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "CoverBoundsRenderStep[RegularCover] + "
          "SolidColor SrcOver",
 
-         //---- Single-sample - BGRA8Unorm/Depth16Unorm -> kBGRA_1_Depth
+         //---- Single-sample - BGRA8Unorm/Depth16Unorm -> kBGRA_1_D
 /* 4 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
          "AnalyticBlurRenderStep + "
          "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver",
@@ -409,7 +447,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ Image(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-         //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> bgra_4_depth
+         //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> bgra_4_D
          // For now, we're going to pass on the AnalyticClip Pipelines
 /* 20 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
@@ -423,7 +461,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "TessellateWedgesRenderStep[Convex] + "
          "SolidColor SrcOver",
 
-         //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DepthStencil
+         //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DS
 /* 23 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
          "AnalyticRRectRenderStep + "
          "SolidColor SrcOver",
@@ -484,7 +522,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
 //----------------------------
 // These are leftover Pipelines that were generated by the stories but are pretty infrequently used.
 // Some of them get picked up in the preceding cases
-          //---- Single-sample - BGRA8Unorm/Depth16Unorm -> bgra_1_depth
+          //---- Single-sample - BGRA8Unorm/Depth16Unorm -> bgra_1_D
 /* 37 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
@@ -513,7 +551,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
-         //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> bgra_4_depth
+         //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> bgra_4_D
 /* 44 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
          "AnalyticRRectRenderStep + "
          "SolidColor SrcOver",
@@ -546,7 +584,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
-         //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DepthStencil
+         //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DS
 /* 52 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
          "AnalyticRRectRenderStep + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
@@ -606,9 +644,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     };
 
     for (size_t i = 0; i < std::size(kCases); ++i) {
-        PaintOptions paintOptions;
-        RenderPassProperties renderPassSettings;
-        DrawTypeFlags drawTypeFlags = DrawTypeFlags::kNone;
+        PrecompileSettings settings;
 
         // TODO(robertphillips): splitting kCases[i] into substrings (based on a " + " separator)
         // before passing to the helpers would make this prettier
@@ -621,7 +657,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             // Punting on the blur cases for now since they horribly over-generate
             case 0:             [[fallthrough]];
             case 1:
-                renderPassSettings = kR_1_Depth;
+                renderPassSettings = kR_1_D;
                 drawTypeFlags = DrawTypeFlags::kSimpleShape;
                 paintOptions = blur_image();
                 expectedNumPipelines = 11;
@@ -631,25 +667,19 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             // 2 and 3 form a single-draw pair and are, thus, addressed by the same settings
             case 2: [[fallthrough]];   // TessellateWedgesRenderStep[EvenOdd]
             case 3:                    // kSrcOver - CoverBoundsRenderStep[RegularCover]
-                renderPassSettings = kR_4_DepthStencil;
-                drawTypeFlags = DrawTypeFlags::kNonSimpleShape;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[2]; // solid_srcover, kNonSimpleShape, kR_4_DS
                 expectedNumPipelines = 11;   // This is pretty bad for just 2 Pipelines
                 break;
 
             // 4 and 13 share the same paintOptions
             case 4:  // AnalyticBlurRenderStep
-                renderPassSettings = kBGRA_1_Depth;
-                drawTypeFlags = DrawTypeFlags::kAnalyticBlur;
-                paintOptions = blend_porter_duff_color_filter_srcover();
+                settings = kPrecompileCases[0]; // blend_porter_duff_color_filter_srcover(), kAnalyticBlur, kBGRA_1_D
                 expectedNumPipelines = 1;
                 break;
 
             case 13: // CoverageMaskRenderStep
                 // this case could be greatly reduced if CoverageMaskRenderStep were split out
-                renderPassSettings = kBGRA_1_Depth;
-                drawTypeFlags = DrawTypeFlags::kNonSimpleShape;
-                paintOptions = blend_porter_duff_color_filter_srcover();
+                settings = kPrecompileCases[1]; // blend_porter_duff_color_filter_srcover(), kNonSimpleShape, kBGRA_1_D
                 expectedNumPipelines = 11; // This is pretty bad for just 1 Pipeline
                 break;
 
@@ -667,24 +697,18 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             // The two text pipelines (7 and 24) just differ in render pass settings (one MSAA, the
             // other not)
             case 7:
-                renderPassSettings = kBGRA_1_Depth;
-                drawTypeFlags = DrawTypeFlags::kBitmapText_Mask;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[3]; // solid_srcover(), kBitmapText_Mask, kBGRA_1_D
                 expectedNumPipelines = 1;
                 break;
             case 24:
-                renderPassSettings = kBGRA_4_DepthStencil;
-                drawTypeFlags = DrawTypeFlags::kBitmapText_Mask;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[4]; // solid_srcover(), kBitmapText_Mask, kBGRA_4_DS
                 expectedNumPipelines = 1;
                 break;
 
             // 21 & 22 form a pair (since they both need kNonSimpleShape)
             case 21: // kSrcOver - TessellateStrokesRenderStep
             case 22: // kSrcOver - TessellateWedgesRenderStep[Convex]
-                renderPassSettings = kBGRA_4_Depth;
-                drawTypeFlags = DrawTypeFlags::kNonSimpleShape;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[5]; // solid_srcover(), kNonSimpleShape,  kBGRA_4_D
                 expectedNumPipelines = 11;  // very bad for 2 pipelines
                 break;
 
@@ -708,9 +732,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 61: // TessellateCurvesRenderStep[Winding]
             case 62: // TessellateCurvesRenderStep[EvenOdd]
             case 65: // kSrcOver - TessellateStrokesRenderStep
-                renderPassSettings = kBGRA_4_DepthStencil;
-                drawTypeFlags = DrawTypeFlags::kNonSimpleShape;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[6]; // solid_srcover(), kNonSimpleShape,  kBGRA_4_DS
                 expectedNumPipelines = 11;  // not so bad for 9 pipelines
                 break;
 
@@ -722,9 +744,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 9:  // kSrc     - CoverBoundsRenderStep[NonAAFill]
             case 10: // kClear   - CoverBoundsRenderStep[NonAAFill]
             case 15: // kSrcOver - PerEdgeAAQuadRenderStep
-                renderPassSettings = kBGRA_1_Depth;
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
-                paintOptions = solid_clear_src_srcover();
+                settings = kPrecompileCases[8]; // solid_clear_src_srcover(), kSimpleShape, kBGRA_1_D
                 // This is 3 each for kClear, kSrc and kSrcOver:
                 //     AnalyticRRectRenderStep
                 //     CoverBoundsRenderStep[NonAAFill]
@@ -733,9 +753,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 break;
 
             case 26: // kSrcOver - CircularArcRenderStep
-                renderPassSettings = kBGRA_4_DepthStencil;
-                drawTypeFlags = DrawTypeFlags::kCircularArc;
-                paintOptions = solid_srcover();
+                settings = kPrecompileCases[7]; // solid_srcover(), kCircularArc, kBGRA_4_DS
                 expectedNumPipelines = 1;
                 break;
 
@@ -743,9 +761,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 30: // kSrcOver - CoverBoundsRenderStep[NonAAFill]
             case 31: // kClear   - CoverBoundsRenderStep[NonAAFill]
             case 53: // kSrc     - CoverBoundsRenderStep[NonAAFill]
-                renderPassSettings = kBGRA_4_DepthStencil;
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
-                paintOptions = solid_clear_src_srcover();
+                settings = kPrecompileCases[9]; //  solid_clear_src_srcover(), kSimpleShape, kBGRA_4_DS
                 // This is 3 each for kClear, kSrc and kSrcOver:
                 //     AnalyticRRectRenderStep
                 //     CoverBoundsRenderStep[NonAAFill]
@@ -760,44 +776,37 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 17: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrcOver
             case 19: // PerEdgeAAQuadRenderStep + Image(0) + kSrcOver
             case 38: // CoverBoundsRenderStep[NonAAFill] + HardwareImage(0) + kSrcOver
-                renderPassSettings = kBGRA_1_Depth;
-                paintOptions = image_premul_src_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                settings = kPrecompileCases[10]; // image_premul_src_srcover(), kSimpleShape, kBGRA_1_D
                 expectedNumPipelines = 24; // a bad deal for 5 pipelines
                 break;
 
             // same as except 16 except it has ColorSpaceTransformSRGB
             case 18: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrc
+                settings = kPrecompileCases[12]; // image_srgb_src(), kSimpleShape, kBGRA_1_D_SRGB
                 expectedRenderPassSettings.fDstCS = SkColorSpace::MakeSRGB();
-                renderPassSettings = kBGRA_1_Depth;
-                renderPassSettings.fDstCS = SkColorSpace::MakeSRGB();
-                paintOptions = image_srgb_src();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
                 expectedNumPipelines = 12;  // a bad deal for 1 pipeline
                 break;
 
             case 32: // CoverBoundsRenderStep[NonAAFill] + HardwareImage(0) + kSrcOver
             case 33: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrcOver
             case 60: // PerEdgeAAQuadRenderStep + Image(0) + kSrcOver
-                renderPassSettings = kBGRA_4_DepthStencil;
-                paintOptions = image_premul_srcover();
-                drawTypeFlags = DrawTypeFlags::kSimpleShape;
+                settings = kPrecompileCases[11]; // image_premul_srcover(), kSimpleShape, kBGRA_4_DS
                 expectedNumPipelines = 12; // a bad deal for 3 pipelines
                 break;
             default:
                 continue;
         }
 
-        SkAssertResult(renderPassSettings == expectedRenderPassSettings);
-        SkAssertResult(drawTypeFlags == expectedDrawTypeFlags);
+        SkAssertResult(settings.fRenderPassProps == expectedRenderPassSettings);
+        SkAssertResult(settings.fDrawTypeFlags == expectedDrawTypeFlags);
 
-        if (renderPassSettings.fRequiresMSAA && caps->loadOpAffectsMSAAPipelines()) {
+        if (settings.fRenderPassProps.fRequiresMSAA && caps->loadOpAffectsMSAAPipelines()) {
             expectedNumPipelines *= 2; // due to wgpu::LoadOp::ExpandResolveTexture
         }
 
         run_test(precompileContext.get(), reporter,
                  { kCases, std::size(kCases) }, i,
-                 paintOptions, drawTypeFlags, renderPassSettings, expectedNumPipelines);
+                 settings, expectedNumPipelines);
     }
 }
 
