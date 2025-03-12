@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a32ac37_0e79d547",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-12T20:26:30Z",
+      "side": 1,
+      "message": "FreeType: `out/release/nanobench --match charToGlyph`\n```\nTimer overhead: 38.7ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n 114/115 MB     45      4.44µs  8.22µs  7.46µs  8.22µs  21%     ████████▁▁      nonrendering    face_charToGlyph_100\n 114/115 MB     80      4.44µs  4.44µs  4.45µs  4.6µs   1%      ▁▁▁▁▁▁▁▁▁█      nonrendering    font_charToGlyph_100\n 114/115 MB     603     457ns   462ns   463ns   481ns   2%      ▃▃▃▆▁▁▁▁█▁      nonrendering    face_charToGlyph_10\n 114/115 MB     568     463ns   463ns   464ns   479ns   1%      ▁▁▁▁▁▁▁█▂▂      nonrendering    font_charToGlyph_10\n```\n\nFontations prior to this change: `out/release/nanobench --fontations --match charToGlyph`\n```\nTimer overhead: 38.6ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n 120/123 MB     27      9.97µs  9.97µs  9.99µs  10.2µs  1%      ▂▁▁▁▁▁▁▁▁█      nonrendering    face_charToGlyph_100\n 120/123 MB     33      10.8µs  10.8µs  10.8µs  11µs    1%      ▁▁▁▁█▁▁▁▁▁      nonrendering    font_charToGlyph_100\n 120/123 MB     211     989ns   989ns   994ns   1.03µs  1%      ▁▁▁▁▁▁▁▁█▁      nonrendering    face_charToGlyph_10\n 120/123 MB     215     1.08µs  1.08µs  1.1µs   1.22µs  4%      ▁▁▁▁▁▁█▁▁▁      nonrendering    font_charToGlyph_10\n```\n\nFontations with this change: `out/release/nanobench --fontations --match charToGlyph`\n```\nTimer overhead: 38.7ns\ncurr/maxrss     loops   min     median  mean    max     stddev  samples         config  bench\n 119/122 MB     39      2.59µs  2.59µs  2.59µs  2.61µs  0%      █▁▁▁▁▁▁▁▁▁      nonrendering    face_charToGlyph_100\n 119/122 MB     82      2.59µs  2.59µs  2.61µs  2.78µs  2%      ▁▁▁▁▁▁▁▁▁█      nonrendering    font_charToGlyph_100\n 119/122 MB     256     323ns   323ns   323ns   324ns   0%      █▁▂▂▁▁▂▂▁▁      nonrendering    face_charToGlyph_10\n 119/122 MB     429     339ns   343ns   353ns   464ns   11%     ▁▁▁▁█▁▁▁▁▁      nonrendering    font_charToGlyph_10\n```",
+      "revId": "2828f6fb08ac006610dccf772ef34f8ad7325dd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
