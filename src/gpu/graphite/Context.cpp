@@ -210,7 +210,7 @@ struct Context::AsyncParams {
         if (!fSrcImage) {
             return false;
         }
-        if (fSrcImage->isProtected()) {
+        if ((bool) fSrcImage->isProtected()) {
             return false;
         }
         if (!SkIRect::MakeSize(fSrcImage->dimensions()).contains(fSrcRect)) {

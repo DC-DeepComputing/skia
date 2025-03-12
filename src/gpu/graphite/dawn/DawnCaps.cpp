@@ -182,20 +182,58 @@ bool DawnCaps::isStorage(const TextureInfo& info) const {
     return dawnInfo.fSampleCount == 1 && SkToBool(FormatInfo::kStorage_Flag & formatInfo.fFlags);
 }
 
-uint32_t DawnCaps::maxRenderTargetSampleCount(wgpu::TextureFormat format) const {
-    const FormatInfo& formatInfo = this->getFormatInfo(format);
+// bool DawnCaps::isRenderable(wgpu::TextureFormat format, uint32_t sampleCount) const {
+//     return sampleCount <= this->maxRenderTargetSampleCount(format);
+// }
+
+uint8_t DawnCaps::getDefaultSupportedSampleCount(TextureFormat format) const {
+    const FormatInfo& formatInfo = this->getFormatInfo(TextureFormatToDawnFormat(format));
     if (!SkToBool(formatInfo.fFlags & FormatInfo::kRenderable_Flag)) {
         return 0;
     }
     if (SkToBool(formatInfo.fFlags & FormatInfo::kMSAA_Flag)) {
-        return 8;
+        return SkTo<uint8_t>(fDefaultMSAASamples);
     } else {
         return 1;
     }
 }
 
-bool DawnCaps::isRenderable(wgpu::TextureFormat format, uint32_t sampleCount) const {
-    return sampleCount <= this->maxRenderTargetSampleCount(format);
+TextureFormat DawnCaps::getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags> mask) const {
+    // TODO: Decide if we want to change this to always return a combined depth and stencil format
+    // to allow more sharing of depth stencil allocations.
+    if (mask == DepthStencilFlags::kDepth) {
+        // If needed for workarounds or performance, Depth32Float is also available but requires 2x
+        // the amount of memory.
+        return TextureFormat::kD16;
+    } else if (mask == DepthStencilFlags::kStencil) {
+        return TextureFormat::kS8;
+    } else if (mask == DepthStencilFlags::kDepthStencil) {
+        // For WebGPU, this maps to kDepth24PlusStencil8, which might end up choosing the equivalent
+        // of D32F_S8 under the hood.
+        return TextureFormat::kD24_S8;
+    }
+    return TextureFormat::kUnsupported;
+}
+
+TextureInfo DawnCaps::getDefaultAttachmentTextureInfo(AttachmentDesc desc,
+                                                      Protected,
+                                                      Discardable discardable) const {
+    if (desc.fSampleCount > this->getDefaultSupportedSampleCount(desc.fFormat)) {
+        return {};
+    }
+
+    DawnTextureInfo info;
+    info.fSampleCount = desc.fSampleCount;
+    info.fMipmapped   = Mipmapped::kNo;
+    info.fFormat      = TextureFormatToDawnFormat(desc.fFormat);
+    info.fUsage       = wgpu::TextureUsage::RenderAttachment;
+
+    if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
+        discardable == Discardable::kYes) {
+        info.fUsage |= fSupportedTransientAttachmentUsage;
+    }
+
+    return TextureInfos::MakeDawn(info);
 }
 
 TextureInfo DawnCaps::getDefaultSampledTextureInfo(SkColorType colorType,
@@ -267,46 +305,6 @@ TextureInfo DawnCaps::getDefaultCompressedTextureInfo(SkTextureCompressionType c
     info.fFormat = format;
     info.fViewFormat = format;
     info.fUsage = usage;
-
-    return TextureInfos::MakeDawn(info);
-}
-
-TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                                Discardable discardable) const {
-    if (fDefaultMSAASamples <= 1) {
-        return {};
-    }
-
-    DawnTextureInfo info;
-    info.fSampleCount = fDefaultMSAASamples;
-    info.fMipmapped   = Mipmapped::kNo;
-    info.fFormat      = TextureInfoPriv::Get<DawnTextureInfo>(singleSampledInfo).getViewFormat();
-    info.fUsage       = wgpu::TextureUsage::RenderAttachment;
-
-    if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
-        discardable == Discardable::kYes) {
-        info.fUsage |= fSupportedTransientAttachmentUsage;
-    }
-
-    return TextureInfos::MakeDawn(info);
-}
-
-TextureInfo DawnCaps::getDefaultDepthStencilTextureInfo(
-        SkEnumBitMask<DepthStencilFlags> depthStencilType,
-        uint32_t sampleCount,
-        Protected,
-        Discardable discardable) const {
-    DawnTextureInfo info;
-    info.fSampleCount = sampleCount;
-    info.fMipmapped   = Mipmapped::kNo;
-    info.fFormat      = DawnDepthStencilFlagsToFormat(depthStencilType);
-    info.fViewFormat  = info.fFormat;
-    info.fUsage       = wgpu::TextureUsage::RenderAttachment;
-
-    if (discardable == Discardable::kYes &&
-        fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None) {
-        info.fUsage |= fSupportedTransientAttachmentUsage;
-    }
 
     return TextureInfos::MakeDawn(info);
 }
@@ -966,14 +964,6 @@ void DawnCaps::setColorType(SkColorType colorType,
     }
 }
 
-bool DawnCaps::serializeTextureInfo(const TextureInfo& info, SkWStream* out) const {
-    return TextureInfoPriv::Serialize<DawnTextureInfo>(info, out);
-}
-
-bool DawnCaps::deserializeTextureInfo(SkStream* stream, TextureInfo* out) const {
-    return TextureInfoPriv::Deserialize<DawnTextureInfo>(stream, out);
-}
-
 // Make sure the format table indices will fit into the packed bits, with room to spare for
 // representing an unused attachment.
 static constexpr int kFormatBits = 11; // x2 attachments (color & depthStencil formats)
@@ -981,7 +971,7 @@ static constexpr int kSampleBits = 4;  // x2 attachments (color & depthStencil n
 static constexpr int kResolveBits = 1;
 static constexpr int kUnusedAttachmentIndex = (1 << kFormatBits) - 1;
 static_assert(2*(kFormatBits + kSampleBits) + kResolveBits <= 32);
-static_assert(std::size(kFormats) <= kUnusedAttachmentIndex);
+static_assert((kTextureFormatCount <= kUnusedAttachmentIndex);
 
 static constexpr int kDepthStencilNumSamplesOffset = kResolveBits;
 static constexpr int kDepthStencilFormatOffset = kDepthStencilNumSamplesOffset + kSampleBits;
@@ -999,8 +989,8 @@ uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     // being used.
     SkASSERT(colorInfo.isValid());
 
-    // Use format indices instead of WGPUTextureFormat values since they can be larger than 16 bits.
-    uint32_t colorFormatIndex =
+    uint8_t colorFormatIndex = static_cast<uint8_t>(renderPassDesc.fColorAttachment.fFormat);
+    uint8_t depthStencilIndex = static_cast<uint8_t>
             GetFormatIndex(TextureInfoPriv::Get<DawnTextureInfo>(colorInfo).getViewFormat());
     uint32_t depthStencilFormatIndex = depthStencilInfo.isValid()
             ? GetFormatIndex(

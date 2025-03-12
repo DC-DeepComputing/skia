@@ -395,21 +395,16 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
         auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
         auto fsModule = create_shader_module(dawnSharedContext()->device(), kFragmentShaderText);
 
-        const auto& colorTexInfo = renderPassDesc.fColorAttachment.fTextureInfo;
-        const auto& dsTexInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
-
         pipeline = create_blit_render_pipeline(
                 dawnSharedContext(),
                 /*label=*/"BlitWithDraw",
                 std::move(vsModule),
                 std::move(fsModule),
                 /*renderPassColorFormat=*/
-                TextureInfoPriv::Get<DawnTextureInfo>(colorTexInfo).getViewFormat(),
+                TextureFormatToDawnFormat(renderPassDesc.fColorAttachment.fFormat),
                 /*renderPassDepthStencilFormat=*/
-                dsTexInfo.isValid()
-                        ? TextureInfoPriv::Get<DawnTextureInfo>(dsTexInfo).getViewFormat()
-                        : wgpu::TextureFormat::Undefined,
-                /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
+                TextureFormatToDawnFormat(renderPassDesc.fDepthStencilAttachment.fFormat),
+                /*numSamples=*/renderPassDesc.fColorAttachment.fSampleCount);
 
         if (pipeline) {
             fBlitWithDrawPipelines.set(renderPassKey, pipeline);
