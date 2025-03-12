@@ -116,6 +116,13 @@ void Precompile(PrecompileContext* precompileContext,
         }
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
+            // TODO(b/402787585): Refactor RenderPassDesc creation to be at a lower level in the
+            // precompilation process such that we can use DstReadStrategy::kNoneRequired when
+            // no PaintOption coverage + blend mode combinations require reading from the dst
+            // texture. Currently, Vulkan is the only backend that could benefit from this
+            // distinction, but this test is currently skipped for that backend anyway (see
+            // dm_flags.go).
+            // For now, simply pass in a DstReadStrategy based on the target texture's properties.
             const RenderPassDesc renderPassDesc =
                     RenderPassDesc::Make(caps,
                                          info,

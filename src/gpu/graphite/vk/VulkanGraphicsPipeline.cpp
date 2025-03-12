@@ -695,7 +695,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                              pipelineDesc.paintParamsID(),
                              useStorageBuffers,
                              renderPassDesc.fWriteSwizzle,
-                             renderPassDesc.fDstReadStrategyIfRequired,
+                             renderPassDesc.fDstReadStrategy,
                              &descContainer);
 
     // Populate an array of sampler ptrs where a sampler's index within the array indicates their
@@ -905,14 +905,14 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
     std::string vertShaderText;
     vertShaderText.append(
             "layout(vulkan,  push_constant) uniform vertexUniformBuffer {"
-                "half4 uPosXform;"
+            "half4 uPosXform;"
             "};"
 
-            // MSAA Load Program VS
+            "// MSAA Load Program VS\n"
             "void main() {"
-                "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
-                "sk_Position.xy = position * uPosXform.xy + uPosXform.zw;"
-                "sk_Position.zw = half2(0, 1);"
+            "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
+            "sk_Position.xy = position * uPosXform.xy + uPosXform.zw;"
+            "sk_Position.zw = half2(0, 1);"
             "}");
 
     std::string fragShaderText;
@@ -921,9 +921,9 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
             std::to_string(VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex) +
             ", binding=0) subpassInput uInput;"
 
-            // MSAA Load Program FS
+            "// MSAA Load Program FS\n"
             "void main() {"
-                "sk_FragColor = subpassLoad(uInput);"
+            "sk_FragColor = subpassLoad(uInput);"
             "}");
 
     SkSL::Program::Interface vsInterface, fsInterface;
