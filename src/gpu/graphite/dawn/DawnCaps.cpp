@@ -486,7 +486,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // this case. There is a bug in D3D11's backend where it sets number of SSBOs in vertex shader
     // to non-zero in compat mode. Once that bug is fixed, and a new limit is used for readonly
     // SSBOs, we can enable this again.
-    fStorageBufferSupport =
+    fStorageBufferSupport  =
             info.backendType != wgpu::BackendType::OpenGL &&
             info.backendType != wgpu::BackendType::OpenGLES &&
             info.backendType != wgpu::BackendType::Vulkan &&
