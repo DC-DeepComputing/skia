@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4244b3a0_eae43206",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-03-13T12:50:51Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "ddf0ff23_d46ce09d",
+      "range": {
+        "startLine": 127,
+        "startChar": 12,
+        "endLine": 127,
+        "endChar": 34
+      },
+      "revId": "93170f6cda82547cd7cdbf8ad4212b4910b6c136",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5f8ad27_2a4001c9",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-12T15:51:50Z",
       "side": 1,
       "message": "typo?",
+      "range": {
+        "startLine": 133,
+        "startChar": 69,
+        "endLine": 133,
+        "endChar": 70
+      },
+      "revId": "93170f6cda82547cd7cdbf8ad4212b4910b6c136",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04f8a069_26cdae96",
+        "filename": "src/codec/SkJpegMetadataDecoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-03-13T12:50:51Z",
+      "side": 1,
+      "message": "Broke the build, too. Removed.",
+      "parentUuid": "b5f8ad27_2a4001c9",
       "range": {
         "startLine": 133,
         "startChar": 69,
