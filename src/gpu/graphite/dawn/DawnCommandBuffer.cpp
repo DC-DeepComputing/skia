@@ -337,11 +337,50 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     SkASSERT(!fTimestampQueryBuffer);
 #endif
 
-    auto& colorInfo = renderPassDesc.fColorAttachment;
+    // Possible plan to handle MSAA-render-to-single
+    // The RPDesc has a color attachment with msaa sample count AND a resolve attachment desc
+    // But in RPTask, we see caps supports msaa-render-to-single and use that instead, so we skip
+    // instantiating the color texture.  In that case we would fall through all of this code
+    // based on checking the attachment descs for being a supported format, and then asserting
+    // that the texture is not null (or if it's null that we support msaa extension).
+
+
+    if (resolveTexture) {
+
+    } else {
+        SkASSERT(colorTexture);
+    }
+
+    const auto& colorInfo = renderPassDesc.fColorAttachment;
     bool loadMSAAFromResolveExplicitly = false;
-    if (colorTexture) {
+    if (colorInfo.fFormat != TextureFormat::kUnsupported) {
         wgpuRenderPass.colorAttachments = &wgpuColorAttachment;
         wgpuRenderPass.colorAttachmentCount = 1;
+
+        if (colorTexture) {
+
+            if (resolveTexture) {
+
+            }
+        } else {
+
+
+        }
+
+        if (resolveTexture) {
+            if (colorTexture) {
+                // MSAA attachment with manual resolve
+            } else {
+                // MSAA render to single sampled extension
+            }
+        } else {
+            // Direct render
+            SkASSERT(colorTexture);
+        }
+
+        // But for for msaa-to-single, the color attachment needs to be the resolve texture then
+        // and we take the color attachment's sample count as the chained struct
+        // so maybe we just extract all of this out?
 
         // TODO: check Texture matches RenderPassDesc
         const auto* dawnColorTexture = static_cast<const DawnTexture*>(colorTexture);
@@ -407,20 +446,22 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             }
 #endif
         }
+    } else {
+        // no color texture + resolve texture should mean msaa-render-to-single sampled
+        // if we were doing color rendering (msaa or not) w/o a resolve, we'd have the color texture
     }
 
     // Set up stencil/depth attachment
-    auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
+    const auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
     if (depthStencilTexture) {
-        const auto* dawnDepthStencilTexture = static_cast<const DawnTexture*>(depthStencilTexture);
-        auto format = dawnDepthStencilTexture->dawnTextureInfo().getViewFormat();
-        SkASSERT(DawnFormatIsDepthOrStencil(format));
+        SkASSERT(depthStencilInfo.isCompatible(depthStencilTexture->textureInfo()));
 
-        // TODO: check Texture matches RenderPassDesc
+        const auto* dawnDepthStencilTexture = static_cast<const DawnTexture*>(depthStencilTexture);
+
         SkASSERT(dawnDepthStencilTexture->renderTextureView());
         wgpuDepthStencilAttachment.view = dawnDepthStencilTexture->renderTextureView();
 
-        if (DawnFormatIsDepth(format)) {
+        if (TextureFormatHasDepth(depthStencilInfo.fFormat)) {
             wgpuDepthStencilAttachment.depthClearValue = renderPassDesc.fClearDepth;
             wgpuDepthStencilAttachment.depthLoadOp =
                     wgpuLoadActionMap[static_cast<int>(depthStencilInfo.fLoadOp)];
@@ -428,7 +469,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                     wgpuStoreActionMap[static_cast<int>(depthStencilInfo.fStoreOp)];
         }
 
-        if (DawnFormatIsStencil(format)) {
+        if (TextureFormatHasDepth(depthStencilInfo.fFormat)) {
             wgpuDepthStencilAttachment.stencilClearValue = renderPassDesc.fClearStencil;
             wgpuDepthStencilAttachment.stencilLoadOp =
                     wgpuLoadActionMap[static_cast<int>(depthStencilInfo.fLoadOp)];
@@ -438,7 +479,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
         wgpuRenderPass.depthStencilAttachment = &wgpuDepthStencilAttachment;
     } else {
-        SkASSERT(!depthStencilInfo.fTextureInfo.isValid());
+        SkASSERT(depthStencilInfo.fFormat == TextureFormat::kUnsupported);
     }
 
     if (loadMSAAFromResolveExplicitly) {

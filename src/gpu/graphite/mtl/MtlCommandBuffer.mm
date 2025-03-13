@@ -12,6 +12,7 @@
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
@@ -247,10 +248,12 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
     sk_cfp<MTLRenderPassDescriptor*> descriptor([[MTLRenderPassDescriptor alloc] init]);
     // Set up color attachment.
-    auto& colorInfo = renderPassDesc.fColorAttachment;
+    const auto& colorInfo = renderPassDesc.fColorAttachment;
+    const auto& resolveInfo = renderPassDesc.fColorResolveAttachment;
     bool loadMSAAFromResolve = false;
     if (colorTexture) {
-        // TODO: check Texture matches RenderPassDesc
+        SkASSERT(colorInfo.isCompatible(colorTexture->textureInfo()));
+
         auto colorAttachment = (*descriptor).colorAttachments[0];
         colorAttachment.texture = ((const MtlTexture*)colorTexture)->mtlTexture();
         const std::array<float, 4>& clearColor = renderPassDesc.fClearColor;
@@ -258,10 +261,12 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 MTLClearColorMake(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
         colorAttachment.loadAction = mtlLoadAction[static_cast<int>(colorInfo.fLoadOp)];
         colorAttachment.storeAction = mtlStoreAction[static_cast<int>(colorInfo.fStoreOp)];
+
         // Set up resolve attachment
         if (resolveTexture) {
-            SkASSERT(renderPassDesc.fColorResolveAttachment.fStoreOp == StoreOp::kStore);
-            // TODO: check Texture matches RenderPassDesc
+            SkASSERT(resolveInfo.isCompatible(resolveTexture->textureInfo()));
+            SkASSERT(resolveInfo.fStoreOp == StoreOp::kStore);
+
             colorAttachment.resolveTexture = ((const MtlTexture*)resolveTexture)->mtlTexture();
             // Inclusion of a resolve texture implies the client wants to finish the
             // renderpass with a resolve.
@@ -274,7 +279,7 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 SkASSERT(false);
             }
             // But it also means we have to load the resolve texture into the MSAA color attachment
-            loadMSAAFromResolve = renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+            loadMSAAFromResolve = resolveInfo.fLoadOp == LoadOp::kLoad;
             // TODO: If the color resolve texture is read-only we can use a private (vs. memoryless)
             // msaa attachment that's coupled to the framebuffer and the StoreAndMultisampleResolve
             // action instead of loading as a draw.
@@ -282,11 +287,12 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     // Set up stencil/depth attachment
-    auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
+    const auto& depthStencilInfo = renderPassDesc.fDepthStencilAttachment;
     if (depthStencilTexture) {
-        // TODO: check Texture matches RenderPassDesc
+        SkASSERT(depthStencilInfo.isCompatible(depthStencilTexture->textureInfo()));
+
         id<MTLTexture> mtlTexture = ((const MtlTexture*)depthStencilTexture)->mtlTexture();
-        if (MtlFormatIsDepth(mtlTexture.pixelFormat)) {
+        if (TextureFormatHasDepth(depthStencilInfo.fFormat)) {
             auto depthAttachment = (*descriptor).depthAttachment;
             depthAttachment.texture = mtlTexture;
             depthAttachment.clearDepth = renderPassDesc.fClearDepth;
@@ -295,7 +301,7 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             depthAttachment.storeAction =
                      mtlStoreAction[static_cast<int>(depthStencilInfo.fStoreOp)];
         }
-        if (MtlFormatIsStencil(mtlTexture.pixelFormat)) {
+        if (TextureFormatHasStencil(depthStencilInfo.fFormat)) {
             auto stencilAttachment = (*descriptor).stencilAttachment;
             stencilAttachment.texture = mtlTexture;
             stencilAttachment.clearStencil = renderPassDesc.fClearStencil;
@@ -305,7 +311,7 @@ bool MtlCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                      mtlStoreAction[static_cast<int>(depthStencilInfo.fStoreOp)];
         }
     } else {
-        SkASSERT(!depthStencilInfo.fTextureInfo.isValid());
+        SkASSERT(depthStencilInfo.fFormat == TextureFormat::kUnsupported);
     }
 
     fActiveRenderCommandEncoder = MtlRenderCommandEncoder::Make(fSharedContext,

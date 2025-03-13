@@ -119,6 +119,17 @@ sk_sp<ComputePipeline> ResourceProvider::findOrCreateComputePipeline(
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 
+sk_sp<Texture> ResourceProvider::findOrCreateShareableTexture(SkISize dimensions,
+                                                              const TextureInfo& info,
+                                                              std::string_view label) {
+    SkASSERT(info.isValid());
+    return this->findOrCreateTexture(dimensions,
+                                     info,
+                                     std::move(label),
+                                     Budgeted::kYes,
+                                     Shareable::kYes);
+}
+
 sk_sp<Texture> ResourceProvider::findOrCreateNonShareableTexture(SkISize dimensions,
                                                                  const TextureInfo& info,
                                                                  std::string_view label,
@@ -143,34 +154,6 @@ sk_sp<Texture> ResourceProvider::findOrCreateScratchTexture(
                                      Budgeted::kYes,
                                      Shareable::kScratch,
                                      &unavailable);
-}
-
-sk_sp<Texture> ResourceProvider::findOrCreateDepthStencilAttachment(SkISize dimensions,
-                                                                    const TextureInfo& info) {
-    SkASSERT(info.isValid());
-    // We always make depth and stencil attachments shareable. Between any render pass the values
-    // are reset. Thus it is safe to be used by multiple different render passes without worry of
-    // stomping on each other's data.
-    return this->findOrCreateTexture(dimensions,
-                                     info,
-                                     "DepthStencilAttachment",
-                                     Budgeted::kYes,
-                                     Shareable::kYes);
-}
-
-sk_sp<Texture> ResourceProvider::findOrCreateDiscardableMSAAAttachment(SkISize dimensions,
-                                                                       const TextureInfo& info) {
-    SkASSERT(info.isValid());
-    // We always make discardable msaa attachments shareable. Between any render pass we discard
-    // the values of the MSAA texture. Thus it is safe to be used by multiple different render
-    // passes without worry of stomping on each other's data. It is the callings code's
-    // responsibility to populate the discardable MSAA texture with data at the start of the
-    // render pass.
-    return this->findOrCreateTexture(dimensions,
-                                     info,
-                                     "DiscardableMSAAAttachment",
-                                     Budgeted::kYes,
-                                     Shareable::kYes);
 }
 
 sk_sp<Texture> ResourceProvider::findOrCreateTexture(

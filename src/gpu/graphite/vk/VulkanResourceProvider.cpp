@@ -44,6 +44,7 @@ namespace skgpu::graphite {
 constexpr int kMaxNumberOfCachedBufferDescSets = 1024;
 
 namespace {
+
 VkPipelineLayout create_mock_layout(const VulkanSharedContext* sharedContext) {
     SkASSERT(sharedContext);
     VkPushConstantRange pushConstantRange;
@@ -70,8 +71,11 @@ VkPipelineLayout create_mock_layout(const VulkanSharedContext* sharedContext) {
                                             /*const VkAllocationCallbacks*=*/nullptr,
                                             &layout));
     return layout;
+
 }
+
 } // anonymous
+
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                SingleOwner* singleOwner,
                                                uint32_t recorderID,
@@ -434,14 +438,22 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
 }
 
 
-sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPassWithKnownKey(
+sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
             const RenderPassDesc& renderPassDesc,
-            bool compatibleOnly,
-            const GraphiteResourceKey& rpKey) {
+            bool compatibleOnly) {
     static constexpr Budgeted kBudgeted = Budgeted::kYes;
     static constexpr Shareable kShareable = Shareable::kYes;
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    if (Resource* resource = fResourceCache->findAndRefResource(rpKey, kBudgeted, kShareable)) {
+    GraphiteResourceKey key;
+    {
+        VulkanRenderPass::MetaData rpMetaData{renderPassDesc, compatibleOnly};
+        GraphiteResourceKey::Builder builder(&key, kType, rpMetaData.keySize());
+
+        int startingIdx = 0;
+        rpMetaData.addToKey(builder, startingIdx);
+    }
+    if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
@@ -453,16 +465,9 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPassWithKnownK
         return nullptr;
     }
 
-    fResourceCache->insertResource(renderPass.get(), rpKey, kBudgeted, kShareable);
+    fResourceCache->insertResource(renderPass.get(), key, kBudgeted, kShareable);
 
     return renderPass;
-}
-
-sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
-        const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
-    GraphiteResourceKey rpKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
-
-    return this->findOrCreateRenderPassWithKnownKey(renderPassDesc, compatibleOnly, rpKey);
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
@@ -629,17 +634,16 @@ sk_sp<VulkanYcbcrConversion> VulkanResourceProvider::findOrCreateCompatibleYcbcr
 sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeline(
         const RenderPassDesc& renderPassDesc) {
 
-    if (!renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() ||
-        !renderPassDesc.fColorAttachment.fTextureInfo.isValid()) {
+    if (renderPassDesc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported ||
+        renderPassDesc.fColorAttachment.fFormat == TextureFormat::kUnsupported) {
         SKGPU_LOG_E("Loading MSAA from resolve texture requires valid color & resolve attachment");
         return nullptr;
     }
 
     // Check to see if we already have a suitable pipeline that we can use.
-    GraphiteResourceKey renderPassKey =
-            VulkanRenderPass::MakeRenderPassKey(renderPassDesc, /*compatibleOnly=*/true);
+    VulkanRenderPass::MetaData rpMetadata{renderPassDesc, /*compatibleOnly=*/true};
     for (int i = 0; i < fLoadMSAAPipelines.size(); i++) {
-        if (renderPassKey == fLoadMSAAPipelines.at(i).first) {
+        if (rpMetadata == fLoadMSAAPipelines.at(i).first) {
             return fLoadMSAAPipelines.at(i).second;
         }
     }
@@ -662,9 +666,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     sk_sp<VulkanRenderPass> compatibleRenderPass =
-            this->findOrCreateRenderPassWithKnownKey(renderPassDesc,
-                                                     /*compatibleOnly=*/true,
-                                                     renderPassKey);
+            this->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
     if (!compatibleRenderPass) {
         SKGPU_LOG_E("Failed to make compatible render pass for loading MSAA");
     }
@@ -684,7 +686,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
         return nullptr;
     }
 
-    fLoadMSAAPipelines.push_back(std::make_pair(renderPassKey, pipeline));
+    fLoadMSAAPipelines.push_back(std::make_pair(rpMetadata, pipeline));
     return pipeline;
 }
 

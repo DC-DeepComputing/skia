@@ -106,10 +106,6 @@ private:
     // full (needed when beginning a render pass from the command buffer) RenderPass.
     sk_sp<VulkanRenderPass> findOrCreateRenderPass(const RenderPassDesc&, bool compatibleOnly);
 
-    // Use a predetermined RenderPass key for finding/creating a RenderPass to avoid recreating it
-    sk_sp<VulkanRenderPass> findOrCreateRenderPassWithKnownKey(
-            const RenderPassDesc&, bool compatibleOnly, const GraphiteResourceKey& rpKey);
-
     VkPipelineCache pipelineCache();
     VkPipelineLayout mockPushConstantPipelineLayout() const {
         return fMockPushConstantPipelineLayout;
@@ -123,10 +119,9 @@ private:
     // real pipeline layouts that can be reused across command buffers.
     VkPipelineLayout fMockPushConstantPipelineLayout;
 
-    // The first value of the pair is a renderpass key. Graphics pipeline keys contain extra
-    // information that we do not need for identifying unique pipelines.
-    skia_private::TArray<std::pair<GraphiteResourceKey,
-                         sk_sp<VulkanGraphicsPipeline>>> fLoadMSAAPipelines;
+    // The first value of the pair is a compatible-only renderpass metadata for the render pass.
+    skia_private::TArray<std::pair<VulkanRenderPass::MetaData,
+                                   sk_sp<VulkanGraphicsPipeline>>> fLoadMSAAPipelines;
     // All of the following attributes are the same between all msaa load pipelines, so they only
     // need to be created once and can then be stored.
     VkShaderModule fMSAALoadVertShaderModule = VK_NULL_HANDLE;

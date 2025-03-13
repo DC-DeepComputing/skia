@@ -34,6 +34,7 @@
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
@@ -465,10 +466,8 @@ Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
         if (fRecorder->priv().caps()->msaaRenderToSingleSampledSupport()) {
             fMSAASupported = true;
         } else {
-            TextureInfo msaaTexInfo =
-                   fRecorder->priv().caps()->getDefaultMSAATextureInfo(fDC->target()->textureInfo(),
-                                                                       Discardable::kYes);
-            fMSAASupported = msaaTexInfo.isValid();
+            fMSAASupported = 1 < fRecorder->priv().caps()->getDefaultSupportedSampleCount(
+                    TextureInfoPriv::ViewFormat(fDC->target()->textureInfo()));
         }
     }
 }
