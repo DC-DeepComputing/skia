@@ -33,6 +33,29 @@
       "message": "I guess, at a step back, is there some unit test we should add to exercise the  failure conditions?",
       "revId": "5258ec1c4b7960d9190582c9b0756cbba1c1c826",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a798c53f_0b3718ca",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T19:12:30Z",
+      "side": 1,
+      "message": "If the plot is empty, are there any rects that need to be reset? Or was the old `resetRects()` a no-op in that case?",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 39
+      },
+      "revId": "5258ec1c4b7960d9190582c9b0756cbba1c1c826",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
