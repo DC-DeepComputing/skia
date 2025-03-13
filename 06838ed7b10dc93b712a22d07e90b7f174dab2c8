@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9448cf64_7951330e",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T14:23:04Z",
+      "side": 1,
+      "message": "This is for cases 32,33, and 60 which don\u0027t need kSrc. Using ```image_premul_src_srcover``` would result in even more combinations.\n\nI think, as a follow up, I will just add a ```image_premul_src``` and remove the combined call. That would split cases 11, 16, 17, 19 and 38 into two sets.",
+      "parentUuid": "00e9a85c_1d2a587a",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d5dbc6d_2602b2bf",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61b658a_3db7d322",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T14:23:04Z",
+      "side": 1,
+      "message": "That would be great! I fully expect we\u0027ll have to update these regularly, based on UMA stats feedback, so I\u0027m inclined to just let things ride for now.",
+      "parentUuid": "2d5dbc6d_2602b2bf",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 93
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20c0cac2_798c34a3",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-13T13:59:43Z",
       "side": 1,
       "message": "There is an open question about how we want to handle analytic clipping and clip shaders with precompilation. We could always combine them w/ overgeneration, we could require that they include clip options X paint options, or we could ignore them entirely and just trigger on-the-fly compilation.\n\nWhen we have a low priority background thread, handling the analytic clip overgeneration is probably acceptable.",
+      "range": {
+        "startLine": 413,
+        "startChar": 0,
+        "endLine": 413,
+        "endChar": 70
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "967078f1_8565892e",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T14:23:04Z",
+      "side": 1,
+      "message": "Yeah - I suspect there will be some cases we\u0027ll want to Precompile but I\u0027m a bit skeptical re the generality of the Chrome stories used to generate this set. Regardless of how we express it in the Precompile API I would like to get some actual UMA stats to guide which AnalyticClip Pipelines we generate.",
+      "parentUuid": "20c0cac2_798c34a3",
       "range": {
         "startLine": 413,
         "startChar": 0,
