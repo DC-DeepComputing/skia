@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00e9a85c_1d2a587a",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:59:43Z",
+      "side": 1,
+      "message": "why do we need this one if we have `image_premul_src_srcover()`?",
+      "range": {
+        "startLine": 48,
+        "startChar": 13,
+        "endLine": 48,
+        "endChar": 33
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5dbc6d_2602b2bf",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:59:43Z",
+      "side": 1,
+      "message": "A while back I filed b/388497880 to handle this case and just convert it to a `SolidColor` on the CPU.  This is either an FYI it\u0027ll change later, or a \"should we prioritize getting that through the door if it\u0027s not too hard?\"",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 77,
+        "endChar": 93
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20c0cac2_798c34a3",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:59:43Z",
+      "side": 1,
+      "message": "There is an open question about how we want to handle analytic clipping and clip shaders with precompilation. We could always combine them w/ overgeneration, we could require that they include clip options X paint options, or we could ignore them entirely and just trigger on-the-fly compilation.\n\nWhen we have a low priority background thread, handling the analytic clip overgeneration is probably acceptable.",
+      "range": {
+        "startLine": 413,
+        "startChar": 0,
+        "endLine": 413,
+        "endChar": 70
+      },
+      "revId": "06838ed7b10dc93b712a22d07e90b7f174dab2c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
