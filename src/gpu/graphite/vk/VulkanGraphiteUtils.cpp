@@ -195,7 +195,7 @@ VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(
 }
 
 bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc) {
-    return renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
+    return renderPassDesc.fColorResolveAttachment.fFormat != TextureFormat::kUnsupported &&
            renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
 }
 

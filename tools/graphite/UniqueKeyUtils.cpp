@@ -51,7 +51,7 @@ void DumpDescs(PrecompileContext* precompileContext,
     SkDebugf("   clearColor: %.2f %.2f %.2f %.2f\n"
              "   clearDepth: %.2f\n"
              "   stencilClear: %u\n"
-             "   writeSwizzle: %s\n"
+             "   writeSwizzle: %s\n",
              "   sampleCount: %u\n",
              rpd.fClearColor[0], rpd.fClearColor[1], rpd.fClearColor[2], rpd.fClearColor[3],
              rpd.fClearDepth,

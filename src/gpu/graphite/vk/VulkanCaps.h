@@ -28,7 +28,14 @@ public:
                Protected);
     ~VulkanCaps() override;
 
-    TextureInfo getDefaultSampledTextureInfo(SkColorType,
+    uint8_t getDefaultSupportedSampleCount(TextureFormat) const override;
+    TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const override;
+
+    TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
+                                                Protected,
+                                                Discardable) const override;
+
+                                                TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                              Mipmapped mipmapped,
                                              Protected,
                                              Renderable) const override;
@@ -39,14 +46,6 @@ public:
     TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
                                                 Mipmapped mipmapped,
                                                 Protected) const override;
-
-    TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                          Discardable discardable) const override;
-
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                  uint32_t sampleCount,
-                                                  Protected,
-                                                  Discardable discardable) const override;
 
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
@@ -59,13 +58,9 @@ public:
                                       const RenderPassDesc&) const override;
     UniqueKey makeComputePipelineKey(const ComputePipelineDesc&) const override { return {}; }
 
-    bool serializeTextureInfo(const TextureInfo&, SkWStream*) const override;
-    bool deserializeTextureInfo(SkStream*, TextureInfo* out) const override;
-
     bool isTexturable(const VulkanTextureInfo&) const;
 
     bool isRenderable(const TextureInfo&) const override;
-    bool isRenderable(const VulkanTextureInfo&) const;
     bool isStorage(const TextureInfo&) const override;
 
     void buildKeyForTexture(SkISize dimensions,

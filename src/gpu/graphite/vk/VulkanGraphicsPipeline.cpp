@@ -783,8 +783,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     setup_viewport_scissor_state(&viewportInfo);
 
     VkPipelineMultisampleStateCreateInfo multisampleInfo;
-    setup_multisample_state(renderPassDesc.fColorAttachment.fTextureInfo.numSamples(),
-                            &multisampleInfo);
+    setup_multisample_state(renderPassDesc.fColorAttachment.fSampleCount, &multisampleInfo);
 
     // We will only have one color blend attachment per pipeline.
     VkPipelineColorBlendAttachmentState attachmentStates[1];
@@ -826,8 +825,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     VkPipelineDynamicStateCreateInfo dynamicInfo;
     setup_dynamic_state(&dynamicInfo, dynamicStates);
 
-    bool loadMsaaFromResolve = renderPassDesc.fColorResolveAttachment.fTextureInfo.isValid() &&
-                               renderPassDesc.fColorResolveAttachment.fLoadOp == LoadOp::kLoad;
+    const bool loadMsaaFromResolve = RenderPassDescWillLoadMSAAFromResolve(renderPassDesc);
 
     sk_sp<VulkanRenderPass> compatibleRenderPass =
             rsrcProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
