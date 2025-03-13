@@ -358,14 +358,15 @@ void SkBitmapDevice::drawOval(const SkRect& oval, const SkPaint& paint) {
     this->drawPath(SkPath::Oval(oval), paint, true);
 }
 
+extern bool gUseFastPath;
+bool gUseFastPath = true;
+
 void SkBitmapDevice::drawRRect(const SkRRect& rrect, const SkPaint& paint) {
-#ifdef SK_IGNORE_BLURRED_RRECT_OPT
-    // call the VIRTUAL version, so any subclasses who do handle drawPath aren't
-    // required to override drawRRect.
-    this->drawPath(SkPath::RRect(rrect), paint, true);
-#else
-    LOOP_TILER( drawRRect(rrect, paint), Bounder(rrect.getBounds(), paint))
-#endif
+    if (!gUseFastPath) {
+        this->drawPath(SkPath::RRect(rrect), paint, true);
+    } else {
+        LOOP_TILER( drawRRect(rrect, paint), Bounder(rrect.getBounds(), paint))
+    }
 }
 
 void SkBitmapDevice::drawPath(const SkPath& path,
