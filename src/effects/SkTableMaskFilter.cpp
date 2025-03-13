@@ -14,6 +14,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkFixed.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -36,6 +37,7 @@ public:
     SkMask::Format getFormat() const override;
     bool filterMask(SkMaskBuilder*, const SkMask&, const SkMatrix&, SkIPoint*) const override;
     SkMaskFilterBase::Type type() const override { return SkMaskFilterBase::Type::kTable; }
+    sk_sp<SkImageFilter> asImageFilter(const SkMatrix&) const override;
 
 protected:
     ~SkTableMaskFilterImpl() override;
@@ -122,6 +124,13 @@ sk_sp<SkFlattenable> SkTableMaskFilterImpl::CreateProc(SkReadBuffer& buffer) {
     return sk_sp<SkFlattenable>(SkTableMaskFilter::Create(table));
 }
 
+sk_sp<SkImageFilter> SkTableMaskFilterImpl::asImageFilter(const SkMatrix&) const {
+    sk_sp<SkColorFilter> colorFilter = SkColorFilters::TableARGB(fTable,
+                                                                 nullptr,
+                                                                 nullptr,
+                                                                 nullptr);
+    return SkImageFilters::ColorFilter(colorFilter, nullptr);
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 SkMaskFilter* SkTableMaskFilter::Create(const uint8_t table[256]) {
