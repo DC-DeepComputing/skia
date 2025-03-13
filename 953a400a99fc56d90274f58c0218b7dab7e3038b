@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "771ff659_1e0c6bb4",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T17:08:33Z",
+      "side": 1,
+      "message": "For now I\u0027ve added b/403264070 (Fix Blur Mask choke point) and moved DrawTypeFlags::kAnalyticBlur to InternalDrawTypeFlags.\n\nThis will delay Chrome having the ability to Precompile this Pipeline but that should be fine.",
+      "parentUuid": "d37fa301_4c0c8520",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cc8a212_7b7a89ae",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-13T13:51:29Z",
       "side": 1,
       "message": "Given the size of this enum, I think it might be better to switch to the `\u003d 1 \u003c\u003c N` style for each value.",
+      "range": {
+        "startLine": 184,
+        "startChar": 24,
+        "endLine": 184,
+        "endChar": 36
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcdba764_c29a89e5",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T17:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cc8a212_7b7a89ae",
       "range": {
         "startLine": 184,
         "startChar": 24,
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-13T13:51:29Z",
       "side": 1,
       "message": "nit: also used when doing raster/compute path atlasing",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef374e44_311658a5",
+        "filename": "src/gpu/graphite/InternalDrawTypeFlags.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-13T17:08:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bbc07e5_d08fe3bb",
       "range": {
         "startLine": 21,
         "startChar": 0,
