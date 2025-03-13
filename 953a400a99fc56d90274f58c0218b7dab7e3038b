@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37fa301_4c0c8520",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:51:29Z",
+      "side": 1,
+      "message": "Do we not have have a PaintOption for a blur mask filter? That would be the ideal way to capture this case.\n\nIn the image filter/mask filter choke point, we can adjust the input draw type X rest-of-paint-options to either be analytic or coverage mask.",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 164,
+        "endChar": 37
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc8a212_7b7a89ae",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:51:29Z",
+      "side": 1,
+      "message": "Given the size of this enum, I think it might be better to switch to the `\u003d 1 \u003c\u003c N` style for each value.",
+      "range": {
+        "startLine": 184,
+        "startChar": 24,
+        "endLine": 184,
+        "endChar": 36
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bbc07e5_d08fe3bb",
+        "filename": "src/gpu/graphite/InternalDrawTypeFlags.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-13T13:51:29Z",
+      "side": 1,
+      "message": "nit: also used when doing raster/compute path atlasing",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "953a400a99fc56d90274f58c0218b7dab7e3038b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
