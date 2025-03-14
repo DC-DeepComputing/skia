@@ -63,6 +63,30 @@
       },
       "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2994b0ec_2b076f0e",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-14T18:57:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e8d89894_3c079352",
+      "range": {
+        "startLine": 49,
+        "startChar": 42,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
