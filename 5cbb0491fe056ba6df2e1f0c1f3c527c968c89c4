@@ -39,6 +39,30 @@
       },
       "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8d89894_3c079352",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-14T15:43:35Z",
+      "side": 1,
+      "message": "I was also asked during Chrome Rust sync-up meeting if changing how `kMedium` works may even further regress the compression ratio.  I think the short answer right now is: not necessarily / we don\u0027t know.  The longer answer is:\n\n* Before this CL `kMedium` would use the `flate2` backend.  After this CL `kMedium` will use the `fdeflate` backend (+ adaptive filters, unlike `kLow` which will use `fdeflate` with hardcoded `Up` filter).\n* [The docs](https://github.com/image-rs/image-png/blob/eb9b5d7f371b88f15aaca6a8d21c58b86c400d76/src/common.rs#L333-L335) for `kFast` say that it \"Significantly outperforms libpng and other popular encoders by using a [specialized DEFLATE implementation tuned for PNG](https://crates.io/crates/fdeflate), while still providing better compression ratio than the fastest modes of other encoders.\"\n* I guess this CL is an attempt to quantify/measure these documentation claims and compare to what we got in previous Canary+Dev trials.",
+      "parentUuid": "a7e1910b_53179d04",
+      "range": {
+        "startLine": 49,
+        "startChar": 42,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "5cbb0491fe056ba6df2e1f0c1f3c527c968c89c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
