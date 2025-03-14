@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e10fcad_cdaa30db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-14T13:55:20Z",
+      "side": 1,
+      "message": "Submitting manually due to infra issues/ original CL passed /wo issue and this change is trivial.",
+      "revId": "65db645b6b25f14a1bb8ea193c1d5b6b2a3f25b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
