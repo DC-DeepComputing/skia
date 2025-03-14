@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "81295b05_0a13749d",
+        "filename": "src/core/SkBlendMode.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-14T12:52:38Z",
+      "side": 1,
+      "message": "SKUNREACHABLE?",
+      "range": {
+        "startLine": 131,
+        "startChar": 4,
+        "endLine": 131,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e9230d67_75d46a8a",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkBlendMode.cpp",
+              "range": {
+                "startLine": 130,
+                "startChar": 0,
+                "endLine": 131,
+                "endChar": 0
+              },
+              "replacement": "        default:                       SkUNREACHABLE;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "25387b5b384f64fbdb33727b4a430a2668570eaa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
