@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea57fef8_bc47e2a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-14T12:23:21Z",
+      "side": 1,
+      "message": "I\u0027m going to remove the forceCompact flag from compact() and with it that unit test, so I can add a unit test for this at that point.",
+      "parentUuid": "d1a8f1d6_99372ee7",
+      "revId": "5258ec1c4b7960d9190582c9b0756cbba1c1c826",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a798c53f_0b3718ca",
