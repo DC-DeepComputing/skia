@@ -970,6 +970,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 				},
 				"AVX2": {
 					"GCE":            "x86-64-Haswell_GCE",
+					"Golo":           "x86-64-E3-1230_v5",
 					"MacBookAir7.2":  "x86-64-i5-5350U",
 					"MacBookPro11.5": "x86-64-i7-4870HQ",
 					"MacMini7.1":     "x86-64-i5-4278U",
