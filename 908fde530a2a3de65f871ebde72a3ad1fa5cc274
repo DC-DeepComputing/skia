@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1ad5e9c_f6118ff9",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 947,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-14T18:53:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b4facd1e_328149d6",
+      "range": {
+        "startLine": 944,
+        "startChar": 0,
+        "endLine": 947,
+        "endChar": 9
+      },
+      "revId": "908fde530a2a3de65f871ebde72a3ad1fa5cc274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "991608a7_076ffbd7",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-14T18:48:12Z",
       "side": 1,
       "message": "Without this change, path_huge_crbug_800804 triggers overflows in the edgeSquaredLen calculation when the SkPath is converted to a line. Since we are just trying to calculate the unit directions in the end, this scales down the components by the max of dx or dy for each edge independently (but for a given edge, this is a uniform scaling).  We might have some underflow then if the other component delta was very small compared to the large component, but that is fine since it\u0027s not going to be impacting the direction vector anyways.\n\nOnce the zero-length edges are handled by the original code later on, dx and dy are normalized by `edgeSquaredLen` to be unit anyways, so there\u0027s no need to undo the multiplication by `invMag`.",
+      "range": {
+        "startLine": 647,
+        "startChar": 0,
+        "endLine": 650,
+        "endChar": 42
+      },
+      "revId": "908fde530a2a3de65f871ebde72a3ad1fa5cc274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0edeb9c6_5c0e9d22",
+        "filename": "src/sksl/sksl_graphite_vert.sksl",
+        "patchSetId": 2
+      },
+      "lineNbr": 650,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-14T18:53:25Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "991608a7_076ffbd7",
       "range": {
         "startLine": 647,
         "startChar": 0,
