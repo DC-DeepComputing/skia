@@ -56,6 +56,30 @@
       },
       "revId": "5258ec1c4b7960d9190582c9b0756cbba1c1c826",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9de579e4_02227c0e",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-14T12:22:16Z",
+      "side": 1,
+      "message": "It does update the generation ID for the plot which I think is unnecessary, but just in case I\u0027ve switched to always calling processEvictionAndResetRects, and within that only calling processEviction if !isEmpty().",
+      "parentUuid": "a798c53f_0b3718ca",
+      "range": {
+        "startLine": 497,
+        "startChar": 0,
+        "endLine": 497,
+        "endChar": 39
+      },
+      "revId": "5258ec1c4b7960d9190582c9b0756cbba1c1c826",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
