@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e921cb73_0bd635b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-14T21:43:42Z",
+      "side": 1,
+      "message": "Based on the chrome canary, I\u0027ll need to do a manual chrome roll to rebaseline one pixel test (improved AA quality) and triage some gold images (also improved AA quality).  Since I have to manual roll for the gold images, I\u0027ll include the pixel test image update in that CL instead of suppressing the test or guarding this change.",
+      "revId": "908fde530a2a3de65f871ebde72a3ad1fa5cc274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4facd1e_328149d6",
