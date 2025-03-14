@@ -16,6 +16,24 @@
       "message": "@fmalita@google.com Locally when running this benchmark I get similar (or faster?) averages all around for encoding. I wanted to land this CL first before making the change so we can see if we get regressions on other machines/architectures.",
       "revId": "1d4b4a4589a815befb2e76ac1971c8fad7b1c9f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3f06a31_fa7221d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-14T15:55:34Z",
+      "side": 1,
+      "message": "Sidenote: I wanted to add f32 encoding to the benchmark too but our png codec doesn\u0027t decode into f32 so I couldn\u0027t decode directly into an f32 bitmap.",
+      "parentUuid": "e8db9529_fa50cc7e",
+      "revId": "1d4b4a4589a815befb2e76ac1971c8fad7b1c9f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
