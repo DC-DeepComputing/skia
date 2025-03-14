@@ -118,6 +118,30 @@
       },
       "revId": "750b5eddd7b0b819bf8878b280462fe48612a282",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e25924c8_ffa3be90",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 1
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-14T16:26:23Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "f8286b25_08218bf1",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 140,
+        "endChar": 66
+      },
+      "revId": "750b5eddd7b0b819bf8878b280462fe48612a282",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
