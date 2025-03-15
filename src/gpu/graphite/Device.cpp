@@ -956,6 +956,11 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
             this->drawRRect(rrect, paint);
             return;
         }
+        SkArc arc;
+        if (path.isArc(&arc)) {
+            this->drawArc(arc, paint);
+            return;
+        }
         // For rects, if the path is not explicitly closed and the paint style is stroked then it
         // represents a rectangle with only 3 sides rasterized (and with any caps). If it's filled
         // or is closed+stroked, then the path renders identically to the rectangle.
