@@ -13,6 +13,7 @@
 
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
+#include "src/base/SkMathPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/Buffer.h"
@@ -262,9 +263,13 @@ void DrawContext::flush(Recorder* recorder) {
             // this is handled inside Image::Copy() except we would need it to expose the task in
             // order to link it correctly.
             SkASSERT(recorder->priv().caps()->isTexturable(fTarget->textureInfo()));
+            // Use power of two sizes for better reuse.
+            SkISize dstCopyTextureSize =
+                    SkISize::Make(SkNextPow2(dstReadPixelBounds.size().width()),
+                                  SkNextPow2(dstReadPixelBounds.size().height()));
             dstCopy = TextureProxy::Make(recorder->priv().caps(),
                                          recorder->priv().resourceProvider(),
-                                         dstReadPixelBounds.size(),
+                                         dstCopyTextureSize,
                                          fTarget->textureInfo(),
                                          "DstCopyTexture",
                                          skgpu::Budgeted::kYes);
