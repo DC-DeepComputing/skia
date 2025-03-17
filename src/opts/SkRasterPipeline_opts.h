@@ -9,6 +9,7 @@
 #define SkRasterPipeline_opts_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/core/SkString.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkSpan_impl.h"
 #include "include/private/base/SkTemplates.h"
@@ -222,6 +223,10 @@ namespace SK_OPTS_NS {
 
     SI F   if_then_else(I32 c, F   t, F   e) { return vbslq_f32((U32)c,t,e); }
     SI I32 if_then_else(I32 c, I32 t, I32 e) { return vbslq_s32((U32)c,t,e); }
+
+    SI SkString format(F f) {
+        return SkStringPrintf("[%f %f %f %f]", f[0], f[1], f[2], f[3]);
+    }
 
     #if defined(SK_CPU_ARM64)
         SI bool any(I32 c) { return vmaxvq_u32((U32)c) != 0; }
@@ -5098,6 +5103,10 @@ using U32 = V<uint32_t>;
 using I64 = V< int64_t>;
 using U64 = V<uint64_t>;
 using F   = V<float   >;
+
+SI SkString format(F f) {
+    return SkStringPrintf("[%f %f %f %f]", f[0], f[1], f[2], f[3]);
+}
 
 static constexpr size_t N = sizeof(U16) / sizeof(uint16_t);
 

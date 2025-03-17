@@ -19,8 +19,10 @@
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
+#include <vector>
 
 class SkArenaAlloc;
+class SkBitmap;
 class SkMatrix;
 class SkRasterPipeline;
 class SkShader;
@@ -120,6 +122,15 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&,
                                          SkArenaAlloc*,
                                          sk_sp<SkShader> clipShader,
                                          const SkSurfaceProps& props);
+
+SkBlitter* SkCreateRasterPipelineBlitterVisualizer(const SkPixmap& output,
+                                                   const std::vector<SkBitmap>& stages,
+                                                   const SkPaint&,
+                                                   const SkMatrix& ctm,
+                                                   SkArenaAlloc*,
+                                                   sk_sp<SkShader> clipShader,
+                                                   const SkSurfaceProps& props);
+
 // Use this if you've pre-baked a shader pipeline, including modulating with paint alpha.
 SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&, const SkPaint&,
                                          const SkRasterPipeline& shaderPipeline,
