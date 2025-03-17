@@ -52,6 +52,24 @@
       "parentUuid": "64a8f6af_4dbf8b34",
       "revId": "21450ef4a83a036019e13ed4603a43744dd769eb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "324134ea_fc5bcd83",
+        "filename": "src/gpu/graphite/DrawAtlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 534,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-17T17:18:47Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "62dc4bcc_d5844d87",
+      "revId": "21450ef4a83a036019e13ed4603a43744dd769eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
