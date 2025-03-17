@@ -23,14 +23,27 @@
 #include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileImageFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
-
-namespace {
+#include "src/gpu/graphite/precompile/PrecompileShadersPriv.h"
 
 using ::skgpu::graphite::DepthStencilFlags;
 using ::skgpu::graphite::DrawTypeFlags;
 using ::skgpu::graphite::PaintOptions;
+using ::skgpu::graphite::PrecompileImageShaderFlags;
 using ::skgpu::graphite::RenderPassProperties;
+
+namespace {
+
+// "KnownRuntimeEffect_1DBlur12 [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
+// "KnownRuntimeEffect_1DBlur8  [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
+PaintOptions blur_image() {
+    PaintOptions paintOptions;
+    paintOptions.setImageFilters({ skgpu::graphite::PrecompileImageFilters::Blur(/* input= */ nullptr) });
+    paintOptions.setShaders({ skgpu::graphite::PrecompileShadersPriv::Image(PrecompileImageShaderFlags::kImageOnly) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
 
 // "SolidColor SrcOver"
 PaintOptions solid_srcover() {
@@ -83,6 +96,7 @@ PaintOptions image_srgb_src() {
     paintOptions.setBlendModes({ SkBlendMode::kSrc });
     return paintOptions;
 }
+#endif
 
 // "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver"
 PaintOptions blend_porter_duff_cf_srcover() {
@@ -90,6 +104,51 @@ PaintOptions blend_porter_duff_cf_srcover() {
     // kSrcOver will trigger the PorterDuffBlender
     paintOptions.setColorFilters(
             { skgpu::graphite::PrecompileColorFilters::Blend({ SkBlendMode::kSrcOver }) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+
+    return paintOptions;
+}
+
+#if 0
+// "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransform ] ] Src"
+PaintOptions image_src() {
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ PrecompileShaders::Image() });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+// "LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransform ] ] SrcOver"
+PaintOptions lineargrad_srcover() {
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ PrecompileShaders::LinearGradient() });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+// "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransform ] ] Dither ] SrcOver"
+PaintOptions lineargrad_srcover_dithered() {
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ PrecompileShaders::LinearGradient() });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    paintOptions.setDither(/* dither= */ true);
+    return paintOptions;
+}
+#endif
+
+// "Compose [ SolidColor Blend [ SolidColor Passthrough BlendModeBlender ] ] SrcOver"
+[[maybe_unused]] PaintOptions blend_color_filter_srcover() {
+    PaintOptions paintOptions;
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    paintOptions.setColorFilters({ skgpu::graphite::PrecompileColorFilters::Blend() });
+    return paintOptions;
+}
+
+// "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver
+[[maybe_unused]] PaintOptions blend_porter_duff_color_filter_srcover() {
+    PaintOptions paintOptions;
+    // kSrcOver will trigger the PorterDuffBlender
+    paintOptions.setColorFilters({ skgpu::graphite::PrecompileColorFilters::Blend({ SkBlendMode::kSrcOver }) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
 
     return paintOptions;
@@ -254,6 +313,7 @@ void run_test(skgpu::graphite::PrecompileContext* precompileContext,
               const PrecompileSettings& settings,
               unsigned int expectedNumPipelines) {
     using namespace skgpu::graphite;
+    SkDebugf("running test %zu\n", caseID);
 
     const char* expectedString = cases[caseID];
 
@@ -297,11 +357,21 @@ void run_test(skgpu::graphite::PrecompileContext* precompileContext,
         // The generated strings have trailing whitespace
         if (!strncmp(expectedString, generated[i].c_str(), len)) {
             foundIt = true;
-            break;
         }
     }
 
     REPORTER_ASSERT(reporter, foundIt);
+
+#if 0
+    SkDebugf("-----------\n");
+    for (size_t i = 0; i < cases.size(); ++i) {
+        for (size_t j = 0; j < generated.size(); ++j) {
+            if (strstr(generated[j].c_str(), cases[i]) || strstr(cases[i], generated[j].c_str())) {
+                SkDebugf("case %zu similar to case %zu\n", caseID, i);
+            }
+        }
+    }
+#endif
 
 #ifdef SK_DEBUG
     if (foundIt && correctGenerationAmt) {
@@ -314,6 +384,7 @@ void run_test(skgpu::graphite::PrecompileContext* precompileContext,
              generated.size());
 
     for (size_t i = 0; i < generated.size(); ++i) {
+//        generatedKeys[i].dump("");
         SkDebugf("%zu: %s\n", i, generated[i].c_str());
     }
 #endif
@@ -646,8 +717,120 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
          "SolidColor SrcOver",
     };
 
+#if 0
+    const char* kOldCases[] = {
+        // Wikipedia 2018 - these are reordered from the spreadsheet
+        /*  0 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "TessellateWedgesRenderStep[Winding] + "
+                 "(empty)",
+        /*  1 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "TessellateWedgesRenderStep[EvenOdd] + "
+                 "(empty)",
+        /*  2 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "SolidColor SrcOver",
+        /*  3 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "SolidColor Src",
+        /*  4 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "PerEdgeAAQuadRenderStep + "
+                 "LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] SrcOver",
+        /*  5 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "PerEdgeAAQuadRenderStep + "
+                 "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransform ] ] SrcOver",
+        /*  6 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransform ] ] SrcOver",
+        /*  7 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "AnalyticRRectRenderStep + "
+                 "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
+        /*  8 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
+        /*  9 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "BitmapTextRenderStep[Mask] + "
+                 "LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] SrcOver",
+        /* 10 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+                 "BitmapTextRenderStep[Mask] + "
+                 "SolidColor SrcOver",
+        /* 11 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "AnalyticRRectRenderStep + "
+                 "SolidColor SrcOver",
+        /* 12 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "SolidColor SrcOver",
+        /* 13 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "PerEdgeAAQuadRenderStep + "
+                 "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransform ] ] Src",
+        /* 14 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransform ] ] SrcOver",
+        /* 15 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+                 "TessellateWedgesRenderStep[Convex] + "
+                 "SolidColor SrcOver",
+        /* 16 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+                 "TessellateStrokesRenderStep + "
+                 "SolidColor SrcOver",
+        /* 17 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "AnalyticBlurRenderStep + "
+                 "Compose [ SolidColor Blend [ SolidColor Passthrough BlendModeBlender ] ] SrcOver",
+        /* 18 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "SolidColor Src",
+        /* 19 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
+    };
+#endif
+
+#if 0
+    mapping from old to new cases:
+    0 -> 34
+    1 -> 35
+    2 -> 30
+    3 -> 53
+    4 -> 60
+    5 -> 33
+    6 -> 32
+    7 -> 52
+    8 -> 54
+    9 -> 25
+    10 -> 24
+    11 -> 6
+    12 -> 8
+    13 -> 16
+    14 -> 38
+    15 -> 22
+    16 -> 21
+    17 -> 4
+    18 -> 9
+    19 -> 37
+
+
+    for (size_t i = 0; i < std::size(kOldCases); ++i) {
+        bool foundIt = false;
+        for (size_t j = 0; j < std::size(kCases); ++j) {
+            if (!strcmp(kOldCases[i], kCases[j])) {
+                SkDebugf("%zu -> %zu\n", i, j);
+                foundIt = true;
+                break;
+            }
+        }
+
+        if (!foundIt) {
+            SkDebugf("oldcase %zu not found in new cases\n", i);
+        }
+    }
+
+    exit(0);
+#endif
+
     for (size_t i = 0; i < std::size(kCases); ++i) {
         PrecompileSettings settings;
+//        if (i > 36) {
+//            // After this point the Pipelines become pretty rarely used.
+//            continue;
+//        }
 
         // TODO(robertphillips): splitting kCases[i] into substrings (based on a " + " separator)
         // before passing to the helpers would make this prettier
@@ -659,7 +842,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             // Punting on the blur cases for now since they horribly over-generate
             case 0:             [[fallthrough]];
             case 1:
-                renderPassSettings = kR_1_D;
+                renderPassSettings = kR_1_Depth;
                 drawTypeFlags = DrawTypeFlags::kSimpleShape;
                 paintOptions = blur_image();
                 expectedNumPipelines = 11;
@@ -669,73 +852,74 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             // 2 and 3 form a single-draw pair and are, thus, addressed by the same settings
             case 2: [[fallthrough]];   // TessellateWedgesRenderStep[EvenOdd]
             case 3:                    // kSrcOver - CoverBoundsRenderStep[RegularCover]
-                // solid_srcover, kNonSimpleShape, kR_4_DS
-                settings = kPrecompileCases[2];
+                settings.fRenderPassProps = kR_4_DS;
+                settings.fDrawTypeFlags = DrawTypeFlags::kNonSimpleShape;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 11;   // This is pretty bad for just 2 Pipelines
                 break;
 
             // 4 and 13 share the same paintOptions
-            case 4:  // AnalyticBlurRenderStep
 #if 0
-                // We need to handle AnalyticBlurs differently (b/403264070)
-                // blend_porter_duff_color_filter_srcover(), kAnalyticBlur, kBGRA_1_D
-                settings = kPrecompileCases[0];
+            case 4:  // AnalyticBlurRenderStep
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fDrawTypeFlags = DrawTypeFlags::kAnalyticBlur;
+                settings.fPaintOptions = blend_porter_duff_color_filter_srcover();
                 expectedNumPipelines = 1;
                 break;
-#else
-                continue;
 #endif
 
             case 13: // CoverageMaskRenderStep
-                // this case could be greatly reduced if CoverageMaskRenderStep were split out
-                // blend_porter_duff_color_filter_srcover(), kNonSimpleShape, kBGRA_1_D
-                settings = kPrecompileCases[1];
+                // 13 could be reduced to 1 Pipeline if CoverageMaskRenderStep were split out
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fDrawTypeFlags = DrawTypeFlags::kNonSimpleShape;
+                settings.fPaintOptions = blend_porter_duff_color_filter_srcover();
                 expectedNumPipelines = 11; // This is pretty bad for just 1 Pipeline
                 break;
 
-            // This is the only AlphaOnlyPaintColor case so, we're going to pass for now
+                // This is the only AlphaOnlyPaintColor case so, we're going to pass for now
             case 14:
                 continue;
 
+#if 1 // revisit
             // For now, we're passing on the AnalyticClip Pipelines
             case 5:  // same as 4 but with an AnalyticClip
             case 12:
             case 20:
             case 55:
                 continue;
+#endif
 
-            // The two text pipelines (7 and 24) just differ in render pass settings (one MSAA, the
-            // other not)
+            // 7 and 24 just differ in render pass settings (one MSAA, the other not)
             case 7:
-                // solid_srcover(), kBitmapText_Mask, kBGRA_1_D
-                settings = kPrecompileCases[3];
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fDrawTypeFlags = DrawTypeFlags::kBitmapText_Mask;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 1;
                 break;
             case 24:
-                // solid_srcover(), kBitmapText_Mask, kBGRA_4_DS
-                settings = kPrecompileCases[4];
+                settings.fRenderPassProps = kBGRA_4_DS;
+                settings.fDrawTypeFlags = DrawTypeFlags::kBitmapText_Mask;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 1;
                 break;
 
             // 21 & 22 form a pair (since they both need kNonSimpleShape)
             case 21: // kSrcOver - TessellateStrokesRenderStep
             case 22: // kSrcOver - TessellateWedgesRenderStep[Convex]
-                // solid_srcover(), kNonSimpleShape,  kBGRA_4_D
-                settings = kPrecompileCases[5];
+                settings.fRenderPassProps = kBGRA_4_D;
+                settings.fDrawTypeFlags = DrawTypeFlags::kNonSimpleShape;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 11;  // very bad for 2 pipelines
                 break;
 
-            // Skipping linear gradient text draw. It doesn't seem representative.
+            // Skipping linear gradient text draw. It doesn't seem representative
             case 25:
                 continue;
 
-            // TODO(robertphillips): these two cases aren't being generated!
-            case 27:  // CoverBoundsRenderStep[InverseCover]
-            case 29:  // CoverBoundsRenderStep[RegularCover]
-                continue; // they should normally just fall through
-
-            // the next 9 form a block (since they all need kNonSimpleShape)
+            // the next 4 form a block (since they all need kNonSimpleShape)
             case 28: // kSrcOver - CoverBoundsRenderStep[RegularCover]
+//??? - this isn't generating            case 27:  // CoverBoundsRenderStep[InverseCover]
+//??? - this isn't generating            case 29:  // CoverBoundsRenderStep[RegularCover]
             case 34: // TessellateWedgesRenderStep[Winding]
             case 35: // TessellateWedgesRenderStep[EvenOdd]
             case 36: // kSrcOver - TessellateWedgesRenderStep[Convex]
@@ -745,21 +929,22 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 61: // TessellateCurvesRenderStep[Winding]
             case 62: // TessellateCurvesRenderStep[EvenOdd]
             case 65: // kSrcOver - TessellateStrokesRenderStep
-                // solid_srcover(), kNonSimpleShape,  kBGRA_4_DS
-                settings = kPrecompileCases[6];
+                settings.fRenderPassProps = kBGRA_4_DS;
+                settings.fDrawTypeFlags = DrawTypeFlags::kNonSimpleShape;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 11;  // not so bad for 9 pipelines
                 break;
 
             // These are the same except for the blend mode
-            // kSrcOver seems fine (since it gets 3 pipelines). kSrc and kClear seem like they
-            // should be narrowed (since they're over-generating a lot)
+            // kSrcOver seems fine. kSrc and kClear seem like they should be narrowed
             case 6:  // kSrcOver - AnalyticRRectRenderStep
             case 8:  // kSrcOver - CoverBoundsRenderStep[NonAAFill]
             case 9:  // kSrc     - CoverBoundsRenderStep[NonAAFill]
             case 10: // kClear   - CoverBoundsRenderStep[NonAAFill]
             case 15: // kSrcOver - PerEdgeAAQuadRenderStep
-                // solid_clear_src_srcover(), kSimpleShape, kBGRA_1_D
-                settings = kPrecompileCases[8];
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fDrawTypeFlags = DrawTypeFlags::kSimpleShape;
+                settings.fPaintOptions = solid_clear_src_srcover();
                 // This is 3 each for kClear, kSrc and kSrcOver:
                 //     AnalyticRRectRenderStep
                 //     CoverBoundsRenderStep[NonAAFill]
@@ -768,8 +953,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                 break;
 
             case 26: // kSrcOver - CircularArcRenderStep
-                // solid_srcover(), kCircularArc, kBGRA_4_DS
-                settings = kPrecompileCases[7];
+                settings.fRenderPassProps = kBGRA_4_DS;
+                settings.fDrawTypeFlags = DrawTypeFlags::kCircularArc;
+                settings.fPaintOptions = solid_srcover();
                 expectedNumPipelines = 1;
                 break;
 
@@ -777,8 +963,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 30: // kSrcOver - CoverBoundsRenderStep[NonAAFill]
             case 31: // kClear   - CoverBoundsRenderStep[NonAAFill]
             case 53: // kSrc     - CoverBoundsRenderStep[NonAAFill]
-                //  solid_clear_src_srcover(), kSimpleShape, kBGRA_4_DS
-                settings = kPrecompileCases[9];
+                settings.fRenderPassProps = kBGRA_4_DS;
+                settings.fDrawTypeFlags = DrawTypeFlags::kSimpleShape;
+                settings.fPaintOptions = solid_clear_src_srcover();
                 // This is 3 each for kClear, kSrc and kSrcOver:
                 //     AnalyticRRectRenderStep
                 //     CoverBoundsRenderStep[NonAAFill]
@@ -793,24 +980,29 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
             case 17: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrcOver
             case 19: // PerEdgeAAQuadRenderStep + Image(0) + kSrcOver
             case 38: // CoverBoundsRenderStep[NonAAFill] + HardwareImage(0) + kSrcOver
-                // image_premul_src_srcover(), kSimpleShape, kBGRA_1_D
-                settings = kPrecompileCases[10];
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fPaintOptions = image_premul_src_srcover();
+                settings.fDrawTypeFlags = DrawTypeFlags::kSimpleShape;
                 expectedNumPipelines = 24; // a bad deal for 5 pipelines
                 break;
 
             // same as except 16 except it has ColorSpaceTransformSRGB
             case 18: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrc
-                // image_srgb_src(), kSimpleShape, kBGRA_1_D_SRGB
-                settings = kPrecompileCases[12];
                 expectedRenderPassSettings.fDstCS = SkColorSpace::MakeSRGB();
+                settings.fRenderPassProps = kBGRA_1_D;
+                settings.fRenderPassProps.fDstCS = SkColorSpace::MakeSRGB();
+                settings.fPaintOptions = image_srgb_src();
+                settings.fDrawTypeFlags = DrawTypeFlags::kSimpleShape;
                 expectedNumPipelines = 12;  // a bad deal for 1 pipeline
                 break;
 
+            //---
             case 32: // CoverBoundsRenderStep[NonAAFill] + HardwareImage(0) + kSrcOver
             case 33: // PerEdgeAAQuadRenderStep + HardwareImage(0) + kSrcOver
             case 60: // PerEdgeAAQuadRenderStep + Image(0) + kSrcOver
-                // image_premul_srcover(), kSimpleShape, kBGRA_4_DS
-                settings = kPrecompileCases[11];
+                settings.fRenderPassProps = kBGRA_4_DS;
+                settings.fPaintOptions = image_premul_srcover();
+                settings.fDrawTypeFlags = DrawTypeFlags::kSimpleShape;
                 expectedNumPipelines = 12; // a bad deal for 3 pipelines
                 break;
             default:
@@ -831,4 +1023,4 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     }
 }
 
-#endif // SK_GRAPHITE
+//#endif // SK_GRAPHITE
