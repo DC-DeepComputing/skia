@@ -14,6 +14,7 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/dawn/DawnGraphicsPipeline.h"
+#include "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
 #include "webgpu/webgpu_cpp.h"  // NO_G3_REWRITE
@@ -66,20 +67,15 @@ private:
     bool onAddComputePass(DispatchGroupSpan) override;
 
     // Methods for populating a Dawn RenderPassEncoder:
-    bool beginRenderPass(const RenderPassDesc&,
-                         SkIRect renderPassBounds,
-                         const Texture* colorTexture,
-                         const Texture* resolveTexture,
-                         const Texture* depthStencilTexture);
-    bool loadMSAAFromResolveAndBeginRenderPassEncoder(
-            const RenderPassDesc& frontendRenderPassDesc,
-            const wgpu::RenderPassDescriptor& wgpuRenderPassDesc,
-            const DawnTexture* msaaTexture);
-    bool doBlitWithDraw(const wgpu::RenderPassEncoder& renderEncoder,
-                        const RenderPassDesc& frontendRenderPassDesc,
-                        const wgpu::TextureView& sourceTextureView,
-                        int width,
-                        int height);
+    struct BeginRenderPassResult {
+        bool success = false;
+        std::optional<DawnLoadResolveWithDrawHelper> resolveEmulationHelper;
+    };
+    BeginRenderPassResult beginRenderPass(const RenderPassDesc&,
+                                          SkIRect renderPassBounds,
+                                          const Texture* colorTexture,
+                                          const Texture* resolveTexture,
+                                          const Texture* depthStencilTexture);
     void endRenderPass();
 
     bool addDrawPass(const DrawPass*);

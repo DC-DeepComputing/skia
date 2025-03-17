@@ -33,80 +33,6 @@ constexpr int kBufferBindingSizeAlignment = 16;
 constexpr int kMaxNumberOfCachedBufferBindGroups = 1024;
 constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
 
-wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
-#if defined(__EMSCRIPTEN__)
-    wgpu::ShaderModuleWGSLDescriptor wgslDesc;
-#else
-    wgpu::ShaderSourceWGSL wgslDesc;
-#endif
-    wgslDesc.code = source;
-    wgpu::ShaderModuleDescriptor descriptor;
-    descriptor.nextInChain = &wgslDesc;
-    return device.CreateShaderModule(&descriptor);
-}
-
-wgpu::RenderPipeline create_blit_render_pipeline(const DawnSharedContext* sharedContext,
-                                                 const char* label,
-                                                 wgpu::ShaderModule vsModule,
-                                                 wgpu::ShaderModule fsModule,
-                                                 wgpu::TextureFormat renderPassColorFormat,
-                                                 wgpu::TextureFormat renderPassDepthStencilFormat,
-                                                 int numSamples) {
-    wgpu::RenderPipelineDescriptor descriptor;
-    descriptor.label = label;
-    descriptor.layout = nullptr;
-
-    wgpu::ColorTargetState colorTarget;
-    colorTarget.format = renderPassColorFormat;
-    colorTarget.blend = nullptr;
-    colorTarget.writeMask = wgpu::ColorWriteMask::All;
-
-    wgpu::DepthStencilState depthStencil;
-    if (renderPassDepthStencilFormat != wgpu::TextureFormat::Undefined) {
-        depthStencil.format = renderPassDepthStencilFormat;
-        depthStencil.depthWriteEnabled = false;
-        depthStencil.depthCompare = wgpu::CompareFunction::Always;
-
-        descriptor.depthStencil = &depthStencil;
-    }
-
-    wgpu::FragmentState fragment;
-    fragment.module = std::move(fsModule);
-    fragment.entryPoint = "main";
-    fragment.constantCount = 0;
-    fragment.constants = nullptr;
-    fragment.targetCount = 1;
-    fragment.targets = &colorTarget;
-    descriptor.fragment = &fragment;
-
-    descriptor.vertex.module = std::move(vsModule);
-    descriptor.vertex.entryPoint = "main";
-    descriptor.vertex.constantCount = 0;
-    descriptor.vertex.constants = nullptr;
-    descriptor.vertex.bufferCount = 0;
-    descriptor.vertex.buffers = nullptr;
-
-    descriptor.primitive.frontFace = wgpu::FrontFace::CCW;
-    descriptor.primitive.cullMode = wgpu::CullMode::None;
-    descriptor.primitive.topology = wgpu::PrimitiveTopology::TriangleStrip;
-    descriptor.primitive.stripIndexFormat = wgpu::IndexFormat::Undefined;
-
-    descriptor.multisample.count = numSamples;
-    descriptor.multisample.mask = 0xFFFFFFFF;
-    descriptor.multisample.alphaToCoverageEnabled = false;
-
-    std::optional<DawnErrorChecker> errorChecker;
-    if (sharedContext->dawnCaps()->allowScopedErrorChecks()) {
-        errorChecker.emplace(sharedContext);
-    }
-    auto pipeline = sharedContext->device().CreateRenderPipeline(&descriptor);
-    if (errorChecker.has_value() && errorChecker->popErrorScopes() != DawnErrorType::kNoError) {
-        return nullptr;
-    }
-
-    return pipeline;
-}
-
 template <size_t NumEntries>
 using BindGroupKey = typename DawnResourceProvider::BindGroupKey<NumEntries>;
 using UniformBindGroupKey = BindGroupKey<DawnResourceProvider::kNumUniformEntries>;
@@ -366,55 +292,12 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
 
 DawnResourceProvider::~DawnResourceProvider() = default;
 
-wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
-        const RenderPassDesc& renderPassDesc) {
-    uint32_t renderPassKey =
-            this->dawnSharedContext()->dawnCaps()->getRenderPassDescKeyForPipeline(renderPassDesc);
-    wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[renderPassKey];
-    if (!pipeline) {
-        static constexpr char kVertexShaderText[] =
-            "var<private> fullscreenTriPositions : array<vec2<f32>, 3> = array<vec2<f32>, 3>("
-                "vec2(-1.0, -1.0), vec2(-1.0, 3.0), vec2(3.0, -1.0));"
-
-            "@vertex "
-            "fn main(@builtin(vertex_index) vertexIndex : u32) -> @builtin(position) vec4<f32> {"
-                "return vec4(fullscreenTriPositions[vertexIndex], 1.0, 1.0);"
-            "}";
-
-        static constexpr char kFragmentShaderText[] =
-            "@group(0) @binding(0) var colorMap: texture_2d<f32>;"
-
-            "@fragment "
-            "fn main(@builtin(position) fragPosition : vec4<f32>) -> @location(0) vec4<f32> {"
-                "var coords : vec2<i32> = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
-                "return textureLoad(colorMap, coords, 0);"
-            "}";
-
-        auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
-        auto fsModule = create_shader_module(dawnSharedContext()->device(), kFragmentShaderText);
-
-        const auto& colorTexInfo = renderPassDesc.fColorAttachment.fTextureInfo;
-        const auto& dsTexInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
-
-        pipeline = create_blit_render_pipeline(
-                dawnSharedContext(),
-                /*label=*/"BlitWithDraw",
-                std::move(vsModule),
-                std::move(fsModule),
-                /*renderPassColorFormat=*/
-                TextureInfoPriv::Get<DawnTextureInfo>(colorTexInfo).getViewFormat(),
-                /*renderPassDepthStencilFormat=*/
-                dsTexInfo.isValid()
-                        ? TextureInfoPriv::Get<DawnTextureInfo>(dsTexInfo).getViewFormat()
-                        : wgpu::TextureFormat::Undefined,
-                /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
-
-        if (pipeline) {
-            fBlitWithDrawPipelines.set(renderPassKey, pipeline);
-        }
-    }
-
-    return pipeline;
+wgpu::RenderPipeline DawnResourceProvider::findBlitWithDrawPipeline(uint32_t key) {
+    return fBlitWithDrawPipelines[key];
+}
+void DawnResourceProvider::cacheBlitWithDrawPipeline(uint32_t key,
+                                                     wgpu::RenderPipeline pipeline) {
+    fBlitWithDrawPipelines[key] = std::move(pipeline);
 }
 
 sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
