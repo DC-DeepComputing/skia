@@ -238,13 +238,14 @@ void SkScalerContext::GenerateMetricsFromPath(
 
         const bool needExtraWidth  = (fromLCD && !verticalLCD) || hairline;
         const bool needExtraHeight = (fromLCD &&  verticalLCD) || hairline;
+        // In the FIR filter the two "outer samples" are always 0, so only 0.5 is needed.
         if (needExtraWidth) {
+            bounds.outset(0.5, 0);
             bounds.roundOut(&bounds);
-            bounds.outset(1, 0);
         }
         if (needExtraHeight) {
+            bounds.outset(0, 0.5);
             bounds.roundOut(&bounds);
-            bounds.outset(0, 1);
         }
     }
     SaturateGlyphBounds(glyph, std::move(bounds));
@@ -337,10 +338,10 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
 
     // doVert in this function means swap x and y when writing to dst.
     if (doVert) {
-        SkASSERT(src.width() == (dst.fBounds.height() - 2) * 4);
+        SkASSERT(src.width() == dst.fBounds.height() * 4);
         SkASSERT(src.height() == dst.fBounds.width());
     } else {
-        SkASSERT(src.width() == (dst.fBounds.width() - 2) * 4);
+        SkASSERT(src.width() == dst.fBounds.width() * 4);
         SkASSERT(src.height() == dst.fBounds.height());
     }
 
@@ -395,7 +396,7 @@ static void pack4xHToMask(const SkPixmap& src, SkMaskBuilder& dst,
 
         // TODO: this fir filter implementation is straight forward, but slow.
         // It should be possible to make it much faster.
-        for (int sample_x = -4; sample_x < sample_width + 4; sample_x += 4) {
+        for (int sample_x = 0; sample_x < sample_width; sample_x += 4) {
             int fir[LCD_PER_PIXEL] = { 0 };
             for (int sample_index = std::max(0, sample_x - 4), coeff_index = sample_index - (sample_x - 4)
                 ; sample_index < std::min(sample_x + 8, sample_width)
@@ -520,14 +521,14 @@ void SkScalerContext::GenerateImageFromPath(
     const bool intermediateDst = fromLCD || dstMask.fFormat == SkMask::kBW_Format;
     if (fromLCD) {
         if (verticalLCD) {
-            dstW = 4*dstH - 8;
+            dstW = 4*dstH;
             dstH = srcW;
-            matrix.setAll(0, 4, -SkIntToScalar(dstMask.fBounds.fTop + 1) * 4,
+            matrix.setAll(0, 4, -SkIntToScalar(dstMask.fBounds.fTop) * 4,
                           1, 0, -SkIntToScalar(dstMask.fBounds.fLeft),
                           0, 0, 1);
         } else {
-            dstW = 4*dstW - 8;
-            matrix.setAll(4, 0, -SkIntToScalar(dstMask.fBounds.fLeft + 1) * 4,
+            dstW = 4*dstW;
+            matrix.setAll(4, 0, -SkIntToScalar(dstMask.fBounds.fLeft) * 4,
                           0, 1, -SkIntToScalar(dstMask.fBounds.fTop),
                           0, 0, 1);
         }
