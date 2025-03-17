@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02b92d3d_92f957dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-17T17:04:52Z",
+      "side": 1,
+      "message": "Running CQ to see if this is configured correctly, but looking at https://skia.googlesource.com/skia.git/+/refs/heads/main/infra/bots/gen_tasks_logic/dm_flags.go#448 makes me think this should do what we want.",
+      "revId": "f490ab776d90a1b6d143bc7d4bf3ac77c8964e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
