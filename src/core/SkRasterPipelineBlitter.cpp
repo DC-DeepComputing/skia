@@ -355,6 +355,9 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
         blitter->fDst.rowBytesAsPixels(),
     };
 
+    SkDebugf("ColorPipeline\n");
+    colorPipeline->dump();
+
     return blitter;
 }
 
