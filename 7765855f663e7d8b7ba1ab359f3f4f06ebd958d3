@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08646264_edae2113",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T13:49:33Z",
+      "side": 1,
+      "message": "This change in isolation lgtm, but I\u0027m not sure we should be concerned about the scale of memory regressions that the tests complained about, given the significance of performance improvements with using this code path.  If we can measure the perf improvement w/ or w/o caching in the new 9-patch code and the caching doesn\u0027t change much, then I\u0027d recommend just removing caching entirely.",
+      "revId": "7765855f663e7d8b7ba1ab359f3f4f06ebd958d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
