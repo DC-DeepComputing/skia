@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/task/RenderPassTask.h"
 
+#include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
@@ -18,6 +19,17 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 namespace skgpu::graphite {
+
+namespace {
+SkISize get_msaa_size(const SkISize& targetSize, const Caps& caps) {
+    if (caps.differentResolveAttachmentSizeSupport()) {
+        // Use approx size for better reuse.
+        return GetApproxSize(targetSize);
+    }
+
+    return targetSize;
+}
+}
 
 sk_sp<RenderPassTask> RenderPassTask::Make(DrawPassList passes,
                                            const RenderPassDesc& desc,
@@ -149,7 +161,8 @@ Task::Status RenderPassTask::addCommands(Context* context,
         SkASSERT(fTarget->numSamples() == 1 &&
                  fRenderPassDesc.fColorAttachment.fTextureInfo.numSamples() > 1);
         colorAttachment = resourceProvider->findOrCreateDiscardableMSAAAttachment(
-                fTarget->dimensions(), fRenderPassDesc.fColorAttachment.fTextureInfo);
+                get_msaa_size(fTarget->dimensions(), *context->priv().caps()),
+                fRenderPassDesc.fColorAttachment.fTextureInfo);
         if (!colorAttachment) {
             SKGPU_LOG_W("Could not get Color attachment for RenderPassTask");
             return Status::kFail;
@@ -165,6 +178,10 @@ Task::Status RenderPassTask::addCommands(Context* context,
         SkASSERT(fTarget->isInstantiated());
         SkISize dimensions = context->priv().caps()->getDepthAttachmentDimensions(
                 fTarget->texture()->textureInfo(), fTarget->dimensions());
+        if (fRenderPassDesc.fSampleCount > 1) {
+            SkASSERT(fRenderPassDesc.fColorResolveAttachment.fTextureInfo.isValid());
+            dimensions = get_msaa_size(dimensions, *context->priv().caps());
+        }
         depthStencilAttachment = resourceProvider->findOrCreateDepthStencilAttachment(
                 dimensions, fRenderPassDesc.fDepthStencilAttachment.fTextureInfo);
         if (!depthStencilAttachment) {
