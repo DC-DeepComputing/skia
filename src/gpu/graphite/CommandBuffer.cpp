@@ -99,6 +99,11 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
 
     fColorAttachmentSize = colorTexture->dimensions();
     SkIRect colorAttachmentBounds = SkIRect::MakeSize(fColorAttachmentSize);
+    // Sometime the resolve attachment can have different size from the color attachment, make sure we limit
+    // the draw to the overlapped are.
+    if (resolveTexture) {
+        colorAttachmentBounds.intersect(SkIRect::MakeSize(resolveTexture->dimensions()));
+    }
 
     SkIRect renderPassBounds;
     for (const auto& drawPass : drawPasses) {
