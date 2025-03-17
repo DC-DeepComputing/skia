@@ -22,6 +22,30 @@
       },
       "revId": "74dcdf6c6e9eda7db1cec83174d810654d479be7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "301a4752_5879e63a",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-17T15:45:15Z",
+      "side": 1,
+      "message": "I remembered that we had discussed combining `fColorAttachmentSize` and `fReplayClip`, so I\u0027ve overhauled this CL to do that and added the relevant bug.",
+      "parentUuid": "9c78431d_7d7ad188",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 595,
+        "endChar": 5
+      },
+      "revId": "74dcdf6c6e9eda7db1cec83174d810654d479be7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

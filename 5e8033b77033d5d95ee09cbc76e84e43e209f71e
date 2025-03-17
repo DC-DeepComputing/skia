@@ -1,0 +1,69 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b3bc4ee_619edafb",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-17T15:45:15Z",
+      "side": 1,
+      "message": "We now have a harder requirement that `setReplayTranslationAndClip` be called before `addRenderPass`, which may cause confusion in the future; we could remember just the offset clip in `setReplayTranslationAndClip` and then set `fRenderPassBounds` here, though then we\u0027d be back to having two separate fields.",
+      "fixSuggestions": [
+        {
+          "fixId": "ba007de7_10cfd282",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/CommandBuffer.cpp",
+              "range": {
+                "startLine": 104,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "    if (!renderPassBounds.intersect(fReplayClip)) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/CommandBuffer.cpp",
+              "range": {
+                "startLine": 114,
+                "startChar": 0,
+                "endLine": 116,
+                "endChar": 0
+              },
+              "replacement": "    if (!dstReadBounds.intersect(fReplayClip)) {\n"
+            },
+            {
+              "path": "src/gpu/graphite/CommandBuffer.cpp",
+              "range": {
+                "startLine": 137,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "    SkIRect viewport \u003d SkIRect::MakePtSize(fReplayClip.topLeft(), viewportDims);\n"
+            },
+            {
+              "path": "src/gpu/graphite/CommandBuffer.cpp",
+              "range": {
+                "startLine": 289,
+                "startChar": 0,
+                "endLine": 299,
+                "endChar": 0
+              },
+              "replacement": "void CommandBuffer::setReplayClip(const SkIRect\u0026 clip) {\n    fReplayClip \u003d clip;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "5e8033b77033d5d95ee09cbc76e84e43e209f71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
