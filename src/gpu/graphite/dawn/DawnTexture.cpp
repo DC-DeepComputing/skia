@@ -31,10 +31,6 @@ wgpu::Texture DawnTexture::MakeDawnTexture(const DawnSharedContext* sharedContex
 
     const auto& dawnInfo = TextureInfoPriv::Get<DawnTextureInfo>(info);
 
-    if (dawnInfo.fUsage & wgpu::TextureUsage::TextureBinding && !caps->isTexturable(info)) {
-        return {};
-    }
-
     if (dawnInfo.fUsage & wgpu::TextureUsage::RenderAttachment &&
         !(caps->isRenderable(info) || DawnFormatIsDepthOrStencil(dawnInfo.fFormat))) {
         return {};
