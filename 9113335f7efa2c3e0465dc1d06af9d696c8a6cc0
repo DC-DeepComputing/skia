@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "e044bf16_b8006084",
         "filename": "src/gpu/GrDrawOpAtlas.cpp",
@@ -20,10 +21,10 @@
         "endChar": 20
       },
       "revId": "9113335f7efa2c3e0465dc1d06af9d696c8a6cc0",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b8ab1f6f_f6c606fa",
         "filename": "src/gpu/GrDrawOpAtlas.cpp",
@@ -44,10 +45,34 @@
         "endChar": 20
       },
       "revId": "9113335f7efa2c3e0465dc1d06af9d696c8a6cc0",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1aec9d_b1400bfd",
+        "filename": "src/gpu/GrDrawOpAtlas.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-17T15:26:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b8ab1f6f_f6c606fa",
+      "range": {
+        "startLine": 537,
+        "startChar": 4,
+        "endLine": 537,
+        "endChar": 20
+      },
+      "revId": "9113335f7efa2c3e0465dc1d06af9d696c8a6cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "0f0d6802_ae19a74d",
         "filename": "src/gpu/GrSurfaceProxy.cpp",
@@ -67,8 +92,31 @@
         "endChar": 34
       },
       "revId": "9113335f7efa2c3e0465dc1d06af9d696c8a6cc0",
-      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02",
-      "unresolved": true
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "436b7002_4f84e532",
+        "filename": "src/gpu/GrSurfaceProxy.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-17T15:26:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0f0d6802_ae19a74d",
+      "range": {
+        "startLine": 211,
+        "startChar": 21,
+        "endLine": 211,
+        "endChar": 34
+      },
+      "revId": "9113335f7efa2c3e0465dc1d06af9d696c8a6cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
