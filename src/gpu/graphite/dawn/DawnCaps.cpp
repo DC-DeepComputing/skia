@@ -8,6 +8,7 @@
 #include "src/gpu/graphite/dawn/DawnCaps.h"
 
 #include <algorithm>
+#include <limits>
 #include <string>
 
 #include "include/core/SkTextureCompressionType.h"
@@ -97,6 +98,13 @@ DawnCaps::DawnCaps(const DawnBackendContext& backendContext, const ContextOption
 }
 
 DawnCaps::~DawnCaps() = default;
+
+bool DawnCaps::isTexturableIgnoreSampleCount(const TextureInfo& info) const {
+    auto overrideDawnInfo = TextureInfoPriv::Get<DawnTextureInfo>(info);
+    overrideDawnInfo.fSampleCount = 1;
+    TextureInfo overrideInfo = TextureInfos::MakeDawn(overrideDawnInfo);
+    return this->isTexturable(overrideInfo);
+}
 
 bool DawnCaps::onIsTexturable(const TextureInfo& info) const {
     if (!info.isValid()) {
@@ -286,6 +294,10 @@ TextureInfo DawnCaps::getDefaultMSAATextureInfo(const TextureInfo& singleSampled
     if (fSupportedTransientAttachmentUsage != wgpu::TextureUsage::None &&
         discardable == Discardable::kYes) {
         info.fUsage |= fSupportedTransientAttachmentUsage;
+    }
+
+    if (fEmulateLoadStoreResolve) {
+        info.fUsage |= wgpu::TextureUsage::TextureBinding;
     }
 
     return TextureInfos::MakeDawn(info);
@@ -524,11 +536,26 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::TransientAttachments)) {
         fSupportedTransientAttachmentUsage = wgpu::TextureUsage::TransientAttachment;
     }
-    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
-        fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
+#endif
+
+    if (fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
+        // Without transient attachments, we currently emulate load/resolve using separate render
+        // passes. So that mismatched MSAA & resolve attachments' sizes can work. This helps
+        // reuse MSAA textures better to reduce memory usage.
+        // TODO(b/399640773): Avoid this when Dawn implements the partial resolve feature
+        // that can support mismatched sized MSAA & resolve attachments.
+        fEmulateLoadStoreResolve = true;
+        fDifferentResolveAttachmentSizeSupport = true;
     }
-    fSupportsPartialLoadResolve =
-            backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
+
+#if !defined(__EMSCRIPTEN__)
+    if (!fEmulateLoadStoreResolve) {
+        if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
+            fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
+        }
+        fSupportsPartialLoadResolve =
+                backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
+    }
 #endif
 
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::TimestampQuery)) {
@@ -596,7 +623,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     FormatInfo* info;
     // Format: RGBA8Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGBA8Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RGBA8Unorm)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 2;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -620,7 +647,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: R8Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R8Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::R8Unorm)];
 #if !defined(__EMSCRIPTEN__)
         info->fFlags = FormatInfo::kAllFlags;
         if (!device.HasFeature(wgpu::FeatureName::R8UnormStorage)) {
@@ -663,7 +690,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // TODO(crbug.com/dawn/1856): Support storage binding for compute shader in Dawn.
     // Format: R16Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::R16Unorm)];
         if (supportUnorm16) {
             info->fFlags = FormatInfo::kAllFlags & ~FormatInfo::kStorage_Flag;
             info->fColorTypeInfoCount = 1;
@@ -684,7 +711,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: BGRA8Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::BGRA8Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::BGRA8Unorm)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 2;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -709,7 +736,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: RGBA16Float
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGBA16Float)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RGBA16Float)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 2;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -733,7 +760,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: R16Float
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::R16Float)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::R16Float)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 1;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -752,7 +779,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // TODO(crbug.com/dawn/1856): Support storage binding for compute shader in Dawn.
     // Format: RG8Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG8Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RG8Unorm)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 1;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -770,7 +797,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // TODO(crbug.com/dawn/1856): Support storage binding for compute shader in Dawn.
     // Format: RG16Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG16Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RG16Unorm)];
         if (supportUnorm16) {
             info->fFlags = FormatInfo::kAllFlags;
             info->fColorTypeInfoCount = 1;
@@ -789,7 +816,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: RGB10A2Unorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RGB10A2Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RGB10A2Unorm)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 2;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -813,7 +840,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: RG16Float
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::RG16Float)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::RG16Float)];
         info->fFlags = FormatInfo::kAllFlags;
         info->fColorTypeInfoCount = 1;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -830,7 +857,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // Format: ETC2RGB8Unorm
     {
         if (device.HasFeature(wgpu::FeatureName::TextureCompressionETC2)) {
-            info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::ETC2RGB8Unorm)];
+            info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::ETC2RGB8Unorm)];
             info->fFlags = FormatInfo::kTexturable_Flag;
             info->fColorTypeInfoCount = 1;
             info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -848,7 +875,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     // Format: BC1RGBAUnorm
     {
         if (device.HasFeature(wgpu::FeatureName::TextureCompressionBC)) {
-            info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::BC1RGBAUnorm)];
+            info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::BC1RGBAUnorm)];
             info->fFlags = FormatInfo::kTexturable_Flag;
             info->fColorTypeInfoCount = 1;
             info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -869,28 +896,28 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 
     // Format: Stencil8
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::Stencil8)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::Stencil8)];
         info->fFlags = FormatInfo::kMSAA_Flag;
         info->fColorTypeInfoCount = 0;
     }
 
     // Format: Depth16UNorm
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::Depth16Unorm)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::Depth16Unorm)];
         info->fFlags = FormatInfo::kMSAA_Flag;
         info->fColorTypeInfoCount = 0;
     }
 
     // Format: Depth32Float
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::Depth32Float)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::Depth32Float)];
         info->fFlags = FormatInfo::kMSAA_Flag;
         info->fColorTypeInfoCount = 0;
     }
 
     // Format: Depth24PlusStencil8
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::Depth24PlusStencil8)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::Depth24PlusStencil8)];
         info->fFlags = FormatInfo::kMSAA_Flag;
         info->fColorTypeInfoCount = 0;
     }
@@ -898,7 +925,7 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 #if !defined(__EMSCRIPTEN__)
     // Format: External
     {
-        info = &fFormatTable[GetFormatIndex(wgpu::TextureFormat::External)];
+        info = &fFormatTable[this->makeDawnFormatKey(wgpu::TextureFormat::External)];
         info->fFlags = FormatInfo::kTexturable_Flag;
         info->fColorTypeInfoCount = 1;
         info->fColorTypeInfos = std::make_unique<ColorTypeInfo[]>(info->fColorTypeInfoCount);
@@ -940,9 +967,8 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
 #endif
 }
 
-// static
-size_t DawnCaps::GetFormatIndex(wgpu::TextureFormat format) {
-    for (size_t i = 0; i < std::size(kFormats); ++i) {
+uint16_t DawnCaps::makeDawnFormatKey(wgpu::TextureFormat format) const {
+    for (uint16_t i = 0; i < std::size(kFormats); ++i) {
         if (format == kFormats[i]) {
             return i;
         }
@@ -1001,12 +1027,14 @@ uint32_t DawnCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderP
     SkASSERT(colorInfo.isValid());
 
     // Use format indices instead of WGPUTextureFormat values since they can be larger than 16 bits.
-    uint32_t colorFormatIndex =
-            GetFormatIndex(TextureInfoPriv::Get<DawnTextureInfo>(colorInfo).getViewFormat());
-    uint32_t depthStencilFormatIndex = depthStencilInfo.isValid()
-            ? GetFormatIndex(
-                    TextureInfoPriv::Get<DawnTextureInfo>(depthStencilInfo).getViewFormat())
-            : kUnusedAttachmentIndex;
+    uint32_t colorFormatIndex = this->makeDawnFormatKey(
+            TextureInfoPriv::Get<DawnTextureInfo>(colorInfo).getViewFormat());
+    uint32_t depthStencilFormatIndex =
+            depthStencilInfo.isValid()
+                    ? this->makeDawnFormatKey(
+                              TextureInfoPriv::Get<DawnTextureInfo>(depthStencilInfo)
+                                      .getViewFormat())
+                    : kUnusedAttachmentIndex;
 
     // Note: if Dawn supports ExpandResolveTexture load op and the render pass uses it to load
     // the resolve texture, a render pipeline will need to be created with

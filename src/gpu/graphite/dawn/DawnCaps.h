@@ -77,6 +77,18 @@ public:
 
     bool supportsCommandBufferTimestamps() const { return fSupportsCommandBufferTimestamps; }
 
+    // Whether we should emulate load/resolve with separate render passes.
+    // TODO(b/399640773): This is currently used until Dawn supports true partial resolve feature
+    // that can resolve a MSAA texture to a resolve texture with different size.
+    bool emulateLoadStoreResolve() const { return fEmulateLoadStoreResolve; }
+
+    uint16_t makeDawnFormatKey(wgpu::TextureFormat format) const;
+
+    // Check whether the texture is texturable, ignoring its sample count. This is needed
+    // instead of isTextureable() because graphite frontend treats multisampled textures as
+    // non-textureable.
+    bool isTexturableIgnoreSampleCount(const TextureInfo& info) const;
+
 private:
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
     bool onIsTexturable(const TextureInfo&) const override;
@@ -101,6 +113,7 @@ private:
     }
 
     uint32_t maxRenderTargetSampleCount(wgpu::TextureFormat format) const;
+    using Caps::isTexturable;
     bool isTexturable(wgpu::TextureFormat format) const;
     bool isRenderable(wgpu::TextureFormat format, uint32_t numSamples) const;
 
@@ -133,9 +146,8 @@ private:
     static constexpr size_t kFormatCount = 17;
     std::array<FormatInfo, kFormatCount> fFormatTable;
 
-    static size_t GetFormatIndex(wgpu::TextureFormat format);
     const FormatInfo& getFormatInfo(wgpu::TextureFormat format) const {
-        size_t index = GetFormatIndex(format);
+        size_t index = this->makeDawnFormatKey(format);
         return fFormatTable[index];
     }
 
@@ -151,6 +163,8 @@ private:
     // and resolve. With this feature, we can do that partially according to the actual damage
     // region.
     bool fSupportsPartialLoadResolve = false;
+
+    bool fEmulateLoadStoreResolve = false;
 
     bool fUseAsyncPipelineCreation = true;
     bool fAllowScopedErrorChecks = true;
