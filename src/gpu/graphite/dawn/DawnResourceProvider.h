@@ -36,10 +36,13 @@ public:
                          size_t resourceBudget);
     ~DawnResourceProvider() override;
 
+    DawnSharedContext* dawnSharedContext() const;
+
     sk_sp<DawnTexture> findOrCreateDiscardableMSAALoadTexture(SkISize dimensions,
                                                               const TextureInfo& msaaInfo);
 
-    wgpu::RenderPipeline findOrCreateBlitWithDrawPipeline(const RenderPassDesc& renderPassDesc);
+    wgpu::RenderPipeline findBlitWithDrawPipeline(uint32_t key);
+    void cacheBlitWithDrawPipeline(uint32_t key, wgpu::RenderPipeline pipeline);
 
     sk_sp<DawnBuffer> findOrCreateDawnBuffer(size_t size,
                                              BufferType type,
@@ -86,8 +89,6 @@ private:
     void onDeleteBackendTexture(const BackendTexture&) override;
 
     const wgpu::Buffer& getOrCreateNullBuffer();
-
-    DawnSharedContext* dawnSharedContext() const;
 
     void onFreeGpuResources() override;
     void onPurgeResourcesNotUsedSince(StdSteadyClock::time_point purgeTime) override;
