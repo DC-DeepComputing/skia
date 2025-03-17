@@ -128,7 +128,7 @@ class DefaultFlavor(object):
     ld_library_path = []
 
     workdir = self.m.vars.workdir
-    clang_linux = workdir.joinpath('clang_linux')
+    clang_linux = workdir.joinpath('clang_ubuntu_noble')
     extra_tokens = self.m.vars.extra_tokens
 
     if self.m.vars.is_linux:
@@ -165,7 +165,7 @@ class DefaultFlavor(object):
       ld_library_path.append(clang_linux.joinpath('tsan'))
 
     if any('SAN' in t for t in extra_tokens):
-      # Sanitized binaries may want to run clang_linux/bin/llvm-symbolizer.
+      # Sanitized binaries may want to run clang_ubuntu_noble/bin/llvm-symbolizer.
       path.append(clang_linux.joinpath('bin'))
       # We find that testing sanitizer builds with libc++ uncovers more issues
       # than with the system-provided C++ standard library, which is usually
