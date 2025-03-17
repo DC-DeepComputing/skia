@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d0cb815_0877d721",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-17T19:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "389f292e_570b39d4",
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b18b9193_9ccb0ca6",
@@ -127,6 +145,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77ecf895_572b537b",
+        "filename": "src/encode/SkPngEncoderBase.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-17T19:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b18b9193_9ccb0ca6",
+      "range": {
+        "startLine": 57,
+        "startChar": 29,
+        "endLine": 57,
+        "endChar": 75
+      },
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f835da3_f71e1fcd",
@@ -168,6 +210,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e753075_ffcfd7a0",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-17T19:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f835da3_f71e1fcd",
+      "range": {
+        "startLine": 136,
+        "startChar": 27,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1a6c08f3_4dc76927",
@@ -181,6 +247,30 @@
       "writtenOn": "2025-03-17T16:20:50Z",
       "side": 1,
       "message": "ditto",
+      "range": {
+        "startLine": 396,
+        "startChar": 57,
+        "endLine": 396,
+        "endChar": 67
+      },
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae770f3d_334a50e9",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-17T19:58:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1a6c08f3_4dc76927",
       "range": {
         "startLine": 396,
         "startChar": 57,
