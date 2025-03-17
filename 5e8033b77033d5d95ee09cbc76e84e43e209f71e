@@ -64,6 +64,24 @@
       ],
       "revId": "5e8033b77033d5d95ee09cbc76e84e43e209f71e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d647a98b_75ebd858",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-17T15:46:49Z",
+      "side": 1,
+      "message": "Didn\u0027t mean to add an AI-suggested fix... this one doesn\u0027t seem helpful 🙄",
+      "parentUuid": "8b3bc4ee_619edafb",
+      "revId": "5e8033b77033d5d95ee09cbc76e84e43e209f71e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
