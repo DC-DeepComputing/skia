@@ -943,6 +943,19 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if b.extraConfig("HWASAN") {
 				d["android_hwasan_build"] = "1"
 			}
+		} else if b.os("ChromeOS") {
+			// TODO(borenet): Make this mapping non-optional after removing the
+			// old devices in the Skia lab.
+			deviceOS, ok := map[string]string{
+				"Cherry":   "16002.30.0",
+				"Guybrush": "16002.27.0",
+				"Octopush": "16002.21.0",
+				"Trogdor":  "16002.26.0",
+			}[b.parts["model"]]
+			if ok {
+				d["device_os"] = deviceOS
+				d["device_type"] = strings.ToLower(b.parts["model"])
+			}
 		} else if b.matchOs("iOS") {
 			device, ok := map[string]string{
 				"iPadMini4":   "iPad5,1",
