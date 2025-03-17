@@ -6,11 +6,14 @@
  */
 
 #include "bench/Benchmark.h"
+#include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkBlurMask.h"
 #include "tools/flags/CommandLineFlags.h"
 
 #include <stdio.h>
@@ -134,6 +137,14 @@ private:
     }
     SkISize onGetSize() override { return SkISize::Make(kBenchWidth, kBenchHeight); }
 
+    void setupPaint(SkPaint* paint) override {
+        paint->setAntiAlias(true);
+
+        paint->setMaskFilter(SkMaskFilter::MakeBlur(
+                           kNormal_SkBlurStyle, SkBlurMask::ConvertRadiusToSigma(6.3)));
+
+    }
+
     void onDelayedSetup() override {
         SkScalar w = SkIntToScalar(fShapesSize.width());
         SkScalar h = SkIntToScalar(fShapesSize.height());
@@ -156,11 +167,11 @@ private:
                               static_cast<float>(fShapesSize.height() * fShapesSize.height()));
             fShapes[i].fMatrix.setTranslate(0.5f * pad + rand.nextF() * (kBenchWidth - pad),
                                             0.5f * pad + rand.nextF() * (kBenchHeight - pad));
-            fShapes[i].fMatrix.preRotate(rand.nextF() * 360.0f);
-            if (fPerspective) {
-                fShapes[i].fMatrix.setPerspX(0.00015f);
-                fShapes[i].fMatrix.setPerspY(-0.00015f);
-            }
+            // // fShapes[i].fMatrix.preRotate(rand.nextF() * 360.0f);
+            // if (fPerspective) {
+            //     fShapes[i].fMatrix.setPerspX(0.00015f);
+            //     fShapes[i].fMatrix.setPerspY(-0.00015f);
+            // }
             fShapes[i].fColor = rand.nextU() | 0xff808080;
         }
         for (int i = 0; i < fNumShapes; i++) {
@@ -243,7 +254,7 @@ private:
     SkRRect               fInnerRect;
     SkRRect               fInnerOval;
     SkRRect               fInnerRRect;
-    TArray<ShapeInfo>   fShapes;
+    TArray<ShapeInfo>     fShapes;
 
 
     using INHERITED = Benchmark;

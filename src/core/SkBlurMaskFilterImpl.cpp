@@ -195,6 +195,7 @@ static bool rect_exceeds(const SkRect& r, SkScalar v) {
            r.width() > v || r.height() > v;
 }
 
+#if !defined(SK_DISABLE_BLURRED_RRECT_CACHE) || !defined(SK_DISABLE_BLURRED_RECT_CACHE)
 static SkCachedData* copy_mask_to_cacheddata(SkMaskBuilder* mask) {
     const size_t size = mask->computeTotalImageSize();
     SkCachedData* data = SkResourceCache::NewCachedData(size);
@@ -205,37 +206,54 @@ static SkCachedData* copy_mask_to_cacheddata(SkMaskBuilder* mask) {
     }
     return data;
 }
+#endif
 
 static SkCachedData* find_cached_rrect(SkTLazy<SkMask>* mask, SkScalar sigma, SkBlurStyle style,
                                        const SkRRect& rrect) {
+#if defined(SK_DISABLE_BLURRED_RRECT_CACHE)
+    return nullptr;
+#else
     return SkMaskCache::FindAndRef(sigma, style, rrect, mask);
+#endif
 }
 
 static SkCachedData* add_cached_rrect(SkMaskBuilder* mask, SkScalar sigma, SkBlurStyle style,
                                       const SkRRect& rrect) {
+#if defined(SK_DISABLE_BLURRED_RRECT_CACHE)
+    return nullptr;  // This will signal to NinePatch to free the mask.
+#else
     SkCachedData* cache = copy_mask_to_cacheddata(mask);
     if (cache) {
         SkMaskCache::Add(sigma, style, rrect, *mask, cache);
     }
     return cache;
+#endif
 }
 
 static SkCachedData* find_cached_rects(SkTLazy<SkMask>* mask,
                                        SkScalar sigma,
                                        SkBlurStyle style,
                                        SkSpan<const SkRect> rects) {
+#if defined(SK_DISABLE_BLURRED_RECT_CACHE)
+    return nullptr;
+#else
     return SkMaskCache::FindAndRef(sigma, style, rects, mask);
+#endif
 }
 
 static SkCachedData* add_cached_rects(SkMaskBuilder* mask,
                                       SkScalar sigma,
                                       SkBlurStyle style,
                                       SkSpan<const SkRect> rects) {
+#if defined(SK_DISABLE_BLURRED_RECT_CACHE)
+    return nullptr;  // This will signal to NinePatch to free the mask.
+#else
     SkCachedData* cache = copy_mask_to_cacheddata(mask);
     if (cache) {
         SkMaskCache::Add(sigma, style, rects, *mask, cache);
     }
     return cache;
+#endif
 }
 
 std::optional<SkMaskFilterBase::NinePatch>
