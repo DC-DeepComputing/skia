@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "383fe8f5_ba3f09ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "I think it would take a while for Dawn extension to finish. It\u0027s currently handled by our Intel partners anw. Implementating in Dawn is also more complicated due to having to serve general users. It has to support multiple color attachments. It has to add some rules for render pipeline\u0027s compatibility due to Vulkan\u0027s specific details.\n\nOn the other hands, I\u0027m intending to use this emulation on devices with desktop GPUs (mostly D3D). e.g. D3D11 doesn\u0027t have any concept of render passes. Load/Store are noop. So having multiple render passes with Load/Store does nothing detrimental at all. So having this emulation here would be the same as what the extension in Dawn would do. But we can test it in practice earlier. D3D12 does have render passes. However D3D12 as a graphite\u0027s backend still has a long way to go. So it\u0027s not worth to wait for its extension\u0027s implementation in Dawn to complete IMO.\n\nOn most platforms with tiled GPUs (mac, android), we already have Transient Attachment implemented so neither this emulation nor partial resolve are needed.\nSo IMO even if we kept this emulation and used it on devices without `TransientAttachment` (they are mostly non-tiled GPUs currently), the perf would not be affected much.",
+      "parentUuid": "2849fb02_7d642faa",
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c2bd571_20d3b195",
@@ -89,6 +107,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "71893b08_6dfd97bd",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "The old loadResolve emulation path was intended as an interim solution. Most of the platforms with tiled GPUs already have DawnLoadResolve extension implemented anw.\n\nIn this CL if we change the emulation such that we have 3 render passes with multiple Load/Store steps. On D3D11, these are noop, so it won\u0027t change much in term of perf.\n\nI understand this might affect WASM because DawnLoadResolve is not exposed there. But I thought WASM is low priority for now. Or at least, the best way would be better if Dawn decided to expose the DawnLoadResolve extension in WASM. If you want, I can keep the old emulation path for now. In addition to the new partial resolve emulation\u0027s path.\n\nThough merging the first load to the main render pass also makes sense, will need to keep the depth/stencil as part of the key. We can use 64 bits key for that.",
+      "parentUuid": "aa49afa4_b672aae1",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 0
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6636ac42_e39a3194",
         "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.cpp",
         "patchSetId": 17
@@ -100,6 +142,30 @@
       "writtenOn": "2025-03-17T19:44:32Z",
       "side": 1,
       "message": "The actual srcSampleCount doesn\u0027t need to be part of the key, right? It\u0027s really whether or not we use the shader that performs the for loop or not, the actual sample count is provided by the `textureNumSamples` intrinsic.  We could push that farther and say always use the `kLoadMultisampledFSText` and assume it degrades to the single-sampled load automatically.  Would have to measure performance to see how much that loop generation costs us though.",
+      "range": {
+        "startLine": 71,
+        "startChar": 27,
+        "endLine": 71,
+        "endChar": 41
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4485461e_f24bd8aa",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "multisampled texture needs to be declared with different type in FS though. Compared to normal 2D texture.",
+      "parentUuid": "6636ac42_e39a3194",
       "range": {
         "startLine": 71,
         "startChar": 27,
@@ -135,6 +201,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19b24c28_2271e4e7",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "Ack. I will change it.",
+      "parentUuid": "da488c07_0d5d728a",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c68fb3db_250314b7",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
         "patchSetId": 17
@@ -146,6 +236,30 @@
       "writtenOn": "2025-03-17T19:44:32Z",
       "side": 1,
       "message": "I don\u0027t like having these functions exposed as two separate operations. Can we move the pipeline creation logic back into `DawnResourceProvider` but update its signature so that it takes what it needs, e.g. a dst texture format + sample count (reduced renderpass key) and a src sample count.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 80
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be397ac9_9528c16b",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "My original intention to move to separate class is that the drawing code and the shader code could be self contained in a single file. Originally I wanted to support different offsets between MSAA textures and resolve textures. So that would require some bit hacks to send the offsets to shaders via `base instance` without extra buffers since Dawn doesn\u0027t support push constants yet.\n\nBut now I think that\u0027s not needed yet. I think it makese sense to keep the pipeline creation in the resource provider.",
+      "parentUuid": "c68fb3db_250314b7",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -238,6 +352,30 @@
       "writtenOn": "2025-03-17T19:44:32Z",
       "side": 1,
       "message": "Since the depth attachment normally ought to be matching the color attachment, we could just update the call to `getDepthAttachmentDimensions` to take in the TextureInfo and dimensions from `colorAttachment`. This will then match the dimensions whether or not it called `GetApproxSize`.\n\nOne complexity is I\u0027m not sure how this new logic will behave when we are rendering into a U or V plane that\u0027s at half the size of Y, but we are also resolving to a MSAA color attachment.",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 9
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b131b52a_8c41150a",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-17T20:47:10Z",
+      "side": 1,
+      "message": "You are right, looks like the logic here doesn\u0027t handle the U/V plane\u0027s rendering case properly.\n- If the U/V texture is rendered to directly without AA:  `getDepthAttachmentDimensions` should return Y plane size. So nothing changed. We don\u0027t need emulation here.\n- If the U/V texture is rendered with AA: We use separate render passes. The main render pass doesn\u0027t use the U/V texture as a resolve texture. So no U/V restrictions are applied. I think `getDepthAttachmentDimensions` should be updated to be aware of this and just return the `GetApproxSize`.\n\nPerhaps we need to pass the renderPass\u0027s sampleCount to `getDepthAttachmentDimensions`. Target\u0027s `TextureInfo` is single sampled anw.",
+      "parentUuid": "7596b4a9_85d86edf",
       "range": {
         "startLine": 181,
         "startChar": 8,
