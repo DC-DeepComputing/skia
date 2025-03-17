@@ -1,0 +1,194 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "389f292e_570b39d4",
+        "filename": "src/encode/SkImageEncoderFns.h",
+        "patchSetId": 36
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-17T16:20:50Z",
+      "side": 1,
+      "message": "This looks pretty straightforward and is only used in one place - can we inline instead?",
+      "fixSuggestions": [
+        {
+          "fixId": "40ebb03a_ae3ef639",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkImageEncoderFns.h",
+              "range": {
+                "startLine": 36,
+                "startChar": 0,
+                "endLine": 42,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18b9193_9ccb0ca6",
+        "filename": "src/encode/SkPngEncoderBase.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-17T16:20:50Z",
+      "side": 1,
+      "message": "IIUC kAlpha8 is the only case where we don\u0027t pass a src info.  I think it would be a little more clear if we split this into two explicit factories:\n\n```\n  TargetInfo makeTargetInfo(const SkEncodedInfo\u0026 dstInfo, const SkImageInfo\u0026 srcImageInfo, SkColorType dstCT, SkAlphaType dstAT) {\n      SkASSERT(dstCT !\u003d kAlpha_8_SkColorType);\n      return {\n          srcImageInfo-\u003emakeWH(srcImageInfo-\u003ewidth(), 1),\n          SkImageInfo::Make(srcImageInfo-\u003ewidth(), 1, dstCT, dstAT),\n          dstInfo,\n          dstRowInfo-\u003eminRowBytes(),\n      };\n  }\n  \n  std::optional\u003cTargetInfo\u003e makeAlpha8TargetInfo(const SkEncodedInfo\u0026 dstInfo) {\n      ...\n  }\n```",
+      "range": {
+        "startLine": 57,
+        "startChar": 29,
+        "endLine": 57,
+        "endChar": 75
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "1039ee63_4efe85cf",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 56,
+                "startChar": 0,
+                "endLine": 75,
+                "endChar": 0
+              },
+              "replacement": "SkPngEncoderBase::TargetInfo makeTargetInfo(SkEncodedInfo dstInfo,\n                                            const SkImageInfo\u0026 srcImageInfo,\n                                            const SkColorType dstCT,\n                                            const SkAlphaType dstAT) {\n    SkImageInfo srcRowInfo \u003d srcImageInfo.makeWH(srcImageInfo.width(), 1);\n    SkImageInfo dstRowInfo \u003d SkImageInfo::Make(srcImageInfo.width(), 1, dstCT, dstAT);\n    size_t dstRowSize \u003d dstRowInfo.minRowBytes();\n"
+            },
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 76,
+                "startChar": 0,
+                "endLine": 86,
+                "endChar": 0
+              },
+              "replacement": "    return SkPngEncoderBase::TargetInfo{std::move(srcRowInfo), std::move(dstRowInfo),\n                                        std::move(dstInfo), dstRowSize};\n"
+            },
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 103,
+                "startChar": 0,
+                "endLine": 104,
+                "endChar": 0
+              },
+              "replacement": "                return makeTargetInfo(makeGray8Info(srcInfo),\n                                      srcInfo,\n                                      srcCT,\n                                      srcAT);\n"
+            },
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 109,
+                "endChar": 0
+              },
+              "replacement": "                SkImageInfo dstRowInfo \u003d SkImageInfo::Make(srcInfo.width(), 1, srcCT, srcAT);\n                size_t dstRowSize \u003d dstRowInfo.minRowBytes();\n                return SkPngEncoderBase::TargetInfo{std::nullopt, std::move(dstRowInfo),\n                                                    makeGrayAlpha8Info(srcInfo), dstRowSize};\n"
+            },
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 169,
+                "startChar": 0,
+                "endLine": 171,
+                "endChar": 0
+              },
+              "replacement": "    SkASSERT(fTargetInfo.fSrcRowInfo \u0026\u0026 fTargetInfo.fDstRowInfo);\n"
+            },
+            {
+              "path": "src/encode/SkPngEncoderBase.cpp",
+              "range": {
+                "startLine": 194,
+                "startChar": 0,
+                "endLine": 218,
+                "endChar": 0
+              },
+              "replacement": "        SkASSERT(fSrc.width() \u003d\u003d fTargetInfo.fSrcRowInfo-\u003ewidth());\n        if (!SkConvertPixels(fTargetInfo.fDstRowInfo.value(),\n                            (void*)fStorage.get(),\n                            fTargetInfo.fDstRowSize,\n                            fTargetInfo.fSrcRowInfo.value(),\n                            srcRow,\n                            fTargetInfo.fSrcRowInfo-\u003eminRowBytes()))\n        {\n            return false;\n        }\n        // We need to convert from little endian to big endian so we use skcms.\n        if (fTargetInfo.fDstRowInfo.value().colorType() \u003d\u003d kR16G16B16A16_unorm_SkColorType) {\n            transform_scanline_rgba_16161616LE((char*)fStorage.get(),\n                                               (const char*)fStorage.get(),\n                                               fSrc.width(),\n                                               SkColorTypeBytesPerPixel(fSrc.colorType()));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f835da3_f71e1fcd",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-17T16:20:50Z",
+      "side": 1,
+      "message": "Can `dstRowInfo` be uninitilized for kRGBA_Color, or should we assert instead?",
+      "range": {
+        "startLine": 136,
+        "startChar": 27,
+        "endLine": 136,
+        "endChar": 37
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8f96a3fd_9c0a55d0",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/encode/SkPngEncoderImpl.cpp",
+              "range": {
+                "startLine": 136,
+                "startChar": 0,
+                "endLine": 138,
+                "endChar": 0
+              },
+              "replacement": "            SkASSERT(dstRowInfo);\n            pngColorType \u003d dstRowInfo-\u003eisOpaque() ? PNG_COLOR_TYPE_RGB\n                                                  : PNG_COLOR_TYPE_RGB_ALPHA;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a6c08f3_4dc76927",
+        "filename": "src/encode/SkPngEncoderImpl.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-17T16:20:50Z",
+      "side": 1,
+      "message": "ditto",
+      "range": {
+        "startLine": 396,
+        "startChar": 57,
+        "endLine": 396,
+        "endChar": 67
+      },
+      "revId": "dd15f38ed7415dd6bd8511a6e38c3be21c7b520f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
