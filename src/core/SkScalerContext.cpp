@@ -238,13 +238,14 @@ void SkScalerContext::GenerateMetricsFromPath(
 
         const bool needExtraWidth  = (fromLCD && !verticalLCD) || hairline;
         const bool needExtraHeight = (fromLCD &&  verticalLCD) || hairline;
+        // In the FIR filter the two "outer samples" are always 0, so only 0.5 is needed.
         if (needExtraWidth) {
+            bounds.outset(0.5, 0);
             bounds.roundOut(&bounds);
-            bounds.outset(1, 0);
         }
         if (needExtraHeight) {
+            bounds.outset(0, 0.5);
             bounds.roundOut(&bounds);
-            bounds.outset(0, 1);
         }
     }
     SaturateGlyphBounds(glyph, std::move(bounds));
