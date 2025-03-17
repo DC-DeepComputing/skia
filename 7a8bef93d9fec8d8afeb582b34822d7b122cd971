@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1ea935b0_3f553bfc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T13:10:58Z",
+      "side": 1,
+      "message": "In order for drawPath to convert to drawPoints(lineMode), it needs to make sure the style is stroke since drawPoints forces stroke style. This also adds a small optimization for discarding zero-area filled lines.  Previously these might have been excluded by the clip bounds if they were perfectly horizontal or vertical, but if they were diagonal they would actually just produce a small number of triangles that would have zero-area and never turn into fragments.",
+      "revId": "7a8bef93d9fec8d8afeb582b34822d7b122cd971",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
