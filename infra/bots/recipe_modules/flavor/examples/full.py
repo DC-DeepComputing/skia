@@ -85,7 +85,7 @@ TEST_BUILDERS = [
   'Perf-Android-Clang-MotoG73-GPU-BXM_8_256-arm64-Release-All-Android',
   'Perf-Android-Clang-Nexus5x-GPU-Adreno418-arm64-Debug-All-Android',
   'Perf-Android-Clang-Pixel6-GPU-Adreno620-arm64-Release-All-Android',
-  'Perf-ChromeOS-Clang-SamsungChromebookPlus-GPU-MaliT860-arm-Release-All',
+  'Perf-ChromeOS-Clang-Sparky360-GPU-MaliT860-arm-Release-All',
   'Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-MSAN',
   'Perf-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-ASAN',
   'Perf-Win2019-Clang-GCE-CPU-AVX2-x86_64-Debug-All-ASAN',
@@ -94,7 +94,8 @@ TEST_BUILDERS = [
   'Test-Android-Clang-Nexus5x-GPU-Adreno418-arm64-Debug-All-Android',
   'Test-Android-Clang-Nexus5x-GPU-Adreno418-arm64-Release-All-Android_ASAN',
   'Test-Android-Clang-Pixel3a-GPU-Adreno615-arm64-Debug-All-Android_Vulkan',
-  'Test-ChromeOS-Clang-SamsungChromebookPlus-GPU-MaliT860-arm-Release-All',
+  'Test-ChromeOS-Clang-Cherry-GPU-MaliG57-arm-Debug-All',
+  'Test-ChromeOS-Clang-Sparky360-GPU-MaliT860-arm-Release-All',
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-Coverage',
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-Lottie',
   'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All-TSAN',
@@ -130,6 +131,9 @@ def GenTests(api):
       test += api.platform('win', 64)
     if 'iOS' in buildername and 'RPI' not in buildername:
       test += api.platform('mac', 64)
+    if 'ChromeOS' in buildername and 'Sparky360' not in buildername:
+      test += api.step_data('get CROS_SSH_ID_FILE_PATH',
+                            stdout=api.raw_io.output('/b/id_rsa'))
     yield test
 
   builder = 'Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Release-All'

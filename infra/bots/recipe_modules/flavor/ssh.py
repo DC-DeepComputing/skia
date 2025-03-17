@@ -20,22 +20,29 @@ class SSHFlavor(default.DefaultFlavor):
   def __init__(self, m, app_name):
     super(SSHFlavor, self).__init__(m, app_name)
     self._user_ip = ''
+    self._ssh_args = []
 
   @property
   def user_ip(self):
     if not self._user_ip:
       path = '/tmp/ssh_machine.json'
-      ssh_info = self.m.file.read_json('read ssh_machine.json', path,
-                                       test_data={'user_ip':'foo@127.0.0.1'})
-      self._user_ip = ssh_info.get(u'user_ip')
+      if self.m.vars.builder_cfg['model'] in ('Kevin', 'Sparky360', 'Spin513', 'Spin514'):
+        ssh_info = self.m.file.read_json('read ssh_machine.json', path,
+                                         test_data={'user_ip':'foo@127.0.0.1'})
+        self._user_ip = ssh_info.get(u'user_ip')
+      else:
+        self._user_ip = 'root@variable_chromeos_device_hostname'
+        ssh_id_path = self.m.vars.getenv(
+          'get CROS_SSH_ID_FILE_PATH', 'CROS_SSH_ID_FILE_PATH')
+        self._ssh_args = ['-i', ssh_id_path]
     return self._user_ip
 
   def ssh(self, title, *cmd, **kwargs):
     if 'infra_step' not in kwargs:
       kwargs['infra_step'] = True
 
-    ssh_cmd = ['ssh', '-oConnectTimeout=15', '-oBatchMode=yes',
-               '-t', '-t', self.user_ip] + list(cmd)
+    ssh_cmd = ['ssh', '-oConnectTimeout=15', '-oBatchMode=yes', '-t', '-t'] + \
+        self._ssh_args + [self.user_ip] + list(cmd)
 
     return self._run(title, ssh_cmd, **kwargs)
 
