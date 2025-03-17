@@ -1,0 +1,251 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2849fb02_7d642faa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "I added a mix of very small nits, that are only worth doing if we keep this change, and larger structural changes and questions.  I am also in the process of finishing https://skia-review.googlesource.com/c/skia/+/963157, which will significantly simplify RenderPassDesc and other texture format handling so may be of interest to you if it changes how these blit pipelines are keyed.\n\nOn the other hand, I\u0027m also wanting to know more about the expected timeline for the dawn extension to support resolving to a smaller texture. How much time is there likely to be to go from this to the extension, and then remove all of this code? Or does this also likely benefit all platforms when operating in the context of WASM where we don\u0027t have transient attachments, so they will want to benefit from approx-size attachments via this emulation?",
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c2bd571_20d3b195",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "James just landed https://skia-review.googlesource.com/c/skia/+/961617, which will merge conflict with this bit.",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 89
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbafbfee_4d27ab7a",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "nit: line length wraps at 100",
+      "range": {
+        "startLine": 549,
+        "startChar": 8,
+        "endLine": 549,
+        "endChar": 37
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa49afa4_b672aae1",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want to commit to actually doing multiple render passes here. I believe we can take this code path if we are running WASM+WebGPU and don\u0027t have access to the various dawn extensions. This could easily be on platforms that would regress performance-wise or run into correctness issue (but perhaps not, since transient attachments are one of those extensions, so loading and storing is possible still).\n\nIf I\u0027m understanding this correctly, we are no longer copying the resolve texture into a separate single-channel texture. Before we would do: 1) blit (resolve-\u003ecopy), render (draw w/ copy, ..., resolve) and now we do: 1) render (draw resolve to color) 2) render (..., store color) 3) render (draw color to resolve).\n\nIf we aren\u0027t resolving in the main render pass, I don\u0027t think we need to have a separate intermediate render pass at the start. There shouldn\u0027t be any more restriction of just sampling the resolve texture at the start of the main render pass.  It would mean that the blit-as-draw pipeline needs to handle depth/stencil attachments as part of its key though.",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 0
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6636ac42_e39a3194",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "The actual srcSampleCount doesn\u0027t need to be part of the key, right? It\u0027s really whether or not we use the shader that performs the for loop or not, the actual sample count is provided by the `textureNumSamples` intrinsic.  We could push that farther and say always use the `kLoadMultisampledFSText` and assume it degrades to the single-sampled load automatically.  Would have to measure performance to see how much that loop generation costs us though.",
+      "range": {
+        "startLine": 71,
+        "startChar": 27,
+        "endLine": 71,
+        "endChar": 41
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da488c07_0d5d728a",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "My preference from an API standpoint would be to keep this an internal detail of DawnCommandBuffer. It should be possible to forward declare an inner class inside `DawnCommandBuffer` so that it can be used in return types for `beginRenderPass` but have everything entirely defined in the CPP file.",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68fb3db_250314b7",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "I don\u0027t like having these functions exposed as two separate operations. Can we move the pipeline creation logic back into `DawnResourceProvider` but update its signature so that it takes what it needs, e.g. a dst texture format + sample count (reduced renderpass key) and a src sample count.",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 80
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c1a11b_b4a07d03",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "You can just use `sharedContext-\u003edawnCaps()` here.",
+      "range": {
+        "startLine": 24,
+        "startChar": 23,
+        "endLine": 24,
+        "endChar": 74
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "840ca5ec_a43962c9",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "nit: new line after namespace",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 11
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e51fa969_86179048",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "nit: newline before `}` and update it to `} // anonymous namespace`",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 1
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7596b4a9_85d86edf",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-17T19:44:32Z",
+      "side": 1,
+      "message": "Since the depth attachment normally ought to be matching the color attachment, we could just update the call to `getDepthAttachmentDimensions` to take in the TextureInfo and dimensions from `colorAttachment`. This will then match the dimensions whether or not it called `GetApproxSize`.\n\nOne complexity is I\u0027m not sure how this new logic will behave when we are rendering into a U or V plane that\u0027s at half the size of Y, but we are also resolving to a MSAA color attachment.",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 9
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
