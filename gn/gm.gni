@@ -62,6 +62,7 @@ gm_sources = [
   "$_gm/blurs.cpp",
   "$_gm/blurtextsmallradii.cpp",
   "$_gm/bmpfilterqualityrepeat.cpp",
+  "$_gm/borderbug.cpp",
   "$_gm/bug12866.cpp",
   "$_gm/bug5252.cpp",
   "$_gm/bug530095.cpp",

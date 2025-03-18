@@ -100,6 +100,7 @@ CPU_GMS = [
     # "blurs.cpp",
     # "blurtextsmallradii.cpp",
     # "bmpfilterqualityrepeat.cpp",
+    # "borderbug.cpp",
     # "bug12866.cpp",
     # "bug5252.cpp",
     # "bug530095.cpp",
