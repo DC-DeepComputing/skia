@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f9ce658_adfeb5e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-18T15:39:13Z",
+      "side": 1,
+      "message": "Needs \n\n```\n    {\n      \"name\": \"Noto Sans JP\",\n      \"path\": \"NotoSansJP[wght].ttf\",\n      \"languages\": [\n        \"ja_Jpan\"\n      ]\n    },\n\n```\n\ninserted into `externals/googlefonts_testdata/data/raster_test.json`.",
+      "revId": "796de7cdf8f9399e93798aaa2fbf12830670ddc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
