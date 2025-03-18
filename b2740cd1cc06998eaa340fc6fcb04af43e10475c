@@ -131,6 +131,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d3c4b221_8cc9335c",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-18T20:13:11Z",
+      "side": 1,
+      "message": "WASM isn\u0027t a high priority, but we do have active clients that use it so ideally we don\u0027t set it back too much. In this case, the trade off is that we might hurt performance but would lower memory usage, which they would probably appreciate.\n\nThe new skgpu::TextureFormat enum fits into 8 bits, so I don\u0027t think we will need to increase the key size to 64 bits either but I wouldn\u0027t worry about that right away. I think first if we can get a sense of performance with the 2-pass vs. 3-pass approaches on both D3D11 and on Metal (with transient attachments disabled to simulate WASM path on a tiling GPU).\n\nI agree that hopefully we can expose transient attachments and load-resolve extensions in WASM. I would like to only keep one emulation path, so we should just work out exactly how we want the new one to behave.",
+      "parentUuid": "71893b08_6dfd97bd",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 0
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6636ac42_e39a3194",
         "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.cpp",
         "patchSetId": 17
@@ -166,6 +190,30 @@
       "side": 1,
       "message": "multisampled texture needs to be declared with different type in FS though. Compared to normal 2D texture.",
       "parentUuid": "6636ac42_e39a3194",
+      "range": {
+        "startLine": 71,
+        "startChar": 27,
+        "endLine": 71,
+        "endChar": 41
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a9f5fb2_3083ac91",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-18T20:13:11Z",
+      "side": 1,
+      "message": "Okay, so we can at least reduce the srcSampleCount to just be \u003e 1 or not.",
+      "parentUuid": "4485461e_f24bd8aa",
       "range": {
         "startLine": 71,
         "startChar": 27,
@@ -260,6 +308,30 @@
       "side": 1,
       "message": "My original intention to move to separate class is that the drawing code and the shader code could be self contained in a single file. Originally I wanted to support different offsets between MSAA textures and resolve textures. So that would require some bit hacks to send the offsets to shaders via `base instance` without extra buffers since Dawn doesn\u0027t support push constants yet.\n\nBut now I think that\u0027s not needed yet. I think it makese sense to keep the pipeline creation in the resource provider.",
       "parentUuid": "c68fb3db_250314b7",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 80
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66c79bc_c513dcc8",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-18T20:13:11Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "be397ac9_9528c16b",
       "range": {
         "startLine": 44,
         "startChar": 0,
@@ -376,6 +448,30 @@
       "side": 1,
       "message": "You are right, looks like the logic here doesn\u0027t handle the U/V plane\u0027s rendering case properly.\n- If the U/V texture is rendered to directly without AA:  `getDepthAttachmentDimensions` should return Y plane size. So nothing changed. We don\u0027t need emulation here.\n- If the U/V texture is rendered with AA: We use separate render passes. The main render pass doesn\u0027t use the U/V texture as a resolve texture. So no U/V restrictions are applied. I think `getDepthAttachmentDimensions` should be updated to be aware of this and just return the `GetApproxSize`.\n\nPerhaps we need to pass the renderPass\u0027s sampleCount to `getDepthAttachmentDimensions`. Target\u0027s `TextureInfo` is single sampled anw.",
       "parentUuid": "7596b4a9_85d86edf",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 9
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d9fa821_2b0904c3",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-18T20:13:11Z",
+      "side": 1,
+      "message": "If we are rendering U/V without AA, we want the depth attachment to be `GetApproxSize(Y dims)`.\n\nIf we are rendering U/V with AA, and we have the load extension so we aren\u0027t using a separate render pass, we will want the depth attachment to be `GetApproxSize(Y dims)`. The color attachment, though, can be `GetApproxSize(U/V dims)`, right?\n\nIf we are rendering U/V with AA and no extension, then both the color and depth attachments can be `GetApproxSize(U/V dims)` because they won\u0027t be resolved. And the blitAsDraw into the multiplanar target will use an internal renderpass configured to have no depth attachment at all.\n\nIf we just passed in `colorAttachment-\u003edimensions()` here, `getDepthAttachmentDimensions()` won\u0027t have to separately call `GetApproxSize` since it\u0027ll be `GetApproxSize(U/V dims)`.  Multiplying that by 2 to get the Y size almost always works out correctly.  For every input size \u003e 8px, 2*GetApproxSize(sz) \u003d\u003d GetApproxSize(2*sz).  For sz \u003c\u003d 8px, 2*GetApproxSize(sz) returns 32 instead of 16 but that shouldn\u0027t be problematic since that\u0027s still larger than the Y plane size.\n\nThe only downside to not providing the renderpass sample count to `getDepthAttachmentDimensions` is that when we are rendering MSAA to U/V but don\u0027t have the load extension, we would use `GetApproxSize(y dims)` instead of the smaller `GetApproxSize(uv dims)`. I\u0027m inclined to keep the function simple and less coupled to the multipass configurations of a specific backend when it\u0027s pretty unlikely for multiplanar rendering to trigger AA anyways.",
+      "parentUuid": "b131b52a_8c41150a",
       "range": {
         "startLine": 181,
         "startChar": 8,
