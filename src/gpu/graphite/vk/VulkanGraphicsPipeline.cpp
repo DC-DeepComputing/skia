@@ -698,6 +698,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                              renderPassDesc.fDstReadStrategy,
                              &descContainer);
 
+    // after processing the shader, update this pipeline's dst read strategy
+
+
     // Populate an array of sampler ptrs where a sampler's index within the array indicates their
     // binding index within the descriptor set. Initialize all values to nullptr, which represents a
     // "regular", dynamic sampler at that index.
