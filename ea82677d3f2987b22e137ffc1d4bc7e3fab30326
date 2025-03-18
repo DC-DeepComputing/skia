@@ -22,6 +22,30 @@
       },
       "revId": "ea82677d3f2987b22e137ffc1d4bc7e3fab30326",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2dd9878a_3d2383f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-18T12:52:55Z",
+      "side": 1,
+      "message": "Sorry, copy \u0026 paste artefact, line removed. There is an API modification in 0.29, but that does not affect usage in Skia.",
+      "parentUuid": "f7bed652_e7347c42",
+      "range": {
+        "startLine": 9,
+        "startChar": 7,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "ea82677d3f2987b22e137ffc1d4bc7e3fab30326",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
