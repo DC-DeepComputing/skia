@@ -3153,6 +3153,7 @@ if (skia_enable_tools) {
         "tools/viewer/PathTextSlide.cpp",
         "tools/viewer/ProtectedSlide.cpp",
         "tools/viewer/QuadStrokerSlide.cpp",
+        "tools/viewer/RasterPipelineViz.cpp",
         "tools/viewer/RectanizerSlide.cpp",
         "tools/viewer/RepeatTileSlide.cpp",
         "tools/viewer/SBIXSlide.cpp",
@@ -3366,6 +3367,14 @@ if (skia_enable_tools) {
       sources = [
         "fuzz/FuzzDrawFunctions.cpp",
         "fuzz/oss_fuzz/FuzzDrawFunctions.cpp",
+      ]
+      deps = []
+    }
+
+    libfuzzer_app("api_draw_rrect") {
+      sources = [
+        "fuzz/FuzzCanvas.cpp",
+        "fuzz/oss_fuzz/FuzzDrawRect.cpp",
       ]
       deps = []
     }
