@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a2ffff1_26e9aa7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-18T13:03:10Z",
+      "side": 1,
+      "message": "The tests didn\u0027t disable and I\u0027m not 100% sure this will work either. However, the other SKSL tests have a prefix of SkSL and the one test name is AtomicDeclarations not AtomicOperations. That said, these tests only run with Dawn or Metal, not native Vulkan.",
+      "revId": "3ee6ce4bc72a7b66e3794e0b9e976bb8f9a18694",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
