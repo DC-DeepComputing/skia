@@ -175,6 +175,7 @@ private:
         SkDynamicMemoryWStream* fOut;
         SkPDFStructTree::Mark fCurrentlyActiveMark;
         int fNextMarksElemId;
+        int fCurrentMarksElemId;
         bool fMadeMarks;
     } fMarkManager;
 
