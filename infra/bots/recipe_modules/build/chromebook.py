@@ -66,6 +66,51 @@ def compile_fn(api, checkout_root, out_dir):
       '-L%s' % os.path.join(sysroot_dir, 'lib'),
       '-L%s' % os.path.join(gl_dir, 'lib'),
     ]
+  elif 'arm64' == target_arch:
+    sysroot_dir = os.path.join(top_level, 'arm64_sysroot')
+    gl_dir = os.path.join(top_level, 'chromebook_arm64_gles')
+    env = {'LD_LIBRARY_PATH': os.path.join(sysroot_dir, 'lib')}
+    args['extra_asmflags'] = [
+      '--target=armv8a-linux-gnueabihf',
+      '--sysroot=%s' % sysroot_dir,
+      '-march=armv8-a',
+      #'-mfpu=neon',
+      '-mthumb',
+    ]
+
+    args['extra_cflags'] = [
+      '--target=armv8a-linux-gnueabihf',
+      '--sysroot=%s' % sysroot_dir,
+      '-I%s' % os.path.join(gl_dir, 'include'),
+      '-I%s' % os.path.join(sysroot_dir, 'gcc-cross', 'include'),
+      '-I%s' % os.path.join(sysroot_dir, 'include'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'asm'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12', 'aarch64-linux-gnu'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12', 'aarch64-linux-gnu', 'bits'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'c++', '12', 'aarch64-linux-gnu', 'ext'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'linux'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'sys'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'bits'),
+      '-I%s' % os.path.join(sysroot_dir, 'include', 'bits', 'types'),
+      #'-DSTDC',
+      '-DMESA_EGL_NO_X11_HEADERS',
+      '-U_GLIBCXX_DEBUG',
+    ]
+
+    args['extra_ldflags'] = [
+      '--target=armv8a-linux-gnueabihf',
+      '--sysroot=%s' % sysroot_dir,
+      '-static-libstdc++', '-static-libgcc',
+      # use sysroot's ld which can properly link things.
+      '-B%s' % os.path.join(sysroot_dir, 'bin'),
+      # helps locate crt*.o
+      '-B%s' % os.path.join(sysroot_dir, 'gcc-cross'),
+      # helps locate libgcc*.so
+      '-L%s' % os.path.join(sysroot_dir, 'gcc-cross'),
+      '-L%s' % os.path.join(sysroot_dir, 'lib'),
+      '-L%s' % os.path.join(gl_dir, 'lib'),
+    ]
   else:
     gl_dir = os.path.join(top_level,'chromebook_x86_64_gles')
     env = {}
