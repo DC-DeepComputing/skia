@@ -96,6 +96,9 @@ public:
         return fPipeline;
     }
 
+    // TODO (NEP) remove or make debug only field and private
+    // DstReadStrategy fDstReadStrat;
+
 private:
     VulkanGraphicsPipeline(const VulkanSharedContext* sharedContext,
                            const PipelineInfo& pipelineInfo,

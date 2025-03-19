@@ -544,10 +544,10 @@ static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
             immutableSampler = immutableSamplers[i].get();
         }
         textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                        /*count=*/1,
-                                        /*bindingIdx=*/i,
-                                        PipelineStageFlags::kFragmentShader,
-                                        immutableSampler});
+                                       /*count=*/1,
+                                       /*bindingIdx=*/i,
+                                       PipelineStageFlags::kFragmentShader,
+                                       immutableSampler});
     }
 
     // If no texture/samplers are used, a mock VkDescriptorSetLayout handle by passing in the
@@ -697,6 +697,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                              renderPassDesc.fWriteSwizzle,
                              renderPassDesc.fDstReadStrategy,
                              &descContainer);
+
+    // after processing the shader, update this pipeline's dst read strategy
+
 
     // Populate an array of sampler ptrs where a sampler's index within the array indicates their
     // binding index within the descriptor set. Initialize all values to nullptr, which represents a
