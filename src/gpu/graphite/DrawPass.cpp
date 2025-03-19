@@ -568,6 +568,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     // Some decisions depend upon the dst read strategy used by backends to read dst texture info.
     DstReadStrategy dstReadStrategy = caps->getDstReadStrategy(target->textureInfo());
+    if (dstReadStrategy == DstReadStrategy::kReadFromInput && drawPass->fRequiresMSAA) {
+        dstReadStrategy = DstReadStrategy::kTextureCopy;
+    }
     const bool drawsReadDstAsInput = dstReadStrategy == DstReadStrategy::kReadFromInput;
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.

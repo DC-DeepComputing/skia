@@ -103,7 +103,12 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
         desc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
     }
 
+    // TODO handle this better, but for now, resort to using texture copy if sample count
+    // is > 1.
     desc.fDstReadStrategy = targetReadStrategyIfRequired;
+    if (targetReadStrategyIfRequired == DstReadStrategy::kReadFromInput && desc.fSampleCount > 1) {
+        desc.fDstReadStrategy = DstReadStrategy::kTextureCopy;
+    }
 
     return desc;
 }

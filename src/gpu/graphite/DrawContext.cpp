@@ -250,13 +250,20 @@ void DrawContext::flush(Recorder* recorder) {
     fPendingLoadOp = LoadOp::kLoad;
     fPendingStoreOp = StoreOp::kStore;
 
+    DstReadStrategy dstReadStrategyToUse = fDstReadStrategy;
+    if (!drawWithinListReadsDst) {
+        dstReadStrategyToUse = DstReadStrategy::kNoneRequired;
+    } else if (dstReadStrategyToUse == DstReadStrategy::kReadFromInput && pass->requiresMSAA()) {
+        dstReadStrategyToUse = DstReadStrategy::kTextureCopy;
+    }
+
     if (pass) {
         SkASSERT(fTarget.get() == pass->target());
 
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.
         sk_sp<TextureProxy> dstCopy;
-        if (drawWithinListReadsDst && fDstReadStrategy == DstReadStrategy::kTextureCopy) {
+        if (drawWithinListReadsDst && dstReadStrategyToUse == DstReadStrategy::kTextureCopy) {
             TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
                                  TRACE_EVENT_SCOPE_THREAD);
 
@@ -287,6 +294,7 @@ void DrawContext::flush(Recorder* recorder) {
         auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
                                                   fTarget->textureInfo());
 
+        // If requiresMSAA, then also edit dst read strat?
         RenderPassDesc desc = RenderPassDesc::Make(
                 caps,
                 fTarget->textureInfo(),
@@ -296,7 +304,7 @@ void DrawContext::flush(Recorder* recorder) {
                 pass->clearColor(),
                 pass->requiresMSAA(),
                 writeSwizzle,
-                drawWithinListReadsDst ? fDstReadStrategy : DstReadStrategy::kNoneRequired);
+                dstReadStrategyToUse);//drawWithinListReadsDst ? fDstReadStrategy : DstReadStrategy::kNoneRequired);
 
         RenderPassTask::DrawPassList passes;
         passes.emplace_back(std::move(pass));
