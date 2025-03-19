@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6da81f09_268a1e4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-19T15:57:44Z",
+      "side": 1,
+      "message": "Removing failing bot from cq-include as build failure seems to be because of failure to retriev and update icu4x during the build process.",
+      "revId": "c57af6e928a1a1eacc734d2f7e034d7ba5a61457",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
