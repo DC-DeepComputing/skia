@@ -26,9 +26,11 @@
     M(store_r8)                                                    \
     M(alpha_to_gray) M(alpha_to_gray_dst)                          \
     M(alpha_to_red) M(alpha_to_red_dst)                            \
-    M(bt709_luminance_or_luma_to_alpha) M(bt709_luminance_or_luma_to_rgb) \
+    M(bt709_luminance_or_luma_to_alpha)                            \
+    M(bt709_luminance_or_luma_to_rgb)                              \
     M(bilerp_clamp_8888)                                           \
-    M(load_src) M(store_src) M(store_src_a) M(load_dst) M(store_dst) \
+    M(load_src) M(store_src) M(store_src_a)                        \
+    M(load_dst) M(store_dst)                                       \
     M(scale_u8) M(scale_565) M(scale_1_float) M(scale_native)      \
     M( lerp_u8) M( lerp_565) M( lerp_1_float) M(lerp_native)       \
     M(dstatop) M(dstin) M(dstout) M(dstover)                       \
@@ -50,7 +52,8 @@
     M(xy_to_unit_angle)                                            \
     M(xy_to_radius)                                                \
     M(emboss)                                                      \
-    M(swizzle)
+    M(swizzle)                                                     \
+    M(debug_r) M(debug_x)
 
 /**
  * `SK_RASTER_PIPELINE_OPS_SKSL` defines ops used by SkSL.
