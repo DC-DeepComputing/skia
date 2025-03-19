@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c137f005_7c38438d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-19T13:51:32Z",
+      "side": 1,
+      "message": "Locally verified to recover the perf regression of issue chromium:402451027 and even come out a tiny tiny bit ahead for FreeType.",
+      "revId": "94b9dd9583c34ce52f38b0b9cd4cc1f6bcb216b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
