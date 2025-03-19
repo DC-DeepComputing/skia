@@ -196,7 +196,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    if (!stream->write8(static_cast<uint8_t>(renderPassDesc.fDstReadStrategyIfRequired))) {
+    if (!stream->write8(static_cast<uint8_t>(renderPassDesc.fDstReadStrategy))) {
         return false;
     }
 
@@ -253,7 +253,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    renderPassDesc->fDstReadStrategyIfRequired = static_cast<DstReadStrategy>(tmp8);
+    renderPassDesc->fDstReadStrategy = static_cast<DstReadStrategy>(tmp8);
 
     return true;
 }
@@ -350,8 +350,7 @@ bool DataToPipelineDesc(const Caps* caps,
 }
 
 #if defined(GPU_TEST_UTILS)
-void DumpPipelineDesc(const char* label,
-                      ShaderCodeDictionary* shaderCodeDictionary,
+void DumpPipelineDesc(const char* label, ShaderCodeDictionary* shaderCodeDictionary,
                       const GraphicsPipelineDesc& pipelineDesc,
                       const RenderPassDesc& renderPassDesc) {
     SkString pipelineStr = pipelineDesc.toString(shaderCodeDictionary);
