@@ -33,6 +33,24 @@
       "message": "Can you add a test that would have previously failed?",
       "revId": "dfaccca43835eff3e9930a4cdd55d6a09a528df7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af2deb3_9966d268",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-03-20T16:02:56Z",
+      "side": 1,
+      "message": "No need for extra test, I just added another check that quickly makes sure we are on UTF16.\n(Also corrected another check).",
+      "parentUuid": "0f741d00_0a44f1a7",
+      "revId": "dfaccca43835eff3e9930a4cdd55d6a09a528df7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
