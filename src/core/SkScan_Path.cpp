@@ -245,6 +245,12 @@ static void walk_simple_edges(SkEdge* prevHead, SkBlitter* blitter, int start_y,
     ASSERT_RETURN(local_top >= start_y);
 
     while (local_top < stop_y) {
+        // SkDebugf("leftE\n");
+        // leftE->dump();
+        // SkDebugf("rightE\n");
+        // riteE->dump();
+        // SkDebugf("local_top %d\n", local_top);
+
         SkASSERT(leftE->fFirstY <= stop_y);
         SkASSERT(riteE->fFirstY <= stop_y);
 

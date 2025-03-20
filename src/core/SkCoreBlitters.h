@@ -19,8 +19,10 @@
 #include "src/shaders/SkShaderBase.h"
 
 #include <cstdint>
+#include <vector>
 
 class SkArenaAlloc;
+class SkBitmap;
 class SkMatrix;
 class SkRasterPipeline;
 class SkShader;
@@ -120,6 +122,68 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&,
                                          SkArenaAlloc*,
                                          sk_sp<SkShader> clipShader,
                                          const SkSurfaceProps& props);
+
+class SkBitmap;
+enum class SkRasterPipelineOp;
+
+struct DebugStage {
+    std::vector<SkBitmap> panels;
+    std::vector<SkRasterPipelineOp> ops;
+};
+
+class DebugStageBuilder {
+public:
+    DebugStageBuilder() = default;
+    DebugStageBuilder(const DebugStageBuilder&) = delete;
+    DebugStageBuilder(DebugStageBuilder&&) = delete;
+    DebugStageBuilder& operator=(const DebugStageBuilder&) = delete;
+    DebugStageBuilder& operator=(DebugStageBuilder&&) = delete;
+
+    template <typename... Args>
+    DebugStageBuilder& add(const SkBitmap& panel, SkRasterPipelineOp op, Args... args) {
+        std::vector<SkBitmap> panels;
+        std::vector<SkRasterPipelineOp> ops;
+        panels.push_back(panel);
+        ops.push_back(op);
+
+        add_next(panels, ops, args...);
+        debugStages_.push_back({panels, ops});
+        return *this;
+    }
+
+    DebugStageBuilder& add() {
+        std::vector<SkBitmap> panels;
+        std::vector<SkRasterPipelineOp> ops;
+        debugStages_.push_back({panels, ops});
+        return *this;
+    }
+
+    std::vector<DebugStage> build() {
+        return debugStages_;
+    }
+
+private:
+    std::vector<DebugStage> debugStages_;
+
+    static void add_next(std::vector<SkBitmap>& v, std::vector<SkRasterPipelineOp>& ops) {}
+
+    template <typename... Args>
+    static void add_next(std::vector<SkBitmap>& panels, std::vector<SkRasterPipelineOp>& ops,
+                         const SkBitmap& panel, SkRasterPipelineOp op, Args... args) {
+        panels.emplace_back(panel);
+        ops.emplace_back(op);
+        add_next(panels, ops, args...);
+    }
+};
+
+SkBlitter* SkCreateRasterPipelineBlitterVisualizer(const SkPixmap& output,
+                                                   const std::vector<DebugStage>& stages,
+                                                   const SkPaint&,
+                                                   const SkMatrix& ctm,
+                                                   SkArenaAlloc*,
+                                                   sk_sp<SkShader> clipShader,
+                                                   const SkSurfaceProps& props);
+
 // Use this if you've pre-baked a shader pipeline, including modulating with paint alpha.
 SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap&, const SkPaint&,
                                          const SkRasterPipeline& shaderPipeline,
