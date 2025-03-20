@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37159fe9_31b369b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-20T14:17:21Z",
+      "side": 1,
+      "message": "I\u0027ve locally run the test that failed during the previous Skia\u003d\u003eChromium roll attempt and with _this_ CL the test passes (and expectedly fails if I add the new #ifdef to `//skia/BUILD.gn` in Chromium ).",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 17
+      },
+      "revId": "c7bbe7b8fd92f5cbd0a8004c300db30333766468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba39cdf_63f1b406",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-03-20T14:17:21Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\n/cc @danieldilan as FYI",
+      "revId": "c7bbe7b8fd92f5cbd0a8004c300db30333766468",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
