@@ -33,6 +33,16 @@ struct RenderPassDesc;
 class TextureInfo;
 class VulkanRenderPass;
 
+// This does not own the underlying vulkan objects, they must be explicitly cleaned up by
+// calling destroy(sharedContext).
+struct VulkanProgramInfo {
+    VkShaderModule fVS = VK_NULL_HANDLE;
+    VkShaderModule fFS = VK_NULL_HANDLE;
+    VkPipelineLayout fLayout = VK_NULL_HANDLE;
+
+    void destroy(const VulkanSharedContext*);
+};
+
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
     inline static constexpr unsigned int kRenderStepUniformBufferIndex = 0;
@@ -67,22 +77,15 @@ public:
                                               SkEnumBitMask<PipelineCreationFlags>,
                                               uint32_t compilationID);
 
-    static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
-            const VulkanSharedContext*,
-            VkShaderModule vsModule,
-            VkShaderModule fsModule,
-            VkPipelineShaderStageCreateInfo* pipelineShaderStages,
-            VkPipelineLayout,
-            sk_sp<VulkanRenderPass> compatibleRenderPass,
-            VkPipelineCache,
-            const TextureInfo& dstColorAttachmentTexInfo);
+    // The struct will either have all non-null handles on success, or all null handles on failure.
+    // The created program info can be provided to MakeLoadMSAAPipeline for reuse with different
+    // render pass descriptions.
+    static VulkanProgramInfo CreateLoadMSAAProgram(const VulkanSharedContext*);
 
-    static bool InitializeMSAALoadPipelineStructs(
-            const VulkanSharedContext*,
-            VkShaderModule* outVertexShaderModule,
-            VkShaderModule* outFragShaderModule,
-            VkPipelineShaderStageCreateInfo* outShaderStageInfo,
-            VkPipelineLayout* outPipelineLayout);
+    static sk_sp<VulkanGraphicsPipeline> MakeLoadMSAAPipeline(
+            VulkanResourceProvider*,
+            const VulkanProgramInfo& loadMSAAProgram,
+            const RenderPassDesc&);
 
     ~VulkanGraphicsPipeline() override {}
 
@@ -102,9 +105,21 @@ private:
                            VkPipelineLayout,
                            VkPipeline,
                            bool ownsPipelineLayout,
-                           skia_private::TArray<sk_sp<VulkanSampler>> immutableSamplers);
+                           skia_private::TArray<sk_sp<VulkanSampler>>&& immutableSamplers);
 
     void freeGpuData() override;
+
+    // The fragment shader can be null if no shading is performed by the pipeline.
+    // This function does not cleanup any of the VulkanProgramInfo's objects on success or failure.
+    static VkPipeline MakePipeline(VulkanResourceProvider*,
+                                   const VulkanProgramInfo&,
+                                   int subpassIndex,
+                                   PrimitiveType,
+                                   SkSpan<const Attribute> vertexAttrs,
+                                   SkSpan<const Attribute> instanceAttrs,
+                                   const DepthStencilSettings&,
+                                   const BlendInfo&,
+                                   const RenderPassDesc&);
 
     VkPipelineLayout fPipelineLayout = VK_NULL_HANDLE;
     VkPipeline fPipeline = VK_NULL_HANDLE;
