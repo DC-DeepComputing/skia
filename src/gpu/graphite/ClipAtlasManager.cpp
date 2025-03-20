@@ -20,6 +20,13 @@ namespace skgpu::graphite {
 static constexpr int kClipAtlasWidth = 4096;
 static constexpr int kClipAtlasHeight = 4096;
 
+int gSmallClips = 0;
+int g512Clips = 0;
+int g1024Clips = 0;
+int g2048Clips = 0;
+int g4096Clips = 0;
+int gGiantClips = 0;
+
 ClipAtlasManager::ClipAtlasManager(Recorder* recorder)
         : fRecorder(recorder)
         , fDrawAtlasMgr(kClipAtlasWidth, kClipAtlasHeight,
@@ -32,6 +39,21 @@ const TextureProxy* ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
                                                         SkIRect iBounds,
                                                         SkIPoint* outPos) {
     skgpu::UniqueKey maskKey = GenerateClipMaskKey(stackRecordID, elementList);
+
+    if (iBounds.width() <= 512 && iBounds.height() <= 256) {
+        ++gSmallClips;
+    } else if (iBounds.width() <= 512 && iBounds.height() <= 512) {
+        ++g512Clips;
+    } else if (iBounds.width() <= 1024 && iBounds.height() <= 1024) {
+        ++g1024Clips;
+    } else if (iBounds.width() <= 2048 && iBounds.height() <= 2048) {
+        ++g2048Clips;
+    } else if (iBounds.width() <= 4096 && iBounds.height() <= 4096) {
+        ++g4096Clips;
+    } else {
+        ++gGiantClips;
+    }
+
     return fDrawAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList, iBounds, outPos);
 }
 
