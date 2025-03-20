@@ -50,6 +50,10 @@ void DrawList::recordDraw(const Renderer* renderer,
         // DstReadStrategy does not require them, but they are inexpensive to track.
         fDstReadBounds.join(clip.drawBounds());
     }
+    // If any draw uses a renderer that requires MSAA, set fRequiresMSAA to true.
+    if (renderer->requiresMSAA()) {
+        fRequiresMSAA = true;
+    }
 }
 
 } // namespace skgpu::graphite
