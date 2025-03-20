@@ -658,6 +658,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (!dstReadRequired) {
         fDstReadStrategy = DstReadStrategy::kNoneRequired;
     }
+    SkASSERT(!dstReadRequired || fDstReadStrategy != DstReadStrategy::kNoneRequired);
 
     // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild.
     SkASSERTF_RELEASE(finalBlendMode.has_value() || dstReadRequired,
