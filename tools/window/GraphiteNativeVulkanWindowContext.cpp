@@ -269,12 +269,15 @@ bool GraphiteVulkanWindowContext::createSwapchain(int width, int height) {
 
     SkColorType colorType;
     switch (surfaceFormat) {
-        case VK_FORMAT_R8G8B8A8_UNORM:  // fall through
-        case VK_FORMAT_R8G8B8A8_SRGB:
+        case VK_FORMAT_R8G8B8A8_UNORM:
             colorType = kRGBA_8888_SkColorType;
             break;
-        case VK_FORMAT_B8G8R8A8_UNORM:  // fall through
+        case VK_FORMAT_B8G8R8A8_UNORM:
             colorType = kBGRA_8888_SkColorType;
+            break;
+        case VK_FORMAT_B8G8R8A8_SRGB:  // fall through
+        case VK_FORMAT_R8G8B8A8_SRGB:
+            colorType = kSRGBA_8888_SkColorType;
             break;
         default:
             return false;
@@ -353,6 +356,7 @@ bool GraphiteVulkanWindowContext::createSwapchain(int width, int height) {
 
         fDestroySwapchainKHR(fDevice, swapchainCreateInfo.oldSwapchain, nullptr);
         swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
+        return false;
     }
 
     return true;
@@ -448,7 +452,9 @@ GraphiteVulkanWindowContext::~GraphiteVulkanWindowContext() { this->destroyConte
 
 void GraphiteVulkanWindowContext::destroyContext() {
     if (this->isValid()) {
-        fQueueWaitIdle(fPresentQueue);
+        if (fPresentQueue != VK_NULL_HANDLE) {
+            fQueueWaitIdle(fPresentQueue);
+        }
         fDeviceWaitIdle(fDevice);
 
         if (fWaitSemaphore != VK_NULL_HANDLE) {
