@@ -86,8 +86,11 @@ public:
 
     int renderStepCount() const { return fRenderStepCount; }
 
-    // Bounds for a dst read required by this DrawList.
+    // Bounds for a dst read required by this DrawList. Invalid ones mean no dst read is required
+    // by any draws contained in the list.
     const Rect& dstReadBounds() const { return fDstReadBounds; }
+    bool drawsReadDst() const { return !fDstReadBounds.isEmptyNegativeOrNaN(); }
+    bool drawsRequireMSAA() const { return fRequiresMSAA; }
 
     SkDEBUGCODE(bool hasCoverageMaskDraws() const { return fCoverageMaskShapeDrawCount > 0; })
 
@@ -128,6 +131,7 @@ private:
     // Tracked for all paints that read from the dst. If it is later determined that the
     // DstReadStrategy is not kTextureCopy, this value can simply be ignored.
     Rect fDstReadBounds = Rect::InfiniteInverted();
+    bool fRequiresMSAA = false;
 };
 
 } // namespace skgpu::graphite
