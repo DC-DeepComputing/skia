@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4daf17a_91a4953b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-03-20T23:39:38Z",
+      "side": 1,
+      "message": "I think enough time has passed for SkCrabbyAvifCodec to soak in the Android tree. I think we can go ahead and land this now.\n\nNoelle, wdyt?",
+      "parentUuid": "01403e84_f749ec8e",
+      "revId": "9262f06293e79be3b79031de58a45fe4b41455d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f83c882_48922288",
@@ -49,6 +67,30 @@
       "writtenOn": "2025-02-05T18:18:09Z",
       "side": 1,
       "message": "Can we set this up on line 469 or so with the other \"big dictionary\"?",
+      "range": {
+        "startLine": 498,
+        "startChar": 5,
+        "endLine": 498,
+        "endChar": 21
+      },
+      "revId": "9262f06293e79be3b79031de58a45fe4b41455d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa1cfb1e_3843ae00",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 498,
+      "author": {
+        "id": 14979
+      },
+      "writtenOn": "2025-03-20T23:39:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f83c882_48922288",
       "range": {
         "startLine": 498,
         "startChar": 5,
