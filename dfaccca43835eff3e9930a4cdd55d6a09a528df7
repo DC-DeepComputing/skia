@@ -16,6 +16,23 @@
       "message": "I absolutely forgot that the current Bidi API is UITF8 and all Dart/Javascript operate on UTF16.\nFortunately, we had UTF16 method for GetBidiRegions. Unfortunately, it never has been tested and I had to fix it, too.",
       "revId": "dfaccca43835eff3e9930a4cdd55d6a09a528df7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f741d00_0a44f1a7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-20T15:29:42Z",
+      "side": 1,
+      "message": "Can you add a test that would have previously failed?",
+      "revId": "dfaccca43835eff3e9930a4cdd55d6a09a528df7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
