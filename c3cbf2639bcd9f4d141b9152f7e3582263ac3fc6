@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "182b8a77_022bc847",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-20T18:19:43Z",
+      "side": 1,
+      "message": "This bug was assigned to me as GPU gardener - assigning myself and Greg, the assignee of related bug b/396772373, as reviewers.",
+      "revId": "c3cbf2639bcd9f4d141b9152f7e3582263ac3fc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
