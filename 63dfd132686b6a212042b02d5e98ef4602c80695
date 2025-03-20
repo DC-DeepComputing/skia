@@ -16,6 +16,23 @@
       "message": "PTAL.",
       "revId": "63dfd132686b6a212042b02d5e98ef4602c80695",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdedebf7_460d6cb5",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-20T12:55:37Z",
+      "side": 1,
+      "message": "I think we would\u0027ve crashed already if this weren\u0027t true",
+      "revId": "63dfd132686b6a212042b02d5e98ef4602c80695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
