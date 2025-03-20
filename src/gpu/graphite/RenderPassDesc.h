@@ -47,7 +47,7 @@ struct RenderPassDesc {
                                const std::array<float, 4>& clearColor,
                                bool requiresMSAA,
                                Swizzle writeSwizzle,
-                               const DstReadStrategy targetReadStrategy);
+                               const DstReadStrategy dstReadStrategy);
 
     bool operator==(const RenderPassDesc& other) const {
         return (fSampleCount == other.fSampleCount &&
