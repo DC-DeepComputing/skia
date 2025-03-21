@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce025803_7a7af2dd",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c2bd571_20d3b195",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 105,
+        "endChar": 89
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cbafbfee_4d27ab7a",
@@ -72,6 +96,30 @@
       "writtenOn": "2025-03-17T19:44:32Z",
       "side": 1,
       "message": "nit: line length wraps at 100",
+      "range": {
+        "startLine": 549,
+        "startChar": 8,
+        "endLine": 549,
+        "endChar": 37
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "706c7017_450f8617",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 549,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cbafbfee_4d27ab7a",
       "range": {
         "startLine": 549,
         "startChar": 8,
@@ -143,6 +191,30 @@
       "side": 1,
       "message": "WASM isn\u0027t a high priority, but we do have active clients that use it so ideally we don\u0027t set it back too much. In this case, the trade off is that we might hurt performance but would lower memory usage, which they would probably appreciate.\n\nThe new skgpu::TextureFormat enum fits into 8 bits, so I don\u0027t think we will need to increase the key size to 64 bits either but I wouldn\u0027t worry about that right away. I think first if we can get a sense of performance with the 2-pass vs. 3-pass approaches on both D3D11 and on Metal (with transient attachments disabled to simulate WASM path on a tiling GPU).\n\nI agree that hopefully we can expose transient attachments and load-resolve extensions in WASM. I would like to only keep one emulation path, so we should just work out exactly how we want the new one to behave.",
       "parentUuid": "71893b08_6dfd97bd",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 469,
+        "endChar": 0
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01ea843c_f8c23888",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 469,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "I have made this CL 2-pass only for now. The 1st blit will be part of the main render pass.\n\nI tested 3-pass vs 2-pass with nanobench\u0027s replays on M1 (transient attachment disabled). 3-pass is generally a bit slower. Most notable is mobi_youtube test, 3-pass is 17% slower than 2-pass.\n\nOn D3D11, both have similar perf.",
+      "parentUuid": "d3c4b221_8cc9335c",
       "range": {
         "startLine": 463,
         "startChar": 0,
@@ -271,6 +343,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "711aaad6_d3f12dc4",
+        "filename": "src/gpu/graphite/dawn/DawnLoadResolveWithDrawHelper.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "I have removed the helper class. And keep the pipeline creations in DawnResourceProvider for now.",
+      "parentUuid": "19b24c28_2271e4e7",
+      "range": {
+        "startLine": 20,
+        "startChar": 6,
+        "endLine": 20,
+        "endChar": 35
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c68fb3db_250314b7",
@@ -365,6 +461,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7b66f8_7e9f5f1d",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9c1a11b_b4a07d03",
+      "range": {
+        "startLine": 24,
+        "startChar": 23,
+        "endLine": 24,
+        "endChar": 74
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "840ca5ec_a43962c9",
@@ -388,6 +508,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad0ea183_f6e08762",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "840ca5ec_a43962c9",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 11
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e51fa969_86179048",
@@ -401,6 +545,30 @@
       "writtenOn": "2025-03-17T19:44:32Z",
       "side": 1,
       "message": "nit: newline before `}` and update it to `} // anonymous namespace`",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 1
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d35a04b_4273192a",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e51fa969_86179048",
       "range": {
         "startLine": 32,
         "startChar": 0,
@@ -472,6 +640,30 @@
       "side": 1,
       "message": "If we are rendering U/V without AA, we want the depth attachment to be `GetApproxSize(Y dims)`.\n\nIf we are rendering U/V with AA, and we have the load extension so we aren\u0027t using a separate render pass, we will want the depth attachment to be `GetApproxSize(Y dims)`. The color attachment, though, can be `GetApproxSize(U/V dims)`, right?\n\nIf we are rendering U/V with AA and no extension, then both the color and depth attachments can be `GetApproxSize(U/V dims)` because they won\u0027t be resolved. And the blitAsDraw into the multiplanar target will use an internal renderpass configured to have no depth attachment at all.\n\nIf we just passed in `colorAttachment-\u003edimensions()` here, `getDepthAttachmentDimensions()` won\u0027t have to separately call `GetApproxSize` since it\u0027ll be `GetApproxSize(U/V dims)`.  Multiplying that by 2 to get the Y size almost always works out correctly.  For every input size \u003e 8px, 2*GetApproxSize(sz) \u003d\u003d GetApproxSize(2*sz).  For sz \u003c\u003d 8px, 2*GetApproxSize(sz) returns 32 instead of 16 but that shouldn\u0027t be problematic since that\u0027s still larger than the Y plane size.\n\nThe only downside to not providing the renderpass sample count to `getDepthAttachmentDimensions` is that when we are rendering MSAA to U/V but don\u0027t have the load extension, we would use `GetApproxSize(y dims)` instead of the smaller `GetApproxSize(uv dims)`. I\u0027m inclined to keep the function simple and less coupled to the multipass configurations of a specific backend when it\u0027s pretty unlikely for multiplanar rendering to trigger AA anyways.",
       "parentUuid": "b131b52a_8c41150a",
+      "range": {
+        "startLine": 181,
+        "startChar": 8,
+        "endLine": 184,
+        "endChar": 9
+      },
+      "revId": "b2740cd1cc06998eaa340fc6fcb04af43e10475c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a40bfa2d_3a812920",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-21T15:57:09Z",
+      "side": 1,
+      "message": "\u003e If we just passed in colorAttachment-\u003edimensions() here, getDepthAttachmentDimensions() won\u0027t have to separately call GetApproxSize since it\u0027ll be GetApproxSize(U/V dims). Multiplying that by 2 to get the Y size almost always works out correctly. For every input size \u003e 8px, 2GetApproxSize(sz) \u003d\u003d GetApproxSize(2sz). For sz \u003c\u003d 8px, 2*GetApproxSize(sz) returns 32 instead of 16 but that shouldn\u0027t be problematic since that\u0027s still larger than the Y plane size.\n\nI don\u0027t think this will work. That will make the depth stencil texture double the size of the MSAA. We cannot use a depth/stencil attachment larger than a color attachment yet. We can make them both larger than the resolve texture. But both must match their size. Depth stencil\u0027s size \u003d 2 x sizeof(U/V) plane is a special rule in D3D11. The MSAA texture is not a U/V plane so that rule won\u0027t be applied.\n\nNevertheless I don\u0027t think the current code can handle the MSAA render to U/V plane correctly either. In D3D11, the resolve texture is not part of the render pass. So if we passed the MSAA attachment to the `getDepthAttachmentDimensions` it would return MSAA attachment\u0027s size x 2. When we bind the attachments in D3D11, it would complain because the MSAA attachment \u0026 depth stencil attachment have different size. The MSAA attachment is not a multiplanar plane, hence the special rule won\u0027t be applied.\n\nBut as you said, it\u0027s very unlikely that we render to a Y/U/V plane with AA. So I will just pass `colorAttachment-\u003edimensions()` to `getDepthAttachmentDimensions` for now.",
+      "parentUuid": "0d9fa821_2b0904c3",
       "range": {
         "startLine": 181,
         "startChar": 8,
