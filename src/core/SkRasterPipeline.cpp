@@ -99,6 +99,16 @@ void SkRasterPipeline::uncheckedAppend(SkRasterPipelineOp op, void* ctx) {
 
 #undef COLOR_TYPE_CASE
 
+        case Op::debug_r:
+        case Op::debug_g:
+        case Op::debug_b:
+        case Op::debug_a:
+        case Op::debug_x:
+        case Op::debug_y: {
+            ct = kRGBA_8888_SkColorType;
+            isStore = true;
+            break;
+        }
         // Odd stage that doesn't have a load variant (appendLoad uses load_a8 + alpha_to_red)
         case Op::store_r8: {
             ct = kR8_unorm_SkColorType;
