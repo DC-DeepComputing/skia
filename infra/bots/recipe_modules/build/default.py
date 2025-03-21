@@ -42,7 +42,15 @@ def compile_swiftshader(api, extra_tokens, swiftshader_root, ninja_root, cc, cxx
 
   if san:
     short,full = san
-    clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
+    os = api.vars.builder_cfg.get('os', '')
+    if os in ('Ubuntu18', 'Debian10', 'Debian11'):
+      clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
+    elif os == 'Ubuntu20.04':
+      clang_linux = str(api.vars.workdir.joinpath('clang_ubuntu_focal'))
+    elif os == 'Ubuntu22.04':
+      clang_linux = str(api.vars.workdir.joinpath('clang_ubuntu_jammy'))
+    else:
+      clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
     libcxx = clang_linux + '/' + short
     cflags = ' '.join([
       '-fsanitize=' + full,
@@ -77,9 +85,17 @@ def compile_fn(api, checkout_root, out_dir):
   os            = api.vars.builder_cfg.get('os',            '')
   target_arch   = api.vars.builder_cfg.get('target_arch',   '')
 
-  clang_linux      = str(api.vars.workdir.joinpath('clang_linux'))
   win_toolchain    = str(api.vars.workdir.joinpath('win_toolchain'))
   dwritecore       = str(api.vars.workdir.joinpath('dwritecore'))
+
+  if os in ('Ubuntu18', 'Debian10', 'Debian11'):
+    clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
+  elif os == 'Ubuntu20.04':
+    clang_linux = str(api.vars.workdir.joinpath('clang_ubuntu_focal'))
+  elif os == 'Ubuntu22.04':
+    clang_linux = str(api.vars.workdir.joinpath('clang_ubuntu_jammy'))
+  else:
+    clang_linux = str(api.vars.workdir.joinpath('clang_linux'))
 
   cc, cxx, ccache = None, None, None
   extra_cflags = []
