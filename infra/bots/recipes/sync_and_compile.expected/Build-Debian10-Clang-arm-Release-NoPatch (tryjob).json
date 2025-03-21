@@ -189,11 +189,11 @@
       "--json-output",
       "/path/to/tmp/json",
       "copy",
-      "[START_DIR]/skia/infra/bots/assets/clang_linux/VERSION",
+      "[START_DIR]/skia/infra/bots/assets/clang_ubuntu_noble/VERSION",
       "/path/to/tmp/"
     ],
     "infra_step": true,
-    "name": "Get clang_linux VERSION",
+    "name": "Get clang_ubuntu_noble VERSION",
     "~followup_annotations": [
       "@@@STEP_LOG_LINE@VERSION@42@@@",
       "@@@STEP_LOG_END@VERSION@@@"
