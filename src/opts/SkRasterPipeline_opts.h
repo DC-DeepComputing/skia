@@ -2905,6 +2905,42 @@ HIGHP_STAGE(store_8888, const SkRasterPipeline_MemoryCtx* ctx) {
            | to_unorm(a, 255) << 24;
     store(ptr, px);
 }
+HIGHP_STAGE(debug_r, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(r);
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_g, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(g);
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_b, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(b);
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_a, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(a);
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_x, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(r);
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_y, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    U32 px = sk_bit_cast<U32>(g);
+    store(ptr, px);
+}
 
 HIGHP_STAGE(load_rg88, const SkRasterPipeline_MemoryCtx* ctx) {
     auto ptr = ptr_at_xy<const uint16_t>(ctx, dx, dy);
@@ -5961,7 +5997,7 @@ SI void from_8888(U32 rgba, U16* r, U16* g, U16* b, U16* a) {
 }
 
 SI void load_8888_(const uint32_t* ptr, U16* r, U16* g, U16* b, U16* a) {
-#if 1 && defined(SKRP_CPU_NEON)
+#if defined(SKRP_CPU_NEON)
     uint8x8x4_t rgba = vld4_u8((const uint8_t*)(ptr));
     *r = cast<U16>(rgba.val[0]);
     *g = cast<U16>(rgba.val[1]);
@@ -6001,7 +6037,7 @@ SI void store_8888_(uint32_t* ptr, U16 r, U16 g, U16 b, U16 a) {
     b = min(b, 255);
     a = min(a, 255);
 
-#if 1 && defined(SKRP_CPU_NEON)
+#if defined(SKRP_CPU_NEON)
     uint8x8x4_t rgba = {{
         cast<U8>(r),
         cast<U8>(g),
@@ -6029,6 +6065,55 @@ LOWP_STAGE_GP(gather_8888, const SkRasterPipeline_GatherCtx* ctx) {
     const uint32_t* ptr;
     U32 ix = ix_and_ptr(&ptr, ctx, x,y);
     from_8888(gather<U32>(ptr, ix), &r, &g, &b, &a);
+}
+LOWP_STAGE_PP(debug_r, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = (cast<U32>(r) & 0x0000FF);
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_g, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = (cast<U32>(g) & 0x0000FF) << 8;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_b, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = (cast<U32>(b) & 0x0000FF) << 16;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_a, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = (cast<U32>(a) & 0x0000FF);
+    store(ptr, px | px << 8 | px << 16 | px << 24);
+}
+LOWP_STAGE_GG(debug_x, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = cast<U32>(abs_(x) / 256) & 0xFF;
+    auto g2 = cast<U32>(abs_(x)) & 0xFF;
+    auto b2 = cast<U32>(abs_(x) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = cast<U32>(min(max(x * -256 * 256, 0), 0xFF));
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+LOWP_STAGE_GG(debug_y, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = cast<U32>(abs_(y) / 256) & 0xFF;
+    auto g2 = cast<U32>(abs_(y)) & 0xFF;
+    auto b2 = cast<U32>(abs_(y) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = cast<U32>(min(max(y * -256 * 256, 0), 0xFF));
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
 }
 
 // ~~~~~~ 16-bit memory loads and stores ~~~~~~ //
@@ -6137,7 +6222,7 @@ SI void from_88(U16 rg, U16* r, U16* g) {
 }
 
 SI void load_88_(const uint16_t* ptr, U16* r, U16* g) {
-#if 1 && defined(SKRP_CPU_NEON)
+#if defined(SKRP_CPU_NEON)
     uint8x8x2_t rg = vld2_u8((const uint8_t*)(ptr));
     *r = cast<U16>(rg.val[0]);
     *g = cast<U16>(rg.val[1]);
@@ -6150,7 +6235,7 @@ SI void store_88_(uint16_t* ptr, U16 r, U16 g) {
     r = min(r, 255);
     g = min(g, 255);
 
-#if 1 && defined(SKRP_CPU_NEON)
+#if defined(SKRP_CPU_NEON)
     uint8x8x2_t rg = {{
         cast<U8>(r),
         cast<U8>(g),
