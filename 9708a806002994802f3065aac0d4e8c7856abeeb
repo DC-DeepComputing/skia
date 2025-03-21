@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dea46b1_da9788eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-21T02:11:48Z",
+      "side": 1,
+      "message": "The chained CL (https://skia-review.googlesource.com/c/skia/+/967958) was originally failing presubmits since I was modifying lines that included GPU_TEST_UTILS. I\u0027d uploaded that CL by bypassing hooks since I wasn\u0027t entirely sure if it was just a local issue originally.\n\nI\u0027ve verified with this change that locally the next CL passes presubmit, and the housekeep try job is happy.",
+      "revId": "9708a806002994802f3065aac0d4e8c7856abeeb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
