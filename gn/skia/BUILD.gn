@@ -394,6 +394,8 @@ config("default") {
     }
     if (sanitizers == "safe-stack") {
       cflags_cc += [ "-fno-aligned-allocation" ]
+      # The linker is finding multiple copies of __sanitizer_internal_*
+      ldflags += [ "--allow-multiple-definition" ]
     }
   }
 
