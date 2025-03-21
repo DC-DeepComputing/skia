@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b934a1d_3dca8edd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-21T13:25:48Z",
+      "side": 1,
+      "message": "Thanks for this fix Zeng Yong! It looks like you\u0027re a new contributor, so before this can be approved, can you follow the instructions at https://skia.org/docs/dev/contrib to sign the CLA and then add your name/email to the `AUTHORS` file in the root directory?",
+      "revId": "a73442adfe75a35a770bd7d0968d3e7270c26c46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
