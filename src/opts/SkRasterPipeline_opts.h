@@ -5127,7 +5127,7 @@ static constexpr U16 U16_0   = U16_(0),
 // It's exactly the same decision and implementation strategy as the F stages above.
 #if SKRP_NARROW_STAGES
     struct Params {
-        size_t dx, dy;
+        const size_t dx, dy;
         U16 dr,dg,db,da;
     };
     using Stage = void (ABI*)(Params*, SkRasterPipelineStage* program, U16 r, U16 g, U16 b, U16 a);
@@ -6695,8 +6695,161 @@ LOWP_STAGE_PP(swizzle, void* ctx) {
     }
 }
 
+LOWP_STAGE_PP(debug_r_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>(min(r, 255));
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_g_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>(min(g, 255)) << 8;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_b_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>(min(b, 255)) << 16;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_a_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>(min(a, 255));
+    // Render alpha as greyscale
+    store(ptr, px | px << 8 | px << 16 | px << 24);
+}
+LOWP_STAGE_GG(debug_x, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = cast<U32>(abs_(x) / 256) & 0xFF;
+    auto g2 = cast<U32>(abs_(x)) & 0xFF;
+    auto b2 = cast<U32>(abs_(x) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = cast<U32>(min(max(x * -256 * 256, 0), 0xFF));
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+LOWP_STAGE_GG(debug_y, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = cast<U32>(abs_(y) / 256) & 0xFF;
+    auto g2 = cast<U32>(abs_(y)) & 0xFF;
+    auto b2 = cast<U32>(abs_(y) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = cast<U32>(min(max(y * -256 * 256, 0), 0xFF));
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+LOWP_STAGE_PP(debug_r, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    // Flip the byte ordering so it aligns with the fixed point used above
+    auto px = cast<U32>((r & 0xFF00) >> 8 |
+                        (r & 0x00FF) << 8);
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_g, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>((g & 0xFF00) >> 8 |
+                        (g & 0x00FF) << 8);
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_b, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>((b & 0xFF00) >> 8 |
+                        (b & 0x00FF) << 8);
+    store(ptr, px);
+}
+LOWP_STAGE_PP(debug_a, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = cast<U32>((a & 0xFF00) >> 8 |
+                        (a & 0x00FF) << 8);
+    store(ptr, px);
+}
+
 #endif//defined(SKRP_CPU_SCALAR) controlling whether we build lowp stages
 }  // namespace lowp
+
+HIGHP_STAGE(debug_r_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = to_unorm(r, 255);
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_g_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = to_unorm(g, 255) << 8;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_b_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = to_unorm(b, 255) << 16;
+    px |= 0xFF000000; // make opaque
+    store(ptr, px);
+}
+HIGHP_STAGE(debug_a_255, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto px = to_unorm(a, 255);
+    // Render alpha as greyscale
+    store(ptr, px | px << 8 | px << 16 | px << 24);
+}
+HIGHP_STAGE(debug_r, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = trunc_(abs_(r) / 256) & 0xFF;
+    auto g2 = trunc_(abs_(r)) & 0xFF;
+    auto b2 = trunc_(abs_(r) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = to_unorm(r * -256 * 256, 255);
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+HIGHP_STAGE(debug_g, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = trunc_(abs_(g) / 256) & 0xFF;
+    auto g2 = trunc_(abs_(g)) & 0xFF;
+    auto b2 = trunc_(abs_(g) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = to_unorm(g * -256 * 256, 255);
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+auto debug_x = debug_r;
+auto debug_y = debug_g;
+HIGHP_STAGE(debug_b, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = trunc_(abs_(b) / 256) & 0xFF;
+    auto g2 = trunc_(abs_(b)) & 0xFF;
+    auto b2 = trunc_(abs_(b) * 256) & 0xFF;
+    auto a2 = to_unorm(b * -256 * 256, 255);
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
+HIGHP_STAGE(debug_a, const SkRasterPipeline_MemoryCtx* ctx) {
+    auto ptr = ptr_at_xy<uint32_t>(ctx, dx,dy);
+
+    auto r2 = trunc_(abs_(a) / 256) & 0xFF;
+    auto g2 = trunc_(abs_(a)) & 0xFF;
+    auto b2 = trunc_(abs_(a) * 256) & 0xFF;
+    // alpha channel will be 0xFF for negative floats and
+    // 0x00 for positive floats
+    auto a2 = to_unorm(a * -256 * 256, 255);
+    store(ptr, r2 | (g2 << 8) | (b2 << 16) | (a2 << 24));
+}
 
 /* This gives us SK_OPTS::lowp::N if lowp::N has been set, or SK_OPTS::N if it hasn't. */
 namespace lowp { static constexpr size_t lowp_N = N; }
