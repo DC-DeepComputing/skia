@@ -164,6 +164,30 @@
       },
       "revId": "4d5e6e7786dc36238c3678118836c04e710a776f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b263da6_20b5fb77",
+        "filename": "infra/bots/recipe_modules/build/chromebook.py",
+        "patchSetId": 36
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-24T12:22:06Z",
+      "side": 1,
+      "message": "We\u0027re looking good without it.",
+      "parentUuid": "976f9074_f403046b",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 32
+      },
+      "revId": "4d5e6e7786dc36238c3678118836c04e710a776f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
