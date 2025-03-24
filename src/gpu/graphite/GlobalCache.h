@@ -64,17 +64,24 @@ public:
     void forEachGraphicsPipeline(
             const std::function<void(const UniqueKey&, const GraphicsPipeline*)>& fn)
             SK_EXCLUDES(fSpinLock);
+#endif
 
     struct PipelineStats {
+#if defined(GPU_TEST_UTILS)
         int fGraphicsCacheHits = 0;
         int fGraphicsCacheMisses = 0;
         int fGraphicsCacheAdditions = 0;
         int fGraphicsRaces = 0;
         int fGraphicsPurges = 0;
+#endif
+        uint32_t fNormalPreemptedByPrecompile = 0;
+        uint32_t fPrecompilePreemptedByNormal = 0;
+        uint32_t fUnpreemptedNormalPipelines = 0;
+        uint32_t fUnpreemptedPrecompilePipelines = 0;
+        uint32_t fUnusedPrecompiledPipelines = 0;
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
-#endif
 
     // Find and add operations for ComputePipelines, with the same pattern as GraphicsPipelines.
     sk_sp<ComputePipeline> findComputePipeline(const UniqueKey&) SK_EXCLUDES(fSpinLock);
@@ -121,9 +128,7 @@ private:
     PipelineCallback fPipelineCallback SK_GUARDED_BY(fSpinLock) = nullptr;
     PipelineCallbackContext fPipelineCallbackContext SK_GUARDED_BY(fSpinLock) = nullptr;
 
-#if defined(GPU_TEST_UTILS)
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
-#endif
 };
 
 }  // namespace skgpu::graphite
