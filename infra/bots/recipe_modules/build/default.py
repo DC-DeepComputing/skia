@@ -200,6 +200,8 @@ def compile_fn(api, checkout_root, out_dir):
       extra_cflags.append('-DSKCMS_PORTABLE')
 
   if 'MSAN' in extra_tokens:
+    extra_cflags.append('-fPIE')
+    extra_ldflags.append('-pie')
     extra_ldflags.append('-L' + clang_linux + '/msan')
   elif 'TSAN' in extra_tokens:
     extra_ldflags.append('-L' + clang_linux + '/tsan')
