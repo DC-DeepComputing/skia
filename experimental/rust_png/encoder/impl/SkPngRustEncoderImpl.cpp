@@ -46,13 +46,13 @@ rust_png::ColorType ToColorType(SkEncodedInfo::Color color) {
 rust_png::Compression ToCompression(SkPngRustEncoder::CompressionLevel level) {
     switch (level) {
         case SkPngRustEncoder::CompressionLevel::kLow:
-#ifdef SK_RUST_PNG_USE_FDEFLATE_COMPRESSION_LEVELS
+#ifdef SK_RUST_PNG_MAP_LOW_TO_FDEFLATE_FASTEST
             return rust_png::Compression::Fastest;
 #else
             return rust_png::Compression::Fast;
 #endif
         case SkPngRustEncoder::CompressionLevel::kMedium:
-#ifdef SK_RUST_PNG_USE_FDEFLATE_COMPRESSION_LEVELS
+#ifdef SK_RUST_PNG_MAP_MEDIUM_TO_FDEFLATE_FAST
             // Using `Fast` instead of `Balanced` because we expect that
             // `fdeflate` will performs better than 1) `flate2` used by Rust for
             // `Balanced` and 2) `libpng`/`zlib`-based default in Chromium.  We
