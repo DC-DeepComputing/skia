@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "83f07a74_5d742ac9",
+        "filename": "infra/bots/assets/arm64_sysroot/Dockerfile",
+        "patchSetId": 36
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-24T11:18:16Z",
+      "side": 1,
+      "message": "These absolute paths won\u0027t work when transferred via CIPD to the swarming bot.  Yes, we\u0027re using a sysroot to build for arm64 on x64_64.",
+      "parentUuid": "7433f81c_aa5dbf78",
+      "range": {
+        "startLine": 21,
+        "startChar": 21,
+        "endLine": 21,
+        "endChar": 28
+      },
+      "revId": "4d5e6e7786dc36238c3678118836c04e710a776f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c8a7c2f_4ebbb1ed",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "32278abf_6bb6759f",
+        "filename": "infra/bots/assets/arm64_sysroot/README.md",
+        "patchSetId": 36
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-24T11:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c8a7c2f_4ebbb1ed",
+      "range": {
+        "startLine": 1,
+        "startChar": 7,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "4d5e6e7786dc36238c3678118836c04e710a776f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25dd5ceb_4b747e16",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-21T19:09:09Z",
       "side": 1,
       "message": "I presume you figured this out via trial and error? Or was this copied from another config?",
+      "range": {
+        "startLine": 89,
+        "startChar": 8,
+        "endLine": 89,
+        "endChar": 32
+      },
+      "revId": "4d5e6e7786dc36238c3678118836c04e710a776f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae9c255f_39e92e8d",
+        "filename": "infra/bots/recipe_modules/build/chromebook.py",
+        "patchSetId": 36
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-24T11:18:16Z",
+      "side": 1,
+      "message": "Copied from the `arm` config, but it\u0027s also present in the x86_64 chromebook build, so I assumed it was needed here.  I can try removing it and see what happens if you\u0027d like?",
+      "parentUuid": "25dd5ceb_4b747e16",
       "range": {
         "startLine": 89,
         "startChar": 8,
