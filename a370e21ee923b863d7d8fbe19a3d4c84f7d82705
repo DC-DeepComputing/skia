@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82dc5f26_ac094cbf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-24T12:12:55Z",
+      "side": 1,
+      "message": "PTAL after ignores were added",
+      "revId": "a370e21ee923b863d7d8fbe19a3d4c84f7d82705",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
