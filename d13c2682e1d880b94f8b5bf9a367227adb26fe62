@@ -51,6 +51,24 @@
       ],
       "revId": "d13c2682e1d880b94f8b5bf9a367227adb26fe62",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44e4fe8f_384c024a",
+        "filename": "src/ports/fontations/src/ffi.rs",
+        "patchSetId": 6
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-24T08:19:41Z",
+      "side": 1,
+      "message": "I meant to remove the AI suggested fix, but it re-attached itself. I think it\u0027s wrong.",
+      "parentUuid": "abd2ebb8_a0cf398e",
+      "revId": "d13c2682e1d880b94f8b5bf9a367227adb26fe62",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
