@@ -247,7 +247,7 @@ static bool convert_to_alpha8(const SkImageInfo& dstInfo,       void* vdst, size
 static void convert_with_pipeline(const SkImageInfo& dstInfo, void* dstRow, int dstStride,
                                   const SkImageInfo& srcInfo, const void* srcRow, int srcStride,
                                   const SkColorSpaceXformSteps& steps) {
-    SkRasterPipeline_MemoryCtx src = { const_cast<void*>(srcRow), srcStride },
+    SkRasterPipelineContexts::MemoryCtx src = { const_cast<void*>(srcRow), srcStride },
                                dst = {                   dstRow,  dstStride };
 
     SkRasterPipeline_<256> pipeline;

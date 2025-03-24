@@ -30,7 +30,7 @@ sk_sp<SkFlattenable> SkBlendShader::CreateProc(SkReadBuffer& buffer) {
     sk_sp<SkShader> dst(buffer.readShader());
     sk_sp<SkShader> src(buffer.readShader());
     if (!buffer.validate(dst && src)) {
-        return nullptr;
+    return nullptr;
     }
 
     unsigned mode = buffer.read32();
@@ -60,8 +60,8 @@ static float* append_two_shaders(const SkStageRec& rec,
                                  SkShader* s0,
                                  SkShader* s1) {
     struct Storage {
-        float fCoords[2 * SkRasterPipeline_kMaxStride];
-        float fRes0[4 * SkRasterPipeline_kMaxStride];
+        float fCoords[2 * SkRasterPipelineContexts::kMaxStride];
+        float fRes0[4 * SkRasterPipelineContexts::kMaxStride];
     };
     auto storage = rec.fAlloc->make<Storage>();
 
