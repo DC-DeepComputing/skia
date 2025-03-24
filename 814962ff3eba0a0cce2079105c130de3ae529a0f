@@ -90,6 +90,29 @@
       "message": "Can we add a const here ?",
       "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdd6f1ce_f612a00e",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-24T18:47:27Z",
+      "side": 1,
+      "message": "It seems a shame not to fuse this with draw_clip_mask_to_bitmap somehow",
+      "range": {
+        "startLine": 270,
+        "startChar": 0,
+        "endLine": 291,
+        "endChar": 5
+      },
+      "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
