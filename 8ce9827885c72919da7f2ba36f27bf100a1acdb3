@@ -1,0 +1,85 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c228b99d_60a21389",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-24T14:20:36Z",
+      "side": 1,
+      "message": "lgtm modulo nits, thanks!",
+      "revId": "8ce9827885c72919da7f2ba36f27bf100a1acdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39e564b2_f7c78a56",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-24T14:20:36Z",
+      "side": 1,
+      "message": "nit: \", s\"",
+      "range": {
+        "startLine": 542,
+        "startChar": 17,
+        "endLine": 542,
+        "endChar": 20
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "267cde2c_9063c5e4",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/dawn/DawnCaps.cpp",
+              "range": {
+                "startLine": 542,
+                "startChar": 0,
+                "endLine": 543,
+                "endChar": 0
+              },
+              "replacement": "        // passes, so that mismatched MSAA \u0026 resolve attachments\u0027 sizes can work. This helps\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8ce9827885c72919da7f2ba36f27bf100a1acdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da9ce857_2ae47ba8",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-24T14:20:36Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 102
+      },
+      "revId": "8ce9827885c72919da7f2ba36f27bf100a1acdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
