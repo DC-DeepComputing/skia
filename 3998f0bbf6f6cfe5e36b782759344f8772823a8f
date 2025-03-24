@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dafa0c5e_9e5d015c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-24T18:51:58Z",
+      "side": 1,
+      "message": "https://docs.google.com/presentation/d/1R7loX9P2MBk2H-6w0ES0zcuBWpDpnLqM9u1rsuQVCag/edit?slide\u003did.p#slide\u003did.p motivates and explains this CL",
+      "revId": "3998f0bbf6f6cfe5e36b782759344f8772823a8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
