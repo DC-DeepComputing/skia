@@ -16,6 +16,80 @@
       "message": "PTAL",
       "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73071c24_e278a512",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-24T18:42:47Z",
+      "side": 1,
+      "message": "static or anonymous namespace ?\nhere and below\n\nI guess, also, could they be shared helpers in skgpu?",
+      "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d2f56c9_bb6ca032",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-24T18:42:47Z",
+      "side": 1,
+      "message": "Would this be better named \u0027isFirstElement\u0027 ?",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 17
+      },
+      "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0020c804_36139aca",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-24T18:42:47Z",
+      "side": 1,
+      "message": "wdyt about either altering the comment\u0027s order to match the code or vice versa?",
+      "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0274c1b_766dbc7a",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-24T18:42:47Z",
+      "side": 1,
+      "message": "Can we add a const here ?",
+      "revId": "814962ff3eba0a0cce2079105c130de3ae529a0f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
