@@ -16,6 +16,24 @@
       "message": "Do we need a \"program.destroy\" here ?",
       "revId": "c09368fb2c9f290bd7a100a3e319a5f1b823bf2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21c57ba9_ec0ab5bd",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 761,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-24T14:41:40Z",
+      "side": 1,
+      "message": "You\u0027re right, good catch. I adjusted the related checks to check for success in `SkSLToSPIRV` and set the VkShaderModule fields so there aren\u0027t any early returns. WDYT?",
+      "parentUuid": "97e825b7_9ca02bf3",
+      "revId": "c09368fb2c9f290bd7a100a3e319a5f1b823bf2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
