@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "472b2880_bbc6b5c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-24T17:40:36Z",
+      "side": 1,
+      "message": "Could you +1 again? It seems I lost +1 after the latest patchset. Thanks",
+      "revId": "a59c4be9930d204bdd8d6a992f8288c1e5c68e3f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

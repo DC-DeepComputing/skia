@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "806620d9_5ba15674",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 542,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-24T17:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39e564b2_f7c78a56",
+      "range": {
+        "startLine": 542,
+        "startChar": 17,
+        "endLine": 542,
+        "endChar": 20
+      },
+      "revId": "8ce9827885c72919da7f2ba36f27bf100a1acdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "da9ce857_2ae47ba8",
@@ -72,6 +96,30 @@
       "writtenOn": "2025-03-24T14:20:36Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 463,
+        "startChar": 0,
+        "endLine": 463,
+        "endChar": 102
+      },
+      "revId": "8ce9827885c72919da7f2ba36f27bf100a1acdb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce50310d_961a0de7",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-24T17:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da9ce857_2ae47ba8",
       "range": {
         "startLine": 463,
         "startChar": 0,
