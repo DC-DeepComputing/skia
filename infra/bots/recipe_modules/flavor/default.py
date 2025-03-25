@@ -134,6 +134,7 @@ class DefaultFlavor(object):
       clang_linux = workdir.joinpath('clang_ubuntu_noble')
 
     if self.m.vars.is_linux:
+      env['DISPLAY'] = ':0'
       if (self.m.vars.builder_cfg.get('cpu_or_gpu', '') == 'GPU'
           and 'Intel' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
         dri_path = workdir.joinpath('mesa_intel_driver_linux')
