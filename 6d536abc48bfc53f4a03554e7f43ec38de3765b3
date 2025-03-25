@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04302a85_75cb8445",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-25T14:53:27Z",
+      "side": 1,
+      "message": "Small chunk of work to align the DrawPass and RenderPassDesc dst read strategies with comment documentation.",
+      "revId": "6d536abc48bfc53f4a03554e7f43ec38de3765b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
