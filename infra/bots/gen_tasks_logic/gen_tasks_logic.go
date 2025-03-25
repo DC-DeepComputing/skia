@@ -464,9 +464,10 @@ func GenTasks(cfg *Config) {
 			"skia/go.sum", // Needed by Gazelle.
 			// Needed to run Bazel.
 			"skia/.bazelignore",
+			"skia/.bazelignore",
 			"skia/.bazelrc",
-			"skia/.bazelversion",
 			"skia/BUILD.bazel",
+			"skia/Cargo.toml",
 			"skia/LICENSE", // Referred to by default_applicable_licenses
 			"skia/WORKSPACE.bazel",
 			"skia/bazel",
