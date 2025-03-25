@@ -25,6 +25,8 @@
 #include "src/gpu/graphite/dawn/DawnTexture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+#include <sstream>
+
 namespace skgpu::graphite {
 
 namespace {
@@ -155,6 +157,24 @@ BindGroupKey<1> make_texture_bind_group_key(const DawnSampler* sampler,
 
     return uniqueKey;
 }
+
+std::string generate_read_from_msaa_fs(const Caps& caps) {
+    const int sampleCount = caps.defaultMSAASamplesCount();
+    std::ostringstream ss;
+    ss <<
+    "@group(0) @binding(0) var colorMap: texture_multisampled_2d<f32>;"
+    "@fragment\n"
+    "fn main(@builtin(position) fragPosition : vec4<f32>) -> @location(0) vec4<f32> {"
+        "let coords = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
+        "var sum = textureLoad(colorMap, coords, 0);";
+    for (int i = 1; i < sampleCount; ++i) {
+        ss << "sum += textureLoad(colorMap, coords, " << i << ");";
+    }
+    ss << "return sum * " << 1.f / sampleCount << ";"
+    "}";
+    return ss.str();
+}
+
 }  // namespace
 
 
@@ -372,7 +392,7 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
             renderPassDesc, srcIsMSAA);
     wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[renderPassKey];
     if (!pipeline) {
-        static constexpr char kVertexShaderText[] =
+        static constexpr char kVS[] =
             "var<private> fullscreenTriPositions : array<vec2<f32>, 3> = array<vec2<f32>, 3>("
                 "vec2(-1.0, -1.0), vec2(-1.0, 3.0), vec2(3.0, -1.0));"
 
@@ -381,7 +401,7 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 "return vec4(fullscreenTriPositions[vertexIndex], 1.0, 1.0);"
             "}";
 
-        static constexpr char kFragmentShaderText[] =
+        static constexpr char kReadSingleSampledFS[] =
             "@group(0) @binding(0) var colorMap: texture_2d<f32>;"
 
             "@fragment "
@@ -390,23 +410,11 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 "return textureLoad(colorMap, coords, 0);"
             "}";
 
-        static constexpr char kFragmentShaderMSAAText[] =
-            "@group(0) @binding(0) var colorMap: texture_multisampled_2d<f32>;"
-            "@fragment\n"
-            "fn main(@builtin(position) fragPosition : vec4<f32>) -> @location(0) vec4<f32> {"
-                "let coords = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
-                "var sum = vec4f(0.0);"
-                "let sampleCount = textureNumSamples(colorMap);"
-                "for (var i: u32 = 0; i < sampleCount; i = i + 1) {"
-                    "sum += textureLoad(colorMap, coords, i);"
-                "}"
-                "return sum / f32(sampleCount);"
-            "}";
-
-        auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
-        auto fsModule =
-                create_shader_module(dawnSharedContext()->device(),
-                                     srcIsMSAA ? kFragmentShaderMSAAText : kFragmentShaderText);
+        auto vsModule = create_shader_module(dawnSharedContext()->device(), kVS);
+        auto fsModule = create_shader_module(
+                dawnSharedContext()->device(),
+                srcIsMSAA ? generate_read_from_msaa_fs(*dawnSharedContext()->caps()).c_str()
+                          : kReadSingleSampledFS);
 
         const auto& colorTexInfo = renderPassDesc.fColorAttachment.fTextureInfo;
         const auto& dsTexInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
