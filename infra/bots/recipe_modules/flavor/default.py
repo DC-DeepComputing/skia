@@ -129,6 +129,8 @@ class DefaultFlavor(object):
 
     workdir = self.m.vars.workdir
     clang_linux = workdir.joinpath('clang_linux')
+    if 'MSAN' in extra_tokens:
+      clang_linux = workdir.joinpath('clang_ubuntu_noble')
     extra_tokens = self.m.vars.extra_tokens
 
     if self.m.vars.is_linux:
@@ -173,7 +175,7 @@ class DefaultFlavor(object):
       # analyses. We ship a copy of libc++ with our Linux toolchain in /lib.
       ld_library_path.append(clang_linux.joinpath('lib', 'x86_64-unknown-linux-gnu'))
 
-    if 'ASAN' in extra_tokens:
+    if 'ASAN' in extra_tokens or 'MSAN' in extra_tokens:
       os = self.m.vars.builder_cfg.get('os', '')
       if 'Mac' in os or 'Win' in os:
         # Mac and Win don't support detect_leaks.
@@ -181,7 +183,9 @@ class DefaultFlavor(object):
       else:
         env['ASAN_OPTIONS'] = 'symbolize=1 detect_leaks=1'
         env['ASAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
+        env['MSAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
       env[ 'LSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
+      env[ 'MSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
       env['UBSAN_OPTIONS'] = 'symbolize=1 print_stacktrace=1'
 
       # If you see <unknown module> in stacktraces, try fast_unwind_on_malloc=0.
