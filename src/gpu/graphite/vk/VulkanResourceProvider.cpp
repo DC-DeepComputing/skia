@@ -129,7 +129,8 @@ sk_sp<GraphicsPipeline> VulkanResourceProvider::createGraphicsPipeline(
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
-    return VulkanGraphicsPipeline::Make(this,
+    return VulkanGraphicsPipeline::Make(this->vulkanSharedContext(),
+                                        this,
                                         runtimeDict,
                                         pipelineKey,
                                         pipelineDesc,
@@ -418,6 +419,19 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
     return *fUniformBufferDescSetCache.insert(key, newDS);
 }
 
+// TODO: This function can mvoe inot findOrCreateRenderPass once findorCreateLoadMSAAPipeline uses
+// VulkanRenderPass::Metadata as its cache key and findOrCreateRenderPassWithKnownKey can go away.
+static void build_renderpass_key(GraphiteResourceKey* key,
+                                 const RenderPassDesc& renderPassDesc,
+                                 bool compatibleOnly) {
+    static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
+
+    VulkanRenderPass::Metadata rpMetadata{renderPassDesc};
+    GraphiteResourceKey::Builder builder(key, kType, rpMetadata.keySize());
+
+    int startingIdx = 0;
+    rpMetadata.addToKey(builder, startingIdx, compatibleOnly);
+}
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPassWithKnownKey(
             const RenderPassDesc& renderPassDesc,
@@ -445,9 +459,9 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPassWithKnownK
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
         const RenderPassDesc& renderPassDesc, bool compatibleOnly) {
-    GraphiteResourceKey rpKey = VulkanRenderPass::MakeRenderPassKey(renderPassDesc, compatibleOnly);
-
-    return this->findOrCreateRenderPassWithKnownKey(renderPassDesc, compatibleOnly, rpKey);
+    GraphiteResourceKey key;
+    build_renderpass_key(&key, renderPassDesc, compatibleOnly);
+    return this->findOrCreateRenderPassWithKnownKey(renderPassDesc, compatibleOnly, key);
 }
 
 VkPipelineCache VulkanResourceProvider::pipelineCache() {
@@ -620,8 +634,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     // Check to see if we already have a suitable pipeline that we can use.
-    GraphiteResourceKey renderPassKey =
-            VulkanRenderPass::MakeRenderPassKey(renderPassDesc, /*compatibleOnly=*/true);
+    GraphiteResourceKey renderPassKey;
+    build_renderpass_key(&renderPassKey, renderPassDesc, /*compatibleOnly=*/true);
     for (int i = 0; i < fLoadMSAAPipelines.size(); i++) {
         if (renderPassKey == fLoadMSAAPipelines.at(i).first) {
             return fLoadMSAAPipelines.at(i).second;
@@ -640,7 +654,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     sk_sp<VulkanGraphicsPipeline> pipeline = VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
-            this, *fLoadMSAAProgram, renderPassDesc);
+            this->vulkanSharedContext(), this, *fLoadMSAAProgram, renderPassDesc);
     if (!pipeline) {
         SKGPU_LOG_E("Failed to create MSAA load pipeline");
         return nullptr;
