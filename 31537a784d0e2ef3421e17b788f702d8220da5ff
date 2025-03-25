@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "076ac809_be960e3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-25T20:12:34Z",
+      "side": 1,
+      "message": "While trying to build and run viewer over native GL on Mac I was surprised to find that these GL calls were actually going through Angle, which segfaulted, presumably because the context hadn\u0027t been set up properly. Creating the GL interface earlier and using it for these calls seems to work as expected.",
+      "revId": "31537a784d0e2ef3421e17b788f702d8220da5ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
