@@ -1396,7 +1396,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     // into a single mask and storing in an atlas. Otherwise these will be handled by
     // Device::drawClip().
     AtlasProvider* atlasProvider = fDevice->recorder()->priv().atlasProvider();
-    if (!msaaSupported && !outEffectiveElements->empty()) {
+    if (/*!msaaSupported &&*/ !outEffectiveElements->empty()) {
         ClipAtlasManager* clipAtlas = atlasProvider->getClipAtlasManager();
         SkASSERT(clipAtlas);
         AtlasClip* atlasClip = &nonMSAAClip.fAtlasClip;
