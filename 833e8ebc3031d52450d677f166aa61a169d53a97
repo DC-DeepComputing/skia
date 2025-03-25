@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed53064c_02283443",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-25T17:00:03Z",
+      "side": 1,
+      "message": "To avoid code duplication with SkCreateRasterPipelineBlitter could we structure the code something roughly like and use the helper in both SkCreateRasterPipelineBlitter and CreateBlitter:\n\n```\n// maybe just return a struct instead of the extra two out params\nstatic SkRasterPipeline_\u003c256\u003e create_raster_pipeline_some_good_name_helper(..., bool* outIsOpaque, bool* outIsConstant) {\n    SkRasterPipeline_\u003c256\u003e shaderPipeline;\n    if (!shader) {\n        // Having no shader makes things nice and easy... just use the paint color\n        shaderPipeline.appendConstantColor(alloc, dstPaintColor.premul().vec());\n        bool is_opaque    \u003d dstPaintColor.fA \u003d\u003d 1.0f,\n             is_constant  \u003d true;\n        return shaderPipeline;\n    }\n\n    bool is_opaque    \u003d shader-\u003eisOpaque() \u0026\u0026 dstPaintColor.fA \u003d\u003d 1.0f;\n    bool is_constant  \u003d shader-\u003eisConstant();\n\n    if (shader-\u003eappendRootStages(SkStageRec{\u0026shaderPipeline, alloc, dstCT, dstCS, dstPaintColor, props},\n                                 ctm)) {\n        if (dstPaintColor.fA !\u003d 1.0f) {\n            shaderPipeline.append(SkRasterPipelineOp::scale_1_float,\n                                  alloc-\u003emake\u003cfloat\u003e(dstPaintColor.fA));\n            return shaderPipeline;\n         }\n    }\n    return nullptr;\n}\n\n\nSkBlitter* CreateBlitter(...) {\n    SkRasterPipeline_\u003c256\u003e shaderPipeline \u003d create_raster_pipeline_some_good_name_helper(...);\n    if (!shaderPipeline) {\n        return nullptr;\n    }\n    // Add all debug stuff\n    ...\n    ...\n    return SkRasterPipelineBlitter::Create(dst, paint, dstPaintColor, alloc, shaderPipeline,\n                                               is_opaque, is_constant, clipShader.get());\n\n```",
+      "range": {
+        "startLine": 170,
+        "startChar": 11,
+        "endLine": 170,
+        "endChar": 24
+      },
+      "revId": "833e8ebc3031d52450d677f166aa61a169d53a97",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
