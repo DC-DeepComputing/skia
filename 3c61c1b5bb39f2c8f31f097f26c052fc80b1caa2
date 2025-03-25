@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c832540_7e757954",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-25T18:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91aa84f1_1316bfe7",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 20
+      },
+      "revId": "3c61c1b5bb39f2c8f31f097f26c052fc80b1caa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "29a88f90_54c7c19b",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-25T13:43:13Z",
       "side": 1,
       "message": "This should pass in the sample count of color attachment, which in theory could end up different than the default MSAA sample count.",
+      "range": {
+        "startLine": 416,
+        "startChar": 55,
+        "endLine": 416,
+        "endChar": 83
+      },
+      "revId": "3c61c1b5bb39f2c8f31f097f26c052fc80b1caa2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf993b57_ae04bf2a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-03-25T18:55:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29a88f90_54c7c19b",
       "range": {
         "startLine": 416,
         "startChar": 55,
