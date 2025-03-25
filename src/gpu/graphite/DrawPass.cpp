@@ -416,7 +416,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                                          sk_sp<TextureProxy> target,
                                          const SkImageInfo& targetInfo,
                                          std::pair<LoadOp, StoreOp> ops,
-                                         std::array<float, 4> clearColor) {
+                                         std::array<float, 4> clearColor,
+                                         const DstReadStrategy dstReadStrategy) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -532,7 +533,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         passBounds.join(draw.fDrawParams.clip().drawBounds());
         drawPass->fDepthStencilFlags |= draw.fRenderer->depthStencilFlags();
-        drawPass->fRequiresMSAA |= draw.fRenderer->requiresMSAA();
     }
 
     if (!gradientBufferTracker.writeData(gatherer.gradientBufferData(), bufferMgr)) {
@@ -567,7 +567,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     UniformTracker shadingUniformTracker(useStorageBuffers);
 
     // Some decisions depend upon the dst read strategy used by backends to read dst texture info.
-    DstReadStrategy dstReadStrategy = caps->getDstReadStrategy(target->textureInfo());
     const bool drawsReadDstAsInput = dstReadStrategy == DstReadStrategy::kReadFromInput;
     // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
     // bound separately from the rest of the textures.
