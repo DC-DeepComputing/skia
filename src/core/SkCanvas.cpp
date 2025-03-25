@@ -845,8 +845,9 @@ void SkCanvas::internalDrawDeviceWithFilter(SkDevice* src,
 
     // Evaluate the image filter, with a context pointing to the source snapped from 'src' and
     // possibly transformed into the intermediate layer coordinate space.
-    ctx = ctx.withNewDesiredOutput(mapping.deviceToLayer(outputBounds))
-             .withNewSource(source);
+      ctx = ctx.withNewDesiredOutput(mapping.deviceToLayer(outputBounds))
+                .withNewSource(source);
+
 
     // Here, we allow a single-element FilterSpan with a null entry, to simplify the loop:
     sk_sp<SkImageFilter> nullFilter;
