@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a19ff5e9_8a60f831",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-25T02:27:50Z",
+      "side": 1,
+      "message": "We could avoid some extra work and allocations by failing out as soon as we know we will need to, particularly with pipeline layout creation which goes through a fair amount of logic + vulkan struct creations. Not the end of the world, but I have a preference to do that sooner rather than later. Though I see your comment later on that that isn\u0027t really expected to happen unless we\u0027re in a pretty bad way, so... \nJust pointing it out.",
+      "range": {
+        "startLine": 747,
+        "startChar": 12,
+        "endLine": 747,
+        "endChar": 96
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19709b84_c79f6f9f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-25T02:27:50Z",
+      "side": 1,
+      "message": "IIUC, this would only be possible for when we do not load MSAA from resolve which requires the explicit usage of subpasses which dynamic rendering does not provide which may be worth clarifying",
+      "range": {
+        "startLine": 788,
+        "startChar": 64,
+        "endLine": 789,
+        "endChar": 98
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
