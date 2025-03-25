@@ -97,7 +97,11 @@ private:
     };
 
     Recorder* fRecorder;
-    DrawAtlasMgr fDrawAtlasMgr;
+    // We have two atlas managers, one for clips that can be keyed via the path keys,
+    // and a smaller one for those that can only be keyed the SaveRecord ID. We keep
+    // them separate because the SaveRecord keyed clips will be far more volatile.
+    DrawAtlasMgr fPathKeyAtlasMgr;
+    DrawAtlasMgr fSaveRecordKeyAtlasMgr;
 };
 
 }  // namespace skgpu::graphite
