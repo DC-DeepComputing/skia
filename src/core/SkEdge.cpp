@@ -55,17 +55,17 @@ void SkEdge::dump() const {
 }
 #endif
 
-int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, int shift) {
+int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip) {
     SkFDot6 x0, y0, x1, y1;
 
     {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(p0.fX, shift);
-        y0 = SkScalarRoundToFDot6(p0.fY, shift);
-        x1 = SkScalarRoundToFDot6(p1.fX, shift);
-        y1 = SkScalarRoundToFDot6(p1.fY, shift);
+        x0 = SkScalarRoundToFDot6(p0.fX);
+        y0 = SkScalarRoundToFDot6(p0.fY);
+        x1 = SkScalarRoundToFDot6(p1.fX);
+        y1 = SkScalarRoundToFDot6(p1.fY);
 #else
-        float scale = float(1 << (shift + 6));
+        constexpr float scale = float(1 << 6);
         x0 = int(p0.fX * scale);
         y0 = int(p0.fY * scale);
         x1 = int(p1.fX * scale);
@@ -175,10 +175,11 @@ static inline SkFDot6 cheap_distance(SkFDot6 dx, SkFDot6 dy)
     dx = SkAbs32(dx);
     dy = SkAbs32(dy);
     // return max + min/2
-    if (dx > dy)
+    if (dx > dy){
         dx += dy >> 1;
-    else
+    } else {
         dx = dy + (dx >> 1);
+    }
     return dx;
 }
 
@@ -235,8 +236,9 @@ bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift)
     int bot = SkFDot6Round(y2);
 
     // are we a zero-height quad (line)?
-    if (top == bot)
+    if (top == bot) {
         return 0;
+    }
 
     // compute number of steps needed (1 << shift)
     {
@@ -300,8 +302,8 @@ bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift)
     return true;
 }
 
-int SkQuadraticEdge::setQuadratic(const SkPoint pts[3], int shift) {
-    if (!setQuadraticWithoutUpdate(pts, shift)) {
+int SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
+    if (!setQuadraticWithoutUpdate(pts, 0)) {
         return 0;
     }
     return this->updateQuadratic();
@@ -471,8 +473,8 @@ bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool so
     return true;
 }
 
-int SkCubicEdge::setCubic(const SkPoint pts[4], int shift) {
-    if (!this->setCubicWithoutUpdate(pts, shift)) {
+int SkCubicEdge::setCubic(const SkPoint pts[4]) {
+    if (!this->setCubicWithoutUpdate(pts, 0)) {
         return 0;
     }
     return this->updateCubic();

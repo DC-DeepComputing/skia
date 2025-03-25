@@ -245,6 +245,11 @@ static void walk_simple_edges(SkEdge* prevHead, SkBlitter* blitter, int start_y,
     ASSERT_RETURN(local_top >= start_y);
 
     while (local_top < stop_y) {
+        SkDebugf("leftE\n");
+        leftE->dump();
+        SkDebugf("rightE\n");
+        riteE->dump();
+        SkDebugf("local_top %d\n", local_top);
         SkASSERT(leftE->fFirstY <= stop_y);
         SkASSERT(riteE->fFirstY <= stop_y);
 
@@ -396,19 +401,12 @@ static SkEdge* sort_edges(SkEdge* list[], int count, SkEdge** last) {
     return list[0];
 }
 
-// clipRect has not been shifted up
-void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitter,
-                  int start_y, int stop_y, int shiftEdgesUp, bool pathContainedInClip) {
+static void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitter,
+                         int start_y, int stop_y, bool pathContainedInClip) {
     SkASSERT(blitter);
 
-    SkIRect shiftedClip = clipRect;
-    shiftedClip.fLeft = SkLeftShift(shiftedClip.fLeft, shiftEdgesUp);
-    shiftedClip.fRight = SkLeftShift(shiftedClip.fRight, shiftEdgesUp);
-    shiftedClip.fTop = SkLeftShift(shiftedClip.fTop, shiftEdgesUp);
-    shiftedClip.fBottom = SkLeftShift(shiftedClip.fBottom, shiftEdgesUp);
-
-    SkBasicEdgeBuilder builder(shiftEdgesUp);
-    int count = builder.buildEdges(path, pathContainedInClip ? nullptr : &shiftedClip);
+    SkBasicEdgeBuilder builder;
+    int count = builder.buildEdges(path, pathContainedInClip ? nullptr : &clipRect);
     SkEdge** list = builder.edgeList();
 
     if (0 == count) {
@@ -427,10 +425,10 @@ void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitte
                 rect.fBottom = stop_y;
             }
             if (!rect.isEmpty()) {
-                blitter->blitRect(rect.fLeft << shiftEdgesUp,
-                                  rect.fTop << shiftEdgesUp,
-                                  rect.width() << shiftEdgesUp,
-                                  rect.height() << shiftEdgesUp);
+                blitter->blitRect(rect.fLeft,
+                                  rect.fTop,
+                                  rect.width(),
+                                  rect.height());
             }
         }
         return;
@@ -453,20 +451,18 @@ void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitte
 
     // now edge is the head of the sorted linklist
 
-    start_y = SkLeftShift(start_y, shiftEdgesUp);
-    stop_y = SkLeftShift(stop_y, shiftEdgesUp);
-    if (!pathContainedInClip && start_y < shiftedClip.fTop) {
-        start_y = shiftedClip.fTop;
+    if (!pathContainedInClip && start_y < clipRect.fTop) {
+        start_y = clipRect.fTop;
     }
-    if (!pathContainedInClip && stop_y > shiftedClip.fBottom) {
-        stop_y = shiftedClip.fBottom;
+    if (!pathContainedInClip && stop_y > clipRect.fBottom) {
+        stop_y = clipRect.fBottom;
     }
 
     InverseBlitter  ib;
     PrePostProc     proc = nullptr;
 
     if (path.isInverseFillType()) {
-        ib.setBlitter(blitter, clipRect, shiftEdgesUp);
+        ib.setBlitter(blitter, clipRect, 0);
         blitter = &ib;
         proc = PrePostInverseBlitterProc;
     }
@@ -476,7 +472,7 @@ void sk_fill_path(const SkPath& path, const SkIRect& clipRect, SkBlitter* blitte
         walk_simple_edges(&headEdge, blitter, start_y, stop_y);
     } else {
         walk_edges(&headEdge, path.getFillType(), blitter, start_y, stop_y, proc,
-                   shiftedClip.right());
+                   clipRect.right());
     }
 }
 
@@ -666,7 +662,7 @@ void SkScan::FillPath(const SkPath& path, const SkRegion& origClip,
         SkASSERT(clipper.getClipRect() == nullptr ||
                 *clipper.getClipRect() == clipPtr->getBounds());
         sk_fill_path(path, clipPtr->getBounds(), blitter, ir.fTop, ir.fBottom,
-                     0, clipper.getClipRect() == nullptr);
+                     clipper.getClipRect() == nullptr);
         if (path.isInverseFillType()) {
             sk_blit_below(blitter, ir, *clipPtr);
         }
@@ -692,15 +688,15 @@ static int build_tri_edges(SkEdge edge[], const SkPoint pts[],
                            const SkIRect* clipRect, SkEdge* list[]) {
     SkEdge** start = list;
 
-    if (edge->setLine(pts[0], pts[1], clipRect, 0)) {
+    if (edge->setLine(pts[0], pts[1], clipRect)) {
         *list++ = edge;
         edge = (SkEdge*)((char*)edge + sizeof(SkEdge));
     }
-    if (edge->setLine(pts[1], pts[2], clipRect, 0)) {
+    if (edge->setLine(pts[1], pts[2], clipRect)) {
         *list++ = edge;
         edge = (SkEdge*)((char*)edge + sizeof(SkEdge));
     }
-    if (edge->setLine(pts[2], pts[0], clipRect, 0)) {
+    if (edge->setLine(pts[2], pts[0], clipRect)) {
         *list++ = edge;
     }
     return (int)(list - start);
