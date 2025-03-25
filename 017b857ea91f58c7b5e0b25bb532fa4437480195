@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3624960c_885c4cfe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-25T18:51:06Z",
+      "side": 1,
+      "message": "LGTM minus one question",
+      "revId": "017b857ea91f58c7b5e0b25bb532fa4437480195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d2b8fd8_fe51e9ee",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 6
+      },
+      "lineNbr": 467,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-03-25T18:51:06Z",
+      "side": 1,
+      "message": "Is this intentional?",
+      "range": {
+        "startLine": 467,
+        "startChar": 10,
+        "endLine": 467,
+        "endChar": 21
+      },
+      "revId": "017b857ea91f58c7b5e0b25bb532fa4437480195",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
