@@ -180,7 +180,8 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
 
 skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
-                                     SkIRect iBounds) {
+                                     SkIRect iBounds,
+                                     bool* usesPathKey) {
     skgpu::UniqueKey maskKey;
     {
         static constexpr int kMaxShapeCountForKey = 2;
@@ -235,6 +236,7 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                     elementKeyIndex += kXformKeySize + shape.keySize();
                 }
 
+                *usesPathKey = true;
                 return maskKey;
             }
         }
@@ -244,6 +246,7 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
         builder[0] = stackRecordID;
     }
 
+    *usesPathKey = false;
     return maskKey;
 }
 
