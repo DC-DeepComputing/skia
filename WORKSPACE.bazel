@@ -273,16 +273,17 @@ browser_repositories(
 
 http_archive(
     name = "rules_rust",
-    sha256 = "671ddb3fe5ebcf9dd34d051eca7352fbaf33fa53bf61eed0b75a4c34829e5480",
-    urls = gcs_mirror_url(
-        sha256 = "671ddb3fe5ebcf9dd34d051eca7352fbaf33fa53bf61eed0b75a4c34829e5480",
-        url = "https://github.com/bazelbuild/rules_rust/releases/download/0.52.2/rules_rust-v0.52.2.tar.gz",
-    ),
+    sha256 = "09e17b47c0150465631aa319f2742760a43ededab2e9c012f91d0ae2eff02268",
+    urls = ["https://github.com/bazelbuild/rules_rust/releases/download/0.59.2/rules_rust-0.59.2.tar.gz"],
+    # urls = gcs_mirror_url(
+    #     sha256 = "09e17b47c0150465631aa319f2742760a43ededab2e9c012f91d0ae2eff02268",
+    #     url = "https://github.com/bazelbuild/rules_rust/releases/download/0.59.2/rules_rust-v0.59.2.tar.gz",
+    # ),
 )
 
 load("@rules_rust//rust:repositories.bzl", "rules_rust_dependencies", "rust_register_toolchains")
 
-# https://github.com/bazelbuild/rules_rust/blob/5c715ec50602e2ba6ca2ebfdd870662a6e6d1eda/rust/repositories.bzl#L48
+# https://github.com/bazelbuild/rules_rust/blob/1832faa3f1058a27e8b6dd97f45162abe57e2bd6/rust/repositories.bzl#L56
 rules_rust_dependencies()
 
 rust_register_toolchains(
@@ -292,9 +293,9 @@ rust_register_toolchains(
         "aarch64-apple-ios",
     ],
     versions = [
-        # supported versions from https://github.com/bazelbuild/rules_rust/blob/5c715ec50602e2ba6ca2ebfdd870662a6e6d1eda/util/fetch_shas_VERSIONS.txt
+        # supported versions from https://github.com/bazelbuild/rules_rust/blob/1832faa3f1058a27e8b6dd97f45162abe57e2bd6/util/fetch_shas/fetch_shas_VERSIONS.txt
         # The rust rules validate a toolchain by sha256 hash, as listed in https://github.com/bazelbuild/rules_rust/blob/5c715ec50602e2ba6ca2ebfdd870662a6e6d1eda/rust/known_shas.bzl
-        "1.76.0",
+        "1.85.1",
     ],
 )
 
