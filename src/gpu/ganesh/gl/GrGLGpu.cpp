@@ -4305,6 +4305,12 @@ void GrGLGpu::flush(FlushType flushType) {
 }
 
 bool GrGLGpu::onSubmitToGpu(const GrSubmitInfo& info) {
+    // For reasons not fully understood, some platforms require binding to framebuffer 0 on submit.
+    // See skbug.com/398631003.
+    if (this->glCaps().bindDefaultFramebufferOnSubmit() && fBoundDrawFramebuffer != 0) {
+        this->bindFramebuffer(GR_GL_DRAW_FRAMEBUFFER, 0);
+    }
+
     if (info.fSync == GrSyncCpu::kYes ||
         (!fFinishCallbacks.empty() && !this->glCaps().fenceSyncSupport())) {
         this->finishOutstandingGpuWork();
