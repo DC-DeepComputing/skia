@@ -173,7 +173,7 @@ class DefaultFlavor(object):
       # analyses. We ship a copy of libc++ with our Linux toolchain in /lib.
       ld_library_path.append(clang_linux.joinpath('lib', 'x86_64-unknown-linux-gnu'))
 
-    if 'ASAN' in extra_tokens:
+    if 'ASAN' in extra_tokens or 'MSAN' in extra_tokens:
       os = self.m.vars.builder_cfg.get('os', '')
       if 'Mac' in os or 'Win' in os:
         # Mac and Win don't support detect_leaks.
