@@ -123,7 +123,7 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
     // resolve.
     for (int i = 0; i < rpData.fSubpassDependencyCount; i++) {
         builder[builderIdx++] = 0 | (mainSubpassIdx << 8); // srcSubpass, dstSubpass
-        builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMask
+        builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // srcStageMasks
         builder[builderIdx++] = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT; // dstStageMask
         builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;          // srcAccessMask
         builder[builderIdx++] = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT |          // dstAccessMask
@@ -286,6 +286,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
         const auto& vkColorAttachInfo =
                 TextureInfoPriv::Get<VulkanTextureInfo>(colorAttachmentTextureInfo);
         auto& colorAttachDesc = rpDesc.fColorAttachment;
+
         colorRef.attachment = descs.size();
 
         // Use a general image layout for the color attachment for all compatible renderpasses, only
