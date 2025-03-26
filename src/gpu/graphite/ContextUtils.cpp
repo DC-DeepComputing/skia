@@ -76,6 +76,28 @@ bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> blendMode, C
     return false;
 }
 
+// bool UsesNoncoherentAdvancedBlend(const Caps* caps, SkBlendMode blendMode, Coverage coverage) {
+    // If the blend equation is not advanced, return false.
+
+
+    // First, check if we can use a hardware blend equation. If not, then we should instead
+    // read the dst in the shader (if possible) and are CompatibleWithCoverageAsAlpha. If so,
+    // then we can proceed to determine
+    // bool canUseHwBlendMode;
+    // If caps does not have advancedBlendEquationSupport, return false.
+    // If caps indicates advancedBlendEquations are disabled, return false. For now, assume
+    // we do not need to disable any advanced blend modes seeing as ganesh only did so for GL
+    // driver versions which graphite does not support. Check ANGLE version concerns.
+    // Finally, if the coverage is LCD, return false.
+    // TODO: Is it still the case that LCD coverage must be applied after the blend equation?
+
+    // Secondly, once determined we *can* use a hardware blend mode, determine if it's a noncoherent
+    // blend.
+    // Query caps for level of blend support available (see Ganesh's GrCaps::BlendEquationSupport).
+    // If advanced coherent blends are supported, then blend barriers are NOT required.
+    // Otherwise, they are.
+// }
+
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,
                               SkIRect dstReadBounds,
