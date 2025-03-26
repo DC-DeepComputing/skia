@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd90b2bf_8a464297",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-26T14:19:16Z",
+      "side": 1,
+      "message": "Chrome side should be unaffected as long as we keep the manual lines in `gni_exporter.go` - once this rolled into Chromium, I will update the GN rules there, and remove the manual line. Then I can start splitting the files.",
+      "revId": "b97152432c8a541356a68bb5f6437b2605fe1bac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
