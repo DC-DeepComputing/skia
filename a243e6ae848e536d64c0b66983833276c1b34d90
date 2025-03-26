@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "504211d0_5a9186f8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-26T12:33:33Z",
+      "side": 1,
+      "message": "Test failing because table mask filter not being applied to SkPictureRecorder\u0027s canvas (for any backend). Looking into this",
+      "revId": "a243e6ae848e536d64c0b66983833276c1b34d90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
