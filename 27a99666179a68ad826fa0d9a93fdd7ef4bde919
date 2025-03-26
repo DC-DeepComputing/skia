@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "702b4f68_e3849937",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-26T08:54:47Z",
+      "side": 1,
+      "message": "Change LGTM, thank you for addressing this so quickly. Can\u0027t judge what\u0027s up with the bots but change and intention very LGTM.",
+      "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9dc95c04_6ae53e6e",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-26T08:54:47Z",
+      "side": 1,
+      "message": "Just curious, is adding the additional ones needed? What\u0027s the effect?",
+      "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
