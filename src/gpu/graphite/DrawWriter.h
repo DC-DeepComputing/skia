@@ -81,6 +81,20 @@ public:
     // the old pipeline, so this must be called *before* binding the new pipeline.
     void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
         this->flush();
+
+        // At this point, whatever was pending was flushed. This means that whatever
+        // the pendingCount was, it has now been added to the pendingBase.
+        // At this point, we try to prevent additional draw calls + bindings in reserve
+        // by starting the new pendingBase at the previous pendingBase byte usage,
+        // alligned to the new vertex stride. If new or previous vertexStride is 0, then don't
+        // try aligning.
+        if (!vertexStride || !fVertexStride) {
+            fPendingBase = 0;
+        } else {
+            const size_t currentBytes = fPendingBase * fVertexStride;
+            fPendingBase = SkTo<uint32_t>((currentBytes + vertexStride - 1) / vertexStride);
+        }
+
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
