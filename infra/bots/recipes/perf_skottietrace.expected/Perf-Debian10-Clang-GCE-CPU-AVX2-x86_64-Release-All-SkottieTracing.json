@@ -124,6 +124,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "name": "symbolized dm"
@@ -210,6 +211,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "name": "symbolized dm (2)"
@@ -296,6 +298,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
     },
     "name": "symbolized dm (3)"

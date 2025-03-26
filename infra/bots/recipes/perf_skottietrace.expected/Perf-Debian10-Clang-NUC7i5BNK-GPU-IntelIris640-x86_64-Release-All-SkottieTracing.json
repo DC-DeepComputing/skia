@@ -124,6 +124,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "LD_LIBRARY_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "LIBGL_DRIVERS_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
@@ -213,6 +214,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "LD_LIBRARY_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "LIBGL_DRIVERS_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
@@ -302,6 +304,7 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
+      "DISPLAY": ":0",
       "LD_LIBRARY_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "LIBGL_DRIVERS_PATH": "[START_DIR]/mesa_intel_driver_linux",
       "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
