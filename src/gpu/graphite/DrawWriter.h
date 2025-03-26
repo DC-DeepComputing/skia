@@ -81,22 +81,45 @@ public:
     // the old pipeline, so this must be called *before* binding the new pipeline.
     void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
         this->flush();
+
+        // At this point, whatever was pending was flushed. This means that whatever
+        // the pendingCount was, it has now been added to the pendingBase.
+        SkASSERT(fPendingCount == 0);
+
+        // We try to prevent additional draw calls + bindings in reserve
+        // by starting the new pendingBase at the previous pendingBase byte usage,
+        // alligned to the new stride usage:
+
+        // What is the stride of the prior data in the buffer?
+        // If the instance stride is not zero, then we know that we have fixed vertex data,
+        // so we use the instance stride to calculate the prior offset. As a future
+        // alternative, the type of data (instance or vertex) could be returned by each
+        // renderStep, and tracked at the drawPass level.
+        const size_t prevStride = fInstanceStride ? fInstanceStride : fVertexStride;
+        // Safety check. If the prevStride is 0, simply set fPendingBase to 0.
+        if (prevStride) {
+            // Same logic for the current stride.
+            const size_t currStride = instanceStride ? instanceStride : vertexStride;
+            if (currStride) {
+                const size_t prevBytes = fPendingBase * prevStride;
+                fPendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
+            } else {
+                fPendingBase = 0;
+            }
+        } else {
+            fPendingBase = 0;
+        }
+
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
-
-        // NOTE: resetting pending base is sufficient to redo bindings for vertex/instance data that
-        // is later appended but doesn't invalidate bindings for fixed buffers that might not need
-        // to change between pipelines.
-        fPendingBase = 0;
-        SkASSERT(fPendingCount == 0);
     }
 
 #ifdef SK_DEBUG
     // Query current pipeline state for validation
-    size_t        instanceStride() const { return fInstanceStride; }
-    size_t        vertexStride()   const { return fVertexStride;   }
-    PrimitiveType primitiveType()  const { return fPrimitiveType;  }
+    size_t instanceStride() const { return fInstanceStride; }
+    size_t vertexStride() const { return fVertexStride; }
+    PrimitiveType primitiveType() const { return fPrimitiveType; }
 #endif
 
     // Collects new vertex data for a call to CommandBuffer::draw(). Automatically accumulates
@@ -163,8 +186,7 @@ public:
     // vertex data from the DrawBufferManager forced a flush after the first, then the second would
     // use minIndexCount2 unless a subsequent compatible DynamicInstances template appended more
     // contiguous data.
-    template <typename VertexCountProxy>
-    class DynamicInstances;
+    template <typename VertexCountProxy> class DynamicInstances;
 
     // Issues a draws with fully specified data. This can be used when all instance data has already
     // been written to known buffers, or when the vertex shader only depends on the vertex or
@@ -179,13 +201,17 @@ public:
     void drawIndexed(BindBufferInfo vertices, BindBufferInfo indices, unsigned int indexCount) {
         this->bindAndFlush(vertices, indices, {}, 0, indexCount);
     }
-    void drawInstanced(BindBufferInfo vertices, unsigned int vertexCount,
-                       BindBufferInfo instances, unsigned int instanceCount) {
+    void drawInstanced(BindBufferInfo vertices,
+                       unsigned int vertexCount,
+                       BindBufferInfo instances,
+                       unsigned int instanceCount) {
         SkASSERT(vertexCount > 0);
         this->bindAndFlush(vertices, {}, instances, vertexCount, instanceCount);
     }
-    void drawIndexedInstanced(BindBufferInfo vertices, BindBufferInfo indices,
-                              unsigned int indexCount, BindBufferInfo instances,
+    void drawIndexedInstanced(BindBufferInfo vertices,
+                              BindBufferInfo indices,
+                              unsigned int indexCount,
+                              BindBufferInfo instances,
                               unsigned int instanceCount) {
         SkASSERT(indexCount > 0);
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
@@ -196,7 +222,7 @@ private:
     DrawPassCommands::List* fCommandList;
     DrawBufferManager* fManager;
 
-    SkAutoMalloc fFailureStorage; // storage address for VertexWriter when GPU buffer mapping fails
+    SkAutoMalloc fFailureStorage;  // storage address for VertexWriter when GPU buffer mapping fails
 
     // Pipeline state matching currently bound pipeline
     PrimitiveType fPrimitiveType;
@@ -212,18 +238,24 @@ private:
     // instanced drawing, where real index count = max(-fTemplateCount-1)
     int fTemplateCount;
 
-    uint32_t fPendingCount; // # of vertices or instances (depending on mode) to be drawn
-    uint32_t fPendingBase; // vertex/instance offset (depending on mode) applied to buffer
-    bool fPendingBufferBinds; // true if {fVertices,fIndices,fInstances} has changed since last draw
+    uint32_t fPendingCount;    // # of vertices or instances (depending on mode) to be drawn
+    uint32_t fPendingBase;     // vertex/instance offset (depending on mode) applied to buffer
+    bool fPendingBufferBinds;  // true if {fVertices,fIndices,fInstances} has changed since last
+                               // draw
 
-    void setTemplate(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
+    void setTemplate(BindBufferInfo vertices,
+                     BindBufferInfo indices,
+                     BindBufferInfo instances,
                      int templateCount);
     // NOTE: bindAndFlush's templateCount is unsigned because dynamic index count instancing
     // isn't applicable.
-    void bindAndFlush(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
-                      unsigned int templateCount, unsigned int drawCount) {
+    void bindAndFlush(BindBufferInfo vertices,
+                      BindBufferInfo indices,
+                      BindBufferInfo instances,
+                      unsigned int templateCount,
+                      unsigned int drawCount) {
         SkASSERT(drawCount > 0);
-        SkASSERT(!fAppender); // shouldn't be appending and manually drawing at the same time.
+        SkASSERT(!fAppender);  // shouldn't be appending and manually drawing at the same time.
         this->setTemplate(vertices, indices, instances, SkTo<int>(templateCount));
         fPendingBase = 0;
         fPendingCount = drawCount;
@@ -244,7 +276,7 @@ public:
 
     Appender(DrawWriter& w, Target target)
             : fDrawer(w)
-            , fTarget(target == Target::kVertices ? w.fVertices     : w.fInstances)
+            , fTarget(target == Target::kVertices ? w.fVertices : w.fInstances)
             , fStride(target == Target::kVertices ? w.fVertexStride : w.fInstanceStride)
             , fReservedCount(0)
             , fNextWriter() {
@@ -262,12 +294,12 @@ public:
     }
 
 protected:
-    DrawWriter&     fDrawer;
+    DrawWriter& fDrawer;
     BindBufferInfo& fTarget;
-    uint32_t        fStride;
+    uint32_t fStride;
 
-    uint32_t     fReservedCount; // in target stride units
-    VertexWriter fNextWriter;    // writing to the target buffer binding
+    uint32_t fReservedCount;   // in target stride units
+    VertexWriter fNextWriter;  // writing to the target buffer binding
 
     virtual void onFlush() {}
 
@@ -279,7 +311,7 @@ protected:
             // DBM has additional contiguous bytes after the prior reserved range. The byte count
             // multiply should be safe here: if it would have overflowed, the original allocation
             // should have failed and not increased fReservedCount.
-            SkASSERT(SkTFitsIn<uint32_t>((uint64_t)fReservedCount*(uint64_t)fStride));
+            SkASSERT(SkTFitsIn<uint32_t>((uint64_t)fReservedCount * (uint64_t)fStride));
             const uint32_t returnedBytes = fReservedCount * fStride;
             SkASSERT(fTarget.fSize >= returnedBytes);
             fDrawer.fManager->returnVertexBytes(returnedBytes);
@@ -295,7 +327,12 @@ protected:
 
             if (reservedChunk.fBuffer != fTarget.fBuffer ||
                 reservedChunk.fOffset !=
-                        (fTarget.fOffset + (fDrawer.fPendingBase+fDrawer.fPendingCount)*fStride)) {
+                        (fTarget.fOffset +
+                         (fDrawer.fPendingBase + fDrawer.fPendingCount) * fStride)) {
+                if (reservedChunk.fBuffer == fTarget.fBuffer &&
+                    fStride == fDrawer.fInstanceStride) {
+                }
+
                 // Not contiguous, so flush and update binding to 'reservedChunk'
                 this->onFlush();
                 fDrawer.flush();
@@ -315,18 +352,19 @@ protected:
         this->reserve(count);
 
         if (!fNextWriter) SK_UNLIKELY {
-            // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address to
-            // write to so that RenderSteps don't have to worry about error handling. The Recording
-            // will fail since the map failure is tracked by BufferManager.
-            // Since one of the reasons for GPU mapping failure is that count*stride does not fit
-            // in 32-bits, we calculate the CPU-side size carefully.
-            uint64_t size = (uint64_t)count * (uint64_t)fStride;
-            if (!SkTFitsIn<size_t>(size)) {
-                sk_report_container_overflow_and_die();
+                // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address
+                // to write to so that RenderSteps don't have to worry about error handling. The
+                // Recording will fail since the map failure is tracked by BufferManager. Since one
+                // of the reasons for GPU mapping failure is that count*stride does not fit in
+                // 32-bits, we calculate the CPU-side size carefully.
+                uint64_t size = (uint64_t)count * (uint64_t)fStride;
+                if (!SkTFitsIn<size_t>(size)) {
+                    sk_report_container_overflow_and_die();
+                }
+                return VertexWriter(
+                        fDrawer.fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
+                        SkTo<size_t>(size));
             }
-            return VertexWriter(fDrawer.fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
-                                SkTo<size_t>(size));
-        }
 
         SkASSERT(fReservedCount >= count);
         fReservedCount -= count;
@@ -342,8 +380,8 @@ public:
         w.setTemplate(w.fVertices, {}, {}, 0);
     }
 
-    using Appender::reserve;
     using Appender::append;
+    using Appender::reserve;
 };
 
 class DrawWriter::Instances : private DrawWriter::Appender {
@@ -357,16 +395,14 @@ public:
         w.setTemplate(vertices, indices, w.fInstances, SkTo<int>(vertexCount));
     }
 
-    using Appender::reserve;
     using Appender::append;
+    using Appender::reserve;
 };
 
 template <typename VertexCountProxy>
 class DrawWriter::DynamicInstances : private DrawWriter::Appender {
 public:
-    DynamicInstances(DrawWriter& w,
-                     BindBufferInfo vertices,
-                     BindBufferInfo indices)
+    DynamicInstances(DrawWriter& w, BindBufferInfo vertices, BindBufferInfo indices)
             : Appender(w, Target::kInstances) {
         w.setTemplate(vertices, indices, w.fInstances, -1);
     }
@@ -379,8 +415,7 @@ public:
 
     using Appender::reserve;
 
-    template <typename V>
-    VertexWriter append(const V& vertexCount, unsigned int instanceCount) {
+    template <typename V> VertexWriter append(const V& vertexCount, unsigned int instanceCount) {
         VertexWriter w = this->Appender::append(instanceCount);
         // Record index count after appending instance data in case the append triggered a flush
         // and the max index count is reset. However, the contents of 'w' will not have been flushed
@@ -408,6 +443,6 @@ private:
     VertexCountProxy fProxy = {};
 };
 
-} // namespace skgpu::graphite
+}  // namespace skgpu::graphite
 
-#endif // skgpu_graphite_DrawWriter_DEFINED
+#endif  // skgpu_graphite_DrawWriter_DEFINED
