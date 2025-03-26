@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e293483e_a4319c41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 42
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-26T15:52:22Z",
+      "side": 1,
+      "message": "Okay, isolated the graphite-level changes into a parent CL that\u0027s on Michael\u0027s docket. PTAL at these changes even if some non-Vulkan tasks currently complain.",
+      "revId": "23e4df972033db6f9bfbd42618d4deda5f95b85b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad55896_86cb0138",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 407,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-26T15:52:22Z",
+      "side": 1,
+      "message": "Note to reviewer: This change was necessary to accommodate assigning the target texture, which may be multisampled, as an input attachment for compatible RPs (even if they do not read from the dst) to appease validation layers.\n\nWill be necessary once we implement reading from MSAA textures anyhow.\n\nLeaving as unresolved for visibility.",
+      "range": {
+        "startLine": 404,
+        "startChar": 0,
+        "endLine": 407,
+        "endChar": 86
+      },
+      "revId": "23e4df972033db6f9bfbd42618d4deda5f95b85b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

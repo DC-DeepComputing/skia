@@ -216,6 +216,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3cd50f9_5e788542",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-26T15:52:22Z",
+      "side": 1,
+      "message": "Okay, after much offline turmoil and wrestling with validation layers and layout performance concerns , here is where we landed (working on doc, but here is the gist. Comment docs have been added at key areas in an attempt to explain the choices made):\n\nCompatible-only RPS:\n- always have the main subpass self-dependency (necessary for compatibility; neglibile performance cost)\n- always assign the main subpass\u0027s input attachment to point to the color attachment (necessary for compatibility)\n- always use VK_IMAGE_LAYOUT_GENERAL for the color and input attachment references on the main subpass (necessary to avoid validation layer complaints even on compatible-only RPs)\n\nFull RPs that do have NO draws which read from the dst as an input attachment (including those that do texture copies, which right now is necessary for MSAA target textures):\n- Use VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL for color attachment reference\n- Assign a different key value at for the main subpass\u0027s input attachment reference (arbitrarily the statically-defined kAttachmentUnused, even though we cannot actually utilize VK_ATTACHMENT_UNUSED for the input attachment reference without violating RP compatibility)\n- Still use VK_IMAGE_LAYOUT_GENERAL for the input attachment reference, though drivers supposedly are able to optimize around this and thusly should not impact the more common case of no-dst-read RPs using optimal layouts)\n\nFull RPs that DO read from the dst as an input attachment:\n- Are simply a full versions of the compatible-only RPs that are used for pipeline compilations (those that do and do not read from the dst)",
+      "parentUuid": "60c88e60_b2d3c551",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f88a59a4_9b3e8299",
         "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
         "patchSetId": 28
