@@ -1638,22 +1638,19 @@ DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
     // not marked as supported and skip checking for it.
     SkASSERT(!this->shaderCaps()->fFBFetchSupport);
 
-    // TODO(b/383769988): Once DstReadStrategy::kReadFromInput is supported by the Vulkan backend,
-    // determine whether that strategy can be used.
-    // bool supportsInputAttachmentUsage =
-    //      GetVkUsageFlags(info) & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT;
-// #ifdef SK_BUILD_FOR_ANDROID
+    VulkanTextureInfo vkTexInfo;
+    SkAssertResult(TextureInfos::GetVulkanTextureInfo(info, &vkTexInfo));
+    bool supportsInputAttachmentUsage =
+            SkToBool(vkTexInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT);
+#ifdef SK_BUILD_FOR_ANDROID
     // We expect that all Android target textures to support input attachment usage.
-    // SkASSERT(supportsInputAttachmentUsage);
-// #endif
+    SkASSERT(supportsInputAttachmentUsage);
+#endif
+
     // TODO(b/390458117): Add support to do this w/ MSAA textures. For now, simply default to using
     // TextureCopy if the texture has a sample count >1.
-    // return supportsInputAttachmentUsage && info.numSamples() == 1
-    //      ? DstReadStrategy::kReadFromInput
-    //      : DstReadStrategy::kTextureCopy;
-
-    // For now, always return DstReadStrategy::kTextureCopy.
-    return DstReadStrategy::kTextureCopy;
+    return supportsInputAttachmentUsage && info.numSamples() == 1 ? DstReadStrategy::kReadFromInput
+                                                                  : DstReadStrategy::kTextureCopy;
 }
 
 ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {
