@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c17c284_2b02a1a2",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 333,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T18:51:37Z",
+      "side": 1,
+      "message": "Could you add a comment explaining the min/max count choices? In particular, I\u0027m confused about why we don\u0027t want the min to be 0?",
+      "range": {
+        "startLine": 320,
+        "startChar": 0,
+        "endLine": 333,
+        "endChar": 51
+      },
+      "revId": "491ba9a01b843f680ff36cbd5aa98d43b74c742b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
