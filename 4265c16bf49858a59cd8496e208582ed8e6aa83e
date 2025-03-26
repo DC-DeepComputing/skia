@@ -52,6 +52,24 @@
       "parentUuid": "88aa3d10_89ba32fd",
       "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc31b66_76962ebe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-26T21:23:38Z",
+      "side": 1,
+      "message": "I am able to repro locally, and it does only fail in viewer. As far as I can tell no offscreen draws are affected by this bug (otherwise I would have liked to have added a unit test or GM).\n\nSo far binding FBO0 specifically does seem to be necessary. Perhaps it\u0027s related that this is only an issue rendering to actual displays.",
+      "parentUuid": "c467d78b_9ef12e69",
+      "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
