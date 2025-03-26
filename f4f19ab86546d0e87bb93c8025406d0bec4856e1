@@ -51,6 +51,24 @@
       ],
       "revId": "f4f19ab86546d0e87bb93c8025406d0bec4856e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "354afaa1_636922e7",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-26T15:42:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d15e934c_08ffb8ff",
+      "revId": "f4f19ab86546d0e87bb93c8025406d0bec4856e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
