@@ -16,6 +16,24 @@
       "message": "lgtm, CC\u0027ing Greg to see if it rings any bells as well.",
       "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88aa3d10_89ba32fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-26T14:33:52Z",
+      "side": 1,
+      "message": "Are you able to repro this locally? Is binding FBO0 specifically needed or could we just unbind all FBOs?",
+      "parentUuid": "87de30a1_e7bb826f",
+      "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
