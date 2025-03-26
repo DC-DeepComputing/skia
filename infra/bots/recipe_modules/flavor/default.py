@@ -134,6 +134,7 @@ class DefaultFlavor(object):
       clang_linux = workdir.joinpath('clang_ubuntu_noble')
 
     if self.m.vars.is_linux:
+      env['DISPLAY'] = ':0'
       if (self.m.vars.builder_cfg.get('cpu_or_gpu', '') == 'GPU'
           and 'Intel' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
         dri_path = workdir.joinpath('mesa_intel_driver_linux')
@@ -175,7 +176,7 @@ class DefaultFlavor(object):
       # analyses. We ship a copy of libc++ with our Linux toolchain in /lib.
       ld_library_path.append(clang_linux.joinpath('lib', 'x86_64-unknown-linux-gnu'))
 
-    if 'ASAN' in extra_tokens or 'MSAN' in extra_tokens:
+    if 'ASAN' in extra_tokens:
       os = self.m.vars.builder_cfg.get('os', '')
       if 'Mac' in os or 'Win' in os:
         # Mac and Win don't support detect_leaks.
@@ -183,9 +184,9 @@ class DefaultFlavor(object):
       else:
         env['ASAN_OPTIONS'] = 'symbolize=1 detect_leaks=1'
         env['ASAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
-        env['MSAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
+        #env['MSAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
       env[ 'LSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
-      env[ 'MSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
+      #env[ 'MSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
       env['UBSAN_OPTIONS'] = 'symbolize=1 print_stacktrace=1'
 
       # If you see <unknown module> in stacktraces, try fast_unwind_on_malloc=0.
@@ -198,6 +199,7 @@ class DefaultFlavor(object):
       # We don't care about malloc(), fprintf, etc. used in signal handlers.
       # If we're in a signal handler, we're already crashing...
       env['TSAN_OPTIONS'] = 'report_signal_unsafe=0'
+      cmd = ['setarch', 'linux64', '-R'] + cmd
 
     if 'Coverage' in extra_tokens:
       # This is the output file for the coverage data. Just running the binary
@@ -218,7 +220,7 @@ class DefaultFlavor(object):
           '%s' % p for p in ld_library_path)
 
     to_symbolize = ['dm', 'nanobench']
-    if name in to_symbolize and self.m.vars.is_linux and 'MSAN' not in extra_tokens:
+    if name in to_symbolize and self.m.vars.is_linux and 'TSAN' not in extra_tokens:
       # Convert path objects or placeholders into strings such that they can
       # be passed to symbolize_stack_trace.py
       args = [workdir] + [str(x) for x in cmd]
