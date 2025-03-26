@@ -16,6 +16,24 @@
       "message": "\u003e Test-Debian10-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations failed. \n\nI can\u0027t connect this failure to this CL, seems unrelated, removing the bot from include line.",
       "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "939b5c0a_04a4cfd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-26T16:44:02Z",
+      "side": 1,
+      "message": "That\u0027s kind of the only task actually testing this build. It is currently passing on status, so I assume something is going wonky here. Note that `Test-Mac14-Clang-MacMini8.1-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations` (and 15) is only \"kinda\" testing anything here. The way things are set up that task is still using CoreText for most of the tests.",
+      "parentUuid": "52f67ac4_0d1cbd92",
+      "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
