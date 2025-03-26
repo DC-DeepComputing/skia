@@ -34,6 +34,24 @@
       "parentUuid": "87de30a1_e7bb826f",
       "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c467d78b_9ef12e69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-26T14:37:37Z",
+      "side": 1,
+      "message": "Also does this fail in just viewer or does dm also fail?",
+      "parentUuid": "88aa3d10_89ba32fd",
+      "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
