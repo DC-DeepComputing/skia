@@ -33,6 +33,24 @@
       "message": "lgtm, once you track down what\u0027s going on with mask filters and the `serialize-` config (which shouldn\u0027t be affected by this change other than the new GM).",
       "revId": "a243e6ae848e536d64c0b66983833276c1b34d90",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "711affee_2fe8711d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-26T14:10:40Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com FYI had to add registerFlattenables function to SkTableMaskFilter so that table mask filters could be deserialized. +1 went away.",
+      "parentUuid": "504211d0_5a9186f8",
+      "revId": "a243e6ae848e536d64c0b66983833276c1b34d90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
