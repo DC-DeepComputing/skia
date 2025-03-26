@@ -38,6 +38,12 @@ struct AttachmentDesc {
     SkString toString() const;
 };
 
+// enum class BarrierFlags {
+//     kNone = 0,
+//     kReadInputAttachmentBarrier,
+//     kNonCoherentAdvBlend,
+// }
+
 struct RenderPassDesc {
     static RenderPassDesc Make(const Caps* caps,
                                const TextureInfo& targetInfo,
