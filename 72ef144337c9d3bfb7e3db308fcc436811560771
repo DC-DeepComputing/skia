@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d45b5f4_f6fb43d9",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-26T16:18:50Z",
+      "side": 1,
+      "message": "Switched to only incrementing the first time a Precompiled Pipeline gets used instead of a Normal Pipeline.",
+      "parentUuid": "3685ebc1_9095fbc0",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 9
+      },
+      "revId": "72ef144337c9d3bfb7e3db308fcc436811560771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "603b77bb_16d30f5d",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-26T13:33:38Z",
       "side": 1,
       "message": "Depending on how we deal with my first comment, we should explain how we came about this value that\u0027s different from the other histograms.",
+      "range": {
+        "startLine": 323,
+        "startChar": 47,
+        "endLine": 323,
+        "endChar": 51
+      },
+      "revId": "72ef144337c9d3bfb7e3db308fcc436811560771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebbc6763_fc0fa763",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-26T16:18:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "603b77bb_16d30f5d",
       "range": {
         "startLine": 323,
         "startChar": 47,
