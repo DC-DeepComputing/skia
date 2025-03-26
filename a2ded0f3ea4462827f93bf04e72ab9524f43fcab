@@ -34,6 +34,24 @@
       "parentUuid": "52f67ac4_0d1cbd92",
       "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6661fbd8_15786b22",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-26T17:48:01Z",
+      "side": 1,
+      "message": "Can repro locally with `out/gnvello/dm -m Serialization --fontations` which indeed doesn\u0027t fail on main. Will look into it, that seems odd.",
+      "parentUuid": "939b5c0a_04a4cfd2",
+      "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
