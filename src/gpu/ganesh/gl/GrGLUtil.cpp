@@ -787,10 +787,27 @@ GrGLDriverInfo GrGLGetDriverInfo(const GrGLInterface* interface) {
                  info.fANGLEDriverVersion) =
                 get_angle_d3d_vendor_and_renderer(innerAngleRendererString.c_str());
     } else if (info.fANGLEBackend == GrGLANGLEBackend::kOpenGL) {
+#if 1 // Fix ANGLE version reporting issue
+        // In GrGLCaps.cpp several decisions are made based on the OpenGL driver version
+        // Along the lines of "if (vendor=xyz && version<abc) { do workaround }"
+        // The problem is that GrGLContextInfo.driverVersion() returns fDriverInfo.fDriverVersion which is the ANGLE version
+        // This code copies the ANGLE vendor/render/driver/version data from the info.* entries to the info.fANGLE* entries, 
+        //   then overwrites the info.* entries with the native renderer data
+        // The info data is mapped onto the fDriverInfo, so GrGLContextInfo.driverVersion() returns the correct version string
+        info.fANGLEVendor=info.fVendor;
+        info.fANGLERenderer=info.fRenderer;
+        info.fANGLEDriver=info.fDriver;
+        info.fANGLEDriverVersion=info.fDriverVersion;
+        std::tie(info.fVendor,
+                 info.fRenderer,
+                 info.fDriver,
+                 info.fDriverVersion) =
+#else
         std::tie(info.fANGLEVendor,
                  info.fANGLERenderer,
                  info.fANGLEDriver,
                  info.fANGLEDriverVersion) =
+#endif
                 get_angle_gl_vendor_and_renderer(innerAngleRendererString.c_str(),
                                                  interface->fExtensions);
     } else if (info.fANGLEBackend == GrGLANGLEBackend::kMetal) {
