@@ -16,6 +16,41 @@
       "message": "PTAL",
       "revId": "f4f19ab86546d0e87bb93c8025406d0bec4856e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d15e934c_08ffb8ff",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-26T15:38:44Z",
+      "side": 1,
+      "message": "A comment explaining the new detach semantics would be helpful.",
+      "fixSuggestions": [
+        {
+          "fixId": "c9200bdd_8ea74aad",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipAtlasManager.cpp",
+              "range": {
+                "startLine": 147,
+                "startChar": 0,
+                "endLine": 147,
+                "endChar": 0
+              },
+              "replacement": "                // SkBitmap takes ownership of the pixels, so we need to detach them from the\n                // SkAutoPixmapStorage and pass them to SkBitmap::installPixels().\n"
+            }
+          ]
+        }
+      ],
+      "revId": "f4f19ab86546d0e87bb93c8025406d0bec4856e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
