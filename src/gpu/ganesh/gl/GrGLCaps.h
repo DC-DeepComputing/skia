@@ -469,6 +469,11 @@ public:
         return fRebindColorAttachmentAfterCheckFramebufferStatus;
     }
 
+    // Bind the framebuffer to 0 on submit to GPU.
+    bool bindDefaultFramebufferOnSubmit() const {
+        return fBindDefaultFramebufferOnSubmit;
+    }
+
     // During writePixels, call glFlush() before issuing glTexSubImage2D().
     bool flushBeforeWritePixels() const {
         return fFlushBeforeWritePixels;
@@ -661,6 +666,7 @@ private:
     bool fMustResetBlendFuncBetweenDualSourceAndDisable : 1;
     bool fBindTexture0WhenChangingTextureFBOMultisampleCount : 1;
     bool fRebindColorAttachmentAfterCheckFramebufferStatus : 1;
+    bool fBindDefaultFramebufferOnSubmit : 1;
     bool fFlushBeforeWritePixels : 1;
     bool fDisableScalingCopyAsDraws : 1;
     bool fPadRG88TransferAlignment : 1;
