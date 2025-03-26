@@ -22,6 +22,30 @@
       },
       "revId": "9b0f5f4149c98e81f34d55df7d87ca368663ebde",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d2a818_7317238c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-26T14:44:32Z",
+      "side": 1,
+      "message": "I can prepare the Chromium side change speculatively, but I need https://skia-review.googlesource.com/c/skia/+/970276 to roll into Chromium first. Will update the commit message to point to the Chromium side change, once it\u0027s ready.",
+      "parentUuid": "b8e794d8_d4260102",
+      "range": {
+        "startLine": 9,
+        "startChar": 9,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "9b0f5f4149c98e81f34d55df7d87ca368663ebde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
