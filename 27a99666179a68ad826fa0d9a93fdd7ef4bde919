@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0183bca9_586f6417",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-26T13:44:02Z",
+      "side": 1,
+      "message": "https://github.com/bazelbuild/platforms/issues/115 for more context",
+      "parentUuid": "311384a7_220ab329",
+      "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9dc95c04_6ae53e6e",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 8
