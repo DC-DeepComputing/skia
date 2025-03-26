@@ -116,6 +116,21 @@ void Precompile(PrecompileContext* precompileContext,
         }
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
+            // TODO(b/402787585): Refactor RenderPassDesc creation to be at a lower level in the
+            // precompilation process such that target DstReadStrategy can be determined for each
+            // PaintOption coverage + blend mode combination. This means we could remove the #ifdef.
+            // For now, we can use DstReadStrategy::kNoneRequired when building for Vulkan because
+            // Vulkan pipeline compilation only requires a *compatible* renderpass. Compatible
+            // RPs can be shared between pipelines that do and do not read from the dst texture.
+            // Once the command buffer actually binds a pipeline and needs a full renderpass, Vulkan
+            // can then create (or use a cached) full renderpass to accomodate dst reads if needed.
+            DstReadStrategy dstReadStrategy =
+#ifdef SK_VULKAN
+                DstReadStrategy::kNoneRequired;
+#else
+                // Other backends still expect a valid DstReadStrategy.
+                caps->getDstReadStrategy(info);
+#endif
             const RenderPassDesc renderPassDesc =
                     RenderPassDesc::Make(caps,
                                          info,
@@ -125,7 +140,7 @@ void Precompile(PrecompileContext* precompileContext,
                                          /* clearColor= */ { .0f, .0f, .0f, .0f },
                                          rpp.fRequiresMSAA,
                                          writeSwizzle,
-                                         caps->getDstReadStrategy(info));
+                                         dstReadStrategy);
 
             SkColorInfo ci(rpp.fDstCT, kPremul_SkAlphaType, rpp.fDstCS);
             KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
