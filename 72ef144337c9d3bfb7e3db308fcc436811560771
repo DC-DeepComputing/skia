@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3685ebc1_9095fbc0",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T13:33:38Z",
+      "side": 1,
+      "message": "Can we add a comment here that this will be incremented by 1 every time a DrawPass would use the pipeline (so it\u0027s more than just the first time we requested it, but less than the total number of draws). Alternatively, if we wanted to keep it on the same scale as the other stats, we could have a mutable flag on the pipeline that set once we\u0027ve incremented this counter the first time?",
+      "range": {
+        "startLine": 166,
+        "startChar": 0,
+        "endLine": 168,
+        "endChar": 9
+      },
+      "revId": "72ef144337c9d3bfb7e3db308fcc436811560771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "603b77bb_16d30f5d",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T13:33:38Z",
+      "side": 1,
+      "message": "Depending on how we deal with my first comment, we should explain how we came about this value that\u0027s different from the other histograms.",
+      "range": {
+        "startLine": 323,
+        "startChar": 47,
+        "endLine": 323,
+        "endChar": 51
+      },
+      "revId": "72ef144337c9d3bfb7e3db308fcc436811560771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
