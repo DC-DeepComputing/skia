@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "311384a7_220ab329",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-26T13:41:58Z",
+      "side": 1,
+      "message": "Looks like I can\u0027t update rust_rules past 0.56.0 because it depends on a newer version of @platforms which I can\u0027t seem to update without updating Bazel itself to Bazel 8 which I can\u0027t do without updating Skia to be built using bzlmod instead of WORKSPACE.\n\nUpdating to 0.56.0 gives us access to rustc version 1.83.0 at least\nhttps://github.com/bazelbuild/rules_rust/blob/7a1f0373f3c763e7d0b8a5c306641bc6a01603f0/util/fetch_shas/fetch_shas_VERSIONS.txt",
+      "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9dc95c04_6ae53e6e",
         "filename": "WORKSPACE.bazel",
         "patchSetId": 8
@@ -31,6 +48,24 @@
       "writtenOn": "2025-03-26T08:54:47Z",
       "side": 1,
       "message": "Just curious, is adding the additional ones needed? What\u0027s the effect?",
+      "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "892bcd49_1f4ef5a3",
+        "filename": "WORKSPACE.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-03-26T13:41:58Z",
+      "side": 1,
+      "message": "Yes. Without these, the new rust_rules complain and refuse to build.",
+      "parentUuid": "9dc95c04_6ae53e6e",
       "revId": "27a99666179a68ad826fa0d9a93fdd7ef4bde919",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
