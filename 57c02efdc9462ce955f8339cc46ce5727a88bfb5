@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eba7ea6_f7a15948",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "If we have precompilation set the dst read strategy on the RenderPassDesc, but it was for a paint that didn\u0027t require dst reads, wouldn\u0027t we still be compiling a valid pipeline w/ a compatible renderpass for the eventual real rendering scenario of a DrawList with all draws not requiring dst reads?",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 16
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb64b88_c3799825",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "Given this approach, does it mean we can go ahead and remove the TextureInfo from caps::getDstReadstrategy already?  We can pass in whether or not the draws require MSAA || target samples \u003e 1 in the event that we have an explicitly MSAA\u0027ed drawcontext with draws that don\u0027t actually need MSAA.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 44
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d301dc20_baa799d6",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "// Determine the optimal strategy given",
+      "range": {
+        "startLine": 280,
+        "startChar": 7,
+        "endLine": 281,
+        "endChar": 54
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71be5351_8e6976cb",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "To keep these updates next to each other, WDYT about storing the depth-stencil flags on the DrawList as well?",
+      "range": {
+        "startLine": 535,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 76
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff341db3_d8991ad4",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "Why does it not work to use this for Vulkan as well?",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 47
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "884a05c4_52d4e2f3",
+        "filename": "src/gpu/graphite/RenderPassDesc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "What about: \"If any draw does read from the dst, then each pipeline used by this RP independently determines if a dst read is needed. When required, this strategy determines how to perform it.\"",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 53
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f515d4fa_6bf98cc2",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T19:20:43Z",
+      "side": 1,
+      "message": "I think given the if statement above this, the relevant assert is clearer if we add an else like\n\n    } else {\n        SkASSERT(fDstReadStrategy !\u003d DstReadStrategy::kNoneRequired);\n    }",
+      "range": {
+        "startLine": 660,
+        "startChar": 0,
+        "endLine": 660,
+        "endChar": 85
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
