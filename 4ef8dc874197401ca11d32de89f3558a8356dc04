@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92431279_1333678d",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T14:04:46Z",
+      "side": 1,
+      "message": "nit: remove the repeated \"At this point\"",
+      "range": {
+        "startLine": 87,
+        "startChar": 11,
+        "endLine": 87,
+        "endChar": 26
+      },
+      "revId": "4ef8dc874197401ca11d32de89f3558a8356dc04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bcf3237_a7d5d06d",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T14:04:46Z",
+      "side": 1,
+      "message": "This logic looks correct to me, except that we need to handle aligning instances too. Unlike the follow-up ARM execution bug, we do want to adjusting this value to minimize binding buffers for both appended vertex data or instance data.\n\nWe should be able to infer which stride to use for alignment based on `fTemplateCount \u003d\u003d 0` for the prior state (\u003d\u003d 0 means we were doing vertex only draws), and for the new pipeline state if `instanceStride \u003d\u003d 0` we would be doing vertex data. It doesn\u0027t make much sense (and we can add asserts) that we don\u0027t ever create a DrawWriter::Instances() with an instance stride of 0.",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 9
+      },
+      "revId": "4ef8dc874197401ca11d32de89f3558a8356dc04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0182e0e8_430740c8",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T14:04:46Z",
+      "side": 1,
+      "message": "Most of this should be deleted now, but the assert about pending count being 0 makes sense to move up to your new comment.",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 37
+      },
+      "revId": "4ef8dc874197401ca11d32de89f3558a8356dc04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a1ef411_f8f17179",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-26T14:04:46Z",
+      "side": 1,
+      "message": "I think we will need to update the logic in `getVertexWriter` to align its suballocations to the `fStride` that is passed in, instead of just assuming 4. Technically this is overaligning, but is necessary if we\u0027ve aligned up the pendingBase past some bytes that were still available in the DBM.  \n\nThe DBM\u0027s next getVertexWriter call will start at those available bytes and then we will still fail the contiguous allocation check below and trigger a flush.",
+      "range": {
+        "startLine": 306,
+        "startChar": 57,
+        "endLine": 306,
+        "endChar": 72
+      },
+      "revId": "4ef8dc874197401ca11d32de89f3558a8356dc04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
