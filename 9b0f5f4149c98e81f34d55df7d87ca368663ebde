@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8e794d8_d4260102",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-26T14:43:29Z",
+      "side": 1,
+      "message": "Chromium side changes to land first (so as not to hold up the autoroller)? If so, a link to them?",
+      "range": {
+        "startLine": 9,
+        "startChar": 9,
+        "endLine": 9,
+        "endChar": 30
+      },
+      "revId": "9b0f5f4149c98e81f34d55df7d87ca368663ebde",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
