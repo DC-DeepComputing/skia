@@ -461,6 +461,10 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 					// b/389701894 - The Dawn/GLES backend is hard crashing on this test
 					skip(ALL, "test", ALL, "ThreadedPipelineCompilePurgingTest")
+
+					// b/405970498 - The Dawn/GLES backend is failing these two tests
+					skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompileTest")
+					skip(ALL, "test", ALL, "ThreadedPipelinePrecompileCompilePurgingTest")
 				}
 
 				if b.extraConfig("Vulkan") {
@@ -1302,6 +1306,17 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 
 	if b.extraConfig("ANGLE") && b.matchOs("Win") && b.matchGpu("IntelIris(540|655|Xe)") {
 		skip(ALL, "tests", ALL, "ImageFilterCropRect_Gpu") // b/294080402
+	}
+
+	if b.extraConfig("ANGLE") && b.matchOs("Mac15") && b.matchGpu("IntelUHDGraphics630") {
+		// b/405918638
+		skip(ALL, "tests", ALL, "TransferPixelsFromTextureTest")
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels_Renderable_BottomLeft")
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels_Renderable_TopLeft")
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels_NonRenderable_BottomLeft")
+		skip(ALL, "tests", ALL, "ImageAsyncReadPixels_NonRenderable_TopLeft")
+		skip(ALL, "tests", ALL, "SurfaceAsyncReadPixels")
+		skip(ALL, "tests", ALL, "TransferPixelsToTextureTest")
 	}
 
 	if b.gpu("RTX3060") && b.extraConfig("Vulkan") && b.matchOs("Win") {

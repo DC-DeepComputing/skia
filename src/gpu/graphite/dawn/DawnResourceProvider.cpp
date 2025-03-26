@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
 
+#include "include/core/SkString.h"
 #include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/gpu/graphite/dawn/DawnGraphiteTypes.h"
@@ -367,12 +368,17 @@ DawnResourceProvider::DawnResourceProvider(SharedContext* sharedContext,
 DawnResourceProvider::~DawnResourceProvider() = default;
 
 wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
-        const RenderPassDesc& renderPassDesc) {
-    uint32_t renderPassKey =
-            this->dawnSharedContext()->dawnCaps()->getRenderPassDescKeyForPipeline(renderPassDesc);
-    wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[renderPassKey];
+        const RenderPassDesc& renderPassDesc, int srcSampleCount) {
+    // Currently Dawn only supports one sample count > 1. So we can optimize the pipeline key by
+    // specifying whether the source has MSAA or not.
+    SkASSERT(srcSampleCount <= 1 ||
+             srcSampleCount == this->dawnSharedContext()->dawnCaps()->defaultMSAASamplesCount());
+    const bool srcIsMSAA = srcSampleCount > 1;
+    const uint32_t pipelineKey = this->dawnSharedContext()->dawnCaps()->getRenderPassDescKeyForPipeline(
+            renderPassDesc, srcIsMSAA);
+    wgpu::RenderPipeline pipeline = fBlitWithDrawPipelines[pipelineKey];
     if (!pipeline) {
-        static constexpr char kVertexShaderText[] =
+        static constexpr char kVS[] =
             "var<private> fullscreenTriPositions : array<vec2<f32>, 3> = array<vec2<f32>, 3>("
                 "vec2(-1.0, -1.0), vec2(-1.0, 3.0), vec2(3.0, -1.0));"
 
@@ -381,17 +387,33 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 "return vec4(fullscreenTriPositions[vertexIndex], 1.0, 1.0);"
             "}";
 
-        static constexpr char kFragmentShaderText[] =
+        static constexpr char kReadSingleSampledFS[] =
             "@group(0) @binding(0) var colorMap: texture_2d<f32>;"
 
             "@fragment "
             "fn main(@builtin(position) fragPosition : vec4<f32>) -> @location(0) vec4<f32> {"
-                "var coords : vec2<i32> = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
+                "let coords = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
                 "return textureLoad(colorMap, coords, 0);"
             "}";
 
-        auto vsModule = create_shader_module(dawnSharedContext()->device(), kVertexShaderText);
-        auto fsModule = create_shader_module(dawnSharedContext()->device(), kFragmentShaderText);
+        static constexpr char kReadMSAAFSTemplate[] =
+            "@group(0) @binding(0) var colorMap: texture_multisampled_2d<f32>;"
+            "@fragment\n"
+            "fn main(@builtin(position) fragPosition : vec4<f32>) -> @location(0) vec4<f32> {"
+                "let coords = vec2<i32>(i32(fragPosition.x), i32(fragPosition.y));"
+                "const sampleCount = %d;"
+                "var sum = vec4f(0.0);"
+                "for (var i: u32 = 0; i < sampleCount; i = i + 1) {"
+                    "sum += textureLoad(colorMap, coords, i);"
+                "}"
+                "return sum * (1.0 / f32(sampleCount));"
+            "}";
+
+        auto vsModule = create_shader_module(dawnSharedContext()->device(), kVS);
+        auto fsModule = create_shader_module(
+                dawnSharedContext()->device(),
+                srcIsMSAA ? SkStringPrintf(kReadMSAAFSTemplate, srcSampleCount).c_str()
+                          : kReadSingleSampledFS);
 
         const auto& colorTexInfo = renderPassDesc.fColorAttachment.fTextureInfo;
         const auto& dsTexInfo = renderPassDesc.fDepthStencilAttachment.fTextureInfo;
@@ -410,7 +432,7 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
                 /*numSamples=*/renderPassDesc.fColorAttachment.fTextureInfo.numSamples());
 
         if (pipeline) {
-            fBlitWithDrawPipelines.set(renderPassKey, pipeline);
+            fBlitWithDrawPipelines.set(pipelineKey, pipeline);
         }
     }
 
