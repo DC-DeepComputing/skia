@@ -141,7 +141,7 @@ DEF_TEST(FontMgr_Iter, reporter) {
 
             sk_sp<SkTypeface> face2(fm->matchFamilyStyle(name1.c_str(), s1));
             if (!face2) {
-                REPORTER_ASSERT(reporter, face2.get());
+                REPORTER_ASSERT(reporter, face2.get(), "Could not find %s", name1.c_str());
                 continue;
             }
             SkString name2;
