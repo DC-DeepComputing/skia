@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67f8cfa2_53869d47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3888902
+      },
+      "writtenOn": "2025-03-27T19:16:23Z",
+      "side": 1,
+      "message": "It looks like we\u0027re getting an error because the go version we use is too low:\n\nERROR: no such package \u0027@@org_golang_x_crypto//ssh/terminal\u0027: failed to fetch org_golang_x_crypto: fetch_repo: golang.org/x/crypto@v0.35.0 requires go \u003e\u003d 1.23.0 (running go 1.21.4)\n\nIs the correct approach to resolving this to update Go in a separate CL first?",
+      "revId": "430217a533b2caede971637e18def9774a57c722",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
