@@ -46,6 +46,30 @@
       },
       "revId": "b5b6f29d690f830cfc7cbad5d059f972b413db75",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e73619a_936accba",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 86
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-27T19:06:56Z",
+      "side": 0,
+      "message": "Fun, I suppose that means those machines have FontConfig setup which is specifies fonts that cannot actually be opened? I\u0027ve created https://skia-review.googlesource.com/c/skia/+/971049 to get a few more details, but I think it\u0027s fine to land this with this failure. I\u0027ll just go of and try to fix it.",
+      "parentUuid": "013f100e_b081ebc0",
+      "range": {
+        "startLine": 602,
+        "startChar": 17,
+        "endLine": 602,
+        "endChar": 25
+      },
+      "revId": "b5b6f29d690f830cfc7cbad5d059f972b413db75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
