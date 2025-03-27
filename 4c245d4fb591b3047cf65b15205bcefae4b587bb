@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "62499911_6f8c8186",
+        "filename": "src/gpu/ganesh/Device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T13:37:56Z",
+      "side": 0,
+      "message": "These can be removed from the base `SkDevice` as well, is that on your radar?",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 63
+      },
+      "revId": "4c245d4fb591b3047cf65b15205bcefae4b587bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42b36f9c_2601a2d7",
+        "filename": "src/gpu/ganesh/Device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T13:37:56Z",
+      "side": 0,
+      "message": "snapSpecialScaled() is still used, so we shouldn\u0027t get rid of it.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 100
+      },
+      "revId": "4c245d4fb591b3047cf65b15205bcefae4b587bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
