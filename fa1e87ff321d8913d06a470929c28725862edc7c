@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "177e9a8f_37dc4e92",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-27T18:29:40Z",
+      "side": 1,
+      "message": "as talked about offline, I think this should always be general since two attachment refs pointing to the same attachment must have the same layout. And the input forces us to use general here",
+      "range": {
+        "startLine": 309,
+        "startChar": 26,
+        "endLine": 309,
+        "endChar": 32
+      },
+      "revId": "fa1e87ff321d8913d06a470929c28725862edc7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
