@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6e4e6c4_718cd627",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T15:42:08Z",
+      "side": 1,
+      "message": "nit: aligned",
+      "range": {
+        "startLine": 90,
+        "startChar": 63,
+        "endLine": 90,
+        "endChar": 71
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "e20f254c_47a636b9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/DrawWriter.h",
+              "range": {
+                "startLine": 90,
+                "startChar": 0,
+                "endLine": 91,
+                "endChar": 0
+              },
+              "replacement": "        // pendingBase at the previous pendingBase byte usage, aligned to the new stride usage:\n"
+            }
+          ]
+        }
+      ],
+      "revId": "6be97272007ecfdc4d3430fdcda5477eddbfdd49",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
