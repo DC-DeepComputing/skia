@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fea94d_825e8bbd",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0fe1c356_df1afcff",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 103
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bb988bdc_4ef3a8c9",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-03-27T14:27:10Z",
       "side": 1,
       "message": "nit: adjust wrapping of these comments (above and below too, I think) to fit 100 chars. VS Code has a Rewrap extension that I like that can use a hotkey to wrap the selected line or paragraph selection.",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 44
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf1a367a_5636e6bf",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bb988bdc_4ef3a8c9",
       "range": {
         "startLine": 89,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "887cc336_c96faed5",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "236e248d_88483cf6",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 85
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f4d4fed_9010d528",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0c13c8f_58c4abe3",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3f4d4fed_9010d528",
+      "range": {
+        "startLine": 105,
+        "startChar": 31,
+        "endLine": 105,
+        "endChar": 89
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72833e86_10099561",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-03-27T14:27:10Z",
       "side": 1,
       "message": "nit: this was bespoke alignment, but I prefer it for these sorts of simple getters",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 66
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4b40e3b_c5d8bd50",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "72833e86_10099561",
       "range": {
         "startLine": 120,
         "startChar": 4,
@@ -179,6 +299,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0daa001e_23439f48",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f709188f_3b6d55c4",
+      "range": {
+        "startLine": 279,
+        "startChar": 12,
+        "endLine": 280,
+        "endChar": 88
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0866990d_a2fdfb71",
@@ -202,6 +346,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0f600af_64257bae",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0866990d_a2fdfb71",
+      "range": {
+        "startLine": 297,
+        "startChar": 4,
+        "endLine": 302,
+        "endChar": 29
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f504a0f0_f875de6f",
@@ -215,6 +383,30 @@
       "writtenOn": "2025-03-27T14:27:10Z",
       "side": 1,
       "message": "nit: this looks like it got tabbed over 1",
+      "range": {
+        "startLine": 354,
+        "startChar": 7,
+        "endLine": 365,
+        "endChar": 14
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e095e65_a071672e",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-03-27T15:26:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f504a0f0_f875de6f",
       "range": {
         "startLine": 354,
         "startChar": 7,
