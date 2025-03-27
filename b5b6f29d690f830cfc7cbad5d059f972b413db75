@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67bf37b8_ddd851da",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 86
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-27T16:47:08Z",
+      "side": 0,
+      "message": "This one here is the one that runs with native FreeType and FontConfig to make sure we\u0027re not breaking anything there. Skia still supports Debian 10 (mostly because Chrome does) so it\u0027s good to run this one on Debian 10 (or Ubuntu 18.04). That being said, if we do need to remove all the old OSes here, in theory Chrome still builds and tests against old FreeType, so should keep things working, though it would be nice to also see the Skia GM results there.\n\nSame argument goes for a lot of the GPU testing, we want to be sure it is at least minimally tested on our oldest supported platform or we won\u0027t know when we break it (by using something too new or just badly supported).",
+      "range": {
+        "startLine": 602,
+        "startChar": 17,
+        "endLine": 602,
+        "endChar": 25
+      },
+      "revId": "b5b6f29d690f830cfc7cbad5d059f972b413db75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
