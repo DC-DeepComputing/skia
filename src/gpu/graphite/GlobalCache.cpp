@@ -317,7 +317,7 @@ void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTim
     // TODO: add purging of Compute Pipelines (b/389073204)
 }
 
-void GlobalCache::reportPipelineStats() {
+void GlobalCache::reportPrecompileStats() {
     SkAutoSpinlock lock{fSpinLock};
 
     uint32_t numUnusedInCache = 0;
@@ -349,6 +349,19 @@ void GlobalCache::reportPipelineStats() {
                                /* countMin= */ 50,
                                /* countMax= */ 100,
                                /* bucketCount= */ 50);
+}
+
+
+void GlobalCache::reportCacheStats() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                               fStats.fNewPipelinesInEpoch,
+                               /* countMin= */ 1,
+                               /* countMax= */ 1001,
+                               /* bucketCount= */ 100); // 10/bucket
+
+    fStats.fNewPipelinesInEpoch = 0;
 }
 
 #if defined(GPU_TEST_UTILS)
