@@ -599,6 +599,9 @@ void SkEdgeClipper::ClipPath(const SkPath& path, const SkRect& clip, bool canCul
                     consume(&clipper, e.fIsNewContour, ctx);
                 }
                 break;
+            default:
+                SkDEBUGFAIL("Unknown edge type");
+                break;
         }
     }
 }

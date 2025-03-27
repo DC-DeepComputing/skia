@@ -36,9 +36,9 @@ struct SkEdge {
     SkEdge* fNext;
     SkEdge* fPrev;
 
-    SkFixed fX;
+    SkFixed fX;             // where the line crosses this scanline
     SkFixed fDX;
-    int32_t fFirstY;
+    int32_t fFirstY;        // start of this scanline
     int32_t fLastY;
     Type    fEdgeType;      // Remembers the *initial* edge type
     int8_t  fCurveCount;    // only used by kQuad(+) and kCubic(-)
@@ -46,9 +46,9 @@ struct SkEdge {
     uint8_t fCubicDShift;   // applied to fCDx and fCDy only in cubic
     Winding fWinding;
 
-    int setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, int shiftUp);
+    int setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip);
     // call this version if you know you don't have a clip
-    inline int setLine(const SkPoint& p0, const SkPoint& p1, int shiftUp);
+    inline int setLine(const SkPoint& p0, const SkPoint& p1);
     inline int updateLine(SkFixed ax, SkFixed ay, SkFixed bx, SkFixed by);
     void chopLineWithClip(const SkIRect& clip);
 
@@ -77,7 +77,7 @@ struct SkQuadraticEdge : public SkEdge {
     SkFixed fQLastX, fQLastY;
 
     bool setQuadraticWithoutUpdate(const SkPoint pts[3], int shiftUp);
-    int setQuadratic(const SkPoint pts[3], int shiftUp);
+    int setQuadratic(const SkPoint pts[3]);
     int updateQuadratic();
 };
 
@@ -89,21 +89,21 @@ struct SkCubicEdge : public SkEdge {
     SkFixed fCLastX, fCLastY;
 
     bool setCubicWithoutUpdate(const SkPoint pts[4], int shiftUp, bool sortY = true);
-    int setCubic(const SkPoint pts[4], int shiftUp);
+    int setCubic(const SkPoint pts[4]);
     int updateCubic();
 };
 
-int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, int shift) {
+int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1) {
     SkFDot6 x0, y0, x1, y1;
 
     {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(p0.fX, shift);
-        y0 = SkScalarRoundToFDot6(p0.fY, shift);
-        x1 = SkScalarRoundToFDot6(p1.fX, shift);
-        y1 = SkScalarRoundToFDot6(p1.fY, shift);
+        x0 = SkScalarRoundToFDot6(p0.fX);
+        y0 = SkScalarRoundToFDot6(p0.fY);
+        x1 = SkScalarRoundToFDot6(p1.fX);
+        y1 = SkScalarRoundToFDot6(p1.fY);
 #else
-        float scale = float(1 << (shift + 6));
+        constexpr float scale = float(1 << 6);
         x0 = int(p0.fX * scale);
         y0 = int(p0.fY * scale);
         x1 = int(p1.fX * scale);
