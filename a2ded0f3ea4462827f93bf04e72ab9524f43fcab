@@ -52,6 +52,24 @@
       "parentUuid": "939b5c0a_04a4cfd2",
       "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "422f3cda_179c9878",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-03-27T08:52:53Z",
+      "side": 1,
+      "message": "Good that you insisted. Fixed now. I accidentally moved `PaletteOverride` from being a type shared across Rust/C++ to being an opaque type. Compilation still succeeded because of the aggressive cast in SkTypeface_Fontations.cpp:962\n```\n    rust::Slice\u003cconst fontations_ffi::PaletteOverride\u003e argPaletteOverrides(\n            reinterpret_cast\u003cconst fontations_ffi::PaletteOverride*\u003e(args.getPalette().overrides),\n            args.getPalette().overrideCount);\n\n```\nbut lead to palette overrides not being serialized correctly. \n\nAdded an in-depth struct comparison as `static_assert` in order to guard the cast.",
+      "parentUuid": "6661fbd8_15786b22",
+      "revId": "a2ded0f3ea4462827f93bf04e72ab9524f43fcab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
