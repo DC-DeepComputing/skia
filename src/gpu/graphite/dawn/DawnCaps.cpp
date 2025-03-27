@@ -500,7 +500,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fStorageBufferSupport =
             info.backendType != wgpu::BackendType::OpenGL &&
             info.backendType != wgpu::BackendType::OpenGLES &&
-            info.backendType != wgpu::BackendType::Vulkan &&
+            //info.backendType != wgpu::BackendType::Vulkan &&
             backendContext.fDevice.HasFeature(wgpu::FeatureName::CoreFeaturesAndLimits);
 #else
     // WASM doesn't provide a way to query the backend, so can't tell if we are on a backend that
