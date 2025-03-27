@@ -41,6 +41,8 @@
 #include "src/core/SkWriteBuffer.h"
 #include "src/utils/SkMatrix22.h"
 
+#include "src/core/SkDistanceFieldGen.h"
+
 #include <algorithm>
 #include <cstring>
 #include <limits>
@@ -292,15 +294,18 @@ SkGlyph SkScalerContext::internalMakeGlyph(SkPackedGlyphID packedID, SkMask::For
         return glyph;
     }
 
-    if (fMaskFilter) {
-        // only want the bounds from the filter
+    const bool doSDFT = SkToBool(fRec.fFlags & SkScalerContext::kSDFTData_Flag);
+
+    // only want the bounds from the filter or SDFT
+    if (fMaskFilter || doSDFT) {
         SkMask src(nullptr, glyph.iRect(), glyph.rowBytes(), glyph.maskFormat());
         SkMaskBuilder dst;
+
         SkMatrix matrix;
-
         fRec.getMatrixFrom2x2(&matrix);
-
-        if (as_MFB(fMaskFilter)->filterMask(&dst, src, matrix, nullptr)) {
+        bool filterSuccess = doSDFT ? coverageToDistanceField(&dst, src)
+                                    : as_MFB(fMaskFilter)->filterMask(&dst, src, matrix, nullptr);
+        if (filterSuccess) {
             if (dst.fBounds.isEmpty()) {
                 zeroBounds(glyph);
                 return glyph;
@@ -597,10 +602,14 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
     SkAutoMalloc tmpGlyphImageStorage;
     SkGlyph tmpGlyph;
     SkSTArenaAlloc<sizeof(SkGlyph::PathData)> tmpGlyphPathDataStorage;
-    if (fMaskFilter) {
+    const bool doSDFT = SkToBool(fRec.fFlags & SkScalerContext::kSDFTData_Flag);
+
+    if (fMaskFilter || doSDFT) {
         // need the original bounds, sans our maskfilter
         sk_sp<SkMaskFilter> mf = std::move(fMaskFilter);
+        if (doSDFT) fRec.fFlags &= ~SkScalerContext::kSDFTData_Flag;
         tmpGlyph = this->makeGlyph(origGlyph.getPackedID(), &tmpGlyphPathDataStorage);
+        if (doSDFT) fRec.fFlags |= SkScalerContext::kSDFTData_Flag;
         fMaskFilter = std::move(mf);
 
         // Use the origGlyph storage for the temporary unfiltered mask if it will fit.
@@ -637,7 +646,7 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
         }
     }
 
-    if (fMaskFilter) {
+    if (fMaskFilter || doSDFT) {
         // k3D_Format should not be mask filtered.
         SkASSERT(SkMask::k3D_Format != unfilteredGlyph->fMaskFormat);
 
@@ -646,7 +655,10 @@ void SkScalerContext::getImage(const SkGlyph& origGlyph) {
         SkMatrix m;
         fRec.getMatrixFrom2x2(&m);
 
-        if (as_MFB(fMaskFilter)->filterMask(&srcMask, unfilteredGlyph->mask(), m, nullptr)) {
+        bool filterSuccess = doSDFT ? coverageToDistanceField(&srcMask, unfilteredGlyph->mask())
+                                    : as_MFB(fMaskFilter)->filterMask(&srcMask, unfilteredGlyph->mask(), m, nullptr);
+
+        if (filterSuccess) {
             // Filter succeeded; srcMask.fImage was allocated.
             srcMaskOwnedImage.reset(srcMask.image());
         } else if (unfilteredGlyph->fImage == tmpGlyphImageStorage.get()) {
@@ -1185,6 +1197,9 @@ void SkScalerContext::MakeRecAndEffects(const SkFont& font, const SkPaint& paint
     if (typeface->glyphMaskNeedsCurrentColor()) {
         flags |= SkScalerContext::kNeedsForegroundColor_Flag;
         rec->fForegroundColor = paint.getColor();
+    }
+    if (SkToBool(scalerContextFlags & SkScalerContextFlags::kSDFTData)) {
+        flags |= SkScalerContext::kSDFTData_Flag;
     }
     rec->fFlags = SkToU16(flags);
 

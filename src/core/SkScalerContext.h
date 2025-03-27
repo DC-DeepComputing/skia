@@ -53,6 +53,7 @@ enum class SkScalerContextFlags : uint32_t {
     kNone                      = 0,
     kFakeGamma                 = 1 << 0,
     kBoostContrast             = 1 << 1,
+    kSDFTData                  = 1 << 2,
     kFakeGammaAndBoostContrast = kFakeGamma | kBoostContrast,
 };
 SK_MAKE_BITFIELD_OPS(SkScalerContextFlags)
@@ -250,6 +251,7 @@ struct SkScalerContextEffects {
 
     SkPathEffect*   fPathEffect;
     SkMaskFilter*   fMaskFilter;
+    bool            fSDFT = false;
 };
 
 class SkScalerContext {
@@ -280,6 +282,7 @@ public:
         kBaselineSnap_Flag        = 0x2000,
 
         kNeedsForegroundColor_Flag = 0x4000,
+        kSDFTData_Flag            = 0x8000,
     };
 
     // computed values
