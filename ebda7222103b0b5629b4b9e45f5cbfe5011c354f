@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ef778ff_cf930399",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "Logic all looks good to me! just some style comments really.",
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fe1c356_df1afcff",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "nit line length. Skia\u0027s style would typically either wrap this like:\n\n    auto [ptr, bindInfo] \u003d \n            this-\u003eprepareMappedBindBuffer(\u0026info, \"VertexBuffer\", requiredBytes, stride);\n            \nor:\n\n    auto [ptr, bindInfo] \u003d this-\u003eprepareMappedBindBuffer(\n            \u0026info, \"VertexBuffer\", requiredBytes, stride);\n            \nor:\n\n    auto [ptr, bindInfo] \u003d this-\u003eprepareMappedBindBuffer(\u0026info, \n                                                         \"VertexBuffer\", \n                                                         requiredBytes, \n                                                         stride);",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 103
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb988bdc_4ef3a8c9",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "nit: adjust wrapping of these comments (above and below too, I think) to fit 100 chars. VS Code has a Rewrap extension that I like that can use a hotkey to wrap the selected line or paragraph selection.",
+      "range": {
+        "startLine": 89,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 44
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "236e248d_88483cf6",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "WDYT about moving this to right by `prevStride`, and then we can collapse the nested ifs into a single `if (prevStride \u0026\u0026 currStride) { ... } else { pendingBase \u003d 0}`?",
+      "range": {
+        "startLine": 102,
+        "startChar": 0,
+        "endLine": 102,
+        "endChar": 85
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f4d4fed_9010d528",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "Can we add a comment here that we are intentionally not using `SkAlignTo` since the stride is likely not a power of two.",
+      "range": {
+        "startLine": 105,
+        "startChar": 31,
+        "endLine": 105,
+        "endChar": 89
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72833e86_10099561",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "nit: this was bespoke alignment, but I prefer it for these sorts of simple getters",
+      "range": {
+        "startLine": 120,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 66
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fafe9a4b_95f30463",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "clang-format(?) nit: we don\u0027t usually have 2 spaces between a semicolon and a trailing comment, and I think that should allow the comment to fit onto a single line still.\n\nI\u0027m happy to keep the change that aligned the start of the 2 comments above this one, though.",
+      "range": {
+        "startLine": 243,
+        "startChar": 30,
+        "endLine": 243,
+        "endChar": 31
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f709188f_3b6d55c4",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "nit: restore the bespoke alignment, I like this custom alignment in these scenarios to highlight the similarities between the statements.",
+      "range": {
+        "startLine": 279,
+        "startChar": 12,
+        "endLine": 280,
+        "endChar": 88
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0866990d_a2fdfb71",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "bespoke alignment note, can we keep the types and variable names lined up here?",
+      "range": {
+        "startLine": 297,
+        "startChar": 4,
+        "endLine": 302,
+        "endChar": 29
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f504a0f0_f875de6f",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 365,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-27T14:27:10Z",
+      "side": 1,
+      "message": "nit: this looks like it got tabbed over 1",
+      "range": {
+        "startLine": 354,
+        "startChar": 7,
+        "endLine": 365,
+        "endChar": 14
+      },
+      "revId": "ebda7222103b0b5629b4b9e45f5cbfe5011c354f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
