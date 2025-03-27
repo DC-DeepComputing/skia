@@ -12,8 +12,6 @@ GPU_FILES = [
     "Glyph.h",
     "GlyphVector.cpp",
     "GlyphVector.h",
-    "SDFMaskFilter.cpp",
-    "SDFMaskFilter.h",
     "Slug.cpp",
     "SlugImpl.cpp",
     "SlugImpl.h",
