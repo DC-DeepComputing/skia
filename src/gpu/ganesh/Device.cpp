@@ -838,57 +838,6 @@ sk_sp<skif::Backend> Device::createImageFilteringBackend(const SkSurfaceProps& s
             fContext, fSurfaceDrawContext->origin(), surfaceProps, colorType);
 }
 
-sk_sp<SkSpecialImage> Device::makeSpecial(const SkBitmap& bitmap) {
-    ASSERT_SINGLE_OWNER
-
-    // TODO: this makes a tight copy of 'bitmap' but it doesn't have to be (given SkSpecialImage's
-    // semantics). Since this is cached we would have to bake the fit into the cache key though.
-    auto view = std::get<0>(
-            GrMakeCachedBitmapProxyView(fContext.get(), bitmap, /*label=*/"Device_MakeSpecial"));
-    if (!view) {
-        return nullptr;
-    }
-
-    const SkIRect rect = SkIRect::MakeSize(view.proxy()->dimensions());
-
-    // GrMakeCachedBitmapProxyView creates a tight copy of 'bitmap' so we don't have to subset
-    // the special image
-    return SkSpecialImages::MakeDeferredFromGpu(fContext.get(),
-                                                rect,
-                                                bitmap.getGenerationID(),
-                                                std::move(view),
-                                                {SkColorTypeToGrColorType(bitmap.colorType()),
-                                                 kPremul_SkAlphaType,
-                                                 bitmap.refColorSpace()},
-                                                this->surfaceProps());
-}
-
-sk_sp<SkSpecialImage> Device::makeSpecial(const SkImage* image) {
-    ASSERT_SINGLE_OWNER
-
-    SkPixmap pm;
-    if (image->isTextureBacked()) {
-        auto [view, ct] =
-                skgpu::ganesh::AsView(this->recordingContext(), image, skgpu::Mipmapped::kNo);
-        SkASSERT(view);
-
-        return SkSpecialImages::MakeDeferredFromGpu(
-                fContext.get(),
-                SkIRect::MakeWH(image->width(), image->height()),
-                image->uniqueID(),
-                std::move(view),
-                {ct, kPremul_SkAlphaType, image->refColorSpace()},
-                this->surfaceProps());
-    } else if (image->peekPixels(&pm)) {
-        SkBitmap bm;
-
-        bm.installPixels(pm);
-        return this->makeSpecial(bm);
-    } else {
-        return nullptr;
-    }
-}
-
 sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy) {
     ASSERT_SINGLE_OWNER
 
@@ -928,38 +877,6 @@ sk_sp<SkSpecialImage> Device::snapSpecial(const SkIRect& subset, bool forceCopy)
                                                 finalSubset,
                                                 kNeedNewImageUniqueID_SpecialImage,
                                                 std::move(view),
-                                                GrColorInfo(this->imageInfo().colorInfo()),
-                                                this->surfaceProps());
-}
-
-sk_sp<SkSpecialImage> Device::snapSpecialScaled(const SkIRect& subset, const SkISize& dstDims) {
-     ASSERT_SINGLE_OWNER
-
-    auto sdc = fSurfaceDrawContext.get();
-
-    // If we are wrapping a vulkan secondary command buffer, then we can't snap off a special image
-    // since it would require us to make a copy of the underlying VkImage which we don't have access
-    // to. Additionaly we can't stop and start the render pass that is used with the secondary
-    // command buffer.
-    if (sdc->wrapsVkSecondaryCB()) {
-        return nullptr;
-    }
-
-    SkASSERT(sdc->asSurfaceProxy());
-
-    auto scaledContext = sdc->rescale(sdc->imageInfo().makeDimensions(dstDims),
-                                      sdc->origin(),
-                                      subset,
-                                      RescaleGamma::kSrc,
-                                      RescaleMode::kLinear);
-    if (!scaledContext) {
-        return nullptr;
-    }
-
-    return SkSpecialImages::MakeDeferredFromGpu(fContext.get(),
-                                                SkIRect::MakeSize(dstDims),
-                                                kNeedNewImageUniqueID_SpecialImage,
-                                                scaledContext->readSurfaceView(),
                                                 GrColorInfo(this->imageInfo().colorInfo()),
                                                 this->surfaceProps());
 }
