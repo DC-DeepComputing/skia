@@ -1640,9 +1640,10 @@ make_sdft_strike_spec(const SkFont& font, const SkPaint& paint,
                       const SkSurfaceProps& surfaceProps, const SkMatrix& deviceMatrix,
                       const SkPoint& textLocation, const sktext::gpu::SubRunControl& control) {
     // Add filter to the paint which creates the SDFT data for A8 masks.
+    //TODO: erase this comment and make a new one below
     SkPaint dfPaint{paint};
-    dfPaint.setMaskFilter(sktext::gpu::SDFMaskFilter::Make());
-
+    // dfPaint.setMaskFilter(sktext::gpu::SDFMaskFilter::Make());
+    SkDebugf("made sdf mask filter\n");
     auto [dfFont, strikeToSourceScale, matrixRange] = control.getSDFFont(font, deviceMatrix,
                                                                          textLocation);
 
@@ -1672,7 +1673,8 @@ make_sdft_strike_spec(const SkFont& font, const SkPaint& paint,
 
     // Fake-gamma and subpixel antialiasing are applied in the shader, so we ignore the
     // passed-in scaler context flags. (It's only used when we fall-back to bitmap text).
-    SkScalerContextFlags flags = SkScalerContextFlags::kNone;
+    //TODO: add comment about sdf
+    SkScalerContextFlags flags = SkScalerContextFlags::kSDFTData;
     SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(dfFont, dfPaint, surfaceProps, flags,
                                                      SkMatrix::I());
 
