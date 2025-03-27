@@ -306,7 +306,7 @@ void populate_attachment_refs(const RenderPassDesc& rpDesc,
                                 rpDesc.fDstReadStrategy != DstReadStrategy::kReadFromInput;
         VkImageLayout layout = useOptimalLayout ? VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
                                                 : VK_IMAGE_LAYOUT_GENERAL;
-        colorRef.layout = layout;
+        colorRef.layout = VK_IMAGE_LAYOUT_GENERAL;
 
         VkAttachmentDescription& vkColorAttachDesc = descs.push_back();
         memset(&vkColorAttachDesc, 0, sizeof(VkAttachmentDescription));
@@ -412,14 +412,28 @@ void populate_subpass_dependencies(skia_private::STArray<2, VkSubpassDependency>
     // one to every RenderPass which has an input attachment on the main subpass. This is useful
     // because it means that as we perform draw calls, if we encounter a draw that uses a blend
     // operation requiring a dst read, we can avoid having to switch RenderPasses.
+    static const VkPipelineStageFlags readInputAsDstStageFlags =
+            VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    static const VkAccessFlags readInputAsDstAccessFlags = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+
+    static const VkPipelineStageFlags writeToDstStageFlags =
+            VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    static const VkAccessFlags writeToDstAccessFlags = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
     VkSubpassDependency& selfDependency = deps.push_back();
     selfDependency.srcSubpass = mainSubpassIdx;
     selfDependency.dstSubpass = mainSubpassIdx;
     selfDependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
-    selfDependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    selfDependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    selfDependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-    selfDependency.dstAccessMask = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+
+    // For dst reads, we must:
+    // 1) Make sure the color attachment is written to before the fragment shader reads in its
+    //    value.
+    // 2) Make sure that the color attachment is written to before it is written to again by
+    //    another draw.
+    selfDependency.srcStageMask = readInputAsDstStageFlags | writeToDstStageFlags;//VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+    selfDependency.srcAccessMask = readInputAsDstAccessFlags | writeToDstAccessFlags;//VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+    selfDependency.dstStageMask = readInputAsDstStageFlags | writeToDstStageFlags;//VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+    selfDependency.dstAccessMask = readInputAsDstAccessFlags | writeToDstAccessFlags;
 
     // If loading MSAA from resolve, enforce that subpass goes first with a subpass dependency.
     if (loadMSAAFromResolve) {

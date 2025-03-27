@@ -544,10 +544,10 @@ static bool texture_sampler_desc_set_layout(VkDescriptorSetLayout& outLayout,
             immutableSampler = immutableSamplers[i].get();
         }
         textureSamplerDescs.push_back({DescriptorType::kCombinedTextureSampler,
-                                        /*count=*/1,
-                                        /*bindingIdx=*/i,
-                                        PipelineStageFlags::kFragmentShader,
-                                        immutableSampler});
+                                       /*count=*/1,
+                                       /*bindingIdx=*/i,
+                                       PipelineStageFlags::kFragmentShader,
+                                       immutableSampler});
     }
 
     // If no texture/samplers are used, a mock VkDescriptorSetLayout handle by passing in the
@@ -907,7 +907,6 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
             "layout(vulkan,  push_constant) uniform vertexUniformBuffer {"
                 "half4 uPosXform;"
             "};"
-
             // MSAA Load Program VS
             "void main() {"
                 "float2 position = float2(sk_VertexID >> 1, sk_VertexID & 1);"
@@ -920,7 +919,6 @@ bool VulkanGraphicsPipeline::InitializeMSAALoadPipelineStructs(
             "layout(vulkan, input_attachment_index=0, set=" +
             std::to_string(VulkanGraphicsPipeline::kLoadMsaaFromResolveInputDescSetIndex) +
             ", binding=0) subpassInput uInput;"
-
             // MSAA Load Program FS
             "void main() {"
                 "sk_FragColor = subpassLoad(uInput);"
