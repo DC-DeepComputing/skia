@@ -8,6 +8,8 @@
 #define SkDistanceFieldGen_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "src/core/SkMask.h"
+#include "src/core/SkMaskFilterBase.h"
 
 #include <cstddef>
 
@@ -67,6 +69,9 @@ bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
 bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
                                         const unsigned char* image,
                                         int w, int h, size_t rowBytes);
+
+//TODO: add documentation
+bool coverageToDistanceField(SkMaskBuilder* dst, const SkMask& src);
 
 /** Given width and height of original image, return size (in bytes) of distance field
  *  @param w                 Width of the original image.
