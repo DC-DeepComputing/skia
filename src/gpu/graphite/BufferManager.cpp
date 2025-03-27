@@ -184,6 +184,8 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
         , fMaxBlockSize(maxBlockSize)
         , fCurBlockSize(SkAlignTo(minBlockSize, fStartAlignment)) {}
 
+// For the vertexWriter, we explicitly pass in the required stride to align the mapped
+// bindBuffer to try to keep the buffer contiguous with future vertex data.
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
                                                                            size_t stride) {
     uint32_t requiredBytes = validate_count_and_stride(count, stride);
@@ -192,7 +194,8 @@ std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_
     }
 
     auto& info = fCurrentBuffers[kVertexBufferIndex];
-    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes);
+    auto [ptr, bindInfo] =
+        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, stride);
     return {VertexWriter(ptr, requiredBytes), bindInfo};
 }
 
