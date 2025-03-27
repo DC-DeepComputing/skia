@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "481e04b8_d0e38040",
+        "filename": "src/gpu/ganesh/Device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-27T13:49:31Z",
+      "side": 0,
+      "message": "woops completely missed these were virtual. Which also answers why snapSpecialScaled didn\u0027t break when I deleted it. Removed",
+      "parentUuid": "62499911_6f8c8186",
+      "range": {
+        "startLine": 250,
+        "startChar": 0,
+        "endLine": 251,
+        "endChar": 63
+      },
+      "revId": "4c245d4fb591b3047cf65b15205bcefae4b587bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42b36f9c_2601a2d7",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-27T13:37:56Z",
       "side": 0,
       "message": "snapSpecialScaled() is still used, so we shouldn\u0027t get rid of it.",
+      "range": {
+        "startLine": 253,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 100
+      },
+      "revId": "4c245d4fb591b3047cf65b15205bcefae4b587bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed717d42_a5076af4",
+        "filename": "src/gpu/ganesh/Device.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-27T13:49:31Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "42b36f9c_2601a2d7",
       "range": {
         "startLine": 253,
         "startChar": 0,
