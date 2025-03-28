@@ -62,49 +62,6 @@ bool DawnFormatIsDepthOrStencil(wgpu::TextureFormat format) {
     SkUNREACHABLE;
 }
 
-bool DawnFormatIsDepth(wgpu::TextureFormat format) {
-    switch (format) {
-        case wgpu::TextureFormat::Depth16Unorm:         [[fallthrough]];
-        case wgpu::TextureFormat::Depth32Float:
-        case wgpu::TextureFormat::Depth24PlusStencil8:
-        case wgpu::TextureFormat::Depth32FloatStencil8:
-            return true;
-        default:
-            return false;
-    }
-
-    SkUNREACHABLE;
-}
-
-bool DawnFormatIsStencil(wgpu::TextureFormat format) {
-    switch (format) {
-        case wgpu::TextureFormat::Stencil8:             [[fallthrough]];
-        case wgpu::TextureFormat::Depth24PlusStencil8:
-        case wgpu::TextureFormat::Depth32FloatStencil8:
-            return true;
-        default:
-            return false;
-    }
-
-    SkUNREACHABLE;
-}
-
-wgpu::TextureFormat DawnDepthStencilFlagsToFormat(SkEnumBitMask<DepthStencilFlags> mask) {
-    // TODO: Decide if we want to change this to always return a combined depth and stencil format
-    // to allow more sharing of depth stencil allocations.
-    if (mask == DepthStencilFlags::kDepth) {
-        // If needed for workarounds or performance, Depth32Float is also available but requires 2x
-        // the amount of memory.
-        return wgpu::TextureFormat::Depth16Unorm;
-    } else if (mask == DepthStencilFlags::kStencil) {
-        return wgpu::TextureFormat::Stencil8;
-    } else if (mask == DepthStencilFlags::kDepthStencil) {
-        return wgpu::TextureFormat::Depth24PlusStencil8;
-    }
-    SkASSERT(false);
-    return wgpu::TextureFormat::Undefined;
-}
-
 TextureFormat DawnFormatToTextureFormat(wgpu::TextureFormat format) {
     switch (format) {
         case wgpu::TextureFormat::R8Unorm:                    return TextureFormat::kR8;

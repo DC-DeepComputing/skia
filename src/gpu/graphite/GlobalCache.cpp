@@ -82,8 +82,7 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
     }
 
     if (tmpCB) {
-        sk_sp<SkData> data = PipelineDescToData(sharedContext->caps(),
-                                                sharedContext->shaderCodeDictionary(),
+        sk_sp<SkData> data = PipelineDescToData(sharedContext->shaderCodeDictionary(),
                                                 pipelineDesc,
                                                 renderPassDesc);
 
@@ -94,8 +93,7 @@ void GlobalCache::invokePipelineCallback(SharedContext* sharedContext,
             GraphicsPipelineDesc readBackPipelineDesc;
             RenderPassDesc readBackRenderPassDesc;
 
-            SkAssertResult(DataToPipelineDesc(sharedContext->caps(),
-                                              sharedContext->shaderCodeDictionary(),
+            SkAssertResult(DataToPipelineDesc(sharedContext->shaderCodeDictionary(),
                                               data.get(),
                                               &readBackPipelineDesc,
                                               &readBackRenderPassDesc));

@@ -147,6 +147,19 @@ private:
                            bool ownsPipelineLayout,
                            skia_private::TArray<sk_sp<VulkanSampler>>&& immutableSamplers);
 
+    // Have this take in vertex attribute list, instance attribute list so that it can
+    // make the vertexInputInfo. Have it take in the depthstencil settings as well.
+    // Possibly also the blend info.
+
+    // BUt it hshould tkae the renderpassdesc, so it can create the compatible renderpass and
+    // read the sample count to create the multisampleinfo
+    static sk_sp<VulkanGraphicsPipeline> Make(const VulkanSharedContext*,
+                                              VulkanResourceProvider*,
+                                              const SkSpan<const Attribute>& vertexAttrs,
+                                              const SkSpan<const Attribute>& instanceAttrs,
+                                              VkShadersAndLayout program,
+                                              const RenderPassDesc&);
+
     void freeGpuData() override;
 
     // The fragment shader can be null if no shading is performed by the pipeline.

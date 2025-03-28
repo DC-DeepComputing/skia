@@ -10,13 +10,12 @@
 
 #include "src/gpu/graphite/Resource.h"
 
+#include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkTArray.h"
-#include "src/gpu/graphite/vk/VulkanCommandBuffer.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 
 namespace skgpu::graphite {
 
-struct AttachmentDesc;
-struct RenderPassDesc;
 class VulkanCommandBuffer;
 class VulkanSharedContext;
 
@@ -48,7 +47,7 @@ public:
 
     // Struct to store Vulkan information surrounding a RenderPassDesc
     struct Metadata {
-        Metadata(const RenderPassDesc& renderPassDesc);
+        Metadata(const RenderPassDesc& renderPassDesc, bool compatibleOnly);
 
         bool fLoadMSAAFromResolve;
 
@@ -62,7 +61,7 @@ public:
 
         // Accumulate attachments into a container to mimic future structure in RenderPassDesc
         // Currently there can be up to three: color, resolve, depth+stencil
-        skia_private::STArray<3, const AttachmentDesc*> fAttachments;
+        skia_private::STArray<3, AttachmentDesc> fAttachments;
 
         int keySize() const;
 
@@ -72,7 +71,7 @@ public:
         int subpassCount() const { return fLoadMSAAFromResolve ? 2 : 1; }
         int subpassDependencyCount() const { return fLoadMSAAFromResolve ? 1 : 0; }
 
-        void addToKey(ResourceKey::Builder&, int& builderIdx, bool compatibleOnly);
+        void addToKey(ResourceKey::Builder&, int& builderIdx);
     };
 
 private:

@@ -10,6 +10,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkStream.h"
 #include "src/base/SkAutoMalloc.h"
+#include "src/gpu/SwizzlePriv.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
@@ -120,48 +121,50 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     return true;
 }
 
-[[nodiscard]] bool serialize_attachment_desc(const Caps* caps,
-                                             SkWStream* stream,
+[[nodiscard]] bool serialize_attachment_desc(SkWStream* stream,
                                              const AttachmentDesc& attachmentDesc) {
-    if (!caps->serializeTextureInfo(attachmentDesc.fTextureInfo, stream)) {
-        return false;
-    }
-
-    if (attachmentDesc.fTextureInfo.isValid()) {
-        if (!stream->write32(SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fStoreOp),
-                                              static_cast<uint8_t>(attachmentDesc.fLoadOp),
-                                              0, 0))) {
-            return false;
-        }
-    }
-
-    return true;
+    uint32_t tag = attachmentDesc.fFormat == TextureFormat::kUnsupported
+            ? SkSetFourByteTag(static_cast<uint8_t>(TextureFormat::kUnsupported), 0, 0, 0)
+            : SkSetFourByteTag(static_cast<uint8_t>(attachmentDesc.fFormat),
+                               static_cast<uint8_t>(attachmentDesc.fLoadOp),
+                               static_cast<uint8_t>(attachmentDesc.fStoreOp),
+                               attachmentDesc.fSampleCount);
+    return stream->write32(tag);
 }
 
-[[nodiscard]] bool deserialize_attachment_desc(const Caps* caps,
-                                               SkStream* stream,
+[[nodiscard]] bool deserialize_attachment_desc(SkStream* stream,
                                                AttachmentDesc* attachmentDesc) {
-    if (!caps->deserializeTextureInfo(stream, &attachmentDesc->fTextureInfo)) {
+    uint32_t tag;
+    if (!stream->readU32(&tag)) {
         return false;
     }
 
-    if (attachmentDesc->fTextureInfo.isValid()) {
-        uint32_t tag;
-        if (!stream->readU32(&tag)) {
-            return false;
-        }
+    uint8_t format      = static_cast<uint8_t>((tag >> 24) & 0xFF);
+    uint8_t loadOp      = static_cast<uint8_t>((tag >> 16) & 0xFF);
+    uint8_t storeOp     = static_cast<uint8_t>((tag >>  8) & 0xFF);
+    uint8_t sampleCount = static_cast<uint8_t>((tag >>  0) & 0xFF);
 
-        attachmentDesc->fStoreOp = static_cast<StoreOp>(0xFF & (tag >> 24));
-        attachmentDesc->fLoadOp  = static_cast<LoadOp> (0xFF & (tag >> 16));
+    if (format >= kTextureFormatCount) {
+        return false;
     }
+    if (loadOp >= kLoadOpCount) {
+        return false;
+    }
+    if (storeOp >= kStoreOpCount) {
+        return false;
+    }
+
+    *attachmentDesc = {static_cast<TextureFormat>(format),
+                       static_cast<LoadOp>(loadOp),
+                       static_cast<StoreOp>(storeOp),
+                       sampleCount};
 
     return true;
 }
 
-[[nodiscard]] bool serialize_render_pass_desc(const Caps* caps,
-                                              SkWStream* stream,
+[[nodiscard]] bool serialize_render_pass_desc(SkWStream* stream,
                                               const RenderPassDesc& renderPassDesc) {
-    if (!serialize_attachment_desc(caps, stream, renderPassDesc.fColorAttachment)) {
+    if (!serialize_attachment_desc(stream, renderPassDesc.fColorAttachment)) {
         return false;
     }
 
@@ -171,10 +174,10 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
-    if (!serialize_attachment_desc(caps, stream, renderPassDesc.fColorResolveAttachment)) {
+    if (!serialize_attachment_desc(stream, renderPassDesc.fColorResolveAttachment)) {
         return false;
     }
-    if (!serialize_attachment_desc(caps, stream, renderPassDesc.fDepthStencilAttachment)) {
+    if (!serialize_attachment_desc(stream, renderPassDesc.fDepthStencilAttachment)) {
         return false;
     }
 
@@ -185,14 +188,7 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    if (!stream->write32(SkSetFourByteTag(renderPassDesc.fWriteSwizzle[0],
-                                          renderPassDesc.fWriteSwizzle[1],
-                                          renderPassDesc.fWriteSwizzle[2],
-                                          renderPassDesc.fWriteSwizzle[3]))) {
-        return false;
-    }
-
-    if (!stream->write32(renderPassDesc.fSampleCount)) {
+    if (!stream->write16(renderPassDesc.fWriteSwizzle.asKey())) {
         return false;
     }
 
@@ -203,10 +199,9 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     return true;
 }
 
-[[nodiscard]] bool deserialize_render_pass_desc(const Caps* caps,
-                                                SkStream* stream,
+[[nodiscard]] bool deserialize_render_pass_desc(SkStream* stream,
                                                 RenderPassDesc* renderPassDesc) {
-    if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fColorAttachment)) {
+    if (!deserialize_attachment_desc(stream, &renderPassDesc->fColorAttachment)) {
         return false;
     }
 
@@ -216,10 +211,10 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         }
     }
 
-    if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fColorResolveAttachment)) {
+    if (!deserialize_attachment_desc(stream, &renderPassDesc->fColorResolveAttachment)) {
         return false;
     }
-    if (!deserialize_attachment_desc(caps, stream, &renderPassDesc->fDepthStencilAttachment)) {
+    if (!deserialize_attachment_desc(stream, &renderPassDesc->fDepthStencilAttachment)) {
         return false;
     }
 
@@ -230,38 +225,28 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
         return false;
     }
 
-    uint32_t tag;
-    if (!stream->readU32(&tag)) {
+    uint16_t swizzle;
+    if (!stream->readU16(&swizzle)) {
+        return false;
+    }
+    renderPassDesc->fWriteSwizzle = SwizzleCtorAccessor::Make(swizzle);
+
+    uint8_t strategy;
+    if (!stream->readU8(&strategy)) {
+        return false;
+    }
+    if (strategy >= kDstReadStrategyCount) {
         return false;
     }
 
-    char tmpSwizzle[4] = {
-            (char) (0xFF & (tag >> 24)),
-            (char) (0xFF & (tag >> 16)),
-            (char) (0xFF & (tag >> 8)),
-            (char) (0xFF & (tag)),
-    };
-
-    renderPassDesc->fWriteSwizzle = Swizzle(tmpSwizzle);
-
-    if (!stream->readU32(&renderPassDesc->fSampleCount)) {
-        return false;
-    }
-
-    uint8_t tmp8;
-    if (!stream->readU8(&tmp8)) {
-        return false;
-    }
-
-    renderPassDesc->fDstReadStrategyIfRequired = static_cast<DstReadStrategy>(tmp8);
+    renderPassDesc->fDstReadStrategyIfRequired = static_cast<DstReadStrategy>(strategy);
 
     return true;
 }
 
 #define SK_BLOB_END_TAG SkSetFourByteTag('e', 'n', 'd', ' ')
 
-bool SerializePipelineDesc(const Caps* caps,
-                           ShaderCodeDictionary* shaderCodeDictionary,
+bool SerializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
                            SkWStream* stream,
                            const GraphicsPipelineDesc& pipelineDesc,
                            const RenderPassDesc& renderPassDesc) {
@@ -273,7 +258,7 @@ bool SerializePipelineDesc(const Caps* caps,
         return false;
     }
 
-    if (!serialize_render_pass_desc(caps, stream, renderPassDesc)) {
+    if (!serialize_render_pass_desc(stream, renderPassDesc)) {
         return false;
     }
 
@@ -281,8 +266,7 @@ bool SerializePipelineDesc(const Caps* caps,
     return true;
 }
 
-bool DeserializePipelineDesc(const Caps* caps,
-                             ShaderCodeDictionary* shaderCodeDictionary,
+bool DeserializePipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
                              SkStream* stream,
                              GraphicsPipelineDesc* pipelineDesc,
                              RenderPassDesc* renderPassDesc) {
@@ -296,7 +280,7 @@ bool DeserializePipelineDesc(const Caps* caps,
         return false;
     }
 
-    if (!deserialize_render_pass_desc(caps, stream, renderPassDesc)) {
+    if (!deserialize_render_pass_desc(stream, renderPassDesc)) {
         return false;
     }
 
@@ -314,14 +298,12 @@ bool DeserializePipelineDesc(const Caps* caps,
 
 } // anonymous namespace
 
-sk_sp<SkData> PipelineDescToData(const Caps* caps,
-                                 ShaderCodeDictionary* shaderCodeDictionary,
+sk_sp<SkData> PipelineDescToData(ShaderCodeDictionary* shaderCodeDictionary,
                                  const GraphicsPipelineDesc& pipelineDesc,
                                  const RenderPassDesc& renderPassDesc) {
     SkDynamicMemoryWStream stream;
 
-    if (!SerializePipelineDesc(caps,
-                               shaderCodeDictionary,
+    if (!SerializePipelineDesc(shaderCodeDictionary,
                                &stream,
                                pipelineDesc, renderPassDesc)) {
         return nullptr;
@@ -330,8 +312,7 @@ sk_sp<SkData> PipelineDescToData(const Caps* caps,
     return stream.detachAsData();
 }
 
-bool DataToPipelineDesc(const Caps* caps,
-                        ShaderCodeDictionary* shaderCodeDictionary,
+bool DataToPipelineDesc(ShaderCodeDictionary* shaderCodeDictionary,
                         const SkData* data,
                         GraphicsPipelineDesc* pipelineDesc,
                         RenderPassDesc* renderPassDesc) {
@@ -340,7 +321,8 @@ bool DataToPipelineDesc(const Caps* caps,
     }
     SkMemoryStream stream(data->data(), data->size());
 
-    if (!DeserializePipelineDesc(caps, shaderCodeDictionary, &stream,
+    if (!DeserializePipelineDesc(shaderCodeDictionary,
+                                 &stream,
                                  pipelineDesc,
                                  renderPassDesc)) {
         return false;

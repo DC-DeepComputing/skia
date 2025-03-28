@@ -1393,10 +1393,10 @@ bool VulkanCaps::isRenderable(const TextureInfo& texInfo) const {
            this->isRenderable(TextureInfoPriv::Get<VulkanTextureInfo>(texInfo));
 }
 
-bool VulkanCaps::isRenderable(const VulkanTextureInfo& vkInfo) const {
-    const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
-    return info.isRenderable(vkInfo.fImageTiling, vkInfo.fSampleCount);
-}
+// bool VulkanCaps::isRenderable(const VulkanTextureInfo& vkInfo) const {
+//     const FormatInfo& info = this->getFormatInfo(vkInfo.fFormat);
+//     return info.isRenderable(vkInfo.fImageTiling, vkInfo.fSampleCount);
+// }
 
 bool VulkanCaps::isStorage(const TextureInfo& texInfo) const {
     if (!texInfo.isValid()) {
@@ -1526,10 +1526,9 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
                                               const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain =
-            UniqueKey::GenerateDomain();
+        static const skgpu::UniqueKey::Domain kGraphicsPipelineDomain = UniqueKey::GenerateDomain();
 
-        VulkanRenderPass::Metadata rpMetadata{renderPassDesc};
+        VulkanRenderPass::Metadata rpMetaData{renderPassDesc, /*compatibleOnly=*/true};
 
         // Reserve 3 uint32s for the render step id, paint id, and write swizzle.
         static constexpr int kUint32sNeededForPipelineInfo = 3;
@@ -1547,20 +1546,12 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         // Add RenderPass info relevant for pipeline creation that's not captured in RenderPass keys
         builder[idx++] = renderPassDesc.fWriteSwizzle.asKey();
         // Add RenderPassDesc information
-        rpMetadata.addToKey(builder, idx, /*compatibleOnly=*/true);
+        rpMetadata.addToKey(builder, idx);
 
         builder.finish();
     }
 
     return pipelineKey;
-}
-
-bool VulkanCaps::serializeTextureInfo(const TextureInfo& info, SkWStream* out) const {
-    return TextureInfoPriv::Serialize<VulkanTextureInfo>(info, out);
-}
-
-bool VulkanCaps::deserializeTextureInfo(SkStream* stream, TextureInfo* out) const {
-    return TextureInfoPriv::Deserialize<VulkanTextureInfo>(stream, out);
 }
 
 void VulkanCaps::buildKeyForTexture(SkISize dimensions,

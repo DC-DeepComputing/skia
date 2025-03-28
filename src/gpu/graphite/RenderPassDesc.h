@@ -9,7 +9,7 @@
 #define skgpu_graphite_RenderPassDesc_DEFINED
 
 #include "include/core/SkString.h"
-#include "include/gpu/graphite/TextureInfo.h"
+#include "src/gpu/graphite/TextureFormat.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 #include "src/gpu/Swizzle.h"
@@ -19,21 +19,29 @@
 namespace skgpu::graphite {
 
 class Caps;
+class TextureInfo;
 
 struct AttachmentDesc {
-    TextureInfo fTextureInfo;
-    LoadOp fLoadOp;
-    StoreOp fStoreOp;
+    TextureFormat fFormat = TextureFormat::kUnsupported;
+    LoadOp fLoadOp = LoadOp::kDiscard;
+    StoreOp fStoreOp = StoreOp::kDiscard;
+    // NOTE: GPU-supported sample counts should always fit in a byte, and this lets AttachmentDesc
+    // stay at 32-bits given the backing types of TextureFormat and Load/StoreOp.
+    uint8_t fSampleCount = 1;
 
     bool operator==(const AttachmentDesc& other) const {
-        if (!fTextureInfo.isValid() && !other.fTextureInfo.isValid()) {
+        if (fFormat == TextureFormat::kUnsupported &&
+            other.fFormat == TextureFormat::kUnsupported) {
             return true;
         }
 
-        return fTextureInfo == other.fTextureInfo &&
+        return fFormat == other.fFormat &&
                fLoadOp == other.fLoadOp &&
-               fStoreOp == other.fStoreOp;
+               fStoreOp == other.fStoreOp &&
+               fSampleCount == other.fSampleCount;
     }
+
+    bool isCompatible(const TextureInfo&) const;
 
     SkString toString() const;
 };
@@ -50,8 +58,7 @@ struct RenderPassDesc {
                                const DstReadStrategy targetReadStrategy);
 
     bool operator==(const RenderPassDesc& other) const {
-        return (fSampleCount == other.fSampleCount &&
-                fWriteSwizzle == other.fWriteSwizzle &&
+        return (fWriteSwizzle == other.fWriteSwizzle &&
                 fClearDepth == other.fClearDepth &&
                 fClearColor == other.fClearColor &&
                 fColorAttachment == other.fColorAttachment &&
@@ -65,24 +72,25 @@ struct RenderPassDesc {
     }
 
     AttachmentDesc fColorAttachment;
-    std::array<float, 4> fClearColor;
     AttachmentDesc fColorResolveAttachment;
-
     AttachmentDesc fDepthStencilAttachment;
-    float fClearDepth;
-    uint32_t fClearStencil;
 
+    // The write swizzle is applied in shader, so affects SkSL code generation, but is determined by
+    // the desired SkColorType semantics and target TextureFormat combination of the render pass.
     Swizzle fWriteSwizzle;
-
-    // This samples count usually matches fColorAttachment & fDepthStencilAttachment's samples
-    // count. The only exceptional case is when multisampled render to single sampled is used. In
-    // that case, the fColorAttachment's samples count will be 1 and fSampleCount will be > 1.
-    uint32_t fSampleCount;
 
     // Each shader/pipeline will need to independently determine whether a dst read is required.
     // If so, it can consult RenderPassDesc's fDstReadStrategyIfRequired which is determined by
     // the dst texture's information.
     DstReadStrategy fDstReadStrategyIfRequired;
+
+    // The overall sample count of the render pass
+    uint8_t fSampleCount;
+
+    // These are set on renderpasses and attachments, but don't change the structure of the pass.
+    std::array<float, 4> fClearColor;
+    float fClearDepth = 0.f;
+    uint32_t fClearStencil = 0;
 
     SkString toString() const;
     // Only includes fixed state relevant to pipeline creation

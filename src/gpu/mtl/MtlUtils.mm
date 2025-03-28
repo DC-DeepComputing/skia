@@ -32,37 +32,6 @@ bool MtlFormatIsDepthOrStencil(MTLPixelFormat format) {
     SkUNREACHABLE;
 }
 
-bool MtlFormatIsDepth(MTLPixelFormat format) {
-    switch (format) {
-        case MTLPixelFormatDepth16Unorm:            [[fallthrough]];
-        case MTLPixelFormatDepth32Float:
-#if defined(SK_BUILD_FOR_MAC)
-        case MTLPixelFormatDepth24Unorm_Stencil8:
-#endif
-        case MTLPixelFormatDepth32Float_Stencil8:
-            return true;
-        default:
-            return false;
-    }
-
-    SkUNREACHABLE;
-}
-
-bool MtlFormatIsStencil(MTLPixelFormat format) {
-    switch (format) {
-        case MTLPixelFormatStencil8:                [[fallthrough]];
-#if defined(SK_BUILD_FOR_MAC)
-        case MTLPixelFormatDepth24Unorm_Stencil8:
-#endif
-        case MTLPixelFormatDepth32Float_Stencil8:
-            return true;
-        default:
-            return false;
-    }
-
-    SkUNREACHABLE;
-}
-
 bool MtlFormatIsCompressed(MTLPixelFormat mtlFormat) {
     switch (mtlFormat) {
         case MTLPixelFormatETC2_RGB8:

@@ -59,8 +59,7 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
 
-    if (!DataToPipelineDesc(fSharedContext->caps(),
-                            fSharedContext->shaderCodeDictionary(),
+    if (!DataToPipelineDesc(fSharedContext->shaderCodeDictionary(),
                             serializedPipelineKey.get(),
                             &pipelineDesc,
                             &renderPassDesc)) {
@@ -90,8 +89,7 @@ std::string PrecompileContext::getPipelineLabel(sk_sp<SkData> serializedPipeline
     GraphicsPipelineDesc pipelineDesc;
     RenderPassDesc renderPassDesc;
 
-    if (!DataToPipelineDesc(fSharedContext->caps(),
-                            fSharedContext->shaderCodeDictionary(),
+    if (!DataToPipelineDesc(fSharedContext->shaderCodeDictionary(),
                             serializedPipelineKey.get(),
                             &pipelineDesc,
                             &renderPassDesc)) {
