@@ -93,6 +93,30 @@
       },
       "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "105b8284_9ca6caa6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-28T18:49:08Z",
+      "side": 1,
+      "message": "Yeah, I looked into this some, but unless that determination changes this CL or your plans in a meaningful way then we can hold off on feeling more confident in that ability + testing that out (though I see your point). LMK your thoughts.\n\n(For posterity, I dug some into:\n* https://registry.khronos.org/vulkan/specs/latest/man/html/VkRenderingAttachmentInfoKHR.html \n* https://registry.khronos.org/vulkan/specs/latest/html/vkspec.html#renderpass-resolve-operations (YCbCr implications on Android)",
+      "parentUuid": "ef3a62cd_97cac149",
+      "range": {
+        "startLine": 788,
+        "startChar": 64,
+        "endLine": 789,
+        "endChar": 98
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
