@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17146aae_4b7edec7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-28T19:30:23Z",
+      "side": 1,
+      "message": "I suspect the issue is in the layer/restore process (not the drawEdgeAA). When I route the function to always do this draw with the method of doing each image in the set individually with its own layer, it works fine for prespective. However, once I add a mask filter (even one that does nothing), the prespective fails and shows artifacts.",
+      "parentUuid": "18aedbc5_6adf64fe",
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9e83be86_67ea90b3",
