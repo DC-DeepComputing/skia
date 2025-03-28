@@ -16,6 +16,23 @@
       "message": "Due to unresolved concerns on CL 908136, I\u0027ve rebased and reordered this CL to precede that one, to allow this part to mainline sooner.",
       "revId": "b99a08e1d837d28160b2dc81015fc37fcc61e17b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f778ab26_98c04bb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3858597
+      },
+      "writtenOn": "2025-03-28T22:47:17Z",
+      "side": 1,
+      "message": "Review ping. This have caused build failures for at least downstream like LibreOffice and webkit2gtk and we really need this.",
+      "revId": "b99a08e1d837d28160b2dc81015fc37fcc61e17b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
