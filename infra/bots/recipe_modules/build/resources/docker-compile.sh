@@ -14,7 +14,13 @@ set -x
 
 export PATH="/SRC/recipe_bundle/depot_tools:${PATH}"
 
-cd /SRC/skia
+env
+
+# TODO(borenet): We shouldn't hard-code this.
+cd /SRC/cache/work/skia
+ls -alh /SRC
+pwd
+ls -alh
 ./bin/fetch-ninja
 ./bin/fetch-gn
 ./bin/gn gen /OUT "--args=$1"
