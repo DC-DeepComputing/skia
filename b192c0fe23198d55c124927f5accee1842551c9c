@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5bab495_9bfe5113",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 747,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:19:42Z",
+      "side": 1,
+      "message": "I updated `VulkanProgramInfo` to have ownership of the modules and layout (with a way to release the layout to `VulkanGraphicsPipeline`) so that we get auto-delete behavior and then restored the behavior to exit as soon as there\u0027s an error.",
+      "parentUuid": "a19ff5e9_8a60f831",
+      "range": {
+        "startLine": 747,
+        "startChar": 12,
+        "endLine": 747,
+        "endChar": 96
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "19709b84_c79f6f9f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-25T02:27:50Z",
       "side": 1,
       "message": "IIUC, this would only be possible for when we do not load MSAA from resolve which requires the explicit usage of subpasses which dynamic rendering does not provide which may be worth clarifying",
+      "range": {
+        "startLine": 788,
+        "startChar": 64,
+        "endLine": 789,
+        "endChar": 98
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef3a62cd_97cac149",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:19:42Z",
+      "side": 1,
+      "message": "Admittedly I did a very fast read of https://www.khronos.org/blog/streamlining-subpasses, but I think it suggests that we can use pipeline barriers to emulate the high-level concept of subpasses, so we could still perform a load, and since there aren\u0027t any explicit subpasses there isn\u0027t any issue locking the subpass index into the pipeline.",
+      "parentUuid": "19709b84_c79f6f9f",
       "range": {
         "startLine": 788,
         "startChar": 64,
