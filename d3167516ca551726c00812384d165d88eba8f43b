@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7c161a2_cb97f453",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-28T18:03:35Z",
+      "side": 1,
+      "message": "could be merged.",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 595,
+        "endChar": 11
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "de95f3d6_c184dfe6",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/pdf/SkPDFTag.cpp",
+              "range": {
+                "startLine": 593,
+                "startChar": 0,
+                "endLine": 594,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/pdf/SkPDFTag.cpp",
+              "range": {
+                "startLine": 595,
+                "startChar": 0,
+                "endLine": 596,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "d3167516ca551726c00812384d165d88eba8f43b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97eea63d_9159375a",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-28T18:03:35Z",
+      "side": 1,
+      "message": "Double-checking: is `Count` supposed to reflect the cumulative descendant count or the immediate linked list count?",
+      "range": {
+        "startLine": 684,
+        "startChar": 38,
+        "endLine": 684,
+        "endChar": 54
+      },
+      "revId": "d3167516ca551726c00812384d165d88eba8f43b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
