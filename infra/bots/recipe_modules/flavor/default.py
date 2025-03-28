@@ -134,6 +134,7 @@ class DefaultFlavor(object):
       clang_linux = workdir.joinpath('clang_ubuntu_noble')
 
     if self.m.vars.is_linux:
+      env['DISPLAY'] = ':0'
       if (self.m.vars.builder_cfg.get('cpu_or_gpu', '') == 'GPU'
           and 'Intel' in self.m.vars.builder_cfg.get('cpu_or_gpu_value', '')):
         dri_path = workdir.joinpath('mesa_intel_driver_linux')
@@ -157,6 +158,12 @@ class DefaultFlavor(object):
           env['VK_LAYER_PATH'] = str(workdir.joinpath(
               'linux_vulkan_sdk', 'etc', 'vulkan', 'explicit_layer.d'))
 
+      # Set XDG_RUNTIME_DIR.
+      # TODO(borenet): Only do this if not present. Derive it from $USER. This
+      # should probably be added to the allowlist of environment variables that
+      # Swarming allows to pass through.
+      env['XDG_RUNTIME_DIR'] = '/run/user/1001'
+
     if 'SwiftShader' in extra_tokens:
       ld_library_path.append(self.host_dirs.bin_dir.joinpath('swiftshader_out'))
 
@@ -175,7 +182,7 @@ class DefaultFlavor(object):
       # analyses. We ship a copy of libc++ with our Linux toolchain in /lib.
       ld_library_path.append(clang_linux.joinpath('lib', 'x86_64-unknown-linux-gnu'))
 
-    if 'ASAN' in extra_tokens or 'MSAN' in extra_tokens:
+    if 'ASAN' in extra_tokens:
       os = self.m.vars.builder_cfg.get('os', '')
       if 'Mac' in os or 'Win' in os:
         # Mac and Win don't support detect_leaks.
@@ -183,9 +190,9 @@ class DefaultFlavor(object):
       else:
         env['ASAN_OPTIONS'] = 'symbolize=1 detect_leaks=1'
         env['ASAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
-        env['MSAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
+        #env['MSAN_SYMBOLIZER_PATH'] = clang_linux.joinpath('bin', 'llvm-symbolizer')
       env[ 'LSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
-      env[ 'MSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
+      #env[ 'MSAN_OPTIONS'] = 'symbolize=1 print_suppressions=1'
       env['UBSAN_OPTIONS'] = 'symbolize=1 print_stacktrace=1'
 
       # If you see <unknown module> in stacktraces, try fast_unwind_on_malloc=0.
@@ -198,6 +205,10 @@ class DefaultFlavor(object):
       # We don't care about malloc(), fprintf, etc. used in signal handlers.
       # If we're in a signal handler, we're already crashing...
       env['TSAN_OPTIONS'] = 'report_signal_unsafe=0'
+      if self.m.vars.is_linux:
+        # Running through setarch with '-R' disables address randomization,
+        # which would otherwise cause TSAN to error out.
+        cmd = ['setarch', '-R'] + cmd
 
     if 'Coverage' in extra_tokens:
       # This is the output file for the coverage data. Just running the binary
@@ -218,7 +229,7 @@ class DefaultFlavor(object):
           '%s' % p for p in ld_library_path)
 
     to_symbolize = ['dm', 'nanobench']
-    if name in to_symbolize and self.m.vars.is_linux and 'MSAN' not in extra_tokens:
+    if name in to_symbolize and self.m.vars.is_linux and 'MSAN' not in extra_tokens and 'ASAN' not in extra_tokens:
       # Convert path objects or placeholders into strings such that they can
       # be passed to symbolize_stack_trace.py
       args = [workdir] + [str(x) for x in cmd]
@@ -234,5 +245,7 @@ class DefaultFlavor(object):
                        self.module.resource('win_run_and_check_log.ps1')] + cmd
         self._run(name, wrapped_cmd)
     else:
+      if 'ASAN' in extra_tokens:
+        cmd = ['gdb', '-batch', '-ex', 'run', '-ex', 'bt', '--args'] + cmd
       with self.m.context(env=env):
         self._run(name, cmd)
