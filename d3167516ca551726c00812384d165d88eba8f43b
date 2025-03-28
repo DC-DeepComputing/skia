@@ -54,6 +54,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c1be17e3_d0c51513",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-03-28T20:22:32Z",
+      "side": 1,
+      "message": "This break is being used here to point out that the above anonymous namespace is for the \"header outline\" and this anonymous namespace is for the \"structure outline\". This is one of those places where it would be nice to have \"named local\" namespaces (work like named namespaces but everything inside is still internal linkage). I suppose that could be done with named namspaces with inline anonymous namespaces in them.",
+      "parentUuid": "f7c161a2_cb97f453",
+      "range": {
+        "startLine": 593,
+        "startChar": 0,
+        "endLine": 595,
+        "endChar": 11
+      },
+      "revId": "d3167516ca551726c00812384d165d88eba8f43b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97eea63d_9159375a",
         "filename": "src/pdf/SkPDFTag.cpp",
         "patchSetId": 6
