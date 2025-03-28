@@ -73,6 +73,30 @@
       },
       "revId": "d3167516ca551726c00812384d165d88eba8f43b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31f53440_f7200e52",
+        "filename": "src/pdf/SkPDFTag.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 684,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-03-28T18:07:23Z",
+      "side": 1,
+      "message": "NVM, I found confirmation in the spec.",
+      "parentUuid": "97eea63d_9159375a",
+      "range": {
+        "startLine": 684,
+        "startChar": 38,
+        "endLine": 684,
+        "endChar": 54
+      },
+      "revId": "d3167516ca551726c00812384d165d88eba8f43b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
