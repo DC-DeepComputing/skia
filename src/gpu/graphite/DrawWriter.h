@@ -81,15 +81,33 @@ public:
     // the old pipeline, so this must be called *before* binding the new pipeline.
     void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
         this->flush();
+
+        // At this point, whatever was pending was flushed, meaning that whatever pendingCount was,
+        // it has now been added to the pendingBase.
+        SkASSERT(fPendingCount == 0);
+
+        // We try to prevent additional draw calls + bindings in reserve by starting the new
+        // pendingBase at the previous pendingBase byte usage, aligned to the new stride usage:
+
+        // What is the stride of the data in the buffer? A positive instance stride implies fixed
+        // vertex data, so the instance stride is used, else, the vertex stride is used. As a future
+        // alternative, the type of data (instance or vertex) could be returned by each renderStep,
+        // and tracked at the drawPass level.
+        const size_t prevStride = fInstanceStride ? fInstanceStride : fVertexStride;
+        const size_t currStride = instanceStride ? instanceStride : vertexStride;
+        // If either stride is 0, no aligning is required so the pendingBase is set to 0.
+        if (prevStride && currStride) {
+            const size_t prevBytes = fPendingBase * prevStride;
+            // Because neither stride is guaranteed to be a power of two, we manually align instead
+            // of using SkAlignTo.
+            fPendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
+        } else {
+            fPendingBase = 0;
+        }
+
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
-
-        // NOTE: resetting pending base is sufficient to redo bindings for vertex/instance data that
-        // is later appended but doesn't invalidate bindings for fixed buffers that might not need
-        // to change between pipelines.
-        fPendingBase = 0;
-        SkASSERT(fPendingCount == 0);
     }
 
 #ifdef SK_DEBUG
@@ -304,7 +322,7 @@ protected:
                 fDrawer.fPendingBase = 0;
                 fDrawer.fPendingBufferBinds = true;
             } else {
-                fTarget.fSize += reservedChunk.fSize;
+                fTarget.fSize = reservedChunk.fSize + reservedChunk.fOffset - fTarget.fOffset;
             }
         }
         fNextWriter = std::move(writer);

@@ -255,7 +255,10 @@ public:
     // The passed in BindBufferInfos are updated when finalize() is later called, to point to the
     // packed, GPU-private buffer at the appropriate offset. The data written to the returned Writer
     // is copied to the private buffer at that offset. 'binding' must live until finalize() returns.
-    VertexWriter getVertexWriter(size_t size, BindBufferInfo* binding);
+
+    // For the vertex writer, the count and stride of the buffer is passed to allow alignment of
+    // future vertices.
+    VertexWriter getVertexWriter(size_t count, size_t stride, BindBufferInfo* binding);
     // TODO: Update the tessellation index buffer generation functions to use an IndexWriter so this
     // can return an IndexWriter vs. a VertexWriter that happens to just write uint16s...
     VertexWriter getIndexWriter(size_t size, BindBufferInfo* binding);
@@ -289,7 +292,10 @@ private:
         }
 
         const BufferType fBufferType;
-        const uint32_t   fAlignment;
+
+        // To prevent unnecessary rebinding due to differing vertex strides over the lifetime of the
+        // buffer, fAlignment is mutable.
+        uint32_t fAlignment;
 
         skia_private::TArray<CopyRange> fData;
         uint32_t fTotalRequiredBytes;
