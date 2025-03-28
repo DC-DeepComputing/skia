@@ -20,16 +20,6 @@ struct RenderPassDesc;
 class VulkanCommandBuffer;
 class VulkanSharedContext;
 
-const static VkAttachmentStoreOp vkStoreOp[] {
-    VK_ATTACHMENT_STORE_OP_STORE,
-    VK_ATTACHMENT_STORE_OP_DONT_CARE
-};
-const static VkAttachmentLoadOp vkLoadOp[] {
-    VK_ATTACHMENT_LOAD_OP_LOAD,
-    VK_ATTACHMENT_LOAD_OP_CLEAR,
-    VK_ATTACHMENT_LOAD_OP_DONT_CARE
-};
-
 /**
  * Wrapper around VkRenderPass.
 */
@@ -42,10 +32,6 @@ public:
     static constexpr int kDepthStencilAttachmentIdx = 2;
 
     static constexpr int kMaxExpectedAttachmentCount = kDepthStencilAttachmentIdx + 1;
-
-    // Methods to create compatible (needed when creating a framebuffer and graphics pipeline) or
-    // full (needed when beginning a render pass from the command buffer) render passes and keys.
-    static GraphiteResourceKey MakeRenderPassKey(const RenderPassDesc&, bool compatibleOnly);
 
     static sk_sp<VulkanRenderPass> MakeRenderPass(const VulkanSharedContext*,
                                                   const RenderPassDesc&,
@@ -61,33 +47,60 @@ public:
     const char* getResourceType() const override { return "Vulkan RenderPass"; }
 
     // Struct to store Vulkan information surrounding a RenderPassDesc
+<<<<<<< PATCH SET (5cd77b [graphite] Refactor VulkanRenderPass metadata in prep for At)
+    struct Metadata {
+        Metadata(const RenderPassDesc& renderPassDesc);
+||||||| BASE
+    struct VulkanRenderPassMetaData {
+        VulkanRenderPassMetaData(const RenderPassDesc& renderPassDesc);
+=======
     struct VulkanRenderPassMetaData {
         VulkanRenderPassMetaData(const RenderPassDesc&);
+>>>>>>> BASE      (b67e53 Roll vulkan-deps from 7de3e153f521 to 897477bba573 (4 revisi)
 
         bool fLoadMSAAFromResolve;
 
+<<<<<<< PATCH SET (5cd77b [graphite] Refactor VulkanRenderPass metadata in prep for At)
+        // TODO: Extend RenderPassDesc to have subpasses that index into the attachments of the
+        // RenderPassDesc. For a given subpass, we can simplify the description to assume there's
+        // at most 1 color, resolve, and depth-stencil attachment. For now these bools represent
+        // the main subpass's attachment "refs".
+||||||| BASE
+=======
         // These bools apply to the *main* subpass (not the subpass used when loading MSAA
         // from resolve).
+>>>>>>> BASE      (b67e53 Roll vulkan-deps from 7de3e153f521 to 897477bba573 (4 revisi)
         bool fHasColorAttachment;
         bool fHasColorResolveAttachment;
         bool fHasDepthStencilAttachment;
         bool fHasInputAttachment;
 
-        int fNumColorAttachments;
-        int fNumResolveAttachments;
-        int fNumDepthStencilAttachments;
-        int fSubpassCount;
-        int fSubpassDependencyCount;
-        int fUint32DataCnt;
-
         // Accumulate attachments into a container to mimic future structure in RenderPassDesc
-        skia_private::TArray<const AttachmentDesc*> fAttachments;
-    };
+        // Currently there can be up to three: color, resolve, depth+stencil
+        skia_private::STArray<3, const AttachmentDesc*> fAttachments;
 
+<<<<<<< PATCH SET (5cd77b [graphite] Refactor VulkanRenderPass metadata in prep for At)
+        int keySize() const;
+
+        // TODO: Extend RenderPassDesc to describe generalized subpasses and subpass dependencies,
+        // at which point these can be inferred from there. It's undecided if the load-from-resolve
+        // subpass will be an extra +1, or if RenderPassDesc will explicitly include it.
+        int subpassCount() const { return fLoadMSAAFromResolve ? 2 : 1; }
+        int subpassDependencyCount() const { return fLoadMSAAFromResolve ? 1 : 0; }
+
+        void addToKey(ResourceKey::Builder&, int& builderIdx, bool compatibleOnly);
+    };
+||||||| BASE
+    static void AddRenderPassInfoToKey(VulkanRenderPassMetaData& rpMetaData,
+                                       ResourceKey::Builder& builder,
+                                       int& builderIdx,
+                                       bool compatibleOnly);
+=======
     static void AddRenderPassInfoToKey(const VulkanRenderPassMetaData& rpMetaData,
                                        ResourceKey::Builder& builder,
                                        int& builderIdx,
                                        bool compatibleOnly);
+>>>>>>> BASE      (b67e53 Roll vulkan-deps from 7de3e153f521 to 897477bba573 (4 revisi)
 
 private:
     void freeGpuData() override;
