@@ -124,7 +124,9 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+      "DISPLAY": ":0",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
+      "XDG_RUNTIME_DIR": "/run/user/1001"
     },
     "name": "symbolized dm"
   },
@@ -210,7 +212,9 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+      "DISPLAY": ":0",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
+      "XDG_RUNTIME_DIR": "/run/user/1001"
     },
     "name": "symbolized dm (2)"
   },
@@ -296,7 +300,9 @@
     "cwd": "[START_DIR]/skia",
     "env": {
       "CHROME_HEADLESS": "1",
-      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+      "DISPLAY": ":0",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]",
+      "XDG_RUNTIME_DIR": "/run/user/1001"
     },
     "name": "symbolized dm (3)"
   },
