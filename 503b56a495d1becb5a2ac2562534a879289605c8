@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8391b5ee_347972d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "I\u0027ve posted some comments that maybe accounts for the perspective interpolation issues you saw in the GM, but assuming it\u0027s still present, then it could be a bug in Graphite\u0027s edge aa quad code, or an issue with how perspective is being handled by the maskfilter-\u003eimagefilter autolayering that we can then dig into.",
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e83be86_67ea90b3",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2729,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "We should copy `realPaint` into a per-entry paint and then modify that per iteration.",
+      "range": {
+        "startLine": 2729,
+        "startChar": 82,
+        "endLine": 2729,
+        "endChar": 91
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77f6db35_8f08cfe0",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2734,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "Unless the `SkMatrix` returns true from `rectStaysRect()`, `mapRect()` returns a bounding box of the transformed corners of the input rect. To keep things simple, I think we\u0027d just skip going through `drawImageRect` if there was a matrix index set.",
+      "range": {
+        "startLine": 2734,
+        "startChar": 0,
+        "endLine": 2734,
+        "endChar": 74
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "465edf52_8bb1859d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "If we route the entry to just `drawImageRect`, it should be done before we call `SkModifyPaintAndDstForDrawImageRect` since it\u0027ll handle that already.",
+      "range": {
+        "startLine": 2743,
+        "startChar": 16,
+        "endLine": 2744,
+        "endChar": 74
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50394c53_c0163df9",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "Since we\u0027re inside the autolayer, we should call `this-\u003etopDevice()-\u003edrawEdgeAAQuad(...)`. `this-\u003etopDevice()` returns the SkDevice that was created for the auto layer and we don\u0027t want to go through more SkCanvas virtuals.\n\nSince we can\u0027t call `mapRect` to apply any preview matrix and `drawEdgeAAQuad` doesn\u0027t take an optional matrix, we can modify the local-to-device matrix of the layer\u0027s top device:\n\n    this-\u003etopDevice()-\u003esetLocalToDevice(this-\u003etopDevice()-\u003elocalToDevice44() * SkM44(preViewMatrices[index]));\n    \nThe auto layer will get rid of the device right after the draw, so there\u0027s no need to restore the transform.",
+      "range": {
+        "startLine": 2750,
+        "startChar": 16,
+        "endLine": 2750,
+        "endChar": 38
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da10890_41d7fbff",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "We should be able to pass in `dstClips + dstClipIndex` instead of copying into `clip`",
+      "range": {
+        "startLine": 2750,
+        "startChar": 48,
+        "endLine": 2750,
+        "endChar": 52
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2cacdfe5_b328b5e7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T17:58:12Z",
+      "side": 1,
+      "message": "This should be layer-\u003epaint().getColor4f()",
+      "range": {
+        "startLine": 2751,
+        "startChar": 39,
+        "endLine": 2751,
+        "endChar": 61
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
