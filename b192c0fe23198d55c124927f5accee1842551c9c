@@ -117,6 +117,30 @@
       },
       "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02814815_4eeb01d4",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 789,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-28T19:04:12Z",
+      "side": 1,
+      "message": "`VK_dynamic_rendering_local_read` and the resolve load op extension you linked are useful to keep in mind, but don\u0027t change the immediate plans for this CL or for your changes around input attachments and the current load-to-msaa subpass code.\n\nI mostly wanted to record that there was this extension to think about in the future, and call out that w/o it, there are pipeline complications if we start using real subpasses to elide saveLayers.",
+      "parentUuid": "105b8284_9ca6caa6",
+      "range": {
+        "startLine": 788,
+        "startChar": 64,
+        "endLine": 789,
+        "endChar": 98
+      },
+      "revId": "b192c0fe23198d55c124927f5accee1842551c9c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
