@@ -91,8 +91,14 @@ bool can_fit(uint32_t requestedSize,
     return requestedSize <= (allocatedSize - startOffset);
 }
 
+
+// Both vertex and index data is aligned to 4 bytes by default. For vertex data, this alignment is
+// only used when the buffer is created, afterwards, the stride of the vertex data is used instead
+// for alignment.
+// TODO Possibly remove this function? I.e. Always explcitly pass alignment? This is obfuscating
+// what the alignment of the buffer is at any given time: sometimes we use the alignment in the
+// internal state of the Buffer Manager, sometimes we pass it in explicitly when we call a writer.
 uint32_t starting_alignment(BufferType type, bool useTransferBuffers, const Caps* caps) {
-    // Both vertex and index data is aligned to 4 bytes by default
     uint32_t alignment = 4;
     if (type == BufferType::kUniform) {
         alignment = SkTo<uint32_t>(caps->requiredUniformBufferAlignment());
@@ -184,6 +190,8 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
         , fMaxBlockSize(maxBlockSize)
         , fCurBlockSize(SkAlignTo(minBlockSize, fStartAlignment)) {}
 
+// For the vertexWriter, we explicitly pass in the required stride to align the mapped
+// bindBuffer to try to keep the buffer contiguous with future vertex data.
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
                                                                            size_t stride) {
     uint32_t requiredBytes = validate_count_and_stride(count, stride);
@@ -192,7 +200,8 @@ std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_
     }
 
     auto& info = fCurrentBuffers[kVertexBufferIndex];
-    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes);
+    auto [ptr, bindInfo] =
+        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, stride);
     return {VertexWriter(ptr, requiredBytes), bindInfo};
 }
 
@@ -509,10 +518,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         // alignment. This is useful when the offset is used as an index into a storage buffer
         // rather than an offset for an actual binding.
         // We can't simply use SkAlignTo here, because that can only align to powers of two.
-        const uint32_t misalignment = info->fOffset % requiredAlignment;
-        if (misalignment > 0) {
-            info->fOffset += requiredAlignment - misalignment;
-        }
+        info->fOffset = SkTo<uint32_t>(SkAlignNonPow2(info->fOffset, requiredAlignment));
 
         // Don't align the offset any further.
         requiredAlignment = 1;
@@ -619,7 +625,12 @@ StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
         , fAlignment(starting_alignment(type, /*useTransferBuffers=*/true, caps))
         , fTotalRequiredBytes(0) {}
 
-VertexWriter StaticBufferManager::getVertexWriter(size_t size, BindBufferInfo* binding) {
+VertexWriter StaticBufferManager::getVertexWriter(size_t count, size_t stride, BindBufferInfo* binding) {
+    // StaticBuffers always use transfer buffer, so any update to the alignment must be made against
+    // requiredTransferAlignment
+    const size_t alignment = stride > fRequiredTransferAlignment ? stride : fRequiredTransferAlignment;
+    fVertexBufferInfo.fAlignment = alignment;
+    const size_t size = count * alignment;
     void* data = this->prepareStaticData(&fVertexBufferInfo, size, binding);
     return VertexWriter{data, size};
 }
@@ -640,11 +651,13 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
         return nullptr;
     }
 
+    // Because the vertex stride may have been changed since construction of SBM, the alignment of a
+    // buffer is not necessarily a power of two
+    size32 = SkTo<uint32_t>(SkAlignNonPow2(size32, info->fAlignment));
+
     // Both the transfer buffer and static buffers are aligned to the max required alignment for
     // the pair of buffer types involved (transfer cpu->gpu and either index or vertex). Copies
     // must also copy an aligned amount of bytes.
-    size32 = SkAlignTo(size32, info->fAlignment);
-
     auto [transferMapPtr, transferBindInfo] =
             fUploadManager.makeBindInfo(size32,
                                         fRequiredTransferAlignment,
