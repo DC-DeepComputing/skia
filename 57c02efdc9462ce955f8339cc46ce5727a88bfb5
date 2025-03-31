@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5eff585e_b5666640",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "\"wouldn\u0027t we still be compiling a valid pipeline w/ a compatible renderpass for the eventual real rendering scenario of a DrawList with all draws not requiring dst reads?\"\n\nYes - the problem is how we currently handle serializing and deserializing android-style keys for precompilation. We want to maintain a renderpassdesc\u0027s dst read strategy across packing/unpacking keys so we can populate a real value (using kNone triggers ShaderInfo assertions that if a dst read is required we provide a strategy that isn\u0027t `kNoneRequired` - I could look into changing that assert for precompilation use cases as one possible change) but do not actually care whether they match.\nSo when real-world versus precompilation keys are compared for equality, we fail the `UserDefinedStableKeyTest`.\n\nAnyhow, sending out the beginning of some responses - marking CL as WIP while I test out one path forward (always assigning a dst read strategy for RenderPassDesc used for precompilation, removing dst read strategy from renderpassdesc serialization, removing TextureInfo as arg for caps-\u003egetDstReadStrategy, and calling caps-\u003egetDstReadStrategy when it\u0027s time to recreate the RenderPassDesc from keys). Wanted to get some replies out as an update.",
+      "parentUuid": "1eba7ea6_f7a15948",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 16
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7cb64b88_c3799825",
         "filename": "src/gpu/graphite/DrawContext.cpp",
         "patchSetId": 12
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-26T19:20:43Z",
       "side": 1,
       "message": "Given this approach, does it mean we can go ahead and remove the TextureInfo from caps::getDstReadstrategy already?  We can pass in whether or not the draws require MSAA || target samples \u003e 1 in the event that we have an explicitly MSAA\u0027ed drawcontext with draws that don\u0027t actually need MSAA.",
+      "range": {
+        "startLine": 220,
+        "startChar": 0,
+        "endLine": 229,
+        "endChar": 44
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11101255_cbf7be38",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "Yes, this occurred to me as well. Thinking about the best point to do this...\nI am wanting to land these changes with the above `#ifdef`, with an immediate plan to remove them once the necessary precompilation changes are made (that can be independent of this CL chain).\n\nSo, so long as we keep this check outside of the `#ifdef` for the precompilation workaround, I agree `TextureInfo` could be removed now / in a direct follow-up CL to this one. That does rely us leaning on the fact that only Vulkan uses `kReadFromInput` (or more precisely, that any backend that does use it also cannot use that strategy on MSAA textures), but we already tie this strategy to a particular backend anyhow in shader compilation (in a later CL) which folks seemed OK with, so I can live with that.\n\nWill add follow-on CL to remove that.",
+      "parentUuid": "7cb64b88_c3799825",
       "range": {
         "startLine": 220,
         "startChar": 0,
@@ -60,6 +108,30 @@
       "writtenOn": "2025-03-26T19:20:43Z",
       "side": 1,
       "message": "// Determine the optimal strategy given",
+      "range": {
+        "startLine": 280,
+        "startChar": 7,
+        "endLine": 281,
+        "endChar": 54
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "016f208f_ab546e09",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d301dc20_baa799d6",
       "range": {
         "startLine": 280,
         "startChar": 7,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d2315745_7f19f958",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "Makes sense to me organizationally. Just to check though - once drawpasses are more representative of subpasses (as opposed to 1:1 Renderpass \u003c--\u003e Drawpass relationship), would we expect the depth/stencil flags to change between subpasses?\n\nIf that is a case we expect to encounter then maybe it should stay where it is, but otherwise, I think elevating it is a good idea. Did so for now, but LMKWYT.",
+      "parentUuid": "71be5351_8e6976cb",
+      "range": {
+        "startLine": 535,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 76
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ff341db3_d8991ad4",
         "filename": "src/gpu/graphite/PublicPrecompile.cpp",
         "patchSetId": 12
@@ -106,6 +202,30 @@
       "writtenOn": "2025-03-26T19:20:43Z",
       "side": 1,
       "message": "Why does it not work to use this for Vulkan as well?",
+      "range": {
+        "startLine": 131,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 47
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "683b9b17_7d816b70",
+        "filename": "src/gpu/graphite/PublicPrecompile.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "It would \"work\" in the sense of graphics pipelines being created with compatible RPs, but would fail in terms of comparing precompilation pipeline creation versus real-world pipeline compiles (see other comment).",
+      "parentUuid": "ff341db3_d8991ad4",
       "range": {
         "startLine": 131,
         "startChar": 0,
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bf756b7_b2f55a0b",
+        "filename": "src/gpu/graphite/RenderPassDesc.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "I like this; changed. Thank you!",
+      "parentUuid": "884a05c4_52d4e2f3",
+      "range": {
+        "startLine": 84,
+        "startChar": 6,
+        "endLine": 86,
+        "endChar": 53
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f515d4fa_6bf98cc2",
@@ -152,6 +296,30 @@
       "writtenOn": "2025-03-26T19:20:43Z",
       "side": 1,
       "message": "I think given the if statement above this, the relevant assert is clearer if we add an else like\n\n    } else {\n        SkASSERT(fDstReadStrategy !\u003d DstReadStrategy::kNoneRequired);\n    }",
+      "range": {
+        "startLine": 660,
+        "startChar": 0,
+        "endLine": 660,
+        "endChar": 85
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05603d11_ee1cbd09",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 660,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-03-31T20:59:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f515d4fa_6bf98cc2",
       "range": {
         "startLine": 660,
         "startChar": 0,
