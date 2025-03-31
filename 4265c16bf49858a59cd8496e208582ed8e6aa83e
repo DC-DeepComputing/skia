@@ -70,6 +70,24 @@
       "parentUuid": "c467d78b_9ef12e69",
       "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645f3fe4_1f399c25",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-31T16:04:59Z",
+      "side": 1,
+      "message": "Okay here is my proposal which you/michael can discuss which approach (yours vs mind) you like better. I\u0027m fine with either.\n\n1) similar to what we do in `VulkanWindowContext`, update the Ganesh GL mac version to call flush on the main surface, https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/tools/window/mac/GaneshGLWindowContext_mac.mm;l\u003d122.\n\n2) In the flush call set SkSurfaces::BackendSurfaceAccess::kPresent.\n\n3) Have GrGLGpu.cpp override `prepareSurfacesForBackendAccessAndStateUpdates`. We\u0027ll want asserts here that the surface wraps FBO0 and no mutable state.\n\n4) In that call if access is kPresent and we\u0027ve enable the workaround, `bindDefaultFramebufferOnPresent`, then we\u0027ll do a bind call.",
+      "parentUuid": "bdc31b66_76962ebe",
+      "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
