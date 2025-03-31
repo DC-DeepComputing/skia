@@ -88,6 +88,24 @@
       "parentUuid": "bdc31b66_76962ebe",
       "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c4a1e1_66c4ee5b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T16:22:07Z",
+      "side": 1,
+      "message": "Assuming that this is sufficient to address the issue, I like that it\u0027s scoped to when a flush/submit actually uses a surface that targets FBO0.",
+      "parentUuid": "645f3fe4_1f399c25",
+      "revId": "4265c16bf49858a59cd8496e208582ed8e6aa83e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
