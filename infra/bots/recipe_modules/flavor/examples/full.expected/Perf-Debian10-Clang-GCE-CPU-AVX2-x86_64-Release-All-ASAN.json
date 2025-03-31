@@ -195,6 +195,15 @@
   },
   {
     "cmd": [
+      "gdb",
+      "-batch",
+      "-ex",
+      "set disable-randomization off",
+      "-ex",
+      "run",
+      "-ex",
+      "bt",
+      "--args",
       "[START_DIR]/build/nanobench",
       "--some-flag"
     ],
