@@ -366,6 +366,7 @@ public:
 #endif
 
 #ifdef SK_DEBUG
+    void checkDimensionsExpection(SkISize dims) const;
     void validate(GrContext_Base*) const;
     SkString getDebugName() {
         return fDebugName.isEmpty() ? SkStringPrintf("%u", this->uniqueID().asUInt()) : fDebugName;

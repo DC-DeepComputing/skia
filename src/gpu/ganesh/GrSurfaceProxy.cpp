@@ -12,6 +12,7 @@
 #include "include/core/SkPoint.h"
 #include "include/gpu/GpuTypes.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
+#include "include/private/base/SkMutex.h"
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/ganesh/GrCaps.h"
@@ -249,16 +250,25 @@ void GrSurfaceProxy::computeScratchKey(const GrCaps& caps, skgpu::ScratchKey* ke
                                  renderable, sampleCount, mipmapped, fIsProtected, key);
 }
 
+#ifdef SK_DEBUG
+// We expect that the dimensions of the instantiated GrSurface will always match
+// our prediction in backingStoreDimensions
+void GrSurfaceProxy::checkDimensionsExpection(SkISize expected) const {
+    static SkMutex mutex;
+
+    SkAutoMutexExclusive am(mutex);
+    if (fTarget) {
+        SkASSERT(fTarget->dimensions() == expected);
+    }
+}
+#endif
+
 SkISize GrSurfaceProxy::backingStoreDimensions() const {
     SkASSERT(!this->isFullyLazy());
-    if (fTarget) {
-        return fTarget->dimensions();
-    }
 
-    if (SkBackingFit::kExact == fFit) {
-        return fDimensions;
-    }
-    return skgpu::GetApproxSize(fDimensions);
+    SkISize dims = SkBackingFit::kExact == fFit ? fDimensions : skgpu::GetApproxSize(fDimensions);
+    SkDEBUGCODE(this->checkDimensionsExpection(dims);)
+    return dims;
 }
 
 bool GrSurfaceProxy::isFunctionallyExact() const {
