@@ -109,11 +109,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(ShaderInfoDetectsFixedFunctionBlend, reporter
     // should a dst read be required by any of the paints encountered.
     // TODO(b/390458117): Once the TextureInfo argument is removed from getDstReadStrategy, this is
     // no longer necessary.
-    DstReadStrategy dstReadStrategy = caps->getDstReadStrategy(
-            caps->getDefaultSampledTextureInfo(SkColorType::kRGBA_8888_SkColorType,
-                                               skgpu::Mipmapped::kNo,
-                                               skgpu::Protected::kNo,
-                                               skgpu::Renderable::kYes));
+    DstReadStrategy dstReadStrategy = caps->getDstReadStrategy();
 
     for (int bm = 0; bm <= (int) SkBlendMode::kLastCoeffMode; ++bm) {
         PaintParamsKeyBuilder builder(dict);

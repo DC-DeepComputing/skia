@@ -497,7 +497,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
                                              UniquePaintParamsID paintID,
                                              bool useStorageBuffers,
                                              skgpu::Swizzle writeSwizzle,
-                                             DstReadStrategy dstReadStrategyIfRequired,
+                                             DstReadStrategy dstReadStrategy,
                                              skia_private::TArray<SamplerDesc>* outDescs) {
     const char* shadingSsboIndex =
             useStorageBuffers && step->performsShading() ? "shadingSsboIndex" : nullptr;
@@ -511,8 +511,7 @@ std::unique_ptr<ShaderInfo> ShaderInfo::Make(const Caps* caps,
     auto result = std::unique_ptr<ShaderInfo>(
             new ShaderInfo(dict, rteDict,
                            shadingSsboIndex,
-                           hasFragShader ? dstReadStrategyIfRequired
-                                         : DstReadStrategy::kNoneRequired));
+                           hasFragShader ? dstReadStrategy : DstReadStrategy::kNoneRequired));
 
     // The fragment shader must be generated before the vertex shader, because we determine
     // properties of the entire program while generating the fragment shader.
@@ -558,7 +557,7 @@ std::string dst_read_strategy_to_str(DstReadStrategy strategy) {
         default:
             SkUNREACHABLE;
     }
-    return "";
+    return {};
 }
 } // anonymous
 
@@ -654,9 +653,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // The passed-in dstReadStrategy should only be used iff it is determined one is needed. If not,
     // then manually assign fDstReadStrategy to kNoneRequired. ShaderInfo's dst read strategy
     // informs the pipeline's via PipelineInfo created w/ shader info.
-    bool dstReadRequired = IsDstReadRequired(caps, finalBlendMode, finalCoverage);
+    const bool dstReadRequired = IsDstReadRequired(caps, finalBlendMode, finalCoverage);
     if (!dstReadRequired) {
         fDstReadStrategy = DstReadStrategy::kNoneRequired;
+    } else {
+        SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
     }
 
     // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild.
@@ -798,6 +799,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // Calculate the src color and stash its output variable in `args`
     args.fPriorStageOutput = srcColorRoot->invokeAndAssign(*this, args, &mainBody);
 
+    std::string stratStr = dst_read_strategy_to_str(fDstReadStrategy);
+    SkDebugf("strategy: ");
+    SkDebugf(stratStr.c_str());
+    SkDebugf("\n");
+
     if (dstReadRequired) {
         // Get the current dst color into a local variable, it may be used later on for coverage
         // blending as well as the final blend.
@@ -807,7 +813,11 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             // reciprocol of the dstCopy dimensions are in ZW.
             mainBody += "dstColor = sample(dstSampler,"
                                           "dstReadBounds.zw*(sk_FragCoord.xy - dstReadBounds.xy));";
+        } else if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
+            // TODO(b/383769988): Add SkSL for reading from input attachment
+            SkDebugf("hit it\n");
         } else {
+            SkDebugf("strategy as uint8_t: %u\n", (unsigned)fDstReadStrategy);
             SkASSERT(fDstReadStrategy == DstReadStrategy::kFramebufferFetch);
             mainBody += "dstColor = sk_LastFragColor;";
         }

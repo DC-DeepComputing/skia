@@ -1157,7 +1157,7 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
                                            /* clearColor= */ { .0f, .0f, .0f, .0f },
                                            requiresMSAA,
                                            writeSwizzle,
-                                           this->getDstReadStrategy(targetTexInfo));
+                                           this->getDstReadStrategy());
 
     return true;
 }

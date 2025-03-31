@@ -320,7 +320,7 @@ public:
     // least on Android, support input attachment usage) then the TextureInfo argument can be
     // removed and backend Caps implementations can report kReadFromInput support some other way
     // (such as a simple member attribute bool). For now, we must check each render target's info.
-    virtual DstReadStrategy getDstReadStrategy(const TextureInfo&) const;
+    virtual DstReadStrategy getDstReadStrategy() const;
 
     float minDistanceFieldFontSize() const { return fMinDistanceFieldFontSize; }
     float glyphsAsPathsFontSize() const { return fGlyphsAsPathsFontSize; }
