@@ -99,7 +99,7 @@ void DrawWriter::flush() {
         SkASSERT((fPendingBase + fPendingCount)*fInstanceStride <= fInstances.fSize);
         if (fIndices) {
             // It's not possible to validate that the indices stored in fIndices access only valid
-            // data within fVertices. Simply vaidate that fIndices holds enough data for the
+            // data within fVertices. Simply validate that fIndices holds enough data for the
             // vertex count that's drawn.
             SkASSERT(realVertexCount*sizeof(uint16_t) <= fIndices.fSize);
             fCommandList->drawIndexedInstanced(fPrimitiveType, 0, realVertexCount, 0,
