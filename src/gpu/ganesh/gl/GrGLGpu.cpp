@@ -48,6 +48,7 @@
 #include "src/gpu/ganesh/GrPipeline.h"
 #include "src/gpu/ganesh/GrProgramInfo.h"
 #include "src/gpu/ganesh/GrRenderTarget.h"
+#include "src/gpu/ganesh/GrRenderTargetProxy.h"
 #include "src/gpu/ganesh/GrSemaphore.h"
 #include "src/gpu/ganesh/GrShaderCaps.h"
 #include "src/gpu/ganesh/GrShaderVar.h"
@@ -4301,6 +4302,23 @@ void GrGLGpu::flush(FlushType flushType) {
     if (fNeedsGLFlush || flushType == FlushType::kForce) {
         GL_CALL(Flush());
         fNeedsGLFlush = false;
+    }
+}
+
+void GrGLGpu::prepareSurfacesForBackendAccessAndStateUpdates(
+        SkSpan<GrSurfaceProxy*> proxies,
+        SkSurfaces::BackendSurfaceAccess access,
+        const skgpu::MutableTextureState* newState) {
+    // For reasons not fully understood, some platforms require binding to framebuffer 0 on present.
+    // See skbug.com/398631003.
+    SkASSERT(!newState);
+    if (!proxies.empty() &&
+        access == SkSurfaces::BackendSurfaceAccess::kPresent &&
+        this->glCaps().bindDefaultFramebufferOnPresent()) {
+        SkASSERT(proxies.size() == 1);
+        SkASSERT(proxies[0]->asRenderTargetProxy());
+        SkASSERT(proxies[0]->asRenderTargetProxy()->glRTFBOIDIs0());
+        this->bindFramebuffer(GR_GL_DRAW_FRAMEBUFFER, 0);
     }
 }
 

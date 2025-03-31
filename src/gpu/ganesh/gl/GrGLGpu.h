@@ -455,6 +455,11 @@ private:
             const skia_private::TArray<GrSurfaceProxy*, true>& sampledProxies,
             GrXferBarrierFlags renderPassXferBarriers) override;
 
+    void prepareSurfacesForBackendAccessAndStateUpdates(
+            SkSpan<GrSurfaceProxy*> proxies,
+            SkSurfaces::BackendSurfaceAccess access,
+            const skgpu::MutableTextureState* newState) override;
+
     bool onSubmitToGpu(const GrSubmitInfo& info) override;
 
     bool copySurfaceAsDraw(GrSurface* dst, bool drawToMultisampleFBO, GrSurface* src,
