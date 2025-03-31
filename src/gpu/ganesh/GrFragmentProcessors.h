@@ -16,6 +16,7 @@
 class GrColorInfo;
 class GrFragmentProcessor;
 class GrRecordingContext;
+class GrRenderTargetProxy;
 class SkBlenderBase;
 class SkColorFilter;
 class SkMaskFilter;
@@ -77,7 +78,8 @@ std::unique_ptr<GrFragmentProcessor> Make(const SkShader*,
  * created with generic/null inputs, since the runtime effect is responsible for filling in the
  * arguments to the function.
  */
-GrFPResult MakeChildFP(const SkRuntimeEffect::ChildPtr& child, const GrFPArgs& childArgs);
+GrFPResult MakeChildFP(const SkRuntimeEffect::ChildPtr& child,
+                       const GrFPArgs& childArgs);
 
 }  // namespace GrFragmentProcessors
 
