@@ -52,6 +52,24 @@
       "parentUuid": "dc18d1a3_d4aac5ec",
       "revId": "06775adef1787ec742c3c61c500da87b3df29c04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e28ae3_149b90f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-03-31T20:11:47Z",
+      "side": 1,
+      "message": "ahh you\u0027re right, there are tests that call these APIs with kPresent but GL always ignored them. So yeah we should do as you suggested",
+      "parentUuid": "f113549c_29c4c485",
+      "revId": "06775adef1787ec742c3c61c500da87b3df29c04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
