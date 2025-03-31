@@ -34,6 +34,24 @@
       "parentUuid": "09499ee4_5c432914",
       "revId": "06775adef1787ec742c3c61c500da87b3df29c04",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f113549c_29c4c485",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-03-31T19:31:49Z",
+      "side": 1,
+      "message": "Hm, sorry, maybe was a little premature in thinking this was ready; here is a test we have that fails the added asserts:\nhttps://crsrc.org/c/third_party/skia/tests/DeferredDisplayListTest.cpp?q\u003dkPresent\u0026ss\u003dchromium\n\nIs it actually appropriate to assert that a surface provided with kPresent wraps FBO0? Or should we check that the surface wraps FBO0 and then only call bindFramebuffer if it does?",
+      "parentUuid": "dc18d1a3_d4aac5ec",
+      "revId": "06775adef1787ec742c3c61c500da87b3df29c04",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
