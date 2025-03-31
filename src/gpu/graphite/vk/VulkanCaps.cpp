@@ -1631,7 +1631,7 @@ void VulkanCaps::buildKeyForTexture(SkISize dimensions,
     SkASSERT(i == num32DataCnt);
 }
 
-DstReadStrategy VulkanCaps::getDstReadStrategy(const TextureInfo& info) const {
+DstReadStrategy VulkanCaps::getDstReadStrategy() const {
     // We know the graphite Vulkan backend does not support frame buffer fetch, so make sure it is
     // not marked as supported and skip checking for it.
     SkASSERT(!this->shaderCaps()->fFBFetchSupport);
