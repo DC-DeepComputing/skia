@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f13c505_139d8f33",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T19:16:25Z",
+      "side": 1,
+      "message": "We can keep this internal to the CPP file if we just pass in the GrSurfaceProxy and use `peekSurface()` to get at the target",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 256,
+        "endChar": 71
+      },
+      "revId": "4414975b124b1eca161730d60703d74b0cb926b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "153c97a3_ea90c60b",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T19:16:25Z",
+      "side": 1,
+      "message": "maybe `checkDimensionsMatchTarget` to indicate what the expectation is?",
+      "range": {
+        "startLine": 369,
+        "startChar": 9,
+        "endLine": 369,
+        "endChar": 33
+      },
+      "revId": "4414975b124b1eca161730d60703d74b0cb926b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
