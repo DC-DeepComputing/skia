@@ -8,6 +8,7 @@
 #include "src/core/SkEdge.h"
 
 #include "include/private/base/SkDebug.h"
+#include "include/private/base/SkMath.h"
 #include "include/private/base/SkSafe32.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkMathPriv.h"
@@ -16,21 +17,9 @@
 #include <algorithm>
 #include <utility>
 
-/*
-    In setLine, setQuadratic, setCubic, the first thing we do is to convert
-    the points into FDot6. This is modulated by the shift parameter, which
-    will either be 0, or something like 2 for antialiasing.
-
-    In the float case, we want to turn the float into .6 by saying pt * 64,
-    or pt * 256 for antialiasing. This is implemented as 1 << (shift + 6).
-
-    In the fixed case, we want to turn the fixed into .6 by saying pt >> 10,
-    or pt >> 8 for antialiasing. This is implemented as pt >> (10 - shift).
-*/
-
+// Convert SkFDot6 to SkFixed and divide by 2 along the way. Rather than shift left 10 place
+// and right one place, we just shift left 9 places to avoid throwing away data.
 static inline SkFixed SkFDot6ToFixedDiv2(SkFDot6 value) {
-    // we want to return SkFDot6ToFixed(value >> 1), but we don't want to throw
-    // away data in value, so just perform a modify up-shift
     return SkLeftShift(value, 16 - 6 - 1);
 }
 
@@ -55,17 +44,17 @@ void SkEdge::dump() const {
 }
 #endif
 
-int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, int shift) {
+bool SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip) {
     SkFDot6 x0, y0, x1, y1;
 
     {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(p0.fX, shift);
-        y0 = SkScalarRoundToFDot6(p0.fY, shift);
-        x1 = SkScalarRoundToFDot6(p1.fX, shift);
-        y1 = SkScalarRoundToFDot6(p1.fY, shift);
+        x0 = SkScalarRoundToFDot6(p0.fX);
+        y0 = SkScalarRoundToFDot6(p0.fY);
+        x1 = SkScalarRoundToFDot6(p1.fX);
+        y1 = SkScalarRoundToFDot6(p1.fY);
 #else
-        float scale = float(1 << (shift + 6));
+        constexpr float scale = float(1 << 6);
         x0 = int(p0.fX * scale);
         y0 = int(p0.fY * scale);
         x1 = int(p1.fX * scale);
@@ -86,11 +75,11 @@ int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, i
 
     // are we a zero-height line?
     if (top == bot) {
-        return 0;
+        return false;
     }
     // are we completely above or below the clip?
     if (clip && (top >= clip->fBottom || bot <= clip->fTop)) {
-        return 0;
+        return false;
     }
 
     SkFixed slope = SkFDot6Div(x1 - x0, y1 - y0);
@@ -108,15 +97,14 @@ int SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, i
     if (clip) {
         this->chopLineWithClip(*clip);
     }
-    return 1;
+    return true;
 }
 
 // called from a curve subclass
-int SkEdge::updateLine(SkFixed x0, SkFixed y0, SkFixed x1, SkFixed y1)
+bool SkEdge::updateLine(SkFixed x0, SkFixed y0, SkFixed x1, SkFixed y1)
 {
     SkASSERT(fWinding == Winding::kCW || fWinding == Winding::kCCW);
     SkASSERT(fCurveCount != 0);
-//    SkASSERT(fCurveShift != 0);
 
     y0 >>= 10;
     y1 >>= 10;
@@ -129,8 +117,9 @@ int SkEdge::updateLine(SkFixed x0, SkFixed y0, SkFixed x1, SkFixed y1)
 //  SkASSERT(top >= fFirstY);
 
     // are we a zero-height line?
-    if (top == bot)
-        return 0;
+    if (top == bot) {
+        return false;
+    }
 
     x0 >>= 10;
     x1 >>= 10;
@@ -143,7 +132,7 @@ int SkEdge::updateLine(SkFixed x0, SkFixed y0, SkFixed x1, SkFixed y1)
     fFirstY     = top;
     fLastY      = bot - 1;
 
-    return 1;
+    return true;
 }
 
 void SkEdge::chopLineWithClip(const SkIRect& clip)
@@ -175,14 +164,15 @@ static inline SkFDot6 cheap_distance(SkFDot6 dx, SkFDot6 dy)
     dx = SkAbs32(dx);
     dy = SkAbs32(dy);
     // return max + min/2
-    if (dx > dy)
+    if (dx > dy){
         dx += dy >> 1;
-    else
+    } else {
         dx = dy + (dx >> 1);
+    }
     return dx;
 }
 
-static inline int diff_to_shift(SkFDot6 dx, SkFDot6 dy, int shiftAA = 2)
+static inline int diff_to_shift(SkFDot6 dx, SkFDot6 dy, int accuracy)
 {
     // cheap calc of distance from center of p0-p2 to the center of the curve
     SkFDot6 dist = cheap_distance(dx, dy);
@@ -191,27 +181,26 @@ static inline int diff_to_shift(SkFDot6 dx, SkFDot6 dy, int shiftAA = 2)
     // down by 3 should give us 1/8 pixel accuracy (assuming our dist is accurate...)
     // this is chosen by heuristic: make it as big as possible (to minimize segments)
     // ... but small enough so that our curves still look smooth
-    // When shift > 0, we're using AA and everything is scaled up so we can
-    // lower the accuracy.
-    dist = (dist + (1 << (2 + shiftAA))) >> (3 + shiftAA);
+    // For cubics still, we have shift > 0. TODO(kjlubick) can we align cubics and quads?
+    dist = (dist + (1 << (2 + accuracy))) >> (3 + accuracy);
 
     // each subdivision (shift value) cuts this dist (error) by 1/4
     return (32 - SkCLZ(dist)) >> 1;
 }
 
-bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift) {
+bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3]) {
     SkFDot6 x0, y0, x1, y1, x2, y2;
 
     {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(pts[0].fX, shift);
-        y0 = SkScalarRoundToFDot6(pts[0].fY, shift);
-        x1 = SkScalarRoundToFDot6(pts[1].fX, shift);
-        y1 = SkScalarRoundToFDot6(pts[1].fY, shift);
-        x2 = SkScalarRoundToFDot6(pts[2].fX, shift);
-        y2 = SkScalarRoundToFDot6(pts[2].fY, shift);
+        x0 = SkScalarRoundToFDot6(pts[0].fX);
+        y0 = SkScalarRoundToFDot6(pts[0].fY);
+        x1 = SkScalarRoundToFDot6(pts[1].fX);
+        y1 = SkScalarRoundToFDot6(pts[1].fY);
+        x2 = SkScalarRoundToFDot6(pts[2].fX);
+        y2 = SkScalarRoundToFDot6(pts[2].fY);
 #else
-        float scale = float(1 << (shift + 6));
+        constexpr float scale = float(1 << 6);
         x0 = int(pts[0].fX * scale);
         y0 = int(pts[0].fY * scale);
         x1 = int(pts[1].fX * scale);
@@ -235,19 +224,16 @@ bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift)
     int bot = SkFDot6Round(y2);
 
     // are we a zero-height quad (line)?
-    if (top == bot)
+    if (top == bot) {
         return 0;
+    }
 
     // compute number of steps needed (1 << shift)
-    {
-        SkFDot6 dx = (SkLeftShift(x1, 1) - x0 - x2) >> 2;
-        SkFDot6 dy = (SkLeftShift(y1, 1) - y0 - y2) >> 2;
-        // This is a little confusing:
-        // before this line, shift is the scale up factor for AA;
-        // after this line, shift is the fCurveShift.
-        shift = diff_to_shift(dx, dy, shift);
-        SkASSERT(shift >= 0);
-    }
+    SkFDot6 dx = (SkLeftShift(x1, 1) - x0 - x2) >> 2;
+    SkFDot6 dy = (SkLeftShift(y1, 1) - y0 - y2) >> 2;
+    int shift = diff_to_shift(dx, dy, 0);
+    SkASSERT(shift >= 0);
+
     // need at least 1 subdivision for our bias trick
     if (shift == 0) {
         shift = 1;
@@ -300,16 +286,16 @@ bool SkQuadraticEdge::setQuadraticWithoutUpdate(const SkPoint pts[3], int shift)
     return true;
 }
 
-int SkQuadraticEdge::setQuadratic(const SkPoint pts[3], int shift) {
-    if (!setQuadraticWithoutUpdate(pts, shift)) {
-        return 0;
+bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
+    if (!setQuadraticWithoutUpdate(pts)) {
+        return false;
     }
     return this->updateQuadratic();
 }
 
-int SkQuadraticEdge::updateQuadratic()
+bool SkQuadraticEdge::updateQuadratic()
 {
-    int     success;
+    bool    success;
     int     count = fCurveCount;
     SkFixed oldx = fQx;
     SkFixed oldy = fQy;
@@ -370,21 +356,21 @@ static SkFDot6 cubic_delta_from_line(SkFDot6 a, SkFDot6 b, SkFDot6 c, SkFDot6 d)
     return std::max(SkAbs32(oneThird), SkAbs32(twoThird));
 }
 
-bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool sortY) {
+bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4]) {
     SkFDot6 x0, y0, x1, y1, x2, y2, x3, y3;
 
     {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(pts[0].fX, shift);
-        y0 = SkScalarRoundToFDot6(pts[0].fY, shift);
-        x1 = SkScalarRoundToFDot6(pts[1].fX, shift);
-        y1 = SkScalarRoundToFDot6(pts[1].fY, shift);
-        x2 = SkScalarRoundToFDot6(pts[2].fX, shift);
-        y2 = SkScalarRoundToFDot6(pts[2].fY, shift);
-        x3 = SkScalarRoundToFDot6(pts[3].fX, shift);
-        y3 = SkScalarRoundToFDot6(pts[3].fY, shift);
+        x0 = SkScalarRoundToFDot6(pts[0].fX);
+        y0 = SkScalarRoundToFDot6(pts[0].fY);
+        x1 = SkScalarRoundToFDot6(pts[1].fX);
+        y1 = SkScalarRoundToFDot6(pts[1].fY);
+        x2 = SkScalarRoundToFDot6(pts[2].fX);
+        y2 = SkScalarRoundToFDot6(pts[2].fY);
+        x3 = SkScalarRoundToFDot6(pts[3].fX);
+        y3 = SkScalarRoundToFDot6(pts[3].fY);
 #else
-        float scale = float(1 << (shift + 6));
+        constexpr float scale = float(1 << 6);
         x0 = int(pts[0].fX * scale);
         y0 = int(pts[0].fY * scale);
         x1 = int(pts[1].fX * scale);
@@ -397,7 +383,7 @@ bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool so
     }
 
     Winding winding = Winding::kCW;
-    if (sortY && y0 > y3)
+    if (y0 > y3)
     {
         using std::swap;
         swap(x0, x3);
@@ -411,28 +397,27 @@ bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool so
     int bot = SkFDot6Round(y3);
 
     // are we a zero-height cubic (line)?
-    if (sortY && top == bot)
+    if (top == bot)
         return 0;
 
     // compute number of steps needed (1 << shift)
-    {
-        // Can't use (center of curve - center of baseline), since center-of-curve
-        // need not be the max delta from the baseline (it could even be coincident)
-        // so we try just looking at the two off-curve points
-        SkFDot6 dx = cubic_delta_from_line(x0, x1, x2, x3);
-        SkFDot6 dy = cubic_delta_from_line(y0, y1, y2, y3);
-        // add 1 (by observation)
-        shift = diff_to_shift(dx, dy) + 1;
-    }
+    // Can't use (center of curve - center of baseline), since center-of-curve
+    // need not be the max delta from the baseline (it could even be coincident)
+    // so we try just looking at the two off-curve points
+    SkFDot6 dx = cubic_delta_from_line(x0, x1, x2, x3);
+    SkFDot6 dy = cubic_delta_from_line(y0, y1, y2, y3);
+    // add 1 (by observation)
+    int shift = diff_to_shift(dx, dy, 2) + 1;
     // need at least 1 subdivision for our bias trick
     SkASSERT(shift > 0);
     if (shift > MAX_COEFF_SHIFT) {
         shift = MAX_COEFF_SHIFT;
     }
 
-    /*  Since our in coming data is initially shifted down by 10 (or 8 in
-        antialias). That means the most we can shift up is 8. However, we
-        compute coefficients with a 3*, so the safest upshift is really 6
+    /*  Our incoming data used to be shifted by 8 (for AA) or 10. That means we used to only be
+        able to shift up is 8. However, we compute coefficients with a 3*, so the safest upshift
+        is really 6.
+        TODO(kjlubick) can this be increased now that AA is handled on its own edge type?
     */
     int upShift = 6;    // largest safe value
     int downShift = shift + upShift - 10;
@@ -471,16 +456,16 @@ bool SkCubicEdge::setCubicWithoutUpdate(const SkPoint pts[4], int shift, bool so
     return true;
 }
 
-int SkCubicEdge::setCubic(const SkPoint pts[4], int shift) {
-    if (!this->setCubicWithoutUpdate(pts, shift)) {
-        return 0;
+bool SkCubicEdge::setCubic(const SkPoint pts[4]) {
+    if (!this->setCubicWithoutUpdate(pts)) {
+        return false;
     }
     return this->updateCubic();
 }
 
-int SkCubicEdge::updateCubic()
+bool SkCubicEdge::updateCubic()
 {
-    int     success;
+    bool    success;
     int     count = fCurveCount;
     SkFixed oldx = fCx;
     SkFixed oldy = fCy;
