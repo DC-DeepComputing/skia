@@ -218,7 +218,7 @@ private:
     bool activateNewPage(Recorder*);
     void deactivateLastPage();
 
-    void processEvictionAndResetRects(Plot* plot);
+    void processEvictionAndResetRects(Plot* plot, bool freeData);
 
     SkColorType           fColorType;
     size_t                fBytesPerPixel;
