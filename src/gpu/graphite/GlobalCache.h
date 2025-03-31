@@ -58,7 +58,8 @@ public:
     void purgePipelinesNotUsedSince(
             StdSteadyClock::time_point purgeTime) SK_EXCLUDES(fSpinLock);
 
-    void reportPipelineStats() SK_EXCLUDES(fSpinLock);
+    void reportPrecompileStats() SK_EXCLUDES(fSpinLock);
+    void reportCacheStats() SK_EXCLUDES(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
     int numGraphicsPipelines() const SK_EXCLUDES(fSpinLock);
@@ -82,6 +83,8 @@ public:
         uint32_t fUnpreemptedPrecompilePipelines = 0;
         // Precompiled Pipelines that were purged from the cache prior to use
         uint32_t fPurgedUnusedPrecompiledPipelines = 0;
+        // The number of Pipelines requested since the last call to reportCacheStats
+        uint32_t fPipelineUsesInEpoch = 0;
     };
 
     PipelineStats getStats() const SK_EXCLUDES(fSpinLock);
@@ -134,6 +137,8 @@ private:
     PipelineCallbackContext fPipelineCallbackContext SK_GUARDED_BY(fSpinLock) = nullptr;
 
     PipelineStats fStats SK_GUARDED_BY(fSpinLock);
+
+    uint32_t fEpoch SK_GUARDED_BY(fSpinLock) = 1;
 };
 
 }  // namespace skgpu::graphite
