@@ -153,7 +153,7 @@ protected:
         SkMatrix view = canvas->getLocalToDeviceAs3x3();
         SkSurfaceProps props;
         GrPaint grPaint;
-        SkPaintToGrPaint(context, sdc->colorInfo(), paint, view, props, &grPaint);
+        SkPaintToGrPaint(sdc, paint, view, &grPaint);
         sdc->drawQuadSet(nullptr, std::move(grPaint), view, batch, kRectCount);
     }
 
