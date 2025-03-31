@@ -77,6 +77,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba2fd419_71fb7fad",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2729,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9e83be86_67ea90b3",
+      "range": {
+        "startLine": 2729,
+        "startChar": 82,
+        "endLine": 2729,
+        "endChar": 91
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77f6db35_8f08cfe0",
@@ -100,6 +124,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c39515_fb7ab24d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2734,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77f6db35_8f08cfe0",
+      "range": {
+        "startLine": 2734,
+        "startChar": 0,
+        "endLine": 2734,
+        "endChar": 74
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "465edf52_8bb1859d",
@@ -113,6 +161,30 @@
       "writtenOn": "2025-03-28T17:58:12Z",
       "side": 1,
       "message": "If we route the entry to just `drawImageRect`, it should be done before we call `SkModifyPaintAndDstForDrawImageRect` since it\u0027ll handle that already.",
+      "range": {
+        "startLine": 2743,
+        "startChar": 16,
+        "endLine": 2744,
+        "endChar": 74
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "050d91f6_d24fefe8",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "465edf52_8bb1859d",
       "range": {
         "startLine": 2743,
         "startChar": 16,
@@ -169,6 +241,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78299b44_9d430f54",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50394c53_c0163df9",
+      "range": {
+        "startLine": 2750,
+        "startChar": 16,
+        "endLine": 2750,
+        "endChar": 38
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "124b5331_0a41dd61",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2750,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7da10890_41d7fbff",
+      "range": {
+        "startLine": 2750,
+        "startChar": 48,
+        "endLine": 2750,
+        "endChar": 52
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2cacdfe5_b328b5e7",
@@ -182,6 +302,30 @@
       "writtenOn": "2025-03-28T17:58:12Z",
       "side": 1,
       "message": "This should be layer-\u003epaint().getColor4f()",
+      "range": {
+        "startLine": 2751,
+        "startChar": 39,
+        "endLine": 2751,
+        "endChar": 61
+      },
+      "revId": "503b56a495d1becb5a2ac2562534a879289605c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25dc3154_91a1e53f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2cacdfe5_b328b5e7",
       "range": {
         "startLine": 2751,
         "startChar": 39,

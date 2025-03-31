@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05b9169f_0746b04b",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2732,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "Is the speedup here only when we are drawing blurred round rects?",
+      "range": {
+        "startLine": 2727,
+        "startChar": 0,
+        "endLine": 2732,
+        "endChar": 13
+      },
+      "revId": "fc422706f8d351cad410e2a2b0d921a1b82859f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a555ec1a_be1a7dbd",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2748,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-03-31T11:51:32Z",
+      "side": 1,
+      "message": "When I use the drawEdgeAAQuad function you are able to see the image borders, for that reason I am calling drawEdgeAAImageSet on one image at a time. This is probably due to getting the graphite backed image/sampling we do in this function is not replicated in the drawEdgeAAQuad.",
+      "range": {
+        "startLine": 2746,
+        "startChar": 0,
+        "endLine": 2748,
+        "endChar": 92
+      },
+      "revId": "fc422706f8d351cad410e2a2b0d921a1b82859f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
