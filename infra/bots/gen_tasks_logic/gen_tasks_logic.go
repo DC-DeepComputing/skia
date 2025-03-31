@@ -999,7 +999,7 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					// CPU dimension we can use. However, they do have integrated
 					// GPUs whose models differ from our other machines, so we
 					// specify the GPU dimension even when running CPU tests.
-					"NUC11TZi5": {"cpu": "x86-64", "gpu": "8086:9a49"},
+					"NUC11TZi5": {"cpu": "x86-64", "gpu": "8086:9a49", "id": "lin-246-e505"},
 				},
 				"AVX512": {
 					"GCE":  {"cpu": "x86-64-Skylake_GCE"},
