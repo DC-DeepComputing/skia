@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8eae7c7a_705d785a",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 256,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-31T20:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9f13c505_139d8f33",
+      "range": {
+        "startLine": 256,
+        "startChar": 0,
+        "endLine": 256,
+        "endChar": 71
+      },
+      "revId": "4414975b124b1eca161730d60703d74b0cb926b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "153c97a3_ea90c60b",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-03-31T19:16:25Z",
       "side": 1,
       "message": "maybe `checkDimensionsMatchTarget` to indicate what the expectation is?",
+      "range": {
+        "startLine": 369,
+        "startChar": 9,
+        "endLine": 369,
+        "endChar": 33
+      },
+      "revId": "4414975b124b1eca161730d60703d74b0cb926b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf27b08_5b8fef2b",
+        "filename": "src/gpu/ganesh/GrSurfaceProxy.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-03-31T20:38:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "153c97a3_ea90c60b",
       "range": {
         "startLine": 369,
         "startChar": 9,
