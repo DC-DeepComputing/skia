@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c7646ca_9972211b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "All the changes in src/gpu/graphite/render and src/gpu/tessellate lgtm.  The BufferManager changes can be simplified if we bring in the LCM between the requested stride and the minimum required alignment per reservation, but otherwise I think the changes to it are all on the right track.\n\nAs I was debugging why we were still seeing VBO binding calls with the wikipedia site, I realized there is another source of binding thrashing still(!) so wrote that up if you want to start thinking about it, otherwise we can discuss in person tomorrow.",
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d9f22d0_b9a0c867",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "I think we want to keep this function, but make it clear that the alignments stored on the BufferInfos represent the minimum required alignment for the buffer type.",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 98
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22c7fcd1_8765316c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "Given that we should use LCM to mix the non-power-of2 per-reservation stride with the minimum required alignment, we should add a comment here that since both the initial required alignments (4, or UBO/SSBO alignments from Caps, and the transfer alignments) are powers of 2, then max is equivalent to the LCM.",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 97
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cd95faa_07fe7f35",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "This was missing before you modified it, but we should account for the rare-ish case where an explicitly provided alignment isn\u0027t a multiple of the BufferInfo\u0027s required/starting alignment.\n\nChecking for alignment is easy since the starting alignment will always be a power-of-2, and then only if it\u0027s not aligned we can calculate the LCM.",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 521,
+        "endChar": 89
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2e6d18d_0ea27158",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 631,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "This should be the LCM of the required transfer alignment, the buffer info\u0027s required alignment, and the requested stride.",
+      "range": {
+        "startLine": 631,
+        "startChar": 0,
+        "endLine": 631,
+        "endChar": 103
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd143c9_25e3553e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "Since the alignment is going to vary per reservation call, I think it\u0027s cleaner if we just add the alignment as a parameter to `prepareStaticData`.\n\nThis alignment padding will also need to be zero\u0027ed when dealing with the arm execution bug.",
+      "range": {
+        "startLine": 654,
+        "startChar": 0,
+        "endLine": 656,
+        "endChar": 70
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b31ff75_c839ce4e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "We should set the new total bytes to be the align(old total bytes, reservation\u0027s net alignment) + size32 so that when we are copying every cpu-\u003egpu transfer buffer to the single buffer, the target will be properly aligned and have enough room for padding.",
+      "range": {
+        "startLine": 672,
+        "startChar": 0,
+        "endLine": 672,
+        "endChar": 40
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9a09624_ec26bdd0",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "I think we need to add the reservation\u0027s alignment to `CopyRange` so that we can align each target offset correctly here (and we also won\u0027t have to mutate the fAlignment anymore, that can remain the starting alignment).",
+      "range": {
+        "startLine": 701,
+        "startChar": 0,
+        "endLine": 701,
+        "endChar": 39
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa1e6199_b5c8de06",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 298,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "I think we want to keep this constant and have it represent the minimum required alignment for anything going into the buffer. The per-reservation alignment must always be adjusted to the LCM of the reservation\u0027s alignment and the minimum required alignment. \n\nIt\u0027s trivial to allow functions to rely on the default required alignment (e.g. requiredAlignment \u003d 0 in DrawBufferManager::prepareBindBuffer).",
+      "range": {
+        "startLine": 296,
+        "startChar": 0,
+        "endLine": 298,
+        "endChar": 28
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47f68f6f_fde8b402",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-03-31T20:41:27Z",
+      "side": 1,
+      "message": "I haven\u0027t completely isolated what is going on, but I think without modifying setTemplate, we end up in a situation where we thrash between static vertex buffers and dynamic vertex buffers as pipelines switch. \n\nOne thought that is immediately applicable that might simplify some of this tracking is instead of having: fVertices, fInstances, fPendingBufferBinds, and fPendingBaseInstance|Vertex, we switch to tracking: fBoundVertices, fBoundInstances, fPendingVertices, fPendingInstances.\n\nThen in flush, we can look at the byte offset of the pending vertex and instance buffers (and also index buffer offset), and try and shift them into one the draw call parameters to get to a canonical binding BindBufferInfo (ideally with offset \u003d 0).  Then if those are different from the `fBoundFoo`s, we record the binding command before the draw command.\n\nI think that simplifies what needs to happen in setTemplate (just flushes on change to pending BBIs) and newPipelineState (reset pending BBIs) because of the built-in stride alignments that the BoundsManager is doing. Inside flush() we\u0027ll typically being seeing everything at the alignment that the pipeline wants.\n\n\nThe other issue that just realized could be happening is when the pipelines are switching between vertex-appended data and instance-appended data.  Instead of being able to bind both kinds of appendable data to one slot, and separately keep the static data bound to another slot, we are thrashing the vertex binding between the static VBO and the dynamic VBO.  I think we can chat tomorrow about what this might look like, and outline a plan to make the different parts of this growing change landable and reviewable in isolation.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 82
+      },
+      "revId": "2ae2f31a81736b63f72824162e6a096381b4ad92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
