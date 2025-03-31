@@ -459,10 +459,6 @@ class SkPathEdgeIter {
     bool            fNextIsNewContour;
     SkDEBUGCODE(bool fIsConic;)
 
-    enum {
-        kIllegalEdgeValue = 99
-    };
-
 public:
     SkPathEdgeIter(const SkPath& path);
 
@@ -476,6 +472,7 @@ public:
         kQuad  = SkPath::kQuad_Verb,
         kConic = SkPath::kConic_Verb,
         kCubic = SkPath::kCubic_Verb,
+        kInvalid = 99,
     };
 
     static SkPath::Verb EdgeToVerb(Edge e) {
@@ -505,7 +502,7 @@ public:
             if (fVerbs == fVerbsStop) {
                 return fNeedsCloseLine
                     ? closeline()
-                    : Result{ nullptr, Edge(kIllegalEdgeValue), false };
+                    : Result{ nullptr, Edge(Edge::kInvalid), false };
             }
 
             SkDEBUGCODE(fIsConic = false;)
