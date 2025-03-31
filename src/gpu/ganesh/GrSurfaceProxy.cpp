@@ -249,16 +249,23 @@ void GrSurfaceProxy::computeScratchKey(const GrCaps& caps, skgpu::ScratchKey* ke
                                  renderable, sampleCount, mipmapped, fIsProtected, key);
 }
 
+#ifdef SK_DEBUG
+void GrSurfaceProxy::checkDimensionsExpection(SkISize expected) const {
+    static SkMutex mutex;
+
+    SkAutoMutexExclusive am(mutex);
+    if (fTarget) {
+        SkASSERT(fTarget->dimensions() == expected);
+    }
+}
+#endif
+
 SkISize GrSurfaceProxy::backingStoreDimensions() const {
     SkASSERT(!this->isFullyLazy());
-    if (fTarget) {
-        return fTarget->dimensions();
-    }
 
-    if (SkBackingFit::kExact == fFit) {
-        return fDimensions;
-    }
-    return skgpu::GetApproxSize(fDimensions);
+    SkISize dims = SkBackingFit::kExact == fFit ? fDimensions : skgpu::GetApproxSize(fDimensions);
+    SkDEBUGCODE(this->checkDimensionsExpection(dims);)
+    return dims;
 }
 
 bool GrSurfaceProxy::isFunctionallyExact() const {
