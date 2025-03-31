@@ -49,6 +49,7 @@ gm_sources = [
   "$_gm/bitmapshader.cpp",
   "$_gm/bitmaptiled.cpp",
   "$_gm/bleed.cpp",
+  "$_gm/blurbug.cpp",
   "$_gm/blurcircles.cpp",
   "$_gm/blurcircles2.cpp",
   "$_gm/blurignorexform.cpp",

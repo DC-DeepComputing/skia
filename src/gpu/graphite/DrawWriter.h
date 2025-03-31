@@ -289,7 +289,9 @@ protected:
 
         // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
         // move assignment.
-        auto [writer, reservedChunk] = fDrawer.fManager->getVertexWriter(count, fStride);
+        size_t alignedCount = fStride == fDrawer.fVertexStride ? SkAlign4<uint32_t>(count) : count;
+        auto [writer, reservedChunk] =
+            fDrawer.fManager->getVertexWriter(count, alignedCount, fStride);
         if (writer) {
             fReservedCount = count;
 
