@@ -163,6 +163,10 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
         ++fStats.fGraphicsCacheHits;
 #endif
 
+        if ((*entry)->epoch() != fEpoch) {
+            ++fStats.fPipelineUsesInEpoch;
+            (*entry)->markEpoch(fEpoch);
+        }
         if (!forPrecompile && (*entry)->fromPrecompile() && !(*entry)->wasUsed()) {
             ++fStats.fNormalPreemptedByPrecompile;
         }
@@ -241,6 +245,10 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
         ++fStats.fGraphicsCacheAdditions;
 #endif
 
+        SkASSERT((*entry)->epoch() == 0);
+        (*entry)->markEpoch(fEpoch);
+        ++fStats.fPipelineUsesInEpoch;
+
         if ((*entry)->fromPrecompile()) {
             ++fStats.fUnpreemptedPrecompilePipelines;
         }
@@ -317,7 +325,7 @@ void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTim
     // TODO: add purging of Compute Pipelines (b/389073204)
 }
 
-void GlobalCache::reportPipelineStats() {
+void GlobalCache::reportPrecompileStats() {
     SkAutoSpinlock lock{fSpinLock};
 
     uint32_t numUnusedInCache = 0;
@@ -349,6 +357,19 @@ void GlobalCache::reportPipelineStats() {
                                /* countMin= */ 50,
                                /* countMax= */ 100,
                                /* bucketCount= */ 50);
+}
+
+
+void GlobalCache::reportCacheStats() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.PipelineCache.PipelineUsesInEpoch",
+                               fStats.fPipelineUsesInEpoch,
+                               /* countMin= */ 1,
+                               /* countMax= */ 1001,
+                               /* bucketCount= */ 100); // 10/bucket
+
+    fStats.fPipelineUsesInEpoch = 0;
 }
 
 #if defined(GPU_TEST_UTILS)
