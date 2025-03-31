@@ -33,6 +33,24 @@
       "message": "Should we have a unit test for this ?",
       "revId": "e32e29d7f9f8cdf8461e2ac3b3cf956c6924515b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18257114_b64d13ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-03-31T16:27:57Z",
+      "side": 1,
+      "message": "I\u0027ll have to think about how to do that. The method in DrawAtlas isn\u0027t public and we\u0027re already exercising these code paths in DrawAtlasTest.",
+      "parentUuid": "f80c815d_7ff8573d",
+      "revId": "e32e29d7f9f8cdf8461e2ac3b3cf956c6924515b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
