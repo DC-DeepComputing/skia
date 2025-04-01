@@ -29,7 +29,7 @@ SK_MAKE_BITMASK_OPS(DepthStencilFlags)
  * The strategy that a renderpass and/or pipeline use to access the current dst pixel when blending.
  */
 enum class DstReadStrategy : uint8_t {
-    kNoneRequired,
+    kNoneRequired = 0,
     kTextureCopy,
     kTextureSample,
     kReadFromInput,
