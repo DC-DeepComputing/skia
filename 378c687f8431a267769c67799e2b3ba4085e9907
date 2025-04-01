@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e9d3f1e_96bbdbe1",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T20:48:30Z",
+      "side": 0,
+      "message": "Correct.",
+      "parentUuid": "96c8c20f_6bd1106f",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "378c687f8431a267769c67799e2b3ba4085e9907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82e4a327_3033597a",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-01T19:34:47Z",
       "side": 0,
       "message": "was the old code path never needing to call `computeFastBounds` when using this mask filter?",
+      "range": {
+        "startLine": 89,
+        "startChar": 2,
+        "endLine": 90,
+        "endChar": 86
+      },
+      "revId": "378c687f8431a267769c67799e2b3ba4085e9907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e66db0_d2923136",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T20:48:30Z",
+      "side": 0,
+      "message": "AFAICT, checked scaler context subclasses and references to it (also trusting our testing)",
+      "parentUuid": "82e4a327_3033597a",
       "range": {
         "startLine": 89,
         "startChar": 2,
