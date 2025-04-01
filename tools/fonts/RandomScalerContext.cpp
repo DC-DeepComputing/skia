@@ -68,6 +68,9 @@ SkScalerContext::GlyphMetrics RandomScalerContext::generateMetrics(const SkGlyph
         case 3: format = SkMask::kBW_Format; break;
     }
 
+    if (!SkToBool(fRec.fFlags & SkScalerContext::kSDFTData_Flag)) {
+        fProxy->forceOffSDF();
+    }
     auto glyph = fProxy->internalMakeGlyph(origGlyph.getPackedID(), format, alloc);
 
     GlyphMetrics mx(SkMask::kA8_Format);
@@ -114,6 +117,9 @@ void RandomScalerContext::generateImage(const SkGlyph& glyph, void* imageBuffer)
         return;
     }
 
+    if (!SkToBool(fRec.fFlags & SkScalerContext::kSDFTData_Flag)) {
+        fProxy->forceOffSDF();
+    }
     SkGlyph* proxyGlyph = fProxyGlyphs.find(glyph.getPackedID());
     if (!proxyGlyph || !proxyGlyph->path()) {
         fProxy->getImage(glyph);

@@ -11,6 +11,9 @@
 
 #include <cstddef>
 
+struct SkMask;
+struct SkMaskBuilder;
+
 #if !defined(SK_DISABLE_SDF_TEXT)
 
 // the max magnitude for the distance field
@@ -67,6 +70,13 @@ bool SkGenerateDistanceFieldFromLCD16Mask(unsigned char* distanceField,
 bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
                                         const unsigned char* image,
                                         int w, int h, size_t rowBytes);
+
+/** Given an SkMask, operate on the SkMaskBuilder to generate a distance field
+
+ *  @param dst               The dst to write our new signed distance field.
+ *  @param src               The coverage mask to convert.
+ */
+bool coverageToDistanceField(SkMaskBuilder* dst, const SkMask& src);
 
 /** Given width and height of original image, return size (in bytes) of distance field
  *  @param w                 Width of the original image.
