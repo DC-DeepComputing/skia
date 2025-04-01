@@ -74,7 +74,7 @@ struct SkAnalyticEdge {
     bool updateLine(SkFixed ax, SkFixed ay, SkFixed bx, SkFixed by, SkFixed slope);
 
     // return true if we're NOT done with this edge
-    bool update(SkFixed last_y, bool sortY = true);
+    bool update(SkFixed last_y);
 
 #ifdef SK_DEBUG
     void dump() const {
@@ -99,11 +99,15 @@ struct SkAnalyticEdge {
 };
 
 struct SkAnalyticQuadraticEdge : public SkAnalyticEdge {
-    SkQuadraticEdge fQEdge;
+    SkFixed fQx, fQy;
+    SkFixed fQDx, fQDy;
+    SkFixed fQDDx, fQDDy;
+    SkFixed fQLastX, fQLastY;
 
     // snap y to integer points in the middle of the curve to accelerate AAA path filling
     SkFixed fSnappedX, fSnappedY;
 
+    bool setQuadraticWithoutUpdate(const SkPoint pts[3], int shiftUp);
     bool setQuadratic(const SkPoint pts[3]);
     bool updateQuadratic();
     inline void keepContinuous() {
@@ -117,15 +121,20 @@ struct SkAnalyticQuadraticEdge : public SkAnalyticEdge {
 };
 
 struct SkAnalyticCubicEdge : public SkAnalyticEdge {
-    SkCubicEdge fCEdge;
+    SkFixed fCx, fCy;
+    SkFixed fCDx, fCDy;
+    SkFixed fCDDx, fCDDy;
+    SkFixed fCDDDx, fCDDDy;
+    SkFixed fCLastX, fCLastY;
 
     SkFixed fSnappedY; // to make sure that y is increasing with smooth jump and snapping
 
-    bool setCubic(const SkPoint pts[4], bool sortY = true);
-    bool updateCubic(bool sortY = true);
+    bool setCubicWithoutUpdate(const SkPoint pts[4], int shiftUp);
+    bool setCubic(const SkPoint pts[4]);
+    bool updateCubic();
     inline void keepContinuous() {
-        SkASSERT(SkAbs32(fX - SkFixedMul(fDX, fY - SnapY(fCEdge.fCy)) - fCEdge.fCx) < SK_Fixed1);
-        fCEdge.fCx = fX;
+        SkASSERT(SkAbs32(fX - SkFixedMul(fDX, fY - SnapY(fCy)) - fCx) < SK_Fixed1);
+        fCx = fX;
         fSnappedY = fY;
     }
 };

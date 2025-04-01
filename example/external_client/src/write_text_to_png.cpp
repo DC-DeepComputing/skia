@@ -12,12 +12,16 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkFont.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkMaskFilter.h"
 #include "include/core/SkFontStyle.h"
 #include "include/core/SkFontMgr.h"
+#include "include/core/SkBlurTypes.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkStream.h"
 #include "include/encode/SkPngEncoder.h"
+#include "include/effects/SkGradientShader.h"
 
 #if defined(SK_FONTMGR_FONTCONFIG_AVAILABLE)
 #include "include/ports/SkFontMgr_fontconfig.h"
@@ -59,6 +63,29 @@ int main(int argc, char** argv) {
     paint.setColor(SK_ColorGREEN);
     canvas->clear(SK_ColorYELLOW);
     canvas->drawString("Hello world!", 10, 25, font, paint);
+
+    {
+        SkPaint paint;
+        paint.setColor(SK_ColorRED);
+        //paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0));
+        SkColor colors[] = {
+            SkColorSetRGB(0xE4, 0x03, 0x03), // Red
+            SkColorSetRGB(0xFF, 0x8C, 0x00), // Orange
+            SkColorSetRGB(0xFF, 0xED, 0x00), // Yellow
+            SkColorSetRGB(0x00, 0x80, 0x26), // Green
+            SkColorSetRGB(0x00, 0x4D, 0xFF), // Blue
+            SkColorSetRGB(0x75, 0x07, 0x87)  // Violet
+        };
+        SkPoint points[] = {
+            {0, 0}, {0, 100},
+        };
+        auto shader = SkGradientShader::MakeLinear(
+            points, colors, nullptr, std::size(colors), SkTileMode::kClamp);
+        paint.setShader(shader);
+        SkRRect rrect = SkRRect::MakeRectXY({40, 20, 100, 50}, 5, 5);
+        canvas->drawRRect(rrect, paint);
+    }
+
     SkPixmap pixmap;
     if (surface->peekPixels(&pixmap)) {
         if (!SkPngEncoder::Encode(&output, pixmap, {})) {
