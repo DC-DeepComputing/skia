@@ -132,7 +132,7 @@ static bool is_vertical(const Edge* edge) {
 
 void SkBasicEdgeBuilder::addLine(const SkPoint pts[]) {
     SkEdge* edge = fAlloc.make<SkEdge>();
-    if (edge->setLine(pts[0], pts[1], fClipShift)) {
+    if (edge->setLine(pts[0], pts[1])) {
         Combine combine = is_vertical(edge) && !fList.empty()
             ? this->combineVertical(edge, (SkEdge*)fList.back())
             : kNo_Combine;
@@ -161,7 +161,7 @@ void SkAnalyticEdgeBuilder::addLine(const SkPoint pts[]) {
 }
 void SkBasicEdgeBuilder::addQuad(const SkPoint pts[]) {
     SkQuadraticEdge* edge = fAlloc.make<SkQuadraticEdge>();
-    if (edge->setQuadratic(pts, fClipShift)) {
+    if (edge->setQuadratic(pts)) {
         fList.push_back(edge);
     }
 }
@@ -174,7 +174,7 @@ void SkAnalyticEdgeBuilder::addQuad(const SkPoint pts[]) {
 
 void SkBasicEdgeBuilder::addCubic(const SkPoint pts[]) {
     SkCubicEdge* edge = fAlloc.make<SkCubicEdge>();
-    if (edge->setCubic(pts, fClipShift)) {
+    if (edge->setCubic(pts)) {
         fList.push_back(edge);
     }
 }
@@ -192,7 +192,7 @@ SkEdgeBuilder::Combine SkBasicEdgeBuilder::addPolyLine(const SkPoint pts[],
     auto edge    = (SkEdge*) arg_edge;
     auto edgePtr = (SkEdge**)arg_edgePtr;
 
-    if (edge->setLine(pts[0], pts[1], fClipShift)) {
+    if (edge->setLine(pts[0], pts[1])) {
         return is_vertical(edge) && edgePtr > (SkEdge**)fEdgeList
             ? this->combineVertical(edge, edgePtr[-1])
             : kNo_Combine;
@@ -213,10 +213,10 @@ SkEdgeBuilder::Combine SkAnalyticEdgeBuilder::addPolyLine(const SkPoint pts[],
 }
 
 SkRect SkBasicEdgeBuilder::recoverClip(const SkIRect& src) const {
-    return { SkIntToScalar(src.fLeft   >> fClipShift),
-             SkIntToScalar(src.fTop    >> fClipShift),
-             SkIntToScalar(src.fRight  >> fClipShift),
-             SkIntToScalar(src.fBottom >> fClipShift), };
+    return { SkIntToScalar(src.fLeft),
+             SkIntToScalar(src.fTop),
+             SkIntToScalar(src.fRight),
+             SkIntToScalar(src.fBottom), };
 }
 SkRect SkAnalyticEdgeBuilder::recoverClip(const SkIRect& src) const {
     return SkRect::Make(src);
