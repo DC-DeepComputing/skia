@@ -824,7 +824,7 @@ public:
         GrRecordingContext* const rContext = sdc->recordingContext();
 
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                                 fVertexFiller.opMaskType(),
+                                                 fVertexFiller.grMaskType(),
                                                  !integerTranslate,
                                                  this->glyphCount(),
                                                  subRunDeviceBounds,
@@ -835,7 +835,7 @@ public:
     }
 
     void fillVertexData(void* vertexDst, int offset, int count,
-                        GrColor color,
+                        const SkPMColor4f& color,
                         const SkMatrix& drawMatrix, SkPoint drawOrigin,
                         SkIRect clip) const override {
         const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
@@ -1007,7 +1007,7 @@ public:
         SkMatrix positionMatrix = position_matrix(viewMatrix, drawOrigin);
         auto [_, deviceRect] = fVertexFiller.deviceRectAndCheckTransform(positionMatrix);
         GrOp::Owner op = GrOp::Make<AtlasTextOp>(rContext,
-                                                 fVertexFiller.opMaskType(),
+                                                 fVertexFiller.grMaskType(),
                                                  true,
                                                  this->glyphCount(),
                                                  deviceRect,
@@ -1019,7 +1019,7 @@ public:
 
     void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color,
+            const SkPMColor4f& color,
             const SkMatrix& drawMatrix, SkPoint drawOrigin,
             SkIRect clip) const override {
         const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
@@ -1255,7 +1255,7 @@ public:
 
     void fillVertexData(
             void *vertexDst, int offset, int count,
-            GrColor color,
+            const SkPMColor4f& color,
             const SkMatrix& drawMatrix, SkPoint drawOrigin,
             SkIRect clip) const override {
         const SkMatrix positionMatrix = position_matrix(drawMatrix, drawOrigin);
