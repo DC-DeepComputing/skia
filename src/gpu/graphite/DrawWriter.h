@@ -80,7 +80,23 @@ public:
     // attribute strides of that pipeline. This issues draw calls for pending data that relied on
     // the old pipeline, so this must be called *before* binding the new pipeline.
     void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
+        // if we will begin to append instances, but previously was appending vertices,
+        // then we need to make sure that the padding that we added will not be overwritten.
+        // therefore, we find the misalignment of the pendingCount (if any) pre-flush then
+        // add it post flush to the aligned pending base
+        uint32_t misalignment = 0;
+        if (instanceStride && fVertexStride) {
+            misalignment = fPendingCount & 3;
+        }
         this->flush();
+
+        if (misalignment && instanceStride && fVertexStride) {
+            const uint32_t bytes = misalignment * fVertexStride;
+            fPendingBase = (bytes + instanceStride - 1) / instanceStride;
+        } else {
+            fPendingBase = 0;
+        }
+
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
@@ -88,7 +104,6 @@ public:
         // NOTE: resetting pending base is sufficient to redo bindings for vertex/instance data that
         // is later appended but doesn't invalidate bindings for fixed buffers that might not need
         // to change between pipelines.
-        fPendingBase = 0;
         SkASSERT(fPendingCount == 0);
     }
 
@@ -289,7 +304,9 @@ protected:
 
         // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
         // move assignment.
-        auto [writer, reservedChunk] = fDrawer.fManager->getVertexWriter(count, fStride);
+        size_t alignedCount = fStride == fDrawer.fVertexStride ? SkAlign4<uint32_t>(count) : count;
+        auto [writer, reservedChunk] =
+            fDrawer.fManager->getVertexWriter(count, alignedCount, fStride);
         if (writer) {
             fReservedCount = count;
 
