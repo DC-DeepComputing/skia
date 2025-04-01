@@ -238,6 +238,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb9c5945_fa0d9f8a",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-01T16:52:09Z",
+      "side": 1,
+      "message": "Marking as resolved",
+      "parentUuid": "e3cd50f9_5e788542",
+      "range": {
+        "startLine": 186,
+        "startChar": 38,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "eb974d20f7c5c20b5ca693b58e9a5288c64e88f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f88a59a4_9b3e8299",
