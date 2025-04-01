@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d332ed9d_1bd558c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T19:05:43Z",
+      "side": 1,
+      "message": "Sidenote: b/402587902 is now marked closed which affected the same tests.",
+      "revId": "fd2ce83ae6ff5810266c0947e35173478c90f65a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
