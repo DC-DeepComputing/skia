@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96c8c20f_6bd1106f",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 0,
+      "message": "Since it looks like we were always passing `margin \u003d nullptr` previously, I\u0027m assuming that\u0027s why we don\u0027t take the margin as a parameter in the new functions you added?",
+      "range": {
+        "startLine": 60,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "378c687f8431a267769c67799e2b3ba4085e9907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82e4a327_3033597a",
+        "filename": "src/text/gpu/SDFMaskFilter.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 0,
+      "message": "was the old code path never needing to call `computeFastBounds` when using this mask filter?",
+      "range": {
+        "startLine": 89,
+        "startChar": 2,
+        "endLine": 90,
+        "endChar": 86
+      },
+      "revId": "378c687f8431a267769c67799e2b3ba4085e9907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

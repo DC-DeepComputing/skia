@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "322dd414_0d600924",
+        "filename": "src/core/SkDistanceFieldGen.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "nit: for better or worse (I historically also put bool operators on the next line like this), Skia style puts them at the end of the line.\n\nThe `return false` should also only be 1 tab, but to make it clearer that it\u0027s not a continuation of the if condition, I like to add a comment inside the if in these situations, like \"// Mask format not supported\"",
+      "range": {
+        "startLine": 575,
+        "startChar": 8,
+        "endLine": 577,
+        "endChar": 50
+      },
+      "revId": "cb0b77bfeaf2409d8d15f796308e46b1505ddb33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b0e612e_f898610a",
+        "filename": "src/core/SkDistanceFieldGen.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "nit: line up these wrapped params (and the other 2 function calls below)",
+      "range": {
+        "startLine": 594,
+        "startChar": 28,
+        "endLine": 595,
+        "endChar": 43
+      },
+      "revId": "cb0b77bfeaf2409d8d15f796308e46b1505ddb33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a9152338_6b8ed917",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "or SDF",
+      "range": {
+        "startLine": 607,
+        "startChar": 46,
+        "endLine": 607,
+        "endChar": 56
+      },
+      "revId": "cb0b77bfeaf2409d8d15f796308e46b1505ddb33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8cc286f_a246ab5f",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "nit: put {} around the if expression",
+      "range": {
+        "startLine": 611,
+        "startChar": 0,
+        "endLine": 611,
+        "endChar": 67
+      },
+      "revId": "cb0b77bfeaf2409d8d15f796308e46b1505ddb33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51933d38_37897e8a",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "nit line wrapping",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 658,
+        "endChar": 117
+      },
+      "revId": "cb0b77bfeaf2409d8d15f796308e46b1505ddb33",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5ec7b07_2b62f140",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "nit: delete either `this` or `the`",
+      "range": {
+        "startLine": 9,
+        "startChar": 56,
+        "endLine": 9,
+        "endChar": 60
+      },
+      "revId": "49016681927bcaf38f2787d24cb0f0b3bc2dc496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4236610a_7cf7ad90",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "While this is generally true, it will still be valuable to cache blurred glyph masks in the scalar context.  There are other places in the code that already only handle the mask filter on the text blob or subrun if it\u0027s a blur, so I suspect that we can handle it explicitly similar to this SDF and extracting the blur params from an SkMaskFilter can happen similarly to how SkCanvas calls out to the `SkDevice::drawBlurredRRect` fast path.",
+      "range": {
+        "startLine": 9,
+        "startChar": 185,
+        "endLine": 9,
+        "endChar": 267
+      },
+      "revId": "49016681927bcaf38f2787d24cb0f0b3bc2dc496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aab174b_a83103d0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:34:47Z",
+      "side": 1,
+      "message": "I think this all looks right to me, but looping in Jim as the main SDF expert and Ben as the ScalerContext owner.",
+      "revId": "49016681927bcaf38f2787d24cb0f0b3bc2dc496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
