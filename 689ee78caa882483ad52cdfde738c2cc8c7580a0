@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "276311cf_4866f495",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T22:10:02Z",
+      "side": 1,
+      "message": "Unresolving for future reference. Skia GM for compositor_quads_filter for graphite builds (and using drawEdgeAAImageSet with a mask filter in graphite in general) will not look correct for perspective transforms until this bug is fixed.",
+      "parentUuid": "31fc63e4_a7e67048",
+      "revId": "689ee78caa882483ad52cdfde738c2cc8c7580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2d4f5da7_67504966",
         "filename": "src/core/SkCanvas.cpp",
         "patchSetId": 15
