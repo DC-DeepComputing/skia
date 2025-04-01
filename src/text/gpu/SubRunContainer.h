@@ -103,7 +103,7 @@ public:
 
     virtual void fillVertexData(
             void* vertexDst, int offset, int count,
-            GrColor color,
+            const SkPMColor4f& color,
             const SkMatrix& drawMatrix,
             SkPoint drawOrigin,
             SkIRect clip) const = 0;
