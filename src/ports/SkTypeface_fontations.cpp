@@ -1005,6 +1005,10 @@ std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_Fontations::onGetAdvancedM
         info->fFlags |= SkAdvancedTypefaceMetrics::kVariable_FontFlag;
     }
 
+    if (fontations_ffi::outline_format(*fOutlines) == fontations_ffi::OutlineFormat::Glyf) {
+        info->fType = SkAdvancedTypefaceMetrics::kTrueType_Font;
+    }
+
     // Metrics information.
     fontations_ffi::Metrics metrics =
             fontations_ffi::get_unscaled_metrics(*fBridgeFontRef, *fBridgeNormalizedCoords);
