@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d38b1ed_54ea6c53",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2744,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T19:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d4f5da7_67504966",
+      "range": {
+        "startLine": 2743,
+        "startChar": 16,
+        "endLine": 2744,
+        "endChar": 105
+      },
+      "revId": "689ee78caa882483ad52cdfde738c2cc8c7580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "552e0823_1e11fbb5",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-04-01T19:01:50Z",
       "side": 1,
       "message": "nit: skia style when chopping parameters indents 2 tabs (which might enough that this all fits onto a single secondary line?)",
+      "range": {
+        "startLine": 2747,
+        "startChar": 43,
+        "endLine": 2748,
+        "endChar": 92
+      },
+      "revId": "689ee78caa882483ad52cdfde738c2cc8c7580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97398c0d_848cf1b0",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2748,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T19:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "552e0823_1e11fbb5",
       "range": {
         "startLine": 2747,
         "startChar": 43,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e0ac1bf_31329917",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2751,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T19:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3b0e423_c9374025",
+      "range": {
+        "startLine": 2751,
+        "startChar": 63,
+        "endLine": 2751,
+        "endChar": 64
+      },
+      "revId": "689ee78caa882483ad52cdfde738c2cc8c7580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "48ffa150_7db39502",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-04-01T19:01:50Z",
       "side": 1,
       "message": "nit: similar to above, if we don\u0027t chop the first parameter on wrapping, skia style lines up the args.  But since that probably pushes the clip parameter over, we can either move `drawDst` to a newline and just indent 2 tabs for all params, or wrap the `clip` param in isolation (assuming `imageSet[i].fHasClip ? dstClips + dstClipIndex` fits on the line still).",
+      "range": {
+        "startLine": 2752,
+        "startChar": 50,
+        "endLine": 2756,
+        "endChar": 62
+      },
+      "revId": "689ee78caa882483ad52cdfde738c2cc8c7580a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fe8856ca_0a75b724",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 2756,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-01T19:19:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "48ffa150_7db39502",
       "range": {
         "startLine": 2752,
         "startChar": 50,
