@@ -41,7 +41,7 @@ inline SkFDot6 SkScalarRoundToFDot6(SkScalar x, int shift = 0)
 #define SK_FDot6Half        (32)
 
 #ifdef SK_DEBUG
-    inline SkFDot6 SkIntToFDot6(int x) {
+    constexpr inline SkFDot6 SkIntToFDot6(int x) {
         SkASSERT(SkToS16(x) == x);
         return x << 6;
     }
@@ -62,6 +62,7 @@ inline SkFixed SkFDot6ToFixed(SkFDot6 x) {
 }
 
 #define SkScalarToFDot6(x)  (SkFDot6)((x) * 64)
+#define SkFloatToFDot6(x)  (SkFDot6)((x) * 64)
 #define SkFDot6ToScalar(x)  ((SkScalar)(x) * 0.015625f)
 #define SkFDot6ToFloat      SkFDot6ToScalar
 
