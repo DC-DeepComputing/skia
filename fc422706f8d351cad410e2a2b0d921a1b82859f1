@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0d31d63_43fb3cd3",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 2732,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:01:50Z",
+      "side": 1,
+      "message": "Yes, I think that\u0027s the main case. And looking at the non-virtual experimental_drawEdgeAAImageSet function, it\u0027s already handling the case where there\u0027s 1 entry that can be sent to `drawImageRect`. I think given that, we could skip routing to drawimageRect within the loop to keep things simple.",
+      "parentUuid": "05b9169f_0746b04b",
+      "range": {
+        "startLine": 2727,
+        "startChar": 0,
+        "endLine": 2732,
+        "endChar": 13
+      },
+      "revId": "fc422706f8d351cad410e2a2b0d921a1b82859f1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a555ec1a_be1a7dbd",
