@@ -213,6 +213,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c892a2da_e6363dd1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 535,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-01T19:13:40Z",
+      "side": 1,
+      "message": "I think we will likely still have a 1:1 relationship between DrawList and DrawPass, even if a DrawPass is then bundled up as a subpass in a larger renderpass.  But it\u0027s definitely possible for a subpass to not need a stencil attachment or not need MSAA while another does from a DrawList POV.  There\u0027s a lot of functional behavior to work out, though.\n\nWhat I could see possibly happening is DrawList keeps track of these aggregating state properties, and then DrawPass represents its explicit subpass attachment descriptions (so sort of the DrawContext\u0027s RenderPassDesc creation logic right now), and then the RenderPassDesc gets created by aggregating all of the DrawPasss within the task.",
+      "parentUuid": "d2315745_7f19f958",
+      "range": {
+        "startLine": 535,
+        "startChar": 0,
+        "endLine": 535,
+        "endChar": 76
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff341db3_d8991ad4",
