@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2ef1318_3d7f27b8",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 211,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-01T16:50:21Z",
+      "side": 1,
+      "message": "Talked offline; marking as resolved",
+      "parentUuid": "5eff585e_b5666640",
+      "range": {
+        "startLine": 209,
+        "startChar": 0,
+        "endLine": 211,
+        "endChar": 16
+      },
+      "revId": "57c02efdc9462ce955f8339cc46ce5727a88bfb5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7cb64b88_c3799825",
