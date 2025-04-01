@@ -8,6 +8,7 @@
 #include "src/core/SkDistanceFieldGen.h"
 
 #include "include/core/SkPoint.h"
+#include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkTPin.h"
@@ -567,6 +568,40 @@ bool SkGenerateDistanceFieldFromBWImage(unsigned char* distanceField,
     sk_bzero(currDestPtr, (width+2)*sizeof(char));
 
     return generate_distance_field_from_image(distanceField, copyPtr, width, height);
+}
+
+
+bool SkGenerateDistanceFieldFromCoverage(SkMaskBuilder* dst, const SkMask& src) {
+    if (src.fFormat != SkMask::kA8_Format
+        && src.fFormat != SkMask::kBW_Format
+        && src.fFormat != SkMask::kLCD16_Format) {
+            return false;
+    }
+
+    *dst = SkMaskBuilder::PrepareDestination(SK_DistanceFieldPad, SK_DistanceFieldPad, src);
+    dst->format() = SkMask::kSDF_Format;
+
+    if (src.fImage == nullptr) {
+        return true;
+    }
+    if (dst->fImage == nullptr) {
+        dst->bounds().setEmpty();
+        return false;
+    }
+
+    if (src.fFormat == SkMask::kA8_Format) {
+        return SkGenerateDistanceFieldFromA8Image(dst->image(), src.fImage,
+                            src.fBounds.width(), src.fBounds.height(),
+                            src.fRowBytes);
+    } else if (src.fFormat == SkMask::kLCD16_Format) {
+        return SkGenerateDistanceFieldFromLCD16Mask(dst->image(), src.fImage,
+                                src.fBounds.width(), src.fBounds.height(),
+                                src.fRowBytes);
+    } else {
+        return SkGenerateDistanceFieldFromBWImage(dst->image(), src.fImage,
+                            src.fBounds.width(), src.fBounds.height(),
+                            src.fRowBytes);
+    }
 }
 
 #endif // !defined(SK_DISABLE_SDF_TEXT)
