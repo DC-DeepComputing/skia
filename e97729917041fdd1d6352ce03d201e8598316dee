@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5564e6a6_b098f34b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-01T20:55:15Z",
+      "side": 1,
+      "message": "A couple of outstanding issues:\n\n1) Only lifting top-level local matrix transformations may be a good starting point, but two generalizations we may want are a) nested transformations and b) expressions on things other than coordinates. It may be tricky to generalize this current approach to support both of those needs. Perhaps we would have to handle different types of expressions each in their own way (e.g. nested coordinate transforms vs. color calculations).\n\n2) This doesn\u0027t look at the max number of varyings possible when deciding to lift expressions. Though the max number of expressions it can lift for now is 2, because it only lifts root-node-expressions.",
+      "revId": "e97729917041fdd1d6352ce03d201e8598316dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f968db_a2436c97",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-01T20:55:15Z",
+      "side": 1,
+      "message": "This only tries to lift the root nodes in the shader node tree, excluding the clip shader node if it exists. This means that even a \"top-level\" transform that\u0027s e.g. under a blend node, will not be lifted, since the blend node is the root. That seems like an obvious thing to address, maybe even in this CL.",
+      "revId": "e97729917041fdd1d6352ce03d201e8598316dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "336978ac_e6dfc0f0",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1029,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-01T20:55:15Z",
+      "side": 1,
+      "message": "There\u0027s a little bit of duplicated work here between the fragment \u0026 vertex shader generation; I suppose this could be saved on the ShaderInfo during fragment shader generation and then re-used here if we wanted.",
+      "range": {
+        "startLine": 1028,
+        "startChar": 0,
+        "endLine": 1029,
+        "endChar": 55
+      },
+      "revId": "e97729917041fdd1d6352ce03d201e8598316dee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
