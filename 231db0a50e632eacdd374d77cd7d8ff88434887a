@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a710b7e5_3c6d4074",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 412,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-01T19:08:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f969836a_16b97697",
+      "range": {
+        "startLine": 412,
+        "startChar": 18,
+        "endLine": 412,
+        "endChar": 36
+      },
+      "revId": "231db0a50e632eacdd374d77cd7d8ff88434887a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db21d21e_ddfa91d8",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-01T18:48:46Z",
       "side": 1,
       "message": "needed? or can we forward declare something?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 43
+      },
+      "revId": "231db0a50e632eacdd374d77cd7d8ff88434887a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60f015d_b72cd128",
+        "filename": "src/gpu/graphite/PrecompileContextPriv.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-01T19:08:38Z",
+      "side": 1,
+      "message": "Unless we outline a bunch of the calls in PrecompileContextPriv we should have this here. We\u0027ve just been lucking out so far.",
+      "parentUuid": "db21d21e_ddfa91d8",
       "range": {
         "startLine": 12,
         "startChar": 0,
