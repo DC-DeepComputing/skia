@@ -185,15 +185,22 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
         , fCurBlockSize(SkAlignTo(minBlockSize, fStartAlignment)) {}
 
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
+                                                                           size_t alignedCount,
                                                                            size_t stride) {
-    uint32_t requiredBytes = validate_count_and_stride(count, stride);
-    if (!requiredBytes) {
+    uint32_t reqBytes = validate_count_and_stride(count, stride);
+    uint32_t alignBytes = validate_count_and_stride(alignedCount, stride);
+    if (!reqBytes || !alignBytes) {
         return {};
     }
-
     auto& info = fCurrentBuffers[kVertexBufferIndex];
-    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes);
-    return {VertexWriter(ptr, requiredBytes), bindInfo};
+    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, "VertexBuffer", alignBytes);
+    if (alignedCount > count) {
+        size_t numBytesToZero = (alignedCount - count) * stride;
+        size_t offset = count * stride;
+        void* zPtr = SkTAddOffset<void>(ptr, offset);
+        memset(zPtr, 0, numBytesToZero);
+    }
+    return {VertexWriter(ptr, reqBytes), bindInfo};
 }
 
 void DrawBufferManager::returnVertexBytes(size_t unusedBytes) {
