@@ -284,11 +284,9 @@ sk_sp<GraphicsPipeline> GlobalCache::addGraphicsPipeline(const UniqueKey& key,
                              "compilationID", pipeline->getPipelineInfo().fCompilationID);
 #endif
 
-#if SK_HISTOGRAMS_ENABLED
         SK_HISTOGRAM_ENUMERATION("Graphite.PipelineCreationRace",
                                  race,
                                  kPipelineCreationRaceCount);
-#endif
     }
     return *entry;
 }
@@ -317,8 +315,28 @@ void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTim
     // TODO: add purging of Compute Pipelines (b/389073204)
 }
 
+void report(int foo) {
+   SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                                     1+foo,
+                                     /* countMin= */ 1,
+                                     /* countMax= */ 51,
+                                     /* bucketCount= */ 52);
+    SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Skia.Graphite.Precompile.UnpreemptedPrecompilePipelines",
+                                     100 + foo,
+                                     /* countMin= */ 100,
+                                     /* countMax= */ 150,
+                                     /* bucketCount= */ 52);
+    SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Skia.Graphite.Precompile.UnusedPrecompiledPipelines",
+                                     50+ foo,
+                                     /* countMin= */ 50,
+                                     /* countMax= */ 100,
+                                     /* bucketCount= */ 52);
+}
+
 void GlobalCache::reportPipelineStats() {
     SkAutoSpinlock lock{fSpinLock};
+
+    printf("---------------------------------------------------------\n");
 
     uint32_t numUnusedInCache = 0;
 
@@ -330,25 +348,32 @@ void GlobalCache::reportPipelineStats() {
         }
     });
 
+#if 0
     // From local testing we expect these UMA stats to comfortably fit in the specified ranges.
     // If we see a lot of the counts hitting the over and under-flow buckets something
     // unexpected is happening and we would need to figure it out and, possibly, create
     // new UMA statistics for the observed range.
-    SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
-                               fStats.fNormalPreemptedByPrecompile,
-                               /* countMin= */ 1,
-                               /* countMax= */ 51,
-                               /* bucketCount= */ 50);
-    SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.UnpreemptedPrecompilePipelines",
-                               fStats.fUnpreemptedPrecompilePipelines,
-                               /* countMin= */ 100,
-                               /* countMax= */ 150,
-                               /* bucketCount= */ 50);
-    SK_HISTOGRAM_CUSTOM_COUNTS("Skia.Graphite.Precompile.UnusedPrecompiledPipelines",
-                               fStats.fPurgedUnusedPrecompiledPipelines + numUnusedInCache,
-                               /* countMin= */ 50,
-                               /* countMax= */ 100,
-                               /* bucketCount= */ 50);
+    SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Graphite.Precompile.NormalPreemptedByPrecompile",
+                                     fStats.fNormalPreemptedByPrecompile,
+                                     /* countMin= */ 1,
+                                     /* countMax= */ 51,
+                                     /* bucketCount= */ 52);
+    SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Graphite.Precompile.UnpreemptedPrecompilePipelines",
+                                     fStats.fUnpreemptedPrecompilePipelines,
+                                     /* countMin= */ 100,
+                                     /* countMax= */ 150,
+                                     /* bucketCount= */ 52);
+    SK_HISTOGRAM_CUSTOM_EXACT_LINEAR("Graphite.Precompile.UnusedPrecompiledPipelines",
+                                     fStats.fPurgedUnusedPrecompiledPipelines + numUnusedInCache,
+                                     /* countMin= */ 50,
+                                     /* countMax= */ 100,
+                                     /* bucketCount= */ 52);
+#endif
+
+    for (int i = -1; i <= 50; ++i) {
+        report(i);
+    }
+    report(200);
 }
 
 #if defined(GPU_TEST_UTILS)
