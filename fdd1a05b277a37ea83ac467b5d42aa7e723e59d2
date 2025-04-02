@@ -1,0 +1,79 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ff3e385_0f4f6c40",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T07:25:54Z",
+      "side": 1,
+      "message": "Minor: In order to reduce code and logic on the C++ side, I would have a slight preference to reduce code here and assign to `info-\u003efType` directly and putting static asserts to match the enum values between `SkAdvancedTypefaceMetrics` and `ffi` so that we don\u0027t have to have conditional conversion here. What do you think?",
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ea90641_de0bdc59",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T07:25:54Z",
+      "side": 1,
+      "message": "The FT backend sets the CFF type, too, do we want that, or does that not matter?",
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94985630_aba9d92b",
+        "filename": "src/ports/fontations/src/base.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T07:25:54Z",
+      "side": 1,
+      "message": "You can shorten this to `outlines.and_then(|o| o.format())`.",
+      "range": {
+        "startLine": 129,
+        "startChar": 19,
+        "endLine": 129,
+        "endChar": 47
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "13e86191_bfa9c451",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/fontations/src/base.rs",
+              "range": {
+                "startLine": 129,
+                "startChar": 0,
+                "endLine": 130,
+                "endChar": 0
+              },
+              "replacement": "    match outlines.and_then(|o| o.format()) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
