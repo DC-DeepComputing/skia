@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f642be53_5dbde307",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T15:44:40Z",
+      "side": 1,
+      "message": "This can come up in complicated scenarios, but also can come up in the current case where we have a top-level LM around a gradient or image snippet.\n\nBefore this CL, the local coords flag would bubble up to the root and this would be used to declare a varying and assign `stepLocalCoords` to it so it could be read in the fragment shader for the LM transformation logic.\n\nWith this CL, we will add a new varying for the transformed local coords that will be passed directly to the gradient/image child. The LM, though, just refers to the transformed local coords and there isn\u0027t any other snippet that actually would reference the original local coords anymore, they\u0027ve been replaced. The varying is still being interpolated and passed to the fragment shader; I\u0027m not sure how well drivers would avoid interpolation overhead if the frag shader never reads from the varying (because they are 2 separate modules, this would have to be handled at link time for the pipeline). \n\nIn complex graphs of snippets or with runtime effects, you might have a mix of some branches using the lifted expression\u0027s varying and other branches using the original local coords.  Or you could have multiple branches with their own lifted expression varyings but then no branch requiring the original local coords.  Ideally, we\u0027d be detecting this effect when we emit our varyings from the vertex shader as well so even though we might use `stepLocalCoords` in the VS to calculate the lifted expressions, it wouldn\u0027t have to be included in the varyings to the FS anymore.",
+      "parentUuid": "bad54b5d_19de7ee6",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 5
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a311b13_0c94c8e5",
