@@ -157,6 +157,30 @@
       },
       "revId": "2e659a781e4e390f93937935277e346b687c33ac",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e52c7806_b42409f6",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T15:29:45Z",
+      "side": 1,
+      "message": "This change didn\u0027t seem to get uploaded\n```suggestion\n        // Since it is divisible, we can align without calling lcm and we know req \u003e min\n        if (SkIsPow2(req)) {\n            bytes \u003d SkTo\u003cuint32_t\u003e(SkAlignTo(bytes, req));\n        } else {\n            bytes \u003d SkTo\u003cuint32_t\u003e(SkAlignNonPow2(bytes, req));\n        }\n```",
+      "parentUuid": "0ec2b39d_656a8c5f",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 9
+      },
+      "revId": "2e659a781e4e390f93937935277e346b687c33ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
