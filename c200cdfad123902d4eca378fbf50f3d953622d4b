@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "18e0c48f_576a4fa5",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-02T14:17:11Z",
+      "side": 1,
+      "message": "Nope, artifact from some debugging. Thank you; removed",
+      "parentUuid": "bfb318bf_c191d055",
+      "range": {
+        "startLine": 32,
+        "startChar": 17,
+        "endLine": 32,
+        "endChar": 21
+      },
+      "revId": "c200cdfad123902d4eca378fbf50f3d953622d4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0509f67d_36e20179",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-01T19:13:40Z",
       "side": 1,
       "message": "Even when we assume all target textures have the input attachment, we will need to have a special MSAA version that reads the input attachment per sample, right?\n\nI am definitely fine with not exposing the input attachment strategy until that case is handled since it keeps `getDstReadStrategy` straight forward, but just wanted to make sure I\u0027m following what work is still left.",
+      "range": {
+        "startLine": 1639,
+        "startChar": 0,
+        "endLine": 1641,
+        "endChar": 26
+      },
+      "revId": "c200cdfad123902d4eca378fbf50f3d953622d4b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec82f1b2_8e0557d3",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1641,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-02T14:17:11Z",
+      "side": 1,
+      "message": "Yes, this is correct! Right now the `getDstReadStrategy` override to use `kTextureCopy` lives within `determine_drawpass_dstReadStrategy` in `DrawContext.cpp` w/ comment doc and linked bug.",
+      "parentUuid": "0509f67d_36e20179",
       "range": {
         "startLine": 1639,
         "startChar": 0,
