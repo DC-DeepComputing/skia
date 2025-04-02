@@ -183,7 +183,7 @@ class SkMakeZipDetail {
 public:
     template<typename... Ts>
     static constexpr auto MakeZip(Ts&& ... ts) {
-
+        // NOLINTBEGIN
         // Pick the first collection that has a size, and use that for the size.
         size_t size = PickOneSize<DecayPointerT<Ts>...>::Size(std::forward<Ts>(ts)...);
 
@@ -200,7 +200,8 @@ public:
         SkASSERT(minSize == maxSize);
 #endif
 
-        return SkZip<ValueType<Ts>...>{size, Span<Ts>::Data(std::forward<Ts>(ts))...};
+        return SkZip<ValueType<Ts>...>(size, Span<Ts>::Data(std::forward<Ts>(ts))...);
+        // NOLINTEND
     }
 };
 

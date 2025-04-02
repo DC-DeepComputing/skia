@@ -64,7 +64,7 @@
       "/path/to/tmp/json",
       "ensure-directory",
       "--mode",
-      "0777",
+      "0o777",
       "results_dir"
     ],
     "infra_step": true,
@@ -233,6 +233,21 @@
     "~followup_annotations": [
       "@@@STEP_EXCEPTION@@@"
     ]
+  },
+  {
+    "cmd": [
+      "ideviceinstaller",
+      "-U",
+      "com.google.dm"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1",
+      "IOS_BUNDLE_ID": "com.google.dm",
+      "IOS_MOUNT_POINT": "[START_DIR]/mnt_iosdevice",
+      "PATH": "<PATH>:RECIPE_REPO[depot_tools]"
+    },
+    "infra_step": true,
+    "name": "uninstall dm (2)"
   },
   {
     "failure": {
