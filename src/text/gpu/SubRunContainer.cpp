@@ -48,7 +48,6 @@
 #include "src/text/StrikeForGPU.h"
 #include "src/text/gpu/Glyph.h"
 #include "src/text/gpu/GlyphVector.h"
-#include "src/text/gpu/SDFMaskFilter.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/SubRunControl.h"
 #include "src/text/gpu/VertexFiller.h"
@@ -1639,10 +1638,7 @@ static std::tuple<SkStrikeSpec, SkScalar, sktext::gpu::SDFTMatrixRange>
 make_sdft_strike_spec(const SkFont& font, const SkPaint& paint,
                       const SkSurfaceProps& surfaceProps, const SkMatrix& deviceMatrix,
                       const SkPoint& textLocation, const sktext::gpu::SubRunControl& control) {
-    // Add filter to the paint which creates the SDFT data for A8 masks.
     SkPaint dfPaint{paint};
-    dfPaint.setMaskFilter(sktext::gpu::SDFMaskFilter::Make());
-
     auto [dfFont, strikeToSourceScale, matrixRange] = control.getSDFFont(font, deviceMatrix,
                                                                          textLocation);
 
@@ -1672,7 +1668,8 @@ make_sdft_strike_spec(const SkFont& font, const SkPaint& paint,
 
     // Fake-gamma and subpixel antialiasing are applied in the shader, so we ignore the
     // passed-in scaler context flags. (It's only used when we fall-back to bitmap text).
-    SkScalerContextFlags flags = SkScalerContextFlags::kNone;
+    // Add flag to the SkStrikeSpec which creates the SDFT data.
+    SkScalerContextFlags flags = SkScalerContextFlags::kSDFTData;
     SkStrikeSpec strikeSpec = SkStrikeSpec::MakeMask(dfFont, dfPaint, surfaceProps, flags,
                                                      SkMatrix::I());
 
