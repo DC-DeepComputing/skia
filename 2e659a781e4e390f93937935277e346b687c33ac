@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7da5189b_c11fe62c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T15:26:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6183f85f_1e8e5942",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 18
+      },
+      "revId": "2e659a781e4e390f93937935277e346b687c33ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4796ee78_b0d98262",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfef96b1_abc75116",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T15:26:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4796ee78_b0d98262",
+      "range": {
+        "startLine": 124,
+        "startChar": 8,
+        "endLine": 124,
+        "endChar": 20
+      },
+      "revId": "2e659a781e4e390f93937935277e346b687c33ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f27fb31b_afd860a0",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-04-02T15:13:06Z",
       "side": 1,
       "message": "If `req \u003c min`, and we know `min` is a power of 2, then the first check `req \u0026 (min - 1)` will be true, so we can skip explicitly calling `std::max(req, min)` and just use `req` for either the aligned or unaligned case.\n\nIt\u0027s also probable that `req` is divisible by `min` but still a power of 2, so we should use `SkIsPow2(req)` to decide which alignment function to call.",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 134,
+        "endChar": 9
+      },
+      "revId": "2e659a781e4e390f93937935277e346b687c33ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ec2b39d_656a8c5f",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T15:26:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f27fb31b_afd860a0",
       "range": {
         "startLine": 128,
         "startChar": 8,
