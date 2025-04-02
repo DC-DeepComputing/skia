@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d874cc2_2989c633",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-02T13:24:09Z",
+      "side": 1,
+      "message": "It seems really awkward to introduce a fontations_ffi enum here that lists font types like Type1 that aren\u0027t supported. `SkAdvancedTypefaceMetrics::FontType` is really a bit silly of a name, it\u0027s more like a `SkPDF::FontType` with very specific meanings related to how PDF viewers will treat the font data. In other words the Skia side enum isn\u0027t really about the font format but more about what we think PDF viewers will support. The names are deceptively generic because we\u0027re pretending like there isn\u0027t this very tight coupling between these `FontType` enum values and PDF viewer implementations, but that\u0027s the way things are. The reality is that the format checking would be better done in the PDF code by having a separate parser and validator for the bits there, but that\u0027s a pain so the hack is to ask the typeface and essentially push a bit of PDF logic into every typeface implementation because that is more expedient.\n\nAlso, this doesn\u0027t need to be fast in any way. This is only used by printing and the result is cached.",
+      "parentUuid": "5ff3e385_0f4f6c40",
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8ea90641_de0bdc59",
         "filename": "src/ports/SkTypeface_fontations.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2025-04-02T07:25:54Z",
       "side": 1,
       "message": "The FT backend sets the CFF type, too, do we want that, or does that not matter?",
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "534277c8_064e8184",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1009,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-02T13:24:09Z",
+      "side": 1,
+      "message": "It doesn\u0027t matter at the moment, and it won\u0027t matter until we can be reasonably sure no one is using printers released up until the year 2022 (when the last known major printer company finally supported OpenType CFF in PDFs). Added it anyway for funsies.",
+      "parentUuid": "8ea90641_de0bdc59",
       "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -72,6 +108,30 @@
           ]
         }
       ],
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70dabb49_18c495f1",
+        "filename": "src/ports/fontations/src/base.rs",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-02T13:24:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94985630_aba9d92b",
+      "range": {
+        "startLine": 129,
+        "startChar": 19,
+        "endLine": 129,
+        "endChar": 47
+      },
       "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
