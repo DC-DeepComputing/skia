@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bad54b5d_19de7ee6",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-02T15:32:09Z",
+      "side": 1,
+      "message": "Comment added -- I definitely agree this is temporary and that we want to be able to combine transforms and skip nodes. But could you clarify what you mean by:\n\u003e mask off child nodes requiring local coords if their parent is providing the coordinate via the lifted expression",
+      "parentUuid": "2c4d2cfc_0b36a687",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 5
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4a311b13_0c94c8e5",
         "filename": "src/gpu/graphite/ShaderInfo.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-02T14:57:29Z",
       "side": 1,
       "message": "Can we add a comment here to provide a way for lifted expressions to declare their varying type?",
+      "range": {
+        "startLine": 405,
+        "startChar": 37,
+        "endLine": 405,
+        "endChar": 54
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f685447b_6f1b71b8",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-02T15:32:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a311b13_0c94c8e5",
       "range": {
         "startLine": 405,
         "startChar": 37,
@@ -60,6 +108,30 @@
       "writtenOn": "2025-04-02T14:57:29Z",
       "side": 1,
       "message": "I don\u0027t think we want to modify the `fHasPaintUniforms` variable here. I\u0027m guessing it doesn\u0027t matter since the FS processing will overwrite it, but using an `unusedHasPaintUniforms` parameter seems clearer.",
+      "range": {
+        "startLine": 1036,
+        "startChar": 54,
+        "endLine": 1036,
+        "endChar": 71
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf2ea08_864e5000",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1036,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-02T15:32:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5a1ffce_5efda048",
       "range": {
         "startLine": 1036,
         "startChar": 54,
