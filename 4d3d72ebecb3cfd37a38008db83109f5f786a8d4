@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "836816c5_b2a752ad",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-02T16:39:57Z",
+      "side": 1,
+      "message": "We should also define this by default in Skia, so we start exercising the new code right away.",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "4d3d72ebecb3cfd37a38008db83109f5f786a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4b5ccc9a_f8e18342",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-02T16:39:57Z",
+      "side": 1,
+      "message": "Is this needed?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "4d3d72ebecb3cfd37a38008db83109f5f786a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
