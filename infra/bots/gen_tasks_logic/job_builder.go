@@ -115,9 +115,6 @@ func (b *jobBuilder) genTasksForJob() {
 	if b.extraConfig("PushAppsFromSkiaDockerImage") {
 		b.createPushAppsFromSkiaDockerImage()
 		return
-	} else if b.extraConfig("PushBazelAppsFromWASMDockerImage") {
-		b.createPushBazelAppsFromWASMDockerImage()
-		return
 	}
 
 	// Infra tests.
@@ -133,6 +130,10 @@ func (b *jobBuilder) genTasksForJob() {
 	}
 	if b.Name == "Housekeeper-PerCommit-CheckGeneratedFiles" {
 		b.checkGeneratedFiles()
+		return
+	}
+	if b.Name == "Housekeeper-PerCommit-GoLinters" {
+		b.goLinters()
 		return
 	}
 	if b.Name == "Housekeeper-PerCommit-RunGnToBp" {
@@ -179,10 +180,6 @@ func (b *jobBuilder) genTasksForJob() {
 		b.dm()
 		return
 	}
-	if b.role("FM") {
-		b.fm()
-		return
-	}
 
 	// Canary bots.
 	if b.role("Canary") {
@@ -213,6 +210,16 @@ func (b *jobBuilder) genTasksForJob() {
 		return
 	}
 
+	if b.role("BazelBuild") {
+		b.bazelBuild()
+		return
+	}
+
+	if b.role("BazelTest") {
+		b.bazelTest()
+		return
+	}
+
 	log.Fatalf("Don't know how to handle job %q", b.Name)
 }
 
@@ -222,7 +229,7 @@ func (b *jobBuilder) finish() {
 		b.trigger(specs.TRIGGER_NIGHTLY)
 	} else if b.frequency("Weekly") {
 		b.trigger(specs.TRIGGER_WEEKLY)
-	} else if b.extraConfig("Flutter", "CommandBuffer", "CreateDockerImage", "PushAppsFromSkiaDockerImage", "PushBazelAppsFromWASMDockerImage") {
+	} else if b.extraConfig("Flutter", "CreateDockerImage", "PushAppsFromSkiaDockerImage", "PushBazelAppsFromWASMDockerImage") {
 		b.trigger(specs.TRIGGER_MAIN_ONLY)
 	} else if b.frequency("OnDemand") || b.role("Canary") {
 		b.trigger(specs.TRIGGER_ON_DEMAND)
