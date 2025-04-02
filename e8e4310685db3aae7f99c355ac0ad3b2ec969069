@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "ee20eb2e_9f4ed3a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad3341dd_c64ffb98",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 79
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "293cdef8_0bb36a98",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 13
@@ -54,6 +78,30 @@
       "writtenOn": "2025-04-02T13:54:22Z",
       "side": 1,
       "message": "I would update this to be \"Buffers can ...\", since this also being used for the `getAlignedSsboWriter` code path (which is good, it hadn\u0027t been doing the LCM before and should have been I think).",
+      "range": {
+        "startLine": 113,
+        "startChar": 2,
+        "endLine": 113,
+        "endChar": 18
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb4b235e_37790dd9",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "741086ce_00f12b87",
       "range": {
         "startLine": 113,
         "startChar": 2,
@@ -110,6 +158,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "485e0394_c12b9c9a",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "176bd62a_2d986207",
+      "range": {
+        "startLine": 659,
+        "startChar": 86,
+        "endLine": 659,
+        "endChar": 96
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac7708b8_d029c8aa",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5be13ab2_2da0329d",
+      "range": {
+        "startLine": 659,
+        "startChar": 70,
+        "endLine": 659,
+        "endChar": 71
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6da9162c_17870ba0",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-04-02T13:54:22Z",
       "side": 1,
       "message": "I would move this back below the comment, and update the whole comment to be:\n\n    // Copies must copy an amount of bytes aligned to the transfer alignment. For simplicity, we align the reserved size to the LCM of the minimum alignment (already net buffer and transfer alignment) and the required alignment stride.",
+      "range": {
+        "startLine": 680,
+        "startChar": 0,
+        "endLine": 681,
+        "endChar": 86
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40881a7e_95c12bfa",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 681,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6da9162c_17870ba0",
       "range": {
         "startLine": 680,
         "startChar": 0,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17017d30_ac75b476",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 725,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e7d2d313_118b26ff",
+      "range": {
+        "startLine": 724,
+        "startChar": 0,
+        "endLine": 725,
+        "endChar": 94
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f8ffe7b_e20ad68c",
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad398511_4dbf1108",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f8ffe7b_e20ad68c",
+      "range": {
+        "startLine": 36,
+        "startChar": 4,
+        "endLine": 36,
+        "endChar": 82
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9912eae_d7d100f4",
@@ -192,6 +360,30 @@
       "writtenOn": "2025-04-02T13:54:22Z",
       "side": 1,
       "message": "This should be 0 still (it\u0027s the `baseIndex` parameter), and the parameter after `realVertexCount` (which is the `indexCount` parameter) should be `fPendingBaseVertex`.\n\nAlso given line length, I think we put each parameter after the first on its own line, lined up under `fPrimitiveType`.",
+      "range": {
+        "startLine": 107,
+        "startChar": 63,
+        "endLine": 107,
+        "endChar": 81
+      },
+      "revId": "e8e4310685db3aae7f99c355ac0ad3b2ec969069",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8797e07_b2010f65",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-02T14:55:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9912eae_d7d100f4",
       "range": {
         "startLine": 107,
         "startChar": 63,
