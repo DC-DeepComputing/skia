@@ -168,7 +168,9 @@ CircularArcRenderStep::CircularArcRenderStep(StaticBufferManager* bufferManager)
     // Initialize the static buffer we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only
     // ever be one CircularArcRenderStep at a time, this shouldn't be an issue.
-    write_vertex_buffer(bufferManager->getVertexWriter(kVertexCount, sizeof(Vertex),
+    write_vertex_buffer(bufferManager->getVertexWriter(kVertexCount,
+                                                       SkAlign4<size_t>(kVertexCount),
+                                                       sizeof(Vertex),
                                                        &fVertexBuffer));
 }
 

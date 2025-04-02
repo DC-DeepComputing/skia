@@ -137,6 +137,16 @@ uint32_t align_to_req_min_lcm(uint32_t bytes, uint32_t req, uint32_t min) {
     return bytes;
 }
 
+// TODO write something about bug here
+void zero_misaligned_vert_bytes(void* ptr, size_t count, size_t alignedCount, size_t stride) {
+    if (alignedCount > count) {
+        size_t numBytesToZero = (alignedCount - count) * stride;
+        size_t offset = count * stride;
+        void* zPtr = SkTAddOffset<void>(ptr, offset);
+        memset(zPtr, 0, numBytesToZero);
+    }
+}
+
 } // anonymous namespace
 
 // ------------------------------------------------------------------------------------------------
@@ -218,16 +228,17 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
 // For the vertexWriter, we explicitly pass in the required stride to align the mapped
 // bindBuffer to try to keep the buffer contiguous with future vertex data.
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
+                                                                           size_t alignedCount,
                                                                            size_t stride) {
-    uint32_t requiredBytes = validate_count_and_stride(count, stride);
-    if (!requiredBytes) {
+    uint32_t reqBytes = validate_count_and_stride(count, stride);
+    uint32_t alignBytes = validate_count_and_stride(alignedCount, stride);
+    if (!reqBytes || !alignBytes) {
         return {};
     }
-
     auto& info = fCurrentBuffers[kVertexBufferIndex];
-    auto [ptr, bindInfo] =
-        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, stride);
-    return {VertexWriter(ptr, requiredBytes), bindInfo};
+    auto [ptr, bindInfo] = this->prepareMappedBindBuffer(&info, "VertexBuffer", alignBytes);
+    zero_misaligned_vert_bytes(ptr, count, alignedCount, stride);
+    return {VertexWriter(ptr, reqBytes), bindInfo};
 }
 
 void DrawBufferManager::returnVertexBytes(size_t unusedBytes) {
@@ -650,12 +661,19 @@ StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
         , fMinimumAlignment(minimum_alignment(type, /*useTransferBuffers=*/true, caps))
         , fTotalRequiredBytes(0) {}
 
+// TODO Comment something like "Ask for alignedBytes, then zero, but only track my bytes."
 VertexWriter StaticBufferManager::getVertexWriter(size_t count,
+                                                  size_t alignedCount,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
-    const size_t size = count * stride;
-    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride, binding);
-    return VertexWriter{data, size};
+    uint32_t reqBytes = validate_count_and_stride(count, stride);
+    uint32_t alignBytes = validate_count_and_stride(alignedCount, stride);
+    if (!reqBytes || !alignBytes) {
+        return {};
+    }
+    void* data = this->prepareStaticData(&fVertexBufferInfo, alignBytes, stride, binding);
+    zero_misaligned_vert_bytes(data, count, alignedCount, stride);
+    return VertexWriter{data, alignBytes};
 }
 
 VertexWriter StaticBufferManager::getIndexWriter(size_t size, BindBufferInfo* binding) {

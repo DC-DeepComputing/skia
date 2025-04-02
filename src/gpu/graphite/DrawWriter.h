@@ -80,6 +80,14 @@ public:
     // attribute strides of that pipeline. This issues draw calls for pending data that relied on
     // the old pipeline, so this must be called *before* binding the new pipeline.
     void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
+        // if we will append instances, but previously appended vertices, then we need to make sure
+        // that the zeroing that we added will not be overwritten. therefore, we find the
+        // misalignment of the pendingCount (if any) pre-flush then add it post-flush to the pending
+        // base
+        uint32_t vertexCountMisalignment = 0;
+        if (instanceStride && fVertexStride) {
+            vertexCountMisalignment = fPendingCount & 3;
+        }
         this->flush();
 
         // At this point, whatever was pending was flushed, meaning that whatever pendingCount was,
@@ -98,7 +106,7 @@ public:
         uint32_t& pendingBase = instanceStride ? fPendingBaseInstance : fPendingBaseVertex;
         // If either stride is 0, no aligning is required so the pendingBase is set to 0.
         if (prevStride && currStride) {
-            const size_t prevBytes = pendingBase * prevStride;
+            const size_t prevBytes = (pendingBase + vertexCountMisalignment) * prevStride;
             // Because neither stride is guaranteed to be a power of two, we manually align instead
             // of using SkAlignTo.
             pendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
@@ -109,6 +117,11 @@ public:
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
+
+        // NOTE: resetting pending base is sufficient to redo bindings for vertex/instance data that
+        // is later appended but doesn't invalidate bindings for fixed buffers that might not need
+        // to change between pipelines.
+        SkASSERT(fPendingCount == 0);
     }
 
 #ifdef SK_DEBUG
@@ -296,7 +309,8 @@ protected:
     virtual void onFlush() {}
 
     void reserve(unsigned int count) {
-        if (fReservedCount >= count) {
+        size_t alignedCount = fStride == fDrawer.fVertexStride ? SkAlign4<uint32_t>(count) : count;
+        if (fReservedCount >= alignedCount) {
             return;
         } else if (fReservedCount > 0) {
             // Have contiguous bytes that can't satisfy request, so return them in the event the
@@ -313,7 +327,8 @@ protected:
 
         // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
         // move assignment.
-        auto [writer, reservedChunk] = fDrawer.fManager->getVertexWriter(count, fStride);
+        auto [writer, reservedChunk] =
+            fDrawer.fManager->getVertexWriter(count, alignedCount, fStride);
         if (writer) {
             fReservedCount = count;
 

@@ -96,9 +96,11 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
     // Initialize the static buffers we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. If this ends up causing
     // problems, we can modify StaticBufferManager to de-duplicate requests.
-    auto vertexData = bufferManager->getVertexWriter(FixedCountCurves::VertexBufferVertexCount(),
-                                                     FixedCountCurves::VertexBufferStride(),
-                                                     &fVertexBuffer);
+    auto vertexData = bufferManager->getVertexWriter(
+            FixedCountCurves::VertexBufferVertexCount(),
+            SkAlign4<size_t>(FixedCountWedges::VertexBufferVertexCount()),
+            FixedCountCurves::VertexBufferStride(),
+            &fVertexBuffer);
     if (vertexData) {
         FixedCountCurves::WriteVertexBuffer(std::move(vertexData),
                                             FixedCountCurves::VertexBufferSize());
