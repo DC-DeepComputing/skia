@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f853210_1ac9ca95",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-02T14:00:54Z",
+      "side": 1,
+      "message": "So it shouldn\u0027t matter much, but this isn\u0027t needed. The PDF code (which is the only real user of `modified`) always creates with an `SkFont` with `setScaleX(1)` and `setSkewX(0)` and a matrix of identity. `SkScalerContextRec::computeMatrices` does appear to stably set this to identity in this case, so there shouldn\u0027t be any issue with this being here, and it is difficult to argue that it isn\u0027t correct. So it\u0027s fine to leave it I\u0027ll just have to think about if the other `generatePath` should do this as well.",
+      "parentUuid": "d7f58fa3_21366832",
+      "revId": "d9cd1ee7a8cb537624df5a1bb378f23eca9425de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95cec7b2_b940eac0",
