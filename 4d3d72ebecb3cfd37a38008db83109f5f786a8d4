@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e589898f_4ba248b7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-02T20:32:47Z",
+      "side": 1,
+      "message": "Chromium has its own BUILD.gn files for Skia, so we can safely add the flag to our build files without interfering.  Later we can add to Chromium too, with rebaselines if needed.\n\nAnother approach we\u0027ve used in the past is to invert the flag meaning and conditionals:\n\n```\n  #ifdef SK_USE_LEGACY_FOO\n    // do legacy stuff\n  #else\n    // do new stuff\n  #endif\n```\n\nThen we don\u0027t need any flags defined in Skia as it will default to the new impl, but we do need to land the flag in Chromium first to enable the legacy path.  Later we\u0027d remove the flag from Chromium and rebaseline.",
+      "parentUuid": "1766457e_9e3e6eef",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "4d3d72ebecb3cfd37a38008db83109f5f786a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b5ccc9a_f8e18342",
         "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
         "patchSetId": 7
