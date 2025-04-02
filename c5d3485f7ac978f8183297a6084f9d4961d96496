@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "556455f5_58203142",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T13:27:52Z",
+      "side": 1,
+      "message": "As part of simplifying filtering, SkMaskFilters are internally being converted to SkImageFilters that process an A8 image and then are shaded as if that image was a coverage value.\n\nThere are special hooks in place to convert fast-path blurred round rects. Caching the output of filtered glyphs won\u0027t go away, it\u0027s just that the mechanism is changing for evaluation.  There is already an intermediate representation just for blurs that we could keep: `BlurRec`.  \n\nI\u0027m unclear how deep the assumption goes, but TextBlobs only treat mask filters that are blurs as anything special.  If strikes have this same limitation, it\u0027ll be easy to switch mask filter out for explicitly holding the blur parameters. If not, then perhaps it\u0027ll stay as an SkMaskFilter.",
+      "parentUuid": "505b48e4_111ada8d",
+      "range": {
+        "startLine": 9,
+        "startChar": 185,
+        "endLine": 9,
+        "endChar": 226
+      },
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c517b85e_8c8b10c1",
         "filename": "/COMMIT_MSG",
         "patchSetId": 19
@@ -43,6 +67,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "761e1f63_17eae875",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T13:27:52Z",
+      "side": 1,
+      "message": "If you click \"Edit\" there should be a \"Format\" button that does this for you automatically now.",
+      "parentUuid": "c517b85e_8c8b10c1",
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "63648420_be744840",
         "filename": "src/core/SkScalerContext.h",
         "patchSetId": 19
@@ -54,6 +96,30 @@
       "writtenOn": "2025-04-02T01:13:47Z",
       "side": 1,
       "message": "Says who? On the CPU side we really want to cache glyph mask blurs.",
+      "range": {
+        "startLine": 285,
+        "startChar": 66,
+        "endLine": 286,
+        "endChar": 43
+      },
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23170e05_2cdee1e0",
+        "filename": "src/core/SkScalerContext.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T13:27:52Z",
+      "side": 1,
+      "message": "See earlier comments, but cached glyphs post filtering won\u0027t be going away.  This change is about isolating SkMaskFilter as thin shim in the public API.",
+      "parentUuid": "63648420_be744840",
       "range": {
         "startLine": 285,
         "startChar": 66,
