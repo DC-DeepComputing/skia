@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29e0075e_ed7beccf",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1008,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T13:44:45Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "4d874cc2_2989c633",
+      "revId": "fdd1a05b277a37ea83ac467b5d42aa7e723e59d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ea90641_de0bdc59",
