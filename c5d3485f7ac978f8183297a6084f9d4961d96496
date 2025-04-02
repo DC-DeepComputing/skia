@@ -83,6 +83,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef209e58_808c8bb2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 19
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-02T15:54:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "761e1f63_17eae875",
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c542b07_0c59ff44",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 306,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-02T15:54:32Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com Let me know if you think I should ASSERT that fMaskFilter is null when we use SDF. This only has internal and temporary usage, so it may be okay as is, but may also be confusing if someone working on it sets the kSDFTData_Flag and also has a mask filter.",
+      "range": {
+        "startLine": 305,
+        "startChar": 6,
+        "endLine": 306,
+        "endChar": 98
+      },
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63648420_be744840",
@@ -143,6 +184,24 @@
       "writtenOn": "2025-04-02T01:13:47Z",
       "side": 1,
       "message": "Why would this be set here over and over again (here and below)? The other `force` methods are dangerous themselves and should only be used in constructors, as should this. (Probably should document that for the future.)",
+      "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b79e638_7734f711",
+        "filename": "tools/fonts/RandomScalerContext.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-02T15:54:32Z",
+      "side": 1,
+      "message": "Yes it\u0027s true it doesn\u0027t need to be set over again and only needs to be set once. However, we do call this at least once because in `SkScalerContext::getImage` we get the original bounds by moving the maskfilter to a temporary sk_sp, which also affects `fProxy`\u0027s maskfilter because it is a pointer to the same one. So we have to tell `fProxy` somehow that there is no sdf mask filter. We could do something like `useStrokeForFakeBold()` on `fProxy-\u003efRec`, but that be the same as this function. wdyt?",
+      "parentUuid": "4032df49_dc5d0ba8",
       "revId": "c5d3485f7ac978f8183297a6084f9d4961d96496",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
