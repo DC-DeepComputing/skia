@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ffd1fbc_20e48bb7",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-02T15:51:52Z",
+      "side": 1,
+      "message": "Ah, right! So in the case where we are able to lift expressions, `stepLocalCoords` is a potentially unnecessary varying we want to remove if possible.",
+      "parentUuid": "f642be53_5dbde307",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 5
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a311b13_0c94c8e5",
