@@ -99,9 +99,11 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID
     // Initialize the static buffers we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. If this ends up causing
     // problems, we can modify StaticBufferManager to de-duplicate requests.
-    auto vertexData = bufferManager->getVertexWriter(FixedCountWedges::VertexBufferVertexCount(),
-                                                     FixedCountWedges::VertexBufferStride(),
-                                                     &fVertexBuffer);
+    auto vertexData = bufferManager->getVertexWriter(
+            FixedCountWedges::VertexBufferVertexCount(),
+            SkAlign4<size_t>(FixedCountWedges::VertexBufferVertexCount()),
+            FixedCountWedges::VertexBufferStride(),
+            &fVertexBuffer);
     if (vertexData) {
         FixedCountWedges::WriteVertexBuffer(std::move(vertexData),
                                             FixedCountWedges::VertexBufferSize());

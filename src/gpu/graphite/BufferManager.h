@@ -107,7 +107,9 @@ public:
 
     // These writers automatically calculate the required bytes based on count and stride. If a
     // valid writer is returned, the byte count will fit in a uint32_t.
-    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t stride);
+    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count,
+                                                            size_t alignedCount,
+                                                            size_t stride);
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
 
@@ -259,7 +261,8 @@ public:
 
     // For the vertex writer, the count and stride of the buffer is passed to allow alignment of
     // future vertices.
-    VertexWriter getVertexWriter(size_t count, size_t stride, BindBufferInfo* binding);
+    VertexWriter getVertexWriter(size_t count, size_t alignedCount, size_t stride,
+                                 BindBufferInfo* binding);
     // TODO: Update the tessellation index buffer generation functions to use an IndexWriter so this
     // can return an IndexWriter vs. a VertexWriter that happens to just write uint16s...
     VertexWriter getIndexWriter(size_t size, BindBufferInfo* binding);

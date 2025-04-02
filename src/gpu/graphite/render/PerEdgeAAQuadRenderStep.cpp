@@ -221,7 +221,9 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
     // Initialize the static buffers we'll use when recording draw calls.
     // NOTE: Each instance of this RenderStep gets its own copy of the data. Since there should only
     // ever be one PerEdgeAAQuadRenderStep at a time, this shouldn't be an issue.
-    write_vertex_buffer(bufferManager->getVertexWriter(kVertexCount, sizeof(Vertex),
+    write_vertex_buffer(bufferManager->getVertexWriter(kVertexCount,
+                                                       SkAlign4<size_t>(kVertexCount),
+                                                       sizeof(Vertex),
                                                        &fVertexBuffer));
     write_index_buffer(bufferManager->getIndexWriter(sizeof(uint16_t) * kIndexCount,
                                                      &fIndexBuffer));
