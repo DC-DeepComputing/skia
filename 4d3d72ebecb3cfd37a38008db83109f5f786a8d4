@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1766457e_9e3e6eef",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-02T20:18:55Z",
+      "side": 1,
+      "message": "Currently looking into this but let me know if there is an easy way to do this, how can I build for default in Skia but not chromium? Do I have to change this code to guard the legacy impl and set the flag in Chromium first?",
+      "parentUuid": "836816c5_b2a752ad",
+      "range": {
+        "startLine": 11,
+        "startChar": 16,
+        "endLine": 11,
+        "endChar": 48
+      },
+      "revId": "4d3d72ebecb3cfd37a38008db83109f5f786a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4b5ccc9a_f8e18342",
         "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
         "patchSetId": 7
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-02T16:39:57Z",
       "side": 1,
       "message": "Is this needed?",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 6
+      },
+      "revId": "4d3d72ebecb3cfd37a38008db83109f5f786a8d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a422fb6b_97dd0805",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-02T20:18:55Z",
+      "side": 1,
+      "message": "Not needed for this CL but when I compile out/RustPng locally, I get an error that this is needed. Not sure if I am building wrong because I also have to change a BUILD file so will leave this out for now and add it to a future CL if needed.",
+      "parentUuid": "4b5ccc9a_f8e18342",
       "range": {
         "startLine": 25,
         "startChar": 0,
