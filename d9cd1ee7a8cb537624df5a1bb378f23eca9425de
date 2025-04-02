@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "516c5cfc_0f88b6c6",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 777,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T14:08:50Z",
+      "side": 1,
+      "message": "Ack, thanks for the background.",
+      "parentUuid": "3f853210_1ac9ca95",
+      "revId": "d9cd1ee7a8cb537624df5a1bb378f23eca9425de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "95cec7b2_b940eac0",
@@ -49,6 +67,30 @@
       "writtenOn": "2025-04-02T13:49:30Z",
       "side": 1,
       "message": "nit: four space indent.",
+      "range": {
+        "startLine": 1027,
+        "startChar": 4,
+        "endLine": 1027,
+        "endChar": 6
+      },
+      "revId": "d9cd1ee7a8cb537624df5a1bb378f23eca9425de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e7c8262_97a21471",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-02T14:08:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "95cec7b2_b940eac0",
       "range": {
         "startLine": 1027,
         "startChar": 4,
