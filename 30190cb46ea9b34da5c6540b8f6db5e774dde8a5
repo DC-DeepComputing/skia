@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4d2cfc_0b36a687",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T14:57:29Z",
+      "side": 1,
+      "message": "This logic is here to only set the lift expression on root nodes, correct? Can we comment that that is temporary.\n\nI think eventually we will want to have some analysis pass that can adjust the flags of every node in the tree so that we can coelesce liftable transforms potentially, and skip over nodes that don\u0027t modify the parameter.  We also want to be able to mask off child nodes requiring local coords if their parent is providing the coordinate via the lifted expression so that we get rid of the original varying overhead.\n\nBut since that is pretty unspecified for now, I\u0027m fine with this approach.",
+      "range": {
+        "startLine": 138,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 5
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a311b13_0c94c8e5",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T14:57:29Z",
+      "side": 1,
+      "message": "Can we add a comment here to provide a way for lifted expressions to declare their varying type?",
+      "range": {
+        "startLine": 405,
+        "startChar": 37,
+        "endLine": 405,
+        "endChar": 54
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5a1ffce_5efda048",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1036,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-02T14:57:29Z",
+      "side": 1,
+      "message": "I don\u0027t think we want to modify the `fHasPaintUniforms` variable here. I\u0027m guessing it doesn\u0027t matter since the FS processing will overwrite it, but using an `unusedHasPaintUniforms` parameter seems clearer.",
+      "range": {
+        "startLine": 1036,
+        "startChar": 54,
+        "endLine": 1036,
+        "endChar": 71
+      },
+      "revId": "30190cb46ea9b34da5c6540b8f6db5e774dde8a5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
