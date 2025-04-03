@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42c68049_29c98644",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-03T18:21:45Z",
+      "side": 1,
+      "message": "LMKWYT about this small edit - to me it made sense to not expose these methods if we do not expect other classes to call them directly. Of course anything with a ptr to the `DrawPassCommand::List` could append draw commands independently, but this just internalizes methods this class uses for these additions.",
+      "revId": "2789c6f80b531b19fbb0715132f3f9aedee82a4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
