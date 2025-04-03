@@ -185,6 +185,7 @@ public:
     template <typename VertexCountProxy>
     class DynamicInstances;
 
+private:
     // Issues a draws with fully specified data. This can be used when all instance data has already
     // been written to known buffers, or when the vertex shader only depends on the vertex or
     // instance IDs. To keep things simple, these helpers do not accept parameters for base vertices
@@ -210,7 +211,6 @@ public:
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
     }
 
-private:
     // Both of these pointers must outlive the DrawWriter.
     DrawPassCommands::List* fCommandList;
     DrawBufferManager* fManager;
