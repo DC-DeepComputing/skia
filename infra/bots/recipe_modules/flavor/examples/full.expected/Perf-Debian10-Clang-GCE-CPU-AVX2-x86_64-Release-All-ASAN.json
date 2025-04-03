@@ -195,8 +195,9 @@
   },
   {
     "cmd": [
-      "[START_DIR]/build/nanobench",
-      "--some-flag"
+      "bash",
+      "-c",
+      "ulimit -c 50000; [START_DIR]/build/nanobench --some-flag"
     ],
     "env": {
       "ASAN_OPTIONS": "symbolize=1 detect_leaks=1",
