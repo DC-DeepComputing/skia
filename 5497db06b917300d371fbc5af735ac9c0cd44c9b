@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b814677_10d3d6e2",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-04-03T15:18:22Z",
+      "side": 1,
+      "message": "I\u0027m waiting for confirmation that this is a HWASAN build; I suspect that it isn\u0027t.",
+      "range": {
+        "startLine": 854,
+        "startChar": 34,
+        "endLine": 854,
+        "endChar": 48
+      },
+      "revId": "5497db06b917300d371fbc5af735ac9c0cd44c9b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
