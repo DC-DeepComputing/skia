@@ -442,10 +442,10 @@ wgpu::RenderPipeline DawnResourceProvider::findOrCreateBlitWithDrawPipeline(
 sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture& texture) {
     // Convert to smart pointers. wgpu::Texture* constructor will increment the ref count.
     wgpu::Texture dawnTexture         = BackendTextures::GetDawnTexturePtr(texture);
-    wgpu::TextureView dawnTextureView = BackendTextures::GetDawnTextureViewPtr(texture);
-    SkASSERT(!dawnTexture || !dawnTextureView);
+    wgpu::TextureView dawnRenderView = BackendTextures::GetDawnRenderViewPtr(texture);
+    wgpu::TextureView dawnSampleView = BackendTextures::GetDawnSampleViewPtr(texture);
 
-    if (!dawnTexture && !dawnTextureView) {
+    if (!dawnTexture && !dawnRenderView && !dawnSampleView) {
         return {};
     }
 
@@ -453,12 +453,15 @@ sk_sp<Texture> DawnResourceProvider::onCreateWrappedTexture(const BackendTexture
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTexture));
+                                        std::move(dawnTexture),
+                                        std::move(dawnRenderView),
+                                        std::move(dawnSampleView));
     } else {
         return DawnTexture::MakeWrapped(this->dawnSharedContext(),
                                         texture.dimensions(),
                                         texture.info(),
-                                        std::move(dawnTextureView));
+                                        std::move(dawnRenderView),
+                                        std::move(dawnSampleView));
     }
 }
 
@@ -532,7 +535,10 @@ BackendTexture DawnResourceProvider::onCreateBackendTexture(SkISize dimensions,
         return {};
     }
 
-    return BackendTextures::MakeDawn(texture.MoveToCHandle());
+    auto [renderView, sampleView] = DawnTexture::MakeDawnTextureViews(texture, info);
+
+    return BackendTextures::MakeDawn(
+            texture.MoveToCHandle(), renderView.MoveToCHandle(), sampleView.MoveToCHandle());
 }
 
 void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture) {
@@ -541,7 +547,8 @@ void DawnResourceProvider::onDeleteBackendTexture(const BackendTexture& texture)
 
     // Automatically release the pointers in wgpu::TextureView & wgpu::Texture's dtor.
     // Acquire() won't increment the ref count.
-    wgpu::TextureView::Acquire(BackendTextures::GetDawnTextureViewPtr(texture));
+    wgpu::TextureView::Acquire(BackendTextures::GetDawnRenderViewPtr(texture));
+    wgpu::TextureView::Acquire(BackendTextures::GetDawnSampleViewPtr(texture));
     // We need to explicitly call Destroy() here since since that is the recommended way to delete
     // a Dawn texture predictably versus just dropping a ref and relying on garbage collection.
     //

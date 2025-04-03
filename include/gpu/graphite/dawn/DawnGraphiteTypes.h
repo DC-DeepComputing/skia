@@ -9,6 +9,7 @@
 #define skgpu_graphite_DawnTypes_DEFINED
 
 #include "include/core/SkSize.h"
+#include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAPI.h"
@@ -19,7 +20,6 @@ class SkStream;
 class SkWStream;
 
 namespace skgpu::graphite {
-class BackendTexture;
 
 class SK_API DawnTextureInfo final : public TextureInfo::Data {
 public:
@@ -133,6 +133,18 @@ namespace BackendTextures {
 // the WGPUTexture.
 SK_API BackendTexture MakeDawn(WGPUTexture);
 
+// Create a BackendTexture from a WGPUTexture and WGPUTextureViews. Texture info will be queried
+// from the texture.
+//
+// This is the recommended way of specifying a BackendTexture for Dawn. See the note below on
+// the constructor that takes a WGPUTextureView for a fuller explanation.
+//
+// The BackendTexture will not call retain or release on the passed in WGPUTexture nor
+// WGPUTextureViews. Thus, the client must keep the WGPUTexture & WGPUTextureViews valid until they
+// are no longer using the BackendTexture. However, any SkImage or SkSurface that wraps the
+// BackendTexture *will* retain and release the WGPUTexture & WGPUTextureViews.
+SK_API BackendTexture MakeDawn(WGPUTexture, WGPUTextureView renderView, WGPUTextureView sampleView);
+
 // Create a BackendTexture from a WGPUTexture. Texture planeDimensions, plane aspect and
 // info have to be provided. This is intended to be used only when accessing a plane
 // of a WGPUTexture.
@@ -142,6 +154,11 @@ SK_API BackendTexture MakeDawn(WGPUTexture);
 // However, any SkImage or SkSurface that wraps the BackendTexture *will* retain and release
 // the WGPUTexture.
 SK_API BackendTexture MakeDawn(SkISize planeDimensions, const DawnTextureInfo&, WGPUTexture);
+SK_API BackendTexture MakeDawn(SkISize planeDimensions,
+                               const DawnTextureInfo&,
+                               WGPUTexture,
+                               WGPUTextureView renderView,
+                               WGPUTextureView sampleView);
 
 // Create a BackendTexture from a WGPUTextureView. Texture dimensions and
 // info have to be provided.
