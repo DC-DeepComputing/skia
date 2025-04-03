@@ -24,6 +24,10 @@ public:
                                          SkISize dimensions,
                                          const TextureInfo&);
 
+    // Create and return a pair of renderView, sampleView.
+    static std::pair<wgpu::TextureView, wgpu::TextureView> MakeDawnTextureViews(
+            const wgpu::Texture& texture, const TextureInfo& info);
+
     static sk_sp<Texture> Make(const DawnSharedContext*,
                                SkISize dimensions,
                                const TextureInfo&);
@@ -31,12 +35,15 @@ public:
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
-                                      wgpu::Texture);
+                                      wgpu::Texture,
+                                      const wgpu::TextureView& renderView,
+                                      const wgpu::TextureView& sampleView);
 
     static sk_sp<Texture> MakeWrapped(const DawnSharedContext*,
                                       SkISize dimensions,
                                       const TextureInfo&,
-                                      const wgpu::TextureView&);
+                                      const wgpu::TextureView& renderView,
+                                      const wgpu::TextureView& sampleView);
 
     ~DawnTexture() override {}
 
@@ -53,20 +60,17 @@ private:
                 SkISize dimensions,
                 const TextureInfo&,
                 wgpu::Texture,
-                wgpu::TextureView sampleTextureView,
                 wgpu::TextureView renderTextureView,
+                wgpu::TextureView sampleTextureView,
                 Ownership);
 
     void freeGpuData() override;
 
-    static std::pair<wgpu::TextureView, wgpu::TextureView> CreateTextureViews(
-            const wgpu::Texture& texture, const TextureInfo& info);
-
     void setBackendLabel(char const* label) override;
 
     wgpu::Texture     fTexture;
-    wgpu::TextureView fSampleTextureView;
     wgpu::TextureView fRenderTextureView;
+    wgpu::TextureView fSampleTextureView;
 };
 
 }  // namespace skgpu::graphite
