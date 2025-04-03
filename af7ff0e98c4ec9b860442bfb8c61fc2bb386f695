@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a33d3c11_47dcea6c",
+        "filename": "gm/textblobrandomfont.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-03T20:39:57Z",
+      "side": 0,
+      "message": "As it turns out, this is difficult. It\u0027s actually not that bad to remove the GPU but...",
+      "revId": "af7ff0e98c4ec9b860442bfb8c61fc2bb386f695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "320dd303_a512380a",
+        "filename": "gm/textblobrandomfont.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-03T20:39:57Z",
+      "side": 0,
+      "message": "...then the color type here needs to not be \"unknown\" when doing `serialize-8888` or `pic-8888`. Fixing this does fix `pic-8888` but then one runs into the issue that `RandomTypeface` isn\u0027t currently serializable or deserializable. That\u0027s an issue that should be fixed later.",
+      "range": {
+        "startLine": 121,
+        "startChar": 62,
+        "endLine": 121,
+        "endChar": 93
+      },
+      "revId": "af7ff0e98c4ec9b860442bfb8c61fc2bb386f695",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
