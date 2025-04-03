@@ -48,7 +48,8 @@ DEF_TEST(FillPathInverse, reporter) {
               SkIntToScalar(width), 0.0f)
         .close()
         .setFillType(SkPathFillType::kInverseWinding);
-    SkScan::FillPath(path, clip, &blitter);
+    SkRegion rgn(clip);
+    SkScan::FillPath(path, rgn, &blitter);
 
     REPORTER_ASSERT(reporter, blitter.m_blitCount == expected_lines);
 }
