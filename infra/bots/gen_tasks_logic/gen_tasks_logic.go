@@ -850,8 +850,8 @@ var androidDeviceInfos = map[string][]string{
 	"Nexus7":          {"grouper", "LMY47V_1836172"}, // 2012 Nexus 7
 	"P30":             {"HWELE", "HUAWEIELE-L29"},
 	"Pixel3a":         {"sargo", "QP1A.190711.020"},
-	"Pixel4":          {"flame", "RPB2.200611.009"},       // R Preview
-	"Pixel4a":         {"sunfish", "AOSP.MASTER_7819821"}, // Pixel4a flashed with an Android HWASan build.
+	"Pixel4":          {"flame", "RPB2.200611.009"},   // R Preview
+	"Pixel4a":         {"sunfish", "UP1A.220818.002"}, // Pixel4a flashed with an Android HWASan build.
 	"Pixel4XL":        {"coral", "QD1A.190821.011.C4"},
 	"Pixel5":          {"redfin", "RD1A.200810.022.A4"},
 	"Pixel6":          {"oriole", "SD1A.210817.037"},

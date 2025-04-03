@@ -45902,7 +45902,7 @@
       ],
       "dimensions": [
         "android_hwasan_build:1",
-        "device_os:AOSP.MASTER_7819821",
+        "device_os:UP1A.220818.002",
         "device_type:sunfish",
         "os:Android",
         "pool:Skia"
@@ -45984,7 +45984,7 @@
       ],
       "dimensions": [
         "android_hwasan_build:1",
-        "device_os:AOSP.MASTER_7819821",
+        "device_os:UP1A.220818.002",
         "device_type:sunfish",
         "os:Android",
         "pool:Skia"
