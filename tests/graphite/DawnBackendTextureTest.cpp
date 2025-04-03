@@ -64,14 +64,18 @@ DEF_GRAPHITE_TEST_FOR_DAWN_CONTEXT(DawnBackendTextureCopyVariableTest,
     BackendTexture beTexture2;
     REPORTER_ASSERT(reporter, beTexture2 != beTexture);
     REPORTER_ASSERT(reporter, BackendTextures::GetDawnTexturePtr(beTexture2) == nullptr);
-    REPORTER_ASSERT(reporter, BackendTextures::GetDawnTextureViewPtr(beTexture2) == nullptr);
+    REPORTER_ASSERT(reporter, BackendTextures::GetDawnRenderViewPtr(beTexture2) == nullptr);
+    REPORTER_ASSERT(reporter, BackendTextures::GetDawnSampleViewPtr(beTexture2) == nullptr);
 
     beTexture2 = beTexture;
     REPORTER_ASSERT(reporter, beTexture2 == beTexture);
     REPORTER_ASSERT(reporter, BackendTextures::GetDawnTexturePtr(beTexture2) != nullptr);
     REPORTER_ASSERT(reporter,
-                    BackendTextures::GetDawnTexturePtr(beTexture2) ==
-                            BackendTextures::GetDawnTexturePtr(beTexture));
+                    BackendTextures::GetDawnRenderViewPtr(beTexture2) ==
+                            BackendTextures::GetDawnRenderViewPtr(beTexture));
+    REPORTER_ASSERT(reporter,
+                    BackendTextures::GetDawnSampleViewPtr(beTexture2) ==
+                            BackendTextures::GetDawnSampleViewPtr(beTexture));
 
     recorder->deleteBackendTexture(beTexture);
 }
