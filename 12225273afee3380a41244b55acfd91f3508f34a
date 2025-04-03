@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "628074b6_5a8bf415",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-03T12:50:19Z",
+      "side": 0,
+      "message": "Just curious, what is the reason for taking out the const here?",
+      "range": {
+        "startLine": 155,
+        "startChar": 42,
+        "endLine": 155,
+        "endChar": 50
+      },
+      "revId": "12225273afee3380a41244b55acfd91f3508f34a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
