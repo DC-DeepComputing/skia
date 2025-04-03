@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07db4338_312533af",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 42
+      },
+      "lineNbr": 1642,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-03T18:15:44Z",
+      "side": 1,
+      "message": "Note for Greg (leaving as unresolved for visibility):\n\nIn case you\u0027re wondering, I skip checking for MSAA here because we now perform this check when determining which `DstReadStrategy` should be used by both the `DrawPass` and the `RenderPassDesc`. Relevant comment and bug ID mentioned there now instead (and will be removed once MSAA dst texture reads are supported): https://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/DrawContext.cpp#212\n\nFor more context if you\u0027re interested:\nBefore elevating that decision to the `DrawContext` level, a `DrawPass` could have a target texture that is single-sampled (which means Vulkan would report we are able to use `kReadFromInput`). However, when creating the `RenderPassDesc`, we check for `msaaRenderToSingleSampledSupport` and then may decide to make the target multisampled. This elevation aligned the two and allowed us to remove `TextureInfo` as a parameter to `getDstReadStrategy` already (which was planned to happen eventually anyhow), which was helpful for precompilation(+).\n\n(+) without making this comment into a research paper, this is basically because it enables us to remove `DstReadStrategy` from `RenderPassDesc` serialization since we can re-determine what strategy to use upon deserialization even though we do not have the target texture information at that time. This way, precompilation `RenderPassDesc`s appropriately ignore `DstReadStrategy` for unique keying. This behavior is desired because the resulting pipeline compilation is the same either way (for Vulkan as well since DstReadStrategy::kNone and kReadFromInput have shared compatible RPs).",
+      "range": {
+        "startLine": 1640,
+        "startChar": 0,
+        "endLine": 1642,
+        "endChar": 43
+      },
+      "revId": "3b8320f3fb60a2d08d27e3585fdd5f7ae4d9b228",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

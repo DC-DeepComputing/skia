@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "097730b7_3bc8adf1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-03T18:15:44Z",
+      "side": 1,
+      "message": "Note for reviewers (leaving unresolved for visibility):\n\nThis is where I\u0027m currently verifying my understanding on the # of draw commands per pipeline (analyzing how draw commands get added to the `DrawPassCommand` list to make sure an AddBarrier `DrawPassCommand` is added before all draws which perform dst reads). Feel free to review other areas of this CL or to weigh in. This barrier needs to be added before every draw which reads from the dst texture.\n\nThe previous location of this addBarrier call led to incorrect/undefined behavior, presumably due to insufficient barriers (this is all despite not triggering validation layer errors nor synchronization validation errors).\n\nThe `DrawWriter` seems to be the sole class which adds draw commands to the list of `DrawPassCommand`s, but draw calls are triggered via `flush()` calls in different ways.",
+      "range": {
+        "startLine": 622,
+        "startChar": 0,
+        "endLine": 626,
+        "endChar": 13
+      },
+      "revId": "6fc41e441b5cb144d52cd42b466657dec2dc40c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
