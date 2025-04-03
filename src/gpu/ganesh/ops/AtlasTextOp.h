@@ -32,6 +32,7 @@
 #include <cstdint>
 #include <utility>
 
+class GrClip;
 class GrDstProxyView;
 class GrGeometryProcessor;
 class GrMeshDrawTarget;
@@ -42,6 +43,7 @@ class GrRecordingContext;
 class GrSurfaceProxy;
 class GrSurfaceProxyView;
 class SkArenaAlloc;
+class SkPaint;
 enum class GrXferBarrierFlags;
 struct GrShaderCaps;
 
@@ -52,6 +54,14 @@ namespace skgpu::ganesh {
 class AtlasTextOp final : public GrMeshDrawOp {
 public:
     DEFINE_OP_CLASS_ID
+
+    static std::tuple<const GrClip*, GrOp::Owner> Make(SurfaceDrawContext*,
+                                                       const sktext::gpu::AtlasSubRun&,
+                                                       const GrClip*,
+                                                       const SkMatrix& viewMatrix,
+                                                       SkPoint drawOrigin,
+                                                       const SkPaint&,
+                                                       sk_sp<SkRefCnt>&& subRunStorage);
 
     ~AtlasTextOp() override {
         for (const Geometry* g = fHead; g != nullptr;) {
