@@ -1,0 +1,56 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86ae1ac3_833b503f",
+        "filename": "BUILD.gn",
+        "patchSetId": 13
+      },
+      "lineNbr": 1310,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-03T13:02:57Z",
+      "side": 1,
+      "message": "Doesn\u0027t match the flag in src files, `SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS`?",
+      "fixSuggestions": [
+        {
+          "fixId": "28d400b1_e06c44d1",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.gn",
+              "range": {
+                "startLine": 1310,
+                "startChar": 0,
+                "endLine": 1311,
+                "endChar": 0
+              },
+              "replacement": "    \"SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS\",\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c18446167af8534c371f01dc1d2b877265f14143",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3192b86_7b341f4c",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 13
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-03T13:02:57Z",
+      "side": 1,
+      "message": "Ditto.",
+      "revId": "c18446167af8534c371f01dc1d2b877265f14143",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
