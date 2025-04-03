@@ -17,29 +17,33 @@ namespace skgpu::graphite {
 
 class DawnBackendTextureData final : public BackendTextureData {
 public:
-    DawnBackendTextureData(WGPUTexture tex, WGPUTextureView tv) : fTexture(tex), fTextureView(tv) {}
+    DawnBackendTextureData(WGPUTexture tex, WGPUTextureView rv, WGPUTextureView sv)
+            : fTexture(tex), fRenderView(rv), fSampleView(sv) {}
 
 #if defined(SK_DEBUG)
     skgpu::BackendApi type() const override { return skgpu::BackendApi::kDawn; }
 #endif
 
     WGPUTexture texture() const { return fTexture; }
-    WGPUTextureView textureView() const { return fTextureView; }
+    WGPUTextureView renderView() const { return fRenderView; }
+    WGPUTextureView sampleView() const { return fSampleView; }
 
 private:
     WGPUTexture fTexture;
-    WGPUTextureView fTextureView;
+    WGPUTextureView fRenderView;
+    WGPUTextureView fSampleView;
 
     void copyTo(AnyBackendTextureData& dstData) const override {
         // Don't assert that dstData has a Dawn type() because it could be
         // uninitialized and that assert would fail.
-        dstData.emplace<DawnBackendTextureData>(fTexture, fTextureView);
+        dstData.emplace<DawnBackendTextureData>(fTexture, fRenderView, fSampleView);
     }
 
     bool equal(const BackendTextureData* that) const override {
         SkASSERT(!that || that->type() == skgpu::BackendApi::kDawn);
         if (auto otherDawn = static_cast<const DawnBackendTextureData*>(that)) {
-            return fTexture == otherDawn->fTexture && fTextureView == otherDawn->fTextureView;
+            return fTexture == otherDawn->fTexture && fRenderView == otherDawn->fRenderView &&
+                   fSampleView == otherDawn->fSampleView;
         }
         return false;
     }
@@ -60,17 +64,27 @@ static DawnTextureInfo strip_copy_usage(const DawnTextureInfo& info) {
 }
 
 namespace BackendTextures {
-BackendTexture MakeDawn(WGPUTexture texture) {
+BackendTexture MakeDawn(WGPUTexture texture) { return MakeDawn(texture, nullptr, nullptr); }
+
+BackendTexture MakeDawn(WGPUTexture texture, WGPUTextureView rv, WGPUTextureView sv) {
     return BackendTexturePriv::Make(
             {
                     static_cast<int32_t>(wgpuTextureGetWidth(texture)),
                     static_cast<int32_t>(wgpuTextureGetHeight(texture)),
             },
             TextureInfos::MakeDawn(texture),
-            DawnBackendTextureData(texture, nullptr));
+            DawnBackendTextureData(texture, rv, sv));
 }
 
 BackendTexture MakeDawn(SkISize planeDimensions, const DawnTextureInfo& info, WGPUTexture texture) {
+    return MakeDawn(planeDimensions, info, texture, nullptr, nullptr);
+}
+
+BackendTexture MakeDawn(SkISize planeDimensions,
+                        const DawnTextureInfo& info,
+                        WGPUTexture texture,
+                        WGPUTextureView rv,
+                        WGPUTextureView sv) {
 #if defined(__EMSCRIPTEN__)
     SkASSERT(info.fAspect == wgpu::TextureAspect::All);
 #else
@@ -79,9 +93,8 @@ BackendTexture MakeDawn(SkISize planeDimensions, const DawnTextureInfo& info, WG
              info.fAspect == wgpu::TextureAspect::Plane1Only ||
              info.fAspect == wgpu::TextureAspect::Plane2Only);
 #endif
-    return BackendTexturePriv::Make(planeDimensions,
-                                    TextureInfos::MakeDawn(info),
-                                    DawnBackendTextureData(texture, nullptr));
+    return BackendTexturePriv::Make(
+            planeDimensions, TextureInfos::MakeDawn(info), DawnBackendTextureData(texture, rv, sv));
 }
 
 BackendTexture MakeDawn(SkISize dimensions,
@@ -89,7 +102,7 @@ BackendTexture MakeDawn(SkISize dimensions,
                         WGPUTextureView textureView) {
     return BackendTexturePriv::Make(dimensions,
                                     TextureInfos::MakeDawn(strip_copy_usage(info)),
-                                    DawnBackendTextureData(nullptr, textureView));
+                                    DawnBackendTextureData(nullptr, textureView, textureView));
 }
 
 WGPUTexture GetDawnTexturePtr(const BackendTexture& tex) {
@@ -101,13 +114,22 @@ WGPUTexture GetDawnTexturePtr(const BackendTexture& tex) {
     return dawnData->texture();
 }
 
-WGPUTextureView GetDawnTextureViewPtr(const BackendTexture& tex) {
+WGPUTextureView GetDawnRenderViewPtr(const BackendTexture& tex) {
     if (!tex.isValid() || tex.backend() != skgpu::BackendApi::kDawn) {
         return nullptr;
     }
     const DawnBackendTextureData* dawnData = get_and_cast_data(tex);
     SkASSERT(dawnData);
-    return dawnData->textureView();
+    return dawnData->renderView();
+}
+
+WGPUTextureView GetDawnSampleViewPtr(const BackendTexture& tex) {
+    if (!tex.isValid() || tex.backend() != skgpu::BackendApi::kDawn) {
+        return nullptr;
+    }
+    const DawnBackendTextureData* dawnData = get_and_cast_data(tex);
+    SkASSERT(dawnData);
+    return dawnData->sampleView();
 }
 
 }  // namespace BackendTextures
