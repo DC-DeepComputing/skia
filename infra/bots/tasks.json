@@ -38275,6 +38275,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -38377,6 +38378,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -38479,6 +38481,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -62643,6 +62646,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -62752,6 +62756,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -62859,6 +62864,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -62966,6 +62972,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -63075,6 +63082,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -63182,6 +63190,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -63289,6 +63298,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],
@@ -63396,6 +63406,7 @@
       ],
       "dimensions": [
         "gpu:8086:9a49",
+        "id:id:lin-246-e505",
         "os:Ubuntu-24.04",
         "pool:Skia"
       ],

@@ -1073,6 +1073,9 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 					log.Fatalf("Entry %q not found in Linux GPU mapping.", b.parts["cpu_or_gpu_value"])
 				}
 				d["gpu"] = gpu
+				if b.parts["cpu_or_gpu_value"] == "IntelIrisXe" {
+					d["id"] = "id:lin-246-e505"
+				}
 			} else if b.matchOs("Mac") {
 				gpu, ok := map[string]string{
 					"AppleM1":             "AppleM1",
