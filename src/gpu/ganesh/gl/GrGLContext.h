@@ -72,7 +72,7 @@ public:
     /** What driver is running our GL implementation? This is not necessarily related to the vendor.
         (e.g. Intel GPU being driven by Mesa) */
     GrGLDriver driver() const { return fDriverInfo.fDriver; }
-    GrGLDriverVersion driverVersion() const { return fDriverInfo.fDriverVersion; }
+    GrGLDriverVersion driverVersion() const { return (this->angleBackend() == GrGLANGLEBackend::kUnknown) ? fDriverInfo.fDriverVersion : fDriverInfo.fANGLEDriverVersion; }
     bool isOverCommandBuffer() const { return fDriverInfo.fIsOverCommandBuffer; }
     bool isRunningOverVirgl() const { return fDriverInfo.fIsRunningOverVirgl; }
 
