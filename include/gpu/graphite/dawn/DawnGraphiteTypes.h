@@ -9,6 +9,7 @@
 #define skgpu_graphite_DawnTypes_DEFINED
 
 #include "include/core/SkSize.h"
+#include "include/gpu/graphite/BackendTexture.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAPI.h"
@@ -19,7 +20,6 @@ class SkStream;
 class SkWStream;
 
 namespace skgpu::graphite {
-class BackendTexture;
 
 class SK_API DawnTextureInfo final : public TextureInfo::Data {
 public:
@@ -115,6 +115,17 @@ private:
     bool isCompatible(const TextureInfo& that, bool requireExact) const override;
 };
 
+// This holds BackendTexture and retains the texture views so that they don't need to be recreated
+// everytime the BackendTexture is wrapped in a SkSurface or SkImage.
+struct SK_API DawnBackendTextureAndView final {
+    explicit DawnBackendTextureAndView(BackendTexture backendTexture);
+
+    BackendTexture fBackendTexture;
+
+    wgpu::TextureView fRenderView;
+    wgpu::TextureView fSampleView;
+};
+
 namespace TextureInfos {
 SK_API TextureInfo MakeDawn(const DawnTextureInfo& dawnInfo);
 
@@ -133,6 +144,10 @@ namespace BackendTextures {
 // the WGPUTexture.
 SK_API BackendTexture MakeDawn(WGPUTexture);
 
+// Create a DawnBackendTextureAndView from a WGPUTexture.
+// The DawnBackendTextureAndView will not call retain or release on the passed in WGPUTexture.
+SK_API DawnBackendTextureAndView MakeDawnAndView(WGPUTexture);
+
 // Create a BackendTexture from a WGPUTexture. Texture planeDimensions, plane aspect and
 // info have to be provided. This is intended to be used only when accessing a plane
 // of a WGPUTexture.
@@ -142,6 +157,12 @@ SK_API BackendTexture MakeDawn(WGPUTexture);
 // However, any SkImage or SkSurface that wraps the BackendTexture *will* retain and release
 // the WGPUTexture.
 SK_API BackendTexture MakeDawn(SkISize planeDimensions, const DawnTextureInfo&, WGPUTexture);
+
+// Create a DawnBackendTextureAndView from a WGPUTexture.
+// The DawnBackendTextureAndView will not call retain or release on the passed in WGPUTexture.
+SK_API DawnBackendTextureAndView MakeDawnAndView(SkISize planeDimensions,
+                                                 const DawnTextureInfo&,
+                                                 WGPUTexture);
 
 // Create a BackendTexture from a WGPUTextureView. Texture dimensions and
 // info have to be provided.
