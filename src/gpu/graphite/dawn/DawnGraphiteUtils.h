@@ -82,8 +82,11 @@ TextureFormat DawnFormatToTextureFormat(wgpu::TextureFormat);
 
 namespace BackendTextures {
 
+BackendTexture MakeDawn(const TextureInfo&, WGPUTexture, WGPUTextureView rv, WGPUTextureView sv);
+
 WGPUTexture GetDawnTexturePtr(const BackendTexture&);
-WGPUTextureView GetDawnTextureViewPtr(const BackendTexture&);
+WGPUTextureView GetDawnRenderViewPtr(const BackendTexture&);
+WGPUTextureView GetDawnSampleViewPtr(const BackendTexture&);
 
 }  // namespace BackendTextures
 
