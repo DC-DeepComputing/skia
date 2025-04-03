@@ -27,7 +27,7 @@
 SkEdgeBuilder::Combine SkBasicEdgeBuilder::combineVertical(const SkEdge* edge, SkEdge* last) {
     // We only consider edges that were originally lines to be vertical to avoid numerical issues
     // (crbug.com/1154864).
-    if (last->fEdgeType != SkEdge::Type::kLine || last->fDX || edge->fX != last->fX) {
+    if (last->fEdgeType != SkEdge::Type::kLine || last->fDxDy || edge->fX != last->fX) {
         return kNo_Combine;
     }
     if (edge->fWinding == last->fWinding) {
@@ -119,12 +119,18 @@ SkEdgeBuilder::Combine SkAnalyticEdgeBuilder::combineVertical(const SkAnalyticEd
     return kNo_Combine;
 }
 
-template <typename Edge>
-static bool is_vertical(const Edge* edge) {
+static bool is_vertical(const SkEdge* edge) {
+    // We only consider edges that were originally lines to be vertical to avoid numerical issues
+    // (crbug.com/1154864).
+    return edge->fDxDy     == 0
+        && edge->fEdgeType == SkEdge::Type::kLine;
+}
+
+static bool is_vertical(const SkAnalyticEdge* edge) {
     // We only consider edges that were originally lines to be vertical to avoid numerical issues
     // (crbug.com/1154864).
     return edge->fDX       == 0
-        && edge->fEdgeType == Edge::Type::kLine;
+        && edge->fEdgeType == SkAnalyticEdge::Type::kLine;
 }
 
 // TODO: we can deallocate the edge if edge->setFoo() fails
@@ -132,7 +138,7 @@ static bool is_vertical(const Edge* edge) {
 
 void SkBasicEdgeBuilder::addLine(const SkPoint pts[]) {
     SkEdge* edge = fAlloc.make<SkEdge>();
-    if (edge->setLine(pts[0], pts[1], fClipShift)) {
+    if (edge->setLine(pts[0], pts[1])) {
         Combine combine = is_vertical(edge) && !fList.empty()
             ? this->combineVertical(edge, (SkEdge*)fList.back())
             : kNo_Combine;
@@ -161,7 +167,7 @@ void SkAnalyticEdgeBuilder::addLine(const SkPoint pts[]) {
 }
 void SkBasicEdgeBuilder::addQuad(const SkPoint pts[]) {
     SkQuadraticEdge* edge = fAlloc.make<SkQuadraticEdge>();
-    if (edge->setQuadratic(pts, fClipShift)) {
+    if (edge->setQuadratic(pts)) {
         fList.push_back(edge);
     }
 }
@@ -174,7 +180,7 @@ void SkAnalyticEdgeBuilder::addQuad(const SkPoint pts[]) {
 
 void SkBasicEdgeBuilder::addCubic(const SkPoint pts[]) {
     SkCubicEdge* edge = fAlloc.make<SkCubicEdge>();
-    if (edge->setCubic(pts, fClipShift)) {
+    if (edge->setCubic(pts)) {
         fList.push_back(edge);
     }
 }
@@ -192,7 +198,7 @@ SkEdgeBuilder::Combine SkBasicEdgeBuilder::addPolyLine(const SkPoint pts[],
     auto edge    = (SkEdge*) arg_edge;
     auto edgePtr = (SkEdge**)arg_edgePtr;
 
-    if (edge->setLine(pts[0], pts[1], fClipShift)) {
+    if (edge->setLine(pts[0], pts[1])) {
         return is_vertical(edge) && edgePtr > (SkEdge**)fEdgeList
             ? this->combineVertical(edge, edgePtr[-1])
             : kNo_Combine;
@@ -213,10 +219,10 @@ SkEdgeBuilder::Combine SkAnalyticEdgeBuilder::addPolyLine(const SkPoint pts[],
 }
 
 SkRect SkBasicEdgeBuilder::recoverClip(const SkIRect& src) const {
-    return { SkIntToScalar(src.fLeft   >> fClipShift),
-             SkIntToScalar(src.fTop    >> fClipShift),
-             SkIntToScalar(src.fRight  >> fClipShift),
-             SkIntToScalar(src.fBottom >> fClipShift), };
+    return { SkIntToScalar(src.fLeft),
+             SkIntToScalar(src.fTop),
+             SkIntToScalar(src.fRight),
+             SkIntToScalar(src.fBottom), };
 }
 SkRect SkAnalyticEdgeBuilder::recoverClip(const SkIRect& src) const {
     return SkRect::Make(src);
@@ -301,7 +307,6 @@ int SkEdgeBuilder::buildPoly(const SkPath& path, const SkIRect* iclip, bool canC
 }
 
 int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullToTheRight) {
-    SkPathEdgeIter iter(path);
     if (iclip) {
         SkRect clip = this->recoverClip(*iclip);
         struct Rec {
@@ -333,6 +338,7 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
         return rec.fIsFinite ? fList.size() : 0;
     }
 
+    SkPathEdgeIter iter(path);
     SkAutoConicToQuads quadder;
     constexpr float kConicTol = 0.25f;
     SkPoint monoY[10];
@@ -368,6 +374,9 @@ int SkEdgeBuilder::build(const SkPath& path, const SkIRect* iclip, bool canCullT
                 }
                 break;
             }
+            default:
+                SkDEBUGFAIL("Unknown edge type");
+                break;
         }
     }
     fEdgeList = fList.begin();
