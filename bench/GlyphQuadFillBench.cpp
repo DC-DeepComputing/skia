@@ -20,6 +20,7 @@
 #include "src/text/GlyphRun.h"
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlob.h"
+#include "src/text/gpu/VertexFiller.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/gpu/TestCanvas.h"
 #include "tools/text/gpu/TextBlobTools.h"
@@ -69,7 +70,8 @@ class DirectMaskGlyphVertexFillBenchmark : public Benchmark {
                 sktext::gpu::TextBlobTools::FirstSubRun(fBlob.get());
         SkASSERT_RELEASE(subRun);
         subRun->testingOnly_packedGlyphIDToGlyph(&fCache);
-        fVertices.reset(new char[subRun->vertexStride(drawMatrix) * subRun->glyphCount() * 4]);
+        size_t vertexStride = subRun->vertexFiller().vertexStride(drawMatrix);
+        fVertices.reset(new char[vertexStride * subRun->glyphCount() * 4]);
     }
 
     void onDraw(int loops, SkCanvas* canvas) override {
