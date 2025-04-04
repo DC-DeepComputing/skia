@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b83e59a8_8f8e613d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-04-04T15:01:28Z",
+      "side": 1,
+      "message": "I think this is a quick way to eliminate the overheads. Other options seem like bug architectural changes which we could do over a long period of time.\n\nI tried to cache SkSurface \u0026 SkImage but they are harder to cache because they have more options (like `SkSurfaceProps`, etc) that influence the object unlike BackendTexture. If you worry that the new API would be misused by external Skia users. Maybe we can add a new header that is public to Chrome devs only? Like `DawnGraphiteChrome.h`? This header can be removed once we do the architectural changes.",
+      "parentUuid": "1a1cbfd8_7537cfa3",
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10931348_16714e16",
@@ -43,6 +61,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c7559bc1_fa167b76",
+        "filename": "src/gpu/graphite/dawn/DawnBackendTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-04-04T15:01:28Z",
+      "side": 1,
+      "message": "Dawn doesn\u0027t have public API to verify that. Maybe we can add an API that returns BackendTexture and its Views created from internal `MakeTextureViews` to be safe.\n\ne.g.\n```\nstd::pair\u003cBackendTexture, wgpu::TextureView\u003e MakeDawnAndView(...);\n```",
+      "parentUuid": "10931348_16714e16",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 36
+      },
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5250e981_00eee3fa",
         "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
         "patchSetId": 7
@@ -54,6 +96,30 @@
       "writtenOn": "2025-04-04T14:25:39Z",
       "side": 1,
       "message": "Could we not have a case wehre there\u0027s a renderView but not a sampleView? We wouldn\u0027t necessarily want to replace the render texture view that was provided. Although it looks like in the impl of `MakeTextureViews`, we always create the sample view even if it\u0027s on a texture that isn\u0027t sampleable.",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 68
+      },
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6643efb4_62c96e67",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-04-04T15:01:28Z",
+      "side": 1,
+      "message": "You are right, there might be scenarios where only renderView is needed. But for chrome use cases, we almost can always provide both. And most of the time, both views are the same (because Chrome\u0027s shared images like D3D, IOSurface backing doesn\u0027t have mipmaps). So probably we can make this simpler by providing only one `view` parameter? This view will be used as both render and sample view in the `DawnTexture`.",
+      "parentUuid": "5250e981_00eee3fa",
       "range": {
         "startLine": 190,
         "startChar": 8,
