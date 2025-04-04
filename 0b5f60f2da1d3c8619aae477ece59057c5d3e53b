@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8493a6f_32db99e8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-04-04T15:02:01Z",
+      "side": 1,
+      "message": "sorry typo \"big\" architectural changes.",
+      "parentUuid": "b83e59a8_8f8e613d",
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10931348_16714e16",
