@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1cbfd8_7537cfa3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-04T14:25:39Z",
+      "side": 1,
+      "message": "Before going forward with an API change like this, I\u0027d like to understand what alternatives we can do to allow Chrome to rely less on BackendTexture at all.  Being forced to throw away the SkSurface and SkImage is also a performance loss.  If we didn\u0027t have to do that, then it wouldn\u0027t matter who had the texture views initially.\n\nOne missing feature that would be nice, would be to allow promise images to be fulfilled by another SkImage. Right now I believe this is one reason why the graphite shared image backings hold backend textures instead. Another might be historic, because in Ganesh backend textures were the only way to get simultaneous read/write views of the same texture.  In Graphite, an SkSurface that is sampleable also has an SkImage that can be used whenever.",
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10931348_16714e16",
+        "filename": "src/gpu/graphite/dawn/DawnBackendTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-04T14:25:39Z",
+      "side": 1,
+      "message": "Is there a way in webgpu to make sure that the `texture`, `rv`, and `sv` all point to the same GPU resource?",
+      "range": {
+        "startLine": 96,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 36
+      },
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5250e981_00eee3fa",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-04T14:25:39Z",
+      "side": 1,
+      "message": "Could we not have a case wehre there\u0027s a renderView but not a sampleView? We wouldn\u0027t necessarily want to replace the render texture view that was provided. Although it looks like in the impl of `MakeTextureViews`, we always create the sample view even if it\u0027s on a texture that isn\u0027t sampleable.",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 68
+      },
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
