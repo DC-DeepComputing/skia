@@ -22,6 +22,30 @@
       },
       "revId": "c3eec6b1dc5da059a65e95fcfdb6b1881324a12d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1270838b_7fbc23e3",
+        "filename": "src/core/SkFDot6.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-04T18:18:48Z",
+      "side": 1,
+      "message": "Good suggestion and yes, that\u0027s the goal of this.",
+      "parentUuid": "263af535_b4ebfec0",
+      "range": {
+        "startLine": 66,
+        "startChar": 29,
+        "endLine": 66,
+        "endChar": 37
+      },
+      "revId": "c3eec6b1dc5da059a65e95fcfdb6b1881324a12d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
