@@ -250,5 +250,8 @@ class DefaultFlavor(object):
                        self.module.resource('win_run_and_check_log.ps1')] + cmd
         self._run(name, wrapped_cmd)
     else:
+      if 'ASAN' in extra_tokens:
+        cmd = ['gdb', '-batch', '-ex', 'set disable-randomization off', '-ex', 'run', '-ex', 'bt', '--args'] + cmd
+        #cmd = ['bash', '-c', 'ulimit -c 50000; ' + ' '.join([str(c) for c in cmd])]
       with self.m.context(env=env):
         self._run(name, cmd)
