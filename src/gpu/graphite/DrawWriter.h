@@ -278,7 +278,14 @@ public:
 
     virtual ~Appender() {
         if (fReservedCount > 0) {
-            fDrawer.fManager->returnVertexBytes(fReservedCount * fStride);
+            // Don't give back any bytes that may be zerod.
+            // Given that the reserve count is always aligned, redundant?
+            if (fDrawer.fVertexStride == fStride) {
+                size_t misalignment = fReservedCount & 3;
+                fDrawer.fManager->returnVertexBytes((fReservedCount - misalignment) * fStride);
+            } else {
+                fDrawer.fManager->returnVertexBytes(fReservedCount * fStride);
+            }
         }
         SkASSERT(fDrawer.fAppender == this);
         SkDEBUGCODE(fDrawer.fAppender = nullptr;)
@@ -296,42 +303,99 @@ protected:
     virtual void onFlush() {}
 
     void reserve(unsigned int count) {
-        if (fReservedCount >= count) {
-            return;
-        } else if (fReservedCount > 0) {
-            // Have contiguous bytes that can't satisfy request, so return them in the event the
-            // DBM has additional contiguous bytes after the prior reserved range. The byte count
-            // multiply should be safe here: if it would have overflowed, the original allocation
-            // should have failed and not increased fReservedCount.
-            SkASSERT(SkTFitsIn<uint32_t>((uint64_t)fReservedCount*(uint64_t)fStride));
-            const uint32_t returnedBytes = fReservedCount * fStride;
-            SkASSERT(fTarget.fSize >= returnedBytes);
-            fDrawer.fManager->returnVertexBytes(returnedBytes);
-            fTarget.fSize -= returnedBytes;
-            fReservedCount = 0;
-        }
-
-        // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
-        // move assignment.
-        auto [writer, reservedChunk] = fDrawer.fManager->getVertexWriter(count, fStride);
-        if (writer) {
-            fReservedCount = count;
-
-            if (reservedChunk.fBuffer != fTarget.fBuffer ||
-                reservedChunk.fOffset !=
-                        (fTarget.fOffset + (fPendingBase+fDrawer.fPendingCount)*fStride)) {
-                // Not contiguous, so flush and update binding to 'reservedChunk'
-                this->onFlush();
-                fDrawer.flush();
-
-                fTarget = reservedChunk;
-                fPendingBase = 0;
-                fDrawer.fPendingBufferBinds = true;
-            } else {
-                fTarget.fSize = reservedChunk.fSize + reservedChunk.fOffset - fTarget.fOffset;
+        if (fStride == fDrawer.fVertexStride) {
+            size_t alignedCount = SkAlign4(count);
+            size_t byteDiff = (alignedCount - count) * fStride;
+            if (fReservedCount >= alignedCount) {
+                if (byteDiff) {
+                    SkASSERT(fNextWriter); // It shouldn't be possible to not have a writer here.
+                    fNextWriter.zeroOutBytes(count * fStride, byteDiff);
+                }
+                return;
+            } else if (fReservedCount > 0) {
+                // Have contiguous bytes that can't satisfy request, so return them in the event the
+                // DBM has additional contiguous bytes after the prior reserved range. The byte count
+                // multiply should be safe here: if it would have overflowed, the original allocation
+                // should have failed and not increased fReservedCount.
+                SkASSERT(SkTFitsIn<uint32_t>((uint64_t)fReservedCount*(uint64_t)fStride));
+                const uint32_t returnedBytes = fReservedCount * fStride;
+                SkASSERT(fTarget.fSize >= returnedBytes);
+                fDrawer.fManager->returnVertexBytes(returnedBytes);
+                fTarget.fSize -= returnedBytes;
+                fReservedCount = 0;
             }
+
+            // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
+            // move assignment.
+            auto [writer, reservedChunk] =
+                fDrawer.fManager->getVertexWriter(alignedCount, fStride);
+            if (writer) {
+                if (byteDiff) {
+                    writer.zeroOutBytes(count * fStride, byteDiff);
+                }
+                fReservedCount = count; //This effectively makes it so that the zero bytes are never returned.
+                if (reservedChunk.fBuffer != fTarget.fBuffer ||
+                    reservedChunk.fOffset !=
+                            (fTarget.fOffset + (fPendingBase+fDrawer.fPendingCount)*fStride)) {
+                    // There may not be a writer at this point.
+                    if (fNextWriter) {
+                        // If there is however, do not allow the zerod bytes to be returned.
+                        // TO MICHAEL: I'm putting this to be safe, but this might overkill.
+                        // once a buffer chunk is discarded, can the buffer manager ever scavenge the
+                        // leftover memory?
+                    }
+
+                    // Not contiguous, so flush and update binding to 'reservedChunk'
+                    this->onFlush();
+                    fDrawer.flush();
+
+                    fTarget = reservedChunk;
+                    fPendingBase = 0;
+                    fDrawer.fPendingBufferBinds = true;
+                } else {
+                    fTarget.fSize = reservedChunk.fSize + reservedChunk.fOffset - fTarget.fOffset;
+                }
+            }
+            fNextWriter = std::move(writer);
+        } else {
+            if (fReservedCount >= count) {
+                return;
+            } else if (fReservedCount > 0) {
+                // Have contiguous bytes that can't satisfy request, so return them in the event the
+                // DBM has additional contiguous bytes after the prior reserved range. The byte count
+                // multiply should be safe here: if it would have overflowed, the original allocation
+                // should have failed and not increased fReservedCount.
+                SkASSERT(SkTFitsIn<uint32_t>((uint64_t)fReservedCount*(uint64_t)fStride));
+                const uint32_t returnedBytes = fReservedCount * fStride;
+                SkASSERT(fTarget.fSize >= returnedBytes);
+                fDrawer.fManager->returnVertexBytes(returnedBytes);
+                fTarget.fSize -= returnedBytes;
+                fReservedCount = 0;
+            }
+
+            // NOTE: Cannot bind tuple directly to fNextWriter, compilers don't produce the right
+            // move assignment.
+            auto [writer, reservedChunk] =
+                fDrawer.fManager->getVertexWriter(count, fStride);
+            if (writer) {
+                fReservedCount = count;
+
+                if (reservedChunk.fBuffer != fTarget.fBuffer ||
+                    reservedChunk.fOffset !=
+                            (fTarget.fOffset + (fPendingBase+fDrawer.fPendingCount)*fStride)) {
+                    // Not contiguous, so flush and update binding to 'reservedChunk'
+                    this->onFlush();
+                    fDrawer.flush();
+
+                    fTarget = reservedChunk;
+                    fPendingBase = 0;
+                    fDrawer.fPendingBufferBinds = true;
+                } else {
+                    fTarget.fSize = reservedChunk.fSize + reservedChunk.fOffset - fTarget.fOffset;
+                }
+            }
+            fNextWriter = std::move(writer);
         }
-        fNextWriter = std::move(writer);
     }
 
     VertexWriter append(unsigned int count) {
@@ -344,12 +408,18 @@ protected:
             // will fail since the map failure is tracked by BufferManager.
             // Since one of the reasons for GPU mapping failure is that count*stride does not fit
             // in 32-bits, we calculate the CPU-side size carefully.
-            uint64_t size = (uint64_t)count * (uint64_t)fStride;
+            size_t alignedCount = fStride == fDrawer.fVertexStride ? SkAlign4(count) : count;
+            uint64_t size = (uint64_t)alignedCount * (uint64_t)fStride;
             if (!SkTFitsIn<size_t>(size)) {
                 sk_report_container_overflow_and_die();
             }
-            return VertexWriter(fDrawer.fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
+            auto writer =
+                VertexWriter(fDrawer.fFailureStorage.reset(size, SkAutoMalloc::kReuse_OnShrink),
                                 SkTo<size_t>(size));
+            if (fStride == fDrawer.fVertexStride && alignedCount > count) {
+                writer.zeroOutBytes(count * fStride, (alignedCount - count) * fStride);
+            }
+            return writer;
         }
 
         SkASSERT(fReservedCount >= count);

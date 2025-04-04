@@ -653,9 +653,17 @@ StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
 VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
-    const size_t size = count * stride;
-    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride, binding);
-    return VertexWriter{data, size};
+    const size_t alignedCount = SkAlign4(count);
+    const size_t alignedSize = validate_count_and_stride(alignedCount, stride);
+    void* data = this->prepareStaticData(&fVertexBufferInfo, alignedSize, stride, binding);
+    if (alignedCount > count) {
+        const size_t byteDiff = (alignedCount - count) * stride;
+        if (byteDiff) {
+            void* zPtr = SkTAddOffset<void>(data, count * stride);
+            memset(zPtr, 0, byteDiff);
+        }
+    }
+    return VertexWriter{data, alignedSize};
 }
 
 VertexWriter StaticBufferManager::getIndexWriter(size_t size, BindBufferInfo* binding) {
