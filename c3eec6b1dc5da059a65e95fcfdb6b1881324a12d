@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "263af535_b4ebfec0",
+        "filename": "src/core/SkFDot6.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-04T18:15:27Z",
+      "side": 1,
+      "message": "nit: Use float here if the point is to start deprecating SkScalar?",
+      "range": {
+        "startLine": 66,
+        "startChar": 29,
+        "endLine": 66,
+        "endChar": 37
+      },
+      "revId": "c3eec6b1dc5da059a65e95fcfdb6b1881324a12d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
