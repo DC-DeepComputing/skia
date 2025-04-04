@@ -13,6 +13,7 @@
 #include "include/core/SkSpan.h"
 #include "src/core/SkColorData.h"  // IWYU pragma: keep
 #include "src/text/gpu/SubRunAllocator.h"
+#include "src/text/gpu/VertexFiller.h"
 
 #include <cstddef>
 #include <functional>
@@ -26,7 +27,9 @@ class SkPaint;
 class SkReadBuffer;
 class SkStrikeClient;
 class SkWriteBuffer;
+struct SkIRect;
 struct SkPoint;
+struct SkRect;
 struct SkStrikeDeviceInfo;
 
 namespace sktext {
@@ -38,21 +41,10 @@ namespace skgpu {
 enum class MaskFormat : int;
 }
 
-#if defined(SK_GANESH) || defined(SK_USE_LEGACY_GANESH_TEXT_APIS)
-#include "src/gpu/ganesh/ops/GrOp.h"
-
-class GrClip;
-struct SkIRect;
-namespace skgpu::ganesh {
-class SurfaceDrawContext;
-}
-#endif
-
 namespace sktext::gpu {
 class GlyphVector;
 class Glyph;
 class StrikeCache;
-class VertexFiller;
 
 using RegenerateAtlasDelegate = std::function<std::tuple<bool, int>(GlyphVector*,
                                                                     int begin,
@@ -90,29 +82,37 @@ public:
     virtual int glyphSrcPadding() const = 0;
     virtual unsigned short instanceFlags() const = 0;
 
-#if defined(SK_GANESH) || defined(SK_USE_LEGACY_GANESH_TEXT_APIS)
-    virtual size_t vertexStride(const SkMatrix& drawMatrix) const = 0;
+    virtual std::tuple<bool, SkRect> deviceRectAndNeedsTransform(
+            const SkMatrix &positionMatrix) const = 0;
 
-    virtual std::tuple<const GrClip*, GrOp::Owner> makeAtlasTextOp(
-            const GrClip*,
-            const SkMatrix& viewMatrix,
-            SkPoint drawOrigin,
-            const SkPaint&,
-            sk_sp<SkRefCnt>&& subRunStorage,
-            skgpu::ganesh::SurfaceDrawContext*) const = 0;
+    struct GlyphParams {
+        bool isSDF;
+        bool isLCD;
+        bool isAA;
+    };
+    virtual GlyphParams glyphParams() const = 0;
 
-    virtual void fillVertexData(
-            void* vertexDst, int offset, int count,
-            const SkPMColor4f& color,
-            const SkMatrix& drawMatrix,
-            SkPoint drawOrigin,
-            SkIRect clip) const = 0;
-#endif
     // This call is not thread safe. It should only be called from a known single-threaded env.
     virtual std::tuple<bool, int> regenerateAtlas(
             int begin, int end, RegenerateAtlasDelegate) const = 0;
 
     virtual const VertexFiller& vertexFiller() const = 0;
+
+    size_t vertexStride(const SkMatrix& drawMatrix) const {
+        return this->vertexFiller().vertexStride(drawMatrix);
+    }
+
+    void fillVertexData(
+            void* vertexDst, int offset, int count,
+            const SkPMColor4f& color,
+            const SkMatrix& drawMatrix,
+            SkPoint drawOrigin,
+            SkIRect clip) const {
+        SkMatrix position_matrix = drawMatrix;
+        position_matrix.preTranslate(drawOrigin.x(), drawOrigin.y());
+        this->vertexFiller().fillVertexData(offset, count, this->glyphs(), color, position_matrix,
+                                            clip, vertexDst);
+    }
 
     virtual void testingOnly_packedGlyphIDToGlyph(StrikeCache* cache) const = 0;
 };
