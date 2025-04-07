@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "416996f2_33c0239e",
+        "filename": "gm/fontations_ft_compare.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-07T18:49:32Z",
+      "side": 1,
+      "message": "This always happens (`fSimulatePixelGeometry` doesn\u0027t appear to do anything other than set the name of the gm). See https://skia-review.googlesource.com/c/skia/+/976196 for what I think was the intent.",
+      "revId": "13c6a67128538902d1206590fe9e256c54143e35",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
