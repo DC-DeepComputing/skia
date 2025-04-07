@@ -158,6 +158,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "89cb7555_d53f0b5c",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-07T17:41:13Z",
+      "side": 1,
+      "message": "I haven\u0027t fully worked it out, but my thinking is that for ARM padding the old `fRenderState` will be needed during `reserve()`, because we will need to know if there were instances in the prior append.",
+      "parentUuid": "3e901286_b096ca99",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c91cf98_6b72a622",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 2
@@ -422,6 +446,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "Does this mean line wrapping? Or are things not rendering correctly?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 30
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58d87a3a_713838a8",
+        "filename": "src/gpu/graphite/render/GraphiteVertexFiller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-07T17:41:13Z",
+      "side": 1,
+      "message": "Leftover working comment for line wrapping I forgot to delete.",
+      "parentUuid": "e24a1e5f_2c6bee0a",
       "range": {
         "startLine": 33,
         "startChar": 0,
