@@ -265,6 +265,8 @@ private:
 
     uint32_t fNumActivePages;
 
+    skia_private::TArray<sk_sp<TextureProxy>> fProxyDeleteList;
+
     SkDEBUGCODE(void validate(const AtlasLocator& atlasLocator) const;)
 };
 

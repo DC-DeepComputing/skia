@@ -286,6 +286,9 @@ SkIPoint DrawAtlas::prepForRender(const AtlasLocator& locator, SkAutoPixmapStora
 }
 
 void DrawAtlas::compact(AtlasToken startTokenForNextFlush) {
+    // Release any proxies from previously deactivated Pages
+    fProxyDeleteList.clear();
+
     if (fNumActivePages < 1) {
         fPrevFlushToken = startTokenForNextFlush;
         return;
@@ -514,8 +517,8 @@ inline void DrawAtlas::deactivateLastPage() {
         }
     }
 
-    // remove ref to the texture proxy
-    fProxies[lastPageIndex].reset();
+    // push the texture proxy on the delete list
+    fProxyDeleteList.push_back(std::move(fProxies[lastPageIndex]));
     --fNumActivePages;
 }
 
