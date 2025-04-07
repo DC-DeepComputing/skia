@@ -612,6 +612,7 @@ private:
     enum Type {
         kTrueType_Type, kBitmap_Type, kLine_Type
     } fType;
+    bool fGenerateFromPath;
     TEXTMETRIC fTM;
 };
 
@@ -646,6 +647,7 @@ SkScalerContext_GDI::SkScalerContext_GDI(LogFontTypeface& rawTypeface,
         , fSavefont(nullptr)
         , fFont(nullptr)
         , fSC(nullptr)
+        , fGenerateFromPath(false)
 {
     LogFontTypeface* typeface = static_cast<LogFontTypeface*>(this->getTypeface());
 
@@ -741,7 +743,7 @@ SkScalerContext_GDI::SkScalerContext_GDI(LogFontTypeface& rawTypeface,
         fMat22.eM22 = SkFloatToFIXED(xform.eM22);
 
         if (needToRenderWithSkia(fRec)) {
-            this->forceGenerateImageFromPath();
+            fGenerateFromPath = true;
         }
 
         // Create a hires matrix if we need linear metrics.
@@ -811,6 +813,7 @@ SkScalerContext::GlyphMetrics SkScalerContext_GDI::generateMetrics(const SkGlyph
     SkASSERT(fDDC);
 
     GlyphMetrics mx(glyph.maskFormat());
+    mx.computeFromPath = fGenerateFromPath;
 
     if (fType == SkScalerContext_GDI::kBitmap_Type || fType == SkScalerContext_GDI::kLine_Type) {
         SIZE size;
@@ -1086,6 +1089,11 @@ void SkScalerContext_GDI::RGBToLcd16(
 
 void SkScalerContext_GDI::generateImage(const SkGlyph& glyph, void* imageBuffer) {
     SkASSERT(fDDC);
+
+    if (fGenerateFromPath) {
+        this->generateImageFromPath(glyph, imageBuffer);
+        return;
+    }
 
     const bool isBW = SkMask::kBW_Format == fRec.fMaskFormat;
     const bool isAA = !isLCD(fRec);
