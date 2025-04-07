@@ -20,6 +20,7 @@
 SkTypefaceCache::SkTypefaceCache() {}
 
 void SkTypefaceCache::add(sk_sp<SkTypeface> face) {
+    SkASSERT_RELEASE(face);
     const auto limit = SkGraphics::GetTypefaceCacheCountLimit();
 
     if (fTypefaces.size() >= limit) {
