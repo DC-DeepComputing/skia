@@ -55,10 +55,10 @@ public:
 
     CoverageMaskShape() = default;
     CoverageMaskShape(const Shape& shape,
-                      const TextureProxy* proxy,
+                      sk_sp<TextureProxy> proxy,
                       const SkM44& deviceToLocal,
                       const MaskInfo& maskInfo)
-            : fTextureProxy(proxy)
+            : fTextureProxy(std::move(proxy))
             , fDeviceToLocal(deviceToLocal)
             , fInverted(shape.inverted())
             , fMaskInfo(maskInfo) {
@@ -90,13 +90,15 @@ public:
     const half2& maskSize() const { return fMaskInfo.fMaskSize; }
 
     // The texture that the shape will be rendered to.
-    const TextureProxy* textureProxy() const { return fTextureProxy; }
+    const TextureProxy* textureProxy() const { return fTextureProxy.get(); }
 
     // Whether or not the shape will be painted according to an inverse fill rule.
     bool inverted() const { return fInverted; }
 
 private:
-    const TextureProxy* fTextureProxy;
+    // We store a ref to the texture proxy to keep it alive.
+    // TODO: switch to raw pointer once textures/uniforms are extracted in Device::drawGeometry.
+    sk_sp<TextureProxy> fTextureProxy;
     SkM44 fDeviceToLocal;
     bool fInverted;
     MaskInfo fMaskInfo;
