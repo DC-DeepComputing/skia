@@ -733,6 +733,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
     return sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
+                                     pipelineLabel,
                                      pipelineInfo,
                                      std::move(asyncCreation),
                                      std::move(groupLayouts),
@@ -743,13 +744,14 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 
 DawnGraphicsPipeline::DawnGraphicsPipeline(
         const skgpu::graphite::SharedContext* sharedContext,
+        const std::string& pipelineLabel,
         const PipelineInfo& pipelineInfo,
         std::unique_ptr<AsyncPipelineCreation> asyncCreationInfo,
         BindGroupLayouts groupLayouts,
         PrimitiveType primitiveType,
         uint32_t refValue,
         skia_private::TArray<sk_sp<DawnSampler>> immutableSamplers)
-    : GraphicsPipeline(sharedContext, pipelineInfo)
+    : GraphicsPipeline(sharedContext, pipelineLabel, pipelineInfo)
     , fAsyncPipelineCreation(std::move(asyncCreationInfo))
     , fGroupLayouts(std::move(groupLayouts))
     , fPrimitiveType(primitiveType)
