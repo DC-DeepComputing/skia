@@ -29,6 +29,8 @@
 #include "src/gpu/graphite/Texture.h"
 #include "src/sksl/SkSLCompiler.h"
 
+FILE* gFile = nullptr;
+
 namespace skgpu::graphite {
 
 // This is only used when tracing is enabled at compile time.
@@ -99,7 +101,21 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
             // usage immediately sees that the pipeline cannot be created, vs. retrying every time?
             pipeline = globalCache->addGraphicsPipeline(pipelineKey, std::move(pipeline));
         }
+
+        if (!gFile) {
+            gFile = fopen("/Users/robertphillips/chrome-log.txt", "a");
+            if (!gFile) {
+                printf("----------------------- Failed to open output file\n");
+            }
+        }
+
+        if (gFile) {
+            SkDebugf("%s\n", pipeline->pipelineLabel().c_str());
+            fprintf(gFile, "%s\n", pipeline->pipelineLabel().c_str());
+            fflush(gFile);
+        }
     }
+
     return pipeline;
 }
 

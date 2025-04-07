@@ -91,11 +91,14 @@ public:
     void markEpoch(uint16_t epoch) { fPipelineInfo.fEpoch = epoch; }
     uint16_t epoch() const { return fPipelineInfo.fEpoch; }
 
+    const std::string& pipelineLabel() const { return fPipelineLabel; }
+
 protected:
-    GraphicsPipeline(const SharedContext*, const PipelineInfo&);
+    GraphicsPipeline(const SharedContext*, const std::string& pipelineLabel, const PipelineInfo&);
 
 private:
     PipelineInfo fPipelineInfo;
+    const std::string fPipelineLabel;
 };
 
 }  // namespace skgpu::graphite
