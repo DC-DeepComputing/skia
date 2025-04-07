@@ -1307,7 +1307,6 @@ optional("png_encode") {
   public_defines = [
     "SK_CODEC_ENCODES_PNG",
     "SK_CODEC_ENCODES_PNG_WITH_LIBPNG",
-    "SK_CODEC_ENCODES_PNG_WITH_CONVERT_PIXELS",
   ]
 
   public = skia_encode_png_public
@@ -2533,9 +2532,6 @@ if (skia_enable_tools) {
       ":fontmgr_fontconfig_tests",
       ":fontmgr_mac_ct_tests",
       ":fontscanner_tests",
-      ":png_decode_libpng_tests",
-      ":png_decode_rust_tests",
-      ":png_encode_rust_tests",
       ":skia",
       ":test",
       ":tool_utils",
@@ -2552,6 +2548,14 @@ if (skia_enable_tools) {
       "//third_party/libwebp",
       "//third_party/zlib",
     ]
+    if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
+      deps += [
+        ":png_decode_rust_tests",
+        ":png_encode_rust_tests",
+      ]
+    } else {
+      deps += [ ":png_decode_libpng_tests" ]
+    }
   }
 
   import("gn/bench.gni")
