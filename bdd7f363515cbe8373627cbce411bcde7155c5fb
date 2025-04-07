@@ -182,6 +182,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d29fccc5_a01233de",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T17:56:13Z",
+      "side": 1,
+      "message": "Would it keep things simpler if we handled the ARM padding in `newPipelineState`? If the old render state was vertices (regardless of if the new state was vertices or instances), a new pipeline means the end padding needs to be zero\u0027ed.\n\nBut all reserved excess bytes should be returned at this point, so we can have DrawWriter zero out bytes up to a multiple of (4*old vertex stride), right?",
+      "parentUuid": "89cb7555_d53f0b5c",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c91cf98_6b72a622",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 2
