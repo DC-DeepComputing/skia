@@ -360,6 +360,7 @@ static void write_vertex_buffer(VertexWriter writer) {
 
 AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferManager)
         : RenderStep(RenderStepID::kAnalyticRRect,
+                     // Appends Instances, Static.
                      Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA |
                      Flags::kUseNonAAInnerFill,
                      /*uniforms=*/{},
@@ -481,7 +482,11 @@ void AnalyticRRectRenderStep::writeVertices(DrawWriter* writer,
                                             skvx::uint2 ssboIndices) const {
     SkASSERT(params.geometry().isShape() || params.geometry().isEdgeAAQuad());
 
-    DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
+    DrawWriter::Instances instance{*writer,
+                                   fVertexBuffer,
+                                   fIndexBuffer,
+                                   kIndexCount,
+                                   getRenderStateFlags()};
     auto vw = instance.append(1);
 
     // The bounds of a rect is the rect, and the bounds of a rrect is tight (== SkRRect::getRect()).

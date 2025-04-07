@@ -82,7 +82,8 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
                                                        StaticBufferManager* bufferManager)
         : RenderStep(evenOdd ? RenderStepID::kTessellateCurves_EvenOdd
                              : RenderStepID::kTessellateCurves_Winding,
-                     Flags::kRequiresMSAA,
+                     // Appends Instances, Dynamic.
+                     Flags::kRequiresMSAA | Flags::kIsDynamic,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
@@ -137,7 +138,8 @@ void TessellateCurvesRenderStep::writeVertices(DrawWriter* dw,
                   *dw,
                   fVertexBuffer,
                   fIndexBuffer,
-                  patchReserveCount};
+                  patchReserveCount,
+                  getRenderStateFlags()};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
     writer.updateSsboIndexAttrib(ssboIndices);
 

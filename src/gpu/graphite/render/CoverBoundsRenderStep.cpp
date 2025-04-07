@@ -27,6 +27,7 @@ namespace skgpu::graphite {
 CoverBoundsRenderStep::CoverBoundsRenderStep(RenderStep::RenderStepID renderStepID,
                                              DepthStencilSettings dsSettings)
         : RenderStep(renderStepID,
+                     // Appends Instances, Static
                      Flags::kPerformsShading,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,
@@ -55,7 +56,7 @@ void CoverBoundsRenderStep::writeVertices(DrawWriter* writer,
                                           skvx::uint2 ssboIndices) const {
     // Each instance is 4 vertices, forming 2 triangles from a single triangle strip, so no indices
     // are needed. sk_VertexID is used to place vertex positions, so no vertex buffer is needed.
-    DrawWriter::Instances instances{*writer, {}, {}, 4};
+    DrawWriter::Instances instances{*writer, {}, {}, 4, getRenderStateFlags()};
 
     skvx::float4 bounds;
     if (params.geometry().isShape() && params.geometry().shape().inverted()) {

@@ -126,6 +126,7 @@ static void write_vertex_buffer(VertexWriter writer) {
 
 CircularArcRenderStep::CircularArcRenderStep(StaticBufferManager* bufferManager)
         : RenderStep(RenderStepID::kCircularArc,
+                     // Appends Instances, Static.
                      Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA,
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,
@@ -206,7 +207,7 @@ void CircularArcRenderStep::writeVertices(DrawWriter* writer,
                                           skvx::uint2 ssboIndices) const {
     SkASSERT(params.geometry().isShape() && params.geometry().shape().isArc());
 
-    DrawWriter::Instances instance{*writer, fVertexBuffer, {}, kVertexCount};
+    DrawWriter::Instances instance{*writer, fVertexBuffer, {}, kVertexCount, getRenderStateFlags()};
     auto vw = instance.append(1);
 
     const Shape& shape = params.geometry().shape();

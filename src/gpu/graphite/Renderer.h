@@ -144,12 +144,33 @@ public:
     // and variant is a unique term describing instance's specific configuration.
     const char* name() const { return RenderStepName(fRenderStepID); }
 
+    enum class Flags : unsigned {
+        kNone                  = 0b0000000000,
+        kAppendVertices        = 0b0000000001,  // Else instances
+        kIsDynamic             = 0b0000000010,  // Else statically known appends
+        kRequiresMSAA          = 0b0000000100,
+        kPerformsShading       = 0b0000001000,
+        kHasTextures           = 0b0000010000,
+        kEmitsCoverage         = 0b0000100000,
+        kLCDCoverage           = 0b0001000000,
+        kEmitsPrimitiveColor   = 0b0010000000,
+        kOutsetBoundsForAA     = 0b0100000000,
+        kUseNonAAInnerFill     = 0b1000000000,
+    };
+    SK_DECL_BITMASK_OPS_FRIENDS(Flags) // Delete this now?
+
     bool requiresMSAA()        const { return SkToBool(fFlags & Flags::kRequiresMSAA);        }
     bool performsShading()     const { return SkToBool(fFlags & Flags::kPerformsShading);     }
     bool hasTextures()         const { return SkToBool(fFlags & Flags::kHasTextures);         }
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
     bool outsetBoundsForAA()   const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);   }
     bool useNonAAInnerFill()   const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);   }
+    SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
+        SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
+        if (SkToBool(fFlags & Flags::kAppendVertices))    rs |= RenderStateFlags::kAppendVertices;
+        if (SkToBool(fFlags & Flags::kIsDynamic))         rs |= RenderStateFlags::kIsDynamic;
+        return rs;
+    }
 
     Coverage coverage() const { return RenderStep::GetCoverage(fFlags); }
 
@@ -210,19 +231,6 @@ public:
     //      stateless Renderstep can refer to for {draw,step} pairs?
     //    - Does each DrawList::Draw have extra space (e.g. 8 bytes) that steps can cache data in?
 protected:
-    enum class Flags : unsigned {
-        kNone                  = 0b00000000,
-        kRequiresMSAA          = 0b00000001,
-        kPerformsShading       = 0b00000010,
-        kHasTextures           = 0b00000100,
-        kEmitsCoverage         = 0b00001000,
-        kLCDCoverage           = 0b00010000,
-        kEmitsPrimitiveColor   = 0b00100000,
-        kOutsetBoundsForAA     = 0b01000000,
-        kUseNonAAInnerFill     = 0b10000000,
-    };
-    SK_DECL_BITMASK_OPS_FRIENDS(Flags)
-
     // While RenderStep does not define the full program that's run for a draw, it defines the
     // entire vertex layout of the pipeline. This is not allowed to change, so can be provided to
     // the RenderStep constructor by subclasses.

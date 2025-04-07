@@ -31,7 +31,8 @@ namespace skgpu::graphite {
 MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
         : RenderStep(evenOdd ? RenderStepID::kMiddleOutFan_EvenOdd
                              : RenderStepID::kMiddleOutFan_Winding,
-                     Flags::kRequiresMSAA,
+                     // Appends Vertices, Static.
+                     Flags::kRequiresMSAA | Flags::kAppendVertices,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
@@ -61,7 +62,7 @@ void MiddleOutFanRenderStep::writeVertices(DrawWriter* writer,
 
     float depth = params.order().depthAsFloat();
 
-    DrawWriter::Vertices verts{*writer};
+    DrawWriter::Vertices verts{*writer, getRenderStateFlags()};
     verts.reserve(maxTrianglesInFans * 3);
     for (tess::PathMiddleOutFanIter it(path); !it.done();) {
         for (auto [p0, p1, p2] : it.nextStack()) {

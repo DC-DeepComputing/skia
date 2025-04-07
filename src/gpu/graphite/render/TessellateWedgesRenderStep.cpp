@@ -83,7 +83,8 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID
                                                        DepthStencilSettings depthStencilSettings,
                                                        StaticBufferManager* bufferManager)
         : RenderStep(renderStepID,
-                     Flags::kRequiresMSAA |
+                     // Appends Instances, Dynamic.
+                     Flags::kRequiresMSAA | Flags::kIsDynamic |
                      (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
                                                               : Flags::kNone),
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
@@ -146,7 +147,8 @@ void TessellateWedgesRenderStep::writeVertices(DrawWriter* dw,
                   *dw,
                   fVertexBuffer,
                   fIndexBuffer,
-                  patchReserveCount};
+                  patchReserveCount,
+                  getRenderStateFlags()};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
     writer.updateSsboIndexAttrib(ssboIndices);
 

@@ -193,6 +193,7 @@ static void write_vertex_buffer(VertexWriter writer) {
 
 PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferManager)
         : RenderStep(RenderStepID::kPerEdgeAAQuad,
+                     // Appends Instances, Static.
                      Flags::kPerformsShading | Flags::kEmitsCoverage | Flags::kOutsetBoundsForAA |
                      Flags::kUseNonAAInnerFill,
                      /*uniforms=*/{},
@@ -256,7 +257,11 @@ void PerEdgeAAQuadRenderStep::writeVertices(DrawWriter* writer,
     SkASSERT(params.geometry().isEdgeAAQuad());
     const EdgeAAQuad& quad = params.geometry().edgeAAQuad();
 
-    DrawWriter::Instances instance{*writer, fVertexBuffer, fIndexBuffer, kIndexCount};
+    DrawWriter::Instances instance{*writer,
+                                   fVertexBuffer,
+                                   fIndexBuffer,
+                                   kIndexCount,
+                                   getRenderStateFlags()};
     auto vw = instance.append(1);
 
     // Empty fills should not have been recorded at all.
