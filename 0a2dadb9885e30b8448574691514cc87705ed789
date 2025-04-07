@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cfde50c3_ed085c7f",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T17:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83cc9ecb_40edd4ac",
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "575abcda_010f657b",
@@ -100,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b656e0b_6f050a9b",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T17:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "882f3de8_12688ba5",
+      "range": {
+        "startLine": 1158,
+        "startChar": 0,
+        "endLine": 1158,
+        "endChar": 70
+      },
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2763e31a_7803e292",
@@ -131,6 +173,24 @@
       "side": 1,
       "message": "It no longer needs to be. The types are global and VertexFiller is Ganesh-agnostic.",
       "parentUuid": "2763e31a_7803e292",
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c972fe4_46d178e5",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T17:13:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b339c735_0e47ee90",
       "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
