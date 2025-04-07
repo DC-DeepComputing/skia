@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "83cc9ecb_40edd4ac",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T15:21:55Z",
+      "side": 1,
+      "message": "No, it\u0027s used in the various makeAtlasTextOp() methods.",
+      "parentUuid": "bc63608a_c1397f7c",
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "575abcda_010f657b",
         "filename": "src/text/gpu/SubRunContainer.cpp",
         "patchSetId": 8
@@ -60,6 +78,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "882f3de8_12688ba5",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1158,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T15:21:55Z",
+      "side": 1,
+      "message": "I fixed it in the follow-up CL.",
+      "parentUuid": "575abcda_010f657b",
+      "range": {
+        "startLine": 1158,
+        "startChar": 0,
+        "endLine": 1158,
+        "endChar": 70
+      },
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2763e31a_7803e292",
         "filename": "src/text/gpu/SubRunContainer.h",
         "patchSetId": 8
@@ -71,6 +113,24 @@
       "writtenOn": "2025-04-07T15:05:47Z",
       "side": 1,
       "message": "Do we not want this guarded by:\n#if defined(SK_GANESH) || defined(SK_USE_LEGACY_GANESH_TEXT_APIS)\n?",
+      "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b339c735_0e47ee90",
+        "filename": "src/text/gpu/SubRunContainer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 156,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-07T15:21:55Z",
+      "side": 1,
+      "message": "It no longer needs to be. The types are global and VertexFiller is Ganesh-agnostic.",
+      "parentUuid": "2763e31a_7803e292",
       "revId": "0a2dadb9885e30b8448574691514cc87705ed789",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
