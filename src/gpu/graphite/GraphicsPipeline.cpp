@@ -19,11 +19,13 @@
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
+                                   const std::string& pipelineLabel,
                                    const PipelineInfo& pipelineInfo)
         : Resource(sharedContext,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0)
-        , fPipelineInfo(pipelineInfo) {}
+        , fPipelineInfo(pipelineInfo)
+        , fPipelineLabel(pipelineLabel) {}
 
 GraphicsPipeline::~GraphicsPipeline() {
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)

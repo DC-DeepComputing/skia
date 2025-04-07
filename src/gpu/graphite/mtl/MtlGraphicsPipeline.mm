@@ -479,7 +479,7 @@ MtlGraphicsPipeline::MtlGraphicsPipeline(const skgpu::graphite::SharedContext* s
                                          sk_cfp<id<MTLRenderPipelineState>> pso,
                                          sk_cfp<id<MTLDepthStencilState>> dss,
                                          uint32_t refValue)
-        : GraphicsPipeline(sharedContext, pipelineInfo)
+        : GraphicsPipeline(sharedContext, "metal", pipelineInfo)
         , fPipelineState(std::move(pso))
         , fDepthStencilState(std::move(dss))
         , fStencilReferenceValue(refValue) {}
