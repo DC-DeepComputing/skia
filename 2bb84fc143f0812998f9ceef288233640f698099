@@ -16,6 +16,24 @@
       "message": "Do we enable testing with bazel in our tryjobs?",
       "revId": "2bb84fc143f0812998f9ceef288233640f698099",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcf818bf_98449045",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-07T18:11:40Z",
+      "side": 1,
+      "message": "We have some bazel jobs if you search, but I think the actual test coverage is very spotty (not many unit tests have been converted/enabled).",
+      "parentUuid": "3befaa74_1b0a478c",
+      "revId": "2bb84fc143f0812998f9ceef288233640f698099",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
