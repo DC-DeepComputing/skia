@@ -206,6 +206,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d45c7d76_0cc3164e",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-07T18:45:47Z",
+      "side": 1,
+      "message": "It\u0027s doable---you do still have `fNextWriter` to zero out the bytes. The only problem is that you will need a `TakeBackBytes` function to make sure the pointers get updated and you don\u0027t stomp the padding on vertices-\u003einstance switch.\n\nI\u0027ll make the changes to this CL, assuming this works :).",
+      "parentUuid": "d29fccc5_a01233de",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3c91cf98_6b72a622",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 2
