@@ -1,0 +1,435 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a83bb580_a77fe8ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "I\u0027m a big fan of this direction. Most of my comments are how we can push this upfront RenderStateFlags concept to get more immediate simplifications to DrawWriter that I think would be reasonable to do in this CL.",
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cef9a37_6db8462a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "Since we are passing this in here, we shouldn\u0027t need to require the Appenders to have a RenderStateFlags argument that all RenderSteps have to pass in.",
+      "range": {
+        "startLine": 619,
+        "startChar": 40,
+        "endLine": 619,
+        "endChar": 72
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6f168b9_24e27a84",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "Can we change this to have 4 values like:\nkFixed \u003d 0b000, // Uses explicit `DrawWriter::draw` functions\nkAppendVertices \u003d 0b001, // Appends vertices\nkAppendInstances \u003d 0b010, // Appends instances with a static vertex count\nkAppendDynamicInstances \u003d 0b100, // Appends instances with flexible vertex count\n\nThere are two competing \"dynamic\" concepts at play with DrawWriter, so I think this helps differentiate them: 1. whether or not some type of data is being appended, so the draw count is dynamic, or 2. whether or not the instance\u0027s definition is itself dynamic.\n\nRight now no RenderStep will use kFixed, but there is a good chance that as we flesh out the implementation for the `SkMesh` and `SkVertices` APIs that we would cache GPU buffers associated with the user-facing objects.  In that case, the VerticesRenderStep would be kFixed and call the direct `draw` functions with BindBufferInfos from the mesh object.",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 61
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c47808_c870ae0e",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "This should add a `SK_MAKE_BITMASK_OPS(RenderStateFlags)` right here to add the type safe bitmask operators.",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 2
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "210d86c0_9fa4f529",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "A lot of the original complexity in `setTemplate` was because it was trying to support implicit changes to render state flags at any point in time. Now, we know the render state flags are only changing in one place: `newPipelineState` and it already has a call to flush().\n\nsetTemplate only has to flush if the buffers are changing (rare), but could be a way to account for the pending base calculations instead of also having to reset them in newPipelineState. Something like:\n\n    uint32_t newPendingBaseVertex \u003d 0;\n    if (vertices.fBuffer) {\n        if (vertices.fOffset % fVertexStride \u003d\u003d 0) {\n            newPendingBaseVertex \u003d vertices.fOffset / fVertexStride;\n            vertices.fOffset \u003d 0;\n        } // else will have to bind directly to the original byte offset\n    } else {\n        // Vertices aren\u0027t used, so carry prior state forward so we don\u0027t change\n        // state that is ignored by the current pipeline.\n        vertices \u003d fVertices;\n        newPendingBaseVertex \u003d fPendingBaseVertex;\n    }\n    \n    // ... repeat for instances and matching fields and indices.\n    \n    // With `vertices` offset hopefully set to 0, this will hopefully be true rarely.\n    bool needBindingChange \u003d vertices !\u003d fVertices || instances !\u003d fInstances ...\n    bool pendingBaseChange \u003d newPendingBaseVertex !\u003d fPendingBaseVertices || ...\n    if (fPendingCount \u003e 0 \u0026\u0026 (needBindingChange || pendingBaseChange)) {\n        this-\u003eflush();\n    }\n    \n    fPendingBufferBinds \u003d needBindingChange;\n    fVertices \u003d vertices;\n    fPendingBaseVertex \u003d newPendingBaseVertex;\n    // etc.\n    \nWith this logic for setting pending bases, I think we can just get rid of the pending base assignment in newPipelineState entirely because we will always have a later call to `setTemplate`",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 91
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aee98746_e2dc643b",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "See note in `setTemplate`, but I think because we can stash the render state here and we\u0027ve flushed, we can move the pending base calculations to setTemplate and then we\u0027re down to one place that is setting them.",
+      "range": {
+        "startLine": 95,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 9
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e901286_b096ca99",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "We should set `fRenderState \u003d renderState` here, as it will always be the same state flags for all later Appenders of the DrawWriter until the next `newPipelineState` call.  Since `flush()` is called at the start, and we\u0027ve already adjusted our pending base, we won\u0027t need the old `fRenderState` value anymore.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3c91cf98_6b72a622",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "They might be used in unit tests? But they are otherwise unused for actual `RenderSteps`. As long as they aren\u0027t creating a burden to `setTemplate` or `flush`, I\u0027d prefer to keep them around as a way to show how the fully-specified draws could be handled.",
+      "range": {
+        "startLine": 203,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 39
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "689e906a_1f2789cb",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "These `draw` calls all would have the same render state flags, since they aren\u0027t dynamic and they aren\u0027t appending anything. We can remove this parameter from them and `bindAndFlush` and make sure `bindAndFlush` does the right thing.",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 60
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ef6b9e7_21492d88",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "This state encoding in `fTemplateCount` is needed with `fRenderState`. This can switch to just store the vertex-count-per-instance.",
+      "range": {
+        "startLine": 247,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 23
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d1c7b7e2_93b95c51",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "We should also add an assert here (with the changes I proposed to setTemplate) that `fPendingCount \u003d\u003d 0`.  Currently, the code is flexible enough that if someone had been appending data and then switched to an explicit draw call, it would automatically flush here.\n\nBut realistically, a RenderStep isn\u0027t going to mix appending data and explicit draw calls (and if it were, then it should manually flush). Instead it\u0027ll have been flushed already from the call to newPipelineState, or from the last call to bindAndFlush.",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 268,
+        "endChar": 94
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f842866f_230df30a",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "For the base `Appender` we can have the subclasses pass in the expected renderstate and assert that it matches what was set on `w`.",
+      "range": {
+        "startLine": 290,
+        "startChar": 28,
+        "endLine": 290,
+        "endChar": 72
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "674363f3_6c61b9ea",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "But for the concrete class, this should always be a constant `RenderStateFlags::kAppendVertices`",
+      "range": {
+        "startLine": 390,
+        "startChar": 26,
+        "endLine": 390,
+        "endChar": 75
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe56186b_0544668f",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "This would always be kNone",
+      "range": {
+        "startLine": 405,
+        "startChar": 14,
+        "endLine": 405,
+        "endChar": 60
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ded1979f_38a149a8",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "And this would always be kDynamic.",
+      "range": {
+        "startLine": 421,
+        "startChar": 21,
+        "endLine": 421,
+        "endChar": 67
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4608f81_ffc8910f",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "With RenderStateFlags, we can keep Flags private.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 58
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eff908c6_f521f302",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "In the context of an `if` expression, it shouldn\u0027t be necessary to add the `SkToBool`.",
+      "range": {
+        "startLine": 170,
+        "startChar": 12,
+        "endLine": 170,
+        "endChar": 20
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "491c5e80_f0d92af0",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "Skia style doesn\u0027t want if\u0027s that don\u0027t have any {}. It\u0027s okay to have a simple if like this on 1 line with the {}, though.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 93
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e24a1e5f_2c6bee0a",
+        "filename": "src/gpu/graphite/render/GraphiteVertexFiller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-07T16:29:52Z",
+      "side": 1,
+      "message": "Does this mean line wrapping? Or are things not rendering correctly?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 30
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
