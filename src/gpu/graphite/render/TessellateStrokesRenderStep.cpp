@@ -89,7 +89,8 @@ static constexpr SkSpan<const Attribute> kAttributes[2] = {kAttributesWithCurveT
 
 TessellateStrokesRenderStep::TessellateStrokesRenderStep(bool infinitySupport)
         : RenderStep(RenderStepID::kTessellateStrokes,
-                     Flags::kRequiresMSAA | Flags::kPerformsShading,
+                     // Appends Instances, Dynamic.
+                     Flags::kRequiresMSAA | Flags::kPerformsShading | Flags::kIsDynamic,
                      /*uniforms=*/{{"affineMatrix", SkSLType::kFloat4},
                                    {"translate", SkSLType::kFloat2},
                                    {"maxScale", SkSLType::kFloat}},
@@ -133,7 +134,8 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                   *dw,
                   kNullBinding,
                   kNullBinding,
-                  patchReserveCount};
+                  patchReserveCount,
+                  getRenderStateFlags()};
     writer.updatePaintDepthAttrib(params.order().depthAsFloat());
     writer.updateSsboIndexAttrib(ssboIndices);
 

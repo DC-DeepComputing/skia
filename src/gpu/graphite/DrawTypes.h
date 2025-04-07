@@ -71,7 +71,6 @@ enum class VertexAttribType : uint8_t {
 };
 static const int kVertexAttribTypeCount = (int)(VertexAttribType::kLast) + 1;
 
-
 /**
  * Returns the size of the attrib type in bytes.
  */
@@ -180,6 +179,12 @@ static constexpr int kStencilOpCount = 1 + (int)StencilOp::kDecClamp;
 enum class BarrierType : uint8_t {
     kAdvancedNoncoherentBlend,
     kReadDstFromInput,
+};
+
+enum class RenderStateFlags : unsigned {
+    kNone           = 0b00,
+    kAppendVertices = 0b01,  // Else instances
+    kIsDynamic      = 0b10,  // Else statically known appends
 };
 
 struct DepthStencilSettings {

@@ -22,6 +22,7 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
         , fIndices()
         , fInstances()
         , fTemplateCount(0)
+        , fRenderState(RenderStateFlags::kNone)
         , fPendingCount(0)
         , fPendingBaseInstance(0)
         , fPendingBaseVertex(0)
@@ -29,17 +30,22 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
     SkASSERT(commandList && bufferManager);
 }
 
+// Still need to rebind if old buffers dont match new buffers.
 void DrawWriter::setTemplate(BindBufferInfo vertices,
                              BindBufferInfo indices,
                              BindBufferInfo instances,
-                             int templateCount) {
+                             int templateCount,
+                             SkEnumBitMask<RenderStateFlags> newRenderState) {
+    bool isDynamic = SkToBool(fRenderState & RenderStateFlags::kIsDynamic);
+    bool willBeDynamic = SkToBool(newRenderState & RenderStateFlags::kIsDynamic);
+    bool isAppendingVertices = SkToBool(fRenderState & RenderStateFlags::kAppendVertices);
+    bool willAppendVertices = SkToBool(newRenderState & RenderStateFlags::kAppendVertices);
+
     if (vertices != fVertices || instances != fInstances || fIndices != indices) {
         if (fPendingCount > 0) {
             this->flush();
         }
 
-        bool willAppendVertices = templateCount == 0;
-        bool isAppendingVertices = fTemplateCount == 0;
         if (willAppendVertices != isAppendingVertices ||
             (isAppendingVertices && fVertices != vertices) ||
             (!isAppendingVertices && fInstances != instances)) {
@@ -55,18 +61,20 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
         fTemplateCount = templateCount;
 
         fPendingBufferBinds = true;
-    } else if ((templateCount >= 0 && templateCount != fTemplateCount) || // vtx or reg. instances
-               (templateCount < 0 && fTemplateCount >= 0)) {              // dynamic index instances
+    } else if ((!isDynamic && templateCount != fTemplateCount) ||
+               (isDynamic && !willBeDynamic)) {
         if (fPendingCount > 0) {
             this->flush();
         }
-        if ((templateCount == 0) != (fTemplateCount == 0)) {
+        if (willAppendVertices != isAppendingVertices) {
             // Switching from appending vertices to instances, or vice versa, so the pending
             // base vertex for appended data is invalid
             fPendingBaseVertex = 0;
+            fPendingBaseInstance = 0;
         }
         fTemplateCount = templateCount;
     }
+    fRenderState = newRenderState;
 
     SkASSERT(fVertices  == vertices);
     SkASSERT(fInstances == instances);

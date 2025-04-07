@@ -60,6 +60,7 @@ CoverageMaskRenderStep::CoverageMaskRenderStep()
         : RenderStep(RenderStepID::kCoverageMask,
                      // The mask will have AA outsets baked in, but the original bounds for clipping
                      // still require the outset for analytic coverage.
+                     // Appends Instances, Static.
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
                      Flags::kOutsetBoundsForAA,
                      /*uniforms=*/{{"maskToDeviceRemainder", SkSLType::kFloat3x3}},
@@ -122,7 +123,7 @@ void CoverageMaskRenderStep::writeVertices(DrawWriter* dw,
     SkASSERT(proxy);
 
     // A quad is a 4-vertex instance. The coordinates are derived from the vertex IDs.
-    DrawWriter::Instances instances(*dw, {}, {}, 4);
+    DrawWriter::Instances instances(*dw, {}, {}, 4, getRenderStateFlags());
 
     // The device origin is the  translation extracted from the mask-to-device matrix so
     // that the remaining matrix uniform has less variance between draws.

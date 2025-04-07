@@ -30,8 +30,9 @@ public:
                                    DrawWriter& writer,
                                    BindBufferInfo fixedVertexBuffer,
                                    BindBufferInfo fixedIndexBuffer,
-                                   unsigned int reserveCount)
-            : fInstances(writer, fixedVertexBuffer, fixedIndexBuffer) {
+                                   unsigned int reserveCount,
+                                   SkEnumBitMask<RenderStateFlags> newRenderState)
+            : fInstances(writer, fixedVertexBuffer, fixedIndexBuffer, newRenderState) {
         SkASSERT(stride == writer.instanceStride());
         // TODO: Is it worth re-reserving large chunks after this preallocation is used up? Or will
         // appending 1 at a time be fine since it's coming from a large vertex buffer alloc anyway?

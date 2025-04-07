@@ -31,7 +31,9 @@ namespace skgpu::graphite {
 
 AnalyticBlurRenderStep::AnalyticBlurRenderStep()
         : RenderStep(RenderStepID::kAnalyticBlur,
-                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage,
+                     // Appends Verts, Static.
+                     Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
+                     Flags::kAppendVertices,
                      /*uniforms=*/
                      {{"localToDevice", SkSLType::kFloat4x4},
                       {"deviceToScaledShape", SkSLType::kFloat3x3},
@@ -74,7 +76,7 @@ void AnalyticBlurRenderStep::writeVertices(DrawWriter* writer,
                                            const DrawParams& params,
                                            skvx::uint2 ssboIndices) const {
     const Rect& r = params.geometry().analyticBlurMask().drawBounds();
-    DrawWriter::Vertices verts{*writer};
+    DrawWriter::Vertices verts{*writer, getRenderStateFlags()};
     verts.append(6) << skvx::float2(r.left(), r.top()) << ssboIndices
                     << skvx::float2(r.right(), r.top()) << ssboIndices
                     << skvx::float2(r.left(), r.bot()) << ssboIndices

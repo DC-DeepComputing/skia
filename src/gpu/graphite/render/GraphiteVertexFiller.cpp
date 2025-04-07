@@ -13,6 +13,7 @@
 #include "src/base/SkZip.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/BufferWriter.h"
+#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
@@ -29,18 +30,22 @@ struct AtlasPt {
     uint16_t v;
 };
 
-void VertexFiller::fillInstanceData(skgpu::graphite::DrawWriter* dw,
-                                    int offset, int count,
-                                    unsigned short flags,
-                                    skvx::uint2 ssboIndex,
-                                    SkSpan<const Glyph*> glyphs,
-                                    SkScalar depth) const {
+// TODO figure out line issues
+void VertexFiller::fillInstanceData(
+        skgpu::graphite::DrawWriter* dw,
+        int offset,
+        int count,
+        unsigned short flags,
+        skvx::uint2 ssboIndex,
+        SkSpan<const Glyph*> glyphs,
+        SkScalar depth,
+        SkEnumBitMask<skgpu::graphite::RenderStateFlags> renderState) const {
     auto quadData = [&]() {
         return SkMakeZip(glyphs.subspan(offset, count),
                          fLeftTop.subspan(offset, count));
     };
 
-    skgpu::graphite::DrawWriter::Instances instances{*dw, {}, {}, 4};
+    skgpu::graphite::DrawWriter::Instances instances{*dw, {}, {}, 4, renderState};
     instances.reserve(count);
     // Need to send width, height, uvPos, xyPos, and strikeToSourceScale
     // pre-transform coords = (s*w*b_x + t_x, s*h*b_y + t_y)

@@ -49,6 +49,7 @@ constexpr int kNumSDFAtlasTextures = 4;
 
 SDFTextLCDRenderStep::SDFTextLCDRenderStep()
         : RenderStep(RenderStepID::kSDFTextLCD,
+                     // Appends Instances, Static.
                      Flags::kPerformsShading | Flags::kHasTextures | Flags::kEmitsCoverage |
                      Flags::kLCDCoverage,
                      /*uniforms=*/{{"subRunDeviceMatrix", SkSLType::kFloat4x4},
@@ -135,7 +136,8 @@ void SDFTextLCDRenderStep::writeVertices(DrawWriter* dw,
                                                          subRunData.subRun()->instanceFlags(),
                                                          ssboIndices,
                                                          subRunData.subRun()->glyphs(),
-                                                         params.order().depthAsFloat());
+                                                         params.order().depthAsFloat(),
+                                                         getRenderStateFlags());
 }
 
 void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,

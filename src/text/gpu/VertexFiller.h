@@ -16,6 +16,7 @@
 #include "include/private/base/SkTLogic.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkColorData.h"
+#include "src/gpu/graphite/DrawTypes.h"
 
 #include <cstddef>
 #include <optional>
@@ -90,7 +91,8 @@ public:
                           unsigned short flags,
                           skvx::uint2 ssboIndex,
                           SkSpan<const Glyph*> glyphs,
-                          SkScalar depth) const;
+                          SkScalar depth,
+                          SkEnumBitMask<skgpu::graphite::RenderStateFlags> newRenderState) const;
 
     std::tuple<skgpu::graphite::Rect, skgpu::graphite::Transform> boundsAndDeviceMatrix(
             const skgpu::graphite::Transform& localToDevice, SkPoint drawOrigin) const;

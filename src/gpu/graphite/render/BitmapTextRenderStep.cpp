@@ -58,6 +58,7 @@ RenderStep::RenderStepID variant_id(skgpu::MaskFormat variant) {
 
 BitmapTextRenderStep::BitmapTextRenderStep(skgpu::MaskFormat variant)
         : RenderStep(variant_id(variant),
+                     // Appends Instances, Static.
                      Flags(variant),
                      /*uniforms=*/{{"subRunDeviceMatrix", SkSLType::kFloat4x4},
                                    {"deviceToLocal"     , SkSLType::kFloat4x4},
@@ -163,7 +164,8 @@ void BitmapTextRenderStep::writeVertices(DrawWriter* dw,
                                                          subRunData.subRun()->instanceFlags(),
                                                          ssboIndices,
                                                          subRunData.subRun()->glyphs(),
-                                                         params.order().depthAsFloat());
+                                                         params.order().depthAsFloat(),
+                                                         getRenderStateFlags());
 }
 
 void BitmapTextRenderStep::writeUniformsAndTextures(const DrawParams& params,

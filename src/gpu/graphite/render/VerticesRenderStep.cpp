@@ -106,8 +106,9 @@ RenderStep::RenderStepID variant_id(PrimitiveType type, bool hasColor, bool hasT
 
 VerticesRenderStep::VerticesRenderStep(PrimitiveType type, bool hasColor, bool hasTexCoords)
         : RenderStep(variant_id(type, hasColor, hasTexCoords),
-                     hasColor ? Flags::kEmitsPrimitiveColor | Flags::kPerformsShading
-                              : Flags::kPerformsShading,
+                     // Appends Vertices, Static.
+                     (hasColor ? Flags::kEmitsPrimitiveColor : Flags::kNone) |
+                     Flags::kPerformsShading | Flags::kAppendVertices,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4},
                                    {"depth", SkSLType::kFloat}},
                      type,
@@ -177,7 +178,7 @@ void VerticesRenderStep::writeVertices(DrawWriter* writer,
     // a CPU index buffer that indexes into the accumulated vertex data (and handles offsetting for
     // merged drawIndexed calls), or if we could bind multiple attribute sources and copy the
     // position/color/texCoord data separately in bulk w/o using an Appender.
-    DrawWriter::Vertices verts{*writer};
+    DrawWriter::Vertices verts{*writer, getRenderStateFlags()};
     verts.reserve(indices ? indexCount : vertexCount);
 
     VertState state(vertexCount, indices, indexCount);
