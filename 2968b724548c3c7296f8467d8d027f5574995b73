@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7b9ca4c_31a66584",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-07T14:29:27Z",
+      "side": 1,
+      "message": "@jlavrova@google.com Sending to you as gardener, a CL I submitted last week seems to be blocking the g3 roll. Un-defining this flag should fix it as it goes back to the previous behavior.",
+      "revId": "2968b724548c3c7296f8467d8d027f5574995b73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
