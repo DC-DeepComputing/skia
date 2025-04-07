@@ -56,23 +56,20 @@ void SkEdge::dump() const {
 }
 #endif
 
-bool SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, int shift) {
+bool SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip) {
     SkFDot6 x0, y0, x1, y1;
 
-    {
 #ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(p0.fX, shift);
-        y0 = SkScalarRoundToFDot6(p0.fY, shift);
-        x1 = SkScalarRoundToFDot6(p1.fX, shift);
-        y1 = SkScalarRoundToFDot6(p1.fY, shift);
+    x0 = SkScalarRoundToFDot6(p0.fX, 0);
+    y0 = SkScalarRoundToFDot6(p0.fY, 0);
+    x1 = SkScalarRoundToFDot6(p1.fX, 0);
+    y1 = SkScalarRoundToFDot6(p1.fY, 0);
 #else
-        float scale = float(1 << (shift + 6));
-        x0 = int(p0.fX * scale);
-        y0 = int(p0.fY * scale);
-        x1 = int(p1.fX * scale);
-        y1 = int(p1.fY * scale);
+    x0 = SkFloatToFDot6(p0.fX);
+    y0 = SkFloatToFDot6(p0.fY);
+    x1 = SkFloatToFDot6(p1.fX);
+    y1 = SkFloatToFDot6(p1.fY);
 #endif
-    }
 
     Winding winding = Winding::kCW;
     if (y0 > y1) {
@@ -97,6 +94,7 @@ bool SkEdge::setLine(const SkPoint& p0, const SkPoint& p1, const SkIRect* clip, 
     SkFixed slope = SkFDot6Div(x1 - x0, y1 - y0);
     const SkFDot6 dy  = SkEdge_Compute_DY(top, y0);
 
+    // Note that SkFixedMul(SkFixed, SkFDot6) produces results in SkFDot6
     fX          = SkFDot6ToFixed(x0 + SkFixedMul(slope, dy));
     fDxDy       = slope;
     fFirstY     = top;
@@ -206,27 +204,24 @@ static inline int diff_to_shift(SkFDot6 dx, SkFDot6 dy, int shiftAA)
     return (32 - SkCLZ(dist)) >> 1;
 }
 
-bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3], int shift) {
+bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
     SkFDot6 x0, y0, x1, y1, x2, y2;
 
-    {
-#ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(pts[0].fX, shift);
-        y0 = SkScalarRoundToFDot6(pts[0].fY, shift);
-        x1 = SkScalarRoundToFDot6(pts[1].fX, shift);
-        y1 = SkScalarRoundToFDot6(pts[1].fY, shift);
-        x2 = SkScalarRoundToFDot6(pts[2].fX, shift);
-        y2 = SkScalarRoundToFDot6(pts[2].fY, shift);
+#if defined(SK_RASTERIZE_EVEN_ROUNDING)
+    x0 = SkScalarRoundToFDot6(pts[0].fX);
+    y0 = SkScalarRoundToFDot6(pts[0].fY);
+    x1 = SkScalarRoundToFDot6(pts[1].fX);
+    y1 = SkScalarRoundToFDot6(pts[1].fY);
+    x2 = SkScalarRoundToFDot6(pts[2].fX);
+    y2 = SkScalarRoundToFDot6(pts[2].fY);
 #else
-        float scale = float(1 << (shift + 6));
-        x0 = int(pts[0].fX * scale);
-        y0 = int(pts[0].fY * scale);
-        x1 = int(pts[1].fX * scale);
-        y1 = int(pts[1].fY * scale);
-        x2 = int(pts[2].fX * scale);
-        y2 = int(pts[2].fY * scale);
+    x0 = SkFloatToFDot6(pts[0].fX);
+    y0 = SkFloatToFDot6(pts[0].fY);
+    x1 = SkFloatToFDot6(pts[1].fX);
+    y1 = SkFloatToFDot6(pts[1].fY);
+    x2 = SkFloatToFDot6(pts[2].fX);
+    y2 = SkFloatToFDot6(pts[2].fY);
 #endif
-    }
 
     Winding winding = Winding::kCW;
     if (y0 > y2) {
@@ -246,15 +241,11 @@ bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3], int shift) {
     }
 
     // compute number of steps needed (1 << shift)
-    {
-        SkFDot6 dx = (SkLeftShift(x1, 1) - x0 - x2) >> 2;
-        SkFDot6 dy = (SkLeftShift(y1, 1) - y0 - y2) >> 2;
-        // This is a little confusing:
-        // before this line, shift is the scale up factor for AA;
-        // after this line, shift is the fCurveShift.
-        shift = diff_to_shift(dx, dy, shift);
-        SkASSERT(shift >= 0);
-    }
+    SkFDot6 dx = (SkLeftShift(x1, 1) - x0 - x2) >> 2;
+    SkFDot6 dy = (SkLeftShift(y1, 1) - y0 - y2) >> 2;
+
+    int shift = diff_to_shift(dx, dy, 0);
+    SkASSERT(shift >= 0);
 
     // We need at least 2 line segments for us to be able to save the derivatives as
     // half their values to avoid overflow.
@@ -383,31 +374,28 @@ static SkFDot6 cubic_delta_from_line(SkFDot6 a, SkFDot6 b, SkFDot6 c, SkFDot6 d)
     return std::max(SkAbs32(oneThird), SkAbs32(twoThird));
 }
 
-bool SkCubicEdge::setCubic(const SkPoint pts[4], int shift) {
+bool SkCubicEdge::setCubic(const SkPoint pts[4]) {
     SkFDot6 x0, y0, x1, y1, x2, y2, x3, y3;
 
-    {
-#ifdef SK_RASTERIZE_EVEN_ROUNDING
-        x0 = SkScalarRoundToFDot6(pts[0].fX, shift);
-        y0 = SkScalarRoundToFDot6(pts[0].fY, shift);
-        x1 = SkScalarRoundToFDot6(pts[1].fX, shift);
-        y1 = SkScalarRoundToFDot6(pts[1].fY, shift);
-        x2 = SkScalarRoundToFDot6(pts[2].fX, shift);
-        y2 = SkScalarRoundToFDot6(pts[2].fY, shift);
-        x3 = SkScalarRoundToFDot6(pts[3].fX, shift);
-        y3 = SkScalarRoundToFDot6(pts[3].fY, shift);
+#if defined(SK_RASTERIZE_EVEN_ROUNDING)
+    x0 = SkScalarRoundToFDot6(pts[0].fX, 0);
+    y0 = SkScalarRoundToFDot6(pts[0].fY, 0);
+    x1 = SkScalarRoundToFDot6(pts[1].fX, 0);
+    y1 = SkScalarRoundToFDot6(pts[1].fY, 0);
+    x2 = SkScalarRoundToFDot6(pts[2].fX, 0);
+    y2 = SkScalarRoundToFDot6(pts[2].fY, 0);
+    x3 = SkScalarRoundToFDot6(pts[3].fX, 0);
+    y3 = SkScalarRoundToFDot6(pts[3].fY, 0);
 #else
-        float scale = float(1 << (shift + 6));
-        x0 = int(pts[0].fX * scale);
-        y0 = int(pts[0].fY * scale);
-        x1 = int(pts[1].fX * scale);
-        y1 = int(pts[1].fY * scale);
-        x2 = int(pts[2].fX * scale);
-        y2 = int(pts[2].fY * scale);
-        x3 = int(pts[3].fX * scale);
-        y3 = int(pts[3].fY * scale);
+    x0 = SkFloatToFDot6(pts[0].fX);
+    y0 = SkFloatToFDot6(pts[0].fY);
+    x1 = SkFloatToFDot6(pts[1].fX);
+    y1 = SkFloatToFDot6(pts[1].fY);
+    x2 = SkFloatToFDot6(pts[2].fX);
+    y2 = SkFloatToFDot6(pts[2].fY);
+    x3 = SkFloatToFDot6(pts[3].fX);
+    y3 = SkFloatToFDot6(pts[3].fY);
 #endif
-    }
 
     Winding winding = Winding::kCW;
     if (y0 > y3)
@@ -429,15 +417,13 @@ bool SkCubicEdge::setCubic(const SkPoint pts[4], int shift) {
     }
 
     // compute number of steps needed (1 << shift)
-    {
-        // Can't use (center of curve - center of baseline), since center-of-curve
-        // need not be the max delta from the baseline (it could even be coincident)
-        // so we try just looking at the two off-curve points
-        SkFDot6 dx = cubic_delta_from_line(x0, x1, x2, x3);
-        SkFDot6 dy = cubic_delta_from_line(y0, y1, y2, y3);
-        // add 1 (by observation)
-        shift = diff_to_shift(dx, dy, 2) + 1;
-    }
+    // Can't use (center of curve - center of baseline), since center-of-curve
+    // need not be the max delta from the baseline (it could even be coincident)
+    // so we try just looking at the two off-curve points
+    SkFDot6 dx = cubic_delta_from_line(x0, x1, x2, x3);
+    SkFDot6 dy = cubic_delta_from_line(y0, y1, y2, y3);
+    // add 1 (by observation)
+    int shift = diff_to_shift(dx, dy, 2) + 1;
     // need at least 1 subdivision for our bias trick
     SkASSERT(shift > 0);
     if (shift > MAX_COEFF_SHIFT) {
