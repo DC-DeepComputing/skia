@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "tools/graphite/UniqueKeyUtils.h"
 
 /*** From here to the matching banner can be cut and pasted into Chrome's graphite_precompile.cc **/
@@ -340,9 +341,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);
 
-    TextureInfo msaaTex = caps->getDefaultMSAATextureInfo(textureInfo, Discardable::kYes);
+    const bool msaaSupported =
+            caps->getDefaultSupportedSampleCount(TextureInfoPriv::ViewFormat(textureInfo)) > 1;
 
-    if (msaaTex.numSamples() <= 1) {
+    if (!msaaSupported) {
         // The following pipelines rely on having MSAA
         return;
     }
