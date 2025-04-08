@@ -22,6 +22,30 @@
       },
       "revId": "6fc41e441b5cb144d52cd42b466657dec2dc40c9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f557543b_1f93ae91",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 43
+      },
+      "lineNbr": 626,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:32:48Z",
+      "side": 1,
+      "message": "As discussed offline, this is close, but we also want to issue this barrier for state changes (not just pipeline changes). Moved and edited this logic and updated the comment docs.",
+      "parentUuid": "097730b7_3bc8adf1",
+      "range": {
+        "startLine": 622,
+        "startChar": 0,
+        "endLine": 626,
+        "endChar": 13
+      },
+      "revId": "6fc41e441b5cb144d52cd42b466657dec2dc40c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
