@@ -22,6 +22,30 @@
       },
       "revId": "b37dd432217ec2498d07e517de2ab58e20b6c061",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72c543a8_c9cfe5f3",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T17:44:25Z",
+      "side": 1,
+      "message": "I think we do require the `.` preceding the `*` in regex since the \"*\" is simply a quantifier token/repetition operator that analyzes for the expression immediately preceding it, where in this case I believe we want to capture any characters (`.`) before the string \"Precompile\". \nhttps://web.mit.edu/gnu/doc/html/regex_toc.html#SEC12\n\nThe intent here was to capture any file at this path with `Precompile` in its name (and not just those with `Precompile` as the **starting** word of a class name) for some level of future-proofing.\n\nLMK if I am misunderstanding!",
+      "parentUuid": "9d0e6921_655554ab",
+      "range": {
+        "startLine": 759,
+        "startChar": 36,
+        "endLine": 759,
+        "endChar": 37
+      },
+      "revId": "b37dd432217ec2498d07e517de2ab58e20b6c061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
