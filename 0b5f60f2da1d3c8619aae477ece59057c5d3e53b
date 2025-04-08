@@ -54,6 +54,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb1aa008_adb659fa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T13:52:14Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to move it into a chrome private header, I suspect there won\u0027t be large clients using this function that we\u0027d have to worry about migrating.",
+      "parentUuid": "f8493a6f_32db99e8",
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "10931348_16714e16",
@@ -138,6 +156,30 @@
       "side": 1,
       "message": "You are right, there might be scenarios where only renderView is needed. But for chrome use cases, we almost can always provide both. And most of the time, both views are the same (because Chrome\u0027s shared images like D3D, IOSurface backing doesn\u0027t have mipmaps). So probably we can make this simpler by providing only one `view` parameter? This view will be used as both render and sample view in the `DawnTexture`.",
       "parentUuid": "5250e981_00eee3fa",
+      "range": {
+        "startLine": 190,
+        "startChar": 8,
+        "endLine": 190,
+        "endChar": 68
+      },
+      "revId": "0b5f60f2da1d3c8619aae477ece59057c5d3e53b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52d03fe6_6e3bf540",
+        "filename": "src/gpu/graphite/dawn/DawnTexture.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T13:52:14Z",
+      "side": 1,
+      "message": "Yes, I think passing in a single view for a simpler signature makes sense. If we wanted to, we could check aspects and try and re-create views for either sampling or rendering if the provided view wasn\u0027t able to be used by both.\n\nOr we\u0027d just have that BackendTexture only usable as either an SkSurface or SkImage, but not both in such a situation.",
+      "parentUuid": "6643efb4_62c96e67",
       "range": {
         "startLine": 190,
         "startChar": 8,
