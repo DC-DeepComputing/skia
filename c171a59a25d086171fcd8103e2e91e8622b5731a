@@ -16,6 +16,23 @@
       "message": "This seems like a plausible early return. It ends up skipping applying the stroking or path effect to the device-space path, which itself wasn\u0027t very correct",
       "revId": "c171a59a25d086171fcd8103e2e91e8622b5731a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09cd66ac_15a53853",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-08T19:28:56Z",
+      "side": 1,
+      "message": "The logic behind this change appears to be that if `invert` returns `false` then `inverse` is not changed, and so remains the identity matrix. Any stroking and path effect would then be incorrectly applied to `localPath` (and the assigned to `devPath`), which does look like a problem since the zero area fill may no longer be zero area when it should have been. However, that work is currently discarded as `SkGlyph::setPath` will only allow the path to be set once. After this `setPath` call the one below will be a no-op (and will return `false`). So logically one might as well return here since any work being done below will be discarded.\n\nAnother possible way to handle this would be to recognize that if the matrix cannot be inverted then the path returned should take up no area and simply be considered empty. However, that is not true if stroking with hairline, so if we return early here we also need to set `hairline` to `true` here if needed. However, this isn\u0027t currently being handled correctly since `hairline` will be set to the correct value below (too late). Arguably this `if` block should go below the hairline `if` block below, but before the commit of `localPath` to `devPath`, though that still isn\u0027t quite correct.\n\nReally we need some test cases where there is a singular and a near singular matrix used on a glyph and an SkPath of the glyph outline with various path effects and stroke widths and ensure that they act the same. Is there any specific scenario that motivated this proposed change?\n\nPart of the issue here is that logically the stroking (other than hairline) and the path effect should be done to the outline down in the scaler context before the matrix is applied, and to a post-hinted but pre-matrix glyph outline, which isn\u0027t really possible. This code is trying to do that \"in post\" but this breaks down when the matrix cannot be inverted.",
+      "revId": "c171a59a25d086171fcd8103e2e91e8622b5731a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
