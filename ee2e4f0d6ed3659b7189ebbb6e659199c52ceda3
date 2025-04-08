@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b06d937_bb4b3e88",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "663a8f9b_58e7c619",
+      "range": {
+        "startLine": 202,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 84
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df49dcc6_c4b35856",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-04-08T15:05:44Z",
       "side": 1,
       "message": "note to nic: attn here",
+      "range": {
+        "startLine": 50,
+        "startChar": 11,
+        "endLine": 79,
+        "endChar": 0
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e48748ed_0f419327",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "It is also worth taking a look at how this further changes in https://skia-review.googlesource.com/c/skia/+/963157 once AttachmentDescs can be copied/rewritten w/o TextureInfos.",
+      "parentUuid": "df49dcc6_c4b35856",
       "range": {
         "startLine": 50,
         "startChar": 11,
@@ -110,6 +158,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d12228ac_a4e3a144",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11289221_bf1391f4",
+      "range": {
+        "startLine": 419,
+        "startChar": 26,
+        "endLine": 419,
+        "endChar": 37
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0eccb354_40688034",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "20441241_4012eecd",
+      "range": {
+        "startLine": 419,
+        "startChar": 27,
+        "endLine": 419,
+        "endChar": 36
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2c9ade3d_ed170064",
@@ -133,6 +229,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5adecba_9600dd57",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c9ade3d_ed170064",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 11
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7b3562d_8617fcea",
@@ -146,6 +266,30 @@
       "writtenOn": "2025-04-08T15:05:44Z",
       "side": 1,
       "message": "nit: Add existing relevant bug `(b/302126809)`",
+      "range": {
+        "startLine": 79,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 11
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "091dbca7_5fcf1bf0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T16:46:39Z",
+      "side": 1,
+      "message": "Done, thanks!",
+      "parentUuid": "b7b3562d_8617fcea",
       "range": {
         "startLine": 79,
         "startChar": 7,
