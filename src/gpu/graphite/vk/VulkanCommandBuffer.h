@@ -197,7 +197,10 @@ private:
     // Track whether there is currently an active render pass (beginRenderPass has been called, but
     // not endRenderPass)
     bool fActiveRenderPass = false;
-
+    // Store a ptr to the active RenderPass's target texture so we have access to it for any
+    // AddBarrier DrawPassCommands that pertain to the dst. A raw ptr is acceptable here because the
+    // target texture is kept alive via a command buffer reference.
+    VulkanTexture* fTargetTexture = nullptr;
     const VulkanGraphicsPipeline* fActiveGraphicsPipeline = nullptr;
 
     VkFence fSubmitFence = VK_NULL_HANDLE;
@@ -214,6 +217,7 @@ private:
     VkPipelineStageFlags fDstStageMask = 0;
 
     // Track whether certain descriptor sets need to be bound
+    bool fBindDstAsInputAttachment = false;
     bool fBindUniformBuffers = false;
     bool fBindTextureSamplers = false;
 
