@@ -34,6 +34,24 @@
       "parentUuid": "1ca32eb6_3df16b9e",
       "revId": "def48ad0682a4861d08ae62c9f20dff02d6bffcd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e39da26_900ec739",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 2
+      },
+      "lineNbr": 752,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T16:41:48Z",
+      "side": 1,
+      "message": "Not positive about case sensitivity, but I added more path locations anyhow to cover this JIC. This way also more closely mimics other location regexes in this file.",
+      "parentUuid": "7e7248a1_47dc53a9",
+      "revId": "def48ad0682a4861d08ae62c9f20dff02d6bffcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
