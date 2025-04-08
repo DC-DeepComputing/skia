@@ -16,6 +16,23 @@
       "message": "Good catch, thanks for this. I\u0027ll take a more detailed look after the dry run completes.",
       "revId": "43c1412a6d5381357b440bc0d9701d7ad3d96844",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6267ed01_8fdcd9e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2025-04-08T07:10:40Z",
+      "side": 1,
+      "message": "Friendly ping",
+      "revId": "43c1412a6d5381357b440bc0d9701d7ad3d96844",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
