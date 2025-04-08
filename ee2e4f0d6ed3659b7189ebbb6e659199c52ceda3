@@ -16,6 +16,144 @@
       "message": "Everything appears happy after the merge resolution, so ready to review again.",
       "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "663a8f9b_58e7c619",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "nit: align on whether there is a space or not following the cast (as in, `(int)valueOrVariable` versus `(int) valueOrVariable`). Skimming the skia style guide, I don\u0027t think we specify which to use.",
+      "range": {
+        "startLine": 202,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 84
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df49dcc6_c4b35856",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "note to nic: attn here",
+      "range": {
+        "startLine": 50,
+        "startChar": 11,
+        "endLine": 79,
+        "endChar": 0
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11289221_bf1391f4",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "nit: fix",
+      "range": {
+        "startLine": 419,
+        "startChar": 26,
+        "endLine": 419,
+        "endChar": 37
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20441241_4012eecd",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 419,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "nit: Fix",
+      "range": {
+        "startLine": 419,
+        "startChar": 27,
+        "endLine": 419,
+        "endChar": 36
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c9ade3d_ed170064",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "Not the fault of your change of course, but would you mind adding the bug # here as well? `b/302126809`",
+      "range": {
+        "startLine": 545,
+        "startChar": 7,
+        "endLine": 545,
+        "endChar": 11
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7b3562d_8617fcea",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T15:05:44Z",
+      "side": 1,
+      "message": "nit: Add existing relevant bug `(b/302126809)`",
+      "range": {
+        "startLine": 79,
+        "startChar": 7,
+        "endLine": 79,
+        "endChar": 11
+      },
+      "revId": "ee2e4f0d6ed3659b7189ebbb6e659199c52ceda3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
