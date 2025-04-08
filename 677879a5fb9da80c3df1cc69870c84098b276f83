@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a85283d_01b72bf2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-08T12:50:49Z",
+      "side": 1,
+      "message": "Internal doc also adds some clarification about how this works https://docs.google.com/presentation/d/1SQYSY1Fyqk7bJ5YNYWYKZYL8sLcSS0bT1P4H2MVMgoA/edit?",
+      "revId": "677879a5fb9da80c3df1cc69870c84098b276f83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
