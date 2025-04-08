@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15b01fd5_949c77e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T13:18:35Z",
+      "side": 1,
+      "message": "This seems like a plausible early return. It ends up skipping applying the stroking or path effect to the device-space path, which itself wasn\u0027t very correct",
+      "revId": "c171a59a25d086171fcd8103e2e91e8622b5731a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
