@@ -800,6 +800,7 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc) {
         fRec.getMatrixFrom2x2(&matrix);
         if (!matrix.invert(&inverse)) {
             glyph.setPath(alloc, &devPath, hairline, pathModified);
+            return;
         }
         path.transform(inverse, &localPath);
         // now localPath is only affected by the paint settings, and not the canvas matrix
