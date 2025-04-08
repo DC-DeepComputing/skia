@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "508262f4_6a711712",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-08T17:29:41Z",
+      "side": 1,
+      "message": "Promoting Michael from CC\u0027d to reviewer given he has weighed in and I need code owner approval for `include/core/SkTraceMemoryDump.h` changes.",
+      "revId": "47fa268ebf7476a98d61f51667eeb71799ff3c77",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
