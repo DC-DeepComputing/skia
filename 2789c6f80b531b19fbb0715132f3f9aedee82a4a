@@ -16,6 +16,23 @@
       "message": "LMKWYT about this small edit - to me it made sense to not expose these methods if we do not expect other classes to call them directly. Of course anything with a ptr to the `DrawPassCommand::List` could append draw commands independently, but this just internalizes methods this class uses for these additions.",
       "revId": "2789c6f80b531b19fbb0715132f3f9aedee82a4a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1708af0e_0e3ad60d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-08T13:36:48Z",
+      "side": 1,
+      "message": "These draw functions are actually meant to be public, as a way for RenderSteps to record fully-defined draws (e.g. if we end up having SkVertices or SkMesh objects cache their data uploaded to GPU buffers). They are currently unused though.",
+      "revId": "2789c6f80b531b19fbb0715132f3f9aedee82a4a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
