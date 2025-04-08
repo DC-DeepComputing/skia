@@ -33,6 +33,23 @@
       "message": "Thanks for detangling these knots!",
       "revId": "3f59ca84a84acba452e27d924c927eb80fce01f7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e3bdf3d_b39bd591",
+        "filename": "src/text/gpu/SubRunContainer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-08T15:17:03Z",
+      "side": 1,
+      "message": "Do we want /* isSDF\u003d */ and /* isAA\u003d */ here and below?",
+      "revId": "3f59ca84a84acba452e27d924c927eb80fce01f7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
