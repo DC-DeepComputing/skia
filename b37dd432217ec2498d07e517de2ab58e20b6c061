@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d0e6921_655554ab",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-08T17:14:41Z",
+      "side": 1,
+      "message": "Do we want this \u0027.\u0027 ? Here and below.",
+      "range": {
+        "startLine": 759,
+        "startChar": 36,
+        "endLine": 759,
+        "endChar": 37
+      },
+      "revId": "b37dd432217ec2498d07e517de2ab58e20b6c061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
