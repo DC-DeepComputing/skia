@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c64f3924_d5b0f9f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-08T16:57:45Z",
+      "side": 1,
+      "message": "This will cause large paths and clips to be drawn aliased, but they should still be drawn. From my testing this is a rare case anyway.",
+      "revId": "6da39c4a43481652b9c9693de35ddaf975a2e02b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
