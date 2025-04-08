@@ -22,6 +22,7 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
         , fIndices()
         , fInstances()
         , fTemplateCount(0)
+        , fRenderState(RenderStateFlags::kNone)
         , fPendingCount(0)
         , fPendingBaseInstance(0)
         , fPendingBaseVertex(0)
@@ -33,13 +34,16 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
                              BindBufferInfo indices,
                              BindBufferInfo instances,
                              int templateCount) {
+    bool willAppendVertices = templateCount == 0;
+    bool isAppendingVertices = fTemplateCount == 0;
+    bool isDynamic = fTemplateCount < 0;
+    bool willBeDynamic = templateCount < 0;
+
     if (vertices != fVertices || instances != fInstances || fIndices != indices) {
         if (fPendingCount > 0) {
             this->flush();
         }
 
-        bool willAppendVertices = templateCount == 0;
-        bool isAppendingVertices = fTemplateCount == 0;
         if (willAppendVertices != isAppendingVertices ||
             (isAppendingVertices && fVertices != vertices) ||
             (!isAppendingVertices && fInstances != instances)) {
@@ -55,15 +59,16 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
         fTemplateCount = templateCount;
 
         fPendingBufferBinds = true;
-    } else if ((templateCount >= 0 && templateCount != fTemplateCount) || // vtx or reg. instances
-               (templateCount < 0 && fTemplateCount >= 0)) {              // dynamic index instances
+    } else if ((!isDynamic && templateCount != fTemplateCount) ||
+               (isDynamic && !willBeDynamic)) {
         if (fPendingCount > 0) {
             this->flush();
         }
-        if ((templateCount == 0) != (fTemplateCount == 0)) {
+        if (willAppendVertices != isAppendingVertices) {
             // Switching from appending vertices to instances, or vice versa, so the pending
             // base vertex for appended data is invalid
             fPendingBaseVertex = 0;
+            fPendingBaseInstance = 0;
         }
         fTemplateCount = templateCount;
     }
@@ -79,7 +84,7 @@ void DrawWriter::setTemplate(BindBufferInfo vertices,
 
 void DrawWriter::flush() {
     // If nothing was appended, or the only appended data was through dynamic instances and the
-    // final vertex count per instance is 0 (-1 in the sign encoded field), nothing should be drawn.
+    // final vertex count per instance is 0, nothing should be drawn.
     if (fPendingCount == 0 || fTemplateCount == -1) {
         return;
     }

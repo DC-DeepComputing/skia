@@ -79,7 +79,14 @@ public:
     // Notify the DrawWriter that a new pipeline needs to be bound, providing the primitive type and
     // attribute strides of that pipeline. This issues draw calls for pending data that relied on
     // the old pipeline, so this must be called *before* binding the new pipeline.
-    void newPipelineState(PrimitiveType type, size_t vertexStride, size_t instanceStride) {
+    void newPipelineState(PrimitiveType type,
+                          size_t vertexStride,
+                          size_t instanceStride,
+                          SkEnumBitMask<RenderStateFlags> newRenderState) {
+        // TO BE ADDED in separate CL
+        // Zero out verts with fNextWriter
+        // If !(newRenderState & kAppendVertices) take the bytes back so they dont get stomped
+
         this->flush();
 
         // At this point, whatever was pending was flushed, meaning that whatever pendingCount was,
@@ -89,26 +96,31 @@ public:
         // We try to prevent additional draw calls + bindings in reserve by starting the new
         // pendingBase at the previous pendingBase byte usage, aligned to the new stride usage:
 
-        // What is the stride of the data in the buffer? A positive instance stride implies fixed
-        // vertex data, so the instance stride is used, else, the vertex stride is used. As a future
-        // alternative, the type of data (instance or vertex) could be returned by each renderStep,
-        // and tracked at the drawPass level.
-        const size_t prevStride = fInstanceStride ? fInstanceStride : fVertexStride;
-        const size_t currStride = instanceStride ? instanceStride : vertexStride;
-        uint32_t& pendingBase = instanceStride ? fPendingBaseInstance : fPendingBaseVertex;
+        // Although we currently use 2 bits to track the render state, which implies 4 total
+        // possible states in practice, we either have fixed vertices or fixed instances. In the
+        // future, if that assumption no longer holds, we'll need to change this logic.
+        auto [prevStride, prevBase] = (fRenderState & RenderStateFlags::kAppendVertices)
+            ? std::make_pair(fVertexStride, &fPendingBaseVertex)
+            : std::make_pair(fInstanceStride, &fPendingBaseInstance);
+
+        auto [currStride, currBase] = (newRenderState & RenderStateFlags::kAppendVertices)
+            ? std::make_pair(vertexStride, &fPendingBaseVertex)
+            : std::make_pair(instanceStride, &fPendingBaseInstance);
+
         // If either stride is 0, no aligning is required so the pendingBase is set to 0.
         if (prevStride && currStride) {
-            const size_t prevBytes = pendingBase * prevStride;
+            const size_t prevBytes = *prevBase * prevStride;
             // Because neither stride is guaranteed to be a power of two, we manually align instead
             // of using SkAlignTo.
-            pendingBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
+            *currBase = SkTo<uint32_t>((prevBytes + currStride - 1) / currStride);
         } else {
-            pendingBase = 0;
+            *currBase = 0;
         }
 
         fPrimitiveType = type;
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
+        fRenderState = newRenderState;
     }
 
 #ifdef SK_DEBUG
@@ -201,7 +213,11 @@ public:
     void drawInstanced(BindBufferInfo vertices, unsigned int vertexCount,
                        BindBufferInfo instances, unsigned int instanceCount) {
         SkASSERT(vertexCount > 0);
-        this->bindAndFlush(vertices, {}, instances, vertexCount, instanceCount);
+        this->bindAndFlush(vertices,
+                           {},
+                           instances,
+                           vertexCount,
+                           instanceCount);
     }
     void drawIndexedInstanced(BindBufferInfo vertices, BindBufferInfo indices,
                               unsigned int indexCount, BindBufferInfo instances,
@@ -231,6 +247,8 @@ private:
     // instanced drawing, where real index count = max(-fTemplateCount-1)
     int fTemplateCount;
 
+    SkEnumBitMask<RenderStateFlags> fRenderState;
+
     uint32_t fPendingCount; // # of vertices or instances (depending on mode) to be drawn
     uint32_t fPendingBaseInstance;
     uint32_t fPendingBaseVertex;
@@ -240,11 +258,17 @@ private:
                      int templateCount);
     // NOTE: bindAndFlush's templateCount is unsigned because dynamic index count instancing
     // isn't applicable.
+
     void bindAndFlush(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
                       unsigned int templateCount, unsigned int drawCount) {
         SkASSERT(drawCount > 0);
-        SkASSERT(!fAppender); // shouldn't be appending and manually drawing at the same time.
-        this->setTemplate(vertices, indices, instances, SkTo<int>(templateCount));
+        SkASSERT(!fAppender); // Shouldn't be appending and manually drawing at the same time.
+        // Any prior appends should have been flushed by newPipelineState() or a prior bindAndFlush()
+        SkASSERT(fPendingCount == 0);
+        this->setTemplate(vertices,
+                          indices,
+                          instances,
+                          SkTo<int>(templateCount));
         fPendingBaseInstance = 0;
         fPendingBaseVertex = 0;
         fPendingCount = drawCount;
@@ -261,18 +285,17 @@ private:
 // template-specific API to accumulate vertex/instance data.
 class DrawWriter::Appender {
 public:
-    enum class Target { kVertices, kInstances };
-
-    Appender(DrawWriter& w, Target target)
+    Appender(DrawWriter& w, SkEnumBitMask<RenderStateFlags> renderState)
             : fDrawer(w)
-            , fTarget(target == Target::kVertices ? w.fVertices : w.fInstances)
-            , fPendingBase(target == Target::kVertices ? w.fPendingBaseVertex :
-                                                         w.fPendingBaseInstance)
-            , fStride(target == Target::kVertices ? w.fVertexStride : w.fInstanceStride)
+            , fAppendVertices(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices))
+            , fTarget(fAppendVertices ? w.fVertices : w.fInstances)
+            , fPendingBase(fAppendVertices ? w.fPendingBaseVertex : w.fPendingBaseInstance)
+            , fStride(fAppendVertices ? w.fVertexStride : w.fInstanceStride)
             , fReservedCount(0)
             , fNextWriter() {
         SkASSERT(fStride > 0);
         SkASSERT(!w.fAppender);
+        SkASSERT(w.fRenderState == renderState);
         SkDEBUGCODE(w.fAppender = this;)
     }
 
@@ -286,6 +309,7 @@ public:
 
 protected:
     DrawWriter&     fDrawer;
+    bool fAppendVertices;
     BindBufferInfo& fTarget;
     uint32_t&       fPendingBase;
     uint32_t        fStride;
@@ -362,7 +386,8 @@ protected:
 
 class DrawWriter::Vertices : private DrawWriter::Appender {
 public:
-    Vertices(DrawWriter& w) : Appender(w, Target::kVertices) {
+    Vertices(DrawWriter& w) :
+    Appender(w, RenderStateFlags::kAppendVertices) {
         w.setTemplate(w.fVertices, {}, {}, 0);
     }
 
@@ -376,7 +401,7 @@ public:
               BindBufferInfo vertices,
               BindBufferInfo indices,
               unsigned int vertexCount)
-            : Appender(w, Target::kInstances) {
+            : Appender(w, RenderStateFlags::kAppendInstances) {
         SkASSERT(vertexCount > 0);
         w.setTemplate(vertices, indices, w.fInstances, SkTo<int>(vertexCount));
     }
@@ -391,7 +416,7 @@ public:
     DynamicInstances(DrawWriter& w,
                      BindBufferInfo vertices,
                      BindBufferInfo indices)
-            : Appender(w, Target::kInstances) {
+            : Appender(w, RenderStateFlags::kAppendDynamicInstances) {
         w.setTemplate(vertices, indices, w.fInstances, -1);
     }
 

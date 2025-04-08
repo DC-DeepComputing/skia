@@ -13,6 +13,7 @@
 #include "src/base/SkZip.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/BufferWriter.h"
+#include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Transform.h"
@@ -29,12 +30,14 @@ struct AtlasPt {
     uint16_t v;
 };
 
-void VertexFiller::fillInstanceData(skgpu::graphite::DrawWriter* dw,
-                                    int offset, int count,
-                                    unsigned short flags,
-                                    skvx::uint2 ssboIndex,
-                                    SkSpan<const Glyph*> glyphs,
-                                    SkScalar depth) const {
+void VertexFiller::fillInstanceData(
+        skgpu::graphite::DrawWriter* dw,
+        int offset,
+        int count,
+        unsigned short flags,
+        skvx::uint2 ssboIndex,
+        SkSpan<const Glyph*> glyphs,
+        SkScalar depth) const {
     auto quadData = [&]() {
         return SkMakeZip(glyphs.subspan(offset, count),
                          fLeftTop.subspan(offset, count));

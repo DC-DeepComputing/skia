@@ -16,6 +16,7 @@
 #include "include/private/base/SkTLogic.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkColorData.h"
+#include "src/gpu/graphite/DrawTypes.h"
 
 #include <cstddef>
 #include <optional>
