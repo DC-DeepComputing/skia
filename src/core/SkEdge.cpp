@@ -273,32 +273,15 @@ bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
     }
     SkASSERTF(y0 <= y1 && y1 <= y2, "curve must be monotonic");
 
-    int top = SkFDot6Round(y0);
-    int bot = SkFDot6Round(y2);
+    const int top = SkFDot6Round(y0);
+    const int bot = SkFDot6Round(y2);
 
     // are we a zero-height quad (line)?
     if (top == bot) {
         return false;
     }
-
-    // compute number of steps needed (1 << shift)
-    SkFDot6 dx = (SkLeftShift(x1, 1) - x0 - x2) >> 2;
-    SkFDot6 dy = (SkLeftShift(y1, 1) - y0 - y2) >> 2;
-
-    int shift = diff_to_shift(dx, dy, 0);
-    SkASSERT(shift >= 0);
-
-    // We need at least 2 line segments for us to be able to save the derivatives as
-    // half their values to avoid overflow.
-    if (shift == 0) {
-        shift = 1;
-    } else if (shift > MAX_COEFF_SHIFT) {
-        shift = MAX_COEFF_SHIFT;
-    }
-
     fWinding = winding;
     fEdgeType = Type::kQuad;
-    fSegmentCount = SkToU8(1 << shift);
 
     /*
      *  By re-arranging the Bezier curve in polynomial form, it is easier to
@@ -314,15 +297,30 @@ bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
      *  16.16. However, as seen above, we sometimes compute values that can be
      *  larger (e.g. B = 2*(p1 - p0)). To guard against overflow, we will store
      *  A and B at 1/2 of their actual value, and just apply a 2x scale during
-     *  application in updateQuadratic(). Hence we store (shift - 1) in
-     *  fCurveShift.
+     *  application in nextSegment(). Hence we store (shift - 1) in fCurveShift.
      */
-
-    fCurveShift = SkToU8(shift - 1);
     // TODO(kjlubick): Can we use SkVx and calculate both X and Y at once?
 
+    const SkFDot6 A_x = x0 - 2*x1 + x2;
+    const SkFDot6 A_y = y0 - 2*y1 + y2;
+
+    // compute number of segments needed (2^shift) based on a heuristic.
+    int shift = diff_to_shift(A_x/4, A_y/4, 0);
+    SkASSERT(shift >= 0);
+
+    // We need at least 2 line segments for us to be able to save the derivatives as
+    // half their values to avoid overflow.
+    if (shift == 0) {
+        shift = 1;
+    } else if (shift > MAX_COEFF_SHIFT) {
+        shift = MAX_COEFF_SHIFT;
+    }
+
+    fSegmentCount = SkToU8(1 << shift);
+    fCurveShift = SkToU8(shift - 1);
+
     // The extra 1/2 factor avoids overflow
-    SkFixed A_half = SkFDot6ToFixedDiv2(x0 - x1 - x1 + x2);
+    SkFixed A_half = SkFDot6ToFixedDiv2(A_x);
     SkFixed B_half = SkFDot6ToFixed(x1 - x0);
 
     // We want to calculate the slope at the midpoint of our first segment. This means evaluating
@@ -337,7 +335,7 @@ bool SkQuadraticEdge::setQuadratic(const SkPoint pts[3]) {
     // 1/2 (2A * 1/N) => A * 1/N => A * 1/2^shift => A/2 * 1/2^(shift-1)
     fQD2xDt2 = A_half >> (shift - 1);
 
-    A_half = SkFDot6ToFixedDiv2(y0 - y1 - y1 + y2);
+    A_half = SkFDot6ToFixedDiv2(A_y);
     B_half = SkFDot6ToFixed(y1 - y0);
 
     fQDyDt = B_half + (A_half >> shift);
@@ -485,24 +483,47 @@ bool SkCubicEdge::setCubic(const SkPoint pts[4]) {
     fCurveShift = SkToU8(shift);
     fCubicDShift = SkToU8(downShift);
 
-    SkFixed B = SkFDot6UpShift(3 * (x1 - x0), upShift);
-    SkFixed C = SkFDot6UpShift(3 * (x0 - x1 - x1 + x2), upShift);
-    SkFixed D = SkFDot6UpShift(x3 + 3 * (x1 - x2) - x0, upShift);
+    /*
+     *  By re-arranging the Bezier curve in polynomial form, it is easier to
+     *  find the derivatives and forward-differentiate from one segment to the next.
+     *
+     *  p0 (1-t)^3 + p1 t(1-t)^2 + p2 t^2 (1-t) + p3 t^3 ==> At^3 + Bt^2 + Ct + D
+     *  Where A = -p0 + 3p1 + -3p2 + p3
+     *        B = 3p0 - 6p1 + 3p2
+     *        C = -3p0 + 3p1
+     *        D = p0
+     */
+    // TODO(kjlubick): Can we use SkVx and calculate both X and Y at once?
 
-    fCx     = SkFDot6ToFixed(x0);
-    fCDxDt    = B + (C >> shift) + (D >> 2*shift);    // biased by shift
-    fCD2xDt2   = 2*C + (3*D >> (shift - 1));           // biased by 2*shift
-    fCD3xDt3  = 3*D >> (shift - 1);                   // biased by 2*shift
+    SkFixed A = SkFDot6UpShift(x3 + 3 * (x1 - x2) - x0, upShift);
+    SkFixed B = SkFDot6UpShift(3 * (x0 - 2*x1 + x2), upShift);
+    SkFixed C = SkFDot6UpShift(3 * (x1 - x0), upShift);
 
-    B = SkFDot6UpShift(3 * (y1 - y0), upShift);
-    C = SkFDot6UpShift(3 * (y0 - y1 - y1 + y2), upShift);
-    D = SkFDot6UpShift(y3 + 3 * (y1 - y2) - y0, upShift);
+    // We want to calculate the slope at the midpoint of our first segment. This means evaluating
+    //   dx/dt = 3A*t^2 + 2B*t + C
+    //   dx^2/dt^2 = 6A * t + 2B
+    //   dx^3/dt^3 = 6A
+    // at t = 1/N * 1/2
+    // TODO(kjlubick): I'm not sure these cubic approximations are being done correctly. Some
+    //                 coefficients seem to be missing. Maybe it's being done not at the midpoint
+    //                 of the first line but just...somewhere in there?
+    fCDxDt = (A >> 2*shift) + (B >> shift) + C;
+    fCD2xDt2 = (3*A >> (shift - 1)) + 2*B;
 
-    fCy     = SkFDot6ToFixed(y0);
-    fCDyDt    = B + (C >> shift) + (D >> 2*shift);    // biased by shift
-    fCD2yDt2   = 2*C + (3*D >> (shift - 1));           // biased by 2*shift
-    fCD3yDt3  = 3*D >> (shift - 1);                   // biased by 2*shift
+    // This may be attempting to precompute the third derivative times 1/N
+    // 6A / N => 6A / 2^shift => 3A / 2^(shift-1)
+    fCD3xDt3 = 3*A >> (shift - 1);
 
+    A = SkFDot6UpShift(y3 + 3 * (y1 - y2) - y0, upShift);
+    B = SkFDot6UpShift(3 * (y0 - 2*y1 + y2), upShift);
+    C = SkFDot6UpShift(3 * (y1 - y0), upShift);
+
+    fCDyDt = (A >> 2*shift) + (B >> shift) + C;
+    fCD2yDt2 = (3*A >> (shift - 1)) + 2*B;
+    fCD3yDt3 = 3*A >> (shift - 1);
+
+    fCx = SkFDot6ToFixed(x0);
+    fCy = SkFDot6ToFixed(y0);
     fCLastX = SkFDot6ToFixed(x3);
     fCLastY = SkFDot6ToFixed(y3);
 
@@ -548,8 +569,8 @@ bool SkCubicEdge::nextSegment() {
         oldy = newy;
     } while (count > 0 && !success);
 
-    fCx = newx;
-    fCy = newy;
+    fCx         = newx;
+    fCy         = newy;
     fSegmentCount = SkToU8(count);
     return success;
 }
