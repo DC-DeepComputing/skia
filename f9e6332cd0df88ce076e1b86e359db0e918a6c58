@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c70e6cee_5543e5d6",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-09T21:01:49Z",
+      "side": 1,
+      "message": "This feels brittle -- I wonder if we can verify this somehow statically or at runtime. Maybe at the very least we could define this somewhere where we can check against it when writing out varyings to the actual SkSL?",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 39
+      },
+      "revId": "f9e6332cd0df88ce076e1b86e359db0e918a6c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed4a741_b06cb1a8",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-09T21:01:49Z",
+      "side": 1,
+      "message": "I don\u0027t love using const_cast but I\u0027m not sure what\u0027s the best way to cast a `SkSpan\u003cT*\u003e` to `SkSpan\u003cconst T*\u003e`.",
+      "range": {
+        "startLine": 204,
+        "startChar": 41,
+        "endLine": 204,
+        "endChar": 71
+      },
+      "revId": "f9e6332cd0df88ce076e1b86e359db0e918a6c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
