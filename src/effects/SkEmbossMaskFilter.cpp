@@ -17,6 +17,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/effects/SkEmbossMask.h"
+#include "src/effects/imagefilters/SkLightingImageFilter.cpp"
 
 #if defined(SK_SUPPORT_LEGACY_EMBOSSMASKFILTER)
 #include "include/effects/SkBlurMaskFilter.h"
@@ -145,4 +146,15 @@ void SkEmbossMaskFilter::flatten(SkWriteBuffer& buffer) const {
     tmpLight.fPad = 0;    // for the font-cache lookup to be clean
     buffer.writeByteArray(&tmpLight, sizeof(tmpLight));
     buffer.writeScalar(fBlurSigma);
+}
+
+sk_sp<SkImageFilter> SkEmbossMaskFilter::asImageFilter(const SkMatrix& ctm) const {
+    sk_sp<SkImageFilter> blurFilter = SkImageFilters::Blur(fBlurSigma, fBlurSigma, nullptr);
+
+    SkPoint3 direction = SkPoint3::Make(fLight.fDirection[0], fLight.fDirection[1], fLight.fDirection[2]);
+    sk_sp<SkImageFilter> specularLightFilter = SkImageFilters::DistantLitSpecular(direction, SK_ColorWHITE,
+                                                                                  1, 4,
+                                                                                  8, nullptr);
+    sk_sp<SkImageFilter> composedFilter = SkImageFilters::Compose(specularLightFilter, blurFilter);
+    return SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(composedFilter), nullptr);
 }

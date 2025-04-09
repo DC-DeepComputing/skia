@@ -44,6 +44,7 @@ public:
     bool filterMask(SkMaskBuilder* dst, const SkMask& src, const SkMatrix&,
                     SkIPoint* margin) const override;
     SkMaskFilterBase::Type type() const override { return SkMaskFilterBase::Type::kEmboss; }
+    sk_sp<SkImageFilter> asImageFilter(const SkMatrix& ctm) const override;
 
 protected:
     SkEmbossMaskFilter(SkScalar blurSigma, const Light& light);
