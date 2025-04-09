@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5365d097_febdd88d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-09T14:38:38Z",
+      "side": 1,
+      "message": "Cherry-picking to Chrome Beta.",
+      "revId": "965c010e4c8ffba7d9c1e0462f4bb0a581bed7f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
