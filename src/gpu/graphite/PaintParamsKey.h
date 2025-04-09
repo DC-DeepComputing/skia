@@ -92,7 +92,9 @@ public:
     // source color is computed. The second node defines the final blender between the calculated
     // source color and the current pixel's dst color. If provided, the third node calculates an
     // additional analytic coverage value to combine with the geometry's coverage.
-    SkSpan<const ShaderNode*> getRootNodes(const ShaderCodeDictionary*, SkArenaAlloc*) const;
+    SkSpan<const ShaderNode*> getRootNodes(const Caps*,
+                                           const ShaderCodeDictionary*,
+                                           SkArenaAlloc*) const;
 
     // Converts the key to a structured list of snippet information for debugging or labeling
     // purposes.
