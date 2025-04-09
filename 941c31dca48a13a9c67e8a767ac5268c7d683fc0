@@ -52,6 +52,24 @@
       "parentUuid": "c67641cd_3c864c82",
       "revId": "941c31dca48a13a9c67e8a767ac5268c7d683fc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46ba2355_0ac06612",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-09T20:54:59Z",
+      "side": 1,
+      "message": "In theory this could be split out, but it is also partially the reason for this change. This is needed for the change below which makes `generateImage` call `generateImageFromPath` instead of the big setup for calling `GenerateImageFromPath`. Making that change pointed out the existing issue with bounds calculation.",
+      "parentUuid": "51cc7855_36a68ee4",
+      "revId": "941c31dca48a13a9c67e8a767ac5268c7d683fc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
