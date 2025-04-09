@@ -16,6 +16,23 @@
       "message": "+1 (I can\u0027t vote here)",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8815d28_d35d3b1f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3876051
+      },
+      "writtenOn": "2025-04-09T13:23:41Z",
+      "side": 1,
+      "message": "LGTM. I don\u0027t have voting rights.",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
