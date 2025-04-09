@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec14c604_e16e06c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-04-09T10:28:26Z",
+      "side": 1,
+      "message": "Ben, thanks for the explanation. I just felt while reading through the code that there might be an issue here, but in reality, this scenario might be difficult to trigger in practice. If I need to write a test case to trigger this condition, it might take me some time.",
+      "revId": "c171a59a25d086171fcd8103e2e91e8622b5731a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09cd66ac_15a53853",
