@@ -8,7 +8,9 @@
 #ifndef SkResourceCache_DEFINED
 #define SkResourceCache_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/private/base/SkDebug.h"
+#include "include/private/base/SkMutex.h"
 #include "src/core/SkMessageBus.h"
 
 #include <cstddef>
@@ -21,15 +23,15 @@ class SkTraceMemoryDump;
 /**
  *  Cache object for bitmaps (with possible scale in X Y as part of the key).
  *
- *  Multiple caches can be instantiated, but each instance is not implicitly
- *  thread-safe, so if a given instance is to be shared across threads, the
- *  caller must manage the access itself (e.g. via a mutex).
+ *  Multiple caches can be instantiated. Instances are thread-safe.
  *
  *  As a convenience, a global instance is also defined, which can be safely
  *  access across threads via the static methods (e.g. FindAndLock, etc.).
  */
-class SkResourceCache {
+class SkResourceCache : public SkRefCnt {
 public:
+    ~SkResourceCache() override;
+
     struct Key {
         /** Key subclasses must call this after their own fields and data are initialized.
          *  All fields and data must be tightly packed.
@@ -190,26 +192,6 @@ public:
      */
     static void Dump();
 
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     *  Construct the cache to call DiscardableFactory when it
-     *  allocates memory for the pixels. In this mode, the cache has
-     *  not explicit budget, and so methods like getTotalBytesUsed()
-     *  and getTotalByteLimit() will return 0, and setTotalByteLimit
-     *  will ignore its argument and return 0.
-     */
-    SkResourceCache(DiscardableFactory);
-
-    /**
-     *  Construct the cache, allocating memory with malloc, and respect the
-     *  byteLimit, purging automatically when a new image is added to the cache
-     *  that pushes the total bytesUsed over the limit. Note: The limit can be
-     *  changed at runtime with setTotalByteLimit.
-     */
-    explicit SkResourceCache(size_t byteLimit);
-    ~SkResourceCache();
-
     /**
      *  Returns true if the visitor was called on a matching Key, and the visitor returned true.
      *
@@ -223,8 +205,8 @@ public:
     void add(Rec*, void* payload = nullptr);
     void visitAll(Visitor, void* context);
 
-    size_t getTotalBytesUsed() const { return fTotalBytesUsed; }
-    size_t getTotalByteLimit() const { return fTotalByteLimit; }
+    size_t getTotalBytesUsed() const;
+    size_t getTotalByteLimit() const;
 
     /**
      *  This is respected by SkBitmapProcState::possiblyScaleImage.
@@ -246,11 +228,9 @@ public:
 
     void purgeSharedID(uint64_t sharedID);
 
-    void purgeAll() {
-        this->purgeAsNeeded(true);
-    }
+    void purgeAll();
 
-    DiscardableFactory discardableFactory() const { return fDiscardableFactory; }
+    DiscardableFactory discardableFactory() const;
 
     SkCachedData* newCachedData(size_t bytes);
 
@@ -259,7 +239,36 @@ public:
      */
     void dump() const;
 
+    /**
+     *  Construct the cache, allocating memory with malloc, and respect the
+     *  byteLimit, purging automatically when a new image is added to the cache
+     *  that pushes the total bytesUsed over the limit. Note: The limit can be
+     *  changed at runtime with setTotalByteLimit.
+     */
+    static sk_sp<SkResourceCache> Make(size_t byteLimit);
+
+    /**
+     *  Construct the cache to call DiscardableFactory when it
+     *  allocates memory for the pixels. In this mode, the cache has
+     *  no explicit budget, and so methods like getTotalBytesUsed()
+     *  and getTotalByteLimit() will return 0, and setTotalByteLimit
+     *  will ignore its argument and return 0.
+     */
+    static sk_sp<SkResourceCache> Make(DiscardableFactory);
+
 private:
+    SkResourceCache(DiscardableFactory);
+
+    explicit SkResourceCache(size_t byteLimit);
+    SkResourceCache(SkResourceCache&&) = delete;
+    SkResourceCache& operator=(SkResourceCache&&) = delete;
+    SkResourceCache(const SkResourceCache&) = delete;
+    SkResourceCache& operator=(const SkResourceCache&) = delete;
+
+    friend SkResourceCache* get_cache();
+
+    mutable SkMutex fMutex;
+
     Rec*    fHead;
     Rec*    fTail;
 
@@ -276,6 +285,7 @@ private:
     SkMessageBus<PurgeSharedIDMessage, uint32_t>::Inbox fPurgeSharedIDInbox;
 
     void checkMessages();
+    void checkMessagesNoLock();
     void purgeAsNeeded(bool forcePurge = false);
 
     // linklist management

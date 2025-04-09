@@ -256,8 +256,6 @@ private:
     GrRecordingContextPriv* operator&();
 
     friend class GrRecordingContext; // to construct/copy this type.
-
-    using INHERITED = GrImageContextPriv;
 };
 
 inline GrRecordingContextPriv GrRecordingContext::priv() { return GrRecordingContextPriv(this); }

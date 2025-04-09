@@ -142,15 +142,15 @@ static void testBitmapCache_discarded_bitmap(skiatest::Reporter* reporter, SkRes
 DEF_TEST(BitmapCache_discarded_bitmap, reporter) {
     const size_t byteLimit = 100 * 1024;
     {
-        SkResourceCache cache(byteLimit);
-        testBitmapCache_discarded_bitmap(reporter, &cache, nullptr);
+        auto cache = SkResourceCache::Make(byteLimit);
+        testBitmapCache_discarded_bitmap(reporter, cache.get(), nullptr);
     }
     {
         sk_sp<SkDiscardableMemoryPool> pool(SkDiscardableMemoryPool::Make(byteLimit));
         gPool = pool.get();
         SkResourceCache::DiscardableFactory factory = pool_factory;
-        SkResourceCache cache(factory);
-        testBitmapCache_discarded_bitmap(reporter, &cache, factory);
+        auto cache = SkResourceCache::Make(factory);
+        testBitmapCache_discarded_bitmap(reporter, cache.get(), factory);
     }
     REPORTER_ASSERT(reporter, gFactoryCalls > 0);
 }
@@ -297,12 +297,12 @@ static void test_duplicate_add(SkResourceCache* cache, skiatest::Reporter* repor
 DEF_TEST(ResourceCache_purge, reporter) {
     for (bool purgable : { false, true }) {
         {
-            SkResourceCache cache(1024 * 1024);
-            test_duplicate_add(&cache, reporter, purgable);
+            auto cache = SkResourceCache::Make(1024 * 1024);
+            test_duplicate_add(cache.get(), reporter, purgable);
         }
         {
-            SkResourceCache cache(SkDiscardableMemory::Create);
-            test_duplicate_add(&cache, reporter, purgable);
+            auto cache = SkResourceCache::Make(SkDiscardableMemory::Create);
+            test_duplicate_add(cache.get(), reporter, purgable);
         }
     }
 }
