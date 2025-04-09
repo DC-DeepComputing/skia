@@ -607,7 +607,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     SkASSERT(key.isValid());  // invalid keys should have been caught by invalid paint ID earlier
 
     std::string label = key.toString(dict, /*includeData=*/false).c_str();
-    fRootNodes = key.getRootNodes(dict, &fShaderNodeAlloc);
+    fRootNodes = key.getRootNodes(caps, dict, &fShaderNodeAlloc);
 
     // TODO(b/366220690): aggregateSnippetData() goes away entirely once the VulkanGraphicsPipeline
     // is updated to use the extracted SamplerDescs directly.

@@ -727,10 +727,10 @@ ShaderSnippet ShaderCodeDictionary::convertRuntimeEffect(const SkRuntimeEffect* 
                                                          const char* name) {
     SkEnumBitMask<SnippetRequirementFlags> snippetFlags = SnippetRequirementFlags::kNone;
     if (effect->allowShader()) {
-        // SkRuntimeEffect::usesSampleCoords() can't be used to restrict this because it returns
-        // false when the only use is to pass the coord unmodified to a child. When children can
-        // refer to interpolated varyings directly in this case, we can refine the flags.
         snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+        if (!SkRuntimeEffectPriv::UsesSampleCoords(effect)) {
+            snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+        }
     } else if (effect->allowColorFilter()) {
         snippetFlags |= SnippetRequirementFlags::kPriorStageOutput;
     } else if (effect->allowBlender()) {
@@ -1360,7 +1360,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCompose] = {
             /*name=*/"Compose",
             /*staticFn=*/nullptr,
-            SnippetRequirementFlags::kNone,
+            SnippetRequirementFlags::kPassthroughLocalCoords,
             /*uniforms=*/{},
             /*texturesAndSamplers=*/{},
             /*liftableExpression=*/nullptr,
@@ -1370,7 +1370,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kBlendCompose] = {
             /*name=*/"BlendCompose",
             /*staticFn=*/nullptr,
-            SnippetRequirementFlags::kNone,
+            SnippetRequirementFlags::kPassthroughLocalCoords,
             /*uniforms=*/{},
             /*texturesAndSamplers=*/{},
             /*liftableExpression=*/nullptr,
