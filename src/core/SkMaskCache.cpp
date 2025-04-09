@@ -22,9 +22,6 @@
 class SkDiscardableMemory;
 enum SkBlurStyle : int;
 
-#define CHECK_LOCAL(localCache, localName, globalName, ...) \
-    ((localCache) ? localCache->localName(__VA_ARGS__) : SkResourceCache::globalName(__VA_ARGS__))
-
 struct MaskValue {
     SkMask          fMask;
     SkCachedData*   fData;
@@ -87,10 +84,11 @@ struct RRectBlurRec : public SkResourceCache::Rec {
 
 SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
                                       const SkRRect& rrect, SkTLazy<SkMask>* mask,
-                                      SkResourceCache* localCache) {
+                                      SkResourceCache* cache) {
+    SkASSERT(cache);
     SkTLazy<MaskValue> result;
     RRectBlurKey key(sigma, rrect, style);
-    if (!CHECK_LOCAL(localCache, find, Find, key, RRectBlurRec::Visitor, &result)) {
+    if (!cache->find(key, RRectBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
@@ -101,9 +99,10 @@ SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma, SkBlurStyle style,
 
 void SkMaskCache::Add(SkScalar sigma, SkBlurStyle style,
                       const SkRRect& rrect, const SkMask& mask, SkCachedData* data,
-                      SkResourceCache* localCache) {
+                      SkResourceCache* cache) {
+    SkASSERT(cache);
     RRectBlurKey key(sigma, rrect, style);
-    return CHECK_LOCAL(localCache, add, Add, new RRectBlurRec(key, mask, data));
+    return cache->add(new RRectBlurRec(key, mask, data));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -177,10 +176,11 @@ SkCachedData* SkMaskCache::FindAndRef(SkScalar sigma,
                                       SkBlurStyle style,
                                       SkSpan<const SkRect> rects,
                                       SkTLazy<SkMask>* mask,
-                                      SkResourceCache* localCache) {
+                                      SkResourceCache* cache) {
+    SkASSERT(cache);
     SkTLazy<MaskValue> result;
     RectsBlurKey key(sigma, style, rects);
-    if (!CHECK_LOCAL(localCache, find, Find, key, RectsBlurRec::Visitor, &result)) {
+    if (!cache->find(key, RectsBlurRec::Visitor, &result)) {
         return nullptr;
     }
 
@@ -194,7 +194,8 @@ void SkMaskCache::Add(SkScalar sigma,
                       SkSpan<const SkRect> rects,
                       const SkMask& mask,
                       SkCachedData* data,
-                      SkResourceCache* localCache) {
+                      SkResourceCache* cache) {
+    SkASSERT(cache);
     RectsBlurKey key(sigma, style, rects);
-    return CHECK_LOCAL(localCache, add, Add, new RectsBlurRec(key, mask, data));
+    return cache->add(new RectsBlurRec(key, mask, data));
 }

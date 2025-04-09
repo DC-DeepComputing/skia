@@ -36,17 +36,17 @@ struct TestRec : public SkResourceCache::Rec {
 }  // namespace
 
 class ImageCacheBench : public Benchmark {
-    SkResourceCache fCache;
+    sk_sp<SkResourceCache> fCache;
 
     enum {
         CACHE_COUNT = 500
     };
 public:
-    ImageCacheBench()  : fCache(CACHE_COUNT * 100) {}
+    ImageCacheBench()  : fCache(SkResourceCache::Make(CACHE_COUNT * 100)) {}
 
     void populateCache() {
         for (int i = 0; i < CACHE_COUNT; ++i) {
-            fCache.add(new TestRec(TestKey(i), i));
+            fCache->add(new TestRec(TestKey(i), i));
         }
     }
 
@@ -56,20 +56,18 @@ protected:
     }
 
     void onDraw(int loops, SkCanvas*) override {
-        if (fCache.getTotalBytesUsed() == 0) {
+        if (fCache->getTotalBytesUsed() == 0) {
             this->populateCache();
         }
 
         TestKey key(-1);
         // search for a miss (-1)
         for (int i = 0; i < loops; ++i) {
-            SkDEBUGCODE(bool found =) fCache.find(key, TestRec::Visitor, nullptr);
+            SkDEBUGCODE(bool found =) fCache->find(key, TestRec::Visitor, nullptr);
             SkASSERT(!found);
         }
     }
 
-private:
-    using INHERITED = Benchmark;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

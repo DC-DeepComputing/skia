@@ -104,19 +104,19 @@ private:
         sk_sp<SkTypeface> fFace;
     };
 
-    SkResourceCache fCachedResults;
+    sk_sp<SkResourceCache> fCachedResults;
 
 public:
-    SkFontRequestCache(size_t maxSize) : fCachedResults(maxSize) {}
+    SkFontRequestCache(size_t maxSize) : fCachedResults(SkResourceCache::Make(maxSize)) {}
 
     /** Takes ownership of request. It will be deleted when no longer needed. */
     void add(sk_sp<SkTypeface> face, Request* request) {
-        fCachedResults.add(new Result(request, std::move(face)));
+        fCachedResults->add(new Result(request, std::move(face)));
     }
     /** Does not take ownership of request. */
     sk_sp<SkTypeface> findAndRef(Request* request) {
         sk_sp<SkTypeface> face;
-        fCachedResults.find(*request, [](const SkResourceCache::Rec& rec, void* context) -> bool {
+        fCachedResults->find(*request, [](const SkResourceCache::Rec& rec, void* context) -> bool {
             const Result& result = static_cast<const Result&>(rec);
             sk_sp<SkTypeface>* face = static_cast<sk_sp<SkTypeface>*>(context);
 
