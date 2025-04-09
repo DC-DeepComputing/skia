@@ -99,11 +99,6 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
 
-    fPhysicalDeviceMemoryProperties2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MEMORY_PROPERTIES_2;
-    fPhysicalDeviceMemoryProperties2.pNext = nullptr;
-    VULKAN_CALL(vkInterface,
-                GetPhysicalDeviceMemoryProperties2(physDev, &fPhysicalDeviceMemoryProperties2));
-
     // We could actually query and get a max size for each config, however maxImageDimension2D will
     // give the minimum max size across all configs. So for simplicity we will use that for now.
     fMaxTextureSize = std::min(physDevProperties.limits.maxImageDimension2D, (uint32_t)INT_MAX);
@@ -192,6 +187,36 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
                         VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES);
         if (ycbcrFeatures && ycbcrFeatures->samplerYcbcrConversion) {
             fSupportsYcbcrConversion = true;
+        }
+
+        auto advBlendFeatures =
+                skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT>(
+                        *features,
+                        VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_FEATURES_EXT);
+        if (advBlendFeatures) {
+            // VK_EXT_blend_operation_advanced and VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT
+            // are both ratified in 1.1, the minimum version for graphite.
+            VkPhysicalDeviceBlendOperationAdvancedPropertiesEXT blendProps;
+            blendProps.sType =
+                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_PROPERTIES_EXT;
+            blendProps.pNext = nullptr;
+
+            VkPhysicalDeviceProperties2 physDeviceProps2;
+            physDeviceProps2.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROPERTIES_2;
+            physDeviceProps2.pNext = &blendProps;
+
+            VULKAN_CALL(vkInterface, GetPhysicalDeviceProperties2(physDev, &physDeviceProps2));
+            if (blendProps.advancedBlendAllOperations == VK_TRUE) {
+                auto blendFeatures = skgpu::GetExtensionFeatureStruct<
+                        VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT>(
+                                *features,
+                                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_FEATURES_EXT
+                        );
+                fBarrierNeededForAdvancedBlendEqs =
+                        blendFeatures && blendFeatures->advancedBlendCoherentOperations == VK_FALSE;
+                fShaderCaps->fAdvBlendEqInteraction =
+                        SkSL::ShaderCaps::AdvBlendEqInteraction::kAutomatic_AdvBlendEqInteraction;
+            }
         }
     }
 
