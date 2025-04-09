@@ -39,6 +39,7 @@ namespace skgpu { class ShaderErrorHandler; }
 
 namespace skgpu::graphite {
 
+struct AttachmentDesc;
 enum class BufferType : int;
 struct ContextOptions;
 class ComputePipelineDesc;
@@ -96,6 +97,17 @@ public:
     }
 #endif
 
+    // TODO(michaelludwig): Once backends initialize a Caps-level format table, these will not need
+    // to be virtual anymore:
+
+    virtual bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const = 0;
+    // Return the TextureFormat that satisfies `dsFlags`.
+    virtual TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const = 0;
+
+    virtual TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
+                                                        Protected,
+                                                        Discardable) const = 0;
+
     virtual TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                                      Mipmapped mipmapped,
                                                      Protected,
@@ -107,20 +119,6 @@ public:
     virtual TextureInfo getDefaultCompressedTextureInfo(SkTextureCompressionType,
                                                         Mipmapped mipmapped,
                                                         Protected) const = 0;
-
-    virtual TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                                  Discardable discardable) const = 0;
-
-    // Currently the uses of this API always are asking for a discardable DepthStencil attachment.
-    // However, we still pass in the parameter here because we don't want the backend caps to be
-    // making decisons on if a thing should be discardable or not. This also allows us to eventual
-    // use non discardable DS attachments, but there aren't any current plans to do so. If we find
-    // out over time that we really will only ever use discardable ones, we could rename this
-    // function to be getDefaultDiscardableDepthStencilTextureInfo.
-    virtual TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                          uint32_t sampleCount,
-                                                          Protected,
-                                                          Discardable discardable) const = 0;
 
     virtual TextureInfo getDefaultStorageTextureInfo(SkColorType) const = 0;
 
@@ -137,9 +135,6 @@ public:
                                       GraphicsPipelineDesc*,
                                       RenderPassDesc*,
                                       const RendererProvider*) const { return false; }
-
-    virtual bool serializeTextureInfo(const TextureInfo&, SkWStream*) const = 0;
-    virtual bool deserializeTextureInfo(SkStream*, TextureInfo*) const = 0;
 
     bool areColorTypeAndTextureInfoCompatible(SkColorType, const TextureInfo&) const;
 

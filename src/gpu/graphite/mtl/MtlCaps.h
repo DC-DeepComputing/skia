@@ -22,6 +22,13 @@ public:
     MtlCaps(const id<MTLDevice>, const ContextOptions&);
     ~MtlCaps() override {}
 
+    bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const override;
+    TextureFormat getDepthStencilFormat(SkEnumBitMask<DepthStencilFlags>) const override;
+
+    TextureInfo getDefaultAttachmentTextureInfo(AttachmentDesc,
+                                                Protected,
+                                                Discardable) const override;
+
     TextureInfo getDefaultSampledTextureInfo(SkColorType,
                                              Mipmapped mipmapped,
                                              Protected,
@@ -34,14 +41,6 @@ public:
                                                 Mipmapped mipmapped,
                                                 Protected) const override;
 
-    TextureInfo getDefaultMSAATextureInfo(const TextureInfo& singleSampledInfo,
-                                          Discardable discardable) const override;
-
-    TextureInfo getDefaultDepthStencilTextureInfo(SkEnumBitMask<DepthStencilFlags>,
-                                                  uint32_t sampleCount,
-                                                  Protected,
-                                                  Discardable discardable) const override;
-
     TextureInfo getDefaultStorageTextureInfo(SkColorType) const override;
 
     UniqueKey makeGraphicsPipelineKey(const GraphicsPipelineDesc&,
@@ -53,12 +52,9 @@ public:
                               RenderPassDesc*,
                               const RendererProvider*) const override;
 
-    bool serializeTextureInfo(const TextureInfo&, SkWStream*) const override;
-    bool deserializeTextureInfo(SkStream*, TextureInfo* out) const override;
-
     // Get a sufficiently unique bit representation for the RenderPassDesc to be embedded in other
     // UniqueKeys (e.g. makeGraphicsPipelineKey).
-    uint64_t getRenderPassDescKey(const RenderPassDesc&) const;
+    uint32_t getRenderPassDescKey(const RenderPassDesc&) const;
 
     bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
     bool isApple() const { return fGPUFamily == GPUFamily::kApple; }
@@ -88,14 +84,11 @@ private:
         int idx = static_cast<int>(colorType);
         return fColorTypeToFormatTable[idx];
     }
-    MTLPixelFormat getFormatFromDepthStencilFlags(SkEnumBitMask<DepthStencilFlags>) const;
 
     const ColorTypeInfo* getColorTypeInfo(SkColorType, const TextureInfo&) const override;
 
     bool onIsTexturable(const TextureInfo&) const override;
     bool isTexturable(MTLPixelFormat) const;
-    bool isRenderable(MTLPixelFormat, uint32_t numSamples) const;
-    uint32_t maxRenderTargetSampleCount(MTLPixelFormat) const;
 
     bool supportsWritePixels(const TextureInfo&) const override;
     bool supportsReadPixels(const TextureInfo&) const override;
@@ -108,8 +101,6 @@ private:
             SkColorType srcColorType,
             const TextureInfo& srcTextureInfo,
             SkColorType dstColorType) const override;
-
-    MTLStorageMode getDefaultMSAAStorageMode(Discardable discardable) const;
 
     struct FormatInfo {
         uint32_t colorTypeFlags(SkColorType colorType) const {
