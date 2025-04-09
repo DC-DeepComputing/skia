@@ -16,6 +16,24 @@
       "message": "This might be overly aggressive. The issue is that FreeType currently ignores the `kGenA8FromLCD_Flag` when drawing with FreeType, but it is still respected when drawing from path via the SkScalerContext. This change turns the flag off everywhere. On the other hand this fixes the issue where the bounds (metrics) are computed with kGenA8FromLCD_Flag and then the image without.",
       "revId": "941c31dca48a13a9c67e8a767ac5268c7d683fc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c67641cd_3c864c82",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-09T20:03:42Z",
+      "side": 1,
+      "message": "After some thought and looking at the few tests that this affects (`gpu_tests.pixel_integration_test.PixelIntegrationTest.Pixel_WebGLDisplayP3` in Chrome and `typefacerendering` in Skia, where ` fontations_compare_ft_*` do change but only due to bounds fixes) this does depart a bit from what would have happened with FreeType for glyphs not drawn with the FreeType rasterizer, but is for now the better compromise since it also looks a little less awkward.",
+      "parentUuid": "cd1ded0a_6eb9ada9",
+      "revId": "941c31dca48a13a9c67e8a767ac5268c7d683fc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
