@@ -16,6 +16,23 @@
       "message": "24 untriaged images - is it related to this change?",
       "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "691c6fe4_3e25bc17",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-09T22:05:34Z",
+      "side": 1,
+      "message": "Is this intended to be a visual no-op? And mainly helps with being able to reuse the `ScalerContext` implementation again in Fontations, for example?",
+      "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
