@@ -87,6 +87,24 @@
       "parentUuid": "466fd728_588734cc",
       "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8a5f606_d810b9ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-10T17:34:50Z",
+      "side": 1,
+      "message": "Yes, no change to when we do need to outset.",
+      "parentUuid": "5ac6e8fc_5a6f3b3a",
+      "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
