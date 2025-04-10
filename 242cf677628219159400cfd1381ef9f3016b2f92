@@ -33,6 +33,23 @@
       "message": "LGTM. I don\u0027t have voting rights.",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8e25f0a_fceeb686",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-04-10T13:11:20Z",
+      "side": 1,
+      "message": "I don\u0027t get what this does. In GL you don\u0027t ever need to know the format of an AHardwareBuffer, and it looks like that\u0027s already treated as the case in the default: block anyway if \"requireKnownFormat\" is true. Would the better fix just to _always_ assume requireKnownFormat is true since per the bug it seems like skia expects to have a format in an entirely different place, even though it\u0027s never passed to GL?",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
