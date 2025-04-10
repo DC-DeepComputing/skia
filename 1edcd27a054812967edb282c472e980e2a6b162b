@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "216ed0f9_d7afd159",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-10T18:01:31Z",
+      "side": 1,
+      "message": "Thanks again, Aleks! Apologies for the delay.",
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cd6fa93f_3bb1768c",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-10T18:01:31Z",
+      "side": 1,
+      "message": "(Deferring to Greg for API changes -- I\u0027ll try to revisit this section as well after reviewing the HWUI CL)",
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bd3ac16_fc820c9f",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-10T18:01:31Z",
+      "side": 1,
+      "message": "Trying to think through how this will show up in traces and dashboards, I don\u0027t think we should record the same slice name twice in a row when a compilation is required. Doing so could drag down average duration metrics on dashboards, and confuse engineers looking at traces.\n\nTo preserve parity with how this slice is currently _interpreted_, you could potentially wrap both of these call site blocks with an outer `{ }` block (e.g. wrap lines 564 through 591, inclusive), and place a single `TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline\");` at the top?\n\nYou could then augment this by adding a second slice (with a different name like e.g. `CompileGraphicsPipeline` or `CreateGraphicsPipeline-CacheMiss` (IDK)) around just the second call to `vkCreateGraphicsPipelines` to create a nested slice that indicates that this pipeline actually required compilation.",
+      "range": {
+        "startLine": 565,
+        "startChar": 45,
+        "endLine": 565,
+        "endChar": 67
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e89155e2_25ccef0d",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-10T18:01:31Z",
+      "side": 1,
+      "message": "This should be switched to [GR_VK_CALL_RESULT_NOCHECK](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkUtil.h;l\u003d38-50;drc\u003d5fb01f00262bbbef99571953fb5a987b0bed4d45) since `VK_PIPELINE_COMPILE_REQUIRED` is now an acceptable result (when supported).",
+      "range": {
+        "startLine": 570,
+        "startChar": 8,
+        "endLine": 570,
+        "endChar": 25
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
