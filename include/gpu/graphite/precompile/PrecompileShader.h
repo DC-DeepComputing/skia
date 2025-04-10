@@ -122,7 +122,8 @@ namespace PrecompileShaders {
     // In the main Skia API, the specifics of the SkImage used for the SkImage::makeShader call
     // can determine whether normal or YUV sampling is required. This entry point allows clients
     // to specify that the future image will be a YUV image.
-    SK_API sk_sp<PrecompileShader> YUVImage();
+    SK_API sk_sp<PrecompileShader> YUVImage(SkSpan<const SkColorInfo> = {},
+                                            bool includeCubic = true);
 
     // --- This block of two matches the SkShaders factories in SkPerlinNoiseShader.h
     // Again, most of the details have been elided.
