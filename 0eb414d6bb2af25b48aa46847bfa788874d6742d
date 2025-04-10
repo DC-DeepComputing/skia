@@ -46,6 +46,30 @@
       },
       "revId": "0eb414d6bb2af25b48aa46847bfa788874d6742d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "536d001e_5c3494ea",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-10T16:37:18Z",
+      "side": 1,
+      "message": "And for reference, https://skia-review.googlesource.com/c/skia/+/978200 should be the fix",
+      "parentUuid": "7ee1fb3b_5a70250c",
+      "range": {
+        "startLine": 14,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 53
+      },
+      "revId": "0eb414d6bb2af25b48aa46847bfa788874d6742d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
