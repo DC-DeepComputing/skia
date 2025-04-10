@@ -8,10 +8,12 @@
 #include "src/effects/SkEmbossMaskFilter.h"
 
 #include "include/core/SkBlurTypes.h"
+#include "include/core/SkImageFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkReadBuffer.h"
@@ -145,4 +147,68 @@ void SkEmbossMaskFilter::flatten(SkWriteBuffer& buffer) const {
     tmpLight.fPad = 0;    // for the font-cache lookup to be clean
     buffer.writeByteArray(&tmpLight, sizeof(tmpLight));
     buffer.writeScalar(fBlurSigma);
+}
+
+bool SkEmbossMaskFilter::asImageFilter(const SkMatrix& ctm,
+                                       const SkPaint& paint,
+                                       sk_sp<SkImageFilter>& dstImageFilter) const {
+    dstImageFilter.reset();
+    sk_sp<SkImageFilter> blend = SkImageFilters::Blur(fBlurSigma, fBlurSigma, nullptr);
+    sk_sp<SkImageFilter> coverageMask = SkImageFilters::Blend(SkBlendMode::kDstIn, nullptr, std::move(blend));
+    //note:not optimal but necessary for this shader which
+    // sk_sp<SkImageFilter> srcColor = SkImageFilters::Shader(SkShaders::Color(paint.getColor()));
+    // sk_sp<SkImageFilter> srcShader = SkImageFilters::Compose(SkImageFilters::Shader(paint.refShader()), srcColor);
+    // sk_sp<SkImageFilter> nullptr = SkImageFilters::ColorFilter(paint.refColorFilter(), srcShader);
+
+     // run the light direction through the matrix...
+     Light   light = fLight;
+     ctm.mapVectors((SkVector*)(void*)light.fDirection,
+                       (SkVector*)(void*)fLight.fDirection, 1);
+
+     // now restore the length of the XY component
+     // cast to SkVector so we can call setLength (this double cast silences alias warnings)
+     SkVector* vec = (SkVector*)(void*)light.fDirection;
+     vec->setLength(light.fDirection[0],
+                    light.fDirection[1],
+                    SkPoint::Length(fLight.fDirection[0], fLight.fDirection[1]));
+    //todo: add comment about what this is
+    SkPoint3 diffuseDirection = SkPoint3::Make(-fLight.fDirection[0], -fLight.fDirection[1], fLight.fDirection[2]);
+    if (!diffuseDirection.normalize()) {
+        return true;
+    }
+    const int surfaceScale = 32;
+
+    sk_sp<SkImageFilter> diffuse = SkImageFilters::DistantLitDiffuse(diffuseDirection,
+                                                                     SK_ColorWHITE,
+                                                                     surfaceScale,
+                                                                     1,
+                                                                     coverageMask);
+
+    //todo: this can be an shader?
+    float ambientf = static_cast<float>(fLight.fAmbient);
+    uint8_t rgbTable[256];
+    uint8_t alphaTable[256];
+    for (int i = 0; i < 256; ++i) {
+        rgbTable[i] = (i * ambientf) / 255;
+        alphaTable[i] = i;
+    }
+    sk_sp<SkColorFilter> ambientCF = SkColorFilters::TableARGB(alphaTable, rgbTable, rgbTable, rgbTable);
+    sk_sp<SkImageFilter> ambient = SkImageFilters::ColorFilter(ambientCF, nullptr);
+
+    sk_sp<SkImageFilter> ambientdiffuse = SkImageFilters::Blend(SkBlendMode::kPlus, diffuse, ambient);
+    sk_sp<SkImageFilter> ambientdiffuseBlend = SkImageFilters::Blend(SkBlendMode::kModulate, nullptr, ambientdiffuse);
+
+    //todo: add comment about what this is
+    //todo: change these numbers?
+    SkPoint3 specularDirection = SkPoint3::Make(-fLight.fDirection[0], -fLight.fDirection[1], -fLight.fDirection[2]);
+    sk_sp<SkImageFilter> specular = SkImageFilters::DistantLitSpecular(specularDirection,
+                                                                       SK_ColorWHITE,
+                                                                       32,
+                                                                       1,
+                                                                       (fLight.fSpecular >> 4),
+                                                                       coverageMask);
+    sk_sp<SkImageFilter> finalFilter = SkImageFilters::Blend(SkBlendMode::kPlus, ambientdiffuseBlend, specular);
+
+    dstImageFilter =  sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(finalFilter), nullptr).release());
+    return true;
 }

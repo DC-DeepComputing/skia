@@ -93,9 +93,13 @@ bool SkShaderMaskFilterImpl::filterMask(SkMaskBuilder* dst, const SkMask& src, c
     return true;
 }
 
-sk_sp<SkImageFilter> SkShaderMaskFilterImpl::asImageFilter(const SkMatrix&) const {
+bool SkShaderMaskFilterImpl::asImageFilter(const SkMatrix&,
+                                           const SkPaint&,
+                                           sk_sp<SkImageFilter>& dstImageFilter) const {
+    dstImageFilter.reset();
     sk_sp<SkImageFilter> filter =  SkImageFilters::Shader(fShader);
-    return SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr);
+    dstImageFilter = sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr).release());
+    return false;
 }
 
 sk_sp<SkMaskFilter> SkShaderMaskFilter::Make(sk_sp<SkShader> shader) {
