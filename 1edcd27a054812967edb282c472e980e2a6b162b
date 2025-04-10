@@ -37,6 +37,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "917c4c80_6dd1d7db",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "can we add comments for these functions on what they\u0027re suppose to do?",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 519,
+        "endChar": 43
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc37c76_820ca149",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "Do we also need to check that pipelineCreationCacheControl is enabled in the features?",
+      "range": {
+        "startLine": 422,
+        "startChar": 8,
+        "endLine": 422,
+        "endChar": 90
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac48b02f_81376096",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "nit: move this to its own line so we don\u0027t hit 100 char style limit.",
+      "range": {
+        "startLine": 202,
+        "startChar": 55,
+        "endLine": 202,
+        "endChar": 56
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f8d890f_60bcdacc",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2765,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "I find it a little weird that this only gets set back to false in the case where we support pipelineCreationCacheControl. Like if someone calls the GrDirectContext::storePipeline cache and then immediately calls GrDirectContext::hasNewVkPipelineCacheData it seems like the second calls should return false even if we don\u0027t have the feature.\n\nI wonder if we should change the logic in GrVkPipeline.cpp to be something like:\n\n```\nVkGraphicsPipelineCreateInfo pipelineCreateInfo;\n// do pipeline create setup\nVkResult err \u003d VK_PIPELINE_COMPILE_REQUIRED;\nif (vkcaps-\u003esupportsPipelineCreationCacheControl()) {\n    pipelineCreateInfo.flags \u003d VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;\n    err \u003d CreateGraphitesPipeline(...);\n}\n\nif (err \u003d\u003d VK_PIPELINE_COMPILE_REQUIRED) {\n    pipelineCreateInfo.flags \u003d 0;\n    err \u003d CreateGraphitesPipeline(...);\n}\n```\n\nThen return the `if (!this-\u003ecanDetectNewVkPipelineCacheData()) {` check in this function above. And in GrVkGpu constructor remove\n```\nif (!this-\u003ecanDetectNewVkPipelineCacheData()) {\n        fHasNewVkPipelineCacheData \u003d true;\n    }\n```",
+      "range": {
+        "startLine": 2765,
+        "startChar": 4,
+        "endLine": 2765,
+        "endChar": 38
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fce5d00_b69f6933",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "this doesn\u0027t need the \"on\" prefix. We use on when we have a base function that calls into a virtual version of the function. The virtual then uses the on prefix",
+      "range": {
+        "startLine": 232,
+        "startChar": 9,
+        "endLine": 232,
+        "endChar": 34
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "974acb17_55d9031b",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-10T20:42:53Z",
+      "side": 1,
+      "message": "This is only legal to be set as a flag if pipelineCreationCacheControl feature is enabled. So we need to guard setting this flag with a check GrVkCaps::supportsPipelineCreationCacheControl()",
+      "range": {
+        "startLine": 544,
+        "startChar": 31,
+        "endLine": 544,
+        "endChar": 91
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bd3ac16_fc820c9f",
         "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
         "patchSetId": 1
