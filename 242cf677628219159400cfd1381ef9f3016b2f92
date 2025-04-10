@@ -50,6 +50,24 @@
       "message": "I don\u0027t get what this does. In GL you don\u0027t ever need to know the format of an AHardwareBuffer, and it looks like that\u0027s already treated as the case in the default: block anyway if \"requireKnownFormat\" is true. Would the better fix just to _always_ assume requireKnownFormat is true since per the bug it seems like skia expects to have a format in an entirely different place, even though it\u0027s never passed to GL?",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "678eed62_5d74f886",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3965310
+      },
+      "writtenOn": "2025-04-10T13:22:34Z",
+      "side": 1,
+      "message": "you mean here [1]?\n\n[1] https://cs.android.com/android/platform/superproject/main/+/main:frameworks/native/libs/renderengine/skia/compat/GaneshBackendTexture.cpp;drc\u003dbc3f3609769db87e82f30d609351dae56d40c153;l\u003d52",
+      "parentUuid": "a8e25f0a_fceeb686",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
