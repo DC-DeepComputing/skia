@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e9fe1ea_66e48ef9",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 48
+      },
+      "lineNbr": 1402,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-10T17:23:18Z",
+      "side": 1,
+      "message": "FYI: when wrapping a backendtexture as a surface, we already spew out texture info and backend texture info (including usage flags), so I did not add that here. \n\nhttps://skia.googlesource.com/skia.git/+/refs/heads/main/src/gpu/graphite/Surface_Graphite.cpp#252",
+      "range": {
+        "startLine": 1400,
+        "startChar": 0,
+        "endLine": 1402,
+        "endChar": 83
+      },
+      "revId": "5fb85572e94c3c24639742009bac9231c46003c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

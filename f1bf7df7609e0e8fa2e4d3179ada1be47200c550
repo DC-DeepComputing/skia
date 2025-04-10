@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4e73cfd_fe5a2931",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 1641,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-10T17:23:18Z",
+      "side": 1,
+      "message": "Good question/point - done",
+      "parentUuid": "46438810_ad76f09b",
+      "range": {
+        "startLine": 1641,
+        "startChar": 7,
+        "endLine": 1641,
+        "endChar": 90
+      },
+      "revId": "f1bf7df7609e0e8fa2e4d3179ada1be47200c550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5eb98e84_f47f966e",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-09T16:47:29Z",
       "side": 1,
       "message": "Why do we need to do this in bindGraphicsPipeline? If this isn\u0027t going to change or need to be rebound couldn\u0027t we have just don\u0027t this when we began the render pass? Like around where we are setting up the intrinsic uniforms",
+      "range": {
+        "startLine": 981,
+        "startChar": 3,
+        "endLine": 993,
+        "endChar": 5
+      },
+      "revId": "f1bf7df7609e0e8fa2e4d3179ada1be47200c550",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a1b04a8_5227bcbd",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 45
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-10T17:23:18Z",
+      "side": 1,
+      "message": "The actual binding of the descriptor set requires the pipeline\u0027s layout, though I believe we can simply use a compatible pipeline layout like for push constants. Done",
+      "parentUuid": "5eb98e84_f47f966e",
       "range": {
         "startLine": 981,
         "startChar": 3,

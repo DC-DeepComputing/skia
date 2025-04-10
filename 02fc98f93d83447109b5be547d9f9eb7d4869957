@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7515b3a1_ebc2fdf5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 50
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-10T17:23:18Z",
+      "side": 1,
+      "message": "Okay, is ready for your review with the two updates. :)",
+      "revId": "02fc98f93d83447109b5be547d9f9eb7d4869957",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
