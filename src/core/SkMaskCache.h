@@ -29,25 +29,25 @@ public:
      */
     static SkCachedData* FindAndRef(SkScalar sigma, SkBlurStyle style,
                                     const SkRRect& rrect, SkTLazy<SkMask>* mask,
-                                    SkResourceCache* localCache = nullptr);
+                                    SkResourceCache* cache);
     static SkCachedData* FindAndRef(SkScalar sigma,
                                     SkBlurStyle style,
                                     SkSpan<const SkRect> rects,
                                     SkTLazy<SkMask>* mask,
-                                    SkResourceCache* localCache = nullptr);
+                                    SkResourceCache* cache);
 
     /**
      * Add a mask and its pixel-data to the cache.
      */
     static void Add(SkScalar sigma, SkBlurStyle style,
                     const SkRRect& rrect, const SkMask& mask, SkCachedData* data,
-                    SkResourceCache* localCache = nullptr);
+                    SkResourceCache* cache);
     static void Add(SkScalar sigma,
                     SkBlurStyle style,
                     SkSpan<const SkRect> rects,
                     const SkMask& mask,
                     SkCachedData* data,
-                    SkResourceCache* localCache = nullptr);
+                    SkResourceCache* cache);
 };
 
 #endif

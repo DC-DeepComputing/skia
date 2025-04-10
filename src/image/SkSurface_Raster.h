@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "src/core/SkRasterRecorderPriv.h"
 #include "src/image/SkSurface_Base.h"
 
 #include <cstring>
@@ -24,7 +25,6 @@ class SkPaint;
 class SkPixelRef;
 class SkPixmap;
 class SkSurface;
-class SkSurfaceProps;
 struct SkIRect;
 
 class SkSurface_Raster : public SkSurface_Base {
@@ -33,6 +33,7 @@ public:
                      void (*releaseProc)(void* pixels, void* context), void* context,
                      const SkSurfaceProps*);
     SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef>, const SkSurfaceProps*);
+    SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef>, SkRasterRecorderPriv*);
 
     // From SkSurface.h
     SkImageInfo imageInfo() const override { return fBitmap.info(); }
@@ -50,10 +51,9 @@ public:
     sk_sp<const SkCapabilities> onCapabilities() override;
 
 private:
-    SkBitmap    fBitmap;
-    bool        fWeOwnThePixels;
-
-    using INHERITED = SkSurface_Base;
+    SkRasterRecorderPriv* fRecorder = nullptr;
+    SkBitmap              fBitmap;
+    bool                  fWeOwnThePixels;
 };
 
 #endif
