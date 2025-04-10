@@ -33,6 +33,42 @@
       "message": "Is this intended to be a visual no-op? And mainly helps with being able to reuse the `ScalerContext` implementation again in Fontations, for example?",
       "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "466fd728_588734cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-10T14:20:44Z",
+      "side": 1,
+      "message": "Yes, the `fontations_compare_ft_*` changes are just due to the bounds being tighter (previously this calculated the bounds for subpixel smoothing but then didn\u0027t do the smoothing). The changes to `typefacerendering` are the only real changes this makes, which is to consistently not do subpixel smoothing when doing fake bold and path effects as well.",
+      "parentUuid": "cd3b4cb4_ca6a1c80",
+      "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b085e4fc_5628cfc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-10T14:20:44Z",
+      "side": 1,
+      "message": "This is a no-op except for the bounds being calculated more correctly (not outsetting for subpixel smoothing when it isn\u0027t going to be applied) and for fake bold now being consistent.",
+      "parentUuid": "691c6fe4_3e25bc17",
+      "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
