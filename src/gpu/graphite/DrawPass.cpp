@@ -573,12 +573,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
 
-        // If a draw reads from the dst texture as an input attachment, append a DrawCommand to
-        // signal to backend command buffers to add the appropriate barrier type.
-        if (dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()) {
-            drawPass->fCommandList.addBarrier(BarrierType::kReadDstFromInput);
-        }
-
         const bool pipelineChange = key.pipelineIndex() != lastPipeline;
 
         const bool geomBindingChange = geometryUniformTracker.writeUniforms(
@@ -640,6 +634,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
                 drawPass->fCommandList.setScissor(*newScissor);
                 lastScissor = *newScissor;
             }
+        }
+
+        // Upon a pipeline or state change, check if the current draw reads from the dst texture as
+        // an input attachment. If so, we must issue a DrawPassCommand to add a kReadDstFromInput
+        // barrier before the DrawWriter adds any draw commands.
+        if (dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst() &&
+            (stateChange || pipelineChange)) {
+            drawPass->fCommandList.addBarrier(BarrierType::kReadDstFromInput);
         }
 
         uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
