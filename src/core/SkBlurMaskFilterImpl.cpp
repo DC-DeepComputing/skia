@@ -71,7 +71,9 @@ bool SkBlurMaskFilterImpl::asABlur(BlurRec* rec) const {
     return true;
 }
 
-sk_sp<SkImageFilter> SkBlurMaskFilterImpl::asImageFilter(const SkMatrix& ctm) const {
+bool SkBlurMaskFilterImpl::asImageFilter(const SkMatrix& ctm,
+                                         const SkPaint&,
+                                         sk_sp<SkImageFilter>& dstImageFilter) const {
     float sigma = fSigma;
     if (this->ignoreXform()) {
         // This is analogous to computeXformedSigma(), but it might be more correct to wrap the
@@ -81,23 +83,26 @@ sk_sp<SkImageFilter> SkBlurMaskFilterImpl::asImageFilter(const SkMatrix& ctm) co
         sigma *= ctmScaleFactor;
     }
 
+    dstImageFilter.reset();
     // The null input image filter will be bound to the original coverage mask.
     sk_sp<SkImageFilter> filter = SkImageFilters::Blur(sigma, sigma, nullptr);
     // Combine the original coverage mask (src) and the blurred coverage mask (dst)
     switch(fBlurStyle) {
         case kInner_SkBlurStyle: //  dst = dst * src
                                  //      = 0 * src + src * dst
-            return SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr);
+            dstImageFilter = sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kDstIn, std::move(filter), nullptr).release());
         case kSolid_SkBlurStyle: //  dst = src + dst - src * dst
                                  //      = 1 * src + (1 - src) * dst
-            return SkImageFilters::Blend(SkBlendMode::kSrcOver, std::move(filter), nullptr);
+            dstImageFilter = sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kSrcOver, std::move(filter), nullptr).release());
         case kOuter_SkBlurStyle: //  dst = dst * (1 - src)
                                  //      = 0 * src + (1 - src) * dst
-            return SkImageFilters::Blend(SkBlendMode::kDstOut, std::move(filter), nullptr);
+            dstImageFilter = sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kDstOut, std::move(filter), nullptr).release());
         case kNormal_SkBlurStyle:
-            return filter;
+            dstImageFilter = sk_sp<SkImageFilter>(filter.release());
     }
     SkUNREACHABLE;
+
+    return false;
 }
 
 SkScalar SkBlurMaskFilterImpl::computeXformedSigma(const SkMatrix& ctm) const {

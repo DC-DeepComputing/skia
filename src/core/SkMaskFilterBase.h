@@ -90,8 +90,9 @@ public:
     /**
      * Return an SkImageFilter representation of this mask filter that SkCanvas can apply to an
      * alpha-only image to produce an equivalent effect to running the mask filter directly.
+     * TODO: add documentation about the second arg and what the return value means
      */
-    virtual sk_sp<SkImageFilter> asImageFilter(const SkMatrix& ctm) const;
+    virtual bool asImageFilter(const SkMatrix& ctm, const SkPaint& paint, sk_sp<SkImageFilter>& dstImageFilter) const;
 
     static SkFlattenable::Type GetFlattenableType() {
         return kSkMaskFilter_Type;
