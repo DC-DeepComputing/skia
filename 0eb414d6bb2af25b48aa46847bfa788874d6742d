@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10988592_86269451",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18999
+      },
+      "writtenOn": "2025-04-10T16:17:33Z",
+      "side": 1,
+      "message": "Hey folks,\n\nThis Chromium Control Flow Integrity builder is complaining about a [bad cast] in `SkEdge`:\n\n```\n\n[ RUN      ] DisplayItemListTest.TransformPairedRange\n../../third_party/skia/src/base/SkArenaAlloc.h:311:16: runtime error: control flow integrity check for type \u0027SkEdge\u0027 failed during cast to unrelated type (vtable address 0x4242424242424242)\n0x4242424242424242: note: invalid vtable\n\u003cmemory cannot be printed\u003e\n../../third_party/skia/src/base/SkArenaAlloc.h:311:16: note: check failed in /b/s/w/ir/out/4546-Linux_CFI/cc_unittests, vtable located in (unknown)\n    #0 0x592e146b570b in SkEdge* SkArenaAlloc::allocUninitializedArray\u003cSkEdge\u003e(unsigned long) ./../../third_party/skia/src/base/SkArenaAlloc.h:311:16\n    #1 0x592e146b3af1 in SkEdge* SkArenaAlloc::makeArrayDefault\u003cSkEdge\u003e(unsigned long) ./../../third_party/skia/src/base/SkArenaAlloc.h:173:26\n    ...\n```\n\n... and this CL is in [the blamelist]. Do you think this CL (or one of the `SkEdge` CLs in the Gerrit stack) could be the culprit? Thanks in advance.\n\n[bad cast]: https://ci.chromium.org/ui/p/chromium/builders/ci/Linux%20CFI/29502/test-results\n[the blamelist]: https://ci.chromium.org/ui/p/chromium/builders/ci/Linux%20CFI/29502/blamelist",
+      "range": {
+        "startLine": 14,
+        "startChar": 30,
+        "endLine": 14,
+        "endChar": 53
+      },
+      "revId": "0eb414d6bb2af25b48aa46847bfa788874d6742d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
