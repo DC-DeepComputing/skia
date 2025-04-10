@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3fdc03e_166ec2f6",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1233,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-10T19:16:09Z",
+      "side": 1,
+      "message": "I suppose we could add some debug code that checks if there are any duplicate snippet names in fBuiltInCodeSnippets? Though that could be work for another CL (if we actually want it).",
+      "revId": "986f169f7ef0536ee74ceac531b3b60b4bcc2bc9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
