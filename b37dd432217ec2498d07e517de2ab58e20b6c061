@@ -46,6 +46,30 @@
       },
       "revId": "b37dd432217ec2498d07e517de2ab58e20b6c061",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e107d15_dee2e162",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 4
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-10T16:52:17Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "72c543a8_c9cfe5f3",
+      "range": {
+        "startLine": 759,
+        "startChar": 36,
+        "endLine": 759,
+        "endChar": 37
+      },
+      "revId": "b37dd432217ec2498d07e517de2ab58e20b6c061",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
