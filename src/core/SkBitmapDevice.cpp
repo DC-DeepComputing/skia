@@ -83,13 +83,13 @@ public:
         fDone = false;
 
         // we need fDst to be set, and if we're actually drawing, to dirty the genID
-        if (!dev->accessPixels(&fRootPixmap)) {
+        if (!fDevice->accessPixels(&fRootPixmap)) {
             // NoDrawDevice uses us (why?) so we have to catch this case w/ no pixels
-            fRootPixmap.reset(dev->imageInfo(), nullptr, 0);
+            fRootPixmap.reset(fDevice->imageInfo(), nullptr, 0);
         }
 
         // do a quick check, so we don't even have to process "bounds" if there is no need
-        const SkIRect clipR = dev->fRCStack.rc().getBounds();
+        const SkIRect clipR = fDevice->fRCStack.rc().getBounds();
         fNeedsTiling = clipR.right() > kMaxDim || clipR.bottom() > kMaxDim;
         if (fNeedsTiling) {
             if (bounds) {
@@ -105,7 +105,7 @@ public:
                 //        fSrcBounds = devBounds.roundOut();
                 // The problem being that the promotion of clipR to SkRect was unreliable
                 //
-                fSrcBounds = dev->localToDevice().mapRect(*bounds).roundOut();
+                fSrcBounds = fDevice->localToDevice().mapRect(*bounds).roundOut();
                 if (fSrcBounds.intersect(clipR)) {
                     // Check again, now that we have computed srcbounds.
                     fNeedsTiling = fSrcBounds.right() > kMaxDim || fSrcBounds.bottom() > kMaxDim;
@@ -126,12 +126,15 @@ public:
         } else {
             // don't reference fSrcBounds, as it may not have been set
             fDraw.fDst = fRootPixmap;
-            fDraw.fCTM = &dev->localToDevice();
-            fDraw.fRC = &dev->fRCStack.rc();
+            fDraw.fCTM = &fDevice->localToDevice();
+            fDraw.fRC = &fDevice->fRCStack.rc();
             fOrigin.set(0, 0);
         }
 
         fDraw.fProps = &fDevice->surfaceProps();
+        if (fDevice->fRecorder) {
+            fDraw.fCtx = fDevice->fRecorder->ctx();
+        }
     }
 
     bool needsTiling() const { return fNeedsTiling; }
@@ -235,8 +238,17 @@ SkBitmapDevice::SkBitmapDevice(const SkBitmap& bitmap)
 SkBitmapDevice::SkBitmapDevice(const SkBitmap& bitmap, const SkSurfaceProps& surfaceProps,
                                SkRasterHandleAllocator::Handle hndl)
         : SkDevice(bitmap.info(), surfaceProps)
-        , fBitmap(bitmap)
         , fRasterHandle(hndl)
+        , fBitmap(bitmap)
+        , fRCStack(bitmap.width(), bitmap.height())
+        , fGlyphPainter(this->surfaceProps(), bitmap.colorType(), bitmap.colorSpace()) {
+    SkASSERT(valid_for_bitmap_device(bitmap.info(), nullptr));
+}
+
+SkBitmapDevice::SkBitmapDevice(SkRasterRecorderPriv* recorder, const SkBitmap& bitmap)
+        : SkDevice(bitmap.info(), recorder->ctx()->surfaceProps())
+        , fRecorder(recorder)
+        , fBitmap(bitmap)
         , fRCStack(bitmap.width(), bitmap.height())
         , fGlyphPainter(this->surfaceProps(), bitmap.colorType(), bitmap.colorSpace()) {
     SkASSERT(valid_for_bitmap_device(bitmap.info(), nullptr));
