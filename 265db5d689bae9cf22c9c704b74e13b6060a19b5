@@ -69,6 +69,24 @@
       "parentUuid": "691c6fe4_3e25bc17",
       "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ac6e8fc_5a6f3b3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-10T17:19:16Z",
+      "side": 1,
+      "message": "Got it, thanks. If I understood correctly, this does not mean a change for when we _do_ need to outset them, as in RGB AA, and we would still hit the layout hit-testing slow path issue, that we saw before - no change to that?",
+      "parentUuid": "466fd728_588734cc",
+      "revId": "265db5d689bae9cf22c9c704b74e13b6060a19b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
