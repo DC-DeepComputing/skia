@@ -844,14 +844,14 @@ var androidDeviceInfos = map[string][]string{
 	"GalaxyS24":       {"pineapple", "UP1A.231005.007"},
 	"JioNext":         {"msm8937", "RKQ1.210602.002"},
 	"Mokey":           {"mokey", "UP1A.231105.001"},
-	"MokeyGo32":       {"mokey_go32", "UQ1A.240105.003.A1_11159138"},
+	"MokeyGo32":       {"mokey_go32", "UQ1A.240105.003.A1"},
 	"MotoG73":         {"devonf", "U1TNS34.82-12-7-6"},
 	"Nexus5":          {"hammerhead", "M4B30Z_3437181"},
 	"Nexus7":          {"grouper", "LMY47V"}, // 2012 Nexus 7
 	"P30":             {"HWELE", "HUAWEIELE-L29"},
 	"Pixel3a":         {"sargo", "QP1A.190711.020"},
-	"Pixel4":          {"flame", "RPB2.200611.009"},       // R Preview
-	"Pixel4a":         {"sunfish", "AOSP.MASTER_7819821"}, // Pixel4a flashed with an Android HWASan build.
+	"Pixel4":          {"flame", "RPB2.200611.009"}, // R Preview
+	"Pixel4a":         {"sunfish", "AOSP.MASTER"},   // Pixel4a flashed with an Android HWASan build.
 	"Pixel4XL":        {"coral", "QD1A.190821.011.C4"},
 	"Pixel5":          {"redfin", "RD1A.200810.022.A4"},
 	"Pixel6":          {"oriole", "SD1A.210817.037"},
@@ -923,12 +923,6 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			}
 			d["device_type"] = deviceInfo[0]
 			d["device_os"] = deviceInfo[1]
-
-			// Tests using Android's HWAddress Sanitizer require an HWASan build of Android.
-			// See https://developer.android.com/ndk/guides/hwasan.
-			if b.extraConfig("HWASAN") {
-				d["android_hwasan_build"] = "1"
-			}
 		} else if b.os("Android12") {
 			// For Android, the device type is a better dimension
 			// than CPU or GPU.
@@ -1035,13 +1029,13 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			if b.matchOs("Win") {
 				gpu, ok := map[string]string{
 					"GTX1660":       "10de:2184-31.0.15.4601",
-					"IntelHD4400":   "8086:0a16-20.19.15.4963",
-					"IntelIris540":  "8086:1926-31.0.101.2115",
+					"IntelHD4400":   "8086:0a16-10.0.26100.1",
+					"IntelIris540":  "8086:1926-26.20.100.7528",
 					"IntelIris6100": "8086:162b-20.19.15.5171",
 					"IntelIris655":  "8086:3ea5-26.20.100.7463",
 					"IntelIrisXe":   "8086:9a49-31.0.101.5333",
 					"RadeonHD7770":  "1002:683d-26.20.13031.18002",
-					"RadeonR9M470X": "1002:6646-26.20.13031.18002",
+					"RadeonR9M470X": "1002:6646-21.19.136.0",
 					"QuadroP400":    "10de:1cb3-31.0.15.5222",
 					"RadeonVega6":   "1002:1636-31.0.14057.5006",
 					"RadeonVega8":   "1002:1638-31.0.21916.2",
