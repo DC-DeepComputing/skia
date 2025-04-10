@@ -1638,12 +1638,8 @@ DstReadStrategy VulkanCaps::getDstReadStrategy() const {
     // not marked as supported and skip checking for it.
     SkASSERT(!this->shaderCaps()->fFBFetchSupport);
 
-    // TODO(b/383769988): Return DstReadStrategy::kReadFromInput once implemented for the Vulkan
-    // backend. We assume all target textures have input attachment usage (all internally-created
-    // render targets do).
-
-    // For now, always return DstReadStrategy::kTextureCopy.
-    return DstReadStrategy::kTextureCopy;
+    // All render target textures are expected to have VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT.
+    return DstReadStrategy::kReadFromInput;
 }
 
 ImmutableSamplerInfo VulkanCaps::getImmutableSamplerInfo(const TextureInfo& textureInfo) const {

@@ -44,6 +44,9 @@ namespace skgpu::graphite {
 constexpr int kMaxNumberOfCachedBufferDescSets = 1024;
 
 namespace {
+// Create a mock pipeline layout that has a compatible input attachment descriptor set layout and
+// push constant parameters with all other real pipeline layouts. This allows us to perform
+// once-per-renderpass operations even before a real pipeline is bound by the command buffer.
 VkPipelineLayout create_mock_layout(const VulkanSharedContext* sharedContext) {
     SkASSERT(sharedContext);
     VkPushConstantRange pushConstantRange;
@@ -51,25 +54,35 @@ VkPipelineLayout create_mock_layout(const VulkanSharedContext* sharedContext) {
     pushConstantRange.size = VulkanResourceProvider::kIntrinsicConstantSize;
     pushConstantRange.stageFlags = VulkanResourceProvider::kIntrinsicConstantStageFlags;
 
+    skia_private::STArray<1, DescriptorData> inputDesc {
+            VulkanGraphicsPipeline::kInputAttachmentDescriptor};
+    VkDescriptorSetLayout setLayout;
+    DescriptorDataToVkDescSetLayout(sharedContext, inputDesc, &setLayout);
+
     VkPipelineLayoutCreateInfo layoutCreateInfo;
     memset(&layoutCreateInfo, 0, sizeof(VkPipelineLayoutCreateFlags));
     layoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
     layoutCreateInfo.pNext = nullptr;
     layoutCreateInfo.flags = 0;
-    layoutCreateInfo.setLayoutCount = 0;
-    layoutCreateInfo.pSetLayouts = nullptr;
+    layoutCreateInfo.setLayoutCount = 1;
+    layoutCreateInfo.pSetLayouts = &setLayout;
     layoutCreateInfo.pushConstantRangeCount = 1;
     layoutCreateInfo.pPushConstantRanges = &pushConstantRange;
 
     VkResult result;
-    VkPipelineLayout layout;
+    VkPipelineLayout pipelineLayout;
     VULKAN_CALL_RESULT(sharedContext,
                        result,
                        CreatePipelineLayout(sharedContext->device(),
                                             &layoutCreateInfo,
                                             /*const VkAllocationCallbacks*=*/nullptr,
-                                            &layout));
-    return layout;
+                                            &pipelineLayout));
+
+    // Once the pipeline layout is created, we can clean up the VkDescriptorSetLayout.
+    VULKAN_CALL(sharedContext->interface(),
+                DestroyDescriptorSetLayout(sharedContext->device(), setLayout, nullptr));
+
+    return pipelineLayout;
 }
 } // anonymous
 VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
@@ -77,7 +90,7 @@ VulkanResourceProvider::VulkanResourceProvider(SharedContext* sharedContext,
                                                uint32_t recorderID,
                                                size_t resourceBudget)
         : ResourceProvider(sharedContext, singleOwner, recorderID, resourceBudget)
-        , fMockPushConstantPipelineLayout(
+        , fMockPipelineLayout(
                 create_mock_layout(static_cast<const VulkanSharedContext*>(sharedContext)))
         , fUniformBufferDescSetCache(kMaxNumberOfCachedBufferDescSets) {}
 
@@ -88,10 +101,10 @@ VulkanResourceProvider::~VulkanResourceProvider() {
                                          fPipelineCache,
                                          nullptr));
     }
-    if (fMockPushConstantPipelineLayout) {
+    if (fMockPipelineLayout) {
         VULKAN_CALL(this->vulkanSharedContext()->interface(),
                     DestroyPipelineLayout(this->vulkanSharedContext()->device(),
-                                          fMockPushConstantPipelineLayout,
+                                          fMockPipelineLayout,
                                           nullptr));
     }
 }
@@ -106,8 +119,21 @@ sk_sp<Texture> VulkanResourceProvider::onCreateWrappedTexture(const BackendTextu
     if (vkInfo.fYcbcrConversionInfo.isValid()) {
         ycbcrConversion = this->findOrCreateCompatibleYcbcrConversion(vkInfo.fYcbcrConversionInfo);
         if (!ycbcrConversion) {
+            SKGPU_LOG_W("Cannot find or create valid YCbCr conversion while attempting to wrap the "
+                        "BackendTexture");
             return nullptr;
         }
+    }
+
+    // The provided BackendTexture may be wrapped in order to use it as a render target or sampling.
+    // Graphite expects that all renderable textures support input attachment usage, so if the
+    // backing VkImage can be used as a color attachment, make sure it can also be used as an
+    // input attachment.
+    if (vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT &&
+        !vkInfo.fImageUsageFlags & VK_IMAGE_USAGE_INPUT_ATTACHMENT_BIT) {
+        SKGPU_LOG_W("In order to wrapping a BackendTexture that is renderable, it must have input "
+                    "attachment usage.");
+        return nullptr;
     }
 
     return VulkanTexture::MakeWrapped(this->vulkanSharedContext(),
