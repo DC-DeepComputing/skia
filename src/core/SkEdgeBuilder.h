@@ -61,13 +61,20 @@ public:
 private:
     Combine combineVertical(const SkEdge* edge, SkEdge* last);
 
-    char* allocEdges(size_t, size_t*) override;
+    char* allocEdges(size_t, size_t*) override {
+        SkDEBUGFAIL("Not implemented");
+        return nullptr;
+    }
+
     SkRect recoverClip(const SkIRect&) const override;
 
     void addLine (const SkPoint pts[]) override;
     void addQuad (const SkPoint pts[]) override;
     void addCubic(const SkPoint pts[]) override;
-    Combine addPolyLine(const SkPoint pts[], char* edge, char** edgePtr) override;
+    Combine addPolyLine(const SkPoint pts[], char* edge, char** edgePtr) override {
+        SkDEBUGFAIL("Not implemented");
+        return kNo_Combine;
+    }
 };
 
 class SkAnalyticEdgeBuilder final : public SkEdgeBuilder {
