@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "919bcb4c_5c5e7468",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-11T18:27:49Z",
+      "side": 1,
+      "message": "Took me a little to wrap my head around the change for restoring layers. LMK what you think about the general interface change for mask filters as image filters. \nFor the emboss mask filter image filter itself, I believe I have the general flow down and it looks generally correct in the emboss gm for viewer. \nHowever, the parameters for diffuse and specular image filters were chosen heuristically and not proven mathematically, so I am still looking working at understanding that.",
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
