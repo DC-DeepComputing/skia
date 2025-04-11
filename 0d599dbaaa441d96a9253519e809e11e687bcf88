@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e7751e1_c822dd8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-11T18:46:18Z",
+      "side": 1,
+      "message": "Thanks! You gave me feedback at the level I was hoping for - early steering signals.",
+      "parentUuid": "71361fbf_4d1ce4a0",
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d70bbc1e_f502598f",
@@ -112,6 +130,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78b37a5b_d8c39837",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-11T18:46:18Z",
+      "side": 1,
+      "message": "I don\u0027t like that pattern, TBH. I think it leaks too much stuff into the public API.",
+      "parentUuid": "9cea980e_634e81a3",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59c283a2_8b0473c2",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 6
@@ -123,6 +165,30 @@
       "writtenOn": "2025-04-11T18:35:20Z",
       "side": 1,
       "message": "We shouldn\u0027t necessarily need to go this far to make SkResourceCache thread safe.  If there was a resource cache per Recorder, they would be able to be unguarded.  We would just explicitly lock access to the hidden default Recorder/Context during client migration.\n\nIf the cache will be on the Context and shared by all recorders, then it makes sense for this to be internally thread safe.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9771a2fb_09f21008",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-11T18:46:18Z",
+      "side": 1,
+      "message": "I pulled out the thread safety onto https://skia-review.googlesource.com/c/skia/+/978956\n\nI had thought about putting a non thread-safe resource cache on Recorder, but it felt awkward to have to effectively replicate all of https://github.com/google/skia/blob/786d3a4bb792e3eb2f69cc171dd9fb696bc10983/src/core/SkResourceCache.cpp#L466-L587 on Recorder. I think it\u0027s cleaner to make the cache be thread-safe regardless of where it goes (and I think context fits better into my mental model of this architecture)",
+      "parentUuid": "59c283a2_8b0473c2",
       "range": {
         "startLine": 26,
         "startChar": 0,
