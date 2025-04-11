@@ -48,17 +48,17 @@ struct TestingRec : public SkResourceCache::Rec {
 static const int COUNT = 10;
 static const int DIM = 256;
 
-static void test_cache(skiatest::Reporter* reporter, SkResourceCache& cache, bool testPurge) {
+static void test_cache(skiatest::Reporter* reporter, sk_sp<SkResourceCache> cache, bool testPurge) {
     for (int i = 0; i < COUNT; ++i) {
         TestingKey key(i);
         intptr_t value = -1;
 
-        REPORTER_ASSERT(reporter, !cache.find(key, TestingRec::Visitor, &value));
+        REPORTER_ASSERT(reporter, !cache->find(key, TestingRec::Visitor, &value));
         REPORTER_ASSERT(reporter, -1 == value);
 
-        cache.add(new TestingRec(key, i));
+        cache->add(new TestingRec(key, i));
 
-        REPORTER_ASSERT(reporter, cache.find(key, TestingRec::Visitor, &value));
+        REPORTER_ASSERT(reporter, cache->find(key, TestingRec::Visitor, &value));
         REPORTER_ASSERT(reporter, i == value);
     }
 
@@ -66,23 +66,23 @@ static void test_cache(skiatest::Reporter* reporter, SkResourceCache& cache, boo
         // stress test, should trigger purges
         for (int i = 0; i < COUNT * 100; ++i) {
             TestingKey key(i);
-            cache.add(new TestingRec(key, i));
+            cache->add(new TestingRec(key, i));
         }
     }
 
     // test the originals after all that purging
     for (int i = 0; i < COUNT; ++i) {
         intptr_t value;
-        (void)cache.find(TestingKey(i), TestingRec::Visitor, &value);
+        (void)cache->find(TestingKey(i), TestingRec::Visitor, &value);
     }
 
-    cache.setTotalByteLimit(0);
+    cache->setTotalByteLimit(0);
 }
 
-static void test_cache_purge_shared_id(skiatest::Reporter* reporter, SkResourceCache& cache) {
+static void test_cache_purge_shared_id(skiatest::Reporter* reporter, sk_sp<SkResourceCache> cache) {
     for (int i = 0; i < COUNT; ++i) {
         TestingKey key(i, i & 1);   // every other key will have a 1 for its sharedID
-        cache.add(new TestingRec(key, i));
+        cache->add(new TestingRec(key, i));
     }
 
     // Ensure that everyone is present
@@ -90,12 +90,12 @@ static void test_cache_purge_shared_id(skiatest::Reporter* reporter, SkResourceC
         TestingKey key(i, i & 1);   // every other key will have a 1 for its sharedID
         intptr_t value = -1;
 
-        REPORTER_ASSERT(reporter, cache.find(key, TestingRec::Visitor, &value));
+        REPORTER_ASSERT(reporter, cache->find(key, TestingRec::Visitor, &value));
         REPORTER_ASSERT(reporter, value == i);
     }
 
     // Now purge the ones that had a non-zero sharedID (the odd-indexed ones)
-    cache.purgeSharedID(1);
+    cache->purgeSharedID(1);
 
     // Ensure that only the even ones are still present
     for (int i = 0; i < COUNT; ++i) {
@@ -103,9 +103,9 @@ static void test_cache_purge_shared_id(skiatest::Reporter* reporter, SkResourceC
         intptr_t value = -1;
 
         if (i & 1) {
-            REPORTER_ASSERT(reporter, !cache.find(key, TestingRec::Visitor, &value));
+            REPORTER_ASSERT(reporter, !cache->find(key, TestingRec::Visitor, &value));
         } else {
-            REPORTER_ASSERT(reporter, cache.find(key, TestingRec::Visitor, &value));
+            REPORTER_ASSERT(reporter, cache->find(key, TestingRec::Visitor, &value));
             REPORTER_ASSERT(reporter, value == i);
         }
     }
@@ -121,36 +121,36 @@ DEF_TEST(ImageCache, reporter) {
     static const size_t defLimit = DIM * DIM * 4 * COUNT + 1024;    // 1K slop
 
     {
-        SkResourceCache cache(defLimit);
+        auto cache = SkResourceCache::Make(defLimit);
         test_cache(reporter, cache, true);
     }
     {
         sk_sp<SkDiscardableMemoryPool> pool(SkDiscardableMemoryPool::Make(defLimit));
         gPool = pool.get();
-        SkResourceCache cache(pool_factory);
+        auto cache = SkResourceCache::Make(pool_factory);
         test_cache(reporter, cache, true);
     }
     {
-        SkResourceCache cache(SkDiscardableMemory::Create);
+        auto cache = SkResourceCache::Make(SkDiscardableMemory::Create);
         test_cache(reporter, cache, false);
     }
     {
-        SkResourceCache cache(defLimit);
+        auto cache = SkResourceCache::Make(defLimit);
         test_cache_purge_shared_id(reporter, cache);
     }
 }
 
 DEF_TEST(ImageCache_doubleAdd, r) {
     // Adding the same key twice should be safe.
-    SkResourceCache cache(4096);
+    auto cache = SkResourceCache::Make(4096);
 
     TestingKey key(1);
 
-    cache.add(new TestingRec(key, 2));
-    cache.add(new TestingRec(key, 3));
+    cache->add(new TestingRec(key, 2));
+    cache->add(new TestingRec(key, 3));
 
     // Lookup can return either value.
     intptr_t value = -1;
-    REPORTER_ASSERT(r, cache.find(key, TestingRec::Visitor, &value));
+    REPORTER_ASSERT(r, cache->find(key, TestingRec::Visitor, &value));
     REPORTER_ASSERT(r, 2 == value || 3 == value);
 }

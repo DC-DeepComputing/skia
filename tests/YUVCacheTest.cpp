@@ -36,7 +36,7 @@ static void check_data(skiatest::Reporter* reporter, SkCachedData* data,
 }
 
 DEF_TEST(YUVPlanesCache, reporter) {
-    SkResourceCache cache(1024);
+    auto cache = SkResourceCache::Make(1024);
 
     SkYUVAInfo yuvaInfo({5, 5},
                         SkYUVAInfo::PlaneConfig::kY_U_V,
@@ -48,25 +48,25 @@ DEF_TEST(YUVPlanesCache, reporter) {
     SkYUVAPixmaps yuvaPixmaps;
     const uint32_t genID = 12345678;
 
-    SkCachedData* data = SkYUVPlanesCache::FindAndRef(genID, &yuvaPixmaps, &cache);
+    SkCachedData* data = SkYUVPlanesCache::FindAndRef(genID, &yuvaPixmaps, cache.get());
     REPORTER_ASSERT(reporter, !data);
 
     size_t size = yuvaPixmapInfo.computeTotalBytes();
-    data = cache.newCachedData(size);
+    data = cache->newCachedData(size);
     memset(data->writable_data(), 0xff, size);
 
     SkPixmap pmaps[SkYUVAInfo::kMaxPlanes];
     yuvaPixmapInfo.initPixmapsFromSingleAllocation(data->writable_data(), pmaps);
     yuvaPixmaps = SkYUVAPixmaps::FromExternalPixmaps(yuvaInfo, pmaps);
 
-    SkYUVPlanesCache::Add(genID, data, yuvaPixmaps, &cache);
+    SkYUVPlanesCache::Add(genID, data, yuvaPixmaps, cache.get());
     check_data(reporter, data, 2, kInCache, kLocked);
 
     data->unref();
     check_data(reporter, data, 1, kInCache, kUnlocked);
 
     SkYUVAPixmaps yuvaPixmapsRead;
-    data = SkYUVPlanesCache::FindAndRef(genID, &yuvaPixmapsRead, &cache);
+    data = SkYUVPlanesCache::FindAndRef(genID, &yuvaPixmapsRead, cache.get());
 
     REPORTER_ASSERT(reporter, data);
     REPORTER_ASSERT(reporter, data->size() == size);
@@ -81,7 +81,7 @@ DEF_TEST(YUVPlanesCache, reporter) {
 
     check_data(reporter, data, 2, kInCache, kLocked);
 
-    cache.purgeAll();
+    cache->purgeAll();
     check_data(reporter, data, 1, kNotInCache, kLocked);
     data->unref();
 }
