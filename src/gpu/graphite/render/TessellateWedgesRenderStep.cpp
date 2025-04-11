@@ -83,7 +83,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID
                                                        DepthStencilSettings depthStencilSettings,
                                                        StaticBufferManager* bufferManager)
         : RenderStep(renderStepID,
-                     Flags::kRequiresMSAA |
+                     Flags::kRequiresMSAA | Flags::kAppendDynamicInstances |
                      (depthStencilSettings.fDepthWriteEnabled ? Flags::kPerformsShading
                                                               : Flags::kNone),
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
