@@ -16,6 +16,7 @@
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
 #include "tools/graphite/UniqueKeyUtils.h"
 
 /*** From here to the matching banner can be cut and pasted into Chrome's graphite_precompile.cc **/
@@ -95,35 +96,35 @@ PaintOptions blend_porter_duff_cf_srcover() {
     return paintOptions;
 }
 
-// "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000)",
+// "RP((R8+D16 x1).a000)"
 // Single sampled R w/ just depth
 const RenderPassProperties kR_1_D { DepthStencilFlags::kDepth,
                                     kAlpha_8_SkColorType,
                                     /* fDstCS= */ nullptr,
                                     /* fRequiresMSAA= */ false };
 
-// "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000)",
+// "RP((R8+D24_S8 x4->1).a000)"
 // MSAA R w/ depth and stencil
 const RenderPassProperties kR_4_DS { DepthStencilFlags::kDepthStencil,
                                      kAlpha_8_SkColorType,
                                      /* fDstCS= */ nullptr,
                                      /* fRequiresMSAA= */ true };
 
-// "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba)"
+// "RP((BGRA8+D16 x1).rgba)"
 // Single sampled BGRA w/ just depth
 const RenderPassProperties kBGRA_1_D { DepthStencilFlags::kDepth,
                                        kBGRA_8888_SkColorType,
                                        /* fDstCS= */ nullptr,
                                        /* fRequiresMSAA= */ false };
 
-// "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba)"
+// "RP((BGRA8+D16 x4->1).rgba)"
 // MSAA BGRA w/ just depth
 const RenderPassProperties kBGRA_4_D { DepthStencilFlags::kDepth,
                                        kBGRA_8888_SkColorType,
                                        /* fDstCS= */ nullptr,
                                        /* fRequiresMSAA= */ true };
 
-// "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba)"
+// "RP((BGRA8+D24_S8 x4->1).rgba)"
 // MSAA BGRA w/ depth and stencil
 const RenderPassProperties kBGRA_4_DS { DepthStencilFlags::kDepthStencil,
                                         kBGRA_8888_SkColorType,
@@ -167,16 +168,11 @@ RenderPassProperties get_render_pass_properties(const char* str) {
         const char* fStr;
         RenderPassProperties fRenderPassProperties;
     } kRenderPassPropertiesMapping[] = {
-        { "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000)",
-          kR_1_D },
-        { "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000)",
-          kR_4_DS },
-        { "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba)",
-          kBGRA_1_D },
-        { "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba)",
-          kBGRA_4_D },
-        { "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba)",
-           kBGRA_4_DS },
+        { "RP((R8+D16 x1).a000)",          kR_1_D },
+        { "RP((R8+D24_S8 x4->1).a000)",    kR_4_DS },
+        { "RP((BGRA8+D16 x1).rgba)",       kBGRA_1_D },
+        { "RP((BGRA8+D16 x4->1).rgba)",    kBGRA_4_D },
+        { "RP((BGRA8+D24_S8 x4->1).rgba)", kBGRA_4_DS },
     };
 
     for (const auto& rppm : kRenderPassPropertiesMapping) {
@@ -340,9 +336,12 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
                                                                  skgpu::Protected::kNo,
                                                                  skgpu::Renderable::kYes);
 
-    TextureInfo msaaTex = caps->getDefaultMSAATextureInfo(textureInfo, Discardable::kYes);
+    const bool msaaSupported =
+            caps->msaaRenderToSingleSampledSupport() ||
+            caps->isSampleCountSupported(TextureInfoPriv::ViewFormat(textureInfo),
+                                         caps->defaultMSAASamplesCount());
 
-    if (msaaTex.numSamples() <= 1) {
+    if (!msaaSupported) {
         // The following pipelines rely on having MSAA
         return;
     }
@@ -365,160 +364,160 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
     //
     const char* kCases[] = {
           //---- Single-sample - R8Unorm/Depth16Unorm --> kR_1_D
-/* 0 */  "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000) + "
+/* 0 */  "RP((R8+D16 x1).a000) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "KnownRuntimeEffect_1DBlur12 [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
 
-/* 1 */  "RP(color: Dawn(f=R8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: a000) + "
+/* 1 */  "RP((R8+D16 x1).a000) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "KnownRuntimeEffect_1DBlur8  [ LocalMatrix [ Compose [ Image(0) ColorSpaceTransform ] ] ] Src",
 
           //---- MSAA4 - R8Unorm/Depth24PlusStencil8 --> kR_4_DS
-/* 2 */  "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000) + "
+/* 2 */  "RP((R8+D24_S8 x4->1).a000) + "
          "TessellateWedgesRenderStep[EvenOdd] + "
          "(empty)",
 
-/* 3 */  "RP(color: Dawn(f=R8,s=4), resolve: Dawn(f=R8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: a000) + "
+/* 3 */  "RP((R8+D24_S8 x4->1).a000) + "
          "CoverBoundsRenderStep[RegularCover] + "
          "SolidColor SrcOver",
 
          //---- Single-sample - BGRA8Unorm/Depth16Unorm -> kBGRA_1_D
-/* 4 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 4 */  "RP((BGRA8+D16 x1).rgba) + "
          "AnalyticBlurRenderStep + "
          "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver",
 
           // For now, we're going to pass on the AnalyticClip Pipelines
-/* 5 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 5 */  "RP((BGRA8+D16 x1).rgba) + "
          "AnalyticBlurRenderStep + "
          "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver AnalyticClip",
 
-/* 6 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 6 */  "RP((BGRA8+D16 x1).rgba) + "
          "AnalyticRRectRenderStep + "
          "SolidColor SrcOver",
 
-/* 7 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 7 */  "RP((BGRA8+D16 x1).rgba) + "
          "BitmapTextRenderStep[Mask] + "
          "SolidColor SrcOver",
 
-/* 8 */  "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 8 */  "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor SrcOver",
 
-/* 9 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 9 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor Src",
 
-/* 10 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 10 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor Clear",
 
-/* 11 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 11 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] Src",
 
           // For now, we're going to pass on the AnalyticClip Pipelines
-/* 12 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 12 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
 
-/* 13 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 13 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverageMaskRenderStep + "
          "Compose [ SolidColor BlendCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver",
 
          // This is the only AlphaOnlyPaintColor case so, we're going to pass for now
-/* 14 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 14 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "BlendCompose [ LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver",
 
-/* 15 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 15 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "SolidColor SrcOver",
 
-/* 16 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 16 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] Src",
 
-/* 17 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 17 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 18 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 18 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformSRGB ] ] Src",
 
-/* 19 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 19 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ Image(0) ColorSpaceTransformPremul ] ] SrcOver",
 
          //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> bgra_4_D
          // For now, we're going to pass on the AnalyticClip Pipelines
-/* 20 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 20 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
 
-/* 21 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 21 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "TessellateStrokesRenderStep + "
          "SolidColor SrcOver",
 
-/* 22 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 22 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "TessellateWedgesRenderStep[Convex] + "
          "SolidColor SrcOver",
 
          //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DS
-/* 23 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 23 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "AnalyticRRectRenderStep + "
          "SolidColor SrcOver",
 
-/* 24 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 24 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "BitmapTextRenderStep[Mask] + "
          "SolidColor SrcOver",
 
          // This seems like a quirk of our test set. Is linear gradient text that common? Pass for now.
-/* 25 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 25 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "BitmapTextRenderStep[Mask] + "
          "LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 26 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 26 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CircularArcRenderStep + "
          "SolidColor SrcOver",
 
-/* 27 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 27 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[InverseCover] + "
          "(empty)",
 
-/* 28 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 28 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[RegularCover] + "
          "SolidColor SrcOver",
 
-/* 29 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 29 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[RegularCover] + "
          "(empty)",
 
-/* 30 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 30 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor SrcOver",
 
-/* 31 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 31 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor Clear",
 
-/* 32 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 32 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 33 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 33 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 34 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 34 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateWedgesRenderStep[Winding] + "
          "(empty)",
 
-/* 35 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 35 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateWedgesRenderStep[EvenOdd] + "
          "(empty)",
 
-/* 36 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 36 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateWedgesRenderStep[Convex] + "
          "SolidColor SrcOver",
 
@@ -526,122 +525,122 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
 // These are leftover Pipelines that were generated by the stories but are pretty infrequently used.
 // Some of them get picked up in the preceding cases
           //---- Single-sample - BGRA8Unorm/Depth16Unorm -> kBGRA_1_D
-/* 37 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 37 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 38 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 38 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 39 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 39 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ Image(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 40 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 40 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformSRGB ] ] SrcOver",
 
-/* 41 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 41 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformSRGB ] ] Src",
 
-/* 42 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 42 */ "RP((BGRA8+D16 x1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
-/* 43 */ "RP(color: Dawn(f=BGRA8,s=1), resolve: {}, ds: Dawn(f=D16,s=1), samples: 1, swizzle: rgba) + "
+/* 43 */ "RP((BGRA8+D16 x1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
          //---- MSAA4 - BGRA8Unorm/Depth16Unorm -> kBGRA_4_D
-/* 44 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 44 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "AnalyticRRectRenderStep + "
          "SolidColor SrcOver",
 
-/* 45 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 45 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "BitmapTextRenderStep[Mask] + "
          "SolidColor SrcOver",
 
-/* 46 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 46 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor SrcOver",
 
-/* 47 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 47 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor Src",
 
-/* 48 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 48 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 49 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 49 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
-/* 50 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 50 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 51 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D16,s=4), samples: 4, swizzle: rgba) + "
+/* 51 */ "RP((BGRA8+D16 x4->1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver",
 
          //---- MSAA4 - BGRA8Unorm/Depth24PlusStencil8 --> kBGRA_4_DS
-/* 52 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 52 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "AnalyticRRectRenderStep + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 53 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 53 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor Src",
 
-/* 54 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 54 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient4 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
          // For now, we're going to pass on the AnalyticClip Pipelines
-/* 55 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 55 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[NonAAFill] + "
          "SolidColor SrcOver AnalyticClip",
 
-/* 56 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 56 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "CoverBoundsRenderStep[RegularCover] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient8 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 57 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 57 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "MiddleOutFanRenderStep[Winding] + "
          "(empty)",
 
-/* 58 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 58 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "MiddleOutFanRenderStep[EvenOdd] + "
          "(empty)",
 
-/* 59 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 59 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "BlendCompose [ LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver",
 
-/* 60 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 60 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "PerEdgeAAQuadRenderStep + "
          "LocalMatrix [ Compose [ Image(0) ColorSpaceTransformPremul ] ] SrcOver",
 
-/* 61 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 61 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateCurvesRenderStep[Winding] + "
          "(empty)",
 
-/* 62 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 62 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateCurvesRenderStep[EvenOdd] + "
          "(empty)",
 
-/* 63 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 63 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateWedgesRenderStep[Convex] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradientBuffer ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 64 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 64 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateWedgesRenderStep[Convex] + "
          "Compose [ LocalMatrix [ Compose [ LinearGradient8 ColorSpaceTransformPremul ] ] Dither ] SrcOver",
 
-/* 65 */ "RP(color: Dawn(f=BGRA8,s=4), resolve: Dawn(f=BGRA8,s=1), ds: Dawn(f=D24_S8,s=4), samples: 4, swizzle: rgba) + "
+/* 65 */ "RP((BGRA8+D24_S8 x4->1).rgba) + "
          "TessellateStrokesRenderStep + "
          "SolidColor SrcOver",
     };
