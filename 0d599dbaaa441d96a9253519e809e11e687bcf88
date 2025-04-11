@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71361fbf_4d1ce4a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "There\u0027s a lot here, so I won\u0027t guarantee I\u0027ve given it a thorough review but I\u0027ve posted some comments. Nothing really seems like the wrong direction, though, just refining things.",
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d70bbc1e_f502598f",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "Graphite\u0027s context and recorder do not extend SkRefCnt, they are meant to be passed around by `std::unique_ptr`",
+      "range": {
+        "startLine": 13,
+        "startChar": 23,
+        "endLine": 13,
+        "endChar": 41
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a55b033_3d9a96c1",
+        "filename": "include/core/SkRasterRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "We will want a base `SkRecorder` as well I believe, so that we can make raster surfaces from any recorder, not just a SkRasterRecorder.",
+      "range": {
+        "startLine": 13,
+        "startChar": 13,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac66cbf_a1854886",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "SkDraws are short lived, so they shouldn\u0027t need to store an sk_sp here. The context shoudl remain alive for the duration, just like the other properties.",
+      "range": {
+        "startLine": 161,
+        "startChar": 3,
+        "endLine": 161,
+        "endChar": 36
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cea980e_634e81a3",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "To keep the pattern consistent with Graphite and Ganesh, I would have these be on `SkRasterContext` w/ forward declarations and the it friends `SkRasterContextPriv` so that internal code can access things, e.g. `context-\u003epriv().resourceCache()`.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c283a2_8b0473c2",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T18:35:20Z",
+      "side": 1,
+      "message": "We shouldn\u0027t necessarily need to go this far to make SkResourceCache thread safe.  If there was a resource cache per Recorder, they would be able to be unguarded.  We would just explicitly lock access to the hidden default Recorder/Context during client migration.\n\nIf the cache will be on the Context and shared by all recorders, then it makes sense for this to be internally thread safe.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
