@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "04976935_363b9af6",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T16:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "788391be_ff37714c",
+      "range": {
+        "startLine": 284,
+        "startChar": 49,
+        "endLine": 284,
+        "endChar": 66
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cdb1d5c6_7fea3a78",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-04-11T15:02:06Z",
       "side": 1,
       "message": "This wasn\u0027t from your change, but could you shift these two rows align their last column values again?",
+      "range": {
+        "startLine": 310,
+        "startChar": 56,
+        "endLine": 310,
+        "endChar": 57
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb1e3ef4_a18fdcad",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T16:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cdb1d5c6_7fea3a78",
       "range": {
         "startLine": 310,
         "startChar": 56,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "509de29b_f7a3e18c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T16:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a9559d1_e852f48e",
+      "range": {
+        "startLine": 355,
+        "startChar": 4,
+        "endLine": 358,
+        "endChar": 95
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c6762eac_00e88dff",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ba3575b_4b315680",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T16:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6762eac_00e88dff",
+      "range": {
+        "startLine": 151,
+        "startChar": 49,
+        "endLine": 151,
+        "endChar": 66
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef026277_9a97e891",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-04-11T15:02:06Z",
       "side": 1,
       "message": "We can consolidate `write_vertex_buffer` by just passing in `get_vertex_corner(N)` here without an extra variable declarations (and just have the corner label as a comment again).",
+      "range": {
+        "startLine": 194,
+        "startChar": 18,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a948efac_2ab91d3e",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T16:47:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef026277_9a97e891",
       "range": {
         "startLine": 194,
         "startChar": 18,
