@@ -148,6 +148,47 @@ cc_library_static {
     ],
 }
 
+rust_ffi_static {
+    name: "libskia_rust_ffi",
+    host_supported: true,
+    crate_name: "skia",
+    srcs: [
+      "src/ports/fontations/src/base.rs",
+      "src/ports/fontations/src/bitmap.rs",
+      "src/ports/fontations/src/colr.rs",
+      "src/ports/fontations/src/ffi.rs",
+      "src/ports/fontations/src/hinting.rs",
+      "src/ports/fontations/src/names.rs",
+      "src/ports/fontations/src/skpath_bridge.rs",
+      "src/ports/fontations/src/verb_points_pen.rs",
+    ],
+    include_dirs: ["src/ports/fontations/src"],
+    rustlibs: [
+      "libcxx",
+      "libskrifa",
+      "libread_fonts",
+      "libfont_types",
+    ],
+    features: [ "cxx" ],
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_code",
+    tools: ["cxxbridge"],
+    cmd: "$$(location cxxbridge) $$(in) >> $$(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "cpp",
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_header",
+    tools: ["cxxbridge"],
+    cmd: "$$(location cxxbridge) $$(in) --header >> $$(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "rs.h",
+    export_include_dirs: ["."]
+}
+
 cc_library_static {
     name: "libskia",
     host_supported: true,
@@ -172,6 +213,12 @@ cc_library_static {
         ],
         export_include_dirs: [
           "android",
+        ],
+        generated_headers: [
+          "libskia_cxx_bridge_header",
+        ],
+        generated_sources: [
+          "libskia_cxx_bridge_code",
         ],
       },
       host_linux: {
@@ -279,6 +326,8 @@ cc_defaults {
         ],
         whole_static_libs: [
             "libcrabbyavif_ffi",
+            "libskia_rust_ffi",
+            "libskrifa",
         ],
       },
       darwin: {
@@ -540,6 +589,7 @@ def generate_args(target_os, enable_gpu, renderengine = False):
   else:
     d['skia_enable_android_utils'] = 'true'
     d['skia_use_freetype'] = 'true'
+    d['skia_use_fontations'] = 'true'
     d['skia_use_fixed_gamma_text'] = 'true'
     d['skia_enable_fontmgr_custom_empty'] = 'true'
     d['skia_use_wuffs'] = 'true'
@@ -592,7 +642,9 @@ gm_includes   .add("modules/skcms")
 # types in `srcs` (e.g. all header extensions must be excluded).
 def strip_non_srcs(sources):
   src_extensions = ['.s', '.S', '.c', '.cpp', '.cc', '.cxx', '.mm']
-  return {s for s in sources if os.path.splitext(s)[1] in src_extensions}
+  #(base, ext) = os.path.splitext(s)
+  #(_, baseExt) = os.path.splitext(base)
+  return {s for s in sources if os.path.splitext(s)[1] in src_extensions and os.path.splitext(os.path.splitext(s)[0])[1] != ".rs" }
 
 VMA_DEP = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator"
 
