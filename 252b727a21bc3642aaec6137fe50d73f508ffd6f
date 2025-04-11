@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5ce059b_698eb185",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T22:06:22Z",
+      "side": 1,
+      "message": "I\u0027m pretty much sending this out to everyone because it is such a big change. I think it\u0027d be valuable for everyone to see the `RenderPassDesc.h` changes and `Caps.h` changes. Then I think focus can be split up:\n - Rob: src/graphite/precompile/ and related files, and RenderPassDesc.cpp/RenderPassTask.cpp\n - Jim: src/graphite/mtl\n - Nicolette: src/graphite/vk\n - Quyen: src/graphite/dawn",
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
