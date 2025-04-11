@@ -16,6 +16,47 @@
       "message": "Took me a little to wrap my head around the change for restoring layers. LMK what you think about the general interface change for mask filters as image filters. \nFor the emboss mask filter image filter itself, I believe I have the general flow down and it looks generally correct in the emboss gm for viewer. \nHowever, the parameters for diffuse and specular image filters were chosen heuristically and not proven mathematically, so I am still looking working at understanding that.",
       "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63aac253_9ae1a489",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-11T18:39:21Z",
+      "side": 1,
+      "message": "Additionally, what is the reason mask filters don\u0027t run on text for GPU and will we need to change that if we don\u0027t want to break any clients? Or will this work on raster backend too eventually when it is able to use AutoLayerForImageFilter?",
+      "parentUuid": "919bcb4c_5c5e7468",
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6ee36a_82bfa6cd",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-11T18:39:21Z",
+      "side": 1,
+      "message": "any insight?",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 84
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
