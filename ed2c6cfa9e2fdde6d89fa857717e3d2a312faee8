@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d8f780f_f0e01849",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T17:17:53Z",
+      "side": 1,
+      "message": "Can we document that this refers to the number of varying variables, and not the total number of varying scalars?",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 19
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71c7f1ed_1a32cf61",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T17:17:53Z",
+      "side": 1,
+      "message": "Can we keep a note or todo about how there would ideally be a way to differentiate between passing through coordinates and never needing any coordinates?\n\nDoes it actually work to only include `kLocalCoords` when `UsesSampleCoords(effect)` is true, `kPassthroughLocalCoords` when it\u0027s false.  And then update the masking logic to allow a child\u0027s `kLocalCoords` flag when `kPassthrough` is present in the current node?",
+      "range": {
+        "startLine": 731,
+        "startChar": 8,
+        "endLine": 733,
+        "endChar": 9
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a283dfc_820daef6",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T17:17:53Z",
+      "side": 1,
+      "message": "Should we mask off `kPassthroughLocalCoords` here so it only makes its way to the root nodes if every node re-adds it itself?",
+      "range": {
+        "startLine": 173,
+        "startChar": 51,
+        "endLine": 173,
+        "endChar": 55
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec202a7_5bface9a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T17:17:53Z",
+      "side": 1,
+      "message": "Does `SkSpan` not have an implicit constructor to create an `SkSpan\u003cconst T\u003e` from an `SkSpan\u003cT\u003e`? We can just `return fChildren;` or `return SkSpan\u003cconst ShaderNode*\u003e(fChildren.data(), fChildren.size());` here?",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 59
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d9fe4d8_c6c897cb",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T17:17:53Z",
+      "side": 1,
+      "message": "We can pass in `step-\u003evaryings().size() + 2` and say that `getRootNodes()` takes in the existing number of varyings.  For now ShaderInfo reserves 2 for its ssboindex and regular local coord varying, although in the future those two could be optional.",
+      "range": {
+        "startLine": 610,
+        "startChar": 0,
+        "endLine": 610,
+        "endChar": 65
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
