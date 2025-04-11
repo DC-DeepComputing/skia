@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3161b1_613fe77c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 691,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-11T03:41:33Z",
+      "side": 1,
+      "message": "If this is debug-only, it won\u0027t fix the crash as that\u0027s in release.",
+      "range": {
+        "startLine": 691,
+        "startChar": 4,
+        "endLine": 691,
+        "endChar": 21
+      },
+      "revId": "dc61ae76235d51669dae86a06d40a84ed3719685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
