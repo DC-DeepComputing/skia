@@ -254,14 +254,6 @@ static skvx::float2 quad_center(const EdgeAAQuad& quad) {
                         dot(quad.ys(), skvx::float4(0.25f)));
 }
 
-// Represents the per-vertex attributes used in each instance.
-struct Vertex {
-    SkV2 fPosition;
-    SkV2 fNormal;
-    float fNormalScale;
-    float fCenterWeight;
-};
-
 // Allowed values for the center weight instance value (selected at record time based on style
 // and transform), and are defined such that when (insance-weight > vertex-weight) is true, the
 // vertex should be snapped to the center instead of its regular calculation.
@@ -276,6 +268,56 @@ static constexpr float kComplexAAInsets = -1.f;
 static constexpr int kCornerVertexCount = 9; // sk_VertexID is divided by this in SkSL
 static constexpr int kVertexCount = 4 * kCornerVertexCount;
 static constexpr int kIndexCount = 69;
+
+// Represents the per-vertex attributes used in each instance.
+struct Vertex {
+    uint32_t fCornerID;
+    SkV2 fPosition;
+    SkV2 fNormal;
+    float fNormalScale;
+    float fCenterWeight;
+};
+
+// This template is repeated 4 times in the vertex buffer, for each of the four corners. The corner
+// ID is used to lookup per-corner instance properties such as corner radii or positions.
+template<uint32_t kCornerID>
+constexpr std::array<Vertex, kCornerVertexCount> get_vertex_corner() {
+    // Allowed values for the normal scale attribute. +1 signals a device-space outset along the
+    // normal away from the outer edge of the stroke. 0 signals no outset, but placed on the outer
+    // edge of the stroke. -1 signals a local inset along the normal from the inner edge.
+    constexpr float kOutset = 1.0;
+    constexpr float kInset  = -1.0;
+
+    constexpr float kCenter = 1.f; // "true" as a float
+
+    // Zero, but named this way to help call out non-zero parameters.
+    constexpr float _______ = 0.f;
+
+    constexpr float kHR2 = 0.5f * SK_FloatSqrt2; // "half root 2"
+    // TL -> TR -> BR -> BL.
+    return {{
+        // Device-space AA outsets from outer curve
+        { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kOutset, _______ },
+        { kCornerID, {1.0f, 0.0f}, {kHR2, kHR2}, kOutset, _______ },
+        { kCornerID, {0.0f, 1.0f}, {kHR2, kHR2}, kOutset, _______ },
+        { kCornerID, {0.0f, 1.0f}, {0.0f, 1.0f}, kOutset, _______ },
+
+        // Outer anchors (no local or device-space normal outset)
+        { kCornerID, {1.0f, 0.0f}, {kHR2, kHR2}, _______, _______ },
+        { kCornerID, {0.0f, 1.0f}, {kHR2, kHR2}, _______, _______ },
+
+        // Inner curve (with additional AA inset in the common case)
+        { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kInset, _______ },
+        { kCornerID, {0.0f, 1.0f}, {0.0f, 1.0f}, kInset, _______ },
+
+        // Center filling vertices (equal to inner AA insets unless 'center' triggers a fill).
+        // TODO: On backends that support "cull" distances (and with SkSL support), these vertices
+        // and their corresponding triangles can be completely removed. The inset vertices can
+        // set their cull distance value to cause all filling triangles to be discarded or not
+        // depending on the instance's style.
+        { kCornerID, {1.0f, 0.0f}, {1.0f, 0.0f}, kInset,  kCenter },
+    }};
+}
 
 static void write_index_buffer(VertexWriter writer) {
     static constexpr uint16_t kTL = 0 * kCornerVertexCount;
@@ -310,51 +352,16 @@ static void write_index_buffer(VertexWriter writer) {
 }
 
 static void write_vertex_buffer(VertexWriter writer) {
-    // Allowed values for the normal scale attribute. +1 signals a device-space outset along the
-    // normal away from the outer edge of the stroke. 0 signals no outset, but placed on the outer
-    // edge of the stroke. -1 signals a local inset along the normal from the inner edge.
-    static constexpr float kOutset = 1.0;
-    static constexpr float kInset  = -1.0;
-
-    static constexpr float kCenter = 1.f; // "true" as a float
-
-    // Zero, but named this way to help call out non-zero parameters.
-    static constexpr float _______ = 0.f;
-
-    static constexpr float kHR2 = 0.5f * SK_FloatSqrt2; // "half root 2"
-
-    // This template is repeated 4 times in the vertex buffer, for each of the four corners.
-    // The vertex ID is used to lookup per-corner instance properties such as corner radii or
-    // positions, but otherwise this vertex data produces a consistent clockwise mesh from
-    // TL -> TR -> BR -> BL.
-    static constexpr Vertex kCornerTemplate[kCornerVertexCount] = {
-        // Device-space AA outsets from outer curve
-        { {1.0f, 0.0f}, {1.0f, 0.0f}, kOutset, _______ },
-        { {1.0f, 0.0f}, {kHR2, kHR2}, kOutset, _______ },
-        { {0.0f, 1.0f}, {kHR2, kHR2}, kOutset, _______ },
-        { {0.0f, 1.0f}, {0.0f, 1.0f}, kOutset, _______ },
-
-        // Outer anchors (no local or device-space normal outset)
-        { {1.0f, 0.0f}, {kHR2, kHR2}, _______, _______ },
-        { {0.0f, 1.0f}, {kHR2, kHR2}, _______, _______ },
-
-        // Inner curve (with additional AA inset in the common case)
-        { {1.0f, 0.0f}, {1.0f, 0.0f}, kInset, _______ },
-        { {0.0f, 1.0f}, {0.0f, 1.0f}, kInset, _______ },
-
-        // Center filling vertices (equal to inner AA insets unless 'center' triggers a fill).
-        // TODO: On backends that support "cull" distances (and with SkSL support), these vertices
-        // and their corresponding triangles can be completely removed. The inset vertices can
-        // set their cull distance value to cause all filling triangles to be discarded or not
-        // depending on the instance's style.
-        { {1.0f, 0.0f}, {1.0f, 0.0f}, kInset,  kCenter },
-    };
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerTL = get_vertex_corner<0>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerTR = get_vertex_corner<1>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerBR = get_vertex_corner<2>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerBL = get_vertex_corner<3>();
 
     if (writer) {
-        writer << kCornerTemplate  // TL
-               << kCornerTemplate  // TR
-               << kCornerTemplate  // BR
-               << kCornerTemplate; // BL
+        writer << kCornerTL
+               << kCornerTR
+               << kCornerBR
+               << kCornerBL;
     } // otherwise static buffer creation failed, so do nothing; Context initialization will fail.
 }
 
@@ -366,6 +373,7 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGreaterPass,
                      /*vertexAttrs=*/{
+                            {"cornerID", VertexAttribType::kUInt, SkSLType::kUInt},
                             {"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                             {"normal", VertexAttribType::kFloat2, SkSLType::kFloat2},
                             // TODO: These values are all +1/0/-1, or +1/0, so could be packed
@@ -454,7 +462,7 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = analytic_rrect_vertex_fn("
                    // Vertex Attributes
-                   "position, normal, normalScale, centerWeight, "
+                   "cornerID, position, normal, normalScale, centerWeight, "
                    // Instance Attributes
                    "xRadiiOrFlags, radiiOrQuadXs, ltrbOrQuadYs, center, depth, "
                    "float3x3(mat0, mat1, mat2), "

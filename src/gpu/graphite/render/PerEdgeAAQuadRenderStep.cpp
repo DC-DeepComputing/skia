@@ -132,17 +132,35 @@ static bool is_clockwise(const EdgeAAQuad& quad) {
     return winding >= 0.f;
 }
 
-// Represents the per-vertex attributes used in each instance.
-struct Vertex {
-    SkV2 fNormal;
-};
-
 // Allowed values for the center weight instance value (selected at record time based on style
 // and transform), and are defined such that when (insance-weight > vertex-weight) is true, the
 // vertex should be snapped to the center instead of its regular calculation.
 static constexpr int kCornerVertexCount = 4; // sk_VertexID is divided by this in SkSL
 static constexpr int kVertexCount = 4 * kCornerVertexCount;
 static constexpr int kIndexCount = 29;
+
+// Represents the per-vertex attributes used in each instance.
+struct Vertex {
+    uint32_t fCornerID;
+    SkV2 fNormal;
+};
+
+// This template is repeated 4 times in the vertex buffer, for each of the four corners. The corner
+// ID is used to lookup per-corner instance properties such as positions.
+template<uint32_t kCornerID>
+constexpr std::array<Vertex, kCornerVertexCount> get_vertex_corner() {
+    constexpr float kHR2 = 0.5f * SK_FloatSqrt2; // "half root 2"
+
+    return {{
+        // Normals for device-space AA outsets from outer curve
+        { kCornerID, {1.0f, 0.0f} },
+        { kCornerID, {kHR2, kHR2} },
+        { kCornerID, {0.0f, 1.0f} },
+
+        // Normal for outer anchor (zero length to signal no local or device-space normal outset)
+        { kCornerID, {0.0f, 0.0f} },
+    }};
+}
 
 static void write_index_buffer(VertexWriter writer) {
     static constexpr uint16_t kTL = 0 * kCornerVertexCount;
@@ -167,27 +185,16 @@ static void write_index_buffer(VertexWriter writer) {
 }
 
 static void write_vertex_buffer(VertexWriter writer) {
-    static constexpr float kHR2 = 0.5f * SK_FloatSqrt2; // "half root 2"
-
-    // This template is repeated 4 times in the vertex buffer, for each of the four corners.
-    // The vertex ID is used to lookup per-corner instance properties such as positions,
-    // but otherwise this vertex data produces a consistent clockwise mesh from
-    // TL -> TR -> BR -> BL.
-    static constexpr Vertex kCornerTemplate[kCornerVertexCount] = {
-        // Normals for device-space AA outsets from outer curve
-        { {1.0f, 0.0f} },
-        { {kHR2, kHR2} },
-        { {0.0f, 1.0f} },
-
-        // Normal for outer anchor (zero length to signal no local or device-space normal outset)
-        { {0.0f, 0.0f} },
-    };
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerTL = get_vertex_corner<0>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerTR = get_vertex_corner<1>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerBR = get_vertex_corner<2>();
+    static constexpr std::array<Vertex, kCornerVertexCount> kCornerBL = get_vertex_corner<3>();
 
     if (writer) {
-        writer << kCornerTemplate  // TL
-               << kCornerTemplate  // TR
-               << kCornerTemplate  // BR
-               << kCornerTemplate; // BL
+        writer << kCornerTL
+               << kCornerTR
+               << kCornerBR
+               << kCornerBL;
     } // otherwise static buffer creation failed, so do nothing; Context initialization will fail.
 }
 
@@ -199,6 +206,7 @@ PerEdgeAAQuadRenderStep::PerEdgeAAQuadRenderStep(StaticBufferManager* bufferMana
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGreaterPass,
                      /*vertexAttrs=*/{
+                            {"cornerID", VertexAttribType::kUInt, SkSLType::kUInt },
                             {"normal", VertexAttribType::kFloat2, SkSLType::kFloat2},
                      },
                      /*instanceAttrs=*/
@@ -234,7 +242,7 @@ std::string PerEdgeAAQuadRenderStep::vertexSkSL() const {
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = per_edge_aa_quad_vertex_fn("
                    // Vertex Attributes
-                   "normal, "
+                   "cornerID, normal, "
                    // Instance Attributes
                    "edgeFlags, quadXs, quadYs, depth, "
                    "float3x3(mat0, mat1, mat2), "
