@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "038a0b67_6c1aa251",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T01:34:41Z",
+      "side": 1,
+      "message": "Do we need to do this even with https://skia-review.googlesource.com/c/skia/+/977136?",
+      "revId": "27df726fb35b4726476855d6d0e5cd735ddbd4dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
