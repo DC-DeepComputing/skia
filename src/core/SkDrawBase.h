@@ -19,6 +19,7 @@
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkMask.h"
+#include "src/core/SkRasterContextPriv.h"
 
 #include <cstddef>
 
@@ -156,6 +157,8 @@ public:
     const SkMatrix*         fCTM{nullptr};             // required
     const SkRasterClip*     fRC{nullptr};              // required
     const SkSurfaceProps*   fProps{nullptr};           // optional
+
+    const SkRasterContextPriv* fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG
     void validate() const;
