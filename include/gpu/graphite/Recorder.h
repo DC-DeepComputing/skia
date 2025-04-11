@@ -14,6 +14,7 @@
 #include "include/gpu/graphite/Recording.h"
 #include "include/private/base/SingleOwner.h"
 #include "include/private/base/SkTArray.h"
+#include "include/core/SkRecorder.h"
 
 #include <chrono>
 #include <optional>
@@ -77,16 +78,18 @@ struct SK_API RecorderOptions final {
     std::optional<bool> fRequireOrderedRecordings;
 };
 
-class SK_API Recorder final {
+class SK_API Recorder final : public SkRecorder {
 public:
     Recorder(const Recorder&) = delete;
     Recorder(Recorder&&) = delete;
     Recorder& operator=(const Recorder&) = delete;
     Recorder& operator=(Recorder&&) = delete;
 
-    ~Recorder();
+    ~Recorder() override;
 
     BackendApi backend() const;
+
+    Type type() const final { return SkRecorder::Type::kGraphite; }
 
     std::unique_ptr<Recording> snap();
 
