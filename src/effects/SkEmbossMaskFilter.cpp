@@ -8,10 +8,12 @@
 #include "src/effects/SkEmbossMaskFilter.h"
 
 #include "include/core/SkBlurTypes.h"
+#include "include/core/SkImageFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkTypes.h"
+#include "include/effects/SkImageFilters.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "src/core/SkBlurMask.h"
 #include "src/core/SkReadBuffer.h"
@@ -145,4 +147,78 @@ void SkEmbossMaskFilter::flatten(SkWriteBuffer& buffer) const {
     tmpLight.fPad = 0;    // for the font-cache lookup to be clean
     buffer.writeByteArray(&tmpLight, sizeof(tmpLight));
     buffer.writeScalar(fBlurSigma);
+}
+
+// This image filter uses coverage masks for operations but affects shading properties
+// of a draw using the paint parameter, and returning true to indicate appliesShading.
+bool SkEmbossMaskFilter::asImageFilter(const SkMatrix& ctm,
+                                       const SkPaint& paint,
+                                       sk_sp<SkImageFilter>& dstImageFilter) const {
+    dstImageFilter.reset();
+    // Here the original bitmap we are operating on (nullptr for imageFilters) should be
+    // our coverage mask, as a white RGBA8 image where the alpha corresponds to the coverage.
+    sk_sp<SkImageFilter> coverageBlurred = SkImageFilters::Blur(fBlurSigma, fBlurSigma, nullptr);
+
+    // The paint should have the original shading properties that we want to apply.
+    sk_sp<SkImageFilter> paintColor = SkImageFilters::Shader(SkShaders::Color(paint.getColor()));
+    sk_sp<SkImageFilter> srcShader = SkImageFilters::Compose(SkImageFilters::Shader(paint.refShader()), paintColor);
+    sk_sp<SkImageFilter> srcColor = SkImageFilters::ColorFilter(paint.refColorFilter(), srcShader);
+
+     // Run the light direction through the matrix.
+     Light   light = fLight;
+     ctm.mapVectors((SkVector*)(void*)light.fDirection,
+                       (SkVector*)(void*)fLight.fDirection, 1);
+
+     // Now restore the length of the XY component.
+     // Cast to SkVector so we can call setLength (this double cast silences alias warnings).
+     SkVector* vec = (SkVector*)(void*)light.fDirection;
+     vec->setLength(light.fDirection[0],
+                    light.fDirection[1],
+                    SkPoint::Length(fLight.fDirection[0], fLight.fDirection[1]));
+
+
+      // TODO: ambient step can be a shader? doesnt work right now when I use 'skimagefilters::shader(skshaders::color(ambient))'
+      float ambientf = static_cast<float>(fLight.fAmbient);
+      uint8_t rgbTable[256];
+      uint8_t alphaTable[256];
+      for (int i = 0; i < 256; ++i) {
+          rgbTable[i] = ambientf;
+          alphaTable[i] = i;
+      }
+      sk_sp<SkColorFilter> ambientCF = SkColorFilters::TableARGB(alphaTable, rgbTable, rgbTable, rgbTable);
+      sk_sp<SkImageFilter> ambient = SkImageFilters::ColorFilter(ambientCF, nullptr);
+
+    // fLight gives direction of the light, DistantLitDiffuse image filter wants direction to the light.
+    // TODO: looks correct when z is negative here but positive for specular... why?
+    SkPoint3 diffuseDirection = SkPoint3::Make(-fLight.fDirection[0], -fLight.fDirection[1], fLight.fDirection[2]);
+    if (!diffuseDirection.normalize()) {
+        return true;
+    }
+    const int surfaceScale = 32;
+
+    // diffuse = dot(L, N)
+    sk_sp<SkImageFilter> diffuseCF = SkImageFilters::DistantLitDiffuse(diffuseDirection,
+                                                                     SK_ColorWHITE,
+                                                                     32,
+                                                                     1,
+                                                                     coverageBlurred);
+    // mul = diffuse + fLight.fAmbient
+    sk_sp<SkImageFilter> ambientdiffuse = SkImageFilters::Blend(SkBlendMode::kPlus, diffuseCF, ambient);
+    // ambientdiffuseColor = srcColor * mul
+    sk_sp<SkImageFilter> ambientdiffuseBlend = SkImageFilters::Blend(SkBlendMode::kModulate, srcColor, ambientdiffuse);
+
+    SkPoint3 specularDirection = SkPoint3::Make(-fLight.fDirection[0], -fLight.fDirection[1], -fLight.fDirection[2]);
+    // specular = (pow(dot(R, V), fLight.fSpecular))
+    sk_sp<SkImageFilter> specular = SkImageFilters::DistantLitSpecular(specularDirection,
+                                                                       SK_ColorWHITE,
+                                                                       surfaceScale,
+                                                                       0.5,
+                                                                       (fLight.fSpecular >> 4) + 1,
+                                                                       coverageBlurred);
+    // dstColor = ambientdiffuseColor + specular
+    sk_sp<SkImageFilter> finalFilter = SkImageFilters::Blend(SkBlendMode::kPlus, ambientdiffuseBlend, specular);
+    // Mask by original coverage mask, it remains unchanged.
+    dstImageFilter = sk_sp<SkImageFilter>(SkImageFilters::Blend(SkBlendMode::kDstIn, finalFilter, nullptr).release());
+    // Return true to indicate applies shading.
+    return true;
 }
