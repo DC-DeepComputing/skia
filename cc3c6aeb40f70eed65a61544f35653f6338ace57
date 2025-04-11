@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7af83d56_8b941b51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "Awesome, just some style/naming nits and then this lgtm.",
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "788391be_ff37714c",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "nit: like PerEdgeAAQuad comment, adjust the name to match what you go with.",
+      "range": {
+        "startLine": 284,
+        "startChar": 49,
+        "endLine": 284,
+        "endChar": 66
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdb1d5c6_7fea3a78",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 310,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "This wasn\u0027t from your change, but could you shift these two rows align their last column values again?",
+      "range": {
+        "startLine": 310,
+        "startChar": 56,
+        "endLine": 310,
+        "endChar": 57
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a9559d1_e852f48e",
+        "filename": "src/gpu/graphite/render/AnalyticRRectRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "like PerEdgeAAQuadRS, let\u0027s inline these with the `\u003c\u003c` operators.",
+      "range": {
+        "startLine": 355,
+        "startChar": 4,
+        "endLine": 358,
+        "endChar": 95
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6762eac_00e88dff",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "nit: expand the name to describe the value more, e.g. `get_per_corner_vertex_attrs`.",
+      "range": {
+        "startLine": 151,
+        "startChar": 49,
+        "endLine": 151,
+        "endChar": 66
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef026277_9a97e891",
+        "filename": "src/gpu/graphite/render/PerEdgeAAQuadRenderStep.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T15:02:06Z",
+      "side": 1,
+      "message": "We can consolidate `write_vertex_buffer` by just passing in `get_vertex_corner(N)` here without an extra variable declarations (and just have the corner label as a comment again).",
+      "range": {
+        "startLine": 194,
+        "startChar": 18,
+        "endLine": 194,
+        "endChar": 27
+      },
+      "revId": "cc3c6aeb40f70eed65a61544f35653f6338ace57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
