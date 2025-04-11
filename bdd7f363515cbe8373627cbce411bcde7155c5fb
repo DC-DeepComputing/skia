@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "224cd009_9fb36264",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 619,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3cef9a37_6db8462a",
+      "range": {
+        "startLine": 619,
+        "startChar": 40,
+        "endLine": 619,
+        "endChar": 72
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d6f168b9_24e27a84",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "Can we change this to have 4 values like:\nkFixed \u003d 0b000, // Uses explicit `DrawWriter::draw` functions\nkAppendVertices \u003d 0b001, // Appends vertices\nkAppendInstances \u003d 0b010, // Appends instances with a static vertex count\nkAppendDynamicInstances \u003d 0b100, // Appends instances with flexible vertex count\n\nThere are two competing \"dynamic\" concepts at play with DrawWriter, so I think this helps differentiate them: 1. whether or not some type of data is being appended, so the draw count is dynamic, or 2. whether or not the instance\u0027s definition is itself dynamic.\n\nRight now no RenderStep will use kFixed, but there is a good chance that as we flesh out the implementation for the `SkMesh` and `SkVertices` APIs that we would cache GPU buffers associated with the user-facing objects.  In that case, the VerticesRenderStep would be kFixed and call the direct `draw` functions with BindBufferInfos from the mesh object.",
+      "range": {
+        "startLine": 187,
+        "startChar": 0,
+        "endLine": 187,
+        "endChar": 61
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40bef2c3_97c2e62b",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6f168b9_24e27a84",
       "range": {
         "startLine": 187,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "da52aca8_5060ff2f",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92c47808_c870ae0e",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 2
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "210d86c0_9fa4f529",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "99f6d269_af2080d5",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "210d86c0_9fa4f529",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 91
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aee98746_e2dc643b",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "See note in `setTemplate`, but I think because we can stash the render state here and we\u0027ve flushed, we can move the pending base calculations to setTemplate and then we\u0027re down to one place that is setting them.",
+      "range": {
+        "startLine": 95,
+        "startChar": 1,
+        "endLine": 114,
+        "endChar": 9
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39577895_3ef96063",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aee98746_e2dc643b",
       "range": {
         "startLine": 95,
         "startChar": 1,
@@ -228,6 +348,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0446dd20_fa2fdd2c",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "d45c7d76_0cc3164e",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 41
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3c91cf98_6b72a622",
@@ -241,6 +385,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "They might be used in unit tests? But they are otherwise unused for actual `RenderSteps`. As long as they aren\u0027t creating a burden to `setTemplate` or `flush`, I\u0027d prefer to keep them around as a way to show how the fully-specified draws could be handled.",
+      "range": {
+        "startLine": 203,
+        "startChar": 4,
+        "endLine": 203,
+        "endChar": 39
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09fe30fd_71ce681f",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3c91cf98_6b72a622",
       "range": {
         "startLine": 203,
         "startChar": 4,
@@ -274,6 +442,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e9535e8_7480efc2",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "689e906a_1f2789cb",
+      "range": {
+        "startLine": 205,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 60
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ef6b9e7_21492d88",
@@ -287,6 +479,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "This state encoding in `fTemplateCount` is needed with `fRenderState`. This can switch to just store the vertex-count-per-instance.",
+      "range": {
+        "startLine": 247,
+        "startChar": 4,
+        "endLine": 250,
+        "endChar": 23
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb1ca52d_ca114357",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ef6b9e7_21492d88",
       "range": {
         "startLine": 247,
         "startChar": 4,
@@ -320,6 +536,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43e03e90_39a10005",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d1c7b7e2_93b95c51",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 268,
+        "endChar": 94
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f842866f_230df30a",
@@ -333,6 +573,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "For the base `Appender` we can have the subclasses pass in the expected renderstate and assert that it matches what was set on `w`.",
+      "range": {
+        "startLine": 290,
+        "startChar": 28,
+        "endLine": 290,
+        "endChar": 72
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a24dfc8_a7481257",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f842866f_230df30a",
       "range": {
         "startLine": 290,
         "startChar": 28,
@@ -366,6 +630,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd1ead99_ba0c70b4",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "674363f3_6c61b9ea",
+      "range": {
+        "startLine": 390,
+        "startChar": 26,
+        "endLine": 390,
+        "endChar": 75
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fe56186b_0544668f",
@@ -379,6 +667,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "This would always be kNone",
+      "range": {
+        "startLine": 405,
+        "startChar": 14,
+        "endLine": 405,
+        "endChar": 60
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64060a0f_7b9c3b30",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 405,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe56186b_0544668f",
       "range": {
         "startLine": 405,
         "startChar": 14,
@@ -412,6 +724,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "45069435_3b0ea31c",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 421,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ded1979f_38a149a8",
+      "range": {
+        "startLine": 421,
+        "startChar": 21,
+        "endLine": 421,
+        "endChar": 67
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e4608f81_ffc8910f",
@@ -425,6 +761,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "With RenderStateFlags, we can keep Flags private.",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 58
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a615b44_105d1998",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4608f81_ffc8910f",
       "range": {
         "startLine": 147,
         "startChar": 0,
@@ -458,6 +818,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae64299b_cc6fe404",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eff908c6_f521f302",
+      "range": {
+        "startLine": 170,
+        "startChar": 12,
+        "endLine": 170,
+        "endChar": 20
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "491c5e80_f0d92af0",
@@ -471,6 +855,30 @@
       "writtenOn": "2025-04-07T16:29:52Z",
       "side": 1,
       "message": "Skia style doesn\u0027t want if\u0027s that don\u0027t have any {}. It\u0027s okay to have a simple if like this on 1 line with the {}, though.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 93
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4231da9f_b498b7be",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "491c5e80_f0d92af0",
       "range": {
         "startLine": 171,
         "startChar": 0,
@@ -518,6 +926,30 @@
       "side": 1,
       "message": "Leftover working comment for line wrapping I forgot to delete.",
       "parentUuid": "e24a1e5f_2c6bee0a",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 30
+      },
+      "revId": "bdd7f363515cbe8373627cbce411bcde7155c5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3a30ad2_8ee7597e",
+        "filename": "src/gpu/graphite/render/GraphiteVertexFiller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-11T19:13:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58d87a3a_713838a8",
       "range": {
         "startLine": 33,
         "startChar": 0,
