@@ -148,6 +148,43 @@ cc_library_static {
     ],
 }
 
+rust_ffi_static {
+    name: "libskia_rust_ffi",
+    host_supported: true,
+    crate_name: "skia",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    include_dirs: ["src/ports/fontations/src"],
+    rustlibs: [
+      "libcxx",
+      "libskrifa",
+      "libread_fonts",
+      "libfont_types",
+    ],
+    features: [ "cxx" ],
+    target: {
+        windows: {
+            enabled: true,
+        },
+    },
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_code",
+    tools: ["cxxbridge"],
+    cmd: "$$(location cxxbridge) $$(in) >> $$(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "cpp",
+}
+
+gensrcs {
+    name: "libskia_cxx_bridge_header",
+    tools: ["cxxbridge"],
+    cmd: "$$(location cxxbridge) $$(in) --header >> $$(out)",
+    srcs: ["src/ports/fontations/src/ffi.rs"],
+    output_extension: "rs.h",
+    export_include_dirs: ["."]
+}
+
 cc_library_static {
     name: "libskia",
     host_supported: true,
@@ -160,6 +197,12 @@ cc_library_static {
 
     srcs: [
         $srcs
+    ],
+    generated_headers: [
+      "libskia_cxx_bridge_header",
+    ],
+    generated_sources: [
+      "libskia_cxx_bridge_code",
     ],
 
     target: {
@@ -270,6 +313,10 @@ cc_defaults {
     ],
     cflags: [
         "-DSK_PDF_USE_HARFBUZZ_SUBSET",
+    ],
+    whole_static_libs: [
+        "libskia_rust_ffi",
+        "libskrifa",
     ],
     target: {
       android: {
@@ -540,6 +587,7 @@ def generate_args(target_os, enable_gpu, renderengine = False):
   else:
     d['skia_enable_android_utils'] = 'true'
     d['skia_use_freetype'] = 'true'
+    d['skia_use_fontations'] = 'true'
     d['skia_use_fixed_gamma_text'] = 'true'
     d['skia_enable_fontmgr_custom_empty'] = 'true'
     d['skia_use_wuffs'] = 'true'
@@ -554,8 +602,9 @@ gn_args_renderengine  = generate_args('"android"', True, True)
 
 js = gn_to_bp_utils.GenerateJSONFromGN(gn_args)
 
+# Also remove fontations generated include directories.
 def strip_slashes(lst):
-  return {str(p.lstrip('/')) for p in lst}
+  return {str(p.lstrip('/')) for p in lst if not p.startswith('/tmp')}
 
 android_srcs    = strip_slashes(js['targets']['//:skia']['sources'])
 cflags          = strip_slashes(js['targets']['//:skia']['cflags'])
@@ -592,7 +641,9 @@ gm_includes   .add("modules/skcms")
 # types in `srcs` (e.g. all header extensions must be excluded).
 def strip_non_srcs(sources):
   src_extensions = ['.s', '.S', '.c', '.cpp', '.cc', '.cxx', '.mm']
-  return {s for s in sources if os.path.splitext(s)[1] in src_extensions}
+  #(base, ext) = os.path.splitext(s)
+  #(_, baseExt) = os.path.splitext(base)
+  return {s for s in sources if os.path.splitext(s)[1] in src_extensions and os.path.splitext(os.path.splitext(s)[0])[1] != ".rs" }
 
 VMA_DEP = "//src/gpu/vk/vulkanmemoryallocator:vulkanmemoryallocator"
 
