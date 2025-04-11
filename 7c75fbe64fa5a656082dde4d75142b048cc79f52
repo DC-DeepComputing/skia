@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "682a973b_4e778629",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-11T13:19:57Z",
+      "side": 1,
+      "message": "This still doesn\u0027t quite match what we\u0027d discussed offline.  We need to tell `DrawWriter` that it needs to include barriers every time it issues a draw call, because it may draw internally if buffers run out of space.\n\nWe also have to inject a flush between draws that don\u0027t otherwise have pipeline/state changes when they overlap so that the barrier orders them correctly. This should be detectable by just comparing `draw.fDrawParams.order().paintOrder()` against the order of the previous draw. If they are equal, they don\u0027t overlap so there\u0027s no barrier needed.",
+      "range": {
+        "startLine": 639,
+        "startChar": 0,
+        "endLine": 645,
+        "endChar": 9
+      },
+      "revId": "7c75fbe64fa5a656082dde4d75142b048cc79f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
