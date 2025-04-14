@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27a1dd90_59aa9517",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-14T14:26:35Z",
+      "side": 1,
+      "message": "I had planned to put the ResourceCache in https://skia-review.googlesource.com/c/skia/+/977817/4/src/core/SkRasterContextPriv.h but I guess maybe that can be a unique ptr",
+      "parentUuid": "549067cf_00d5206a",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d0accc8cb3c9eb85ca5e4686e34a5854d5e0dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0af51d9d_5c590fe1",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 1
