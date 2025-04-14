@@ -16,6 +16,23 @@
       "message": "This breaks other GMs -- in particular: perspective_clip, crbug_884166, degeneratesegments, preservefillrule_big, skbug12244, parsedpaths. It also breaks some of the TriangulatingPathRenderer tests.",
       "revId": "e8edf828c184494996e72aa871bcb0aa7a999f58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33f52d16_05236cc6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-14T13:01:14Z",
+      "side": 1,
+      "message": "The Canary-Chromium failure is not due to this CL.",
+      "revId": "e8edf828c184494996e72aa871bcb0aa7a999f58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
