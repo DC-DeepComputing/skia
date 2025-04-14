@@ -43,6 +43,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "549067cf_00d5206a",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-14T14:07:18Z",
+      "side": 1,
+      "message": "why this change? Looking at the code the only use of SkResourceCache::Make in src/ is for SkFontRequestCache. As far as I can tell its not trying to share this object with anyone else. So why do we need this to be ref counted?",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d0accc8cb3c9eb85ca5e4686e34a5854d5e0dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0af51d9d_5c590fe1",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 1
