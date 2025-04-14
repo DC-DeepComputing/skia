@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d446ce4_d16dfba2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-14T18:50:30Z",
+      "side": 1,
+      "message": "I made a subclass of SkResourceCache so we can keep existing code paths similar and not have to add templating.\n\nIf the reviewers want, I can try making SkResourceCache a pure virtual interface and have two subclasses, and the synchronized subclass has a `std::unique_ptr` of the non-thread-safe version.",
+      "revId": "0646794d4a1b0975ace1196bd47e6b5bb5bb54b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
