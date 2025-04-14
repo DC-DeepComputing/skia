@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "be1da134_91a3a677",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:17:56Z",
+      "side": 1,
+      "message": "On Graphite, this wasn\u0027t ever working because it only knew how to handle mask filters that used AutoLayer. On Ganesh, it had dedicated code to handle blurs and mask filters that could be converted to `GrFragmentProcessors`, and if that didn\u0027t work I believe it would run the mask filter on the CPU and then upload the texture. In that case, it would only work for certain types of SkMask data and I don\u0027t think 3D was one of them.  The goal will be for raster, Ganesh, and Graphite to all use AutoLayer.  I believe there is evidence that clients relying on the deprecated emboss filter have also forced their rendering to be on the raster backend to get the output they wanted.  When this is all done, it could mean they could go back to GPU rendering.\n\nI am not surprised that there is a mismatch between how the emboss lighting parameters are input vs. what the specular/diffuse parameters are expecting, but I will look to see if the heuristics make sense. I don\u0027t think we need to have it be exactly right as long the as approximate visual effect is preserved.\n\nCan we expand the emboss example to have some regular text and path draws?",
+      "parentUuid": "0f33a41c_fc87a7e6",
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e6ee36a_82bfa6cd",
         "filename": "src/effects/SkEmbossMaskFilter.cpp",
         "patchSetId": 6
@@ -85,6 +103,30 @@
       "writtenOn": "2025-04-11T18:39:21Z",
       "side": 1,
       "message": "any insight?",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 84
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e6cd234_04ee6f2b",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:17:56Z",
+      "side": 1,
+      "message": "This took a bit, but I think it\u0027s a bug in SkEmbossMask. \n\nAll documentation for SVG lighting effects (starting point for SkLightingImageFilter), comments within SkLightingImageFilter and related shaders, and in the GMs that use lighting filters are consistent with the model that positive Z is towards the user.  This would make me expect that a light\u0027s position that contributes to the image have a positive Z.  Similarly, in SkLightingImageFilter conventions, the direction from surface to the light would also then have a positive Z.\n\nThe code in SkEmbossMask is calculating the dot product between the normal and the light without negating the light direction. The GMs are also setting light directions with positive Z. SkEmbossMask\u0027s calculation for the reflection vector is also consistent with the light direction being from surface to light.  For now, let\u0027s assume that it is also intends that positive Z is towards the user and that light direction is from surface-to-light. The `// R * Eye(0, 0, 1)` corroborates this. \n\nBut there is a difference in how the two filters are deriving their normals (besides the slightly different weights). Looking on profile for 1 dimension, they both subtract the prior alpha value from the next alpha value:\n   \n       n   ^\n      /    |\n     /    +z\n    p\n    \n    +x -\u003e\n    \nIn this example, the next alpha is greater than the prior alpha.  The mask filter uses (nx-px) directly in the lighting dot product, so it behaves as if the normal points in positive x. The lighting image filter code uses -(nx-px), so the normal points towards negative x, which is more what you\u0027d expect for a normal vector extending from the edge shown.  Another interpretation of the mask filter impl is that as the alpha increases, it pushes the surface into the monitor away from the user.\n\nLooking at the blue circle and text in `emboss` GM, and knowing that the light direction is `{1,1,1}`, the light is above the monitor screen and towards the bottom right corner.  For a surface that pushes out of the monitor, I\u0027d expect white highlights on the bottom right and shadows along the top left. For a surface pushing into the monitor, it\u0027d be flipped with highlights along the top left and shadows on the bottom right.  This matches what is shown in `emboss`.\n\nWe should not be flipping the sign of the light directions for specular or diffuse here.  To get the behavior of the old mask filter, we can just negative `surfaceScale` to be -32 instead.",
+      "parentUuid": "8e6ee36a_82bfa6cd",
       "range": {
         "startLine": 196,
         "startChar": 4,

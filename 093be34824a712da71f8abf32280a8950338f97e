@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b18cc657_e831f544",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:17:56Z",
+      "side": 1,
+      "message": "One minor difference is that the image filter code uses (N.H) as the base whereas the mask filter code uses (R.E).  H is the half vector between L and E, whereas R is the reflection of L over N.  Behaviorally, in 3D lighting R.E and N.H are similar characteristics, but N.H is the more widely adopted model now.",
+      "range": {
+        "startLine": 227,
+        "startChar": 18,
+        "endLine": 227,
+        "endChar": 52
+      },
+      "revId": "093be34824a712da71f8abf32280a8950338f97e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
