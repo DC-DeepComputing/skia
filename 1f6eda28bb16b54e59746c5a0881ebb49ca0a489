@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0f33a41c_fc87a7e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-14T13:21:29Z",
+      "side": 1,
+      "message": "This actually isn\u0027t working for draws correctly currently, the emboss example slide we have draws an SkImage, not a regular draw method.",
+      "parentUuid": "63aac253_9ae1a489",
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e6ee36a_82bfa6cd",
         "filename": "src/effects/SkEmbossMaskFilter.cpp",
         "patchSetId": 6
