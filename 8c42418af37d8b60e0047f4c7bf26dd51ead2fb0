@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "536684fb_61dce1a6",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:08Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "0d379594_327f0d43",
+      "range": {
+        "startLine": 551,
+        "startChar": 0,
+        "endLine": 551,
+        "endChar": 2
+      },
+      "revId": "8c42418af37d8b60e0047f4c7bf26dd51ead2fb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "61cc16c4_60e8f825",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-10T18:00:18Z",
       "side": 1,
       "message": "This should be changed to [GR_VK_CALL_RESULT_NOCHECK](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkUtil.h;l\u003d38-50;drc\u003d5fb01f00262bbbef99571953fb5a987b0bed4d45) since `VK_INCOMPLETE` is now acceptable, which then also means a failure message should be manually logged before the `return` on line 577 (since `result` would be an OOM error in that case).",
+      "range": {
+        "startLine": 574,
+        "startChar": 4,
+        "endLine": 574,
+        "endChar": 21
+      },
+      "revId": "8c42418af37d8b60e0047f4c7bf26dd51ead2fb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "971fb978_163b77fe",
+        "filename": "src/gpu/ganesh/vk/GrVkResourceProvider.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:08Z",
+      "side": 1,
+      "message": "Thanks for spotting all of that! Done.",
+      "parentUuid": "61cc16c4_60e8f825",
       "range": {
         "startLine": 574,
         "startChar": 4,
