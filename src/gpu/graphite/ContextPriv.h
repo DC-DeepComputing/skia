@@ -107,6 +107,21 @@ public:
                                                 const ContextOptions&);
 };
 
+struct PixelTransferResult {
+    using ConversionFn = void(void* dst, const void* mappedBuffer);
+    // If null then the transfer could not be performed. Otherwise this buffer will contain
+    // the pixel data when the transfer is complete.
+    sk_sp<Buffer> fTransferBuffer;
+    // Size of the read.
+    SkISize fSize;
+    // RowBytes for transfer buffer data
+    size_t fRowBytes;
+    // If this is null then the transfer buffer will contain the data in the requested
+    // color type. Otherwise, when the transfer is done this must be called to convert
+    // from the transfer buffer's color type to the requested color type.
+    std::function<ConversionFn> fPixelConverter;
+};
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ContextPriv_DEFINED
