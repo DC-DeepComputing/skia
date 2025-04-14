@@ -39,7 +39,9 @@ public:
     SkMask::Format getFormat() const override;
     bool filterMask(SkMaskBuilder*, const SkMask&, const SkMatrix&, SkIPoint*) const override;
     SkMaskFilterBase::Type type() const override { return SkMaskFilterBase::Type::kTable; }
-    sk_sp<SkImageFilter> asImageFilter(const SkMatrix&) const override;
+    bool asImageFilter(const SkMatrix&,
+                       const SkPaint&,
+                       sk_sp<SkImageFilter>& dstImageFilter) const override;
 
 protected:
     ~SkTableMaskFilterImpl() override;
@@ -128,12 +130,15 @@ sk_sp<SkFlattenable> SkTableMaskFilterImpl::CreateProc(SkReadBuffer& buffer) {
     return sk_sp<SkFlattenable>(SkTableMaskFilter::Create(table));
 }
 
-sk_sp<SkImageFilter> SkTableMaskFilterImpl::asImageFilter(const SkMatrix&) const {
+bool SkTableMaskFilterImpl::asImageFilter(
+    const SkMatrix&, const SkPaint&, sk_sp<SkImageFilter>& dstImageFilter) const {
     sk_sp<SkColorFilter> colorFilter = SkColorFilters::TableARGB(fTable,
                                                                  nullptr,
                                                                  nullptr,
                                                                  nullptr);
-    return SkImageFilters::ColorFilter(colorFilter, nullptr);
+    dstImageFilter.reset();
+    dstImageFilter = SkImageFilters::ColorFilter(colorFilter, nullptr);
+    return false;
 }
 ///////////////////////////////////////////////////////////////////////////////
 
