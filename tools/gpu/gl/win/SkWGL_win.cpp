@@ -361,6 +361,7 @@ static HGLRC create_gl_context(HDC dc, const SkWGLExtensions& extensions,
     if (kGLES_SkWGLContextRequest == contextType) {
         if (!extensions.hasExtension(dc, "WGL_EXT_create_context_es2_profile")) {
             wglMakeCurrent(prevDC, prevGLRC);
+            SkDebugf("No WGL_EXT_create_context_es2_profile\n");
             return nullptr;
         }
         static const int glesAttribs[] = {
@@ -372,6 +373,7 @@ static HGLRC create_gl_context(HDC dc, const SkWGLExtensions& extensions,
         glrc = extensions.createContextAttribs(dc, shareContext, glesAttribs);
         if (nullptr == glrc) {
             wglMakeCurrent(prevDC, prevGLRC);
+            SkDebugf("Failed to create gles context\n");
             return nullptr;
         }
     } else {
@@ -398,6 +400,7 @@ static HGLRC create_gl_context(HDC dc, const SkWGLExtensions& extensions,
                 if (glrc) {
                     break;
                 }
+                SkDebugf("failed to create core context of %d.%d\n", coreProfileAttribs[1], coreProfileAttribs[3]);
             }
         }
     }
@@ -407,6 +410,7 @@ static HGLRC create_gl_context(HDC dc, const SkWGLExtensions& extensions,
         if (shareContext) {
             if (!wglShareLists(shareContext, glrc)) {
                 wglDeleteContext(glrc);
+                SkDebugf("failed to share between contexts\n");
                 return nullptr;
             }
         }
@@ -414,14 +418,16 @@ static HGLRC create_gl_context(HDC dc, const SkWGLExtensions& extensions,
     SkASSERT(glrc);
 
     wglMakeCurrent(prevDC, prevGLRC);
-
+    SkDebugf("created glrc\n");
     return glrc;
 }
 
 HGLRC SkCreateWGLContext(HDC dc, int msaaSampleCount, bool deepColor,
                          SkWGLContextRequest contextType, HGLRC shareContext) {
+    SkDebugf("SkCreateWGLContext type: %d\n", (int) contextType);
     SkWGLExtensions extensions;
     if (!extensions.hasExtension(dc, "WGL_ARB_pixel_format")) {
+        SkDebugf("No WGL_ARB_pixel_format\n");
         return nullptr;
     }
 
@@ -438,6 +444,7 @@ HGLRC SkCreateWGLContext(HDC dc, int msaaSampleCount, bool deepColor,
     }
 
     if (!set) {
+        SkDebugf("no compatible pixel formats\n");
         return nullptr;
     }
 
