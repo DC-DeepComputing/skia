@@ -22,6 +22,30 @@
       },
       "revId": "25f970c3129bc1f710a0e32b3412018dac4c1528",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed919dec_73e75f7a",
+        "filename": "src/core/SkRecorderPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-14T14:43:02Z",
+      "side": 1,
+      "message": "Done. Thank you for the naming suggestion offline!",
+      "parentUuid": "d7a4fcec_5f0c64e1",
+      "range": {
+        "startLine": 77,
+        "startChar": 6,
+        "endLine": 77,
+        "endChar": 20
+      },
+      "revId": "25f970c3129bc1f710a0e32b3412018dac4c1528",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
