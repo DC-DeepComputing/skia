@@ -624,6 +624,28 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                         bdb->fVertices, bdb->fInstances, bdb->fIndices, bdb->fIndirect);
                 break;
             }
+            case DrawPassCommands::Type::kBindVertexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindVertexBuffer*>(cmdPtr);
+                this->bindVertexBuffer(bdb->fVertices.fBuffer, bdb->fVertices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindInstanceBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindInstanceBuffer*>(cmdPtr);
+                this->bindInstanceBuffer(bdb->fInstances.fBuffer, bdb->fInstances.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndexBuffer*>(cmdPtr);
+                this->bindIndexBuffer(
+                        bdb->fIndices.fBuffer, bdb->fIndices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndirectBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndirectBuffer*>(cmdPtr);
+                this->bindIndirectBuffer(
+                        bdb->fIndirect.fBuffer, bdb->fIndirect.fOffset);
+                break;
+            }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
                 this->bindTextureAndSamplers(*drawPass, *bts);
@@ -742,26 +764,43 @@ void DawnCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
                                         const BindBufferInfo& instances,
                                         const BindBufferInfo& indices,
                                         const BindBufferInfo& indirect) {
-    SkASSERT(fActiveRenderPassEncoder);
+    bindVertexBuffer(vertices.fBuffer, vertices.fOffset);
+    bindInstanceBuffer(instances.fBuffer, instances.fOffset);
+    bindIndexBuffer(indices.fBuffer, indices.fOffset);
+    bindIndirectBuffer(indirect.fBuffer, indirect.fOffset);
+}
 
-    if (vertices.fBuffer) {
-        auto dawnBuffer = static_cast<const DawnBuffer*>(vertices.fBuffer)->dawnBuffer();
+void DawnCommandBuffer::bindVertexBuffer(const Buffer* vertexBuffer, size_t offset) {
+    SkASSERT(fActiveRenderPassEncoder);
+    if (vertexBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(vertexBuffer)->dawnBuffer();
         fActiveRenderPassEncoder.SetVertexBuffer(
-                DawnGraphicsPipeline::kVertexBufferIndex, dawnBuffer, vertices.fOffset);
+                DawnGraphicsPipeline::kVertexBufferIndex, dawnBuffer, offset);
     }
-    if (instances.fBuffer) {
-        auto dawnBuffer = static_cast<const DawnBuffer*>(instances.fBuffer)->dawnBuffer();
+}
+
+void DawnCommandBuffer::bindInstanceBuffer(const Buffer* instanceBuffer, size_t offset) {
+    SkASSERT(fActiveRenderPassEncoder);
+    if (instanceBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(instanceBuffer)->dawnBuffer();
         fActiveRenderPassEncoder.SetVertexBuffer(
-                DawnGraphicsPipeline::kInstanceBufferIndex, dawnBuffer, instances.fOffset);
+                DawnGraphicsPipeline::kInstanceBufferIndex, dawnBuffer, offset);
     }
-    if (indices.fBuffer) {
-        auto dawnBuffer = static_cast<const DawnBuffer*>(indices.fBuffer)->dawnBuffer();
+}
+
+void DawnCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offset) {
+    SkASSERT(fActiveRenderPassEncoder);
+    if (indexBuffer) {
+        auto dawnBuffer = static_cast<const DawnBuffer*>(indexBuffer)->dawnBuffer();
         fActiveRenderPassEncoder.SetIndexBuffer(
-                dawnBuffer, wgpu::IndexFormat::Uint16, indices.fOffset);
+                dawnBuffer, wgpu::IndexFormat::Uint16, offset);
     }
-    if (indirect.fBuffer) {
-        fCurrentIndirectBuffer = static_cast<const DawnBuffer*>(indirect.fBuffer)->dawnBuffer();
-        fCurrentIndirectBufferOffset = indirect.fOffset;
+}
+
+void DawnCommandBuffer::bindIndirectBuffer(const Buffer* indirectBuffer, size_t offset) {
+    if (indirectBuffer) {
+        fCurrentIndirectBuffer = static_cast<const DawnBuffer*>(indirectBuffer)->dawnBuffer();
+        fCurrentIndirectBufferOffset = offset;
     } else {
         fCurrentIndirectBuffer = nullptr;
         fCurrentIndirectBufferOffset = 0;

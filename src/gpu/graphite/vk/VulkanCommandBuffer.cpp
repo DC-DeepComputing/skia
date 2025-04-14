@@ -894,6 +894,28 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                         bdb->fVertices, bdb->fInstances, bdb->fIndices, bdb->fIndirect);
                 break;
             }
+            case DrawPassCommands::Type::kBindVertexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindVertexBuffer*>(cmdPtr);
+                this->bindVertexBuffer(bdb->fVertices.fBuffer, bdb->fVertices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindInstanceBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindInstanceBuffer*>(cmdPtr);
+                this->bindInstanceBuffer(bdb->fInstances.fBuffer, bdb->fInstances.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndexBuffer*>(cmdPtr);
+                this->bindIndexBuffer(
+                        bdb->fIndices.fBuffer, bdb->fIndices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndirectBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndirectBuffer*>(cmdPtr);
+                this->bindIndirectBuffer(
+                        bdb->fIndirect.fBuffer, bdb->fIndirect.fOffset);
+                break;
+            }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
                 this->recordTextureAndSamplerDescSet(drawPass, bts);
@@ -1098,22 +1120,18 @@ void VulkanCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
                                           const BindBufferInfo& instances,
                                           const BindBufferInfo& indices,
                                           const BindBufferInfo& indirect) {
-    this->bindVertexBuffers(vertices.fBuffer,
-                            vertices.fOffset,
-                            instances.fBuffer,
-                            instances.fOffset);
+    this->bindVertexBuffer(vertices.fBuffer, vertices.fOffset);
+    this->bindInstanceBuffer(instances.fBuffer, instances.fOffset);
     this->bindIndexBuffer(indices.fBuffer, indices.fOffset);
     this->bindIndirectBuffer(indirect.fBuffer, indirect.fOffset);
 }
 
-void VulkanCommandBuffer::bindVertexBuffers(const Buffer* vertexBuffer,
-                                            size_t vertexOffset,
-                                            const Buffer* instanceBuffer,
-                                            size_t instanceOffset) {
-    this->bindInputBuffer(vertexBuffer, vertexOffset,
-                          VulkanGraphicsPipeline::kVertexBufferIndex);
-    this->bindInputBuffer(instanceBuffer, instanceOffset,
-                          VulkanGraphicsPipeline::kInstanceBufferIndex);
+void VulkanCommandBuffer::bindVertexBuffer(const Buffer* vertexBuffer, size_t offset) {
+    this->bindInputBuffer(vertexBuffer, offset, VulkanGraphicsPipeline::kVertexBufferIndex);
+}
+
+void VulkanCommandBuffer::bindInstanceBuffer(const Buffer* instanceBuffer, size_t offset) {
+    this->bindInputBuffer(instanceBuffer, offset, VulkanGraphicsPipeline::kInstanceBufferIndex);
 }
 
 void VulkanCommandBuffer::bindInputBuffer(const Buffer* buffer, VkDeviceSize offset,

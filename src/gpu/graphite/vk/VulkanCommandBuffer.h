@@ -115,8 +115,8 @@ private:
                          const BindBufferInfo& instances,
                          const BindBufferInfo& indices,
                          const BindBufferInfo& indirect);
-    void bindVertexBuffers(const Buffer* vertexBuffer, size_t vertexOffset,
-                           const Buffer* instanceBuffer, size_t instanceOffset);
+    void bindVertexBuffer(const Buffer* vertexBuffer, size_t offset);
+    void bindInstanceBuffer(const Buffer* instanceBuffer, size_t offset);
     void bindInputBuffer(const Buffer* buffer, VkDeviceSize offset, uint32_t binding);
     void bindIndexBuffer(const Buffer* indexBuffer, size_t offset);
     void bindIndirectBuffer(const Buffer* indirectBuffer, size_t offset);

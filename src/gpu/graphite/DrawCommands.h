@@ -32,6 +32,10 @@ namespace DrawPassCommands {
     M(SetBlendConstants)                 \
     M(BindUniformBuffer)                 \
     M(BindDrawBuffers)                   \
+    M(BindVertexBuffer)                  \
+    M(BindInstanceBuffer)                \
+    M(BindIndirectBuffer)                \
+    M(BindIndexBuffer)                   \
     M(BindTexturesAndSamplers)           \
     M(SetScissor)                        \
     M(Draw)                              \
@@ -84,6 +88,14 @@ COMMAND(BindDrawBuffers,
             BindBufferInfo fVertices;
             BindBufferInfo fInstances;
             BindBufferInfo fIndices;
+            BindBufferInfo fIndirect);
+COMMAND(BindVertexBuffer,
+            BindBufferInfo fVertices);
+COMMAND(BindInstanceBuffer,
+            BindBufferInfo fInstances)
+COMMAND(BindIndexBuffer,
+            BindBufferInfo fIndices);
+COMMAND(BindIndirectBuffer,
             BindBufferInfo fIndirect);
 COMMAND(BindTexturesAndSamplers,
             int fNumTexSamplers;
@@ -161,11 +173,28 @@ public:
         this->add<SetScissor>(Scissor(scissor));
     }
 
+    // TODO possibly no longer needed?
     void bindDrawBuffers(BindBufferInfo vertexAttribs,
                          BindBufferInfo instanceAttribs,
                          BindBufferInfo indices,
                          BindBufferInfo indirect) {
         this->add<BindDrawBuffers>(vertexAttribs, instanceAttribs, indices, indirect);
+    }
+
+    void bindVertexBuffer(BindBufferInfo vertexAttribs) {
+        this->add<BindVertexBuffer>(vertexAttribs);
+    }
+
+    void bindInstanceBuffer(BindBufferInfo instanceAttribs) {
+        this->add<BindInstanceBuffer>(instanceAttribs);
+    }
+
+    void bindIndexBuffer(BindBufferInfo indices) {
+        this->add<BindIndexBuffer>(indices);
+    }
+
+    void bindIndirectBuffer(BindBufferInfo indirect) {
+        this->add<BindIndirectBuffer>(indirect);
     }
 
     void draw(PrimitiveType type, unsigned int baseVertex, unsigned int vertexCount) {

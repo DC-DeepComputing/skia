@@ -388,6 +388,28 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
                         bdb->fVertices, bdb->fInstances, bdb->fIndices, bdb->fIndirect);
                 break;
             }
+            case DrawPassCommands::Type::kBindVertexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindVertexBuffer*>(cmdPtr);
+                this->bindVertexBuffer(bdb->fVertices.fBuffer, bdb->fVertices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindInstanceBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindInstanceBuffer*>(cmdPtr);
+                this->bindInstanceBuffer(bdb->fInstances.fBuffer, bdb->fInstances.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndexBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndexBuffer*>(cmdPtr);
+                this->bindIndexBuffer(
+                        bdb->fIndices.fBuffer, bdb->fIndices.fOffset);
+                break;
+            }
+            case DrawPassCommands::Type::kBindIndirectBuffer: {
+                auto bdb = static_cast<DrawPassCommands::BindIndirectBuffer*>(cmdPtr);
+                this->bindIndirectBuffer(
+                        bdb->fIndirect.fBuffer, bdb->fIndirect.fOffset);
+                break;
+            }
             case DrawPassCommands::Type::kBindTexturesAndSamplers: {
                 auto bts = static_cast<DrawPassCommands::BindTexturesAndSamplers*>(cmdPtr);
                 for (int j = 0; j < bts->fNumTexSamplers; ++j) {
@@ -524,32 +546,30 @@ void MtlCommandBuffer::bindDrawBuffers(const BindBufferInfo& vertices,
                                        const BindBufferInfo& instances,
                                        const BindBufferInfo& indices,
                                        const BindBufferInfo& indirect) {
-    this->bindVertexBuffers(vertices.fBuffer,
-                            vertices.fOffset,
-                            instances.fBuffer,
-                            instances.fOffset);
+    this->bindVertexBuffer(vertices.fBuffer, vertices.fOffset);
+    this->bindInstanceBuffer(instances.fBuffer, instances.fOffset);
     this->bindIndexBuffer(indices.fBuffer, indices.fOffset);
     this->bindIndirectBuffer(indirect.fBuffer, indirect.fOffset);
 }
 
-void MtlCommandBuffer::bindVertexBuffers(const Buffer* vertexBuffer,
-                                         size_t vertexOffset,
-                                         const Buffer* instanceBuffer,
-                                         size_t instanceOffset) {
+void MtlCommandBuffer::bindVertexBuffer(const Buffer* vertexBuffer, size_t offset) {
     SkASSERT(fActiveRenderCommandEncoder);
-
     if (vertexBuffer) {
         id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(vertexBuffer)->mtlBuffer();
         // Metal requires buffer offsets to be aligned to the data type, which is at most 4 bytes
         // since we use [[attribute]] to automatically unpack float components into SIMD arrays.
-        SkASSERT((vertexOffset & 0b11) == 0);
-        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, vertexOffset,
+        SkASSERT((offset & 0b11) == 0);
+        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, offset,
                                                      MtlGraphicsPipeline::kVertexBufferIndex);
     }
+}
+
+void MtlCommandBuffer::bindInstanceBuffer(const Buffer* instanceBuffer, size_t offset) {
+    SkASSERT(fActiveRenderCommandEncoder);
     if (instanceBuffer) {
         id<MTLBuffer> mtlBuffer = static_cast<const MtlBuffer*>(instanceBuffer)->mtlBuffer();
-        SkASSERT((instanceOffset & 0b11) == 0);
-        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, instanceOffset,
+        SkASSERT((offset & 0b11) == 0);
+        fActiveRenderCommandEncoder->setVertexBuffer(mtlBuffer, offset,
                                                      MtlGraphicsPipeline::kInstanceBufferIndex);
     }
 }

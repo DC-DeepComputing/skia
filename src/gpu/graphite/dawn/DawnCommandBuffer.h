@@ -94,6 +94,10 @@ private:
                          const BindBufferInfo& instances,
                          const BindBufferInfo& indices,
                          const BindBufferInfo& indirect);
+    void bindVertexBuffer(const Buffer* vertexBuffer, size_t offset);
+    void bindInstanceBuffer(const Buffer* instanceBuffer, size_t offset);
+    void bindIndexBuffer(const Buffer* indexBuffer, size_t offset);
+    void bindIndirectBuffer(const Buffer* indirectBuffer, size_t offset);
 
     void bindTextureAndSamplers(const DrawPass& drawPass,
                                 const DrawPassCommands::BindTexturesAndSamplers& command);
