@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d09c8b2_ef4e73a8",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 519,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Done. Let me know if we should also add docs for the functions below.",
+      "parentUuid": "917c4c80_6dd1d7db",
+      "range": {
+        "startLine": 518,
+        "startChar": 4,
+        "endLine": 519,
+        "endChar": 43
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8bc37c76_820ca149",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-04-10T20:42:53Z",
       "side": 1,
       "message": "Do we also need to check that pipelineCreationCacheControl is enabled in the features?",
+      "range": {
+        "startLine": 422,
+        "startChar": 8,
+        "endLine": 422,
+        "endChar": 90
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b78e0d2a_00463354",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 422,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Yes, thank you!",
+      "parentUuid": "8bc37c76_820ca149",
       "range": {
         "startLine": 422,
         "startChar": 8,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "df28b5ae_4fdc73d3",
+        "filename": "src/gpu/ganesh/vk/GrVkCaps.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Thanks, I missed that.",
+      "parentUuid": "ac48b02f_81376096",
+      "range": {
+        "startLine": 202,
+        "startChar": 55,
+        "endLine": 202,
+        "endChar": 56
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5f8d890f_60bcdacc",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-04-10T20:42:53Z",
       "side": 1,
       "message": "I find it a little weird that this only gets set back to false in the case where we support pipelineCreationCacheControl. Like if someone calls the GrDirectContext::storePipeline cache and then immediately calls GrDirectContext::hasNewVkPipelineCacheData it seems like the second calls should return false even if we don\u0027t have the feature.\n\nI wonder if we should change the logic in GrVkPipeline.cpp to be something like:\n\n```\nVkGraphicsPipelineCreateInfo pipelineCreateInfo;\n// do pipeline create setup\nVkResult err \u003d VK_PIPELINE_COMPILE_REQUIRED;\nif (vkcaps-\u003esupportsPipelineCreationCacheControl()) {\n    pipelineCreateInfo.flags \u003d VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT;\n    err \u003d CreateGraphitesPipeline(...);\n}\n\nif (err \u003d\u003d VK_PIPELINE_COMPILE_REQUIRED) {\n    pipelineCreateInfo.flags \u003d 0;\n    err \u003d CreateGraphitesPipeline(...);\n}\n```\n\nThen return the `if (!this-\u003ecanDetectNewVkPipelineCacheData()) {` check in this function above. And in GrVkGpu constructor remove\n```\nif (!this-\u003ecanDetectNewVkPipelineCacheData()) {\n        fHasNewVkPipelineCacheData \u003d true;\n    }\n```",
+      "range": {
+        "startLine": 2765,
+        "startChar": 4,
+        "endLine": 2765,
+        "endChar": 38
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5a99563_c35f5bfb",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 2765,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Okay, I agree that it\u0027s more useful to report hasNewVkPipelineCacheData \u003d true only after a pipeline has been created, even if we don\u0027t have pipeline creation cache control. Done.\n\nI also agree that the structure you suggested above looks much cleaner. I\u0027ve used it in the latest patch. However I could not figure out a clean way of conditionally emitting the 2nd trace event since it\u0027s scoped. I used an if / else that does the same thing in both branches, one with a trace event. Do you know of any way to collapse that down? Otherwise the logic works out quite nicely, thanks!",
+      "parentUuid": "5f8d890f_60bcdacc",
       "range": {
         "startLine": 2765,
         "startChar": 4,
@@ -150,6 +246,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c9b3196_34fc91cc",
+        "filename": "src/gpu/ganesh/vk/GrVkGpu.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Done. Note: I used `on` as it signifies a notification as opposed to a request.",
+      "parentUuid": "4fce5d00_b69f6933",
+      "range": {
+        "startLine": 232,
+        "startChar": 9,
+        "endLine": 232,
+        "endChar": 34
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "974acb17_55d9031b",
@@ -163,6 +283,30 @@
       "writtenOn": "2025-04-10T20:42:53Z",
       "side": 1,
       "message": "This is only legal to be set as a flag if pipelineCreationCacheControl feature is enabled. So we need to guard setting this flag with a check GrVkCaps::supportsPipelineCreationCacheControl()",
+      "range": {
+        "startLine": 544,
+        "startChar": 31,
+        "endLine": 544,
+        "endChar": 91
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38cae435_a39a07bf",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 544,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Done, thanks!",
+      "parentUuid": "974acb17_55d9031b",
       "range": {
         "startLine": 544,
         "startChar": 31,
@@ -196,6 +340,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "80abeec7_63d7e5ca",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 565,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Done, thanks! I used `CreateGraphicsPipeline-CompileRequired` which I think precisely describes what happened.",
+      "parentUuid": "7bd3ac16_fc820c9f",
+      "range": {
+        "startLine": 565,
+        "startChar": 45,
+        "endLine": 565,
+        "endChar": 67
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e89155e2_25ccef0d",
@@ -209,6 +377,30 @@
       "writtenOn": "2025-04-10T18:01:31Z",
       "side": 1,
       "message": "This should be switched to [GR_VK_CALL_RESULT_NOCHECK](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkUtil.h;l\u003d38-50;drc\u003d5fb01f00262bbbef99571953fb5a987b0bed4d45) since `VK_PIPELINE_COMPILE_REQUIRED` is now an acceptable result (when supported).",
+      "range": {
+        "startLine": 570,
+        "startChar": 8,
+        "endLine": 570,
+        "endChar": 25
+      },
+      "revId": "1edcd27a054812967edb282c472e980e2a6b162b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "147668dc_a6b22f9a",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 570,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-14T17:35:35Z",
+      "side": 1,
+      "message": "Done, thanks!",
+      "parentUuid": "e89155e2_25ccef0d",
       "range": {
         "startLine": 570,
         "startChar": 8,
