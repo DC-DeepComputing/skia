@@ -15,122 +15,142 @@ namespace skgpu::graphite {
 DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* bufferManager)
         : fCommandList(commandList)
         , fManager(bufferManager)
+        , fRenderState(RenderStateFlags::kNone)
         , fPrimitiveType(PrimitiveType::kTriangles)
         , fVertexStride(0)
         , fInstanceStride(0)
         , fVertices()
         , fIndices()
         , fInstances()
+        , fBoundVertices()
+        , fBoundIndices()
+        , fBoundInstances()
         , fTemplateCount(0)
-        , fPendingCount(0)
-        , fPendingBaseInstance(0)
-        , fPendingBaseVertex(0)
-        , fPendingBufferBinds(true) {
+        , fPendingCount(0) {
     SkASSERT(commandList && bufferManager);
 }
 
 void DrawWriter::setTemplate(BindBufferInfo vertices,
                              BindBufferInfo indices,
                              BindBufferInfo instances,
-                             int templateCount) {
-    if (vertices != fVertices || instances != fInstances || fIndices != indices) {
-        if (fPendingCount > 0) {
-            this->flush();
-        }
-
-        bool willAppendVertices = templateCount == 0;
-        bool isAppendingVertices = fTemplateCount == 0;
-        if (willAppendVertices != isAppendingVertices ||
-            (isAppendingVertices && fVertices != vertices) ||
-            (!isAppendingVertices && fInstances != instances)) {
-            // The buffer binding target for appended data is changing, so reset the base offset
-            fPendingBaseInstance = 0;
-            fPendingBaseVertex = 0;
-        }
-
-        fVertices = vertices;
-        fInstances = instances;
-        fIndices = indices;
-
-        fTemplateCount = templateCount;
-
-        fPendingBufferBinds = true;
-    } else if ((templateCount >= 0 && templateCount != fTemplateCount) || // vtx or reg. instances
-               (templateCount < 0 && fTemplateCount >= 0)) {              // dynamic index instances
-        if (fPendingCount > 0) {
-            this->flush();
-        }
-        if ((templateCount == 0) != (fTemplateCount == 0)) {
-            // Switching from appending vertices to instances, or vice versa, so the pending
-            // base vertex for appended data is invalid
-            fPendingBaseVertex = 0;
-        }
-        fTemplateCount = templateCount;
+                             unsigned int templateCount) {
+    bool isDynamic = SkToBool(fRenderState & RenderStateFlags::kAppendDynamicInstances);
+    bool willBind = vertices != fVertices || instances != fInstances || indices != fIndices;
+    // Flush pending data if incompatible with the new template settings.
+    if (fPendingCount && (willBind || (templateCount != fTemplateCount && !isDynamic))) {
+        this->flush();
     }
 
-    SkASSERT(fVertices  == vertices);
-    SkASSERT(fInstances == instances);
-    SkASSERT(fIndices   == indices);
-    // NOTE: This allows 'fTemplateCount' to update across multiple DynamicInstances as long
-    // as they have the same vertex and index buffers.
-    SkASSERT((fTemplateCount < 0) == (templateCount < 0));
-    SkASSERT(fTemplateCount < 0 || fTemplateCount == templateCount);
+    // Update the writer's template state.
+    fVertices = vertices;
+    fInstances = instances;
+    fIndices = indices;
+
+    // For dynamic instances, fTemplateCount is finalized during flush/destruction.
+    if (!isDynamic) {
+        fTemplateCount = templateCount;
+    }
 }
 
 void DrawWriter::flush() {
-    // If nothing was appended, or the only appended data was through dynamic instances and the
-    // final vertex count per instance is 0 (-1 in the sign encoded field), nothing should be drawn.
-    if (fPendingCount == 0 || fTemplateCount == -1) {
+    // Skip flush if no items appended, or dynamic instances resolved to zero count.
+    if (fPendingCount == 0 ||
+        ((fRenderState & RenderStateFlags::kAppendDynamicInstances) && fTemplateCount == 0)) {
         return;
     }
-    if (fPendingBufferBinds) {
-        fCommandList->bindDrawBuffers(fVertices, fInstances, fIndices, {});
-        fPendingBufferBinds = false;
+
+    // Calculate base offsets from buffer info for the draw commands.
+    // - If a valid bufferFoo exists and matches the current stride, use pendingBaseFoo as a
+    //   pseudo-alias for offset and reset the size and offset for comparison against fBoundFoo.
+    // - If a valid bufferFoo does not exist, or is not stride aligned, then draw from the start of
+    //   the offset with pendingBaseFoo = 0.
+    uint32_t pendingBaseIndices = 0;
+    uint32_t pendingBaseVertex = 0;
+    uint32_t pendingBaseInstance = 0;
+    if (fVertices.fBuffer) {
+        if (fVertices.fOffset % fVertexStride == 0) {
+            pendingBaseVertex = fVertices.fOffset / fVertexStride;
+            fVertices.fOffset = 0;
+            fVertices.fSize = fVertices.fBuffer->size();
+        }
+    }
+    if (fInstances.fBuffer) {
+        if (fInstances.fOffset % fInstanceStride == 0) {
+            pendingBaseInstance = fInstances.fOffset / fInstanceStride;
+            fInstances.fOffset = 0;
+            fInstances.fSize = fInstances.fBuffer->size();
+        }
+    }
+    if (fIndices.fBuffer) {
+        if (fIndices.fOffset % sizeof(uint16_t) == 0) {
+            pendingBaseIndices = fIndices.fOffset / sizeof(uint16_t);
+            fIndices.fOffset = 0;
+            fIndices.fSize = fIndices.fBuffer->size();
+        }
     }
 
-    if (fTemplateCount) {
-        // Instanced drawing
-        unsigned int realVertexCount;
-        if (fTemplateCount < 0) {
-            realVertexCount = -fTemplateCount - 1;
-            fTemplateCount = -1; // reset to re-accumulate max index account for next flush
-        } else {
-            realVertexCount = fTemplateCount;
-        }
+    // Bind buffers only if they differ from the last known bound state.
+    if ((fVertices.fBuffer && fBoundVertices != fVertices) ||
+        (fInstances.fBuffer && fBoundInstances != fInstances) ||
+        (fIndices.fBuffer && fIndices != fBoundIndices)) {
+        if (fVertices.fBuffer) { fBoundVertices = fVertices; }
+        if (fInstances.fBuffer) { fBoundInstances = fInstances; }
+        if (fIndices.fBuffer) { fBoundIndices = fIndices; }
+        fCommandList->bindDrawBuffers(fBoundVertices, fInstances, fIndices, {});
+    }
 
-        SkASSERT((fPendingBaseInstance + fPendingCount)*fInstanceStride <= fInstances.fSize);
+    // Issue the appropriate draw call (instanced vs. non-instanced) based on the current
+    // fTemplateCount. Because of the initial AppendDynamicInstances && fTemplateCount check, any
+    // DynamicInstance render step must have valid (positive) templateCount data at this point; thus
+    // this check covers RenderStateFlags:: AppendInstances, AppendDynamicInstances, and Fixed.
+    if (fTemplateCount) {
+        SkASSERT((pendingBaseInstance + fPendingCount)*fInstanceStride <= fInstances.fSize);
         if (fIndices) {
             // It's not possible to validate that the indices stored in fIndices access only valid
             // data within fVertices. Simply validate that fIndices holds enough data for the
             // vertex count that's drawn.
-            SkASSERT(realVertexCount*sizeof(uint16_t) <= fIndices.fSize);
+            SkASSERT(fTemplateCount*sizeof(uint16_t) <= fIndices.fSize);
             fCommandList->drawIndexedInstanced(fPrimitiveType,
-                                               0,
-                                               realVertexCount,
-                                               fPendingBaseVertex,
-                                               fPendingBaseInstance,
+                                               pendingBaseIndices,
+                                               fTemplateCount,
+                                               pendingBaseVertex,
+                                               pendingBaseInstance,
                                                fPendingCount);
+
         } else {
-            SkASSERT(realVertexCount*fVertexStride <= fVertices.fSize);
-            fCommandList->drawInstanced(fPrimitiveType, fPendingBaseVertex, realVertexCount,
-                                        fPendingBaseInstance, fPendingCount);
+            SkASSERT(fTemplateCount*fVertexStride <= fVertices.fSize);
+            fCommandList->drawInstanced(fPrimitiveType, pendingBaseVertex, fTemplateCount,
+                                        pendingBaseInstance, fPendingCount);
         }
 
-        fPendingBaseInstance += fPendingCount;
+        // Clear instancing template state after the draw is recorded for non-Fixed RenderState
+        if (fRenderState &
+            (RenderStateFlags::kAppendInstances | RenderStateFlags::kAppendDynamicInstances)) {
+            fInstances = {};
+            fTemplateCount = 0;
+        }
     } else {
-        SkASSERT(!fInstances);
+        // Issue non-instanced draw call (indexed or non-indexed).
+        SkASSERT(!fInstances); // Should not have an instance buffer in non-instanced mode.
         if (fIndices) {
             // As before, just validate there is sufficient index data
             SkASSERT(fPendingCount*sizeof(uint16_t) <= fIndices.fSize);
-            fCommandList->drawIndexed(fPrimitiveType, 0, fPendingCount, fPendingBaseVertex);
+            fCommandList->drawIndexed(fPrimitiveType,
+                                      pendingBaseIndices,
+                                      fPendingCount,
+                                      pendingBaseVertex);
         } else {
-            SkASSERT((fPendingBaseVertex + fPendingCount)*fVertexStride <= fVertices.fSize);
-            fCommandList->draw(fPrimitiveType, fPendingBaseVertex, fPendingCount);
+            SkASSERT((pendingBaseVertex + fPendingCount)*fVertexStride <= fVertices.fSize);
+            fCommandList->draw(fPrimitiveType, pendingBaseVertex, fPendingCount);
         }
 
-        fPendingBaseVertex += fPendingCount;
+        // Clear vertex template state after the draw is recorded for non-Fixed RenderState
+        if (fRenderState & RenderStateFlags::kAppendVertices) {
+            fVertices = {};
+        }
     }
 
+    // Mark all appended items as drawn.
     fPendingCount = 0;
 }
 
