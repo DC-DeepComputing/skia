@@ -71,6 +71,9 @@
 #include "tools/gpu/MemoryCache.h"
 #include "tools/gpu/TestCanvas.h"
 
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "src/gpu/graphite/ContextUtils.h"
+
 #if defined(SK_BUILD_FOR_ANDROID)
 #include "include/ports/SkImageGeneratorNDK.h"
 #endif
@@ -2153,6 +2156,42 @@ Result RasterSink::draw(const Src& src, SkBitmap* dst, SkWStream*, SkString*) co
 
 #if defined(SK_GRAPHITE)
 
+void dump_keys(skgpu::graphite::PrecompileContext* precompileContext,
+               const std::vector<skgpu::UniqueKey>& keys) {
+    using namespace skgpu::graphite;
+
+    SkDebugf("-------------------------- %zu pipelines\n", keys.size());
+
+    SharedContext* sharedContext = precompileContext->priv().sharedContext();
+
+    for (const skgpu::UniqueKey& k : keys) {
+        SkDebugf("--1\n");
+        GraphicsPipelineDesc pipelineDesc;
+        RenderPassDesc renderPassDesc;
+        UniqueKeyUtils::ExtractKeyDescs(precompileContext, k,
+                                        &pipelineDesc,
+                                        &renderPassDesc);
+        SkDebugf("--2\n");
+
+        const RendererProvider* rendererProvider = sharedContext->rendererProvider();
+        if (!rendererProvider) {
+            SkDebugf("no rendererProvider\n");
+        }
+
+        const RenderStep* renderStep = rendererProvider->lookup(pipelineDesc.renderStepID());
+        if (!renderStep) {
+            SkDebugf("no renderStep\n");
+        }
+
+        std::string label = GetPipelineLabel(sharedContext->shaderCodeDictionary(),
+                                            renderPassDesc,
+                                            renderStep,
+                                            pipelineDesc.paintParamsID());
+        SkDebugf("%s\n", label.c_str());
+        SkDebugf("--3\n");
+    }
+}
+
 GraphiteSink::GraphiteSink(const SkCommandLineConfigGraphite* config,
                            const skiatest::graphite::TestOptions& options)
         : fOptions(options)
@@ -2164,6 +2203,8 @@ Result GraphiteSink::draw(const Src& src,
                           SkBitmap* dst,
                           SkWStream* dstStream,
                           SkString* log) const {
+    using namespace skgpu::graphite;
+
     skiatest::graphite::TestOptions options = fOptions;
     // If we've copied context options from an external source we can't trust that the
     // priv pointer is still in scope, so assume it should be NULL and set our own up.
@@ -2179,6 +2220,8 @@ Result GraphiteSink::draw(const Src& src,
     if (!context) {
         return Result::Fatal("Could not create a context.");
     }
+
+    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
 
     std::unique_ptr<skgpu::graphite::Recorder> recorder =
                                 context->makeRecorder(ToolUtils::CreateTestingRecorderOptions());
@@ -2215,6 +2258,11 @@ Result GraphiteSink::draw(const Src& src,
         return Result::Fatal("Context::insertRecording failed.");
     }
     ctxInfo.fTestContext->syncedSubmit(context);
+
+    //$$
+    std::vector<skgpu::UniqueKey> keys;
+    UniqueKeyUtils::FetchUniqueKeys(precompileContext.get(), &keys);
+    dump_keys(precompileContext.get(), keys);
 
     return Result::Ok();
 }
