@@ -60,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3bf32a1e_ece4599a",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T19:26:58Z",
+      "side": 1,
+      "message": "The original motivation to use `uint8_t` in `AttachmentDesc` was to save space and fit it in 32-bits. The rest of the updates around this were all to be consistent and avoid having to cast down to a `uint8_t`.\n\nTalking with Greg, we may push this farther and update to an enum bitmask that enforces the fact that these sample counts should be powers of two, and you aren\u0027t really going to see more than 16 anyways.",
+      "parentUuid": "97fd329f_b3f429c0",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f3c4899_8624da27",
         "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
         "patchSetId": 14
@@ -71,6 +95,30 @@
       "writtenOn": "2025-04-14T17:18:34Z",
       "side": 1,
       "message": "I\u0027m not sure about this since Renderable to me implies color RenderTarget format. Is this only needed for isSampleCountSupported?",
+      "range": {
+        "startLine": 667,
+        "startChar": 48,
+        "endLine": 667,
+        "endChar": 76
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d9807a39_d8bf1ff7",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T19:26:58Z",
+      "side": 1,
+      "message": "Yes, that was so things kept working in `isSampleCountSupported` without needing to change logic for if the texture format was depth/stencil.\n\nMy interpretation of Renderbale was that it meant it could be an attachment of a renderpass, but that is a lower-level question than can this format be used to render Skia content.",
+      "parentUuid": "1f3c4899_8624da27",
       "range": {
         "startLine": 667,
         "startChar": 48,
