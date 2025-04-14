@@ -5,8 +5,8 @@
  * found in the LICENSE file.
  */
 
-#ifndef SkRecorder_DEFINED
-#define SkRecorder_DEFINED
+#ifndef SkRecorderPriv_DEFINED
+#define SkRecorderPriv_DEFINED
 
 #include "include/core/SkCanvasVirtualEnforcer.h"
 #include "include/core/SkColor.h"
@@ -72,13 +72,13 @@ private:
     SkTDArray<SkDrawable*> fArray;
 };
 
-// SkRecorder provides an SkCanvas interface for recording into an SkRecord.
+// SkRecorderPriv provides an SkCanvas interface for recording into an SkRecord.
 
-class SkRecorder final : public SkCanvasVirtualEnforcer<SkNoDrawCanvas> {
+class SkRecorderPriv final : public SkCanvasVirtualEnforcer<SkNoDrawCanvas> {
 public:
     // Does not take ownership of the SkRecord.
-    SkRecorder(SkRecord*, int width, int height);   // TODO: remove
-    SkRecorder(SkRecord*, const SkRect& bounds);
+    SkRecorderPriv(SkRecord*, int width, int height);   // TODO: remove
+    SkRecorderPriv(SkRecord*, const SkRect& bounds);
 
     void reset(SkRecord*, const SkRect& bounds);
 
@@ -87,7 +87,7 @@ public:
     SkDrawableList* getDrawableList() const { return fDrawableList.get(); }
     std::unique_ptr<SkDrawableList> detachDrawableList() { return std::move(fDrawableList); }
 
-    // Make SkRecorder forget entirely about its SkRecord*; all calls to SkRecorder will fail.
+    // Make SkRecorderPriv forget entirely about its SkRecord*; all calls to SkRecorderPriv will fail.
     void forgetRecord();
 
     void willSave() override;
@@ -173,4 +173,4 @@ private:
     std::unique_ptr<SkDrawableList> fDrawableList;
 };
 
-#endif//SkRecorder_DEFINED
+#endif//SkRecorderPriv_DEFINED
