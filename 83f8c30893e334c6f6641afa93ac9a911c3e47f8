@@ -1,0 +1,234 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29a9e393_fe1ef3d1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "nit: The first line of commit messages should be between 72-80ish characters since it becomes the title that Gerrit shows everyone.\n\nIn this case, it could be something like \"[graphite] Update DrawWriter to minimize binds by using pending base offsets\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 209
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c51cbae1_f136684e",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "Does it work to push this to just assertions if `fPendingCount !\u003d 0`? Then we could wrap the updates to the writer\u0027s template state to be inside `if (fPendingCount \u003d\u003d 0) { ... }`.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01800312_04530c3a",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "nit: maybe move this up to be with the comment just above the `pendingBaseFoo` variables since we apply this strategy 3x in a row",
+      "range": {
+        "startLine": 78,
+        "startChar": 36,
+        "endLine": 78,
+        "endChar": 96
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "774696e5_8331655e",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "This won\u0027t work with the `kFixed` render state, but it should be valid to check for `fTemplateCount \u003e 0` here to know if it\u0027s instanced rendering, since we already checked for `fTemplateCount \u003d\u003d 0 \u0026 AppendDynamicInstances` to early out.",
+      "range": {
+        "startLine": 101,
+        "startChar": 4,
+        "endLine": 103,
+        "endChar": 88
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5601ef8_af48a697",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "With the `fTemplateCount \u003e 0` check for the if branch, we can move the renderstate checks here to reset the appending buffer so that reserve() doesn\u0027t incorrectly thing it\u0027s contiguous with an already range of data.",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 125,
+        "endChar": 27
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3c17700_937223c2",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "and then similarly here for kAppendVertices state.",
+      "range": {
+        "startLine": 140,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 23
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "87650171_6132f2dd",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "nit: this can still fit on one line, right?",
+      "range": {
+        "startLine": 187,
+        "startChar": 27,
+        "endLine": 191,
+        "endChar": 42
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfa84cf_9db5477b",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "Since we don\u0027t need `fAppendVertices` after the constructor, we should just duplicate this logic in `fTarget` and `fStride`\u0027s initializers, since I\u0027m guessing the compiler was complaining if we tried to just assign to `fTarget` later in the constructor body were we could have had a `appendVertices` local.",
+      "range": {
+        "startLine": 273,
+        "startChar": 14,
+        "endLine": 273,
+        "endChar": 90
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "95d846b4_d045eff3",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "Or to be combined with the next draw call\u0027s DynamicInstances object if there was no pipeline change between calls to `RenderStep::writeVertices`",
+      "range": {
+        "startLine": 425,
+        "startChar": 0,
+        "endLine": 425,
+        "endChar": 91
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff112735_ff583b08",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 430,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-14T18:59:10Z",
+      "side": 1,
+      "message": "We should update DynamicInstancesPatchAllocator\u0027s LinearTolerancesProxy to be a uint32_t operator instead of unsigned int.",
+      "range": {
+        "startLine": 430,
+        "startChar": 78,
+        "endLine": 430,
+        "endChar": 86
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
