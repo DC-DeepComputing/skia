@@ -15,9 +15,9 @@
 #include "src/core/SkBigPicture.h"
 #include "src/core/SkRecord.h"
 #include "src/core/SkRecordDraw.h"
+#include "src/core/SkRecordMaker.h"
 #include "src/core/SkRecordOpts.h"
 #include "src/core/SkRecordedDrawable.h"
-#include "src/core/SkRecorder.h"
 
 #include <cstddef>
 #include <memory>
@@ -27,7 +27,7 @@ using namespace skia_private;
 
 SkPictureRecorder::SkPictureRecorder() {
     fActivelyRecording = false;
-    fRecorder = std::make_unique<SkRecorder>(nullptr, SkRect::MakeEmpty());
+    fRecorder = std::make_unique<SkRecordMaker>(nullptr, SkRect::MakeEmpty());
 }
 
 SkPictureRecorder::~SkPictureRecorder() {}
