@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "021856e6_a50e1dda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-14T15:47:02Z",
+      "side": 1,
+      "message": "I am generally against pushing a mutex into the instances. At worst, this could be reorganized into `SkResourceCache` and `SkSynchronizedResourceCache` (to borrow a Java naming convention to point out the history of failure of making everything synchronized by default, see Java\u0027s Vector and Stack) where it just a wrapper with its own `SkResourceCache` and mutex and which it takes on every call it proxies.",
+      "revId": "d0accc8cb3c9eb85ca5e4686e34a5854d5e0dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c2e33fdd_33a81205",
@@ -78,6 +95,30 @@
       "side": 1,
       "message": "I had planned to put the ResourceCache in https://skia-review.googlesource.com/c/skia/+/977817/4/src/core/SkRasterContextPriv.h but I guess maybe that can be a unique ptr",
       "parentUuid": "549067cf_00d5206a",
+      "range": {
+        "startLine": 31,
+        "startChar": 24,
+        "endLine": 31,
+        "endChar": 39
+      },
+      "revId": "d0accc8cb3c9eb85ca5e4686e34a5854d5e0dda7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d581d67f_f7a07cd8",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-14T15:47:02Z",
+      "side": 1,
+      "message": "`SkFontRequestCache` isn\u0027t even really part of Skia, it\u0027s a vestigial \"FontConfigInterface\" thing for Chrome (previously used in G3, but that\u0027s been fixed). Part of this is to get Chromium off this silly \"FontConfigInterface\" stuff (or at least stop pretending it can be used as a `SkFontMgr, which it cannot).",
+      "parentUuid": "27a1dd90_59aa9517",
       "range": {
         "startLine": 31,
         "startChar": 24,
