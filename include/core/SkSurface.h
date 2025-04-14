@@ -25,13 +25,14 @@ class GrBackendSemaphore;
 class GrBackendTexture;
 class GrRecordingContext;
 class GrSurfaceCharacterization;
-enum GrSurfaceOrigin : int;
 class SkBitmap;
 class SkCanvas;
 class SkCapabilities;
 class SkColorSpace;
 class SkPaint;
+class SkRecorder;
 class SkSurface;
+enum GrSurfaceOrigin : int;
 struct SkIRect;
 struct SkISize;
 
@@ -80,6 +81,15 @@ SK_API sk_sp<SkSurface> Raster(const SkImageInfo& imageInfo,
 inline sk_sp<SkSurface> Raster(const SkImageInfo& imageInfo,
                                const SkSurfaceProps* props = nullptr) {
     return Raster(imageInfo, 0, props);
+}
+SK_API sk_sp<SkSurface> Raster(SkRecorder* recorder,
+                               const SkImageInfo& imageInfo,
+                               size_t rowBytes,
+                               const SkSurfaceProps* surfaceProps);
+inline sk_sp<SkSurface> Raster(SkRecorder* recorder,
+                               const SkImageInfo& imageInfo,
+                               const SkSurfaceProps* props = nullptr) {
+    return Raster(recorder, imageInfo, 0, props);
 }
 
 /** Allocates raster SkSurface. SkCanvas returned by SkSurface draws directly into the

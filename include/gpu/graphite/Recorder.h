@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -18,11 +19,12 @@
 #include <chrono>
 #include <optional>
 
-struct AHardwareBuffer;
 class SkCanvas;
-struct SkImageInfo;
 class SkPixmap;
+class SkRasterRecorderPriv;
 class SkTraceMemoryDump;
+struct AHardwareBuffer;
+struct SkImageInfo;
 
 namespace skgpu {
 class RefCntedCallback;
@@ -77,16 +79,18 @@ struct SK_API RecorderOptions final {
     std::optional<bool> fRequireOrderedRecordings;
 };
 
-class SK_API Recorder final {
+class SK_API Recorder final : public SkRecorder {
 public:
     Recorder(const Recorder&) = delete;
     Recorder(Recorder&&) = delete;
     Recorder& operator=(const Recorder&) = delete;
     Recorder& operator=(Recorder&&) = delete;
 
-    ~Recorder();
+    ~Recorder() override;
 
     BackendApi backend() const;
+
+    Type type() const final { return SkRecorder::Type::kGraphite; }
 
     std::unique_ptr<Recording> snap();
 
@@ -230,6 +234,8 @@ public:
     RecorderPriv priv();
     const RecorderPriv priv() const;  // NOLINT(readability-const-return-type)
 
+    SkRasterRecorderPriv* rasterRecorder() override;
+
 private:
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
@@ -302,6 +308,7 @@ private:
     sk_sp<Device> fTargetProxyDevice;
     std::unique_ptr<SkCanvas> fTargetProxyCanvas;
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
+    std::unique_ptr<SkRasterRecorderPriv> fRasterRecorder;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
 
