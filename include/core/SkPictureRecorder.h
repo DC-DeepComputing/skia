@@ -27,7 +27,7 @@ class SkCanvas;
 class SkDrawable;
 class SkPicture;
 class SkRecord;
-class SkRecorder;
+class SkRecorderPriv;
 
 class SK_API SkPictureRecorder {
 public:
@@ -105,7 +105,7 @@ private:
     bool                        fActivelyRecording;
     SkRect                      fCullRect;
     sk_sp<SkBBoxHierarchy>      fBBH;
-    std::unique_ptr<SkRecorder> fRecorder;
+    std::unique_ptr<SkRecorderPriv> fRecorder;
     sk_sp<SkRecord>             fRecord;
 
     SkPictureRecorder(SkPictureRecorder&&) = delete;
