@@ -16,6 +16,69 @@
       "message": "I\u0027m pretty much sending this out to everyone because it is such a big change. I think it\u0027d be valuable for everyone to see the `RenderPassDesc.h` changes and `Caps.h` changes. Then I think focus can be split up:\n - Rob: src/graphite/precompile/ and related files, and RenderPassDesc.cpp/RenderPassTask.cpp\n - Jim: src/graphite/mtl\n - Nicolette: src/graphite/vk\n - Quyen: src/graphite/dawn",
       "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ca4bbc0_e18557cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-14T17:18:34Z",
+      "side": 1,
+      "message": "This is a lot -- some early comments.",
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97fd329f_b3f429c0",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-14T17:18:34Z",
+      "side": 1,
+      "message": "What\u0027s the motivation to change it to uint8? Just to save space?",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f3c4899_8624da27",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-14T17:18:34Z",
+      "side": 1,
+      "message": "I\u0027m not sure about this since Renderable to me implies color RenderTarget format. Is this only needed for isSampleCountSupported?",
+      "range": {
+        "startLine": 667,
+        "startChar": 48,
+        "endLine": 667,
+        "endChar": 76
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
