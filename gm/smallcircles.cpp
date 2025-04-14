@@ -11,6 +11,30 @@
 #include "include/core/SkPaint.h"
 #include "include/core/SkSurface.h"
 
+#include "include/core/SkBitmap.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkCanvas.h"
+#include "include/core/SkColor.h"
+#include "include/core/SkColorFilter.h"
+#include "include/core/SkFont.h"
+#include "include/core/SkMaskFilter.h"
+#include "include/core/SkPaint.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
+#include "include/core/SkString.h"
+#include "include/core/SkSurface.h"
+#include "include/core/SkTypeface.h"
+#include "include/effects/SkTableMaskFilter.h"
+#include "include/utils/SkTextUtils.h"
+#include "src/core/SkBlurMask.h"
+#include "src/effects/SkEmbossMaskFilter.h"
+#include "tools/fonts/FontToolUtils.h"
+
+#include "include/core/SkColor.h"
+#include "include/effects/SkImageFilters.h"
+#include "src/shaders/SkColorShader.h"
+
 static void draw_small_circle(SkCanvas* canvas, const SkPaint& p, const float radius) {
     SkRect oval = SkRect::MakeLTRB(radius * -1, radius * -1, radius, radius);
     constexpr bool kUseCenter = false;
@@ -46,3 +70,12 @@ DEF_SIMPLE_GM(smallcircles, canvas, 425, 425) {
     auto img = surface->makeImageSnapshot();
     canvas->drawImage(img, 0, 0);
 }
+
+
+
+
+
+
+
+
+
