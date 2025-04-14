@@ -39,6 +39,30 @@
       },
       "revId": "e1e170c82cba5376ce5d96a63a039fbc4c8bde29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6bfd0b8_8ef3bc10",
+        "filename": "infra/bots/gen_tasks_logic/gen_tasks_logic.go",
+        "patchSetId": 11
+      },
+      "lineNbr": 854,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-04-14T14:03:53Z",
+      "side": 1,
+      "message": "It\u0027s HWASAN.  The build hasn\u0027t changed but the specificity of the \"os\" dimension as reported by Chrome\u0027s bot_config script is different.",
+      "parentUuid": "44009608_eb853c44",
+      "range": {
+        "startLine": 854,
+        "startChar": 85,
+        "endLine": 854,
+        "endChar": 91
+      },
+      "revId": "e1e170c82cba5376ce5d96a63a039fbc4c8bde29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
