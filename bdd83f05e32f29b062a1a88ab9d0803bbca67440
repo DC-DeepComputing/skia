@@ -26,6 +26,109 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4351f351_4eb8c99b",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T19:30:02Z",
+      "side": 1,
+      "message": "nit: overlength",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5c3770b_1ed29ab0",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T19:30:02Z",
+      "side": 1,
+      "message": "nano-nit: Can we rm this \u0027 \u0027 ?",
+      "range": {
+        "startLine": 984,
+        "startChar": 38,
+        "endLine": 984,
+        "endChar": 39
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36c495ca_d3011a82",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T19:30:02Z",
+      "side": 1,
+      "message": "Can this be \"\u003d kColorFormatOffset + kFormatBits\" and aligned with the others?",
+      "range": {
+        "startLine": 995,
+        "startChar": 43,
+        "endLine": 995,
+        "endChar": 77
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be65eac_8ac96989",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1083,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T19:30:02Z",
+      "side": 1,
+      "message": "Move this line left ?",
+      "range": {
+        "startLine": 1083,
+        "startChar": 11,
+        "endLine": 1083,
+        "endChar": 46
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa5b6701_d7141488",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T19:30:02Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6126879d_aa6ba899",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 15
