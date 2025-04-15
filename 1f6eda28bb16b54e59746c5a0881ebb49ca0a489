@@ -153,6 +153,53 @@
       },
       "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b80248c3_abcf559c",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T18:42:42Z",
+      "side": 1,
+      "message": "From offline discussion, it\u0027s looking like the negative surface scale is working correctly with the unmodified direction.  One small cleanup is then we can create just one `SkPoint3 lightDirection` for both diffuse and specular filters.",
+      "parentUuid": "1e6cd234_04ee6f2b",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 84
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f404e61_946bef2e",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T18:42:42Z",
+      "side": 1,
+      "message": "The SkEmbossMaskFilter logic was implementing \"Phong\" specular lighting, whereas the SkLightingImageFilter logic is implementing \"Blinn-Phong\" specular lighting.\n\nhttps://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model recommends multiplying by 4 to convert from a Phong specular exponent to a Blinn exponent.  In addition, though, SkEmbossMaskFilter documents `fLight.fSpecular` as being in fixed 4.4 format.\n\nTo convert to a scalar, we should divide by 16.f, which will preserve the lower four bits as fractional (whereas `\u003e\u003e 4` discards them). Combining that with the Blinn-Phong adjustment should mean we just have to pass in `fLight.fSpecular / 4.f` (no +1 anymore either)",
+      "range": {
+        "startLine": 222,
+        "startChar": 4,
+        "endLine": 228,
+        "endChar": 88
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

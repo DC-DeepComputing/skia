@@ -330,6 +330,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a0313f8_10118ec1",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T18:42:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "af00a080_0a3dbe3f",
+      "range": {
+        "startLine": 203,
+        "startChar": 29,
+        "endLine": 203,
+        "endChar": 31
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb9c9497_fc8b4bf5",
@@ -367,6 +391,30 @@
       "side": 1,
       "message": "kDstIn defined as `r \u003d d * sa`, so I think we want final filter as Dst.",
       "parentUuid": "cb9c9497_fc8b4bf5",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 86
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5539aad1_0eebaaeb",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T18:42:42Z",
+      "side": 1,
+      "message": "Oops, you\u0027re right.",
+      "parentUuid": "58382c28_b8d0d165",
       "range": {
         "startLine": 235,
         "startChar": 0,
