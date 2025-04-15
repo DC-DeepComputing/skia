@@ -72,7 +72,7 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
                                                 skvx::half2* outPos) {
     const TextureProxy* proxy = nullptr;
 
-    if (!shape.isVolatile()) {
+    if (!shape.isVolatilePath()) {
         constexpr int kMaxSmallPathSize = 162;
         // Try to locate or add to cached DrawAtlas
         if (maskSize.x() <= kMaxSmallPathSize && maskSize.y() <= kMaxSmallPathSize) {
@@ -113,7 +113,6 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
         return proxy;
     }
 
-#if defined(SK_GRAPHITE_RASTER_ATLAS_ENABLE_PROXY_CACHE)
     // Failed to add to atlases, try to add to ProxyCache
     skgpu::UniqueKey maskKey = GeneratePathMaskKey(shape, localToDevice, strokeRec,
                                                    maskOrigin, maskSize);
@@ -152,9 +151,6 @@ const TextureProxy* RasterPathAtlas::onAddShape(const Shape& shape,
 
     *outPos = { kEntryPadding, kEntryPadding };
     return cachedProxy.get();
-#else
-    return nullptr;
-#endif
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////

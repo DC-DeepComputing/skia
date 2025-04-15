@@ -69,7 +69,7 @@ public:
     bool isArc()   const { return fType == Type::kArc;   }
     bool isPath()  const { return fType == Type::kPath;  }
 
-    bool isVolatile() const {
+    bool isVolatilePath() const {
         return fType == Type::kPath && this->path().isVolatile();
     }
 

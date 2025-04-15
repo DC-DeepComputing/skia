@@ -239,6 +239,8 @@ void Shape::writeKey(uint32_t* key, bool includeInverted) const {
 
                 int dataKeySize = path_key_from_data_size(this->path());
                 if (dataKeySize >= 0) {
+                    // We check the rest of the size in write_path_key_from_data
+                    SkASSERT(key - origKey == 1);
                     write_path_key_from_data(this->path(), key);
                     return;
                 } else {
