@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09aef9af_583277e9",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T03:31:36Z",
+      "side": 1,
+      "message": "If the following logic were in `setTemplate()`, wouldn\u0027t we get the member buffers assigned the first time `setTemplate()` was called after a flush, or for the very first draw? Other batchable `setTemplate()` calls shouldn\u0027t be changing the values passed to `DrawWriter::Appender` if there wasn\u0027t a pipeline state change to trigger something new.\n\n```\nif (fPendingCount \u003d\u003d 0) {\n    fVertices \u003d vertices;\n    fIndices \u003d indices;\n    fInstances \u003d instances;\n    fTemplateCount \u003d templateCount;\n} else {\n    // If there is non-zero pending count, we haven\u0027t called newPipelineState() yet, and we aren\u0027t expecting RenderSteps to append data with different buffers but the same pipeline.\n    SkASSERT(fVertices \u003d\u003d vertices \u0026\u0026 fInstances \u003d\u003d instances \u0026\u0026 fIndices \u003d\u003d indices);\n    SkASSERT((templateCount \u003d\u003d 0 \u0026\u0026 DynamicInstances) || fTemplateCount \u003d\u003d templateCount);\n}\n```\n\nPerhaps the issue is that flush() modifies `fVertices`, etc. to zero out the offsets. When we run out of room in a buffer, we\u0027d flush and pendingCount would go back to 0, but any SVBO binding would have been adjusted to be zero based. Then reserve()+append() would start the new buffer and increment pendingCount. If we had another compatible draw after that, it\u0027d call setTemplate() with the non-zero\u0027ed SVBOs and be compared to the zero\u0027ed SVBOs even though they are technically pointing to the same region.\n\nThis makes me think flush() should manipulate local copies of `fVertices`, etc. when it\u0027s determining what to bind.",
+      "parentUuid": "522e4584_2466d634",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "01800312_04530c3a",
         "filename": "src/gpu/graphite/DrawWriter.cpp",
         "patchSetId": 9
