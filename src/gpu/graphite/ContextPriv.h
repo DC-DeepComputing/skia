@@ -54,6 +54,9 @@ public:
     SharedContext* sharedContext() {
         return fContext->fSharedContext.get();
     }
+    const SkRasterContext_Base* rasterContext() const {
+        return fContext->fRasterContext.get();
+    }
 
 #if defined(GPU_TEST_UTILS)
     void startCapture() {
