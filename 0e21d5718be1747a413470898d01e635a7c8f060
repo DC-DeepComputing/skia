@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "039fd24e_7452a8bf",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-15T17:47:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a18d0c8b_7b3eebc1",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 659,
+        "endChar": 62
+      },
+      "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "373f7992_e484fa03",
@@ -95,6 +119,30 @@
           ]
         }
       ],
+      "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70d3961f_a9d75c99",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-15T17:47:04Z",
+      "side": 1,
+      "message": "Good callout - done \u0026 added the relevant bug #.",
+      "parentUuid": "373f7992_e484fa03",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 70
+      },
       "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
