@@ -92,6 +92,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2e510555_d65d9fd9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "You mentioned Youtube may use this for subtitles so it may be important to fully replicate text for this mf-if, for both using raster with autolayers in the future or so this mask filter can be used with GPU backend. The raster backend is currently able to apply the mask filter no matter the size of the text. \nHowever for Graphite, the text in emboss.cpp isn\u0027t getting the mask filter applied, but when it is large enough it does. This means that when it is small, we create a `DirectMaskSubRun` which tries to filter the mask itself (but for graphite do nothing I guess). We can just force an autolayer in this case for now.\nThis check can be done in multiple places, we can do it when setting up the subruncontainer, and check for 3d_format to make a `PathSubRun` instead where it will go back to the canvas code to create the layer, which is what the code is doing now (PS 12). This seems like a fitting place to check because in this code we inspect the mask filter for sdf and blur properties as well, I don\u0027t think there are any caching benefits to doing this though(?).\nThis could also potentially just be checked in the `SkCanvas::onDrawGlyphRunList` and have the flag not be set under certain conditions (\u0027not blur mask\u0027). \nThis is less performant than it could be probably but it is temporary in the sense that we will have to refactor some of this code soon to work with caching glyphs with mask filters in graphite.\nThis refactor will require more thinking for a later CL, and will be tied in with changing the SDF mask filter as well so I think this is okay for now.",
+      "parentUuid": "be1da134_91a3a677",
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8e6ee36a_82bfa6cd",
         "filename": "src/effects/SkEmbossMaskFilter.cpp",
         "patchSetId": 6

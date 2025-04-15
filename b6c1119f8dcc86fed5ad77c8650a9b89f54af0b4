@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d47e319_05ddff74",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "819ab984_9ec3eea5",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 86,
+        "endChar": 27
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a927137_04b33df1",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-14T18:17:56Z",
       "side": 1,
       "message": "Dithering should also be part of what gets folded into the shading node of the graph.  We can do this by passing in the `Dither` enum value to `SkImageFilters::Shader`.",
+      "range": {
+        "startLine": 272,
+        "startChar": 4,
+        "endLine": 272,
+        "endChar": 46
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1310ad_4d2dd562",
+        "filename": "src/core/SkCanvasPriv.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a927137_04b33df1",
       "range": {
         "startLine": 272,
         "startChar": 4,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e7c116c_8f781cd5",
+        "filename": "src/core/SkMaskFilterBase.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "380fae8f_62cab993",
+      "range": {
+        "startLine": 104,
+        "startChar": 12,
+        "endLine": 104,
+        "endChar": 16
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e106808_cdcebd3d",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-04-14T18:17:56Z",
       "side": 1,
       "message": "The SkPaint shading logic when there\u0027s an SkShader is a little convoluted due to history. If there\u0027s a regular SkShader, the RGB of the paint color are ignored, but it gets modulated by the paint alpha:\n\n    sk_sp\u003cSkShader\u003e srcShader \u003d SkShaders::Color(paint.getColor4f(), /*cs\u003d*/nullptr);;\n    if (paint.getShader()) {\n       srcShader \u003d SkShaders::Blend(SkBlendMode::kDstIn, std::move(srcShader), paint.refShader());\n    }\n    srcShader \u003d srcShader-\u003emakeWithColorFilter(paint.refColorFilter());\n    sk_sp\u003cSkImageFilter\u003e srcColor \u003d SkImageFilters::Shader(std::move(srcShader), paint.isDither() ? Dither::kYes : Dither::kNo);\n    \nThis uses a Blend to mix the paint color with any shader. The kDstIn mode multiplies the src color by the dst alpha channel. *edit*: your PS11 still uses Compose, which wouldn\u0027t show the paint alpha making things transparent. I also don\u0027t think we should do a src color blend CF-IF to get the solid color mixed with the coverage mask (not sure if that shows up or if src will discard that entirely).\n\nIt\u0027s also a subtle difference, but applying the SkColorFilter to the Shader means there\u0027s one image filter node that produces one image output that includes the CF effects. With your code, we\u0027d produce an image of just the shader, and then process that by the CF-IF.  That has logic to defer applying the CF until it needs to, so it wouldn\u0027t necessarily create a second intermediate output, it would just apply the CF automatically when sampling the shader\u0027s output into the next step. Since that is just a blend with the lighting equations calculated by the coverage blur, it\u0027s not being sampled multiple times so I wouldn\u0027t expect a performance impact, but adjusting the CF to be handled in the first step makes that more explicit.",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 165,
+        "endChar": 63
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "822c9b7f_3e27d691",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Done. When applying shader have that be dst because we do dst color multiplied by alpha.",
+      "parentUuid": "8e106808_cdcebd3d",
       "range": {
         "startLine": 163,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de203d61_83d79dad",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b5d47fd4_a6da9590",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 55
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "20046454_6a2c1faf",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-04-14T18:17:56Z",
       "side": 1,
       "message": "Hmm, it\u0027s not obvious to me why just using an `::Shader` node would be wrong here.  Since the table CF is being passed an identity function for alpha channel, and you\u0027re passing in nullptr for its input, this carries the original coverage mask values into `ambient`\u0027s output before adding it to `diffuse`.  Given the arg swap in the final `kDstIn` blend, this maybe was helping things to look correct anyways?",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 182,
+        "endChar": 60
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "013b45a2_82e2c6f5",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Done. This was a silly mistake, forgot SkColor4f was normalized.",
+      "parentUuid": "20046454_6a2c1faf",
       "range": {
         "startLine": 181,
         "startChar": 0,
@@ -164,6 +308,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "af00a080_0a3dbe3f",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "Yes that was the thinking",
+      "parentUuid": "ce61c236_f2e43775",
+      "range": {
+        "startLine": 203,
+        "startChar": 29,
+        "endLine": 203,
+        "endChar": 31
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cb9c9497_fc8b4bf5",
         "filename": "src/effects/SkEmbossMaskFilter.cpp",
         "patchSetId": 10
@@ -175,6 +343,30 @@
       "writtenOn": "2025-04-14T18:17:56Z",
       "side": 1,
       "message": "`::Blend` takes in the dst first and then the src, so I think we want to flip these parameters around so that it\u0027s `finalFilter` multiplied by the original coverage\u0027s alpha value.",
+      "range": {
+        "startLine": 235,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 86
+      },
+      "revId": "b6c1119f8dcc86fed5ad77c8650a9b89f54af0b4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58382c28_b8d0d165",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "kDstIn defined as `r \u003d d * sa`, so I think we want final filter as Dst.",
+      "parentUuid": "cb9c9497_fc8b4bf5",
       "range": {
         "startLine": 235,
         "startChar": 0,

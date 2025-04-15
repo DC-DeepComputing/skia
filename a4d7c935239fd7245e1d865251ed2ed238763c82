@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "66bc609b_ec1872be",
+        "filename": "gm/emboss.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-15T12:02:04Z",
+      "side": 1,
+      "message": "The blendmodes where autolayer mask filter impl looks wrong are marked here",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 293,
+        "endChar": 34
+      },
+      "revId": "a4d7c935239fd7245e1d865251ed2ed238763c82",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
