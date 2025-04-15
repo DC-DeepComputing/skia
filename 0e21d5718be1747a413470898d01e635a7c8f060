@@ -16,6 +16,87 @@
       "message": "PTAL :)",
       "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bad6b2f_c02ca722",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 52
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T16:58:09Z",
+      "side": 1,
+      "message": "All the DrawWriter updates look like they should issue barriers in the right place, just one comment nit and a preference to pass the barrier type into `newPipelineState` instead of adding another setter.",
+      "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a18d0c8b_7b3eebc1",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 659,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T16:58:09Z",
+      "side": 1,
+      "message": "nit: This should only be changing when `pipelineChange` is true, so we can just add a parameter to `newPipelineState()`.",
+      "range": {
+        "startLine": 656,
+        "startChar": 0,
+        "endLine": 659,
+        "endChar": 62
+      },
+      "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "373f7992_e484fa03",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 52
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-15T16:58:09Z",
+      "side": 1,
+      "message": "// This assert can be removed once the sample loading shader supports sample counts \u003e 1",
+      "range": {
+        "startLine": 468,
+        "startChar": 0,
+        "endLine": 468,
+        "endChar": 70
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "be0b6f9b_52da623f",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+              "range": {
+                "startLine": 468,
+                "startChar": 0,
+                "endLine": 468,
+                "endChar": 0
+              },
+              "replacement": "        // This assert can be removed once the sample loading shader supports sample counts \u003e 1\n"
+            }
+          ]
+        }
+      ],
+      "revId": "0e21d5718be1747a413470898d01e635a7c8f060",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
