@@ -19,6 +19,8 @@
 
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkRasterContext_Base.h"
+#include "src/core/SkRasterRecorder_Base.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/DataUtils.h"
@@ -129,7 +131,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
                                                              fSharedContext->caps(),
                                                              fUploadBufferManager.get());
-
     SkASSERT(fResourceProvider);
 }
 
