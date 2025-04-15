@@ -22,6 +22,30 @@
       },
       "revId": "0f708df342791c89a3c57fb26f1bb72114ab7f5c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2883c898_92455ae3",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-15T17:56:40Z",
+      "side": 1,
+      "message": "It doesn\u0027t affect basic functionality but it does skip the assert at the end, so removed.",
+      "parentUuid": "fd93f260_a13f7a16",
+      "range": {
+        "startLine": 243,
+        "startChar": 20,
+        "endLine": 243,
+        "endChar": 27
+      },
+      "revId": "0f708df342791c89a3c57fb26f1bb72114ab7f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
