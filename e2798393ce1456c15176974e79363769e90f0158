@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7795ea8e_ecbb3034",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-15T16:43:29Z",
+      "side": 0,
+      "message": "Why is this deleted and not put elsewhere? Was the file deleted or was it not needed in this grouping but is already included elsewhere?",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 35
+      },
+      "revId": "e2798393ce1456c15176974e79363769e90f0158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

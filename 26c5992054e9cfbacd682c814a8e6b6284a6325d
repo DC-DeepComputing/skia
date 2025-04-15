@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63cdfbb0_ebfbc837",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-15T16:43:29Z",
+      "side": 1,
+      "message": "If the Android Canary roll is now green or if it failing was unrelated, LGTM (I had one small question)",
+      "revId": "26c5992054e9cfbacd682c814a8e6b6284a6325d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
