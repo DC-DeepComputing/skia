@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77b6cae0_86d3886a",
+        "filename": "src/gpu/ganesh/vk/GrVkResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-15T17:19:48Z",
+      "side": 1,
+      "message": "We should also call `fGpu-\u003echeckVkResult(result)`. We should probably call it every time so just do it before the if here. We can ignore the return value for it and just use the if check you already have.",
+      "range": {
+        "startLine": 579,
+        "startChar": 4,
+        "endLine": 579,
+        "endChar": 6
+      },
+      "revId": "c674370f6725eb2a61df41d63f9f799e17440202",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
