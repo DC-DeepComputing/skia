@@ -22,6 +22,8 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkRasterContextPriv.h"
+#include "src/core/SkRasterRecorderPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -101,6 +103,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 
     fSharedContext->globalCache()->setPipelineCallback(options.fPipelineCallback,
                                                        options.fPipelineCallbackContext);
+
+    fRasterContext = std::make_unique<SkRasterContextPriv>();
 }
 
 Context::~Context() {

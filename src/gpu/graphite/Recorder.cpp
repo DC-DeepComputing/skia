@@ -19,6 +19,8 @@
 
 #include "src/core/SkCompressedDataUtils.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkRasterContextPriv.h"
+#include "src/core/SkRasterRecorderPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/AtlasTypes.h"
 #include "src/gpu/DataUtils.h"
@@ -130,6 +132,8 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              fSharedContext->caps(),
                                                              fUploadBufferManager.get());
 
+    fRasterRecorder = std::make_unique<SkRasterRecorderPriv>(context->priv().rasterContext());
+
     SkASSERT(fResourceProvider);
 }
 
@@ -154,6 +158,11 @@ Recorder::~Recorder() {
 }
 
 BackendApi Recorder::backend() const { return fSharedContext->backend(); }
+
+SkRasterRecorderPriv* Recorder::rasterRecorder() {
+    SkASSERT(fRasterRecorder);
+    return fRasterRecorder.get();
+}
 
 std::unique_ptr<Recording> Recorder::snap() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);

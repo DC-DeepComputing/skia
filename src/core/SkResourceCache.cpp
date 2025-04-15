@@ -561,33 +561,6 @@ void SkResourceCache::PostPurgeSharedID(uint64_t sharedID) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-size_t SkGraphics::GetResourceCacheTotalBytesUsed() {
-    return SkResourceCache::GetTotalBytesUsed();
-}
-
-size_t SkGraphics::GetResourceCacheTotalByteLimit() {
-    return SkResourceCache::GetTotalByteLimit();
-}
-
-size_t SkGraphics::SetResourceCacheTotalByteLimit(size_t newLimit) {
-    return SkResourceCache::SetTotalByteLimit(newLimit);
-}
-
-size_t SkGraphics::GetResourceCacheSingleAllocationByteLimit() {
-    return SkResourceCache::GetSingleAllocationByteLimit();
-}
-
-size_t SkGraphics::SetResourceCacheSingleAllocationByteLimit(size_t newLimit) {
-    return SkResourceCache::SetSingleAllocationByteLimit(newLimit);
-}
-
-void SkGraphics::PurgeResourceCache() {
-    SkImageFilter_Base::PurgeCache();
-    return SkResourceCache::PurgeAll();
-}
-
-/////////////
-
 static void dump_visitor(const SkResourceCache::Rec& rec, void*) {
     SkDebugf("RC: %12s bytes %9zu  discardable %p\n",
              rec.getCategory(), rec.bytesUsed(), rec.diagnostic_only_getDiscardable());
