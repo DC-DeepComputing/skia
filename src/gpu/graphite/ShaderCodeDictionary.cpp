@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RuntimeEffectDictionary.h"
 #include "src/gpu/graphite/ShaderInfo.h"
+#include "src/gpu/graphite/UniformManager.h"
 #include "src/sksl/SkSLString.h"
 #include "src/sksl/codegen/SkSLPipelineStageCodeGenerator.h"
 #include "src/sksl/ir/SkSLVarDeclarations.h"
@@ -1230,7 +1231,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     };
 
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHWYUVNoSwizzleImageShader] = {
-            /*name=*/"HWYUVImage",
+            /*name=*/"HWYUVImageNoSwizzle",
             /*staticFn=*/"sk_hw_yuv_no_swizzle_image_shader",
             SnippetRequirementFlags::kLocalCoords,
             /*uniforms=*/{ { "invImgSizeY",              SkSLType::kFloat2 },
