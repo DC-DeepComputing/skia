@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e71fe9d_d43e0cc4",
+        "filename": "src/gpu/graphite/geom/Shape.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T13:51:49Z",
+      "side": 1,
+      "message": "Should this be isVolatilePath ?",
+      "revId": "9459372ec2750816975386b2d9af432fb6fbdd84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
