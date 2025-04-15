@@ -104,6 +104,24 @@
       "parentUuid": "72673a94_528d643c",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "772f9a3a_59b9f782",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-15T13:23:41Z",
+      "side": 1,
+      "message": "This function has gone through various refactors, name changes, usages, etc. overtime and the end result is that the naming of the variables and lack of comments is vague. But TLDR I think the code and this change are doing what we\u0027d want.\n\nSo essentially requireKnownFormat is a flag to mean we want to render to the texture we\u0027re creating (or technically upload data to it). In these cases when we actually end up creating/importing the texture itself we ignore the texture type on the GrBackendFormat and import it with GR_GL_TEXTURE_2D. Thus we need to know the actual real format of the pixels. And if we can\u0027t tell the real format from the AHB we return an invalid GrBackendFormat to signal we can\u0027t meet the request.\n\nFor cases where we are just importing an AHB to sample in shader John is right that the format doesn\u0027t really matter. But just to share code we use the same switch block but allow a default value at the end.\n\nAs you can see in the comment at the start of the block there was a desire to just have all known formats return GR_GL_TEXTURE_2D always. But it just has never been a priority to take the time to confirm that this is always valid and more performant than EXTERNAL. So we just left things how they worked in the past.\n\nIn the end this code would benefit from some refactoring, better naming, etc., but as for now it is low on Skia\u0027s priority list to update this Ganesh code.",
+      "parentUuid": "cc683557_9d92e5cd",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
