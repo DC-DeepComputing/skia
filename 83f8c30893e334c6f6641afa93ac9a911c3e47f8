@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c389cbde_5fda3896",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-15T15:32:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09aef9af_583277e9",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "83f8c30893e334c6f6641afa93ac9a911c3e47f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "01800312_04530c3a",
