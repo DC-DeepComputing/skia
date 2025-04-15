@@ -131,6 +131,11 @@ static constexpr bool BlendEquationIsAdvanced(BlendEquation equation) {
            equation != BlendEquation::kIllegal;
 }
 
+// static constexpr bool AdvancedBlendEquationIsNoncoherent() {
+//     // Needs: BlendEquation, Coverage. Caps should at some point confirm whether or not this is
+//     // supported.
+// }
+
 static constexpr bool BlendModifiesDst(BlendEquation equation,
                                        BlendCoeff srcCoeff,
                                        BlendCoeff dstCoeff) {

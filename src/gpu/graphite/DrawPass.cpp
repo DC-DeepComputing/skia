@@ -454,8 +454,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     GraphicsPipelineCache pipelineCache;
 
-    // Geometry uniforms are currently always UBO-backed.
     const Caps* caps = recorder->priv().caps();
+    // Geometry uniforms are currently always UBO-backed.
     const bool useStorageBuffers = caps->storageBufferSupport();
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
     Layout uniformLayout =
@@ -585,6 +585,15 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
                 shadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
 
+        // Given a draw's paint params and blend mode (if present) and the render step's coverage,
+        // determine whether draws will be utilizing an advanced blend equation.
+        const bool drawRequiresAdvancedBlendEq =
+                draw.fPaintParams.has_value() &&
+                draw.fPaintParams.value().asFinalBlendMode().has_value() &&
+                BlendEquationIsAdvanced(caps,
+                                        draw.fPaintParams.value().asFinalBlendMode().value(),
+                                        renderStep.coverage());
+
         // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
         // dst copy to the texture bind group/descriptor set automatically when processing a
         // BindTexturesAndSamplers call because they use a single group to contain all textures.
@@ -603,14 +612,26 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // that draw must not be grouped with draws that read from the dst texture since those
         // requirements are mutually exclusive. We would also need to issue append an addBarrier
         // command to the command list with BarrierType::kAdvancedNoncoherentBlend.
-        const std::optional<BarrierType> barrierToAddBeforeDraws =
-                dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()
-                        ? std::optional<BarrierType>(BarrierType::kReadDstFromInput)
-                        : std::nullopt;
+        std::optional<BarrierType> barrierToAddBeforeDraws = std::nullopt;
+        if (dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()) {
+            barrierToAddBeforeDraws = BarrierType::kReadDstFromInput;
+        }
+        // Given a draw's paint params and blend mode (if present) and the render step's coverage,
+        // determine whether draws will be utilizing an advanced blend equation.
+        if (drawRequiresAdvancedBlendEq) {
+            barrierToAddBeforeDraws = BarrierType::kAdvancedNoncoherentBlend;
+        }
+
+        // If a draw uses an advanced noncoherent blend equation and a backend requires barriers
+        // for them and those draws must be grouped separately from any draws which perform
+        // dst reads.
+        bool drawRequiresBlendBarrier = drawRequiresAdvancedBlendEq &&
+                                        caps->barrierNeededForAdvancedBlendEqs();
 
         const bool stateChange = geomBindingChange ||
                                  shadingBindingChange ||
                                  textureBindingsChange ||
+                                 drawRequiresBlendBarrier ||
                                  SkToBool(newScissor);
 
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
@@ -651,6 +672,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             if (newScissor) {
                 drawPass->fCommandList.setScissor(*newScissor);
                 lastScissor = *newScissor;
+            }
+            if (drawRequiresBlendBarrier) {
+                drawPass->fCommandList.addBarrier(BarrierType::kAdvancedNoncoherentBlend);
             }
         }
 

@@ -65,6 +65,7 @@ void CollectIntrinsicUniforms(const Caps* caps,
                               UniformManager*);
 
 bool IsDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
+bool BlendEquationIsAdvanced(const Caps*, SkBlendMode, Coverage);
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,

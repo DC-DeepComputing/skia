@@ -303,6 +303,8 @@ public:
      */
     bool supportsAHardwareBufferImages() const { return fSupportsAHardwareBufferImages; }
 
+    bool barrierNeededForAdvancedBlendEqs() const { return fBarrierNeededForAdvancedBlendEqs; }
+
     // Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
     // passed in SkColorType and TextureInfo.
     skgpu::Swizzle getReadSwizzle(SkColorType, const TextureInfo&) const;
@@ -454,6 +456,8 @@ protected:
     bool fSupportBilerpFromGlyphAtlas = false;
 
     bool fRequireOrderedRecordings = false;
+
+    bool fBarrierNeededForAdvancedBlendEqs = false;
 
     bool fSetBackendLabels = false;
 

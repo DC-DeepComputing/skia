@@ -76,6 +76,44 @@ bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> blendMode, C
     return false;
 }
 
+bool BlendEquationIsAdvanced(const Caps* caps, SkBlendMode bm, Coverage coverage) {
+    // Based upon blend mode and coverage, determine the blend equation kFirstAdvanced
+    // If the blend equation is not advanced, return false.
+    // Get blend equation from blend mode?
+
+    if (coverage == Coverage::kNone) {
+        return false;
+    }
+
+    if (IsDstReadRequired(caps, bm, coverage)) {
+        // Use kSrc HW BlendInfo and do the coverage blend with dst in the shader.
+        return false;
+    }
+
+    skgpu::BlendFormula blendFormula = coverage == Coverage::kLCD
+                            ? skgpu::GetLCDBlendFormula(bm)
+                            : skgpu::GetBlendFormula(/*isOpaque=*/false, /*hasCoverage=*/true, bm);
+
+    return BlendEquationIsAdvanced(blendFormula.equation());
+
+    // First, check if we can use a hardware blend equation. If not, then we should instead
+    // read the dst in the shader (if possible) and are CompatibleWithCoverageAsAlpha. If so,
+    // then we can proceed to determine
+    // bool canUseHwBlendMode;
+    // If caps does not have advancedBlendEquationSupport, return false.
+    // If caps indicates advancedBlendEquations are disabled, return false. For now, assume
+    // we do not need to disable any advanced blend modes seeing as ganesh only did so for GL
+    // driver versions which graphite does not support. Check ANGLE version concerns.
+    // Finally, if the coverage is LCD, return false.
+    // TODO: Is it still the case that LCD coverage must be applied after the blend equation?
+
+    // Secondly, once determined we *can* use a hardware blend mode, determine if it's a noncoherent
+    // blend.
+    // Query caps for level of blend support available (see Ganesh's GrCaps::BlendEquationSupport).
+    // If advanced coherent blends are supported, then blend barriers are NOT required.
+    // Otherwise, they are.
+}
+
 void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect viewport,
                               SkIRect dstReadBounds,

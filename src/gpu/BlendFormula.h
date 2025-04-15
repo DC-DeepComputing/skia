@@ -80,6 +80,10 @@ public:
     bool usesInputColor() const {
         return SkToBool(fProps & kUsesInputColor_Property);
     }
+    // bool usesNonCoherentHWBlending() const {
+    //     return SkToBool(fProps & kUsesNonCoherentHWBlending_Property);
+    // }
+
     bool canTweakAlphaForCoverage() const {
         return SkToBool(fProps & kCanTweakAlphaForCoverage_Property);
     }
@@ -106,13 +110,14 @@ public:
 
 private:
     enum Properties {
-        kModifiesDst_Property              = 1 << 0,
-        kUnaffectedByDst_Property          = 1 << 1,
-        kUnaffectedByDstIfOpaque_Property  = 1 << 2,
-        kUsesInputColor_Property           = 1 << 3,
-        kCanTweakAlphaForCoverage_Property = 1 << 4,
+        kModifiesDst_Property               = 1 << 0,
+        kUnaffectedByDst_Property           = 1 << 1,
+        kUnaffectedByDstIfOpaque_Property   = 1 << 2,
+        kUsesInputColor_Property            = 1 << 3,
+        kCanTweakAlphaForCoverage_Property  = 1 << 4,
+        // kUsesNonCoherentHWBlending_Property = 1 << 5,
 
-        kLast_Property = kCanTweakAlphaForCoverage_Property
+        kLast_Property = kCanTweakAlphaForCoverage_Property, //kUsesNonCoherentHWBlending_Property
     };
     SK_DECL_BITFIELD_OPS_FRIENDS(Properties)
 
@@ -133,6 +138,13 @@ private:
         SkASSERT((kNone_OutputType == SecondaryOut) == !skgpu::BlendCoeffRefsSrc2(DstCoeff)),
         SkASSERT(PrimaryOut != SecondaryOut || kNone_OutputType == PrimaryOut),
         SkASSERT(kNone_OutputType != PrimaryOut || kNone_OutputType == SecondaryOut),
+
+        // TODO determine if using noncoherent adv blend. See GrCustomXferMode.
+        // can_use_hw_blend_equation()
+        // hw_blend_equation
+        // For now, just assign false.
+        // bool usesNoncoherent
+
 
         static_cast<Properties>(
             (skgpu::BlendModifiesDst(BlendEquation, SrcCoeff, DstCoeff)
@@ -155,6 +167,7 @@ private:
                                 skgpu::BlendAllowsCoverageAsAlpha(BlendEquation, SrcCoeff, DstCoeff)
                         ? kCanTweakAlphaForCoverage_Property
                         : 0));
+            // Check properties for coherency?
     }
 
     struct {

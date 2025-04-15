@@ -666,9 +666,13 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         finalBlendRoot->codeSnippetId() >= kFixedBlendIDOffset) {
         finalBlendMode =
                 static_cast<SkBlendMode>(finalBlendRoot->codeSnippetId() - kFixedBlendIDOffset);
-        if (*finalBlendMode > SkBlendMode::kLastCoeffMode) {
-            // TODO(b/239726010): When we support advanced blend modes in HW, these modes could
-            // still be handled by fBlendInfo instead of SkSL
+
+        // If we are using an advanced blend equation and hardware-based blending is not an option,
+        // we need to handle the blend in SkSL.
+        if (BlendEquationIsAdvanced(caps, *finalBlendMode, finalCoverage) &&
+        // if (*finalBlendMode > SkBlendMode::kLastCoeffMode &&
+            caps->shaderCaps()->fAdvBlendEqInteraction ==
+                    SkSL::ShaderCaps::kNotSupported_AdvBlendEqInteraction) {
             finalBlendMode.reset();
         }
     }
