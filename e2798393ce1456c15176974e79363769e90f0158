@@ -22,6 +22,30 @@
       },
       "revId": "e2798393ce1456c15176974e79363769e90f0158",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45b823ce_05afc7a7",
+        "filename": "toolchain/linux_trampolines/clang_trampoline_linux.sh",
+        "patchSetId": 6
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-15T17:48:26Z",
+      "side": 0,
+      "message": "This should be covered by `src/gpu/M` and was redundant",
+      "parentUuid": "7795ea8e_ecbb3034",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 35
+      },
+      "revId": "e2798393ce1456c15176974e79363769e90f0158",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
