@@ -25,6 +25,8 @@
 #include <memory>
 
 class SkColorSpace;
+class SkRasterContext_Base;
+class SkRasterRecorder;
 class SkRuntimeEffect;
 class SkTraceMemoryDump;
 
@@ -56,6 +58,7 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+    std::unique_ptr<SkRasterRecorder> makeRasterRecorder();
 
     /** Creates a helper object that can be moved to a different thread and used
      *  for precompilation.
@@ -357,6 +360,7 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
+    std::unique_ptr<const SkRasterContext_Base> fRasterContext;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.

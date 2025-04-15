@@ -8,6 +8,7 @@
 #ifndef skgpu_graphite_Recorder_DEFINED
 #define skgpu_graphite_Recorder_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -18,11 +19,12 @@
 #include <chrono>
 #include <optional>
 
-struct AHardwareBuffer;
 class SkCanvas;
-struct SkImageInfo;
 class SkPixmap;
+class SkRasterRecorder_Base;
 class SkTraceMemoryDump;
+struct AHardwareBuffer;
+struct SkImageInfo;
 
 namespace skgpu {
 class RefCntedCallback;
@@ -77,16 +79,18 @@ struct SK_API RecorderOptions final {
     std::optional<bool> fRequireOrderedRecordings;
 };
 
-class SK_API Recorder final {
+class SK_API Recorder final : public SkRecorder {
 public:
     Recorder(const Recorder&) = delete;
     Recorder(Recorder&&) = delete;
     Recorder& operator=(const Recorder&) = delete;
     Recorder& operator=(Recorder&&) = delete;
 
-    ~Recorder();
+    ~Recorder() override;
 
     BackendApi backend() const;
+
+    Type type() const override { return SkRecorder::Type::kGraphite; }
 
     std::unique_ptr<Recording> snap();
 
