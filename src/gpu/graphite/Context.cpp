@@ -22,6 +22,8 @@
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkColorFilterPriv.h"
 #include "src/core/SkConvertPixels.h"
+#include "src/core/SkRasterContext_Base.h"
+#include "src/core/SkRasterRecorder_Base.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkYUVMath.h"
 #include "src/gpu/RefCntedCallback.h"
@@ -101,6 +103,8 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 
     fSharedContext->globalCache()->setPipelineCallback(options.fPipelineCallback,
                                                        options.fPipelineCallbackContext);
+
+    fRasterContext = std::make_unique<SkRasterContext_Base>();
 }
 
 Context::~Context() {
@@ -147,6 +151,12 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     }
 #endif
     return recorder;
+}
+
+std::unique_ptr<SkRasterRecorder> Context::makeRasterRecorder() {
+    ASSERT_SINGLE_OWNER
+
+    return std::make_unique<SkRasterRecorder_Base>(fRasterContext.get());
 }
 
 std::unique_ptr<PrecompileContext> Context::makePrecompileContext() {
