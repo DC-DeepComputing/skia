@@ -68,6 +68,24 @@
       "parentUuid": "a8e25f0a_fceeb686",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72673a94_528d643c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3957457
+      },
+      "writtenOn": "2025-04-15T08:22:48Z",
+      "side": 1,
+      "message": "can you elaborate the suggestion?(sorry, i am not familiar with skia..) so, should we use `requireKnownFormat` as true for use cases as jiyong mentioned, and remove BGRA8-related code here? If so, it uses `GrBackendFormat()` which causes an error in different place because it is considered as invalid format..",
+      "parentUuid": "678eed62_5d74f886",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
