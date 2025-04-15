@@ -86,6 +86,24 @@
       "parentUuid": "678eed62_5d74f886",
       "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc683557_9d92e5cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-04-15T12:54:31Z",
+      "side": 1,
+      "message": "I\u0027m not familiar enough with skia to really be a good reviewer of this. I don\u0027t know what the point of this format approximation is or what role it serves. I\u0027d suggest just having this function behave as if requiresKnownFormat is always true and map any unknown AHardwareBuffer format to GR_GL_RGBA8. But this would be a better question for Greg or maybe Noelle knows?",
+      "parentUuid": "72673a94_528d643c",
+      "revId": "242cf677628219159400cfd1381ef9f3016b2f92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
