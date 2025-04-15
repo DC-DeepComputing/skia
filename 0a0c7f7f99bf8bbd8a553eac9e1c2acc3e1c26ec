@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfb980df_26c2b120",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-15T19:12:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09d14418_b2bb3b44",
+      "range": {
+        "startLine": 73,
+        "startChar": 17,
+        "endLine": 73,
+        "endChar": 18
+      },
+      "revId": "0a0c7f7f99bf8bbd8a553eac9e1c2acc3e1c26ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2e7d468_8fc7aeaa",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d410d7b_2c9257e8",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-15T19:12:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2e7d468_8fc7aeaa",
+      "range": {
+        "startLine": 75,
+        "startChar": 20,
+        "endLine": 76,
+        "endChar": 35
+      },
+      "revId": "0a0c7f7f99bf8bbd8a553eac9e1c2acc3e1c26ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a1712c2_41efb8f4",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-04-15T16:01:22Z",
       "side": 1,
       "message": "`newBinding` and this comparison to set `rebindDrawBuffers` is only valid when `buffer.fOffset % stride \u003d\u003d 0`.  In the else branch, we want to set `rebindDrawBuffers |\u003d boundBuffer !\u003d buffer`.\n\nWe can re-arrange things to only have one update to `rebindDrawBuffers` like:\n\n```\nBindBufferInfo newBinding \u003d buffer;\nif (buffer.fOffset % stride \u003d\u003d 0) {\n    pendingBase \u003d buffer.fOffset / stride;\n    newBinding \u003d {buffer.fBuffer, 0, SkTo\u003cuint32_t\u003e(buffer.fBuffer-\u003esize())};\n}\nrebindDrawBuffers |\u003d boundBuffer !\u003d newBinding;\nboundBuffer \u003d newBinding;\n```",
+      "range": {
+        "startLine": 79,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 59
+      },
+      "revId": "0a0c7f7f99bf8bbd8a553eac9e1c2acc3e1c26ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dff44214_c6f768e9",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-15T19:12:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a1712c2_41efb8f4",
       "range": {
         "startLine": 79,
         "startChar": 0,
