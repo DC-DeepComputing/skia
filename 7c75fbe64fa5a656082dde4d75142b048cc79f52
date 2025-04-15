@@ -22,6 +22,30 @@
       },
       "revId": "7c75fbe64fa5a656082dde4d75142b048cc79f52",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb0d1b7d_2572a2cc",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 51
+      },
+      "lineNbr": 645,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-15T16:34:54Z",
+      "side": 1,
+      "message": "The `DrawWriter` now has an optional member attribute which, if assigned to a real value, will be used to add `AddBarrier` commands to the command list prior to appending any draw commands.\n\nAdded tracking of prior draw\u0027s paint order. If this draw indicated the need for a barrier (and there\u0027s no pipeline/state change), then the paint orders of the current and prior draw are compared and a flush injected if they are not equal.\n\n\"If they are equal, they don\u0027t overlap so there\u0027s no barrier needed.\"\nI don\u0027t think this is true. There is no **flush** needed, but we still need to add a barrier prior to issuing draw commands. In Vulkan, even if there is no draw overlap, we need to add an image memory barrier on the target texture itself to ensure that it is written to as a color attachment prior to being read from in the fragment shader as an input attachment.\nWith that in mind, I still assign the draw writer a barrier type even when there is no draw overlap.",
+      "parentUuid": "682a973b_4e778629",
+      "range": {
+        "startLine": 639,
+        "startChar": 0,
+        "endLine": 645,
+        "endChar": 9
+      },
+      "revId": "7c75fbe64fa5a656082dde4d75142b048cc79f52",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
