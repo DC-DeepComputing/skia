@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/DrawTypes.h"
 
+#include <optional>
+
 namespace skgpu::graphite {
 
 namespace DrawPassCommands {
@@ -110,6 +112,8 @@ public:
         fVertexStride = vertexStride;
         fInstanceStride = instanceStride;
     }
+
+    void assignBarrierType(std::optional<BarrierType> type) { fBarrierToIssueBeforeDraws = type; }
 
 #ifdef SK_DEBUG
     // Query current pipeline state for validation
@@ -235,6 +239,8 @@ private:
     uint32_t fPendingBaseInstance;
     uint32_t fPendingBaseVertex;
     bool fPendingBufferBinds; // true if {fVertices,fIndices,fInstances} has changed since last draw
+
+    std::optional<BarrierType> fBarrierToIssueBeforeDraws = std::nullopt;
 
     void setTemplate(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
                      int templateCount);
