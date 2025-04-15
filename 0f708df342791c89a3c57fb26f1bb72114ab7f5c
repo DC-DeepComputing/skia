@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd93f260_a13f7a16",
+        "filename": "src/gpu/graphite/geom/Shape.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-15T14:20:41Z",
+      "side": 1,
+      "message": "Do we actually want or need this return ?",
+      "range": {
+        "startLine": 243,
+        "startChar": 20,
+        "endLine": 243,
+        "endChar": 27
+      },
+      "revId": "0f708df342791c89a3c57fb26f1bb72114ab7f5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
