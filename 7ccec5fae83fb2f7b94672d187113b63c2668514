@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff339d0_53d485f0",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-15T19:17:34Z",
+      "side": 1,
+      "message": "I haven\u0027t seen the CL which uses these APIs, but what would happen if we didn\u0027t have this public function? Like what if the client just only called hasNewVkPipelineCacheData()? It seems like things should just work the same right?",
+      "range": {
+        "startLine": 518,
+        "startChar": 3,
+        "endLine": 529,
+        "endChar": 49
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c0dcbb2_84829409",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-15T19:17:34Z",
+      "side": 1,
+      "message": "Is this true? Wasn\u0027t the updated plan to just set the has new data to false every time we store the pipeline cache. And then if we don\u0027t have \"canDetectNewVkPipelineCacheData\" we always set has new data to true when we compile a new pipeline. But this does mean there is a window this function could (and probably should) return false",
+      "range": {
+        "startLine": 532,
+        "startChar": 35,
+        "endLine": 533,
+        "endChar": 13
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3f6d875_70e3d447",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-15T19:17:34Z",
+      "side": 1,
+      "message": "I don\u0027t think this is valuable to have this inner if and else. This is all for adding the trace events right? So I would do the tracing something like:\n\n```\n{\n    TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline\");\n    if (gpu-\u003evkCaps().supportsPipelineCreationCacheControl()) {\n        TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline-CacheLookupOnly\");\n        CreateGraphicsPipeline(....);\n    }\n\n    if (err \u003d\u003d VK_PIPELINE_COMPILE_REQUIRED) {\n        TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline-Compile\");\n        CreateGraphicsPipeline(....);\n    }\n}\n```",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
