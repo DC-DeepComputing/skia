@@ -240,6 +240,7 @@ private:
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
     friend class RecorderPriv; // for ctor and hidden methods
+    friend class SkRecorderPriv;
 
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
@@ -310,6 +311,8 @@ private:
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
 
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder

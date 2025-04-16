@@ -19,6 +19,11 @@ public:
     static SkRasterRecorder* TODO();
 
     Type type() const final { return SkRecorder::Type::kRaster; }
+
+private:
+    friend class SkRecorderPriv;
+
+    sk_sp<SkSurface> makeSurface(const SkImageInfo&, const SkSurfaceProps&) override;
 };
 
 #endif

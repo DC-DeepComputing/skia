@@ -8,6 +8,7 @@
 #ifndef SkImage_GaneshBase_DEFINED
 #define SkImage_GaneshBase_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
@@ -58,7 +59,10 @@ public:
     bool isValid(GrRecordingContext*) const final;
     sk_sp<SkImage> makeColorTypeAndColorSpace(GrDirectContext* dContext,
                                               SkColorType targetColorType,
-                                              sk_sp<SkColorSpace> targetCS) const final;
+                                              sk_sp<SkColorSpace> targetCS) const final {
+        return makeColorTypeAndColorSpace(dContext->recorder(), targetColorType, targetCS);
+    }
+
     sk_sp<SkImage> makeSubset(GrDirectContext* direct, const SkIRect& subset) const final;
 
     // From SkImage_Base.h
@@ -68,8 +72,6 @@ public:
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const final;
 
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect& subset) const final;
-
-    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
 
     bool onReadPixels(GrDirectContext* dContext,
                       const SkImageInfo& dstInfo,
@@ -123,12 +125,18 @@ protected:
                                 const SkIRect& subset,
                                 RequiredProperties) const final;
     using SkImage_Base::onMakeColorTypeAndColorSpace;
-    sk_sp<SkImage> makeColorTypeAndColorSpace(skgpu::graphite::Recorder*,
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
                                               SkColorType,
                                               sk_sp<SkColorSpace>,
                                               RequiredProperties) const final;
 
     sk_sp<GrImageContext> fContext;
+private:
+    SkRecorder* recorder() const final {
+        return fRecorder.get();
+    }
+
+    std::unique_ptr<SkRecorder> fRecorder;
 };
 
 #endif

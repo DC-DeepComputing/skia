@@ -126,6 +126,7 @@ skia_filegroup(
         "SkRasterRecorder_Base.h",
         "SkReadBuffer.h",
         "SkRecord.h",
+        "SkRecorderPriv.h",
         "SkRecordDraw.h",
         "SkRecordOpts.h",
         "SkRecordedDrawable.h",
