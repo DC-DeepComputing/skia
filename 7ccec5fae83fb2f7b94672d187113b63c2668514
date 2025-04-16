@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71f1b3f5_11b1c52d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-16T16:42:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "263ec95f_440f317b",
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bff339d0_53d485f0",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-04-15T19:17:34Z",
       "side": 1,
       "message": "I haven\u0027t seen the CL which uses these APIs, but what would happen if we didn\u0027t have this public function? Like what if the client just only called hasNewVkPipelineCacheData()? It seems like things should just work the same right?",
+      "range": {
+        "startLine": 518,
+        "startChar": 3,
+        "endLine": 529,
+        "endChar": 49
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cfca9b1_0e27464c",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 529,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-16T16:42:42Z",
+      "side": 1,
+      "message": "So, when `VK_EXT_pipeline_creation_cache_control` is not available, we use the size of the cache to detect changes and avoid frequent writes. However this is a heuristic, as it\u0027s possible that the cache changes but stays exactly the same size (albeit highly unlikely).\n\nWhen the extension is available, we can skip the size check as we legitimately know when the caches change.\n\nIf this function was not exposed, we could always do the size check (as we don\u0027t know whether the extension is available or not) - and in (let\u0027s say) 99% of cases there would be no difference in the outcome. However there may be the occasional call where we know that the cache has changed but HWUI does not save it. In that case we\u0027ll be actively dropping some data from the cache until it changes size. The effects of this would be minimal (at most one, presumably small, compilation per app session), however I think it\u0027s less trouble to just keep the function? \n\nLet me know.",
+      "parentUuid": "bff339d0_53d485f0",
       "range": {
         "startLine": 518,
         "startChar": 3,
@@ -64,6 +106,53 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "77eaa408_484c6c22",
+        "filename": "include/gpu/ganesh/GrDirectContext.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 533,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-16T16:42:42Z",
+      "side": 1,
+      "message": "Sorry, forgot to come back to this. Fixed.",
+      "parentUuid": "5c0dcbb2_84829409",
+      "range": {
+        "startLine": 532,
+        "startChar": 35,
+        "endLine": 533,
+        "endChar": 13
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c73c4c10_ebe2ef65",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-16T16:42:42Z",
+      "side": 1,
+      "message": "Should we call `gpu-\u003echeckVkResult` after this call as well?",
+      "range": {
+        "startLine": 574,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 38
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3f6d875_70e3d447",
@@ -77,6 +166,30 @@
       "writtenOn": "2025-04-15T19:17:34Z",
       "side": 1,
       "message": "I don\u0027t think this is valuable to have this inner if and else. This is all for adding the trace events right? So I would do the tracing something like:\n\n```\n{\n    TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline\");\n    if (gpu-\u003evkCaps().supportsPipelineCreationCacheControl()) {\n        TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline-CacheLookupOnly\");\n        CreateGraphicsPipeline(....);\n    }\n\n    if (err \u003d\u003d VK_PIPELINE_COMPILE_REQUIRED) {\n        TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"CreateGraphicsPipeline-Compile\");\n        CreateGraphicsPipeline(....);\n    }\n}\n```",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d796f8d2_c509e1a1",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-16T16:42:42Z",
+      "side": 1,
+      "message": "I\u0027m not entirely convinced we should do this, since when `VK_EXT_pipeline_creation_cache_control` is not available, we will be reporting compiles even for cache lookups. Unless we assume that the extension is always available for our purposes?\n\nIn other words, to emit a different tracing structure depending on whether the extension is available, we would always need the check. I think we can only avoid that if we always have the same tracing structure, however that could be a problem if we\u0027re dealing with populations where some devices have the extension enabled and others do not.\n\nHow do you think we should proceed?",
+      "parentUuid": "f3f6d875_70e3d447",
       "range": {
         "startLine": 595,
         "startChar": 12,
