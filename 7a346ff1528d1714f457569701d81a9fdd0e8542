@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c085c662_8c0a0266",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-16T14:51:34Z",
+      "side": 1,
+      "message": "Greg\u0027s comments were addressed and this LGTM, +1ing to satisfy 2-person approval requirement",
+      "revId": "7a346ff1528d1714f457569701d81a9fdd0e8542",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
