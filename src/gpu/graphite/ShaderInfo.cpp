@@ -653,6 +653,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                       label.c_str());
     const ShaderNode* const srcColorRoot = fRootNodes[0];
     const ShaderNode* const finalBlendRoot = fRootNodes[1];
+    const int32_t finalBlendRootSnippetId = finalBlendRoot->codeSnippetId();
     const ShaderNode* const clipRoot = fRootNodes.size() > 2 ? fRootNodes[2] : nullptr;
 
     // Determine the algorithm for final blending: direct HW blending, coverage-modified HW
@@ -661,27 +662,33 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (finalCoverage == Coverage::kNone && SkToBool(clipRoot)) {
         finalCoverage = Coverage::kSingleChannel;
     }
-    std::optional<SkBlendMode> finalBlendMode;
-    if (finalBlendRoot->codeSnippetId() < kBuiltInCodeSnippetIDCount &&
-        finalBlendRoot->codeSnippetId() >= kFixedBlendIDOffset) {
-        finalBlendMode =
-                static_cast<SkBlendMode>(finalBlendRoot->codeSnippetId() - kFixedBlendIDOffset);
-        if (*finalBlendMode > SkBlendMode::kLastCoeffMode) {
-            // TODO(b/239726010): When we support advanced blend modes in HW, these modes could
-            // still be handled by fBlendInfo instead of SkSL
-            finalBlendMode.reset();
-        }
+
+    std::optional<SkBlendMode> blendMode;
+    if (finalBlendRootSnippetId < kBuiltInCodeSnippetIDCount &&
+        finalBlendRootSnippetId >= kFixedBlendIDOffset) {
+        blendMode = static_cast<SkBlendMode>(finalBlendRootSnippetId - kFixedBlendIDOffset);
     }
 
-    // The passed-in dstReadStrategy should only be used iff it is determined one is needed. If not,
-    // then manually assign fDstReadStrategy to kNoneRequired. ShaderInfo's dst read strategy
-    // informs the pipeline's via PipelineInfo created w/ shader info.
-    const bool dstReadRequired = IsDstReadRequired(caps, finalBlendMode, finalCoverage);
-    if (!dstReadRequired) {
-        fDstReadStrategy = DstReadStrategy::kNoneRequired;
-    } else {
-        SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
-    }
+    BlendingAlgorithm finalBlendAlgo = DetermineBlendingAlgorithm(caps,
+                                                                  blendMode,
+                                                                  finalCoverage);
+    // if (finalBlendAlgo == BlendingAlgorithm::kReadDstInShader) {
+    //     SkASSERT(finalBlendAlgo == BlendingAlgorithm::kHardwareBlending);
+    //     blendMode = std::nullopt;
+    //     // The passed-in dstReadStrategy should only be used iff it is determined one is needed.
+    //     // Otherwise, update fDstReadStrategy to kNoneRequired so that, when ShaderInfo is used to
+    //     // populate PipelineInfo, it properly indicates when no dst reads are needed.
+    //     fDstReadStrategy = DstReadStrategy::kNoneRequired;
+    // }
+
+    // // The passed-in dstReadStrategy should only be used iff it is determined one is needed.
+    // // Otherwise, update fDstReadStrategy to kNoneRequired so that, when ShaderInfo is used to
+    // // populate PipelineInfo, it properly indicates when no dst reads are needed.
+    // if (finalBlendAlgo != BlendingAlgorithm::kReadDstInShader) {
+    // } else {
+    //     // Expect valid strategy to be passed in if a dst read is required.
+    //     SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
+    // }
 
     // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild.
     SkASSERTF_RELEASE(finalBlendMode.has_value() || dstReadRequired,

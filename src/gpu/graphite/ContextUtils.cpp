@@ -52,28 +52,47 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
     return recorder->priv().shaderCodeDictionary()->findOrCreate(builder);
 }
 
-bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> blendMode, Coverage coverage) {
+BlendingAlgorithm DetermineBlendingAlgorithm(const Caps* caps,
+                                             std::optional<SkBlendMode> blendMode,
+                                             Coverage coverage) {
     // If the blend mode is absent, this is assumed to be for a runtime blender, for which we always
     // do a dst read.
-    // If the blend mode is plus, always do in-shader blending since we may be drawing to an
-    // unsaturated surface (e.g. F16) and we don't want to let the hardware clamp the color output
-    // in that case. We could check the draw dst properties to only do in-shader blending with plus
-    // when necessary, but we can't detect that during shader precompilation.
-    if (!blendMode || *blendMode > SkBlendMode::kLastCoeffMode ||
-        *blendMode == SkBlendMode::kPlus) {
-        return true;
+    if (!blendMode.has_value()) {
+        return BlendingAlgorithm::kHardwareBlending;
     }
 
     const bool isLCD = coverage == Coverage::kLCD;
-    const bool hasCoverage = coverage != Coverage::kNone;
-    BlendFormula blendFormula = isLCD ? skgpu::GetLCDBlendFormula(*blendMode)
-                                      : skgpu::GetBlendFormula(false, hasCoverage, *blendMode);
-    if ((blendFormula.hasSecondaryOutput() && !caps->shaderCaps()->fDualSourceBlendingSupport) ||
-        (coverage == Coverage::kLCD && blendMode != SkBlendMode::kSrcOver)) {
-        return true;
+    const SkBlendMode bm = blendMode.value();
+
+    // Check for special cases that would prevent the usage of direct hardware blending and
+    // require us to fall back to using shader-based blending.
+
+    if (// Using LCD coverage (which must be applied after the blend equation) with any blend mode
+        // besides SkBlendMode::kSrcOver
+        (coverage == Coverage::kLCD && bm != SkBlendMode::kSrcOver) ||
+        // The blend formula requires dual-source blending, but it is not supported by hardware
+        (skgpu::GetBlendFormula(/*isOpaque=*/false,
+                               /*hasCoverage=*/coverage != Coverage::kNone,
+                               bm).hasSecondaryOutput() &&
+         !caps->shaderCaps()->fDualSourceBlendingSupport) ||
+        // Using SkBlendMode::kPlus (we may be drawing to an unsaturated surface (e.g. F16), and we
+        // don't want to let the hardware clamp the color output in that case.
+        // NOTE: We could check the draw dst properties to only do in-shader blending with plus when
+        // necessary, but we can't detect that during shader precompilation.
+        bm == SkBlendMode::kPlus ||
+        // Using an advanced blend mode but the hardware does not support them
+        (bm > SkBlendMode::kLastCoeffMode && !caps->supportsHardwareAdvancedBlending())) {
+        return BlendingAlgorithm::kReadDstInShader;
     }
 
-    return false;
+    // In all other cases (which is more commonly encountered - such as using a simple blend mode),
+    // we can use direct HW blending.
+    return BlendingAlgorithm::kHardwareBlending;
+}
+
+bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> blendMode, Coverage coverage) {
+    return DetermineBlendingAlgorithm(caps, blendMode, coverage) ==
+           BlendingAlgorithm::kReadDstInShader;
 }
 
 void CollectIntrinsicUniforms(const Caps* caps,

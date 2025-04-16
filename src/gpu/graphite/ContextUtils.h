@@ -64,7 +64,18 @@ void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect dstReadBounds,
                               UniformManager*);
 
-bool IsDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
+// TODO(NEP): Move to shader dictionary or similar?
+enum class BlendingAlgorithm : uint8_t {
+    kHardwareBlending,
+    kReadDstInShader,
+};
+BlendingAlgorithm DetermineBlendingAlgorithm(const Caps*,
+                                             std::optional<SkBlendMode>,
+                                             Coverage);
+
+bool IsDstReadRequired(const Caps* caps, std::optional<SkBlendMode> bm, Coverage coverage) {
+    return DetermineBlendingAlgorithm(caps, bm, coverage) == BlendingAlgorithm::kReadDstInShader;
+}
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,
                              const RenderPassDesc& renderPassDesc,
