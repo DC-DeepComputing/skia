@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a0ad8e9_c1b989cc",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0d8f780f_f0e01849",
+      "range": {
+        "startLine": 155,
+        "startChar": 8,
+        "endLine": 155,
+        "endChar": 19
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71c7f1ed_1a32cf61",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-11T17:17:53Z",
       "side": 1,
       "message": "Can we keep a note or todo about how there would ideally be a way to differentiate between passing through coordinates and never needing any coordinates?\n\nDoes it actually work to only include `kLocalCoords` when `UsesSampleCoords(effect)` is true, `kPassthroughLocalCoords` when it\u0027s false.  And then update the masking logic to allow a child\u0027s `kLocalCoords` flag when `kPassthrough` is present in the current node?",
+      "range": {
+        "startLine": 731,
+        "startChar": 8,
+        "endLine": 733,
+        "endChar": 9
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f5eac98_c329feb0",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 733,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "So actually even this existing code doesn\u0027t work, because a runtime effect can pass in arbitrary coords to its children, not directly based on its input coords, and then `UsesSampleCoords(effect)` can return false even though we can\u0027t correctly lift the child coordinate transforms.\n\n`color_cube_rt` has an example of this (possibly the only example in our GMs):\nhttps://crsrc.org/c/third_party/skia/gm/runtimeshader.cpp?q\u003dcolor_cube_rt\n\nFor now I think we have to go back to always adding the `kLocalCoords` flag to runtime shader nodes, and maybe to address this we could add a little more analysis to runtime shaders to see if they actually call children with their own input coords or not. And if we\u0027re adding analysis maybe we can expose whether a runtime shader actually needs its input coords at all.",
+      "parentUuid": "71c7f1ed_1a32cf61",
       "range": {
         "startLine": 731,
         "startChar": 8,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d12e005_81116516",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "Yep, done",
+      "parentUuid": "8a283dfc_820daef6",
+      "range": {
+        "startLine": 173,
+        "startChar": 51,
+        "endLine": 173,
+        "endChar": 55
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fec202a7_5bface9a",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e6d320f_712d7136",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "Unfortunately this doesn\u0027t work because you can\u0027t statically cast a `T**` to a `const T**` in C++. I guess statically casting non-const to const only works when it\u0027s the outermost pointer that\u0027s changing constness.",
+      "parentUuid": "fec202a7_5bface9a",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 205,
+        "endChar": 59
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d9fe4d8_c6c897cb",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-04-11T17:17:53Z",
       "side": 1,
       "message": "We can pass in `step-\u003evaryings().size() + 2` and say that `getRootNodes()` takes in the existing number of varyings.  For now ShaderInfo reserves 2 for its ssboindex and regular local coord varying, although in the future those two could be optional.",
+      "range": {
+        "startLine": 610,
+        "startChar": 0,
+        "endLine": 610,
+        "endChar": 65
+      },
+      "revId": "ed2c6cfa9e2fdde6d89fa857717e3d2a312faee8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af03ad0_11afdf94",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 610,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "Have `getRootNodes()` taking the available number of varyings.",
+      "parentUuid": "5d9fe4d8_c6c897cb",
       "range": {
         "startLine": 610,
         "startChar": 0,

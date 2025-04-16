@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "3dd92b1c_f7397201",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-16T14:45:54Z",
+      "side": 1,
+      "message": "Addressed in call to `getRootNodes()`.",
+      "parentUuid": "c70e6cee_5543e5d6",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 170,
+        "endChar": 39
+      },
+      "revId": "f9e6332cd0df88ce076e1b86e359db0e918a6c58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "eed4a741_b06cb1a8",
         "filename": "src/gpu/graphite/ShaderCodeDictionary.h",
         "patchSetId": 1
