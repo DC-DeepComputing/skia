@@ -16,6 +16,24 @@
       "message": "you will need to have your name in org in the AUTHORS file. Please see the instructions in \u003cskia root dir\u003e/AUTHORS on how to first sign the CLA and then add your name/org to that file. You can update that file in this CL if you like",
       "revId": "a864180dfea944c86911a2676a69ad16d5f4d6cc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a18a1a0f_5d260e6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3943009
+      },
+      "writtenOn": "2025-04-16T14:47:06Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nThank you so much for the detailed explanation. I\u0027ve added my name to the AUTHORS file and have also signed the CLA. I hope everything is in order now.\n\nPlease let me know if anything else is needed.",
+      "parentUuid": "f28125af_f4822bf3",
+      "revId": "a864180dfea944c86911a2676a69ad16d5f4d6cc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
