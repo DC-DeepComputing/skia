@@ -26,6 +26,40 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "065f9346_3e80d932",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T13:13:50Z",
+      "side": 1,
+      "message": "Got to here",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1796dfa7_f87b1b19",
+        "filename": "src/gpu/graphite/RenderPassDesc.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T13:13:50Z",
+      "side": 1,
+      "message": "I probably missed it somewhere - do we have a static assert somewhere checking that AttachmentDesc always fits in a uint32_t ?",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4351f351_4eb8c99b",
         "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
         "patchSetId": 15
@@ -123,6 +157,70 @@
       "writtenOn": "2025-04-15T19:30:02Z",
       "side": 1,
       "message": "Got to here",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "547059d4_af6f9661",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 331,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T13:13:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa5b6701_d7141488",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83f4c5db_e14ce28f",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 15
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T13:13:50Z",
+      "side": 1,
+      "message": "uint32_t ? or omit ?",
+      "range": {
+        "startLine": 951,
+        "startChar": 51,
+        "endLine": 951,
+        "endChar": 57
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68dbd4b_529d0f6c",
+        "filename": "src/gpu/graphite/precompile/SerializationUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T13:13:50Z",
+      "side": 1,
+      "message": "rm ?",
+      "range": {
+        "startLine": 215,
+        "startChar": 47,
+        "endLine": 215,
+        "endChar": 49
+      },
       "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
