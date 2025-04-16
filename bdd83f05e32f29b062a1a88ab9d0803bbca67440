@@ -41,6 +41,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70ea7530_066df8d3",
+        "filename": "src/gpu/graphite/RenderPassDesc.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "065f9346_3e80d932",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1796dfa7_f87b1b19",
@@ -227,6 +245,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "27a7a1d5_ac9e8c9c",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "has ?",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 31
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6126879d_aa6ba899",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 15
@@ -238,6 +279,92 @@
       "writtenOn": "2025-04-15T18:47:48Z",
       "side": 1,
       "message": "Add bug # or username like in Caps-level TODO",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46aa6de4_877ddd04",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "false - here and below ?",
+      "range": {
+        "startLine": 297,
+        "startChar": 19,
+        "endLine": 297,
+        "endChar": 20
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e036134b_391d4039",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "wdyt about passing this as a pointer rather than a non-const\u0026 ?",
+      "range": {
+        "startLine": 654,
+        "startChar": 66,
+        "endLine": 654,
+        "endChar": 67
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec38e0d_11d6128b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "Fix this comment ?",
+      "range": {
+        "startLine": 672,
+        "startChar": 4,
+        "endLine": 672,
+        "endChar": 50
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57ae3564_a5c59236",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "We could also make these SkDEBUGCODEs",
       "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -261,6 +388,46 @@
         "endLine": 193,
         "endChar": 75
       },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7306b35a_aef73535",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "Extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 67,
+        "endLine": 75,
+        "endChar": 69
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e69b6d4_e93555c0",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 423,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-16T18:29:15Z",
+      "side": 1,
+      "message": "Got to here",
       "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
