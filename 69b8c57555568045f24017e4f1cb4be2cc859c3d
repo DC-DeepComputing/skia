@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38719f7d_55931a41",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-16T17:04:55Z",
+      "side": 1,
+      "message": "Should this also be `dataLength * sizeof(uint32_t)`? I wonder if `dataLength` should be renamed to clarify that it\u0027s the number of `uint32_t`, rather than the number of bytes.",
+      "range": {
+        "startLine": 199,
+        "startChar": 77,
+        "endLine": 199,
+        "endChar": 87
+      },
+      "revId": "69b8c57555568045f24017e4f1cb4be2cc859c3d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
