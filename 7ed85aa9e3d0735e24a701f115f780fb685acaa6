@@ -16,6 +16,24 @@
       "message": "As much as I would love to just land this change and assume it fixes things, it alone is not enough. There is a lot of issues throughout the caps with sometimes checking vendor vs driver vs renderer and then comparing with driverVersion. Unfortunately all of those behave slightly differently based on if Angle is used or not.\n\nThere probably could be a big refactor to update the whole system to make it easier to check all these various properties that hides the fact that angle may or may not be being used. However, Ganesh is generally in a maintenance mode at this point and I don\u0027t think its worth doing a big refactor.\n\nInstead, there really are only about a dozen callers of driverVersion() today in caps. I think I would advocate to just updating those callers to be in the form of:\n\n```\nif ((nonAngleCheck() \u003d\u003d foo \u0026\u0026 driverVersion() \u003c\u003d bar) ||\n    (angle !\u003d kUnknown \u0026\u0026 (angleCheck() \u003d\u003d foo \u0026\u0026 angleDriverVersion() \u003c\u003dbar()))\n```\n\nThe above is certainly uglier but its the simpler approach and we don\u0027t expect to be doing much more work in Ganesh that warrants refactoring this into a better system",
       "revId": "7ed85aa9e3d0735e24a701f115f780fb685acaa6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3b62ef4_92978db3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3943009
+      },
+      "writtenOn": "2025-04-16T07:08:45Z",
+      "side": 1,
+      "message": "Hi Greg,\n\nThanks a lot for explaining. We have marked this changelist as abandoned. \n\nWe are proposing the following change instead: https://skia-review.googlesource.com/c/skia/+/980376",
+      "parentUuid": "a744674e_43ae753d",
+      "revId": "7ed85aa9e3d0735e24a701f115f780fb685acaa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
