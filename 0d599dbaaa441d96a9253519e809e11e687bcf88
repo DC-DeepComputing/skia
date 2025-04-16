@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "60dca2b7_afe88d61",
+        "filename": "include/core/SkContext.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-16T18:00:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d70bbc1e_f502598f",
+      "range": {
+        "startLine": 13,
+        "startChar": 23,
+        "endLine": 13,
+        "endChar": 41
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4a55b033_3d9a96c1",
@@ -82,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b7af9c8_b8381c3f",
+        "filename": "include/core/SkRasterRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-16T18:00:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a55b033_3d9a96c1",
+      "range": {
+        "startLine": 13,
+        "startChar": 13,
+        "endLine": 13,
+        "endChar": 29
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aac66cbf_a1854886",
@@ -95,6 +143,30 @@
       "writtenOn": "2025-04-11T18:35:20Z",
       "side": 1,
       "message": "SkDraws are short lived, so they shouldn\u0027t need to store an sk_sp here. The context shoudl remain alive for the duration, just like the other properties.",
+      "range": {
+        "startLine": 161,
+        "startChar": 3,
+        "endLine": 161,
+        "endChar": 36
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "532c1f59_d3635895",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-16T18:00:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aac66cbf_a1854886",
       "range": {
         "startLine": 161,
         "startChar": 3,
@@ -189,6 +261,30 @@
       "side": 1,
       "message": "I pulled out the thread safety onto https://skia-review.googlesource.com/c/skia/+/978956\n\nI had thought about putting a non thread-safe resource cache on Recorder, but it felt awkward to have to effectively replicate all of https://github.com/google/skia/blob/786d3a4bb792e3eb2f69cc171dd9fb696bc10983/src/core/SkResourceCache.cpp#L466-L587 on Recorder. I think it\u0027s cleaner to make the cache be thread-safe regardless of where it goes (and I think context fits better into my mental model of this architecture)",
       "parentUuid": "59c283a2_8b0473c2",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 67
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ed24598_cd4df069",
+        "filename": "src/core/SkResourceCache.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-16T18:00:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9771a2fb_09f21008",
       "range": {
         "startLine": 26,
         "startChar": 0,
