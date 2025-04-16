@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff146b52_e3470661",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T01:40:06Z",
+      "side": 1,
+      "message": "This lgtm, but will need to resolve merge conflicts with https://skia-review.googlesource.com/c/skia/+/946201, which added automatic barriers inside flush() and setting barrier type in `newPipelineState`.",
+      "revId": "d10fe48ebbade969e779a9d966092fe79563875f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
