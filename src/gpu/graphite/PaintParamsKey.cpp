@@ -194,7 +194,7 @@ static int key_to_string(SkString* str,
             if (includeData) {
                 // Encode data in base64 to shorten it
                 str->append(": ");
-                SkAutoMalloc encodedData{SkBase64::EncodedSize(dataLength)};
+                SkAutoMalloc encodedData{SkBase64::EncodedSize(dataLength * sizeof(uint32_t))};
                 char* dst = static_cast<char*>(encodedData.get());
                 size_t encodedLen = SkBase64::Encode(&keyData[currentIndex], dataLength, dst);
                 str->append(dst, encodedLen);
