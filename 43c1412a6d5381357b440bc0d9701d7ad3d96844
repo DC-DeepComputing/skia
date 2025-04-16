@@ -67,6 +67,24 @@
       "message": "Looks fine to me, but it\u0027ll need to be remerged.",
       "revId": "43c1412a6d5381357b440bc0d9701d7ad3d96844",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d284238_1f0b22e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18764
+      },
+      "writtenOn": "2025-04-16T06:52:41Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "ebb5dc22_1f4e6eb5",
+      "revId": "43c1412a6d5381357b440bc0d9701d7ad3d96844",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
