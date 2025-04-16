@@ -32,6 +32,7 @@ class SkMatrix;
 class SkPath;
 class SkRRect;
 class SkRasterClip;
+class SkRasterContext_Base;
 class SkShader;
 class SkSurfaceProps;
 struct SkIRect;
@@ -156,6 +157,8 @@ public:
     const SkMatrix*         fCTM{nullptr};             // required
     const SkRasterClip*     fRC{nullptr};              // required
     const SkSurfaceProps*   fProps{nullptr};           // optional
+
+    const SkRasterContext_Base* fCtx{nullptr};  // optional for now
 
 #ifdef SK_DEBUG
     void validate() const;
