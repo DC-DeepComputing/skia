@@ -11,6 +11,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkPixelRef.h"
+#include "include/core/SkRasterRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
@@ -56,8 +57,6 @@ public:
                                 const SkIRect&,
                                 RequiredProperties) const override;
 
-    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
-
     SkPixelRef* getPixelRef() const { return fBitmap.pixelRef(); }
 
     bool onAsLegacyBitmap(GrDirectContext*, SkBitmap*) const override;
@@ -77,6 +76,10 @@ public:
 
     bool onHasMipmaps() const override { return SkToBool(fBitmap.fMips); }
     bool onIsProtected() const override { return false; }
+
+    SkRecorder* recorder() const override {
+        return SkRasterRecorder::TODO();
+    }
 
     SkMipmap* onPeekMips() const override { return fBitmap.fMips.get(); }
 

@@ -8,6 +8,7 @@
 #ifndef SkImage_GaneshBase_DEFINED
 #define SkImage_GaneshBase_DEFINED
 
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/gpu/ganesh/GrRecordingContext.h"
@@ -69,8 +70,6 @@ public:
 
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect& subset) const final;
 
-    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
-
     bool onReadPixels(GrDirectContext* dContext,
                       const SkImageInfo& dstInfo,
                       void* dstPixels,
@@ -129,6 +128,12 @@ protected:
                                               RequiredProperties) const final;
 
     sk_sp<GrImageContext> fContext;
+private:
+    SkRecorder* recorder() const final {
+        return fRecorder.get();
+    }
+
+    std::unique_ptr<SkRecorder> fRecorder;
 };
 
 #endif
