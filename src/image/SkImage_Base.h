@@ -74,10 +74,6 @@ public:
                               int srcY,
                               CachingHint) const = 0;
 
-    // used by makeScaled()
-    virtual sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*,
-                                           const SkImageInfo&) const = 0;
-
     virtual bool readPixelsGraphite(skgpu::graphite::Recorder*,
                                     const SkPixmap& dst,
                                     int srcX,
@@ -120,6 +116,8 @@ public:
 
     /** this->context() try-casted to GrDirectContext. Useful for migrations – avoid otherwise! */
     virtual GrDirectContext* directContext() const { return nullptr; }
+
+    virtual SkRecorder* recorder() const = 0;
 
     // If this image is the current cached image snapshot of a surface then this is called when the
     // surface is destroyed to indicate no further writes may happen to surface backing store.

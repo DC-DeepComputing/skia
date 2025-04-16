@@ -14,6 +14,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRasterRecorder.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTileMode.h"
 #include "include/core/SkTypes.h"
@@ -21,6 +22,7 @@
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkNextID.h"
+#include "src/core/SkRecorderPriv.h"
 #include "src/image/SkImage_Base.h"
 #include "src/shaders/SkImageShader.h"
 
@@ -48,17 +50,38 @@ bool SkImage::readPixels(GrDirectContext* dContext, const SkImageInfo& dstInfo, 
     return as_IB(this)->onReadPixels(dContext, dstInfo, dstPixels, dstRowBytes, srcX, srcY, chint);
 }
 
-sk_sp<SkImage> SkImage::makeScaled(skgpu::graphite::Recorder* recorder,
+sk_sp<SkImage> SkImage::makeScaled(const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling) const {
+    return makeScaled(nullptr, newInfo, sampling, SkSurfaceProps{});
+}
+
+sk_sp<SkImage> SkImage::makeScaled(SkRecorder* recorder,
                                    const SkImageInfo& newInfo,
                                    const SkSamplingOptions& sampling) const {
+    return makeScaled(recorder, newInfo, sampling, SkSurfaceProps{});
+}
+
+sk_sp<SkImage> SkImage::makeScaled(SkRecorder* recorder,
+                                   const SkImageInfo& newInfo,
+                                   const SkSamplingOptions& sampling,
+                                   const SkSurfaceProps& props) const {
     if (!SkImageInfoIsValid(newInfo)) {
         return nullptr;
     }
-    if (newInfo == this->imageInfo()) {
-        return sk_ref_sp(this);
+    if (recorder) {
+        if (recorder == as_IB(this)->recorder() && newInfo == this->imageInfo()) {
+            return sk_ref_sp(this);
+        }
     }
 
-    auto surf = as_IB(this)->onMakeSurface(recorder, newInfo);
+    if (!recorder) {
+        recorder = as_IB(this)->recorder();
+    }
+    if (!recorder) {
+        return nullptr;
+    }
+
+    auto surf = SkRecorderPriv::MakeSurface(recorder, newInfo, props);
     if (!surf) {
         return nullptr;
     }

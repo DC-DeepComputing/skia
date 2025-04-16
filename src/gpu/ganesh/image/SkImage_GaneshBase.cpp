@@ -60,10 +60,35 @@ class GrContextThreadSafeProxy;
 class SkImageFilter;
 struct SkIPoint;
 
+// A helper class for making a Ganesh backed surface for drawing re-scaled images and such.
+class SurfaceMaker final : public SkRecorder {
+public:
+    SurfaceMaker(GrRecordingContext* ctx) : fCtx(ctx) {}
+
+    Type type() const override { return SkRecorder::Type::kGanesh; }
+
+    sk_sp<SkSurface> makeSurface(const SkImageInfo& ii, const SkSurfaceProps& props) override {
+        if (fCtx) {
+            auto isBudgeted = skgpu::Budgeted::kNo;  // Assuming we're a one-shot surface
+            return SkSurfaces::RenderTarget(fCtx, isBudgeted, ii, 0, &props);
+        }
+        return nullptr;
+    }
+
+private:
+    friend class SkRecorderPriv;
+
+    GrRecordingContext* fCtx;
+};
+
 SkImage_GaneshBase::SkImage_GaneshBase(sk_sp<GrImageContext> context,
                                        SkImageInfo info,
                                        uint32_t uniqueID)
-        : SkImage_Base(std::move(info), uniqueID), fContext(std::move(context)) {}
+        : SkImage_Base(std::move(info), uniqueID), fContext(std::move(context)) {
+    if (fContext) {
+        fRecorder = std::make_unique<SurfaceMaker>(fContext->priv().asRecordingContext());
+    }
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -229,17 +254,6 @@ sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(skgpu::graphite::R
                                                               sk_sp<SkColorSpace>,
                                                               RequiredProperties) const {
     SkDEBUGFAIL("Cannot convert Ganesh-backed image to Graphite");
-    return nullptr;
-}
-
-sk_sp<SkSurface> SkImage_GaneshBase::onMakeSurface(skgpu::graphite::Recorder*,
-                                                   const SkImageInfo& info) const {
-    if (auto ictx = this->context()) {
-        if (auto rctx = ictx->priv().asRecordingContext()) {
-            auto isBudgeted = skgpu::Budgeted::kNo;  // Assuming we're a one-shot surface
-            return SkSurfaces::RenderTarget(rctx, isBudgeted, info);
-        }
-    }
     return nullptr;
 }
 

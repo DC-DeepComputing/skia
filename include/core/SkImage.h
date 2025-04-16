@@ -33,6 +33,7 @@ class SkMipmap;
 class SkPaint;
 class SkPicture;
 class SkPixmap;
+class SkRecorder;
 class SkShader;
 class SkSurfaceProps;
 enum SkColorType : int;
@@ -720,17 +721,19 @@ public:
      * The Recorder parameter is required if the original image was created on a graphite Recorder,
      * but must be nullptr if it was create in some other way (e.g. GrContext, raster, deferred).
      *
-     * return nullptr if the requested ColorInfo is not supported,  its dimesions are out of range,
+     * return nullptr if the requested ColorInfo is not supported, its dimesions are out of range,
      *  or if the recorder is null on a graphite Image.
      */
-    sk_sp<SkImage> makeScaled(skgpu::graphite::Recorder*,
+    sk_sp<SkImage> makeScaled(SkRecorder*,
                               const SkImageInfo&,
                               const SkSamplingOptions&) const;
+    sk_sp<SkImage> makeScaled(SkRecorder*,
+                              const SkImageInfo&,
+                              const SkSamplingOptions&,
+                              const SkSurfaceProps&) const;
 
     sk_sp<SkImage> makeScaled(const SkImageInfo& info,
-                              const SkSamplingOptions& sampling) const {
-        return this->makeScaled(nullptr, info, sampling);
-    }
+                              const SkSamplingOptions& sampling) const;
 
     /** Returns encoded SkImage pixels as SkData, if SkImage was created from supported
         encoded stream format. Platform support for formats vary and may require building

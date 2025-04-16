@@ -20,6 +20,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/Recording.h"
+#include "include/gpu/graphite/Surface.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
@@ -510,6 +511,10 @@ void Recorder::dumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump) const {
     fResourceProvider->dumpMemoryStatistics(traceMemoryDump);
     // TODO: What is the graphite equivalent for the text blob cache and how do we print out its
     // used bytes here (see Ganesh implementation).
+}
+
+sk_sp<SkSurface> Recorder::makeSurface(const SkImageInfo& info, const SkSurfaceProps& props) {
+    return SkSurfaces::RenderTarget(this, info, skgpu::Mipmapped::kNo, &props);
 }
 
 void RecorderPriv::addPendingRead(const TextureProxy* proxy) {
