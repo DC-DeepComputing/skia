@@ -66,31 +66,32 @@ void DrawWriter::flush() {
     //   pseudo-alias for offset and reset the offset and size before assigning to boundBufferFoo.
     // - If a valid bufferFoo does not exist, or is not stride aligned, then draw from the start of
     //   the offset with pendingBaseFoo = 0 and assign the current buffer.
-    bool rebindDrawBuffers = false;
-    auto bind = [&](const BindBufferInfo& buffer,
-                    uint32_t stride,
-                    BindBufferInfo& boundBuffer,
-                    uint32_t& pendingBase) {
+    auto bind = [](const BindBufferInfo& buffer, uint32_t stride, BindBufferInfo& boundBuffer,
+                   uint32_t& pendingBase) -> bool {
+        bool shouldBind = false;
         if (buffer.fBuffer) {
             BindBufferInfo newBinding = buffer;
             if (buffer.fOffset % stride == 0) {
                 pendingBase = buffer.fOffset / stride;
                 newBinding = {buffer.fBuffer, 0, SkTo<uint32_t>(buffer.fBuffer->size())};
             }
-            rebindDrawBuffers |= boundBuffer != newBinding;
+            shouldBind = boundBuffer != newBinding;
             boundBuffer = newBinding;
         }
+        return shouldBind;
     };
 
     uint32_t pendingBaseIndices = 0;
     uint32_t pendingBaseVertex = 0;
     uint32_t pendingBaseInstance = 0;
-    bind(fVertices, fVertexStride, fBoundVertices, pendingBaseVertex);
-    bind(fInstances, fInstanceStride, fBoundInstances, pendingBaseInstance);
-    bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices);
-
-    if (rebindDrawBuffers) {
-        fCommandList->bindDrawBuffers(fBoundVertices, fBoundInstances, fBoundIndices, {});
+    if (bind(fVertices, fVertexStride, fBoundVertices, pendingBaseVertex)) {
+        fCommandList->bindStaticDataBuffer(fBoundVertices);
+    }
+    if (bind(fInstances, fInstanceStride, fBoundInstances, pendingBaseInstance)) {
+        fCommandList->bindAppendDataBuffer(fBoundInstances);
+    }
+    if (bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices)) {
+        fCommandList->bindIndexBuffer(fBoundIndices);
     }
 
     // Before any draw commands are added, check if the DrawWriter has an assigned barrier type
@@ -133,7 +134,7 @@ void DrawWriter::flush() {
         }
     } else {
         // Issue non-instanced draw call (indexed or non-indexed).
-        SkASSERT(!fInstances); // Should not have an instance buffer in non-instanced mode.
+        //SkASSERT(!fInstances); // Should not have an instance buffer in non-instanced mode.
         if (fIndices) {
             // As before, just validate there is sufficient index data
             SkASSERT(fPendingCount*sizeof(uint16_t) <= fBoundIndices.fSize);
@@ -142,13 +143,13 @@ void DrawWriter::flush() {
                                       fPendingCount,
                                       pendingBaseVertex);
         } else {
-            SkASSERT((pendingBaseVertex + fPendingCount)*fVertexStride <= fBoundVertices.fSize);
+            SkASSERT((pendingBaseVertex + fPendingCount)*fVertexStride <= fBoundInstances.fSize);
             fCommandList->draw(fPrimitiveType, pendingBaseVertex, fPendingCount);
         }
 
         // Clear vertex template state after the draw is recorded for non-Fixed RenderState
         if (fRenderState & RenderStateFlags::kAppendVertices) {
-            fVertices = {};
+            fInstances = {};
         }
     }
 

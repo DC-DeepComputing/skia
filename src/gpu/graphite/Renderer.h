@@ -150,6 +150,7 @@ public:
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
     bool outsetBoundsForAA()   const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);   }
     bool useNonAAInnerFill()   const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);   }
+    bool isAppendRateVert()    const { return SkToBool(fFlags & Flags::kAppendVertices);   }
     SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
         if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed; }

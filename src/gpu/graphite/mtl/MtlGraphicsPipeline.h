@@ -35,8 +35,8 @@ public:
     inline static constexpr unsigned int kIntrinsicUniformBufferIndex = 0;
     inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
     inline static constexpr unsigned int kPaintUniformBufferIndex = 2;
-    inline static constexpr unsigned int kVertexBufferIndex = 3;
-    inline static constexpr unsigned int kInstanceBufferIndex = 4;
+    inline static constexpr unsigned int kStaticDataBufferIndex = 3;
+    inline static constexpr unsigned int kAppendDataBufferIndex = 4;
     inline static constexpr unsigned int kGradientBufferIndex = 5;
 
     static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
@@ -70,6 +70,7 @@ private:
                                            const std::string& label,
                                            const PipelineInfo&,
                                            MSLFunction vertexMain,
+                                           MTLVertexStepFunction appendStepFunc,
                                            SkSpan<const Attribute> vertexAttrs,
                                            SkSpan<const Attribute> instanceAttrs,
                                            MSLFunction fragmentMain,

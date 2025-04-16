@@ -105,7 +105,7 @@ static void setup_vertex_input_state(
     for (auto attrib : vertexAttrs) {
         VkVertexInputAttributeDescription vkAttrib;
         vkAttrib.location = attribIndex++;
-        vkAttrib.binding = VulkanGraphicsPipeline::kVertexBufferIndex;
+        vkAttrib.binding = VulkanGraphicsPipeline::kStaticDataBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
         vkAttrib.offset = vertexAttributeOffset;
         vertexAttributeOffset += attrib.sizeAlign4();
@@ -116,7 +116,7 @@ static void setup_vertex_input_state(
     for (auto attrib : instanceAttrs) {
         VkVertexInputAttributeDescription vkAttrib;
         vkAttrib.location = attribIndex++;
-        vkAttrib.binding = VulkanGraphicsPipeline::kInstanceBufferIndex;
+        vkAttrib.binding = VulkanGraphicsPipeline::kAppendDataBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
         vkAttrib.offset = instanceAttributeOffset;
         instanceAttributeOffset += attrib.sizeAlign4();
@@ -125,14 +125,14 @@ static void setup_vertex_input_state(
 
     if (bindingDescs && !vertexAttrs.empty()) {
         bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kVertexBufferIndex,
+                VulkanGraphicsPipeline::kStaticDataBufferIndex,
                 (uint32_t) vertexAttributeOffset,
                 VK_VERTEX_INPUT_RATE_VERTEX
         };
     }
     if (bindingDescs && !instanceAttrs.empty()) {
         bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kInstanceBufferIndex,
+                VulkanGraphicsPipeline::kAppendDataBufferIndex,
                 (uint32_t) instanceAttributeOffset,
                 VK_VERTEX_INPUT_RATE_INSTANCE
         };

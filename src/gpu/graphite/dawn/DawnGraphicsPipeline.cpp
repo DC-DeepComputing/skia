@@ -598,7 +598,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         auto arrayStride = create_vertex_attributes(step->vertexAttributes(),
                                                     0,
                                                     &vertexAttributes);
-        auto& layout = vertexBufferLayouts[kVertexBufferIndex];
+        auto& layout = vertexBufferLayouts[kStaticDataBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
             layout.stepMode = wgpu::VertexStepMode::Vertex;
@@ -622,7 +622,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         auto arrayStride = create_vertex_attributes(step->instanceAttributes(),
                                                     step->vertexAttributes().size(),
                                                     &instanceAttributes);
-        auto& layout = vertexBufferLayouts[kInstanceBufferIndex];
+        auto& layout = vertexBufferLayouts[kAppendDataBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
             layout.stepMode = wgpu::VertexStepMode::Instance;

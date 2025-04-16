@@ -275,10 +275,12 @@ class DrawWriter::Appender {
 public:
     Appender(DrawWriter& w, SkEnumBitMask<RenderStateFlags> renderState)
             : fDrawer(w)
-            , fTarget(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
-                               w.fVertices : w.fInstances)
-            , fStride(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
-                               w.fVertexStride : w.fInstanceStride)
+            // , fTarget(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
+            //                    w.fVertices : w.fInstances)
+            // , fStride(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
+            //                    w.fVertexStride : w.fInstanceStride)
+            , fTarget(w.fInstances)
+            , fStride(w.fInstanceStride)
             , fReservedCount(0)
             , fNextWriter() {
         SkASSERT(fStride > 0);
@@ -370,7 +372,7 @@ class DrawWriter::Vertices : private DrawWriter::Appender {
 public:
     Vertices(DrawWriter& w) :
     Appender(w, RenderStateFlags::kAppendVertices) {
-        w.setTemplate(w.fVertices, {}, {}, 0);
+        w.setTemplate({}, {}, w.fInstances, 0);
     }
 
     using Appender::reserve;
