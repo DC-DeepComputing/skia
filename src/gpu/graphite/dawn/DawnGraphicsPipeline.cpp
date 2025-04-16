@@ -593,17 +593,18 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     // Vertex state
     std::array<wgpu::VertexBufferLayout, kNumVertexBuffers> vertexBufferLayouts;
     // Vertex buffer layout
-    std::vector<wgpu::VertexAttribute> vertexAttributes;
+    std::vector<wgpu::VertexAttribute> staticDataAttributes;
+    // TODO Make sure when done step attributes matches this.
     {
         auto arrayStride = create_vertex_attributes(step->vertexAttributes(),
                                                     0,
-                                                    &vertexAttributes);
-        auto& layout = vertexBufferLayouts[kVertexBufferIndex];
+                                                    &staticDataAttributes);
+        auto& layout = vertexBufferLayouts[kStaticDataBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
             layout.stepMode = wgpu::VertexStepMode::Vertex;
-            layout.attributeCount = vertexAttributes.size();
-            layout.attributes = vertexAttributes.data();
+            layout.attributeCount = staticDataAttributes.size();
+            layout.attributes = staticDataAttributes.data();
         } else {
             layout.arrayStride = 0;
 #if defined(__EMSCRIPTEN__)
@@ -617,17 +618,18 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     }
 
     // Instance buffer layout
-    std::vector<wgpu::VertexAttribute> instanceAttributes;
+    std::vector<wgpu::VertexAttribute> appendDataAttributes;
     {
         auto arrayStride = create_vertex_attributes(step->instanceAttributes(),
                                                     step->vertexAttributes().size(),
-                                                    &instanceAttributes);
-        auto& layout = vertexBufferLayouts[kInstanceBufferIndex];
+                                                    &appendDataAttributes);
+        auto& layout = vertexBufferLayouts[kAppendDataBufferIndex];
         if (arrayStride) {
             layout.arrayStride = arrayStride;
-            layout.stepMode = wgpu::VertexStepMode::Instance;
-            layout.attributeCount = instanceAttributes.size();
-            layout.attributes = instanceAttributes.data();
+            layout.stepMode = step->isAppendRateVert() ? wgpu::VertexStepMode::Vertex :
+                                                         wgpu::VertexStepMode::Instance;
+            layout.attributeCount = appendDataAttributes.size();
+            layout.attributes = appendDataAttributes.data();
         } else {
             layout.arrayStride = 0;
 #if defined(__EMSCRIPTEN__)
