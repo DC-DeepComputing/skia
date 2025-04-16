@@ -10,6 +10,7 @@
 
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
@@ -29,13 +30,14 @@
 #include <vector>
 
 class SkColorInfo;
+class SkRasterContext_Base;
+class SkRasterRecorder;
 class SkSurface;
 enum SkYUVColorSpace : int;
 class SkColorSpace;
 class SkTraceMemoryDump;
 struct SkIRect;
 struct SkImageInfo;
-struct SkISize;
 
 namespace skgpu {
 enum class BackendApi : unsigned int;
@@ -67,6 +69,7 @@ public:
     BackendApi backend() const;
 
     std::unique_ptr<Recorder> makeRecorder(const RecorderOptions& = {});
+    std::unique_ptr<SkRasterRecorder> makeRasterRecorder();
 
     /** Creates a helper object that can be moved to a different thread and used
      *  for precompilation.
@@ -374,6 +377,7 @@ private:
     std::unique_ptr<ResourceProvider> fResourceProvider;
     std::unique_ptr<QueueManager> fQueueManager;
     std::unique_ptr<ClientMappedBufferManager> fMappedBufferManager;
+    std::unique_ptr<const SkRasterContext_Base> fRasterContext;
 
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
