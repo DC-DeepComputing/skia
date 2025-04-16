@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17837227_03a7ff6c",
+        "filename": "include/gpu/graphite/TextureInfo.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3bf32a1e_ece4599a",
+      "range": {
+        "startLine": 62,
+        "startChar": 8,
+        "endLine": 62,
+        "endChar": 15
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f3c4899_8624da27",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "Yes, that was so things kept working in `isSampleCountSupported` without needing to change logic for if the texture format was depth/stencil.\n\nMy interpretation of Renderbale was that it meant it could be an attachment of a renderpass, but that is a lower-level question than can this format be used to render Skia content.",
       "parentUuid": "1f3c4899_8624da27",
+      "range": {
+        "startLine": 667,
+        "startChar": 48,
+        "endLine": 667,
+        "endChar": 76
+      },
+      "revId": "252b727a21bc3642aaec6137fe50d73f508ffd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a030417_45740753",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 14
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Talking offline, we agreed to have Graphite\u0027s renderability mean it can be used as an attachment but isn\u0027t restricted to just color formats, but that we also wanted to preserve the concept of renderable+colorformat.  \n\nI looked into renaming `Caps::isRenderable`, but the only places that would need to be updated to something like `isColorRenderable` were Surface and DrawContext (there was a similar situation for Image with `isTexturable`).  But Surface and Image were already immediately calling `Caps::areColorTypeAndTextureInfoCompatible`, which restricts texture formats that are depth/stencil since they won\u0027t have an SkColorType associated with them.\n\nInstead of changing the Caps API, I think this makes sense and just updated some comments in the backend caps and some checks in DrawContext to match Surface\u0027s.",
+      "parentUuid": "d9807a39_d8bf1ff7",
       "range": {
         "startLine": 667,
         "startChar": 48,

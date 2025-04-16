@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0651c9cb_6a24bfc9",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Switched to a bug number.",
+      "parentUuid": "a7af411b_2e5d1e8e",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 29
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "065f9346_3e80d932",
@@ -93,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12f5559e_7bc9b101",
+        "filename": "src/gpu/graphite/RenderPassDesc.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1796dfa7_f87b1b19",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4351f351_4eb8c99b",
@@ -110,6 +152,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "46df8a59_66be5763",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4351f351_4eb8c99b",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d5c3770b_1ed29ab0",
@@ -123,6 +183,30 @@
       "writtenOn": "2025-04-15T19:30:02Z",
       "side": 1,
       "message": "nano-nit: Can we rm this \u0027 \u0027 ?",
+      "range": {
+        "startLine": 984,
+        "startChar": 38,
+        "endLine": 984,
+        "endChar": 39
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d66c4de_4448231b",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 984,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5c3770b_1ed29ab0",
       "range": {
         "startLine": 984,
         "startChar": 38,
@@ -156,6 +240,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "29abc5ec_f9a658cb",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 995,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36c495ca_d3011a82",
+      "range": {
+        "startLine": 995,
+        "startChar": 43,
+        "endLine": 995,
+        "endChar": 77
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4be65eac_8ac96989",
@@ -169,6 +277,30 @@
       "writtenOn": "2025-04-15T19:30:02Z",
       "side": 1,
       "message": "Move this line left ?",
+      "range": {
+        "startLine": 1083,
+        "startChar": 11,
+        "endLine": 1083,
+        "endChar": 46
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b6e7121_27b3b46b",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1083,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4be65eac_8ac96989",
       "range": {
         "startLine": 1083,
         "startChar": 11,
@@ -237,6 +369,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b459116d_08cb1f33",
+        "filename": "src/gpu/graphite/mtl/MtlCaps.mm",
+        "patchSetId": 15
+      },
+      "lineNbr": 951,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83f4c5db_e14ce28f",
+      "range": {
+        "startLine": 951,
+        "startChar": 51,
+        "endLine": 951,
+        "endChar": 57
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c68dbd4b_529d0f6c",
@@ -250,6 +406,30 @@
       "writtenOn": "2025-04-16T13:13:50Z",
       "side": 1,
       "message": "rm ?",
+      "range": {
+        "startLine": 215,
+        "startChar": 47,
+        "endLine": 215,
+        "endChar": 49
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7dba15c1_46ea50d8",
+        "filename": "src/gpu/graphite/precompile/SerializationUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c68dbd4b_529d0f6c",
       "range": {
         "startLine": 215,
         "startChar": 47,
@@ -283,6 +463,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8fa233c_81518260",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "27a7a1d5_ac9e8c9c",
+      "range": {
+        "startLine": 68,
+        "startChar": 27,
+        "endLine": 68,
+        "endChar": 31
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6126879d_aa6ba899",
@@ -300,6 +504,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "06ea77a8_550bbbe1",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6126879d_aa6ba899",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "46aa6de4_877ddd04",
@@ -313,6 +535,30 @@
       "writtenOn": "2025-04-16T18:29:15Z",
       "side": 1,
       "message": "false - here and below ?",
+      "range": {
+        "startLine": 297,
+        "startChar": 19,
+        "endLine": 297,
+        "endChar": 20
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4eebbb13_ca192d07",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46aa6de4_877ddd04",
       "range": {
         "startLine": 297,
         "startChar": 19,
@@ -346,6 +592,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "697a87e0_e5f1886b",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 654,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e036134b_391d4039",
+      "range": {
+        "startLine": 654,
+        "startChar": 66,
+        "endLine": 654,
+        "endChar": 67
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fec38e0d_11d6128b",
@@ -359,6 +629,30 @@
       "writtenOn": "2025-04-16T18:29:15Z",
       "side": 1,
       "message": "Fix this comment ?",
+      "range": {
+        "startLine": 672,
+        "startChar": 4,
+        "endLine": 672,
+        "endChar": 50
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aba37e68_16252fa3",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 672,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fec38e0d_11d6128b",
       "range": {
         "startLine": 672,
         "startChar": 4,
@@ -386,6 +680,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e750e7cc_1a21f7e5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 737,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "57ae3564_a5c59236",
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ee132291_3c4098c0",
@@ -409,6 +721,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f095739e_b99c6600",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "From offline discussion, I\u0027m just removing A8B8G8R8 entirely.",
+      "parentUuid": "ee132291_3c4098c0",
+      "range": {
+        "startLine": 191,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 75
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7306b35a_aef73535",
@@ -422,6 +758,30 @@
       "writtenOn": "2025-04-16T18:29:15Z",
       "side": 1,
       "message": "Extra \u0027 \u0027 ?",
+      "range": {
+        "startLine": 75,
+        "startChar": 67,
+        "endLine": 75,
+        "endChar": 69
+      },
+      "revId": "bdd83f05e32f29b062a1a88ab9d0803bbca67440",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d619d83_b6989513",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-16T19:26:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7306b35a_aef73535",
       "range": {
         "startLine": 75,
         "startChar": 67,
