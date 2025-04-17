@@ -64,6 +64,7 @@ void CollectIntrinsicUniforms(const Caps* caps,
                               SkIRect dstReadBounds,
                               UniformManager*);
 
+bool CanUseHardwareBlending(const Caps*, std::optional<SkBlendMode>, Coverage);
 bool IsDstReadRequired(const Caps*, std::optional<SkBlendMode>, Coverage);
 
 std::string GetPipelineLabel(const ShaderCodeDictionary*,

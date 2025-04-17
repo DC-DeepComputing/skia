@@ -8,6 +8,7 @@
 #ifndef skgpu_Blend_DEFINED
 #define skgpu_Blend_DEFINED
 
+#include "include/core/SkBlendMode.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
@@ -15,7 +16,6 @@
 
 #include <cstdint>
 
-enum class SkBlendMode;
 class SkString;
 
 namespace skgpu {
@@ -82,6 +82,10 @@ enum class BlendCoeff : uint8_t {
 
 struct BlendInfo {
     SkDEBUGCODE(SkString dump() const;)
+
+    // BlendInfo() = default;
+    // BlendInfo(skgpu::BlendEquation)
+    // BlendInfo(const skgpu::BlendEquation hwBlendEq) : fEquation(hwBlendEq) {}
 
     bool operator==(const BlendInfo& other) const {
         return fEquation == other.fEquation &&
@@ -208,6 +212,47 @@ struct ReducedBlendModeInfo {
     SkSpan<const float> fUniformData;
 };
 ReducedBlendModeInfo GetReducedBlendModeInfo(SkBlendMode mode);
+
+/**
+ * Returns the hardware blend equation that corresponds with a given blend mode.
+ */
+static constexpr skgpu::BlendEquation GetHardwareBlendEquation(SkBlendMode mode) {
+    // TODO(NEP): Validate that bm > kLastCoeffMode
+
+    constexpr int kEqOffset = ((int)skgpu::BlendEquation::kOverlay - (int)SkBlendMode::kOverlay);
+    static_assert((int)skgpu::BlendEquation::kOverlay ==
+                  (int)SkBlendMode::kOverlay + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kDarken ==
+                  (int)SkBlendMode::kDarken + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kLighten ==
+                  (int)SkBlendMode::kLighten + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kColorDodge ==
+                  (int)SkBlendMode::kColorDodge + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kColorBurn ==
+                  (int)SkBlendMode::kColorBurn + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kHardLight ==
+                  (int)SkBlendMode::kHardLight + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kSoftLight ==
+                  (int)SkBlendMode::kSoftLight + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kDifference ==
+                  (int)SkBlendMode::kDifference + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kExclusion ==
+                  (int)SkBlendMode::kExclusion + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kMultiply ==
+                  (int)SkBlendMode::kMultiply + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kHSLHue ==
+                  (int)SkBlendMode::kHue + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kHSLSaturation ==
+                  (int)SkBlendMode::kSaturation + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kHSLColor ==
+                  (int)SkBlendMode::kColor + kEqOffset);
+    static_assert((int)skgpu::BlendEquation::kHSLLuminosity ==
+                  (int)SkBlendMode::kLuminosity + kEqOffset);
+    // There's an illegal BlendEquation that corresponds to no SkBlendMode, hence the extra +1.
+    static_assert(skgpu::kBlendEquationCnt == (int)SkBlendMode::kLastMode + 1 + 1 + kEqOffset);
+
+    return static_cast<skgpu::BlendEquation>((int)mode + kEqOffset);
+}
 
 } // namespace skgpu
 
