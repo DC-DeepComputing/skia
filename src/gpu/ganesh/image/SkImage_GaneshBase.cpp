@@ -224,23 +224,39 @@ sk_sp<SkImage> SkImage_GaneshBase::onMakeSubset(skgpu::graphite::Recorder*,
     return nullptr;
 }
 
-sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(skgpu::graphite::Recorder*,
-                                                              SkColorType,
-                                                              sk_sp<SkColorSpace>,
+sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(SkRecorder* recorder,
+                                                              SkColorType targetColorType,
+                                                              sk_sp<SkColorSpace> targetCS,
                                                               RequiredProperties) const {
-    SkDEBUGFAIL("Cannot convert Ganesh-backed image to Graphite");
-    return nullptr;
-}
-
-sk_sp<SkSurface> SkImage_GaneshBase::onMakeSurface(skgpu::graphite::Recorder*,
-                                                   const SkImageInfo& info) const {
-    if (auto ictx = this->context()) {
-        if (auto rctx = ictx->priv().asRecordingContext()) {
-            auto isBudgeted = skgpu::Budgeted::kNo;  // Assuming we're a one-shot surface
-            return SkSurfaces::RenderTarget(rctx, isBudgeted, info);
-        }
+    if (!recorder || recorder->type() != SkRecorder::Type::kGanesh) {
+        return nullptr;
     }
-    return nullptr;
+    GrDirectContext dContext = static_cast<GaneshRecorder*>(recorder)->directContext();
+    if (!dContext) {
+        return nullptr;
+    }
+
+    if (kUnknown_SkColorType == targetColorType || !targetCS) {
+        return nullptr;
+    }
+
+    auto myContext = this->context();
+    // This check is also performed in the subclass, but we do it here for the short-circuit below.
+    if (!myContext || !myContext->priv().matches(dContext)) {
+        return nullptr;
+    }
+
+    SkColorType colorType = this->colorType();
+    SkColorSpace* colorSpace = this->colorSpace();
+    if (!colorSpace) {
+        colorSpace = sk_srgb_singleton();
+    }
+    if (colorType == targetColorType &&
+        (SkColorSpace::Equals(colorSpace, targetCS.get()) || this->isAlphaOnly())) {
+        return sk_ref_sp(const_cast<SkImage_GaneshBase*>(this));
+    }
+
+    return this->onMakeColorTypeAndColorSpace(targetColorType, std::move(targetCS), dContext);
 }
 
 bool SkImage_GaneshBase::onReadPixels(GrDirectContext* dContext,
@@ -280,31 +296,6 @@ bool SkImage_GaneshBase::isValid(GrRecordingContext* context) const {
     return true;
 }
 
-sk_sp<SkImage> SkImage_GaneshBase::makeColorTypeAndColorSpace(GrDirectContext* dContext,
-                                                              SkColorType targetColorType,
-                                                              sk_sp<SkColorSpace> targetCS) const {
-    if (kUnknown_SkColorType == targetColorType || !targetCS) {
-        return nullptr;
-    }
-
-    auto myContext = this->context();
-    // This check is also performed in the subclass, but we do it here for the short-circuit below.
-    if (!myContext || !myContext->priv().matches(dContext)) {
-        return nullptr;
-    }
-
-    SkColorType colorType = this->colorType();
-    SkColorSpace* colorSpace = this->colorSpace();
-    if (!colorSpace) {
-        colorSpace = sk_srgb_singleton();
-    }
-    if (colorType == targetColorType &&
-        (SkColorSpace::Equals(colorSpace, targetCS.get()) || this->isAlphaOnly())) {
-        return sk_ref_sp(const_cast<SkImage_GaneshBase*>(this));
-    }
-
-    return this->onMakeColorTypeAndColorSpace(targetColorType, std::move(targetCS), dContext);
-}
 
 sk_sp<GrTextureProxy> SkImage_GaneshBase::MakePromiseImageLazyProxy(
         GrContextThreadSafeProxy* tsp,

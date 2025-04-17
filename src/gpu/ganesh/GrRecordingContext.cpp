@@ -30,6 +30,7 @@
 #include "src/gpu/ganesh/ops/AtlasTextOp.h"
 #include "src/text/gpu/SubRunAllocator.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
+#include "src/gpu/ganesh/SkGaneshRecorder.h"
 
 #include <utility>
 
@@ -56,6 +57,7 @@ GrRecordingContext::GrRecordingContext(sk_sp<GrContextThreadSafeProxy> proxy, bo
         , fArenas(ddlRecording) {
     fProxyProvider = std::make_unique<GrProxyProvider>(this);
     fRasterContext = std::make_unique<SkRasterContext_Base>();
+    fRecorder = std::make_unique<SkGaneshRecorder>(this);
 }
 
 GrRecordingContext::~GrRecordingContext() {
