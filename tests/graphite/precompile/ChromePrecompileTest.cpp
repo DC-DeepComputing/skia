@@ -830,9 +830,11 @@ void run_test(skgpu::graphite::PrecompileContext* precompileContext,
         localMatches.push_back(didThisLabelMatch);
     }
 
-    SkASSERT(matchesInCases.size() >= 1); // This tests requirement 1, above
-    [[maybe_unused]] float utilization = ((float) matchesInCases.size())/generatedLabels.size();
-    SkASSERT(utilization >= 0.4f); // This tests requirement 2, above
+    REPORTER_ASSERT(reporter, matchesInCases.size() >= 1,   // This tests requirement 1, above
+                    "%d: num matches: %zu", precompileSettingsIndex, matchesInCases.size());
+    float utilization = ((float) matchesInCases.size())/generatedLabels.size();
+    REPORTER_ASSERT(reporter, utilization >= 0.4f,         // This tests requirement 2, above
+                    "%d: utilization: %f", precompileSettingsIndex, utilization);
 
 #if defined(PRINT_COVERAGE)
     // This block will print out all the cases in 'kCases' that the given PrecompileSettings
