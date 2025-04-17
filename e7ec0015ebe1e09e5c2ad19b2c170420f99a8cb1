@@ -1,6 +1,46 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "625ca01e_a596ab75",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-17T18:13:45Z",
+      "side": 1,
+      "message": "Metal and common code looks good to me.",
+      "revId": "e7ec0015ebe1e09e5c2ad19b2c170420f99a8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3942cb6c_71aea491",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 465,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-17T18:13:45Z",
+      "side": 1,
+      "message": "This might break anyone who\u0027s been assuming that setting defaultMSAASamplesCount to 1 will force non-MSAA regardless of the target sample count. I think it\u0027s the right change but we should be aware in case someone squawks.",
+      "range": {
+        "startLine": 465,
+        "startChar": 8,
+        "endLine": 465,
+        "endChar": 53
+      },
+      "revId": "e7ec0015ebe1e09e5c2ad19b2c170420f99a8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ffd12b1f_836e2a04",
@@ -32,6 +72,29 @@
           ]
         }
       ],
+      "revId": "e7ec0015ebe1e09e5c2ad19b2c170420f99a8cb1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab577f44_7f798555",
+        "filename": "src/gpu/graphite/mtl/MtlGraphiteUtils.mm",
+        "patchSetId": 19
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-17T18:13:45Z",
+      "side": 1,
+      "message": "Nit: available",
+      "range": {
+        "startLine": 100,
+        "startChar": 83,
+        "endLine": 100,
+        "endChar": 92
+      },
       "revId": "e7ec0015ebe1e09e5c2ad19b2c170420f99a8cb1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
