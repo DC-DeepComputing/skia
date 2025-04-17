@@ -16,7 +16,7 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
                        const SkM44& local2Dev,
                        const SkColorInfo& dstColorInfo,
                        OptimizeSampling optimizeSampling,
-                       const SkColor4f& paintColor)
+                       const SkColor4f& paintColor, bool)
         : fRecorder(recorder)
         , fLocal2Dev(local2Dev)
         , fLocalMatrix(nullptr)
@@ -25,8 +25,8 @@ KeyContext::KeyContext(skgpu::graphite::Recorder* recorder,
         , fCaps(recorder->priv().caps()) {
     fDictionary = fRecorder->priv().shaderCodeDictionary();
     fRTEffectDict = fRecorder->priv().runtimeEffectDictionary();
-    fPaintColor = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
-    fPaintColor.fA = paintColor.fA;
+    fPaintColor1 = PaintParams::Color4fPrepForDst(paintColor, fDstColorInfo).makeOpaque().premul();
+    fPaintColor1.fA = paintColor.fA;
 }
 
 KeyContext::KeyContext(const KeyContext& other)
@@ -36,7 +36,7 @@ KeyContext::KeyContext(const KeyContext& other)
         , fDictionary(other.fDictionary)
         , fRTEffectDict(other.fRTEffectDict)
         , fDstColorInfo(other.fDstColorInfo)
-        , fPaintColor(other.fPaintColor)
+        , fPaintColor1(other.fPaintColor1)
         , fScope(other.fScope)
         , fOptimizeSampling(other.fOptimizeSampling)
         , fCaps(other.fCaps) {}

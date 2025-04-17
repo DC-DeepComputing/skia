@@ -60,15 +60,17 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations1(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
+                                          /* isPaintColorOpaque= */ true,
                                           Coverage::kNone,
                                           renderPassDesc,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
+                                                           bool /* isPaintColorOpaque */,
                                                            Coverage,
                                                            const RenderPassDesc&) {
                                                                precompileIDs.push_back(id);
@@ -90,15 +92,17 @@ void run_test(const KeyContext& keyContext,
                     expectedNumOptions, paintOptions.priv().numCombinations());
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations1(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
+                                          /* isPaintColorOpaque= */ true,
                                           Coverage::kNone,
                                           renderPassDesc,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
+                                                           bool /* isPaintColorOpaque */,
                                                            Coverage,
                                                            const RenderPassDesc&) {
                                               precompileIDs.push_back(id);
@@ -171,15 +175,17 @@ void big_test(const KeyContext& keyContext,
                     "Actual # of combinations %d", paintOptions.priv().numCombinations());
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations1(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
+                                          /* isPaintColorOpaque= */ true,
                                           Coverage::kNone,
                                           renderPassDesc,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
+                                                           bool /* isPaintAlphaOpaque */,
                                                            Coverage,
                                                            const RenderPassDesc&) {
                                                                precompileIDs.push_back(id);
@@ -338,15 +344,17 @@ void runtime_effect_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 64);
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations1(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
+                                          /* isPaintColorOpaque= */ true,
                                           Coverage::kNone,
                                           renderPassDesc,
                                           [&precompileIDs](UniquePaintParamsID id,
                                                            DrawTypeFlags,
                                                            bool /* withPrimitiveBlender */,
+                                                           bool /* isPaintAlphaOpaque */,
                                                            Coverage,
                                                            const RenderPassDesc&) {
                                                                precompileIDs.push_back(id);

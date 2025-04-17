@@ -112,7 +112,9 @@ namespace PrecompileShaders {
     // Note that this factory is for non-YUV SkImages, the YUVImage factory (below) should be used
     // to represent the shading and sampling required for YUV images.
     SK_API sk_sp<PrecompileShader> Image(SkSpan<const SkColorInfo> = {},
-                                         SkSpan<const SkTileMode> = {});
+                                         SkSpan<const SkTileMode> = {},
+                                         bool skipCubic = false,
+                                         bool skipOtherTwo = false);
     // As with the above Image call, raw ImageShaders are usually created via an
     // SkImage::makeRawShader call. The RawImage call allows the equivalent precompilation
     // program structure to be created without needing the SkImage.

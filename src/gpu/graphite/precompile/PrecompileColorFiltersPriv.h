@@ -11,6 +11,8 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSpan.h"
 
+#include "modules/skcms/src/skcms_public.h"
+
 namespace skgpu::graphite {
 
 class PrecompileColorFilter;

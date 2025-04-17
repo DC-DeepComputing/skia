@@ -164,7 +164,7 @@ void add_alpha_only_paint_color_uniform_data(const ShaderCodeDictionary* dict,
 void RGBPaintColorBlock::AddBlock(const KeyContext& keyContext,
                                   PaintParamsKeyBuilder* builder,
                                   PipelineDataGatherer* gatherer) {
-    add_rgb_paint_color_uniform_data(keyContext.dict(), keyContext.paintColor(), gatherer);
+    add_rgb_paint_color_uniform_data(keyContext.dict(), keyContext.paintColor1(), gatherer);
 
     builder->addBlock(BuiltInCodeSnippetID::kRGBPaintColor);
 }
@@ -172,7 +172,7 @@ void RGBPaintColorBlock::AddBlock(const KeyContext& keyContext,
 void AlphaOnlyPaintColorBlock::AddBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer) {
-    add_alpha_only_paint_color_uniform_data(keyContext.dict(), keyContext.paintColor(), gatherer);
+    add_alpha_only_paint_color_uniform_data(keyContext.dict(), keyContext.paintColor1(), gatherer);
 
     builder->addBlock(BuiltInCodeSnippetID::kAlphaOnlyPaintColor);
 }

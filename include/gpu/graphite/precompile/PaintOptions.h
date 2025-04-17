@@ -162,16 +162,18 @@ private:
 
     int numCombinations() const;
     // 'desiredCombination' must be less than the result of the numCombinations call
-    void createKey(const KeyContext&,
+    void createKey1(const KeyContext&,
                    PaintParamsKeyBuilder*,
                    PipelineDataGatherer*,
                    int desiredCombination,
                    bool addPrimitiveBlender,
+                   bool isPaintColorOpaque,
                    Coverage coverage) const;
 
     typedef std::function<void(UniquePaintParamsID id,
                                DrawTypeFlags,
                                bool withPrimitiveBlender,
+                               bool isPaintColorOpaque,
                                Coverage,
                                const RenderPassDesc&)> ProcessCombination;
 
@@ -179,6 +181,7 @@ private:
                            PipelineDataGatherer*,
                            DrawTypeFlags,
                            bool addPrimitiveBlender,
+                           bool isPaintColorOpaque,
                            Coverage,
                            const RenderPassDesc&,
                            const ProcessCombination&) const;

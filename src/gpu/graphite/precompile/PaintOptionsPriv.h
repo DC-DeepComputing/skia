@@ -31,16 +31,17 @@ public:
         return fPaintOptions->numCombinations();
     }
 
-    void buildCombinations(
+    void buildCombinations1(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
             DrawTypeFlags drawTypes,
             bool withPrimitiveBlender,
+            bool isPaintColorOpaque,
             Coverage coverage,
             const RenderPassDesc& renderPassDesc,
             const ProcessCombination& processCombination) const {
         fPaintOptions->buildCombinations(
-                keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
+                keyContext, gatherer, drawTypes, withPrimitiveBlender, isPaintColorOpaque, coverage,
                 renderPassDesc, processCombination);
     }
 

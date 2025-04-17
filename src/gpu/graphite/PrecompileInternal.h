@@ -26,6 +26,7 @@ void PrecompileCombinations(const RendererProvider*,
                             const KeyContext&,
                             DrawTypeFlags,
                             bool withPrimitiveBlender,
+                            bool isPaintAlphaOpaque,
                             Coverage,
                             const RenderPassDesc&);
 

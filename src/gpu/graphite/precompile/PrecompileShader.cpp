@@ -249,7 +249,7 @@ public:
                                              : DefaultColorInfos())
             , fTileModes(!tileModes.empty()
                             ? std::vector<SkTileMode>(tileModes.begin(), tileModes.end())
-                            : DefaultTileModes())
+                            : ((flags & PrecompileImageShaderFlags::kExcludeOtherTwo) ? NoTileModes() : DefaultTileModes()))
             , fUseDstColorSpace(!colorInfos.empty())
             , fRaw(raw) {}
 
@@ -303,6 +303,10 @@ private:
     // A fixed list of SkTileModes that will trigger each tiling shader variant.
     static std::vector<SkTileMode> DefaultTileModes() {
         return { SkTileMode::kClamp, SkTileMode::kRepeat };
+    }
+
+    static std::vector<SkTileMode> NoTileModes() {
+        return {};
     }
 
     const int fNumExtraSamplingTilingCombos;
@@ -424,9 +428,19 @@ private:
 };
 
 sk_sp<PrecompileShader> PrecompileShaders::Image(SkSpan<const SkColorInfo> colorInfos,
-                                                 SkSpan<const SkTileMode> tileModes) {
+                                                 SkSpan<const SkTileMode> tileModes,
+                                                 bool skipCubic,
+                                                 bool skipOtherTwo) {
+    PrecompileImageShaderFlags flags = PrecompileImageShaderFlags::kNone;
+    if (skipCubic) {
+        flags = PrecompileImageShaderFlags((int)flags | (int)PrecompileImageShaderFlags::kExcludeCubic);
+    }
+    if (skipOtherTwo) {
+        flags = PrecompileImageShaderFlags((int)flags | (int)PrecompileImageShaderFlags::kExcludeOtherTwo);
+    }
+
     return PrecompileShaders::LocalMatrix(
-            { sk_make_sp<PrecompileImageShader>(PrecompileImageShaderFlags::kNone,
+            { sk_make_sp<PrecompileImageShader>(flags,
                                                 colorInfos, tileModes,
                                                 /* raw= */false) });
 }

@@ -150,11 +150,12 @@ int PaintOptions::numCombinations() const {
            this->numClipShaderCombinations();
 }
 
-void PaintOptions::createKey(const KeyContext& keyContext,
+void PaintOptions::createKey1(const KeyContext& keyContext,
                              PaintParamsKeyBuilder* keyBuilder,
                              PipelineDataGatherer* gatherer,
                              int desiredCombination,
                              bool addPrimitiveBlender,
+                             bool isPaintColorOpaque,
                              Coverage coverage) const {
     SkDEBUGCODE(keyBuilder->checkReset();)
     SkASSERT(desiredCombination < this->numCombinations());
@@ -175,9 +176,6 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     const int desiredShaderCombination = remainingCombinations;
     SkASSERT(desiredShaderCombination < this->numShaderCombinations());
 
-    // TODO: this probably needs to be passed in just like addPrimitiveBlender
-    const bool kOpaquePaintColor = true;
-
     auto clipShader = PrecompileBase::SelectOption(SkSpan(fClipShaderOptions),
                                                    desiredClipShaderCombination);
 
@@ -196,7 +194,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
     PrecompileBlender* blender = finalBlender.first.get();
     std::optional<SkBlendMode> blendMode = blender ? blender->priv().asBlendMode()
                                                    : SkBlendMode::kSrcOver;
-    PaintOption option(kOpaquePaintColor,
+    PaintOption option(isPaintColorOpaque,
                        finalBlender,
                        PrecompileBase::SelectOption(SkSpan(fShaderOptions),
                                                     desiredShaderCombination),
@@ -229,10 +227,11 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
     imagePaintOptions.setColorFilters(orig.getColorFilters());
     imagePaintOptions.priv().addColorFilter(nullptr);
 
-    imagePaintOptions.priv().buildCombinations(keyContext,
+    imagePaintOptions.priv().buildCombinations1(keyContext,
                                                gatherer,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
+                                               /* isPaintColorOpaque= */ true,
                                                Coverage::kSingleChannel,
                                                renderPassDesc,
                                                processCombination);
@@ -245,6 +244,7 @@ void PaintOptions::buildCombinations(
         PipelineDataGatherer* gatherer,
         DrawTypeFlags drawTypes,
         bool withPrimitiveBlender,
+        bool isPaintColorOpaque,
         Coverage coverage,
         const RenderPassDesc& renderPassDesc,
         const ProcessCombination& processCombination) const {
@@ -292,8 +292,8 @@ void PaintOptions::buildCombinations(
             tmp.setColorFilters(newCFs);
         }
 
-        tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                              renderPassDesc, processCombination);
+        tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender,
+                              isPaintColorOpaque, coverage, renderPassDesc, processCombination);
 
         create_image_drawing_pipelines(keyContext, gatherer, *this,
                                        renderPassDesc, processCombination);
@@ -311,13 +311,15 @@ void PaintOptions::buildCombinations(
             // the exact layout doesn't matter
             gatherer->resetWithNewLayout(Layout::kMetal);
 
-            this->createKey(keyContext, &builder, gatherer, i, withPrimitiveBlender, coverage);
+            this->createKey1(keyContext, &builder, gatherer, i, withPrimitiveBlender,
+                             isPaintColorOpaque, coverage);
 
             // The 'findOrCreate' calls lockAsKey on builder and then destroys the returned
             // PaintParamsKey. This serves to reset the builder.
             UniquePaintParamsID paintID = keyContext.dict()->findOrCreate(&builder);
 
-            processCombination(paintID, drawTypes, withPrimitiveBlender, coverage, renderPassDesc);
+            processCombination(paintID, drawTypes, withPrimitiveBlender, isPaintColorOpaque,
+                               coverage, renderPassDesc);
         }
     }
 }

@@ -82,10 +82,11 @@ void CreateBlurImageFilterPipelines(
     blurPaintOptions.setShaders({ PrecompileShadersPriv::Blur(imageShader) });
     blurPaintOptions.setBlendModes(kBlurBlendModes);
 
-    blurPaintOptions.priv().buildCombinations(keyContext,
+    blurPaintOptions.priv().buildCombinations1(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
+                                              /* isPaintColorOpaque= */ true,
                                               Coverage::kSingleChannel,
                                               renderPassDesc,
                                               processCombination);
@@ -122,10 +123,11 @@ private:
 
         paintOptions.setShaders({ std::move(blendShader) });
 
-        paintOptions.priv().buildCombinations(keyContext,
+        paintOptions.priv().buildCombinations1(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
+                                              /* isPaintColorOpaque= */ true,
                                               Coverage::kSingleChannel,
                                               renderPassDesc,
                                               processCombination);
@@ -225,10 +227,11 @@ private:
         paintOptions.setColorFilters({ fColorFilter });
         paintOptions.setBlendModes(kBlendModes);
 
-        paintOptions.priv().buildCombinations(keyContext,
+        paintOptions.priv().buildCombinations1(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
+                                              /* isPaintColorOpaque= */ true,
                                               Coverage::kSingleChannel,
                                               renderPassDesc,
                                               processCombination);
@@ -280,10 +283,11 @@ private:
 
         displacement.setShaders({ PrecompileShadersPriv::Displacement(imageShader, imageShader) });
 
-        displacement.priv().buildCombinations(keyContext,
+        displacement.priv().buildCombinations1(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
+                                              /* isPaintColorOpaque= */ true,
                                               Coverage::kSingleChannel,
                                               renderPassDesc,
                                               processCombination);
@@ -316,10 +320,11 @@ private:
         PaintOptions lighting;
         lighting.setShaders({ PrecompileShadersPriv::Lighting(std::move(imageShader)) });
 
-        lighting.priv().buildCombinations(keyContext,
+        lighting.priv().buildCombinations1(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kSimpleShape,
                                           /* withPrimitiveBlender= */ false,
+                                          /* isPaintColorOpaque= */ true,
                                           Coverage::kSingleChannel,
                                           renderPassDesc,
                                           processCombination);
@@ -355,10 +360,11 @@ private:
 
         matrixConv.setShaders({ PrecompileShadersPriv::MatrixConvolution(imageShader) });
 
-        matrixConv.priv().buildCombinations(keyContext,
+        matrixConv.priv().buildCombinations1(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
+                                            /* isPaintColorOpaque= */ true,
                                             Coverage::kSingleChannel,
                                             renderPassDesc,
                                             processCombination);
@@ -396,10 +402,11 @@ private:
             sparse.setShaders({ PrecompileShadersPriv::SparseMorphology(imageShader) });
             sparse.setBlendModes(kBlendModes);
 
-            sparse.priv().buildCombinations(keyContext,
+            sparse.priv().buildCombinations1(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
+                                            /* isPaintColorOpaque= */ true,
                                             Coverage::kSingleChannel,
                                             renderPassDesc,
                                             processCombination);
@@ -412,10 +419,11 @@ private:
             linear.setShaders({ PrecompileShadersPriv::LinearMorphology(std::move(imageShader)) });
             linear.setBlendModes(kBlendModes);
 
-            linear.priv().buildCombinations(keyContext,
+            linear.priv().buildCombinations1(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
+                                            /* isPaintColorOpaque= */ true,
                                             Coverage::kSingleChannel,
                                             renderPassDesc,
                                             processCombination);

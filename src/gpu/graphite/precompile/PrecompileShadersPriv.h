@@ -17,9 +17,10 @@ namespace skgpu::graphite {
 class PrecompileShader;
 
 enum class PrecompileImageShaderFlags {
-    kNone         = 0b00,
-    kExcludeAlpha = 0b01,
-    kExcludeCubic = 0b10
+    kNone            = 0b000,
+    kExcludeAlpha    = 0b001,
+    kExcludeCubic    = 0b010,
+    kExcludeOtherTwo = 0b100,
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageShaderFlags)
 

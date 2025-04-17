@@ -132,6 +132,7 @@ void Precompile(PrecompileContext* precompileContext,
             KeyContext keyContext(caps, dict, rtEffectDict.get(), ci);
 
             for (Coverage coverage : { Coverage::kNone, Coverage::kSingleChannel }) {
+            for (bool isPaintAlphaOpaque : { true, false }) {
                 PrecompileCombinations(
                         precompileContext->priv().rendererProvider(),
                         precompileContext->priv().resourceProvider(),
@@ -141,8 +142,10 @@ void Precompile(PrecompileContext* precompileContext,
                                                                  DrawTypeFlags::kSDFText_LCD |
                                                                  DrawTypeFlags::kDrawVertices)),
                         /* withPrimitiveBlender= */ false,
+                        isPaintAlphaOpaque,
                         coverage,
                         renderPassDesc);
+            }
             }
 
             if (drawTypes & DrawTypeFlags::kBitmapText_Color) {
@@ -157,6 +160,7 @@ void Precompile(PrecompileContext* precompileContext,
                                        keyContext,
                                        DrawTypeFlags::kBitmapText_Color,
                                        /* withPrimitiveBlender= */ true,
+                                       /* isPaintAlphaOpaque= */ true,
                                        Coverage::kNone,
                                        renderPassDesc);
             }
@@ -170,6 +174,7 @@ void Precompile(PrecompileContext* precompileContext,
                         static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
                                                                 DrawTypeFlags::kSDFText_LCD)),
                         /* withPrimitiveBlender= */ false,
+                        /* isPaintAlphaOpaque= */ true,
                         Coverage::kLCD,
                         renderPassDesc);
             }
@@ -178,13 +183,17 @@ void Precompile(PrecompileContext* precompileContext,
                 // drawVertices w/ colors use a primitiveBlender while those w/o don't. It never
                 // emits coverage.
                 for (bool withPrimitiveBlender : { true, false }) {
-                    PrecompileCombinations(precompileContext->priv().rendererProvider(),
-                                           precompileContext->priv().resourceProvider(),
-                                           options, keyContext,
-                                           DrawTypeFlags::kDrawVertices,
-                                           withPrimitiveBlender,
-                                           Coverage::kNone,
-                                           renderPassDesc);
+                    for (bool isPaintAlphaOpaque : { true, false }) {
+
+                        PrecompileCombinations(precompileContext->priv().rendererProvider(),
+                                               precompileContext->priv().resourceProvider(),
+                                               options, keyContext,
+                                               DrawTypeFlags::kDrawVertices,
+                                               withPrimitiveBlender,
+                                               isPaintAlphaOpaque,
+                                               Coverage::kNone,
+                                               renderPassDesc);
+                    }
                 }
             }
         }
@@ -197,6 +206,7 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
                             const KeyContext& keyContext,
                             DrawTypeFlags drawTypes,
                             bool withPrimitiveBlender,
+                            bool isPaintAlphaOpaque,
                             Coverage coverage,
                             const RenderPassDesc& renderPassDescIn) {
     if (drawTypes == DrawTypeFlags::kNone) {
@@ -207,16 +217,18 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
 
-    options.priv().buildCombinations(
+    options.priv().buildCombinations1(
         keyContext,
         &gatherer,
         drawTypes,
         withPrimitiveBlender,
+        isPaintAlphaOpaque,
         coverage,
         renderPassDescIn,
         [rendererProvider, resourceProvider, &keyContext](UniquePaintParamsID uniqueID,
                                                           DrawTypeFlags drawTypes,
                                                           bool withPrimitiveBlender,
+                                                          bool /* isPaintAlphaOpaque */,
                                                           Coverage coverage,
                                                           const RenderPassDesc& renderPassDesc) {
                compile(rendererProvider,

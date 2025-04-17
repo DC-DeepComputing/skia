@@ -44,7 +44,8 @@ public:
                const SkM44& local2Dev,
                const SkColorInfo& dstColorInfo,
                OptimizeSampling optimizeSampling,
-               const SkColor4f& paintColor);
+               const SkColor4f& paintColor,
+               bool);
 
     KeyContext(const KeyContext&);
 
@@ -60,7 +61,7 @@ public:
 
     const SkColorInfo& dstColorInfo() const { return fDstColorInfo; }
 
-    const SkPMColor4f& paintColor() const { return fPaintColor; }
+    const SkPMColor4f& paintColor1() const { return fPaintColor1; }
 
     enum class Scope {
         kDefault,
@@ -80,7 +81,7 @@ protected:
     // Although stored as premul the paint color is actually comprised of an opaque RGB portion
     // and a separate alpha portion. The two portions will never be used together but are stored
     // together to reduce the number of uniforms.
-    SkPMColor4f fPaintColor = SK_PMColor4fBLACK;
+    SkPMColor4f fPaintColor1 = SK_PMColor4fBLACK;
     Scope fScope = Scope::kDefault;
     OptimizeSampling fOptimizeSampling = OptimizeSampling::kNo;
 
@@ -113,12 +114,12 @@ public:
     KeyContextWithColorInfo(const KeyContext& other, const SkColorInfo& info) : KeyContext(other) {
         // We want to keep fPaintColor's alpha value but replace the RGB with values in the new
         // color space
-        SkPMColor4f tmp = fPaintColor;
+        SkPMColor4f tmp = fPaintColor1;
         tmp.fA = 1.0f;
         SkColorSpaceXformSteps(fDstColorInfo, info).apply(tmp.vec());
-        fPaintColor.fR = tmp.fR;
-        fPaintColor.fG = tmp.fG;
-        fPaintColor.fB = tmp.fB;
+        fPaintColor1.fR = tmp.fR;
+        fPaintColor1.fG = tmp.fG;
+        fPaintColor1.fB = tmp.fB;
         fDstColorInfo = info;
     }
 

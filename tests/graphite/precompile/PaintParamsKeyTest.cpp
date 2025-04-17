@@ -1919,7 +1919,8 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 
-    for (bool withPrimitiveBlender: {false, true}) {
+    for (bool withPrimitiveBlender : { false, true }) {
+    for (bool isPaintAlphaOpaque : { false, true }) {
 
         sk_sp<SkBlender> primitiveBlender;
         if (withPrimitiveBlender) {
@@ -1971,15 +1972,17 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         RenderPassDesc unusedRenderPassDesc;
 
         std::vector<UniquePaintParamsID> precompileIDs;
-        paintOptions.priv().buildCombinations(precompileKeyContext,
+        paintOptions.priv().buildCombinations1(precompileKeyContext,
                                               &precompileGatherer,
                                               DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
+                                              isPaintAlphaOpaque,
                                               coverage,
                                               unusedRenderPassDesc,
                                               [&precompileIDs](UniquePaintParamsID id,
                                                                DrawTypeFlags,
                                                                bool /* withPrimitiveBlender */,
+                                                               bool /* isPaintAlphaOpaque */,
                                                                Coverage,
                                                                const RenderPassDesc&) {
                                                   precompileIDs.push_back(id);
@@ -2017,6 +2020,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
 #endif
 
         REPORTER_ASSERT(reporter, result != precompileIDs.end());
+    }
     }
 }
 

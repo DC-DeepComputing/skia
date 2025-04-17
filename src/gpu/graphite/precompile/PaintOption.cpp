@@ -96,7 +96,7 @@ void PaintOption::handlePaintAlpha(const KeyContext& keyContext,
         return;
     }
 
-    if (!fOpaquePaintColor) {
+    if (!fOpaquePaintColor1) {
         Blend(keyContext, keyBuilder, gatherer,
               /* addBlendToKey= */ [&] () -> void {
                   AddFixedBlendMode(keyContext, keyBuilder, gatherer, SkBlendMode::kSrcIn);

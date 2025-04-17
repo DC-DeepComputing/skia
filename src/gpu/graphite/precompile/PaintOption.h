@@ -32,7 +32,7 @@ public:
                 const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
                 bool dstReadRequired,
                 bool dither)
-        : fOpaquePaintColor(opaquePaintColor)
+        : fOpaquePaintColor1(opaquePaintColor)
         , fFinalBlender(finalBlender)
         , fShader(shader)
         , fColorFilter(colorFilter)
@@ -56,7 +56,7 @@ private:
     bool shouldDither(SkColorType dstCT) const;
     void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
-    bool fOpaquePaintColor;
+    bool fOpaquePaintColor1;
     std::pair<sk_sp<PrecompileBlender>, int> fFinalBlender;
     std::pair<sk_sp<PrecompileShader>, int> fShader;
     std::pair<sk_sp<PrecompileColorFilter>, int> fColorFilter;
