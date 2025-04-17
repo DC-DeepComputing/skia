@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c9c70e1_d34473da",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3943009
+      },
+      "writtenOn": "2025-04-17T09:28:15Z",
+      "side": 1,
+      "message": "Hi Greg and Nicoletter,\n\nThank you for accepting the change. Could you please provide an estimated timeline for when this change will be included in the released binary?\n\nThis is a high priority for our client.\n\nBest regards,\nFaijur",
+      "revId": "abef2d5f05dc49679fc8d1424bb6d69da8a3bf05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
