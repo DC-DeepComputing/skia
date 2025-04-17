@@ -4,9 +4,11 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
+#include "include/core/SkBitmap.h"
 #include "include/core/SkBlurTypes.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkColor.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
@@ -20,6 +22,7 @@
 
 #if defined(SK_GANESH)
 #include "include/gpu/ganesh/GrDirectContext.h"
+#include "include/gpu/ganesh/SkImageGanesh.h"
 #endif
 
 #if defined(SK_GRAPHITE)
@@ -45,6 +48,8 @@ DEF_TEST(RasterSurface_UsesRasterContextAndRecorderToDraw_DrawsPixels, reporter)
     SkPixmap pmap;
     REPORTER_ASSERT(reporter, surface->peekPixels(&pmap));
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
+
+    REPORTER_ASSERT(reporter, surface->getCanvas()->baseRecorder() == recorder.get());
 }
 
 DEF_TEST(RasterSurface_UsesTODORecorder_DrawsPixels, reporter) {
@@ -62,6 +67,26 @@ DEF_TEST(RasterSurface_UsesTODORecorder_DrawsPixels, reporter) {
     SkPixmap pmap;
     REPORTER_ASSERT(reporter, surface->peekPixels(&pmap));
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
+
+    REPORTER_ASSERT(reporter, surface->getCanvas()->baseRecorder() == SkRasterRecorder::TODO());
+}
+
+DEF_TEST(ImageMakeColorSpace_UsesRasterRecorderToMakeImage_Success, reporter) {
+    auto ctx = SkRasterContext::MakeWithDefaults();
+
+    std::unique_ptr<SkRasterRecorder> recorder = ctx->makeRecorder();
+
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto img = SkImages::RasterFromBitmap(bm);
+    SkASSERT(img);
+
+    auto newImg = img->makeColorSpace(recorder.get(), SkColorSpace::MakeSRGBLinear(), {});
+
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 100);
+    REPORTER_ASSERT(reporter, !newImg->isTextureBacked());
 }
 
 #if defined(SK_GRAPHITE)
@@ -111,4 +136,64 @@ DEF_GANESH_TEST_FOR_ALL_CONTEXTS(
     REPORTER_ASSERT(reporter, surface->peekPixels(&pmap));
     REPORTER_ASSERT(reporter, pmap.getColor(25, 25) == SK_ColorRED);
 }
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(
+        ImageMakeColorSpace_RasterSourceGaneshDestWithContext_Success,
+        reporter,
+        ctxInfo,
+        CtsEnforcement::kNextRelease) {
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto img = SkImages::RasterFromBitmap(bm);
+    SkASSERT(img);
+
+    auto newImg = img->makeColorSpace(ctxInfo.directContext(), SkColorSpace::MakeSRGBLinear());
+
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 100);
+    REPORTER_ASSERT(reporter, newImg->isTextureBacked());
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(
+        ImageMakeColorSpace_RasterSourceGaneshDestWithRecorder_Success,
+        reporter,
+        ctxInfo,
+        CtsEnforcement::kNextRelease) {
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto img = SkImages::RasterFromBitmap(bm);
+    SkASSERT(img);
+
+    auto newImg = img->makeColorSpace(ctxInfo.directContext()->asRecorder(), SkColorSpace::MakeSRGBLinear(), {});
+
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 100);
+    REPORTER_ASSERT(reporter, newImg->colorSpace() == SkColorSpace::MakeSRGBLinear().get());
+    REPORTER_ASSERT(reporter, newImg->isTextureBacked());
+}
+
+DEF_GANESH_TEST_FOR_ALL_CONTEXTS(
+        ImageMakeColorSpace_GaneshSourceGaneshDestWithRecorder_Success,
+        reporter,
+        ctxInfo,
+        CtsEnforcement::kNextRelease) {
+    SkBitmap bm;
+    bm.setInfo(SkImageInfo::Make(100, 100, kRGBA_8888_SkColorType, kPremul_SkAlphaType));
+    bm.allocPixels();
+    auto rImg = SkImages::RasterFromBitmap(bm);
+    SkASSERT(rImg);
+
+    auto img = SkImages::TextureFromImage(ctxInfo.directContext(), rImg);
+    SkASSERT(img);
+    SkASSERT(img->isTextureBacked());
+
+    auto newImg = img->makeColorSpace(ctxInfo.directContext()->asRecorder(), SkColorSpace::MakeSRGBLinear(), {});
+
+    REPORTER_ASSERT(reporter, newImg);
+    REPORTER_ASSERT(reporter, newImg->width() == 100);
+    REPORTER_ASSERT(reporter, newImg->isTextureBacked());
+}
+
 #endif

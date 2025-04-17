@@ -195,13 +195,6 @@ sk_sp<SkImage> Image_Base::onMakeSubset(Recorder* recorder,
                            label);
 }
 
-sk_sp<SkSurface> Image_Base::onMakeSurface(Recorder* recorder, const SkImageInfo& info) const {
-    if (!recorder) {
-        return nullptr;
-    }
-    return SkSurfaces::RenderTarget(recorder, info);
-}
-
 sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(Recorder* recorder,
                                                       SkColorType targetCT,
                                                       sk_sp<SkColorSpace> targetCS,
