@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkRasterRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAPixmaps.h"
@@ -70,13 +71,15 @@ public:
                                 const SkIRect&,
                                 RequiredProperties) const override;
 
-    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
-
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
                                                 GrDirectContext*) const override;
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const final;
+
+    SkRecorder* recorder() const override {
+        return SkRasterRecorder::TODO();
+    }
 
     void addUniqueIDListener(sk_sp<SkIDChangeListener>) const;
     sk_sp<SkCachedData> getPlanes(const SkYUVAPixmapInfo::SupportedDataTypes& supportedDataTypes,

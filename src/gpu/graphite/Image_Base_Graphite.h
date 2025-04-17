@@ -56,6 +56,9 @@ public:
                                               SkColorType targetCT,
                                               sk_sp<SkColorSpace> targetCS,
                                               RequiredProperties) const override;
+    SkRecorder* recorder() const final {
+        return nullptr;
+    }
 
     // No-ops for Ganesh APIs
     bool onReadPixels(GrDirectContext*,
@@ -71,8 +74,6 @@ public:
                      CachingHint = kAllow_CachingHint) const override { return false; }
 
     sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
-
-    sk_sp<SkSurface> onMakeSurface(Recorder*, const SkImageInfo&) const override;
 
     sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
                                                 sk_sp<SkColorSpace>,
