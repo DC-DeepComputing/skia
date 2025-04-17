@@ -392,8 +392,13 @@ template <typename Strings> bool ShouldSkipImpl(const Strings& strings, const ch
 }  // namespace
 
 bool CommandLineFlags::ShouldSkip(const SkTDArray<const char*>& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    SkTDArray<const char*> tmp;
+    tmp.push_back("ChromePrecompileTest");
+    return ShouldSkipImpl(tmp, name);
 }
 bool CommandLineFlags::ShouldSkip(const StringArray& strings, const char* name) {
-    return ShouldSkipImpl(strings, name);
+    skia_private::TArray<SkString> tmp;
+    tmp.push_back(SkString("ChromePrecompileTest"));
+    StringArray tmp2(tmp);
+    return ShouldSkipImpl(tmp2, name);
 }
