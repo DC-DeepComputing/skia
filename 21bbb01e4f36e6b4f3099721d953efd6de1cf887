@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59f6abb7_24123273",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-17T13:57:29Z",
+      "side": 1,
+      "message": "Same deal -- just making sure the client always has a ref.",
+      "revId": "21bbb01e4f36e6b4f3099721d953efd6de1cf887",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
