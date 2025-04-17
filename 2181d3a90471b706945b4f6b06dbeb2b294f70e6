@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "942cf01d_36d74b4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-17T13:26:00Z",
+      "side": 1,
+      "message": "See https://logs.chromium.org/logs/skia/705b3dc2d3b55011/+/steps/dm/0/stdout for an example, although it\u0027s not obvious why only dawn-\u003evulkan is failing but native vulkan is fine.",
+      "revId": "2181d3a90471b706945b4f6b06dbeb2b294f70e6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
