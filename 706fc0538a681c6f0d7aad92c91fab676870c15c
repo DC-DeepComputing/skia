@@ -16,6 +16,23 @@
       "message": "It seems super flaky, not sure what\u0027s going on.",
       "revId": "706fc0538a681c6f0d7aad92c91fab676870c15c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8a64043_b6318410",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-18T12:58:23Z",
+      "side": 1,
+      "message": "Do you know what the `error: closed` means in the failures?",
+      "revId": "706fc0538a681c6f0d7aad92c91fab676870c15c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
