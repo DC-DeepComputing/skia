@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7300e5f0_3543d911",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-18T15:30:30Z",
+      "side": 1,
+      "message": "Turning this back on to see whether it affects the addDrawPass crashes.",
+      "revId": "819f7a44f4919b747f4316ebaf83511dd00be171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
