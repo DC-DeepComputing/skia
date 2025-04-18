@@ -176,6 +176,8 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     backendContext.fInstance = wgpu::Instance(sInstance->Get());
     backendContext.fDevice = device;
     backendContext.fQueue  = device.GetQueue();
+
+    printf("Device good\n");
     return std::unique_ptr<GraphiteTestContext>(new DawnTestContext(backendContext));
 }
 
