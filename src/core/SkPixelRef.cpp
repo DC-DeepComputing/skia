@@ -30,9 +30,9 @@ uint32_t SkNextID::ImageID() {
 ///////////////////////////////////////////////////////////////////////////////
 
 SkPixelRef::SkPixelRef(int width, int height, void* pixels, size_t rowBytes)
-    : fWidth(width)
+    : fPixels(pixels)
+    , fWidth(width)
     , fHeight(height)
-    , fPixels(pixels)
     , fRowBytes(rowBytes)
     , fAddedToCache(false)
 {
