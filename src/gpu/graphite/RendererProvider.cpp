@@ -178,6 +178,8 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     this->assumeOwnership(std::move(coverInverse));
     this->assumeOwnership(std::move(coverFill));
 
+    printf("Renderer Provider Complete\n");
+
 #ifdef SK_ENABLE_VELLO_SHADERS
     fVelloRenderer = std::make_unique<VelloRenderer>(caps);
 #endif
