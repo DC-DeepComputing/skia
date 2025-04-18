@@ -33,6 +33,24 @@
       "message": "Do you know what the `error: closed` means in the failures?",
       "revId": "706fc0538a681c6f0d7aad92c91fab676870c15c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "513f5bfb_b091a92c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-04-18T13:58:06Z",
+      "side": 1,
+      "message": "It\u0027s a new one to me.  I had only seen the `error: no devices/emulators found` partway through running nanobench.  I\u0027m seeing several different old threads about `error: closed`, mostly related to booting into recovery, but I suspect that the root cause is just the device detaching and the error message is dependent on what was being done at the time.",
+      "parentUuid": "f8a64043_b6318410",
+      "revId": "706fc0538a681c6f0d7aad92c91fab676870c15c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
