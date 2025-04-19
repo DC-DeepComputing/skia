@@ -616,9 +616,13 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // Update DrawWriter *before* we actually change any state so that accumulated draws from
         // the previous state use the proper state.
         if (pipelineChange) {
+            printf("\n\n\n");
+            printf(renderStep.RenderStepName(renderStep.renderStepID()));
+            printf("\n");
             drawWriter.newPipelineState(renderStep.primitiveType(),
                                         renderStep.vertexStride(),
                                         renderStep.instanceStride(),
+                                        renderStep.getRenderStateFlags(),
                                         barrierToAddBeforeDraws);
         } else if (stateChange) {
             drawWriter.newDynamicState();
