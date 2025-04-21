@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98c8b0a8_d9656619",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-21T15:12:52Z",
+      "side": 1,
+      "message": "I\u0027m not exactly sure how the build works out this way as the original CL doesn\u0027t touch this file `SkImageEncoderFns.h` and doesn\u0027t remove any BUILD deps, but I guess it should be explicitly included anyways as the function `icc_from_color_space` is used.",
+      "revId": "53b5dedc0f231522e34f1a22567d640fac1a3aae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
