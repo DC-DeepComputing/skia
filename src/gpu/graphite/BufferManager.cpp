@@ -654,7 +654,7 @@ VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
     const size_t size = count * stride;
-    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride, binding);
+    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride * 4, binding);
     return VertexWriter{data, size};
 }
 
