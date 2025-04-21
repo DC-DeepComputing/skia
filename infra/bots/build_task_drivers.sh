@@ -11,6 +11,11 @@
 
 set -x -e
 
+# Debugging LUCI_CONTEXT
+env
+cat ${LUCI_CONTEXT}
+
+
 # Navigate to the root of the infra checkout.
 cd $(dirname ${BASH_SOURCE[0]})
 cd ../..
