@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8762df0f_890bf7a4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-21T17:39:49Z",
+      "side": 1,
+      "message": "nit: Link a bug and give a bit more context about the *why* here in the commit message",
+      "revId": "84e4641162d15011bc95e9308385a5bfa5c643d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "66ab321b_74d7cbd1",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-21T17:39:49Z",
+      "side": 1,
+      "message": "The intent of this is to eventually return an `SkRecorder`, not just a graphite recorder, right? (example: https://skia-review.googlesource.com/c/skia/+/977817)",
+      "range": {
+        "startLine": 24,
+        "startChar": 67,
+        "endLine": 24,
+        "endChar": 75
+      },
+      "revId": "84e4641162d15011bc95e9308385a5bfa5c643d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aac9fdb1_3ee2303c",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-21T17:39:49Z",
+      "side": 1,
+      "message": "nit: run `git clang-format origin/main` or similar to check on indentation.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 45
+      },
+      "revId": "84e4641162d15011bc95e9308385a5bfa5c643d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60de9827_b47a773f",
+        "filename": "tests/BUILD.bazel",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-21T17:39:49Z",
+      "side": 1,
+      "message": "Why is this necessary? I don\u0027t see any tests added here.",
+      "range": {
+        "startLine": 69,
+        "startChar": 19,
+        "endLine": 69,
+        "endChar": 28
+      },
+      "revId": "84e4641162d15011bc95e9308385a5bfa5c643d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
