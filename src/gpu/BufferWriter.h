@@ -248,6 +248,13 @@ struct VertexWriter : public BufferWriter {
         this->writeQuadVertex<3>(remainder...);
     }
 
+    void zeroOutBytes(size_t offset, size_t bytesToZero) {
+        SkASSERT(bytesToZero);
+        this->validate(bytesToZero);
+        void* zPtr = SkTAddOffset<void>(fPtr, offset);
+        memset(zPtr, 0, bytesToZero);
+    }
+
 private:
     template <int kCornerIdx, typename T, typename... Args>
     std::enable_if_t<!is_quad<T>::value, void> writeQuadVertex(const T& val,

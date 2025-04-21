@@ -18,7 +18,7 @@
 
 #include "dawn/dawn_proc.h"
 
-#define LOG_ADAPTER 0
+#define LOG_ADAPTER 1
 
 namespace skiatest::graphite {
 
@@ -104,8 +104,9 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
 
 #if LOG_ADAPTER
     wgpu::AdapterInfo info;
-    sAdapter.GetInfo(&info);
-    SkDebugf("GPU: %s\nDriver: %s\n", info.device, info.description);
+    wgpu::Adapter wgpuAdapter = matchedAdaptor.Get();
+    wgpuAdapter.GetInfo(&info);
+    SkDebugf("GPU: %s\nDriver: %s\n", info.device.data, info.description.data);
 #endif
 
     std::vector<wgpu::FeatureName> features;
@@ -176,6 +177,8 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     backendContext.fInstance = wgpu::Instance(sInstance->Get());
     backendContext.fDevice = device;
     backendContext.fQueue  = device.GetQueue();
+
+    printf("Device good\n");
     return std::unique_ptr<GraphiteTestContext>(new DawnTestContext(backendContext));
 }
 
