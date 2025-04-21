@@ -298,12 +298,10 @@ sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::addToAtlas(
     // and hence the position we render at will be relative to that Plot.
     // The value of outPos is relative to the entire texture, to be used for texture coords.
     SkAutoPixmapStorage dst;
-    SkIPoint renderPos = fDrawAtlas->prepForRender(*locator, &dst);
+    fDrawAtlas->prepForRender(*locator, &dst);
 
     // Bounds relative to the AtlasLocator
     SkIRect iDrawBounds = SkIRect::MakeXYWH(0, 0, maskSize.width(), maskSize.height());
-    // Offset bounds to plot location for draw
-    iDrawBounds.offset(renderPos.x(), renderPos.y());
 
     draw_clip_mask_to_pixmap(elementsForMask, iBounds, fDrawAtlas->plotSize(), iDrawBounds, &dst);
 
