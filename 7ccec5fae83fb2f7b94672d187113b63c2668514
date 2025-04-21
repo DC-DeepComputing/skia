@@ -155,6 +155,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bba0d88b_dd2207f6",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-21T17:41:39Z",
+      "side": 1,
+      "message": "yeah",
+      "parentUuid": "c73c4c10_ebe2ef65",
+      "range": {
+        "startLine": 574,
+        "startChar": 0,
+        "endLine": 574,
+        "endChar": 38
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f3f6d875_70e3d447",
         "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
         "patchSetId": 2
@@ -190,6 +214,30 @@
       "side": 1,
       "message": "I\u0027m not entirely convinced we should do this, since when `VK_EXT_pipeline_creation_cache_control` is not available, we will be reporting compiles even for cache lookups. Unless we assume that the extension is always available for our purposes?\n\nIn other words, to emit a different tracing structure depending on whether the extension is available, we would always need the check. I think we can only avoid that if we always have the same tracing structure, however that could be a problem if we\u0027re dealing with populations where some devices have the extension enabled and others do not.\n\nHow do you think we should proceed?",
       "parentUuid": "f3f6d875_70e3d447",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa3ce6e0_2aef5cb4",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-21T17:41:39Z",
+      "side": 1,
+      "message": "So the main trace we want to track is the \"CreateGraphicsPipeline\". This tells us how much time we are spending in the driver to eventually have a VkPipeline. This trace is also stable whether or not we have the extension. So this is the value we\u0027ll be doing most of our \"perf\" analysis on. The sub traces are purely meant to give us more insight into what\u0027s happening on the hood.\n\nBasically there are two cases we\u0027ll call into vkCreateGrahicsPipeline. Once with the VK_PIPELINE_CREATE_FAIL_ON_PIPELINE_COMPILE_REQUIRED_BIT_EXT flag set and one without. So IMO I think its fine to just have one trace for each of these options and keeps the code simpler. It\u0027s not like it will be hard to figure out if the extension is on the device or not since if it is we\u0027ll always have a \"CreateGraphicsPipeline-CacheLookupOnly\" call. If you have a better suggestion for \"CreateGraphicsPipeline-Compile\" since as you said it doesn\u0027t always compile (when we don\u0027t have the extension).\n\nThat being said I\u0027m also fine if y\u0027all really thing a different trace structure is better. Between you and Noelle you have more experience looking at the traces for compiles.",
+      "parentUuid": "d796f8d2_c509e1a1",
       "range": {
         "startLine": 595,
         "startChar": 12,
