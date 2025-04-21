@@ -30344,19 +30344,12 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:ea71ae8f23ef18150e0be1e35f78bc3ccdf0bd92"
-        },
-        {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
       "command": [
-        "luci-auth",
-        "context",
         "/bin/bash",
         "skia/infra/bots/build_task_drivers.sh",
         "${ISOLATED_OUTDIR}",
@@ -30374,9 +30367,7 @@
       },
       "env_prefixes": {
         "PATH": [
-          "bazelisk_linux_amd64",
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -30386,19 +30377,12 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:ea71ae8f23ef18150e0be1e35f78bc3ccdf0bd92"
-        },
-        {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
       "command": [
-        "luci-auth",
-        "context",
         "/bin/bash",
         "skia/infra/bots/build_task_drivers.sh",
         "${ISOLATED_OUTDIR}",
@@ -30416,9 +30400,7 @@
       },
       "env_prefixes": {
         "PATH": [
-          "bazelisk_linux_amd64",
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,
@@ -30428,19 +30410,12 @@
       "casSpec": "task-drivers",
       "cipd_packages": [
         {
-          "name": "infra/tools/luci-auth/${platform}",
-          "path": "cipd_bin_packages",
-          "version": "git_revision:ea71ae8f23ef18150e0be1e35f78bc3ccdf0bd92"
-        },
-        {
           "name": "skia/bots/bazelisk_linux_amd64",
           "path": "bazelisk_linux_amd64",
           "version": "version:0"
         }
       ],
       "command": [
-        "luci-auth",
-        "context",
         "/bin/bash",
         "skia/infra/bots/build_task_drivers.sh",
         "${ISOLATED_OUTDIR}",
@@ -30458,9 +30433,7 @@
       },
       "env_prefixes": {
         "PATH": [
-          "bazelisk_linux_amd64",
-          "cipd_bin_packages",
-          "cipd_bin_packages/bin"
+          "bazelisk_linux_amd64"
         ]
       },
       "idempotent": true,

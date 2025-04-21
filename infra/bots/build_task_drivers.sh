@@ -11,6 +11,8 @@
 
 set -x -e
 
+env
+
 # Navigate to the root of the infra checkout.
 cd $(dirname ${BASH_SOURCE[0]})
 cd ../..

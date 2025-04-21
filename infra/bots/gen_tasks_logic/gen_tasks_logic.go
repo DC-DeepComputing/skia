@@ -1192,13 +1192,11 @@ func (b *jobBuilder) buildTaskDrivers(goos, goarch string) string {
 	name := BUILD_TASK_DRIVERS_PREFIX + "_" + goos + "_" + goarch
 	b.addTask(name, func(b *taskBuilder) {
 		b.cmd(
-			"luci-auth", "context",
 			"/bin/bash", "skia/infra/bots/build_task_drivers.sh",
 			specs.PLACEHOLDER_ISOLATED_OUTDIR,
 			goos+"_"+goarch)
 		b.linuxGceDimensions(MACHINE_TYPE_MEDIUM)
 		b.usesBazel("linux_x64")
-		b.usesLUCIAuth()
 		b.idempotent()
 		b.cas(CAS_TASK_DRIVERS)
 		b.serviceAccount(b.cfg.ServiceAccountCompile)
