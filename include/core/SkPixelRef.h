@@ -83,9 +83,9 @@ protected:
     void android_only_reset(int width, int height, size_t rowBytes);
 
 private:
+    void*               fPixels;
     int                 fWidth;
     int                 fHeight;
-    void*               fPixels;
     size_t              fRowBytes;
 
     // Bottom bit indicates the Gen ID is unique.
