@@ -66,6 +66,7 @@ skia_cc_library(
     deps = [
         "//:core",
         "//:pathops",
+        "//modules/skcapture",
         "//src/base",
         "//src/core:core_priv",
     ] + select({
