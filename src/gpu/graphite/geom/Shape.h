@@ -49,6 +49,7 @@ public:
     explicit Shape(const SkRRect& rrect)    { this->setRRect(rrect); }
     explicit Shape(const SkArc& arc)        { this->setArc(arc);     }
     explicit Shape(const SkPath& path)      { this->setPath(path);   }
+    explicit Shape(const SkPath& path, uint32_t genID) { this->setPath(path, genID); }
 
     ~Shape() { this->reset(); }
 
@@ -150,7 +151,7 @@ public:
         fArc = arc;
         fInverted = false;
     }
-    void setPath(const SkPath& path) {
+    void setPath(const SkPath& path, uint32_t genID = 0) {
         if (fType == Type::kPath) {
             // Assign directly
             fPath = path;
@@ -160,6 +161,7 @@ public:
             new (&fPath) SkPath(path);
         }
         fInverted = path.isInverseFillType();
+        fPathGenID = genID != 0 ? genID : fPath.getGenerationID();
     }
 
     void reset() {
@@ -202,8 +204,9 @@ private:
         SkPath  fPath;
     };
 
-    Type    fType     = Type::kEmpty;
-    bool    fInverted = false;
+    Type     fType     = Type::kEmpty;
+    bool     fInverted = false;
+    uint32_t fPathGenID = 0;  // Used for key generation
 };
 
 } // namespace skgpu::graphite

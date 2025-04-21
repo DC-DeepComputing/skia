@@ -34,7 +34,7 @@ Shape& Shape::operator=(const Shape& shape) {
         case Type::kRect:  this->setRect(shape.rect());           break;
         case Type::kRRect: this->setRRect(shape.rrect());         break;
         case Type::kArc:   this->setArc(shape.arc());             break;
-        case Type::kPath:  this->setPath(shape.path());           break;
+        case Type::kPath:  this->setPath(shape.path(), shape.fPathGenID);           break;
     }
 
     fInverted = shape.fInverted;
@@ -244,7 +244,7 @@ void Shape::writeKey(uint32_t* key, bool includeInverted) const {
                     write_path_key_from_data(this->path(), key);
                     return;
                 } else {
-                    *key++ = this->path().getGenerationID();
+                    *key++ = fPathGenID;
                 }
             }
             break;

@@ -1229,9 +1229,10 @@ void Device::drawGeometry(const Transform& localToDevice,
         SkPath dst;
         if (paint.getPathEffect()->filterPath(&dst, geometry.shape().asPath(), &newStyle,
                                               nullptr, localToDevice)) {
-            dst.setIsVolatile(true);
             // Recurse using the path and new style, while disabling downstream path effect handling
-            this->drawGeometry(localToDevice, Geometry(Shape(dst)), paint, newStyle,
+            this->drawGeometry(localToDevice,
+                               Geometry(Shape(dst, geometry.shape().asPath().getGenerationID())),
+                               paint, newStyle,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
                                skipColorXform);
             return;
