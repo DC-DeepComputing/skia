@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61bb60c_fb3cb93a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6026
+      },
+      "writtenOn": "2025-04-21T16:29:59Z",
+      "side": 1,
+      "message": "Do you have more information about the motivation here?\n\nI thought clang-cl\u0027s and clang\u0027s fp-contract handling was self-consistent. Why does this turn off fp contractions only for clang-cl?\n\nDid the arch changes have an effect in practice? Which one?",
+      "revId": "d7e6796ff68356186548c08d9a21069ecd870b43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
