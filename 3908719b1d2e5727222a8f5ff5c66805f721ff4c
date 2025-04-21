@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d6dcbff_ac31d330",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-04-21T18:23:14Z",
+      "side": 1,
+      "message": "@kjlubick, can you PTAL?\n\nI\u0027ve locally verified that `chrome`, `blink_platform_unittests`, and `gfx_unittests` build fine after this CL.  I\u0027ve also tried to run a Canary-Chromium tryjob, but it failed for unrelated reasons, so I don\u0027t plan to add a `Cq-Include-Trybots: luci.skia.skia.primary:Canary-Chromium` like to the CL description.\n\nI\u0027ve tried to verify Flutter via Canary-Flutter tryjob, but IIUC it failed because of infrastructure-level issues - see: https://task-scheduler.skia.org/job/ZTu6ANJ9K5vXTAedrxWA.  FWIW I\u0027ve forked the new Flutter repo into https://github.com/anforowicz/flutter and failed to locally find non-Skia usages of the old `gni` lists by `grep`ping for `\u0027\\bskia_codec_png\\b\u0027` and `\\bskia_encode_png_srcs\\b`:\n\n```\n$ rg -uuu \u0027\\bskia_codec_png\\b\u0027\nengine/src/flutter/third_party/skia/gn/codec.gni\n103:skia_codec_png \u003d [\n\nengine/src/flutter/third_party/skia/bazel/exporter_tool/main.go\n59:             {Var: \"skia_codec_png\",\n\n$ rg -uuu \u0027\\bskia_encode_png_srcs\\b\u0027\nengine/src/flutter/third_party/skia/gn/core.gni\n821:skia_encode_png_srcs \u003d [\n\nengine/src/flutter/third_party/skia/BUILD.gn\n1315:  sources \u003d skia_encode_png_srcs\n\nengine/src/flutter/third_party/skia/bazel/exporter_tool/main.go\n170:            {Var: \"skia_encode_png_srcs\",\n```\n\nSo based on the above maybe it\u0027s okay to just try landing this CL?\n\nPS. Not sure if there are some Flutter contacts we could/should loop-in... I looked at go/flag-oncall but wasn\u0027t sure which of the many resources would be relevant here...",
+      "revId": "3908719b1d2e5727222a8f5ff5c66805f721ff4c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
