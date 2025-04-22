@@ -264,9 +264,9 @@ const struct PrecompileSettings {
 
         { "CircularArcRenderStep",                       DrawTypeFlags::kCircularArc  },
 
-        { "AnalyticRRectRenderStep",                     DrawTypeFlags::kSimpleShape  },
-        { "CoverBoundsRenderStep[NonAAFill]",            DrawTypeFlags::kSimpleShape  },
-        { "PerEdgeAAQuadRenderStep",                     DrawTypeFlags::kSimpleShape  },
+        { "AnalyticRRectRenderStep",                     DrawTypeFlags::kAnalyticRRect  },
+        { "CoverBoundsRenderStep[NonAAFill]",            DrawTypeFlags::kNonAAFillRect  },
+        { "PerEdgeAAQuadRenderStep",                     DrawTypeFlags::kPerEdgeAAQuad  },
 
         { "CoverageMaskRenderStep",                      DrawTypeFlags::kNonSimpleShape },
         { "CoverBoundsRenderStep[RegularCover]",         DrawTypeFlags::kNonSimpleShape },

@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/private/base/SkMacros.h"
 
 #include <memory>
 
@@ -168,7 +169,11 @@ enum DrawTypeFlags : uint16_t {
     //    AnalyticRRectRenderStep
     //    PerEdgeAAQuadRenderStep
     //    CoverBoundsRenderStep[NonAAFill]
-    kSimpleShape      = 1 << 7,
+    kAnalyticRRect    = 1 << 7,
+    kPerEdgeAAQuad    = 1 << 8,
+    kNonAAFillRect    = 1 << 9,
+
+    kSimpleShape      = kAnalyticRRect | kPerEdgeAAQuad | kNonAAFillRect,
 
     // kNonSimpleShape should be used to generate Pipelines that use the following RenderSteps:
     //    CoverageMaskRenderStep
@@ -177,10 +182,11 @@ enum DrawTypeFlags : uint16_t {
     //    TessellateWedgesRenderStep[*] for [Convex], [EvenOdd], [Winding]
     //    TessellateCurvesRenderStep[*] for [EvenOdd], [Winding]
     //    MiddleOutFanRenderStep[*] for [EvenOdd], [Winding]
-    kNonSimpleShape   = 1 << 8,
+    kNonSimpleShape   = 1 << 10,
 
     kLast = kNonSimpleShape,
 };
+SK_MAKE_BITFIELD_CLASS_OPS(DrawTypeFlags)
 
 } // namespace skgpu::graphite
 
