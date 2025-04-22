@@ -226,6 +226,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2103d214_26ab16fd",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T13:11:21Z",
+      "side": 1,
+      "message": "The pattern of our priv cases is that they\u0027re basically \"free\" to make since they don\u0027t add new data members. They just as tools to punch holes and view private data of the base class.",
+      "parentUuid": "78b37a5b_d8c39837",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59c283a2_8b0473c2",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 6
