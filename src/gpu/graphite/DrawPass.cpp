@@ -617,8 +617,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // the previous state use the proper state.
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep.primitiveType(),
-                                        renderStep.vertexStride(),
-                                        renderStep.instanceStride(),
+                                        renderStep.staticDataStride(),
+                                        renderStep.appendDataStride(),
                                         renderStep.getRenderStateFlags(),
                                         barrierToAddBeforeDraws);
         } else if (stateChange) {
