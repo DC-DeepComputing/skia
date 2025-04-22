@@ -7,7 +7,12 @@
 #ifndef SkRecorder_DEFINED
 #define SkRecorder_DEFINED
 
+#include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
+
+struct SkImageInfo;
+class SkSurfaceProps;
+class SkSurface;
 
 class SK_API SkRecorder {
 public:
@@ -19,6 +24,9 @@ public:
     };
 
     virtual Type type() const = 0;
+
+private:
+    friend class SkRecorderPriv;
 };
 
 #endif

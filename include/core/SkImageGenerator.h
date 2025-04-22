@@ -19,6 +19,7 @@
 #include <cstdint>
 
 class GrRecordingContext;
+class SkRecorder;
 
 class SK_API SkImageGenerator {
 public:
@@ -52,6 +53,9 @@ public:
      */
     bool isValid(GrRecordingContext* context) const {
         return this->onIsValid(context);
+    }
+    bool isValid(SkRecorder* recorder) const {
+        return this->onIsValid(recorder);
     }
 
     /**
@@ -124,6 +128,7 @@ protected:
     struct Options {};
     virtual bool onGetPixels(const SkImageInfo&, void*, size_t, const Options&) { return false; }
     virtual bool onIsValid(GrRecordingContext*) const { return true; }
+    virtual bool onIsValid(SkRecorder*) const { return true; }
     virtual bool onIsProtected() const { return false; }
     virtual bool onQueryYUVAInfo(const SkYUVAPixmapInfo::SupportedDataTypes&,
                                  SkYUVAPixmapInfo*) const { return false; }

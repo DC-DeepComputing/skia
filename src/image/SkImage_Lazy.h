@@ -12,6 +12,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageGenerator.h"
 #include "include/core/SkImageInfo.h"
+#include "include/core/SkRasterRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/core/SkYUVAPixmaps.h"
@@ -53,6 +54,7 @@ public:
 
     // From SkImage.h
     bool isValid(GrRecordingContext*) const override;
+    bool isValid(SkRecorder*) const override;
 
     // From SkImage_Base.h
     bool onHasMipmaps() const override {
@@ -70,7 +72,7 @@ public:
                                 const SkIRect&,
                                 RequiredProperties) const override;
 
-    sk_sp<SkSurface> onMakeSurface(skgpu::graphite::Recorder*, const SkImageInfo&) const override;
+    sk_sp<SkSurface> onMakeSurface(SkRecorder*, const SkImageInfo&) const override;
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
     SkImage_Base::Type type() const override { return SkImage_Base::Type::kLazy; }
