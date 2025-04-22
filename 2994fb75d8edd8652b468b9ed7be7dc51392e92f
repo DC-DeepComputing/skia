@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad4d25d_27ed3b6d",
+        "filename": "gm/smallcircles.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-22T21:58:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fd1aa37d_d869bbd0",
+      "range": {
+        "startLine": 14,
+        "startChar": 2,
+        "endLine": 75,
+        "endChar": 0
+      },
+      "revId": "2994fb75d8edd8652b468b9ed7be7dc51392e92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ec16e98_adbb183b",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-15T18:42:42Z",
       "side": 1,
       "message": "nit: line up with `(` if it fits, or move both parameters to new line with 2 tabs.",
+      "range": {
+        "startLine": 75,
+        "startChar": 40,
+        "endLine": 75,
+        "endChar": 64
+      },
+      "revId": "2994fb75d8edd8652b468b9ed7be7dc51392e92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8a7a92d_8c0a7dd2",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-22T21:58:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ec16e98_adbb183b",
       "range": {
         "startLine": 75,
         "startChar": 40,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "538dc676_14896a0e",
+        "filename": "src/core/SkBlurMaskFilterImpl.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-22T21:58:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4234a429_69e586d7",
+      "range": {
+        "startLine": 91,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 101
+      },
+      "revId": "2994fb75d8edd8652b468b9ed7be7dc51392e92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9a72d1d_7132b633",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "82cb311f_1e42791f",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-22T21:58:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9a72d1d_7132b633",
+      "range": {
+        "startLine": 154,
+        "startChar": 73,
+        "endLine": 155,
+        "endChar": 101
+      },
+      "revId": "2994fb75d8edd8652b468b9ed7be7dc51392e92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb2812fc_d8a004ce",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-04-15T18:42:42Z",
       "side": 1,
       "message": "A more compact way to do this that\u0027s common in skia code is to make the denominator a float: `fLight.fAmbient / 255.f`",
+      "range": {
+        "startLine": 171,
+        "startChar": 21,
+        "endLine": 171,
+        "endChar": 62
+      },
+      "revId": "2994fb75d8edd8652b468b9ed7be7dc51392e92f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "92314fe5_1ee75202",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-22T21:58:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cb2812fc_d8a004ce",
       "range": {
         "startLine": 171,
         "startChar": 21,
