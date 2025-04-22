@@ -1342,11 +1342,15 @@ void Device::drawGeometry(const Transform& localToDevice,
     const int numNewRenderSteps = (renderer ? renderer->numRenderSteps() : 1) +
                                   (secondaryRenderer ? secondaryRenderer->numRenderSteps() : 0);
 
+    const bool requiresMSAA = (renderer && renderer->requiresMSAA()) ||
+                              (secondaryRenderer && secondaryRenderer->requiresMSAA());
+
     // Decide if we have any reason to flush pending work. We want to flush before updating the clip
     // state or making any permanent changes to a path atlas, since otherwise clip operations and/or
     // atlas entries for the current draw will be flushed.
-    DstReadStrategy dstReadStrategy = dstReadRequired ? fDC->dstReadStrategy()
+    DstReadStrategy dstReadStrategy = dstReadRequired ? fDC->dstReadStrategy(requiresMSAA)
                                                       : DstReadStrategy::kNoneRequired;
+
     const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
     if (needsFlush) {
         if (pathAtlas != nullptr) {

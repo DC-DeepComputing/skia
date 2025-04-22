@@ -101,7 +101,9 @@ public:
     sk_sp<Task> snapDrawTask(Recorder*);
 
     // Returns the dst read strategy to use when/if a paint requires a dst read
-    DstReadStrategy dstReadStrategy() const { return fDstReadStrategy; }
+    DstReadStrategy dstReadStrategy(bool requiresMSAA) const {
+        return requiresMSAA ? fMSAADstReadStrategy : fSingleSampleDstReadStrategy;
+    }
 
 private:
     DrawContext(const Caps*, sk_sp<TextureProxy>, const SkImageInfo&, const SkSurfaceProps&);
@@ -113,7 +115,11 @@ private:
 
     // Does *not* reflect whether a dst read is needed by the DrawLists - simply specifies the
     // strategy to use should any encountered paint require it.
-    const DstReadStrategy fDstReadStrategy;
+    // TODO(b/390458117): Until reading MSAA textures as input attachments is implemented for the
+    // Vulkan backend, we must have different strategies for multisampled versus single-sampled
+    // targets.
+    const DstReadStrategy fSingleSampleDstReadStrategy;
+    const DstReadStrategy fMSAADstReadStrategy;
 
     // The in-progress DrawTask that will be snapped and returned when some external requirement
     // must depend on the contents of this DrawContext's target. As higher-level Skia operations
