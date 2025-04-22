@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f76011f_f0dae449",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "Every device on the base canvas should point back to the same recorder, so it should be fine to do `SkCanvasPriv::TopDevice(fBaseCanvas)-\u003erecorder()-...` and not have to friend `SkCaptureCanvas` in SkCanvas.",
+      "range": {
+        "startLine": 24,
+        "startChar": 29,
+        "endLine": 24,
+        "endChar": 94
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5868bc37_6d762e56",
         "filename": "modules/skcapture/SkCaptureCanvas.cpp",
         "patchSetId": 5
@@ -19,6 +42,29 @@
         "startChar": 12,
         "endLine": 27,
         "endChar": 13
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72d5cd71_9fc20f09",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "nit: member function calls should have `this-\u003e`",
+      "range": {
+        "startLine": 27,
+        "startChar": 12,
+        "endLine": 27,
+        "endChar": 33
       },
       "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -95,6 +141,98 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cf53282b_25461c6c",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "nit: SkCaptureCanvas",
+      "range": {
+        "startLine": 16,
+        "startChar": 3,
+        "endLine": 16,
+        "endChar": 18
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ac3e34_812901d0",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "nit: a",
+      "range": {
+        "startLine": 16,
+        "startChar": 79,
+        "endLine": 16,
+        "endChar": 81
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "efb7835b_d740f4ca",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "nit: SKP refers to the file format of a serialized SkPicture, since this is returning an SkPicture directly this should just be named `snapPicture`",
+      "range": {
+        "startLine": 18,
+        "startChar": 38,
+        "endLine": 18,
+        "endChar": 45
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af5d23f_966c5916",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "It is a bit of an odd design to publicly inherit SkNWayCanvas but then go and hide the public APIs of SkNWayCanvas.\n\nI\u0027m still in favor of the other approach we talked about last week where `SkCaptureCanvas` just holds two `std::unique_ptr\u003cSkCanvas\u003e` where the recording canvas is null if not active.  Then we can extend SkCanvasVirtualEnforcer\u003cSkCaptureCanvas\u003e\n\nA macro can be used to make most overrides pretty lightweight:\n\n```\n#define CALL_CANVAS(FN, ...) \\\n    this-\u003epollCapturingStatus(); \\\n    fBaseCanvas-\u003eFN(__VA_ARGS__); \\\n    if (fRecordingCanvas) { \\\n        fRecordingCanvas-\u003eFN(__VA_ARGS__); \\\n    }\n```",
+      "range": {
+        "startLine": 22,
+        "startChar": 24,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3da924b5_6c4a6960",
         "filename": "modules/skcapture/SkCaptureCanvas.h",
         "patchSetId": 5
@@ -134,6 +272,29 @@
         "startChar": 4,
         "endLine": 121,
         "endChar": 34
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c2e7825_0b2b683e",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:53:22Z",
+      "side": 1,
+      "message": "The `using INHERITED` style is not used anymore, but just lingers in older source files.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 35
       },
       "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
