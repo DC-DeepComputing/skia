@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d4fa0ee_5f197d61",
+        "filename": "src/core/SkRasterContext_Base.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-22T14:08:06Z",
+      "side": 1,
+      "message": "The other \"Base\" instances in Skia (`SkImage_Base`, `SkSurface_Base`) are actual base classes for derived internal types.  This one is not, and it reads kind of weird to have a **final** \"Base\" class.  Maybe a naming tweak would help (\"Impl\", \"Priv\"?).",
+      "range": {
+        "startLine": 14,
+        "startChar": 6,
+        "endLine": 14,
+        "endChar": 57
+      },
+      "revId": "105c8ed1ecb05a261ae77473a7d636b85a0d985d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57b3a85f_90aec30c",
+        "filename": "src/core/SkRasterRecorder.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-04-22T14:08:06Z",
+      "side": 1,
+      "message": "Does the `SkOnce` pattern have any benefits over a local static initializer?\n\n`static const std::unique_ptr\u003cSkRasterRecorder\u003e gRecorder \u003d\n    SkRasterContext_Base::TODO()-\u003emakeRecorder();`",
+      "revId": "105c8ed1ecb05a261ae77473a7d636b85a0d985d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
