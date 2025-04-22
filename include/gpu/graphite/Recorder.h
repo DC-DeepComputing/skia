@@ -240,6 +240,7 @@ private:
     friend class Context; // For ctor
     friend class Device; // For registering and deregistering Devices;
     friend class RecorderPriv; // for ctor and hidden methods
+    friend class SkRecorderPriv;
 
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
