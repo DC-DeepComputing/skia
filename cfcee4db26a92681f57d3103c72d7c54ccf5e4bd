@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5868bc37_6d762e56",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "nit: `this-\u003eattachRecordingCanvas();`",
+      "range": {
+        "startLine": 27,
+        "startChar": 12,
+        "endLine": 27,
+        "endChar": 13
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ffe6fb5_153f093a",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 13
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11b66ccd_15d9f548",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8878ad0_75286691",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "this-\u003e",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 5
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da924b5_6c4a6960",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "Should these be calling into Nway? For example,\n\n`SkNwayCanvas::addCanvas(canvas);`?",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 32
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b184a16_1a4ce75c",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T14:36:46Z",
+      "side": 1,
+      "message": "we\u0027ve generally have moved away from using INHERITED and instead just being explicit on what base class we\u0027re referencing",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 34
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
