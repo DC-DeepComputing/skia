@@ -256,6 +256,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e4549486_33db7c16",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T15:54:47Z",
+      "side": 1,
+      "message": "If we do stick with extending `SkNWayCanvas`, then I think Greg is right, this override causes an issue with their use in `attachRecordingCanvas` and `detacthRecordingCanvas`. If these stay no-ops, those attach/detach functions need to call the NWay functions directly.",
+      "parentUuid": "3da924b5_6c4a6960",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 32
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2b184a16_1a4ce75c",
         "filename": "modules/skcapture/SkCaptureCanvas.h",
         "patchSetId": 5
