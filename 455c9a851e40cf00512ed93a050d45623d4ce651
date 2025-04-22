@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a38c5352_79a17fb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4012184
+      },
+      "writtenOn": "2025-04-22T15:04:33Z",
+      "side": 1,
+      "message": "Hello, It\u0027s my first PR to Skia, so I\u0027m not entirely sure how things are working regarding PR reviewers. I\u0027m assigning someone but let me know if this is not the right way. Thank you ☺️",
+      "revId": "455c9a851e40cf00512ed93a050d45623d4ce651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
