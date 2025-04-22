@@ -294,6 +294,30 @@
       },
       "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "057e9196_445b25aa",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-22T15:37:33Z",
+      "side": 1,
+      "message": "I\u0027m OK with either approach, and am hesitant to extend review further.\n\nTrying to think through interpretations -- with the current approach, if average values of `CreateGraphicsPipeline-Compile` are compared between devices that do and do not support the extension (or if the extension is supported with a driver upgrade), then the metric will appear to regress on devices that _do_ support the extension, since it will no longer be \"diluted\" by unreported cache hits? I could see it being initially confusing, but perhaps not an issue in practice.\n\nI personally use Code Search for understanding trace slices -- perhaps we just add a short comment noting the potential misnomer?",
+      "parentUuid": "06b938ca_7e183d47",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
