@@ -250,6 +250,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8cee618d_2e736c57",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-22T17:08:53Z",
+      "side": 1,
+      "message": "One challenge is we will need to merge whatever design we decide on into the public hierarchy of the existing Graphite Recorder and Context types. And we have to decide how the GPU recorders get used in the raster-context-requiring APIs. \n\nIf we stay with gpu recorders/contexts have raster recorder/contexts, then I imagine we could define this hierarchy easily:\n\n```\nSkContext\n    SkRasterContext\n        SkRasterContextImpl\n    skgpu::graphite::Context\n        skgpu::graphite::ContextImpl\n    etc.\n```\n\nbut if we wanted to have an internal `ContextImpl` or have the GPU contexts extend `SkRasterContext`, then multiple inheritance starts to get a little clunkier.\n\nIn that is-a model, the Priv approach leads to a more straight forward hierarchy:\n```\nSkContext -\u003e SkRasterContext -\u003e skgpu::graphite::Context\nSkContextPriv -\u003e SkRasterContextPriv -\u003e skgpu::graphite::ContextPriv\n```\n\n\nMy thoughts are that in an ideal world, we\u0027d be able to expose pure virtual APIs to clients so we didn\u0027t leak anything. A lot of Skia\u0027s current APIs don\u0027t abide by that, so \"leaking\" forward declarations doesn\u0027t bother me too much, although it does mean most things have to be stored by pointers instead of being inlined.\n\nGiven that, I\u0027m leaning towards the base approach, with the caveat we need to think about what the final hierarchy looks like when we have different backend contexts and base classes.  If the public APIs are pure virtual, then the inheritance seems maybe not as clunky as I thought it would be.\n```\nSkContext -\u003e SkRasterContext -\u003e skgpu::graphite::Context pure virtual\n\nSkContextImpl : SkContext\nSkRasterContextImpl : SkContextImpl, SkRasterContext\ngraphite::ContextImpl : SkRasterContextImpl, skgpu::graphite::Context\n```\n\nAnd if the graphite context doesn\u0027t extend the raster context because it has a raster context, then it\u0027s a flatter hierarchy too.  That decision needs to be based on how we expect recorded raster work to interleave with recorded GPU work.  I\u0027m inclined to say they should be inherited so that there are not two recorders mixing together.",
+      "parentUuid": "2103d214_26ab16fd",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59c283a2_8b0473c2",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 6
