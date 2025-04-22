@@ -318,6 +318,30 @@
       },
       "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6cdd131_78538266",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-22T16:58:17Z",
+      "side": 1,
+      "message": "Okay talking this over a little more with Noelle offline, I think we should go back to something closer to what you had before. Even though we know what the subtraces might mean in certain cases, someone else trying to look at different traces may not understand that the meaning and possible range of values may change depending on the extension being present or not.\n\nSo that leaves us still with the one high level `CreateGraphicsPipeline`, but then have 3 possible sub traces. Those would be (feel free to come up with better names):\n`CreateGraphicsPipeline-CacheLookupOnly` // We have extension and setting fail on compile flag\n`CreateGraphicsPipeline-CompileAfterCacheMiss` // Have extension but failed first call\n`CreateGraphicsPipeline-Compile` // Don\u0027t have the extension.\n\nThanks for bearing with us as we bikesheded on this. If you want you can make the inner if block (which picks between the extension vs not extension compile), just control a static string to pick, and then pass that into a TRACE call. That avoids duplicated the calls to `vkCreateGraphicsPipelines`. But it is not a big deal either way.",
+      "parentUuid": "057e9196_445b25aa",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
