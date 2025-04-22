@@ -26,7 +26,8 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
         , fBoundIndices()
         , fBoundInstances()
         , fTemplateCount(0)
-        , fPendingCount(0) {
+        , fPendingCount(0)
+        , fVertexWriter() {
     SkASSERT(commandList && bufferManager);
 }
 
