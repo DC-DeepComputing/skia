@@ -80,22 +80,28 @@ void SkEmbossMask::Emboss(SkMaskBuilder* mask, const SkEmbossMaskFilter::Light& 
             int nx = alpha[x + neq_to_one(x, maxx)] - alpha[x - nonzero_to_one(x)];
             int ny = alpha[x + next_row] - alpha[x - prev_row];
 
+            // L dot N
             SkFixed numer = lx * nx + ly * ny + lz_dot_nz;
-            int     mul = ambient;
-            int     add = 0;
+            int mul = ambient;
+        ////////// For Isolating specular filter: /////////////////////////////
+            // int mul = 0;
+        ///////////////////////////////////////////////////////////////////////
+            int add = 0;
 
             if (numer > 0) {  // preflight when numer/denom will be <= 0
+                // ||N||
                 int denom = SkSqrt32(nx * nx + ny * ny + kDelta*kDelta);
                 SkFixed dot = numer / denom;
                 dot >>= 8;  // now dot is 2^8 instead of 2^16
+        //////// Comment this line out for isolating specular filter ///////////
                 mul = std::min(mul + dot, 255);
-
+        ////////////////////////////////////////////////////////////////////////
                 // now for the reflection
 
                 //  R = 2 (Light * Normal) Normal - Light
                 //  hilite = R * Eye(0, 0, 1)
 
-                int hilite = (2 * dot - lz_dot8) * lz_dot8 >> 8;
+                int hilite = (2 * dot /* kDelta / denom*/ - lz_dot8) * lz_dot8 >> 8;
                 if (hilite > 0) {
                     // pin hilite to 255, since our fast math is also a little sloppy
                     hilite = std::min(hilite, 255);
