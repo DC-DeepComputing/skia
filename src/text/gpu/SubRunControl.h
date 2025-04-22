@@ -51,13 +51,13 @@ public:
     getSDFFont(const SkFont& font, const SkMatrix& viewMatrix, const SkPoint& textLocation) const;
 
     bool isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                const SkMatrix& matrix) const;
+                bool matrixNearlyAffine) const;
     SkScalar maxSize() const { return fMaxDistanceFieldFontSize; }
 #else
     SubRunControl(bool forcePathAA=false) : fForcePathAA(forcePathAA) {}
 #endif
     bool isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                  const SkMatrix& matrix) const;
+                  bool matrixNearlyAffine) const;
 
     bool forcePathAA() const { return fForcePathAA; }
 

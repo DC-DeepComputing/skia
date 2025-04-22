@@ -55,29 +55,29 @@ SubRunControl::SubRunControl(
 #endif // !defined(SK_DISABLE_SDF_TEXT)
 
 bool SubRunControl::isDirect(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                           const SkMatrix& matrix) const {
+                             bool matrixNearlyAffine) const {
 #if !defined(SK_DISABLE_SDF_TEXT)
     const bool isSDFT = this->isSDFT(approximateDeviceTextSize, paint, matrix);
 #else
     const bool isSDFT = false;
 #endif
     return !isSDFT &&
-           !matrix.hasPerspective() &&
-            0 < approximateDeviceTextSize &&
-            approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas;
+           matrixNearlyAffine &&
+           0 < approximateDeviceTextSize &&
+           approximateDeviceTextSize < SkGlyphDigest::kSkSideTooBigForAtlas;
 }
 
 #if !defined(SK_DISABLE_SDF_TEXT)
 bool SubRunControl::isSDFT(SkScalar approximateDeviceTextSize, const SkPaint& paint,
-                           const SkMatrix& matrix) const {
+                           bool matrixNearlyAffine) const {
     const bool wideStroke = paint.getStyle() == SkPaint::kStroke_Style &&
             paint.getStrokeWidth() > 0;
     return fAbleToUseSDFT &&
            paint.getMaskFilter() == nullptr &&
             (paint.getStyle() == SkPaint::kFill_Style || wideStroke) &&
            0 < approximateDeviceTextSize &&
-           (fAbleToUsePerspectiveSDFT || !matrix.hasPerspective()) &&
-           (fMinDistanceFieldFontSize <= approximateDeviceTextSize || matrix.hasPerspective()) &&
+           (fAbleToUsePerspectiveSDFT || matrixNearlyAffine) &&
+           (fMinDistanceFieldFontSize <= approximateDeviceTextSize || !matrixNearlyAffine) &&
            approximateDeviceTextSize <= fMaxDistanceFieldFontSize;
 }
 
