@@ -70,6 +70,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f80c2151_4c683993",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5868bc37_6d762e56",
+      "range": {
+        "startLine": 27,
+        "startChar": 12,
+        "endLine": 27,
+        "endChar": 13
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6ffe6fb5_153f093a",
@@ -83,6 +107,30 @@
       "writtenOn": "2025-04-22T14:36:46Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 29,
+        "startChar": 12,
+        "endLine": 29,
+        "endChar": 13
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bd6613e_ddc3aca2",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ffe6fb5_153f093a",
       "range": {
         "startLine": 29,
         "startChar": 12,
@@ -116,6 +164,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff1ef56c_d41c272a",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11b66ccd_15d9f548",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 40,
+        "endChar": 5
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c8878ad0_75286691",
@@ -129,6 +201,30 @@
       "writtenOn": "2025-04-22T14:36:46Z",
       "side": 1,
       "message": "this-\u003e",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 5
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d54db19_c9bb9434",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8878ad0_75286691",
       "range": {
         "startLine": 41,
         "startChar": 4,
@@ -278,6 +374,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0a11aef_1630145a",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "3da924b5_6c4a6960",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 32
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b184a16_1a4ce75c",
@@ -319,6 +439,30 @@
         "startChar": 0,
         "endLine": 121,
         "endChar": 35
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc7fda0b_90149790",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-22T16:01:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b184a16_1a4ce75c",
+      "range": {
+        "startLine": 121,
+        "startChar": 4,
+        "endLine": 121,
+        "endChar": 34
       },
       "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
