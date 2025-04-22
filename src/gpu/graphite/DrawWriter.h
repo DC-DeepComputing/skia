@@ -69,7 +69,10 @@ public:
     DrawWriter(DrawWriter&&) = delete;
 
     // flush() should be called before the writer is destroyed
-    ~DrawWriter() { SkASSERT(fPendingCount == 0); }
+    ~DrawWriter() {
+        SkASSERT(fPendingCount == 0);
+        // call pad and zero
+    }
 
     DrawBufferManager* bufferManager() { return fManager; }
 
@@ -86,6 +89,7 @@ public:
                           size_t instanceStride,
                           SkEnumBitMask<RenderStateFlags> newRenderState,
                           std::optional<BarrierType> barrierType) {
+        this->padAndZero(newRenderState);
         this->flush();
 
         // Once flushed, any pending data must have been drawn.
@@ -200,6 +204,20 @@ public:
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
     }
 
+    void padAndZero(SkEnumBitMask<RenderStateFlags> newRenderState) {
+        if (fPendingCount && (fRenderState & RenderStateFlags::kAppendVertices)) {
+            const uint32_t alignedCount = SkAlign4(fPendingCount);
+            if (alignedCount > fPendingCount) {
+                const uint32_t byteDiff = (alignedCount - fPendingCount) * fVertexStride;
+                fVertexWriter.zeroBytes(byteDiff);
+                if (!(newRenderState & RenderStateFlags::kAppendVertices)) {
+                    fManager->takeVertexBytes(byteDiff);
+                    fVertexWriter.makeOffset(byteDiff);
+                }
+            }
+        }
+    }
+
 private:
     // Both of these pointers must outlive the DrawWriter.
     DrawPassCommands::List* fCommandList;
@@ -249,6 +267,7 @@ private:
     uint32_t fPendingCount;
 
     std::optional<BarrierType> fBarrierToIssueBeforeDraws = std::nullopt;
+    VertexWriter fVertexWriter;
 
     void setTemplate(BindBufferInfo vertices, BindBufferInfo indices, BindBufferInfo instances,
                      uint32_t templateCount);
@@ -280,7 +299,7 @@ public:
             , fStride(SkToBool(w.fRenderState & RenderStateFlags::kAppendVertices) ?
                                w.fVertexStride : w.fInstanceStride)
             , fReservedCount(0)
-            , fNextWriter() {
+            , fNextWriter(fDrawer.fVertexWriter) {
         SkASSERT(fStride > 0);
         SkASSERT(!w.fAppender);
         SkASSERT(w.fRenderState == renderState);
@@ -300,8 +319,8 @@ protected:
     BindBufferInfo& fTarget;
     uint32_t        fStride;
 
-    uint32_t     fReservedCount; // in target stride units
-    VertexWriter fNextWriter;    // writing to the target buffer binding
+    uint32_t        fReservedCount; // in target stride units
+    VertexWriter&   fNextWriter;    // writing to the target buffer binding
 
     virtual void prepareFlush() {}
 
@@ -342,7 +361,9 @@ protected:
 
     VertexWriter append(unsigned int count) {
         SkASSERT(count > 0);
-        this->reserve(count);
+        uint32_t alignedCount = SkToBool(fDrawer.fRenderState & RenderStateFlags::kAppendVertices) ?
+                                SkAlign4(count) : count;
+        this->reserve(alignedCount);
 
         if (!fNextWriter) SK_UNLIKELY {
             // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address to
@@ -350,7 +371,7 @@ protected:
             // will fail since the map failure is tracked by BufferManager.
             // Since one of the reasons for GPU mapping failure is that count*stride does not fit
             // in 32-bits, we calculate the CPU-side size carefully.
-            uint64_t size = (uint64_t)count * (uint64_t)fStride;
+            uint64_t size = (uint64_t)alignedCount * (uint64_t)fStride;
             if (!SkTFitsIn<size_t>(size)) {
                 sk_report_container_overflow_and_die();
             }
@@ -358,7 +379,7 @@ protected:
                                 SkTo<size_t>(size));
         }
 
-        SkASSERT(fReservedCount >= count);
+        SkASSERT(fReservedCount >= alignedCount);
         fReservedCount -= count;
         fDrawer.fPendingCount += count;
         // Since we have a writer, we know count*stride is valid.
