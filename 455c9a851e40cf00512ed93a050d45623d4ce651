@@ -33,6 +33,24 @@
       "message": "Adding the current Gardener to help find a suitable reviewer.",
       "revId": "455c9a851e40cf00512ed93a050d45623d4ce651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ead3956f_24913de6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-04-22T17:20:11Z",
+      "side": 1,
+      "message": "There are few other cases when we use SkFont: placeholders, struts and empty text.\nIt\u0027s probably not so important (not sure about struts) but I would rather keep them in sync, too.",
+      "parentUuid": "a38c5352_79a17fb3",
+      "revId": "455c9a851e40cf00512ed93a050d45623d4ce651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
