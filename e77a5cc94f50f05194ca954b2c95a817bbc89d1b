@@ -67,6 +67,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "91a1e060_c77d9b91",
+        "filename": "tools/flags/CommonFlagsGraphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-23T19:14:19Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "ebd5b650_8557be2b",
+      "range": {
+        "startLine": 12,
+        "startChar": 18,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "e77a5cc94f50f05194ca954b2c95a817bbc89d1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "99dc3a3f_5d1b03be",
         "filename": "tools/viewer/Viewer.cpp",
         "patchSetId": 1
