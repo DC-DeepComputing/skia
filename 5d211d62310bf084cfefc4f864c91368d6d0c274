@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff87cdee_9eb9918b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-23T19:38:27Z",
+      "side": 1,
+      "message": "looks good, just the one more minor thing",
+      "revId": "5d211d62310bf084cfefc4f864c91368d6d0c274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "053b1dab_d4f01941",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-23T19:38:27Z",
+      "side": 1,
+      "message": "add VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME to this list",
+      "range": {
+        "startLine": 168,
+        "startChar": 16,
+        "endLine": 168,
+        "endChar": 32
+      },
+      "revId": "5d211d62310bf084cfefc4f864c91368d6d0c274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
