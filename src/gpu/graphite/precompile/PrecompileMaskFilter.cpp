@@ -76,7 +76,7 @@ private:
             // will then be used as the coverage mask for the restoreOptions.
             PaintOptions restoreOptions = paintOptions;
             restoreOptions.setMaskFilters({});
-            restoreOptions.priv().buildCombinations(
+            restoreOptions.priv().buildCombinations2(
                     keyContext,
                     gatherer,
                     static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kCoverageMask),
@@ -95,7 +95,7 @@ private:
             coverageOptions.setShaders({ PrecompileShaders::Color() });
             coverageOptions.setBlendModes({ SkBlendMode::kSrcOver });
 
-            coverageOptions.priv().buildCombinations(
+            coverageOptions.priv().buildCombinations2(
                     keyContext,
                     gatherer,
                     DrawTypeFlags::kAnalyticRRect,

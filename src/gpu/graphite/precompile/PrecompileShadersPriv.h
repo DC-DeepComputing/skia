@@ -16,12 +16,14 @@ namespace skgpu::graphite {
 
 class PrecompileShader;
 
+#if 0
 enum class PrecompileImageShaderFlags {
     kNone         = 0b00,
     kExcludeAlpha = 0b01,
     kExcludeCubic = 0b10
 };
 SK_MAKE_BITMASK_OPS(PrecompileImageShaderFlags)
+#endif
 
 //--------------------------------------------------------------------------------------------------
 namespace PrecompileShadersPriv {
@@ -44,11 +46,13 @@ namespace PrecompileShadersPriv {
     // the usage is revised.
     sk_sp<PrecompileShader> CTM(SkSpan<const sk_sp<PrecompileShader>> wrapped);
 
+#if 0
     // The remaining factories are special cases used to reduce the combinatorics of the
     // precompilation system.
     sk_sp<PrecompileShader> Image(SkEnumBitMask<PrecompileImageShaderFlags>);
 
     sk_sp<PrecompileShader> RawImage(SkEnumBitMask<PrecompileImageShaderFlags>);
+#endif
 
     // This factory variant should be used when the existence or non-existence of the local matrix
     // is known. If 'withLM' is true only the LMShader-wrapped shader will be created while, when

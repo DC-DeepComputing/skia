@@ -180,7 +180,7 @@ private:
                                Coverage,
                                const RenderPassDesc&)> ProcessCombination;
 
-    void buildCombinations(const KeyContext&,
+    void buildCombinations1(const KeyContext&,
                            PipelineDataGatherer*,
                            DrawTypeFlags,
                            bool addPrimitiveBlender,

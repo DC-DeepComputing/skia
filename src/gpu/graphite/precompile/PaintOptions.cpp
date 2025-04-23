@@ -217,8 +217,9 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
     PaintOptions imagePaintOptions;
 
     // For imagefilters we know we don't have alpha-only textures and don't need cubic filtering.
-    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+    sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+            {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
 
     imagePaintOptions.setShaders({ imageShader });
     imagePaintOptions.setBlendModes(orig.getBlendModes());
@@ -226,7 +227,7 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
     imagePaintOptions.setColorFilters(orig.getColorFilters());
     imagePaintOptions.priv().addColorFilter(nullptr);
 
-    imagePaintOptions.priv().buildCombinations(keyContext,
+    imagePaintOptions.priv().buildCombinations2(keyContext,
                                                gatherer,
                                                DrawTypeFlags::kSimpleShape,
                                                /* withPrimitiveBlender= */ false,
@@ -237,7 +238,7 @@ void create_image_drawing_pipelines(const KeyContext& keyContext,
 
 } // anonymous namespace
 
-void PaintOptions::buildCombinations(
+void PaintOptions::buildCombinations1(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
         DrawTypeFlags drawTypes,
@@ -289,7 +290,7 @@ void PaintOptions::buildCombinations(
             tmp.setColorFilters(newCFs);
         }
 
-        tmp.buildCombinations(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
+        tmp.buildCombinations1(keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
                               renderPassDesc, processCombination);
 
         create_image_drawing_pipelines(keyContext, gatherer, *this,

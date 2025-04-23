@@ -60,7 +60,7 @@ void no_blend_mode_option_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 1);
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations2(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
@@ -90,7 +90,7 @@ void run_test(const KeyContext& keyContext,
                     expectedNumOptions, paintOptions.priv().numCombinations());
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations2(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
@@ -151,7 +151,7 @@ void big_test(const KeyContext& keyContext,
                                                 PrecompileShaders::Color()
                                             },
                                             {
-                                                PrecompileShaders::Image()
+                                                PrecompileShaders::Image({}, {})
                                             })
                                 });
 
@@ -171,7 +171,7 @@ void big_test(const KeyContext& keyContext,
                     "Actual # of combinations %d", paintOptions.priv().numCombinations());
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations2(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
@@ -338,7 +338,7 @@ void runtime_effect_test(const KeyContext& keyContext,
     REPORTER_ASSERT(reporter, paintOptions.priv().numCombinations() == 64);
 
     std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(keyContext,
+    paintOptions.priv().buildCombinations2(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
@@ -444,7 +444,7 @@ void shader_subtest(const KeyContext& keyContext,
     // The CoordClamp shader doesn't add any additional combinations to its wrapped shader.
     {
         PaintOptions paintOptions;
-        paintOptions.setShaders({ PrecompileShaders::CoordClamp({ PrecompileShaders::Image() }) });
+        paintOptions.setShaders({ PrecompileShaders::CoordClamp({ PrecompileShaders::Image({}, {}) }) });
 
         run_test(keyContext, gatherer, renderPassDesc, reporter, paintOptions,
                  /* expectedNumOptions= */ kExpectedImageCombos);

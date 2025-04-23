@@ -73,16 +73,19 @@ void CreateBlurImageFilterPipelines(
 
     PaintOptions blurPaintOptions;
 
+
+
     // For blur imagefilters we know we don't have alpha-only textures and don't need cubic
     // filtering.
-    sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+    sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+            {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+            //PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
 
     static const SkBlendMode kBlurBlendModes[] = { SkBlendMode::kSrc };
     blurPaintOptions.setShaders({ PrecompileShadersPriv::Blur(imageShader) });
     blurPaintOptions.setBlendModes(kBlurBlendModes);
 
-    blurPaintOptions.priv().buildCombinations(keyContext,
+    blurPaintOptions.priv().buildCombinations2(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
@@ -111,9 +114,10 @@ private:
 
         PaintOptions paintOptions;
 
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-                PrecompileImageShaderFlags::kExcludeAlpha |
-                PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//                PrecompileImageShaderFlags::kExcludeAlpha |
+//                PrecompileImageShaderFlags::kExcludeCubic);
 
         sk_sp<PrecompileShader> blendShader = PrecompileShaders::Blend(
                 SkSpan<const sk_sp<PrecompileBlender>>(&fBlender, 1),
@@ -122,7 +126,7 @@ private:
 
         paintOptions.setShaders({ std::move(blendShader) });
 
-        paintOptions.priv().buildCombinations(keyContext,
+        paintOptions.priv().buildCombinations2(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
@@ -216,16 +220,17 @@ private:
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
         PaintOptions paintOptions;
 
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-                PrecompileImageShaderFlags::kExcludeAlpha |
-                PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//                PrecompileImageShaderFlags::kExcludeAlpha |
+//                PrecompileImageShaderFlags::kExcludeCubic);
 
         static const SkBlendMode kBlendModes[] = { SkBlendMode::kDstOut };
         paintOptions.setShaders({ std::move(imageShader) });
         paintOptions.setColorFilters({ fColorFilter });
         paintOptions.setBlendModes(kBlendModes);
 
-        paintOptions.priv().buildCombinations(keyContext,
+        paintOptions.priv().buildCombinations2(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
@@ -274,13 +279,14 @@ private:
 
         // For displacement imagefilters we know we don't have alpha-only textures and don't need
         // cubic filtering.
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-                PrecompileImageShaderFlags::kExcludeAlpha |
-                PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//                PrecompileImageShaderFlags::kExcludeAlpha |
+//                PrecompileImageShaderFlags::kExcludeCubic);
 
         displacement.setShaders({ PrecompileShadersPriv::Displacement(imageShader, imageShader) });
 
-        displacement.priv().buildCombinations(keyContext,
+        displacement.priv().buildCombinations2(keyContext,
                                               gatherer,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
@@ -309,14 +315,15 @@ private:
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-                PrecompileImageShaderFlags::kExcludeAlpha |
-                PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//                PrecompileImageShaderFlags::kExcludeAlpha |
+//                PrecompileImageShaderFlags::kExcludeCubic);
 
         PaintOptions lighting;
         lighting.setShaders({ PrecompileShadersPriv::Lighting(std::move(imageShader)) });
 
-        lighting.priv().buildCombinations(keyContext,
+        lighting.priv().buildCombinations2(keyContext,
                                           gatherer,
                                           DrawTypeFlags::kSimpleShape,
                                           /* withPrimitiveBlender= */ false,
@@ -349,13 +356,14 @@ private:
 
         // For matrix convolution imagefilters we know we don't have alpha-only textures and don't
         // need cubic filtering.
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-                PrecompileImageShaderFlags::kExcludeAlpha |
-                PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//                PrecompileImageShaderFlags::kExcludeAlpha |
+//                PrecompileImageShaderFlags::kExcludeCubic);
 
         matrixConv.setShaders({ PrecompileShadersPriv::MatrixConvolution(imageShader) });
 
-        matrixConv.priv().buildCombinations(keyContext,
+        matrixConv.priv().buildCombinations2(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
@@ -386,8 +394,9 @@ private:
 
         // For morphology imagefilters we know we don't have alpha-only textures and don't need
         // cubic filtering.
-        sk_sp<PrecompileShader> imageShader = PrecompileShadersPriv::Image(
-            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
+        sk_sp<PrecompileShader> imageShader = PrecompileShaders::Image(
+                {}, {}, PrecompileShaders::ImageShaderFlags::kNoAlphaNoCubic);
+//            PrecompileImageShaderFlags::kExcludeAlpha | PrecompileImageShaderFlags::kExcludeCubic);
 
         {
             PaintOptions sparse;
@@ -396,7 +405,7 @@ private:
             sparse.setShaders({ PrecompileShadersPriv::SparseMorphology(imageShader) });
             sparse.setBlendModes(kBlendModes);
 
-            sparse.priv().buildCombinations(keyContext,
+            sparse.priv().buildCombinations2(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
@@ -412,7 +421,7 @@ private:
             linear.setShaders({ PrecompileShadersPriv::LinearMorphology(std::move(imageShader)) });
             linear.setBlendModes(kBlendModes);
 
-            linear.priv().buildCombinations(keyContext,
+            linear.priv().buildCombinations2(keyContext,
                                             gatherer,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
