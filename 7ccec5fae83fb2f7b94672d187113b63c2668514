@@ -342,6 +342,30 @@
       },
       "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e71005a_075814af",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-23T14:21:57Z",
+      "side": 1,
+      "message": "Thanks both, I\u0027ve done that.\n\nI went with these labels:\n - `CacheLookup`: dropped the `Only` suffix as this seems redundant with the new, clear structure\n - `CompileAfterCacheMiss`: left as-is, describes exactly what happened\n - `CacheLookupOrCompile`: since we don\u0027t know which one happened exactly and the times will fluctuate to reflect this (so `Compile` by itself could be misleading)\n \nHappy to do another round if anyone has better name suggestions.\n\nI could not choose a static string at runtime - I ran into this compile error:\n```\nexternal/perfetto/include/perfetto/tracing/internal/track_event_data_source.h:142:7: error: static assertion failed due to requirement \u0027IsValidEventNameType\u003cconst char *, void\u003e::value\u0027: Event names must be static strings. To use dynamic event names, see https://perfetto.dev/docs/in\nstrumentation/track-events#dynamic-event-names         \n```\nso I\u0027ve resorted to the if / else block.\n\nI had this code:\n```\nTRACE_EVENT0_ALWAYS(\n    \"skia.shaders\",\n         gpu-\u003evkCaps().supportsPipelineCreationCacheControl() ? \n             \"CreateGraphicsPipeline-CompileAfterCacheMiss\" : \n             \"CreateGraphicsPipeline-CacheLookupOrCompile\");\n```\n\nIf there\u0027s a better way to do this please let me know!",
+      "parentUuid": "b6cdd131_78538266",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
