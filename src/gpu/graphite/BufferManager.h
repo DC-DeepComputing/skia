@@ -107,7 +107,8 @@ public:
 
     // These writers automatically calculate the required bytes based on count and stride. If a
     // valid writer is returned, the byte count will fit in a uint32_t.
-    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t stride);
+    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t dataStride,
+                                                            size_t alignStride);
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
 
@@ -151,6 +152,10 @@ public:
     // Returns the last 'unusedBytes' from the last call to getVertexWriter(). Assumes that
     // 'unusedBytes' is less than the 'count*stride' to the original allocation.
     void returnVertexBytes(size_t unusedBytes);
+
+    // In order to correctly pad and zero out the vertex buffer for driver issues on ARM hardware,
+    // vertex bytes must be "taken back" to avoid stomping
+    void takeVertexBytes(size_t bytes);
 
     // Finalizes all buffers and transfers ownership of them to a Recording. Returns true on success
     // and false if a mapping had previously failed.

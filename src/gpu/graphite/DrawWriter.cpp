@@ -26,7 +26,8 @@ DrawWriter::DrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* b
         , fBoundIndices()
         , fBoundInstances()
         , fTemplateCount(0)
-        , fPendingCount(0) {
+        , fPendingCount(0)
+        , fVertexWriter() {
     SkASSERT(commandList && bufferManager);
 }
 
@@ -88,6 +89,10 @@ void DrawWriter::flush() {
     bind(fVertices, fVertexStride, fBoundVertices, pendingBaseVertex);
     bind(fInstances, fInstanceStride, fBoundInstances, pendingBaseInstance);
     bind(fIndices, sizeof(uint16_t), fBoundIndices, pendingBaseIndices);
+
+    if (pendingBaseVertex & 3) {
+        printf("UH OH\n");
+    }
 
     if (rebindDrawBuffers) {
         fCommandList->bindDrawBuffers(fBoundVertices, fBoundInstances, fBoundIndices, {});
