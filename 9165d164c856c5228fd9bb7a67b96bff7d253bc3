@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88cdd60a_10bc21d2",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-23T21:28:47Z",
+      "side": 1,
+      "message": "Not opposed to changing this naming to include \"emboss\" somehow. Additionally this function is not currently private, you mentioned before possibly putting a declaration in `SkEmbossMaskFilter.h`, not sure what you meant by that?",
+      "range": {
+        "startLine": 592,
+        "startChar": 32,
+        "endLine": 592,
+        "endChar": 46
+      },
+      "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

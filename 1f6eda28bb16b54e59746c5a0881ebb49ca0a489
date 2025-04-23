@@ -179,6 +179,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "db708d68_2b1f3502",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-23T21:28:47Z",
+      "side": 1,
+      "message": "From offline discussion: It isn\u0027t possible to directly replicate the legacy emboss functionality because the legacy implementation operated on the normal vectors differently than our current shaders do. We still need to keep the functionality for clients, so we wrote an extension to the current specular shader that will replicate SkEmbossMaskfilter",
+      "parentUuid": "b80248c3_abcf559c",
+      "range": {
+        "startLine": 196,
+        "startChar": 4,
+        "endLine": 196,
+        "endChar": 84
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0f404e61_946bef2e",
@@ -192,6 +216,30 @@
       "writtenOn": "2025-04-15T18:42:42Z",
       "side": 1,
       "message": "The SkEmbossMaskFilter logic was implementing \"Phong\" specular lighting, whereas the SkLightingImageFilter logic is implementing \"Blinn-Phong\" specular lighting.\n\nhttps://en.wikipedia.org/wiki/Blinn%E2%80%93Phong_reflection_model recommends multiplying by 4 to convert from a Phong specular exponent to a Blinn exponent.  In addition, though, SkEmbossMaskFilter documents `fLight.fSpecular` as being in fixed 4.4 format.\n\nTo convert to a scalar, we should divide by 16.f, which will preserve the lower four bits as fractional (whereas `\u003e\u003e 4` discards them). Combining that with the Blinn-Phong adjustment should mean we just have to pass in `fLight.fSpecular / 4.f` (no +1 anymore either)",
+      "range": {
+        "startLine": 222,
+        "startChar": 4,
+        "endLine": 228,
+        "endChar": 88
+      },
+      "revId": "1f6eda28bb16b54e59746c5a0881ebb49ca0a489",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5771fc9_ce956926",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-23T21:28:47Z",
+      "side": 1,
+      "message": "Keeping the bit shift in order to better replicate loss of precision in original, as well as the plus one.",
+      "parentUuid": "0f404e61_946bef2e",
       "range": {
         "startLine": 222,
         "startChar": 4,
