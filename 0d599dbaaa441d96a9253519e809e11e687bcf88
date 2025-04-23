@@ -274,6 +274,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c4e5dd30_3770aba2",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-23T13:13:21Z",
+      "side": 1,
+      "message": "I also want the hierarchy to fit nicely with Ganesh so we can align some of the APIs.\nWith the data collected from follow-on CL https://skia-review.googlesource.com/c/skia/+/981082, I\u0027m not sure I yet see the need to make Graphite context inherit from Raster context *nor* have an SkContext superclass. Are there places in the API where we want to take a context of any type? I was only aware of the Recorder of any types.\n\nI think I want to keep with the \"has a\" approach for now, since I think that\u0027s a cleaner separation of things. As we flesh things out, we can change our minds somewhat easily. The next big lift is plugging Raster recorders through a bunch of APIs but that\u0027s orthogonal to how contexts interact.",
+      "parentUuid": "8cee618d_2e736c57",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "59c283a2_8b0473c2",
         "filename": "src/core/SkResourceCache.h",
         "patchSetId": 6
