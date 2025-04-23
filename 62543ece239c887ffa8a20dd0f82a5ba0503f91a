@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2444faa6_aa75de04",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-23T16:05:44Z",
+      "side": 1,
+      "message": "This only works at the moment because `GenerateJSONFromGN` generates into `tmp \u003d tempfile.mkdtemp()` and this wants to exclude any include directory (or really anything else) that ends up there, since that will obviously not be part of any Android build. What is really wanted here is to exclude anything in the `tmp` directory that `GenerateJSONFromGN` created, but that isn\u0027t currently exported. Could try using `tempfile.gettempdir()` here which would be better, but that would still be an incorrect hack.\n\nAlso, `GenerateJSONFromGN` uses `tempfile.mkdtemp()` and never cleans up. This should probably be fixed.",
+      "range": {
+        "startLine": 607,
+        "startChar": 63,
+        "endLine": 607,
+        "endChar": 67
+      },
+      "revId": "62543ece239c887ffa8a20dd0f82a5ba0503f91a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

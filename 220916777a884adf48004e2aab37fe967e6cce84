@@ -16,6 +16,24 @@
       "message": "So these need to be moved out here because HWUI/Skia/skrifa need to be present on host builds as well. Rust builds for Windows host appears to have been very recently added, but it looks like these need to opt-in to that?",
       "revId": "220916777a884adf48004e2aab37fe967e6cce84",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "612c791d_0042fd00",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 7
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-23T16:05:44Z",
+      "side": 1,
+      "message": "See b/405267306 for list of Android side changes that have been made.",
+      "parentUuid": "ca419b71_c068979a",
+      "revId": "220916777a884adf48004e2aab37fe967e6cce84",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
