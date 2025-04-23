@@ -40,6 +40,7 @@ namespace sktext { class GlyphRunList; }
 struct SkImageInfo;
 struct SkPoint;
 struct SkRSXform;
+class SkRasterRecorderImpl;
 
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
@@ -57,6 +58,12 @@ public:
      *  any drawing to this device will have no effect.
      */
     SkBitmapDevice(const SkBitmap& bitmap, const SkSurfaceProps& surfaceProps,
+                   void* externalHandle = nullptr);
+
+    SkBitmapDevice(SkRasterRecorderImpl*, const SkBitmap& bitmap);
+    SkBitmapDevice(SkRasterRecorderImpl*,
+                   const SkBitmap& bitmap,
+                   const SkSurfaceProps& surfaceProps,
                    void* externalHandle = nullptr);
 
     static sk_sp<SkBitmapDevice> Create(const SkImageInfo&, const SkSurfaceProps&,
@@ -137,9 +144,10 @@ private:
     void drawBitmap(const SkBitmap&, const SkMatrix&, const SkRect* dstOrNull,
                     const SkSamplingOptions&, const SkPaint&);
 
-    SkBitmap    fBitmap;
-    void*       fRasterHandle = nullptr;
-    SkRasterClipStack  fRCStack;
+    void* fRasterHandle = nullptr;
+    SkRasterRecorderImpl* fRecorder = nullptr;
+    SkBitmap fBitmap;
+    SkRasterClipStack fRCStack;
     SkGlyphRunListPainterCPU fGlyphPainter;
 };
 

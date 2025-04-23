@@ -23,6 +23,7 @@ class SkImage;
 class SkPaint;
 class SkPixelRef;
 class SkPixmap;
+class SkRasterRecorderImpl;
 class SkSurface;
 class SkSurfaceProps;
 struct SkIRect;
@@ -33,6 +34,18 @@ public:
                      void (*releaseProc)(void* pixels, void* context), void* context,
                      const SkSurfaceProps*);
     SkSurface_Raster(const SkImageInfo& info, sk_sp<SkPixelRef>, const SkSurfaceProps*);
+
+    SkSurface_Raster(SkRasterRecorderImpl*,
+                     const SkImageInfo&,
+                     void*,
+                     size_t rb,
+                     void (*releaseProc)(void* pixels, void* context),
+                     void* context,
+                     const SkSurfaceProps*);
+    SkSurface_Raster(SkRasterRecorderImpl*,
+                     const SkImageInfo& info,
+                     sk_sp<SkPixelRef>,
+                     const SkSurfaceProps*);
 
     // From SkSurface.h
     SkImageInfo imageInfo() const override { return fBitmap.info(); }
@@ -50,10 +63,9 @@ public:
     sk_sp<const SkCapabilities> onCapabilities() override;
 
 private:
-    SkBitmap    fBitmap;
-    bool        fWeOwnThePixels;
-
-    using INHERITED = SkSurface_Base;
+    SkRasterRecorderImpl* fRecorder;
+    SkBitmap fBitmap;
+    bool fWeOwnThePixels;
 };
 
 #endif
