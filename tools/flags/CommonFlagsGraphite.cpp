@@ -9,6 +9,8 @@
 #include "tools/graphite/TestOptions.h"
 
 namespace CommonFlags {
+static DEFINE_int(internalSamples, -1,
+        "Number of samples for internal draws that use MSAA, or default value if negative.");
 
 #if defined(SK_DAWN)
 static DEFINE_bool(disable_tint_symbol_renaming, false, "Disable Tint WGSL symbol renaming when "
@@ -20,6 +22,9 @@ static DEFINE_bool(useWGPUTextureView, false, "Run Graphite w/ a wrapped WGPU te
 #endif // SK_DAWN
 
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
+    if (FLAGS_internalSamples >= 0) {
+        testOptions->fContextOptions.fInternalMultisampleCount = FLAGS_internalSamples;
+    }
 #if defined(SK_DAWN)
     testOptions->fDisableTintSymbolRenaming = FLAGS_disable_tint_symbol_renaming;
     testOptions->fNeverYieldToWebGPU = FLAGS_neverYieldToWebGPU;
