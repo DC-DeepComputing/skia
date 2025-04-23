@@ -17,6 +17,7 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
+#include "src/core/SkRasterRecorderImpl.h"
 
 #include <cstddef>
 
@@ -40,7 +41,6 @@ namespace sktext { class GlyphRunList; }
 struct SkImageInfo;
 struct SkPoint;
 struct SkRSXform;
-class SkRasterRecorderImpl;
 
 ///////////////////////////////////////////////////////////////////////////////
 class SkBitmapDevice final : public SkDevice {
@@ -119,6 +119,8 @@ public:
     void setImmutable() override { fBitmap.setImmutable(); }
 
     void* getRasterHandle() const override { return fRasterHandle; }
+
+    SkRecorder* baseRecorder() const override { return fRecorder; }
 
 private:
     friend class SkDraw;

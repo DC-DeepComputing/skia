@@ -54,6 +54,10 @@
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/gpu/YUVUtils.h"
 
+#if defined(SK_GRAPHITE)
+#include "include/gpu/graphite/Recorder.h"
+#endif
+
 #include <math.h>
 #include <string.h>
 #include <initializer_list>
