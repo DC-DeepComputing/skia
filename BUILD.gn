@@ -1881,6 +1881,7 @@ skia_static_library("pathkit") {
 group("modules") {
   deps = [
     "modules/bentleyottmann",
+    "modules/skcapture",
     "modules/skottie",
     "modules/skparagraph",
     "modules/skshaper",
