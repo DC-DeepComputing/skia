@@ -218,15 +218,16 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
 // For the vertexWriter, we explicitly pass in the required stride to align the mapped
 // bindBuffer to try to keep the buffer contiguous with future vertex data.
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
-                                                                           size_t stride) {
-    uint32_t requiredBytes = validate_count_and_stride(count, stride);
+                                                                           size_t dataStride,
+                                                                           size_t alignStride) {
+    uint32_t requiredBytes = validate_count_and_stride(count, dataStride);
     if (!requiredBytes) {
         return {};
     }
 
     auto& info = fCurrentBuffers[kVertexBufferIndex];
     auto [ptr, bindInfo] =
-        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, stride);
+        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, alignStride);
     return {VertexWriter(ptr, requiredBytes), bindInfo};
 }
 
@@ -238,6 +239,15 @@ void DrawBufferManager::returnVertexBytes(size_t unusedBytes) {
     }
     SkASSERT(fCurrentBuffers[kVertexBufferIndex].fOffset >= unusedBytes);
     fCurrentBuffers[kVertexBufferIndex].fOffset -= unusedBytes;
+}
+
+void DrawBufferManager::takeVertexBytes(size_t bytes) {
+    if (fMappingFailed) {
+        return;
+    }
+    SkASSERT(fCurrentBuffers[kVertexBufferIndex].fMaxBlockSize >=
+             fCurrentBuffers[kVertexBufferIndex].fOffset + bytes);
+    fCurrentBuffers[kVertexBufferIndex].fOffset += bytes;
 }
 
 std::pair<IndexWriter, BindBufferInfo> DrawBufferManager::getIndexWriter(size_t count,
@@ -653,11 +663,15 @@ StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
 VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
-    const size_t size = count * stride;
-    // We align the stride of the static buffer to 4 to accomodate driver issues on ARM hardware,
-    // when converting byte offsets into base vertex.
-    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride * 4, binding);
-    return VertexWriter{data, size};
+    const size_t alignedCount = SkAlign4(count);
+    const size_t alignedSize = validate_count_and_stride(alignedCount, stride);
+    void* data = this->prepareStaticData(&fVertexBufferInfo, alignedSize, stride * 4, binding);
+    if (alignedCount > count) {
+        const uint32_t byteDiff = (alignedCount - count) * stride;
+        void* zPtr = SkTAddOffset<void>(data, count * stride);
+        memset(zPtr, 0, byteDiff);
+    }
+    return VertexWriter{data, alignedSize};
 }
 
 VertexWriter StaticBufferManager::getIndexWriter(size_t size, BindBufferInfo* binding) {
