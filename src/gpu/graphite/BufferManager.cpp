@@ -218,15 +218,16 @@ DrawBufferManager::BufferInfo::BufferInfo(BufferType type,
 // For the vertexWriter, we explicitly pass in the required stride to align the mapped
 // bindBuffer to try to keep the buffer contiguous with future vertex data.
 std::pair<VertexWriter, BindBufferInfo> DrawBufferManager::getVertexWriter(size_t count,
-                                                                           size_t stride) {
-    uint32_t requiredBytes = validate_count_and_stride(count, stride);
+                                                                           size_t dataStride,
+                                                                           size_t alignStride) {
+    uint32_t requiredBytes = validate_count_and_stride(count, dataStride);
     if (!requiredBytes) {
         return {};
     }
 
     auto& info = fCurrentBuffers[kVertexBufferIndex];
     auto [ptr, bindInfo] =
-        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, stride);
+        this->prepareMappedBindBuffer(&info, "VertexBuffer", requiredBytes, alignStride);
     return {VertexWriter(ptr, requiredBytes), bindInfo};
 }
 
@@ -650,13 +651,20 @@ StaticBufferManager::BufferInfo::BufferInfo(BufferType type, const Caps* caps)
         , fMinimumAlignment(minimum_alignment(type, /*useTransferBuffers=*/true, caps))
         , fTotalRequiredBytes(0) {}
 
+// The ARM hardware bug (b/399631317) also means that static vertex data must be padded and zeroed
+// out. So we always request a count 4 aligned offset, count 4 aligned amount of space, and zero it.
 VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
     const size_t size = count * stride;
-    // We align the stride of the static buffer to 4 to accomodate driver issues on ARM hardware,
-    // when converting byte offsets into base vertex.
-    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride * 4, binding);
+    const size_t alignedCount = SkAlign4(count);
+    const size_t alignedSize = validate_count_and_stride(alignedCount, stride);
+    void* data = this->prepareStaticData(&fVertexBufferInfo, alignedSize, stride * 4, binding);
+    if (alignedCount > count) {
+        const uint32_t byteDiff = (alignedCount - count) * stride;
+        void* zPtr = SkTAddOffset<void>(data, count * stride);
+        memset(zPtr, 0, byteDiff);
+    }
     return VertexWriter{data, size};
 }
 
