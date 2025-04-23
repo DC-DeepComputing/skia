@@ -890,7 +890,10 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_yuv_image_shader(SkRa
         s = SkShaders::Image(std::move(yuvImage), tmX, tmY, samplingOptions, lmPtr);
     }
 
-    o = PrecompileShaders::YUVImage({ colorInfo }, useCubic);
+    o = PrecompileShaders::YUVImage(
+            { colorInfo },
+            useCubic ? PrecompileShaders::YUVImageShaderFlags::kCubicSampling
+                     : PrecompileShaders::YUVImageShaderFlags::kExcludeCubic);
 
     return { s, o };
 }
