@@ -296,6 +296,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a57ccee_38f5d64b",
+        "filename": "src/core/SkRasterContextPriv.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T13:53:56Z",
+      "side": 1,
+      "message": "Sorry, I\u0027d been writing out Context but the hierarchy examples could be swapped to be in terms of Recorder as well.\n\nOne place where a super SkContext can make sense, but open to design, is how we want to handle \"readbacks\" in an async case. Right now these are APIs on the Graphite Context.  With an async CPU backend, the readback isn\u0027t really asynchronous but it could still be wrapped up in a matching API to make it easier for clients to think in that model.",
+      "parentUuid": "c4e5dd30_3770aba2",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 39
+      },
+      "revId": "0d599dbaaa441d96a9253519e809e11e687bcf88",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "59c283a2_8b0473c2",
