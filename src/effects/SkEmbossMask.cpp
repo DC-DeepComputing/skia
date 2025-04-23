@@ -81,15 +81,14 @@ void SkEmbossMask::Emboss(SkMaskBuilder* mask, const SkEmbossMaskFilter::Light& 
             int ny = alpha[x + next_row] - alpha[x - prev_row];
 
             SkFixed numer = lx * nx + ly * ny + lz_dot_nz;
-            int     mul = ambient;
-            int     add = 0;
+            int mul = ambient;
+            int add = 0;
 
             if (numer > 0) {  // preflight when numer/denom will be <= 0
                 int denom = SkSqrt32(nx * nx + ny * ny + kDelta*kDelta);
                 SkFixed dot = numer / denom;
                 dot >>= 8;  // now dot is 2^8 instead of 2^16
                 mul = std::min(mul + dot, 255);
-
                 // now for the reflection
 
                 //  R = 2 (Light * Normal) Normal - Light

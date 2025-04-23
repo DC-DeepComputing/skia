@@ -135,7 +135,8 @@ struct Material {
     enum class Type {
         kDiffuse,
         kSpecular,
-        kLast = kSpecular
+        kLegacySpecular,
+        kLast = kLegacySpecular
     };
 
     Type fType;
@@ -154,6 +155,10 @@ struct Material {
     static Material Specular(float k, float shininess, float surfaceDepth) {
         return {Type::kSpecular, skif::ParameterSpace<ZValue>(surfaceDepth), k, shininess};
     }
+
+    static Material LegacySpecular(float k, float shininess, float surfaceDepth) {
+      return {Type::kLegacySpecular , skif::ParameterSpace<ZValue>(surfaceDepth), k, shininess};
+  }
 };
 
 class SkLightingImageFilter final : public SkImageFilter_Base {
@@ -239,7 +244,7 @@ sk_sp<SkShader> make_lighting_shader(sk_sp<SkShader> normalMap,
     builder.uniform("materialAndLightType") =
             SkV4{surfaceDepth.val(),
                  shininess,
-                 matType == Material::Type::kDiffuse ? 0.f : 1.f,
+                 static_cast<float>(matType),
                  lightType == Light::Type::kPoint ?
                          0.f : (lightType == Light::Type::kDistant ? -1.f : 1.f)};
     builder.uniform("lightPosAndSpotFalloff") =
@@ -336,6 +341,14 @@ sk_sp<SkImageFilter> SkImageFilters::SpotLitDiffuse(
     return make_lighting(Light::Spot(lightColor, location, dir, falloffExponent, cosCutoffAngle),
                          Material::Diffuse(kd, surfaceScale),
                          std::move(input), cropRect);
+}
+
+sk_sp<SkImageFilter> SkImageFilters::LegacySpecular(
+        const SkPoint3& direction, SkColor lightColor, SkScalar surfaceScale, SkScalar ks,
+        SkScalar shininess, sk_sp<SkImageFilter> input, const CropRect& cropRect) {
+    return make_lighting(Light::Distant(lightColor, direction),
+                        Material::LegacySpecular(ks, shininess, surfaceScale),
+                        std::move(input), cropRect);
 }
 
 sk_sp<SkImageFilter> SkImageFilters::DistantLitSpecular(
