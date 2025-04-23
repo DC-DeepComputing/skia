@@ -13,6 +13,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSurface.h"
 #include "src/image/SkSurface_Base.h"
 
 #include <cstring>
@@ -24,7 +25,6 @@ class SkPaint;
 class SkPixelRef;
 class SkPixmap;
 class SkRasterRecorderImpl;
-class SkSurface;
 class SkSurfaceProps;
 struct SkIRect;
 

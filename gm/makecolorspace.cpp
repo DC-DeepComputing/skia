@@ -28,6 +28,7 @@
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
 #endif
 
 sk_sp<SkImage> make_raster_image(const char* path) {
