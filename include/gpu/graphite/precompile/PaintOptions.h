@@ -139,6 +139,11 @@ public:
     void setDither(bool dither) { fDither = dither; }
     bool isDither() const { return fDither; }
 
+    void setPaintColorIsOpaque(bool paintColorIsOpaque) {
+        fPaintColorIsOpaque = paintColorIsOpaque;
+    }
+    bool isPaintColorOpaque() const { return fPaintColorIsOpaque; }
+
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();
     const PaintOptionsPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -175,7 +180,7 @@ private:
                                Coverage,
                                const RenderPassDesc&)> ProcessCombination;
 
-    void buildCombinations(const KeyContext&,
+    void buildCombinations1(const KeyContext&,
                            PipelineDataGatherer*,
                            DrawTypeFlags,
                            bool addPrimitiveBlender,
@@ -193,6 +198,7 @@ private:
     skia_private::TArray<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
 
     bool fDither = false;
+    bool fPaintColorIsOpaque = true;
 };
 
 } // namespace skgpu::graphite

@@ -207,7 +207,7 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
 
-    options.priv().buildCombinations(
+    options.priv().buildCombinations2(
         keyContext,
         &gatherer,
         drawTypes,

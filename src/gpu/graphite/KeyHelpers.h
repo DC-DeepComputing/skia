@@ -175,7 +175,7 @@ struct ImageShaderBlock {
         sk_sp<TextureProxy> fTextureProxy;
     };
 
-    static void AddBlock(const KeyContext&,
+    static void AddBlock1(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
                          const ImageData&);

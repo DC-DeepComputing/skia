@@ -407,6 +407,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
     }
 }
 
+//$$
 void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
@@ -675,7 +676,7 @@ ImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
         , fSubset(subset) {
 }
 
-void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
+void ImageShaderBlock::AddBlock1(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
                                 const ImageData& imgData) {
@@ -2072,7 +2073,7 @@ static void add_to_key(const KeyContext& keyContext,
                   /* addSrcToKey= */ [&] () -> void {
                       Compose(keyContext, builder, gatherer,
                               /* addInnerToKey= */ [&]() -> void {
-                                  ImageShaderBlock::AddBlock(keyContext, builder, gatherer,
+                                  ImageShaderBlock::AddBlock1(keyContext, builder, gatherer,
                                                              imgData);
                               },
                               /* addOuterToKey= */ [&]() -> void {
@@ -2089,7 +2090,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                ImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+                ImageShaderBlock::AddBlock1(keyContext, builder, gatherer, imgData);
             },
             /* addOuterToKey= */ [&]() -> void {
                 ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, colorXformData);

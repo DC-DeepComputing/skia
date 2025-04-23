@@ -12,6 +12,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/private/base/SkMacros.h"
 
 #include <memory>
 
@@ -185,6 +186,8 @@ enum DrawTypeFlags : uint16_t {
 
     kLast = kNonSimpleShape,
 };
+
+SK_MAKE_BITFIELD_CLASS_OPS(DrawTypeFlags)
 
 } // namespace skgpu::graphite
 

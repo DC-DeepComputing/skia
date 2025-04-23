@@ -890,7 +890,9 @@ std::pair<sk_sp<SkShader>, sk_sp<PrecompileShader>> create_yuv_image_shader(SkRa
         s = SkShaders::Image(std::move(yuvImage), tmX, tmY, samplingOptions, lmPtr);
     }
 
-    o = PrecompileShaders::YUVImage({ colorInfo }, useCubic);
+    o = PrecompileShaders::YUVImage({ colorInfo },
+                                    useCubic ? PrecompileShaders::YUVImageShaderFlags::kCubicSampling
+                                             : PrecompileShaders::YUVImageShaderFlags::kExcludeCubic);
 
     return { s, o };
 }
@@ -1975,7 +1977,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         RenderPassDesc unusedRenderPassDesc;
 
         std::vector<UniquePaintParamsID> precompileIDs;
-        paintOptions.priv().buildCombinations(precompileKeyContext,
+        paintOptions.priv().buildCombinations2(precompileKeyContext,
                                               &precompileGatherer,
                                               DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
