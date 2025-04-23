@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "e77a5cc94f50f05194ca954b2c95a817bbc89d1b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d379b3ca_098cb216",
+        "filename": "tools/flags/CommonFlagsGraphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-23T18:49:34Z",
+      "side": 1,
+      "message": "This is the same flag we use for Ganesh.",
+      "range": {
+        "startLine": 12,
+        "startChar": 18,
+        "endLine": 12,
+        "endChar": 33
+      },
+      "revId": "e77a5cc94f50f05194ca954b2c95a817bbc89d1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99dc3a3f_5d1b03be",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 613,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-23T18:49:34Z",
+      "side": 1,
+      "message": "This is the same flag we use for Ganesh.",
+      "range": {
+        "startLine": 613,
+        "startChar": 8,
+        "endLine": 613,
+        "endChar": 18
+      },
+      "revId": "e77a5cc94f50f05194ca954b2c95a817bbc89d1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
