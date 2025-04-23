@@ -22,6 +22,30 @@
       },
       "revId": "62543ece239c887ffa8a20dd0f82a5ba0503f91a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63b816d4_98723b96",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 11
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-23T17:31:21Z",
+      "side": 1,
+      "message": "Fortunately, the gn json provides the build directory.",
+      "parentUuid": "2444faa6_aa75de04",
+      "range": {
+        "startLine": 607,
+        "startChar": 63,
+        "endLine": 607,
+        "endChar": 67
+      },
+      "revId": "62543ece239c887ffa8a20dd0f82a5ba0503f91a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
