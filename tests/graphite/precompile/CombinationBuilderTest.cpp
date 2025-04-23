@@ -151,7 +151,7 @@ void big_test(const KeyContext& keyContext,
                                                 PrecompileShaders::Color()
                                             },
                                             {
-                                                PrecompileShaders::Image()
+                                                PrecompileShaders::Image({}, {})
                                             })
                                 });
 
@@ -444,7 +444,7 @@ void shader_subtest(const KeyContext& keyContext,
     // The CoordClamp shader doesn't add any additional combinations to its wrapped shader.
     {
         PaintOptions paintOptions;
-        paintOptions.setShaders({ PrecompileShaders::CoordClamp({ PrecompileShaders::Image() }) });
+        paintOptions.setShaders({ PrecompileShaders::CoordClamp({ PrecompileShaders::Image({}, {}) }) });
 
         run_test(keyContext, gatherer, renderPassDesc, reporter, paintOptions,
                  /* expectedNumOptions= */ kExpectedImageCombos);
