@@ -327,6 +327,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "70f3b6a8_9a8d4853",
+        "filename": "modules/skcapture/SkCaptureCanvas.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T13:55:09Z",
+      "side": 1,
+      "message": "Talking offline, there\u0027s not a significant difference in likely performance here, and `SkCaptureCanvas` is never really going to be exposed as the type of an object to any caller, so the fact that it extends `SkNWayCanvas` isn\u0027t a problem.",
+      "parentUuid": "4af5d23f_966c5916",
+      "range": {
+        "startLine": 22,
+        "startChar": 24,
+        "endLine": 22,
+        "endChar": 44
+      },
+      "revId": "cfcee4db26a92681f57d3103c72d7c54ccf5e4bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3da924b5_6c4a6960",
