@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4dfc879f_587e7f9d",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 252,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "nit: this-\u003evalidate",
+      "range": {
+        "startLine": 252,
+        "startChar": 8,
+        "endLine": 252,
+        "endChar": 16
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "613ac3cd_886fae19",
+        "filename": "src/gpu/BufferWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "After this `memset`, we need to advance the writer as well, like `*this \u003d this-\u003emakeOffset(bytesToZero);`",
+      "range": {
+        "startLine": 253,
+        "startChar": 8,
+        "endLine": 253,
+        "endChar": 37
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79c3407e_b8842f7d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 668,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "nit: I think a comment here that we align to a multiple of 4stride for baseVertex, and round the storage up to a multiple of 4stride (effectively the same as aligning count to a multiple of 4) w/ zero\u0027ing the extra space at the end is for ARM speculative execution and other driver issues.",
+      "range": {
+        "startLine": 666,
+        "startChar": 4,
+        "endLine": 668,
+        "endChar": 95
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d0b2edc_2cd30854",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 674,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "We should still only pass in `size` here. The caller of `getVertexWriter` shouldn\u0027t be allowed to overwrite the 4-aligned extra bytes that we zero\u0027ed out.",
+      "range": {
+        "startLine": 674,
+        "startChar": 30,
+        "endLine": 674,
+        "endChar": 41
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5cac065_def826fd",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "When we pad and zero because of a new pipeline state, we always want the zero\u0027ed bytes to be preserved.  Even if the new render state appends vertices, and those vertices happen to have the same stride, we need the zeroed bytes to protect from different attribute layouts between the pipelines.\n\nIgnoring for now the case of padAndZero\u0027ing because a buffer ran out of space, when we call padAndZero because of newPipelineState or because of the end of a DrawPass, there isn\u0027t an active Appender (which we can assert). This means all of its reserved bytes will have been returned, so we don\u0027t need to add a new `takeVertexBytes` function, but should be able to just call `getVertexWriter()` with a stride of 1.",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 216,
+        "endChar": 53
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b0fa878b_e8c17b1b",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "Ideally we\u0027d only use 4*stride for the first `reserve` call after `newPipelineState`, at least for ensuring that speculative execution doesn\u0027t access any non-pipeline data in front of what\u0027s bound.\n\nIf we have to align to 4*stride to make sure that the base vertex ends up a multiple of 4, then we\u0027d want to do this after any `flush()`. I think the current code aligns to a multiple of 4 for every reserve call even if the regular stride-aligned allocation would have been contiguous.\n\nIn the situation where we have multiple batched `AnalyticBlurRenderStep::writeVertices` calls without a pipeline state change between them, we will have a series of `append(6)` calls, but each uses their own stack-allocated `Vertices` appender. The `getVertexWriter()` call with `fStride*4` for each of these will create gaps between each block of 6 vertices but we are otherwise treating it as if it were a contiguous draw.\n\nTo make sure we have enough room to padAndZero when a new pipeline state comes around later on, we can request `SkAlign4(count` from the buffer manager and use that for `fReservedCount`.",
+      "range": {
+        "startLine": 346,
+        "startChar": 73,
+        "endLine": 348,
+        "endChar": 109
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c58f896e_a0e75e33",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "Why do we have to pad and zero these bytes? I don\u0027t think it\u0027s necessary if we use the regular stride for reserve requests when pendingCount \u003e 0. Then byteDiff should always be 0.",
+      "range": {
+        "startLine": 361,
+        "startChar": 0,
+        "endLine": 366,
+        "endChar": 17
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1693895f_4289aee4",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 409,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-23T17:24:59Z",
+      "side": 1,
+      "message": "WDYT about having BufferManager just memset all remaining bytes in a buffer when it moves it from being a current buffer to a used buffer?  As long as we request SkAlign4(count) in reserve, we\u0027ll have enough remaining bytes even when the next reserve() moves to a new buffer and we don\u0027t have to try and set bytes using a VertexWriter.\n\nAlthough, we could get at the necessary byte range to zero by using `fNextWriter`.  Its limit should have been marked at the 4*count limit so we\u0027d just zero everything left in that range.",
+      "range": {
+        "startLine": 409,
+        "startChar": 0,
+        "endLine": 409,
+        "endChar": 62
+      },
+      "revId": "de511d11931f30c4232627ebc65a962bc703bf18",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
