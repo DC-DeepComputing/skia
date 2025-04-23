@@ -575,6 +575,24 @@ public:
                                                SkColor lightColor, SkScalar surfaceScale,
                                                SkScalar kd, sk_sp<SkImageFilter> input,
                                                const CropRect& cropRect = {});
+    /**
+     *  Create a filter that calculates the specular illumination from a distant light source,
+     *  interpreting the alpha channel of the input as the height profile of the surface (to
+     *  approximate normal vectors). This is based on the legacy raster implementation of the
+     *  emboss mask filter for clients that still use it.
+     *  @param direction    The direction to the distance light.
+     *  @param lightColor   The color of the specular light source.
+     *  @param surfaceScale Scale factor to transform from alpha values to physical height.
+     *  @param ks           Specular reflectance coefficient.
+     *  @param shininess    The specular exponent determining how shiny the surface is.
+     *  @param input        The input filter that defines surface normals (as alpha), or uses the
+     *                      source bitmap when null.
+     *  @param cropRect     Optional rectangle that crops the input and output.
+     */
+    static sk_sp<SkImageFilter> LegacySpecular(const SkPoint3& direction, SkColor lightColor,
+                                               SkScalar surfaceScale, SkScalar ks,
+                                               SkScalar shininess, sk_sp<SkImageFilter> input,
+                                               const CropRect& cropRect = {});
 
     /**
      *  Create a filter that calculates the specular illumination from a distant light source,
