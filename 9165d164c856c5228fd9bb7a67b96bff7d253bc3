@@ -22,6 +22,30 @@
       },
       "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "691eb548_a60a4e51",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-23T23:10:17Z",
+      "side": 1,
+      "message": "I could put `LegacySpecular` declaration in `SkEmbossMaskFilter.h` and not have it be in `SkImageFilters` actually and that could work, only thing would be name ambiguity for the two types of Light, could just change one of them pretty easily",
+      "parentUuid": "88cdd60a_10bc21d2",
+      "range": {
+        "startLine": 592,
+        "startChar": 32,
+        "endLine": 592,
+        "endChar": 46
+      },
+      "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
