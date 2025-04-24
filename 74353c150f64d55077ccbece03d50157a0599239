@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c1cf90_1b4496ad",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-24T20:25:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "79ee6d8d_15a26231",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 155,
+        "endChar": 54
+      },
+      "revId": "74353c150f64d55077ccbece03d50157a0599239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab4a93c4_97ca7eab",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-24T20:04:43Z",
       "side": 1,
       "message": "nit: these need 1 more space",
+      "range": {
+        "startLine": 190,
+        "startChar": 70,
+        "endLine": 193,
+        "endChar": 87
+      },
+      "revId": "74353c150f64d55077ccbece03d50157a0599239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d8af992_2a6dc5ee",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-24T20:25:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ab4a93c4_97ca7eab",
       "range": {
         "startLine": 190,
         "startChar": 70,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "229c4580_1a05c9f8",
+        "filename": "src/effects/SkEmbossMaskFilter.h",
+        "patchSetId": 28
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-24T20:25:28Z",
+      "side": 1,
+      "message": "Done. Added comment in SkLightingImageFilter.cpp that this is a private function.",
+      "parentUuid": "154093cd_0d0cd62e",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 95
+      },
+      "revId": "74353c150f64d55077ccbece03d50157a0599239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "af19af9c_c1edb59a",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-04-24T20:04:43Z",
       "side": 1,
       "message": "nit: line up with `static`",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 162,
+        "endChar": 3
+      },
+      "revId": "74353c150f64d55077ccbece03d50157a0599239",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a2692b5_cdf9299e",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 28
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-24T20:25:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "af19af9c_c1edb59a",
       "range": {
         "startLine": 162,
         "startChar": 0,
