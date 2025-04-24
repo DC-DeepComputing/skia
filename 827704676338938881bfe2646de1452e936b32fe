@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe7871c_7de89f34",
+        "filename": "include/core/SkRasterContext.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-24T13:19:21Z",
+      "side": 1,
+      "message": "Two nit/style/naming questions:\n\nOne, do we still want to continue using the term \"Raster\" to refer to cpu rendering? IMO that has never seemed like an obvious name to someone new to Skia and is mostly just legacy from when Skia was only CPU.\n\nTwo, what are our thoughts on continuing to use the Sk prefix for raster/cpu versus moving towards a namespace system like we\u0027ve done with Graphite? Would it be weird to have the mix of skcpu::Context but still needing to have things like SkCanvas/Surface/Image/Shader? Then again all those Sk things are shared generic Skia things where as something like skcpu::Context would be very specific to one backend like the GPU stuff.",
+      "range": {
+        "startLine": 16,
+        "startChar": 13,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4c619d3_85081773",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-24T13:19:21Z",
+      "side": 1,
+      "message": "Mostly bringing this up for discussion and less about things that need to happen in this CL.\n\nDo we think we\u0027ll have public APIs in Skia that will pass in a backend specific Recorder (i.e. a skgpu::Recorder or SkRasterRecorder)? I know were trying to merge as much as we can but maybe there are still something that should be very specific to a backend. If that is the case do we want this base class to also have virtuals for things like asGraphiteRecorder() and asRasterRecorder()?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 6
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
