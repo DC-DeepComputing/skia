@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_objc_library")
+load("//bazel:skia_rules.bzl", "skia_objc_library", "supports_platforms")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -51,6 +51,10 @@ skia_objc_library(
     ],
     sdk_frameworks = ["CoreFoundation"],
     visibility = ["//:__subpackages__"],
+    target_compatible_with = supports_platforms(
+        "@platforms//os:macos",
+        "@platforms//os:ios",
+    ),
     deps = [
         "//:core",
         "//src/base",

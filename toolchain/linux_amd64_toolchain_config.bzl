@@ -27,7 +27,7 @@ load(
 load(":clang_layering_check.bzl", "make_layering_check_features")
 
 # The location of the created clang toolchain.
-EXTERNAL_TOOLCHAIN = "external/clang_linux_amd64"
+EXTERNAL_TOOLCHAIN = "external/+_repo_rules+clang_linux_amd64"
 
 def _linux_amd64_toolchain_info(ctx):
     action_configs = _make_action_configs()
