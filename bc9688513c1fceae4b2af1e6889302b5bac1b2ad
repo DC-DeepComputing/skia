@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e90ee943_0d43c4ef",
+        "filename": "gm/blurbug.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T19:48:06Z",
+      "side": 1,
+      "message": "This comment is out of date, we should update it to just say that it exercises a reliable trigger of ARMs speculative vertex execution issue in Graphite.",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 70
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e52b6d6_da875d30",
+        "filename": "gm/blurbug.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T19:48:06Z",
+      "side": 1,
+      "message": "We should just name this `bug_399631317`",
+      "range": {
+        "startLine": 34,
+        "startChar": 58,
+        "endLine": 34,
+        "endChar": 65
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e405b099_d2d9c79d",
+        "filename": "gm/blurbug.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T19:48:06Z",
+      "side": 1,
+      "message": "Can we get rid of these and just return a constant SkISize of `{112, 112}`.",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 54,
+        "endChar": 90
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b72a3733_c2597b4b",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T19:48:06Z",
+      "side": 1,
+      "message": "Do we have to do the aligning here and in Vertice\u0027s overridden reserve()? Would it work if we just did `count \u003d SkAlign4(count)` inside Appender::reserve() after it checked that there wasn\u0027t enough room?",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 71
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7922ac8_72856e92",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T19:48:06Z",
+      "side": 1,
+      "message": "When we call `prepareFlush()` because we ran out of room to fit the next reservation, `DBM-\u003egetVertexWriter()` has already moved off of the buffer that needs to be zero\u0027ed, so `padAndZero()` calling `getVertexWriter()` again will be getting a byte range in the next buffer.\n\nBut at this point, `Appender::fNextWriter` should still have its offset starting at the spot in the old buffer that needs to be zero\u0027ed.  Or is this the issue around fPendingCOunt not being correct all the time that you mentioned offline?\n\nLike if we mostly filled up a buffer, then called flush() externally because of astate change, and then did another reservation that had to move to a new buffer right away. In this scenario `fPendingCount \u003d\u003d 0` because of the state change flush.\n\nI think we can still reconstruct the required bytes needing to be zero\u0027ed by looking at `fTarget.fOffset + fTarget.fSize`. If we round this ending byte offset up to a multiple of 4*stride, then the difference is the number of bytes to zero. `fNextWriter` should be at the right spot to start zero\u0027ing and should have a mark that is far enough out (it\u0027d be the pessimistic reservation that includes any returned bytes) we can call `zeroBytes(...)` on it.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
