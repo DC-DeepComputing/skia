@@ -45,8 +45,9 @@ bool SkMaskFilterBase::asABlur(BlurRec*) const {
     return false;
 }
 
-sk_sp<SkImageFilter> SkMaskFilterBase::asImageFilter(const SkMatrix& ctm) const {
-    return nullptr;
+std::pair<sk_sp<SkImageFilter>, bool> SkMaskFilterBase::asImageFilter(const SkMatrix& ctm,
+                                                                      const SkPaint& paint) const {
+    return std::make_pair(nullptr, false);
 }
 
 static SkMask extract_mask_subset(const SkMask& src, SkIRect bounds, int32_t newX, int32_t newY) {
