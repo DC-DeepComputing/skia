@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acbd7de9_17ecd1fe",
+        "filename": "src/effects/SkEmbossMaskFilter.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T16:42:55Z",
+      "side": 1,
+      "message": "nit: line up under `lightDirection`",
+      "range": {
+        "startLine": 191,
+        "startChar": 67,
+        "endLine": 193,
+        "endChar": 86
+      },
+      "revId": "683cd140ab30486f5fbd88305abf034170411a70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a7270b1_ba864e89",
+        "filename": "src/effects/imagefilters/SkLightingImageFilter.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T16:42:55Z",
+      "side": 1,
+      "message": "I\u0027d call this `kEmboss` or `kEmbossSpecular` with a comment that it\u0027s used to match historical behavior of SkEmbossMaskFilter\u0027s specular implementation.",
+      "range": {
+        "startLine": 138,
+        "startChar": 8,
+        "endLine": 138,
+        "endChar": 23
+      },
+      "revId": "683cd140ab30486f5fbd88305abf034170411a70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "053a1ffa_dcf8b943",
+        "filename": "src/sksl/sksl_rt_shader.sksl",
+        "patchSetId": 26
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T16:42:55Z",
+      "side": 1,
+      "message": "Can we update the above comment to something generic like `// Scale color by material type` and then at the end of each `{` of the if branches comment the material type like:\n\n```\nif (materialType \u003d\u003d 0) { // diffuse\n...\n} else if (materialType \u003d\u003d 1) { // specular\n\n} else { // emboss\n\n}\n```",
+      "range": {
+        "startLine": 160,
+        "startChar": 27,
+        "endLine": 160,
+        "endChar": 28
+      },
+      "revId": "683cd140ab30486f5fbd88305abf034170411a70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fc03ea0c_bc0464fa",
+        "filename": "src/sksl/sksl_rt_shader.sksl",
+        "patchSetId": 26
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T16:42:55Z",
+      "side": 1,
+      "message": "this should be `surfaceToLight.z` here and right after the `*`, right?",
+      "range": {
+        "startLine": 170,
+        "startChar": 57,
+        "endLine": 170,
+        "endChar": 63
+      },
+      "revId": "683cd140ab30486f5fbd88305abf034170411a70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

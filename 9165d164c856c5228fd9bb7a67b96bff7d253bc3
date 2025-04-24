@@ -46,6 +46,30 @@
       },
       "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22d3ae7a_928f2acb",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T16:42:55Z",
+      "side": 1,
+      "message": "Yeah, I think we should have this be a function that isn\u0027t visible to users that can include `include/effects/*`.  I think something like `LegacySpecular` or `EmbossSpecular` in `SkEmbossMaskFilter.h` makes the most sense.",
+      "parentUuid": "691eb548_a60a4e51",
+      "range": {
+        "startLine": 592,
+        "startChar": 32,
+        "endLine": 592,
+        "endChar": 46
+      },
+      "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
