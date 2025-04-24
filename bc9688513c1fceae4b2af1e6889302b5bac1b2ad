@@ -95,6 +95,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e0f61fb1_d1928ceb",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-24T21:34:38Z",
+      "side": 1,
+      "message": "See other comment.",
+      "parentUuid": "b72a3733_c2597b4b",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 71
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "f7922ac8_72856e92",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 23
@@ -106,6 +130,30 @@
       "writtenOn": "2025-04-24T19:48:06Z",
       "side": 1,
       "message": "When we call `prepareFlush()` because we ran out of room to fit the next reservation, `DBM-\u003egetVertexWriter()` has already moved off of the buffer that needs to be zero\u0027ed, so `padAndZero()` calling `getVertexWriter()` again will be getting a byte range in the next buffer.\n\nBut at this point, `Appender::fNextWriter` should still have its offset starting at the spot in the old buffer that needs to be zero\u0027ed.  Or is this the issue around fPendingCOunt not being correct all the time that you mentioned offline?\n\nLike if we mostly filled up a buffer, then called flush() externally because of astate change, and then did another reservation that had to move to a new buffer right away. In this scenario `fPendingCount \u003d\u003d 0` because of the state change flush.\n\nI think we can still reconstruct the required bytes needing to be zero\u0027ed by looking at `fTarget.fOffset + fTarget.fSize`. If we round this ending byte offset up to a multiple of 4*stride, then the difference is the number of bytes to zero. `fNextWriter` should be at the right spot to start zero\u0027ing and should have a mark that is far enough out (it\u0027d be the pessimistic reservation that includes any returned bytes) we can call `zeroBytes(...)` on it.",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99e517db_a96b94d4",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-24T21:34:38Z",
+      "side": 1,
+      "message": "Good catch, I did not think of this interaction when changing the pad/zeroing to `getVertexWriter()`. So this definitely needs to get fixed.\n\nThe issue with `fPendingCount` is that if `fPendingCount \u003d\u003d 0` and then you call a \"naked reserve call\" followed by an append\u0027s reserve call, both offsets get count 4 aligned, because the naked reserve does not increment `fPendingCount`, but the buffer offset does get moved forward.\n\nThe other scenario, which I believe is the same as you are describing, is a \"naked reserve\" followed by an append large enough to trigger a new buffer, where\nagain,`fPendingCount` says one thing but the buffer offset is somewhere else.\n\nHOWEVER, after going through it again, I realized there is a deeper problem here: simply asking for an aligned count reservation does not always guarantee that there is an aligned count amount of room in the buffer and writer because of the interaction with returning vertex bytes. Using `getVertexWriter` to do the padding/zeroing masked this interaction because that writer would always have enough room.\n\nI\u0027ll keep hacking at it!",
+      "parentUuid": "f7922ac8_72856e92",
       "range": {
         "startLine": 403,
         "startChar": 0,
