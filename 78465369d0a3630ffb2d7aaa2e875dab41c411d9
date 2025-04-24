@@ -16,6 +16,24 @@
       "message": "So apparently only the top level `ffi.rs` can be mentioned here? I suppose that\u0027s fine for this bit, but it seems the rest of these files should be mentioned somewhere?",
       "revId": "78465369d0a3630ffb2d7aaa2e875dab41c411d9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dc35377_6a92f55a",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 1
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-24T15:00:08Z",
+      "side": 1,
+      "message": "Nit: maybe add a TODO comment about that? I\u0027m fine either given our discussion offline that this seems to be fine for soong\u0027s purposes.",
+      "parentUuid": "59886a49_f6a3234e",
+      "revId": "78465369d0a3630ffb2d7aaa2e875dab41c411d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
