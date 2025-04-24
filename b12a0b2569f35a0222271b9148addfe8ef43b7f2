@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57d4abbd_54b18290",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 29
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-24T20:27:53Z",
+      "side": 1,
+      "message": "lgtm assuming tryjobs and GMs are happy!",
+      "revId": "b12a0b2569f35a0222271b9148addfe8ef43b7f2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
