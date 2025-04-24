@@ -39,6 +39,30 @@
       },
       "revId": "5d211d62310bf084cfefc4f864c91368d6d0c274",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a67430d4_095b7626",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-24T09:45:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "053b1dab_d4f01941",
+      "range": {
+        "startLine": 168,
+        "startChar": 16,
+        "endLine": 168,
+        "endChar": 32
+      },
+      "revId": "5d211d62310bf084cfefc4f864c91368d6d0c274",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
