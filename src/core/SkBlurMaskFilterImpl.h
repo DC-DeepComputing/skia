@@ -39,8 +39,8 @@ public:
 
     void computeFastBounds(const SkRect&, SkRect*) const override;
     bool asABlur(BlurRec*) const override;
-    sk_sp<SkImageFilter> asImageFilter(const SkMatrix& ctm) const override;
-
+    std::pair<sk_sp<SkImageFilter>, bool> asImageFilter(const SkMatrix& ctm,
+                                                        const SkPaint&) const override;
 
     SkScalar computeXformedSigma(const SkMatrix& ctm) const;
     SkBlurStyle blurStyle() const {return fBlurStyle;}
