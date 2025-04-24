@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fce38f5f_7c199660",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-24T21:07:51Z",
+      "side": 1,
+      "message": "The canary run seems to have failed for unrelated reasons (the tests with Graphite enabled did pass).",
+      "revId": "e4c1c48b4a959b172ad1613c356837ad0e9088db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
