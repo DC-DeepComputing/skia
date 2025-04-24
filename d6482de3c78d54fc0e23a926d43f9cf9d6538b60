@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aad290d5_569f362d",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-24T19:46:59Z",
+      "side": 1,
+      "message": "Note that passing the empty span into \u0027tileModes\u0027 now means the Shader-based sampling combinations will be skipped (as noted above).",
+      "range": {
+        "startLine": 138,
+        "startChar": 41,
+        "endLine": 138,
+        "endChar": 65
+      },
+      "revId": "d6482de3c78d54fc0e23a926d43f9cf9d6538b60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
