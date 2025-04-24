@@ -45,6 +45,29 @@
       },
       "revId": "827704676338938881bfe2646de1452e936b32fe",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a9ac846_4c97d735",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-04-24T15:51:55Z",
+      "side": 1,
+      "message": "Wasn\u0027t there talk on getting rid of these factories and instead just having them as functions on the Recorder?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 67
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
