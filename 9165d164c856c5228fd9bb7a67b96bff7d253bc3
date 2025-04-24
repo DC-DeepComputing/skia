@@ -70,6 +70,30 @@
       },
       "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a446e7_0b1cb6cc",
+        "filename": "include/effects/SkImageFilters.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 592,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-04-24T17:18:43Z",
+      "side": 1,
+      "message": "Done. Changed the name of `Light` struct in SkEmbossMaskFilter.h to `EmbossLight`",
+      "parentUuid": "22d3ae7a_928f2acb",
+      "range": {
+        "startLine": 592,
+        "startChar": 32,
+        "endLine": 592,
+        "endChar": 46
+      },
+      "revId": "9165d164c856c5228fd9bb7a67b96bff7d253bc3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
