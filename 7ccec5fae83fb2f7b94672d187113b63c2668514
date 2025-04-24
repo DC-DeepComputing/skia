@@ -390,6 +390,30 @@
       },
       "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffca3ba3_1e22b870",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-24T16:00:45Z",
+      "side": 1,
+      "message": "These names seem great to me, thanks for your patience with the iterations!\n\n\u003e \n\nApologies, this is an under-documented footgun. The `perfetto::DynamicString` and `perfetto::StaticString` concepts discussed in the [Perfetto docs](https://perfetto.dev/docs/instrumentation/track-events#dynamic-event-names) map to `TRACE_STR_COPY` and `TRACE_STR_STATIC` (respectively) [in Skia](https://cs.android.com/android/platform/superproject/main/+/main:external/skia/src/core/SkTraceEvent.h;l\u003d34-74;drc\u003dc19cc483c61983fd5034833bba470998ba93414e).\n\nSo in this case, I _believe_ you should be able to do:\n```\nTRACE_EVENT0_ALWAYS(\n    \"skia.shaders\",\n         TRACE_STR_STATIC(gpu-\u003evkCaps().supportsPipelineCreationCacheControl() ? \n             \"CreateGraphicsPipeline-CompileAfterCacheMiss\" : \n             \"CreateGraphicsPipeline-CacheLookupOrCompile\"));\n```\n\nIf not, then this current approach is totally fine too.",
+      "parentUuid": "6e020cda_e4eb842e",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
