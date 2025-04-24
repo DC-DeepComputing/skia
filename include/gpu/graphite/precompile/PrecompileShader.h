@@ -16,6 +16,9 @@
 
 class SkColorSpace;
 
+template<typename E>
+class SkEnumBitMask;
+
 namespace skgpu::graphite {
 
 class PrecompileBlender;
@@ -106,18 +109,57 @@ namespace PrecompileShaders {
                                          SkSpan<const sk_sp<PrecompileShader>> srcs);
     SK_API sk_sp<PrecompileShader> CoordClamp(SkSpan<const sk_sp<PrecompileShader>>);
 
-    // In the main Skia API ImageShaders are usually created via a SkImage::makeShader call.
-    // Since the SkImage used to create the ImageShader is unlikely to be present at precompilation
-    // time this entry point allows the equivalent precompilation program structure to be created.
-    // Note that this factory is for non-YUV SkImages, the YUVImage factory (below) should be used
-    // to represent the shading and sampling required for YUV images.
-    SK_API sk_sp<PrecompileShader> Image(SkSpan<const SkColorInfo> = {},
-                                         SkSpan<const SkTileMode> = {});
+    enum class ImageShaderFlags : uint16_t {
+        kNone                 = 0,
+
+        kCubicSampling        = 1 << 1,
+        kIncludeAlphaOnly     = 1 << 2,
+
+        kAll = kCubicSampling | kIncludeAlphaOnly,
+        kExcludeCubic = kIncludeAlphaOnly,
+        kNoAlphaNoCubic = kNone,
+    };
+
+    /**
+        In the main Skia API ImageShaders are usually created via a SkImage::makeShader call.
+        Since the SkImage used to create the ImageShader is unlikely to be present at precompilation
+        time this entry point allows the equivalent precompilation program structure to be created.
+        Note that this factory is for non-YUV SkImages, the YUVImage factory (below) should be used
+        to represent the shading and sampling required for YUV images.
+
+        @param colorInfos a span of SkColorInfos to narrow down the combinations.
+                          In general, the color info affects the swizzle and colorSpace
+                          transformation of the final Pipeline.
+        @param tileModes
+        @param samplingFlags Specify the sampling variations that will be precompiled.
+        @return A precompile shader capturing the specified combinations
+    */
+    SK_API sk_sp<PrecompileShader> Image(ImageShaderFlags = ImageShaderFlags::kAll,
+                                         SkSpan<const SkColorInfo> = {},
+                                         SkSpan<const SkTileMode> = { SkTileMode::kClamp,
+                                                                      SkTileMode::kRepeat });
     // As with the above Image call, raw ImageShaders are usually created via an
     // SkImage::makeRawShader call. The RawImage call allows the equivalent precompilation
     // program structure to be created without needing the SkImage.
     SK_API sk_sp<PrecompileShader> RawImage(SkSpan<const SkColorInfo> = {},
                                             SkSpan<const SkTileMode> = {});
+
+    enum class YUVImageShaderFlags : uint16_t {
+        kNone                       = 0,
+
+        kHardwareSamplingNoSwizzle  = 1 << 1,
+        kHardwareSampling           = 1 << 2,
+        kShaderBasedSampling        = 1 << 3,
+        kCubicSampling              = 1 << 4,
+
+        kExcludeCubic = kHardwareSamplingNoSwizzle | kHardwareSampling | kShaderBasedSampling,
+        kNoCubicNoNonSwizzledHW = kHardwareSamplingNoSwizzle | kShaderBasedSampling,
+    };
+    // Inlined SK_MAKE_BITMASK_OPS to avoid including SkEnumBitMask.h
+    constexpr SkEnumBitMask<YUVImageShaderFlags> operator|(YUVImageShaderFlags, YUVImageShaderFlags);
+    constexpr SkEnumBitMask<YUVImageShaderFlags> operator&(YUVImageShaderFlags, YUVImageShaderFlags);
+    constexpr SkEnumBitMask<YUVImageShaderFlags> operator^(YUVImageShaderFlags, YUVImageShaderFlags);
+    constexpr SkEnumBitMask<YUVImageShaderFlags> operator~(YUVImageShaderFlags);
 
     /**
         In the main Skia API, the specifics of the SkImage used for the SkImage::makeShader call
@@ -127,12 +169,13 @@ namespace PrecompileShaders {
         @param colorInfos a span of SkColorInfos to narrow down the combinations.
                           In general, the color info affects the swizzle and colorSpace
                           transformation of the final Pipeline.
-        @param includeCubic if true, a cubic-sampling combination will be included.
-                            In practice, YUV images are rarely cubic-sampling.
-        @return             A precompile shader capturing the specified combinations
+        @param samplingFlags Specify the sampling variations that will be precompiled.
+                             In practice, YUV images are rarely cubic-sampling.
+        @return A precompile shader capturing the specified combinations
     */
-    SK_API sk_sp<PrecompileShader> YUVImage(SkSpan<const SkColorInfo> = {},
-                                            bool includeCubic = true);
+    SK_API sk_sp<PrecompileShader> YUVImage(
+            SkSpan<const SkColorInfo> = {},
+            YUVImageShaderFlags = YUVImageShaderFlags::kExcludeCubic);
 
     // --- This block of two matches the SkShaders factories in SkPerlinNoiseShader.h
     // Again, most of the details have been elided.
