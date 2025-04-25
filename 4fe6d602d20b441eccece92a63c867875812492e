@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c6ed51_51389ed1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "Please describe what the error in the GPU drawing is for the commit message.\nEx:\n```Fix precision error when path segments intersect\n\n[2 sentences on what caused the problem, and how this CL addresses it]```",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "67a405e4_e2578850",
@@ -31,6 +48,279 @@
       "writtenOn": "2025-04-25T02:10:22Z",
       "side": 1,
       "message": "It seems I don\u0027t have permission to rerun these failed test cases. Could you please check again? Thanks.",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23d49a5c_e990445e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with this codebase, so I can\u0027t give a +1 on the fix or its implementation. I left some general formatting comments.",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5890c3_e982a0f1",
+        "filename": "gm/pathfill.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27a73958_280f70ca",
+        "filename": "gm/pathfill.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 728,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f23c9471_661de192",
+        "filename": "gm/pathfill.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 739,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4db2a7a_85d9bfdc",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffc3eb29_925acb89",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfe7c071_3776cb3e",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c13274e_c9277340",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 286,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c2fef41_91bb3687",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da309e92_de956f2e",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff7fa5e7_5a34a7f2",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3db217ab_d29af658",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "06c92531_1b892be5",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1234,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5acb747_b9b0f8f2",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1435,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "revId": "4fe6d602d20b441eccece92a63c867875812492e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c119fd0c_e20c6fad",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-04-25T14:47:11Z",
+      "side": 1,
+      "message": "nit: line break",
+      "fixSuggestions": [
+        {
+          "fixId": "e9c58e28_37b46b0d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+              "range": {
+                "startLine": 1603,
+                "startChar": 0,
+                "endLine": 1604,
+                "endChar": 0
+              },
+              "replacement": "        TESS_LOG(\"\\nvertex %g: (%1.9g,%1.9g), alpha %d\\n\",\n                 v-\u003efID, v-\u003efPoint.fX, v-\u003efPoint.fY, v-\u003efAlpha);\n"
+            }
+          ]
+        }
+      ],
       "revId": "4fe6d602d20b441eccece92a63c867875812492e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
