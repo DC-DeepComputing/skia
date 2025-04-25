@@ -414,6 +414,30 @@
       },
       "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8f53c20_22002f1f",
+        "filename": "src/gpu/ganesh/vk/GrVkPipeline.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 595,
+      "author": {
+        "id": 3762617
+      },
+      "writtenOn": "2025-04-25T11:05:36Z",
+      "side": 1,
+      "message": "Yeah, that works, thanks!",
+      "parentUuid": "ffca3ba3_1e22b870",
+      "range": {
+        "startLine": 595,
+        "startChar": 12,
+        "endLine": 595,
+        "endChar": 20
+      },
+      "revId": "7ccec5fae83fb2f7b94672d187113b63c2668514",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
