@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b4cda64_31861629",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-04-25T23:25:15Z",
+      "side": 1,
+      "message": "Q: do we even need to clamp since I can\u0027t imagine how the coords would go outside the range?",
+      "range": {
+        "startLine": 582,
+        "startChar": 25,
+        "endLine": 582,
+        "endChar": 44
+      },
+      "revId": "6385b0b61031c05b833ccfafb8b741900fdd2819",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
