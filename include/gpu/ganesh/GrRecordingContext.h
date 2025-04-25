@@ -34,6 +34,11 @@ class SkArenaAlloc;
 class SkCapabilities;
 class SkJSONWriter;
 
+namespace skcpu {
+class ContextImpl;
+class Recorder;
+}
+
 namespace sktext::gpu {
 class SubRunAllocator;
 class TextBlobRedrawCoordinator;
@@ -98,6 +103,8 @@ public:
     }
 
     SK_API sk_sp<const SkCapabilities> skCapabilities() const;
+
+    SK_API std::unique_ptr<skcpu::Recorder> makeRasterRecorder();
 
     // Provides access to functions that aren't part of the public API.
     GrRecordingContextPriv priv();
@@ -269,6 +276,7 @@ private:
 
     std::unique_ptr<GrDrawingManager> fDrawingManager;
     std::unique_ptr<GrProxyProvider>  fProxyProvider;
+    std::unique_ptr<const skcpu::ContextImpl> fRasterContext;
 
 #if defined(GPU_TEST_UTILS)
     int fSuppressWarningMessages = 0;
