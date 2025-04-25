@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b9487dd_b29d630a",
+        "filename": "include/core/SkRasterContext.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-25T21:10:41Z",
+      "side": 1,
+      "message": "I like namespaces. It is the new millennium after all!",
+      "parentUuid": "bfe7871c_7de89f34",
+      "range": {
+        "startLine": 16,
+        "startChar": 13,
+        "endLine": 16,
+        "endChar": 28
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b4c619d3_85081773",
@@ -49,6 +73,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b6e4db0_4d1b0581",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-25T21:10:41Z",
+      "side": 1,
+      "message": "I don\u0027t know if we want those to be public. In my opinion, the client should be holding on to the recorder of the sub type, so they shouldn\u0027t need to call those virtuals. We can add them if we find a usecase.",
+      "parentUuid": "b4c619d3_85081773",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 6
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5a9ac846_4c97d735",
         "filename": "include/core/SkSurface.h",
         "patchSetId": 26
@@ -60,6 +108,30 @@
       "writtenOn": "2025-04-24T15:51:55Z",
       "side": 1,
       "message": "Wasn\u0027t there talk on getting rid of these factories and instead just having them as functions on the Recorder?",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 67
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0fb3679_2919e8da",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-25T21:10:41Z",
+      "side": 1,
+      "message": "Yes. Was that how we wanted it to be?",
+      "parentUuid": "5a9ac846_4c97d735",
       "range": {
         "startLine": 85,
         "startChar": 0,
