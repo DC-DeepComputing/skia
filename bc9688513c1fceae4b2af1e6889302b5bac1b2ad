@@ -186,6 +186,30 @@
       },
       "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dbcbe95_2a427e84",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-25T03:03:49Z",
+      "side": 1,
+      "message": "Re Situation #1:\n\nCorrection: My previous analysis was flawed. It\u0027s true that reserve doesn\u0027t modify `fPendingCount`, so a following reserve operation will also request a 4 count aligned offset. However, I missed that without a following append `fReservedCount` is never decremented. Consequently, the full amount of reserved space is returned, leaving no potential gaps.\n\n\nRe Situation #3:\nSee google chat. It\u0027s too long to post in here.",
+      "parentUuid": "6cf3aba0_a4e5e75c",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
