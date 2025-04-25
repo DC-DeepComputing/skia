@@ -162,6 +162,30 @@
       },
       "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf3aba0_a4e5e75c",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 23
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-25T01:47:11Z",
+      "side": 1,
+      "message": "For the first situation, the append\u0027s reserve call shouldn\u0027t be doing anything to change the buffer offset. It should end up using the space that was already reserved from the first call. And if it didn\u0027t fit, then the first reserve\u0027s entire reservation would have returned like it never happened, right? What causes the buffer offset to move in the naked reserve call?\n\nIn the second situation, you\u0027re right that the fPendingCount could be misleading as it reflects the post-flush state. My idea to use `fTarget` also doesn\u0027t work as-is because the flush resets fTarget. Although this is only a problem if a state-change triggers a flush (pipeline-triggering flushes already pad and zero, and a \"ran-out-of-room\" flush hasn\u0027t modified fPendingCount or fTarget yet). \n\nPerhaps if flush() resets fTarget\u0027s fOffset to be `fOffset + fPendingCount*stride` to position (and reduce fSize to appropriately), the appending target still defines whatever space was left in the original reservation that had been returned by `getVertexWriter()` inside reserve(). \n\n\nIn the 3rd situation, I\u0027m not following how the returning of bytes prevents us from not having enough bytes to be able zero out to a 4-aligned count. I can see how calling `getVertexWriter` for the bytes to zero could accidentally go to the next buffer if we hadn\u0027t returned bytes yet (although when padding-and-zero\u0027ing, we should have already returned bytes or shouldn\u0027t have an active appender, so this might mean that some other calculation was messing up how many bytes we were trying to return?).\n\nAnd I wouldn\u0027t expect to always have room for 4*stride space at the end, but there should be enough to fill up to a multiple of 4*stride. I\u0027d need to see a step-by-step breakdown of what\u0027s happening to see where it\u0027s breaking down.",
+      "parentUuid": "99e517db_a96b94d4",
+      "range": {
+        "startLine": 403,
+        "startChar": 0,
+        "endLine": 403,
+        "endChar": 29
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
