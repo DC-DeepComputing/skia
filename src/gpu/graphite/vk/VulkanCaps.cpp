@@ -129,7 +129,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     populate_resource_binding_reqs(fResourceBindingReqs);
 
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
-    fStorageBufferSupport = false;
+    fStorageBufferSupport = true;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
