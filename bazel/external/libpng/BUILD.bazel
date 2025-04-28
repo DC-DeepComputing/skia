@@ -74,7 +74,7 @@ cc_library(
     # file, we must tell Bazel to explicitly bring it in as an "includable".
     textual_hdrs = ["scripts/pnglibconf.h.prebuilt"],
     visibility = ["//visibility:public"],
-    deps = ["@zlib_skia//:zlib"],
+    deps = ["@zlib"],
 )
 
 # Creates a file called pnglibconf.h that includes the default png settings with one
