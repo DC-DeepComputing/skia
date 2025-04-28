@@ -54,7 +54,10 @@ public:
                                 const SkGainmapInfo& gainmapInfo,
                                 const SkRect& dstRect,
                                 float dstHdrRatio,
-                                sk_sp<SkColorSpace> dstColorSpace);
+                                sk_sp<SkColorSpace> dstColorSpace) {
+      return Make(baseImage, baseRect, baseSamplingOptions, gainmapImage, gainmapRect,
+                  gainmapSamplingOptions, gainmapInfo, dstRect, dstHdrRatio);
+    }
 };
 
 #endif
