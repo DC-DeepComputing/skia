@@ -104,8 +104,8 @@ http_archive(
     ],
 )
 
-load("@bazel_gazelle//:deps.bzl", "gazelle_dependencies")
-load("@io_bazel_rules_go//go:deps.bzl", "go_download_sdk", "go_register_toolchains", "go_rules_dependencies")
+load("@gazelle//:deps.bzl", "gazelle_dependencies")
+load("@rules_go//go:deps.bzl", "go_download_sdk", "go_register_toolchains", "go_rules_dependencies")
 load("//:go_repositories.bzl", "go_repositories")
 
 # gazelle:repository_macro go_repositories.bzl%go_repositories
@@ -484,7 +484,7 @@ local_repository(
 # @vulkan_utility_libraries - //bazel/external/vulkan_utility_libraries:BUILD.bazel
 # @vulkanmemoryallocator - //bazel/external/vulkanmemoryallocator:BUILD.bazel
 # @wuffs - //bazel/external/wuffs:BUILD.bazel
-# @zlib_skia - //bazel/external/zlib_skia:BUILD.bazel
+# @zlib - //bazel/external/zlib:BUILD.bazel
 #### END GENERATED LIST OF THIRD_PARTY DEPS
 c_plus_plus_deps()
 

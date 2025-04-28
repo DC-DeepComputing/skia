@@ -71,8 +71,7 @@ var deps = map[string]depConfig{
 	"vulkan-utility-libraries": {bazelNameOverride: "vulkan_utility_libraries", needsBazelFile: true},
 	"vulkanmemoryallocator":    {needsBazelFile: true},
 	"wuffs":                    {needsBazelFile: true},
-	// Some other dependency downloads zlib but with their own rules
-	"zlib": {bazelNameOverride: "zlib_skia", needsBazelFile: true},
+	"zlib":                     {needsBazelFile: true},
 }
 
 func main() {
@@ -285,15 +284,14 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//bazel:download_config_files.bzl", "download_config_files")
 load("//bazel:gcs_mirror.bzl", "gcs_mirror_url")
 
-def c_plus_plus_deps(ws = "@skia"):
+def _c_plus_plus_modules_impl(ctx):
     """A list of native Bazel git rules to download third party git repositories
 
        These are in the order they appear in //DEPS.
         https://bazel.build/rules/lib/repo/git
 
     Args:
-      ws: The name of the Skia Bazel workspace. The default, "@", may be when used from within the
-          Skia workspace.
+      ctx: https://bazel.build/rules/lib/builtins/module_ctx
     """`
 
 // If necessary, we can make a new map for bazel deps
@@ -363,6 +361,10 @@ def header_based_configs():
             "make_data_cpp.py": "third_party/icu/make_data_cpp.py",
         },
     )
+
+c_plus_plus_modules = module_extension(
+    implementation = _c_plus_plus_modules_impl,
+)
 `
 
 func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string, patchCmds, patchCmdsWin []string) error {
@@ -372,7 +374,7 @@ func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string, p
 		_, err := w.WriteString(fmt.Sprintf(`
     new_git_repository(
         name = "%s",
-        build_file = ws + "//bazel/external/%s:BUILD.bazel",
+        build_file = "//bazel/external/%s:BUILD.bazel",
         commit = "%s",
         remote = "%s",
     )
@@ -384,7 +386,7 @@ func writeNewGitRepositoryRule(w io.StringWriter, bazelName, repo, rev string, p
 	_, err := w.WriteString(fmt.Sprintf(`
     new_git_repository(
         name = "%s",
-        build_file = ws + "//bazel/external/%s:BUILD.bazel",
+        build_file = "//bazel/external/%s:BUILD.bazel",
         commit = "%s",
         remote = "%s",
         patch_cmds = %s,
