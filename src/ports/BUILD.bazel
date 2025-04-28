@@ -3,6 +3,7 @@ load(
     "skia_cc_library",
     "skia_filegroup",
     "skia_objc_library",
+    "supports_platforms",
 )
 
 package(
@@ -218,6 +219,10 @@ skia_objc_library(
         "CoreText",
     ],
     visibility = ["//:__pkg__"],
+    target_compatible_with = supports_platforms(
+        "@platforms//os:macos",
+        "@platforms//os:ios",
+    ),
     deps = [
         ":coretext_typeface",
         "//:core",
