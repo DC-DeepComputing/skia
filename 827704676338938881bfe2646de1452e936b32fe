@@ -95,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a61a5464_4382dd3b",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T13:41:49Z",
+      "side": 1,
+      "message": "I think they can be aded easily in the future if we need to. I wouldn\u0027t be surprised if there\u0027s some location in client code that does 90% the same work on an SkRecorder and then needs to do something slightly different if they are on the GPU and checking the recorder type is the best way to do that.",
+      "parentUuid": "3b6e4db0_4d1b0581",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 6
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a9ac846_4c97d735",
@@ -132,6 +156,30 @@
       "side": 1,
       "message": "Yes. Was that how we wanted it to be?",
       "parentUuid": "5a9ac846_4c97d735",
+      "range": {
+        "startLine": 85,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 67
+      },
+      "revId": "827704676338938881bfe2646de1452e936b32fe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89c9f4e4_823956d6",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 26
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T13:41:49Z",
+      "side": 1,
+      "message": "Yes, that is my recollection of that decision",
+      "parentUuid": "a0fb3679_2919e8da",
       "range": {
         "startLine": 85,
         "startChar": 0,
