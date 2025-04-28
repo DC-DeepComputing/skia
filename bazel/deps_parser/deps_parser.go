@@ -29,6 +29,7 @@ type depConfig struct {
 var deps = map[string]depConfig{
 	"abseil-cpp":  {bazelNameOverride: "abseil_cpp"},
 	"brotli":      {},
+	"protobuf":    {bazelNameOverride: "com_google_protobuf"},
 	"highway":     {},
 	"spirv-tools": {bazelNameOverride: "spirv_tools"},
 	// This name is important because spirv_tools expects @spirv_headers to exist by that name.

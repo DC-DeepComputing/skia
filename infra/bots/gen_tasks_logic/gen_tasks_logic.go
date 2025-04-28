@@ -470,10 +470,7 @@ func GenTasks(cfg *Config) {
 			"skia/requirements.txt",
 			"skia/toolchain",
 		},
-		Excludes: []string{
-			rbe.ExcludeGitDir,
-			"skia/third_party/externals",
-		},
+		Excludes: []string{rbe.ExcludeGitDir},
 	})
 	b.MustAddCasSpec(CAS_CANVASKIT, &specs.CasSpec{
 		Root: "..",

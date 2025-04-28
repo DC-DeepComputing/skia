@@ -90684,8 +90684,7 @@
         "skia/toolchain"
       ],
       "excludes": [
-        "^(.*\\/)*\\.git(\\/.*)*$",
-        "skia/third_party/externals"
+        "^(.*\\/)*\\.git(\\/.*)*$"
       ]
     },
     "canvaskit": {
