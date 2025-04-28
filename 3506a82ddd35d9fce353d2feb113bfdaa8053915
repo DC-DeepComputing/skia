@@ -16,6 +16,75 @@
       "message": "ARM speculative vertex execution bug ready for re-review",
       "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c1a7a485_e9a58bfe",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T19:12:31Z",
+      "side": 1,
+      "message": "we should assert that `alignStride` is at least `dataStride` and a multiple of `dataStride`.",
+      "range": {
+        "startLine": 221,
+        "startChar": 76,
+        "endLine": 222,
+        "endChar": 93
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1524edcc_561bccf3",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T19:12:31Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to zero these bytes at this point, there\u0027s still the possibility that another `append()` call will come along and provide valid data for these indices. Does it not work to have `pad()` also handle zeroing the data in the vertex writer that it gets?",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80a0056b_4600c733",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T19:12:31Z",
+      "side": 1,
+      "message": "I think this zero\u0027ing could be brittle. I think it\u0027s meant to zero out the final tail that we want for the reservation that triggered the new buffer, but if the DBM\u0027s buffer size has bumped up to a pretty large buffer, then there\u0027s likely to be a fair amount of extra data that subsequent reservations can use (and may have different strides in).  Also think the current logic is off because `countDiff` is based off of `fPendingCount`, but if the DBM has made a new buffer, `writer` will be pointing to that instead.\n\nYour idea to query the DBM if it has enough space seems simplest, and if there isn\u0027t space for the allocation then it can call the existing `pad()` function.",
+      "range": {
+        "startLine": 359,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
