@@ -50,6 +50,26 @@ load("@rules_pkg//:deps.bzl", "rules_pkg_dependencies")
 rules_pkg_dependencies()
 
 #######################################################################################
+# C++
+#######################################################################################
+
+# https://github.com/bazelbuild/rules_cc
+http_archive(
+    name = "rules_cc",
+    sha256 = "4b12149a041ddfb8306a8fd0e904e39d673552ce82e4296e96fac9cbf0780e59",
+    strip_prefix = "rules_cc-0.1.0",
+    urls = gcs_mirror_url(
+        sha256 = "4b12149a041ddfb8306a8fd0e904e39d673552ce82e4296e96fac9cbf0780e59",
+        url = "https://github.com/bazelbuild/rules_cc/releases/download/0.1.0/rules_cc-0.1.0.tar.gz",
+    ),    
+)
+
+local_repository(
+    name = "com_google_protobuf",
+    path = "third_party/externals/protobuf",
+)
+
+#######################################################################################
 # Python
 #######################################################################################
 
@@ -146,32 +166,6 @@ load("//bazel:go_googleapis_compatibility_hack.bzl", "go_googleapis_compatibilit
 # v0.41.0 or newer. See the go_googleapis() rule's docstring for details.
 go_googleapis_compatibility_hack(
     name = "go_googleapis",
-)
-
-# Needed by @com_github_bazelbuild_remote_apis.
-http_archive(
-    name = "com_google_protobuf",
-    sha256 = "b8ab9bbdf0c6968cf20060794bc61e231fae82aaf69d6e3577c154181991f576",
-    strip_prefix = "protobuf-3.18.1",
-    urls = gcs_mirror_url(
-        sha256 = "b8ab9bbdf0c6968cf20060794bc61e231fae82aaf69d6e3577c154181991f576",
-        url = "https://github.com/protocolbuffers/protobuf/releases/download/v3.18.1/protobuf-all-3.18.1.tar.gz",
-    ),
-)
-
-# Originally, we pulled protobuf dependencies as follows:
-#
-#     load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
-#     protobuf_deps()
-#
-# The protobuf_deps() macro brings in a bunch of dependencies, but by copying the macro body here
-# and removing dependencies one by one, "rules_proto" was identified as the only dependency that is
-# required to build this repository.
-http_archive(
-    name = "rules_proto",
-    sha256 = "a4382f78723af788f0bc19fd4c8411f44ffe0a72723670a34692ffad56ada3ac",
-    strip_prefix = "rules_proto-f7a30f6f80006b591fa7c437fe5a951eb10bcbcf",
-    urls = ["https://github.com/bazelbuild/rules_proto/archive/f7a30f6f80006b591fa7c437fe5a951eb10bcbcf.zip"],
 )
 
 http_archive(
