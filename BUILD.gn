@@ -1466,7 +1466,8 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   action("rust_png_cxx_core_bazel_build") {
     script = "gn/bazel_build.py"
     sources = [
-      "WORKSPACE.bazel",
+      "MODULE.bazel",
+      "MODULE.bazel.lock",
       "bazel/external/cxx/BUILD.bazel",
       "bazel/external/cxx/BUILD.bazel.skia",
     ]

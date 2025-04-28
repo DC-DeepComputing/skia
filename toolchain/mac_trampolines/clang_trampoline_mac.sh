@@ -6,4 +6,4 @@
 
 set -euo pipefail
 
-external/clang_mac/bin/clang $@
+external/+_repo_rules2+clang_mac/bin/clang $@
