@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d8e9d0fd_02ecb688",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T21:16:36Z",
+      "side": 1,
+      "message": "Yes; that is handled in the `zeroBytes()` call below, which occurs after `returnBytes`. Regardless of whether we got a new buffer, or a writer that\u0027s on the same buffer, we zero out the tail. Because we got the writer after `returnBytes`, we know its looking at the right place.",
+      "parentUuid": "2c9f5758_d239c0ee",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80a0056b_4600c733",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 30
@@ -197,6 +221,30 @@
       "side": 1,
       "message": "I am concerned that double writing everything will have a noticeable impact on performance. In particular, cases where we just reserve(1), append(1), ... will mean we end up touching every byte twice. Now maybe that will not make any noticeable change in performance if the memory controller is able to discard the redundant zero\u0027ing for bytes we end up setting attributes on.  This would be something that we could hopefully measure with `nanobench` to make sure we weren\u0027t regressing.\n\nOn the other hand, alignment math is just a few instructions so repeating it is probably negligible. It could still be limited to the appendVerts case.\n\nI agree that adding a query for space left is a not the cleanest API for DBM, but isn\u0027t too unreasonable either. An alternative would be that we let DBM handle all of the zero\u0027ing internally, but I think that would be trickier. It\u0027d make the end-of-a-buffer simpler, but the padding and calculations for when a pipeline changes would end pushing a lot of tracking from DrawWriter back into DBM.\n\nIn the long term, if we move DBM to a ScratchBuffer approach, it\u0027ll end up similarly to the check-first and then request logic above. In that eventual world, `Appender` would store a mapped ScratchBuffer. `append()` would advance the cursor within the scratchbuffer if there was room, or it would fail. Then Appender would request a new buffer. `reserve` would no-op if the current buffer had enough room, or would request a new buffer. This would simplify things because the Appender can perform intermediate logic between running out of room and returning the used-up buffer, and when it\u0027s checked out a buffer, it knows about the entire size of the buffer and can use all of it.  Right now the fReserveCount and vertex returning makes that tracking harder to follow, but with a ScratchBuffer it tracks the used+written position exactly.",
       "parentUuid": "99cc24a0_ad800d37",
+      "range": {
+        "startLine": 359,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c5947d4_777fe8cb",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T21:16:36Z",
+      "side": 1,
+      "message": "Miscommunication: when I wrote \"preemptively zeroing the new buffer\" I meant we are zeroing the *tail*. So we aren\u0027t double writing the *entire* buffer, just the tail.\n\nRegardless, if you want to try to move to a more forward thinking approach like scratch buffers, happy to pivot to that too. Discuss more tomorrow!",
+      "parentUuid": "04280a03_9b273b11",
       "range": {
         "startLine": 359,
         "startChar": 0,
