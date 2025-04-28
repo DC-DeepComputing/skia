@@ -39,6 +39,30 @@
       },
       "revId": "4a3267e88ebca7f41db833154e89cd153d8a67be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "697b3342_2db18869",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-04-28T18:36:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "11548fa9_2d2dba74",
+      "range": {
+        "startLine": 138,
+        "startChar": 70,
+        "endLine": 139,
+        "endChar": 89
+      },
+      "revId": "4a3267e88ebca7f41db833154e89cd153d8a67be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
