@@ -107,7 +107,8 @@ public:
 
     // These writers automatically calculate the required bytes based on count and stride. If a
     // valid writer is returned, the byte count will fit in a uint32_t.
-    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t stride);
+    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t dataStride,
+                                                            size_t alignStride);
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
 
