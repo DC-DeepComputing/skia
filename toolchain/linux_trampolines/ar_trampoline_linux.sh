@@ -11,4 +11,4 @@ if [[ "$@" == *SKIA_SKIP_LINKING* ]]; then
   exit 0
 fi
 
-external/clang_linux_amd64/bin/llvm-ar $@
+external/+_repo_rules+clang_linux_amd64/bin/llvm-ar $@
