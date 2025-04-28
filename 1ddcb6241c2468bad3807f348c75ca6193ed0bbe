@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a63ec69f_602acdc5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-28T14:44:42Z",
+      "side": 1,
+      "message": "Fixed the Bazel build so I need re-reviewing, PTAL.",
+      "revId": "1ddcb6241c2468bad3807f348c75ca6193ed0bbe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
