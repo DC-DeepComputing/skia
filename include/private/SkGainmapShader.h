@@ -9,10 +9,10 @@
 #define SkGainmapShader_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
 #include "include/private/base/SkAPI.h"
 
 class SkColorSpace;
-class SkShader;
 class SkImage;
 struct SkGainmapInfo;
 struct SkRect;
