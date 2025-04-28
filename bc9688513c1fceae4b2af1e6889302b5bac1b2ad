@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25129569_0c1059b6",
+        "filename": "gm/blurbug.cpp",
+        "patchSetId": 23
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T18:12:24Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49d7d441_fd80c96e",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 70
+      },
+      "revId": "bc9688513c1fceae4b2af1e6889302b5bac1b2ad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e52b6d6_da875d30",
