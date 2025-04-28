@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6032faa_a1c90318",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-28T19:09:23Z",
+      "side": 1,
+      "message": "Should we also check this in release and return an empty bitmap if it\u0027s false?",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 78
+      },
+      "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbfe44f_0a2a8ada",
+        "filename": "tests/BlurTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-28T19:09:23Z",
+      "side": 1,
+      "message": "Looks like this test also needs to be guarded by `#if defined(SK_GRAPHITE)`",
+      "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
