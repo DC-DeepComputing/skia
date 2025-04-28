@@ -16,6 +16,29 @@
       "message": "The Chrome Canary is failing for unrelated reasons but is compiling.",
       "revId": "4a3267e88ebca7f41db833154e89cd153d8a67be",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11548fa9_2d2dba74",
+        "filename": "include/gpu/graphite/precompile/PrecompileShader.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T13:58:32Z",
+      "side": 1,
+      "message": "This default value being \"public\" is a bit confusing, and might not be obvious to be updated if we ever split up other tilemode specializations. I think we should just have it hold all tilemodes and accept the redundant key generation that doesn\u0027t end up compiling anything.",
+      "range": {
+        "startLine": 138,
+        "startChar": 70,
+        "endLine": 139,
+        "endChar": 89
+      },
+      "revId": "4a3267e88ebca7f41db833154e89cd153d8a67be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
