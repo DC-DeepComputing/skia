@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3b4f7d0_b397a055",
+        "filename": "include/private/SkGainmapShader.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-28T20:33:21Z",
+      "side": 1,
+      "message": "Because this takes an `sk_sp\u003cSkColorSpace\u003e` it must be able to destroy it, so the type must be complete. This should probably be fixed by moving the implementation into the cpp file. This is currently blocking the Google3 roll.",
+      "range": {
+        "startLine": 57,
+        "startChar": 32,
+        "endLine": 57,
+        "endChar": 65
+      },
+      "revId": "732930485dd7c484c37d097de19c1215eda8b302",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
