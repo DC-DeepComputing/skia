@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2c63757_52f7e265",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 30
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T19:30:46Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c1a7a485_e9a58bfe",
+      "range": {
+        "startLine": 221,
+        "startChar": 76,
+        "endLine": 222,
+        "endChar": 93
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1524edcc_561bccf3",
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b9ed46e1_92f16e81",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T19:30:46Z",
+      "side": 1,
+      "message": "This *does* need to get zeroed, because the previous zeroing only occurred up the alignment of the *previous* reservation count. In this case where `fReservedCount \u003e\u003d alignedCount` we are now overwriting that padding and appending more data; that appended data needs its padding too.",
+      "parentUuid": "1524edcc_561bccf3",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "80a0056b_4600c733",
         "filename": "src/gpu/graphite/DrawWriter.h",
         "patchSetId": 30
@@ -77,6 +125,30 @@
       "writtenOn": "2025-04-28T19:12:31Z",
       "side": 1,
       "message": "I think this zero\u0027ing could be brittle. I think it\u0027s meant to zero out the final tail that we want for the reservation that triggered the new buffer, but if the DBM\u0027s buffer size has bumped up to a pretty large buffer, then there\u0027s likely to be a fair amount of extra data that subsequent reservations can use (and may have different strides in).  Also think the current logic is off because `countDiff` is based off of `fPendingCount`, but if the DBM has made a new buffer, `writer` will be pointing to that instead.\n\nYour idea to query the DBM if it has enough space seems simplest, and if there isn\u0027t space for the allocation then it can call the existing `pad()` function.",
+      "range": {
+        "startLine": 359,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99cc24a0_ad800d37",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-28T19:30:46Z",
+      "side": 1,
+      "message": "Apologies for confusion, I am using a different technique now: \"always zero, sometimes pad.\" Basically whenever we make a reservation we always zero out the tail according to whatever the reserve count was. Whether or not that data gets overwritten depends on if pad() is called.\n\nSo for this call here, we are not trying to zero out the data in preparation for the flush, that was *already* zeroed during its `reserve` call. Instead, we are preemptively zeroing the new buffer, in case it also gets flushed prior to `newPipelineState()`. \n\n\nThe advantage of this padding/zero technique is that it constrains the padding/zeroing logic to `DrawWriter`. Querying the DBM would also work, and I can implement that way as well. (If you have concerns about redundant zeroing, because we are zeroing on every `reserve` call now. DBM querying would mean repeating the overflow buffer logic.)",
+      "parentUuid": "80a0056b_4600c733",
       "range": {
         "startLine": 359,
         "startChar": 0,
