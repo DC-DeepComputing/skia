@@ -22,6 +22,30 @@
       },
       "revId": "6385b0b61031c05b833ccfafb8b741900fdd2819",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c03f427d_a470e5e6",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 3
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-28T14:21:55Z",
+      "side": 1,
+      "message": "In this situation, both `sk_hw_yuv` variants are only chosen when the requested subset is equal to the Y plane\u0027s dimensions, so accessing the whole UV plane should be fine too (we don\u0027t support using approx-fit textures for the sub-sampled planes).  \n\nIn that case we could just say `uvCoords \u003d floor(coords) + 0.5;`, but if you\u0027re not seeing much performance difference with including this clamp, we could keep the clamp and extend it to apply to `coords` as well.\n\nThen we\u0027d be able to remove the slow-path fallout when we hit\n```\n// We depend on the subset code to handle cases where the UV dimensions times the\n// subsample factors are not equal to the Y dimensions.\nif (imgData.fImgSize !\u003d imgData.fImgSizeUV) {\n    return false;\n}\n```\n\nTo account for this, we\u0027d basically be changing `sk_hw_yuv...` to `sk_clamp_yuv...` and could be used for either HW images (with a infinite subset), or for clamp shader tiling that sets the `subset` and `linearFilterUVInset` values:\n\n    return $sample_image(clamp(coords, subsetInsetClamp.xy, subsetInsetClamp.zw), invImgSize, s);\n\n\n```\nfloat2 uvCoords \u003d mix(floor(coords)+0.5, coords, filterMode);\nuvCoords \u003d clamp(uvCoords, subset.xy+linearFilterUVInset, subset.zw-linearFilterUVInset);\ncoords \u003d clamp(coords, subset.xy+$kLinearInset, subset.zw-$kLinearInset);\n```\n\nI\u0027d be curious to see how much this changes the shader performance, but if it\u0027s not much, it would be valuable to reduce the number of scenarios that would drop out of the fast paths.",
+      "parentUuid": "8b4cda64_31861629",
+      "range": {
+        "startLine": 582,
+        "startChar": 25,
+        "endLine": 582,
+        "endChar": 44
+      },
+      "revId": "6385b0b61031c05b833ccfafb8b741900fdd2819",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
