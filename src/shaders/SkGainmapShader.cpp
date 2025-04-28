@@ -85,6 +85,20 @@ static bool all_channels_equal(const SkColor4f& c) {
     return c.fR == c.fG && c.fR == c.fB;
 }
 
+static sk_sp<SkShader> Make(const sk_sp<const SkImage>& baseImage,
+                            const SkRect& baseRect,
+                            const SkSamplingOptions& baseSamplingOptions,
+                            const sk_sp<const SkImage>& gainmapImage,
+                            const SkRect& gainmapRect,
+                            const SkSamplingOptions& gainmapSamplingOptions,
+                            const SkGainmapInfo& gainmapInfo,
+                            const SkRect& dstRect,
+                            float dstHdrRatio,
+                            sk_sp<SkColorSpace> dstColorSpace) {
+    return Make(baseImage, baseRect, baseSamplingOptions, gainmapImage, gainmapRect,
+                gainmapSamplingOptions, gainmapInfo, dstRect, dstHdrRatio);
+}
+
 sk_sp<SkShader> SkGainmapShader::Make(const sk_sp<const SkImage>& baseImage,
                                       const SkRect& baseRect,
                                       const SkSamplingOptions& baseSamplingOptions,
