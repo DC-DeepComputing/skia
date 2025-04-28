@@ -47,6 +47,11 @@ var deps = deps_parser.DepsEntries{
 		Version: "729495f2ffa69080907780591fa2a630b2556e98",
 		Path:    "buildtools",
 	},
+	"chromium.googlesource.com/chromium/src/third_party/abseil-cpp": {
+		Id:      "chromium.googlesource.com/chromium/src/third_party/abseil-cpp",
+		Version: "04dc59d2c83238cb1fcb49083e5e416643a899ce",
+		Path:    "third_party/externals/abseil-cpp",
+	},
 	"chromium.googlesource.com/chromium/src/third_party/freetype2": {
 		Id:      "chromium.googlesource.com/chromium/src/third_party/freetype2",
 		Version: "5d4e649f740c675426fbe4cdaffc53ee2a4cb954",
@@ -61,6 +66,11 @@ var deps = deps_parser.DepsEntries{
 		Id:      "chromium.googlesource.com/chromium/src/third_party/markupsafe",
 		Version: "0bad08bb207bbfc1d6f3bbc82b9242b0c50e5794",
 		Path:    "third_party/externals/markupsafe",
+	},
+	"chromium.googlesource.com/chromium/src/third_party/protobuf": {
+		Id:      "chromium.googlesource.com/chromium/src/third_party/protobuf",
+		Version: "1a4051088b71355d44591172c474304331aaddad",
+		Path:    "third_party/externals/protobuf",
 	},
 	"chromium.googlesource.com/chromium/src/third_party/zlib": {
 		Id:      "chromium.googlesource.com/chromium/src/third_party/zlib",
@@ -149,7 +159,7 @@ var deps = deps_parser.DepsEntries{
 	},
 	"dawn.googlesource.com/dawn": {
 		Id:      "dawn.googlesource.com/dawn",
-		Version: "1a81a31c86f24b217d6396bc0a4c796590fffc43",
+		Version: "7f388e660a882aa070921d65c2757547dca7e123",
 		Path:    "third_party/externals/dawn",
 	},
 	"infra/3pp/tools/ninja": {
@@ -196,11 +206,6 @@ var deps = deps_parser.DepsEntries{
 		Id:      "skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
 		Version: "783d7033613cedaa7147d0700b517abc5c32312d",
 		Path:    "third_party/externals/spirv-tools",
-	},
-	"skia.googlesource.com/external/github.com/abseil/abseil-cpp": {
-		Id:      "skia.googlesource.com/external/github.com/abseil/abseil-cpp",
-		Version: "65a55c2ba891f6d2492477707f4a2e327a0b40dc",
-		Path:    "third_party/externals/abseil-cpp",
 	},
 	"skia.googlesource.com/external/github.com/emscripten-core/emsdk": {
 		Id:      "skia.googlesource.com/external/github.com/emscripten-core/emsdk",
