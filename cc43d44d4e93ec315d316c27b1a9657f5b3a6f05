@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e89ff7f9_14615c10",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-04-28T19:16:41Z",
+      "side": 1,
+      "message": "Expanded error message:\n```\nFAILED: out/soong/.intermediates/frameworks/base/libs/hwui/libhwui/linux_glibc_x86_64_static/obj/frameworks/base/libs/hwui/effects/GainmapRenderer.o\n....d -o out/soong/.intermediates/frameworks/base/libs/hwui/libhwui/linux_glibc_x86_64_static/obj/frameworks/base/libs/hwui/effects/GainmapRenderer.o frameworks/base/libs/hwui/effects/GainmapRenderer.cpp\nIn file included from frameworks/base/libs/hwui/effects/GainmapRenderer.cpp:17:\nIn file included from frameworks/base/libs/hwui/effects/GainmapRenderer.h:19:\nIn file included from external/skia/include/core/SkCanvas.h:16:\nIn file included from external/skia/include/core/SkImageFilter.h:11:\nIn file included from external/skia/include/core/SkFlattenable.h:11:\nexternal/skia/include/core/SkRefCnt.h:151:12: error: member access into incomplete type \u0027SkShader\u0027\n  151 |         obj-\u003eunref();\n      |            ^\nexternal/skia/include/core/SkRefCnt.h:256:9: note: in instantiation of function template specialization \u0027SkSafeUnref\u003cSkShader\u003e\u0027 requested here\n  256 |         SkSafeUnref(fPtr);\n      |         ^\nexternal/skia/include/private/SkGainmapShader.h:58:14: note: in instantiation of member function \u0027sk_sp\u003cSkShader\u003e::~sk_sp\u0027 requested here\n   58 |       return Make(baseImage, baseRect, baseSamplingOptions, gainmapImage, gainmapRect,\n      |              ^\nexternal/skia/include/core/SkPaint.h:30:7: note: forward declaration of \u0027SkShader\u0027\n   30 | class SkShader;\n      |       ^\n1 error generated.\n```",
+      "revId": "cc43d44d4e93ec315d316c27b1a9657f5b3a6f05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
