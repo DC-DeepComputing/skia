@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4af3ba3b_2633bee8",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 311,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T19:22:46Z",
+      "side": 1,
+      "message": "nit: separate",
+      "range": {
+        "startLine": 311,
+        "startChar": 30,
+        "endLine": 311,
+        "endChar": 38
+      },
+      "revId": "dd748be0e6bb63f763cd0f50cc9e69c08ec4dea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9f3eee8_58c8d1b8",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T19:22:46Z",
+      "side": 1,
+      "message": "This was the original comment, but it\u0027s a little out-of-date/inaccurate. Instead we should say something like \"SkBlendMode::kPlus always clamps its output to [0,1], but we can\u0027t rely on hardware blending to do that for all texture formats.\"",
+      "range": {
+        "startLine": 82,
+        "startChar": 10,
+        "endLine": 83,
+        "endChar": 79
+      },
+      "revId": "dd748be0e6bb63f763cd0f50cc9e69c08ec4dea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e12c740_5e35c0ab",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T19:22:46Z",
+      "side": 1,
+      "message": "I think this comment is more general: if we can\u0027t use any hardware blending, we have to perform a dst read.\n\nGiven that, we could just replace all uses of IsDstReadRequired with CanUseHardwareBlending and only have one function. I agree that CanUseHardwareBlending is a more obvious name, and helps differentiate the behavior from the higher-level logic around whether or not the dst color effects the output at all (which can still be true if we are doing HW blending).",
+      "range": {
+        "startLine": 105,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 18
+      },
+      "revId": "dd748be0e6bb63f763cd0f50cc9e69c08ec4dea5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
