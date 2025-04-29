@@ -68,6 +68,23 @@
       "parentUuid": "c08f03fe_d18b2be9",
       "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eeff588_381580f3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-29T14:51:32Z",
+      "side": 1,
+      "message": "It looks like you have fixed a case that originally was fixed to fail, rather than ending up in an infinite loop, see: https://g-issues.chromium.org/issues/40799501. Now it generates 303 vertices. So you need to change line 1363 in tests/TriangulatingPathRendererTests.cpp to have vertexCount \u003d\u003d 303. If you want to test that locally, you can build the dm test executable, and run \"dm --src tests --match Triangulator_Crbug1262444\"",
+      "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
