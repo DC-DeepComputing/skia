@@ -33,6 +33,23 @@
       "message": "Who knows why these two checks failed, and what can I do?",
       "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c08f03fe_d18b2be9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-29T12:41:46Z",
+      "side": 1,
+      "message": "I\u0027ll install your patch locally and take a look.",
+      "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
