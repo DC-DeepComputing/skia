@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4f242e_a341a7ac",
+        "filename": "DEPS",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-29T18:12:02Z",
+      "side": 1,
+      "message": "Manually doing a bit of this to unblock the Dawn into Skia roll. However, it is likely that this will need to be done with the Dawn roll, since Dawn\u0027s BUILD.gn changed at the same time.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 89
+      },
+      "revId": "15ca331e03c0ab2a15ce3cc8e33c86e6a5e07540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
