@@ -16,6 +16,23 @@
       "message": "The latest patch fixed the three tiny path cases: inverse_paths, clippedcubic2, and circular_arcs_stroke_round.\n\nThe reason is that setTop and setBottom involve isLeft or isRight judgments, so we needed to move the assignment of fOriginalSegment earlier.\nAdditionally, splitEdge calls mergeCollinearEdges, which may merge edges and cause the winding of the edge to become zero. Therefore, we needed to add a reverseWinding flag to determine whether the fOriginalSegment of the newly split line segment needs to be reversed.\n\nFinally, on the Win11 x86_64 MSVC platform, I ran all gm tests with the code before applying this commit and generated reference images, then ran all gm tests with the code after applying this commit and generated images. A binary comparison revealed differences in only four cases:\ncrbug_884166, dstreadshuffle, parsedpaths, and path_skbug_11859.\nAmong them, crbug_884166 and path_skbug_11859 show no visible pixel differences to the naked eye. parsedpaths may have a difference of up to 2 pixels, while dstreadshuffle has 9 thin line differences, but I personally consider this acceptable.\n\nHope you can take another look. Thanks!",
       "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d357176_275347a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-04-29T09:02:29Z",
+      "side": 1,
+      "message": "Who knows why these two checks failed, and what can I do?",
+      "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
