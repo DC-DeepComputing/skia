@@ -22,6 +22,30 @@
       },
       "revId": "4528c1e21b39d1c240bab8acf850ef22b07a8c8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f6a877_7ca6b827",
+        "filename": "infra/bots/recipe_modules/build/chromebook.py",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-29T15:48:06Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/986778",
+      "parentUuid": "032a3b0c_1cb11d2a",
+      "range": {
+        "startLine": 137,
+        "startChar": 54,
+        "endLine": 137,
+        "endChar": 63
+      },
+      "revId": "4528c1e21b39d1c240bab8acf850ef22b07a8c8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
