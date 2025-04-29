@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da9d0d87_48bc60ef",
+        "filename": "modules/skcapture/SkCaptureCanvas.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-29T13:15:34Z",
+      "side": 1,
+      "message": "Need a `SkCaptureCanvas::~SkCaptureCanvas() \u003d default;` here",
+      "revId": "0384aaeb18f1d6430a3580a5557341f95c68364c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
