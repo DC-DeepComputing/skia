@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94e567e6_73ba6d54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T18:20:47Z",
+      "side": 1,
+      "message": "The test failures are related to precompile, and since we are consolidating some cases that used to trigger more pipelines that no longer, the utilization will appear lower than expected. This likely means the more expensive YUV shaders aren\u0027t needed in the precompilation set now.",
+      "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e3d75545_2cd86aa2",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T18:20:47Z",
+      "side": 1,
+      "message": "If we are here or in the other hw_ variant and the tilemodes are not clamp, the subset needs to be adjusted to [-really-big, +really-big] since the shader is universally applying the clamp.\n\nAlternatively, we could use the sign of `fLinearFilterUVInset` to specify whether or not the subset should be applied. \n\nSince the UV inset parameter is 2 components and should always be positive if we are going to use it for real values, we could also use that to eliminate the extra `filterMode` uniform. Sign-encode the X channel as negative if we are doing the UV coord snapping to centers, and sign-encode the Y channel as negative if we are doign the clamp calls.",
+      "range": {
+        "startLine": 778,
+        "startChar": 4,
+        "endLine": 778,
+        "endChar": 37
+      },
+      "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
