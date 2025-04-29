@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb623142_0bf505ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-29T16:40:44Z",
+      "side": 1,
+      "message": "We can hit this in our one-on-one, but this ended up looking a bit different than we originally discussed (original plan was to flush whenever going to multisampling, but we needed to account for going from multisampling(texture copies) to single-sampled dst reads. We already flush every time we go to the texture copy approach.",
+      "revId": "7402d3cea06cb248d20a23bd5119dd83be48971b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
