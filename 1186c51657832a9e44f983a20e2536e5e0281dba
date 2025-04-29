@@ -102,6 +102,42 @@
       "message": "Thank you very much for tracking this down, btw. This particular bug has been plaguing us for a while but no one has had time to dig into it.",
       "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f69a87e4_89ea2327",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-04-29T15:31:57Z",
+      "side": 1,
+      "message": "Jim, thanks! I stumbled upon this bug while learning about PathGeometry algorithms—glad I happened to fix it!",
+      "parentUuid": "f91de1fb_a9929e51",
+      "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8b26571_db0dd15f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-04-29T15:31:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2eeff588_381580f3",
+      "revId": "1186c51657832a9e44f983a20e2536e5e0281dba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
