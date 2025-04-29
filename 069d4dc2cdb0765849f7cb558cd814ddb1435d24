@@ -16,6 +16,23 @@
       "message": "See commit message for how the abseil-cpp commit what chosen.",
       "revId": "069d4dc2cdb0765849f7cb558cd814ddb1435d24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b914c687_6233a7be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-29T19:45:39Z",
+      "side": 1,
+      "message": "It looks like `rules_cc` may need to be rolled as well. Looks like the abseil build now needs `emscripten` in https://github.com/bazelbuild/rules_cc/blame/main/cc/compiler/BUILD .",
+      "revId": "069d4dc2cdb0765849f7cb558cd814ddb1435d24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
