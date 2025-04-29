@@ -16,6 +16,24 @@
       "message": "It looks like chrome/m137 just branched right before this landed, this should get cherry-picked there before chrome actually branches.",
       "revId": "4dc2ded2068707f43113fd9305562e2ae22f86db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c4c1c6d_07120858",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-29T15:19:49Z",
+      "side": 1,
+      "message": "The \"No-Unresolved-Comments\" verifier is absolute garbage.",
+      "parentUuid": "80286cbd_071941e6",
+      "revId": "4dc2ded2068707f43113fd9305562e2ae22f86db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
