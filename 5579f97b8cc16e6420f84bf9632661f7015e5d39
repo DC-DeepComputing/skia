@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5f6158f3_5aa7bde7",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T01:56:55Z",
+      "side": 1,
+      "message": "I don\u0027t think that\u0027s necessary; these would only trip in release if SkScalarCeilToInt was adjusted to saturate differently (or not at all), or if `SK_MaxS32FitsInFloat` were to change value.  Both of these seem unlikely. Ideally this would be a static assert, but ceil and other float functions aren\u0027t constexpr so it\u0027s more annoying to do.",
+      "parentUuid": "f6032faa_a1c90318",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 78
+      },
+      "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "2fbfe44f_0a2a8ada",
         "filename": "tests/BlurTest.cpp",
         "patchSetId": 1
@@ -37,6 +61,24 @@
       "writtenOn": "2025-04-28T19:09:23Z",
       "side": 1,
       "message": "Looks like this test also needs to be guarded by `#if defined(SK_GRAPHITE)`",
+      "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b459d5a3_2762bebb",
+        "filename": "tests/BlurTest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 599,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T01:56:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fbfe44f_0a2a8ada",
       "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
