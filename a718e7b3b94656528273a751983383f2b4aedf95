@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d2dc782_77a024f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-29T12:21:34Z",
+      "side": 1,
+      "message": "Is this what\u0027s blocked on updating the rust toolchain? I\u0027ve been working on untangling all that in https://skia-review.googlesource.com/c/skia/+/984976",
+      "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
