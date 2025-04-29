@@ -16,6 +16,41 @@
       "message": "Is this what\u0027s blocked on updating the rust toolchain? I\u0027ve been working on untangling all that in https://skia-review.googlesource.com/c/skia/+/984976",
       "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb0219e_1d314fd8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-29T14:14:35Z",
+      "side": 1,
+      "message": "Yes, as mentioned in the comment on https://issues.skia.org/issues/413044303#comment4 - thanks for working on that.",
+      "parentUuid": "9d2dc782_77a024f6",
+      "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b740889e_c5b70a60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-04-29T14:14:35Z",
+      "side": 1,
+      "message": "\u003e https://doc.rust-lang.org/std/option/enum.Option.html#method.is_none_or\n\nis the reason the build fails on some of the bots, this requires Rust 1.82. So yes, we are now blocked on rolling Fontations.",
+      "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
