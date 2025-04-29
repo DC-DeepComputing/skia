@@ -33,6 +33,24 @@
       "message": "It looks like `rules_cc` may need to be rolled as well. Looks like the abseil build now needs `emscripten` in https://github.com/bazelbuild/rules_cc/blame/main/cc/compiler/BUILD .",
       "revId": "069d4dc2cdb0765849f7cb558cd814ddb1435d24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e15b0f0_4e837571",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-04-29T19:47:49Z",
+      "side": 1,
+      "message": "I\u0027m in the process of rolling all our Bazel deps and Bazel itself - https://skia-review.googlesource.com/c/skia/+/984976",
+      "parentUuid": "b914c687_6233a7be",
+      "revId": "069d4dc2cdb0765849f7cb558cd814ddb1435d24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
