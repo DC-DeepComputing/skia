@@ -30,7 +30,6 @@
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/RendererProvider.h"
-#include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/SharedContext.h"
 #include "src/gpu/graphite/SpecialImage_Graphite.h"
 #include "src/gpu/graphite/Surface_Graphite.h"
@@ -1349,7 +1348,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                               (secondaryRenderer && secondaryRenderer->requiresMSAA());
     DstReadStrategy dstReadStrategy = dstReadRequired ? fDC->dstReadStrategy(requiresMSAA)
                                                       : DstReadStrategy::kNoneRequired;
-    const bool needsFlush = this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
+    const bool needsFlush =
+            this->needsFlushBeforeDraw(numNewRenderSteps, dstReadStrategy);
     if (needsFlush) {
         if (pathAtlas != nullptr) {
             // We need to flush work for all devices associated with the current Recorder.
@@ -1828,13 +1828,23 @@ void Device::internalFlush() {
     fRecorder->priv().atlasProvider()->compact();
 }
 
-bool Device::needsFlushBeforeDraw(int numNewRenderSteps, DstReadStrategy dstReadStrategy) const {
+bool Device::needsFlushBeforeDraw(int numNewRenderSteps, DstReadStrategy dstReadStrategy) {
     // Must also account for the elements in the clip stack that might need to be recorded.
     numNewRenderSteps += fClip.maxDeferredClipDraws() * Renderer::kMaxRenderSteps;
-    return // Need flush if we don't have room to record into the current list.
+    bool needsFlush =
+           // Need flush if we don't have room to record into the current list.
            (DrawList::kMaxRenderSteps - fDC->pendingRenderSteps()) < numNewRenderSteps ||
            // Need flush if this draw needs to copy the dst surface for reading.
-           dstReadStrategy == DstReadStrategy::kTextureCopy;
+           dstReadStrategy == DstReadStrategy::kTextureCopy ||
+           // Need flush if we were performing a dst copy but now can read as an input
+           // attachment (we must perform the copy operation prior to reading)
+           (fPriorDrawDstReadStrategy == DstReadStrategy::kTextureCopy &&
+            dstReadStrategy == DstReadStrategy::kReadFromInput);
+
+    // Update prior DstReadStrategy after making this determination
+    fPriorDrawDstReadStrategy = dstReadStrategy;
+
+    return needsFlush;
 }
 
 void Device::drawSpecial(SkSpecialImage* special,
