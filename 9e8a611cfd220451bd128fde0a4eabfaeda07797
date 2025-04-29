@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0dacece_f680e4cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-29T18:17:27Z",
+      "side": 1,
+      "message": "Small CL to set up for advanced blend mode support. Streamlines the determination of the final blending method and consolidates it into one utility function that should accurately mirror graphite\u0027s current selection logic.",
+      "revId": "9e8a611cfd220451bd128fde0a4eabfaeda07797",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
