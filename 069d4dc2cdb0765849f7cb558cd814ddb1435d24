@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf8f2c45_848f6a4b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-04-29T18:45:49Z",
+      "side": 1,
+      "message": "See commit message for how the abseil-cpp commit what chosen.",
+      "revId": "069d4dc2cdb0765849f7cb558cd814ddb1435d24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
