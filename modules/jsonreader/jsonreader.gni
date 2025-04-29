@@ -12,3 +12,4 @@ skia_jsonreader_sources = [
   "$_modules/jsonreader/SkJSONReader.cpp",
   "$_modules/jsonreader/SkJSONReader.h",
 ]
+

@@ -113,3 +113,4 @@ skia_svg_sources = [
   "$_modules/svg/src/SkSVGUse.cpp",
   "$_modules/svg/src/SkSVGValue.cpp",
 ]
+

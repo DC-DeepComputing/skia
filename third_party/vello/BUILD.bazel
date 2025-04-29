@@ -42,7 +42,7 @@ rust_static_library(
         },
     ),
     deps = [
-        "@cxx",
+        "@crates//:cxx",
         "@vello//:vello_encoding",
         "@vello//:vello_shaders",
         "@vello_deps//:bytemuck",

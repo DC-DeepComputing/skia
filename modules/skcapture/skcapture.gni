@@ -12,3 +12,4 @@ skia_skcapture_sources = [
   "$_modules/skcapture/SkCaptureCanvas.cpp",
   "$_modules/skcapture/SkCaptureCanvas.h",
 ]
+

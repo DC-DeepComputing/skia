@@ -49,3 +49,4 @@ bentleyottmann_tests = [
   "$_modules/bentleyottmann/tests/SegmentTest.cpp",
   "$_modules/bentleyottmann/tests/SweepLineTest.cpp",
 ]
+

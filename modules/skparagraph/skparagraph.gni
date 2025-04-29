@@ -122,3 +122,4 @@ skparagraph_sources = [
   "$_modules/skparagraph/src/TypefaceFontProvider.cpp",
   "$_modules/skparagraph/utils/TestFontCollection.cpp",
 ]
+

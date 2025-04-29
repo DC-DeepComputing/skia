@@ -95,3 +95,4 @@ skia_colorfilters_sources = [
   "$_src/effects/colorfilters/SkWorkingFormatColorFilter.cpp",
   "$_src/effects/colorfilters/SkWorkingFormatColorFilter.h",
 ]
+

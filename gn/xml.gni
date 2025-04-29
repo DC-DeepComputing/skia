@@ -18,3 +18,4 @@ skia_xml_sources = [
   "$_src/xml/SkXMLWriter.cpp",
   "$_src/xml/SkXMLWriter.h",
 ]
+
