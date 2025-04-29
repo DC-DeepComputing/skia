@@ -195,17 +195,27 @@ sk_sp<SkImage> Image_Base::onMakeSubset(Recorder* recorder,
                            label);
 }
 
-sk_sp<SkSurface> Image_Base::onMakeSurface(Recorder* recorder, const SkImageInfo& info) const {
+sk_sp<SkSurface> Image_Base::onMakeSurface(SkRecorder* recorder, const SkImageInfo& info) const {
     if (!recorder) {
         return nullptr;
     }
-    return SkSurfaces::RenderTarget(recorder, info);
+    if (recorder->type() != SkRecorder::Type::kGraphite) {
+        return nullptr;
+    }
+    return SkSurfaces::RenderTarget(static_cast<Recorder*>(recorder), info);
 }
 
-sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(Recorder* recorder,
+sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
                                                       SkColorType targetCT,
                                                       sk_sp<SkColorSpace> targetCS,
                                                       RequiredProperties requiredProps) const {
+    if (!recorder) {
+        return nullptr;
+    }
+    if (recorder->type() != SkRecorder::Type::kGraphite) {
+        return nullptr;
+    }
+
     SkColorInfo dstColorInfo{targetCT, this->alphaType(), std::move(targetCS)};
     // optimization : return self if there's no color type/space change and the image's texture
     // is immutable
@@ -224,7 +234,7 @@ sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(Recorder* recorder,
 
     // Use CopyAsDraw directly to perform the color space changes. The copied image is not
     // considered budgeted because this is a client-invoked API and they will own the image.
-    return CopyAsDraw(recorder,
+    return CopyAsDraw(static_cast<Recorder*>(recorder),
                       this,
                       this->bounds(),
                       dstColorInfo,
