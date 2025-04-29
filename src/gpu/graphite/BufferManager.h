@@ -105,9 +105,13 @@ public:
     // work that will be wasted because the next Recording snap will fail.
     bool hasMappingFailed() const { return fMappingFailed; }
 
+    // AppendVerts needs to check if a new reservation will overflow the buffer
+    bool willVertexOverflow(size_t count, size_t dataStride, size_t alignStride);
+
     // These writers automatically calculate the required bytes based on count and stride. If a
     // valid writer is returned, the byte count will fit in a uint32_t.
-    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t stride);
+    std::pair<VertexWriter, BindBufferInfo> getVertexWriter(size_t count, size_t dataStride,
+                                                            size_t alignStride);
     std::pair<IndexWriter, BindBufferInfo> getIndexWriter(size_t count, size_t stride);
     std::pair<UniformWriter, BindBufferInfo> getUniformWriter(size_t count, size_t stride);
 
@@ -182,6 +186,9 @@ private:
         // How many bytes have been used for for this buffer type since the last Recording snap.
         uint32_t fUsedSize = 0;
     };
+
+    bool willBufferOverflow(BufferInfo* info, uint32_t requiredBytes, uint32_t requiredAlignment);
+
     std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(
             BufferInfo* info,
             std::string_view label,
@@ -235,6 +242,9 @@ private:
     // If mapping failed on Buffers created/managed by this DrawBufferManager or by the mapped
     // transfer buffers from the UploadManager, remember so that the next Recording will fail.
     bool fMappingFailed = false;
+
+    // Try to prevent some redundant logic.
+    bool fWillOverflow = false;
 };
 
 /**
