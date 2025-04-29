@@ -16,6 +16,29 @@
       "message": "The canary run seems to have failed for unrelated reasons (the tests with Graphite enabled did pass).",
       "revId": "e4c1c48b4a959b172ad1613c356837ad0e9088db",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e934aba4_86687feb",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 1
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-29T18:47:59Z",
+      "side": 1,
+      "message": "I think I would prefer to keep `$sample_image` as it was, and then have `sk_hw_image_shader` just call `sample` directly with a comment that it assumes `coords` has already been normalized.",
+      "range": {
+        "startLine": 435,
+        "startChar": 0,
+        "endLine": 435,
+        "endChar": 36
+      },
+      "revId": "e4c1c48b4a959b172ad1613c356837ad0e9088db",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
