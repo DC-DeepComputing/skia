@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "926a51d0_8da6b155",
+        "filename": "src/gpu/BlurUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 196,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-29T13:31:33Z",
+      "side": 1,
+      "message": "OK right, got it.",
+      "parentUuid": "5f6158f3_5aa7bde7",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 196,
+        "endChar": 78
+      },
+      "revId": "5579f97b8cc16e6420f84bf9632661f7015e5d39",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fbfe44f_0a2a8ada",
