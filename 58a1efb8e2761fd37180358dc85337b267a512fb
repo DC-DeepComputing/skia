@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39c24f80_93dd6a14",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T16:57:35Z",
+      "side": 1,
+      "message": "One thing that came up when discussing this optimization with Sunny was whether or not we should do it for a color node if there were other nodes that still required fragment shader work. In that case, we\u0027d be accessing uniforms anyways (so the color value would be cached most likely) but also adding an extra varying to interpolate. \n\nI think we could capture this easily enough by only considering the root nodes. Right now this means we might not lift complex constant color expressions where a CF shader wrapped a solid color, but ideally those will be calculated on the CPU and normalized to just a SolidColor paint params key to avoid triggering an extra pipeline.",
+      "range": {
+        "startLine": 179,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 9
+      },
+      "revId": "58a1efb8e2761fd37180358dc85337b267a512fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
