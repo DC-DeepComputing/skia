@@ -124,6 +124,9 @@ private:
                                                      skgpu::BlendEquation BlendEquation,
                                                      skgpu::BlendCoeff SrcCoeff,
                                                      skgpu::BlendCoeff DstCoeff) {
+        // TODO(NEP): If this class is now also being used for advanced blends, then
+        // account for those when determining Properties (GrCustomXfermode.cpp analysisProperties())
+
         return
         // The provided formula should already be optimized before a BlendFormula is constructed.
         // Assert that here while setting up the properties in the constexpr constructor.
@@ -179,6 +182,8 @@ static_assert(4 == sizeof(BlendFormula));
 SK_MAKE_BITFIELD_OPS(BlendFormula::Properties)
 
 BlendFormula GetBlendFormula(bool isOpaque, bool hasCoverage, SkBlendMode xfermode);
+
+BlendFormula GetAdvancedBlendFormula();
 
 BlendFormula GetLCDBlendFormula(SkBlendMode xfermode);
 

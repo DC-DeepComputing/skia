@@ -89,7 +89,8 @@ bool CanUseHardwareBlending(const Caps* caps,
         (bm > SkBlendMode::kLastCoeffMode && !caps->supportsHardwareAdvancedBlending()) ||
 
         // The blend formula requires dual-source blending, but it is not supported by hardware
-        (skgpu::GetBlendFormula(/*isOpaque=*/false,
+        (bm <= SkBlendMode::kLastCoeffMode &&
+         skgpu::GetBlendFormula(/*isOpaque=*/false,
                                 /*hasCoverage=*/coverage != Coverage::kNone,
                                 bm).hasSecondaryOutput() &&
          !caps->shaderCaps()->fDualSourceBlendingSupport)) {
