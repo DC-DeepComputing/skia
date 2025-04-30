@@ -33,6 +33,23 @@
       "message": "There are two gold images that are not passing when running the DDL3-Vulkan config. I\u0027m not sure why it would fail that config and not the regular Vulkan one. I\u0027m re-running to make sure it\u0027s not a flaky test.",
       "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b60e1863_b71e1975",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-30T19:29:10Z",
+      "side": 1,
+      "message": "I\u0027ve verified locally, the \u0027clipcubic\u0027 GM is failing with the modified Triangulator, but only when ddl is enabled. It looks like it\u0027s something to do with how the DDL processor chops that path up. You can test by running dm with \"--config glddl\". Unfortunately we can\u0027t run with DDLs in viewer.",
+      "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
