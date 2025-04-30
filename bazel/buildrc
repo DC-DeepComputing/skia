@@ -227,7 +227,3 @@ build:vk --config=vulkan_ganesh
 build:compile_sksl --cc_output_directory_tag=compile_sksl \
     --compilation_mode=opt --//src/core:load_sksl_from_disk --copt="-DSKSL_STANDALONE=1" \
     --features=skia_uses_cpp20
-
-# Layering check does not work without sandboxing because the system headers are not in the
-# right spot and so they are not found.
-build:no_sandbox --spawn_strategy=local --features=-layering_check
