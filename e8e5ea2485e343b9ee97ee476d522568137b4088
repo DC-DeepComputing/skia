@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a73717b4_1ad48048",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 29
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T17:05:17Z",
+      "side": 1,
+      "message": "For the long-term API, where we make surfaces off of any `SkRecorder`, I imagine we will have some form of `makeSurface` on the base `SkRecorder` to make a \"compatible\" surface, whether or not it\u0027s a CPU recorder or a GPU recorder.\n\nGiven that, we do still want a way to explicitly request a CPU surface when a client has a GPU-backed recorder.  I think we need to figure out what that pattern will look like now to make sure we don\u0027t add too much refactoring work later on.\n\nIf a GPU recorder has a `skcpu::Recorder`, this could be: `recorder-\u003e[as|get?]CPURecorder()-\u003emakeSurface()`. But maybe it\u0027s better to leave `makeSurface` for the base class\u0027s functions and have these be `makeCPUSurface` and `makeGPUSurface`.  Or `makeBitmapSurface`, `makeTextureSurface` (I kind of like these because CPU and GPU are easily visually confused).",
+      "range": {
+        "startLine": 49,
+        "startChar": 21,
+        "endLine": 49,
+        "endChar": 32
+      },
+      "revId": "e8e5ea2485e343b9ee97ee476d522568137b4088",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
