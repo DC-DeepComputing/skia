@@ -221,6 +221,7 @@ template("optional") {
       if (defined(invoker.configs)) {
         configs += invoker.configs
       }
+      public_configs = [ ":" + target_name + "_public" ]
       all_dependent_configs = [ ":" + target_name + "_public" ]
     }
     if (defined(invoker.sources_for_tests) && skia_enable_tools) {
@@ -1421,6 +1422,14 @@ optional("typeface_fontations") {
   public_defines = [ "SK_TYPEFACE_FACTORY_FONTATIONS" ]
   enabled = skia_use_fontations
   public_deps = [ ":fontations_ffi" ]
+  deps = []
+  if (skia_use_rust_png_decode) {
+    deps += [ ":png_decode_rust" ]
+  } else if (skia_use_libpng_decode) {
+    deps += [ ":png_decode_libpng" ]
+  } else {
+    assert(false, "Fontations requires a PNG decoder")
+  }
   sources = skia_ports_typeface_fontations_sources
   sources_for_tests = [
     "tests/FontationsTest.cpp",
