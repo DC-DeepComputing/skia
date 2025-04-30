@@ -16,6 +16,23 @@
       "message": "All checks passed.",
       "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50eb0cda_c4c4efc4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-04-30T18:16:43Z",
+      "side": 1,
+      "message": "There are two gold images that are not passing when running the DDL3-Vulkan config. I\u0027m not sure why it would fail that config and not the regular Vulkan one. I\u0027m re-running to make sure it\u0027s not a flaky test.",
+      "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
