@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "31ca492a_bf080680",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1842,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-30T14:55:51Z",
+      "side": 1,
+      "message": "I don\u0027t think this is necessary given that now, when the device queries the draw context for its dst read strategy, it passes in whether or not MSAA is required. If so, then that returns `kTextureCopy` (for Vulkan) which is already accounted for in this if statement (we flush any time we are using texture copies). LMKWYT!",
+      "parentUuid": "2687bd25_fd127b09",
+      "range": {
+        "startLine": 1839,
+        "startChar": 0,
+        "endLine": 1842,
+        "endChar": 64
+      },
+      "revId": "9aeb984854649c39662ceb31c332ea3dcf4f96fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b9d71ae_045f299a",
         "filename": "src/gpu/graphite/Device.h",
         "patchSetId": 3
@@ -37,6 +61,30 @@
       "writtenOn": "2025-04-29T19:10:53Z",
       "side": 1,
       "message": "nit: rename this or the field to match",
+      "range": {
+        "startLine": 287,
+        "startChar": 47,
+        "endLine": 287,
+        "endChar": 72
+      },
+      "revId": "9aeb984854649c39662ceb31c332ea3dcf4f96fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f3b79a6_7e19ad95",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-30T14:55:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b9d71ae_045f299a",
       "range": {
         "startLine": 287,
         "startChar": 47,
