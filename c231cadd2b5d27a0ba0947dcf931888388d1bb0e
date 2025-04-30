@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3595fc4d_e660f510",
+        "filename": "src/gpu/ganesh/GrDirectContext.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 551,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T16:44:43Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 551,
+        "startChar": 4,
+        "endLine": 551,
+        "endChar": 28
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7f8a9589_9053a810",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/ganesh/GrDirectContext.cpp",
+              "range": {
+                "startLine": 551,
+                "startChar": 0,
+                "endLine": 552,
+                "endChar": 0
+              },
+              "replacement": "    this-\u003estoreVkPipelineCacheData(SIZE_MAX);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "c231cadd2b5d27a0ba0947dcf931888388d1bb0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
