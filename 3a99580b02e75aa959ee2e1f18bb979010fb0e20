@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f04956e_87c4be30",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1851,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T20:21:15Z",
+      "side": 1,
+      "message": "I think we only want to save this strategy if `dstReadStrategy !\u003d kNone`, otherwise we might erase the strategy from a previously recorded draw, but in most cases kNone for the new draw will mean `needsFlush` gets to be false, so we still want to remember if an earlier draw was texture copy or read-from-input.",
+      "range": {
+        "startLine": 1851,
+        "startChar": 0,
+        "endLine": 1851,
+        "endChar": 48
+      },
+      "revId": "3a99580b02e75aa959ee2e1f18bb979010fb0e20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
