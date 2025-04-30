@@ -65,8 +65,10 @@ bool GrMeshBuffer<Base, Type>::onUpdate(GrDirectContext* dc,
 
     if (!dc->priv().caps()->transferFromBufferToBufferSupport()) {
         auto ownedData = SkData::MakeWithCopy(data, size);
-        dc->priv().drawingManager()->newBufferUpdateTask(
-                std::move(ownedData), fBuffer, offset);
+        if (!ownedData) {
+            return false;
+        }
+        dc->priv().drawingManager()->newBufferUpdateTask(std::move(ownedData), fBuffer, offset);
         return true;
     }
 

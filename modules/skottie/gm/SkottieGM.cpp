@@ -194,6 +194,9 @@ protected:
             fAnimation = skottie::Animation::Builder()
                             .setResourceProvider(sk_make_sp<MultiFrameResourceProvider>())
                             .make(stream.get());
+            if (!fAnimation) {
+                return;
+            }
             fAnimation->seek(0);
         }
     }

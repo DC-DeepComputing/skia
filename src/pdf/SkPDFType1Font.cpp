@@ -176,6 +176,9 @@ static sk_sp<SkData> convert_type1_font_stream(std::unique_ptr<SkStreamAsset> sr
         SkASSERT(length + (2 * kPFBSectionHeaderLength) <= srcLen);
 
         sk_sp<SkData> data(SkData::MakeUninitialized(length));
+        if (!data) {
+            return nullptr;
+        }
 
         const uint8_t* const srcHeader = src + kPFBSectionHeaderLength;
         // There is a six-byte section header before header and data
@@ -205,6 +208,9 @@ static sk_sp<SkData> convert_type1_font_stream(std::unique_ptr<SkStreamAsset> sr
     const size_t length = *headerLen + *dataLen + *trailerLen;
     SkASSERT(length > 0);
     auto data = SkData::MakeUninitialized(length);
+    if (!data) {
+        return nullptr;
+    }
     uint8_t* buffer = (uint8_t*)data->writable_data();
 
     memcpy(buffer, src, *headerLen);

@@ -405,6 +405,9 @@ static sk_sp<const SkData> read_metadata(const SkJpegMarkerList& markerList,
 
     // Copy all of the markers and stitch them together.
     auto result = SkData::MakeUninitialized(partsTotalSize);
+    if (!result) {
+        return nullptr;
+    }
     void* copyDest = result->writable_data();
     for (const auto& part : parts) {
         memcpy(copyDest, part->data(), part->size());

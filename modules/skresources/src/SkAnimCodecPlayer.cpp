@@ -74,6 +74,9 @@ sk_sp<SkImage> SkAnimCodecPlayer::getFrameAt(int index) {
     size_t rb = fImageInfo.minRowBytes();
     size_t size = fImageInfo.computeByteSize(rb);
     auto data = SkData::MakeUninitialized(size);
+    if (!data) {
+        return nullptr;
+    }
 
     SkCodec::Options opts;
     opts.fFrameIndex = index;
@@ -118,6 +121,9 @@ sk_sp<SkImage> SkAnimCodecPlayer::getFrameAt(int index) {
         rb = imageInfo.minRowBytes();
         size = imageInfo.computeByteSize(rb);
         data = SkData::MakeUninitialized(size);
+        if (!data) {
+            return nullptr;
+        }
         auto canvas = SkCanvas::MakeRasterDirect(imageInfo, data->writable_data(), rb);
         canvas->concat(originMatrix);
         canvas->drawImage(image, 0, 0, SkSamplingOptions(), &paint);

@@ -199,6 +199,9 @@ sk_sp<SkPicture> SkPicture::MakeFromStreamPriv(SkStream* stream, const SkDeseria
                 return nullptr;
             }
             auto data = SkData::MakeUninitialized(size);
+            if (!data) {
+                return nullptr;
+            }
             if (stream->read(data->writable_data(), size) != size) {
                 return nullptr;
             }

@@ -293,6 +293,9 @@ public:
 
     std::unique_ptr<SkMemoryStream> transferBuffer(size_t offset, size_t size) override {
         sk_sp<SkData> data(SkData::MakeUninitialized(size));
+        if (!data) {
+            return SkMemoryStream::Make(nullptr);
+        }
         if (offset > fStreamBuffer.bytesWritten()) {
             // If the offset is not buffered, read from fStream directly and skip the buffering.
             const size_t skipLength = offset - fStreamBuffer.bytesWritten();
@@ -419,6 +422,9 @@ public:
             return SkMemoryStream::Make(data);
         } else {
             sk_sp<SkData> data(SkData::MakeUninitialized(bytesToRead));
+            if (!data) {
+                return SkMemoryStream::Make(nullptr);
+            }
             if (!fStream->seek(offset)) {
                 return nullptr;
             }

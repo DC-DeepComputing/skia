@@ -154,6 +154,9 @@ size_t SkPath::writeToMemory(void* storage) const {
 sk_sp<SkData> SkPath::serialize() const {
     size_t size = this->writeToMemory(nullptr);
     sk_sp<SkData> data = SkData::MakeUninitialized(size);
+    if (!data) {
+        return nullptr;
+    }
     this->writeToMemory(data->writable_data());
     return data;
 }

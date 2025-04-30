@@ -173,9 +173,11 @@ sk_sp<SkColorFilter> SkOverdrawColorFilter::MakeWithSkColors(const SkColor color
     const SkRuntimeEffect* overdrawEffect = GetKnownRuntimeEffect(StableKey::kOverdraw);
 
     auto data = SkData::MakeUninitialized(kNumColors * sizeof(SkPMColor4f));
-    SkPMColor4f* premul = (SkPMColor4f*)data->writable_data();
-    for (int i = 0; i < kNumColors; ++i) {
-        premul[i] = SkColor4f::FromColor(colors[i]).premul();
+    if (data) {
+        SkPMColor4f* premul = (SkPMColor4f*)data->writable_data();
+        for (int i = 0; i < kNumColors; ++i) {
+            premul[i] = SkColor4f::FromColor(colors[i]).premul();
+        }
     }
     return overdrawEffect->makeColorFilter(std::move(data));
 }

@@ -118,7 +118,11 @@ public:
         if (!size) {
             return {};
         }
-        return GrPixmap(info, SkData::MakeUninitialized(size), rb);
+        sk_sp<SkData> storage = SkData::MakeUninitialized(size);
+        if (!storage) {
+            return {};
+        }
+        return GrPixmap(info, std::move(storage), rb);
     }
 
 private:

@@ -323,8 +323,10 @@ sk_sp<SkData> SkTypeface::onCopyTableData(SkFontTableTag tag) const {
     size_t size = this->getTableSize(tag);
     if (size) {
         sk_sp<SkData> data = SkData::MakeUninitialized(size);
-        (void)this->getTableData(tag, 0, size, data->writable_data());
-        return data;
+        if (data) {
+            (void)this->getTableData(tag, 0, size, data->writable_data());
+            return data;
+        }
     }
     return nullptr;
 }

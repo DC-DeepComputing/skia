@@ -847,7 +847,9 @@ sk_sp<SkData> SkTextBlob::serialize(const SkSerialProcs& procs) const {
 
     size_t total = buffer.bytesWritten();
     sk_sp<SkData> data = SkData::MakeUninitialized(total);
-    buffer.writeToMemory(data->writable_data());
+    if (data) {
+        buffer.writeToMemory(data->writable_data());
+    }
     return data;
 }
 

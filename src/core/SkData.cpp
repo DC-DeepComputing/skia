@@ -100,7 +100,7 @@ sk_sp<SkData> SkData::copySubset(size_t offset, size_t length) const {
 }
 
 void SkData::operator delete(void* p) {
-    ::operator delete(p);
+    sk_free(p);
 }
 
 sk_sp<SkData> SkData::PrivateNewWithCopy(const void* srcOrNull, size_t length) {
@@ -108,10 +108,15 @@ sk_sp<SkData> SkData::PrivateNewWithCopy(const void* srcOrNull, size_t length) {
         return SkData::MakeEmpty();
     }
 
+    if (SIZE_MAX - sizeof(SkData) < length) {
+        return nullptr;
+    }
     const size_t actualLength = length + sizeof(SkData);
-    SkASSERT_RELEASE(length < actualLength);  // Check for overflow.
 
-    void* storage = ::operator new (actualLength);
+    void* storage = sk_malloc_canfail(actualLength);
+    if (!storage) {
+        return nullptr;
+    }
     sk_sp<SkData> data(new (storage) SkData(length));
     if (srcOrNull) {
         memcpy(data->writable_data(), srcOrNull, length);
@@ -134,8 +139,7 @@ static void sk_free_releaseproc(const void* ptr, void*) {
 }
 
 sk_sp<SkData> SkData::MakeFromMalloc(const void* data, size_t length) {
-    std::byte* ptr = static_cast<std::byte*>(const_cast<void*>(data));
-    return sk_sp<SkData>(new SkData({ptr, length}, sk_free_releaseproc, nullptr));
+    return MakeWithProc(data, length, sk_free_releaseproc, nullptr);
 }
 
 sk_sp<SkData> SkData::MakeWithCopy(const void* src, size_t length) {
@@ -149,15 +153,19 @@ sk_sp<SkData> SkData::MakeUninitialized(size_t length) {
 
 sk_sp<SkData> SkData::MakeZeroInitialized(size_t length) {
     auto data = MakeUninitialized(length);
-    if (length != 0) {
+    if (data && length != 0) {
         memset(data->writable_data(), 0, data->size());
     }
     return data;
 }
 
 sk_sp<SkData> SkData::MakeWithProc(const void* data, size_t length, ReleaseProc proc, void* ctx) {
+    void* storage = sk_malloc_canfail(sizeof(SkData));
+    if (!storage) {
+        return nullptr;
+    }
     std::byte* ptr = static_cast<std::byte*>(const_cast<void*>(data));
-    return sk_sp<SkData>(new SkData({ptr, length}, proc, ctx));
+    return sk_sp<SkData>(new (storage) SkData({ptr, length}, proc, ctx));
 }
 
 // assumes fPtr was allocated with sk_fmmap
@@ -215,6 +223,9 @@ sk_sp<SkData> SkData::MakeFromStream(SkStream* stream, size_t size) {
         return nullptr;
     }
     sk_sp<SkData> data(SkData::MakeUninitialized(size));
+    if (!data) {
+        return nullptr;
+    }
     if (stream->read(data->writable_data(), size) != size) {
         return nullptr;
     }

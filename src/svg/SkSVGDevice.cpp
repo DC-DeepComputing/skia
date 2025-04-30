@@ -573,6 +573,9 @@ sk_sp<SkData> AsDataUri(SkImage* image, SkSVGCanvas::EncodePngCallback pngEncode
 
     size_t b64Size = SkBase64::EncodedSize(imageData->size());
     sk_sp<SkData> dataUri = SkData::MakeUninitialized(selectedPrefixLength + b64Size);
+    if (!dataUri) {
+        return nullptr;
+    }
     char* dest = (char*)dataUri->writable_data();
     memcpy(dest, selectedPrefix, selectedPrefixLength);
     SkBase64::Encode(imageData->data(), imageData->size(), dest + selectedPrefixLength - 1);

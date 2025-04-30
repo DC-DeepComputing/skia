@@ -545,7 +545,10 @@ bool SurfaceContext::internalWritePixels(GrDirectContext* dContext,
     }
 
     auto tmpData = tmpSize ? SkData::MakeUninitialized(tmpSize) : nullptr;
-    void*    tmp = tmpSize ? tmpData->writable_data()           : nullptr;
+    void*    tmp = tmpData ? tmpData->writable_data()           : nullptr;
+    if (tmpSize && !tmp) {
+        return false;
+    }
     AutoSTArray<15, GrMipLevel> srcLevels(numLevels);
     bool ownAllStorage = true;
     for (int i = 0; i < numLevels; ++i) {

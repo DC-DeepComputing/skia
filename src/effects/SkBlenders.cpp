@@ -50,5 +50,9 @@ sk_sp<SkBlender> SkBlenders::Arithmetic(float k1, float k2, float k3, float k4,
         k1, k2, k3, k4,
         enforcePremul ? 0.0f : 1.0f,
     };
-    return arithmeticEffect->makeBlender(SkData::MakeWithCopy(array, sizeof(array)));
+    auto data = SkData::MakeWithCopy(array, sizeof(array));
+    if (!data) {
+        return nullptr;
+    }
+    return arithmeticEffect->makeBlender(std::move(data));
 }

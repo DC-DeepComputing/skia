@@ -440,7 +440,9 @@ size_t SkColorSpace::writeToMemory(void* memory) const {
 
 sk_sp<SkData> SkColorSpace::serialize() const {
     sk_sp<SkData> data = SkData::MakeUninitialized(this->writeToMemory(nullptr));
-    this->writeToMemory(data->writable_data());
+    if (data) {
+        this->writeToMemory(data->writable_data());
+    }
     return data;
 }
 

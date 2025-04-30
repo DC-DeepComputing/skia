@@ -320,6 +320,9 @@ sk_sp<SkImage> SkImage::makeRasterImage(GrDirectContext* dContext, CachingHint c
         dContext = as_IB(this)->directContext();
     }
     sk_sp<SkData> data = SkData::MakeUninitialized(size);
+    if (!data) {
+        return nullptr;
+    }
     pm = {fInfo.makeColorSpace(nullptr), data->writable_data(), fInfo.minRowBytes()};
     if (!this->readPixels(dContext, pm, 0, 0, chint)) {
         return nullptr;

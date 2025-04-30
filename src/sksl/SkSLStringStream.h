@@ -38,7 +38,9 @@ public:
     const std::string& str() const {
         if (!fString.size()) {
             sk_sp<SkData> data = fStream.detachAsData();
-            fString = std::string((const char*) data->data(), data->size());
+            if (data) {
+                fString = std::string((const char*) data->data(), data->size());
+            }
         }
         return fString;
     }

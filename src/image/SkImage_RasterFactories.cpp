@@ -170,5 +170,8 @@ sk_sp<SkImage> MakeRasterCopyPriv(const SkPixmap& pmap, uint32_t id) {
 
     // Here we actually make a copy of the caller's pixel data
     sk_sp<SkData> data(SkData::MakeWithCopy(pmap.addr(), size));
+    if (!data) {
+        return nullptr;
+    }
     return sk_make_sp<SkImage_Raster>(pmap.info(), std::move(data), pmap.rowBytes(), id);
 }

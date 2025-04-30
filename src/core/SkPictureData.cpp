@@ -58,6 +58,9 @@ SkPictureData::SkPictureData(const SkPictureRecord& record,
     , fInfo(info) {
 
     fOpData = record.opData();
+    if (!fOpData) {
+        fOpData = SkData::MakeEmpty();
+    }
 
     fPaints  = record.fPaints;
 
@@ -497,7 +500,8 @@ void SkPictureData::parseBufferTag(SkReadBuffer& buffer, uint32_t tag, uint32_t 
                 return;
             }
             auto data(SkData::MakeUninitialized(size));
-            if (!buffer.readByteArray(data->writable_data(), size) ||
+            if (!data ||
+                !buffer.readByteArray(data->writable_data(), size) ||
                 !buffer.validate(nullptr == fOpData)) {
                 return;
             }

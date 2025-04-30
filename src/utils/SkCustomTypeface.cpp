@@ -404,6 +404,9 @@ std::unique_ptr<SkStreamAsset> SkUserTypeface::onOpenStream(int* ttcIndex) const
         auto data = rec.isDrawable()
                 ? rec.fDrawable->serialize()
                 : rec.fPath.serialize();
+        if (!data) {
+            data = SkData::MakeEmpty();
+        }
 
         const size_t sz = data->size();
         SkASSERT(SkIsAlign4(sz));
@@ -493,6 +496,9 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
         }
 
         auto data = SkData::MakeUninitialized(sz);
+        if (!data) {
+            return nullptr;
+        }
         if (stream->read(data->writable_data(), sz) != sz) {
             return nullptr;
         }
