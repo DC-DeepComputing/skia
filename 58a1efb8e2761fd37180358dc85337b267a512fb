@@ -22,6 +22,30 @@
       },
       "revId": "58a1efb8e2761fd37180358dc85337b267a512fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4884b44f_ff00db48",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-04-30T21:24:12Z",
+      "side": 1,
+      "message": "Makes sense, took out recursive call to `lift_color_expressions`.",
+      "parentUuid": "39c24f80_93dd6a14",
+      "range": {
+        "startLine": 179,
+        "startChar": 8,
+        "endLine": 183,
+        "endChar": 9
+      },
+      "revId": "58a1efb8e2761fd37180358dc85337b267a512fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
