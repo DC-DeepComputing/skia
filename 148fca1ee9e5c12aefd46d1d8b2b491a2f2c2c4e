@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "059e0e82_ce2eab78",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:50:29Z",
+      "side": 1,
+      "message": "nit: This should be on its own line as `Fixed: chromium:414609517` and we should add `Bug: chromium:414594133` for the chromium tracking issue.",
+      "range": {
+        "startLine": 18,
+        "startChar": 18,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "148fca1ee9e5c12aefd46d1d8b2b491a2f2c2c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "98997446_3e86a1df",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:50:29Z",
+      "side": 1,
+      "message": "marking lgtm pending merge approval",
+      "revId": "148fca1ee9e5c12aefd46d1d8b2b491a2f2c2c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
