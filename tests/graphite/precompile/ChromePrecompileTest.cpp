@@ -690,7 +690,7 @@ static const ChromePipeline kCases[] = {
 /* 183 */ { 7, "RP((BGRA8+D16 x1).rgba) + "
                "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] SrcOver AnalyticClip" },
 /* 184 */ { 6, "RP((BGRA8+D24_S8 x4->1).rgba w/ msaa load) + "
-               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ YUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
+               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 185 */ { 6, "RP((BGRA8+D24_S8 x4->1).rgba w/ msaa load) + "
                "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImageNoSwizzle ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 186 */ { 6, "RP((BGRA8+D24_S8 x4->1).rgba w/ msaa load) + "
@@ -699,7 +699,7 @@ static const ChromePipeline kCases[] = {
                "AnalyticRRectRenderStep + SolidColor SrcOver AnalyticClip" },
 //--------
 /* 188 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
-               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ YUVImage ColorSpaceTransformSRGB ] ] SrcOver" },
+               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver" },
 /* 189 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
                "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImageNoSwizzle ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 190 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
@@ -707,7 +707,7 @@ static const ChromePipeline kCases[] = {
 /* 191 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
                "CoverBoundsRenderStep[NonAAFill] + SolidColor SrcOver AnalyticClip" },
 /* 192 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
-               "CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ YUVImage ColorSpaceTransformSRGB ] ] SrcOver" },
+               "CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver" },
 /* 193 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
                "CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ HWYUVImageNoSwizzle ColorSpaceTransformSRGB ] ] SrcOver" },
 /* 194 */ { 6, "RP((BGRA8+D16 x1).rgba) + "
@@ -721,7 +721,7 @@ static const ChromePipeline kCases[] = {
                "AnalyticRRectRenderStep + SolidColor SrcOver" },
 //--------
 /* 198 */ { 5, "RP((BGRA8+D24_S8 x4->1).rgba) + "
-               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ YUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
+               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 199 */ { 5, "RP((BGRA8+D24_S8 x4->1).rgba) + "
                "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImageNoSwizzle ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 200 */ { 5, "RP((BGRA8+D24_S8 x4->1).rgba) + "
@@ -737,7 +737,7 @@ static const ChromePipeline kCases[] = {
                "AnalyticBlurRenderStep + Compose [ SolidColor Bl\" },endCompose [ SolidColor Passthrough PorterDuffBlender ] ] SrcOver AnalyticClip" },
 //--------
 /* 205 */ { 5, "RP((BGRA8+D16 x1).rgba) + "
-               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ YUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
+               "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HWYUVImage ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
 /* 206 */ { 5, "RP((BGRA8+D16 x1).rgba) + "
                "PerEdgeAAQuadRenderStep + LocalMatrix [ Compose [ HardwareImage(0) ColorSpaceTransformPremul ] ] DstIn" },
 /* 207 */ { 5, "RP((BGRA8+D16 x1).rgba) + "
