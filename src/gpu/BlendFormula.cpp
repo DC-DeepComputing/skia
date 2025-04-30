@@ -209,6 +209,8 @@ constexpr BlendFormula gLCDBlendTable[(int)SkBlendMode::kLastCoeffMode + 1] = {
                                       skgpu::BlendCoeff::kISC),
 };
 
+
+
 }  // anonymous namespace
 
 namespace skgpu {
@@ -217,6 +219,21 @@ BlendFormula GetBlendFormula(bool isOpaque, bool hasCoverage, SkBlendMode xfermo
     SkASSERT((unsigned)xfermode <= (unsigned)SkBlendMode::kLastCoeffMode);
     return gBlendTable[isOpaque][hasCoverage][(int)xfermode];
 }
+
+// BlendFormula GetAdvancedBlendFormula(SkBlendMode xfermode) {
+//     // BlendFormula(OutputType primaryOut,
+//     //             OutputType secondaryOut,
+//     //             skgpu::BlendEquation equation,
+//     //             skgpu::BlendCoeff srcCoeff,
+//     //             skgpu::BlendCoeff dstCoeff)
+
+//     // TODO(NEP): Assert Caps has adv blend eq support
+//     SkASSERT(xfermode > SkBlendMode::kLastCoeffMode);
+
+//     BlendFormula bf ();
+
+//     return bf;
+// }
 
 BlendFormula GetLCDBlendFormula(SkBlendMode xfermode) {
     SkASSERT((unsigned)xfermode <= (unsigned)SkBlendMode::kLastCoeffMode);

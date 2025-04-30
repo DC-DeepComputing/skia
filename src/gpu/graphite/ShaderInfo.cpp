@@ -520,8 +520,14 @@ constexpr skgpu::BlendInfo make_simple_blendInfo(skgpu::BlendCoeff srcCoeff,
              skgpu::BlendModifiesDst(skgpu::BlendEquation::kAdd, srcCoeff, dstCoeff) };
 }
 
-static constexpr int kNumCoeffModes = (int)SkBlendMode::kLastCoeffMode + 1;
-static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
+constexpr skgpu::BlendInfo make_hardware_advanced_blendInfo(SkBlendMode advancedBlendMode) {
+    BlendInfo blendInfo;
+    blendInfo.fEquation = skgpu::GetHardwareBlendEquation(advancedBlendMode);
+    return blendInfo;
+}
+
+static constexpr skgpu::BlendInfo gBlendTable[kSkBlendModeCount] = {
+        /* Porter-Duff blend modes */
         /* clear */      make_simple_blendInfo(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kZero),
         /* src */        make_simple_blendInfo(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kZero),
         /* dst */        make_simple_blendInfo(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kOne),
@@ -536,7 +542,23 @@ static constexpr skgpu::BlendInfo gBlendTable[kNumCoeffModes] = {
         /* xor */        make_simple_blendInfo(skgpu::BlendCoeff::kIDA,  skgpu::BlendCoeff::kISA),
         /* plus */       make_simple_blendInfo(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kOne),
         /* modulate */   make_simple_blendInfo(skgpu::BlendCoeff::kZero, skgpu::BlendCoeff::kSC),
-        /* screen */     make_simple_blendInfo(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC)
+        /* screen */     make_simple_blendInfo(skgpu::BlendCoeff::kOne,  skgpu::BlendCoeff::kISC),
+
+        /* BlendInfo for advanced blend modes */
+        make_hardware_advanced_blendInfo(SkBlendMode::kOverlay),
+        make_hardware_advanced_blendInfo(SkBlendMode::kDarken),
+        make_hardware_advanced_blendInfo(SkBlendMode::kLighten),
+        make_hardware_advanced_blendInfo(SkBlendMode::kColorDodge),
+        make_hardware_advanced_blendInfo(SkBlendMode::kColorBurn),
+        make_hardware_advanced_blendInfo(SkBlendMode::kHardLight),
+        make_hardware_advanced_blendInfo(SkBlendMode::kSoftLight),
+        make_hardware_advanced_blendInfo(SkBlendMode::kDifference),
+        make_hardware_advanced_blendInfo(SkBlendMode::kExclusion),
+        make_hardware_advanced_blendInfo(SkBlendMode::kMultiply),
+        make_hardware_advanced_blendInfo(SkBlendMode::kHue),
+        make_hardware_advanced_blendInfo(SkBlendMode::kSaturation),
+        make_hardware_advanced_blendInfo(SkBlendMode::kColor),
+        make_hardware_advanced_blendInfo(SkBlendMode::kLuminosity)
 };
 
 }  // anonymous namespace
@@ -685,6 +707,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                       label.c_str());
     const ShaderNode* const srcColorRoot = fRootNodes[0];
     const ShaderNode* const finalBlendRoot = fRootNodes[1];
+    const int32_t finalBlendRootSnippetId = finalBlendRoot->codeSnippetId();
     const ShaderNode* const clipRoot = fRootNodes.size() > 2 ? fRootNodes[2] : nullptr;
 
     // Determine the algorithm for final blending: direct HW blending, coverage-modified HW
@@ -693,35 +716,26 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     if (finalCoverage == Coverage::kNone && SkToBool(clipRoot)) {
         finalCoverage = Coverage::kSingleChannel;
     }
-    std::optional<SkBlendMode> finalBlendMode;
-    if (finalBlendRoot->codeSnippetId() < kBuiltInCodeSnippetIDCount &&
-        finalBlendRoot->codeSnippetId() >= kFixedBlendIDOffset) {
-        finalBlendMode =
-                static_cast<SkBlendMode>(finalBlendRoot->codeSnippetId() - kFixedBlendIDOffset);
-        if (*finalBlendMode > SkBlendMode::kLastCoeffMode) {
-            // TODO(b/239726010): When we support advanced blend modes in HW, these modes could
-            // still be handled by fBlendInfo instead of SkSL
-            finalBlendMode.reset();
-        }
-    }
 
-    // The passed-in dstReadStrategy should only be used iff it is determined one is needed. If not,
-    // then manually assign fDstReadStrategy to kNoneRequired. ShaderInfo's dst read strategy
-    // informs the pipeline's via PipelineInfo created w/ shader info.
-    const bool dstReadRequired = !CanUseHardwareBlending(caps, finalBlendMode, finalCoverage);
-    if (!dstReadRequired) {
+    // Initialize the final blend mode to the final snippet's blend mode. It may be changed based
+    // upon whether or not we can use hardware blending.
+    std::optional<SkBlendMode> finalBlendMode;
+    if (finalBlendRootSnippetId < kBuiltInCodeSnippetIDCount &&
+        finalBlendRootSnippetId >= kFixedBlendIDOffset) {
+        finalBlendMode = static_cast<SkBlendMode>(finalBlendRootSnippetId - kFixedBlendIDOffset);
+    }
+    const bool useHardwareBlending = CanUseHardwareBlending(caps, finalBlendMode, finalCoverage);
+    if (useHardwareBlending) {
+        // If we can use hardware blending, update the dstReadStrategy to be kNoneRequired to ensure
+        // that ShaderInfo properly informs PipelineInfo of the pipeline's dst read requirement.
         fDstReadStrategy = DstReadStrategy::kNoneRequired;
     } else {
+        // If we cannot use hardware blending, then we must perform a dst read within the shader.
+        // Therefore we should assert that a valid strategy to do so was passed in. Later operations
+        // also expect the blend mode to be kSrc, so update that here.
         SkASSERT(fDstReadStrategy != DstReadStrategy::kNoneRequired);
+        finalBlendMode = SkBlendMode::kSrc;
     }
-
-    // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild.
-    SkASSERTF_RELEASE(finalBlendMode.has_value() || dstReadRequired,
-                      "blend mode: %d, dst read: %d, coverage: %d, label = %s",
-                      finalBlendMode.has_value() ? (int)*finalBlendMode : -1,
-                      (int) fDstReadStrategy,
-                      (int) finalCoverage,
-                      label.c_str());
 
     const bool hasStepUniforms = step->numUniforms() > 0 && step->coverage() != Coverage::kNone;
     const bool useStepStorageBuffer = useStorageBuffers && hasStepUniforms;
@@ -875,7 +889,10 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // Calculate the src color and stash its output variable in `args`
     args.fPriorStageOutput = srcColorRoot->invokeAndAssign(*this, args, &mainBody);
 
-    if (dstReadRequired) {
+    // If not using hardware blending, we perform a dst read in the shader and must add SkSL
+    // accordingly.
+    const bool readDstInShader = !useHardwareBlending;
+    if (readDstInShader) {
         // Get the current dst color into a local variable, it may be used later on for coverage
         // blending as well as the final blend.
         mainBody += "half4 dstColor;";
@@ -896,7 +913,6 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
 
         args.fBlenderDstColor = "dstColor";
         args.fPriorStageOutput = finalBlendRoot->invokeAndAssign(*this, args, &mainBody);
-        finalBlendMode = SkBlendMode::kSrc;
     }
 
     if (writeSwizzle != Swizzle::RGBA()) {
@@ -905,18 +921,14 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                                         writeSwizzle.asString().c_str());
     }
 
+
     if (finalCoverage == Coverage::kNone) {
         // Either direct HW blending or a dst-read w/o any extra coverage. In both cases we just
         // need to assign directly to sk_FragCoord and update the HW blend info to finalBlendMode.
         SkASSERT(finalBlendMode.has_value());
-        // TODO(b/372912880): Release assert debugging for illegal instruction occurring in the wild
-        SkASSERTF_RELEASE(finalBlendMode.has_value(),
-                          "blend mode: %d, dst read: %d, label = %s",
-                          finalBlendMode.has_value() ? (int)*finalBlendMode : -1,
-                          (int) fDstReadStrategy,
-                          label.c_str());
 
         fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
+
         SkSL::String::appendf(&mainBody, "sk_FragColor = %s;", args.fPriorStageOutput.c_str());
     } else {
         // Accumulate the output coverage. This will either modify the src color and secondary
@@ -944,7 +956,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         }
 
         const char* outColor = args.fPriorStageOutput.c_str();
-        if (dstReadRequired) {
+        if (readDstInShader) {
             // If this draw uses a non-coherent dst read, we want to keep the existing dst color (or
             // whatever has been previously drawn) when there's no coverage. This helps for batching
             // text draws that need to read from a dst copy for blends. However, this only helps the
@@ -963,7 +975,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
             }
 
             // Use kSrc HW BlendInfo and do the coverage blend with dst in the shader.
-            fBlendInfo = gBlendTable[static_cast<int>(SkBlendMode::kSrc)];
+            SkASSERT(finalBlendMode.has_value() && finalBlendMode.value() == SkBlendMode::kSrc);
+            fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
             SkSL::String::appendf(
                     &mainBody,
                     "sk_FragColor = %s * outputCoverage + dstColor * (1.0 - outputCoverage);",
@@ -978,39 +991,61 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
         } else {
             // Adjust the shader output(s) to incorporate the coverage so that HW blending produces
             // the correct output.
-            // TODO: Determine whether draw is opaque and pass that to GetBlendFormula.
-            // TODO(b/372912880): Release assert debugging for illegal instruction
-            SkASSERTF_RELEASE(finalBlendMode.has_value(),
-                              "blend mode: %d, dst read: %d, coverage: %d, label = %s",
-                              finalBlendMode.has_value() ? (int)*finalBlendMode : -1,
-                              (int) fDstReadStrategy,
-                              (int) finalCoverage,
-                              label.c_str());
-            BlendFormula coverageBlendFormula =
-                    finalCoverage == Coverage::kLCD
-                            ? skgpu::GetLCDBlendFormula(*finalBlendMode)
-                            : skgpu::GetBlendFormula(
-                                      /*isOpaque=*/false, /*hasCoverage=*/true, *finalBlendMode);
-            fBlendInfo = {coverageBlendFormula.equation(),
-                          coverageBlendFormula.srcCoeff(),
-                          coverageBlendFormula.dstCoeff(),
-                          SK_PMColor4fTRANSPARENT,
-                          coverageBlendFormula.modifiesDst()};
+            if (finalBlendMode > SkBlendMode::kLastCoeffMode) {
+                // SkASSERT(finalCoverage != Coverage::kLCD);
+                SkASSERT(finalCoverage == Coverage::kSingleChannel);
+                // If using an advanced blend mode, refer to the gBlendTable.
+                fBlendInfo = gBlendTable[static_cast<int>(*finalBlendMode)];
 
-            if (finalCoverage == Coverage::kLCD) {
-                mainBody += "outputCoverage.a = max(max(outputCoverage.r, "
-                                                       "outputCoverage.g), "
+                // Apply coverage by multiplying it into the src color before blending. This will "just
+                // work" automatically. (See analysisProperties())
+                SkSL::String::appendf(&mainBody,
+                                      "%s = %s * %s;",
+                                      "sk_FragColor",
+                                      "outputCoverage",
+                                      outColor);
+
+                // mainBody += emit_color_output(coverageBlendFormula.primaryOutput(),
+                //                               "sk_FragColor",
+                //                               outColor);
+                // if (coverageBlendFormula.hasSecondaryOutput()) {
+                //     SkASSERT(caps->shaderCaps()->fDualSourceBlendingSupport);
+                //     mainBody += emit_color_output(coverageBlendFormula.secondaryOutput(),
+                //                                 "sk_SecondaryFragColor",
+                //                                 outColor);
+                // }
+                //  SkSL::String::appendf(&mainBody, "sk_FragColor = %s;", args.fPriorStageOutput.c_str());
+
+                // See GrXferProcessor.cpp's emitCode().
+            } else {
+                // Porter-Duff blend modes can utilize BlendFormula.
+                // TODO: Determine whether draw is opaque and pass that to GetBlendFormula.
+                BlendFormula coverageBlendFormula =
+                        finalCoverage == Coverage::kLCD
+                                ? skgpu::GetLCDBlendFormula(*finalBlendMode)
+                                : skgpu::GetBlendFormula(
+                                        /*isOpaque=*/false, /*hasCoverage=*/true, *finalBlendMode);
+                fBlendInfo = {coverageBlendFormula.equation(),
+                              coverageBlendFormula.srcCoeff(),
+                              coverageBlendFormula.dstCoeff(),
+                              SK_PMColor4fTRANSPARENT,
+                              coverageBlendFormula.modifiesDst()};
+
+                if (finalCoverage == Coverage::kLCD) {
+                    mainBody += "outputCoverage.a = max(max(outputCoverage.r, "
+                                                           "outputCoverage.g), "
                                                    "outputCoverage.b);";
-            }
+                }
 
-            mainBody += emit_color_output(coverageBlendFormula.primaryOutput(),
-                                          "sk_FragColor",
-                                          outColor);
-            if (coverageBlendFormula.hasSecondaryOutput()) {
-                SkASSERT(caps->shaderCaps()->fDualSourceBlendingSupport);
-                mainBody += emit_color_output(coverageBlendFormula.secondaryOutput(),
-                                              "sk_SecondaryFragColor",
+                mainBody += emit_color_output(coverageBlendFormula.primaryOutput(),
+                                              "sk_FragColor",
                                               outColor);
+                if (coverageBlendFormula.hasSecondaryOutput()) {
+                    SkASSERT(caps->shaderCaps()->fDualSourceBlendingSupport);
+                    mainBody += emit_color_output(coverageBlendFormula.secondaryOutput(),
+                                                  "sk_SecondaryFragColor",
+                                                  outColor);
+                }
             }
         }
     }
