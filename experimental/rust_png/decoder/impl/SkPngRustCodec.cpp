@@ -668,7 +668,6 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                                                   int* rowsDecodedPtr) {
     this->initializeXformParams();
 
-    int rowsDecoded = 0;
     bool interlaced = fReader->interlaced();
     while (true) {
         // TODO(https://crbug.com/357876243): Avoid an unconditional buffer hop
@@ -681,7 +680,7 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
         Result result = ToSkCodecResult(fReader->next_interlaced_row(decodedRow));
         if (result != kSuccess) {
             if (result == kIncompleteInput && rowsDecodedPtr) {
-                *rowsDecodedPtr = rowsDecoded;
+                *rowsDecodedPtr = decodingState.fRowsWrittenToOutput;
             }
             return result;
         }
@@ -695,7 +694,7 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                              this->dstInfo().colorType(),
                              this->dstInfo().alphaType());
             }
-            if (!interlaced) {
+            if (!interlaced && (!this->swizzler() || this->swizzler()->sampleY() == 1)) {
                 // All of the original `fDst` should be filled out at this point.
                 SkASSERT(decodingState.fDst.empty());
             }
@@ -713,23 +712,28 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
                 this->expandDecodedInterlacedRow(
                         decodingState.fPreblendBuffer, decodedRow, decodingState);
             }
-            // `rowsDecoded` is not incremented, because full, contiguous rows
+            // `fDecodedRowsCount` is not incremented, because full, contiguous rows
             // are not decoded until pass 6 (or 7 depending on how you look) of
             // Adam7 interlacing scheme.
         } else {
-            if (decodingState.fPreblendBuffer.empty()) {
-                this->applyXformRow(decodingState.fDst, decodedRow);
-            } else {
-                this->applyXformRow(decodingState.fPreblendBuffer, decodedRow);
-                blendRow(decodingState.fDst,
-                         decodingState.fPreblendBuffer,
-                         this->dstInfo().colorType(),
-                         this->dstInfo().alphaType());
-            }
+            int currentRowNumber = decodingState.fDecodedRowsCount;
+            decodingState.fDecodedRowsCount++;
+            if (!this->swizzler() || this->swizzler()->rowNeeded(currentRowNumber)) {
+                if (decodingState.fPreblendBuffer.empty()) {
+                    this->applyXformRow(decodingState.fDst, decodedRow);
+                } else {
+                    SkASSERT(!this->swizzler() || this->swizzler()->sampleX() == 1);
+                    this->applyXformRow(decodingState.fPreblendBuffer, decodedRow);
+                    blendRow(decodingState.fDst,
+                             decodingState.fPreblendBuffer,
+                             this->dstInfo().colorType(),
+                             this->dstInfo().alphaType());
+                }
 
-            decodingState.fDst = decodingState.fDst.subspan(
-                    std::min(decodingState.fDstRowStride, decodingState.fDst.size()));
-            rowsDecoded++;
+                decodingState.fRowsWrittenToOutput++;
+                decodingState.fDst = decodingState.fDst.subspan(
+                        std::min(decodingState.fDstRowStride, decodingState.fDst.size()));
+            }
         }
     }
 }
@@ -912,6 +916,27 @@ const SkFrameHolder* SkPngRustCodec::getFrameHolder() const { return &fFrameHold
 std::unique_ptr<SkStream> SkPngRustCodec::getEncodedData() const {
     SkASSERT(fPrivStream);
     return fPrivStream->duplicate();
+}
+
+SkSampler* SkPngRustCodec::getSampler(bool createIfNecessary) {
+    // For parity with `SkPngCodec` we support decoding a sub-sample (e.g. every
+    // other row and column / 25% of pixels) but only for scenarios covered by
+    // `SkPngCodec`.  `SkPngCodec` doesn't support APNG, so we don't support
+    // sub-sampling if APNGs, because sub-sampling would become a bit more
+    // complicated if we had to consider 1) frames with rect smaller than the
+    // whole image and 2) frames that need to blend with previous frames.
+    if (fFrameHolder.size() > 1 || this->options().fFrameIndex != 0) {
+        return nullptr;
+    }
+
+    // TODO(https://crbug.com/378697848): Consider sampling support for
+    // interlaced images - this will require decoding into an intermediate
+    // buffer.
+    if (fReader->interlaced()) {
+        return nullptr;
+    }
+
+    return SkPngCodecBase::getSampler(createIfNecessary);
 }
 
 SkPngRustCodec::FrameHolder::~FrameHolder() = default;

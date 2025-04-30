@@ -1428,7 +1428,7 @@ optional("typeface_fontations") {
   } else if (skia_use_libpng_decode) {
     deps += [ ":png_decode_libpng" ]
   } else {
-    assert(false, "Fontations requires a PNG decoder")
+    assert(!enabled, "Fontations requires a PNG decoder")
   }
   sources = skia_ports_typeface_fontations_sources
   sources_for_tests = [
