@@ -94,6 +94,30 @@
       },
       "revId": "df7d8de9b1116f3190616041b9497feb47cc9cda",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fff565f3_ff108f9f",
+        "filename": "src/gpu/ganesh/surface/SkSurface_AndroidFactories.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-30T16:54:50Z",
+      "side": 1,
+      "message": "Or \n```\nSkDebugf(\"%s failed due not finding a valid backend format for %\" PRIu32\n         \" (requireKnownFormat: 1)\", __func__, bufferDesc.format);\n```\n\nOkay, final idea that I may personally like best but may be overkill:\nStatically define something like `static const bool requireKnownFormat \u003d true;`, and use that when calling `GrAHardwareBufferUtils::GetBackendFormat(...)` above and for printing here (assuring that those two values are always aligned more explicitly?)",
+      "parentUuid": "56bcbe12_f3340a18",
+      "range": {
+        "startLine": 91,
+        "startChar": 20,
+        "endLine": 91,
+        "endChar": 38
+      },
+      "revId": "df7d8de9b1116f3190616041b9497feb47cc9cda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
