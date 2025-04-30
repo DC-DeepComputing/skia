@@ -39,6 +39,30 @@
       },
       "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b7a18f2_7317177d",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-04-30T23:06:28Z",
+      "side": 1,
+      "message": "Ok, I did the sign encoding thing like you suggested. I feel like we can do this optimization (i.e. allow subset draws with clamp tiling) for the regular HW image shader too, maybe in a follow-up?",
+      "parentUuid": "e3d75545_2cd86aa2",
+      "range": {
+        "startLine": 778,
+        "startChar": 4,
+        "endLine": 778,
+        "endChar": 37
+      },
+      "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
