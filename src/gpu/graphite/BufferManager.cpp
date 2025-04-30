@@ -654,8 +654,6 @@ VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   size_t stride,
                                                   BindBufferInfo* binding) {
     const size_t size = count * stride;
-    // We align the stride of the static buffer to 4 to accomodate driver issues on ARM hardware,
-    // when converting byte offsets into base vertex.
     void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride * 4, binding);
     return VertexWriter{data, size};
 }

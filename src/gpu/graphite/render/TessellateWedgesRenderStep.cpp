@@ -90,11 +90,11 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      depthStencilSettings,
-                     /*vertexAttrs=*/  {{"resolveLevel_and_idx",
+                     /*staticDataAttrs=*/  {{"resolveLevel_and_idx",
                                          VertexAttribType::kFloat2, SkSLType::kFloat2}},
-                     /*instanceAttrs=*/kAttributes[infinitySupport])
+                     /*appendDataAttrs=*/kAttributes[infinitySupport])
         , fInfinitySupport(infinitySupport) {
-    SkASSERT(this->instanceStride() ==
+    SkASSERT(this->appendDataStride() ==
              PatchStride(infinitySupport ? kAttribs : kAttribsWithCurveType));
 
     // Initialize the static buffers we'll use when recording draw calls.

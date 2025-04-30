@@ -58,8 +58,8 @@ SDFTextLCDRenderStep::SDFTextLCDRenderStep()
                                    {"gammaParams", SkSLType::kHalf4}},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGEqualPass,
-                     /*vertexAttrs=*/ {},
-                     /*instanceAttrs=*/
+                     /*staticDataAttrs=*/ {},
+                     /*appendDataAttrs=*/
                      {{"size", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"uvPos", VertexAttribType::kUShort2, SkSLType::kUShort2},
                       {"xyPos", VertexAttribType::kFloat2, SkSLType::kFloat2},
