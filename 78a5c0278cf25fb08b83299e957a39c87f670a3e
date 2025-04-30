@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a136bb_f25463c4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 37
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-30T21:53:22Z",
+      "side": 1,
+      "message": "OK to review. I added the \"dense packing\" for dynamic state changes.\n\nAn upstream issue with dual source blending is causing some tests to fail on Vulkan, but no lost devices.",
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
