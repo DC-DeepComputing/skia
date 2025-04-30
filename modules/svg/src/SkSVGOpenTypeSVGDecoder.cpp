@@ -91,6 +91,9 @@ private:
         }
 
         sk_sp<SkData> data = SkData::MakeUninitialized(dataLen);
+        if (!data) {
+            return nullptr;
+        }
         void* rawData = data->writable_data();
         if (SkBase64::Decode(b64Data, b64DataLen, rawData, &dataLen) != SkBase64::kNoError) {
             return nullptr;

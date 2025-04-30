@@ -143,6 +143,9 @@ static sk_sp<SkData> read_xmp_extended(const std::vector<sk_sp<const SkData>>& d
 
     // Stitch the parts together. Fail if we find that they are not contiguous.
     auto xmpExtendedData = SkData::MakeUninitialized(fullLength);
+    if (!xmpExtendedData) {
+        return nullptr;
+    }
     uint8_t* xmpExtendedBase = reinterpret_cast<uint8_t*>(xmpExtendedData->writable_data());
     uint8_t* xmpExtendedCurrent = xmpExtendedBase;
     SkMD5 md5;

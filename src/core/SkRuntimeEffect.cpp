@@ -181,6 +181,7 @@ sk_sp<const SkData> SkRuntimeEffectPriv::TransformUniforms(
     auto writableData = [&]() {
         if (!data) {
             data = SkData::MakeWithCopy(originalData->data(), originalData->size());
+            SkASSERT_RELEASE(data);
         }
         return data->writable_data();
     };

@@ -172,8 +172,11 @@ SkYUVAPixmaps SkYUVAPixmaps::Allocate(const SkYUVAPixmapInfo& yuvaPixmapInfo) {
     if (!yuvaPixmapInfo.isValid()) {
         return {};
     }
-    return SkYUVAPixmaps(yuvaPixmapInfo,
-                         SkData::MakeUninitialized(yuvaPixmapInfo.computeTotalBytes()));
+    sk_sp<SkData> data = SkData::MakeUninitialized(yuvaPixmapInfo.computeTotalBytes());
+    if (!data) {
+        return {};
+    }
+    return SkYUVAPixmaps(yuvaPixmapInfo, std::move(data));
 }
 
 SkYUVAPixmaps SkYUVAPixmaps::FromData(const SkYUVAPixmapInfo& yuvaPixmapInfo, sk_sp<SkData> data) {

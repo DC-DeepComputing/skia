@@ -194,6 +194,9 @@ protected:
 
     sk_sp<SkData> buildUniformData() const {
         auto uniformData = SkData::MakeZeroInitialized(fEffect->uniformSize());
+        if (!uniformData) {
+            return nullptr;
+        }
         SkASSERT(uniformData);
         for (const auto& uniform : fUniforms) {
             const auto& name = std::get<0>(uniform);

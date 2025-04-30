@@ -159,6 +159,9 @@ public:
         if (result.fPixelConverter) {
             size_t size = rowBytes*dimensions.height();
             sk_sp<SkData> data = SkData::MakeUninitialized(size);
+            if (!data) {
+                return false;
+            }
             result.fPixelConverter(data->writable_data(), mappedData);
             this->addCpuPlane(std::move(data), rowBytes);
             result.fTransferBuffer->unmap();

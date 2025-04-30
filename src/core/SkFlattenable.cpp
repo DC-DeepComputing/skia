@@ -133,7 +133,9 @@ sk_sp<SkData> SkFlattenable::serialize(const SkSerialProcs* procs) const {
     writer.writeFlattenable(this);
     size_t size = writer.bytesWritten();
     auto data = SkData::MakeUninitialized(size);
-    writer.writeToMemory(data->writable_data());
+    if (data) {
+        writer.writeToMemory(data->writable_data());
+    }
     return data;
 }
 

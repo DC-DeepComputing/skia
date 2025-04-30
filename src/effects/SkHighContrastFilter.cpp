@@ -38,13 +38,17 @@ sk_sp<SkColorFilter> SkHighContrastFilter::Make(const SkHighContrastConfig& conf
         (float)config.fInvertStyle,  // 0.0f for none, 1.0f for brightness, 2.0f for lightness
         (1+c)/(1-c),
     };
+    sk_sp<SkData> uniformData = SkData::MakeWithCopy(&uniforms, sizeof(uniforms));
+    if (!uniformData) {
+        return nullptr;
+    }
 
     const SkRuntimeEffect* highContrastEffect =
             GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::kHighContrast);
 
     const SkAlphaType kUnpremul = kUnpremul_SkAlphaType;
     return SkColorFilterPriv::WithWorkingFormat(
-            highContrastEffect->makeColorFilter(SkData::MakeWithCopy(&uniforms,sizeof(uniforms))),
+            highContrastEffect->makeColorFilter(uniformData),
             &SkNamedTransferFn::kLinear,
             /* gamut= */ nullptr,           // use the dst gamut
             &kUnpremul);

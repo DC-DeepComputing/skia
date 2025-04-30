@@ -129,6 +129,9 @@ template <typename Base> sk_sp<Base> SkMeshPriv::CpuBuffer<Base>::Make(const voi
     } else {
         storage = SkData::MakeZeroInitialized(size);
     }
+    if (!storage) {
+        storage = SkData::MakeEmpty();
+    }
     return sk_sp<Base>(new CpuBuffer<Base>(std::move(storage)));
 }
 

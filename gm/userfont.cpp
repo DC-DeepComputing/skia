@@ -77,6 +77,9 @@ static sk_sp<SkTypeface> make_tf() {
 
 static sk_sp<SkTypeface> round_trip(sk_sp<SkTypeface> tf) {
     auto data = tf->serialize();
+    if (!data) {
+        return nullptr;
+    }
     SkMemoryStream stream(data->data(), data->size());
     sk_sp<SkTypeface> face = SkTypeface::MakeDeserialize(&stream, nullptr);
     SkASSERT(face);

@@ -278,11 +278,16 @@ size_t SkFILEStream::getLength() const {
 ///////////////////////////////////////////////////////////////////////////////
 
 static sk_sp<SkData> newFromParams(const void* src, size_t size, bool copyData) {
+    sk_sp<SkData> data;
     if (copyData) {
-        return SkData::MakeWithCopy(src, size);
+        data = SkData::MakeWithCopy(src, size);
     } else {
-        return SkData::MakeWithoutCopy(src, size);
+        data = SkData::MakeWithoutCopy(src, size);
     }
+    if (!data) {
+        data = SkData::MakeEmpty();
+    }
+    return data;
 }
 
 SkMemoryStream::SkMemoryStream() {
@@ -292,6 +297,9 @@ SkMemoryStream::SkMemoryStream() {
 
 SkMemoryStream::SkMemoryStream(size_t size) {
     fData = SkData::MakeUninitialized(size);
+    if (!fData) {
+        fData = SkData::MakeEmpty();
+    }
     fOffset = 0;
 }
 
@@ -714,6 +722,9 @@ sk_sp<SkData> SkDynamicMemoryWStream::detachAsData() {
         return SkData::MakeEmpty();
     }
     sk_sp<SkData> data = SkData::MakeUninitialized(size);
+    if (!data) {
+        return nullptr;
+    }
     this->copyToAndReset(data->writable_data());
     return data;
 }

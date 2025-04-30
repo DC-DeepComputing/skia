@@ -1019,6 +1019,9 @@ static sk_sp<SkData> base64_string_to_data(const std::string& s) {
     }
 
     sk_sp<SkData> decodedData = SkData::MakeUninitialized(dataLen);
+    if (!decodedData) {
+        return nullptr;
+    }
     void* rawData = decodedData->writable_data();
     if (SkBase64::Decode(s.c_str(), s.size(), rawData, &dataLen) != SkBase64::kNoError) {
         return nullptr;

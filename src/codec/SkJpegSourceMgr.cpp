@@ -124,6 +124,9 @@ class SkJpegBufferedSourceMgr : public SkJpegSourceMgr {
 public:
     SkJpegBufferedSourceMgr(SkStream* stream, size_t bufferSize) : SkJpegSourceMgr(stream) {
         fBuffer = SkData::MakeUninitialized(bufferSize);
+        if (!fBuffer) {
+            fBuffer = SkData::MakeEmpty();
+        }
     }
     ~SkJpegBufferedSourceMgr() override {}
 
@@ -189,6 +192,9 @@ public:
             return nullptr;
         }
         sk_sp<SkData> data = SkData::MakeUninitialized(size);
+        if (!data) {
+            return nullptr;
+        }
         if (fStream->read(data->writable_data(), size) != size) {
             SkCodecPrintf("Failed to read subset stream data.\n");
             return nullptr;
@@ -233,6 +239,9 @@ public:
         // Read the remainder of the segment.
         size_t sizeToRead = segment.parameterLength - kJpegSegmentParameterLengthSize;
         auto result = SkData::MakeUninitialized(sizeToRead);
+        if (!result) {
+            return nullptr;
+        }
         if (fStream->read(result->writable_data(), sizeToRead) != sizeToRead) {
             return nullptr;
         }
@@ -259,6 +268,9 @@ class SkJpegUnseekableSourceMgr : public SkJpegSourceMgr {
 public:
     SkJpegUnseekableSourceMgr(SkStream* stream, size_t bufferSize) : SkJpegSourceMgr(stream) {
         fBuffer = SkData::MakeUninitialized(bufferSize);
+        if (!fBuffer) {
+            fBuffer = SkData::MakeEmpty();
+        }
         fScanner = std::make_unique<SkJpegSegmentScanner>(kJpegMarkerEndOfImage);
     }
     ~SkJpegUnseekableSourceMgr() override {}
@@ -325,6 +337,9 @@ public:
 
         // Allocate the memory to return, and indicate that the result is a copy.
         sk_sp<SkData> subsetData = SkData::MakeUninitialized(size);
+        if (!subsetData) {
+            return nullptr;
+        }
         uint8_t* subsetDataCurrent = reinterpret_cast<uint8_t*>(subsetData->writable_data());
 
         // Determine the relationship between the offset we're reading from and |fBuffer|.

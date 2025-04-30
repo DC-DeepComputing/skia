@@ -482,6 +482,7 @@ private:
     void* writableUniformData() {
         if (!fUniforms->unique()) {
             fUniforms = SkData::MakeWithCopy(fUniforms->data(), fUniforms->size());
+            SkASSERT_RELEASE(fUniforms);
         }
         return fUniforms->writable_data();
     }
