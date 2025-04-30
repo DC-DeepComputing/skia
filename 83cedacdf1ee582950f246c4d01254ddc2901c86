@@ -39,6 +39,30 @@
       },
       "revId": "83cedacdf1ee582950f246c4d01254ddc2901c86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b927344_d0d51a25",
+        "filename": "src/encode/BUILD.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-04-30T16:34:32Z",
+      "side": 1,
+      "message": "Resolving this old comment to remove this already-landed CL from my Gerrit dashboard.",
+      "parentUuid": "52ec88c6_adf62f3f",
+      "range": {
+        "startLine": 92,
+        "startChar": 26,
+        "endLine": 92,
+        "endChar": 37
+      },
+      "revId": "83cedacdf1ee582950f246c4d01254ddc2901c86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
