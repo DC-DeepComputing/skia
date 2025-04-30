@@ -802,6 +802,8 @@ static void test_dimensions(skiatest::Reporter* r, const char path[]) {
 
 // Ensure that onGetScaledDimensions returns valid image dimensions to use for decodes
 DEF_TEST(Codec_Dimensions, r) {
+    ERRORF(r, "BOOM!");  // DO NOT SUBMIT
+
     // JPG
     test_dimensions(r, "images/CMYK.jpg");
     test_dimensions(r, "images/color_wheel.jpg");
