@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c6f4d7d5_5d9ad43b",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1842,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T15:00:42Z",
+      "side": 1,
+      "message": "You\u0027re right that the above call would handle the case automatically when changing from `fPriorDrawDstReadStrategy \u003d\u003d kReadFromInput` to needing a kTextureCopy, but we need to handle when `dstReadRequired` is false above (because it was something like src-over) for the new MSAA draw.  This would catch the case where we\u0027re passing in `DstReadStrategy::kNone` but still required MSAA for the new draw.",
+      "parentUuid": "31ca492a_bf080680",
+      "range": {
+        "startLine": 1839,
+        "startChar": 0,
+        "endLine": 1842,
+        "endChar": 64
+      },
+      "revId": "9aeb984854649c39662ceb31c332ea3dcf4f96fa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5b9d71ae_045f299a",
         "filename": "src/gpu/graphite/Device.h",
         "patchSetId": 3
