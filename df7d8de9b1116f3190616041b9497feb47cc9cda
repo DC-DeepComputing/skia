@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9b6dd8d_af20ea5b",
+        "filename": "src/gpu/ganesh/surface/SkSurface_AndroidFactories.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-04-30T15:59:15Z",
+      "side": 1,
+      "message": "Is this here because by this point we already know that `requireKnownFormat` is true, or...? If this is never false here, does it add helpful information to the output (like when compared to times where we do not require a known format?)",
+      "range": {
+        "startLine": 91,
+        "startChar": 20,
+        "endLine": 91,
+        "endChar": 38
+      },
+      "revId": "df7d8de9b1116f3190616041b9497feb47cc9cda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
