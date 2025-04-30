@@ -775,6 +775,18 @@ void add_hw_yuv_image_uniform_data(const ShaderCodeDictionary* dict,
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
+    gatherer->write(imgData.fSubset);
+    SkPoint linearFilterUVInset = imgData.fLinearFilterUVInset;
+    if (imgData.fSampling.filter == SkFilterMode::kNearest) {
+        linearFilterUVInset.fX = -linearFilterUVInset.fX;
+    }
+    if (imgData.fTileModes.first == SkTileMode::kClamp &&
+        imgData.fTileModes.second == SkTileMode::kClamp) {
+        linearFilterUVInset.fY = -linearFilterUVInset.fY;
+    } else {
+        SkASSERT(imgData.fSubset.contains(SkRect::Make(imgData.fImgSize)));
+    }
+    gatherer->write(linearFilterUVInset);
     for (int i = 0; i < 4; ++i) {
         gatherer->writeHalf(imgData.fChannelSelect[i]);
     }
@@ -789,6 +801,19 @@ void add_hw_yuv_no_swizzle_image_uniform_data(const ShaderCodeDictionary* dict,
 
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
     gatherer->write(SkSize::Make(1.f/imgData.fImgSizeUV.width(), 1.f/imgData.fImgSizeUV.height()));
+    gatherer->write(imgData.fSubset);
+    SkPoint linearFilterUVInset = imgData.fLinearFilterUVInset;
+    if (imgData.fSampling.filter == SkFilterMode::kNearest) {
+        linearFilterUVInset.fX = -linearFilterUVInset.fX;
+    }
+    if (imgData.fTileModes.first == SkTileMode::kClamp &&
+        imgData.fTileModes.second == SkTileMode::kClamp) {
+        linearFilterUVInset.fY = -linearFilterUVInset.fY;
+    } else {
+        SkASSERT(imgData.fSubset.contains(SkRect::Make(imgData.fImgSize)));
+    }
+    gatherer->write(linearFilterUVInset);
+    gatherer->write(SkTo<int>(imgData.fSampling.filter));
     gatherer->writeHalf(imgData.fYUVtoRGBMatrix);
     SkV4 yuvToRGBXlateAlphaParam = {
         imgData.fYUVtoRGBTranslate.fX,
@@ -820,18 +845,11 @@ static bool can_do_yuv_tiling_in_hw(const Caps* caps,
                                           imgData.fTileModes.second == SkTileMode::kDecal)) {
         return false;
     }
-    // We depend on the subset code to handle cases where the UV dimensions times the
-    // subsample factors are not equal to the Y dimensions.
-    if (imgData.fImgSize != imgData.fImgSizeUV) {
-        return false;
-    }
-    // For nearest filtering when the Y texture size is larger than the UV texture size,
-    // we use linear filtering for the UV texture. In this case we also adjust pixel centers
-    // which may affect dependent texture reads.
-    if (imgData.fSampling.filter != imgData.fSamplingUV.filter) {
-        return false;
-    }
-    return imgData.fSubset.contains(SkRect::Make(imgData.fImgSize));
+    // Use the HW tiling shader variant if we're drawing the full rect with any tiling mode, or if
+    // we're drawing a subset with clamp tiling mode.
+    return imgData.fSubset.contains(SkRect::Make(imgData.fImgSize)) ||
+           (imgData.fTileModes.first == SkTileMode::kClamp &&
+            imgData.fTileModes.second == SkTileMode::kClamp);
 }
 
 static bool no_yuv_swizzle(const YUVImageShaderBlock::ImageData& imgData) {
