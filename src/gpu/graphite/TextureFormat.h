@@ -8,10 +8,16 @@
 #ifndef skgpu_graphite_TextureFormat_DEFINED
 #define skgpu_graphite_TextureFormat_DEFINED
 
+#include "include/core/SkSpan.h"
 #include "include/core/SkTextureCompressionType.h"
+#include "include/private/base/SkTArray.h"
+#include "src/base/SkEnumBitMask.h"
+#include "src/gpu/Swizzle.h"
 
 #include <stddef.h>
 #include <cstdint>
+
+enum SkColorType : int;
 
 namespace skgpu::graphite {
 
@@ -146,6 +152,57 @@ bool TextureFormatHasDepth(TextureFormat);
 bool TextureFormatHasStencil(TextureFormat);
 
 bool TextureFormatIsMultiplanar(TextureFormat);
+
+// Formats are ordered from most compatible to least based on the policies described above in
+// TextureFormat. These must still be filtered by support for a given Caps.
+SkSpan<const TextureFormat> CompatibleTextureFormats(SkColorType);
+
+// Determine the shader read/write swizzle to apply when accessing a texture of the given format
+// that is being treated as the given SkColorType.
+Swizzle TextureFormatReadSwizzle(TextureFormat, SkColorType);
+Swizzle TextureFormatWriteSwizzle(TextureFormat, SkColorType);
+
+dananas
+
+/**
+ * The FormatInfo table stored on Caps defines behavior for how core Graphite interprets or works with
+ * TextureFormats, such as compatible SkColorTypes, what swizzle to use when reading or writing data
+ * during shading, and what data transforms are needed before uploading or after a readback.
+ *
+ * Some of this is determined independent of each backend (such as SkColorType mapping and swizzles)
+ * but each backend Caps marks which operations are supported on the current hardware for each
+ * TextureFormat during initialization. This is separate and must be combined with the usage
+ * capabilities of a specific texture.
+ */
+class TextureFormatInfo {
+public:
+    enum class Supports : uint8_t {
+        kNone     = 0b000000, // Format is unsupported
+        kRender   = 0b000001, // Format can be used as a rendering attachment
+        kTexture  = 0b000010, // Format can be sampled within a shader
+        kReadback = 0b000100, // Format can be transferred from GPU to CPU
+        kUpload   = 0b001000, // Format can be transferred from CPU to GPU
+        kResolve  = 0b010000, // Format can be resolved to at the end of a render pass
+        kStorage  = 0b100000, // Format can be read and written to in a compute pipeline
+    };
+    enum class SampleCount : uint8_t {
+        k1  = 0x01,
+        k2  = 0x02,
+        k4  = 0x04,
+        k8  = 0x08,
+        k16 = 0x10
+    };
+
+
+private:
+    skia_private::STArray<3, SkColorType> fCompatibleColorTypes;
+
+// FIXME store duplicates of these fields for optimal and linear memory layout? Does webgpu have
+// that concept? I think metal does although we don't use it yet
+    SkEnumBitMask<Supports>    fSupportFlags;
+    SkEnumBitMask<SampleCount> fSupportedSampleCounts;
+};
+SK_MAKE_BITMASK_OPS(TextureFormatInfo::Supports)
 
 } // namespace skgpu::graphite
 
