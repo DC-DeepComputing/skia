@@ -7,8 +7,6 @@
 
 #include "src/gpu/Blend.h"
 
-#include "include/core/SkBlendMode.h"
-
 #ifdef SK_DEBUG
 #include "include/core/SkString.h"
 #endif
