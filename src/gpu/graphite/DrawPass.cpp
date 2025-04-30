@@ -668,7 +668,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // Update priorDrawPaintOrder value before iterating to analyze the next draw.
         priorDrawPaintOrder = draw.fDrawParams.order().paintOrder();
     }
-    // Finish recording draw calls for any collected data at the end of the loop
     drawWriter.flush();
 
     drawPass->fBounds = passBounds.roundOut().asSkIRect();
