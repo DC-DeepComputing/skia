@@ -1,0 +1,211 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2be6ddb_322c8988",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: member function calls in skia use `this-\u003e`",
+      "range": {
+        "startLine": 223,
+        "startChar": 11,
+        "endLine": 223,
+        "endChar": 29
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d965ee5a_dc5ac2b5",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 505,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: find",
+      "range": {
+        "startLine": 505,
+        "startChar": 58,
+        "endLine": 505,
+        "endChar": 62
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0395204_5fd3ea66",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "This function shouldn\u0027t be modifying `info`\u0027s offset. We can have it return an `std::optional\u003cuint32_t\u003e`, empty being the buffer would overflow and non-empty being the calculated offset.  That way the `prepareBindBuffer` can reuse the calculated value but we don\u0027t have any side effects when a public caller queries this function.",
+      "range": {
+        "startLine": 507,
+        "startChar": 4,
+        "endLine": 507,
+        "endChar": 20
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f9c5eb7_ab6133cf",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 561,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 561,
+        "startChar": 34,
+        "endLine": 561,
+        "endChar": 52
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "916b6c0e_cf73ca7c",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: this comment is pretty specific to how the function is going to be used by DrawWriter::Appender, but could provide my general description of what it does, e.g. `// Return true if the next call to getVertexWriter() with the same values would require a new Buffer allocation`",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 79
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5239cb38_49ac1b22",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: this function can be const",
+      "range": {
+        "startLine": 109,
+        "startChar": 9,
+        "endLine": 109,
+        "endChar": 27
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e2214b9_a1112bf1",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "nit: `willBufferOverflow` and `info` can both be `const`.",
+      "range": {
+        "startLine": 190,
+        "startChar": 28,
+        "endLine": 190,
+        "endChar": 38
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6572d7f8_339d5b05",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 35
+      },
+      "lineNbr": 358,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "This case handles zero\u0027ing after a flush from a state change *when* we also happen to reach the end of a buffer (pending ct \u003d\u003d 0), and it handles zero\u0027ing when reach the end of the buffer normally (pending ct \u003e 0), but thinking through possible scenarios, I realized that because we are aligning the start of each suballocation to 4*fStride when pending count \u003d\u003d 0, we need something to zero when there was a flush from a state change too.\n\nI think this can be done pretty simply but having the public `flush()` call `padAndZero()` (and so then newPipelineState and the end of DrawPass::Make go back to normal) and `padAndZero()` is private.  We also have an `internalFlush()` call that `Appender` calls on buffer overflow that doesn\u0027t force zero\u0027ing (since it\u0027ll have manually zero\u0027ed here before the buffer overflowed).  \n\nThis should also let this overflow check be restricted to `fAppendVerts \u0026\u0026 fPendingCount \u003e 0`.",
+      "range": {
+        "startLine": 358,
+        "startChar": 12,
+        "endLine": 358,
+        "endChar": 24
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b69bca3_297e186a",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 492,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-04-30T14:30:22Z",
+      "side": 1,
+      "message": "hold over from testing?",
+      "range": {
+        "startLine": 492,
+        "startChar": 0,
+        "endLine": 492,
+        "endChar": 78
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
