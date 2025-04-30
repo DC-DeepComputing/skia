@@ -160,6 +160,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f617ce5_07db083a",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-30T02:26:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8e9d0fd_02ecb688",
+      "range": {
+        "startLine": 338,
+        "startChar": 0,
+        "endLine": 340,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80a0056b_4600c733",
@@ -245,6 +269,30 @@
       "side": 1,
       "message": "Miscommunication: when I wrote \"preemptively zeroing the new buffer\" I meant we are zeroing the *tail*. So we aren\u0027t double writing the *entire* buffer, just the tail.\n\nRegardless, if you want to try to move to a more forward thinking approach like scratch buffers, happy to pivot to that too. Discuss more tomorrow!",
       "parentUuid": "04280a03_9b273b11",
+      "range": {
+        "startLine": 359,
+        "startChar": 0,
+        "endLine": 361,
+        "endChar": 13
+      },
+      "revId": "3506a82ddd35d9fce353d2feb113bfdaa8053915",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da0d145_5061b6d8",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 30
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-04-30T02:26:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c5947d4_777fe8cb",
       "range": {
         "startLine": 359,
         "startChar": 0,
