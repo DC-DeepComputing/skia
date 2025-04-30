@@ -3,7 +3,7 @@
 To update this file, please un "make -C bazel gazelle_update_repo".
 """
 
-load("@bazel_gazelle//:deps.bzl", "go_repository")
+load("@gazelle//:deps.bzl", "go_repository")
 
 def go_repositories():
     """This Gazelle-generated macro defines repositories for the Go modules in //go.mod."""
