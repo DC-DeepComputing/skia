@@ -184,6 +184,22 @@ static constexpr bool VkFormatIsCompressed(VkFormat vkFormat) {
 }
 
 /**
+ * Prepend ptr to the pNext chain at chainStart
+ */
+template <typename VulkanStruct1, typename VulkanStruct2>
+void AddToPNextChain(VulkanStruct1* chainStart, VulkanStruct2* ptr) {
+    // Make sure this function is not called with `&pointer` instead of `pointer`.
+    static_assert(!std::is_pointer<VulkanStruct1>::value);
+    static_assert(!std::is_pointer<VulkanStruct2>::value);
+
+    SkASSERT(ptr->pNext == nullptr);
+
+    VkBaseOutStructure* localPtr = reinterpret_cast<VkBaseOutStructure*>(chainStart);
+    ptr->pNext = localPtr->pNext;
+    localPtr->pNext = reinterpret_cast<VkBaseOutStructure*>(ptr);
+}
+
+/**
  * Returns a ptr to the requested extension feature struct or nullptr if it is not present.
 */
 template <typename T>
