@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70ead051_93c9e489",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T18:51:07Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 844,
+        "startChar": 0,
+        "endLine": 844,
+        "endChar": 73
+      },
+      "revId": "41d70990dbe21a9b786781a431e68bc32314946d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

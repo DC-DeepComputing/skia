@@ -189,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5cf123f_ed2002db",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T18:51:07Z",
+      "side": 1,
+      "message": "Yeah, it doesn\u0027t apply anymore.",
+      "parentUuid": "556cee89_70b43062",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 36
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "239aa82f_199d7db9",
