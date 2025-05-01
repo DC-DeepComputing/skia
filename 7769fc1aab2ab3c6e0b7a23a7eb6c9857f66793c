@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e6a993c_8912a9e7",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1866,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "212de241_8b3fed7f",
+      "range": {
+        "startLine": 1866,
+        "startChar": 0,
+        "endLine": 1866,
+        "endChar": 82
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec036390_b1f4e976",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "082f6d84_b2c57ce5",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec036390_b1f4e976",
+      "range": {
+        "startLine": 1873,
+        "startChar": 0,
+        "endLine": 1873,
+        "endChar": 68
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c46fd21_0dbe55e2",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-05-01T16:06:15Z",
       "side": 1,
       "message": "Could replace the save/restore pairs with `SkAutoCanvasRestore`",
+      "range": {
+        "startLine": 1914,
+        "startChar": 0,
+        "endLine": 1914,
+        "endChar": 21
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c4af331_4dcf692d",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c46fd21_0dbe55e2",
       "range": {
         "startLine": 1914,
         "startChar": 0,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "556cee89_70b43062",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "Not sure this applies now that everything is back in this method.",
+      "parentUuid": "3ef3d02e_861c3558",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 36
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "239aa82f_199d7db9",
         "filename": "src/utils/SkShadowUtils.cpp",
         "patchSetId": 3
@@ -106,6 +202,30 @@
       "writtenOn": "2025-05-01T16:06:15Z",
       "side": 1,
       "message": "We should these to true if the ambient/spot colors are 0 so we don\u0027t trigger a layer fallback in canvas when nothing is necessary.",
+      "range": {
+        "startLine": 640,
+        "startChar": 26,
+        "endLine": 640,
+        "endChar": 31
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5646316b_5d452e62",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "No longer applies",
+      "parentUuid": "239aa82f_199d7db9",
       "range": {
         "startLine": 640,
         "startChar": 26,
@@ -129,6 +249,30 @@
       "writtenOn": "2025-05-01T16:06:15Z",
       "side": 1,
       "message": "I think we can consolidate these defined checks to just early out and return {false, false} if SK_ENABLE_OPTIMIZE_SIZE is true?",
+      "range": {
+        "startLine": 644,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 37
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb74f19d_149d113e",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-01T18:40:47Z",
+      "side": 1,
+      "message": "No longer applies.",
+      "parentUuid": "77076a98_a3e5aa72",
       "range": {
         "startLine": 644,
         "startChar": 0,
