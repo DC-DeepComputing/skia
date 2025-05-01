@@ -63,6 +63,30 @@
       },
       "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f716251_34652323",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 778,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:25:31Z",
+      "side": 1,
+      "message": "Applying clamp tiling in the HW image shader was something that we looked into here https://docs.google.com/document/d/1YFgDi-I3YQcry-GOlTA3NnVGLS5bixZYLEqZ8pvkjgI/edit?usp\u003dsharing, but for now we settled on a dedicated clamp-only specialization.  I didn\u0027t think it was reasonable for YUVA to get another specialization for clamp-only, and it\u0027s unlikely to have as significant of a change in performance relative to pure HW tiling in yuva, given all the other overhead that happens when sampling multiple planes and converting yuv to rgb.\n\nIt also interacts with the expression lifting work that James is working on, since we\u0027d have to normalize the clamp coordinates in order to allow them to operate on normalized texcoord varyings (doable but more involved code). But it could mean that as all of that lifting work lands the perf delta that we had measured changes and we revisit the analysis to see if it\u0027s worth consolidating again.",
+      "parentUuid": "1b7a18f2_7317177d",
+      "range": {
+        "startLine": 778,
+        "startChar": 4,
+        "endLine": 778,
+        "endChar": 37
+      },
+      "revId": "ef827b67ee2d35b5b773bab7bc34816815c8d97e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
