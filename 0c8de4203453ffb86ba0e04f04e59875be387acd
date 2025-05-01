@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ca2c0b2_0e025f53",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 671,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T19:08:00Z",
+      "side": 0,
+      "message": "Lets keep this comment",
+      "range": {
+        "startLine": 671,
+        "startChar": 0,
+        "endLine": 671,
+        "endChar": 80
+      },
+      "revId": "0c8de4203453ffb86ba0e04f04e59875be387acd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
