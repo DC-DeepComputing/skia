@@ -63,6 +63,30 @@
       },
       "revId": "7043413eec254cdfbdb08ffddffa9d70d4b26540",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30456f5d_77791adc",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-01T14:17:16Z",
+      "side": 1,
+      "message": "Yep, that would do it - whoops! Fixed in latest patch.",
+      "parentUuid": "fd92c82c_964c041f",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 34
+      },
+      "revId": "7043413eec254cdfbdb08ffddffa9d70d4b26540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
