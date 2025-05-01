@@ -489,7 +489,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     // Android. Once the problem is fixed SSBOs can be enabled again.
     fStorageBufferSupport = info.backendType != wgpu::BackendType::OpenGL &&
                             info.backendType != wgpu::BackendType::OpenGLES &&
-                            info.backendType != wgpu::BackendType::Vulkan &&
+                            //info.backendType != wgpu::BackendType::Vulkan &&
                             limits.maxStorageBuffersInVertexStage >= 4 &&
                             limits.maxStorageBuffersInFragmentStage >= 4;
 #else
