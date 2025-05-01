@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a30a0d91_fa826000",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-01T17:50:58Z",
+      "side": 1,
+      "message": "Assigned James as primary reviewer since he has worked within `ShaderInfo` - CC\u0027ing Michael and Rob in case y\u0027all wanted to drive by TAL with all your ganesh/SkSL wisdom.",
+      "revId": "693c7931e4ba2995a8dd7b7b2f77b105951fcb59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23ccf790_26a459c0",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 583,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-01T17:50:58Z",
+      "side": 1,
+      "message": "Note for reviewer(s): This logic + comment is ripped directly from ganesh\u0027s `CustomXPFactory::analysisProperties(...)`.\n\nLeaving as unresolved for visibility b/w patchsets.",
+      "range": {
+        "startLine": 486,
+        "startChar": 0,
+        "endLine": 583,
+        "endChar": 6
+      },
+      "revId": "693c7931e4ba2995a8dd7b7b2f77b105951fcb59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
