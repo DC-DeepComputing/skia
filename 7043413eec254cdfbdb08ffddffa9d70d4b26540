@@ -39,6 +39,30 @@
       },
       "revId": "7043413eec254cdfbdb08ffddffa9d70d4b26540",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd92c82c_964c041f",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T14:14:15Z",
+      "side": 1,
+      "message": "I could imagine a Graphite-level helper that takes a Coverage and a BlendMode, and just branches between GetBlendFormula and GetLCDBlendFormula, with isOpaque\u003dfalse.",
+      "parentUuid": "402ef101_d8a08c21",
+      "range": {
+        "startLine": 93,
+        "startChar": 9,
+        "endLine": 95,
+        "endChar": 34
+      },
+      "revId": "7043413eec254cdfbdb08ffddffa9d70d4b26540",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
