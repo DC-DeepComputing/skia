@@ -8,6 +8,7 @@
 #ifndef SkATrace_DEFINED
 #define SkATrace_DEFINED
 
+#include "include/private/base/SkAPI.h"
 #include "include/utils/SkEventTracer.h"
 
 #include <cstdint>
@@ -41,6 +42,7 @@ public:
 
     const uint8_t* getCategoryGroupEnabled(const char* name) override;
 
+    SK_SPI
     const char* getCategoryGroupName(const uint8_t* categoryEnabledFlag) override {
         static const char* category = "skiaATrace";
         return category;

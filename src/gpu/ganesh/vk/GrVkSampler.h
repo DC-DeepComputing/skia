@@ -80,7 +80,7 @@ private:
 
     void freeGPUData() const override;
 
-    static uint32_t GenID() {
+    static SK_SPI uint32_t GenID() {
         static std::atomic<uint32_t> nextID{1};
         uint32_t id;
         do {

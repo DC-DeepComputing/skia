@@ -72,7 +72,7 @@ enum class GrXferBarrierFlags;
 
 // A helper macro to generate a class static id
 #define DEFINE_OP_CLASS_ID \
-    static uint32_t ClassID() { \
+    static SK_SPI uint32_t ClassID() { \
         static uint32_t kClassID = GenOpClassID(); \
         return kClassID; \
     }
@@ -180,7 +180,7 @@ public:
      * onPrePrepare must be prepared to handle both cases (when onPrePrepare has been called
      * ahead of time and when it has not been called).
      */
-    void prePrepare(GrRecordingContext* context, const GrSurfaceProxyView& dstView,
+    void SK_SPI prePrepare(GrRecordingContext* context, const GrSurfaceProxyView& dstView,
                     GrAppliedClip* clip, const GrDstProxyView& dstProxyView,
                     GrXferBarrierFlags renderPassXferBarriers, GrLoadOp colorLoadOp) {
         TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_STR_STATIC(name()));
@@ -192,13 +192,13 @@ public:
      * Called prior to executing. The op should perform any resource creation or data transfers
      * necessary before execute() is called.
      */
-    void prepare(GrOpFlushState* state) {
+    void SK_SPI prepare(GrOpFlushState* state) {
         TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_STR_STATIC(name()));
         this->onPrepare(state);
     }
 
     /** Issues the op's commands to GrGpu. */
-    void execute(GrOpFlushState* state, const SkRect& chainBounds) {
+    void SK_SPI execute(GrOpFlushState* state, const SkRect& chainBounds) {
         TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_STR_STATIC(name()));
         this->onExecute(state, chainBounds);
     }
