@@ -584,7 +584,7 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& rpDesc,
     // After loading the resolve attachment, proceed to the next subpass.
     this->nextSubpass();
     // While transitioning to the next subpass, the layout of the resolve texture gets changed
-    // internally to accommodate its usage within the following subpass. Thus, we need  to update
+    // internally to accommodate its usage within the following subpass. Thus, we need to update
     // our tracking of the layout to match the new/final layout. We do not need to use a general
     // layout because we do not expect to later treat the resolve texture as a dst to read from.
     resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
@@ -861,6 +861,57 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
                                    &beginInfo,
                                    VK_SUBPASS_CONTENTS_INLINE));
     fActiveRenderPass = true;
+
+    // Set all the dynamic state that Graphite never changes once at the beginning of the render
+    // pass.  The following state are constants in Graphite:
+    //
+    // * lineWidth
+    // * depthBias*
+    // * min/maxDepthBounds, depthBoundsTestEnable
+    // * primitiveRestartEnable
+    // * cullMode
+    // * frontFace
+    // * rasterizerDiscardEnable
+    if (fSharedContext->caps()->useBasicDynamicState()) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetLineWidth(fPrimaryCommandBuffer,
+                                    /*lineWidth=*/1.0));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBias(fPrimaryCommandBuffer,
+                                    /*depthBiasConstantFactor=*/0.0f,
+                                    /*depthBiasClamp=*/0.0f,
+                                    /*depthBiasSlopeFactor=*/0.0f));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBounds(fPrimaryCommandBuffer,
+                                      /*minDepthBounds=*/0.0f,
+                                      /*maxDepthBounds=*/1.0f));
+    }
+    if (fSharedContext->caps()->useExtendedDepthStencilDynamicState()) {
+        // Note: VK_FALSE is chosen based on the value in setup_depth_stencil_state, but that has a
+        // TODO to confirm.
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBoundsTestEnable(fPrimaryCommandBuffer,
+                                                /*depthBoundsTestEnable=*/VK_FALSE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBiasEnable(fPrimaryCommandBuffer,
+                                          /*depthBiasEnable=*/VK_FALSE));
+    }
+    if (fSharedContext->caps()->useInputAssemblyDynamicState()) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetPrimitiveRestartEnable(fPrimaryCommandBuffer,
+                                                 /*primitiveRestartEnable=*/VK_FALSE));
+    }
+    if (fSharedContext->caps()->useRasterDynamicState()) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetCullMode(fPrimaryCommandBuffer,
+                                   /*cullMode=*/VK_CULL_MODE_NONE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetFrontFace(fPrimaryCommandBuffer,
+                                    /*frontFace=*/VK_FRONT_FACE_COUNTER_CLOCKWISE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetRasterizerDiscardEnable(fPrimaryCommandBuffer,
+                                                  /*rasterizerDiscardEnable=*/VK_FALSE));
+    }
 
     SkIRect nativeBounds = SkIRect::MakeXYWH(renderArea.offset.x,
                                              renderArea.offset.y,
