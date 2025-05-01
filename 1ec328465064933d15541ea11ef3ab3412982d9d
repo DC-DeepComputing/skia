@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "111941a1_b67e8c6f",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-01T19:49:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "277f1087_4c86e3ed",
+      "range": {
+        "startLine": 170,
+        "startChar": 8,
+        "endLine": 170,
+        "endChar": 30
+      },
+      "revId": "1ec328465064933d15541ea11ef3ab3412982d9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cf97663_2185777e",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-05-01T19:08:00Z",
       "side": 1,
       "message": "this can simplify to `return can_offset_fit(...).has_value()`",
+      "range": {
+        "startLine": 230,
+        "startChar": 0,
+        "endLine": 235,
+        "endChar": 34
+      },
+      "revId": "1ec328465064933d15541ea11ef3ab3412982d9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05d67eab_9a9a12b5",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-01T19:49:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0cf97663_2185777e",
       "range": {
         "startLine": 230,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4657f38f_329d9d6e",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 39
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-01T19:49:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ade49afa_1386f3e1",
+      "range": {
+        "startLine": 564,
+        "startChar": 34,
+        "endLine": 564,
+        "endChar": 56
+      },
+      "revId": "1ec328465064933d15541ea11ef3ab3412982d9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bd90669_b6d4b723",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-05-01T19:08:00Z",
       "side": 1,
       "message": "Now that we don\u0027t need `start` or `countDiff` beyond calculating `alignedCount`, this can be simplified to `uint32_t alignedCount \u003d fAppendVerts ? (SkAlign4(fDraw.fPendingCount + count) - fDraw.fPendingCount) : count`. \n\nWe also could (but up to you for what you think is more readable), move the align4 work inside an outer if check:\n```\nuint32_t alignedCount \u003d count;\nuint32_t alignedStride \u003d stride;\nif (fAppendVerts) {\n    alignedCount \u003d ...;\n    if (fShouldAlign4) {\n        ...\n    }\n}\n```",
+      "range": {
+        "startLine": 352,
+        "startChar": 0,
+        "endLine": 354,
+        "endChar": 71
+      },
+      "revId": "1ec328465064933d15541ea11ef3ab3412982d9d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6936a9fc_06ecaba4",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 39
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-01T19:49:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0bd90669_b6d4b723",
       "range": {
         "startLine": 352,
         "startChar": 0,
