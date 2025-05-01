@@ -34,6 +34,24 @@
       "parentUuid": "db997c9f_8af71064",
       "revId": "d9ab0f726c075c43442d02782a3dc56db6a2a761",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "03cf63ad_460d5681",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-01T18:02:46Z",
+      "side": 1,
+      "message": "Merged",
+      "parentUuid": "589d1fe8_f433081d",
+      "revId": "d9ab0f726c075c43442d02782a3dc56db6a2a761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
