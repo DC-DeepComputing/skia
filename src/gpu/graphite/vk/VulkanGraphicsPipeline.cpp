@@ -164,7 +164,7 @@ static void setup_input_assembly_state(PrimitiveType primitiveType,
                                        VkPipelineInputAssemblyStateCreateInfo* inputAssemblyInfo) {
     *inputAssemblyInfo = {};
     inputAssemblyInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
-    inputAssemblyInfo->primitiveRestartEnable = false;
+    inputAssemblyInfo->primitiveRestartEnable = VK_FALSE;
     inputAssemblyInfo->topology = primitive_type_to_vk_topology(primitiveType);
 }
 
@@ -239,7 +239,9 @@ static void setup_depth_stencil_state(const DepthStencilSettings& stencilSetting
     stencilInfo->depthTestEnable = stencilSettings.fDepthTestEnabled;
     stencilInfo->depthWriteEnable = stencilSettings.fDepthWriteEnabled;
     stencilInfo->depthCompareOp = compare_op_to_vk_compare_op(stencilSettings.fDepthCompareOp);
-    stencilInfo->depthBoundsTestEnable = VK_FALSE; // Default value TODO - Confirm
+    // TODO - Confirm value for depthBoundsTestEnable.
+    // If changed, update dynamic state in VulkanCommandBuffer::beginRenderPass
+    stencilInfo->depthBoundsTestEnable = VK_FALSE;
     stencilInfo->stencilTestEnable = stencilSettings.fStencilTestEnabled;
     if (stencilSettings.fStencilTestEnabled) {
         setup_stencil_op_state(&stencilInfo->front,
@@ -612,15 +614,69 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
 }
 
-static void setup_dynamic_state(VkPipelineDynamicStateCreateInfo* dynamicInfo,
-                                VkDynamicState* dynamicStates) {
-    *dynamicInfo = {};
+using VkDynamicStateList = std::array<VkDynamicState, 21>;
+static void setup_dynamic_state(const Caps& caps,
+                                VkPipelineDynamicStateCreateInfo* dynamicInfo,
+                                VkDynamicStateList* dynamicStates) {
+    uint32_t count = 0;
+
+    // The following state is always dynamic in Graphite
+    (*dynamicStates)[count++] = VK_DYNAMIC_STATE_VIEWPORT;
+    (*dynamicStates)[count++] = VK_DYNAMIC_STATE_SCISSOR;
+    (*dynamicStates)[count++] = VK_DYNAMIC_STATE_BLEND_CONSTANTS;
+
+    if (caps.useBasicDynamicState()) {
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_LINE_WIDTH;
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_BIAS;
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_BOUNDS;
+        // TODO(b/414645290): make the following state dynamic:
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_STENCIL_COMPARE_MASK;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_STENCIL_WRITE_MASK;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_STENCIL_REFERENCE;
+    }
+
+    if (caps.useExtendedDepthStencilDynamicState()) {
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_BOUNDS_TEST_ENABLE;
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_BIAS_ENABLE;
+        // TODO(b/414645290): make the following state dynamic:
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_COMPARE_OP;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_TEST_ENABLE;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_DEPTH_WRITE_ENABLE;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_STENCIL_OP;
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_STENCIL_TEST_ENABLE;
+    }
+
+    if (caps.useInputAssemblyDynamicState()) {
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_PRIMITIVE_RESTART_ENABLE;
+        // TODO(b/414645290): make the following state dynamic:
+        // (*dynamicStates)[count++] = VK_DYNAMIC_STATE_PRIMITIVE_TOPOLOGY;
+    }
+
+    if (caps.useRasterDynamicState()) {
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_CULL_MODE;
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_FRONT_FACE;
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_RASTERIZER_DISCARD_ENABLE;
+    }
+
+    // VK_DYNAMIC_STATE_SCISSOR_WITH_COUNT_EXT and VK_DYNAMIC_STATE_VIEWPORT_WITH_COUNT_EXT are not
+    // used because Graphite only sets one scissor and viewport.
+    //
+    // VK_DYNAMIC_STATE_LOGIC_OP_EXT and VK_DYNAMIC_STATE_PATCH_CONTROL_POINTS_EXT are irrelevant to
+    // Graphite.
+    //
+    // VK_DYNAMIC_STATE_VERTEX_INPUT_BINDING_STRIDE is not used because it will be eventually made
+    // obsolete with VK_EXT_vertex_input_dynamic_state and VK_EXT_graphics_pipeline_library.
+    //
+    // Dynamic state from VK_EXT_extended_dynamic_state3 is not yet used.  They _could_ be useful,
+    // but very few bits are universal and lots of the interesting bits are covered by
+    // VK_EXT_graphics_pipeline_library already.  Still, state like
+    // VK_DYNAMIC_STATE_DEPTH_CLAMP_ENABLE_EXT or VK_DYNAMIC_STATE_POLYGON_MODE_EXT could be used in
+    // the future.
+
+    memset(dynamicInfo, 0, sizeof(VkPipelineDynamicStateCreateInfo));
     dynamicInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
-    dynamicStates[0] = VK_DYNAMIC_STATE_VIEWPORT;
-    dynamicStates[1] = VK_DYNAMIC_STATE_SCISSOR;
-    dynamicStates[2] = VK_DYNAMIC_STATE_BLEND_CONSTANTS;
-    dynamicInfo->dynamicStateCount = 3;
-    dynamicInfo->pDynamicStates = dynamicStates;
+    dynamicInfo->dynamicStateCount = count;
+    dynamicInfo->pDynamicStates = dynamicStates->data();
 }
 
 VulkanProgramInfo::~VulkanProgramInfo() {
@@ -846,9 +902,9 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(const VulkanSharedContext* share
                                 &pipelineShaderStages[1]);
     }
 
-    VkDynamicState dynamicStates[3];
+    VkDynamicStateList dynamicStates;
     VkPipelineDynamicStateCreateInfo dynamicInfo;
-    setup_dynamic_state(&dynamicInfo, dynamicStates);
+    setup_dynamic_state(*sharedContext->caps(), &dynamicInfo, &dynamicStates);
 
     sk_sp<VulkanRenderPass> compatibleRenderPass =
             rsrcProvider->findOrCreateRenderPass(renderPassDesc, /*compatibleOnly=*/true);
