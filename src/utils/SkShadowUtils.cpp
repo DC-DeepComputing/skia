@@ -596,7 +596,7 @@ static bool validate_rec(const SkDrawShadowRec& rec) {
            SkIsFinite(rec.fLightRadius);
 }
 
-void SkDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
+void SkDevice::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShadowRec& rec) {
     if (!validate_rec(rec)) {
         return;
     }
@@ -719,14 +719,16 @@ void SkDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
             SkScalar strokeWidth = 0.5f*(devSpaceOutset - blurRadius);
 
             // Now draw with blur
+            SkAutoCanvasRestore autoRestore(canvas, /*doSave=*/true);
+            canvas->setMatrix(SkM44());
             SkPaint paint;
             paint.setColor(rec.fAmbientColor);
             paint.setStrokeWidth(strokeWidth);
             paint.setStyle(SkPaint::kStrokeAndFill_Style);
             SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(blurRadius);
-            bool respectCTM = false;
-            paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, respectCTM));
-            this->drawPath(devSpacePath, paint, true);
+            paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma,
+                                                       /*respectCTM=*/false));
+            canvas->drawPath(devSpacePath, paint);
         }
     }
 
@@ -840,12 +842,15 @@ void SkDevice::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
             }
             SkAutoDeviceTransformRestore adr2(this, SkM44(shadowMatrix));
 
+            // And draw with blur
+            SkAutoCanvasRestore autoRestore(canvas, /*doSave=*/true);
+            canvas->setMatrix(shadowMatrix);
             SkPaint paint;
             paint.setColor(rec.fSpotColor);
             SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(radius);
-            bool respectCTM = false;
-            paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma, respectCTM));
-            this->drawPath(path, paint, false);
+            paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma,
+                                                       /*respectCTM=*/false));
+            canvas->drawPath(path, paint);
         }
     }
 }
