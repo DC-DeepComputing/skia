@@ -16,6 +16,24 @@
       "message": "So the idea here is that all of these end up declaring some static object in a header. If any of these headers end up in more than one TU there will be a definition in each TU of them. When linking happens the linker will pick one. However, if these TUs end up linked into different shared objects then there will be multiple of them.\n\nThe solution here seems to be to mark all of these as publicly visible to allow the dynamic linker to pick one from among the shared objects. On the other hand, Skia, as a library, would really like to minimize the number of exported symbols.\n\nLooking at these, it seems that in all cases it would make more sense to move these definitions into the TUs. (This is a little tricky for the one macro, which will need to be split into a \"declare\" and a \"define\".) For some of these it might be considered to just move define of the global into the TU, but it doesn\u0027t look like that\u0027s really necessary for perf in any of these.",
       "revId": "8b909d10868e43204784c645587a0945ed41e529",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36f5099c_aa515af0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3538120
+      },
+      "writtenOn": "2025-05-01T20:39:12Z",
+      "side": 1,
+      "message": "That\u0027s also a valid solution. I\u0027ll try doing it that way tomorrow.",
+      "parentUuid": "36ff42eb_e6711f16",
+      "revId": "8b909d10868e43204784c645587a0945ed41e529",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
