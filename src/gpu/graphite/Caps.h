@@ -320,6 +320,35 @@ public:
     // SkColorType and TextureInfo.
     skgpu::Swizzle getWriteSwizzle(SkColorType, const TextureInfo&) const;
 
+    /**
+     * Including line width, depth bias, depth bounds, stencil compare mask, stencil write mask and
+     * stencil reference.
+     * This set corresponds to Vulkan 1.0 dynamic state.  Blend constants does not depend on this
+     * flag as it is always dynamic with all graphite backends.
+     */
+    bool useBasicDynamicState() const { return fUseBasicDynamicState; }
+    /**
+     * Including depth test enable, depth write enable, depth compare op, depth bounds test enable,
+     * depth bias enable, stencil test enable and stencil op.
+     * This set corresponds to depth and stencil related state from VK_EXT_extended_dynamic_state
+     * and VK_EXT_extended_dynamic_state2.
+     */
+    bool useExtendedDepthStencilDynamicState() const {
+        return fUseExtendedDepthStencilDynamicState;
+    }
+    /**
+     * Including primitive topology and primitive restart enable.
+     * This set corresponds to state from VK_EXT_extended_dynamic_state and
+     * VK_EXT_extended_dynamic_state2.
+     */
+    bool useInputAssemblyDynamicState() const { return fUseInputAssemblyDynamicState; }
+    /**
+     * Including cull mode, front face and rasterizer discard.
+     * This set corresponds to state from VK_EXT_extended_dynamic_state and
+     * VK_EXT_extended_dynamic_state2.
+     */
+    bool useRasterDynamicState() const { return fUseRasterDynamicState; }
+
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
     // Returns what method of dst read a draw should use for obtaining the dst color. Backends can
@@ -468,6 +497,15 @@ protected:
     bool fRequireOrderedRecordings = false;
 
     bool fSetBackendLabels = false;
+
+    // Dynamic state.  The granularity is less fine than Vulkan's, but there is still some
+    // granularity to allow for some dynamic state to be disabled due to driver bugs without having
+    // to disable everything.  Eventually, these should be moved to the front-end Caps so that it
+    // can create fewer pipelines in the first place.
+    bool fUseBasicDynamicState = false;
+    bool fUseExtendedDepthStencilDynamicState = false;
+    bool fUseInputAssemblyDynamicState = false;
+    bool fUseRasterDynamicState = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
