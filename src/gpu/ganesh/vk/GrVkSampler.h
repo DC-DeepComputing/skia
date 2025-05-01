@@ -9,6 +9,7 @@
 #define GrVkSampler_DEFINED
 
 #include "include/core/SkTypes.h"
+#include "include/private/base/SkAPI.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMacros.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
@@ -80,7 +81,7 @@ private:
 
     void freeGPUData() const override;
 
-    static uint32_t GenID() {
+    static SK_SPI uint32_t GenID() {
         static std::atomic<uint32_t> nextID{1};
         uint32_t id;
         do {

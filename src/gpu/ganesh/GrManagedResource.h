@@ -9,6 +9,7 @@
 #define GrManagedResource_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
@@ -160,7 +161,7 @@ public:
 
 private:
 #ifdef SK_TRACE_MANAGED_RESOURCES
-    static Trace* GetTrace() {
+    static SK_SPI Trace* GetTrace() {
         static Trace kTrace;
         return &kTrace;
     }
