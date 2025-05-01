@@ -50,6 +50,24 @@
       "message": "I\u0027ve verified locally, the \u0027clipcubic\u0027 GM is failing with the modified Triangulator, but only when ddl is enabled. It looks like it\u0027s something to do with how the DDL processor chops that path up. You can test by running dm with \"--config glddl\". Unfortunately we can\u0027t run with DDLs in viewer.",
       "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c48ff43_6dd842a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-01T02:32:29Z",
+      "side": 1,
+      "message": "Okay, thanks! We\u0027re on holiday today—I\u0027ll check again in a few days.",
+      "parentUuid": "b60e1863_b71e1975",
+      "revId": "cbe68d0eb70cd4c0340a3a3c2248638478a0bb0c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
