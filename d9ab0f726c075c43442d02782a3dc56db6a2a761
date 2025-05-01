@@ -16,6 +16,24 @@
       "message": "It looks like the Chrome roll is hitting this assert?",
       "revId": "d9ab0f726c075c43442d02782a3dc56db6a2a761",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "589d1fe8_f433081d",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-01T14:17:23Z",
+      "side": 1,
+      "message": "Yep, fix up for review: https://skia-review.googlesource.com/c/skia/+/987896",
+      "parentUuid": "db997c9f_8af71064",
+      "revId": "d9ab0f726c075c43442d02782a3dc56db6a2a761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
