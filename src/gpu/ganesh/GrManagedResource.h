@@ -160,7 +160,7 @@ public:
 
 private:
 #ifdef SK_TRACE_MANAGED_RESOURCES
-    static Trace* GetTrace() {
+    static SK_SPI Trace* GetTrace() {
         static Trace kTrace;
         return &kTrace;
     }

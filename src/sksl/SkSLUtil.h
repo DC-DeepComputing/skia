@@ -167,7 +167,7 @@ struct ShaderCaps {
 // Various sets of caps for use in tests
 class ShaderCapsFactory {
 public:
-    static const ShaderCaps* Default() {
+    static SK_SPI const ShaderCaps* Default() {
         static const SkSL::ShaderCaps* sCaps = [] {
             std::unique_ptr<ShaderCaps> caps = MakeShaderCaps();
             caps->fVersionDeclString = "#version 400";
@@ -177,7 +177,7 @@ public:
         return sCaps;
     }
 
-    static const ShaderCaps* Standalone() {
+    static SK_SPI const ShaderCaps* Standalone() {
         static const SkSL::ShaderCaps* sCaps = MakeShaderCaps().release();
         return sCaps;
     }
