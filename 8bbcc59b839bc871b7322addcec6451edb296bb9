@@ -144,6 +144,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1f35cfcd_5497bca7",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 507,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "See my other comment around that line, but I think the one use of fOffset when it was overflowing should have been using the original fOffset value, not what had been aligned for the subsequent allocation that overflowed.",
+      "parentUuid": "b7c2279b_a7687d94",
+      "range": {
+        "startLine": 507,
+        "startChar": 4,
+        "endLine": 507,
+        "endChar": 20
+      },
+      "revId": "8bbcc59b839bc871b7322addcec6451edb296bb9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5f9c5eb7_ab6133cf",
         "filename": "src/gpu/graphite/BufferManager.cpp",
         "patchSetId": 35

@@ -16,6 +16,144 @@
       "message": "OK to review. I added the \"dense packing\" for dynamic state changes.\n\nAn upstream issue with dual source blending is causing some tests to fail on Vulkan, but no lost devices.",
       "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "012bf61b_fa09759f",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "This should include `startOffset \u003c allocatedSize \u0026\u0026 ...` so that we don\u0027t underflow when doing `(allocatedSize - startOffset)`.",
+      "range": {
+        "startLine": 140,
+        "startChar": 26,
+        "endLine": 140,
+        "endChar": 72
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27038a4c_1ffeee75",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "See comment above, but this can go away when it\u0027s handled inside `can_offset_fit`.",
+      "range": {
+        "startLine": 515,
+        "startChar": 34,
+        "endLine": 515,
+        "endChar": 82
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dc36a53_c888d791",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 37
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "I think the old code\u0027s handling of explicit required alignment had a subtle bug where it adjusted `fOffset` but then if we overflowed the buffer, we used the now-modified `fOffset` as the total used.\n\n`fUsedSized` is only used for adjusting the size of the next block, so it wouldn\u0027t trigger catastrophic behavior, but I think it means we don\u0027t need to update `info-\u003efOffset \u003d offset` until we know we are in the non-overflowed buffer case. This should also let us return just std::optional\u003cuint32_t\u003e, like:\n```\nauto offset \u003d this-\u003ewillBufferOffsetOverflow(...);\nif (offset.has_value()) {\n   info.fOffset \u003d *offset;\n} else {\n   // overflowedBuffer code\n   offset \u003d 0;\n   // or we could set info.fOffset \u003d 0, but it\u0027s already being set to 0 when\n   // we get inside the if (!info.fBuffer) code and that is perhaps clearer?\n} \n```",
+      "range": {
+        "startLine": 569,
+        "startChar": 0,
+        "endLine": 569,
+        "endChar": 27
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "199d0043_5aec50bf",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "unnecessary now",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 27
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b86581c1_d6a922df",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "nit: does this fit on one line? also a space after `auto`",
+      "range": {
+        "startLine": 276,
+        "startChar": 0,
+        "endLine": 277,
+        "endChar": 62
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49b19173_6b8b139d",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 37
+      },
+      "lineNbr": 389,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T13:49:49Z",
+      "side": 1,
+      "message": "wdyt about adding a local variable like `alignedStride \u003d fStride`, and then inside the `fAppendVerts` if we have \n```\nif (fDrawer.fShouldAlign4) {\n    alignedStride \u003d 4 * fStride;\n    fDrawer.fShouldAlign4 \u003d false;\n}\n```\n\nand then the ternaries in `willVertexOverflow` and `getVertexWriter` can just pass in `alignedStride`.",
+      "range": {
+        "startLine": 389,
+        "startChar": 0,
+        "endLine": 389,
+        "endChar": 69
+      },
+      "revId": "78a5c0278cf25fb08b83299e957a39c87f670a3e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
