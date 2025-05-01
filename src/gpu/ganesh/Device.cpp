@@ -1071,20 +1071,22 @@ void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPain
 ///////////////////////////////////////////////////////////////////////////////
 
 #if !defined(SK_ENABLE_OPTIMIZE_SIZE)
-void Device::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
+std::pair<bool, bool> Device::drawShadow(const SkPath& path, const SkDrawShadowRec& rec) {
 #if defined(GPU_TEST_UTILS)
     if (fContext->priv().options().fAllPathsVolatile && !path.isVolatile()) {
-        this->drawShadow(SkPath(path).setIsVolatile(true), rec);
-        return;
+        return this->drawShadow(SkPath(path).setIsVolatile(true), rec);
     }
 #endif
     ASSERT_SINGLE_OWNER
     GR_CREATE_TRACE_MARKER_CONTEXT("skgpu::ganesh::Device", "drawShadow", fContext.get());
 
-    if (!fSurfaceDrawContext->drawFastShadow(this->clip(), this->localToDevice(), path, rec)) {
-        // failed to find an accelerated case
-        this->SkDevice::drawShadow(path, rec);
+    if (fSurfaceDrawContext->drawFastShadow(this->clip(), this->localToDevice(), path, rec)) {
+        // drawFastShadow handles both types
+        return {true, true};
     }
+
+    // failed to find an accelerated case
+    return this->SkDevice::drawShadow(path, rec);
 }
 #endif  // SK_ENABLE_OPTIMIZE_SIZE
 
