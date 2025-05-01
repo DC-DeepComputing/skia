@@ -120,7 +120,15 @@ private:
               const skgpu::VulkanExtensions*,
               Protected);
 
-    void applyDriverCorrectnessWorkarounds(const VkPhysicalDeviceProperties&);
+    struct PhysicalDeviceProperties {
+        VkPhysicalDeviceProperties2 base;
+        VkPhysicalDeviceDriverProperties driver;
+    };
+    void getProperties(const skgpu::VulkanInterface* vkInterface,
+                       VkPhysicalDevice physDev,
+                       PhysicalDeviceProperties* props);
+
+    void applyDriverCorrectnessWorkarounds(const PhysicalDeviceProperties&);
 
     void initFormatTable(const skgpu::VulkanInterface*,
                          VkPhysicalDevice,
