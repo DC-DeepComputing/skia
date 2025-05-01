@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdea1c2f_f16e88c1",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T15:52:04Z",
+      "side": 1,
+      "message": "nit: Graphite",
+      "range": {
+        "startLine": 48,
+        "startChar": 69,
+        "endLine": 48,
+        "endChar": 73
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "faa153ad_039fa893",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/vk/VulkanCaps.cpp",
+              "range": {
+                "startLine": 48,
+                "startChar": 0,
+                "endLine": 49,
+                "endChar": 0
+              },
+              "replacement": "// Walk the feature chain once and extract any enabled features that Graphite cares about.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fdd625d0adb9c617507be19267dcc0dd000f4f0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
