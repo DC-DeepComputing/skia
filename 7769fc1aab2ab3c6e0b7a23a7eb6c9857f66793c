@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "212de241_8b3fed7f",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1866,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "WDYT about having `drawShadow` take in the `SkCanvas*` so that the mask filter construction logic below can stay near the rest of the shadow calculation code?\n\nThis is the pattern that\u0027s used by `SkDevice::onDrawGlyphRunList` when it falls out of its fast paths.",
+      "range": {
+        "startLine": 1866,
+        "startChar": 0,
+        "endLine": 1866,
+        "endChar": 82
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec036390_b1f4e976",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "I think we want to use the canvas\u0027s localToDevice() transform and not the top device\u0027s. If there are nested layers, these won\u0027t necessarily be the same but going through SkCanvas::drawPath will apply any base-canvas-\u003etop-device adjustment still.",
+      "range": {
+        "startLine": 1873,
+        "startChar": 0,
+        "endLine": 1873,
+        "endChar": 68
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c46fd21_0dbe55e2",
+        "filename": "src/core/SkCanvas.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1914,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "Could replace the save/restore pairs with `SkAutoCanvasRestore`",
+      "range": {
+        "startLine": 1914,
+        "startChar": 0,
+        "endLine": 1914,
+        "endChar": 21
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef3d02e_861c3558",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "WDYT about early-outting here if useBlur is true so that the fast path branches are a bit simpler?",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 36
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "239aa82f_199d7db9",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "We should these to true if the ambient/spot colors are 0 so we don\u0027t trigger a layer fallback in canvas when nothing is necessary.",
+      "range": {
+        "startLine": 640,
+        "startChar": 26,
+        "endLine": 640,
+        "endChar": 31
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77076a98_a3e5aa72",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 644,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-01T16:06:15Z",
+      "side": 1,
+      "message": "I think we can consolidate these defined checks to just early out and return {false, false} if SK_ENABLE_OPTIMIZE_SIZE is true?",
+      "range": {
+        "startLine": 644,
+        "startChar": 0,
+        "endLine": 644,
+        "endChar": 37
+      },
+      "revId": "7769fc1aab2ab3c6e0b7a23a7eb6c9857f66793c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
