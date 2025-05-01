@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db997c9f_8af71064",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 1010,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-01T14:08:15Z",
+      "side": 1,
+      "message": "It looks like the Chrome roll is hitting this assert?",
+      "revId": "d9ab0f726c075c43442d02782a3dc56db6a2a761",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
