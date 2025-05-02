@@ -68,34 +68,74 @@ std::unique_ptr<SkCodec> SkWebpCodec::MakeFromStream(std::unique_ptr<SkStream> s
     }
     // Webp demux needs a contiguous data buffer.
     sk_sp<SkData> data = nullptr;
-    if (stream->getMemoryBase()) {
-        // It is safe to make without copy because we'll hold onto the stream.
-        data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
-    } else {
-        data = SkCopyStreamToData(stream.get());
-
-        // If we are forced to copy the stream to a data, we can go ahead and delete the stream.
-        stream.reset(nullptr);
-    }
-
-    // It's a little strange that the |demux| will outlive |webpData|, though it needs the
-    // pointer in |webpData| to remain valid.  This works because the pointer remains valid
-    // until the SkData is freed.
-    WebPData webpData = { data->bytes(), data->size() };
+    bool onlyHeaderParsed = false;
     WebPDemuxState state;
-    SkAutoTCallVProc<WebPDemuxer, WebPDemuxDelete> demux(WebPDemuxPartial(&webpData, &state));
-    switch (state) {
-        case WEBP_DEMUX_PARSE_ERROR:
+    SkAutoTCallVProc<WebPDemuxer, WebPDemuxDelete> demux;
+
+    const size_t bufferSize = 1024;
+    char buffer[bufferSize];
+    do {
+        if (stream->getMemoryBase()) {
+            // It is safe to make without copy because we'll hold onto the stream.
+            data = SkData::MakeWithoutCopy(stream->getMemoryBase(), stream->getLength());
+        } else if (!data) {
+            // First attempt at reading data
+            size_t bytes_read = stream->read(buffer, bufferSize);
+            if (!IsWebp(buffer, bytes_read)) {
+                *result = kInvalidInput;
+                return nullptr;
+            }
+
+            SkDynamicMemoryWStream writeData;
+            writeData.write(buffer, bytes_read);
+            data = writeData.detachAsData();
+
+            // If exif data, we have to read the whole stream.
+            // We are guaranteed to be able to tell from the first pass.
+            if (!memcmp(&buffer[12], "VP8X", 4)) {
+                uint32_t vp8x_features;
+                memcpy(&vp8x_features, &buffer[20], 1);
+                if ((1 << 3) & vp8x_features) {
+                    data = SkCopyStreamToData(stream.get());
+                    // If we are forced to copy the stream to a data, we can go ahead and delete the stream.
+                    stream.reset(nullptr);
+                }
+            }
+        } else {
+            // Read more data from stream and append to |data|
+            char currData[data->size()];
+            data->copyRange(0, data->size(), currData);
+
+            SkDynamicMemoryWStream dataWriteable;
+            dataWriteable.write(data->data(), data->size());
+
+            size_t bytes_read = stream->read(buffer, bufferSize);
+            dataWriteable.write(buffer, bytes_read);
+
+            data.reset(dataWriteable.detachAsData().release());
+        }
+
+        // Attempt to make demux object.
+        // It's a little strange that the |demux| will outlive |webpData|, though it needs the
+        // pointer in |webpData| to remain valid.  This works because the pointer remains valid
+        // until the SkData is freed.
+        WebPData webpData = { data->bytes(), data->size() };
+        demux.reset(WebPDemuxPartial(&webpData, &state));
+        if (state == WEBP_DEMUX_PARSE_ERROR) {
             *result = kInvalidInput;
             return nullptr;
-        case WEBP_DEMUX_PARSING_HEADER:
-            *result = kIncompleteInput;
-            return nullptr;
-        case WEBP_DEMUX_PARSED_HEADER:
-        case WEBP_DEMUX_DONE:
-            SkASSERT(demux);
-            break;
+        }
+
+    } while (!stream->isAtEnd() && state < WEBP_DEMUX_PARSED_HEADER);
+
+
+    if (state == WEBP_DEMUX_PARSING_HEADER) {
+        *result = kIncompleteInput;
+        return nullptr;
+    } else if (state == WEBP_DEMUX_PARSED_HEADER) {
+        onlyHeaderParsed = true;
     }
+    // else if state == WEBP_DEMUX_DONE then onlyHeaderParsed remains false.
 
     const int width = WebPDemuxGetI(demux, WEBP_FF_CANVAS_WIDTH);
     const int height = WebPDemuxGetI(demux, WEBP_FF_CANVAS_HEIGHT);
@@ -196,7 +236,8 @@ std::unique_ptr<SkCodec> SkWebpCodec::MakeFromStream(std::unique_ptr<SkStream> s
     *result = kSuccess;
     SkEncodedInfo info = SkEncodedInfo::Make(width, height, color, alpha, 8, std::move(profile));
     return std::unique_ptr<SkCodec>(new SkWebpCodec(std::move(info), std::move(stream),
-                                                    demux.release(), std::move(data), origin));
+                                                    demux.release(), std::move(data), origin,
+                                                    onlyHeaderParsed));
 }
 
 static WEBP_CSP_MODE webp_decode_mode(SkColorType dstCT, bool premultiply) {
@@ -265,6 +306,27 @@ int SkWebpCodec::onGetFrameCount() {
     const uint32_t oldFrameCount = fFrameHolder.size();
     if (fFailed) {
         return oldFrameCount;
+    }
+
+    if (fOnlyHeaderParsed) {
+        char currData[fData->size()];
+        fData->copyRange(0, fData->size(), currData);
+        SkDynamicMemoryWStream newData;
+        newData.write(currData, fData->size());
+        SkStreamCopy(&newData, this->stream());
+        fData.reset(newData.detachAsData().release());
+        fOnlyHeaderParsed = false;
+
+
+        // Create new demux object, adding back the full data
+        WebPData webpData = { fData->bytes(), fData->size() };
+        WebPDemuxState state;
+        SkAutoTCallVProc<WebPDemuxer, WebPDemuxDelete> demux(WebPDemuxPartial(&webpData, &state));
+        if (state == WEBP_DEMUX_PARSE_ERROR) {
+            return kInvalidInput;
+        }
+        // We know fDemux state is at least WEBP_DEMUX_PARSED_HEADER already which we allow
+        fDemux.reset(demux.release());
     }
 
     const uint32_t frameCount = WebPDemuxGetI(fDemux, WEBP_FF_FRAME_COUNT);
@@ -399,6 +461,28 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 
     WebPIterator frame;
     SkAutoTCallVProc<WebPIterator, WebPDemuxReleaseIterator> autoFrame(&frame);
+
+    if (fOnlyHeaderParsed) {
+        char currData[fData->size()];
+        fData->copyRange(0, fData->size(), currData);
+        SkDynamicMemoryWStream newData;
+        newData.write(currData, fData->size());
+        SkStreamCopy(&newData, this->stream());
+        fData.reset(newData.detachAsData().release());
+        fOnlyHeaderParsed = false;
+
+
+        // Create new demux object, adding back the full data
+        WebPData webpData = { fData->bytes(), fData->size() };
+        WebPDemuxState state;
+        SkAutoTCallVProc<WebPDemuxer, WebPDemuxDelete> demux(WebPDemuxPartial(&webpData, &state));
+        if (state == WEBP_DEMUX_PARSE_ERROR) {
+            return kInvalidInput;
+        }
+        // We know fDemux state is at least WEBP_DEMUX_PARSED_HEADER already which we allow
+        fDemux.reset(demux.release());
+  }
+
     // If this succeeded in onGetFrameCount(), it should succeed again here.
     SkAssertResult(WebPDemuxGetFrame(fDemux, index + 1, &frame));
 
@@ -591,12 +675,14 @@ SkCodec::Result SkWebpCodec::onGetPixels(const SkImageInfo& dstInfo, void* dst, 
 }
 
 SkWebpCodec::SkWebpCodec(SkEncodedInfo&& info, std::unique_ptr<SkStream> stream,
-                         WebPDemuxer* demux, sk_sp<SkData> data, SkEncodedOrigin origin)
+                         WebPDemuxer* demux, sk_sp<SkData> data, SkEncodedOrigin origin,
+                         bool onlyHeaderParsed)
     : INHERITED(std::move(info), skcms_PixelFormat_BGRA_8888, std::move(stream),
                 origin)
     , fDemux(demux)
     , fData(std::move(data))
     , fFailed(false)
+    , fOnlyHeaderParsed(onlyHeaderParsed)
 {
     const auto& eInfo = this->getEncodedInfo();
     fFrameHolder.setScreenSize(eInfo.width(), eInfo.height());
