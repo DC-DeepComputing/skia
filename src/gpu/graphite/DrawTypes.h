@@ -251,6 +251,59 @@ struct DepthStencilSettings {
                this->fDepthWriteEnabled == that.fDepthWriteEnabled;
     }
 
+    constexpr bool frontStencilPassOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fDepthStencilPassOp == that.fFrontStencil.fDepthStencilPassOp;
+    }
+    constexpr bool frontStencilFailOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fStencilFailOp == that.fFrontStencil.fStencilFailOp;
+    }
+    constexpr bool frontStencilDepthFailOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fDepthFailOp == that.fFrontStencil.fDepthFailOp;
+    }
+    constexpr bool frontStencilCompareOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fCompareOp == that.fFrontStencil.fCompareOp;
+    }
+    constexpr bool frontStencilReadMaskEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fReadMask == that.fFrontStencil.fReadMask;
+    }
+    constexpr bool frontStencilWriteMaskEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fWriteMask == that.fFrontStencil.fWriteMask;
+    }
+    constexpr bool backStencilPassOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fDepthStencilPassOp == that.fFrontStencil.fDepthStencilPassOp;
+    }
+    constexpr bool backStencilFailOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fStencilFailOp == that.fFrontStencil.fStencilFailOp;
+    }
+    constexpr bool backStencilDepthFailOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fDepthFailOp == that.fFrontStencil.fDepthFailOp;
+    }
+    constexpr bool backStencilCompareOpEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fCompareOp == that.fFrontStencil.fCompareOp;
+    }
+    constexpr bool backStencilReadMaskEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fReadMask == that.fFrontStencil.fReadMask;
+    }
+    constexpr bool backStencilWriteMaskEqual(const DepthStencilSettings& that) const {
+        return fFrontStencil.fWriteMask == that.fFrontStencil.fWriteMask;
+    }
+
+    constexpr bool stencilReferenceEqual(const DepthStencilSettings& that) const {
+        return fStencilReferenceValue == that.fStencilReferenceValue;
+    }
+    constexpr bool depthCompareOpEqual(const DepthStencilSettings& that) const {
+        return fDepthCompareOp == that.fDepthCompareOp;
+    }
+    constexpr bool stencilTestEnabledEqual(const DepthStencilSettings& that) const {
+        return fStencilTestEnabled == that.fStencilTestEnabled;
+    }
+    constexpr bool depthTestEnabledEqual(const DepthStencilSettings& that) const {
+        return fDepthTestEnabled == that.fDepthTestEnabled;
+    }
+    constexpr bool depthWriteEnabledEqual(const DepthStencilSettings& that) const {
+        return fDepthWriteEnabled == that.fDepthWriteEnabled;
+    }
+
     Face fFrontStencil;
     Face fBackStencil;
     uint32_t fStencilReferenceValue = 0;
