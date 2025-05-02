@@ -16,6 +16,24 @@
       "message": "Did we also want to enable SSBO on native Vulkan? Or is that still pending b/353983969.",
       "revId": "3c9a7d1ac937947474c13ef1a1cf58d6905dffe0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7135119_60f472ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 14669
+      },
+      "writtenOn": "2025-05-02T15:16:23Z",
+      "side": 1,
+      "message": "This is targeted towards Chrome+Graphite work so no ideally not in this CL. Chrome doesn\u0027t use the native vulkan backend and I haven\u0027t checked it works. I\u0027d assume someone will want to verify native vulkan backend correctness and performance with SSBOs before enabling there?",
+      "parentUuid": "b607a832_fa0749d6",
+      "revId": "3c9a7d1ac937947474c13ef1a1cf58d6905dffe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
