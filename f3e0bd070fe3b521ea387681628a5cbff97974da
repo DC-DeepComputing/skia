@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bfa28eb_e154ddb0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-02T17:59:11Z",
+      "side": 1,
+      "message": "Most of the changes are due to `sed` renames, primary change is switching to the debug util\u0027s messenger + adding layer settings for a future where syncval can be enabled.",
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
