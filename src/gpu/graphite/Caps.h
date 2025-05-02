@@ -338,6 +338,7 @@ public:
     }
     /**
      * Including primitive topology and primitive restart enable.
+     * Note that the primitive topology _class_ is not dynamic.
      * This set corresponds to state from VK_EXT_extended_dynamic_state and
      * VK_EXT_extended_dynamic_state2.
      */
