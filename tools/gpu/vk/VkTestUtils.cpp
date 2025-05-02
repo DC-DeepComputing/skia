@@ -116,39 +116,66 @@ static void print_backtrace() {
 #endif
 }
 
-VKAPI_ATTR VkBool32 VKAPI_CALL DebugReportCallback(
-    VkDebugReportFlagsEXT       flags,
-    VkDebugReportObjectTypeEXT  objectType,
-    uint64_t                    object,
-    size_t                      location,
-    int32_t                     messageCode,
-    const char*                 pLayerPrefix,
-    const char*                 pMessage,
-    void*                       pUserData) {
-    if (flags & VK_DEBUG_REPORT_ERROR_BIT_EXT) {
-        // See https://github.com/KhronosGroup/Vulkan-ValidationLayers/issues/1887
-        if (strstr(pMessage, "VUID-VkGraphicsPipelineCreateInfo-pDynamicStates-01521") ||
-            strstr(pMessage, "VUID-VkGraphicsPipelineCreateInfo-pDynamicStates-01522")) {
-            return VK_FALSE;
+VKAPI_ATTR VkBool32 VKAPI_CALL
+DebugUtilsMessenger(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
+                    VkDebugUtilsMessageTypeFlagsEXT messageTypes,
+                    const VkDebugUtilsMessengerCallbackDataEXT* callbackData,
+                    void* userData) {
+    // VUID-VkDebugUtilsMessengerCallbackDataEXT-pMessage-parameter
+    // pMessage must be a null-terminated UTF-8 string
+    SkASSERT(callbackData->pMessage != nullptr);
+
+    static constexpr const char* kSkippedMessages[] = {};
+
+    // See if it's an issue we are aware of and don't want to be spammed about.
+    // Always report the debug message if message ID is missing
+    if (callbackData->pMessageIdName != nullptr) {
+        for (const char* skipped : kSkippedMessages) {
+            if (strstr(callbackData->pMessageIdName, skipped) != nullptr) {
+                return VK_FALSE;
+            }
         }
-        // See https://github.com/KhronosGroup/Vulkan-ValidationLayers/issues/2171
-        if (strstr(pMessage, "VUID-vkCmdDraw-None-02686") ||
-            strstr(pMessage, "VUID-vkCmdDrawIndexed-None-02686")) {
-            return VK_FALSE;
-        }
-        SkDebugf("Vulkan error [%s]: code: %d: %s\n", pLayerPrefix, messageCode, pMessage);
-        print_backtrace();
-        SkDEBUGFAIL("Vulkan debug layer error");
-        return VK_TRUE; // skip further layers
-    } else if (flags & VK_DEBUG_REPORT_WARNING_BIT_EXT) {
-        SkDebugf("Vulkan warning [%s]: code: %d: %s\n", pLayerPrefix, messageCode, pMessage);
-        print_backtrace();
-    } else if (flags & VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT) {
-        SkDebugf("Vulkan perf warning [%s]: code: %d: %s\n", pLayerPrefix, messageCode, pMessage);
-        print_backtrace();
-    } else {
-        SkDebugf("Vulkan info/debug [%s]: code: %d: %s\n", pLayerPrefix, messageCode, pMessage);
     }
+
+    bool printStackTrace = true;
+    bool fail = false;
+
+    const char* severity = "message";
+    if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT) {
+        severity = "error";
+        fail = true;
+    } else if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT) {
+        severity = "warning";
+    } else if (messageSeverity == VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT) {
+        severity = "info";
+        printStackTrace = false;
+    }
+
+    const char* generalType =
+            (messageTypes & VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT) != 0 ? " <general>" : "";
+    const char* validationType =
+            (messageTypes & VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT) != 0 ? " <validation>"
+                                                                                 : "";
+    const char* performanceType =
+            (messageTypes & VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT) != 0 ? " <performance>"
+                                                                                  : "";
+
+    SkDebugf("Vulkan %s%s%s%s [%s]: %s\n",
+             severity,
+             generalType,
+             validationType,
+             performanceType,
+             callbackData->pMessageIdName ? callbackData->pMessageIdName : "<no id>",
+             callbackData->pMessage);
+
+    if (printStackTrace) {
+        print_backtrace();
+    }
+
+    if (fail) {
+        SkDEBUGFAIL("Vulkan debug layer error");
+    }
+
     return VK_FALSE;
 }
 #endif
@@ -169,7 +196,7 @@ static bool should_include_extension(const char* extensionName) {
             // single merged layer
             VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME,
             VK_EXT_CONSERVATIVE_RASTERIZATION_EXTENSION_NAME,
-            VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
+            VK_EXT_DEBUG_UTILS_EXTENSION_NAME,
             VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
             VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME,
             VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
@@ -196,11 +223,11 @@ static bool should_include_extension(const char* extensionName) {
             // just listing the strings these macros are defined to. This really shouldn't cause
             // any long term issues as the chances of the strings connected to the name macros
             // changing is next to zero.
-            "VK_KHR_win32_surface", // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
-            "VK_KHR_xcb_surface", // VK_KHR_XCB_SURFACE_EXTENSION_NAME,
+            "VK_KHR_win32_surface",  // VK_KHR_WIN32_SURFACE_EXTENSION_NAME
+            "VK_KHR_xcb_surface",    // VK_KHR_XCB_SURFACE_EXTENSION_NAME,
             "VK_ANDROID_external_memory_android_hardware_buffer",
             // VK_ANDROID_EXTERNAL_MEMORY_ANDROID_HARDWARE_BUFFER_EXTENSION_NAME,
-            "VK_KHR_android_surface", // VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
+            "VK_KHR_android_surface",  // VK_KHR_ANDROID_SURFACE_EXTENSION_NAME,
     };
 
     for (size_t i = 0; i < std::size(kValidExtensions); ++i) {
@@ -396,33 +423,32 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
 #define ACQUIRE_VK_INST_PROC_NOCHECK(name, instance) \
     PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name))
 
-#define ACQUIRE_VK_INST_PROC(name, instance) \
-    PFN_vk##name grVk##name =                                                          \
-        reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name));             \
-    do {                                                                               \
-        if (grVk##name == nullptr) {                                                   \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);          \
-            if (inst != VK_NULL_HANDLE) {                                              \
-                destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension); \
-            }                                                                          \
-            return false;                                                              \
-        }                                                                              \
+#define ACQUIRE_VK_INST_PROC(name, instance)                                                     \
+    PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getInstProc(instance, "vk" #name)); \
+    do {                                                                                         \
+        if (grVk##name == nullptr) {                                                             \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);                    \
+            if (inst != VK_NULL_HANDLE) {                                                        \
+                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);          \
+            }                                                                                    \
+            return false;                                                                        \
+        }                                                                                        \
     } while (0)
 
 #define ACQUIRE_VK_PROC_NOCHECK(name, instance, device) \
     PFN_vk##name grVk##name = reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device))
 
-#define ACQUIRE_VK_PROC(name, instance, device)                                        \
-    PFN_vk##name grVk##name =                                                          \
-            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device));     \
-    do {                                                                               \
-        if (grVk##name == nullptr) {                                                   \
-            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);          \
-            if (inst != VK_NULL_HANDLE) {                                              \
-                destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension); \
-            }                                                                          \
-            return false;                                                              \
-        }                                                                              \
+#define ACQUIRE_VK_PROC(name, instance, device)                                         \
+    PFN_vk##name grVk##name =                                                           \
+            reinterpret_cast<PFN_vk##name>(getProc("vk" #name, instance, device));      \
+    do {                                                                                \
+        if (grVk##name == nullptr) {                                                    \
+            SkDebugf("Function ptr for vk%s could not be acquired\n", #name);           \
+            if (inst != VK_NULL_HANDLE) {                                               \
+                destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension); \
+            }                                                                           \
+            return false;                                                               \
+        }                                                                               \
     } while (0)
 
 #define ACQUIRE_VK_PROC_LOCAL(name, instance, device)                              \
@@ -435,13 +461,14 @@ static bool init_device_extensions_and_layers(const skgpu::VulkanGetProc& getPro
         }                                                                          \
     } while (0)
 
-static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc, VkInstance inst,
-                             VkDebugReportCallbackEXT* debugCallback,
+static bool destroy_instance(PFN_vkGetInstanceProcAddr getInstProc,
+                             VkInstance inst,
+                             VkDebugUtilsMessengerEXT* debugMessenger,
                              bool hasDebugExtension) {
-    if (hasDebugExtension && *debugCallback != VK_NULL_HANDLE) {
-        ACQUIRE_VK_INST_PROC_LOCAL(DestroyDebugReportCallbackEXT, inst);
-        grVkDestroyDebugReportCallbackEXT(inst, *debugCallback, nullptr);
-        *debugCallback = VK_NULL_HANDLE;
+    if (hasDebugExtension && *debugMessenger != VK_NULL_HANDLE) {
+        ACQUIRE_VK_INST_PROC_LOCAL(DestroyDebugUtilsMessengerEXT, inst);
+        grVkDestroyDebugUtilsMessengerEXT(inst, *debugMessenger, nullptr);
+        *debugMessenger = VK_NULL_HANDLE;
     }
     ACQUIRE_VK_INST_PROC_LOCAL(DestroyInstance, inst);
     grVkDestroyInstance(inst, nullptr);
@@ -531,7 +558,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                             skgpu::VulkanBackendContext* ctx,
                             skgpu::VulkanExtensions* extensions,
                             VkPhysicalDeviceFeatures2* features,
-                            VkDebugReportCallbackEXT* debugCallback,
+                            VkDebugUtilsMessengerEXT* debugMessenger,
                             uint32_t* presentQueueIndexPtr,
                             const CanPresentFn& canPresent,
                             bool isProtected) {
@@ -597,18 +624,65 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         instanceExtensionNames.push_back(instanceExtensions[i].extensionName);
     }
 
-    const VkInstanceCreateInfo instance_create = {
-        VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,    // sType
-        nullptr,                                   // pNext
-        0,                                         // flags
-        &app_info,                                 // pApplicationInfo
-        (uint32_t) instanceLayerNames.size(),      // enabledLayerNameCount
-        instanceLayerNames.begin(),                // ppEnabledLayerNames
-        (uint32_t) instanceExtensionNames.size(),  // enabledExtensionNameCount
-        instanceExtensionNames.begin(),            // ppEnabledExtensionNames
+    VkInstanceCreateInfo instance_create = {
+            VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,   // sType
+            nullptr,                                  // pNext
+            0,                                        // flags
+            &app_info,                                // pApplicationInfo
+            (uint32_t)instanceLayerNames.size(),      // enabledLayerNameCount
+            instanceLayerNames.begin(),               // ppEnabledLayerNames
+            (uint32_t)instanceExtensionNames.size(),  // enabledExtensionNameCount
+            instanceExtensionNames.begin(),           // ppEnabledExtensionNames
     };
 
     bool hasDebugExtension = false;
+    *debugMessenger = VK_NULL_HANDLE;
+
+#ifdef SK_ENABLE_VK_LAYERS
+    for (int i = 0; i < instanceExtensionNames.size() && !hasDebugExtension; ++i) {
+        if (!strcmp(instanceExtensionNames[i], VK_EXT_DEBUG_UTILS_EXTENSION_NAME)) {
+            hasDebugExtension = true;
+        }
+    }
+
+    // Fine grain control of validation layer features
+    const char* name = "VK_LAYER_KHRONOS_validation";
+    const VkBool32 settingValidateCore = VK_TRUE;
+    // Syncval is disabled for now, but would be useful to enable eventually.
+    const VkBool32 settingValidateSync = VK_FALSE;
+    const VkBool32 settingThreadSafety = VK_TRUE;
+    // Shader validation could be useful (previously broken on Android, might already be fixed:
+    // http://anglebug.com/42265520).
+    const VkBool32 settingCheckShaders = VK_FALSE;
+    // If syncval is enabled, submit time validation could stay disabled due to performance issues:
+    // https://github.com/KhronosGroup/Vulkan-ValidationLayers/issues/7285
+    const VkBool32 settingSyncvalSubmitTimeValidation = VK_FALSE;
+    // Extra properties in syncval make it easier to filter the messages.
+    const VkBool32 settingSyncvalMessageExtraProperties = VK_TRUE;
+    const VkLayerSettingEXT layerSettings[] = {
+            {name, "validate_core", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingValidateCore},
+            {name, "validate_sync", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingValidateSync},
+            {name, "thread_safety", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingThreadSafety},
+            {name, "check_shaders", VK_LAYER_SETTING_TYPE_BOOL32_EXT, 1, &settingCheckShaders},
+            {name,
+             "syncval_submit_time_validation",
+             VK_LAYER_SETTING_TYPE_BOOL32_EXT,
+             1,
+             &settingSyncvalSubmitTimeValidation},
+            {name,
+             "syncval_message_extra_properties",
+             VK_LAYER_SETTING_TYPE_BOOL32_EXT,
+             1,
+             &settingSyncvalMessageExtraProperties},
+    };
+    VkLayerSettingsCreateInfoEXT layerSettingsCreateInfo = {};
+    layerSettingsCreateInfo.sType = VK_STRUCTURE_TYPE_LAYER_SETTINGS_CREATE_INFO_EXT;
+    layerSettingsCreateInfo.settingCount = static_cast<uint32_t>(std::size(layerSettings));
+    layerSettingsCreateInfo.pSettings = layerSettings;
+    if (hasDebugExtension) {
+        instance_create.pNext = &layerSettingsCreateInfo;
+    }
+#endif
 
     ACQUIRE_VK_INST_PROC(CreateInstance, VK_NULL_HANDLE);
     err = grVkCreateInstance(&instance_create, nullptr, &inst);
@@ -627,28 +701,26 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     };
 
 #ifdef SK_ENABLE_VK_LAYERS
-    *debugCallback = VK_NULL_HANDLE;
-    for (int i = 0; i < instanceExtensionNames.size() && !hasDebugExtension; ++i) {
-        if (!strcmp(instanceExtensionNames[i], VK_EXT_DEBUG_REPORT_EXTENSION_NAME)) {
-            hasDebugExtension = true;
-        }
-    }
     if (hasDebugExtension) {
-        // Setup callback creation information
-        VkDebugReportCallbackCreateInfoEXT callbackCreateInfo;
-        callbackCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CREATE_INFO_EXT;
-        callbackCreateInfo.pNext = nullptr;
-        callbackCreateInfo.flags = VK_DEBUG_REPORT_ERROR_BIT_EXT |
-                                   VK_DEBUG_REPORT_WARNING_BIT_EXT |
-                                   // VK_DEBUG_REPORT_INFORMATION_BIT_EXT |
-                                   // VK_DEBUG_REPORT_DEBUG_BIT_EXT |
-                                   VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT;
-        callbackCreateInfo.pfnCallback = &DebugReportCallback;
-        callbackCreateInfo.pUserData = nullptr;
+        VkDebugUtilsMessengerCreateInfoEXT messengerInfo = {};
 
-        ACQUIRE_VK_PROC(CreateDebugReportCallbackEXT, inst, VK_NULL_HANDLE);
+        constexpr VkDebugUtilsMessageSeverityFlagsEXT kSeveritiesToLog =
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT;
+
+        constexpr VkDebugUtilsMessageTypeFlagsEXT kMessagesToLog =
+                VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT |
+                VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT;
+
+        messengerInfo.sType = VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT;
+        messengerInfo.messageSeverity = kSeveritiesToLog;
+        messengerInfo.messageType = kMessagesToLog;
+        messengerInfo.pfnUserCallback = &DebugUtilsMessenger;
+
+        ACQUIRE_VK_PROC(CreateDebugUtilsMessengerEXT, inst, VK_NULL_HANDLE);
         // Register the callback
-        grVkCreateDebugReportCallbackEXT(inst, &callbackCreateInfo, nullptr, debugCallback);
+        grVkCreateDebugUtilsMessengerEXT(inst, &messengerInfo, nullptr, debugMessenger);
     }
 #endif
 
@@ -665,12 +737,12 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     err = grVkEnumeratePhysicalDevices(inst, &gpuCount, nullptr);
     if (err) {
         SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
     if (!gpuCount) {
         SkDebugf("vkEnumeratePhysicalDevices returned no supported devices.\n");
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
     // Allocate enough storage for all available physical devices. We should be able to just ask for
@@ -680,7 +752,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     err = grVkEnumeratePhysicalDevices(inst, &gpuCount, physDevs.data());
     if (err) {
         SkDebugf("vkEnumeratePhysicalDevices failed: %d\n", err);
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
     // We just use the first physical device.
@@ -693,7 +765,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
 
     if (isProtected && physDeviceVersion < VK_MAKE_VERSION(1, 1, 0)) {
         SkDebugf("protected requires vk physical device version 1.1\n");
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
 
@@ -702,7 +774,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     grVkGetPhysicalDeviceQueueFamilyProperties(physDev, &queueCount, nullptr);
     if (!queueCount) {
         SkDebugf("vkGetPhysicalDeviceQueueFamilyProperties returned no queues.\n");
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
 
@@ -722,7 +794,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
     if (graphicsQueueIndex == queueCount) {
         SkDebugf("Could not find any supported graphics queues.\n");
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
 
@@ -737,7 +809,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         }
         if (presentQueueIndex == queueCount) {
             SkDebugf("Could not find any supported present queues.\n");
-            destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+            destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
             return false;
         }
         *presentQueueIndexPtr = presentQueueIndex;
@@ -753,7 +825,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                                            inst, physDev,
                                            &deviceExtensions,
                                            &deviceLayers)) {
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
 
@@ -783,7 +855,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
         extensions->hasExtension(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME, 1)) {
         if (!setup_features(getProc, inst, physDev, physDeviceVersion, extensions, features,
                             isProtected)) {
-            destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+            destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
             return false;
         }
 
@@ -845,7 +917,7 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     }
     if (err) {
         SkDebugf("CreateDevice failed: %d\n", err);
-        destroy_instance(getInstProc, inst, debugCallback, hasDebugExtension);
+        destroy_instance(getInstProc, inst, debugMessenger, hasDebugExtension);
         return false;
     }
 
