@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e689b00_c7736a56",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-02T20:37:26Z",
+      "side": 1,
+      "message": "@drott and @fmalita, can you PTAL?\n\nI am not quite happy with having an ad-hoc helper for Rust-vs-`libpng` dispatching inside Fontations-related code (rather than in `src/codec/...`).  But this seems okay for now, as a first step:\n\n* In the future, we will also need this kind of dispatching in `SkIcoCodec.cpp` and `SkSVGOpenTypeSVGDecoder.cpp`, but I know that Chromium uses Fontations, but I am not sure if Chromium uses `SkIcoCodec` (vs Chromium/Blink-specific decoders).\n* The helper introduced in this CL is focused on Fontation-specific needs (e.g. taking only the `sk_sp\u003cSkData\u003e` parameter).\n* This CL helps to make progress toward shipping Rust PNG.\n\nWDYT?",
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
