@@ -157,3 +157,12 @@ GrVkSampler::Key GrVkSampler::GenerateKey(GrSamplerState samplerState,
     return {samplerState.asKey(/*anisoIsOrthogonal=*/true),
             GrVkSamplerYcbcrConversion::GenerateKey(ycbcrInfo)};
 }
+
+ uint32_t GrVkSampler::GenID() {
+    static std::atomic<uint32_t> nextID{1};
+    uint32_t id;
+    do {
+        id = nextID++;
+    } while (id == SK_InvalidUniqueID);
+    return id;
+}
