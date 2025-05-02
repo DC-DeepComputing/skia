@@ -34,6 +34,24 @@
       "parentUuid": "b607a832_fa0749d6",
       "revId": "3c9a7d1ac937947474c13ef1a1cf58d6905dffe0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2674db7d_cd705360",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-02T15:20:12Z",
+      "side": 1,
+      "message": "I think enabling them in separate CLs makes sense. Kyle is in a position to keep an eye on performance impacts with dawn-\u003evulkan during the chrome canary, although we should get some signal in our perf jobs.\n\nSeparately enabling the native vulkan one gives us more flexibility for reverts and lets us see how it impacts RenderEngine and our own perf jobs. I don\u0027t think there are any more blockers for Thomas to put together that CL and see what the new performance characteristics are like in the native backend.",
+      "parentUuid": "e7135119_60f472ab",
+      "revId": "3c9a7d1ac937947474c13ef1a1cf58d6905dffe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
