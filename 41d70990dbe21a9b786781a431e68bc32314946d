@@ -22,6 +22,30 @@
       },
       "revId": "41d70990dbe21a9b786781a431e68bc32314946d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4391f2c2_262e6440",
+        "filename": "src/utils/SkShadowUtils.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 844,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-02T14:21:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70ead051_93c9e489",
+      "range": {
+        "startLine": 844,
+        "startChar": 0,
+        "endLine": 844,
+        "endChar": 73
+      },
+      "revId": "41d70990dbe21a9b786781a431e68bc32314946d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
