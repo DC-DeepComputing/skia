@@ -1025,6 +1025,11 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 
 void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     SkASSERT(fActiveRenderPass);
+    // TODO(b/414645289): Once the front-end is made aware of dynamic state, it could recognize when
+    // only dynamic state has changed.  In that case, since the pipeline doesn't change, this call
+    // can be avoided.  The logic after this would then have to move to another place; for example
+    // setting dynamic states should move to a separate VulkanCommandBuffer call.
+    const auto *previousGraphicsPipeline = fActiveGraphicsPipeline;
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -1042,6 +1047,8 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
         // up front in this case.
         this->recordTextureAndSamplerDescSet(/*drawPass=*/nullptr, /*command=*/nullptr);
     }
+
+    fActiveGraphicsPipeline->updateDynamicState(fSharedContext, fPrimaryCommandBuffer, previousGraphicsPipeline);
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
