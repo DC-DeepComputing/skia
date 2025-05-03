@@ -343,6 +343,13 @@ public:
      *   VK_EXT_extended_dynamic_state2.
      */
     bool useBasicDynamicState() const { return fUseBasicDynamicState; }
+    /**
+     * Whether all vertex input state is dynamic.
+     * This set corresponds to state from VK_EXT_vertex_input_dynamic_state.  This state is
+     * equivalently pulled out of the shaders pipeline via VK_EXT_graphics_pipeline_library
+     * (usePipelineLibraries()).
+     */
+    bool useVertexInputDynamicState() const { return fUseVertexInputDynamicState; }
 
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
@@ -498,6 +505,7 @@ protected:
     // to disable everything.  Eventually, these can be used to create fewer pipelines in the first
     // place.
     bool fUseBasicDynamicState = false;
+    bool fUseVertexInputDynamicState = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
