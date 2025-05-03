@@ -16,6 +16,24 @@
       "message": "There are no changes necessary in the reland, but we should wait for a fix in RenderEngine first.",
       "revId": "020a21b359d265bacb550daeb192b16d5c3d7048",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2407123e_5b1b46f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-03T02:11:40Z",
+      "side": 1,
+      "message": "Confirmed fixed with https://googleplex-android-review.git.corp.google.com/c/platform/frameworks/native/+/33375645",
+      "parentUuid": "7bc5731f_bc636362",
+      "revId": "020a21b359d265bacb550daeb192b16d5c3d7048",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
