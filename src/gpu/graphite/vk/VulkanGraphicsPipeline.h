@@ -156,6 +156,7 @@ private:
                            const PipelineInfo& pipelineInfo,
                            VkPipelineLayout,
                            VkPipeline,
+                           VkPipeline,
                            bool ownsPipelineLayout,
                            skia_private::TArray<sk_sp<VulkanSampler>>&& immutableSamplers,
                            RenderStep::RenderStepID renderStepID,
@@ -180,10 +181,12 @@ private:
                                    VertexInputAttributeDescriptions* vertexAttributeDescriptions,
                                    const DepthStencilSettings&,
                                    const BlendInfo&,
-                                   const RenderPassDesc&);
+                                   const RenderPassDesc&,
+                                   VkPipeline*);
 
     VkPipelineLayout fPipelineLayout = VK_NULL_HANDLE;
     VkPipeline fPipeline = VK_NULL_HANDLE;
+    VkPipeline fShadersPipeline = VK_NULL_HANDLE;
     bool fOwnsPipelineLayout = true;
 
     // Hold a ref to immutable samplers used such that their lifetime is properly managed.
