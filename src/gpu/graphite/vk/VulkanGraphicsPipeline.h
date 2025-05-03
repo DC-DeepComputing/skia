@@ -13,6 +13,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "src/gpu/Blend.h"
+#include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/vk/VulkanGraphiteUtils.h"
@@ -152,7 +153,9 @@ private:
                            bool ownsPipelineLayout,
                            skia_private::TArray<sk_sp<VulkanSampler>>&& immutableSamplers,
                            PrimitiveType primitiveType,
-                           const DepthStencilSettings& depthStencilSettings);
+                           const DepthStencilSettings& depthStencilSettings,
+                           SkSpan<const Attribute> vertexAttrs,
+                           SkSpan<const Attribute> instanceAttrs);
 
     void freeGpuData() override;
 
@@ -181,6 +184,8 @@ private:
     // this diff and set the state directly instead of the graphics pipeline tracking it.
     PrimitiveType fCachedPrimitiveType;
     DepthStencilSettings fCachedDepthStencilSettings;
+    skia_private::STArray<4, Attribute> fCachedVertexAttribs;
+    skia_private::STArray<16, Attribute> fCachedInstanceAttribs;
 };
 
 } // namespace skgpu::graphite

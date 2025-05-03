@@ -93,17 +93,44 @@ static inline VkFormat attrib_type_to_vkformat(VertexAttribType type) {
     SK_ABORT("Unknown vertex attrib type");
 }
 
-static void setup_vertex_input_state(
+static bool is_same_vertex_input_state(SkSpan<const Attribute> vertexAttrsA,
+                                       SkSpan<const Attribute> instanceAttrsA,
+                                       SkSpan<const Attribute> vertexAttrsB,
+                                       SkSpan<const Attribute> instanceAttrsB) {
+    if (vertexAttrsA.size() != vertexAttrsB.size() ||
+        instanceAttrsA.size() != instanceAttrsB.size()) {
+        return false;
+    }
+
+    for (size_t index = 0; index < vertexAttrsA.size(); ++index) {
+        // Note: CPU and GPU types in Attribute are equivalent, comparing one is enough.
+        // The debug name of the attribute doesn't matter for the purposes of vertex input state.
+        if (vertexAttrsA[index].cpuType() != vertexAttrsB[index].cpuType()) {
+            return false;
+        }
+    }
+    for (size_t index = 0; index < instanceAttrsA.size(); ++index) {
+        if (instanceAttrsA[index].cpuType() != instanceAttrsB[index].cpuType()) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// A helper to derive the vertex input state either for version 1 or 2 of the Vulkan structs.
+template <typename VertexInputBindingDescription, typename VertexInputAttributeDescription>
+static void get_vertex_input_state(
         const SkSpan<const Attribute>& vertexAttrs,
         const SkSpan<const Attribute>& instanceAttrs,
-        VkPipelineVertexInputStateCreateInfo* vertexInputInfo,
-        skia_private::STArray<2, VkVertexInputBindingDescription, true>* bindingDescs,
-        skia_private::STArray<16, VkVertexInputAttributeDescription>* attributeDescs) {
-    // Setup attribute & binding descriptions
+        skia_private::STArray<2, VertexInputBindingDescription>* bindingDescs,
+        skia_private::STArray<16, VertexInputAttributeDescription>* attributeDescs,
+        const VertexInputBindingDescription& defaultBindingDesc,
+        const VertexInputAttributeDescription& defaultAttributeDesc) {
     int attribIndex = 0;
     size_t vertexAttributeOffset = 0;
     for (auto attrib : vertexAttrs) {
-        VkVertexInputAttributeDescription vkAttrib;
+        VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kVertexBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
@@ -114,7 +141,7 @@ static void setup_vertex_input_state(
 
     size_t instanceAttributeOffset = 0;
     for (auto attrib : instanceAttrs) {
-        VkVertexInputAttributeDescription vkAttrib;
+        VertexInputAttributeDescription vkAttrib = defaultAttributeDesc;
         vkAttrib.location = attribIndex++;
         vkAttrib.binding = VulkanGraphicsPipeline::kInstanceBufferIndex;
         vkAttrib.format = attrib_type_to_vkformat(attrib.cpuType());
@@ -123,29 +150,44 @@ static void setup_vertex_input_state(
         attributeDescs->push_back(vkAttrib);
     }
 
-    if (bindingDescs && !vertexAttrs.empty()) {
-        bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kVertexBufferIndex,
-                (uint32_t) vertexAttributeOffset,
-                VK_VERTEX_INPUT_RATE_VERTEX
-        };
+    if (!vertexAttrs.empty()) {
+        VertexInputBindingDescription vkBinding = defaultBindingDesc;
+        vkBinding.binding = VulkanGraphicsPipeline::kVertexBufferIndex;
+        vkBinding.stride = (uint32_t)vertexAttributeOffset;
+        vkBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+        bindingDescs->push_back(vkBinding);
     }
-    if (bindingDescs && !instanceAttrs.empty()) {
-        bindingDescs->push_back() = {
-                VulkanGraphicsPipeline::kInstanceBufferIndex,
-                (uint32_t) instanceAttributeOffset,
-                VK_VERTEX_INPUT_RATE_INSTANCE
-        };
+    if (!instanceAttrs.empty()) {
+        VertexInputBindingDescription vkBinding = defaultBindingDesc;
+        vkBinding.binding = VulkanGraphicsPipeline::kInstanceBufferIndex;
+        vkBinding.stride = (uint32_t)instanceAttributeOffset;
+        vkBinding.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+        bindingDescs->push_back(vkBinding);
     }
+}
+
+static void setup_vertex_input_state(
+        const SkSpan<const Attribute>& vertexAttrs,
+        const SkSpan<const Attribute>& instanceAttrs,
+        VkPipelineVertexInputStateCreateInfo* vertexInputInfo,
+        skia_private::STArray<2, VkVertexInputBindingDescription>* bindingDescs,
+        skia_private::STArray<16, VkVertexInputAttributeDescription>* attributeDescs) {
+    // Setup attribute & binding descriptions
+    get_vertex_input_state(vertexAttrs,
+                           instanceAttrs,
+                           bindingDescs,
+                           attributeDescs,
+                           /*defaultBindingDesc=*/{},
+                           /*defaultAttributeDesc=*/{});
 
     *vertexInputInfo = {};
     vertexInputInfo->sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
-    vertexInputInfo->vertexBindingDescriptionCount = bindingDescs ? bindingDescs->size() : 0;
+    vertexInputInfo->vertexBindingDescriptionCount = bindingDescs->size();
     vertexInputInfo->pVertexBindingDescriptions =
-            bindingDescs && !bindingDescs->empty() ? bindingDescs->begin() : VK_NULL_HANDLE;
-    vertexInputInfo->vertexAttributeDescriptionCount = attributeDescs ? attributeDescs->size() : 0;
+            !bindingDescs->empty() ? bindingDescs->begin() : nullptr;
+    vertexInputInfo->vertexAttributeDescriptionCount = attributeDescs->size();
     vertexInputInfo->pVertexAttributeDescriptions =
-            attributeDescs && !attributeDescs->empty() ? attributeDescs->begin() : VK_NULL_HANDLE;
+            !attributeDescs->empty() ? attributeDescs->begin() : nullptr;
 }
 
 static VkPrimitiveTopology primitive_type_to_vk_topology(PrimitiveType primitiveType) {
@@ -639,7 +681,7 @@ static VkPipelineLayout setup_pipeline_layout(const VulkanSharedContext* sharedC
     return result == VK_SUCCESS ? layout : VK_NULL_HANDLE;
 }
 
-using VkDynamicStateList = std::array<VkDynamicState, 21>;
+using VkDynamicStateList = std::array<VkDynamicState, 22>;
 static void setup_dynamic_state(const Caps& caps,
                                 VkPipelineDynamicStateCreateInfo* dynamicInfo,
                                 VkDynamicStateList* dynamicStates) {
@@ -678,6 +720,9 @@ static void setup_dynamic_state(const Caps& caps,
         (*dynamicStates)[count++] = VK_DYNAMIC_STATE_CULL_MODE;
         (*dynamicStates)[count++] = VK_DYNAMIC_STATE_FRONT_FACE;
         (*dynamicStates)[count++] = VK_DYNAMIC_STATE_RASTERIZER_DISCARD_ENABLE;
+    }
+    if (caps.useVertexInputDynamicState()) {
+        (*dynamicStates)[count++] = VK_DYNAMIC_STATE_VERTEX_INPUT_EXT;
     }
 
     // VK_DYNAMIC_STATE_SCISSOR_WITH_COUNT_EXT and VK_DYNAMIC_STATE_VIEWPORT_WITH_COUNT_EXT are not
@@ -868,7 +913,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                                            /*ownsPipelineLayout=*/true,
                                            std::move(immutableSamplers),
                                            step->primitiveType(),
-                                           step->depthStencilSettings()));
+                                           step->depthStencilSettings(),
+                                           step->vertexAttributes(),
+                                           step->instanceAttributes()));
     }
 
     return pipeline;
@@ -887,13 +934,12 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(const VulkanSharedContext* share
     SkASSERT(program.layout() && program.vs()); // but a fragment shader isn't required
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
-    skia_private::STArray<2, VkVertexInputBindingDescription, true> bindingDescs;
+    skia_private::STArray<2, VkVertexInputBindingDescription> bindingDescs;
     skia_private::STArray<16, VkVertexInputAttributeDescription> attributeDescs;
-    setup_vertex_input_state(vertexAttrs,
-                             instanceAttrs,
-                             &vertexInputInfo,
-                             &bindingDescs,
-                             &attributeDescs);
+    if (!sharedContext->caps()->useVertexInputDynamicState()) {
+        setup_vertex_input_state(
+                vertexAttrs, instanceAttrs, &vertexInputInfo, &bindingDescs, &attributeDescs);
+    }
 
     VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo;
     setup_input_assembly_state(*sharedContext->caps(), primitiveType, &inputAssemblyInfo);
@@ -943,7 +989,8 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(const VulkanSharedContext* share
     pipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
     pipelineCreateInfo.stageCount = program.fs() ? 2 : 1;
     pipelineCreateInfo.pStages = &pipelineShaderStages[0];
-    pipelineCreateInfo.pVertexInputState = &vertexInputInfo;
+    pipelineCreateInfo.pVertexInputState =
+            sharedContext->caps()->useVertexInputDynamicState() ? nullptr : &vertexInputInfo;
     pipelineCreateInfo.pInputAssemblyState = &inputAssemblyInfo;
     pipelineCreateInfo.pTessellationState = nullptr;
     pipelineCreateInfo.pViewportState = &viewportInfo;
@@ -1097,7 +1144,9 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::MakeLoadMSAAPipeline(
                                        /*ownsPipelineLayout=*/false,
                                        /*immutableSamplers=*/{},
                                        PrimitiveType::kTriangleStrip,
-                                       /*depthStencilSettings=*/{}));
+                                       /*depthStencilSettings=*/{},
+                                       /*vertexAttrs=*/{},
+                                       /*instanceAttrs=*/{}));
 }
 
 VulkanGraphicsPipeline::VulkanGraphicsPipeline(
@@ -1108,14 +1157,18 @@ VulkanGraphicsPipeline::VulkanGraphicsPipeline(
         bool ownsPipelineLayout,
         skia_private::TArray<sk_sp<VulkanSampler>>&& immutableSamplers,
         PrimitiveType primitiveType,
-        const DepthStencilSettings& depthStencilSettings)
+        const DepthStencilSettings& depthStencilSettings,
+        SkSpan<const Attribute> vertexAttrs,
+        SkSpan<const Attribute> instanceAttrs)
         : GraphicsPipeline(sharedContext, pipelineInfo)
         , fPipelineLayout(pipelineLayout)
         , fPipeline(pipeline)
         , fOwnsPipelineLayout(ownsPipelineLayout)
         , fImmutableSamplers(std::move(immutableSamplers))
         , fCachedPrimitiveType(primitiveType)
-        , fCachedDepthStencilSettings(depthStencilSettings) {}
+        , fCachedDepthStencilSettings(depthStencilSettings)
+        , fCachedVertexAttribs(vertexAttrs)
+        , fCachedInstanceAttribs(instanceAttrs) {}
 
 void VulkanGraphicsPipeline::freeGpuData() {
     auto sharedCtxt = static_cast<const VulkanSharedContext*>(this->sharedContext());
@@ -1304,6 +1357,40 @@ void VulkanGraphicsPipeline::updateDynamicState(const VulkanSharedContext* share
                         CmdSetPrimitiveTopology(commandBuffer,
                                                 /*primitiveTopology=*/primitive_type_to_vk_topology(
                                                         fCachedPrimitiveType)));
+        }
+    }
+    if (sharedContext->caps()->useVertexInputDynamicState()) {
+        const bool vertexInputDirty = previous == nullptr ||
+                                      !is_same_vertex_input_state(fCachedVertexAttribs,
+                                                                  fCachedInstanceAttribs,
+                                                                  previous->fCachedVertexAttribs,
+                                                                  previous->fCachedInstanceAttribs);
+
+        if (vertexInputDirty) {
+            skia_private::STArray<2, VkVertexInputBindingDescription2EXT> bindingDescs;
+            skia_private::STArray<16, VkVertexInputAttributeDescription2EXT> attributeDescs;
+
+            VkVertexInputBindingDescription2EXT defaultBindingDesc = {};
+            defaultBindingDesc.sType = VK_STRUCTURE_TYPE_VERTEX_INPUT_BINDING_DESCRIPTION_2_EXT;
+            defaultBindingDesc.divisor = 1;
+
+            VkVertexInputAttributeDescription2EXT defaultAttributeDesc = {};
+            defaultAttributeDesc.sType = VK_STRUCTURE_TYPE_VERTEX_INPUT_ATTRIBUTE_DESCRIPTION_2_EXT;
+
+            get_vertex_input_state(SkSpan(fCachedVertexAttribs),
+                                   SkSpan(fCachedInstanceAttribs),
+                                   &bindingDescs,
+                                   &attributeDescs,
+                                   defaultBindingDesc,
+                                   defaultAttributeDesc);
+
+            VULKAN_CALL(
+                    sharedContext->interface(),
+                    CmdSetVertexInput(commandBuffer,
+                                      bindingDescs.size(),
+                                      bindingDescs.empty() ? nullptr : bindingDescs.begin(),
+                                      attributeDescs.size(),
+                                      attributeDescs.empty() ? nullptr : attributeDescs.begin()));
         }
     }
 }

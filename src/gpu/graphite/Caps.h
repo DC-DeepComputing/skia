@@ -349,6 +349,13 @@ public:
      * VK_EXT_extended_dynamic_state2.
      */
     bool useRasterDynamicState() const { return fUseRasterDynamicState; }
+    /**
+     * Whether all vertex input state is dynamic.
+     * This set corresponds to state from VK_EXT_vertex_input_dynamic_state.  This state is
+     * equivalently pulled out of the shaders pipeline via VK_EXT_graphics_pipeline_library
+     * (usePipelineLibraries()).
+     */
+    bool useVertexInputDynamicState() const { return fUseVertexInputDynamicState; }
 
     skgpu::ShaderErrorHandler* shaderErrorHandler() const { return fShaderErrorHandler; }
 
@@ -507,6 +514,7 @@ protected:
     bool fUseExtendedDepthStencilDynamicState = false;
     bool fUseInputAssemblyDynamicState = false;
     bool fUseRasterDynamicState = false;
+    bool fUseVertexInputDynamicState = false;
 
 private:
     virtual bool onIsTexturable(const TextureInfo&) const = 0;
