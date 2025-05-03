@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25451227_5ef7f084",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-03T14:18:35Z",
+      "side": 1,
+      "message": "So in the end the driver bug workarounds we have in ANGLE don\u0027t really affect Graphite, meaning practically all these flags are either set or not set together (well, all except the few Vulkan 1.0 dynamic state, but in isolation they are not that helpful).\n\nHow about I bundle them all in one flag? It can simplify the front-end later, but I guess also depends on how Dawn exposes dynamic state in the future.",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 90
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
