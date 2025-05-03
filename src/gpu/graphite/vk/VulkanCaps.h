@@ -124,6 +124,8 @@ private:
         bool extendedDynamicState2 = false;
         // From VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT:
         bool vertexInputDynamicState = false;
+        // From VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT:
+        bool graphicsPipelineLibrary = false;
     };
     EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2* features,
                                        uint32_t physicalDeviceVersion);

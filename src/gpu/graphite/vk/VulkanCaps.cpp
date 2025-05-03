@@ -229,6 +229,12 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // VK_EXT_vertex_input_dynamic_state.
     fUseVertexInputDynamicState = enabledFeatures.vertexInputDynamicState;
 
+    // Graphics pipeline library usage depends on the mandatory feature of
+    // VK_EXT_graphics_pipeline_library.  The graphicsPipelineLibraryFastLinking property indicates
+    // whether linking libraries is cheap, without which the extension is not very useful.
+    fUsePipelineLibraries = enabledFeatures.graphicsPipelineLibrary &&
+                            properties.gpl.graphicsPipelineLibraryFastLinking;
+
     // Note: Do not add extension/feature checks after this; driver workarounds should be done last.
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(deviceProperties);
@@ -296,6 +302,12 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                     enabled.vertexInputDynamicState = feature->vertexInputDynamicState;
                     break;
                 }
+                case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_FEATURES_EXT: {
+                    const auto* feature = reinterpret_cast<
+                            const VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT*>(pNext);
+                    enabled.graphicsPipelineLibrary = feature->graphicsPipelineLibrary;
+                    break;
+                }
                 default:
                     break;
             }
@@ -319,6 +331,9 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
     props->driver = {};
     props->driver.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_DRIVER_PROPERTIES;
 
+    props->gpl = {};
+    props->gpl.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_PROPERTIES_EXT;
+
     const bool hasDriverProperties =
             physicalDeviceVersion >= VK_API_VERSION_1_2 ||
             extensions->hasExtension(VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME, 1);
@@ -328,6 +343,10 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
         SKGPU_LOG_W(
                 "VK_KHR_driver_properties is not enabled, driver workarounds cannot be correctly "
                 "applied");
+    }
+
+    if (features.graphicsPipelineLibrary) {
+        AddToPNextChain(&props->base, &props->gpl);
     }
 
     // Graphite requires Vulkan version 1.1 or later, so vkGetPhysicalDeviceProperties2 should
