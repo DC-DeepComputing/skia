@@ -16,6 +16,24 @@
       "message": "Fix the clippedcubic2 DDL scenario:\n\nProblem:\nIn the DDL scenario, the canvas of each tile is translated to the top-left origin, causing the path to undergo transformation as well. Under specific conditions (such as the tile with idx\u003d\u003d1 in clippedcubic2), the following issue is triggered.\nThe line segments AB and BC share a common point B. AB intersects another line segment at point E and is split into AE and EB. Due to precision loss at point E, the check for whether AE and BC intersect incorrectly determines that they do intersect.\n\nSolution:\nWhen a line segment has fOriginalSegment, it is also necessary to check whether the original segment of the split edge shares an endpoint. If it does, they do not intersect.",
       "revId": "cbc924853a17ef8d477de3990b5a011074f8e287",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4253c731_f4567c03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-05T13:51:44Z",
+      "side": 1,
+      "message": "All existing `gl` and some `glddl`(since it\u0027s too slow, Case 629/1023) cases have also been checked, and no other issues were found.",
+      "parentUuid": "ebe60063_04832e01",
+      "revId": "cbc924853a17ef8d477de3990b5a011074f8e287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
