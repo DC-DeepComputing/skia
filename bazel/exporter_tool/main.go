@@ -56,6 +56,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		},
 		{Var: "skia_codec_libpng_srcs",
 			Rules: []string{
+				"//src/codec:any_png_decoder_hdr",
 				"//src/codec:buffet_libpng_srcs",
 				"//src/codec:common_libpng_srcs",
 			},
@@ -67,6 +68,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		},
 		{Var: "skia_codec_rust_png",
 			Rules: []string{
+				"//src/codec:any_png_decoder_hdr",
 				"//experimental/rust_png/decoder:srcs",
 				"//experimental/rust_png/ffi:utils",
 			},

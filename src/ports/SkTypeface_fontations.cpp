@@ -18,32 +18,18 @@
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkMutex.h"
 #include "src/base/SkScopeExit.h"
+#include "src/codec/SkAnyPngDecoder.h"
 #include "src/core/SkFontDescriptor.h"
 #include "src/core/SkFontPriv.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
-#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
-    #include "include/codec/SkPngDecoder.h"
-#elif defined(SK_CODEC_DECODES_PNG_WITH_RUST)
-    #include "experimental/rust_png/decoder/SkPngRustDecoder.h"
-#else
-    #error "No PNG decoder has been enabled in the build configuration"
-#endif
-
 namespace {
 
 std::unique_ptr<SkCodec> DecodePng(sk_sp<SkData> data) {
-#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
-    return SkPngDecoder::Decode(std::move(data), nullptr);
-#elif defined(SK_CODEC_DECODES_PNG_WITH_RUST)
-    if (!data) {
-        return nullptr;
-    }
-    return SkPngRustDecoder::Decode(SkMemoryStream::Make(std::move(data)), nullptr);
-#else
-    #error "No PNG decoder has been enabled in the build configuration"
-#endif
+    return SkAnyPngDecoder::Decode(
+        SkMemoryStream::Make(std::move(data)),
+        /*SkCodec::Result=*/nullptr);
 }
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;

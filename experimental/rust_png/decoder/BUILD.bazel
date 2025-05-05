@@ -4,6 +4,8 @@ load(
     "skia_filegroup",
 )
 
+# Public headers.
+# (Note that `src/codec/SkAnyPngDecoder.h` is an _internal_ API.)
 skia_filegroup(
     name = "hdrs",
     srcs = [
@@ -23,7 +25,10 @@ skia_filegroup(
 skia_cc_library(
     name = "decoder",
     srcs = [":srcs"],
-    hdrs = [":hdrs"],
+    hdrs = [
+        ":hdrs",
+        "//src/codec:any_png_decoder_hdr",
+    ],
     features = ["layering_check"],
     deps = [
         "//:core",

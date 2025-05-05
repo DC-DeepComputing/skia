@@ -150,6 +150,9 @@ skia_cc_library(
         "//tests:__pkg__",
         "//tools/fonts:__pkg__",
     ],
+    # TODO / DO NOT SUBMIT: We should depend on either:
+    # * `//src/codec:png_decode`
+    # * `//experimental/rust_png/decoder`
     deps = [
         "//:core",
         "//src/utils:char_to_glyphcache",

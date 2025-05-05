@@ -1040,11 +1040,15 @@ SkCodec::Result SkPngCodec::onIncrementalDecode(int* rowsDecoded) {
 
 std::unique_ptr<SkCodec> SkPngCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
                                                     Result* result, SkPngChunkReader* chunkReader) {
-    SkASSERT(result);
+    SkCodec::Result resultStorage;
+    if (!result) {
+        result = &resultStorage;
+    }
     if (!stream) {
         *result = SkCodec::kInvalidInput;
         return nullptr;
     }
+
     SkCodec* outCodec = nullptr;
     auto compositeReader = sk_make_sp<SkPngCompositeChunkReader>(chunkReader);
     *result = read_header(stream.get(), compositeReader, &outCodec, nullptr, nullptr);
@@ -1113,6 +1117,7 @@ bool SkPngCodec::onGetGainmapInfo(SkGainmapInfo* info) {
 }
 
 namespace SkPngDecoder {
+
 bool IsPng(const void* data, size_t len) {
     return SkPngCodec::IsPng(data, len);
 }
@@ -1120,10 +1125,6 @@ bool IsPng(const void* data, size_t len) {
 std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream,
                                 SkCodec::Result* outResult,
                                 SkCodecs::DecodeContext ctx) {
-    SkCodec::Result resultStorage;
-    if (!outResult) {
-        outResult = &resultStorage;
-    }
     SkPngChunkReader* chunkReader = nullptr;
     if (ctx) {
         chunkReader = static_cast<SkPngChunkReader*>(ctx);
@@ -1142,4 +1143,13 @@ std::unique_ptr<SkCodec> Decode(sk_sp<SkData> data,
     }
     return Decode(SkMemoryStream::Make(std::move(data)), outResult, ctx);
 }
+
 }  // namespace SkPngDecoder
+
+namespace SkAnyPngDecoder {
+
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream, SkCodec::Result* result) {
+    return SkPngCodec::MakeFromStream(std::move(stream), result);
+}
+
+}  // namespace SkAnyPngDecoder

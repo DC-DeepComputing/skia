@@ -423,8 +423,14 @@ SkEncodedOrigin GetEncodedOrigin(const rust_png::Reader& reader) {
 // static
 std::unique_ptr<SkPngRustCodec> SkPngRustCodec::MakeFromStream(std::unique_ptr<SkStream> stream,
                                                                Result* result) {
-    SkASSERT(stream);
-    SkASSERT(result);
+    SkCodec::Result resultStorage;
+    if (!result) {
+        result = &resultStorage;
+    }
+    if (!stream) {
+        *result = SkCodec::kInvalidInput;
+        return nullptr;
+    }
 
     auto inputAdapter = std::make_unique<ReadAndSeekTraitsAdapterForSkStream>(stream.get());
     rust::Box<rust_png::ResultOfReader> resultOfReader =
@@ -1022,3 +1028,11 @@ SkCodec::Result SkPngRustCodec::FrameHolder::setFrameInfoFromCurrentFctlChunk(
     this->setAlphaAndRequiredFrame(frame);
     return kSuccess;
 }
+
+namespace SkAnyPngDecoder {
+
+std::unique_ptr<SkCodec> Decode(std::unique_ptr<SkStream> stream, SkCodec::Result* result) {
+    return SkPngRustCodec::MakeFromStream(std::move(stream), result);
+}
+
+}  // namespace SkAnyPngDecoder

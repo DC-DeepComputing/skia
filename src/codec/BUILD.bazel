@@ -297,12 +297,21 @@ skia_cc_library(
 )
 
 skia_filegroup(
+    name = "any_png_decoder_hdr",
+    srcs = ["SkAnyPngDecoder.h"],
+)
+
+skia_filegroup(
     name = "buffet_libpng_srcs",
     srcs = [
         "SkPngCodec.cpp",
         "SkPngCodec.h",
         "SkPngCompositeChunkReader.cpp",
         "SkPngCompositeChunkReader.h",
+    ],
+    visibility = [
+        ":png_decode",
+        "//experimental/rust_png/decoder:__pkg__",
     ],
 )
 
@@ -321,6 +330,7 @@ skia_cc_library(
         ":common_libpng_srcs",
     ],
     hdrs = [
+        ":any_png_decoder_hdr",
         "//include/codec:any_codec_hdrs",
         "//include/codec:png_public_hdrs",
     ],
