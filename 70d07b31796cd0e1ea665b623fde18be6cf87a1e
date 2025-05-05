@@ -16,6 +16,24 @@
       "message": "@drott and @fmalita, can you PTAL?\n\nI am not quite happy with having an ad-hoc helper for Rust-vs-`libpng` dispatching inside Fontations-related code (rather than in `src/codec/...`).  But this seems okay for now, as a first step:\n\n* In the future, we will also need this kind of dispatching in `SkIcoCodec.cpp` and `SkSVGOpenTypeSVGDecoder.cpp`, but I know that Chromium uses Fontations, but I am not sure if Chromium uses `SkIcoCodec` (vs Chromium/Blink-specific decoders).\n* The helper introduced in this CL is focused on Fontation-specific needs (e.g. taking only the `sk_sp\u003cSkData\u003e` parameter).\n* This CL helps to make progress toward shipping Rust PNG.\n\nWDYT?",
       "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b980131_476aa51e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-05T06:57:08Z",
+      "side": 1,
+      "message": "Happy to see the PNG decoding move to Rust, too. Does any of this need to be runtime-switchable or are we strictly making the decoder choice at compile time?\n\n\u003e I am not quite happy with having an ad-hoc helper for Rust-vs-libpng dispatching inside Fontations-related code (rather than in src/codec/...). But this seems okay for now, as a first step\n\nYes, this is also something I found surprising/in an unusual place in the `SkTypeface_fontations.cpp`. As a compromise, could we have it in a separate header in `ports/`, would that make it easier? What\u0027s the obstacle in putting it into src/codec? \n\nThat said, I don\u0027t see this as a blocker, but I\u0027d let Florin or Ben decide on that. With that, LGTM from my side, but let\u0027s hear it from Skia folks.",
+      "parentUuid": "9e689b00_c7736a56",
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
