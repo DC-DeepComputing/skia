@@ -368,7 +368,7 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
                      /*uniforms=*/{},
                      PrimitiveType::kTriangleStrip,
                      kDirectDepthGreaterPass,
-                     /*vertexAttrs=*/{
+                     /*staticDataAttrs=*/{
                             {"cornerID", VertexAttribType::kUInt, SkSLType::kUInt},
                             {"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                             {"normal", VertexAttribType::kFloat2, SkSLType::kFloat2},
@@ -377,7 +377,7 @@ AnalyticRRectRenderStep::AnalyticRRectRenderStep(StaticBufferManager* bufferMana
                             {"normalScale", VertexAttribType::kFloat, SkSLType::kFloat},
                             {"centerWeight", VertexAttribType::kFloat, SkSLType::kFloat}
                      },
-                     /*instanceAttrs=*/
+                     /*appendDataAttrs=*/
                             {{"xRadiiOrFlags", VertexAttribType::kFloat4, SkSLType::kFloat4},
                              {"radiiOrQuadXs", VertexAttribType::kFloat4, SkSLType::kFloat4},
                              {"ltrbOrQuadYs", VertexAttribType::kFloat4, SkSLType::kFloat4},
@@ -457,9 +457,9 @@ std::string AnalyticRRectRenderStep::vertexSkSL() const {
     // Returns the body of a vertex function, which must define a float4 devPosition variable and
     // must write to an already-defined float2 stepLocalCoords variable.
     return "float4 devPosition = analytic_rrect_vertex_fn("
-                   // Vertex Attributes
+                   // Static Data Attributes
                    "cornerID, position, normal, normalScale, centerWeight, "
-                   // Instance Attributes
+                   // Append Data Attributes
                    "xRadiiOrFlags, radiiOrQuadXs, ltrbOrQuadYs, center, depth, "
                    "float3x3(mat0, mat1, mat2), "
                    // Varyings

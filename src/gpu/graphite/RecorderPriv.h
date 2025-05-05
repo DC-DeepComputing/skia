@@ -54,6 +54,13 @@ public:
         return fRecorder->fSharedContext->isProtected();
     }
 
+    BindBufferInfo staticVertexBindBufferInfo() const {
+        return fRecorder->fSharedContext->globalCache()->getStaticVertexBindBufferInfo();
+    }
+    BindBufferInfo staticIndexBindBufferInfo() const {
+        return fRecorder->fSharedContext->globalCache()->getStaticIndexBindBufferInfo();
+    }
+
     UploadList* rootUploadList() { return fRecorder->fRootUploads.get(); }
     TextureDataCache* textureDataCache() { return fRecorder->fTextureDataCache.get(); }
     DrawBufferManager* drawBufferManager() { return fRecorder->fDrawBufferManager.get(); }

@@ -48,7 +48,9 @@ namespace skgpu::graphite {
 
 GlobalCache::GlobalCache()
         : fGraphicsPipelineCache(kGlobalGraphicsPipelineCacheSizeLimit, &fStats)
-        , fComputePipelineCache(kGlobalComputePipelineCacheSizeLimit) {}
+        , fComputePipelineCache(kGlobalComputePipelineCacheSizeLimit)
+        , fStaticVertexBindBufferInfo({})
+        , fStaticIndexBindBufferInfo({}) {}
 
 GlobalCache::~GlobalCache() {
     // These should have been cleared out earlier by deleteResources().
@@ -437,9 +439,30 @@ sk_sp<ComputePipeline> GlobalCache::addComputePipeline(const UniqueKey& key,
     return *entry;
 }
 
-void GlobalCache::addStaticResource(sk_sp<Resource> resource) {
+void GlobalCache::addStaticVertexResource(const BindBufferInfo& staticVertexBindBufferInfo,
+                                          sk_sp<Resource> resource) {
     SkAutoSpinlock lock{fSpinLock};
     fStaticResource.push_back(std::move(resource));
+    fStaticVertexBindBufferInfo = staticVertexBindBufferInfo;
 }
+
+void GlobalCache::addStaticIndexResource(const BindBufferInfo& staticIndexBindBufferInfo,
+                                          sk_sp<Resource> resource) {
+    SkAutoSpinlock lock{fSpinLock};
+    fStaticResource.push_back(std::move(resource));
+    fStaticIndexBindBufferInfo = staticIndexBindBufferInfo;
+}
+
+BindBufferInfo GlobalCache::getStaticVertexBindBufferInfo() {
+    SkAutoSpinlock lock{fSpinLock};
+    return fStaticVertexBindBufferInfo;
+}
+
+BindBufferInfo GlobalCache::getStaticIndexBindBufferInfo() {
+    SkAutoSpinlock lock{fSpinLock};
+    return fStaticIndexBindBufferInfo;
+}
+
+
 
 } // namespace skgpu::graphite
