@@ -721,6 +721,7 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
     return transferMapPtr;
 }
 
+template<void (GlobalCache::*addStaticResource)(const BindBufferInfo&, sk_sp<Resource> resource)>
 bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         ResourceProvider* resourceProvider,
         Context* context,
@@ -749,7 +750,6 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         data.fTarget->fBuffer = staticBuffer.get();
         data.fTarget->fOffset = offset;
         data.fTarget->fSize = size;
-
         auto copyTask = CopyBufferToBufferTask::Make(
                 data.fSource.fBuffer, data.fSource.fOffset,
                 sk_ref_sp(data.fTarget->fBuffer), data.fTarget->fOffset,
@@ -767,7 +767,9 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
     }
 
     SkASSERT(offset == fTotalRequiredBytes);
-    globalCache->addStaticResource(std::move(staticBuffer));
+    //NOTE make sure the staticBuffer pointer is copied *before* move.
+    (globalCache->*addStaticResource)({staticBuffer.get(), 0, fTotalRequiredBytes},
+                                       std::move(staticBuffer));
     return true;
 }
 
@@ -785,14 +787,17 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
         return FinishResult::kNoWork;
     }
 
-    if (!fVertexBufferInfo.createAndUpdateBindings(fResourceProvider,
-                                                   context,
-                                                   queueManager,
-                                                   globalCache,
-                                                   "StaticVertexBuffer")) {
+    if (!fVertexBufferInfo.createAndUpdateBindings<&GlobalCache::addStaticVertexResource>(
+                                                  fResourceProvider,
+                                                  context,
+                                                  queueManager,
+                                                  globalCache,
+                                                  "StaticVertexBuffer")) {
         return FinishResult::kFailure;
     }
-    if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider,
+
+    if (!fIndexBufferInfo.createAndUpdateBindings<&GlobalCache::addStaticIndexResource>(
+                                                  fResourceProvider,
                                                   context,
                                                   queueManager,
                                                   globalCache,

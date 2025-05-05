@@ -562,6 +562,16 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // therefore the gradient buffer only needs to be bound once.
     gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
 
+    // Static data resides on its own binding slot, and is only bound once per draw pass.
+    BindBufferInfo staticVertexBindBuffer = recorder->priv().staticVertexBindBufferInfo();
+    if (staticVertexBindBuffer.fBuffer) {
+        drawPass->fCommandList.bindStaticDataBuffer(staticVertexBindBuffer);
+    }
+    BindBufferInfo staticIndexBindBuffer = recorder->priv().staticIndexBindBufferInfo();
+    if (staticIndexBindBuffer.fBuffer) {
+        drawPass->fCommandList.bindIndexBuffer(staticIndexBindBuffer);
+    }
+
     UniformTracker geometryUniformTracker(useStorageBuffers);
     UniformTracker shadingUniformTracker(useStorageBuffers);
 
@@ -617,8 +627,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
         // the previous state use the proper state.
         if (pipelineChange) {
             drawWriter.newPipelineState(renderStep.primitiveType(),
-                                        renderStep.vertexStride(),
-                                        renderStep.instanceStride(),
+                                        renderStep.staticDataStride(),
+                                        renderStep.appendDataStride(),
                                         renderStep.getRenderStateFlags(),
                                         barrierToAddBeforeDraws);
         } else if (stateChange) {

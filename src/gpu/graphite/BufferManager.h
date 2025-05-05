@@ -290,11 +290,13 @@ private:
     struct BufferInfo {
         BufferInfo(BufferType type, const Caps* caps);
 
-        bool createAndUpdateBindings(ResourceProvider*,
-                                     Context*,
-                                     QueueManager*,
-                                     GlobalCache*,
-                                     std::string_view label) const;
+    template<void (GlobalCache::*addStaticResource)(const BindBufferInfo&,
+                                                    sk_sp<Resource> resource)>
+    bool createAndUpdateBindings(ResourceProvider*,
+                                 Context*,
+                                 QueueManager*,
+                                 GlobalCache*,
+                                 std::string_view label) const;
         void reset() {
             fData.clear();
             fTotalRequiredBytes = 0;

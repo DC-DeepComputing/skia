@@ -100,7 +100,10 @@ public:
     // alive for the lifetime of the SharedContext. This should be used only for Resources that are
     // immutable after initialization so that anyone can use the resource without synchronization
     // or reference tracking.
-    void addStaticResource(sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
+    void addStaticVertexResource(const BindBufferInfo&, sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
+    void addStaticIndexResource(const BindBufferInfo&, sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
+    BindBufferInfo getStaticVertexBindBufferInfo() SK_EXCLUDES(fSpinLock);
+    BindBufferInfo getStaticIndexBindBufferInfo() SK_EXCLUDES(fSpinLock);
 
     using PipelineCallbackContext = void*;
     using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
@@ -144,6 +147,9 @@ private:
     // Every Pipeline will be marked with the epoch in which it was created and then updated
     // for each epoch in which it was used.
     uint16_t fEpochCounter SK_GUARDED_BY(fSpinLock) = 1;
+
+    BindBufferInfo fStaticVertexBindBufferInfo SK_GUARDED_BY(fSpinLock);
+    BindBufferInfo fStaticIndexBindBufferInfo SK_GUARDED_BY(fSpinLock);
 };
 
 }  // namespace skgpu::graphite
