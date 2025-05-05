@@ -93,6 +93,30 @@
       },
       "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb4c2285_493d436b",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-05T16:40:06Z",
+      "side": 1,
+      "message": "Is there a precedent or an obvious path forward for this?  Otherwise I probably should create a small design note to help us discuss how to do that.  My initial idea would be to:\n\n*  Top-level `//BUILD.bazel`:\n    * Use https://bazel.build/extending/config#defining-build-settings to define a new flag\n    * Let\u0027s make it a **string** flag + assert that it is either 1) not set / empty, 2) \"libpng\", or 3) \"Rust PNG\".  (Alternative: 2 boolean flags + assert that both are not enabled at the same time.  Maybe this more closely mimics the GN world and therefore may be desirable?)\n* `//src/codec`:   \n    * Introduce an `alias` in `//src/codec/BUILD.bazel` that `select`-s either `//src/codec:png_decode` or `//experimental/rust_png/decoder` based on the flag.\n* `//src/codec:png_decode` or `//experimental/rust_png/decoder`\n    * Transitively depending on the actual decoder impls should set a `#define` like `SK_CODEC_DECODES_PNG_WITH_LIBPNG`.  In the GN world I would do this by exposing a `public_configs`, but I don\u0027t know how to do that in Bazel...",
+      "parentUuid": "0b8a594c_facf6f32",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
