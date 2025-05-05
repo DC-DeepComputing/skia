@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bada90fd_d2d05154",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-05T14:06:20Z",
+      "side": 1,
+      "message": "Also adding someone from GPU in the event any of these might want more work (like putting the definition of the global variable in the .cpp file but leaving the code in the header).",
+      "revId": "7280b8d3a12df360491ad9bb377cb3992fb9bfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b1f4a26_71631de0",
+        "filename": "include/core/SkRegion.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-05T14:06:20Z",
+      "side": 1,
+      "message": "Not sure about this empty comment?",
+      "range": {
+        "startLine": 629,
+        "startChar": 68,
+        "endLine": 629,
+        "endChar": 70
+      },
+      "revId": "7280b8d3a12df360491ad9bb377cb3992fb9bfa3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
