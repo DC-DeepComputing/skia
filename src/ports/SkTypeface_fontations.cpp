@@ -7,7 +7,6 @@
 #include "include/ports/SkTypeface_fontations.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -24,7 +23,28 @@
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
 
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+    #include "include/codec/SkPngDecoder.h"
+#elif defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    #include "experimental/rust_png/decoder/SkPngRustDecoder.h"
+#else
+    #error "No PNG decoder has been enabled in the build configuration"
+#endif
+
 namespace {
+
+std::unique_ptr<SkCodec> DecodePng(sk_sp<SkData> data) {
+#if defined(SK_CODEC_DECODES_PNG_WITH_LIBPNG)
+    return SkPngDecoder::Decode(std::move(data), nullptr);
+#elif defined(SK_CODEC_DECODES_PNG_WITH_RUST)
+    if (!data) {
+        return nullptr;
+    }
+    return SkPngRustDecoder::Decode(SkMemoryStream::Make(std::move(data)), nullptr);
+#else
+    #error "No PNG decoder has been enabled in the build configuration"
+#endif
+}
 
 [[maybe_unused]] static inline const constexpr bool kSkShowTextBlitCoverage = false;
 
@@ -613,8 +633,8 @@ protected:
             const fontations_ffi::BitmapMetrics bitmapMetrics =
                     fontations_ffi::bitmap_metrics(*bitmap_glyph);
 
-            std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
-                    SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
+            std::unique_ptr<SkCodec> codec =
+                DecodePng(SkData::MakeWithoutCopy(png_data.data(), png_data.size()));
             if (!codec) {
                 return mx;
             }
@@ -679,9 +699,8 @@ protected:
         rust::cxxbridge1::Slice<const uint8_t> png_data = fontations_ffi::png_data(*bitmap_glyph);
         SkASSERT(png_data.size());
 
-        std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
-                SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
-
+        std::unique_ptr<SkCodec> codec = DecodePng(
+                SkData::MakeWithoutCopy(png_data.data(), png_data.size()));
         if (!codec) {
             return;
         }
