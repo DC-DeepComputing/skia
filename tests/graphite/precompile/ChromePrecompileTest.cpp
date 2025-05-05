@@ -24,15 +24,15 @@
 #include <set>
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
-//#define PRINT_GENERATED_LABELS
+#define PRINT_GENERATED_LABELS
 
 /*** From here to the matching banner can be cut and pasted into Chrome's graphite_precompile.cc **/
 #include "include/gpu/graphite/PrecompileContext.h"
@@ -1644,7 +1644,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(ChromePrecompileTest, is_dawn_metal_context_type,
 
     PipelineLabelInfoCollector collector;
 
-    static const size_t kChosenCase = -1;  // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 36; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
