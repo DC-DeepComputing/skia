@@ -117,6 +117,30 @@
       },
       "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6c8e65e9_915678be",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-05T17:00:28Z",
+      "side": 1,
+      "message": "Flags like that do not work with G3. I\u0027ll help you on the design note.",
+      "parentUuid": "eb4c2285_493d436b",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
