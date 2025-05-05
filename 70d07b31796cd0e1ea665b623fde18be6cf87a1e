@@ -52,6 +52,24 @@
       "parentUuid": "2b980131_476aa51e",
       "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22f16361_609c7081",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-05T15:38:58Z",
+      "side": 1,
+      "message": "+Kaylee.  Yeah, let\u0027s try to avoid PNG ifdefs in Fontations code, I think it introduces friction for Bazel configs.",
+      "parentUuid": "d9c12af6_644f1655",
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
