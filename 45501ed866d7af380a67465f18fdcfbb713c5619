@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ea03e76_1a149400",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T19:38:16Z",
+      "side": 1,
+      "message": "Looking at the gold diffs, the changes impact the nearest-sampling column when using `drawImageRect` to sample a strict subset (with clamp tiling). \n\nWe don\u0027t see any changes to the `drawImage` path that has the subset containing the entire image. Although looking at the old code, I think these still would have been switching to the slow YUV image shader because with nearest for Y, the UV would be linear and the check on line 828 would cause `can_do_yuv_tiling_in_hw` to return false. Now it should be switching those to the HW shader but it\u0027s good that the output is identical.\n\nFor the `drawImageRect` path, it should have been the slow YUV image shader before and now should also be the HW YUV shader. I wasn\u0027t expecting this to cause visual differences, but then I noticed that inside `$sample_image_subset` it actual snaps the `subset` coordinates to integers when the `filterMode` variable is nearest.  Since the `filterMode` will be nearest for the Y plane, its subset is snapped but `filterModeUV` was linear so it wouldn\u0027t be snapped for UV planes.\n\nAnother difference is that in the slow shader, `coords` is set to `floor(coords) + 0.5` in the nearest sampling case and is used to access all 3 planes. In theory, HW nearest sampling of the Y plane would look the same, but perhaps it rounds in a different direction?\n\nIt could be worth testing:\n```\nfloat4 subsetUV \u003d subset;\nif (linearFilterUVInset.x \u003c 0) {\n    coords \u003d floor(coords) + 0.5; // affect Y, U and V\n    subset \u003d float4(floor(subset.xy), ceil(subset.zw)); // Texel subset for Y\n}\nfloat2 uvCoords \u003d coords;\nif (linearFilterUVInset.y \u003c 0) {\n    linearFilterUVInset \u003d abs(linearFilterUVInset);\n    // UV clamped to original subset\n    uvCoords \u003d clamp(uvCoords, subsetUV.xy + linearFilterUVInset, subsetUV.zw - linearFilterUVInset);\n    // Might be clamped to texel boundary of original subset\n    coords \u003d clamp(coords, subset.xy + $kLinearInset, subset.zw - $kLinearInset);\n}\n```\n\nto see which aspect is contributing to the gold diffs.",
+      "revId": "45501ed866d7af380a67465f18fdcfbb713c5619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f72cc944_e7cf8385",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 859,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T19:38:16Z",
+      "side": 1,
+      "message": "good catch, that\u0027s a sneaky subtlety around HW tiling",
+      "range": {
+        "startLine": 859,
+        "startChar": 12,
+        "endLine": 859,
+        "endChar": 50
+      },
+      "revId": "45501ed866d7af380a67465f18fdcfbb713c5619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
