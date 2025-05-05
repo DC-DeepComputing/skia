@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b20ebe5_89a3080c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T17:11:50Z",
+      "side": 1,
+      "message": "Is this correct or am I reading https://registry.khronos.org/vulkan/specs/latest/man/html/VK_KHR_driver_properties.html wrong? This looks like it was promoted in 1.2",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 85
+      },
+      "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
