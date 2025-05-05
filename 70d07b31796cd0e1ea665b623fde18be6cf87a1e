@@ -70,6 +70,29 @@
       "parentUuid": "d9c12af6_644f1655",
       "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b8a594c_facf6f32",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-05T15:43:05Z",
+      "side": 1,
+      "message": "This will not work for Bazel builds. We are going to need to register a PNG codec into this workflow somehow.",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
