@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25bb36b9_c833ccad",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 785,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-05-05T17:10:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "965c0ef1_0f5cf6e7",
+      "range": {
+        "startLine": 780,
+        "startChar": 0,
+        "endLine": 785,
+        "endChar": 5
+      },
+      "revId": "a6e04ad7fa01e8b77ca473a95778f5244e2560d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c1d557d7_06beacdb",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-01T13:25:31Z",
       "side": 1,
       "message": "Can just do `linearFilterUVInset.x \u003c 0` and below in the if?",
+      "range": {
+        "startLine": 580,
+        "startChar": 22,
+        "endLine": 580,
+        "endChar": 26
+      },
+      "revId": "a6e04ad7fa01e8b77ca473a95778f5244e2560d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce7f84c7_2fef0b0b",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 13
+      },
+      "lineNbr": 580,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-05-05T17:10:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c1d557d7_06beacdb",
       "range": {
         "startLine": 580,
         "startChar": 22,
