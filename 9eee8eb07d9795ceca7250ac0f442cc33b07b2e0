@@ -16,6 +16,57 @@
       "message": "OK to review.",
       "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d984093_1e35357b",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-05T18:17:27Z",
+      "side": 1,
+      "message": "Comment needs updating.",
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bd50480_022cfafb",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-05T18:17:27Z",
+      "side": 1,
+      "message": "Comment needs updating.",
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "026c6fe1_80cf8c44",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-05T18:17:27Z",
+      "side": 1,
+      "message": "Comment needs updating.",
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
