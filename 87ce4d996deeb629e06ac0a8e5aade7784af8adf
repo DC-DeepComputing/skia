@@ -22,6 +22,30 @@
       },
       "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa240946_f262b39d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-05T17:16:19Z",
+      "side": 1,
+      "message": "Oops you\u0027re right, I guess I\u0027ll have to do what the comment on the assert below says.\n\nIt\u0027s fairly old extension by the way, we shouldn\u0027t lose anything by requiring it as a minimum requirement for Graphite.",
+      "parentUuid": "2b20ebe5_89a3080c",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 85
+      },
+      "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
