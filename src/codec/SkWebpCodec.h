@@ -54,7 +54,7 @@ protected:
 
 private:
     SkWebpCodec(SkEncodedInfo&&, std::unique_ptr<SkStream>, WebPDemuxer*, sk_sp<SkData>,
-                SkEncodedOrigin);
+                SkEncodedOrigin, bool);
 
     SkAutoTCallVProc<WebPDemuxer, WebPDemuxDelete> fDemux;
 
@@ -108,6 +108,7 @@ private:
     // that we will cap the frame count to the frames that
     // succeed.
     bool        fFailed;
+    bool        fOnlyHeaderParsed;
 
     using INHERITED = SkScalingCodec;
 };
