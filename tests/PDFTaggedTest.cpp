@@ -31,7 +31,7 @@
 
 using PDFTag = SkPDF::StructureElementNode;
 
-static void write_structured_document(SkWStream& outputStream, SkPDF::Metadata::Outline outline) {
+static void write_structured_document(SkWStream& outputStream, SkPDF::Metadata::Outline outline, bool doHeader) {
     SkSize pageSize = SkSize::Make(612, 792);  // U.S. Letter
 
     SkPDF::Metadata metadata;
@@ -51,11 +51,13 @@ static void write_structured_document(SkWStream& outputStream, SkPDF::Metadata::
     root->fTypeString = "Document";
 
     // Heading.
-    auto h1 = std::make_unique<PDFTag>();
-    h1->fNodeId = 2;
-    h1->fTypeString = "H1";
-    h1->fAlt = "A Header";
-    root->fChildVector.push_back(std::move(h1));
+    if (doHeader) {
+        auto h1 = std::make_unique<PDFTag>();
+        h1->fNodeId = 2;
+        h1->fTypeString = "H1";
+        h1->fAlt = "A Header";
+        root->fChildVector.push_back(std::move(h1));
+    }
 
     // Initial paragraph.
     auto p = std::make_unique<PDFTag>();
@@ -201,7 +203,7 @@ DEF_TEST(SkPDF_structelem_header_outline_doc, r) {
     SkDynamicMemoryWStream outputStream;
 #endif
 
-    write_structured_document(outputStream, SkPDF::Metadata::Outline::StructureElementHeaders);
+    write_structured_document(outputStream, SkPDF::Metadata::Outline::StructureElementHeaders, true);
 }
 
 DEF_TEST(SkPDF_structelem_outline_doc, r) {
@@ -212,6 +214,15 @@ DEF_TEST(SkPDF_structelem_outline_doc, r) {
     SkDynamicMemoryWStream outputStream;
 #endif
 
-    write_structured_document(outputStream, SkPDF::Metadata::Outline::StructureElements);
+    write_structured_document(outputStream, SkPDF::Metadata::Outline::StructureElements, true);
 }
 #endif
+
+// Test building a tagged PDF with no headers with a header outline.
+DEF_TEST(SkPDF_structelem_header_outline_noheader_doc, r) {
+    REQUIRE_PDF_DOCUMENT(SkPDF_structelem_header_outline_doc, r);
+    //SkFILEWStream outputStream("");
+    SkDynamicMemoryWStream outputStream;
+
+    write_structured_document(outputStream, SkPDF::Metadata::Outline::StructureElementHeaders, false);
+}
