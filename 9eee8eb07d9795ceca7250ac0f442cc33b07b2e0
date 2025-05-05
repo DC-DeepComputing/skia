@@ -18,6 +18,69 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3410743f_b2a7d1f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "This is a strong start, there\u0027s primarily just a complication around future plans for drawing meshes and vertices provided by users that I don\u0027t want to prevent down the line, but this then impacts the changes in DrawWriter and GlobalCache. I also wrote up some thoughts on the DrawCommands API that we can talk about tomorrow.",
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46f5dc20_f4208d9e",
+        "filename": "src/gpu/graphite/DrawCommands.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "Originally I was going to suggest we use an API like `bindUniformBuffer` that takes a slot enum so there\u0027d only be one `bindDrawBuffer(BindBufferInfo, slot)` function that picked between static, append, indices, or indirect buffers (which I always forget about). Then I refreshed how the CommandBuffers implement things and the only real redundant logic is between static and append buffers, at which point the CB could just share a function and pass in a specific binding index based on the `DrawCommands` switch case its in.  So then I went back to thinking this was solid, but then I started looking at how `bind` could be reused inside `DrawWriter::flushInternal` and it would be pretty simple if it could just add a command that bound to a specific slot enum value.\n\nBut that would require CB\u0027s to specifically handle the index and indirect buffers separately from the static/append data.\n\nAnd there is also some plans to consolidate the uniform structs between render steps and paint params into a single struct and single binding that would need to be updated. This would then remove the slot parameter from bindUniformBuffer entirely, so trying to have bindDrawBuffer match it isn\u0027t so important if it\u0027s going to be simplified.\n\n(although perhaps we just go all the way and have a `bindBuffer(BBI, Slot)` command that covers static, append, index, indirect, and the uniform data slots)?",
+      "range": {
+        "startLine": 170,
+        "startChar": 0,
+        "endLine": 184,
+        "endChar": 5
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "995d078f_7bf9c246",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "We should add asserts that if `staticVertices` and `staticIndices` are not null that they point to the same buffers as `fStaticVertices` and `fStaticIndices` since nothing binds them again after DrawWriter\u0027s ctor.",
+      "range": {
+        "startLine": 37,
+        "startChar": 17,
+        "endLine": 37,
+        "endChar": 28
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1d984093_1e35357b",
@@ -54,6 +117,144 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "406bb239_c550799d",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "For constructor/parameter args like this where the type is a little vague about purpose (and particularly when there are multiple with the same type), we should add parameter names.",
+      "range": {
+        "startLine": 65,
+        "startChar": 60,
+        "endLine": 65,
+        "endChar": 90
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349282cb_3f4e9c66",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 208,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "One challenge with the current approach is that these APIs don\u0027t allow vertex or index data to come from something other than the main static buffers.\n\nThe one case where this might occur in the future is with the drawVertices and drawMesh APIs. There is a good chance that we will want to create cached Buffers for an SkMesh|SkVertices\u0027s vertices and indices and either use these direct render APIs or use appended instance data to apply per-draw-call parameters w/o having to augment the vertex-rate attribute definition (e.g. we\u0027ll need some way to provide the local-to-device matrix and the ssbo index and paint depth).\n\nWhile the static bindings would be changing in these circumstances, that functionality isn\u0027t inconsistent with the static+append model. It just requires binding be a little more flexible.\n\nI like that the current update guarantees we do the static binds right away, and that it reduces state to just the pending base values. But if we go back to the old model (but with renames like `fBoundStaticData` and `fBoundAppendData`) we should be future proof for the mesh improvements. In that world, GlobalCache could just go back to its original API.",
+      "range": {
+        "startLine": 195,
+        "startChar": 0,
+        "endLine": 208,
+        "endChar": 5
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "901b229a_e54995d2",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "I think we can wrap `fStaticVertices` and `fStaticIndices` in `SkDEBUGCODE(...)` because once they are bound at the start of the command list, we only use them in assertions, right?",
+      "range": {
+        "startLine": 236,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 34
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9bb9c045_11a39c24",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "wdyt about having this be an `int32_t` so we get rid of `fPendingIsIndexed`?",
+      "range": {
+        "startLine": 241,
+        "startChar": 0,
+        "endLine": 242,
+        "endChar": 27
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a32b168_c1d6d927",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "A nice benefit of this new structure is we can get rid of these fields on Appender. Regardless of the Appender subclass, the target and stride is always w.fAppend, w.fAppendStride",
+      "range": {
+        "startLine": 313,
+        "startChar": 0,
+        "endLine": 314,
+        "endChar": 38
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7158615d_cf30bf5a",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "Some thoughts on API design (although given my DrawWriter comments, we might end up not needing these changes):\n\n`addStaticResource` is generally available, although currently I think only the static buffers are what is used.  At some point we might want to add dither texture tables or other LUT to the static resources.  So I wouldn\u0027t want to replace `addStaticResource` with these functions, instead their impls might be something like:\n```\nfStaticVertexData \u003d {buffer.get(), 0, buffer-\u003esize()};\nthis-\u003eaddStaticResource(std::move(buffer));\n```\n\nAs-is this API is a bit misleading because adding a static[Vertex|Index]Resource really should only happen once or it erases the BindBufferInfo that was previously added. Having it take a BindBufferInfo is also perhaps too flexible since it\u0027s only ever called (and implicitly expected I think) to be the entire Buffer. In theory if we kept a `setStaticVertexBuffer()` function, it would just need to take an `sk_sp\u003cBuffer\u003e` and could create the BindBufferInfo itself.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 106,
+        "endChar": 73
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "026c6fe1_80cf8c44",
         "filename": "src/gpu/graphite/Renderer.h",
         "patchSetId": 9
@@ -65,6 +266,52 @@
       "writtenOn": "2025-05-05T18:17:27Z",
       "side": 1,
       "message": "Comment needs updating.",
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45d4f8dc_8d54e3cb",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 602,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "nit: it\u0027s probably worth commenting here that for now static data is assumed to always be vertex rate.",
+      "range": {
+        "startLine": 602,
+        "startChar": 0,
+        "endLine": 602,
+        "endChar": 59
+      },
+      "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "757cc731_7d412310",
+        "filename": "src/gpu/graphite/mtl/MtlCommandBuffer.mm",
+        "patchSetId": 9
+      },
+      "lineNbr": 564,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 1,
+      "message": "We can avoid code duplication here by having a single `bindVertexDataBuffer(const Buffer* buffer, size_t offset, int bindIndex)` and in the `DrawCommands` switch we pass in either `kStaticDataBufferIndex` or `kAppendDataBufferIndex`.",
+      "range": {
+        "startLine": 546,
+        "startChar": 0,
+        "endLine": 564,
+        "endChar": 1
+      },
       "revId": "9eee8eb07d9795ceca7250ac0f442cc33b07b2e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

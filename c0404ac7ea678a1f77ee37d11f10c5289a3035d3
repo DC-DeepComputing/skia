@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "322aa43b_92d0a981",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-05T20:36:30Z",
+      "side": 0,
+      "message": "If we had `DrawCommands` use a slot enum similar to its `bindUniformBuffer` function, it\u0027d be easy to reuse this lambda logic in 3 bind calls that pass in the specific slot that would be bound if there\u0027s a change.",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 83,
+        "endChar": 6
+      },
+      "revId": "c0404ac7ea678a1f77ee37d11f10c5289a3035d3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
