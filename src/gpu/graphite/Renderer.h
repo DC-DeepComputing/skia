@@ -96,6 +96,18 @@ enum class Coverage { kNone, kSingleChannel, kLCD };
  *
  * All Renderers are accessed through the SharedContext's RendererProvider.
  */
+/**
+ * Each renderstep may have "Static" data and/or "Append" data. Each type of data has associated
+ * attributes, strides, and layouts (see fStaticAttrs, fAppendAttrs, etc.), and resides on a
+ * specific binding on the GPU. This allows the static buffer to be bound once during a draw pass.
+ * - Static data is information that is fixed in count, does not change between calls of the same
+ *   renderstep, and known after recieving device capabilities. Consequently, it is uploaded ONCE by
+ *   the StaticBufferManager prior to any drawPasses, and is initialized during the constructor of a
+ *   renderstep. Currently, static data can be either indices or vertices.
+ * - Append data is may not be fixed in count and it's usage is not known at compile time. Instead,
+ *   it is uploaded as needed during drawPass through the overload of the writeVertices() function.
+ *   Vertices or Instances can be appended.
+ */
 class RenderStep {
 public:
     virtual ~RenderStep() = default;
@@ -150,10 +162,11 @@ public:
     bool emitsPrimitiveColor() const { return SkToBool(fFlags & Flags::kEmitsPrimitiveColor); }
     bool outsetBoundsForAA()   const { return SkToBool(fFlags & Flags::kOutsetBoundsForAA);   }
     bool useNonAAInnerFill()   const { return SkToBool(fFlags & Flags::kUseNonAAInnerFill);   }
+    bool isAppendRateVert()    const { return SkToBool(fFlags & Flags::kAppendVertices);      }
     SkEnumBitMask<RenderStateFlags> getRenderStateFlags() const {
         SkEnumBitMask<RenderStateFlags> rs = RenderStateFlags::kNone;
-        if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed; }
-        if (fFlags & Flags::kAppendVertices)    { rs |= RenderStateFlags::kAppendVertices; }
+        if (fFlags & Flags::kFixed)             { rs |= RenderStateFlags::kFixed;           }
+        if (fFlags & Flags::kAppendVertices)    { rs |= RenderStateFlags::kAppendVertices;  }
         if (fFlags & Flags::kAppendInstances)   { rs |= RenderStateFlags::kAppendInstances; }
         if (fFlags & Flags::kAppendDynamicInstances) {
              rs |= RenderStateFlags::kAppendDynamicInstances;
@@ -163,13 +176,13 @@ public:
 
     Coverage coverage() const { return RenderStep::GetCoverage(fFlags); }
 
-    PrimitiveType primitiveType()  const { return fPrimitiveType;  }
-    size_t        vertexStride()   const { return fVertexStride;   }
-    size_t        instanceStride() const { return fInstanceStride; }
+    PrimitiveType primitiveType()    const { return fPrimitiveType;    }
+    size_t        staticDataStride() const { return fStaticDataStride; }
+    size_t        appendDataStride() const { return fAppendDataStride; }
 
-    size_t numUniforms()           const { return fUniforms.size();      }
-    size_t numVertexAttributes()   const { return fVertexAttrs.size();   }
-    size_t numInstanceAttributes() const { return fInstanceAttrs.size(); }
+    size_t numUniforms()         const { return fUniforms.size();    }
+    size_t numStaticAttributes() const { return fStaticAttrs.size(); }
+    size_t numAppendAttributes() const { return fAppendAttrs.size(); }
 
     // Name of an attribute containing both render step and shading SSBO indices, if used.
     static const char* ssboIndicesAttribute() { return "ssboIndices"; }
@@ -180,10 +193,10 @@ public:
 
     // The uniforms of a RenderStep are bound to the kRenderStep slot, the rest of the pipeline
     // may still use uniforms bound to other slots.
-    SkSpan<const Uniform>   uniforms()           const { return SkSpan(fUniforms);      }
-    SkSpan<const Attribute> vertexAttributes()   const { return SkSpan(fVertexAttrs);   }
-    SkSpan<const Attribute> instanceAttributes() const { return SkSpan(fInstanceAttrs); }
-    SkSpan<const Varying>   varyings()           const { return SkSpan(fVaryings);      }
+    SkSpan<const Uniform>   uniforms()         const { return SkSpan(fUniforms);      }
+    SkSpan<const Attribute> staticAttributes() const { return SkSpan(fStaticAttrs);   }
+    SkSpan<const Attribute> appendAttributes() const { return SkSpan(fAppendAttrs);   }
+    SkSpan<const Varying>   varyings()         const { return SkSpan(fVaryings);      }
 
     const DepthStencilSettings& depthStencilSettings() const { return fDepthStencilSettings; }
 
@@ -245,8 +258,8 @@ SK_DECL_BITMASK_OPS_FRIENDS(Flags)
                std::initializer_list<Uniform> uniforms,
                PrimitiveType primitiveType,
                DepthStencilSettings depthStencilSettings,
-               SkSpan<const Attribute> vertexAttrs,
-               SkSpan<const Attribute> instanceAttrs,
+               SkSpan<const Attribute> staticAttrs,
+               SkSpan<const Attribute> appendAttrs,
                SkSpan<const Varying> varyings = {});
 
 private:
@@ -271,12 +284,12 @@ private:
     // On the other hand, the attributes are only needed when creating a new pipeline so it's not
     // that performance sensitive.
     std::vector<Uniform>   fUniforms;
-    std::vector<Attribute> fVertexAttrs;
-    std::vector<Attribute> fInstanceAttrs;
+    std::vector<Attribute> fStaticAttrs;
+    std::vector<Attribute> fAppendAttrs;
     std::vector<Varying>   fVaryings;
 
-    size_t fVertexStride;   // derived from vertex attribute set
-    size_t fInstanceStride; // derived from instance attribute set
+    size_t fStaticDataStride; // derived from vertex attribute set
+    size_t fAppendDataStride; // derived from instance attribute set
 };
 SK_MAKE_BITMASK_OPS(RenderStep::Flags)
 
