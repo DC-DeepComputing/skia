@@ -1019,7 +1019,7 @@ VkPipeline VulkanGraphicsPipeline::MakePipeline(
     setup_viewport_scissor_state(&viewportInfo);
 
     VkPipelineMultisampleStateCreateInfo multisampleInfo;
-    setup_multisample_state(renderPassDesc.fColorAttachment.fSampleCount, &multisampleInfo);
+    setup_multisample_state(renderPassDesc.fSampleCount, &multisampleInfo);
 
     // We will only have one color blend attachment per pipeline.
     VkPipelineColorBlendAttachmentState attachmentStates[1];
