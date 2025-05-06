@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "71211150_15f3f7ee",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T17:25:07Z",
+      "side": 1,
+      "message": "So for severity, it\u0027s ensured by the fact that the parameter is `VkDebugUtilsMessageSeverityFlagBitsEXT` and not `VkDebugUtilsMessageSeverityFlagsEXT`. I know C doesn\u0027t strongly type-check this stuff, but a parameter of `VkDebugUtilsMessageSeverityFlagBitsEXT` is supposed to have only one bit in it.\n\nI went back to `\u0026` just in case anyway. As for VERBOSE, we\u0027ll output `message` (if ever enabled, currently they are not)!",
+      "parentUuid": "8aba0a1e_2ea85eb8",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 5
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc4790a4_b1a37222",
