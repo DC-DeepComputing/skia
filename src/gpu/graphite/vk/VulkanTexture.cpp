@@ -70,6 +70,18 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
         createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
     }
 
+    // Proactively use the VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT flag if
+    // the usage flags have color or depth/stencil attachment usage.  There is no flag currently
+    // required for the client to tell whether they intend to use this image for multisampled
+    // rendering later, but this flag is expected to be harmless.
+    const bool hasAttachmentUsage =
+            (vkInfo.fImageUsageFlags & (VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT |
+                                        VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT)) != 0;
+    if (vkSamples == VK_SAMPLE_COUNT_1_BIT && hasAttachmentUsage &&
+        sharedContext->caps()->msaaRenderToSingleSampledSupport()) {
+        createflags |= VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT;
+    }
+
     uint32_t numMipLevels = 1;
     if (vkInfo.fMipmapped == Mipmapped::kYes) {
         numMipLevels = SkMipmap::ComputeLevelCount(dimensions.width(), dimensions.height()) + 1;

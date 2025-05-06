@@ -161,6 +161,7 @@ SkString RenderPassDesc::toPipelineLabel() const {
     // to reduce plumbing. Since the Metal backend doesn't differentiate its UniqueKeys wrt
     // resolve-loads, this can lead to instances where two Metal Pipeline labels will map to the
     // same UniqueKey (i.e., one with "w/ msaa load" and one without it).
+    // TODO: loadOpAffectsMSAAPipelines probably needs to be uncommented
     if (loadMsaaFromResolve /* && Caps::loadOpAffectsMSAAPipelines() */) {
         colorLoadStr = " w/ msaa load";
     }

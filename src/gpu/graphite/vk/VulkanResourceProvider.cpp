@@ -764,6 +764,8 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
     SkASSERT(!(vkTexInfo.fFlags & VK_IMAGE_CREATE_PROTECTED_BIT) ||
              fSharedContext->isProtected() == Protected::kYes);
 
+    // TODO: check for and enable MSRTSS? Does AHB get multisampled rendering too?
+
     const VkImageCreateInfo imageCreateInfo = {
         VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,                                 // sType
         &externalMemoryImageInfo,                                            // pNext

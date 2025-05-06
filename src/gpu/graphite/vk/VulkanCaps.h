@@ -136,6 +136,8 @@ private:
         bool fVertexInputDynamicState = false;
         // From VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT:
         bool fGraphicsPipelineLibrary = false;
+        // From VkPhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT:
+        bool fMultisampledRenderToSingleSampled = false;
     };
     EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2* features,
                                        uint32_t physicalDeviceVersion);
@@ -181,8 +183,8 @@ private:
     // Struct that determines and stores which sample count quantities a VkFormat supports.
     struct SupportedSampleCounts {
         void initSampleCounts(const skgpu::VulkanInterface*,
+                              const VulkanCaps&,
                               VkPhysicalDevice,
-                              const VkPhysicalDeviceProperties&,
                               VkFormat,
                               VkImageUsageFlags);
 
@@ -202,10 +204,7 @@ private:
             return 0;
         }
 
-        void init(const skgpu::VulkanInterface*,
-                  VkPhysicalDevice,
-                  const VkPhysicalDeviceProperties&,
-                  VkFormat);
+        void init(const skgpu::VulkanInterface*, const VulkanCaps&, VkPhysicalDevice, VkFormat);
 
         bool isTexturable(VkImageTiling) const;
         bool isRenderable(VkImageTiling, uint32_t sampleCount) const;
@@ -237,10 +236,7 @@ private:
 
     // A more lightweight equivalent to FormatInfo for depth/stencil VkFormats.
     struct DepthStencilFormatInfo {
-        void init(const skgpu::VulkanInterface*,
-                  VkPhysicalDevice,
-                  const VkPhysicalDeviceProperties&,
-                  VkFormat);
+        void init(const skgpu::VulkanInterface*, const VulkanCaps&, VkPhysicalDevice, VkFormat);
         bool isDepthStencilSupported(VkFormatFeatureFlags) const;
 
         VkFormatProperties fFormatProperties;
