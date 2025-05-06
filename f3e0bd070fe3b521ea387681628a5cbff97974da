@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2bb527e9_5001f64f",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T14:56:28Z",
+      "side": 1,
+      "message": "Hmm that\u0027s good point, looks like severity can be one bit only, but type can be several. Fixed.",
+      "parentUuid": "8d85c5dd_ccf15fff",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 5
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc4790a4_b1a37222",
@@ -66,6 +90,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0b9a8588_39a40e3c",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T14:56:28Z",
+      "side": 1,
+      "message": "This is `clang-format`\u0027s doing, anything I do would be undone by it.",
+      "parentUuid": "bc4790a4_b1a37222",
+      "range": {
+        "startLine": 225,
+        "startChar": 38,
+        "endLine": 226,
+        "endChar": 41
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ad121a9b_3f7d30ca",
         "filename": "tools/gpu/vk/VkTestUtils.cpp",
         "patchSetId": 2
@@ -77,6 +125,30 @@
       "writtenOn": "2025-05-06T14:37:24Z",
       "side": 1,
       "message": "Random aside, but I appreciate you making changes alongside your meaningful ones to spruce up styling + format as you notice it. Thank you!",
+      "range": {
+        "startLine": 626,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 6
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b7a078_5222e652",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T14:56:28Z",
+      "side": 1,
+      "message": "A clean code is a happy code 😄",
+      "parentUuid": "ad121a9b_3f7d30ca",
       "range": {
         "startLine": 626,
         "startChar": 0,
