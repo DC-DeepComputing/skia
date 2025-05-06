@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf384ecc_0ad1bf52",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 756,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-06T12:31:25Z",
+      "side": 1,
+      "message": "Should this pass `std::nullopt` instead?",
+      "fixSuggestions": [
+        {
+          "fixId": "6ca2c6ad_276bb7f2",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScalerContext.cpp",
+              "range": {
+                "startLine": 756,
+                "startChar": 0,
+                "endLine": 757,
+                "endChar": 0
+              },
+              "replacement": "    this-\u003einternalGetPath(glyph, alloc, std::nullopt);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "414b710d1d8cb5fcabb58c3cc6db499f6cb018c4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
