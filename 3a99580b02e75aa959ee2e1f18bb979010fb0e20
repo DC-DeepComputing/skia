@@ -22,6 +22,30 @@
       },
       "revId": "3a99580b02e75aa959ee2e1f18bb979010fb0e20",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2af82fe6_c2e557d5",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1851,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T17:42:47Z",
+      "side": 1,
+      "message": "Great point! Done; also made it such that we reset the last-used strategy upon flushing (we don\u0027t want the last strategy used in a different drawpass to impact our decisions for this new drawpass).",
+      "parentUuid": "0f04956e_87c4be30",
+      "range": {
+        "startLine": 1851,
+        "startChar": 0,
+        "endLine": 1851,
+        "endChar": 48
+      },
+      "revId": "3a99580b02e75aa959ee2e1f18bb979010fb0e20",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
