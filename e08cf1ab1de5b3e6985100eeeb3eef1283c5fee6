@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "acf5a3cd_877c7945",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T04:30:47Z",
+      "side": 1,
+      "message": "Reworded, I had these in `VulkanCaps` before, and the comment meant `Caps` (obviously stale now).\n\nI kept the language plural (flags, these) to avoid having to reword it again in the next CL.",
+      "parentUuid": "42776d04_7200461b",
+      "range": {
+        "startLine": 503,
+        "startChar": 30,
+        "endLine": 503,
+        "endChar": 86
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25451227_5ef7f084",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93790efc_4c909e4f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T04:30:47Z",
+      "side": 1,
+      "message": "Done, bundled them together. Should be pretty low-risk (no granular flags in the backend).",
+      "parentUuid": "505860ec_89550799",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 90
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3f6b95bf_a9a81aac",
@@ -84,6 +132,30 @@
       "writtenOn": "2025-05-06T02:04:45Z",
       "side": 1,
       "message": "What was the motivation for moving this from being a static function defined in the class file to a private member method?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 71
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91b92ae2_25f1ad52",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T04:30:47Z",
+      "side": 1,
+      "message": "Because I moved the `EnabledFeatures` struct to the class to pass to `getProperties`. I realize I committed that too early since it\u0027s unused by that function now, but it\u0027ll be used a few CLs later: https://skia-review.googlesource.com/c/skia/+/989296/2/src/gpu/graphite/vk/VulkanCaps.cpp#348",
+      "parentUuid": "3f6b95bf_a9a81aac",
       "range": {
         "startLine": 126,
         "startChar": 0,
@@ -117,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5841dfc_a869f2b9",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T04:30:47Z",
+      "side": 1,
+      "message": "Removed the TODO; there was no bug for it, but also it\u0027s a 2 year old TODO, if the value was wrong we\u0027d know by now 😊",
+      "parentUuid": "33805105_14bebfea",
+      "range": {
+        "startLine": 891,
+        "startChar": 11,
+        "endLine": 891,
+        "endChar": 27
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "71ddf96f_a2c4a9f9",
@@ -130,6 +226,30 @@
       "writtenOn": "2025-05-06T02:04:45Z",
       "side": 1,
       "message": "nit: Add the bug number here too please. That way we are more likely to catch the fact that we need to update this once the linked bug is addressed. Thank you :)",
+      "range": {
+        "startLine": 248,
+        "startChar": 7,
+        "endLine": 248,
+        "endChar": 11
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b6648d00_3f18dc5b",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T04:30:47Z",
+      "side": 1,
+      "message": "Done (by removing TODO)",
+      "parentUuid": "71ddf96f_a2c4a9f9",
       "range": {
         "startLine": 248,
         "startChar": 7,
