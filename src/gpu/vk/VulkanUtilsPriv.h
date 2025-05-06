@@ -196,26 +196,20 @@ static constexpr bool VkFormatNeedsYcbcrSampler(VkFormat format)  {
 
 static constexpr bool SampleCountToVkSampleCount(uint32_t samples,
                                                  VkSampleCountFlagBits* vkSamples) {
+    static_assert(VK_SAMPLE_COUNT_1_BIT == 1);
+    static_assert(VK_SAMPLE_COUNT_2_BIT == 2);
+    static_assert(VK_SAMPLE_COUNT_4_BIT == 4);
+    static_assert(VK_SAMPLE_COUNT_8_BIT == 8);
+    static_assert(VK_SAMPLE_COUNT_16_BIT == 16);
     SkASSERT(samples >= 1);
-    switch (samples) {
-        case 1:
-            *vkSamples = VK_SAMPLE_COUNT_1_BIT;
-            return true;
-        case 2:
-            *vkSamples = VK_SAMPLE_COUNT_2_BIT;
-            return true;
-        case 4:
-            *vkSamples = VK_SAMPLE_COUNT_4_BIT;
-            return true;
-        case 8:
-            *vkSamples = VK_SAMPLE_COUNT_8_BIT;
-            return true;
-        case 16:
-            *vkSamples = VK_SAMPLE_COUNT_16_BIT;
-            return true;
-        default:
-            return false;
+
+    const bool isPowerOfTwo = (samples & (samples - 1)) == 0;
+    if (!isPowerOfTwo || samples > 16) {
+        return false;
     }
+
+    *vkSamples = static_cast<VkSampleCountFlagBits>(samples);
+    return true;
 }
 
 /**
