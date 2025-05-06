@@ -1,0 +1,228 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39fded2a_c09c8f4a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "LGTM, just some minor nits.",
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d656815_8098debe",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "remove?",
+      "range": {
+        "startLine": 186,
+        "startChar": 0,
+        "endLine": 186,
+        "endChar": 23
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ec86162_4f78f8f5",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "technically this is used by all the manual draw functions, it\u0027s just those are unused 😊",
+      "range": {
+        "startLine": 284,
+        "startChar": 0,
+        "endLine": 284,
+        "endChar": 23
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f8d7454_1b465113",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "nit: Use \"RenderStep\" in this comment",
+      "range": {
+        "startLine": 106,
+        "startChar": 5,
+        "endLine": 106,
+        "endChar": 15
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aecfeb8a_6dd96a65",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "nit: might not be",
+      "range": {
+        "startLine": 107,
+        "startChar": 17,
+        "endLine": 107,
+        "endChar": 28
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "482a5f41_cae5c2f6",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "\" as declared by the RenderStep::Flags of the RenderStep\" or similar.",
+      "range": {
+        "startLine": 109,
+        "startChar": 5,
+        "endLine": 109,
+        "endChar": 43
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "19efbadf_e50453d1",
+        "filename": "src/gpu/graphite/Renderer.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "`isAppendRateVert()` doesn\u0027t read / flow super well to my eye, but since we don\u0027t have a core InputRate enum to use we can\u0027t do something like `inputRate() \u003d\u003d Vertex`.  \n\nWDYT about naming it like `appendsVertices()` or `areVerticesAppended()`?",
+      "range": {
+        "startLine": 165,
+        "startChar": 9,
+        "endLine": 165,
+        "endChar": 25
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3199d37_0a930de9",
+        "filename": "src/gpu/graphite/mtl/MtlGraphicsPipeline.mm",
+        "patchSetId": 11
+      },
+      "lineNbr": 403,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "nit: `dummy` is sometimes considered ableist language that we try to avoid, in a case like this something like `/*unused*/` or `/*ignored*/` is sufficient.",
+      "range": {
+        "startLine": 403,
+        "startChar": 18,
+        "endLine": 403,
+        "endChar": 39
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "909a902e_80df017e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 919,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "nit: line up with `(`",
+      "range": {
+        "startLine": 919,
+        "startChar": 0,
+        "endLine": 919,
+        "endChar": 68
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "445e6aa3_d05b425f",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 1168,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-06T19:29:59Z",
+      "side": 1,
+      "message": "I think as a follow up CL we can now get rid of the input buffer tracking inside `VulkanCommandBuffer` and `MTLRenderEncoder` (DawnCommandBuffer never did any). `DrawWriter\u0027s` up front state tracking should be sufficient now.",
+      "range": {
+        "startLine": 1167,
+        "startChar": 0,
+        "endLine": 1168,
+        "endChar": 58
+      },
+      "revId": "2ca37d07a2f087f55da1a93321ae5901515f3475",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
