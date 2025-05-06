@@ -31,10 +31,11 @@ namespace skgpu::graphite {
 
 namespace {
 
-SkISize get_msaa_size(const SkISize& targetSize, const Caps& caps) {
+SkISize get_msaa_size(const SkISize& targetSize, const SkISize& drawSize, const Caps& caps) {
     if (caps.differentResolveAttachmentSizeSupport()) {
-        // Use approx size for better reuse.
-        return GetApproxSize(targetSize);
+        // Use approx size that can fit all draws. This reduces the MSAA texture size and also
+        // reuses the textures better.
+        return GetApproxSize(drawSize);
     }
 
     return targetSize;
@@ -155,14 +156,20 @@ Task::Status RenderPassTask::addCommands(Context* context,
     SkASSERT(fTarget && fTarget->isInstantiated());
     SkASSERT(!fDstCopy || fDstCopy->isInstantiated());
 
+    // Assuming one draw pass per renderpasstask for now
+    SkASSERT(fDrawPasses.size() == 1);
+    const auto& drawBounds = fDrawPasses[0]->bounds();
+    const SkISize drawSize = SkISize::Make(drawBounds.width(), drawBounds.height());
+
     // Only apply the replay translation and clip if we're drawing to the final replay target.
-    const SkIRect renderTargetBounds = SkIRect::MakeSize(fTarget->dimensions());
     if (fTarget->texture() == replayData.fTarget) {
         // The clip set here will intersect with the render target bounds, and then any scissor set
         // during this render pass. If there is no intersection between the clip and the render
         // target bounds, we can skip this entire render pass.
         if (!commandBuffer->setReplayTranslationAndClip(
-                    replayData.fTranslation, replayData.fClip, renderTargetBounds)) {
+                    replayData.fTranslation,
+                    replayData.fClip,
+                    drawBounds.makeOffset(replayData.fTranslation))) {
             return Status::kSuccess;
         }
 
@@ -171,7 +178,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
         constexpr SkIVector kNoReplayTranslation = {0, 0};
         constexpr SkIRect kNoReplayClip = SkIRect::MakeEmpty();
         commandBuffer->setReplayTranslationAndClip(
-                kNoReplayTranslation, kNoReplayClip, renderTargetBounds);
+                kNoReplayTranslation, kNoReplayClip, drawBounds);
     }
 
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
@@ -187,7 +194,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
         TextureInfo colorInfo = context->priv().caps()->getDefaultAttachmentTextureInfo(
                 fRenderPassDesc.fColorAttachment, fTarget->isProtected(), Discardable::kYes);
 
-        SkISize msaaSize = get_msaa_size(fTarget->dimensions(), *context->priv().caps());
+        SkISize msaaSize = get_msaa_size(fTarget->dimensions(), drawSize, *context->priv().caps());
         colorAttachment = resourceProvider->findOrCreateShareableTexture(
                 msaaSize, colorInfo, "DiscardableMSAAAttachment");
         if (!colorAttachment) {
