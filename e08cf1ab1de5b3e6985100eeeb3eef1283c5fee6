@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "42776d04_7200461b",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T02:04:45Z",
+      "side": 1,
+      "message": "Can you explain what you mean by \"front-end Caps\"?",
+      "range": {
+        "startLine": 503,
+        "startChar": 30,
+        "endLine": 503,
+        "endChar": 86
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "25451227_5ef7f084",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 3
@@ -19,6 +42,99 @@
         "startChar": 0,
         "endLine": 220,
         "endChar": 90
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "505860ec_89550799",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T02:04:45Z",
+      "side": 1,
+      "message": "I think it makes sense to bundle them together into one flag at the `Caps` level for now with a comment that having them broken out may be useful in the future for the reasons you mentioned. \n\nAny backend-specific granular attributes could live within that backend `Caps` implementation (and potentially assigned based on the value of the high-level `Caps` flag if that\u0027s all that must be consulted), only being promoted to a high-level Caps flag if it helps inform higher-level decisions later on. \n\nWDYT?",
+      "parentUuid": "25451227_5ef7f084",
+      "range": {
+        "startLine": 204,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 90
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f6b95bf_a9a81aac",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T02:04:45Z",
+      "side": 1,
+      "message": "What was the motivation for moving this from being a static function defined in the class file to a private member method?",
+      "range": {
+        "startLine": 126,
+        "startChar": 0,
+        "endLine": 127,
+        "endChar": 71
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "33805105_14bebfea",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 891,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T02:04:45Z",
+      "side": 1,
+      "message": "nit: Add the bug number here as well so we can remove this note once it\u0027s no longer needed.",
+      "range": {
+        "startLine": 891,
+        "startChar": 11,
+        "endLine": 891,
+        "endChar": 27
+      },
+      "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71ddf96f_a2c4a9f9",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T02:04:45Z",
+      "side": 1,
+      "message": "nit: Add the bug number here too please. That way we are more likely to catch the fact that we need to update this once the linked bug is addressed. Thank you :)",
+      "range": {
+        "startLine": 248,
+        "startChar": 7,
+        "endLine": 248,
+        "endChar": 11
       },
       "revId": "e08cf1ab1de5b3e6985100eeeb3eef1283c5fee6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
