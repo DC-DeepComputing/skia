@@ -17,14 +17,14 @@ generate_gni:
 	# is currently infeasible due to the fact that the exporter tool *calls*
 	# Bazel, resulting in a deadlock because only one Bazel command can run
 	# at a time.
-	cd .. && bazelisk build //bazel/exporter_tool --config=no_sandbox && \
+	cd .. && bazelisk build //bazel/exporter_tool && \
         ${EXPORTER_TOOL} -output_format=gni -proj_name=Skia ${EXPORTER_RULES} \
 		&& bazelisk run //bazel/external/gn -- format gn/*.gni modules/*/*.gni
 
 .PHONY: generate_gni_rbe
 generate_gni_rbe:
 	cd .. && bazelisk build //bazel/exporter_tool --config=linux_rbe --jobs=100 \
- 		--platforms=@io_bazel_rules_go//go/toolchain:$(shell bazelisk run //bazel/utils:go_platform) \
+ 		--platforms=@rules_go//go/toolchain:$(shell bazelisk run //bazel/utils:go_platform) \
  		--remote_download_toplevel && \
         ${EXPORTER_TOOL} -output_format=gni -proj_name=Skia ${EXPORTER_RULES} \
 		&& bazelisk run //bazel/external/gn -- format gn/*.gni modules/*/*.gni
