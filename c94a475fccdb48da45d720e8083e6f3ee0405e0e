@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e53a4911_0b7fca3a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T17:26:07Z",
+      "side": 1,
+      "message": "This LGTM; @michaelludwig@google.com if you want to TAL!",
+      "revId": "c94a475fccdb48da45d720e8083e6f3ee0405e0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
