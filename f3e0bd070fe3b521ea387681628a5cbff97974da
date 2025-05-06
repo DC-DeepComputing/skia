@@ -16,6 +16,75 @@
       "message": "Most of the changes are due to `sed` renames, primary change is switching to the debug util\u0027s messenger + adding layer settings for a future where syncval can be enabled.",
       "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d85c5dd_ccf15fff",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T14:37:24Z",
+      "side": 1,
+      "message": "Is there any reason why we would expect to see multiple of these flags set? If so, is this hierarchy of prioritizing checking for general --\u003e validation --\u003e performance what we want? If multiple types are included for whatever reason, perhaps it would be valuable to include all of them. Like `type` could look something like `general, validation` if both are true.",
+      "range": {
+        "startLine": 144,
+        "startChar": 0,
+        "endLine": 151,
+        "endChar": 5
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc4790a4_b1a37222",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T14:37:24Z",
+      "side": 1,
+      "message": "nit: perhaps align these `//` with the `// VK_KHR_ANDROID_SURFACE_EXTENSION_NAME` below as well?",
+      "range": {
+        "startLine": 225,
+        "startChar": 38,
+        "endLine": 226,
+        "endChar": 41
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad121a9b_3f7d30ca",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 635,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T14:37:24Z",
+      "side": 1,
+      "message": "Random aside, but I appreciate you making changes alongside your meaningful ones to spruce up styling + format as you notice it. Thank you!",
+      "range": {
+        "startLine": 626,
+        "startChar": 0,
+        "endLine": 635,
+        "endChar": 6
+      },
+      "revId": "f3e0bd070fe3b521ea387681628a5cbff97974da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
