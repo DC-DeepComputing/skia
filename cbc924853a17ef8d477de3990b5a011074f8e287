@@ -34,6 +34,23 @@
       "parentUuid": "ebe60063_04832e01",
       "revId": "cbc924853a17ef8d477de3990b5a011074f8e287",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0644c486_2d2321bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-06T11:38:12Z",
+      "side": 1,
+      "message": "I have checked all the cases in gldddl again, and there are only a few images with differences, which I believe are acceptable.",
+      "revId": "cbc924853a17ef8d477de3990b5a011074f8e287",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
