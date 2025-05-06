@@ -749,7 +749,6 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
         data.fTarget->fBuffer = staticBuffer.get();
         data.fTarget->fOffset = offset;
         data.fTarget->fSize = size;
-
         auto copyTask = CopyBufferToBufferTask::Make(
                 data.fSource.fBuffer, data.fSource.fOffset,
                 sk_ref_sp(data.fTarget->fBuffer), data.fTarget->fOffset,
@@ -792,6 +791,7 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
                                                    "StaticVertexBuffer")) {
         return FinishResult::kFailure;
     }
+
     if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider,
                                                   context,
                                                   queueManager,

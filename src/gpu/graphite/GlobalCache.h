@@ -101,7 +101,6 @@ public:
     // immutable after initialization so that anyone can use the resource without synchronization
     // or reference tracking.
     void addStaticResource(sk_sp<Resource>) SK_EXCLUDES(fSpinLock);
-
     using PipelineCallbackContext = void*;
     using PipelineCallback = void (*)(PipelineCallbackContext context, sk_sp<SkData> pipelineData);
     void setPipelineCallback(PipelineCallback, PipelineCallbackContext) SK_EXCLUDES(fSpinLock);
