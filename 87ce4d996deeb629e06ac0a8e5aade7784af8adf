@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7f48009_396c7271",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T03:52:54Z",
+      "side": 1,
+      "message": "Done, went with `deviceProperties`.",
+      "parentUuid": "6f7500ce_94acfc61",
+      "range": {
+        "startLine": 136,
+        "startChar": 29,
+        "endLine": 136,
+        "endChar": 39
+      },
+      "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d33a3353_38c8aa26",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-06T01:35:58Z",
       "side": 1,
       "message": "nit: I liked having this variable name encapsulate that it was information about the physical device itself. Maybe `deviceLimits` or `devLimits`?",
+      "range": {
+        "startLine": 139,
+        "startChar": 34,
+        "endLine": 139,
+        "endChar": 41
+      },
+      "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e286714_d89ad7d8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T03:52:54Z",
+      "side": 1,
+      "message": "Done, similarly `deviceLimits`",
+      "parentUuid": "d33a3353_38c8aa26",
       "range": {
         "startLine": 139,
         "startChar": 34,
@@ -108,6 +156,30 @@
       "side": 1,
       "message": "It is a fairly old extension, however, I don\u0027t think we can require + enforce that all devices using graphite/Vulkan have it.\n\ngpuinfo.org shows that most Android, Windows, and Linux devices do support it (~85%). We care most about Android. Looking into devices that lack support, I think some of these would cause problems were we to enforce having this extension... mostly Samsung devices (Notes 4, 5, 7, 8; Galaxy S9+...). \n\n@michaelludwig@google.com, LMKWYT? Having your/Greg\u0027s opinion on devices we must support is helpful.\n\nLink to the list:\nhttps://vulkan.gpuinfo.org/listdevicescoverage.php?platform\u003dandroid\u0026extension\u003dVK_KHR_driver_properties\u0026option\u003dnot",
       "parentUuid": "aa240946_f262b39d",
+      "range": {
+        "startLine": 271,
+        "startChar": 0,
+        "endLine": 271,
+        "endChar": 85
+      },
+      "revId": "87ce4d996deeb629e06ac0a8e5aade7784af8adf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9efaa3f3_8500f92c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-06T03:52:54Z",
+      "side": 1,
+      "message": "Done, I added a check and a best guess of the driver ID if the extension is not available. I guess we could still hit this if the context provider creates a Vulkan 1.1 instance and doesn\u0027t enable the extension, so I added a warning about it.",
+      "parentUuid": "d3dc76ce_fc9d2146",
       "range": {
         "startLine": 271,
         "startChar": 0,
