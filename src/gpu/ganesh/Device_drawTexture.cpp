@@ -449,6 +449,42 @@ void Device::drawSpecial(SkSpecialImage* special,
                           SkTileMode::kClamp);
 }
 
+void Device::drawCoverageMask(const SkSpecialImage* mask,
+                              const SkMatrix& localToDevice,
+                              const SkSamplingOptions& sampling,
+                              const SkPaint& paint) {
+    SkRect src = SkRect::Make(mask->subset());
+    SkRect dst = SkRect::MakeWH(mask->width(), mask->height());
+
+    GrSurfaceProxyView view = SkSpecialImages::AsView(this->recordingContext(), mask);
+    if (!view) {
+        // This shouldn't happen since we shouldn't be mixing SkSpecialImage subclasses but
+        // returning early should avoid problems in release builds.
+        SkASSERT(false);
+        return;
+    }
+    SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
+
+    const SkImage_Ganesh image(sk_ref_sp(mask->getContext()),
+                               mask->uniqueID(),
+                               std::move(view),
+                               mask->colorInfo());
+
+    SkASSERT(image.isAlphaOnly());
+
+    SkMatrix textureMatrix = SkMatrix::I();
+    SkTileMode tileModes[] = {SkTileMode::kClamp, SkTileMode::kClamp};
+
+    std::unique_ptr<GrFragmentProcessor> fp = skgpu::ganesh::AsFragmentProcessor(
+        sdc, &image, sampling, tileModes, textureMatrix, nullptr, nullptr);
+
+    GrPaint grPaint;
+    grPaint.setCoverageFragmentProcessor(std::move(fp));
+
+    sdc->fillRectWithEdgeAA(
+        this->clip(), std::move(grPaint), SkToGrQuadAAFlags(SkCanvas::kNone_QuadAAFlags), localToDevice, dst, &src);
+}
+
 void Device::drawImageQuadDirect(const SkImage* image,
                                  const SkRect& srcRect,
                                  const SkRect& dstRect,
