@@ -135,8 +135,11 @@ public:
 protected:
     CommandBuffer(Protected);
 
-    // These are the color attachment bounds, intersected with any clip provided on replay.
-    SkIRect fRenderPassBounds;
+    // These are the render target bounds, intersected with any clip provided on replay.
+    // Note: when tiling is enabled, the top left corner is relative to the target texture's origin,
+    // not the color attachment's origin. The color attachment is the MSAA texture in this case and
+    // the target texture will be the resolve attachment.
+    SkIRect fRenderTargetBounds;
     // This is also the origin of the logical viewport relative to the target texture's (0,0) pixel.
     SkIVector fReplayTranslation;
 
@@ -162,7 +165,7 @@ private:
     virtual void onResetCommandBuffer() = 0;
 
     // Renderpass, viewport bounds have already been adjusted by the replay translation. The render
-    // pass bounds has been intersected with the color attachment bounds.
+    // pass bounds has been intersected with the target texture bounds.
     virtual bool onAddRenderPass(const RenderPassDesc&,
                                  SkIRect renderPassBounds,
                                  const Texture* colorTexture,

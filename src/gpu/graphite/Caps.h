@@ -294,6 +294,11 @@ public:
         return fDifferentResolveAttachmentSizeSupport;
     }
 
+    // Returns max width/height of a MSAA attachment. If the render pass' target is larger than this dimension,
+    // it will broken into tiles. Each tile has size <= MSAA's size limit.
+    // Note: this option is only valid if differentResolveAttachmentSizeSupport() = true.
+    std::optional<uint16_t> getMaxMSAAAttachmentDim() const { return fMaxMSAAAttachmentDim; }
+
     // Returns whether compute shaders are supported.
     bool computeSupport() const { return fComputeSupport; }
 
@@ -427,6 +432,7 @@ protected:
     bool fBufferMapsAreAsync = false;
     bool fMSAARenderToSingleSampledSupport = false;
     bool fDifferentResolveAttachmentSizeSupport = false;
+    std::optional<uint16_t> fMaxMSAAAttachmentDim;
 
     bool fComputeSupport = false;
     bool fSupportsAHardwareBufferImages = false;

@@ -48,7 +48,8 @@ class Renderer;
  * In addition to sorting the collected commands, the command list can be optimized during
  * preparation. Commands that are fully occluded by later operations can be skipped entirely without
  * affecting the final results. Adjacent commands (post sort) that would use equivalent GPU
- * pipelines are merged to produce fewer (but larger) operations on the GPU.
+ * pipelines are merged to produce fewer (but larger) operations on the GPU. If MSAA size limit is
+ * enabled, the commands could also be divided into tiles.
  *
  * Other than flush-time optimizations (sort, cull, and merge), the command list does what you tell
  * it to. Draw-specific simplification, style application, and advanced clipping should be handled
@@ -90,6 +91,7 @@ public:
     // returns true.
     const Rect& dstReadBounds() const { return fDstReadBounds; }
     bool drawsReadDst() const { return !fDstReadBounds.isEmptyNegativeOrNaN(); }
+    const Rect& drawBounds() const { return fDrawBounds; }
     bool drawsRequireMSAA() const { return fRequiresMSAA; }
     SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
@@ -133,6 +135,7 @@ private:
     // Tracked for all paints that read from the dst. If it is later determined that the
     // DstReadStrategy is not kTextureCopy, this value can simply be ignored.
     Rect fDstReadBounds = Rect::InfiniteInverted();
+    Rect fDrawBounds = Rect::InfiniteInverted();
     // Other properties of draws contained within this DrawList
     bool fRequiresMSAA = false;
     SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
