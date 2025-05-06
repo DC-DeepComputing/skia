@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include <memory>
+#include <vector>
 
 struct SkImageInfo;
 
@@ -54,18 +55,18 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    // Create a DrawPass that renders the DrawList into `target` with the given load/store ops and
-    // clear color.
-    static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
-                                          sk_sp<TextureProxy> target,
-                                          const SkImageInfo& targetInfo,
-                                          std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor,
-                                          const DstReadStrategy dstReadStrategy);
+    // Create a DrawPass(or a list of tiles' DrawPasses if MSAA size limit is enabled) that renders
+    // the DrawList into `target` with the given load/store ops and clear color.
+    static std::vector<std::unique_ptr<DrawPass>> Make(Recorder*,
+                                                       std::unique_ptr<DrawList>,
+                                                       sk_sp<TextureProxy> target,
+                                                       const SkImageInfo& targetInfo,
+                                                       std::pair<LoadOp, StoreOp>,
+                                                       std::array<float, 4> clearColor,
+                                                       const DstReadStrategy dstReadStrategy);
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
-    // contained within its dimensions.
+    // contained within its dimensions
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
@@ -86,17 +87,23 @@ public:
     }
 
     const GraphicsPipeline* getPipeline(size_t index) const {
-        return fFullPipelines[index].get();
+        return fSharedResources->fFullPipelines[index].get();
     }
     const Texture* getTexture(size_t index) const;
     const Sampler* getSampler(size_t index) const;
 
-    skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
+    skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const {
+        return fSharedResources->fSampledTextures;
+    }
+
+    bool drawsRequireMSAA() const { return fRequiresMSAA; }
+    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
 
     void addResourceRefs(CommandBuffer*) const;
 
 private:
     class SortKey;
+    class TilesBuilder;
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
@@ -106,19 +113,37 @@ private:
 
     sk_sp<TextureProxy> fTarget;
     SkIRect fBounds;
+    SkIRect fTileBounds;
 
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;
 
-    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
-    // an array of actual GraphicsPipelines.
-    skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
-    skia_private::TArray<SamplerDesc> fSamplerDescs;
+    // All tiles generated from the same DrawList will share these resources.
+    struct TileSharedResource : public SkNVRefCnt<TileSharedResource> {
+        bool prepareResources(ResourceProvider*,
+                              const RuntimeEffectDictionary*,
+                              const RenderPassDesc&);
 
-    // These resources all get instantiated during prepareResources.
-    skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
-    skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
-    skia_private::TArray<sk_sp<Sampler>> fSamplers;
+        void addResourceRefs(CommandBuffer*) const;
+
+        const Texture* getTexture(size_t index) const;
+        const Sampler* getSampler(size_t index) const;
+
+        // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
+        // an array of actual GraphicsPipelines.
+        skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
+        skia_private::TArray<SamplerDesc> fSamplerDescs;
+
+        // These resources all get instantiated during prepareResources.
+        skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
+        skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
+        skia_private::TArray<sk_sp<Sampler>> fSamplers;
+    };
+
+    sk_sp<TileSharedResource> fSharedResources;
+
+    bool fRequiresMSAA = false;
+    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
 };
 
 } // namespace skgpu::graphite
