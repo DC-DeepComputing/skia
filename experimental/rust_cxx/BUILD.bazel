@@ -23,5 +23,5 @@ cc_binary(
 rust_static_library(
     name = "hype_lib",
     srcs = ["hype-bridge.rs"],
-    deps = ["@cxx"],
+    deps = ["@crates//:cxx"],
 )
