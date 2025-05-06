@@ -214,6 +214,13 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
         ACQUIRE_PROC_SUFFIX(BindImageMemory2, KHR, VK_NULL_HANDLE, device);
     }
 
+    // Functions for VK_KHR_create_renderpass2
+    if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 2, 0)) {
+        ACQUIRE_PROC(CreateRenderPass2, VK_NULL_HANDLE, device);
+    } else if (extensions->hasExtension(VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME, 1)) {
+        ACQUIRE_PROC_SUFFIX(CreateRenderPass2, KHR, VK_NULL_HANDLE, device);
+    }
+
     // Functions for VK_KHR_maintenance1 or vulkan 1.1
     if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 1, 0)) {
         ACQUIRE_PROC(TrimCommandPool, VK_NULL_HANDLE, device);
@@ -487,6 +494,14 @@ bool VulkanInterface::validate(uint32_t instanceVersion,
         extensions->hasExtension(VK_KHR_BIND_MEMORY_2_EXTENSION_NAME, 1)) {
         if (nullptr == fFunctions.fBindBufferMemory2 ||
             nullptr == fFunctions.fBindImageMemory2) {
+            RETURN_FALSE_INTERFACE
+        }
+    }
+
+    // Functions for VK_KHR_create_renderpass2
+    if (physicalDeviceVersion >= VK_MAKE_VERSION(1, 2, 0) ||
+        extensions->hasExtension(VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME, 1)) {
+        if (nullptr == fFunctions.fCreateRenderPass2) {
             RETURN_FALSE_INTERFACE
         }
     }
