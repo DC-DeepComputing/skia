@@ -203,18 +203,22 @@ static bool should_include_extension(const char* extensionName) {
             VK_EXT_DEVICE_FAULT_EXTENSION_NAME,
             VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME,
             VK_EXT_EXTENDED_DYNAMIC_STATE_2_EXTENSION_NAME,
-            VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME,
-            VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME,
             VK_EXT_FRAME_BOUNDARY_EXTENSION_NAME,
+            VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME,
             VK_EXT_IMAGE_DRM_FORMAT_MODIFIER_EXTENSION_NAME,
+            VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_EXTENSION_NAME,
+            VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME,
             VK_EXT_QUEUE_FAMILY_FOREIGN_EXTENSION_NAME,
             VK_EXT_RASTERIZATION_ORDER_ATTACHMENT_ACCESS_EXTENSION_NAME,
             VK_EXT_RGBA10X6_FORMATS_EXTENSION_NAME,
+            VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME,
             VK_KHR_BIND_MEMORY_2_EXTENSION_NAME,
+            VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME,
             VK_KHR_DEDICATED_ALLOCATION_EXTENSION_NAME,
+            VK_KHR_DEPTH_STENCIL_RESOLVE_EXTENSION_NAME,
+            VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME,
             VK_KHR_EXTERNAL_MEMORY_CAPABILITIES_EXTENSION_NAME,
             VK_KHR_EXTERNAL_MEMORY_EXTENSION_NAME,
-            VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME,
             VK_KHR_GET_MEMORY_REQUIREMENTS_2_EXTENSION_NAME,
             VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME,
             VK_KHR_IMAGE_FORMAT_LIST_EXTENSION_NAME,
@@ -225,7 +229,6 @@ static bool should_include_extension(const char* extensionName) {
             VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME,
             VK_KHR_SURFACE_EXTENSION_NAME,
             VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-            VK_EXT_PIPELINE_CREATION_CACHE_CONTROL_EXTENSION_NAME,
             // Below are all platform specific extensions. The name macros like we use above are
             // all defined in platform specific vulkan headers. We currently don't include these
             // headers as they are a little bit of a pain (e.g. windows headers requires including
@@ -500,9 +503,9 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
         protectedMemoryFeatures =
           (VkPhysicalDeviceProtectedMemoryFeatures*)sk_malloc_throw(
               sizeof(VkPhysicalDeviceProtectedMemoryFeatures));
+        *protectedMemoryFeatures = {};
         protectedMemoryFeatures->sType =
-          VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROTECTED_MEMORY_FEATURES;
-        protectedMemoryFeatures->pNext = nullptr;
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PROTECTED_MEMORY_FEATURES;
         *tailPNext = protectedMemoryFeatures;
         tailPNext = &protectedMemoryFeatures->pNext;
     }
@@ -522,70 +525,65 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
 
     VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT* blend = nullptr;
     if (extensions->hasExtension(VK_EXT_BLEND_OPERATION_ADVANCED_EXTENSION_NAME, 2)) {
-        blend = (VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT*) sk_malloc_throw(
+        blend = (VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceBlendOperationAdvancedFeaturesEXT));
+        *blend = {};
         blend->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BLEND_OPERATION_ADVANCED_FEATURES_EXT;
-        blend->pNext = nullptr;
         *tailPNext = blend;
         tailPNext = &blend->pNext;
     }
 
-    VkPhysicalDeviceExtendedDynamicStateFeaturesEXT* edsFeature = nullptr;
+    VkPhysicalDeviceExtendedDynamicStateFeaturesEXT* edsFeatures = nullptr;
     if (extensions->hasExtension(VK_EXT_EXTENDED_DYNAMIC_STATE_EXTENSION_NAME, 1)) {
-        edsFeature = (VkPhysicalDeviceExtendedDynamicStateFeaturesEXT*)sk_malloc_throw(
+        edsFeatures = (VkPhysicalDeviceExtendedDynamicStateFeaturesEXT*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceExtendedDynamicStateFeaturesEXT));
-        edsFeature->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_FEATURES_EXT;
-        edsFeature->pNext = nullptr;
-        edsFeature->extendedDynamicState = VK_TRUE;
-        *tailPNext = edsFeature;
-        tailPNext = &edsFeature->pNext;
+        *edsFeatures = {};
+        edsFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_FEATURES_EXT;
+        *tailPNext = edsFeatures;
+        tailPNext = &edsFeatures->pNext;
     }
 
-    VkPhysicalDeviceExtendedDynamicState2FeaturesEXT* eds2Feature = nullptr;
+    VkPhysicalDeviceExtendedDynamicState2FeaturesEXT* eds2Features = nullptr;
     if (extensions->hasExtension(VK_EXT_EXTENDED_DYNAMIC_STATE_2_EXTENSION_NAME, 1)) {
-        eds2Feature = (VkPhysicalDeviceExtendedDynamicState2FeaturesEXT*)sk_malloc_throw(
+        eds2Features = (VkPhysicalDeviceExtendedDynamicState2FeaturesEXT*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceExtendedDynamicState2FeaturesEXT));
-        eds2Feature->sType =
+        *eds2Features = {};
+        eds2Features->sType =
                 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_EXTENDED_DYNAMIC_STATE_2_FEATURES_EXT;
-        eds2Feature->pNext = nullptr;
-        eds2Feature->extendedDynamicState2 = VK_TRUE;
-        *tailPNext = eds2Feature;
-        tailPNext = &eds2Feature->pNext;
+        *tailPNext = eds2Features;
+        tailPNext = &eds2Features->pNext;
     }
 
-    VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT* vidsFeature = nullptr;
+    VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT* vidsFeatures = nullptr;
     if (extensions->hasExtension(VK_EXT_VERTEX_INPUT_DYNAMIC_STATE_EXTENSION_NAME, 1)) {
-        vidsFeature = (VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT*)sk_malloc_throw(
+        vidsFeatures = (VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT));
-        vidsFeature->sType =
+        *vidsFeatures = {};
+        vidsFeatures->sType =
                 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VERTEX_INPUT_DYNAMIC_STATE_FEATURES_EXT;
-        vidsFeature->pNext = nullptr;
-        vidsFeature->vertexInputDynamicState = VK_TRUE;
-        *tailPNext = vidsFeature;
-        tailPNext = &vidsFeature->pNext;
+        *tailPNext = vidsFeatures;
+        tailPNext = &vidsFeatures->pNext;
     }
 
-    VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT* gplFeature = nullptr;
+    VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT* gplFeatures = nullptr;
     if (extensions->hasExtension(VK_EXT_GRAPHICS_PIPELINE_LIBRARY_EXTENSION_NAME, 1)) {
-        gplFeature = (VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT*)sk_malloc_throw(
+        gplFeatures = (VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT));
-        gplFeature->sType =
+        *gplFeatures = {};
+        gplFeatures->sType =
                 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_FEATURES_EXT;
-        gplFeature->pNext = nullptr;
-        gplFeature->graphicsPipelineLibrary = VK_TRUE;
-        *tailPNext = gplFeature;
-        tailPNext = &gplFeature->pNext;
+        *tailPNext = gplFeatures;
+        tailPNext = &gplFeatures->pNext;
     }
 
-    VkPhysicalDeviceSamplerYcbcrConversionFeatures* ycbcrFeature = nullptr;
+    VkPhysicalDeviceSamplerYcbcrConversionFeatures* ycbcrFeatures = nullptr;
     {
-        ycbcrFeature = (VkPhysicalDeviceSamplerYcbcrConversionFeatures*) sk_malloc_throw(
+        ycbcrFeatures = (VkPhysicalDeviceSamplerYcbcrConversionFeatures*)sk_malloc_throw(
                 sizeof(VkPhysicalDeviceSamplerYcbcrConversionFeatures));
-        ycbcrFeature->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
-        ycbcrFeature->pNext = nullptr;
-        ycbcrFeature->samplerYcbcrConversion = VK_TRUE;
-        *tailPNext = ycbcrFeature;
-        tailPNext = &ycbcrFeature->pNext;
+        *ycbcrFeatures = {};
+        ycbcrFeatures->sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES;
+        *tailPNext = ycbcrFeatures;
+        tailPNext = &ycbcrFeatures->pNext;
     }
 
     VkPhysicalDevicePipelineCreationCacheControlFeatures* cacheControlFeatures = nullptr;
@@ -594,12 +592,23 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc, VkInstance inst,
         cacheControlFeatures =
                 (VkPhysicalDevicePipelineCreationCacheControlFeatures*)sk_malloc_throw(
                         sizeof(VkPhysicalDevicePipelineCreationCacheControlFeatures));
+        *cacheControlFeatures = {};
         cacheControlFeatures->sType =
                 VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_PIPELINE_CREATION_CACHE_CONTROL_FEATURES;
-        cacheControlFeatures->pNext = nullptr;
-        cacheControlFeatures->pipelineCreationCacheControl = VK_TRUE;
         *tailPNext = cacheControlFeatures;
         tailPNext = &cacheControlFeatures->pNext;
+    }
+
+    VkPhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT* msrtssFeatures = nullptr;
+    if (extensions->hasExtension(VK_EXT_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_EXTENSION_NAME, 1)) {
+        msrtssFeatures =
+                (VkPhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT*)sk_malloc_throw(
+                        sizeof(VkPhysicalDeviceMultisampledRenderToSingleSampledFeaturesEXT));
+        *msrtssFeatures = {};
+        msrtssFeatures->sType =
+                VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_FEATURES_EXT;
+        *tailPNext = msrtssFeatures;
+        tailPNext = &msrtssFeatures->pNext;
     }
 
     ACQUIRE_VK_PROC_LOCAL(GetPhysicalDeviceFeatures2, inst, VK_NULL_HANDLE);
