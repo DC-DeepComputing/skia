@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e205eadf_e1476803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-06T14:24:49Z",
+      "side": 1,
+      "message": "Upon checking, IDT the skia style guide specifies between /**/ or // usage. Typically though, we try to keep it consistent, so the inconsistency here drove me bonkers.",
+      "revId": "4720a7a3de432a78d31fb857e275bfba4e2646d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
