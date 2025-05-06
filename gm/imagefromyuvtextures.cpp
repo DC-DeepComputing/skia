@@ -277,7 +277,7 @@ protected:
             }
             SkMatrix m;
             m.setRotate(45, image->width()/2.f, image->height()/2.f);
-            SkPaint paint;
+            SkPaint paint;a
             paint.setShader(image->makeShader(SkTileMode::kMirror, SkTileMode::kDecal,
                                               sampling, m));
             auto rect = SkRect::MakeWH(image->width() * 1.3f, image->height());
