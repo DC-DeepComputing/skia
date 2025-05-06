@@ -216,13 +216,11 @@ bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc)
 }
 
 bool RenderPassDescWillImplicitlyLoadMSAA(const RenderPassDesc& renderPassDesc) {
-    // TODO: This is currently not possible, but will be with an upcoming change adding support for
-    // VK_EXT_multisampled_render_to_single_sampled. For now, simply return false.
     SkASSERT(renderPassDesc.fColorAttachment.fFormat != TextureFormat::kUnsupported);
     SkASSERT(renderPassDesc.fColorAttachment.fSampleCount > 1 ||
              renderPassDesc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported);
 
-    return false;
+    return renderPassDesc.fColorAttachment.fSampleCount == 1 && renderPassDesc.fSampleCount > 1;
 }
 
 RenderPassDesc MakePipelineCompatibleRenderPass(const RenderPassDesc& renderPassDesc) {

@@ -64,11 +64,8 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     }
 
     SkASSERT(!isLinear || vkSamples == VK_SAMPLE_COUNT_1_BIT);
-
-    VkImageCreateFlags createflags = 0;
-    if (info.isProtected() == Protected::kYes && caps.protectedSupport()) {
-        createflags |= VK_IMAGE_CREATE_PROTECTED_BIT;
-    }
+    SkASSERT(info.isProtected() == Protected::kNo ||
+         (caps.protectedSupport() && SkToBool(VK_IMAGE_CREATE_PROTECTED_BIT & vkInfo.fFlags)));
 
     uint32_t numMipLevels = 1;
     if (vkInfo.fMipmapped == Mipmapped::kYes) {
@@ -81,7 +78,7 @@ bool VulkanTexture::MakeVkImage(const VulkanSharedContext* sharedContext,
     const VkImageCreateInfo imageCreateInfo = {
         VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO, // sType
         nullptr,                             // pNext
-        createflags,                         // VkImageCreateFlags
+        vkInfo.fFlags,                       // VkImageCreateFlags
         VK_IMAGE_TYPE_2D,                    // VkImageType
         vkInfo.fFormat,                      // VkFormat
         { width, height, 1 },                // VkExtent3D

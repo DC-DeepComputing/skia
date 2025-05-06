@@ -200,6 +200,13 @@ VulkanInterface::VulkanInterface(VulkanGetProc getProc,
     // Function promoted from VK_KHR_external_memory_capabilities to Vulkan 1.1
     ACQUIRE_PROC(GetPhysicalDeviceExternalBufferProperties, instance, VK_NULL_HANDLE);
 
+    // Functions for VK_KHR_create_renderpass2 or 1.2
+    if (physicalDeviceVersion >= VK_API_VERSION_1_2) {
+        ACQUIRE_PROC(CreateRenderPass2, VK_NULL_HANDLE, device);
+    } else if (extensions->hasExtension(VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME, 1)) {
+        ACQUIRE_PROC_SUFFIX(CreateRenderPass2, KHR, VK_NULL_HANDLE, device);
+    }
+
     // Functions for VK_EXT_extended_dynamic_state or 1.3
     if (physicalDeviceVersion >= VK_API_VERSION_1_3) {
         ACQUIRE_PROC(CmdBindVertexBuffers2, VK_NULL_HANDLE, device);
@@ -439,6 +446,14 @@ bool VulkanInterface::validate(uint32_t instanceVersion,
         nullptr == fFunctions.fCreateSamplerYcbcrConversion ||
         nullptr == fFunctions.fDestroySamplerYcbcrConversion) {
         RETURN_FALSE_INTERFACE
+    }
+
+    // Functions for VK_KHR_create_renderpass2 or 1.2
+    if (physicalDeviceVersion >= VK_API_VERSION_1_2 ||
+        extensions->hasExtension(VK_KHR_CREATE_RENDERPASS_2_EXTENSION_NAME, 1)) {
+        if (nullptr == fFunctions.fCreateRenderPass2) {
+            RETURN_FALSE_INTERFACE
+        }
     }
 
     // Functions for VK_EXT_extended_dynamic_state or 1.3
