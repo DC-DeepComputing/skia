@@ -93,6 +93,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
                                   sk_sp<Texture> depthStencilTexture,
                                   const Texture* dstCopy,
                                   SkIRect dstReadBounds,
+                                  SkIPoint viewportTranslation,
                                   SkISize viewportDims,
                                   const DrawPassList& drawPasses) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
@@ -111,7 +112,9 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
         return true;
     }
 
-    dstReadBounds.offset(fReplayTranslation.x(), fReplayTranslation.y());
+    // dstReadbounds is expected to be in the same coord space as viewport so we need to apply
+    // viewportTranslation in addition to replayTranslation.
+    dstReadBounds.offset(fReplayTranslation + viewportTranslation);
     if (!dstReadBounds.intersect(fRenderPassBounds)) {
         // The draws within the RenderPass that would sample from the dstCopy have been translated
         // off screen. Set the bounds to empty and let the GPU clipping do its job.
@@ -134,12 +137,13 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     // We don't intersect the viewport with the render pass bounds or target size because it just
     // defines a linear transform, which we don't want to change just because a portion of it maps
     // to a region that gets clipped.
-    SkIRect viewport = SkIRect::MakePtSize(fReplayTranslation, viewportDims);
+    SkIRect viewport = SkIRect::MakePtSize(fReplayTranslation + viewportTranslation, viewportDims);
     if (!this->onAddRenderPass(renderPassDesc,
                                renderPassBounds,
                                colorTexture.get(),
                                resolveTexture.get(),
                                depthStencilTexture.get(),
+                               viewportTranslation,
                                viewport,
                                drawPasses)) {
         return false;
