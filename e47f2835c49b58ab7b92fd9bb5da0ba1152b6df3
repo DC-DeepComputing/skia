@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "762b3db0_79edb799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-07T10:18:22Z",
+      "side": 1,
+      "message": "Draft at this point, let\u0027s see what the bots say.",
+      "revId": "e47f2835c49b58ab7b92fd9bb5da0ba1152b6df3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
