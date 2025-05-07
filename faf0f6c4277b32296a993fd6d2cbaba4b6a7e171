@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "814f9f18_54d9903c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-07T14:27:18Z",
+      "side": 1,
+      "message": "```suggestion\nBug: skia:416195723\nChange-Id: I2aa1a0440c38b8dbe3249fa4c16f32515c1e2c58\n```",
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
