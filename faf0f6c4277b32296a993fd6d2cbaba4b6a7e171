@@ -132,6 +132,24 @@
       "parentUuid": "8b508105_78adcd8a",
       "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2ea1eb9_87685203",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-07T16:18:28Z",
+      "side": 1,
+      "message": "That cleared up some misconceptions I had about `SkPath`. Thanks for the detailed explanation!",
+      "parentUuid": "5fa7e88b_aa493c10",
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
