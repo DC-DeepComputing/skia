@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cb0010f_d0229c67",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T16:42:20Z",
+      "side": 1,
+      "message": "You can see the missing curve content being restored in the gold diffs for `squarehair`, and in the other diffs you can see an improvement in curvature (vs. linear segment artifacts).",
+      "revId": "d6e19813b4975bd3fa46cfc1d20faf56e71ba8bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
