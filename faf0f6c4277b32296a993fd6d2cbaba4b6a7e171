@@ -16,6 +16,68 @@
       "message": "```suggestion\nBug: skia:416195723\nChange-Id: I2aa1a0440c38b8dbe3249fa4c16f32515c1e2c58\n```",
       "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74f2a315_36476d8e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-07T14:53:46Z",
+      "side": 1,
+      "message": "(aside: the AI generated fixes are pretty good)",
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f124328_23e5df69",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-07T14:53:46Z",
+      "side": 1,
+      "message": "nit: my C++ is admittedly a bit \"rusty\" but is it worth taking an rvalue reference for `generatedPath` and maybe adding some `std::move`s to avoid the unnecessary allocation/copy? I assume this method is intended to consume the path.",
+      "fixSuggestions": [
+        {
+          "fixId": "1833d360_157efe46",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkScalerContext.cpp",
+              "range": {
+                "startLine": 775,
+                "startChar": 0,
+                "endLine": 776,
+                "endChar": 0
+              },
+              "replacement": "                                      std::optional\u003cGeneratedPath\u003e\u0026\u0026 generatedPath) {\n"
+            },
+            {
+              "path": "src/core/SkScalerContext.cpp",
+              "range": {
+                "startLine": 789,
+                "startChar": 0,
+                "endLine": 790,
+                "endChar": 0
+              },
+              "replacement": "        path \u003d std::move(generatedPath-\u003epath);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
