@@ -61,12 +61,14 @@ private:
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
                          const Texture* depthStencilTexture,
+                         SkIPoint viewportTranslation,
                          SkIRect viewport,
                          const DrawPassList&) override;
     bool onAddComputePass(DispatchGroupSpan) override;
 
     // Methods for populating a Dawn RenderPassEncoder:
     bool beginRenderPass(const RenderPassDesc&,
+                         const SkIPoint& viewportTranslation,
                          SkIRect renderPassBounds,
                          const Texture* colorTexture,
                          const Texture* resolveTexture,
@@ -74,6 +76,7 @@ private:
     bool emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
             const RenderPassDesc& intendedRenderPassDesc,
             const wgpu::RenderPassDescriptor& intendedDawnRenderPassDesc,
+            const SkIPoint& viewportTranslation,
             const SkIRect& renderPassBounds,
             const DawnTexture* msaaTexture,
             const DawnTexture* resolveTexture);
@@ -81,10 +84,13 @@ private:
                         const RenderPassDesc& frontendRenderPassDescKey,
                         const wgpu::TextureView& srcTextureView,
                         int srcSampleCount,
-                        const SkIRect& bounds);
+                        const SkIPoint& srcOffset,
+                        const SkIRect& dstBounds);
     bool endRenderPass();
 
-    bool addDrawPass(const DrawPass*);
+    bool addDrawPass(const DrawPass*,
+                     const SkIPoint& viewportTranslation,
+                     const SkIRect& renderPassBounds);
 
     bool bindGraphicsPipeline(const GraphicsPipeline*);
     void setBlendConstants(float* blendConstants);
@@ -97,7 +103,9 @@ private:
     void bindTextureAndSamplers(const DrawPass& drawPass,
                                 const DrawPassCommands::BindTexturesAndSamplers& command);
 
-    void setScissor(const Scissor&);
+    void setScissor(const Scissor&,
+                    const SkIPoint& viewportTranslation,
+                    const SkIRect& renderPassBounds);
     bool updateIntrinsicUniforms(SkIRect viewport);
     void setViewport(SkIRect viewport);
 
@@ -165,6 +173,7 @@ private:
     struct ResolveStepEmulationInfo {
         const DawnTexture* fMSAATexture;
         const DawnTexture* fResolveTexture;
+        SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };
     std::optional<ResolveStepEmulationInfo> fResolveStepEmulationInfo;
