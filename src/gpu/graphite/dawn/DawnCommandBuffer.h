@@ -81,10 +81,13 @@ private:
                         const RenderPassDesc& frontendRenderPassDescKey,
                         const wgpu::TextureView& srcTextureView,
                         int srcSampleCount,
-                        const SkIRect& bounds);
+                        const SkIPoint& srcOffset,
+                        const SkIRect& dstBounds);
     bool endRenderPass();
 
-    bool addDrawPass(const DrawPass*);
+    bool addDrawPass(const DrawPass*,
+                     const SkIPoint& viewportOffset,
+                     const SkIRect& renderPassBounds);
 
     bool bindGraphicsPipeline(const GraphicsPipeline*);
     void setBlendConstants(float* blendConstants);
@@ -98,7 +101,9 @@ private:
     void bindTextureAndSamplers(const DrawPass& drawPass,
                                 const DrawPassCommands::BindTexturesAndSamplers& command);
 
-    void setScissor(const Scissor&);
+    void setScissor(const Scissor&,
+                    const SkIPoint& viewportOffset,
+                    const SkIRect& renderPassBounds);
     bool updateIntrinsicUniforms(SkIRect viewport);
     void setViewport(SkIRect viewport);
 
@@ -166,6 +171,7 @@ private:
     struct ResolveStepEmulationInfo {
         const DawnTexture* fMSAATexture;
         const DawnTexture* fResolveTexture;
+        SkIPoint fMSAAAOffset;
         SkIRect fResolveArea;
     };
     std::optional<ResolveStepEmulationInfo> fResolveStepEmulationInfo;

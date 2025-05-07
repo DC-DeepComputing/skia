@@ -51,6 +51,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
         {3, 16},
     };
 
+    path.moveTo(kPathPoints[0][0], kPathPoints[0][1]);
     for (size_t i = 0; i < std::size(kPathPoints); ++i) {
         path.lineTo(kPathPoints[i][0], kPathPoints[i][1]);
     }

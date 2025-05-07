@@ -227,7 +227,18 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
         return true;
     }
 
+    // When mismatched MSAA/resolve size is supported, we apply a -renderPassBounds' (x, y) offset
+    // to the viewport. So that renderPassBounds' (x, y) will be (0, 0) on the MSAA texture. In this
+    // case, a smaller MSAA texture can be allocated that is enough to contain the renderPassBounds.
+    SkIPoint viewportOffset = SkIPoint::Make(0, 0);
+    if (colorTexture && resolveTexture &&
+        colorTexture->dimensions() != resolveTexture->dimensions()) {
+        SkASSERT(fSharedContext->dawnCaps()->differentResolveAttachmentSizeSupport());
+        viewportOffset = -renderPassBounds.topLeft();
+    }
+
     // Update the intrinsic constant buffer before starting a render pass.
+    viewport.offset(viewportOffset);
     if (!this->updateIntrinsicUniforms(viewport)) SK_UNLIKELY {
         return false;
     }
@@ -243,7 +254,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     this->setViewport(viewport);
 
     for (const auto& drawPass : drawPasses) {
-        if (!this->addDrawPass(drawPass.get())) SK_UNLIKELY {
+        if (!this->addDrawPass(drawPass.get(), viewportOffset, renderPassBounds)) SK_UNLIKELY {
             this->endRenderPass();
             return false;
         }
@@ -369,7 +380,8 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             // But it also means we might have to load the resolve texture into the MSAA color attachment
 
             if (fSharedContext->dawnCaps()->emulateLoadStoreResolve()) {
-                // TODO(b/399640773): Remove this once Dawn natively supports the feature.
+                // TODO(b/399640773): Remove this once Dawn natively supports the partial resolve
+                // feature with different resolve & color offsets.
                 emulateLoadStoreResolveTexture = true;
             } else if (resolveInfo.fLoadOp == LoadOp::kLoad) {
                 std::optional<wgpu::LoadOp> resolveLoadOp =
@@ -493,8 +505,10 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
 
     auto renderPassEncoder = fCommandEncoder.BeginRenderPass(&dawnRenderPassDescWithoutResolve);
 
+    // renderPassBounds' (x, y) will be (0, 0) on the MSAA texture.
+    SkIRect msaaArea = SkIRect::MakeSize(renderPassBounds.size());
+    msaaArea.intersect(SkIRect::MakeSize(msaaTexture->dimensions()));
     SkIRect resolveArea = renderPassBounds;
-    resolveArea.intersect(SkIRect::MakeSize(msaaTexture->dimensions()));
     resolveArea.intersect(SkIRect::MakeSize(resolveTexture->dimensions()));
 
     if (loadResolve) {
@@ -503,7 +517,8 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
                                   renderPassWithoutResolveDesc,
                                   /*srcTextureView=*/resolveTexture->renderTextureView(),
                                   /*srcSampleCount=*/1,
-                                  resolveArea)) {
+                                  /*srcOffset=*/resolveArea.topLeft(),
+                                  /*dstBounds=*/msaaArea)) {
             renderPassEncoder.End();
             return false;
         }
@@ -511,7 +526,7 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
 
     fActiveRenderPassEncoder = renderPassEncoder;
 
-    fResolveStepEmulationInfo = {msaaTexture, resolveTexture, resolveArea};
+    fResolveStepEmulationInfo = {msaaTexture, resolveTexture, msaaArea.topLeft(), resolveArea};
 
     return true;
 }
@@ -520,41 +535,19 @@ bool DawnCommandBuffer::doBlitWithDraw(const wgpu::RenderPassEncoder& renderEnco
                                        const RenderPassDesc& frontendRenderPassDescKey,
                                        const wgpu::TextureView& srcTextureView,
                                        int srcSampleCount,
-                                       const SkIRect& bounds) {
-    auto blitPipeline = fResourceProvider->findOrCreateBlitWithDrawPipeline(
-            frontendRenderPassDescKey, srcSampleCount);
-    if (!blitPipeline) {
+                                       const SkIPoint& srcOffset,
+                                       const SkIRect& dstBounds) {
+    DawnResourceProvider::BitWithDrawEncoder blit =
+            fResourceProvider->findOrCreateBlitWithDrawEncoder(frontendRenderPassDescKey,
+                                                               srcSampleCount);
+    if (!blit) {
         SKGPU_LOG_E("Unable to create pipeline to blit with draw");
         return false;
     }
 
     SkASSERT(renderEncoder);
 
-    renderEncoder.SetPipeline(blitPipeline);
-
-    // The blit pipeline takes no uniforms, no vertex/instance attributes and only uses
-    // one texture that does not require a sampler.
-
-    // TODO: b/260368758
-    // cache single texture's bind group creation.
-    wgpu::BindGroupEntry entry;
-    entry.binding = 0;
-    entry.textureView = srcTextureView;
-
-    wgpu::BindGroupDescriptor desc;
-    desc.layout = blitPipeline.GetBindGroupLayout(0);
-    desc.entryCount = 1;
-    desc.entries = &entry;
-
-    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
-
-    renderEncoder.SetBindGroup(0, bindGroup);
-
-    renderEncoder.SetScissorRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
-    renderEncoder.SetViewport(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 0, 1);
-
-    // Fullscreen triangle
-    renderEncoder.Draw(3);
+    blit.EncodeBlit(renderEncoder, srcTextureView, srcOffset, dstBounds);
 
     return true;
 }
@@ -594,7 +587,8 @@ bool DawnCommandBuffer::endRenderPass() {
             intermediateRenderPassDesc,
             /*srcTextureView=*/fResolveStepEmulationInfo->fMSAATexture->renderTextureView(),
             /*srcSampleCount=*/fResolveStepEmulationInfo->fMSAATexture->textureInfo().numSamples(),
-            fResolveStepEmulationInfo->fResolveArea);
+            /*srcOffset=*/fResolveStepEmulationInfo->fMSAAAOffset,
+            /*dstBounds=*/fResolveStepEmulationInfo->fResolveArea);
 
     renderPassEncoder.End();
 
@@ -603,7 +597,9 @@ bool DawnCommandBuffer::endRenderPass() {
     return blitSucceeded;
 }
 
-bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass,
+                                    const SkIPoint& viewportOffset,
+                                    const SkIRect& renderPassBounds) {
     drawPass->addResourceRefs(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
@@ -636,7 +632,7 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kSetScissor: {
                 auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
-                this->setScissor(ss->fScissor);
+                this->setScissor(ss->fScissor, viewportOffset, renderPassBounds);
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
@@ -915,9 +911,18 @@ void DawnCommandBuffer::syncUniformBuffers() {
     }
 }
 
-void DawnCommandBuffer::setScissor(const Scissor& scissor) {
+void DawnCommandBuffer::setScissor(const Scissor& scissor,
+                                   const SkIPoint& viewportOffset,
+                                   const SkIRect& renderPassBounds) {
     SkASSERT(fActiveRenderPassEncoder);
-    SkIRect rect = scissor.getRect(fReplayTranslation, fRenderPassBounds);
+    // First translate using replayTranslation and clip with renderPassBounds.
+    SkIRect rect = scissor.getRect(fReplayTranslation, renderPassBounds);
+    // Then translate using viewportOffset. Note: we cannot apply viewportOffset together with
+    // fReplayTranslation because renderPassBounds is relative to target texture/resolve texture
+    // whereas viewportOffset converts target texture's coords to MSAA texture's coords. Had we
+    // applied them together in getRect(), the scissor rect would have been clipped by
+    // renderPassBounds to become empty.
+    rect.offset(viewportOffset);
     fActiveRenderPassEncoder.SetScissorRect(rect.x(), rect.y(), rect.width(), rect.height());
 }
 
