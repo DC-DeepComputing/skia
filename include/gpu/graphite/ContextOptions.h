@@ -48,6 +48,13 @@ struct SK_API ContextOptions {
     uint8_t fInternalMultisampleCount = 4;
 
     /**
+     * If set, this specifies the max width/height of MSAA textures that Graphite should use for
+     * internal draws. Graphite might have to break the drawing region into multiple tiles to
+     * satisfy the size constraint.
+     */
+    std::optional<uint16_t> fInternalMultisampleDimLimit = std::nullopt;
+
+    /**
      * Will the client make sure to only ever be executing one thread that uses the Context and all
      * derived classes (e.g. Recorders, Recordings, etc.) at a time. If so we can possibly make some
      * objects (e.g. VulkanMemoryAllocator) not thread safe to improve single thread performance.
