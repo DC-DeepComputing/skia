@@ -103,10 +103,10 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
         renderPassBounds.join(drawPass->bounds());
     }
     if (renderPassDesc.fColorAttachment.fLoadOp == LoadOp::kClear) {
-        renderPassBounds.join(fRenderPassBounds);
+        renderPassBounds.join(fRenderTargetBounds);
     }
     renderPassBounds.offset(fReplayTranslation.x(), fReplayTranslation.y());
-    if (!renderPassBounds.intersect(fRenderPassBounds)) {
+    if (!renderPassBounds.intersect(fRenderTargetBounds)) {
         // The entire RenderPass is offscreen given the replay translation so skip adding the pass
         // at all
         return true;
@@ -115,7 +115,7 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     // dstReadbounds is expected to be in the same coord space as viewport so we need to apply
     // viewportTranslation in addition to replayTranslation.
     dstReadBounds.offset(fReplayTranslation + viewportTranslation);
-    if (!dstReadBounds.intersect(fRenderPassBounds)) {
+    if (!dstReadBounds.intersect(fRenderTargetBounds)) {
         // The draws within the RenderPass that would sample from the dstCopy have been translated
         // off screen. Set the bounds to empty and let the GPU clipping do its job.
         dstReadBounds = SkIRect::MakeEmpty();
@@ -294,11 +294,11 @@ bool CommandBuffer::setReplayTranslationAndClip(const SkIVector& translation,
                                                 const SkIRect& clip,
                                                 const SkIRect& renderTargetBounds) {
     fReplayTranslation = translation;
-    fRenderPassBounds = renderTargetBounds;
+    fRenderTargetBounds = renderTargetBounds;
 
     // If a replay clip is defined, we intersect it with the render target bounds.
     if (!clip.isEmpty()) {
-        if (!fRenderPassBounds.intersect(clip.makeOffset(translation))) {
+        if (!fRenderTargetBounds.intersect(clip.makeOffset(translation))) {
             return false;
         }
     }
