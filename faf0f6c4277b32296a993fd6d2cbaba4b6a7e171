@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4a668c29_2308156c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-07T15:44:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "814f9f18_54d9903c",
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "74f2a315_36476d8e",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -76,6 +94,24 @@
           ]
         }
       ],
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b508105_78adcd8a",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-07T15:44:16Z",
+      "side": 1,
+      "message": "`SkPath` is 16 bytes on a 64 bit system (it is more or less a pointer / reference to a `SkPathRef` and a few cached properties) and is generally treated like a value type. At the moment this could consume the ref and it would avoid an extra (though very local) ref/unref pair. At that point it might be worth doing value semantics here (allowing the caller to make the decision) though that will probably end up with a few extra reads/writes on the stack.\n\nExcept that `SkPath` is not currently move-able! This is because of the `std::atomic` members it has. There is an ongoing process to try to fix this (make `SkPath` immutable and introduce a `SkPathBuilder`) but that will take some time. So we could write `std::move` here but at the moment the copy assignment operator is still being called anyway. It\u0027s probably still useful as a marker of intent and means things would work better once `SkPath` is moveable though. But this does currently discourage value type usage here.",
+      "parentUuid": "0f124328_23e5df69",
       "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
