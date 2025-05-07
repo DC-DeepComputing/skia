@@ -21,9 +21,14 @@ static DEFINE_bool(useWGPUTextureView, false, "Run Graphite w/ a wrapped WGPU te
                                               "the destination");
 #endif // SK_DAWN
 
+DEFINE_int(internalMSAASizeLimit, 0, "Run Graphite w/ limited MSAA texture's size");
+
 void SetTestOptions(skiatest::graphite::TestOptions* testOptions) {
     if (FLAGS_internalSamples >= 0) {
         testOptions->fContextOptions.fInternalMultisampleCount = FLAGS_internalSamples;
+    }
+    if (FLAGS_internalMSAASizeLimit > 0) {
+        testOptions->fContextOptions.fInternalMultisampleDimLimit = FLAGS_internalMSAASizeLimit;
     }
 #if defined(SK_DAWN)
     testOptions->fDisableTintSymbolRenaming = FLAGS_disable_tint_symbol_renaming;
