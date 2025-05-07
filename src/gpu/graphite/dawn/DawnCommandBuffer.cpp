@@ -223,7 +223,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         SkIRect viewport,
                                         const DrawPassList& drawPasses) {
     // `viewport` has already been translated by the replay translation by the base CommandBuffer.
-    if (!SkIRect::Intersects(viewport, fRenderPassBounds)) SK_UNLIKELY {
+    if (!SkIRect::Intersects(viewport, fRenderTargetBounds)) SK_UNLIKELY {
         // The entire pass is offscreen
         return true;
     }
@@ -925,6 +925,7 @@ void DawnCommandBuffer::setScissor(const Scissor& scissor,
                                    const SkIPoint& viewportTranslation,
                                    const SkIRect& renderPassBounds) {
     SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fRenderTargetBounds.contains(renderPassBounds));
     // First translate using replayTranslation and clip with renderPassBounds.
     SkIRect rect = scissor.getRect(fReplayTranslation, renderPassBounds);
     // Then translate using viewportTranslation. Note: we cannot apply viewportTranslation together
