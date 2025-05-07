@@ -1759,7 +1759,7 @@ static constexpr uint32_t kFormatMask = (1 << kFormatBits) - 1;
 static constexpr uint32_t kNumSamplesMask = (1 << kSampleBits) - 1;
 static constexpr uint32_t kLoadFromResolveMask = (1 << kLoadFromResolveBits) - 1;
 
-uint32_t VulkanCaps::getRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) const {
+uint32_t VulkanCaps::GetRenderPassDescKeyForPipeline(const RenderPassDesc& renderPassDesc) {
     // The render pass always has a color attachment, and maybe a depth-stencil attachment.  In
     // truth, the existence of a resolve attachment or whether multisampled unresolve/resolve
     // happens also does not affect the pipeline, but the render pass compatiblity rules are too
@@ -1809,7 +1809,7 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         builder[idx++] = static_cast<uint32_t>(pipelineDesc.renderStepID());
         builder[idx++] = pipelineDesc.paintParamsID().asUInt();
         // Add RenderPassDesc information
-        builder[idx++] = this->getRenderPassDescKeyForPipeline(renderPassDesc);
+        builder[idx++] = VulkanCaps::GetRenderPassDescKeyForPipeline(renderPassDesc);
         // Add RenderPass info relevant for pipeline creation that's not captured in RenderPass keys
         builder[idx++] = renderPassDesc.fWriteSwizzle.asKey();
 
