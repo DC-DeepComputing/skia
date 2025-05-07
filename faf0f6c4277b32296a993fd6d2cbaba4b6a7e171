@@ -114,6 +114,24 @@
       "parentUuid": "0f124328_23e5df69",
       "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fa7e88b_aa493c10",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 775,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-07T16:15:56Z",
+      "side": 1,
+      "message": "I would prefer the value semantics, but since that doesn\u0027t work this can claim to \"consume\" so that things will improve when `SkPath` is actually movable.",
+      "parentUuid": "8b508105_78adcd8a",
+      "revId": "faf0f6c4277b32296a993fd6d2cbaba4b6a7e171",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
