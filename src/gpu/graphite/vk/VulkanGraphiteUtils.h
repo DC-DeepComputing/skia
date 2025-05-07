@@ -72,6 +72,7 @@ VkFormat TextureFormatToVkFormat(TextureFormat);
 VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
 
 bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc);
+bool RenderPassDescWillImplicitlyLoadMSAA(const RenderPassDesc& renderPassDesc);
 
 namespace BackendTextures {
 VkImage GetVkImage(const BackendTexture&);
