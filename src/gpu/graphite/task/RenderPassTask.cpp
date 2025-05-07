@@ -39,14 +39,16 @@ namespace {
 std::pair<SkISize, SkIPoint> get_msaa_size_and_viewport_translation(const SkISize& targetSize,
                                                                     const SkIRect& drawBounds,
                                                                     const Caps& caps,
-                                                                    LoadOp loadOp) {
+                                                                    LoadOp loadOp,
+                                                                    bool isTiled) {
     if (caps.differentResolveAttachmentSizeSupport()) {
         // If possible, use approx size that can fit all draws. This reduces the MSAA texture size
         // and also reuses the textures better.
         // Note: we don't do this if loadOp=Clear because it's supposed to update the whole target
-        // texture.
+        // texture, unless the target is tiled.
+        const bool canUseSmallerSize = isTiled || loadOp != LoadOp::kClear;
         auto smallEnoughBounds = drawBounds;
-        if (loadOp != LoadOp::kClear && !smallEnoughBounds.isEmpty() &&
+        if (canUseSmallerSize && !smallEnoughBounds.isEmpty() &&
             smallEnoughBounds.intersect(SkIRect::MakeSize(targetSize))) {
             SkIPoint vpTranslation = -smallEnoughBounds.topLeft();
             return {GetApproxSize(smallEnoughBounds.size()), vpTranslation};
@@ -176,24 +178,28 @@ Task::Status RenderPassTask::addCommands(Context* context,
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     const auto& drawBounds = fDrawPasses[0]->bounds();
+    const bool isTile = fDrawPasses[0]->isTile();
 
-    // Only apply the replay translation and clip if we're drawing to the final replay target.
-    const SkIRect renderTargetBounds = SkIRect::MakeSize(fTarget->dimensions());
+    auto renderTargetBounds = SkIRect::MakeSize(fTarget->dimensions());
+    SkIVector replayTranslation = SkIVector::Make(0, 0);
+    SkIRect replayClip = SkIRect::MakeEmpty();
     if (fTarget->texture() == replayData.fTarget) {
-        // The clip set here will intersect with the render target bounds, and then any scissor set
-        // during this render pass. If there is no intersection between the clip and the render
-        // target bounds, we can skip this entire render pass.
-        if (!commandBuffer->setReplayTranslationAndClip(
-                    replayData.fTranslation, replayData.fClip, renderTargetBounds)) {
-            return Status::kSuccess;
-        }
+        // Only apply the replay translation and clip if we're drawing to the final replay target.
+        replayTranslation = replayData.fTranslation, replayData.fClip;
+        replayClip = replayData.fClip;
+    }
 
-    } else {
-        // An empty clip is ignored, and will default to the render target bounds.
-        constexpr SkIVector kNoReplayTranslation = {0, 0};
-        constexpr SkIRect kNoReplayClip = SkIRect::MakeEmpty();
-        commandBuffer->setReplayTranslationAndClip(
-                kNoReplayTranslation, kNoReplayClip, renderTargetBounds);
+    if (isTile) {
+        // If this is a tile, limit the bounds to only the draw bounds.
+        renderTargetBounds.intersect(drawBounds.makeOffset(replayTranslation));
+    }
+
+    // The clip set here will intersect with the render target bounds, and then any scissor set
+    // during this render pass. If there is no intersection between the clip and the render target
+    // bounds, we can skip this entire render pass.
+    if (!commandBuffer->setReplayTranslationAndClip(
+                replayTranslation, replayClip, renderTargetBounds)) {
+        return Status::kSuccess;
     }
 
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
@@ -215,7 +221,8 @@ Task::Status RenderPassTask::addCommands(Context* context,
                 fTarget->dimensions(),
                 drawBounds,
                 *context->priv().caps(),
-                fRenderPassDesc.fColorAttachment.fLoadOp);
+                fRenderPassDesc.fColorAttachment.fLoadOp,
+                isTile);
         colorAttachment = resourceProvider->findOrCreateShareableTexture(
                 msaaSize, colorInfo, "DiscardableMSAAAttachment");
         if (!colorAttachment) {
