@@ -78,6 +78,10 @@ VkFormat TextureFormatToVkFormat(TextureFormat);
 VkShaderStageFlags PipelineStageFlagsToVkShaderStageFlags(SkEnumBitMask<PipelineStageFlags>);
 
 bool RenderPassDescWillLoadMSAAFromResolve(const RenderPassDesc& renderPassDesc);
+bool RenderPassDescWillImplicitlyLoadMSAA(const RenderPassDesc& renderPassDesc);
+// Adjust the load/store ops of the render pass to something common, since they do not affect the
+// pipeline and the render pass remains compatible.
+RenderPassDesc MakePipelineCompatibleRenderPass(const RenderPassDesc& renderPassDesc);
 
 namespace BackendTextures {
 VkImage GetVkImage(const BackendTexture&);
