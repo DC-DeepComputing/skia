@@ -76,28 +76,9 @@ public:
     void setVertexBuffer(id<MTLBuffer> buffer, NSUInteger offset, NSUInteger index) {
         SkASSERT(buffer != nil);
         SkASSERT(index < kMaxExpectedBuffers);
-        if (@available(macOS 10.11, iOS 8.3, tvOS 9.0, *)) {
-            if (fCurrentVertexBuffer[index] == buffer) {
-                this->setVertexBufferOffset(offset, index);
-                return;
-            }
-        }
-        if (fCurrentVertexBuffer[index] != buffer || fCurrentVertexOffset[index] != offset) {
-            [(*fCommandEncoder) setVertexBuffer:buffer
-                                         offset:offset
-                                        atIndex:index];
-            fCurrentVertexBuffer[index] = buffer;
-            fCurrentVertexOffset[index] = offset;
-        }
-    }
-    void setVertexBufferOffset(NSUInteger offset, NSUInteger index)
-            SK_API_AVAILABLE(macos(10.11), ios(8.3), tvos(9.0)) {
-        SkASSERT(index < kMaxExpectedBuffers);
-        if (fCurrentVertexOffset[index] != offset) {
-            [(*fCommandEncoder) setVertexBufferOffset:offset
-                                              atIndex:index];
-            fCurrentVertexOffset[index] = offset;
-        }
+        [(*fCommandEncoder) setVertexBuffer:buffer
+                                     offset:offset
+                                     atIndex:index];
     }
 
     void setFragmentBuffer(id<MTLBuffer> buffer, NSUInteger offset, NSUInteger index) {
@@ -264,7 +245,6 @@ private:
                        /*gpuMemorySize=*/0)
             , fCommandEncoder(std::move(encoder)) {
         for (int i = 0; i < kMaxExpectedBuffers; i++) {
-            fCurrentVertexBuffer[i] = nil;
             fCurrentFragmentBuffer[i] = nil;
             // We don't initialize fCurrentVertexOffset or fCurrentFragmentOffset because neither
             // of those should ever be read unless we've already confirmed the current buffer
@@ -288,8 +268,6 @@ private:
     id<MTLDepthStencilState> fCurrentDepthStencilState = nil;
     uint32_t fCurrentStencilReferenceValue = 0; // Metal default value
 
-    id<MTLBuffer> fCurrentVertexBuffer[kMaxExpectedBuffers];
-    NSUInteger fCurrentVertexOffset[kMaxExpectedBuffers];
     id<MTLBuffer> fCurrentFragmentBuffer[kMaxExpectedBuffers];
     NSUInteger fCurrentFragmentOffset[kMaxExpectedBuffers];
 
