@@ -425,26 +425,47 @@ sk_sp<VulkanDescriptorSet> VulkanResourceProvider::findOrCreateUniformBuffersDes
 }
 
 sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
-            const RenderPassDesc& renderPassDesc,
-            bool compatibleOnly) {
+        const RenderPassDesc& originalRenderPassDesc, bool compatibleOnly) {
     static constexpr Budgeted kBudgeted = Budgeted::kYes;
     static constexpr Shareable kShareable = Shareable::kYes;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
-    VulkanRenderPass::Metadata rpMetadata{renderPassDesc, compatibleOnly};
+    RenderPassDesc compatibleRenderPassDesc;
+    if (compatibleOnly) {
+        // Reset all load/store ops on the attachments since those do not affect compatibility.
+        // Choose a combination that is most likely to be used later by the real render pass.
+        const bool hasResolve = originalRenderPassDesc.fColorResolveAttachment.fFormat !=
+                                TextureFormat::kUnsupported;
+        const bool needLoadMSAAFromResolveSubpass =
+                RenderPassDescWillLoadMSAAFromResolve(originalRenderPassDesc);
+        compatibleRenderPassDesc = originalRenderPassDesc;
+        compatibleRenderPassDesc.fColorAttachment.fLoadOp =
+                needLoadMSAAFromResolveSubpass ? LoadOp::kDiscard : LoadOp::kClear;
+        compatibleRenderPassDesc.fColorAttachment.fStoreOp =
+                hasResolve ? StoreOp::kDiscard : StoreOp::kStore;
+        compatibleRenderPassDesc.fColorResolveAttachment.fLoadOp =
+                needLoadMSAAFromResolveSubpass ? LoadOp::kLoad : LoadOp::kDiscard;
+        compatibleRenderPassDesc.fColorResolveAttachment.fStoreOp =
+                hasResolve ? StoreOp::kStore : StoreOp::kDiscard;
+        compatibleRenderPassDesc.fDepthStencilAttachment.fLoadOp = LoadOp::kClear;
+        compatibleRenderPassDesc.fDepthStencilAttachment.fStoreOp = StoreOp::kDiscard;
+    }
+    const RenderPassDesc& renderPassDesc =
+            compatibleOnly ? compatibleRenderPassDesc : originalRenderPassDesc;
+
     GraphiteResourceKey key;
     {
-        GraphiteResourceKey::Builder builder(&key, kType, rpMetadata.keySize());
+        GraphiteResourceKey::Builder builder(&key, kType, VulkanRenderPass::KeySize());
 
         int startingIdx = 0;
-        rpMetadata.addToKey(builder, startingIdx);
+        VulkanRenderPass::AddToKey(renderPassDesc, builder, startingIdx);
     }
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
     }
 
     sk_sp<VulkanRenderPass> renderPass =
-            VulkanRenderPass::Make(this->vulkanSharedContext(), rpMetadata);
+            VulkanRenderPass::Make(this->vulkanSharedContext(), renderPassDesc);
     if (!renderPass) {
         return nullptr;
     }
@@ -617,9 +638,10 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
     }
 
     // Check to see if we already have a suitable pipeline that we can use.
-    VulkanRenderPass::Metadata rpMetadata{renderPassDesc, /*compatibleOnly=*/true};
+    const uint32_t compatibleRenderPassHash =
+            VulkanCaps::GetRenderPassDescKeyForPipeline(renderPassDesc);
     for (int i = 0; i < fLoadMSAAPipelines.size(); i++) {
-        if (rpMetadata == fLoadMSAAPipelines.at(i).first) {
+        if (compatibleRenderPassHash == fLoadMSAAPipelines.at(i).first) {
             return fLoadMSAAPipelines.at(i).second;
         }
     }
@@ -641,7 +663,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanResourceProvider::findOrCreateLoadMSAAPipeli
         return nullptr;
     }
 
-    fLoadMSAAPipelines.push_back(std::make_pair(rpMetadata, pipeline));
+    fLoadMSAAPipelines.push_back(std::make_pair(compatibleRenderPassHash, pipeline));
     return pipeline;
 }
 
@@ -668,9 +690,10 @@ BackendTexture VulkanResourceProvider::onCreateBackendTexture(AHardwareBuffer* h
 
     // Start to assemble VulkanTextureInfo which is needed later on to create the VkImage but can
     // sooner help us query VulkanCaps for certain format feature support.
-    // TODO: Allow client to pass in tiling mode. For external formats, this is required to be
-    // optimal. For AHB that have a known Vulkan format, we can query VulkanCaps to determine if
-    // optimal is a valid decision given the format features.
+    //
+    // Note that the optimal tiling is always the right choice, including for external formats
+    // (which always require optimal) and AHBs (where the real layout is determined by AHB usage
+    // flags, and optimal tiling would automatically mean linear if it has to).
     VkImageTiling tiling = VK_IMAGE_TILING_OPTIMAL;
     VkImageCreateFlags imgCreateflags = isProtectedContent ? VK_IMAGE_CREATE_PROTECTED_BIT : 0;
     VkImageUsageFlags usageFlags = VK_IMAGE_USAGE_SAMPLED_BIT;
