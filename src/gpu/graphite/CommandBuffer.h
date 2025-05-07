@@ -93,6 +93,7 @@ public:
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstReadBounds,
+                       SkIPoint viewportTranslation,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -168,6 +169,7 @@ private:
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,
+                                 SkIPoint viewportTranslation,
                                  SkIRect viewport,
                                  const DrawPassList& drawPasses) = 0;
 
