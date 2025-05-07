@@ -162,8 +162,10 @@ bool MtlCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                        const Texture* colorTexture,
                                        const Texture* resolveTexture,
                                        const Texture* depthStencilTexture,
+                                       SkIPoint viewportTranslation,
                                        SkIRect viewport,
                                        const DrawPassList& drawPasses) {
+    SkASSERT(viewportTranslation.isZero());
     if (!this->beginRenderPass(renderPassDesc, colorTexture, resolveTexture, depthStencilTexture)) {
         return false;
     }
