@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eeb27541_2fdb433e",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:33:41Z",
+      "side": 1,
+      "message": "If I\u0027m following the behavior of this extension correctly, if we are changing pipelines AND those pipelines have different input descriptions, we\u0027ll end up rebuilding the binding and attribute descriptions and calling `CmdSetVertexInput` along with the `VkBindPipeline` call, right?\n\nThe structure of vertex inputs in Graphite is fairly static. Every RenderStep has fixed set of attributes that it has declared at creation time. It is possible that we\u0027ll have different pipelines because of other dynamic/fixed state, or because the paint effects required a different fragment shader. This extension should mean that in these scenarios, the driver is not doing its own work to configure the input assembler each time a pipeline is bound w/ static inputs, correct? \n\nIf so, the key additional benefit for Graphite is that we can determine that the inputs are going to be different between pipelines very efficiently by remembering the RenderStep that was used to create the pipeline and just see if their IDs are different.\n\nI would also recommend trying to precompute the Vulkan descriptions for the pipeline so that we don\u0027t have to rebuild them every time we are going to call `CmdSetVertexInput`. Sometimes painters order rendering can cause us to thrash pipeline switching so minimizing the overhead of any extra operations on binding is good.",
+      "range": {
+        "startLine": 1341,
+        "startChar": 4,
+        "endLine": 1374,
+        "endChar": 5
+      },
+      "revId": "512bef66b62138a82564253f12a21f5101989663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
