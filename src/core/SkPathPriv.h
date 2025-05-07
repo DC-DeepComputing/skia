@@ -228,6 +228,11 @@ public:
         return path.fPathRef->unique();
     }
 
+    /** Returns the backing SkPathRef. */
+    static const sk_sp<SkPathRef>& TestingOnly_pathref(const SkPath& path) {
+        return path.fPathRef;
+    }
+
     // Won't be needed once we can make path's immutable (with their bounds always computed)
     static bool HasComputedBounds(const SkPath& path) {
         return path.hasComputedBounds();

@@ -6075,3 +6075,22 @@ DEF_TEST(path_walk_edges_concave_large_dx, r) {
     paint.setStyle(SkPaint::kFill_Style);
     surface->getCanvas()->drawPath(path, paint);
 }
+
+DEF_TEST(path_filltype_utils, r) {
+    SkPath p1;
+    p1.lineTo(42, 42);
+    p1.lineTo(42, 0);
+    p1.close();
+
+    REPORTER_ASSERT(r, p1.getFillType() == SkPathFillType::kWinding);
+
+    const SkPath p2 = p1.makeFillType(SkPathFillType::kEvenOdd);
+    REPORTER_ASSERT(r, p2 != p1);
+    REPORTER_ASSERT(r, p2.getFillType() == SkPathFillType::kEvenOdd);
+    REPORTER_ASSERT(r, SkPathPriv::TestingOnly_pathref(p2) == SkPathPriv::TestingOnly_pathref(p1));
+
+    const SkPath p3 = p2.makeToggleInverseFillType();
+    REPORTER_ASSERT(r, p3 != p2);
+    REPORTER_ASSERT(r, p3.getFillType() == SkPathFillType::kInverseEvenOdd);
+    REPORTER_ASSERT(r, SkPathPriv::TestingOnly_pathref(p3) == SkPathPriv::TestingOnly_pathref(p2));
+}
