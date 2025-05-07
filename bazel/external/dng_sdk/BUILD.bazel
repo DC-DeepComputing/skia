@@ -161,6 +161,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@libjpeg_turbo",
-        "@zlib_skia//:zlib",
+        "@zlib",
     ],
 )
