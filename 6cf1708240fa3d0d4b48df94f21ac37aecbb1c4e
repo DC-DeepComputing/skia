@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4436d74_e793cf78",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 528,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c8e59b6c_7255a768",
+      "range": {
+        "startLine": 525,
+        "startChar": 0,
+        "endLine": 528,
+        "endChar": 17
+      },
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "94048bff_db4712ce",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-05T18:44:13Z",
       "side": 1,
       "message": "How about:\n`we show that we can multiply coverage into the src color`",
+      "range": {
+        "startLine": 536,
+        "startChar": 11,
+        "endLine": 536,
+        "endChar": 58
+      },
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5424984a_bbecb70b",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 536,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94048bff_db4712ce",
       "range": {
         "startLine": 536,
         "startChar": 11,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9d4e6e5_68ff8ef1",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 545,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78b90126_ceb020ae",
+      "range": {
+        "startLine": 544,
+        "startChar": 0,
+        "endLine": 545,
+        "endChar": 31
+      },
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "989f9f58_fc7d2011",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a46960ce_cb460f80",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "989f9f58_fc7d2011",
+      "range": {
+        "startLine": 585,
+        "startChar": 10,
+        "endLine": 585,
+        "endChar": 54
+      },
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "535b44c5_5779851e",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-05-05T18:44:13Z",
       "side": 1,
       "message": "There are a couple more release asserts we could probably get rid of here (we already have regular asserts for both of these checks)",
+      "range": {
+        "startLine": 861,
+        "startChar": 0,
+        "endLine": 872,
+        "endChar": 37
+      },
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea222aab_34a16605",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Talking with Michael offline, he recommended we keep the latter check (and remove the associated TODO) as it would help provide information for faster issue identification + debugging in the future for similar issues. Regular asserts are good, but this one should also trigger for non-debug builds which I believe has value.\n\nRemoved the check above though.",
+      "parentUuid": "535b44c5_5779851e",
       "range": {
         "startLine": 861,
         "startChar": 0,
@@ -146,6 +266,24 @@
       "writtenOn": "2025-05-05T18:44:13Z",
       "side": 1,
       "message": "I guess this will never be true because we check `finalBlendMode \u003e SkBlendMode::kLastCoeffMode` above",
+      "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d610cb0d_30ccb90f",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1159,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-07T17:18:16Z",
+      "side": 1,
+      "message": "Whoops, good catch - good to assert, but is already accounted for with the if statement immediately above. Removed that part of the assert",
+      "parentUuid": "bd8cd12d_e63e126f",
       "revId": "6cf1708240fa3d0d4b48df94f21ac37aecbb1c4e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
