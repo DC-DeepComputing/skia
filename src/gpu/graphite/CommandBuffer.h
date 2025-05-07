@@ -86,13 +86,18 @@ public:
     //
     // The logical viewport is always (0,0,viewportDims) and matches the "device" coordinate space
     // of the higher-level SkDevices that recorded the rendering operations. The actual viewport
-    // is automatically adjusted by the replay translation.
+    // is automatically adjusted by the replay translation & viewport translation.
+    //
+    // If the RenderPassTask allocates a smaller MSAA texture than the resolve texture, it can pass
+    // a non-zero `viewportTranslation` which will be the the transform applied to `dstReadBounds` &
+    // `viewport`.
     bool addRenderPass(const RenderPassDesc&,
                        sk_sp<Texture> colorTexture,
                        sk_sp<Texture> resolveTexture,
                        sk_sp<Texture> depthStencilTexture,
                        const Texture* dstCopy,
                        SkIRect dstReadBounds,
+                       SkIPoint viewportTranslation,
                        SkISize viewportDims,
                        const DrawPassList& drawPasses);
 
@@ -168,6 +173,7 @@ private:
                                  const Texture* colorTexture,
                                  const Texture* resolveTexture,
                                  const Texture* depthStencilTexture,
+                                 SkIPoint viewportTranslation,
                                  SkIRect viewport,
                                  const DrawPassList& drawPasses) = 0;
 

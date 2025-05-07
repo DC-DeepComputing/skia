@@ -219,10 +219,16 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
                                         const Texture* depthStencilTexture,
+                                        SkIPoint viewportTranslation,
                                         SkIRect viewport,
                                         const DrawPassList& drawPasses) {
-    // `viewport` has already been translated by the replay translation by the base CommandBuffer.
-    if (!SkIRect::Intersects(viewport, fRenderPassBounds)) SK_UNLIKELY {
+    // `viewport` has already been translated by the replay translation & viewport translation by
+    // the base CommandBuffer. However, in order to test whether the viewport is valid within render
+    // target bounds or not, we have to revert the viewport translation. That's because viewport
+    // translation transforms the viewport to the MSAA texture's space. Whereas the render target
+    // bounds in in target texture's space.
+    if (!SkIRect::Intersects(viewport.makeOffset(-viewportTranslation), fRenderPassBounds))
+        SK_UNLIKELY {
         // The entire pass is offscreen
         return true;
     }
@@ -233,6 +239,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     if (!this->beginRenderPass(renderPassDesc,
+                               viewportTranslation,
                                renderPassBounds,
                                colorTexture,
                                resolveTexture,
@@ -243,7 +250,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     this->setViewport(viewport);
 
     for (const auto& drawPass : drawPasses) {
-        if (!this->addDrawPass(drawPass.get())) SK_UNLIKELY {
+        if (!this->addDrawPass(drawPass.get(), viewportTranslation, renderPassBounds)) SK_UNLIKELY {
             this->endRenderPass();
             return false;
         }
@@ -275,6 +282,7 @@ bool DawnCommandBuffer::onAddComputePass(DispatchGroupSpan groups) {
 }
 
 bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
+                                        const SkIPoint& viewportTranslation,
                                         SkIRect renderPassBounds,
                                         const Texture* colorTexture,
                                         const Texture* resolveTexture,
@@ -369,7 +377,8 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
             // But it also means we might have to load the resolve texture into the MSAA color attachment
 
             if (fSharedContext->dawnCaps()->emulateLoadStoreResolve()) {
-                // TODO(b/399640773): Remove this once Dawn natively supports the feature.
+                // TODO(b/399640773): Remove this once Dawn natively supports the partial resolve
+                // feature with different resolve & color offsets.
                 emulateLoadStoreResolveTexture = true;
             } else if (resolveInfo.fLoadOp == LoadOp::kLoad) {
                 std::optional<wgpu::LoadOp> resolveLoadOp =
@@ -443,6 +452,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         if (!this->emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
                     renderPassDesc,
                     wgpuRenderPass,
+                    viewportTranslation,
                     renderPassBounds,
                     static_cast<const DawnTexture*>(colorTexture),
                     static_cast<const DawnTexture*>(resolveTexture))) {
@@ -459,6 +469,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
         const RenderPassDesc& intendedRenderPassDesc,
         const wgpu::RenderPassDescriptor& intendedDawnRenderPassDesc,
+        const SkIPoint& viewportTranslation,
         const SkIRect& renderPassBounds,
         const DawnTexture* msaaTexture,
         const DawnTexture* resolveTexture) {
@@ -493,8 +504,10 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
 
     auto renderPassEncoder = fCommandEncoder.BeginRenderPass(&dawnRenderPassDescWithoutResolve);
 
+    SkIRect msaaArea = renderPassBounds;
+    msaaArea.offset(viewportTranslation);
+    msaaArea.intersect(SkIRect::MakeSize(msaaTexture->dimensions()));
     SkIRect resolveArea = renderPassBounds;
-    resolveArea.intersect(SkIRect::MakeSize(msaaTexture->dimensions()));
     resolveArea.intersect(SkIRect::MakeSize(resolveTexture->dimensions()));
 
     if (loadResolve) {
@@ -503,7 +516,8 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
                                   renderPassWithoutResolveDesc,
                                   /*srcTextureView=*/resolveTexture->renderTextureView(),
                                   /*srcSampleCount=*/1,
-                                  resolveArea)) {
+                                  /*srcOffset=*/resolveArea.topLeft(),
+                                  /*dstBounds=*/msaaArea)) {
             renderPassEncoder.End();
             return false;
         }
@@ -511,7 +525,7 @@ bool DawnCommandBuffer::emulateLoadMSAAFromResolveAndBeginRenderPassEncoder(
 
     fActiveRenderPassEncoder = renderPassEncoder;
 
-    fResolveStepEmulationInfo = {msaaTexture, resolveTexture, resolveArea};
+    fResolveStepEmulationInfo = {msaaTexture, resolveTexture, msaaArea.topLeft(), resolveArea};
 
     return true;
 }
@@ -520,41 +534,19 @@ bool DawnCommandBuffer::doBlitWithDraw(const wgpu::RenderPassEncoder& renderEnco
                                        const RenderPassDesc& frontendRenderPassDescKey,
                                        const wgpu::TextureView& srcTextureView,
                                        int srcSampleCount,
-                                       const SkIRect& bounds) {
-    auto blitPipeline = fResourceProvider->findOrCreateBlitWithDrawPipeline(
-            frontendRenderPassDescKey, srcSampleCount);
-    if (!blitPipeline) {
+                                       const SkIPoint& srcOffset,
+                                       const SkIRect& dstBounds) {
+    DawnResourceProvider::BitWithDrawEncoder blit =
+            fResourceProvider->findOrCreateBlitWithDrawEncoder(frontendRenderPassDescKey,
+                                                               srcSampleCount);
+    if (!blit) {
         SKGPU_LOG_E("Unable to create pipeline to blit with draw");
         return false;
     }
 
     SkASSERT(renderEncoder);
 
-    renderEncoder.SetPipeline(blitPipeline);
-
-    // The blit pipeline takes no uniforms, no vertex/instance attributes and only uses
-    // one texture that does not require a sampler.
-
-    // TODO: b/260368758
-    // cache single texture's bind group creation.
-    wgpu::BindGroupEntry entry;
-    entry.binding = 0;
-    entry.textureView = srcTextureView;
-
-    wgpu::BindGroupDescriptor desc;
-    desc.layout = blitPipeline.GetBindGroupLayout(0);
-    desc.entryCount = 1;
-    desc.entries = &entry;
-
-    auto bindGroup = fSharedContext->device().CreateBindGroup(&desc);
-
-    renderEncoder.SetBindGroup(0, bindGroup);
-
-    renderEncoder.SetScissorRect(bounds.x(), bounds.y(), bounds.width(), bounds.height());
-    renderEncoder.SetViewport(bounds.x(), bounds.y(), bounds.width(), bounds.height(), 0, 1);
-
-    // Fullscreen triangle
-    renderEncoder.Draw(3);
+    blit.EncodeBlit(renderEncoder, srcTextureView, srcOffset, dstBounds);
 
     return true;
 }
@@ -594,7 +586,8 @@ bool DawnCommandBuffer::endRenderPass() {
             intermediateRenderPassDesc,
             /*srcTextureView=*/fResolveStepEmulationInfo->fMSAATexture->renderTextureView(),
             /*srcSampleCount=*/fResolveStepEmulationInfo->fMSAATexture->textureInfo().numSamples(),
-            fResolveStepEmulationInfo->fResolveArea);
+            /*srcOffset=*/fResolveStepEmulationInfo->fMSAAAOffset,
+            /*dstBounds=*/fResolveStepEmulationInfo->fResolveArea);
 
     renderPassEncoder.End();
 
@@ -603,7 +596,9 @@ bool DawnCommandBuffer::endRenderPass() {
     return blitSucceeded;
 }
 
-bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
+bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass,
+                                    const SkIPoint& viewportTranslation,
+                                    const SkIRect& renderPassBounds) {
     drawPass->addResourceRefs(this);
     for (auto [type, cmdPtr] : drawPass->commands()) {
         switch (type) {
@@ -654,7 +649,7 @@ bool DawnCommandBuffer::addDrawPass(const DrawPass* drawPass) {
             }
             case DrawPassCommands::Type::kSetScissor: {
                 auto ss = static_cast<DrawPassCommands::SetScissor*>(cmdPtr);
-                this->setScissor(ss->fScissor);
+                this->setScissor(ss->fScissor, viewportTranslation, renderPassBounds);
                 break;
             }
             case DrawPassCommands::Type::kDraw: {
@@ -931,9 +926,18 @@ void DawnCommandBuffer::syncUniformBuffers() {
     }
 }
 
-void DawnCommandBuffer::setScissor(const Scissor& scissor) {
+void DawnCommandBuffer::setScissor(const Scissor& scissor,
+                                   const SkIPoint& viewportTranslation,
+                                   const SkIRect& renderPassBounds) {
     SkASSERT(fActiveRenderPassEncoder);
-    SkIRect rect = scissor.getRect(fReplayTranslation, fRenderPassBounds);
+    // First translate using replayTranslation and clip with renderPassBounds.
+    SkIRect rect = scissor.getRect(fReplayTranslation, renderPassBounds);
+    // Then translate using viewportTranslation. Note: we cannot apply viewportTranslation together
+    // with fReplayTranslation because renderPassBounds is relative to target texture/resolve
+    // texture whereas viewportTranslation converts target texture's coords to MSAA texture's
+    // coords. Had we applied them together in getRect(), the scissor rect would have been clipped
+    // by renderPassBounds to become empty.
+    rect.offset(viewportTranslation);
     fActiveRenderPassEncoder.SetScissorRect(rect.x(), rect.y(), rect.width(), rect.height());
 }
 
