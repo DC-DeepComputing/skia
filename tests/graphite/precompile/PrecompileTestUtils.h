@@ -13,11 +13,11 @@
 #include "include/gpu/graphite/precompile/Precompile.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
@@ -93,8 +93,10 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
 
 skgpu::graphite::PaintOptions SolidSrcover();
 skgpu::graphite::PaintOptions LinearGradSmSrcover();
-skgpu::graphite::PaintOptions LinearGradSRGBSmMedSrcover();
+skgpu::graphite::PaintOptions LinearGradSRGBSmMedDitherSrcover();
 skgpu::graphite::PaintOptions TransparentPaintImagePremulHWAndClampSrcover();
+skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlyMatrixCFSrcover();
+skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlySrcover();
 skgpu::graphite::PaintOptions TransparentPaintImageSRGBHWOnlySrcover();
 skgpu::graphite::PaintOptions TransparentPaintSrcover();
@@ -113,6 +115,7 @@ skgpu::graphite::PaintOptions ImageAlphaHWOnlySrcover();
 skgpu::graphite::PaintOptions ImageAlphaNoCubicSrc();
 skgpu::graphite::PaintOptions ImagePremulHWOnlyPorterDuffCFSrcover();
 skgpu::graphite::PaintOptions ImagePremulHWOnlyMatrixCFSrcover();
+skgpu::graphite::PaintOptions ImagePremulHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageHWOnlySRGBSrcover();
 
 
