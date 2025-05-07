@@ -227,7 +227,7 @@ bool DawnCommandBuffer::onAddRenderPass(const RenderPassDesc& renderPassDesc,
     // target bounds or not, we have to revert the viewport translation. That's because viewport
     // translation transforms the viewport to the MSAA texture's space. Whereas the render target
     // bounds is in target texture's space.
-    if (!SkIRect::Intersects(viewport.makeOffset(-viewportTranslation), fRenderPassBounds))
+    if (!SkIRect::Intersects(viewport.makeOffset(-viewportTranslation), fRenderTargetBounds))
         SK_UNLIKELY {
         // The entire pass is offscreen
         return true;
@@ -930,6 +930,7 @@ void DawnCommandBuffer::setScissor(const Scissor& scissor,
                                    const SkIPoint& viewportTranslation,
                                    const SkIRect& renderPassBounds) {
     SkASSERT(fActiveRenderPassEncoder);
+    SkASSERT(fRenderTargetBounds.contains(renderPassBounds));
     // First translate using replayTranslation and clip with renderPassBounds.
     SkIRect rect = scissor.getRect(fReplayTranslation, renderPassBounds);
     // Then translate using viewportTranslation. Note: we cannot apply viewportTranslation together
