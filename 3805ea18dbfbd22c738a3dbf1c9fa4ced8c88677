@@ -46,6 +46,30 @@
       },
       "revId": "3805ea18dbfbd22c738a3dbf1c9fa4ced8c88677",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc292fbd_81b8ba65",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:23:22Z",
+      "side": 1,
+      "message": "Skia does not have a clang-format mandate and there are definitely many areas where it\u0027ll disagree with the bespoke formatting that an author has chosen for reasons(tm)",
+      "parentUuid": "2b8dea3a_54c37c4e",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 21
+      },
+      "revId": "3805ea18dbfbd22c738a3dbf1c9fa4ced8c88677",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
