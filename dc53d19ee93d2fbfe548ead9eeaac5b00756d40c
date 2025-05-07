@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb694b7e_7d5b0022",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "My preference is that these be removed and we just use `\u003d\u003d` on the fields in `updateDynamicState`.",
+      "range": {
+        "startLine": 254,
+        "startChar": 3,
+        "endLine": 305,
+        "endChar": 5
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5b6597b_e51b9a23",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "Normally we do 2 tabs for these, but I prefer 1 tab when the parameters are also 2 tabbed over to differentiate the blocks.",
+      "range": {
+        "startLine": 1097,
+        "startChar": 8,
+        "endLine": 1103,
+        "endChar": 62
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b565750b_2d542e0c",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "Having `Cached` in the name makes me think that this will be changing over time as a mutation/modifier of the underlying `VkPipeline` object, but I\u0027m fairly sure the dynamic state doesn\u0027t work that way, and will just be commands issued on the VkCommandBuffer.\n\nCould we use a name like `fDynamicPrimitiveType` or `fDynamicDepthStencilSettings`, or even just no prefix? Then the comment can be updated to say these might be removed once the front-end tracks dynamic state separately and it\u0027s unnecessary to associated a \"fixed\" dynamic state with each VulkanGraphicsPipeline.",
+      "range": {
+        "startLine": 179,
+        "startChar": 0,
+        "endLine": 183,
+        "endChar": 53
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

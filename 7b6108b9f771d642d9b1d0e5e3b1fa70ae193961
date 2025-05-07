@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "472872a5_6b833dd2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "nit: Use `f` prefix for these fields.",
+      "range": {
+        "startLine": 116,
+        "startChar": 13,
+        "endLine": 116,
+        "endChar": 25
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0941f2f_839a55f1",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "For something this simple, I\u0027d prefer `a.fMajor \u003d\u003d b.fMajor \u0026\u0026 a.fMinor \u003d\u003d b.fMinor`",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 72
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b1a0b5a_9aa0054d",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "Skia typically defines the inverse operations in terms of the other, e.g. `return !(a \u003d\u003d b);`",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 72
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4d0ad6e_f94ba962",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "In this case, the tie code style is maybe clearer than `return a.fMajor \u003c b.fMajor || (a.fMajor \u003d\u003d b.fMajor \u0026\u0026 a.fMinor \u003c b.fMinor)` but if there\u0027s no more use of tie or tuples, then maybe just go with that?",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 71
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "437ddba7_f23d4347",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-07T14:24:58Z",
+      "side": 1,
+      "message": "This could be `return !(a \u003c b);`",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
