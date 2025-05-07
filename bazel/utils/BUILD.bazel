@@ -33,6 +33,6 @@ genrule(
     outs = ["go_platform.py"],
     cmd = "echo '%s' > $@" % _GO_PLATFORM,
     tools = [
-        "@go_sdk//:bin/go",
+        "@rules_go//go",
     ],
 )
