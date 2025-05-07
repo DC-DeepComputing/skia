@@ -20,6 +20,7 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include <memory>
+#include <vector>
 
 struct SkImageInfo;
 
@@ -54,18 +55,18 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    // Create a DrawPass that renders the DrawList into `target` with the given load/store ops and
-    // clear color.
-    static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
-                                          sk_sp<TextureProxy> target,
-                                          const SkImageInfo& targetInfo,
-                                          std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor,
-                                          const DstReadStrategy dstReadStrategy);
+    // Create a DrawPass(or a list of tiles' DrawPasses if MSAA size limit is enabled) that renders
+    // the DrawList into `target` with the given load/store ops and clear color.
+    static std::vector<std::unique_ptr<DrawPass>> Make(Recorder*,
+                                                       std::unique_ptr<DrawList>,
+                                                       sk_sp<TextureProxy> target,
+                                                       const SkImageInfo& targetInfo,
+                                                       std::pair<LoadOp, StoreOp>,
+                                                       std::array<float, 4> clearColor,
+                                                       const DstReadStrategy dstReadStrategy);
 
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
-    // contained within its dimensions.
+    // contained within its dimensions
     const SkIRect&      bounds() const { return fBounds;       }
     TextureProxy* target() const { return fTarget.get(); }
     std::pair<LoadOp, StoreOp> ops() const { return fOps; }
@@ -93,10 +94,18 @@ public:
 
     skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
 
+    bool drawsRequireMSAA() const { return fRequiresMSAA; }
+    SkEnumBitMask<DepthStencilFlags> depthStencilFlags() const { return fDepthStencilFlags; }
+
+    // Is this pass a tile drawing. This is used by RenderPassTask to decide whether it's safe to
+    // use smaller MSAA texture or not.
+    bool isTile() const { return fIsTile; }
+
     void addResourceRefs(CommandBuffer*) const;
 
 private:
     class SortKey;
+    class TilesTracker;
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,
@@ -110,8 +119,8 @@ private:
     std::pair<LoadOp, StoreOp> fOps;
     std::array<float, 4> fClearColor;
 
-    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
-    // an array of actual GraphicsPipelines.
+    // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a an
+    // array of actual GraphicsPipelines.
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
     skia_private::TArray<SamplerDesc> fSamplerDescs;
 
@@ -119,6 +128,11 @@ private:
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
     skia_private::TArray<sk_sp<Sampler>> fSamplers;
+
+    bool fRequiresMSAA = false;
+    SkEnumBitMask<DepthStencilFlags> fDepthStencilFlags = DepthStencilFlags::kNone;
+
+    bool fIsTile = false;
 };
 
 } // namespace skgpu::graphite

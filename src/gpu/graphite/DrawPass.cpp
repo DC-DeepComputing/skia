@@ -399,6 +399,147 @@ private:
     static_assert(TextureBindingsField::kBits >= 1+SkNextLog2_portable(DrawList::kMaxRenderSteps));
 };
 
+// TilesTracker subdivides the drawings into tiles and manages their SortKey list & caches.
+class DrawPass::TilesTracker {
+public:
+    // These contains per tile states. They cannot be shared between tiles.
+    struct State {
+        std::vector<DrawPass::SortKey> fDrawKeys;
+        // pipelines cannot be shared between tiles because they depend on the render pass
+        // descriptor of each tile.
+        GraphicsPipelineCache fPipelineCache;
+        // Texture bindings cannot be shared between tiles because each tile might use different set
+        // of textures.
+        TextureBindingTracker fTextureBindingTracker;
+
+        bool fRequiresMSAA = false;
+    };
+
+    TilesTracker(const Caps* caps,
+                 const sk_sp<TextureProxy>& target,
+                 const Rect& drawBounds,
+                 int totalRenderStepCount,
+                 bool requiresMSAA) {
+        if (target->isFullyLazy() && !target->isInstantiated()) {
+            if (drawBounds.isEmptyNegativeOrNaN()) {
+                // No draw in the draw list. No need for tiling
+                SkASSERT(!requiresMSAA);
+                fTargetBounds = SkIRect::MakeWH(std::numeric_limits<int32_t>::max(),
+                                                std::numeric_limits<int32_t>::max());
+            } else {
+                fTargetBounds = drawBounds.makeRoundOut().asSkIRect();
+                fTargetBounds.fLeft = 0;
+                fTargetBounds.fTop = 0;
+            }
+        } else {
+            fTargetBounds = SkIRect::MakeSize(target->dimensions());
+        }
+
+        if (requiresMSAA && caps->getMaxMSAAAttachmentDims()) {
+            const auto tileSize = *caps->getMaxMSAAAttachmentDims();
+            fNumTilesPerW = (fTargetBounds.width() + tileSize.width() - 1) / tileSize.width();
+            fNumTilesPerH = (fTargetBounds.height() + tileSize.height() - 1) / tileSize.height();
+            fTileWidth = tileSize.width();
+            fTileHeight = tileSize.height();
+        } else {
+            fNumTilesPerW = 1;
+            fNumTilesPerH = 1;
+            fTileWidth = fTargetBounds.width();
+            fTileHeight = fTargetBounds.height();
+        }
+
+        const auto totalTiles = fNumTilesPerW * fNumTilesPerH;
+
+        fPerTileStates.resize(totalTiles);
+        fPerTileDrawBounds.resize(totalTiles, Rect::InfiniteInverted());
+
+        // Reserve the space for 1st tile's keys which is the common tile for all cases.
+        fPerTileStates[0].fDrawKeys.reserve(totalRenderStepCount);
+    }
+
+    size_t numTiles() const { return fPerTileStates.size(); }
+    // Bounds of all tiles
+    const SkIRect& allTilesBounds() const { return fTargetBounds; }
+
+    // Insert a draw bounds to the tiles tracker.
+    // Returns the indices of the tiles intersecting the given bounds.
+    SkIRect recordDrawBounds(const Rect& drawBounds) {
+        const auto drawIBounds = drawBounds.makeRoundOut().asSkIRect();
+        const int startTileX = std::max(0, drawIBounds.left() / fTileWidth);
+        const int endTileX = std::min(fNumTilesPerW - 1, drawIBounds.right() / fTileWidth);
+        const int startTileY = std::max(0, drawIBounds.top() / fTileHeight);
+        const int endTileY = std::min(fNumTilesPerH - 1, drawIBounds.bottom() / fTileHeight);
+
+        auto tileIndices = SkIRect::MakeLTRB(startTileX, startTileY, endTileX, endTileY);
+
+        for (int r = tileIndices.top(); r <= tileIndices.bottom(); ++r) {
+            for (int c = tileIndices.left(); c <= tileIndices.right(); ++c) {
+                fPerTileDrawBounds[get1DIndex(c, r)].join(drawBounds);
+            }
+        }
+
+        return tileIndices;
+    }
+
+    // For each tile intersecting the given draw bounds, call the provided function.
+    template <typename Fn>
+    void forEachTile(const SkIRect& tileIndices, Fn&& tileProcessFunc) {
+        for (int r = tileIndices.top(); r <= tileIndices.bottom(); ++r) {
+            for (int c = tileIndices.left(); c <= tileIndices.right(); ++c) {
+                const int idx = get1DIndex(c, r);
+                tileProcessFunc(fPerTileStates[idx]);
+            }
+        }
+    }
+
+    template <typename Fn>
+    bool finalizeTiles(Fn&& tileProcessFunc) {
+        for (int r = 0; r < fNumTilesPerH; ++r) {
+            for (int c = 0; c < fNumTilesPerW; ++c) {
+                const int idx = get1DIndex(c, r);
+
+                if (fPerTileStates[idx].fDrawKeys.empty()) {
+                    // If there is no draw in this tile, skip it.
+                    continue;
+                }
+
+                // Restrict the draw bounds to within tile bounds.
+                auto tileBounds =
+                        SkIRect::MakeXYWH(c * fTileWidth, r * fTileHeight, fTileWidth, fTileHeight);
+
+                if (!tileBounds.intersect(fTargetBounds)) {
+                    SkASSERT(false);
+                }
+
+                const auto drawBounds = fPerTileDrawBounds[idx]
+                                                .makeIntersect(SkRect::Make(tileBounds))
+                                                .roundOut()
+                                                .asSkIRect();
+
+                if (!tileProcessFunc(drawBounds, std::move(fPerTileStates[idx]))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+private:
+    int get1DIndex(int tileX, int tileY) { return tileY * fNumTilesPerW + tileX; }
+
+    std::vector<State> fPerTileStates;
+
+    std::vector<Rect> fPerTileDrawBounds;
+
+    SkIRect fTargetBounds;
+
+    int fNumTilesPerW;
+    int fNumTilesPerH;
+    int fTileWidth;
+    int fTileHeight;
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 DrawPass::DrawPass(sk_sp<TextureProxy> target,
@@ -411,13 +552,13 @@ DrawPass::DrawPass(sk_sp<TextureProxy> target,
 
 DrawPass::~DrawPass() = default;
 
-std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
-                                         std::unique_ptr<DrawList> draws,
-                                         sk_sp<TextureProxy> target,
-                                         const SkImageInfo& targetInfo,
-                                         std::pair<LoadOp, StoreOp> ops,
-                                         std::array<float, 4> clearColor,
-                                         const DstReadStrategy dstReadStrategy) {
+std::vector<std::unique_ptr<DrawPass>> DrawPass::Make(Recorder* recorder,
+                                                      std::unique_ptr<DrawList> draws,
+                                                      sk_sp<TextureProxy> target,
+                                                      const SkImageInfo& targetInfo,
+                                                      std::pair<LoadOp, StoreOp> ops,
+                                                      std::array<float, 4> clearColor,
+                                                      const DstReadStrategy dstReadStrategy) {
     // NOTE: This assert is here to ensure SortKey is as tightly packed as possible. Any change to
     // its size should be done with care and good reason. The performance of sorting the keys is
     // heavily tied to the total size.
@@ -437,22 +578,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "draw count", draws->fDraws.count());
 
-    // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
-    // is returned from Make(), it is considered immutable.
-    std::unique_ptr<DrawPass> drawPass(new DrawPass(target, ops, clearColor));
-
-    Rect passBounds = Rect::InfiniteInverted();
-
     UniformDataCache geometryUniformDataCache;
     UniformDataCache shadingUniformDataCache;
     TextureDataCache* textureDataCache = recorder->priv().textureDataCache();
     DrawBufferManager* bufferMgr = recorder->priv().drawBufferManager();
     if (bufferMgr->hasMappingFailed()) {
         SKGPU_LOG_W("Buffer mapping has already failed; dropping draw pass!");
-        return nullptr;
+        return {};
     }
-
-    GraphicsPipelineCache pipelineCache;
 
     // Geometry uniforms are currently always UBO-backed.
     const Caps* caps = recorder->priv().caps();
@@ -461,7 +594,6 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     Layout uniformLayout =
             useStorageBuffers ? bindingReqs.fStorageBufferLayout : bindingReqs.fUniformBufferLayout;
 
-    TextureBindingTracker textureBindingTracker;
     GradientBufferTracker gradientBufferTracker;
 
     ShaderCodeDictionary* dict = recorder->priv().shaderCodeDictionary();
@@ -471,8 +603,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // shading and geometry uniforms below.
     PipelineDataGatherer gatherer(uniformLayout);
 
-    std::vector<SortKey> keys;
-    keys.reserve(draws->renderStepCount());
+    TilesTracker tilesTracker(caps,
+                              target,
+                              draws->drawsBounds(),
+                              draws->renderStepCount(),
+                              draws->drawsRequireMSAA());
 
     for (const DrawList::Draw& draw : draws->fDraws.items()) {
         // If we have two different descriptors, such that the uniforms from the PaintParams can be
@@ -503,15 +638,19 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             }
         } // else depth-only
 
+        // Find the tiles this draw intersects.
+        const auto tileIndices = tilesTracker.recordDrawBounds(draw.fDrawParams.clip().drawBounds());
+
+        // Check MSAA requirements per tile. So we can skip using MSAA for tiles that don't need it.
+        tilesTracker.forEachTile(tileIndices, [&](auto& states) {
+            states.fRequiresMSAA |= draw.fRenderer->requiresMSAA();
+        });
+
         // Create a sort key for every render step in this draw, extracting out any
         // RenderStep-specific data.
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
             const RenderStep* const step = draw.fRenderer->steps()[stepIndex];
             const bool performsShading = draw.fPaintParams.has_value() && step->performsShading();
-
-            GraphicsPipelineCache::Index pipelineIndex = pipelineCache.insert(
-                    { step->renderStepID(),
-                      performsShading ? shaderID : UniquePaintParamsID::Invalid() });
 
             gatherer.resetWithNewLayout(uniformLayout);
             step->writeUniformsAndTextures(draw.fDrawParams, &gatherer);
@@ -524,161 +663,263 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             TextureDataBlock stepTextures =
                     gatherer.hasTextures() ? textureDataCache->insert(gatherer.textureDataBlock())
                                            : TextureDataBlock();
-            TextureBindingCache::Index textureIndex = textureBindingTracker.trackTextures(
-                    performsShading ? paintTextures : TextureDataBlock(), stepTextures);
 
-            keys.push_back({&draw, stepIndex, pipelineIndex,
-                            geomUniformIndex, shadingUniformIndex, textureIndex});
+            tilesTracker.forEachTile(tileIndices, [&](auto& states) {
+                GraphicsPipelineCache::Index pipelineIndex = states.fPipelineCache.insert(
+                        {step->renderStepID(),
+                         performsShading ? shaderID : UniquePaintParamsID::Invalid()});
+
+                TextureBindingCache::Index textureIndex =
+                        states.fTextureBindingTracker.trackTextures(
+                                performsShading ? paintTextures : TextureDataBlock(), stepTextures);
+
+                states.fDrawKeys.push_back({&draw,
+                                            stepIndex,
+                                            pipelineIndex,
+                                            geomUniformIndex,
+                                            shadingUniformIndex,
+                                            textureIndex});
+            });
         }
-
-        passBounds.join(draw.fDrawParams.clip().drawBounds());
     }
 
     if (!gradientBufferTracker.writeData(gatherer.gradientBufferData(), bufferMgr)) {
         // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
         // Early out now since the next Recording snap will fail.
-        return nullptr;
+        return {};
     }
 
-    // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already, so
-    // algorithms that approach O(n) in that condition may be favorable. Alternatively, could
-    // explore radix sort that is always O(n). Brief testing suggested std::sort was faster than
-    // std::stable_sort and SkTQSort on my [ml]'s Windows desktop. Also worth considering in-place
-    // vs. algorithms that require an extra O(n) storage.
-    // TODO: It's not strictly necessary, but would a stable sort be useful or just end up hiding
-    // bugs in the DrawOrder determination code?
-    std::sort(keys.begin(), keys.end());
-    DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
-    GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
-    SkIRect lastScissor = SkIRect::MakeSize(targetInfo.dimensions());
-
-    SkASSERT(drawPass->fTarget->isFullyLazy() ||
-             SkIRect::MakeSize(drawPass->fTarget->dimensions()).contains(lastScissor));
-    drawPass->fCommandList.setScissor(lastScissor);
-
-    // All large gradients pack their data into a single buffer throughout the draw pass,
-    // therefore the gradient buffer only needs to be bound once.
-    gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
-    UniformTracker geometryUniformTracker(useStorageBuffers);
-    UniformTracker shadingUniformTracker(useStorageBuffers);
-
-    // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
-    // bound separately from the rest of the textures.
-    const bool rebindTexturesOnPipelineChange = dstReadStrategy == DstReadStrategy::kTextureCopy;
-    // Keep track of the prior draw's PaintOrder. If the current draw requires barriers and there
-    // is no pipeline or state change, then we must compare the current and prior draw's PaintOrders
-    // to determine if the draws overlap. If they do, we must inject a flush between them such that
-    // the barrier addition and draw commands are ordered correctly.
-    CompressedPaintersOrder priorDrawPaintOrder {};
-
-    for (const SortKey& key : keys) {
-        const DrawList::Draw& draw = key.draw();
-        const RenderStep& renderStep = key.renderStep();
-
-        const bool pipelineChange = key.pipelineIndex() != lastPipeline;
-
-        const bool geomBindingChange = geometryUniformTracker.writeUniforms(
-                geometryUniformDataCache, bufferMgr, key.geometryUniformIndex());
-        const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
-                shadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
-
-        // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append any
-        // dst copy to the texture bind group/descriptor set automatically when processing a
-        // BindTexturesAndSamplers call because they use a single group to contain all textures.
-        // However, from the DrawPass POV, we can run into the scenario where two pipelines have the
-        // same textures+samplers except one requires a dst-copy and the other does not. In this
-        // case we wouldn't necessarily insert a new command when the pipeline changed and then
-        // end up with layout validation errors.
-        const bool textureBindingsChange = textureBindingTracker.setCurrentTextureBindings(
-                key.textureBindingIndex()) ||
-                (rebindTexturesOnPipelineChange && pipelineChange &&
-                 key.textureBindingIndex() != TextureBindingCache::kInvalidIndex);
-        const SkIRect* newScissor        = draw.fDrawParams.clip().scissor() != lastScissor ?
-                &draw.fDrawParams.clip().scissor() : nullptr;
-
-        // TODO(b/393382700): Check whether a draw uses an advanced noncoherent blend mode. If so,
-        // that draw must not be grouped with draws that read from the dst texture since those
-        // requirements are mutually exclusive. We would also need to issue append an addBarrier
-        // command to the command list with BarrierType::kAdvancedNoncoherentBlend.
-        const std::optional<BarrierType> barrierToAddBeforeDraws =
-                dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()
-                        ? std::optional<BarrierType>(BarrierType::kReadDstFromInput)
-                        : std::nullopt;
-
-        const bool stateChange = geomBindingChange ||
-                                 shadingBindingChange ||
-                                 textureBindingsChange ||
-                                 SkToBool(newScissor);
-
-        // Update DrawWriter *before* we actually change any state so that accumulated draws from
-        // the previous state use the proper state.
-        if (pipelineChange) {
-            drawWriter.newPipelineState(renderStep.primitiveType(),
-                                        renderStep.staticDataStride(),
-                                        renderStep.appendDataStride(),
-                                        renderStep.getRenderStateFlags(),
-                                        barrierToAddBeforeDraws);
-        } else if (stateChange) {
-            drawWriter.newDynamicState();
-        } else if (barrierToAddBeforeDraws.has_value() &&
-                   priorDrawPaintOrder != draw.fDrawParams.order().paintOrder()) {
-            // Even if there is no pipeline or state change, we must consider whether a
-            // DrawPassCommand to add barriers must be inserted before any draw commands. If so,
-            // then determine if the current and prior draws overlap (ie, their PaintOrders are
-            // unequal). If so, perform a flush() to make sure the draw and add barrier commands are
-            // appended to the command list in the proper order.
-            drawWriter.flush();
-        }
-
-        // Make state changes before accumulating new draw data
-        if (pipelineChange) {
-            drawPass->fCommandList.bindGraphicsPipeline(key.pipelineIndex());
-            lastPipeline = key.pipelineIndex();
-        }
-        if (stateChange) {
-            if (geomBindingChange) {
-                geometryUniformTracker.bindUniforms(UniformSlot::kRenderStep,
-                                                    &drawPass->fCommandList);
-            }
-            if (shadingBindingChange) {
-                shadingUniformTracker.bindUniforms(UniformSlot::kPaint, &drawPass->fCommandList);
-            }
-            if (textureBindingsChange) {
-                textureBindingTracker.bindTextures(&drawPass->fCommandList);
-            }
-            if (newScissor) {
-                drawPass->fCommandList.setScissor(*newScissor);
-                lastScissor = *newScissor;
-            }
-        }
-
-        uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
-        uint32_t shadingSsboIndex = useStorageBuffers ? shadingUniformTracker.ssboIndex() : 0;
-        skvx::uint2 ssboIndices = {geometrySsboIndex, shadingSsboIndex};
-        renderStep.writeVertices(&drawWriter, draw.fDrawParams, ssboIndices);
-
-        if (bufferMgr->hasMappingFailed()) {
-            SKGPU_LOG_W("Failed to write necessary vertex/instance data for DrawPass, dropping!");
-            return nullptr;
-        }
-
-        // Update priorDrawPaintOrder value before iterating to analyze the next draw.
-        priorDrawPaintOrder = draw.fDrawParams.order().paintOrder();
+    // The DrawList is converted directly into the DrawPass' data structures, but once the DrawPass
+    // is returned from Make(), it is considered immutable.
+    std::vector<std::unique_ptr<DrawPass>> perTileDrawPasses;
+    const bool isTiled = tilesTracker.numTiles() > 1;
+    bool needClearPass = false;
+    if (ops.first == LoadOp::kClear && isTiled) {
+        // Add extra pass if the intended loadOp is Clear. Since we cannot do partial clear for
+        // each tile, we need an initial pass that clear the whole target texture.
+        needClearPass = true;
+        perTileDrawPasses.reserve(tilesTracker.numTiles() + 1);
+    } else {
+        perTileDrawPasses.reserve(tilesTracker.numTiles());
     }
-    // Finish recording draw calls for any collected data still pending at end of the loop
-    drawWriter.flush();
 
-    drawPass->fBounds = passBounds.roundOut().asSkIRect();
+    DrawPass* singleSampledPass = nullptr;
 
-    drawPass->fPipelineDescs   = pipelineCache.detach();
-    drawPass->fSamplerDescs    = textureBindingTracker.detachSamplers();
-    drawPass->fSampledTextures = textureBindingTracker.detachTextures();
+    // Construct draw passes, one for each tile.
+    // TODO(b/415842843): Some draws might be duplicated in multiple tiles. The vertex shaders would
+    // be executed redundantly. The better way should be transforming the vertices once in the
+    // compute pass and store them in buffers.
+    bool success = tilesTracker.finalizeTiles([&](const SkIRect& tileBounds,
+                                                  auto&& tileState) -> bool {
+        if (tileBounds.isEmpty()) {
+            return true;
+        }
+        auto keys = std::move(tileState.fDrawKeys);
+        auto pipelineCache = std::move(tileState.fPipelineCache);
+        auto textureBindingTracker = std::move(tileState.fTextureBindingTracker);
 
-    TRACE_COUNTER1("skia.gpu", "# pipelines", drawPass->fPipelineDescs.size());
-    TRACE_COUNTER1("skia.gpu", "# textures", drawPass->fSampledTextures.size());
-    TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count());
+        // - For tile that doesn't use MSAA, we cannot do partial clear, so use loadOp=Load. The actual clear will be done in an extra pass.
+        // - For tile that uses MSAA, it's faster to clear the MSAA attachment instead of loading the cleared values from the target texture.
+        DrawPass* drawPass;
+        if (!tileState.fRequiresMSAA && isTiled) {
+            // All single sampled tiles will be merged to a single pass.
+            if (!singleSampledPass) {
+                perTileDrawPasses.emplace_back(std::unique_ptr<DrawPass>(
+                        new DrawPass(target, {LoadOp::kLoad, ops.second}, clearColor)));
 
-    return drawPass;
+                singleSampledPass = perTileDrawPasses.back().get();
+
+                singleSampledPass->fBounds = SkIRect::MakeEmpty();
+
+                singleSampledPass->fRequiresMSAA = false;
+                singleSampledPass->fDepthStencilFlags = draws->depthStencilFlags();
+                singleSampledPass->fIsTile = false;
+            }
+
+            drawPass = singleSampledPass;
+
+            drawPass->fBounds.join(tileBounds);
+        } else {
+            perTileDrawPasses.emplace_back(
+                    std::unique_ptr<DrawPass>(new DrawPass(target, ops, clearColor)));
+            drawPass = perTileDrawPasses.back().get();
+
+            drawPass->fBounds = tileBounds;
+
+            drawPass->fRequiresMSAA = tileState.fRequiresMSAA;
+            drawPass->fDepthStencilFlags = draws->depthStencilFlags();
+            drawPass->fIsTile = isTiled;
+        }
+
+        // TODO: Explore sorting algorithms; in all likelihood this will be mostly sorted already,
+        // so algorithms that approach O(n) in that condition may be favorable. Alternatively, could
+        // explore radix sort that is always O(n). Brief testing suggested std::sort was faster than
+        // std::stable_sort and SkTQSort on my [ml]'s Windows desktop. Also worth considering
+        // in-place vs. algorithms that require an extra O(n) storage.
+        // TODO: It's not strictly necessary, but would a stable sort be useful or just end up
+        // hiding bugs in the DrawOrder determination code?
+        std::sort(keys.begin(), keys.end());
+        DrawWriter drawWriter(&drawPass->fCommandList, bufferMgr);
+        GraphicsPipelineCache::Index lastPipeline = GraphicsPipelineCache::kInvalidIndex;
+        SkIRect lastScissor = tileBounds;
+
+        int numPrevCommands = drawPass->fCommandList.count();
+
+        SkASSERT(drawPass->fTarget->isFullyLazy() ||
+                 SkIRect::MakeSize(drawPass->fTarget->dimensions()).contains(lastScissor));
+        drawPass->fCommandList.setScissor(lastScissor);
+
+        // All large gradients pack their data into a single buffer throughout the draw pass,
+        // therefore the gradient buffer only needs to be bound once.
+        gradientBufferTracker.bindIfNeeded(&drawPass->fCommandList);
+
+        UniformTracker geometryUniformTracker(useStorageBuffers);
+        UniformTracker shadingUniformTracker(useStorageBuffers);
+
+        // TODO(b/372953722): Remove this forced binding command behavior once dst copies are always
+        // bound separately from the rest of the textures.
+        const bool rebindTexturesOnPipelineChange =
+                dstReadStrategy == DstReadStrategy::kTextureCopy;
+        // Keep track of the prior draw's PaintOrder. If the current draw requires barriers and
+        // there is no pipeline or state change, then we must compare the current and prior draw's
+        // PaintOrders to determine if the draws overlap. If they do, we must inject a flush between
+        // them such that the barrier addition and draw commands are ordered correctly.
+        CompressedPaintersOrder priorDrawPaintOrder{};
+
+        for (const SortKey& key : keys) {
+            const DrawList::Draw& draw = key.draw();
+            const RenderStep& renderStep = key.renderStep();
+
+            const bool pipelineChange = key.pipelineIndex() != lastPipeline;
+
+            const bool geomBindingChange = geometryUniformTracker.writeUniforms(
+                    geometryUniformDataCache, bufferMgr, key.geometryUniformIndex());
+            const bool shadingBindingChange = shadingUniformTracker.writeUniforms(
+                    shadingUniformDataCache, bufferMgr, key.shadingUniformIndex());
+
+            // TODO(b/372953722): The Dawn and Vulkan CommandBuffer implementations currently append
+            // any dst copy to the texture bind group/descriptor set automatically when processing a
+            // BindTexturesAndSamplers call because they use a single group to contain all textures.
+            // However, from the DrawPass POV, we can run into the scenario where two pipelines have
+            // the same textures+samplers except one requires a dst-copy and the other does not. In
+            // this case we wouldn't necessarily insert a new command when the pipeline changed and
+            // then end up with layout validation errors.
+            const bool textureBindingsChange =
+                    textureBindingTracker.setCurrentTextureBindings(key.textureBindingIndex()) ||
+                    (rebindTexturesOnPipelineChange && pipelineChange &&
+                     key.textureBindingIndex() != TextureBindingCache::kInvalidIndex);
+            auto drawScissor = draw.fDrawParams.clip().scissor();
+            drawScissor.intersect(tileBounds);
+            const SkIRect* newScissor = drawScissor != lastScissor ? &drawScissor : nullptr;
+
+            // TODO(b/393382700): Check whether a draw uses an advanced noncoherent blend mode. If
+            // so, that draw must not be grouped with draws that read from the dst texture since
+            // those requirements are mutually exclusive. We would also need to issue append an
+            // addBarrier command to the command list with BarrierType::kAdvancedNoncoherentBlend.
+            const std::optional<BarrierType> barrierToAddBeforeDraws =
+                    dstReadStrategy == DstReadStrategy::kReadFromInput && draw.readsFromDst()
+                            ? std::optional<BarrierType>(BarrierType::kReadDstFromInput)
+                            : std::nullopt;
+
+            const bool stateChange = geomBindingChange || shadingBindingChange ||
+                                     textureBindingsChange || SkToBool(newScissor);
+
+            // Update DrawWriter *before* we actually change any state so that accumulated draws
+            // from the previous state use the proper state.
+            if (pipelineChange) {
+                drawWriter.newPipelineState(renderStep.primitiveType(),
+                                            renderStep.staticDataStride(),
+                                            renderStep.appendDataStride(),
+                                            renderStep.getRenderStateFlags(),
+                                            barrierToAddBeforeDraws);
+            } else if (stateChange) {
+                drawWriter.newDynamicState();
+            } else if (barrierToAddBeforeDraws.has_value() &&
+                       priorDrawPaintOrder != draw.fDrawParams.order().paintOrder()) {
+                // Even if there is no pipeline or state change, we must consider whether a
+                // DrawPassCommand to add barriers must be inserted before any draw commands. If so,
+                // then determine if the current and prior draws overlap (ie, their PaintOrders are
+                // unequal). If so, perform a flush() to make sure the draw and add barrier commands
+                // are appended to the command list in the proper order.
+                drawWriter.flush();
+            }
+
+            // Make state changes before accumulating new draw data
+            if (pipelineChange) {
+                drawPass->fCommandList.bindGraphicsPipeline(key.pipelineIndex());
+                lastPipeline = key.pipelineIndex();
+            }
+            if (stateChange) {
+                if (geomBindingChange) {
+                    geometryUniformTracker.bindUniforms(UniformSlot::kRenderStep,
+                                                        &drawPass->fCommandList);
+                }
+                if (shadingBindingChange) {
+                    shadingUniformTracker.bindUniforms(UniformSlot::kPaint,
+                                                       &drawPass->fCommandList);
+                }
+                if (textureBindingsChange) {
+                    textureBindingTracker.bindTextures(&drawPass->fCommandList);
+                }
+                if (newScissor) {
+                    drawPass->fCommandList.setScissor(*newScissor);
+                    lastScissor = *newScissor;
+                }
+            }
+
+            uint32_t geometrySsboIndex = useStorageBuffers ? geometryUniformTracker.ssboIndex() : 0;
+            uint32_t shadingSsboIndex = useStorageBuffers ? shadingUniformTracker.ssboIndex() : 0;
+            skvx::uint2 ssboIndices = {geometrySsboIndex, shadingSsboIndex};
+            // TODO(b/415842843): Considering writing the vertices once in compute shader if the
+            // draw touch many tiles.
+            renderStep.writeVertices(&drawWriter, draw.fDrawParams, ssboIndices);
+
+            if (bufferMgr->hasMappingFailed()) {
+                SKGPU_LOG_W(
+                        "Failed to write necessary vertex/instance data for DrawPass, dropping!");
+                return false;
+            }
+
+            // Update priorDrawPaintOrder value before iterating to analyze the next draw.
+            priorDrawPaintOrder = draw.fDrawParams.order().paintOrder();
+        }
+        // Finish recording draw calls for any collected data still pending at end of the loop
+        drawWriter.flush();
+
+        auto pipelineDescs = pipelineCache.detach();
+        auto samplerDescs = textureBindingTracker.detachSamplers();
+        auto sampledTextures = textureBindingTracker.detachTextures();
+
+        TRACE_COUNTER1("skia.gpu", "# pipelines", pipelineDescs.size());
+        TRACE_COUNTER1("skia.gpu", "# textures", sampledTextures.size());
+        TRACE_COUNTER1("skia.gpu", "# commands", drawPass->fCommandList.count() - numPrevCommands);
+
+        drawPass->fPipelineDescs.move_back(pipelineDescs);
+        drawPass->fSamplerDescs.move_back(samplerDescs);
+        drawPass->fSampledTextures.move_back(sampledTextures);
+
+        return true;
+    });
+
+    if (!success) {
+        return {};
+    }
+
+    if (needClearPass || perTileDrawPasses.empty()) {
+        // Add an extra pass that will do the loadOp for the target texture without MSAA nor
+        // depth/stencil texture.
+        auto extraPass = std::unique_ptr<DrawPass>(new DrawPass(target, ops, clearColor));
+        extraPass->fBounds = tilesTracker.allTilesBounds();
+
+        perTileDrawPasses.push_back(std::move(extraPass));
+
+        // This pass will run first.
+        if (!perTileDrawPasses.empty()) {
+            std::swap(perTileDrawPasses.front(), perTileDrawPasses.back());
+        }
+    }
+
+    return perTileDrawPasses;
 }
 
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
@@ -688,9 +929,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
 
     fFullPipelines.reserve(fFullPipelines.size() + fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
-        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
-                                                                       pipelineDesc,
-                                                                       renderPassDesc);
+        auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                runtimeDict, pipelineDesc, renderPassDesc);
         if (!pipeline) {
             SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
             return false;

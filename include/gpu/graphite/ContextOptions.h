@@ -9,6 +9,7 @@
 #define skgpu_graphite_ContextOptions_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkSpan.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkMath.h"
@@ -46,6 +47,13 @@ struct SK_API ContextOptions {
      * If <= 1, Graphite will disable internal code paths that use multisampling.
      */
     uint8_t fInternalMultisampleCount = 4;
+
+    /**
+     * If set, this specifies the max width/height of MSAA textures that Graphite should use for
+     * internal draws. Graphite might have to break the drawing region into multiple tiles to
+     * satisfy the size constraint.
+     */
+    std::optional<SkISize> fInternalMultisampleDimsLimit = std::nullopt;
 
     /**
      * Will the client make sure to only ever be executing one thread that uses the Context and all
