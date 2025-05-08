@@ -16,6 +16,75 @@
       "message": "Code review comments resolved.",
       "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3d86902_c9c430a3",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-08T12:34:29Z",
+      "side": 1,
+      "message": "Do we actually need these any more ?",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 42
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e1f0a6f_941afa8e",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-08T12:34:29Z",
+      "side": 1,
+      "message": "Maybe add a helper function for this",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 89
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b467f92_e50d4ac2",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1052,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-08T12:34:29Z",
+      "side": 1,
+      "message": "origSegment",
+      "range": {
+        "startLine": 1052,
+        "startChar": 13,
+        "endLine": 1052,
+        "endChar": 23
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
