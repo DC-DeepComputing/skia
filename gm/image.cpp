@@ -39,6 +39,7 @@
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkWriteBuffer.h"
 #include "src/image/SkImage_Base.h"
+#include "tools/DecodeUtils.h"
 #include "tools/GpuToolUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
@@ -195,6 +196,69 @@ private:
     using INHERITED = skiagm::GM;
 };
 DEF_GM( return new ImageGM; )
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+class TransparentImageStressGM : public skiagm::GM {
+    void*   fBuffer;
+    size_t  fBufferSize;
+    SkSize  fSize;
+    enum {
+        W = 64,
+        H = 64,
+        RB = W * 4 + 8,
+    };
+public:
+    TransparentImageStressGM() {
+        fBufferSize = RB * H;
+        fBuffer = sk_malloc_throw(fBufferSize);
+        fSize.set(SkIntToScalar(W), SkIntToScalar(H));
+    }
+
+protected:
+    SkString getName() const override { return SkString("transparent-image"); }
+
+    SkISize getISize() override { return {512, 512}; }
+
+    void onDraw(SkCanvas* canvas) override {
+        for (int i = 0; i < 1024; ++i) {
+            canvas->drawImage(fImage.get(), 0, 0, SkSamplingOptions(), &fPaint);
+        }
+
+        // legacy CM
+        // graphite mtl w/ orig local matrix = 43.5ms using the fastest mode
+        // graphite mtl w/ new LM = 43ms ...
+        // ganesh mtl is 55ms
+
+        // srgb cm
+        // graphite mtl is 106ms ...  but it is using the slowest mode
+        // graphite mtl w/ new LM = 106ms
+        // ganesh mtl is 53ms
+
+        // Do we need an identity CS for image filter like cases where we know we are hitting hte
+        // pxiels many times and really want to elide all the conversions?
+        // in the case of a kawase blur, etc. it should be fine since it'll already be specialized
+        // into a pipelien that is including that rt effect.
+    }
+
+    void onOnceBeforeDraw() override {
+        fPaint.setColor4f({ 0.0f, 0.0f, 0.0f, 0.5f });
+        fImage = ToolUtils::GetResourceAsImage("images/mandrill_512.png")
+                          ->makeRasterImage(nullptr)
+                          ->makeColorTypeAndColorSpace(nullptr,
+                                                       kRGB_888x_SkColorType,
+                                                       SkColorSpace::MakeSRGB())
+                          ->reinterpretColorSpace(SkColorSpace::MakeSRGB()
+                                                               ->makeColorSpin()
+                                                               ->makeLinearGamma());
+
+    }
+
+private:
+    SkPaint fPaint;
+    sk_sp<SkImage> fImage;
+};
+DEF_GM( return new TransparentImageStressGM; )
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 

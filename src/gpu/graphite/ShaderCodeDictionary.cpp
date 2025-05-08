@@ -412,11 +412,20 @@ std::string GenerateSolidColorPreamble(const ShaderInfo& shaderInfo,
 std::string GenerateLocalMatrixExpression(const ShaderInfo& shaderInfo,
                                           const ShaderNode* node,
                                           const ShaderSnippet::Args& args) {
-    std::string uniform =
+    // NOTE: upper2x2 is a float2x2 packed in column major order into a float4
+    std::string upper2x2 =
             get_mangled_uniform_name(shaderInfo, node->entry()->fUniforms[0], node->keyIndex());
-    return SkSL::String::printf("(%s * %s.xy01).xy",
-                                uniform.c_str(),
-                                args.fFragCoord.c_str());
+    std::string translation =
+            get_mangled_uniform_name(shaderInfo, node->entry()->fUniforms[1], node->keyIndex());
+    // if we had a 2x2, this would be equivalent to c0*coord.x + c1*coord.y + translation
+    return SkSL::String::printf("float2x2(%s.xy, %s.zw)*%s + %s",
+                                upper2x2.c_str(),
+                                upper2x2.c_str(),
+                                args.fFragCoord.c_str(),
+                                translation.c_str());
+    // return SkSL::String::printf("(%s * %s.xy01).xy",
+    //                             upper2x2.c_str(),
+    //                             args.fFragCoord.c_str());
 }
 
 static constexpr int kNumCoordinateManipulateChildren = 1;
@@ -1158,7 +1167,9 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*name=*/"LocalMatrix",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kNone,
-            /*uniforms=*/{ { "localMatrix", SkSLType::kFloat4x4 } },
+            /*uniforms=*/{ { "upper2x2",    SkSLType::kFloat4 },
+                           { "translation", SkSLType::kFloat2 } },
+            // /*uniforms=*/{ { "localMatrix",    SkSLType::kFloat4x4 } },
             /*texturesAndSamplers=*/{},
             GenerateCoordManipulationPreamble,
             /*numChildren=*/kNumCoordinateManipulateChildren,
@@ -1169,7 +1180,7 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*name=*/"LocalMatrixShaderPersp",
             /*staticFn=*/nullptr,
             SnippetRequirementFlags::kNone,
-            /*uniforms=*/{ { "localMatrix", SkSLType::kFloat4x4 } },
+            /*uniforms=*/{ { "localMatrix", SkSLType::kFloat3x3 } },
             /*texturesAndSamplers=*/{},
             GenerateCoordManipulationPreamble,
             /*numChildren=*/kNumCoordinateManipulateChildren
