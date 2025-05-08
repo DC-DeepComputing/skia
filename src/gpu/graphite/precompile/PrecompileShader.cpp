@@ -264,6 +264,7 @@ public:
 
 private:
     friend class PrecompileYUVImageShader; // for NonAlphaOnlyDefaultColorInfos
+    friend class PrecompileYCbCrImageShader; // for NonAlphaOnlyDefaultColorInfos
 
     // In addition to the tile mode options provided by the client, we can precompile two additional
     // sampling/tiling variants: hardware-tiled and cubic sampling (which always uses the most
@@ -449,6 +450,91 @@ sk_sp<PrecompileShader> PrecompileShaders::RawImage(ImageShaderFlags shaderFlags
             { sk_make_sp<PrecompileImageShader>(newFlags,
                                                 colorInfos, tileModes,
                                                 /* raw= */true) });
+}
+
+//--------------------------------------------------------------------------------------------------
+class PrecompileYCbCrImageShader : public PrecompileShader {
+public:
+    PrecompileYCbCrImageShader(uint32_t a, uint32_t b, uint32_t c) {}
+
+private:
+    int numIntrinsicCombinations() const override {
+        return 1;
+    }
+
+    void addToKey(const KeyContext& keyContext,
+                  PaintParamsKeyBuilder* builder,
+                  PipelineDataGatherer* gatherer,
+                  int desiredCombination) const override {
+        SkASSERT(desiredCombination < this->numIntrinsicCombinations());
+
+#if 0
+        int desiredTiling = desiredCombination % fNumTilingModes;
+        desiredCombination /= fNumTilingModes;
+
+        int desiredColorInfo = desiredCombination;
+        SkASSERT(desiredColorInfo < static_cast<int>(fColorInfos.size()));
+
+        static constexpr SkSamplingOptions kDefaultCubicSampling(SkCubicResampler::Mitchell());
+        static constexpr SkSamplingOptions kDefaultSampling;
+
+        YUVImageShaderBlock::ImageData imgData(
+                fTilingModes[desiredTiling] == kCubicShaderTiled
+                                     ? kDefaultCubicSampling
+                                     : kDefaultSampling,
+                SkTileMode::kClamp, SkTileMode::kClamp,
+                /* imgSize= */ { 1, 1 },
+                /* subset= */ fTilingModes[desiredTiling] == kShaderTiled
+                                     ? SkRect::MakeEmpty()
+                                     : SkRect::MakeWH(1, 1));
+
+        static constexpr SkV4 kRedChannel{ 1.f, 0.f, 0.f, 0.f };
+        imgData.fChannelSelect[0] = kRedChannel;
+        imgData.fChannelSelect[1] = kRedChannel;
+        if (fTilingModes[desiredTiling] == kHWTiledNoSwizzle) {
+            imgData.fChannelSelect[2] = kRedChannel;
+        } else {
+            // Having a non-red channel selector forces a swizzle
+            imgData.fChannelSelect[2] = { 0.f, 1.f, 0.f, 0.f};
+        }
+        imgData.fChannelSelect[3] = kRedChannel;
+
+        imgData.fYUVtoRGBMatrix.setAll(1, 0, 0, 0, 1, 0, 0, 0, 0);
+        imgData.fYUVtoRGBTranslate = { 0, 0, 0 };
+
+        static sk_sp<SkColorSpace> srgbSpinColorSpace = sk_srgb_singleton()->makeColorSpin();
+        const SkColorInfo& colorInfo = fColorInfos[desiredColorInfo];
+
+        const Caps* caps = keyContext.caps();
+        Swizzle readSwizzle = caps->getReadSwizzle(
+                colorInfo.colorType(),
+                caps->getDefaultSampledTextureInfo(
+                        colorInfo.colorType(), Mipmapped::kNo, Protected::kNo, Renderable::kNo));
+        ColorSpaceTransformBlock::ColorSpaceTransformData colorXformData(
+                SwizzleClassToReadEnum(readSwizzle));
+
+        const SkColorSpace* dstColorSpace = fUseDstColorSpace
+                                            ? keyContext.dstColorInfo().colorSpace()
+                                            : sk_srgb_singleton();
+        colorXformData.fSteps = SkColorSpaceXformSteps(
+                colorInfo.colorSpace(), colorInfo.alphaType(),
+                dstColorSpace, colorInfo.alphaType());
+
+        Compose(keyContext, builder, gatherer,
+                /* addInnerToKey= */ [&]() -> void {
+                    YUVImageShaderBlock::AddBlock(keyContext, builder, gatherer, imgData);
+                },
+                /* addOuterToKey= */ [&]() -> void {
+                    ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer,
+                                                       colorXformData);
+                });
+#endif
+    }
+
+};
+
+sk_sp<PrecompileShader> PrecompileShaders::YCbCrImage(uint32_t a, uint32_t b, uint32_t c) {
+    return PrecompileShaders::LocalMatrix({ sk_make_sp<PrecompileYCbCrImageShader>(a, b, c) });
 }
 
 //--------------------------------------------------------------------------------------------------

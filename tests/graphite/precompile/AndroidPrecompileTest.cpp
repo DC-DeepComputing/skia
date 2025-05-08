@@ -14,10 +14,24 @@
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
+#include "include/private/base/SkTemplates.h"
+#include "src/base/SkBase64.h"
 #include <set>
+
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
 
 using namespace skgpu::graphite;
 using namespace PrecompileTestUtils;
+
+PaintOptions foo() {
+    PaintOptions paintOptions;
+
+//    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    paintOptions.setShaders({ PrecompileShaders::YCbCrImage(0, 0, 0) });
+//                                                       { &ci, 1 },
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
 
 namespace {
 
@@ -100,6 +114,11 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 25 */ { ImagePremulHWOnlySrc(),             DrawTypeFlags::kPerEdgeAAQuad,   kRGBA_1_D },
 // 50% (1/2) handles 74 - due to the w/o msaa load variants not being used
 /* 26 */ { ImagePremulHWOnlySrc(),             DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
+
+// Aiming for:
+// 26:  LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver
+// 50:  LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver
+/* 27 */ { foo(),                               kRRectAndNonAARect,             kRGBA_4_DS },
 };
 
 //
@@ -439,6 +458,42 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
     using namespace skgpu::graphite;
 
+//    size_t encodedLen = SkBase64::Encode(&keyData[currentIndex], srcDataSize, dst);
+
+    size_t expectedDstLength;
+    const char* data = "kEwAAPcAAAAAAAAA";
+//    const char* data = "kHoAAO4AAAAAAAAA";
+//    const char* data = "kHIAAPAAAAAAAAAA";
+    SkBase64::Error error = SkBase64::Decode(data, strlen(data), nullptr, &expectedDstLength);
+    if (error != SkBase64::kNoError) {
+        return;
+    }
+
+    if (expectedDstLength % 4 != 0) {
+        return;
+    }
+
+    int numInts = expectedDstLength / 4;
+    skia_private::AutoTMalloc<uint32_t> dst(numInts);
+    size_t actualDstLength;
+    error = SkBase64::Decode(data, strlen(data), dst, &actualDstLength);
+    if (error != SkBase64::kNoError || expectedDstLength != actualDstLength) {
+        return;
+    }
+
+    SkDebugf("0x%x %d %d\n", dst[0], dst[1], dst[2]);
+
+    SamplerDesc s(dst[0], dst[1], dst[2]);
+
+    SkDebugf("tm: %d %d filter: %d mipmap: %d ",
+             s.tileModeX(),
+             s.tileModeY(),
+             s.filterMode(),
+             s.mipmap());
+
+    ImmutableSamplerInfo info = s.immutableSamplerInfo();
+    SkDebugf("YCbCr conversion info: %d format: %llu\n", info.fNonFormatYcbcrConversionInfo, info.fFormat);
+
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
 
@@ -468,7 +523,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 27; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;

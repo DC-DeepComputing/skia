@@ -150,12 +150,25 @@ namespace PrecompileShaders {
     SK_API sk_sp<PrecompileShader> Image(SkSpan<const SkColorInfo> colorInfos,
                                          SkSpan<const SkTileMode> = { kAllTileModes });
 
-    // As with the above Image call, raw ImageShaders are usually created via an
+    // As with the above Image call, raw ImageShaders are usually created via a
     // SkImage::makeRawShader call. The RawImage call allows the equivalent precompilation
     // program structure to be created without needing the SkImage.
     SK_API sk_sp<PrecompileShader> RawImage(ImageShaderFlags = ImageShaderFlags::kExcludeCubic,
                                             SkSpan<const SkColorInfo> = {},
                                             SkSpan<const SkTileMode> = { kAllTileModes });
+
+    /**
+        In the main Skia API YCbCr Images are usually created by wrapping a BackendTexture.
+        Such backend textures are, in turn, created by a backend-specific entry point like:
+           BackendTextures::MakeVulkan(SkISize, const TextureInfo&, ...) or
+           BackendTextures::MakeDawn(SkISize, const TextureInfo&, ...)
+        where the TextureInfo contains additional YCbCr information. This API abstracts over
+        the various backend differences and requires the same data but more generically.
+
+
+        @return A precompile shader for a specific YCbCr image
+    */
+    SK_API sk_sp<PrecompileShader> YCbCrImage(uint32_t a, uint32_t b, uint32_t c);
 
     enum class YUVImageShaderFlags : uint16_t {
         kNone                       = 0,

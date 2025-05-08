@@ -214,7 +214,7 @@ sk_sp<Sampler> ResourceProvider::findOrCreateCompatibleSampler(const SamplerDesc
         // the sampler is immutable or not. Each backend will already have encoded any specific
         // immutable sampler details into the SamplerDesc, so there is no need to delegate to Caps
         // to create a specific key.
-        const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan();
+        const SkSpan<const uint32_t>& samplerData = samplerDesc.asSpan1();
         GraphiteResourceKey::Builder builder(&key, kType, samplerData.size());
 
         for (size_t i = 0; i < samplerData.size(); i++) {

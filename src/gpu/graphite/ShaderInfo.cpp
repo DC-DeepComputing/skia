@@ -301,7 +301,7 @@ void append_sampler_descs(const SkSpan<const uint32_t> samplerData,
         // be populated with actual immutable sampler data and then inserted.
         SamplerDesc desc{};
         size_t samplerDescLength = 1;
-        SkASSERT(desc.asSpan().size() == samplerDescLength);
+        SkASSERT(desc.asSpan1().size() == samplerDescLength);
 
         // Isolate the ImmutableSamplerInfo portion of the SamplerDesc represented by samplerData.
         // If immutableSamplerInfo is non-zero, that means we are using an immutable sampler.
