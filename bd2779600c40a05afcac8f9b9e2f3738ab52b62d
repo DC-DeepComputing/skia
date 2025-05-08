@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4aaa8071_ccb9ecd7",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-08T14:30:13Z",
+      "side": 1,
+      "message": "Yes, that’s right.",
+      "parentUuid": "d3d86902_c9c430a3",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 227,
+        "endChar": 42
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8e1f0a6f_941afa8e",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-08T12:34:29Z",
       "side": 1,
       "message": "Maybe add a helper function for this",
+      "range": {
+        "startLine": 317,
+        "startChar": 0,
+        "endLine": 320,
+        "endChar": 89
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e7c12c9e_5cbd0a64",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-08T14:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8e1f0a6f_941afa8e",
       "range": {
         "startLine": 317,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6e8c8e2_5913a5ee",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1051,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-08T14:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39f31e09_9cb61e37",
+      "range": {
+        "startLine": 1050,
+        "startChar": 0,
+        "endLine": 1051,
+        "endChar": 38
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b467f92_e50d4ac2",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-05-08T12:34:29Z",
       "side": 1,
       "message": "origSegment",
+      "range": {
+        "startLine": 1052,
+        "startChar": 13,
+        "endLine": 1052,
+        "endChar": 23
+      },
+      "revId": "bd2779600c40a05afcac8f9b9e2f3738ab52b62d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8137809_cbdf4919",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1052,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-08T14:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b467f92_e50d4ac2",
       "range": {
         "startLine": 1052,
         "startChar": 13,
