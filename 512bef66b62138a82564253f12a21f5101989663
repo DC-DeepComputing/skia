@@ -22,6 +22,30 @@
       },
       "revId": "512bef66b62138a82564253f12a21f5101989663",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dffd6337_0f6ec695",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1374,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:14:31Z",
+      "side": 1,
+      "message": "\u003e This extension should mean that in these scenarios, the driver is not doing its own work to configure the input assembler each time a pipeline is bound w/ static inputs, correct?\n\nYeap\n\n\u003e we can determine that the inputs are going to be different between pipelines very efficiently by remembering the RenderStep\n\nI took a quick look, and _some_ of the renderers have the same attributes so using step ID could lead to a few extra calls. That said, I implemented your suggestion anyway (thank you), we could eventually optimize that further with a stepID-\u003euniqueVertexSetID table to know when the layout really changes.\n\n\u003e I would also recommend trying to precompute ...\n\nDone",
+      "parentUuid": "eeb27541_2fdb433e",
+      "range": {
+        "startLine": 1341,
+        "startChar": 4,
+        "endLine": 1374,
+        "endChar": 5
+      },
+      "revId": "512bef66b62138a82564253f12a21f5101989663",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
