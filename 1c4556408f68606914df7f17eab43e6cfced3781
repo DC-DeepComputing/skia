@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "24c0ef00_2d119c1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:21:45Z",
+      "side": 1,
+      "message": "The changes from this CL to \"Make render pass handling less special\" follow my journey of understanding this code 😋\n\nThe changes are independently meaningful, but each is an incremental step to improve this code up. If you prefer, I could squash them all in one and get rid of VulkanRenderPass::Metadata in one shot.",
+      "revId": "1c4556408f68606914df7f17eab43e6cfced3781",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
