@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc86e819_fb7ca016",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-08T18:11:20Z",
+      "side": 1,
+      "message": "Both Ben \u0026 Dominik are out",
+      "revId": "756e2ece29035f4f24629c2d1aa77d13226be364",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
