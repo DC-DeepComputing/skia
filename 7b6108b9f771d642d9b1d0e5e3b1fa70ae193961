@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a064c623_65e9c9b8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:12:24Z",
+      "side": 1,
+      "message": "Done (Nicolette got to them in another change).\n\nFWIW, these were mirroring Vulkan feature names (like you would see in the spec saying \"if feature `foo` is enabled\") which is why they didn\u0027t have a prefix (totally not because I didn\u0027t realize I should add them).",
+      "parentUuid": "472872a5_6b833dd2",
+      "range": {
+        "startLine": 116,
+        "startChar": 13,
+        "endLine": 116,
+        "endChar": 25
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a0941f2f_839a55f1",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-07T14:24:58Z",
       "side": 1,
       "message": "For something this simple, I\u0027d prefer `a.fMajor \u003d\u003d b.fMajor \u0026\u0026 a.fMinor \u003d\u003d b.fMinor`",
+      "range": {
+        "startLine": 75,
+        "startChar": 0,
+        "endLine": 75,
+        "endChar": 72
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "acbf0214_a0f42a8c",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a0941f2f_839a55f1",
       "range": {
         "startLine": 75,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fa430a3_a6a66c34",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b1a0b5a_9aa0054d",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 72
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4d0ad6e_f94ba962",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "887cd475_75a7c3a7",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:12:24Z",
+      "side": 1,
+      "message": "Done, added some `static_asserts` for a quick unit test of these.",
+      "parentUuid": "c4d0ad6e_f94ba962",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 71
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "437ddba7_f23d4347",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-05-07T14:24:58Z",
       "side": 1,
       "message": "This could be `return !(a \u003c b);`",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 1
+      },
+      "revId": "7b6108b9f771d642d9b1d0e5e3b1fa70ae193961",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9352c4_9f4ee197",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:12:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "437ddba7_f23d4347",
       "range": {
         "startLine": 83,
         "startChar": 0,
