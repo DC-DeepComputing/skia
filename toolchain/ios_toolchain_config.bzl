@@ -27,7 +27,7 @@ load(
 load(":clang_layering_check.bzl", "make_layering_check_features")
 
 # The location of the created clang toolchain.
-EXTERNAL_TOOLCHAIN = "external/clang_ios"
+EXTERNAL_TOOLCHAIN = "external/+_repo_rules+clang_ios"
 
 # Root of our symlinks. These symlinks are created in download_ios_toolchain.bzl
 XCODE_IOSSDK_SYMLINK = EXTERNAL_TOOLCHAIN + "/symlinks/xcode/iOSSDK"
