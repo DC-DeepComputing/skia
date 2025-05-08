@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed8b7542_d9deb13d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-08T23:11:27Z",
+      "side": 1,
+      "message": "I would have liked to have incorporated the suggestion from http://review.skia.org/977956/comment/71c7f1ed_1a32cf61, however that still doesn\u0027t work for the reason described in the response, because `SkRuntimeEffect::usesSampleCoords()` can return false even when it sends altered coordinates to its children. The problem is this invalid assumption in SkRuntimeEffect:\nhttps://crsrc.org/c/third_party/skia/src/core/SkRuntimeEffect.cpp;l\u003d607;drc\u003df8f3792e\nthat if the number of coordinate reads and the number of child calls with passthrough coordinates are the same, we must have called all of our children with passthrough coordinates. Presumably this isn\u0027t a problem in Ganesh because we do additional analysis to determine which children actually are provided passthrough coordinates.",
+      "revId": "a0f8fbdcfe5dad32a0b35266c1a079ee782bbb73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
