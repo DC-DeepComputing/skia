@@ -16,6 +16,52 @@
       "message": "Followup from split bindings CL. Ok to review.",
       "revId": "48dde58f4cff1c0fbe0f41f0871fbbb5674cc166",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9cc961e5_1f4c8343",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-08T13:25:55Z",
+      "side": 1,
+      "message": "nit: ObjC style has the colons of the parameters all lined up.",
+      "range": {
+        "startLine": 81,
+        "startChar": 44,
+        "endLine": 81,
+        "endChar": 45
+      },
+      "revId": "48dde58f4cff1c0fbe0f41f0871fbbb5674cc166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eddeafb5_839763ab",
+        "filename": "src/gpu/graphite/mtl/MtlRenderCommandEncoder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-08T13:25:55Z",
+      "side": 1,
+      "message": "When I first suggested we remove state tracking from MtlRenderCommandEncoder, I had forgotten that MTL could just bind arbitrary buffers to indices so `setVertexBuffer` and `setFragmentBuffer` are also used for binding UBOs or SSBOs. \n\nWith the restructuring of appended data, we can be confident that if we call `setVertexBuffer` for vertex/instance data it\u0027ll have been a new buffer and we\u0027d be using the `setVertexBuffer` function and not `setVertexBufferOffset`.\n\nI believe that if \"uniform\" data is uploaded for SSBOs then we could also be confident that we wouldn\u0027t need to use `setVertexBufferOffset` or `setFragmentBufferOffset`, since we could just index into the buffer from offset 0. If we ever disabled SSBOs in the native metal backend, UBO bindings on the hand would benefit from being able to call these bufferOffset functions.\n\nBut we always enable SSBOs in the native metal backend, and if we move to using argument buffers in the future to have more parity with bind groups/descriptor sets, then it\u0027s also moot. Given that, I think we can safely also remove the state tracking from the `setFragmentBuffer` functions too.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 5
+      },
+      "revId": "48dde58f4cff1c0fbe0f41f0871fbbb5674cc166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
