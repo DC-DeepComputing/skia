@@ -151,9 +151,10 @@ static void draw_rect_as_path(const SkDrawBase& orig,
                               const SkMatrix& ctm) {
     SkDrawBase draw(orig);
     draw.fCTM = &ctm;
-    SkPath  tmp;
-    tmp.addRect(prePaintRect);
-    tmp.setFillType(SkPathFillType::kWinding);
+    SkPath tmp = SkPathBuilder()
+        .addRect(prePaintRect)
+        .setFillType(SkPathFillType::kWinding)
+        .detach();
     draw.drawPath(tmp, paint, nullptr, true);
 }
 
@@ -318,8 +319,7 @@ void SkDrawBase::drawRRect(const SkRRect& rrect, const SkPaint& paint) const {
 
 DRAW_PATH:
     // Now fall back to the default case of using a path.
-    SkPath path;
-    path.addRRect(rrect);
+    SkPath path = SkPathBuilder().addRRect(rrect).detach();
     this->drawPath(path, paint, nullptr, true);
 }
 
@@ -400,10 +400,9 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
 
     SkPath*         pathPtr = const_cast<SkPath*>(&origSrcPath);
     bool            doFill = true;
-    SkPath          tmpPathStorage;
+    SkPath          tmpPathStorage = SkPathBuilder().setIsVolatile(true).detach();
     SkPath*         tmpPath = &tmpPathStorage;
     SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
-    tmpPath->setIsVolatile(true);
 
     if (prePathMatrix) {
         if (origPaint.getPathEffect() || origPaint.getStyle() != SkPaint::kFill_Style) {
@@ -638,8 +637,8 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
                         device->drawOval(r, newPaint);
                     }
                 } else {
-                    SkPath     path;
-                    SkMatrix   preMatrix;
+                    SkPathBuilder path;
+                    SkMatrix      preMatrix;
 
                     path.addCircle(0, 0, radius);
                     for (size_t i = 0; i < count; i++) {
@@ -647,7 +646,7 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
                         // pass true for the last point, since we can modify
                         // then path then
                         path.setIsVolatile((count-1) == i);
-                        this->drawPath(path, newPaint, &preMatrix, (count-1) == i);
+                        this->drawPath(path.snapshot(), newPaint, &preMatrix, (count-1) == i);
                     }
                 }
             } else {
@@ -751,7 +750,7 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
             [[fallthrough]]; // couldn't take fast path
         case SkCanvas::kPolygon_PointMode: {
             count -= 1;
-            SkPath path;
+            SkPathBuilder path;
             SkPaint p(paint);
             p.setStyle(SkPaint::kStroke_Style);
             size_t inc = (SkCanvas::kLines_PointMode == mode) ? 2 : 1;
@@ -760,11 +759,11 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, size_t count,
                 path.moveTo(pts[i]);
                 path.lineTo(pts[i+1]);
                 if (device) {
-                    device->drawPath(path, p, true);
+                    device->drawPath(path.snapshot(), p, true);
                 } else {
-                    this->drawPath(path, p, nullptr, true);
+                    this->drawPath(path.snapshot(), p, nullptr, true);
                 }
-                path.rewind();
+                path.reset(); // TODO(borenet)
             }
             break;
         }

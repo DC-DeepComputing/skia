@@ -10,6 +10,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkMacros.h"
@@ -181,9 +182,9 @@ public:
     void cubicTo(const SkPoint&, const SkPoint&, const SkPoint&);
     void close(bool isLine) { this->finishContour(true, isLine); }
 
-    void done(SkPath* dst, bool isLine) {
+    void done(SkPathBuilder* dst, bool isLine) {
         this->finishContour(false, isLine);
-        dst->swap(fOuter);
+        *dst = fOuter;
     }
 
     SkScalar getResScale() const { return fResScale; }
@@ -1414,38 +1415,16 @@ void SkStroke::setJoin(SkPaint::Join join) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// If src==dst, then we use a tmp path to record the stroke, and then swap
-// its contents with src when we're done.
-class AutoTmpPath {
-public:
-    AutoTmpPath(const SkPath& src, SkPath** dst) : fSrc(src) {
-        if (&src == *dst) {
-            *dst = &fTmpDst;
-            fSwapWithSrc = true;
-        } else {
-            (*dst)->reset();
-            fSwapWithSrc = false;
-        }
-    }
-
-    ~AutoTmpPath() {
-        if (fSwapWithSrc) {
-            fTmpDst.swap(*const_cast<SkPath*>(&fSrc));
-        }
-    }
-
-private:
-    SkPath          fTmpDst;
-    const SkPath&   fSrc;
-    bool            fSwapWithSrc;
-};
-
 void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
+    SkPathBuilder builder;
+    strokePath(src, &builder);
+    *dst = builder.detach();
+}
+
+void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
     SkASSERT(dst);
 
     SkScalar radius = SkScalarHalf(fWidth);
-
-    AutoTmpPath tmp(src, &dst);
 
     if (radius <= 0) {
         return;
@@ -1460,7 +1439,8 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
             this->strokeRect(rect, dst, dir);
             // our answer should preserve the inverseness of the src
             if (src.isInverseFillType()) {
-                SkASSERT(!dst->isInverseFillType());
+                // TODO(borenet)
+                //SkASSERT(!dst->isInverseFillType());
                 dst->toggleInverseFillType();
             }
             return;
@@ -1528,7 +1508,7 @@ DONE:
 
     if (fDoFill && !ignoreCenter) {
         if (SkPathPriv::ComputeFirstDirection(src) == SkPathFirstDirection::kCCW) {
-            dst->reverseAddPath(src);
+            SkPathPriv::ReverseAddPath(dst, src);
         } else {
             dst->addPath(src);
         }
@@ -1556,7 +1536,8 @@ DONE:
 
     // our answer should preserve the inverseness of the src
     if (src.isInverseFillType()) {
-        SkASSERT(!dst->isInverseFillType());
+        // TODO(borenet)
+        //SkASSERT(!dst->isInverseFillType());
         dst->toggleInverseFillType();
     }
 }
@@ -1566,7 +1547,7 @@ static SkPathDirection reverse_direction(SkPathDirection dir) {
     return gOpposite[(int)dir];
 }
 
-static void addBevel(SkPath* path, const SkRect& r, const SkRect& outer, SkPathDirection dir) {
+static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer, SkPathDirection dir) {
     SkPoint pts[8];
 
     if (SkPathDirection::kCW == dir) {
@@ -1588,13 +1569,14 @@ static void addBevel(SkPath* path, const SkRect& r, const SkRect& outer, SkPathD
         pts[1].set(outer.fLeft, r.fBottom);
         pts[0].set(outer.fLeft, r.fTop);
     }
-    path->addPoly(pts, 8, true);
+    path->addPolygon(pts, 8, true);
 }
 
 void SkStroke::strokeRect(const SkRect& origRect, SkPath* dst,
                           SkPathDirection dir) const {
     SkASSERT(dst != nullptr);
-    dst->reset();
+    // TODO(borenet)
+    //dst->reset();
 
     SkScalar radius = SkScalarHalf(fWidth);
     if (radius <= 0) {
@@ -1620,15 +1602,16 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPath* dst,
         join = SkPaint::kBevel_Join;
     }
 
+    SkPathBuilder builder;
     switch (join) {
         case SkPaint::kMiter_Join:
-            dst->addRect(r, dir);
+            builder.addRect(r, dir);
             break;
         case SkPaint::kBevel_Join:
-            addBevel(dst, rect, r, dir);
+            addBevel(&builder, rect, r, dir);
             break;
         case SkPaint::kRound_Join:
-            dst->addRoundRect(r, radius, radius, dir);
+            builder.addRRect(SkRRect::MakeRectXY(r, radius, radius), dir);
             break;
         default:
             break;
@@ -1637,6 +1620,7 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPath* dst,
     if (fWidth < std::min(rw, rh) && !fDoFill) {
         r = rect;
         r.inset(radius, radius);
-        dst->addRect(r, reverse_direction(dir));
+        builder.addRect(r, reverse_direction(dir));
     }
+    *dst = builder.detach();
 }

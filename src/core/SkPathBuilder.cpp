@@ -54,12 +54,14 @@ SkPathBuilder& SkPathBuilder::reset() {
     fLastMoveIndex = -1;        // illegal
     fNeedsMoveVerb = true;
 
+    fConvexity = SkPathConvexity::kUnknown;
+    fFirstDirection = SkPathFirstDirection::kUnknown;
+
     return *this;
 }
 
 SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->reset().setFillType(src.getFillType());
-
     for (auto [verb, pts, w] : SkPathPriv::Iterate(src)) {
         switch (verb) {
             case SkPathVerb::kMove:  this->moveTo(pts[0]); break;
@@ -70,6 +72,8 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
             case SkPathVerb::kClose: this->close(); break;
         }
     }
+    this->setConvexity(src.getConvexity());
+    this->setFirstDirection(src.getFirstDirection());
     return *this;
 }
 
@@ -84,13 +88,10 @@ SkRect SkPathBuilder::computeBounds() const {
     return bounds;
 }
 
-/*
- *  Some old behavior in SkPath -- should we keep it?
- *
- *  After each edit (i.e. adding a verb)
-        this->setConvexityType(SkPathConvexity::kUnknown);
-        this->setFirstDirection(SkPathPriv::kUnknown_FirstDirection);
- */
+SkPathBuilder& SkPathBuilder::dirtyAfterEdit() {
+    this->setConvexity(SkPathConvexity::kUnknown);
+    this->setFirstDirection(SkPathFirstDirection::kUnknown);
+}
 
 SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
     // only needed while SkPath is mutable
@@ -101,7 +102,7 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
 
     fLastMovePoint = pt;
     fNeedsMoveVerb = false;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::lineTo(SkPoint pt) {
@@ -111,7 +112,7 @@ SkPathBuilder& SkPathBuilder::lineTo(SkPoint pt) {
     fVerbs.push_back((uint8_t)SkPathVerb::kLine);
 
     fSegmentMask |= kLine_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::quadTo(SkPoint pt1, SkPoint pt2) {
@@ -123,7 +124,7 @@ SkPathBuilder& SkPathBuilder::quadTo(SkPoint pt1, SkPoint pt2) {
     fVerbs.push_back((uint8_t)SkPathVerb::kQuad);
 
     fSegmentMask |= kQuad_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::conicTo(SkPoint pt1, SkPoint pt2, SkScalar w) {
@@ -136,7 +137,7 @@ SkPathBuilder& SkPathBuilder::conicTo(SkPoint pt1, SkPoint pt2, SkScalar w) {
     fConicWeights.push_back(w);
 
     fSegmentMask |= kConic_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::cubicTo(SkPoint pt1, SkPoint pt2, SkPoint pt3) {
@@ -149,7 +150,7 @@ SkPathBuilder& SkPathBuilder::cubicTo(SkPoint pt1, SkPoint pt2, SkPoint pt3) {
     fVerbs.push_back((uint8_t)SkPathVerb::kCubic);
 
     fSegmentMask |= kCubic_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::close() {
@@ -192,8 +193,8 @@ SkPathBuilder& SkPathBuilder::rCubicTo(SkPoint p1, SkPoint p2, SkPoint p3) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
-    auto convexity = SkPathConvexity::kUnknown;
-    SkPathFirstDirection dir = SkPathFirstDirection::kUnknown;
+    auto convexity = fConvexity;
+    SkPathFirstDirection dir = fFirstDirection;
 
     switch (fIsA) {
         case kIsA_Oval:
@@ -865,4 +866,103 @@ SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
         }
     }
     return *this;
+}
+
+bool SkPathBuilder::isEmpty() const {
+    return 0 == this->countVerbs();
+};
+
+bool SkPathBuilder::getLastPt(SkPoint* lastPt) const {
+    int count = this->fPts.size();
+    if (count > 0) {
+        if (lastPt) {
+            *lastPt = this->fPts.at(count - 1);
+        }
+        return true;
+    }
+    if (lastPt) {
+        lastPt -> set(0, 0);
+    }
+    return false;
+};
+
+
+void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
+    int count = fPts.size();
+    if (count == 0) {
+        this->moveTo(x, y);
+    } else {
+        fPts.at(count-1).set(x, y);
+    }
+}
+
+static void subdivide_cubic_to(SkPathBuilder* builder, const SkPoint pts[4],
+                               int level = 2) {
+    if (--level >= 0) {
+        SkPoint tmp[7];
+
+        SkChopCubicAtHalf(pts, tmp);
+        subdivide_cubic_to(builder, &tmp[0], level);
+        subdivide_cubic_to(builder, &tmp[3], level);
+    } else {
+        builder->cubicTo(pts[1], pts[2], pts[3]);
+    }
+}
+
+static void transform_dir_and_start(const SkMatrix& matrix, bool isRRect, bool* isCCW, int* start) {
+    int inStart = *start;
+    int rm = 0;
+    if (isRRect) {
+        // Degenerate rrect indices to oval indices and remember the remainder.
+        // Ovals have one index per side whereas rrects have two.
+        rm = inStart & 0b1;
+        inStart /= 2;
+    }
+    // Is the antidiagonal non-zero (otherwise the diagonal is zero)
+    int antiDiag;
+    // Is the non-zero value in the top row (either kMScaleX or kMSkewX) negative
+    int topNeg;
+    // Are the two non-zero diagonal or antidiagonal values the same sign.
+    int sameSign;
+    if (matrix.get(SkMatrix::kMScaleX) != 0) {
+        antiDiag = 0b00;
+        if (matrix.get(SkMatrix::kMScaleX) > 0) {
+            topNeg = 0b00;
+            sameSign = matrix.get(SkMatrix::kMScaleY) > 0 ? 0b01 : 0b00;
+        } else {
+            topNeg = 0b10;
+            sameSign = matrix.get(SkMatrix::kMScaleY) > 0 ? 0b00 : 0b01;
+        }
+    } else {
+        antiDiag = 0b01;
+        if (matrix.get(SkMatrix::kMSkewX) > 0) {
+            topNeg = 0b00;
+            sameSign = matrix.get(SkMatrix::kMSkewY) > 0 ? 0b01 : 0b00;
+        } else {
+            topNeg = 0b10;
+            sameSign = matrix.get(SkMatrix::kMSkewY) > 0 ? 0b00 : 0b01;
+        }
+    }
+    if (sameSign != antiDiag) {
+        // This is a rotation (and maybe scale). The direction is unchanged.
+        // Trust me on the start computation (or draw yourself some pictures)
+        *start = (inStart + 4 - (topNeg | antiDiag)) % 4;
+        SkASSERT(*start < 4);
+        if (isRRect) {
+            *start = 2 * *start + rm;
+        }
+    } else {
+        // This is a mirror (and maybe scale). The direction is reversed.
+        *isCCW = !*isCCW;
+        // Trust me on the start computation (or draw yourself some pictures)
+        *start = (6 + (topNeg | antiDiag) - inStart) % 4;
+        SkASSERT(*start < 4);
+        if (isRRect) {
+            *start = 2 * *start + (rm ? 0 : 1);
+        }
+    }
+}
+
+SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+    *this = this->snapshot().transform(matrix, pc);
 }

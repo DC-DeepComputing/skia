@@ -36,7 +36,7 @@ enum class SkPathFirstDirection;
 struct SkPathVerbAnalysis;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/9000)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -143,13 +143,6 @@ public:
         return *this;
     }
 
-    /** Returns a copy of this path in the current state, and resets the path to empty. */
-    SkPath detach() {
-        SkPath result = *this;
-        this->reset();
-        return result;
-    }
-
     /** Constructs a copy of an existing path.
         SkPath assignment makes two paths identical by value. Internally, assignment
         shares pointer values. The underlying verb array, SkPoint array and weights
@@ -229,26 +222,12 @@ public:
     */
     SkPathFillType getFillType() const { return (SkPathFillType)fFillType; }
 
-    /** Sets FillType, the rule used to fill SkPath. While there is no check
-        that ft is legal, values outside of FillType are not supported.
-    */
-    void setFillType(SkPathFillType ft) {
-        fFillType = SkToU8(ft);
-    }
-
     /** Returns if FillType describes area outside SkPath geometry. The inverse fill area
         extends indefinitely.
 
         @return  true if FillType is kInverseWinding or kInverseEvenOdd
     */
     bool isInverseFillType() const { return SkPathFillType_IsInverse(this->getFillType()); }
-
-    /** Replaces FillType with its inverse. The inverse of FillType describes the area
-        unmodified by the original FillType.
-    */
-    void toggleInverseFillType() {
-        fFillType ^= 2;
-    }
 
     /** Returns true if the path is convex. If necessary, it will first compute the convexity.
      */
@@ -291,29 +270,6 @@ public:
     */
     bool isArc(SkArc* arc) const;
 
-    /** Sets SkPath to its initial state.
-        Removes verb array, SkPoint array, and weights, and sets FillType to kWinding.
-        Internal storage associated with SkPath is released.
-
-        @return  reference to SkPath
-
-        example: https://fiddle.skia.org/c/@Path_reset
-    */
-    SkPath& reset();
-
-    /** Sets SkPath to its initial state, preserving internal storage.
-        Removes verb array, SkPoint array, and weights, and sets FillType to kWinding.
-        Internal storage associated with SkPath is retained.
-
-        Use rewind() instead of reset() if SkPath storage will be reused and performance
-        is critical.
-
-        @return  reference to SkPath
-
-        example: https://fiddle.skia.org/c/@Path_rewind
-    */
-    SkPath& rewind();
-
     /** Returns if SkPath is empty.
         Empty SkPath may have FillType but has no SkPoint, SkPath::Verb, or conic weight.
         SkPath() constructs empty SkPath; reset() and rewind() make SkPath empty.
@@ -349,27 +305,6 @@ public:
     */
     bool isVolatile() const {
         return SkToBool(fIsVolatile);
-    }
-
-    /** Specifies whether SkPath is volatile; whether it will be altered or discarded
-        by the caller after it is drawn. SkPath by default have volatile set false, allowing
-        Skia to attach a cache of data which speeds repeated drawing.
-
-        Mark temporary paths, discarded or modified after use, as volatile
-        to inform Skia that the path need not be cached.
-
-        Mark animating SkPath volatile to improve performance.
-        Mark unchanging SkPath non-volatile to improve repeated rendering.
-
-        raster surface SkPath draws are affected by volatile for some shadows.
-        GPU surface SkPath draws are affected by volatile for some shadows and concave geometries.
-
-        @param isVolatile  true if caller will alter SkPath after drawing
-        @return            reference to SkPath
-    */
-    SkPath& setIsVolatile(bool isVolatile) {
-        fIsVolatile = isVolatile;
-        return *this;
     }
 
     /** Tests if line between SkPoint pair is degenerate.
@@ -488,20 +423,6 @@ public:
     */
     size_t approximateBytesUsed() const;
 
-    /** Exchanges the verb array, SkPoint array, weights, and SkPath::FillType with other.
-        Cached state is also exchanged. swap() internally exchanges pointers, so
-        it is lightweight and does not allocate memory.
-
-        swap() usage has largely been replaced by operator=(const SkPath& path).
-        SkPath do not copy their content on assignment until they are written to,
-        making assignment as efficient as swap().
-
-        @param other  SkPath exchanged by value
-
-        example: https://fiddle.skia.org/c/@Path_swap
-    */
-    void swap(SkPath& other);
-
     /** Returns minimum and maximum axes values of SkPoint array.
         Returns (0, 0, 0, 0) if SkPath contains no points. Returned bounds width and height may
         be larger or smaller than area affected when SkPath is drawn.
@@ -560,6 +481,10 @@ public:
     */
     bool conservativelyContainsRect(const SkRect& rect) const;
 
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+private:
+#endif
+
     /** Grows SkPath verb array, SkPoint array, and conics to contain additional space.
         May improve performance and use less memory by
         reducing the number and size of allocations when creating SkPath.
@@ -571,10 +496,6 @@ public:
         example: https://fiddle.skia.org/c/@Path_incReserve
     */
     void incReserve(int extraPtCount, int extraVerbCount = 0, int extraConicCount = 0);
-
-#ifdef SK_HIDE_PATH_EDIT_METHODS
-private:
-#endif
 
     /** Adds beginning of contour at SkPoint (x, y).
 
@@ -1023,6 +944,85 @@ private:
     */
     SkPath& close();
 
+    /** Returns a copy of this path in the current state, and resets the path to empty. */
+    SkPath detach() {
+        SkPath result = *this;
+        this->reset();
+        return result;
+    }
+
+    /** Exchanges the verb array, SkPoint array, weights, and SkPath::FillType with other.
+        Cached state is also exchanged. swap() internally exchanges pointers, so
+        it is lightweight and does not allocate memory.
+
+        swap() usage has largely been replaced by operator=(const SkPath& path).
+        SkPath do not copy their content on assignment until they are written to,
+        making assignment as efficient as swap().
+
+        @param other  SkPath exchanged by value
+
+        example: https://fiddle.skia.org/c/@Path_swap
+    */
+    void swap(SkPath& other);
+
+    /** Sets SkPath to its initial state.
+        Removes verb array, SkPoint array, and weights, and sets FillType to kWinding.
+        Internal storage associated with SkPath is released.
+
+        @return  reference to SkPath
+
+        example: https://fiddle.skia.org/c/@Path_reset
+    */
+    SkPath& reset();
+
+    /** Sets SkPath to its initial state, preserving internal storage.
+        Removes verb array, SkPoint array, and weights, and sets FillType to kWinding.
+        Internal storage associated with SkPath is retained.
+
+        Use rewind() instead of reset() if SkPath storage will be reused and performance
+        is critical.
+
+        @return  reference to SkPath
+
+        example: https://fiddle.skia.org/c/@Path_rewind
+    */
+    SkPath& rewind();
+
+    /** Sets FillType, the rule used to fill SkPath. While there is no check
+        that ft is legal, values outside of FillType are not supported.
+    */
+    void setFillType(SkPathFillType ft) {
+        fFillType = SkToU8(ft);
+    }
+
+    /** Replaces FillType with its inverse. The inverse of FillType describes the area
+        unmodified by the original FillType.
+    */
+    void toggleInverseFillType() {
+        fFillType ^= 2;
+    }
+
+    /** Specifies whether SkPath is volatile; whether it will be altered or discarded
+        by the caller after it is drawn. SkPath by default have volatile set false, allowing
+        Skia to attach a cache of data which speeds repeated drawing.
+
+        Mark temporary paths, discarded or modified after use, as volatile
+        to inform Skia that the path need not be cached.
+
+        Mark animating SkPath volatile to improve performance.
+        Mark unchanging SkPath non-volatile to improve repeated rendering.
+
+        raster surface SkPath draws are affected by volatile for some shadows.
+        GPU surface SkPath draws are affected by volatile for some shadows and concave geometries.
+
+        @param isVolatile  true if caller will alter SkPath after drawing
+        @return            reference to SkPath
+    */
+    SkPath& setIsVolatile(bool isVolatile) {
+        fIsVolatile = isVolatile;
+        return *this;
+    }
+
 #ifdef SK_HIDE_PATH_EDIT_METHODS
 public:
 #endif
@@ -1264,9 +1264,18 @@ private:
         return this->addPoly(list.begin(), SkToInt(list.size()), close);
     }
 
-#ifdef SK_HIDE_PATH_EDIT_METHODS
-public:
-#endif
+    /** Transforms verb array, SkPoint array, and weight by matrix.
+        transform may change verbs and increase their number.
+        SkPath is replaced by transformed data.
+
+        @param matrix  SkMatrix to apply to SkPath
+        @param pc      whether to apply perspective clipping
+    */
+    SkPath& transform(const SkMatrix& matrix,
+                      SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) {
+        this->transform(matrix, this, pc);
+        return *this;
+    }
 
     /** \enum SkPath::AddPathMode
         AddPathMode chooses how addPath() appends. Adding one SkPath to another can extend
@@ -1341,17 +1350,6 @@ public:
     */
     SkPath& reverseAddPath(const SkPath& src);
 
-    /** Offsets SkPoint array by (dx, dy). Offset SkPath replaces dst.
-        If dst is nullptr, SkPath is replaced by offset data.
-
-        @param dx   offset added to SkPoint array x-axis coordinates
-        @param dy   offset added to SkPoint array y-axis coordinates
-        @param dst  overwritten, translated copy of SkPath; may be nullptr
-
-        example: https://fiddle.skia.org/c/@Path_offset
-    */
-    void offset(SkScalar dx, SkScalar dy, SkPath* dst) const;
-
     /** Offsets SkPoint array by (dx, dy). SkPath is replaced by offset data.
 
         @param dx  offset added to SkPoint array x-axis coordinates
@@ -1361,54 +1359,6 @@ public:
         this->offset(dx, dy, this);
         return *this;
     }
-
-    /** Transforms verb array, SkPoint array, and weight by matrix.
-        transform may change verbs and increase their number.
-        Transformed SkPath replaces dst; if dst is nullptr, original data
-        is replaced.
-
-        @param matrix  SkMatrix to apply to SkPath
-        @param dst     overwritten, transformed copy of SkPath; may be nullptr
-        @param pc      whether to apply perspective clipping
-
-        example: https://fiddle.skia.org/c/@Path_transform
-    */
-    void transform(const SkMatrix& matrix, SkPath* dst,
-                   SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
-
-    /** Transforms verb array, SkPoint array, and weight by matrix.
-        transform may change verbs and increase their number.
-        SkPath is replaced by transformed data.
-
-        @param matrix  SkMatrix to apply to SkPath
-        @param pc      whether to apply perspective clipping
-    */
-    SkPath& transform(const SkMatrix& matrix,
-                   SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) {
-        this->transform(matrix, this, pc);
-        return *this;
-    }
-
-    SkPath makeTransform(const SkMatrix& m,
-                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const {
-        SkPath dst;
-        this->transform(m, &dst, pc);
-        return dst;
-    }
-
-    SkPath makeScale(SkScalar sx, SkScalar sy) {
-        return this->makeTransform(SkMatrix::Scale(sx, sy), SkApplyPerspectiveClip::kNo);
-    }
-
-    /** Returns last point on SkPath in lastPt. Returns false if SkPoint array is empty,
-        storing (0, 0) if lastPt is not nullptr.
-
-        @param lastPt  storage for final SkPoint in SkPoint array; may be nullptr
-        @return        true if SkPoint array contains one or more SkPoint
-
-        example: https://fiddle.skia.org/c/@Path_getLastPt
-    */
-    bool getLastPt(SkPoint* lastPt) const;
 
     /** Sets last point to (x, y). If SkPoint array is empty, append kMove_Verb to
         verb array and append (x, y) to SkPoint array.
@@ -1428,6 +1378,69 @@ public:
     void setLastPt(const SkPoint& p) {
         this->setLastPt(p.fX, p.fY);
     }
+
+    /** Initializes SkPath from buffer of size length. Returns zero if the buffer is
+        data is inconsistent, or the length is too small.
+
+        Reads SkPath::FillType, verb array, SkPoint array, conic weight, and
+        additionally reads computed information like SkPath::Convexity and bounds.
+
+        Used only in concert with writeToMemory();
+        the format used for SkPath in memory is not guaranteed.
+
+        @param buffer  storage for SkPath
+        @param length  buffer size in bytes; must be multiple of 4
+        @return        number of bytes read, or zero on failure
+
+        example: https://fiddle.skia.org/c/@Path_readFromMemory
+    */
+    size_t readFromMemory(const void* buffer, size_t length);
+
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+public:
+#endif
+
+    /** Offsets SkPoint array by (dx, dy). Offset SkPath replaces dst.
+        If dst is nullptr, SkPath is replaced by offset data.
+
+        @param dx   offset added to SkPoint array x-axis coordinates
+        @param dy   offset added to SkPoint array y-axis coordinates
+        @param dst  overwritten, translated copy of SkPath; may be nullptr
+
+        example: https://fiddle.skia.org/c/@Path_offset
+    */
+    void offset(SkScalar dx, SkScalar dy, SkPath* dst) const;
+
+    /** Transforms verb array, SkPoint array, and weight by matrix.
+        transform may change verbs and increase their number.
+        Transformed SkPath replaces dst; if dst is nullptr, original data
+        is replaced.
+
+        @param matrix  SkMatrix to apply to SkPath
+        @param dst     overwritten, transformed copy of SkPath; may be nullptr
+        @param pc      whether to apply perspective clipping
+
+        example: https://fiddle.skia.org/c/@Path_transform
+    */
+    void transform(const SkMatrix& matrix, SkPath* dst,
+                   SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
+
+    SkPath makeTransform(const SkMatrix& m,
+                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
+
+    SkPath makeScale(SkScalar sx, SkScalar sy) const {
+        return this->makeTransform(SkMatrix::Scale(sx, sy), SkApplyPerspectiveClip::kNo);
+    }
+
+    /** Returns last point on SkPath in lastPt. Returns false if SkPoint array is empty,
+        storing (0, 0) if lastPt is not nullptr.
+
+        @param lastPt  storage for final SkPoint in SkPoint array; may be nullptr
+        @return        true if SkPoint array contains one or more SkPoint
+
+        example: https://fiddle.skia.org/c/@Path_getLastPt
+    */
+    bool getLastPt(SkPoint* lastPt) const;
 
     /** \enum SkPath::SegmentMask
         SegmentMask constants correspond to each drawing Verb type in SkPath; for
@@ -1759,23 +1772,6 @@ public:
         example: https://fiddle.skia.org/c/@Path_serialize
     */
     sk_sp<SkData> serialize() const;
-
-    /** Initializes SkPath from buffer of size length. Returns zero if the buffer is
-        data is inconsistent, or the length is too small.
-
-        Reads SkPath::FillType, verb array, SkPoint array, conic weight, and
-        additionally reads computed information like SkPath::Convexity and bounds.
-
-        Used only in concert with writeToMemory();
-        the format used for SkPath in memory is not guaranteed.
-
-        @param buffer  storage for SkPath
-        @param length  buffer size in bytes; must be multiple of 4
-        @return        number of bytes read, or zero on failure
-
-        example: https://fiddle.skia.org/c/@Path_readFromMemory
-    */
-    size_t readFromMemory(const void* buffer, size_t length);
 
     /** (See Skia bug 1762.)
         Returns a non-zero, globally unique value. A different value is returned

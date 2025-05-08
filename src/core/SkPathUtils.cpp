@@ -9,7 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkMatrixPriv.h"
@@ -29,7 +29,6 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
 bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
                        const SkRect* cullRect, const SkMatrix& ctm) {
     if (!src.isFinite()) {
-        dst->reset();
         return false;
     }
 
