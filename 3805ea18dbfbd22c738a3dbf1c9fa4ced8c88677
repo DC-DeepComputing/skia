@@ -70,6 +70,30 @@
       },
       "revId": "3805ea18dbfbd22c738a3dbf1c9fa4ced8c88677",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8ff935e_cb2bf349",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:11:57Z",
+      "side": 1,
+      "message": "Moved it up, but I don\u0027t promise I\u0027d notice clang-format undoing it at a later point in time 😄",
+      "parentUuid": "bc292fbd_81b8ba65",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 175,
+        "endChar": 21
+      },
+      "revId": "3805ea18dbfbd22c738a3dbf1c9fa4ced8c88677",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
