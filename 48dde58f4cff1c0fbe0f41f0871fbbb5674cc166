@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "301810bc_bced959d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-08T02:25:34Z",
+      "side": 1,
+      "message": "Followup from split bindings CL. Ok to review.",
+      "revId": "48dde58f4cff1c0fbe0f41f0871fbbb5674cc166",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
