@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bdc35ff1_03d807c8",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:23:47Z",
+      "side": 1,
+      "message": "Maybe a clearer `isPowerOfTwo` helper exists somewhere I didn\u0027t notice?",
+      "revId": "38d44a92ad56ae8bfdda1956b2e0b8308a16be71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
