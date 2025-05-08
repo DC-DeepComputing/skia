@@ -167,7 +167,6 @@ public:
         SkASSERT(children.size() == (size_t) fEntry->fNumChildren);
 
         // Propagate requirement flags from children towards root.
-        const bool isRuntimeEffect = codeID >= kBuiltInCodeSnippetIDCount;
         const bool isCompose = codeID == (int) BuiltInCodeSnippetID::kCompose ||
                                codeID == (int) BuiltInCodeSnippetID::kBlendCompose;
         for (const ShaderNode* child : children) {
@@ -179,7 +178,7 @@ public:
             // Runtime effects invoke children with explicit parameters so those requirements never
             // need to propagate to the root. Similarly, compose only needs to propagate the
             // variable parameters for the inner children.
-            if (isRuntimeEffect || (isCompose && child == children.back())) {
+            if (this->isRuntimeEffect() || (isCompose && child == children.back())) {
                 mask |= SnippetRequirementFlags::kLocalCoords |
                         SnippetRequirementFlags::kPriorStageOutput |
                         SnippetRequirementFlags::kBlenderDstColor;
@@ -199,12 +198,14 @@ public:
     std::string getExpressionVarying() const;
 
     int32_t codeSnippetId() const { return fCodeID; }
+    bool isRuntimeEffect() const { return fCodeID >= kBuiltInCodeSnippetIDCount; }
     int32_t keyIndex() const { return fKeyIndex; }
     const ShaderSnippet* entry() const { return fEntry; }
 
     SkEnumBitMask<SnippetRequirementFlags> requiredFlags() const { return fRequiredFlags; }
     void setLiftExpressionFlag() { fRequiredFlags |= SnippetRequirementFlags::kLiftExpression; }
     void setOmitExpressionFlag() { fRequiredFlags |= SnippetRequirementFlags::kOmitExpression; }
+    void unsetLocalCoordsFlag() { fRequiredFlags &= ~SnippetRequirementFlags::kLocalCoords; }
 
     int numChildren() const { return fEntry->fNumChildren; }
     SkSpan<ShaderNode*> children() { return fChildren; }

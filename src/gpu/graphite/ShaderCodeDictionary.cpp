@@ -744,11 +744,14 @@ ShaderSnippet ShaderCodeDictionary::convertRuntimeEffect(const SkRuntimeEffect* 
                                                          const char* name) {
     SkEnumBitMask<SnippetRequirementFlags> snippetFlags = SnippetRequirementFlags::kNone;
     if (effect->allowShader()) {
-        // TODO(b/412621191) SkRuntimeEffect::usesSampleCoords() can't be used to restrict this
-        // because it returns false when the only use is to pass the coord unmodified to a child.
-        // When children can refer to interpolated varyings directly in this case, we can refine the
-        // flags.
+        // TODO(b/412621191) Ideally we would have a way to tell exactly which children of a runtime
+        // shader are sampled with modified coords, or whether coordinates are required at all. For
+        // now we assume all runtime shaders need coordinates, and if any children are sampled with
+        // modified coords, we assume they all are.
         snippetFlags |= SnippetRequirementFlags::kLocalCoords;
+        if (SkRuntimeEffectPriv::AllSampleUsagesArePassThrough(*effect)) {
+            snippetFlags |= SnippetRequirementFlags::kPassthroughLocalCoords;
+        }
     } else if (effect->allowColorFilter()) {
         snippetFlags |= SnippetRequirementFlags::kPriorStageOutput;
     } else if (effect->allowBlender()) {
