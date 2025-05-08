@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "007d547d_0140eab0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-08T03:34:55Z",
+      "side": 1,
+      "message": "If you\u0027re worried about the GENERAL layout, ask me on chat for some unreleased information 😊\n\nFWIW, this change is needed both to simplify the next change, and also for an upcoming switch to dynamic rendering (where this initial/final/subpass layout) logic looks very different.",
+      "revId": "2289e8aaf6f0d310a70817979fabba6293f06cb3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
