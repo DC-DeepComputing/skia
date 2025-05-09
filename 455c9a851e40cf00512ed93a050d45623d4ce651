@@ -51,6 +51,24 @@
       "parentUuid": "a38c5352_79a17fb3",
       "revId": "455c9a851e40cf00512ed93a050d45623d4ce651",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4958b8f_770decf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4012184
+      },
+      "writtenOn": "2025-05-09T08:14:35Z",
+      "side": 1,
+      "message": "\u003e There are few other cases when we use SkFont: placeholders, struts and empty text.\n\u003e It\u0027s probably not so important (not sure about struts) but I would rather keep them in sync, too.\n\nI have pushed a small addition that adds setEdging/setSubpixel/setHinting to placeholder. For instance, before, the edging/hinting/subpixel was not set for it, so it was probably off for this case already. For the other cases you mention, they were not set before, and as strut doesn\u0027t use textstyle directly, but the ParagraphStyle has it, so not sure it is worth it to add it to strut. It is already confusing that some properties on strut can also be set via ParagraphStyle and it is unclear today what is overriding or not between strut and paragraph+textstyle.",
+      "parentUuid": "ead3956f_24913de6",
+      "revId": "455c9a851e40cf00512ed93a050d45623d4ce651",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
