@@ -194,8 +194,9 @@ public:
                       SkStrokeRec* rec,
                       const SkRect* cullR,
                       const SkMatrix& ctm) const final {
-        SkASSERT(src.countPoints() == 2);
-        const SkPoint pts[2] = {src.getPoint(0), src.getPoint(1)};
+        const SkPath srcSnap = src.snapshot();
+        SkASSERT(srcSnap.countPoints() == 2);
+        const SkPoint pts[2] = {srcSnap.getPoint(0), srcSnap.getPoint(1)};
 
         SkMatrix invCtm;
         if (!ctm.invert(&invCtm)) {
@@ -215,11 +216,13 @@ public:
         }
         n = invCtm.mapVector(mappedN.fX, mappedN.fY);
 
-        dst->moveTo(pts[0] + n);
-        dst->lineTo(pts[1] + n);
-        dst->lineTo(pts[1] - n);
-        dst->lineTo(pts[0] - n);
-        dst->close();
+        *dst = SkPathBuilder()
+            .moveTo(pts[0] + n)
+            .lineTo(pts[1] + n)
+            .lineTo(pts[1] - n)
+            .lineTo(pts[0] - n)
+            .close()
+            .detach();
 
         rec->setFillStyle();
 
@@ -259,7 +262,7 @@ protected:
         const float pxInflate = 0.5f;
         sk_sp<SkPathEffect> pathEffect(new StrokeLineInflated(strokeWidth, pxInflate));
 
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(100, 100);
         path.lineTo(200, 200);
 
@@ -268,11 +271,11 @@ protected:
         paint.setAntiAlias(true);
         paint.setColor(SkColorSetA(SK_ColorBLUE, 0xff));
         paint.setPathEffect(pathEffect);
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.snapshot(), paint);
         canvas->save();
         canvas->translate(150, 0);
         canvas->scale(2.5, 0.5f);
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.snapshot(), paint);
         canvas->restore();
 
         // Draw the regular stroked version on top in green.
@@ -281,11 +284,11 @@ protected:
         paint.setStyle(SkPaint::kStroke_Style);
         paint.setStrokeWidth(strokeWidth);
         paint.setColor(SkColorSetA(SK_ColorGREEN, 0xff));
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.snapshot(), paint);
         canvas->save();
         canvas->translate(150, 0);
         canvas->scale(2.5, 0.5f);
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.snapshot(), paint);
         canvas->restore();
     }
 

@@ -71,6 +71,7 @@ public:
         Begin the segment with a moveTo if startWithMoveTo is true
     */
     bool getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo);
+    bool getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo);
 
     /** Return true if the current contour is closed()
     */
