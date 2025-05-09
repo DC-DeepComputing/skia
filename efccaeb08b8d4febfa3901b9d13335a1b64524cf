@@ -34,6 +34,23 @@
       "parentUuid": "3391c3a4_b9547bda",
       "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f0d7fef_b72cf0c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-09T17:17:36Z",
+      "side": 1,
+      "message": "This is an edge case. We\u0027re not planning to revert as this CL addresses a lot of known issues, but if you have the time/interest to find a fix it would be appreciated.",
+      "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
