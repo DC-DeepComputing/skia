@@ -385,9 +385,9 @@ void Device::drawEdgeAAImage(const SkImage* image,
         GrStyledShape shape;
         if (dstClip) {
             // Represent it as an SkPath formed from the dstClip
-            SkPath path;
-            path.addPoly(dstClip, 4, true);
-            shape = GrStyledShape(path);
+            SkPathBuilder path;
+            path.addPolygon(dstClip, 4, true);
+            shape = GrStyledShape(path.snapshot());
         } else {
             shape = GrStyledShape(dst);
         }

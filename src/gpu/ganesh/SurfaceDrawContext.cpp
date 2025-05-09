@@ -1332,11 +1332,11 @@ void SurfaceDrawContext::drawRegion(const GrClip* clip,
     }
     bool complexStyle = !style.isSimpleFill();
     if (complexStyle || GrAA::kYes == aa) {
-        SkPath path;
+        SkPathBuilder path;
         region.getBoundaryPath(&path);
         path.setIsVolatile(true);
 
-        return this->drawPath(clip, std::move(paint), aa, viewMatrix, path, style);
+        return this->drawPath(clip, std::move(paint), aa, viewMatrix, path.detach(), style);
     }
 
     GrAAType aaType = (this->numSamples() > 1) ? GrAAType::kMSAA : GrAAType::kNone;
