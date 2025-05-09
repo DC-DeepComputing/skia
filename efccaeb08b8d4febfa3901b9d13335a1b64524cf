@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3391c3a4_b9547bda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-09T15:40:25Z",
+      "side": 1,
+      "message": "This CL has fixed a number of fuzzer bugs. However, the following path is now failing:\n\npath.setFillType(SkPathFillType::kWinding);\npath.moveTo(SkBits2Float(0xd29a3460), SkBits2Float(0xd1ac9004));  // -3.31151835e+11f, -9.26438195e+10f\npath.conicTo(SkBits2Float(0x39333037), SkBits2Float(0x20879840), SkBits2Float(0x39333037), SkBits2Float(0x20879840), SkBits2Float(0x3f3504f3));  // 0.000170887317f, 2.29706402e-19f, 0.000170887317f, 2.29706402e-19f, 0.707106769f\npath.conicTo(SkBits2Float(0x39333037), SkBits2Float(0x20879840), SkBits2Float(0xd29a3460), SkBits2Float(0xd1ac9004), SkBits2Float(0x3f3504f3));  // 0.000170887317f, 2.29706402e-19f, -3.31151835e+11f, -9.26438195e+10f, 0.707106769f\npath.conicTo(SkBits2Float(0xd31a3460), SkBits2Float(0xd22c9004), SkBits2Float(0xd31a3460), SkBits2Float(0xd22c9004), SkBits2Float(0x3f3504f3));  // -6.6230367e+11f, -1.85287639e+11f, -6.6230367e+11f, -1.85287639e+11f, 0.707106769f\npath.conicTo(SkBits2Float(0xd31a3460), SkBits2Float(0xd22c9004), SkBits2Float(0xd29a3460), SkBits2Float(0xd1ac9004), SkBits2Float(0x3f3504f3));  // -6.6230367e+11f, -1.85287639e+11f, -3.31151835e+11f, -9.26438195e+10f, 0.707106769f\npath.close();\npath.moveTo(SkBits2Float(0x39333037), SkBits2Float(0x20877a35));  // 0.000170887317f, 2.29507594e-19f\npath.cubicTo(SkBits2Float(0x4df5b11b), SkBits2Float(0x4d09787c), SkBits2Float(0x39333037), SkBits2Float(0x20879840), SkBits2Float(0xd54d684a), SkBits2Float(0xd465dc6c));  // 515253088, 144148416, 0.000170887317f, 2.29706402e-19f, -1.41154876e+13f, -3.9489823e+12f",
+      "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
