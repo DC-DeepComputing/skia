@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf6d6f9_5d380b15",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-09T14:53:26Z",
+      "side": 1,
+      "message": "Just to be clear the change from PS1 to PS2 is equivalent to inserting ` \u003d false` right here. The idea is that `modified` should generally start out false and anything that modifies the path in an \"noticeable way\" (like fake bold, stroking, etc) should set it to `true`. Because of this general principle `generatePathImpl` never sets it to `false`, so it should be initialized here.",
+      "range": {
+        "startLine": 538,
+        "startChar": 25,
+        "endLine": 538,
+        "endChar": 26
+      },
+      "revId": "8d1ed58b04c9213d6efbb9a7c47749046c793e5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
