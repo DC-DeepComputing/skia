@@ -8,6 +8,7 @@
 #ifndef SkTypeface_Fontations_priv_DEFINED
 #define SkTypeface_Fontations_priv_DEFINED
 
+#include "include/codec/SkCodec.h"
 #include "include/core/SkFontParameters.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkSpan.h"
@@ -187,6 +188,7 @@ private:
     SkTypeface_Fontations(sk_sp<SkData> fontData,
                           const SkFontStyle& style,
                           uint32_t ttcIndex,
+    SkCodecs::MakeFromStreamCallback decodePngCallback,
                           rust::Box<fontations_ffi::BridgeFontRef>&& fontRef,
                           rust::Box<fontations_ffi::BridgeMappingIndex>&& mappingIndex,
                           rust::Box<fontations_ffi::BridgeNormalizedCoords>&& normalizedCoords,
@@ -208,8 +210,8 @@ public:
 
     static constexpr SkTypeface::FactoryId FactoryId = SkSetFourByteTag('f', 'n', 't', 'a');
 
-    static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData, const SkFontArguments&);
-    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&);
+    static sk_sp<SkTypeface> MakeFromData(sk_sp<SkData> fontData, const SkFontArguments&, SkCodecs::MakeFromStreamCallback);
+    static sk_sp<SkTypeface> MakeFromStream(std::unique_ptr<SkStreamAsset>, const SkFontArguments&, SkCodecs::MakeFromStreamCallback);
 
 protected:
     std::unique_ptr<SkStreamAsset> onOpenStream(int* ttcIndex) const override;
@@ -243,6 +245,8 @@ private:
     sk_sp<SkData> fFontData;
     // Incoming ttc index requested when this typeface was instantiated from data.
     uint32_t fTtcIndex = 0;
+    // Dependency injection point for picking a PNG decoder.
+    const SkCodecs::MakeFromStreamCallback fDecodePngCallback = nullptr;
     // fBridgeFontRef accesses the data in fFontData. fFontData needs to be kept around for the
     // lifetime of fBridgeFontRef to safely request parsed data.
     rust::Box<fontations_ffi::BridgeFontRef> fBridgeFontRef;

@@ -7,7 +7,6 @@
 #include "include/ports/SkTypeface_fontations.h"
 
 #include "include/codec/SkCodec.h"
-#include "include/codec/SkPngDecoder.h"
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkData.h"
@@ -23,6 +22,9 @@
 #include "src/core/SkFontPriv.h"
 #include "src/ports/SkTypeface_fontations_priv.h"
 #include "src/ports/fontations/src/skpath_bridge.h"
+
+// TODO(https://crbug.com/414823091): Remove this `#include`.
+#include "include/codec/SkPngDecoder.h"
 
 namespace {
 
@@ -94,16 +96,36 @@ bool isAxisAligned(const SkScalerContextRec& rec) {
                                   bothZero(rec.fPost2x2[0][0], rec.fPost2x2[1][1]));
 }
 
+SK_API std::unique_ptr<SkCodec> DecodePng(
+        SkCodecs::MakeFromStreamCallback decodePngCallback,
+        rust::Slice<const uint8_t> pngSlice) {
+    sk_sp<SkData> data = SkData::MakeWithoutCopy(pngSlice.data(), pngSlice.size());
+    std::unique_ptr<SkStream> stream = SkMemoryStream::Make(std::move(data));
+
+    // TODO(https://crbug.com/414823091): Remove this fallback + remove direct
+    // dependency from `SkTypeface_Fontations.cpp` to `SkPngDecoder.h`.
+    if (decodePngCallback == nullptr) {
+        decodePngCallback = SkPngDecoder::Decode;
+    }
+
+    return decodePngCallback(
+        std::move(stream),
+        /* SkCodec::Result* = */ nullptr,
+        /* DecodeContext = */ nullptr);
+}
+
 }  // namespace
 
 sk_sp<SkTypeface> SkTypeface_Make_Fontations(std::unique_ptr<SkStreamAsset> fontData,
-                                             const SkFontArguments& args) {
-    return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args);
+                                             const SkFontArguments& args,
+                                             SkCodecs::MakeFromStreamCallback decodePngCallback) {
+    return SkTypeface_Fontations::MakeFromStream(std::move(fontData), args, decodePngCallback);
 }
 
 sk_sp<SkTypeface> SkTypeface_Make_Fontations(sk_sp<SkData> fontData,
-                                             const SkFontArguments& args) {
-    return SkTypeface_Fontations::MakeFromData(std::move(fontData), args);
+                                             const SkFontArguments& args,
+                                             SkCodecs::MakeFromStreamCallback decodePngCallback) {
+    return SkTypeface_Fontations::MakeFromData(std::move(fontData), args, decodePngCallback);
 }
 
 static_assert(
@@ -118,6 +140,7 @@ SkTypeface_Fontations::SkTypeface_Fontations(
         sk_sp<SkData> fontData,
         const SkFontStyle& style,
         uint32_t ttcIndex,
+        SkCodecs::MakeFromStreamCallback decodePngCallback,
         rust::Box<fontations_ffi::BridgeFontRef>&& fontRef,
         rust::Box<fontations_ffi::BridgeMappingIndex>&& mappingIndex,
         rust::Box<fontations_ffi::BridgeNormalizedCoords>&& normalizedCoords,
@@ -127,6 +150,7 @@ SkTypeface_Fontations::SkTypeface_Fontations(
         : SkTypeface(style, true)
         , fFontData(std::move(fontData))
         , fTtcIndex(ttcIndex)
+        , fDecodePngCallback(decodePngCallback)
         , fBridgeFontRef(std::move(fontRef))
         , fMappingIndex(std::move(mappingIndex))
         , fBridgeNormalizedCoords(std::move(normalizedCoords))
@@ -135,12 +159,14 @@ SkTypeface_Fontations::SkTypeface_Fontations(
         , fPalette(std::move(palette)) {}
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromStream(std::unique_ptr<SkStreamAsset> stream,
-                                                        const SkFontArguments& args) {
-    return MakeFromData(streamToData(stream), args);
+                                                        const SkFontArguments& args,
+                                             SkCodecs::MakeFromStreamCallback decodePngCallback) {
+    return MakeFromData(streamToData(stream), args, decodePngCallback);
 }
 
 sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
-                                                      const SkFontArguments& args) {
+                                                      const SkFontArguments& args,
+                                             SkCodecs::MakeFromStreamCallback decodePngCallback) {
     uint32_t ttcIndex = args.getCollectionIndex() & 0xFFFF;
     rust::Box<fontations_ffi::BridgeFontRef> bridgeFontRef = make_bridge_font_ref(data, ttcIndex);
     if (!fontations_ffi::font_ref_is_valid(*bridgeFontRef)) {
@@ -162,12 +188,12 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
                 fontations_ffi::coordinates_for_shifted_named_instance_index(
                         *bridgeFontRef,
                         args.getCollectionIndex(),
-                        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate>());
+                        rust::Slice<fontations_ffi::SkiaDesignCoordinate>());
         concatenatedCoords.reset(
                 new SkFontArguments::VariationPosition::Coordinate
                         [numNamedInstanceCoords + variationPosition.coordinateCount]);
 
-        rust::cxxbridge1::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
+        rust::Slice<fontations_ffi::SkiaDesignCoordinate> targetSlice(
                 reinterpret_cast<fontations_ffi::SkiaDesignCoordinate*>(concatenatedCoords.get()),
                 numNamedInstanceCoords);
         size_t retrievedNamedInstanceCoords =
@@ -208,6 +234,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::MakeFromData(sk_sp<SkData> data,
     return sk_sp<SkTypeface>(new SkTypeface_Fontations(data,
                                                        style,
                                                        ttcIndex,
+                                                       decodePngCallback,
                                                        std::move(bridgeFontRef),
                                                        std::move(mappingIndex),
                                                        std::move(normalizedCoords),
@@ -344,7 +371,8 @@ public:
     SkFontationsScalerContext(const SkTypeface_Fontations& realTypeface,
                               const SkScalerContextEffects& effects,
                               const SkDescriptor* desc,
-                              SkTypeface& proxyTypeface)
+                              SkTypeface& proxyTypeface,
+                              SkCodecs::MakeFromStreamCallback decodePngCallback)
             : SkScalerContext(proxyTypeface, effects, desc) // proxyTypeface owns the realTypeface
             , fBridgeFontRef(realTypeface.getBridgeFontRef())
             , fBridgeNormalizedCoords(realTypeface.getBridgeNormalizedCoords())
@@ -352,7 +380,8 @@ public:
             , fGlyphStyles(realTypeface.getGlyphStyles())
             , fMappingIndex(realTypeface.getMappingIndex())
             , fPalette(realTypeface.getPalette())
-            , fHintingInstance(fontations_ffi::no_hinting_instance()) {
+            , fHintingInstance(fontations_ffi::no_hinting_instance())
+            , fDecodePngCallback(decodePngCallback) {
         fRec.computeMatrices(
                 SkScalerContextRec::PreMatrixScale::kVertical, &fScale, &fRemainingMatrix);
 
@@ -607,9 +636,9 @@ protected:
             mx.neverRequestPath = true;
             mx.extraBits = ScalerContextBits::BITMAP;
 
-            rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
+            rust::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
                     fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID(), fScale.y());
-            rust::cxxbridge1::Slice<const uint8_t> png_data =
+            rust::Slice<const uint8_t> png_data =
                     fontations_ffi::png_data(*bitmap_glyph);
 
             if (png_data.empty()) {
@@ -619,8 +648,7 @@ protected:
             const fontations_ffi::BitmapMetrics bitmapMetrics =
                     fontations_ffi::bitmap_metrics(*bitmap_glyph);
 
-            std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
-                    SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
+            std::unique_ptr<SkCodec> codec = DecodePng(fDecodePngCallback, png_data);
             if (!codec) {
                 return mx;
             }
@@ -680,14 +708,12 @@ protected:
 
         canvas.translate(-glyph.left(), -glyph.top());
 
-        rust::cxxbridge1::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
+        rust::Box<fontations_ffi::BridgeBitmapGlyph> bitmap_glyph =
                 fontations_ffi::bitmap_glyph(fBridgeFontRef, glyph.getGlyphID(), fScale.y());
-        rust::cxxbridge1::Slice<const uint8_t> png_data = fontations_ffi::png_data(*bitmap_glyph);
+        rust::Slice<const uint8_t> png_data = fontations_ffi::png_data(*bitmap_glyph);
         SkASSERT(png_data.size());
 
-        std::unique_ptr<SkCodec> codec = SkPngDecoder::Decode(
-                SkData::MakeWithoutCopy(png_data.data(), png_data.size()), nullptr);
-
+        std::unique_ptr<SkCodec> codec = DecodePng(fDecodePngCallback, png_data);
         if (!codec) {
             return;
         }
@@ -916,6 +942,9 @@ private:
     rust::Vec<uint8_t> fPathVerbs;
     rust::Vec<fontations_ffi::FfiPoint> fPathPoints;
 
+    // Dependency injection point for picking a PNG decoder.
+    const SkCodecs::MakeFromStreamCallback fDecodePngCallback = nullptr;
+
     friend class sk_fontations::ColorPainter;
 };
 
@@ -953,11 +982,11 @@ sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args
     fusedArgs.setVariationDesignPosition({fusedDesignPosition.get(), SkToInt(numAxes)});
     fusedArgs.setPalette(args.getPalette());
 
-    rust::cxxbridge1::Box<fontations_ffi::BridgeNormalizedCoords> normalized_args =
+    rust::Box<fontations_ffi::BridgeNormalizedCoords> normalized_args =
             make_normalized_coords(*fBridgeFontRef, fusedArgs.getVariationDesignPosition());
 
     if (!fontations_ffi::normalized_coords_equal(*normalized_args, *fBridgeNormalizedCoords)) {
-        return MakeFromData(fFontData, fusedArgs);
+        return MakeFromData(fFontData, fusedArgs, fDecodePngCallback);
     }
 
     // TODO(crbug.com/skia/330149870): Palette differences are not fused, see DWrite backend impl.
@@ -969,7 +998,7 @@ sk_sp<SkTypeface> SkTypeface_Fontations::onMakeClone(const SkFontArguments& args
 
     if (fPalette.size() != newPalette.size() ||
         memcmp(fPalette.data(), newPalette.data(), fPalette.size() * sizeof(fPalette[0]))) {
-        return MakeFromData(fFontData, fusedArgs);
+        return MakeFromData(fFontData, fusedArgs, fDecodePngCallback);
     }
 
     return sk_ref_sp(this);
@@ -988,7 +1017,8 @@ std::unique_ptr<SkScalerContext> SkTypeface_Fontations::onCreateScalerContextAsP
             *this,
             effects,
             desc,
-            proxyTypeface ? *proxyTypeface : *const_cast<SkTypeface_Fontations*>(this));
+            proxyTypeface ? *proxyTypeface : *const_cast<SkTypeface_Fontations*>(this),
+            fDecodePngCallback);
 }
 
 std::unique_ptr<SkAdvancedTypefaceMetrics> SkTypeface_Fontations::onGetAdvancedMetrics() const {
