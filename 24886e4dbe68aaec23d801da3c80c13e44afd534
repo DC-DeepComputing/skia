@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac22fb14_3513c7c8",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 19
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-05-09T22:45:07Z",
+      "side": 1,
+      "message": "Oh, yeah looks like Jim\u0027s CL was on ToT when I started working on this patch, but got reverted sometime in the middle. I\u0027ve made the change to `sample_image_subset` to match what we\u0027re doing with the HW YUV shaders.",
+      "parentUuid": "9a7f4f75_801f22de",
+      "range": {
+        "startLine": 319,
+        "startChar": 21,
+        "endLine": 319,
+        "endChar": 94
+      },
+      "revId": "24886e4dbe68aaec23d801da3c80c13e44afd534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0e7004ed_b042cc6a",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-09T02:17:10Z",
       "side": 1,
       "message": "This should be ceil to round up on the right/bottom boundary (and in the other function version)",
+      "range": {
+        "startLine": 585,
+        "startChar": 42,
+        "endLine": 585,
+        "endChar": 47
+      },
+      "revId": "24886e4dbe68aaec23d801da3c80c13e44afd534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8987063d_47e01483",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 19
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-05-09T22:45:07Z",
+      "side": 1,
+      "message": "Doh!",
+      "parentUuid": "0e7004ed_b042cc6a",
       "range": {
         "startLine": 585,
         "startChar": 42,
