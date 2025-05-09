@@ -51,6 +51,23 @@
       "message": "This is an edge case. We\u0027re not planning to revert as this CL addresses a lot of known issues, but if you have the time/interest to find a fix it would be appreciated.",
       "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1624a9f1_43735da6",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-09T17:54:51Z",
+      "side": 1,
+      "message": "After this change `Test-Android-Clang-AndroidOne-GPU-Mali400MP2-arm-Debug-All-Android` and `Test-Android-Clang-JioNext-GPU-Adreno308-arm-Debug-All-Android` are hitting this assert when running `glesmsaa4 svg  desk_motionmark_paths.svg`.",
+      "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
