@@ -14,6 +14,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
@@ -314,7 +315,7 @@ PathOpSubmitter::submitDraws(SkCanvas* canvas, SkPoint drawOrigin, const SkPaint
 
             SkPath deviceOutline;
             idOrPath.fPath.transform(pathMatrix, &deviceOutline);
-            deviceOutline.setIsVolatile(true);
+            deviceOutline = SkPathBuilder(deviceOutline).setIsVolatile(true).detach();
             canvas->drawPath(deviceOutline, runPaint);
         }
     }

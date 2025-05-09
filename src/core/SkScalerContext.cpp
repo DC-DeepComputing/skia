@@ -798,12 +798,12 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
         SkFixed dy = glyphID.getSubYFixed();
         if (dx | dy) {
             pathModified = true;
-            path.offset(SkFixedToScalar(dx), SkFixedToScalar(dy));
+            path = SkPathBuilder(path).offset(SkFixedToScalar(dx), SkFixedToScalar(dy)).detach();
         }
     }
 
     if (fRec.fFrameWidth < 0 && fPathEffect == nullptr) {
-        devPath.swap(path);
+        devPath = path.snapshot();
     } else {
         pathModified = true; // It could still end up the same, but it's probably going to change.
 
@@ -817,7 +817,8 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
 
         fRec.getMatrixFrom2x2(&matrix);
         if (!matrix.invert(&inverse)) {
-            glyph.setPath(alloc, &devPath, hairline, pathModified);
+            SkPath tmp = devPath.snapshot();
+            glyph.setPath(alloc, &tmp, hairline, pathModified);
         }
         path.transform(inverse, &localPath);
         // now localPath is only affected by the paint settings, and not the canvas matrix
@@ -837,14 +838,14 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
         if (fPathEffect) {
             SkPath effectPath;
             if (fPathEffect->filterPath(&effectPath, localPath, &rec, nullptr, matrix)) {
-                localPath.swap(effectPath);
+                localPath = SkPath(effectPath);
             }
         }
 
         if (rec.needToApply()) {
             SkPath strokePath;
             if (rec.applyToPath(&strokePath, localPath)) {
-                localPath.swap(strokePath);
+                localPath = SkPath(strokePath);
             }
         }
 
@@ -1320,7 +1321,7 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
         }
         void generateImage(const SkGlyph&, void*) override {}
         bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override {
-            path->reset();
+            *path = SkPath();
             return false;
         }
         void generateFontMetrics(SkFontMetrics* metrics) override {

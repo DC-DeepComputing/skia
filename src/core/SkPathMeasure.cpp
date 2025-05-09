@@ -46,6 +46,16 @@ bool SkPathMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlags f
 }
 
 bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo) {
+    if (!fContour) {
+        return false;
+    }
+    SkPathBuilder builder;
+    bool rv = this->getSegment(startD, stopD, &builder, startWithMoveTo);
+    *dst = builder.detach();
+    return rv;
+}
+
+bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo) {
     return fContour && fContour->getSegment(startD, stopD, dst, startWithMoveTo);
 }
 

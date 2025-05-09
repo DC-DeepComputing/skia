@@ -54,12 +54,14 @@ SkPathBuilder& SkPathBuilder::reset() {
     fLastMoveIndex = -1;        // illegal
     fNeedsMoveVerb = true;
 
+    fConvexity = SkPathConvexity::kUnknown;
+    fFirstDirection = SkPathFirstDirection::kUnknown;
+
     return *this;
 }
 
 SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->reset().setFillType(src.getFillType());
-
     for (auto [verb, pts, w] : SkPathPriv::Iterate(src)) {
         switch (verb) {
             case SkPathVerb::kMove:  this->moveTo(pts[0]); break;
@@ -70,6 +72,8 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
             case SkPathVerb::kClose: this->close(); break;
         }
     }
+    this->setConvexity(src.getConvexity());
+    this->setFirstDirection(src.getFirstDirection());
     return *this;
 }
 
@@ -84,13 +88,11 @@ SkRect SkPathBuilder::computeBounds() const {
     return bounds;
 }
 
-/*
- *  Some old behavior in SkPath -- should we keep it?
- *
- *  After each edit (i.e. adding a verb)
-        this->setConvexityType(SkPathConvexity::kUnknown);
-        this->setFirstDirection(SkPathPriv::kUnknown_FirstDirection);
- */
+SkPathBuilder& SkPathBuilder::dirtyAfterEdit() {
+    this->setConvexity(SkPathConvexity::kUnknown);
+    this->setFirstDirection(SkPathFirstDirection::kUnknown);
+    return *this;
+}
 
 SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
     // only needed while SkPath is mutable
@@ -101,7 +103,7 @@ SkPathBuilder& SkPathBuilder::moveTo(SkPoint pt) {
 
     fLastMovePoint = pt;
     fNeedsMoveVerb = false;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::lineTo(SkPoint pt) {
@@ -111,7 +113,7 @@ SkPathBuilder& SkPathBuilder::lineTo(SkPoint pt) {
     fVerbs.push_back((uint8_t)SkPathVerb::kLine);
 
     fSegmentMask |= kLine_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::quadTo(SkPoint pt1, SkPoint pt2) {
@@ -123,7 +125,7 @@ SkPathBuilder& SkPathBuilder::quadTo(SkPoint pt1, SkPoint pt2) {
     fVerbs.push_back((uint8_t)SkPathVerb::kQuad);
 
     fSegmentMask |= kQuad_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::conicTo(SkPoint pt1, SkPoint pt2, SkScalar w) {
@@ -136,7 +138,7 @@ SkPathBuilder& SkPathBuilder::conicTo(SkPoint pt1, SkPoint pt2, SkScalar w) {
     fConicWeights.push_back(w);
 
     fSegmentMask |= kConic_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::cubicTo(SkPoint pt1, SkPoint pt2, SkPoint pt3) {
@@ -149,7 +151,7 @@ SkPathBuilder& SkPathBuilder::cubicTo(SkPoint pt1, SkPoint pt2, SkPoint pt3) {
     fVerbs.push_back((uint8_t)SkPathVerb::kCubic);
 
     fSegmentMask |= kCubic_SkPathSegmentMask;
-    return *this;
+    return this->dirtyAfterEdit();
 }
 
 SkPathBuilder& SkPathBuilder::close() {
@@ -192,8 +194,8 @@ SkPathBuilder& SkPathBuilder::rCubicTo(SkPoint p1, SkPoint p2, SkPoint p3) {
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
-    auto convexity = SkPathConvexity::kUnknown;
-    SkPathFirstDirection dir = SkPathFirstDirection::kUnknown;
+    auto convexity = fConvexity;
+    SkPathFirstDirection dir = fFirstDirection;
 
     switch (fIsA) {
         case kIsA_Oval:
@@ -865,4 +867,59 @@ SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
         }
     }
     return *this;
+}
+
+SkPathBuilder& SkPathBuilder::reverseAddPath(const SkPath& src) {
+    return this->privateReverseAddPath(src);
+}
+
+bool SkPathBuilder::isEmpty() const {
+    return 0 == this->countVerbs();
+};
+
+bool SkPathBuilder::getLastPt(SkPoint* lastPt) const {
+    int count = this->fPts.size();
+    if (count > 0) {
+        if (lastPt) {
+            *lastPt = this->fPts.at(count - 1);
+        }
+        return true;
+    }
+    if (lastPt) {
+        lastPt -> set(0, 0);
+    }
+    return false;
+};
+
+void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
+    int count = fPts.size();
+    if (count == 0) {
+        this->moveTo(x, y);
+    } else {
+        fPts.at(count-1).set(x, y);
+    }
+}
+
+SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+    *this = this->snapshot().transform(matrix, pc);
+    return *this;
+}
+
+int SkPathBuilder::countPoints() const {
+    return fPts.size();
+}
+
+bool SkPathBuilder::isZeroLengthSincePoint(int startPtIndex) const {
+    int count = fPts.size() - startPtIndex;
+    if (count < 2) {
+        return true;
+    }
+    const SkPoint* pts = fPts.begin() + startPtIndex;
+    const SkPoint& first = *pts;
+    for (int index = 1; index < count; ++index) {
+        if (first != pts[index]) {
+            return false;
+        }
+    }
+    return true;
 }

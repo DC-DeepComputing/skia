@@ -41,6 +41,8 @@ public:
 
     SkPathBuilder& setFillType(SkPathFillType ft) { fFillType = ft; return *this; }
     SkPathBuilder& setIsVolatile(bool isVolatile) { fIsVolatile = isVolatile; return *this; }
+    SkPathBuilder& setConvexity(SkPathConvexity convexity) { fConvexity = convexity; return *this; }
+    SkPathBuilder& setFirstDirection(SkPathFirstDirection firstDirection ) { fFirstDirection = firstDirection; return *this; }
 
     SkPathBuilder& reset();
 
@@ -222,10 +224,24 @@ public:
 
     SkPathBuilder& offset(SkScalar dx, SkScalar dy);
 
+    SkPathBuilder& transform(const SkMatrix& matrix,
+                             SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes);
+
     SkPathBuilder& toggleInverseFillType() {
         fFillType = (SkPathFillType)((unsigned)fFillType ^ 2);
         return *this;
     }
+
+    SkPathBuilder& reverseAddPath(const SkPath&);
+
+    bool isEmpty() const;
+    bool isZeroLengthSincePoint(int startPtIndex) const;
+    bool getLastPt(SkPoint* lastPt) const;
+    void setLastPt(SkScalar x, SkScalar y);
+
+    int countPoints() const;
+
+    bool isInverseFillType() const { return SkPathFillType_IsInverse(fFillType); }
 
 private:
     SkPathRef::PointsArray fPts;
@@ -239,6 +255,9 @@ private:
     SkPoint     fLastMovePoint;
     int         fLastMoveIndex; // only needed until SkPath is immutable
     bool        fNeedsMoveVerb;
+
+    SkPathConvexity fConvexity;
+    SkPathFirstDirection fFirstDirection;
 
     enum IsA {
         kIsA_JustMoves,     // we only have 0 or more moves
@@ -259,6 +278,8 @@ private:
             this->moveTo(fLastMovePoint);
         }
     }
+
+    SkPathBuilder& dirtyAfterEdit();
 
     SkPath make(sk_sp<SkPathRef>) const;
 
