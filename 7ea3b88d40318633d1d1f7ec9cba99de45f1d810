@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b520707_d3cae372",
+        "filename": "include/ports/SkTypeface_fontations.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-09T16:41:47Z",
+      "side": 1,
+      "message": "I\u0027d probably have it take a SkCodecs::Decoder instead of just the callback. Decoder is the slightly more API-ish version",
+      "range": {
+        "startLine": 23,
+        "startChar": 14,
+        "endLine": 23,
+        "endChar": 36
+      },
+      "revId": "7ea3b88d40318633d1d1f7ec9cba99de45f1d810",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
