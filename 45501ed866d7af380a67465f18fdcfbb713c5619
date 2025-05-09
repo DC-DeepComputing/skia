@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4a96b8ea_470660ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-09T02:17:10Z",
+      "side": 1,
+      "message": "With the changes in PS 19, the remaining pixel diffs are able to be explained as follows:\n- The extensive diffs in the radeon hardware is actually a red herring. I noticed that it included the reference image rows and it turns out that the reference image is created by explicitly flattening the base YUV[A] image and then rendering that RGBA image. Since we changed the YUV[A] shaders, the diffs are actually occurring from the flattening draw, and then being propagated into the final rendering for the GM.\n- These draws (and the 1st/2nd columns for most blocks) had been the slow YUV image and now are the HW yuv image path. The M1 jobs show that the interpolation and interior doesn\u0027t have any diffs; the fact that switching shaders on radeon is likely that driver doing extensive or sloppy optimizations.\n- The cubic YUV shader is only used when the scale \u003e 1, so the middle block row\u0027s 3rd column. For s\u003d1 and \u003c1, the 3rd column actually uses mipmapped rendering, which also now maps to the HW yuva shader so it\u0027s reasonable to see some change there.\n- The significant color change in the 1st column of the subset mode (most obviously seen when looking at M1 jobs): https://gold.skia.org/detail?grouping\u003dname%3Dimage_from_yuv_images%26source_type%3Dgm\u0026digest\u003d617880c3223a25213e1095fb02a7aab0\u0026changelist_id\u003d985696\u0026crs\u003dgerrit is fixed by switching the right/bottom UV subset to use ceil, which I separately commented on, but I tested locally and confirmed it fixes the issue.\n- There are imperceptible pixel diffs on the top/left edges of the 2nd column of the subset mode on M1 hardware. This is actually an improvement over the regular yuv shader. The regular YUV shader should match in the clamp subset it calculates for UV (adding/subtracting `linearFilterUVInset` as a vec2), but it actually applies .x to the Top/Left and .y to the Bot/Right.\n- This was fixed in https://skia-review.googlesource.com/c/skia/+/850517, but that got reverted due to layout test rebaselines being required and it looks like it was never relanded.\n\nSo if we fix the ceil issue in the HW shader, and may as well fix the regular YUV subset to match as well, I think all the diffs are explainable and not to worry about. It\u0027s likely we\u0027ll have to stage this or do a manual chrome roll to handle the rebaselines, which is why I think we also fix the regular YUV shader at the same time.",
+      "parentUuid": "9ea03e76_1a149400",
+      "revId": "45501ed866d7af380a67465f18fdcfbb713c5619",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f72cc944_e7cf8385",
         "filename": "src/gpu/graphite/KeyHelpers.cpp",
         "patchSetId": 18

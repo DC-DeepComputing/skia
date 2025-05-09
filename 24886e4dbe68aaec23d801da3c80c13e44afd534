@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa5dd229_ea5d87d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-09T02:17:10Z",
+      "side": 1,
+      "message": "Did some sleuthing and should be good to go with 2 tiny changes.",
+      "revId": "24886e4dbe68aaec23d801da3c80c13e44afd534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a7f4f75_801f22de",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 19
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-09T02:17:10Z",
+      "side": 1,
+      "message": "This was fixed to be `float4(subset.xy + linearFilterInset, subset.zw - linearFilterInset)` in https://skia-review.googlesource.com/c/skia/+/850517 but was reverted for rebaseline reasons in https://skia-review.googlesource.com/c/skia/+/850521 and never relanded.\n\nIf we bring that fix into this CL as well, we\u0027ll be able to rebaseline everything together and the regular YUV shader\u0027s subsetting logic will then be consistent with the updated HW yuv inset logic.",
+      "range": {
+        "startLine": 319,
+        "startChar": 21,
+        "endLine": 319,
+        "endChar": 94
+      },
+      "revId": "24886e4dbe68aaec23d801da3c80c13e44afd534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e7004ed_b042cc6a",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 19
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-09T02:17:10Z",
+      "side": 1,
+      "message": "This should be ceil to round up on the right/bottom boundary (and in the other function version)",
+      "range": {
+        "startLine": 585,
+        "startChar": 42,
+        "endLine": 585,
+        "endChar": 47
+      },
+      "revId": "24886e4dbe68aaec23d801da3c80c13e44afd534",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
