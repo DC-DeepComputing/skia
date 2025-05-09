@@ -16,6 +16,24 @@
       "message": "I would have liked to have incorporated the suggestion from http://review.skia.org/977956/comment/71c7f1ed_1a32cf61, however that still doesn\u0027t work for the reason described in the response, because `SkRuntimeEffect::usesSampleCoords()` can return false even when it sends altered coordinates to its children. The problem is this invalid assumption in SkRuntimeEffect:\nhttps://crsrc.org/c/third_party/skia/src/core/SkRuntimeEffect.cpp;l\u003d607;drc\u003df8f3792e\nthat if the number of coordinate reads and the number of child calls with passthrough coordinates are the same, we must have called all of our children with passthrough coordinates. Presumably this isn\u0027t a problem in Ganesh because we do additional analysis to determine which children actually are provided passthrough coordinates.",
       "revId": "a0f8fbdcfe5dad32a0b35266c1a079ee782bbb73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1e076d4_12ec1e4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-09T02:33:31Z",
+      "side": 1,
+      "message": "I haven\u0027t reviewed this yet, but I went back to that comment to figure out how it worked in Ganesh again.\n\nGanesh\u0027s fragment processors have two possible flags that get set at creation: whether or not it uses the `coords` variable directly, and whether or not a child uses the `coords`.  So when it uses a \"passthrough\" call to evaluate its child shader, it doesn\u0027t use the coords directly, but it sees that its child might and then is able to bubble up that the local coord varying is still needed.\n\nBut there is actually a separate other set of processing in SkRuntimeEffect, which stores the `fSampleUsages` for each child. This aggregates how the child shaders are evaluated and tracks if they are passthrough or explicit, or a matrix transform, etc.  The matrix transform \"usage\" isn\u0027t something that is determined automatically, but is a special mode when composing `GrMatrixEffect` fragment processors. This is roughly equivalent with LocalMatrix special interaction with its lift expression.\n\nRuntimeEffects only are able to either determine a eval call is explicit or passthrough, but that should be enough for us to look at how to adjust the flags and lifting state of a node, too.  The sneaky thing was it wasn\u0027t exposed as part of its API, but friendship just let Ganesh code get at the sample usages when it was creating a `GrSkSLFP` (GrFragmentProcessor wrapping an SkSL SkRuntimeEffect).",
+      "parentUuid": "ed8b7542_d9deb13d",
+      "revId": "a0f8fbdcfe5dad32a0b35266c1a079ee782bbb73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
