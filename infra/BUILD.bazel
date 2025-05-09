@@ -44,7 +44,7 @@ genrule(
     cmd = "echo '%s' > $@" % _ERRCHECK_SCRIPT,
     tools = [
         "@com_github_kisielk_errcheck//:errcheck",
-        "@go_sdk//:bin/go",
+        "@rules_go//go",
     ],
 )
 
@@ -62,7 +62,7 @@ sh_binary(
     srcs = ["errcheck.sh"],
     data = [
         "@com_github_kisielk_errcheck//:errcheck",
-        "@go_sdk//:bin/go",
+        "@rules_go//go",
     ],
     visibility = ["//visibility:public"],
 )
