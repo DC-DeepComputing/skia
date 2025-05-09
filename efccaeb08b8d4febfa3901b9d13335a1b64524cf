@@ -68,6 +68,24 @@
       "message": "After this change `Test-Android-Clang-AndroidOne-GPU-Mali400MP2-arm-Debug-All-Android` and `Test-Android-Clang-JioNext-GPU-Adreno308-arm-Debug-All-Android` are hitting this assert when running `glesmsaa4 svg  desk_motionmark_paths.svg`.",
       "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63d6874a_49d3bf97",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1603,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-09T17:58:57Z",
+      "side": 1,
+      "message": "https://g-issues.skia.org/issues/416733454 has been filed and we\u0027re disabling that test for the moment.",
+      "parentUuid": "1624a9f1_43735da6",
+      "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
