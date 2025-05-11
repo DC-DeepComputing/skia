@@ -163,6 +163,9 @@ public:
     static bool UsesColorTransform(const SkRuntimeEffect* effect) {
         return effect->usesColorTransform();
     }
+    static SkSL::SampleUsage ChildSampleUsage(const SkRuntimeEffect* effect, int child) {
+        return effect->fSampleUsages[child];
+    }
 };
 
 // These internal APIs for creating runtime effects vary from the public API in two ways:
