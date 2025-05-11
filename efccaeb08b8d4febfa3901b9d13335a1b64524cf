@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "591e2e7a_be8d8675",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-11T07:29:00Z",
+      "side": 1,
+      "message": "firtst contour:\nconic: A -\u003e B -\u003e B\nconic: B -\u003e B -\u003e A\nconic: A -\u003e D -\u003e D\nconic: D -\u003e D -\u003e A\n\nsecond contour:\ncubic: B -\u003e E -\u003e B -\u003e F\n\nIn the path above, the first contour is completely degenerate, so it is determined by the second contour (which itself is almost a straight line).\nDuring testing on the `--config gl` backend, I found that before applying this CL, the output was only a very thin line, and after applying this CL, there was no output at all. However, when testing on the CPU backend, I also found no output (consistent with the result on the GL backend after applying this CL).\nTherefore, I believe this case may not be considered a failure. Moreover, I observed the algorithm\u0027s output when parsing this path after applying the CL, and it successfully completed the entire process without any abnormal early termination.\nAdditionally, I noticed another potential issue (which I had actually observed before, but it became more pronounced in this edge case): the path sent to the algorithm for parsing was not clipped according to the canvas viewport.\nFor example, the cubic in the second contour above is extremely large in size. Because no clipping was performed, converting the cubic into approximate line segments generated an excessive number of line segments.\nI did not conduct an in-depth comprehensive analysis but only noted the above observations. I am unsure what specific scenario you are referring to as a failure here.",
+      "parentUuid": "f1f36483_e88267be",
+      "revId": "efccaeb08b8d4febfa3901b9d13335a1b64524cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1624a9f1_43735da6",
