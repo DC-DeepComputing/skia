@@ -231,8 +231,8 @@ GraphiteResourceKey build_desc_set_key(const SkSpan<DescriptorData>& requestedDe
             const VulkanSampler* sampler =
                     static_cast<const VulkanSampler*>(desc.fImmutableSampler);
             SkASSERT(sampler);
-            keyData.push_back_n(sampler->samplerDesc().asSpan().size(),
-                                sampler->samplerDesc().asSpan().data());
+            keyData.push_back_n(sampler->samplerDesc().asSpan1().size(),
+                                sampler->samplerDesc().asSpan1().data());
         }
     }
 

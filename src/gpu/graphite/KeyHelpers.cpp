@@ -645,7 +645,7 @@ bool can_do_tiling_in_hw(const Caps* caps, const ImageShaderBlock::ImageData& im
 
 void add_sampler_data_to_key(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
     if (samplerDesc.isImmutable()) {
-        builder->addData({samplerDesc.asSpan()});
+        builder->addData({samplerDesc.asSpan1()});
     } else {
         // Means we have a regular dynamic sampler. Append a default SamplerDesc to convey this,
         // allowing the key to maintain and convey sampler binding order.
@@ -671,7 +671,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
                                 PipelineDataGatherer* gatherer,
                                 const ImageData& imgData) {
 
-    if (keyContext.recorder() && !imgData.fTextureProxy) {
+    if (keyContext.recorder() && !imgData.fTextureProxy1) {
         builder->addBlock(BuiltInCodeSnippetID::kError);
         return;
     }
@@ -702,13 +702,14 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     // regular samplers are used).
     // TODO(b/392623124): In precompile mode (fTextureProxy == null), we still have a need for
     // immutable samplers, which must be passed in somehow.
-    ImmutableSamplerInfo info = imgData.fTextureProxy
-            ? caps->getImmutableSamplerInfo(imgData.fTextureProxy->textureInfo())
-            : ImmutableSamplerInfo{};
+    ImmutableSamplerInfo info = imgData.fTextureProxy1
+            ? caps->getImmutableSamplerInfo(imgData.fTextureProxy1->textureInfo())
+            : imgData.fImmutableSamplerInfo;
     SamplerDesc samplerDesc {imgData.fSampling,
                              doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
-                             info};
-    gatherer->add(imgData.fTextureProxy, samplerDesc);
+                             info,
+                             true}; //$$
+    gatherer->add(imgData.fTextureProxy1, samplerDesc);
     add_sampler_data_to_key(builder, samplerDesc);
 
     builder->endBlock();
@@ -1210,7 +1211,8 @@ void NonMSAAClipBlock::AddBlock(const KeyContext& keyContext,
                 caps->getImmutableSamplerInfo(data.fAtlasTexture->textureInfo());
         SamplerDesc samplerDesc {SkSamplingOptions(SkFilterMode::kNearest, SkMipmapMode::kNone),
                                  {SkTileMode::kClamp, SkTileMode::kClamp},
-                                 info};
+                                 info,
+                                 true}; //$$
         gatherer->add(data.fAtlasTexture, samplerDesc);
 
         builder->endBlock();
@@ -2069,7 +2071,7 @@ static void add_to_key(const KeyContext& keyContext,
     }
 
     imgData.fSampling = samplingHasNoEffect ? SkFilterMode::kNearest : newSampling;
-    imgData.fTextureProxy = view.refProxy();
+    imgData.fTextureProxy1 = view.refProxy();
     skgpu::Swizzle readSwizzle = view.swizzle();
     // If the color type is alpha-only, propagate the alpha value to the other channels.
     if (imageToDraw->isAlphaOnly()) {

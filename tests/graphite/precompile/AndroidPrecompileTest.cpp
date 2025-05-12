@@ -12,9 +12,16 @@
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
+#include "include/private/base/SkTemplates.h"
+#include "src/base/SkBase64.h"
 #include <set>
+
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
 
 using namespace skgpu::graphite;
 using namespace PrecompileTestUtils;
@@ -100,6 +107,17 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 25 */ { ImagePremulHWOnlySrc(),             DrawTypeFlags::kPerEdgeAAQuad,   kRGBA_1_D },
 // 50% (1/2) handles 74 - due to the w/o msaa load variants not being used
 /* 26 */ { ImagePremulHWOnlySrc(),             DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
+
+#if defined(SK_VULKAN)
+// 100% (2/2) handles 26 50
+/* 27 */ { ImagePremulYCbCr238Srcover(),       kRRectAndNonAARect,              kRGBA_1_D },
+// 100% (1/1) handles 49
+/* 28 */ { ImagePremulYCbCr240Srcover(),       DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
+// 50% (1/2) handles 76
+/* 29 */ { ImagePremulYCbCr240Srcover(),       DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
+// 50% (1/2) handles 70
+/* 30 */ { TransparentPaintImagePremulYCbCr240Srcover(), DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
+#endif
 };
 
 //
@@ -190,7 +208,7 @@ static const PipelineLabel kCases[] = {
 /*  25 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  26 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
 /*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -259,10 +277,10 @@ static const PipelineLabel kCases[] = {
 /*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] SrcOver AnalyticClip" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  49 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  50 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
 /*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -322,7 +340,7 @@ static const PipelineLabel kCases[] = {
 /*  69 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  70 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
 /*  71 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
@@ -340,7 +358,7 @@ static const PipelineLabel kCases[] = {
 /*  75 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  76 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
 /*  77 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
@@ -379,9 +397,11 @@ bool skip(const char* str) {
     if (strstr(str, "AnalyticClip")) {  // we have to think about this a bit more
         return true;
     }
+#if !defined(SK_VULKAN)
     if (strstr(str, "HardwareImage(3:")) {
         return true;
     }
+#endif // SK_VULKAN
     if (strstr(str, "RE_BlurFilterMixEffect")) {
         return true;
     }
@@ -421,7 +441,8 @@ bool skip(const char* str) {
 // The pipeline strings were created with Android Vulkan but we're going to run the test
 // on Dawn Metal
 bool is_dawn_metal_context_type(skgpu::ContextType type) {
-    return type == skgpu::ContextType::kDawn_Metal;
+    return type == skgpu::ContextType::kDawn_Metal  ||
+           type == skgpu::ContextType::kVulkan;
 }
 
 } // anonymous namespace
@@ -438,6 +459,59 @@ bool is_dawn_metal_context_type(skgpu::ContextType type) {
 DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type,
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
     using namespace skgpu::graphite;
+
+//    size_t encodedLen = SkBase64::Encode(&keyData[currentIndex], srcDataSize, dst);
+
+    size_t expectedDstLength;
+//    const char* data = "kEwAAPcAAAAAAAAA";
+//    const char* data = "kHoAAO4AAAAAAAAA";
+    const char* data = "kHIAAPAAAAAAAAAA";
+    SkBase64::Error error = SkBase64::Decode(data, strlen(data), nullptr, &expectedDstLength);
+    if (error != SkBase64::kNoError) {
+        return;
+    }
+
+    if (expectedDstLength % 4 != 0) {
+        return;
+    }
+
+    int numInts = expectedDstLength / 4;
+    skia_private::AutoTMalloc<uint32_t> dst(numInts);
+    size_t actualDstLength;
+    error = SkBase64::Decode(data, strlen(data), dst, &actualDstLength);
+    if (error != SkBase64::kNoError || expectedDstLength != actualDstLength) {
+        return;
+    }
+
+    SkDebugf("0x%x %u %u\n", dst[0], dst[1], dst[2]);
+
+    SamplerDesc s(dst[0], dst[1], dst[2]);
+
+    SkDebugf("tm: %d %d filter: %d mipmap: %d ",
+             s.tileModeX(),
+             s.tileModeY(),
+             s.filterMode(),
+             s.mipmap());
+
+    ImmutableSamplerInfo info = s.immutableSamplerInfo();
+    SkDebugf("YCbCr conversion info: %u format: %lu\n", info.fNonFormatYcbcrConversionInfo, info.fFormat);
+
+    skgpu::VulkanYcbcrConversionInfo phoenix = VulkanYcbcrConversion::FromImmutableSamplerInfo(info);
+
+    SkDebugf("Want: format: %d extFormat: %lu model: %d range: %d xOff: %d yOff: %d filter: %d explicit: %u features: %u components: %d %d %d %d\n",
+             phoenix.fFormat,
+             phoenix.fExternalFormat,
+             phoenix.fYcbcrModel,
+             phoenix.fYcbcrRange,
+             phoenix.fXChromaOffset,
+             phoenix.fYChromaOffset,
+             phoenix.fChromaFilter,
+             phoenix.fForceExplicitReconstruction,
+             phoenix.fFormatFeatures,
+             phoenix.fComponents.r,
+             phoenix.fComponents.g,
+             phoenix.fComponents.b,
+             phoenix.fComponents.a);
 
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
     const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
@@ -464,13 +538,14 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type
     }
 #endif
 
-    std::set<int> MSAALoadOnlyCases = { 2, 6, 9, 13, 15, 22, 26 };
+    std::set<int> MSAALoadOnlyCases = { 2, 6, 9, 13, 15, 22, 26, 29, 30 };
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+//    static const size_t kChosenCase = 27; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
-        if (kChosenCase != -1 && kChosenCase != i) {
+//        if (kChosenCase != -1 && kChosenCase != i) {
+        if (i < 27 || i > 30) {
             continue;
         }
 

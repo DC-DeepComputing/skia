@@ -421,6 +421,62 @@ PaintOptions ImageHWOnlySRGBSrcover() {
     return paintOptions;
 }
 
+#if defined(SK_VULKAN)
+namespace {
+sk_sp<PrecompileShader> vulkan_ycbcr_709_image_shader(uint64_t format,
+                                                      VkSamplerYcbcrRange range) {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+
+    skgpu::VulkanYcbcrConversionInfo info;
+
+    info.fExternalFormat = format;
+    info.fYcbcrModel     = VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709;
+    info.fYcbcrRange     = range;
+    info.fXChromaOffset  = VK_CHROMA_LOCATION_MIDPOINT;
+    info.fYChromaOffset  = VK_CHROMA_LOCATION_MIDPOINT;
+    info.fChromaFilter   = VK_FILTER_LINEAR;
+
+    return PrecompileShaders::VulkanYCbCrImage(info,
+                                               PrecompileShaders::ImageShaderFlags::kExcludeCubic,
+                                               { &ci, 1 },
+                                               {});
+}
+
+} // anonymous namespace
+
+PaintOptions ImagePremulYCbCr238Srcover() {
+    PaintOptions paintOptions;
+
+    // HardwareImage(3: kHoAAO4AAAAAAAAA)
+    paintOptions.setShaders({ vulkan_ycbcr_709_image_shader(238,
+                                                            VK_SAMPLER_YCBCR_RANGE_ITU_NARROW) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+PaintOptions ImagePremulYCbCr240Srcover() {
+    PaintOptions paintOptions;
+
+    // HardwareImage(3: kHIAAPAAAAAAAAAA)
+    paintOptions.setShaders({ vulkan_ycbcr_709_image_shader(240,
+                                                            VK_SAMPLER_YCBCR_RANGE_ITU_FULL) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+PaintOptions TransparentPaintImagePremulYCbCr240Srcover() {
+    PaintOptions paintOptions;
+
+    // HardwareImage(3: kHIAAPAAAAAAAAAA)
+    paintOptions.setShaders({ vulkan_ycbcr_709_image_shader(240,
+                                                            VK_SAMPLER_YCBCR_RANGE_ITU_FULL) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    paintOptions.setPaintColorIsOpaque(false);
+    return paintOptions;
+}
+#endif // SK_VULKAN
+
+
 namespace {
 
 #if defined(SK_DEBUG)
