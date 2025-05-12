@@ -242,8 +242,8 @@ public:
 
     PaintParamsKey lookup(UniquePaintParamsID) const SK_EXCLUDES(fSpinLock);
 
-    SkString idToString(UniquePaintParamsID id) const {
-        return this->lookup(id).toString(this, /*includeData=*/false);
+    SkString idToString(UniquePaintParamsID id, bool includeData = false) const {
+        return this->lookup(id).toString(this, includeData);
     }
 
 #if defined(SK_DEBUG)
