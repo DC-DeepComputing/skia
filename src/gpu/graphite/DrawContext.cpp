@@ -249,8 +249,6 @@ void DrawContext::flush(Recorder* recorder) {
     // Extract certain properties from DrawList relevant for DrawTask construction before
     // relinquishing the pending draw list to the DrawPass constructor.
     SkIRect dstReadPixelBounds = fPendingDraws->dstReadBounds().makeRoundOut().asSkIRect();
-    const bool drawsRequireMSAA = fPendingDraws->drawsRequireMSAA();
-    const SkEnumBitMask<DepthStencilFlags> dsFlags = fPendingDraws->depthStencilFlags();
     // Determine the optimal dst read strategy for the drawpass given pending draw characteristics
     const DstReadStrategy drawPassDstReadStrategy =
             fPendingDraws->drawsReadDst() ? this->dstReadStrategy(fPendingDraws->drawsRequireMSAA())
@@ -258,32 +256,32 @@ void DrawContext::flush(Recorder* recorder) {
 
     // Convert the pending draws and load/store ops into a DrawPass that will be executed after
     // the collected uploads and compute dispatches.
-    // TODO: At this point, there's only ever one DrawPass in a RenderPassTask to a target. When
-    // subpasses are implemented, they will either be collected alongside fPendingDraws or added
-    // to the RenderPassTask separately.
-    std::unique_ptr<DrawPass> pass = DrawPass::Make(recorder,
-                                                    std::move(fPendingDraws),
-                                                    fTarget,
-                                                    this->imageInfo(),
-                                                    std::make_pair(fPendingLoadOp, fPendingStoreOp),
-                                                    fPendingClearColor,
-                                                    drawPassDstReadStrategy);
+    // TODO: At this point, there's only ever one DrawPass in a RenderPassTask per tile to a target.
+    // When subpasses are implemented, they will either be collected alongside fPendingDraws or
+    // added to the RenderPassTask separately.
+    // DrawPass::Make() will return either 1 DrawPass or multiple if tiling is enabled. One DrawPass
+    // per tile.
+    auto perTilePasses = DrawPass::Make(recorder,
+                                        std::move(fPendingDraws),
+                                        fTarget,
+                                        this->imageInfo(),
+                                        std::make_pair(fPendingLoadOp, fPendingStoreOp),
+                                        fPendingClearColor,
+                                        drawPassDstReadStrategy);
     fPendingDraws = std::make_unique<DrawList>();
     // Now that there is content drawn to the target, that content must be loaded on any subsequent
     // render pass.
     fPendingLoadOp = LoadOp::kLoad;
     fPendingStoreOp = StoreOp::kStore;
 
-    if (pass) {
-        SkASSERT(fTarget.get() == pass->target());
-
+    if (!perTilePasses.empty()) {
         // If any paint used within the DrawPass reads from the dst texture (indicated by nonempty
         // dstReadPixelBounds) and the dstReadStrategy is kTextureCopy, then add a CopyTask.
         sk_sp<TextureProxy> dstCopy;
         if (!dstReadPixelBounds.isEmpty() &&
             drawPassDstReadStrategy == DstReadStrategy::kTextureCopy) {
-            TRACE_EVENT_INSTANT0("skia.gpu", "DrawPass requires dst copy",
-                                 TRACE_EVENT_SCOPE_THREAD);
+            TRACE_EVENT_INSTANT0(
+                    "skia.gpu", "DrawPass requires dst copy", TRACE_EVENT_SCOPE_THREAD);
 
             // TODO: Right now this assert is ensuring that the dstCopy will be texturable since it
             // uses the same texture info as fTarget. Ideally, if fTarget were not texturable but
@@ -308,21 +306,28 @@ void DrawContext::flush(Recorder* recorder) {
         }
 
         const Caps* caps = recorder->priv().caps();
-        auto [loadOp, storeOp] = pass->ops();
-        auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
-                                                  fTarget->textureInfo());
+        auto writeSwizzle =
+                caps->getWriteSwizzle(this->colorInfo().colorType(), fTarget->textureInfo());
 
-        RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
-                                                   dsFlags,
-                                                   pass->clearColor(),
-                                                   drawsRequireMSAA,
-                                                   writeSwizzle,
-                                                   drawPassDstReadStrategy);
+        for (auto& pass : perTilePasses) {
+            SkASSERT(fTarget.get() == pass->target());
+            auto [loadOp, storeOp] = pass->ops();
 
-        RenderPassTask::DrawPassList passes;
-        passes.emplace_back(std::move(pass));
-        fCurrentDrawTask->addTask(RenderPassTask::Make(std::move(passes), desc, fTarget,
-                                                       std::move(dstCopy), dstReadPixelBounds));
+            RenderPassDesc desc = RenderPassDesc::Make(caps,
+                                                       fTarget->textureInfo(),
+                                                       loadOp,
+                                                       storeOp,
+                                                       pass->depthStencilFlags(),
+                                                       pass->clearColor(),
+                                                       pass->drawsRequireMSAA(),
+                                                       writeSwizzle,
+                                                       drawPassDstReadStrategy);
+
+            RenderPassTask::DrawPassList rpPasses;
+            rpPasses.emplace_back(std::move(pass));
+            fCurrentDrawTask->addTask(RenderPassTask::Make(
+                    std::move(rpPasses), desc, fTarget, std::move(dstCopy), dstReadPixelBounds));
+        }
     }
     // else pass creation failed, DrawPass will have logged why. Don't discard the previously
     // accumulated tasks, however, since they may represent operations on an atlas that other
