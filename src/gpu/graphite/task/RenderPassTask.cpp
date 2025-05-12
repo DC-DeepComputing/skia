@@ -38,14 +38,16 @@ namespace {
 std::pair<SkISize, SkIPoint> get_msaa_size_and_resolve_offset(const SkISize& targetSize,
                                                               const SkIRect& drawBounds,
                                                               const Caps& caps,
-                                                              LoadOp loadOp) {
+                                                              LoadOp loadOp,
+                                                              bool isTiled) {
     if (caps.differentResolveAttachmentSizeSupport()) {
         // If possible, use approx size that can fit all draws. This reduces the MSAA texture size
         // and also reuses the textures better.
         // Note: we don't do this if loadOp=Clear because it's supposed to update the whole target
-        // texture.
+        // texture, unless the target is tiled.
+        const bool canUseSmallerSize = isTiled || loadOp != LoadOp::kClear;
         auto smallEnoughBounds = drawBounds;
-        if (loadOp != LoadOp::kClear && !smallEnoughBounds.isEmpty() &&
+        if (canUseSmallerSize && !smallEnoughBounds.isEmpty() &&
             smallEnoughBounds.intersect(SkIRect::MakeSize(targetSize))) {
             SkIPoint resolveOffset = smallEnoughBounds.topLeft();
             return {GetApproxSize(smallEnoughBounds.size()), resolveOffset};
@@ -175,6 +177,7 @@ Task::Status RenderPassTask::addCommands(Context* context,
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);
     const auto& drawBounds = fDrawPasses[0]->bounds();
+    const bool isTile = fDrawPasses[0]->isTile();
 
     // Only apply the replay translation and clip if we're drawing to the final replay target.
     SkIVector replayTranslation = {0, 0};
@@ -183,6 +186,16 @@ Task::Status RenderPassTask::addCommands(Context* context,
         replayTranslation = replayData.fTranslation;
         replayClip = replayData.fClip;
     }
+
+    if (isTile) {
+        // If this is a tile, limit the clip to the draw bounds.
+        if (replayClip.isEmpty()) {
+            replayClip = drawBounds;
+        } else {
+            replayClip.intersect(drawBounds);
+        }
+    }
+
 
     // We don't instantiate the MSAA or DS attachments in prepareResources because we want to use
     // the discardable attachments from the Context.
@@ -203,7 +216,8 @@ Task::Status RenderPassTask::addCommands(Context* context,
                 get_msaa_size_and_resolve_offset(fTarget->dimensions(),
                                                  drawBounds.makeOffset(replayTranslation),
                                                  *context->priv().caps(),
-                                                 fRenderPassDesc.fColorAttachment.fLoadOp);
+                                                 fRenderPassDesc.fColorAttachment.fLoadOp,
+                                                 isTile);
         colorAttachment = resourceProvider->findOrCreateShareableTexture(
                 msaaSize, colorInfo, "DiscardableMSAAAttachment");
         if (!colorAttachment) {
