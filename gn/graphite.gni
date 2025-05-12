@@ -406,3 +406,6 @@ skia_graphite_precompile_sources = [
   "$_src/precompile/SerializationUtils.cpp",
   "$_src/precompile/SerializationUtils.h",
 ]
+
+skia_graphite_precompile_sources =
+    [ "$_src/precompile/VulkanPrecompileShader.cpp" ]
