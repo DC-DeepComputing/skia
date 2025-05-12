@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad1214b8_6dacedde",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-12T19:13:40Z",
+      "side": 1,
+      "message": "`deps_parser` has lived for a while and it so far hasn\u0027t been that big of an issue (because we rarely add new deps). Open to ideas though.",
+      "parentUuid": "7bdda089_62af53cd",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "47468e0e_65745525",
@@ -84,6 +108,30 @@
       "writtenOn": "2025-05-12T17:13:00Z",
       "side": 1,
       "message": "Is there a bug filed for this?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 48
+      },
+      "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec74f397_cccb6874",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 28
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-12T19:13:40Z",
+      "side": 1,
+      "message": "https://crbug.com/skia/417250857",
+      "parentUuid": "47468e0e_65745525",
       "range": {
         "startLine": 5,
         "startChar": 0,
