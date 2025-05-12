@@ -34,6 +34,24 @@
       "parentUuid": "ed8b7542_d9deb13d",
       "revId": "a0f8fbdcfe5dad32a0b35266c1a079ee782bbb73",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c596189a_8b5d8f7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-12T17:56:32Z",
+      "side": 1,
+      "message": "I think one problem is that Ganesh has a `SkSL::SampleUsage` field on its fragment processors, but we don\u0027t have that for ShaderSnippets or ShaderNodes. And since its determined by a node\u0027s parent, it\u0027s a little inconvenient to define statically in ShaderSnippets.\n\nMy current idea to address that was to have a field on ShaderSnippet of per-child flags designating how the snippet\u0027s coordinates are passed to children, and then set a \"how am I sampled\" field on the ShaderNodes while building the node tree, based on these per-child flags in the snippets. But that idea added enough complexity that I uploaded this all-or-nothing approach to begin with.",
+      "parentUuid": "e1e076d4_12ec1e4d",
+      "revId": "a0f8fbdcfe5dad32a0b35266c1a079ee782bbb73",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
