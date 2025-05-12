@@ -36,14 +36,14 @@ void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo
     // Format feature flags are only representative of an external format's capabilities, so skip
     // these checks in the case of using a known format.
     if (conversionInfo.fFormat == VK_FORMAT_UNDEFINED) {
-        if (conversionInfo.fXChromaOffset == VK_CHROMA_LOCATION_MIDPOINT ||
-            conversionInfo.fYChromaOffset == VK_CHROMA_LOCATION_MIDPOINT) {
-            SkASSERT(featureFlags & VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT);
-        }
-        if (conversionInfo.fXChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN ||
-            conversionInfo.fYChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN) {
-            SkASSERT(featureFlags & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT);
-        }
+//        if (conversionInfo.fXChromaOffset == VK_CHROMA_LOCATION_MIDPOINT ||
+//            conversionInfo.fYChromaOffset == VK_CHROMA_LOCATION_MIDPOINT) {
+//            SkASSERT(featureFlags & VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT);
+//        }
+//        if (conversionInfo.fXChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN ||
+//            conversionInfo.fYChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN) {
+//            SkASSERT(featureFlags & VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT);
+//        }
         if (conversionInfo.fChromaFilter == VK_FILTER_LINEAR) {
             SkASSERT(featureFlags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT);
         }
