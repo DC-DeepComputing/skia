@@ -50,6 +50,23 @@
       "message": "No layout test failures, one viz pixeltest to be updated: components/test/data/viz/yuv_stripes_offset_graphite.png\n\nWe can do this with a manual roll into chrome pretty easily so I say we submit this and I\u0027ll watch the roller",
       "revId": "5546a5d4ad0e7bbc4e5d3b688e3a563df7f7bc66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3746db0e_6cb25c69",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-05-12T17:41:51Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "5546a5d4ad0e7bbc4e5d3b688e3a563df7f7bc66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
