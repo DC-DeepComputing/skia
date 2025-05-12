@@ -16,6 +16,11 @@
 
 class SkColorSpace;
 
+namespace skgpu {
+struct VulkanYcbcrConversionInfo;
+}
+
+
 namespace skgpu::graphite {
 
 class PrecompileBlender;
@@ -150,12 +155,28 @@ namespace PrecompileShaders {
     SK_API sk_sp<PrecompileShader> Image(SkSpan<const SkColorInfo> colorInfos,
                                          SkSpan<const SkTileMode> = { kAllTileModes });
 
-    // As with the above Image call, raw ImageShaders are usually created via an
+    // As with the above Image call, raw ImageShaders are usually created via a
     // SkImage::makeRawShader call. The RawImage call allows the equivalent precompilation
     // program structure to be created without needing the SkImage.
     SK_API sk_sp<PrecompileShader> RawImage(ImageShaderFlags = ImageShaderFlags::kExcludeCubic,
                                             SkSpan<const SkColorInfo> = {},
                                             SkSpan<const SkTileMode> = { kAllTileModes });
+
+    /**
+        In the main Skia API YCbCr Images are usually created by wrapping a BackendTexture.
+        Such backend textures are, in turn, created by a backend-specific entry point like:
+           BackendTextures::MakeVulkan(SkISize, const VulkanTextureInfo&, ...) or
+           BackendTextures::MakeDawn(SkISize, const DawnTextureInfo&, ...)
+        where the *TextureInfo contains additional YCbCr information. This API cuts right to
+        providing the backend-specific YCbCr information (i.e., VulkanYcbcrConversionInfo
+        or wgpu::YCbCrVkDescriptor).
+
+        @return A precompile shader for a specific type of YCbCr image
+    */
+    SK_API sk_sp<PrecompileShader> VulkanYCbCrImage(skgpu::VulkanYcbcrConversionInfo& YCbCrInfo,
+                                                    ImageShaderFlags = ImageShaderFlags::kAll,
+                                                    SkSpan<const SkColorInfo> = {},
+                                                    SkSpan<const SkTileMode> = { kAllTileModes });
 
     enum class YUVImageShaderFlags : uint16_t {
         kNone                       = 0,
