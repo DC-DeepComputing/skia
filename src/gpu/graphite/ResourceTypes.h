@@ -190,11 +190,21 @@ struct SamplerDesc {
     static_assert(kSkTileModeCount <= 4 && kSkFilterModeCount <= 2 && kSkMipmapModeCount <= 4);
 
     constexpr SamplerDesc(const SkSamplingOptions& samplingOptions, SkTileMode tileMode)
-            : SamplerDesc(samplingOptions, {tileMode, tileMode}) {}
+            : SamplerDesc(samplingOptions, {tileMode, tileMode}, {}, true) {}
 
     constexpr SamplerDesc(const SkSamplingOptions& samplingOptions,
-                const std::pair<SkTileMode, SkTileMode> tileModes,
-                const ImmutableSamplerInfo info = {})
+                          const std::pair<SkTileMode, SkTileMode> tileModes)
+            : SamplerDesc(samplingOptions, tileModes, {}, true) {}
+
+    constexpr SamplerDesc(uint32_t a, uint32_t b, uint32_t c)
+            : fDesc(a)
+            , fFormat(b)
+            , fExternalFormatMostSignificantBits(c) {}
+
+    constexpr SamplerDesc(const SkSamplingOptions& samplingOptions,
+                          const std::pair<SkTileMode, SkTileMode> tileModes,
+                          const ImmutableSamplerInfo info,
+                          bool foo)
             : fDesc((static_cast<int>(tileModes.first)            << kTileModeXShift           ) |
                     (static_cast<int>(tileModes.second)           << kTileModeYShift           ) |
                     (static_cast<int>(samplingOptions.filter)     << kFilterModeShift          ) |
@@ -208,6 +218,8 @@ struct SamplerDesc {
         // us simplify how we construct SamplerDec's from the options passed to high-level draws.
         SkASSERT(!samplingOptions.useCubic || (samplingOptions.filter == SkFilterMode::kNearest &&
                                                samplingOptions.mipmap == SkMipmapMode::kNone));
+
+        SkDebugf("0x%x %d %d\n", fDesc, fFormat, fExternalFormatMostSignificantBits);
 
         // TODO: Add aniso value when used.
 
@@ -225,8 +237,18 @@ struct SamplerDesc {
 
     bool operator!=(const SamplerDesc& o) const { return !(*this == o); }
 
-    SkTileMode tileModeX()          const { return static_cast<SkTileMode>((fDesc >> 0) & 0b11); }
-    SkTileMode tileModeY()          const { return static_cast<SkTileMode>((fDesc >> 2) & 0b11); }
+    SkTileMode tileModeX()          const {
+        return static_cast<SkTileMode>((fDesc >> kTileModeXShift) & 0b11);
+    }
+    SkTileMode tileModeY()          const {
+        return static_cast<SkTileMode>((fDesc >> kTileModeYShift) & 0b11);
+    }
+    SkFilterMode filterMode()       const {
+        return static_cast<SkFilterMode>((fDesc >> kFilterModeShift) & 0b01);
+    }
+    SkMipmapMode mipmap()           const {
+        return static_cast<SkMipmapMode>((fDesc >> kMipmapModeShift) & 0b11);
+    }
     uint32_t   desc()               const { return fDesc;                                        }
     uint32_t   format()             const { return fFormat;                                      }
     uint32_t   externalFormatMSBs() const { return fExternalFormatMostSignificantBits;           }
@@ -237,8 +259,8 @@ struct SamplerDesc {
     // nearest-neighbor sampling in HW.
     SkSamplingOptions samplingOptions() const {
         // TODO: Add support for anisotropic filtering
-        SkFilterMode filter = static_cast<SkFilterMode>((fDesc >> 4) & 0b01);
-        SkMipmapMode mipmap = static_cast<SkMipmapMode>((fDesc >> 5) & 0b11);
+        SkFilterMode filter = static_cast<SkFilterMode>((fDesc >> kFilterModeShift) & 0b01);
+        SkMipmapMode mipmap = static_cast<SkMipmapMode>((fDesc >> kMipmapModeShift) & 0b11);
         return SkSamplingOptions(filter, mipmap);
     }
 
@@ -247,7 +269,7 @@ struct SamplerDesc {
                 ((uint64_t) this->externalFormatMSBs() << 32) | (uint64_t) this->format()};
     }
 
-    SkSpan<const uint32_t> asSpan() const {
+    SkSpan<const uint32_t> asSpan1() const {
         // Span length depends upon whether the sampler is immutable and if it uses a known format
         return {&fDesc, 1 + this->isImmutable() + this->usesExternalFormat()};
     }
