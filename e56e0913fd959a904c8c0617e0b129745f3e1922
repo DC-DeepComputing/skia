@@ -46,6 +46,52 @@
       },
       "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bdda089_62af53cd",
+        "filename": "bazel/deps_parser/deps_parser.go",
+        "patchSetId": 28
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-12T17:13:00Z",
+      "side": 1,
+      "message": "Wow, there\u0027s a lot of duplication here.  It seems like this is going to be a pain to maintain.  Maybe we should consider just generate DEPS from a new source of truth which contains the information needed here?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 32
+      },
+      "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47468e0e_65745525",
+        "filename": "modules/canvaskit/BUILD.bazel",
+        "patchSetId": 28
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-12T17:13:00Z",
+      "side": 1,
+      "message": "Is there a bug filed for this?",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 48
+      },
+      "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
