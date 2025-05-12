@@ -1465,7 +1465,8 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   action("rust_png_cxx_core_bazel_build") {
     script = "gn/bazel_build.py"
     sources = [
-      "WORKSPACE.bazel",
+      "MODULE.bazel",
+      "MODULE.bazel.lock",
       "bazel/external/cxx/BUILD.bazel",
       "bazel/external/cxx/BUILD.bazel.skia",
     ]
@@ -1474,15 +1475,16 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
       "$root_out_dir/third_party/rust/cxx/v1/cxx.h",
     ]
     args = [
-             "@cxx//:core-lib",
+             "@crates//:cxx_cc",
 
-             rebase_path("//bazel-bin/external/cxx/libcore-lib.a",
-                         root_build_dir) + "=librust_png_cxx_core_lib.a",
+             rebase_path(
+                     "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.158/libcxx_cc.a",
+                     root_build_dir) + "=librust_png_cxx_core_lib.a",
 
              # we want the `cxx.h` header to not simply be copied into the
              # output directory, but in the same path as the Bazel build uses.
              rebase_path(
-                     "//bazel-bin/external/cxx/_virtual_includes/core-lib/third_party/rust/cxx/v1/cxx.h",
+                     "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.158/_virtual_includes/cxx_cc/third_party/rust/cxx/v1/cxx.h",
                      root_build_dir) + "=third_party/rust/cxx/v1/cxx.h",
            ] + bazel_args
   }
