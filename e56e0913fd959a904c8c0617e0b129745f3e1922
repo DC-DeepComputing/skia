@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c9e6bda_c877e3e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 28
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-12T14:38:34Z",
+      "side": 1,
+      "message": "For expat, freetype, and harfbuzz (which already have roll scripts) these could be \"kept in sync\" by having the roll script call `tools/generate_patches.py`?",
+      "range": {
+        "startLine": 39,
+        "startChar": 45,
+        "endLine": 39,
+        "endChar": 63
+      },
+      "revId": "e56e0913fd959a904c8c0617e0b129745f3e1922",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
