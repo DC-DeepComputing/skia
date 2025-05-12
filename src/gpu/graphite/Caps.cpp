@@ -30,6 +30,11 @@ void Caps::finishInitialization(const ContextOptions& options) {
     fCapabilities->initSkCaps(fShaderCaps.get());
 
     fDefaultMSAASamples = options.fInternalMultisampleCount;
+    if (fDifferentResolveAttachmentSizeSupport) {
+        fMaxMSAAAttachmentDims = options.fInternalMultisampleDimsLimit;
+    } else {
+        fMaxMSAAAttachmentDims = std::nullopt;
+    }
 
     if (options.fShaderErrorHandler) {
         fShaderErrorHandler = options.fShaderErrorHandler;
