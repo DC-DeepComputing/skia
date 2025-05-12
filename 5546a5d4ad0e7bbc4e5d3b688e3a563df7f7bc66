@@ -33,6 +33,23 @@
       "message": "lgtm, just running the chrome canary to see if we\u0027ll have to stage this.",
       "revId": "5546a5d4ad0e7bbc4e5d3b688e3a563df7f7bc66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f6685a_e546ea94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-12T14:27:53Z",
+      "side": 1,
+      "message": "No layout test failures, one viz pixeltest to be updated: components/test/data/viz/yuv_stripes_offset_graphite.png\n\nWe can do this with a manual roll into chrome pretty easily so I say we submit this and I\u0027ll watch the roller",
+      "revId": "5546a5d4ad0e7bbc4e5d3b688e3a563df7f7bc66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
