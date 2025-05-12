@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "343ea254_ee4f596d",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-12T14:35:44Z",
+      "side": 1,
+      "message": "There are a couple of methods, including transform, which are marked const but may modify the SkPath, eg. if dst points to the original SkPath or is null.  I\u0027m not sure what to do about the call sites which use these methods in that way.",
+      "range": {
+        "startLine": 1430,
+        "startChar": 9,
+        "endLine": 1430,
+        "endChar": 18
+      },
+      "revId": "97318a82aa3780206f6d7538b4bbb0c73f7c990b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
