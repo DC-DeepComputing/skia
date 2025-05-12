@@ -34,6 +34,9 @@
 #include "src/base/SkMathPriv.h"
 #endif
 
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
+
 namespace skgpu::graphite {
 
 SK_MAKE_BITMASK_OPS(PrecompileShaders::ImageShaderFlags)
@@ -262,8 +265,14 @@ public:
             , fUseDstColorSpace(!colorInfos.empty())
             , fRaw(raw) {}
 
+    void setFoo(const ImmutableSamplerInfo& isi) {
+        fFoo = true;
+        fISI = isi;
+    }
+
 private:
     friend class PrecompileYUVImageShader; // for NonAlphaOnlyDefaultColorInfos
+    friend class PrecompileYCbCrImageShader; // for NonAlphaOnlyDefaultColorInfos
 
     // In addition to the tile mode options provided by the client, we can precompile two additional
     // sampling/tiling variants: hardware-tiled and cubic sampling (which always uses the most
@@ -321,6 +330,8 @@ private:
 
     // Whether this precompiles raw image shaders.
     const bool fRaw;
+    bool fFoo = false;
+    ImmutableSamplerInfo fISI = {};
 
     int numIntrinsicCombinations() const override {
         // TODO(b/400682634) If color infos were provided by the client, and we're using the
@@ -362,13 +373,21 @@ private:
                                  desiredSamplingTilingCombo - numTileModes == kHWTiled)
                                         ? kHWTileableSize
                                         : kShaderTileableSize;
-        const SkSamplingOptions sampling =
+        SkSamplingOptions sampling =
                 (desiredSamplingTilingCombo >= numTileModes &&
                  desiredSamplingTilingCombo - numTileModes == kCubicSampled)
                         ? kDefaultCubicSampling
                         : kDefaultSampling;
 
-        const ImageShaderBlock::ImageData imgData(sampling, tileMode, tileMode, imgSize, kSubset);
+        if (fFoo) {
+            sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        }
+
+        ImageShaderBlock::ImageData imgData(sampling, tileMode, tileMode, imgSize, kSubset);
+
+        if (fFoo) {
+            imgData.fImmutableSamplerInfo = fISI;
+        }
 
         const SkColorInfo& colorInfo = fColorInfos[desiredColorInfo];
         const bool alphaOnly = SkColorTypeIsAlphaOnly(colorInfo.colorType());
@@ -449,6 +468,56 @@ sk_sp<PrecompileShader> PrecompileShaders::RawImage(ImageShaderFlags shaderFlags
             { sk_make_sp<PrecompileImageShader>(newFlags,
                                                 colorInfos, tileModes,
                                                 /* raw= */true) });
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::YCbCrImage(uint32_t a, uint32_t b, uint32_t c,
+                                                      ImageShaderFlags shaderFlags,
+                                                      SkSpan<const SkColorInfo> colorInfos,
+                                                      SkSpan<const SkTileMode> tileModes) {
+
+    sk_sp<PrecompileImageShader> i = sk_make_sp<PrecompileImageShader>(shaderFlags,
+                                                                       colorInfos,
+                                                                       tileModes,
+                                                                       /* raw= */false);
+
+    SamplerDesc s(a, b, c);
+
+    ImmutableSamplerInfo isi = s.immutableSamplerInfo();
+    i->setFoo(isi);
+    return PrecompileShaders::LocalMatrix({ std::move(i) });
+}
+
+sk_sp<PrecompileShader> PrecompileShaders::VulkanYCbCrImage(skgpu::VulkanYcbcrConversionInfo& ycbcrConversionInfo,
+                                                            ImageShaderFlags shaderFlags,
+                                                            SkSpan<const SkColorInfo> colorInfos,
+                                                            SkSpan<const SkTileMode> tileModes) {
+    if (!ycbcrConversionInfo.isValid()) {
+        return nullptr;
+    }
+
+    sk_sp<PrecompileImageShader> i = sk_make_sp<PrecompileImageShader>(shaderFlags,
+                                                                       colorInfos,
+                                                                       tileModes,
+                                                                       /* raw= */false);
+
+    SkDebugf("YCbCr: format: %d extFormat: %llu model: %d range: %d xOff: %d yOff: %d filter: %d explicit: %d features: %d components: %d %d %d %d\n",
+             ycbcrConversionInfo.fFormat,
+             ycbcrConversionInfo.fExternalFormat,
+             ycbcrConversionInfo.fYcbcrModel,
+             ycbcrConversionInfo.fYcbcrRange,
+             ycbcrConversionInfo.fXChromaOffset,
+             ycbcrConversionInfo.fYChromaOffset,
+             ycbcrConversionInfo.fChromaFilter,
+             ycbcrConversionInfo.fForceExplicitReconstruction,
+             ycbcrConversionInfo.fFormatFeatures,
+             ycbcrConversionInfo.fComponents.r,
+             ycbcrConversionInfo.fComponents.g,
+             ycbcrConversionInfo.fComponents.b,
+             ycbcrConversionInfo.fComponents.a);
+
+    ImmutableSamplerInfo isi = VulkanYcbcrConversion::ToImmutableSamplerInfo(ycbcrConversionInfo);
+    i->setFoo(isi);
+    return PrecompileShaders::LocalMatrix({ std::move(i) });
 }
 
 //--------------------------------------------------------------------------------------------------
