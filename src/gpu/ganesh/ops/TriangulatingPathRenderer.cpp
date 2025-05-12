@@ -396,7 +396,7 @@ private:
             return;
         }
         SkRect clipBounds = SkRect::Make(fDevClipBounds);
-        path.transform(fViewMatrix);
+        path = SkPathBuilder(path).transform(fViewMatrix).detach();
         SkScalar tol = GrPathUtils::kDefaultTolerance;
         sk_sp<const GrBuffer> vertexBuffer;
         int firstVertex;

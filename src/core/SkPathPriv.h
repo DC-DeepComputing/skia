@@ -129,6 +129,7 @@ public:
      * assumes empty ovals and zero sweeps have already been filtered out.
      */
     static void CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNoPathEffect);
+    static void CreateDrawArcPath(SkPathBuilder* path, const SkArc& arc, bool isFillNoPathEffect);
 
     /**
      * Determines whether an arc produced by CreateDrawArcPath will be convex. Assumes a non-empty
