@@ -69,6 +69,24 @@
       "parentUuid": "b8cfb669_c5fe3f8e",
       "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a10e3e14_14bf4479",
+        "filename": "MODULE.bazel",
+        "patchSetId": 35
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-13T13:49:29Z",
+      "side": 1,
+      "message": "\u003e Or would the MODULE.bazel have to have additional rules or setup?\nI don\u0027t think it needs a rust toolchain or anything. Just how to specify the `rust_library`\n\n\u003e Could you give that a try as a follow-up?\nSure",
+      "parentUuid": "d1064806_d5bd5401",
+      "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
