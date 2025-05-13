@@ -1245,6 +1245,10 @@ optional("graphite") {
     public += skia_graphite_vk_public
     sources += skia_graphite_vk_sources
     configs += [ ":use_skia_vulkan_headers" ]
+    if (skia_enable_precompile) {
+      public += skia_graphite_vk_precompile_public
+      sources += skia_graphite_vk_precompile_sources
+    }
   }
   if (skia_enable_precompile) {
     public += skia_graphite_precompile_public
@@ -1465,26 +1469,24 @@ if (skia_use_rust_png_decode || skia_use_rust_png_encode) {
   action("rust_png_cxx_core_bazel_build") {
     script = "gn/bazel_build.py"
     sources = [
-      "MODULE.bazel",
-      "MODULE.bazel.lock",
+      "WORKSPACE.bazel",
       "bazel/external/cxx/BUILD.bazel",
       "bazel/external/cxx/BUILD.bazel.skia",
     ]
     outputs = [
-      "$root_out_dir/libcxx_cc.a",
+      "$root_out_dir/librust_png_cxx_core_lib.a",
       "$root_out_dir/third_party/rust/cxx/v1/cxx.h",
     ]
     args = [
-             "@crates//:cxx_cc",
+             "@cxx//:core-lib",
 
-             rebase_path(
-                     "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.158/libcxx_cc.a",
-                     root_build_dir) + "=libcxx_cc.a",
+             rebase_path("//bazel-bin/external/cxx/libcore-lib.a",
+                         root_build_dir) + "=librust_png_cxx_core_lib.a",
 
              # we want the `cxx.h` header to not simply be copied into the
              # output directory, but in the same path as the Bazel build uses.
              rebase_path(
-                     "//bazel-bin/external/rules_rust++crate+crates__cxx-1.0.158/_virtual_includes/cxx_cc/third_party/rust/cxx/v1/cxx.h",
+                     "//bazel-bin/external/cxx/_virtual_includes/core-lib/third_party/rust/cxx/v1/cxx.h",
                      root_build_dir) + "=third_party/rust/cxx/v1/cxx.h",
            ] + bazel_args
   }
@@ -1523,10 +1525,7 @@ optional("png_decode_rust") {
     ":rust_png_cxx_bridge",
     ":rust_png_cxx_core_bazel_build",
   ]
-  libs = [
-    "$root_out_dir/libcxx_cc.a",
-    "c++",
-  ]
+  libs = [ "$root_out_dir/librust_png_cxx_core_lib.a" ]
 }
 
 optional("png_encode_rust") {
@@ -1540,10 +1539,7 @@ optional("png_encode_rust") {
     ":rust_png_cxx_bridge",
     ":rust_png_cxx_core_bazel_build",
   ]
-  libs = [
-    "$root_out_dir/libcxx_cc.a",
-    "c++",
-  ]
+  libs = [ "$root_out_dir/librust_png_cxx_core_lib.a" ]
 }
 
 optional("webp_decode") {
