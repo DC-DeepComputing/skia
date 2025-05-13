@@ -704,7 +704,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     // immutable samplers, which must be passed in somehow.
     ImmutableSamplerInfo info = imgData.fTextureProxy
             ? caps->getImmutableSamplerInfo(imgData.fTextureProxy->textureInfo())
-            : ImmutableSamplerInfo{};
+            : imgData.fImmutableSamplerInfo;
     SamplerDesc samplerDesc {imgData.fSampling,
                              doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
                              info};
