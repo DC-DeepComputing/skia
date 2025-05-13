@@ -22,6 +22,30 @@
       },
       "revId": "9d5b8a92dfca7202d4ca6dc0e0c1d1121e2dd2bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bf5b9e44_10f860eb",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 444,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-13T20:46:29Z",
+      "side": 1,
+      "message": "Good catch, the type needs to be changed to `XPS_COLOR_TYPE_SCRGB` and need to use `scRGB` here. Of course, now that I\u0027m actually running tests, XPS isn\u0027t really working anyway. I\u0027m not sure the viewers I have a working correctly either.",
+      "parentUuid": "b67413aa_93b68bb4",
+      "range": {
+        "startLine": 444,
+        "startChar": 24,
+        "endLine": 444,
+        "endChar": 29
+      },
+      "revId": "9d5b8a92dfca7202d4ca6dc0e0c1d1121e2dd2bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
