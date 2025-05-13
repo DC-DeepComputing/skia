@@ -1,0 +1,169 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "febe89e6_5e90152a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "Let\u0027s also copy the docs/comments from `SkPath.h`.\n\nIf there are related unit tests for SkPath we should replicate them (follow up sgtm).",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77224cb2_15441946",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "This is private in `SkPath` (only used internally), we should probably keep it that way since it\u0027s niche.\n\nWe can make it available to the stroker and test code the same way (friend or SkPathPriv).",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6d0d83b_3449ab4d",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "nit: this is trivial, we can inline:\n\n`bool isEmpty() const { return fVerbs.empty(); }`",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff63c08b_90af1204",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "Also private.",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba49ccdf_a6882f2e",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "Let\u0027s return a `std::optional\u003cSkPoint\u003e` instead of out param.",
+      "fixSuggestions": [
+        {
+          "fixId": "c99702a8_279eb3a3",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 23,
+                "startChar": 0,
+                "endLine": 23,
+                "endChar": 0
+              },
+              "replacement": "#include \u003coptional\u003e\n"
+            },
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 238,
+                "startChar": 0,
+                "endLine": 239,
+                "endChar": 0
+              },
+              "replacement": "    std::optional\u003cSkPoint\u003e getLastPt() const;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "193b9858_0afdc0ce",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "Let\u0027s add a todo to rewrite this to avoid snapshotting/copying, as most transforms can be applied in place.  I can take a look at that.",
+      "fixSuggestions": [
+        {
+          "fixId": "ddcf5c19_f354c77c",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathBuilder.cpp",
+              "range": {
+                "startLine": 937,
+                "startChar": 0,
+                "endLine": 937,
+                "endChar": 0
+              },
+              "replacement": "    // TODO: Rewrite this to avoid snapshotting/copying, as most transforms can be applied in place.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd384bf6_0de7a280",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T21:26:49Z",
+      "side": 1,
+      "message": "nit: looks like a good candidate for inlining also.",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
