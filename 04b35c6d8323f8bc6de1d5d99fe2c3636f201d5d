@@ -16,6 +16,24 @@
       "message": "Per offline discussion, this is a reland of color expression lifting which is gated by whether we\u0027re using storage buffers.\n\nWe saw failures on Pixel 7 Pros with old Vulkan drivers with color expression lifting, but we consider such failures to be very unlikely given the latest changes, since\n\n  - there are no failures when using storage buffers on these devices,\n  - we shouldn\u0027t ever go back to doing color expression lifting without using storage buffers,\n  - the failures only occurred in extremely specific cases: with native vulkan (not dawn-over-vulkan), in release builds (not debug builds), on pixel 7 pros (not regular pixel 7s or any other pixel phones), and with very old drivers (our bots were failing with vulkan driver version 0x9000000, I wasn\u0027t able to reproduce locally with driver version 0x9801000).",
       "revId": "04b35c6d8323f8bc6de1d5d99fe2c3636f201d5d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d83dfcff_db5d7742",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-13T18:44:39Z",
+      "side": 1,
+      "message": "Correction to the above: the Pixel 7 Pro failures may also occur on debug builds, but we only test debug builds with a protected context, where the failing tests would be skipped.",
+      "parentUuid": "b3a48b5c_9e2352f4",
+      "revId": "04b35c6d8323f8bc6de1d5d99fe2c3636f201d5d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
