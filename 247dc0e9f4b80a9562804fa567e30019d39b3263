@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a930d757_aede0f14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-13T18:13:12Z",
+      "side": 1,
+      "message": "See Patchset 1 for link to PDF changes in gold. All the changes are a result of adding one more digit of precision to the numbers in the PDF.",
+      "revId": "247dc0e9f4b80a9562804fa567e30019d39b3263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
