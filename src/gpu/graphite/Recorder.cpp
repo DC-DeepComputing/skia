@@ -133,9 +133,23 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
     }
     fUploadBufferManager = std::make_unique<UploadBufferManager>(fResourceProvider,
                                                                  fSharedContext->caps());
-    fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
-                                                             fSharedContext->caps(),
-                                                             fUploadBufferManager.get());
+
+    if (options.fBufferSizes.has_value()) {
+        fDrawBufferManager = std::make_unique<DrawBufferManager>(
+            fResourceProvider,
+            fSharedContext->caps(),
+            fUploadBufferManager.get(),
+            options.fBufferSizes.value().kVertexBufferMinSize,
+            options.fBufferSizes.value().kVertexBufferMaxSize,
+            options.fBufferSizes.value().kIndexBufferSize,
+            options.fBufferSizes.value().kUniformBufferSize,
+            options.fBufferSizes.value().kStorageBufferMinSize,
+            options.fBufferSizes.value().kStorageBufferMaxSize);
+    } else {
+        fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
+                                                                 fSharedContext->caps(),
+                                                                 fUploadBufferManager.get());
+    }
 
     SkASSERT(fResourceProvider);
 }

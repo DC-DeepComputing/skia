@@ -28,23 +28,6 @@ namespace skgpu::graphite {
 
 namespace {
 
-// TODO: Tune these values on real world data
-static constexpr uint32_t kVertexBufferMinSize = 16 << 10; // 16 KB
-static constexpr uint32_t kVertexBufferMaxSize =  1 << 20; //  1 MB
-static constexpr uint32_t kIndexBufferSize   = 2 << 10; // 2 KB
-static constexpr uint32_t kUniformBufferSize = 2 << 10; // 2 KB
-static constexpr uint32_t kStorageBufferMinSize = 2 << 10; // 2 KB
-static constexpr uint32_t kStorageBufferMaxSize = 1 << 20; // 1 MB
-
-// Make sure the buffer size constants are all powers of two, so we can align to them efficiently
-// when dynamically sizing buffers.
-static_assert(SkIsPow2(kVertexBufferMinSize));
-static_assert(SkIsPow2(kVertexBufferMaxSize));
-static_assert(SkIsPow2(kIndexBufferSize));
-static_assert(SkIsPow2(kUniformBufferSize));
-static_assert(SkIsPow2(kStorageBufferMinSize));
-static_assert(SkIsPow2(kStorageBufferMaxSize));
-
 // The limit for all data created by the StaticBufferManager. This data remains alive for
 // the entire SharedContext so we want to keep it small and give a concrete upper bound to
 // clients for our steady-state memory usage.
@@ -185,25 +168,36 @@ void ScratchBuffer::returnToPool() {
 // ------------------------------------------------------------------------------------------------
 // DrawBufferManager
 
-DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
-                                     const Caps* caps,
-                                     UploadBufferManager* uploadManager)
+DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider, const Caps* caps,
+                                     UploadBufferManager* uploadManager,
+                                     uint32_t vertexBufferMinSize, uint32_t vertexBufferMaxSize,
+                                     uint32_t indexBufferSize, uint32_t uniformBufferSize,
+                                     uint32_t storageBufferMinSize, uint32_t storageBufferMaxSize)
         : fResourceProvider(resourceProvider)
         , fCaps(caps)
         , fUploadManager(uploadManager)
         , fCurrentBuffers{{
-            { BufferType::kVertex,        kVertexBufferMinSize,  kVertexBufferMaxSize,  caps },
-            { BufferType::kIndex,         kIndexBufferSize,      kIndexBufferSize,      caps },
-            { BufferType::kUniform,       kUniformBufferSize,    kUniformBufferSize,    caps },
+            { BufferType::kVertex,        vertexBufferMinSize,  vertexBufferMaxSize,  caps },
+            { BufferType::kIndex,         indexBufferSize,      indexBufferSize,      caps },
+            { BufferType::kUniform,       uniformBufferSize,    uniformBufferSize,    caps },
 
             // mapped storage
-            { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMaxSize, caps },
+            { BufferType::kStorage,       storageBufferMinSize, storageBufferMaxSize, caps },
             // GPU-only storage
-            { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMinSize, caps },
+            { BufferType::kStorage,       storageBufferMinSize, storageBufferMinSize, caps },
 
-            { BufferType::kVertexStorage, kVertexBufferMinSize,  kVertexBufferMinSize,  caps },
-            { BufferType::kIndexStorage,  kIndexBufferSize,      kIndexBufferSize,      caps },
-            { BufferType::kIndirect,      kStorageBufferMinSize, kStorageBufferMinSize, caps } }} {}
+            { BufferType::kVertexStorage, vertexBufferMinSize,  vertexBufferMinSize,  caps },
+            { BufferType::kIndexStorage,  indexBufferSize,      indexBufferSize,      caps },
+            { BufferType::kIndirect,      storageBufferMinSize, storageBufferMinSize, caps } }} {
+    // Make sure the buffer size constants are all powers of two, so we can align to them efficiently
+    // when dynamically sizing buffers.
+    SkASSERT(SkIsPow2(vertexBufferMinSize));
+    SkASSERT(SkIsPow2(vertexBufferMaxSize));
+    SkASSERT(SkIsPow2(indexBufferSize));
+    SkASSERT(SkIsPow2(uniformBufferSize));
+    SkASSERT(SkIsPow2(storageBufferMinSize));
+    SkASSERT(SkIsPow2(storageBufferMaxSize));
+}
 
 DrawBufferManager::~DrawBufferManager() {}
 

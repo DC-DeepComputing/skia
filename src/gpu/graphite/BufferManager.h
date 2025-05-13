@@ -99,7 +99,15 @@ private:
 */
 class DrawBufferManager {
 public:
-    DrawBufferManager(ResourceProvider*, const Caps*, UploadBufferManager*);
+    DrawBufferManager(ResourceProvider* resourceProvider,
+                      const Caps* caps,
+                      UploadBufferManager* uploadManager,
+                      uint32_t vertexBufferMinSize  = 16 << 10, // 16 KB
+                      uint32_t vertexBufferMaxSize  = 1 << 20,  // 1 MB
+                      uint32_t indexBufferSize      = 2 << 10,  // 2 KB
+                      uint32_t uniformBufferSize    = 2 << 10,  // 2 KB
+                      uint32_t storageBufferMinSize = 2 << 10,  // 2 KB
+                      uint32_t storageBufferMaxSize = 1 << 20); // 1 MB
     ~DrawBufferManager();
 
     // Let possible users check if the manager is already in a bad mapping state and skip any extra
