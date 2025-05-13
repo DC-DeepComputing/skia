@@ -13,11 +13,11 @@
 #include "include/gpu/graphite/precompile/Precompile.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
@@ -124,6 +124,15 @@ skgpu::graphite::PaintOptions ImagePremulHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageSRGBHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageHWOnlySRGBSrcover();
 
+#if defined(SK_VULKAN)
+skgpu::graphite::PaintOptions ImagePremulYCbCr238Srcover();
+skgpu::graphite::PaintOptions ImagePremulYCbCr240Srcover();
+skgpu::graphite::PaintOptions TransparentPaintImagePremulYCbCr240Srcover();
+
+// Prints out the VulkanYcbcrConversionInfo retrieved from a Vulkan YCbCr Pipeline label
+// (e.g., base64 part of HardwareImage(3: kEwAAPcAAAAAAAAA)).
+void Base642YCbCr(const char*);
+#endif // SK_VULKAN
 
 // Single sampled R w/ just depth
 const skgpu::graphite::RenderPassProperties kR_1_D {
