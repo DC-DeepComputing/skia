@@ -186,7 +186,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     populate_resource_binding_reqs(fResourceBindingReqs);
 
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
-    fStorageBufferSupport = false;
+    fStorageBufferSupport = true;
 
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
@@ -284,6 +284,13 @@ void VulkanCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropert
     // just default to it being less.
     androidAPIVersion = (strLength == 0) ? 0 : atoi(androidAPIVersionStr);
 #endif
+
+    static bool printed = false;
+    if (!printed) {
+        printed = true;
+        SkDebugf("vendor id: %d, android version: %d, driver version: %x\n",
+                 properties.vendorID, androidAPIVersion, properties.driverVersion);
+    }
 
     // On Mali galaxy s7 we see lots of rendering issues when we suballocate VkImages.
     if (kARM_VkVendor == properties.vendorID && androidAPIVersion <= 28) {
