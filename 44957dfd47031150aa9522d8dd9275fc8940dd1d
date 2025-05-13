@@ -33,6 +33,24 @@
       "message": "Is this where we would then roll Fontations? \n\n1) In [this CL](https://skia-review.googlesource.com/c/skia/+/887137) I am maintaining a local change to be able to build against a separate Fontations check out. How would that work in the new world? \n\n2) The Cargo.toml file is still useful for code editors like VS Code and its built-in rust-analyzer to figure out dependencies. Can we keep that and then perhaps make a roll script to keep the versions here and from the Cargo.toml in sync?",
       "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8cfb669_c5fe3f8e",
+        "filename": "MODULE.bazel",
+        "patchSetId": 35
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-13T12:57:27Z",
+      "side": 1,
+      "message": "1) You\u0027d make a change to MODULE.bazel similar to what you have:\n```\nbazel_dep(name \u003d \"local_skrifa\") # notice no version\n\nlocal_path_override(\n    module_name \u003d \"local_skrifa\",\n    path \u003d \"/path/to/local/skrifa\",\n)\n\n```\n\nThen, in `/path/to/local/skrifa`, you\u0027d add a MODULE.bazel file that loads `rules_rust`. See https://skia-review.googlesource.com/c/skia/+/984976/36/include/config/MODULE.bazel for an example\n\nLike your other CL, you\u0027d then change the deps from `\"@crates//:skrifa\"` -\u003e `\"@local_skrifa\"`\n\n2) We can also try making the Cargo.toml file the source of truth. If you want to give that a shot https://bazelbuild.github.io/rules_rust/crate_universe_bzlmod.html#cargo-workspaces after this lands (since you are a bit more familiar with Cargo things than I am), I\u0027m happy to review and support.",
+      "parentUuid": "898ae284_d3f93457",
+      "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
