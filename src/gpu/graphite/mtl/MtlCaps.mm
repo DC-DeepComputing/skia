@@ -867,7 +867,7 @@ TextureInfo MtlCaps::getTextureInfoForSampledCopy(const TextureInfo& textureInfo
 
 namespace {
 
-skgpu::UniqueKey::Domain get_domain() {
+skgpu::UniqueKey::Domain get_pipeline_domain() {
     static const skgpu::UniqueKey::Domain kMtlGraphicsPipelineDomain =
             skgpu::UniqueKey::GenerateDomain();
 
@@ -950,14 +950,14 @@ const Caps::ColorTypeInfo* MtlCaps::getColorTypeInfo(
     return nullptr;
 }
 
+// 4 uint32_t's (render step id, paint id, renderpass desc, uint16 write swizzle key)
 static constexpr int kMtlGraphicsPipelineKeyData32Count = 4;
 
 UniqueKey MtlCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipelineDesc,
                                            const RenderPassDesc& renderPassDesc) const {
     UniqueKey pipelineKey;
     {
-        // 4 uint32_t's (render step id, paint id, renderpass desc, uint16 write swizzle key)
-        UniqueKey::Builder builder(&pipelineKey, get_domain(),
+        UniqueKey::Builder builder(&pipelineKey, get_pipeline_domain(),
                                    kMtlGraphicsPipelineKeyData32Count, "MtlGraphicsPipeline");
         // add GraphicsPipelineDesc key
         builder[0] = static_cast<uint32_t>(pipelineDesc.renderStepID());
@@ -992,7 +992,7 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
         Swizzle fWriteSwizzle;
     } keyData;
 
-    SkASSERT(key.domain() == get_domain());
+    SkASSERT(key.domain() == get_pipeline_domain());
     SkASSERT(key.dataSize() == 4 * kMtlGraphicsPipelineKeyData32Count);
 
     const uint32_t* rawKeyData = key.data();
@@ -1009,6 +1009,12 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     keyData.fColorSampleCount = static_cast<uint8_t>((rawKeyData[2] >> 16) & 0xFF);
 
     keyData.fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
+
+    // Recreate the GraphicsPipelineDesc
+    *pipelineDesc = GraphicsPipelineDesc(keyData.fRenderStepID, keyData.fPaintParamsID);
+
+    SkDEBUGCODE(const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);)
+    SkASSERT(renderStep->performsShading() == pipelineDesc->paintParamsID().isValid());
 
     // Recreate the RenderPassDesc, picking arbitrary load/store ops. Since Metal doesn't need
     // to include resolve attachment details, assume that if color attachment's sample count is > 1
@@ -1035,14 +1041,6 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
     renderPassDesc->fSampleCount = keyData.fColorSampleCount;
     renderPassDesc->fWriteSwizzle = keyData.fWriteSwizzle;
     renderPassDesc->fDstReadStrategy = this->getDstReadStrategy();
-
-    // Recreate the GraphicsPipelineDesc
-    const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
-
-    UniquePaintParamsID paintID = renderStep->performsShading() ? keyData.fPaintParamsID
-                                                                : UniquePaintParamsID::Invalid();
-
-    *pipelineDesc = GraphicsPipelineDesc(renderStep->renderStepID(), paintID);
 
     return true;
 }
