@@ -175,7 +175,7 @@ void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance,
     rec.fAdvance  = advance;
     rec.fDrawable = std::move(drawable);
     rec.fBounds   = bounds;
-    rec.fPath.reset();
+    rec.fPath = SkPath();
 }
 
 sk_sp<SkTypeface> SkCustomTypefaceBuilder::detach() {
@@ -503,7 +503,7 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
         } break;
         case GlyphType::kPath: {
             SkPath path;
-            if (path.readFromMemory(data->data(), data->size()) != data->size()) {
+            if (SkPath::readFromMemory(&path, data->data(), data->size()) != data->size()) {
                 return nullptr;
             }
 

@@ -211,9 +211,7 @@ struct TextAdapter::PathInfo {
             // reinitialize cached contour data
             auto path = static_cast<SkPath>(fPath);
             if (reverse) {
-                SkPath reversed;
-                reversed.reverseAddPath(path);
-                path = reversed;
+                path = SkPathBuilder().reverseAddPath(path).detach();
             }
 
             SkContourMeasureIter iter(path, /*forceClosed = */false);

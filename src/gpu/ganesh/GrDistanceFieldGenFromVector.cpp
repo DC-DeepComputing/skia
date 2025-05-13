@@ -768,7 +768,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
 
     // transform to device space + SDF offset
     // TODO: remove degenerate segments while doing this?
-    workingPath.transform(dfMatrix);
+    workingPath = SkPathBuilder(workingPath).transform(dfMatrix).detach();
 
     SkDEBUGCODE(pathBounds = workingPath.getBounds().roundOut());
     SkASSERT(expectPathBounds.isEmpty() ||

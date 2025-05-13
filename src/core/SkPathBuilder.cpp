@@ -866,3 +866,58 @@ SkPathBuilder& SkPathBuilder::privateReverseAddPath(const SkPath& src) {
     }
     return *this;
 }
+
+SkPathBuilder& SkPathBuilder::reverseAddPath(const SkPath& src) {
+    return this->privateReverseAddPath(src);
+}
+
+bool SkPathBuilder::isEmpty() const {
+    return 0 == this->countVerbs();
+};
+
+bool SkPathBuilder::getLastPt(SkPoint* lastPt) const {
+    int count = this->fPts.size();
+    if (count > 0) {
+        if (lastPt) {
+            *lastPt = this->fPts.at(count - 1);
+        }
+        return true;
+    }
+    if (lastPt) {
+        lastPt -> set(0, 0);
+    }
+    return false;
+};
+
+void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
+    int count = fPts.size();
+    if (count == 0) {
+        this->moveTo(x, y);
+    } else {
+        fPts.at(count-1).set(x, y);
+    }
+}
+
+SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+    *this = this->snapshot().transform(matrix, pc);
+    return *this;
+}
+
+int SkPathBuilder::countPoints() const {
+    return fPts.size();
+}
+
+bool SkPathBuilder::isZeroLengthSincePoint(int startPtIndex) const {
+    int count = fPts.size() - startPtIndex;
+    if (count < 2) {
+        return true;
+    }
+    const SkPoint* pts = fPts.begin() + startPtIndex;
+    const SkPoint& first = *pts;
+    for (int index = 1; index < count; ++index) {
+        if (first != pts[index]) {
+            return false;
+        }
+    }
+    return true;
+}

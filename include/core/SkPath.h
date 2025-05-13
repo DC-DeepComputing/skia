@@ -36,7 +36,7 @@ enum class SkPathFirstDirection;
 struct SkPathVerbAnalysis;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/9000)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -1398,6 +1398,12 @@ public:
         example: https://fiddle.skia.org/c/@Path_offset
     */
     void offset(SkScalar dx, SkScalar dy, SkPath* dst) const;
+
+    SkPath makeOffset(SkScalar dx, SkScalar dy) const {
+        SkPath dst;
+        this->offset(dx, dy, &dst);
+        return dst;
+    }
 #ifdef SK_HIDE_PATH_EDIT_METHODS
 private:
 #endif
@@ -1849,6 +1855,8 @@ private:
 #ifdef SK_HIDE_PATH_EDIT_METHODS
 public:
 #endif
+    static size_t readFromMemory(SkPath* path, const void* buffer, size_t length);
+
     /** (See Skia bug 1762.)
         Returns a non-zero, globally unique value. A different value is returned
         if verb array, SkPoint array, or conic weight changes.
@@ -1950,6 +1958,7 @@ private:
     // Bottlenecks for working with fConvexity and fFirstDirection.
     // Notice the setters are const... these are mutable atomic fields.
     void  setConvexity(SkPathConvexity) const;
+    SkPath makeConvexity(SkPathConvexity) const;
 
     void setFirstDirection(SkPathFirstDirection) const;
     SkPathFirstDirection getFirstDirection() const;

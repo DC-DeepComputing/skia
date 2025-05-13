@@ -3,6 +3,7 @@
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
@@ -1487,7 +1488,8 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                             SkMatrix total = mx;
                             total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                                 rec->fPos->fY + rec->fOffset.fY);
-                            rec->fPath->addPath(*path, total);
+                            SkPath transformed = path->makeTransform(total);
+                            *rec->fPath = SkPathBuilder(*rec->fPath).addPath(transformed).detach();
                         } else {
                             rec->fNotConverted++;
                         }
@@ -1516,7 +1518,8 @@ SkPath Paragraph::GetPath(SkTextBlob* textBlob) {
                     SkMatrix tmp(mx);
                     tmp.postTranslate(rec->fPos->fX - rec->fOffset.fX,
                                       rec->fPos->fY - rec->fOffset.fY);
-                    rec->fDst->addPath(*src, tmp);
+                    SkPath transformed = src->makeTransform(tmp);
+                    *rec->fDst = SkPathBuilder(*rec->fDst).addPath(transformed).detach();
                 }
                 rec->fPos += 1;
             },

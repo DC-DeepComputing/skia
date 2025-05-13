@@ -36,15 +36,13 @@ bool SkSVGPoly::parseAndSetAttribute(const char* n, const char* v) {
 void SkSVGPoly::onDraw(SkCanvas* canvas, const SkSVGLengthContext&, const SkPaint& paint,
                        SkPathFillType fillType) const {
     // the passed fillType follows inheritance rules and needs to be applied at draw time.
-    fPath.setFillType(fillType);
+    fPath = fPath.makeFillType(fillType);
     canvas->drawPath(fPath, paint);
 }
 
 SkPath SkSVGPoly::onAsPath(const SkSVGRenderContext& ctx) const {
-    SkPath path = fPath;
-
     // clip-rule can be inherited and needs to be applied at clip time.
-    path.setFillType(ctx.presentationContext().fInherited.fClipRule->asFillType());
+    SkPath path = fPath.makeFillType(ctx.presentationContext().fInherited.fClipRule->asFillType());
 
     this->mapToParent(&path);
     return path;
