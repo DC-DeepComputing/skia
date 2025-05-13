@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cd2441c_4e66742a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-13T16:33:41Z",
+      "side": 1,
+      "message": "I updated the changes to `SkRuntimeEffectPriv` to be in line with http://review.skia.org/992396, PTAL",
+      "revId": "c0c4ff4b340c0853fc87037565fd971c3c1d3e89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
