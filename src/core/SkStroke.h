@@ -9,6 +9,7 @@
 #define SkStroke_DEFINED
 
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkAssert.h"
@@ -69,6 +70,8 @@ public:
      *  Stroke the specified rect, winding it in the specified direction..
      */
     void    strokeRect(const SkRect& rect, SkPath* result,
+                       SkPathDirection = SkPathDirection::kCW) const;
+    void    strokeRect(const SkRect& rect, SkPathBuilder* result,
                        SkPathDirection = SkPathDirection::kCW) const;
     void    strokePath(const SkPath& path, SkPath*) const;
 

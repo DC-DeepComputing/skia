@@ -191,6 +191,10 @@ size_t SkPath::readAsRRect(const void* storage, size_t length) {
 }
 
 size_t SkPath::readFromMemory(const void* storage, size_t length) {
+    return readFromMemory(this, storage, length);
+}
+
+size_t SkPath::readFromMemory(SkPath* path, const void* storage, size_t length) {
     SkRBuffer buffer(storage, length);
     uint32_t packed;
     if (!buffer.readU32(&packed)) {
@@ -206,7 +210,7 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
 
     switch (extract_serializationtype(packed)) {
         case SerializationType::kRRect:
-            return this->readAsRRect(storage, length);
+            return path->readAsRRect(storage, length);
         case SerializationType::kGeneral:
             break;  // fall out
         default:
@@ -232,8 +236,7 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
 
     if (counts.vbs == 0) {
         if (counts.pts == 0 && counts.cnx == 0) {
-            reset();
-            setFillType(extract_filltype(packed));
+            *path = SkPathBuilder().setFillType(extract_filltype(packed)).detach();
             return buffer.pos();
         }
         // No verbs but points and/or conic weights is a not a valid path.
@@ -253,7 +256,7 @@ size_t SkPath::readFromMemory(const void* storage, size_t length) {
     if (!analysis.valid || analysis.points != counts.pts || analysis.weights != counts.cnx) {
         return 0;
     }
-    *this = SkPathPriv::MakePath(analysis, points, verbs, counts.vbs, conics,
+    *path = SkPathPriv::MakePath(analysis, points, verbs, counts.vbs, conics,
                                  extract_filltype(packed), false);
     return buffer.pos();
 }
