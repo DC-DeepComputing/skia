@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc4a8349_ea99fe04",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 10562
+      },
+      "writtenOn": "2025-05-13T20:14:01Z",
+      "side": 1,
+      "message": "I also made the change here for consistency but I\u0027m not really sure what window context is used for (viewer?).",
+      "revId": "634b08aeecf856996bc2bcb42fc90ae778fbe623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
