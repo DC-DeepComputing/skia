@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e6542d5_3afcd7f0",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-13T17:56:25Z",
+      "side": 1,
+      "message": "I don\u0027t know why this is private (but exposed via SkPathPriv::ReverseAddPath).  Should reversePathTo also be private?",
+      "range": {
+        "startLine": 279,
+        "startChar": 19,
+        "endLine": 279,
+        "endChar": 40
+      },
+      "revId": "2e3a1e5ad586965680a0fa22f3f43ab9cb88ff70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
