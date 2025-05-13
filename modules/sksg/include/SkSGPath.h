@@ -42,7 +42,7 @@ public:
 
     void setFillType(SkPathFillType fillType) {
         if (fillType != fPath.getFillType()) {
-            fPath.setFillType(fillType);
+            fPath = fPath.makeFillType(fillType);
             this->invalidate();
         }
     }

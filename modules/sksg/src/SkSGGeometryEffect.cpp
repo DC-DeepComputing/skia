@@ -97,8 +97,9 @@ SkPath GeometryTransform::onRevalidateEffect(const sk_sp<GeometryNode>& child, c
     fTransform->revalidate(nullptr, SkMatrix::I());
     const auto m = TransformPriv::As<SkMatrix>(fTransform);
 
-    SkPath path = child->asPath();
-    path.transform(m);
+    SkPath path = SkPathBuilder(child->asPath())
+        .transform(m)
+        .detach();
 
     return path;
 }
