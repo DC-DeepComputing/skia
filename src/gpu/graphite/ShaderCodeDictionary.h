@@ -15,7 +15,9 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/base/SkSpinlock.h"
 #include "src/core/SkKnownRuntimeEffects.h"
+#include "src/core/SkSLTypeShared.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/Attribute.h"
 #include "src/gpu/graphite/BuiltInCodeSnippetID.h"
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
@@ -87,6 +89,15 @@ struct ShaderSnippet {
                                                          const ShaderSnippet::Args& args);
     static const Args kDefaultArgs;
 
+    // If this snippet has an expression that can be lifted from the fragment shader to the vertex
+    // shader, the LiftableExpressionType specifies how the resolved expression is used by
+    // subsequent shader nodes.
+    enum class LiftableExpressionType : uint32_t {
+        kNone,
+        kLocalCoords,
+        kPriorStageOutput,
+    };
+
     ShaderSnippet() = default;
 
     ShaderSnippet(const char* name,
@@ -94,9 +105,11 @@ struct ShaderSnippet {
                   SkEnumBitMask<SnippetRequirementFlags> snippetRequirementFlags,
                   SkSpan<const Uniform> uniforms,
                   SkSpan<const TextureAndSampler> texturesAndSamplers = {},
-                  GenerateLiftableExpressionFn liftableExpression = nullptr,
                   GeneratePreambleForSnippetFn preambleGenerator = nullptr,
-                  int numChildren = 0)
+                  int numChildren = 0,
+                  GenerateLiftableExpressionFn liftableExpression = nullptr,
+                  LiftableExpressionType liftableExpressionType = LiftableExpressionType::kNone,
+                  Interpolation liftableExpressionInterpolation = Interpolation::kPerspective)
             : fName(name)
             , fStaticFunctionName(staticFn)
             , fSnippetRequirementFlags(snippetRequirementFlags)
@@ -104,6 +117,8 @@ struct ShaderSnippet {
             , fTexturesAndSamplers(texturesAndSamplers)
             , fNumChildren(numChildren)
             , fPreambleGenerator(preambleGenerator)
+            , fLiftableExpressionInterpolation(liftableExpressionInterpolation)
+            , fLiftableExpressionType(liftableExpressionType)
             , fLiftableExpressionGenerator(liftableExpression) {
         // Must always provide a name; static function is not optional if using the default (null)
         // generation logic.
@@ -143,6 +158,9 @@ struct ShaderSnippet {
 
     int fNumChildren = 0;
     GeneratePreambleForSnippetFn fPreambleGenerator = nullptr;
+
+    Interpolation fLiftableExpressionInterpolation = Interpolation::kPerspective;
+    LiftableExpressionType fLiftableExpressionType = LiftableExpressionType::kNone;
     GenerateLiftableExpressionFn fLiftableExpressionGenerator = nullptr;
 };
 
@@ -196,7 +214,7 @@ public:
                                 const ShaderSnippet::Args& args,
                                 std::string* funcBody) const;
 
-    std::string getExpressionVarying() const;
+    std::string getExpressionVaryingName() const;
 
     int32_t codeSnippetId() const { return fCodeID; }
     int32_t keyIndex() const { return fKeyIndex; }
