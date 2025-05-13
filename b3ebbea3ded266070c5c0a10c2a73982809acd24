@@ -16,6 +16,24 @@
       "message": "Mac build fails with:\n\n```\nInvoking bazelisk from  /Volumes/Work/s/w/ir/cache/work/skia/out/Build-Mac-Clang-x86_64-Debug-Fontations/Debug\n2025/05/13 09:06:03 Downloading https://releases.bazel.build/8.2.1/release/bazel-8.2.1-darwin-x86_64...\nAnother command holds the output base lock: \npid\u003d26439\nowner\u003dclient\ncwd\u003d/Volumes/Work/s/w/ir/cache/work/skia/out/Build-Mac-Clang-x86_64-Debug-Fontations/Debug\n\nWaiting for it to complete...\nAnother command (pid\u003d26439) is running. Waiting for it to complete on the server (server_pid\u003d26607)...\nComputing main repo mapping: \nLoading: \nLoading: 0 packages loaded\nAnalyzing: target //src/ports/fontations:fontations_ffi (0 packages loaded, 0 targets configured)\nAnalyzing: target //src/ports/fontations:fontations_ffi (0 packages loaded, 0 targets configured)\n\nTarget //src/ports/fontations:fontations_ffi failed to build\nUse --verbose_failures to see the command lines of failed build steps.\nERROR: Analysis of target \u0027//src/ports/fontations:fontations_ffi\u0027 failed; build aborted: Target //src/ports/fontations:fontations_ffi is incompatible and cannot be built, but was explicitly requested.\nDependency chain:\n    //src/ports/fontations:fontations_ffi (068943)\n    //src/ports/fontations:src/ffi.rs.cc (068943)\n    //src/ports/fontations:fontations_ffi/generated (068943)\n    @@rules_rust++crate2+cargo_bindeps//:cxxbridge-cmd__cxxbridge (d25bc5)\n    @@rules_rust++crate2+cargo_bindeps__cxxbridge-cmd-1.0.158//:cxxbridge__bin (d25bc5)   \u003c-- target platform (//bazel/platform:host_with_hermetic_toolchain) didn\u0027t satisfy constraint @@platforms//:incompatible\nINFO: Elapsed time: 258.848s, Critical Path: 0.01s\n```",
       "revId": "b3ebbea3ded266070c5c0a10c2a73982809acd24",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dbbd604_822dd95a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-13T17:10:44Z",
+      "side": 1,
+      "message": "There\u0027s a few kinks with the rust code I\u0027m working on.",
+      "parentUuid": "e835d73c_328c0893",
+      "revId": "b3ebbea3ded266070c5c0a10c2a73982809acd24",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
