@@ -39,6 +39,30 @@
       },
       "revId": "c78cc5b2a09564e1401dc6dbfd7752e7995524ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6811e4f0_8861a563",
+        "filename": "tools/viewer/Viewer.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1886,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-13T19:35:37Z",
+      "side": 1,
+      "message": "Base SkDevice returns nullptr for makeSurface(). I\u0027m not sure why it wouldn\u0027t return SkSurfaces::Raster().",
+      "parentUuid": "e177601f_8f2d03cf",
+      "range": {
+        "startLine": 1886,
+        "startChar": 45,
+        "endLine": 1886,
+        "endChar": 83
+      },
+      "revId": "c78cc5b2a09564e1401dc6dbfd7752e7995524ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
