@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fb8dacc0_8ce732be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 39
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-13T16:18:16Z",
+      "side": 1,
+      "message": "Were fontations bots tested? I see a Mac build failure here:\nhttps://skia-review.googlesource.com/c/skia/+/986816/comments/e835d73c_328c0893",
+      "revId": "6a3b3da2082910b672eb2c463bcc04edf8a8dbd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
