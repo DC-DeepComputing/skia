@@ -181,6 +181,8 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
 skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
                                      SkIRect iBounds,
+                                     bool includeBounds,
+                                     SkIRect* relativeBounds,
                                      bool* usesPathKey) {
     static constexpr int kMaxShapeCountForKey = 2;
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
@@ -201,23 +203,13 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
             keySize += kXformKeySize + shapeKeySize;
         }
         if (canCreateKey) {
-            if (!iBounds.isEmpty()) {
+            if (includeBounds) {
                 keySize += 2;
             }
             skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
                                               "Clip Path Mask");
             int elementKeyIndex = 0;
-            if (!iBounds.isEmpty()) {
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.left()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.top()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.right()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.bottom()));
-
-                builder[0] = iBounds.left() | (iBounds.top() << 16);
-                builder[1] = iBounds.right() | (iBounds.bottom() << 16);
-                elementKeyIndex += 2;
-            }
-
+            Rect totalBounds;
             for (int i = 0; i < elementsForMask->size(); ++i) {
                 const ClipStack::Element* element = (*elementsForMask)[i];
 
@@ -233,6 +225,20 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                /*includeInverted=*/true);
 
                 elementKeyIndex += kXformKeySize + shape.keySize();
+
+                totalBounds.join(element->fLocalToDevice.mapRect(element->fShape.bounds()));
+            }
+
+            *relativeBounds = iBounds.makeOffset(-totalBounds.left(), -totalBounds.top());
+
+            if (includeBounds) {
+                SkASSERT(SkTFitsIn<int16_t>(iBounds.left()));
+                SkASSERT(SkTFitsIn<int16_t>(iBounds.top()));
+                SkASSERT(SkTFitsIn<int16_t>(iBounds.right()));
+                SkASSERT(SkTFitsIn<int16_t>(iBounds.bottom()));
+
+                builder[elementKeyIndex] = iBounds.left() | (iBounds.top() << 16);
+                builder[elementKeyIndex+1] = iBounds.right() | (iBounds.bottom() << 16);
             }
 
             *usesPathKey = true;
@@ -245,6 +251,7 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
     builder[0] = stackRecordID;
 
     *usesPathKey = false;
+    *relativeBounds = iBounds;
     return maskKey;
 }
 

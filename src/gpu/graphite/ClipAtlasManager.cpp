@@ -110,22 +110,25 @@ sk_sp<TextureProxy> ClipAtlasManager::findOrCreateEntry(uint32_t stackRecordID,
     // For the ClipAtlas cache, we don't include the bounds in the key
     skgpu::UniqueKey maskKey;
     bool usesPathKey;
-    maskKey = GenerateClipMaskKey(stackRecordID, elementList, {}, &usesPathKey);
+    SkIRect relativeBounds;
+    maskKey = GenerateClipMaskKey(stackRecordID, elementList, iBounds, false,
+                                  &relativeBounds, &usesPathKey);
 
     sk_sp<TextureProxy> atlasProxy;
     if (usesPathKey) {
-        atlasProxy = fPathKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey,
-                                                        elementList, iBounds, outPos);
+        atlasProxy = fPathKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList,
+                                                        iBounds, relativeBounds, outPos);
     } else {
-        atlasProxy = fSaveRecordKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey,
-                                                              elementList, iBounds, outPos);
+        atlasProxy = fSaveRecordKeyAtlasMgr.findOrCreateEntry(fRecorder, maskKey, elementList,
+                                                              iBounds, relativeBounds, outPos);
     }
     if (atlasProxy) {
         return atlasProxy;
     }
 
     // We need to include the bounds in the key when using the ProxyCache
-    maskKey = GenerateClipMaskKey(stackRecordID, elementList, iBounds, &usesPathKey);
+    maskKey = GenerateClipMaskKey(stackRecordID, elementList, iBounds, true,
+                                  &relativeBounds, &usesPathKey);
     // Bounds relative to the bitmap origin
     // Expanded to include padding as well (so we clear correctly for inverse clip)
     SkIRect iDrawBounds = SkIRect::MakeXYWH(0, 0,
@@ -211,14 +214,15 @@ sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
             const skgpu::UniqueKey& maskKey,
             const ClipStack::ElementList* elementList,
             SkIRect iBounds,
+            SkIRect relativeBounds,
             SkIPoint* outPos) {
     MaskHashEntry* entry = fMaskCache.find(maskKey);
     while (entry) {
         // If this entry is large enough to contain the clip, use it
-        if (entry->fBounds.contains(iBounds)) {
+        if (entry->fBounds.contains(relativeBounds)) {
             SkIPoint topLeft = entry->fLocator.topLeft();
             // We need to adjust the returned outPos to reflect the subset we're using
-            SkIPoint subsetRelativePos = iBounds.topLeft() - entry->fBounds.topLeft();
+            SkIPoint subsetRelativePos = relativeBounds.topLeft() - entry->fBounds.topLeft();
             *outPos = SkIPoint::Make(topLeft.x() + kEntryPadding + subsetRelativePos.x(),
                                      topLeft.y() + kEntryPadding + subsetRelativePos.y());
             fDrawAtlas->setLastUseToken(entry->fLocator,
@@ -248,17 +252,17 @@ sk_sp<TextureProxy> ClipAtlasManager::DrawAtlasMgr::findOrCreateEntry(
         }
         SkASSERT(currEntry);
         SkASSERT(currEntry->fNext == nullptr); // Should be at the end
-        currEntry->fNext = new MaskHashEntry{iBounds, locator, nullptr};
+        currEntry->fNext = new MaskHashEntry{relativeBounds, locator, nullptr};
         ++fHashEntryCount;
     } else {
-        MaskHashEntry newEntry{iBounds, locator, nullptr};
+        MaskHashEntry newEntry{relativeBounds, locator, nullptr};
         fMaskCache.set(maskKey, newEntry);
         ++fHashEntryCount;
     }
 
     // Add key to Plot's MaskKeyList.
     uint32_t index = fDrawAtlas->getListIndex(locator.plotLocator());
-    MaskKeyEntry* keyEntry = new MaskKeyEntry{maskKey, iBounds};
+    MaskKeyEntry* keyEntry = new MaskKeyEntry{maskKey, relativeBounds};
     fKeyLists[index].addToTail(keyEntry);
     ++fListEntryCount;
 

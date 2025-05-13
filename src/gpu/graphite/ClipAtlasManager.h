@@ -52,6 +52,7 @@ private:
                                               const skgpu::UniqueKey&,
                                               const ClipStack::ElementList*,
                                               SkIRect iBounds,
+                                              SkIRect relativeBounds,
                                               SkIPoint* outPos);
         // Adds to DrawAtlas but not the cache
         sk_sp<TextureProxy> addToAtlas(Recorder* recorder,
