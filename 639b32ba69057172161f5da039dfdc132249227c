@@ -1,0 +1,92 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1be0b9cb_b66aad64",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T20:46:46Z",
+      "side": 1,
+      "message": "naming nit: `ReadFromMemory` (static functions start capitalized)",
+      "range": {
+        "startLine": 1873,
+        "startChar": 18,
+        "endLine": 1873,
+        "endChar": 32
+      },
+      "revId": "639b32ba69057172161f5da039dfdc132249227c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9777c5fc_27ce9022",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T20:46:46Z",
+      "side": 1,
+      "message": "It might read more naturally to return a `std::optional\u003cSkPath\u003e` and have an optional `bytes_read` out param.  From a cursory search, not all call sites care about the number of bytes read, some in Chromium just want to know success/failure.",
+      "fixSuggestions": [
+        {
+          "fixId": "7fbe6000_e52e1f91",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 26,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": "#include \u003coptional\u003e\n"
+            },
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 1857,
+                "startChar": 0,
+                "endLine": 1859,
+                "endChar": 0
+              },
+              "replacement": "    /** Initializes SkPath from buffer of size length. If the buffer\u0027s contents are\n        inconsistent, or the length is too small, this returns a nullopt.\n"
+            },
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 1869,
+                "startChar": 0,
+                "endLine": 1870,
+                "endChar": 0
+              },
+              "replacement": "        @param bytesRead if not null, the number of bytes read from buffer will be written here.\n        @return        the path read, or nullopt on failure.\n"
+            },
+            {
+              "path": "include/core/SkPath.h",
+              "range": {
+                "startLine": 1873,
+                "startChar": 0,
+                "endLine": 1874,
+                "endChar": 0
+              },
+              "replacement": "    static std::optional\u003cSkPath\u003e readFromMemory(const void* buffer, size_t length,\n                                                size_t* bytesRead \u003d nullptr);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "639b32ba69057172161f5da039dfdc132249227c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
