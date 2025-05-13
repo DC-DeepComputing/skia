@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9662ffcf_45bc2885",
+        "filename": "src/gpu/graphite/CommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fccbfac6_e31e66f3",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 76
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8748e30e_04d4d2a2",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-09T16:44:01Z",
       "side": 1,
       "message": "There is an implicit assumption that the logical rendering pipeline (and NDC) definition is (0,0,viewW, viewH), so I think viewportTranslation being renamed as the offsetBetweenColorTexture and resolve texture origins would be clearer that this is a shift that shouldn\u0027t be visible to the vertex shader.",
+      "range": {
+        "startLine": 100,
+        "startChar": 23,
+        "endLine": 101,
+        "endChar": 44
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9a7e1ab_4695b6b0",
+        "filename": "src/gpu/graphite/CommandBuffer.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8748e30e_04d4d2a2",
       "range": {
         "startLine": 100,
         "startChar": 23,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e605115_a63a9613",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "deb71692_4b78703f",
+      "range": {
+        "startLine": 390,
+        "startChar": 0,
+        "endLine": 393,
+        "endChar": 75
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "07e01c41_eb0955d5",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-05-09T16:44:01Z",
       "side": 1,
       "message": "See note about translating renderPassBounds to match the MSAA color texture\u0027s coordinate space. That may allow this extra viewport translation to be embedded into the replay translation, which will simplify figuring out what else has to be modified.  I think the only thing that would remain is basically a \"resolveOffset\" that\u0027s applied at the end?",
+      "range": {
+        "startLine": 935,
+        "startChar": 0,
+        "endLine": 939,
+        "endChar": 43
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4a4be556_efcc31be",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 939,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07e01c41_eb0955d5",
       "range": {
         "startLine": 935,
         "startChar": 0,
@@ -135,6 +231,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dd7fd2a6_e9c724bf",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Only this internal class knows about the binding index of the src texture though. We use 0 for single sampled texture and 1 for MS texture. Since I merged the two versions of fragment shader inside one source string.\n\nIf we wanted to move the responsibility to the caller, this binding info would need to be leaked outside.\n\nBtw, we don\u0027t have any function that caches single texture (w.o sampler) bindgroup yet. That would be done in future. Currently we only cache a bindgroup containing a texture + a sampler.",
+      "parentUuid": "0f1b9222_12816b24",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 26
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dd276cbf_175a4523",
         "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
         "patchSetId": 10
@@ -146,6 +266,30 @@
       "writtenOn": "2025-05-09T16:44:01Z",
       "side": 1,
       "message": "We shouldn\u0027t embed the device in this object, we should just make it available to whoever also uses this.",
+      "range": {
+        "startLine": 509,
+        "startChar": 30,
+        "endLine": 509,
+        "endChar": 59
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5455f466_e7e8d8e5",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd276cbf_175a4523",
       "range": {
         "startLine": 509,
         "startChar": 30,
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e305336_cfcbadd8",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9894e774_f4edd244",
+      "range": {
+        "startLine": 33,
+        "startChar": 10,
+        "endLine": 33,
+        "endChar": 28
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5da5a86e_0d861922",
@@ -192,6 +360,30 @@
       "writtenOn": "2025-05-09T16:44:01Z",
       "side": 1,
       "message": "The draw bounds will need to be offset by the replay translation before its intersected with the target size.",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 44
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb7d20b9_fef9115c",
+        "filename": "src/gpu/graphite/task/RenderPassTask.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-13T08:45:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5da5a86e_0d861922",
       "range": {
         "startLine": 48,
         "startChar": 0,
