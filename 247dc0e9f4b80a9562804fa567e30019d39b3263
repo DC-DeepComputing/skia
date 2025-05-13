@@ -37,6 +37,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "fe2b8f2b_ef134a22",
+        "filename": "src/pdf/SkPDFGradientShader.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 993,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-13T19:59:55Z",
+      "side": 1,
+      "message": "Now I don\u0027t want to touch this line just because of the clang-tidy `modernize-make-unique` report that wants me to change this to\n\n```\nkey.fColors \u003d std::make_unique\u003cSkColor4f[]\u003e(key.fInfo.fColorCount);\n```\n\nI know it doesn\u0027t really matter that much here, but I hate this tidy, as while it is nice to \"never new\" it leads to follow on effects like [not being able to find constructor uses](https://youtrack.jetbrains.com/issue/CPP-2697/Find-usages-doesnt-find-implicit-constructor-call-in-template-functions-and-library-code-like-stdmakeshared) (which, again, doesn\u0027t really matter here, but hard enforcing this tidy makes me unhappy). Since it doesn\u0027t matter here I\u0027ll let it slide this time.",
+      "revId": "247dc0e9f4b80a9562804fa567e30019d39b3263",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "33164611_2a2d078d",
         "filename": "src/pdf/SkPDFUtils.h",
         "patchSetId": 2
