@@ -1411,7 +1411,10 @@ if (skia_use_fontations) {
     ]
     public = [ "${root_out_dir}/src/ports/fontations/src/ffi.rs.h" ]
     sources = [ "${root_out_dir}/src/ports/fontations/src/ffi.rs.cc" ]
-    libs = [ "$root_out_dir/libbridge_rust_side.a" ]
+    libs = [
+      "$root_out_dir/libbridge_rust_side.a",
+      "c++",
+    ]
     public_configs = [ ":fontations_ffi_public_config" ]
     configs = [ ":fontations_ffi_private_config" ]
   }
