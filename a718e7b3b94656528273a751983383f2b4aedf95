@@ -51,6 +51,24 @@
       "message": "\u003e https://doc.rust-lang.org/std/option/enum.Option.html#method.is_none_or\n\nis the reason the build fails on some of the bots, this requires Rust 1.82. So yes, we are now blocked on rolling Fontations.",
       "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8440eabc_502cd4b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-13T15:58:59Z",
+      "side": 1,
+      "message": "Thanks for fixing this and enabling Rust 1.86 - this should work now. Tested locally.",
+      "parentUuid": "3fb0219e_1d314fd8",
+      "revId": "a718e7b3b94656528273a751983383f2b4aedf95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
