@@ -16,6 +16,11 @@
 
 class SkColorSpace;
 
+namespace skgpu {
+struct VulkanYcbcrConversionInfo;
+}
+
+
 namespace skgpu::graphite {
 
 class PrecompileBlender;
@@ -150,7 +155,7 @@ namespace PrecompileShaders {
     SK_API sk_sp<PrecompileShader> Image(SkSpan<const SkColorInfo> colorInfos,
                                          SkSpan<const SkTileMode> = { kAllTileModes });
 
-    // As with the above Image call, raw ImageShaders are usually created via an
+    // As with the above Image call, raw ImageShaders are usually created via a
     // SkImage::makeRawShader call. The RawImage call allows the equivalent precompilation
     // program structure to be created without needing the SkImage.
     SK_API sk_sp<PrecompileShader> RawImage(ImageShaderFlags = ImageShaderFlags::kExcludeCubic,
