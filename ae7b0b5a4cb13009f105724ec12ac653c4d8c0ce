@@ -34,6 +34,24 @@
       "parentUuid": "6c68edeb_0ceaec6a",
       "revId": "ae7b0b5a4cb13009f105724ec12ac653c4d8c0ce",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2d19a30_da6bd45a",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-13T13:37:30Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "836cb498_17791427",
+      "revId": "ae7b0b5a4cb13009f105724ec12ac653c4d8c0ce",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
