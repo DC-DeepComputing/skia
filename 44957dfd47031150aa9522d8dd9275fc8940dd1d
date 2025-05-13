@@ -51,6 +51,24 @@
       "parentUuid": "898ae284_d3f93457",
       "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1064806_d5bd5401",
+        "filename": "MODULE.bazel",
+        "patchSetId": 35
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-13T13:28:03Z",
+      "side": 1,
+      "message": "\u003e  See https://skia-review.googlesource.com/c/skia/+/984976/36/include/config/MODULE.bazel for an example\n\n\u003e Like your other CL, you\u0027d then change the deps from \"@crates//:skrifa\" -\u003e \"@local_skrifa\"\n\nThanks, sounds good. And that would automatically take care of building skrifa in /path/to/local/skrifa? Or would the MODULE.bazel have to have additional rules or setup? \n\n\u003e 2) We can also try making the Cargo.toml file the source of truth. If you want to give that a shot https://bazelbuild.github.io/rules_rust/crate_universe_bzlmod.html#cargo-workspaces after this lands (since you are a bit more familiar with Cargo things than I am), I\u0027m happy to review and support.\n\nThat sounds reasonable to try and would avoid the concern I have about multiple specifications for which version Fontations deps are in. Could you give that a try as a follow-up?",
+      "parentUuid": "b8cfb669_c5fe3f8e",
+      "revId": "44957dfd47031150aa9522d8dd9275fc8940dd1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
