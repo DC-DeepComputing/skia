@@ -70,6 +70,30 @@
       },
       "revId": "97318a82aa3780206f6d7538b4bbb0c73f7c990b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "00c0b6f7_58d1d9f7",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-13T14:13:08Z",
+      "side": 1,
+      "message": "Hmm, I think so yeah: technically, if the dest path is simply being reassigned (`*dst \u003d tmpPath`), that should be fine; but as a general direction we do want to avoid out params in SkPath.\n\nReturning a new value is a cleaner API, the only tricky bit is the `dst \u003d\u003d this` optimization - but call sites that care about that case should be using a builder.",
+      "parentUuid": "5b9b5db2_f87b349b",
+      "range": {
+        "startLine": 1430,
+        "startChar": 9,
+        "endLine": 1430,
+        "endChar": 18
+      },
+      "revId": "97318a82aa3780206f6d7538b4bbb0c73f7c990b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
