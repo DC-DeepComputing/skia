@@ -216,6 +216,9 @@ public:
     void drawSpecial(SkSpecialImage*, const SkMatrix& localToDevice, const SkSamplingOptions&,
                      const SkPaint&, SkCanvas::SrcRectConstraint) override;
 
+    void drawCoverageMask(const SkSpecialImage* mask, const SkMatrix& maskToDevice,
+                          const SkSamplingOptions& localToDevice, const SkPaint& paint) override;
+
     void drawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4], SkCanvas::QuadAAFlags aaFlags,
                         const SkColor4f& color, SkBlendMode mode) override;
     void drawEdgeAAImageSet(const SkCanvas::ImageSetEntry[], int count, const SkPoint dstClips[],
@@ -256,6 +259,8 @@ public:
     Device* asGaneshDevice() override { return this; }
 
     SkIRect devClipBounds() const override { return fClip.getConservativeBounds(); }
+
+    bool useDrawCoverageMaskForMaskFilters() const override { return true; }
 
     void pushClipStack() override { fClip.save(); }
     void popClipStack() override { fClip.restore(); }
