@@ -46,6 +46,30 @@
       },
       "revId": "97318a82aa3780206f6d7538b4bbb0c73f7c990b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b9b5db2_f87b349b",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-13T13:43:29Z",
+      "side": 1,
+      "message": "Would it make sense to guard any method which accepts a SkPath* to be modified?  Maybe that implies replacing them with methods which just return SkPath.",
+      "parentUuid": "be486102_9e786253",
+      "range": {
+        "startLine": 1430,
+        "startChar": 9,
+        "endLine": 1430,
+        "endChar": 18
+      },
+      "revId": "97318a82aa3780206f6d7538b4bbb0c73f7c990b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
