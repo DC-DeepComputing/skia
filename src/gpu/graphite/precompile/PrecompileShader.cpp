@@ -262,6 +262,11 @@ public:
             , fUseDstColorSpace(!colorInfos.empty())
             , fRaw(raw) {}
 
+    void setImmutableSamplerInfo(const ImmutableSamplerInfo& samplerInfo) {
+        fFoo = true;
+        fImmutableSamplerInfo = samplerInfo;
+    }
+
 private:
     friend class PrecompileYUVImageShader; // for NonAlphaOnlyDefaultColorInfos
 
@@ -321,6 +326,8 @@ private:
 
     // Whether this precompiles raw image shaders.
     const bool fRaw;
+    bool fFoo = false;
+    ImmutableSamplerInfo fImmutableSamplerInfo;
 
     int numIntrinsicCombinations() const override {
         // TODO(b/400682634) If color infos were provided by the client, and we're using the
@@ -362,13 +369,21 @@ private:
                                  desiredSamplingTilingCombo - numTileModes == kHWTiled)
                                         ? kHWTileableSize
                                         : kShaderTileableSize;
-        const SkSamplingOptions sampling =
+        SkSamplingOptions sampling =
                 (desiredSamplingTilingCombo >= numTileModes &&
                  desiredSamplingTilingCombo - numTileModes == kCubicSampled)
                         ? kDefaultCubicSampling
                         : kDefaultSampling;
 
-        const ImageShaderBlock::ImageData imgData(sampling, tileMode, tileMode, imgSize, kSubset);
+        if (fFoo) {
+            sampling = SkSamplingOptions(SkFilterMode::kLinear, SkMipmapMode::kNone);
+        }
+
+        ImageShaderBlock::ImageData imgData(sampling, tileMode, tileMode, imgSize, kSubset);
+
+        if (fFoo) {
+            imgData.fImmutableSamplerInfo = fImmutableSamplerInfo;
+        }
 
         const SkColorInfo& colorInfo = fColorInfos[desiredColorInfo];
         const bool alphaOnly = SkColorTypeIsAlphaOnly(colorInfo.colorType());
