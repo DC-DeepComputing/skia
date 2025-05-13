@@ -236,8 +236,7 @@ size_t SkPath::readFromMemory(SkPath* path, const void* storage, size_t length) 
 
     if (counts.vbs == 0) {
         if (counts.pts == 0 && counts.cnx == 0) {
-            path->reset();
-            path->setFillType(extract_filltype(packed));
+            *path = SkPathBuilder().setFillType(extract_filltype(packed)).detach();
             return buffer.pos();
         }
         // No verbs but points and/or conic weights is a not a valid path.

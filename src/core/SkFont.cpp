@@ -306,7 +306,7 @@ bool SkFont::getPath(SkGlyphID glyphID, SkPath* path) const {
     this->getPaths(&glyphID, 1, [](const SkPath* orig, const SkMatrix& mx, void* ctx) {
         Pair* pair = static_cast<Pair*>(ctx);
         if (orig) {
-            orig->transform(mx, pair->fPath);
+            *pair->fPath = orig->makeTransform(mx);
             pair->fWasSet = true;
         }
     }, &pair);
