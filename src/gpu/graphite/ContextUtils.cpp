@@ -74,6 +74,7 @@ bool CanUseHardwareBlending(const Caps* caps,
     // Check for special cases that would prevent the usage of direct hardware blending and
     // require us to fall back to using shader-based blending.
     const SkBlendMode bm = blendMode.value();
+    const bool blendModeIsAdvanced = bm > SkBlendMode::kLastCoeffMode;
     const bool hasCoverage = coverage != Coverage::kNone;
     if (// Using LCD coverage (which must be applied after the blend equation) with any blend mode
         // besides SkBlendMode::kSrcOver
@@ -87,10 +88,10 @@ bool CanUseHardwareBlending(const Caps* caps,
         bm == SkBlendMode::kPlus ||
 
         // Using an advanced blend mode but the hardware does not support them
-        (bm > SkBlendMode::kLastCoeffMode && !caps->supportsHardwareAdvancedBlending()) ||
+        (blendModeIsAdvanced && !caps->supportsHardwareAdvancedBlending()) ||
 
         // The blend formula requires dual-source blending, but it is not supported by hardware
-        (bm <= SkBlendMode::kLastCoeffMode &&
+        (!blendModeIsAdvanced &&
          (coverage == Coverage::kLCD ? skgpu::GetLCDBlendFormula(bm).hasSecondaryOutput()
                                      : skgpu::GetBlendFormula(/*isOpaque=*/false,
                                                               hasCoverage,
