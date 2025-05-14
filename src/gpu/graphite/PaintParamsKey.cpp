@@ -269,7 +269,7 @@ static int key_to_string(SkString* str,
         // Define a compact representation for the common case of shader snippets using just one
         // dynamic sampler. Immutable samplers require > 1 index of data to be represented while a
         // dynamic sampler is represented with just one, so we can simply consult dataIndexCount.
-        if (dataIndexCount == 1) {
+        if (dataIndexCount == 0) {
             str->append("(0)");
         } else {
             str->append("(");
