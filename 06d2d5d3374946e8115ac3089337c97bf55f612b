@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d44680c1_7007df81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "febe89e6_5e90152a",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77224cb2_15441946",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-05-13T21:26:49Z",
       "side": 1,
       "message": "This is private in `SkPath` (only used internally), we should probably keep it that way since it\u0027s niche.\n\nWe can make it available to the stroker and test code the same way (friend or SkPathPriv).",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7f6e8bb0_46e6e417",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "77224cb2_15441946",
       "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -52,6 +88,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd3241d9_07416ca4",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6d0d83b_3449ab4d",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff63c08b_90af1204",
@@ -65,6 +119,24 @@
       "writtenOn": "2025-05-13T21:26:49Z",
       "side": 1,
       "message": "Also private.",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1475e2f_36814361",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff63c08b_90af1204",
       "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -114,6 +186,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "98d30da8_5cbc6fb9",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba49ccdf_a6882f2e",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "193b9858_0afdc0ce",
@@ -149,6 +239,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d1a4afb_14249d8c",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 937,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "I had originally tried to copy/paste the implementation from SkPath but I got a little lost trying to maintain the convexity and firstdirection behavior.  I assume those things need to be reconciled eventually.",
+      "parentUuid": "193b9858_0afdc0ce",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd384bf6_0de7a280",
@@ -162,6 +270,24 @@
       "writtenOn": "2025-05-13T21:26:49Z",
       "side": 1,
       "message": "nit: looks like a good candidate for inlining also.",
+      "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a5bdf045_527ac0d0",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 942,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd384bf6_0de7a280",
       "revId": "06d2d5d3374946e8115ac3089337c97bf55f612b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

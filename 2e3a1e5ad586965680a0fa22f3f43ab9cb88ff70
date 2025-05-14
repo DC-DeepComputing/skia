@@ -46,6 +46,30 @@
       },
       "revId": "2e3a1e5ad586965680a0fa22f3f43ab9cb88ff70",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58b738d8_853fa1db",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 279,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T16:17:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dbf5ab5_4e2fe701",
+      "range": {
+        "startLine": 279,
+        "startChar": 19,
+        "endLine": 279,
+        "endChar": 40
+      },
+      "revId": "2e3a1e5ad586965680a0fa22f3f43ab9cb88ff70",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
