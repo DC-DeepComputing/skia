@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "edd4130b_49bd387b",
+        "filename": "src/android/SkAndroidFrameworkUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-14T21:25:10Z",
+      "side": 1,
+      "message": "I suppose technically this should be the min of info-\u003efColorCount (how many were passed in) and `baseInfo-\u003efColorCount` (how many there actually are). In no cases should these be different though if `info-\u003efColors` is set.",
+      "range": {
+        "startLine": 72,
+        "startChar": 32,
+        "endLine": 72,
+        "endChar": 49
+      },
+      "revId": "794071dad552994083561d1ca4ad735b34e9cd53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
