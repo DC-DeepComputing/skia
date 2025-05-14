@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec88db76_65101caf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-14T15:35:31Z",
+      "side": 1,
+      "message": "```suggestion\nmore predictable output.\n```",
+      "range": {
+        "startLine": 26,
+        "startChar": 24,
+        "endLine": 26,
+        "endChar": 25
+      },
+      "revId": "4c9ee3c766948e7c9cfdc32e41f8b58efcb49bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
