@@ -457,7 +457,9 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type
 
 #if defined(SK_VULKAN)
     // Use this call to map back from a HardwareImage sub-string to a VulkanYcbcrConversionInfo
-    //Base642YCbCr("kEwAAPcAAAAAAAAA");
+    Base642YCbCr("kHoAAO4AAAAAAAAA");
+    Base642YCbCr("kEwAAPcAAAAAAAAA");
+    Base642YCbCr("kHIAAPAAAAAAAAAA");
 #endif
 
     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
