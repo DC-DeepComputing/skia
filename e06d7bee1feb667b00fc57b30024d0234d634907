@@ -58,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5414d5a9_146e5117",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-14T19:15:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d05d69eb_7104da4f",
+      "range": {
+        "startLine": 93,
+        "startChar": 23,
+        "endLine": 93,
+        "endChar": 43
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4167d093_63a46787",
@@ -71,6 +95,30 @@
       "writtenOn": "2025-05-14T14:01:26Z",
       "side": 1,
       "message": "This sort of flexibility shouldn\u0027t be exposed to clients.  We should follow the model used in `ContextOptions` and `ContextOptionsPriv` to add a `RecorderOptionsPriv`",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18c223c5_1460e5ce",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-14T19:15:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4167d093_63a46787",
       "range": {
         "startLine": 81,
         "startChar": 0,
@@ -104,6 +152,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0b6be27_e9d985b7",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-14T19:15:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c38ed402_c864f4a0",
+      "range": {
+        "startLine": 173,
+        "startChar": 37,
+        "endLine": 175,
+        "endChar": 97
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e17bfa19_6677e688",
@@ -117,6 +189,30 @@
       "writtenOn": "2025-05-14T14:01:26Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 101
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45192d45_3c49827d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-14T19:15:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e17bfa19_6677e688",
       "range": {
         "startLine": 192,
         "startChar": 0,
