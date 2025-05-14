@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "54c3c066_725fde09",
+        "filename": "src/core/SkRuntimeEffectPriv.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T13:54:56Z",
+      "side": 1,
+      "message": "Yeah, I was surprised as well, but IWYU complains but it\u0027s from using the `std::vector`\u0027s [] operator in `ChildSampleUsage`.",
+      "parentUuid": "6c7eec9e_d7ac2be9",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 17
+      },
+      "revId": "8d99481e99b25d20edd11ea8145907f862e4749a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f9f1b73f_9be31a32",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b537d96f_de1bbe4c",
+        "filename": "src/gpu/graphite/KeyContext.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T13:54:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9f1b73f_9be31a32",
+      "range": {
+        "startLine": 57,
+        "startChar": 21,
+        "endLine": 57,
+        "endChar": 23
+      },
+      "revId": "8d99481e99b25d20edd11ea8145907f862e4749a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09268a99_d8f40a8f",
@@ -60,6 +108,24 @@
       "writtenOn": "2025-05-13T17:22:38Z",
       "side": 1,
       "message": "SkASSERT(effect-\u003echildren().size() \u003d\u003d 1);\n\nHere and in following ?",
+      "revId": "8d99481e99b25d20edd11ea8145907f862e4749a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b0fa95d_b1128b24",
+        "filename": "src/gpu/graphite/precompile/PrecompileShader.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1102,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T13:54:56Z",
+      "side": 1,
+      "message": "Done, and updated to also check for 1 or 2 children in some cases, which caught a bug in the update to the displacement map\u0027s contexts. It needed one context per child, but I\u0027d just been reusing `child\u003d0`",
+      "parentUuid": "09268a99_d8f40a8f",
       "revId": "8d99481e99b25d20edd11ea8145907f862e4749a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
