@@ -40,10 +40,14 @@ void compile(const RendererProvider* rendererProvider,
              const RenderPassDesc& renderPassDesc,
              bool withPrimitiveBlender,
              Coverage coverage) {
+    SkDebugf("-------------\n");
     for (const Renderer* r : rendererProvider->renderers()) {
         if (!(r->drawTypes() & drawTypes)) {
+            SkDebugf("skipping %s\n", r->name());
             continue;
         }
+
+        SkDebugf("trying %s %d\n", r->name(), r->numRenderSteps());
 
         if (r->emitsPrimitiveColor() != withPrimitiveBlender) {
             // UniqueIDs are explicitly built either w/ or w/o primitiveBlending so must
@@ -58,6 +62,7 @@ void compile(const RendererProvider* rendererProvider,
         }
 
         for (auto&& s : r->steps()) {
+            SkDebugf("Step: %s\n", s->name());
             SkASSERT(!s->performsShading() || s->emitsPrimitiveColor() == withPrimitiveBlender);
 
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
@@ -115,6 +120,8 @@ void Precompile(PrecompileContext* precompileContext,
             caps->loadOpAffectsMSAAPipelines()) {
             numLoadOps = 2;
         }
+
+        SkDebugf("loadOpAffectsMSAAPipelines %d\n", caps->loadOpAffectsMSAAPipelines());
 
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
             const RenderPassDesc renderPassDesc =
