@@ -240,7 +240,7 @@ private:
 
     // If Context is non-null, the Recorder will use the Context's resource provider
     // instead of creating its own.
-    Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*);
+    Recorder(sk_sp<SharedContext>, const RecorderOptions&, const Context*, bool capture);
 
     SingleOwner* singleOwner() const { return &fSingleOwner; }
 
@@ -307,6 +307,8 @@ private:
     std::unique_ptr<Recording::LazyProxyData> fTargetProxyData;
 
     skia_private::TArray<sk_sp<RefCntedCallback>> fFinishedProcs;
+
+    bool fCaptureEnabled;
 
 #if defined(GPU_TEST_UTILS)
     // For testing use only -- the Context used to create this Recorder

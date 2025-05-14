@@ -161,6 +161,8 @@ struct SK_API ContextOptions {
      */
     SkSpan<sk_sp<SkRuntimeEffect>> fUserDefinedKnownRuntimeEffects;
 
+    bool fEnableCapture = false;
+
     /**
      * Private options that are only meant for testing within Skia's tools.
      */

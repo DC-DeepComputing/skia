@@ -271,6 +271,9 @@ public:
      */
     GpuStatsFlags supportedGpuStats() const;
 
+    void startCapture();
+    void endCapture(); // TODO: return something on endCapture
+
     // Provides access to functions that aren't part of the public API.
     ContextPriv priv();
     const ContextPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -378,6 +381,8 @@ private:
     // In debug builds we guard against improper thread handling. This guard is passed to the
     // ResourceCache for the Context.
     mutable SingleOwner fSingleOwner;
+
+    bool fCaptureEnabled;
 
 #if defined(GPU_TEST_UTILS)
     void deregisterRecorder(const Recorder*) SK_EXCLUDES(fTestingLock);

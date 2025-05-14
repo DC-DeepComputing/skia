@@ -60,6 +60,9 @@ public:
 
     virtual void deviceTick(Context*) {}
 
+    bool isCurrentlyCapturing() const { return fCurrentlyCapturing; }
+    void setCurrentlyCapturingState(bool capturing) { fCurrentlyCapturing = capturing; }
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
@@ -77,6 +80,7 @@ private:
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
+    bool fCurrentlyCapturing = false;
 };
 
 } // namespace skgpu::graphite

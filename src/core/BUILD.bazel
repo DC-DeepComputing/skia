@@ -175,6 +175,7 @@ skia_filegroup(
         "//src/sksl:core_priv_hdrs",
         "//src/text:text_hdrs",
         "//src/utils:core_priv_hdrs",
+        "//src/capture:capture_hdrs",
     ],
 )
 
@@ -461,6 +462,7 @@ skia_cc_library(
         ":core_priv_hdrs",
         ":core_priv_srcs",
         ":core_srcs",
+        "//src/capture:capture_srcs",
         "//src/effects:core_srcs",
         "//src/image:image_srcs",
         "//src/ports:core_srcs",
