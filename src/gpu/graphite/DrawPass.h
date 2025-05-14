@@ -15,6 +15,7 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/gpu/graphite/DrawCommands.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/DrawWriter.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
@@ -94,6 +95,13 @@ public:
     skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
 
     void addResourceRefs(CommandBuffer*) const;
+
+#if defined(GPU_TEST_UTILS)
+    static std::unique_ptr<DrawPass> getTestDrawPass(sk_sp<TextureProxy> target,
+                                                     std::pair<LoadOp, StoreOp> ops,
+                                                     std::array<float, 4> clearColor);
+    std::unique_ptr<HeadlessDrawWriter> getHeadlessDrawWriter(DrawBufferManager*);
+#endif
 
 private:
     class SortKey;

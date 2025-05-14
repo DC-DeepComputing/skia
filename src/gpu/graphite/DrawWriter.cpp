@@ -97,6 +97,11 @@ void DrawWriter::flushInternal() {
         fCommandList->addBarrier(fBarrierToIssueBeforeDraws.value());
     }
 
+    this->issueDraws(pendingBaseStatic, pendingBaseIndices, pendingBaseAppend);
+}
+
+void DrawWriter::issueDraws(uint32_t pendingBaseStatic, uint32_t pendingBaseIndices,
+                            uint32_t pendingBaseAppend) {
     // Issue the appropriate draw call (instanced vs. non-instanced) based on the current
     // fTemplateCount. Because of the initial AppendDynamicInstances && fTemplateCount check, any
     // DynamicInstance render step must have valid (non-zero) templateCount data at this point.
@@ -151,5 +156,36 @@ void DrawWriter::flushInternal() {
     // Mark all appended items as drawn.
     fPendingCount = 0;
 }
+
+#if defined(GPU_TEST_UTILS)
+void HeadlessDrawWriter::issueDraws(uint32_t pendingBaseStatic, uint32_t pendingBaseIndices,
+                                    uint32_t pendingBaseAppend) {
+    if (fTemplateCount) {
+        SkASSERT((pendingBaseAppend + fPendingCount)*fAppendStride <= fBoundAppend.fSize);
+        if (fIndices) {
+            SkASSERT(fTemplateCount*sizeof(uint16_t) <= fIndices.fSize);
+        } else {
+            SkASSERT(fTemplateCount*fStaticStride <= fStatic.fSize);
+        }
+        if (fRenderState &
+            (RenderStateFlags::kAppendInstances | RenderStateFlags::kAppendDynamicInstances)) {
+            fAppend = {};
+            if (fRenderState & RenderStateFlags::kAppendDynamicInstances) {
+                fTemplateCount = 0;
+            }
+        }
+    } else {
+        if (fIndices) {
+            SkASSERT(fPendingCount*sizeof(uint16_t) <= fIndices.fSize);
+        } else {
+            SkASSERT((pendingBaseAppend + fPendingCount)*fStaticStride <= fBoundAppend.fSize);
+        }
+        if (fRenderState & RenderStateFlags::kAppendVertices) {
+            fAppend = {};
+        }
+    }
+    fPendingCount = 0;
+}
+#endif
 
 } // namespace skgpu::graphite

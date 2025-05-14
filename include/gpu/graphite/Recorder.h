@@ -78,6 +78,26 @@ struct SK_API RecorderOptions final {
     // may be able to make certain assuptions that improve performance. This is often the case
     // if the content being drawn triggers the use of internal atlasing in Graphite (e.g. text).
     std::optional<bool> fRequireOrderedRecordings;
+
+    // The buffer sizes DrawBufferManager uses may be overridden using this option.
+    struct BufferSizes {
+        BufferSizes(uint32_t vertexBufferMinSize, uint32_t vertexBufferMaxSize,
+                    uint32_t indexBufferSize, uint32_t uniformBufferSize,
+                    uint32_t storageBufferMinSize, uint32_t storageBufferMaxSize) :
+                    kVertexBufferMinSize(vertexBufferMinSize),
+                    kVertexBufferMaxSize(vertexBufferMaxSize),
+                    kIndexBufferSize(indexBufferSize),
+                    kUniformBufferSize(uniformBufferSize),
+                    kStorageBufferMinSize(storageBufferMinSize),
+                    kStorageBufferMaxSize(storageBufferMaxSize) {}
+        const uint32_t kVertexBufferMinSize;
+        const uint32_t kVertexBufferMaxSize;
+        const uint32_t kIndexBufferSize;
+        const uint32_t kUniformBufferSize;
+        const uint32_t kStorageBufferMinSize;
+        const uint32_t kStorageBufferMaxSize;
+    };
+    std::optional<BufferSizes> fBufferSizes = std::nullopt;
 };
 
 class SK_API Recorder final {
