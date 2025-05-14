@@ -162,6 +162,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                                stencilCurve.get(),
                                coverStep);
 
+            SkDebugf("---adding %s\n", stencilWedge->name());
             this->initRenderer(&fStencilTessellatedWedges[index],
                                "StencilTessellatedWedges" + variant,
                                DrawTypeFlags::kNonSimpleShape,
