@@ -180,7 +180,9 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
 
 skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
-                                     SkIRect iBounds,
+                                     SkIRect maskBounds,
+                                     bool includeBounds,
+                                     SkIRect* keyBounds,
                                      bool* usesPathKey) {
     static constexpr int kMaxShapeCountForKey = 2;
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
@@ -201,23 +203,13 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
             keySize += kXformKeySize + shapeKeySize;
         }
         if (canCreateKey) {
-            if (!iBounds.isEmpty()) {
+            if (includeBounds) {
                 keySize += 2;
             }
             skgpu::UniqueKey::Builder builder(&maskKey, kDomain, keySize,
                                               "Clip Path Mask");
             int elementKeyIndex = 0;
-            if (!iBounds.isEmpty()) {
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.left()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.top()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.right()));
-                SkASSERT(SkTFitsIn<int16_t>(iBounds.bottom()));
-
-                builder[0] = iBounds.left() | (iBounds.top() << 16);
-                builder[1] = iBounds.right() | (iBounds.bottom() << 16);
-                elementKeyIndex += 2;
-            }
-
+            Rect unclippedBounds = Rect::InfiniteInverted();
             for (int i = 0; i < elementsForMask->size(); ++i) {
                 const ClipStack::Element* element = (*elementsForMask)[i];
 
@@ -233,6 +225,26 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                /*includeInverted=*/true);
 
                 elementKeyIndex += kXformKeySize + shape.keySize();
+
+                Rect transformedBounds = element->fLocalToDevice.mapRect(element->fShape.bounds());
+                unclippedBounds.join(transformedBounds);
+            }
+
+            // The keyBounds are the maskBounds relative to the transformed mask, without the
+            // deviceBounds clip. We use this to ensure we capture the case where the maskBounds
+            // are equal in two cases but actually enclose different regions of the full mask, and
+            // where the only difference between in the elementList transforms is an integer
+            // translation (which is not stored in the key).
+            *keyBounds = maskBounds.makeOffset(-unclippedBounds.left(), -unclippedBounds.top());
+
+            if (includeBounds) {
+                SkASSERT(SkTFitsIn<int16_t>(keyBounds->left()));
+                SkASSERT(SkTFitsIn<int16_t>(keyBounds->top()));
+                SkASSERT(SkTFitsIn<int16_t>(keyBounds->right()));
+                SkASSERT(SkTFitsIn<int16_t>(keyBounds->bottom()));
+
+                builder[elementKeyIndex] = keyBounds->left() | (keyBounds->top() << 16);
+                builder[elementKeyIndex+1] = keyBounds->right() | (keyBounds->bottom() << 16);
             }
 
             *usesPathKey = true;
@@ -245,6 +257,9 @@ skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
     builder[0] = stackRecordID;
 
     *usesPathKey = false;
+    // It doesn't matter what the maskBounds are in this case --
+    // the stackRecordID is enough to distinguish between clips.
+    *keyBounds = maskBounds;
     return maskKey;
 }
 
