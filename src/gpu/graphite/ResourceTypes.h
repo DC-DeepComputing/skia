@@ -190,7 +190,7 @@ struct SamplerDesc {
     static_assert(kSkTileModeCount <= 4 && kSkFilterModeCount <= 2 && kSkMipmapModeCount <= 4);
 
     constexpr SamplerDesc(const SkSamplingOptions& samplingOptions, SkTileMode tileMode)
-            : SamplerDesc(samplingOptions, {tileMode, tileMode}) {}
+            : SamplerDesc(samplingOptions, {tileMode, tileMode}, {}) {}
 
     constexpr SamplerDesc(const SkSamplingOptions& samplingOptions,
                           const std::pair<SkTileMode, SkTileMode> tileModes,
