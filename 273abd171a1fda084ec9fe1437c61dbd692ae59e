@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69c9058b_66a7f873",
+        "filename": "src/gpu/graphite/PaintParamsKey.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T14:02:44Z",
+      "side": 1,
+      "message": "nit: I think this should be `\u003d\u003d 0`.  Dynamic samplers use an empty data span, so the index count should be 0.",
+      "range": {
+        "startLine": 241,
+        "startChar": 12,
+        "endLine": 241,
+        "endChar": 31
+      },
+      "revId": "273abd171a1fda084ec9fe1437c61dbd692ae59e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
