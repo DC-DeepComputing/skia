@@ -441,6 +441,8 @@ sk_sp<PrecompileShader> vulkan_ycbcr_709_image_shader(uint64_t format,
     info.fXChromaOffset  = VK_CHROMA_LOCATION_MIDPOINT;
     info.fYChromaOffset  = VK_CHROMA_LOCATION_MIDPOINT;
     info.fChromaFilter   = VK_FILTER_LINEAR;
+    info.fFormatFeatures = VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT |
+                           VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT;
 
     return PrecompileShaders::VulkanYCbCrImage(info,
                                                PrecompileShaders::ImageShaderFlags::kExcludeCubic,
@@ -511,6 +513,23 @@ void Base642YCbCr(const char* str) {
 
     skgpu::VulkanYcbcrConversionInfo info =
             VulkanYcbcrConversion::FromImmutableSamplerInfo(s.immutableSamplerInfo());
+
+    // The VulkanYcbcrConversion fFormatFeatures field isn't serialized in the Pipeline label
+    // so we re-synthesize it here.
+    // Officially, it should be filled in by vkAndroidHardwareBufferFormatPropertiesANDROID.
+
+    SkASSERT(info.fFormatFeatures == 0);
+    if (info.fXChromaOffset == VK_CHROMA_LOCATION_MIDPOINT ||
+        info.fYChromaOffset == VK_CHROMA_LOCATION_MIDPOINT) {
+        info.fFormatFeatures |= VK_FORMAT_FEATURE_MIDPOINT_CHROMA_SAMPLES_BIT;
+    }
+    if (info.fXChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN ||
+        info.fYChromaOffset == VK_CHROMA_LOCATION_COSITED_EVEN) {
+        info.fFormatFeatures |= VK_FORMAT_FEATURE_COSITED_CHROMA_SAMPLES_BIT;
+    }
+    if (info.fChromaFilter == VK_FILTER_LINEAR) {
+       info.fFormatFeatures |= VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT);
+    }
 
     SkDebugf("VulkanYcbcrConversionInfo: format: %d extFormat: %llu model: %d range: %d "
              "xOff: %d yOff: %d filter: %d explicit: %u features: %u components: %d %d %d %d\n",
