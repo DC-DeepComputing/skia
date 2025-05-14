@@ -11,6 +11,8 @@
 #include <functional>
 
 #include "include/gpu/graphite/Recorder.h"
+#include "include/private/base/SkTArray.h"
+#include "src/capture/SkCaptureCanvas.h"
 #include "src/gpu/graphite/ResourceCache.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/SharedContext.h"
@@ -28,6 +30,7 @@ class RecorderPriv {
 public:
     void add(sk_sp<Task>);
     void flushTrackedDevices();
+    void snapCaptureCanvases();
 
     const Caps* caps() const { return fRecorder->fSharedContext->caps(); }
 
@@ -52,6 +55,18 @@ public:
 
     Protected isProtected() const {
         return fRecorder->fSharedContext->isProtected();
+    }
+
+    bool isCaptureEnabled() {
+        return fRecorder->fCaptureEnabled;
+    }
+
+    bool isCurrentlyCapturing() {
+        return fRecorder->fSharedContext->isCurrentlyCapturing();
+    }
+
+    void trackCaptureCanvas(SkCaptureCanvas* canvas) {
+        fTrackedCaptureCanvases.emplace_back(canvas);
     }
 
     UploadList* rootUploadList() { return fRecorder->fRootUploads.get(); }
@@ -101,6 +116,8 @@ private:
     RecorderPriv* operator&() = delete;
 
     Recorder* fRecorder;
+
+    skia_private::TArray<SkCanvas*> fTrackedCaptureCanvases;
 
     friend class Recorder;  // to construct/copy this type.
 };

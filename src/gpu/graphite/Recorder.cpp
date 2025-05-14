@@ -21,6 +21,7 @@
 #include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/base/SkDebug.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/AtlasTypes.h"
@@ -101,7 +102,8 @@ static uint32_t next_id() {
 
 Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                    const RecorderOptions& options,
-                   const Context* context)
+                   const Context* context,
+                   bool capture)
         : fSharedContext(std::move(sharedContext))
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
@@ -137,6 +139,7 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
                                                              fSharedContext->caps(),
                                                              fUploadBufferManager.get());
 
+    fCaptureEnabled = capture;
     SkASSERT(fResourceProvider);
 }
 
@@ -176,6 +179,7 @@ std::unique_ptr<Recording> Recorder::snap() {
     }
     // Collect all pending tasks on the deferred recording canvas and any other tracked device.
     this->priv().flushTrackedDevices();
+    this->priv().snapCaptureCanvases();
 
     // Now that all devices have been flushed, extract all lazy proxies from the texture
     // data cache so that they can be instantiated easily when the Recording is inserted.
@@ -573,6 +577,17 @@ void RecorderPriv::flushTrackedDevices() {
         }
 
         fRecorder->fFlushingDevicesIndex = -1;
+    }
+}
+
+void RecorderPriv::snapCaptureCanvases() {
+    int i = 0;
+    while (i < fTrackedCaptureCanvases.size()) {
+        SkCaptureCanvas* canvas = fTrackedCaptureCanvases[i];
+        auto picture = canvas->snapPicture();
+        if (picture) {
+            SkDebugf("Got picture. TODO: store");
+        }
     }
 }
 

@@ -33,6 +33,7 @@
 #include "include/gpu/graphite/Surface.h"
 #include "include/private/base/SingleOwner.h"
 #include "include/private/base/SkAlign.h"
+#include "include/private/base/SkDebug.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/base/SkSpan_impl.h"
@@ -135,6 +136,7 @@ Context::Context(sk_sp<SharedContext> sharedContext,
 
     fSharedContext->globalCache()->setPipelineCallback(options.fPipelineCallback,
                                                        options.fPipelineCallbackContext);
+    fCaptureEnabled = options.fEnableCapture;
 }
 
 Context::~Context() {
@@ -180,7 +182,7 @@ std::unique_ptr<Recorder> Context::makeRecorder(const RecorderOptions& options) 
     ASSERT_SINGLE_OWNER
 
     // This is a client-owned Recorder so pass a null context so it creates its own ResourceProvider
-    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, nullptr));
+    auto recorder = std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, nullptr, fCaptureEnabled));
 #if defined(GPU_TEST_UTILS)
     if (fStoreContextRefInRecorder) {
         recorder->priv().setContext(this);
@@ -203,7 +205,7 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
     // it shares the Context's resource provider (no separate budget) and does
     // not get tracked. The internal drawing performed with an internal recorder
     // should not require a client image provider.
-    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, {}, this));
+    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, {}, this, fCaptureEnabled));
 }
 
 bool Context::insertRecording(const InsertRecordingInfo& info) {
@@ -879,6 +881,21 @@ bool Context::supportsProtectedContent() const {
 
 GpuStatsFlags Context::supportedGpuStats() const {
     return fSharedContext->caps()->supportedGpuStats();
+}
+
+void Context::startCapture() {
+    if (fCaptureEnabled) {
+        this->fSharedContext->setCurrentlyCapturingState(true);
+    } else {
+        SkDebugf("Capturing not available.");
+    }
+}
+
+void Context::endCapture() {
+    if (fCaptureEnabled) {
+        this->fSharedContext->setCurrentlyCapturingState(false);
+        // TODO: return capture content
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

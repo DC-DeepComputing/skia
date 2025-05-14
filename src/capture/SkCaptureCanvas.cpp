@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "modules/skcapture/SkCaptureCanvas.h"
+#include "src/capture/SkCaptureCanvas.h"
 
 #include <memory>
 #include "include/core/SkPicture.h"
@@ -14,6 +14,8 @@
 #include "include/private/base/SkAssert.h"
 #include "include/utils/SkNWayCanvas.h"
 #include "src/core/SkCanvasPriv.h"
+#include "src/core/SkDevice.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 
 SkCaptureCanvas::SkCaptureCanvas(SkCanvas* canvas)
         : SkNWayCanvas(canvas->imageInfo().width(), canvas->imageInfo().height()) {
@@ -24,7 +26,7 @@ SkCaptureCanvas::SkCaptureCanvas(SkCanvas* canvas)
 SkCaptureCanvas::~SkCaptureCanvas() = default;
 
 void SkCaptureCanvas::pollCapturingStatus() {
-    bool shouldPoll = false;  // TODO: = SkCanvasPriv::TopDevice(fBaseCanvas)->recorder()->...
+    bool shouldPoll = SkCanvasPriv::TopDevice(fBaseCanvas)->recorder()->priv().isCurrentlyCapturing();
     if (fCapturing != shouldPoll) {
         if (shouldPoll) {
             this->attachRecordingCanvas();

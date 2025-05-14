@@ -15,6 +15,8 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "src/capture/SkCaptureCanvas.h"
+#include "src/gpu/graphite/RecorderPriv.h"
 
 #include <cstdint>
 #include <memory>
@@ -30,7 +32,6 @@ class GrSurfaceCharacterization;
 class SkSurfaceProps;
 enum GrSurfaceOrigin : int;
 enum SkYUVColorSpace : int;
-namespace skgpu { namespace graphite { class Recorder; } }
 struct SkIRect;
 struct SkISize;
 struct SkImageInfo;
@@ -193,6 +194,14 @@ private:
 
 SkCanvas* SkSurface_Base::getCachedCanvas() {
     if (nullptr == fCachedCanvas) {
+        auto surfaceCanvas = this->onNewCanvas();
+        if (this->recorder() && this->recorder()->priv().isCaptureEnabled()) {
+            auto captureCanvas = SkCaptureCanvas(surfaceCanvas);
+            this->recorder()->priv().trackCaptureCanvas(&captureCanvas);
+            fCachedCanvas = std::unique_ptr<SkCanvas>(&captureCanvas);
+        } else {
+            fCachedCanvas = std::unique_ptr<SkCanvas>(surfaceCanvas);
+        }
         fCachedCanvas = std::unique_ptr<SkCanvas>(this->onNewCanvas());
         if (fCachedCanvas) {
             fCachedCanvas->setSurfaceBase(this);
