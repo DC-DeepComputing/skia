@@ -84,6 +84,7 @@
     }
   },
   {"name": "Build-Mac-Clang-arm64-Debug-Android"},
+  {"name": "Build-Mac-Clang-arm64-Debug-Fontations"},
   {"name": "Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal"},
   {"name": "Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal_NoGpu"},
   {"name": "Build-Mac-Clang-arm64-Debug-Graphite_Dawn_Metal_NoPrecompile"},
@@ -157,7 +158,7 @@
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN_Graphite_Dawn_Metal"},
   {"name": "Build-Mac-Clang-x86_64-Debug-ASAN_Metal"},
-  {"name": "Build-Mac-Clang-x86_64-Debug-Fontations"},
+
   {
     "name": "Build-Mac-Clang-x86_64-Debug-Graphite_Dawn_Metal",
     "cq_config": {
@@ -167,7 +168,6 @@
       ]
     }
   },
-  {"name": "Build-Mac-Clang-x86_64-Debug-Graphite_Dawn_Metal_Vello"},
   {
     "name": "Build-Mac-Clang-x86_64-Debug-Graphite_Native_Metal",
     "cq_config": {
@@ -188,7 +188,6 @@
   },
   {"name": "Build-Mac-Clang-x86_64-Release-ANGLE"},
   {"name": "Build-Mac-Clang-x86_64-Release-Graphite_Dawn_Metal"},
-  {"name": "Build-Mac-Clang-x86_64-Release-Graphite_Dawn_Metal_Vello"},
   {
     "name": "Build-Mac-Clang-x86_64-Release-Graphite_Native_Metal",
     "cq_config": {
@@ -773,7 +772,6 @@
   {"name": "Test-Mac13-Clang-MacBookPro15.3-GPU-AppleM3-arm64-Debug-All-Metal"},
   {"name": "Test-Mac13-Clang-MacBookPro15.3-GPU-AppleM3-arm64-Release-All"},
   {"name": "Test-Mac13-Clang-MacBookPro15.3-GPU-AppleM3-arm64-Release-All-Metal"},
-  {"name": "Test-Mac14-Clang-MacMini8.1-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations"},
   {"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All"},
   {"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-ANGLE"},
   {"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-Graphite_Dawn_Metal"},
@@ -783,6 +781,7 @@
   {"name": "Test-Mac14-Clang-MacMini8.1-GPU-IntelUHDGraphics630-x86_64-Release-All-Metal"},
   {"name": "Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All"},
   {"name": "Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts"},
+  {"name": "Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_Fontations"},
   {"name": "Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_PDF"},
   {
     "name": "Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Debug-All",
@@ -840,7 +839,6 @@
   {"name": "Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-Metal"},
   {"name": "Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-TSAN_Graphite_Dawn_Metal"},
   {"name": "Test-Mac14-Clang-MacMini9.1-GPU-AppleM1-arm64-Release-All-TSAN_Graphite_Native_Metal"},
-  {"name": "Test-Mac15-Clang-MacBookPro15.1-CPU-AppleIntel-x86_64-Debug-All-NativeFonts_Fontations"},
   {"name": "Test-Mac15-Clang-MacBookPro15.1-GPU-IntelUHDGraphics630-x86_64-Debug-All"},
   {"name": "Test-Mac15-Clang-MacBookPro15.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-ANGLE"},
   {"name": "Test-Mac15-Clang-MacBookPro15.1-GPU-IntelUHDGraphics630-x86_64-Debug-All-Graphite_Native_Metal"},
