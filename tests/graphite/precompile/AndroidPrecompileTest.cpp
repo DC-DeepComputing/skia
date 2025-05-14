@@ -437,7 +437,8 @@ bool skip(const char* str) {
 // The pipeline strings were created with Android Vulkan but we're going to run the test
 // on Dawn Metal
 bool is_dawn_metal_context_type(skgpu::ContextType type) {
-    return type == skgpu::ContextType::kDawn_Metal;
+    return type == skgpu::ContextType::kDawn_Metal  ||
+           type == skgpu::ContextType::kVulkan;
 }
 
 } // anonymous namespace

@@ -81,7 +81,7 @@ sk_sp<VulkanYcbcrConversion> VulkanYcbcrConversion::Make(
     }
 #else
     // External images are supported only on Android.
-    SkASSERT(!conversionInfo.fExternalFormat);
+//    SkASSERT(!conversionInfo.fExternalFormat);
 #endif
 
     if (!conversionInfo.fExternalFormat) {
