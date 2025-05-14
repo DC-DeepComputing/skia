@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34c30479_22f78849",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T13:44:22Z",
+      "side": 1,
+      "message": "If we add `includeData\u003dtrue` here, we will be including it in pretty much everything. Initially I\u0027d been eliding the data for the pipeline labels that would go into traces, because I was worried about size.\n\nWith the shortening of renderpass description labels, this is less a concern, and traces are potentially the main source in which we identity the ycbcr conversion info from some in-the-wild event. \n\nIf that\u0027s the case, maybe we just remove that parameter from `PaintParamsKey::toString()`?",
+      "range": {
+        "startLine": 174,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 72
+      },
+      "revId": "8a46db685c5e4d7389cd7d414ae4d8d14ccbab69",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
