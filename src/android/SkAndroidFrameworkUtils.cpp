@@ -54,16 +54,25 @@ bool SkAndroidFrameworkUtils::ShaderAsALinearGradient(SkShader* shader,
                                                       LinearGradientInfo* info) {
     SkASSERT(shader);
     SkTLazy<SkShaderBase::GradientInfo> baseInfo;
+    std::unique_ptr<SkColor4f[]> colorStorage;
     if (info) {
         baseInfo.init();
-        baseInfo->fColorCount   = info->fColorCount;
-        baseInfo->fColors       = info->fColors;
+        baseInfo->fColorCount = info->fColorCount;
+        if (info->fColors) {
+            colorStorage = std::make_unique<SkColor4f[]>(info->fColorCount);
+            baseInfo->fColors = colorStorage.get();
+        }
         baseInfo->fColorOffsets = info->fColorOffsets;
     }
     if (as_SB(shader)->asGradient(baseInfo.getMaybeNull()) != SkShaderBase::GradientType::kLinear) {
         return false;
     }
     if (info) {
+        if (info->fColors) {
+            for (int i = 0; i < info->fColorCount; ++i) {
+                info->fColors[i] = baseInfo->fColors[i].toSkColor();
+            }
+        }
         info->fColorCount    = baseInfo->fColorCount;  // this is inout in asGradient()
         info->fPoints[0]     = baseInfo->fPoint[0];
         info->fPoints[1]     = baseInfo->fPoint[1];
