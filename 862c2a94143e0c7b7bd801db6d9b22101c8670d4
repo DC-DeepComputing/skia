@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0bf417fd_c28df506",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-14T16:04:17Z",
+      "side": 1,
+      "message": "It looks like maybe SVG and XPS should also do this, so maybe this belongs in common code (asGradient)?",
+      "revId": "862c2a94143e0c7b7bd801db6d9b22101c8670d4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
