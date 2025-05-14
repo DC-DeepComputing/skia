@@ -82,6 +82,7 @@ third_party("vello") {
   libs = [
     "$root_out_dir/libvello_ffi.a",
     "$root_out_dir/libvello_rust.a",
+    "c++",
   ]
   deps = [
     ":compile_vello_ffi",

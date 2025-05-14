@@ -1158,8 +1158,17 @@ func (b *taskBuilder) defaultSwarmDimensions() {
 			d["gce"] = "1"
 			// Use many-core machines for Build tasks.
 			d["machine_type"] = MACHINE_TYPE_LARGE
-		} else if d["os"] == DEFAULT_OS_MAC || d["os"] == "Mac-10.15.7" {
-			// Mac CPU bots are no longer VMs.
+		} else if d["os"] == DEFAULT_OS_MAC {
+			if b.arch("arm64") {
+				d["cpu"] = "arm64"
+				d["os"] = "Mac-14"
+				delete(d, "gpu")
+			} else {
+				d["cpu"] = "x86-64"
+				d["cores"] = "12"
+				delete(d, "gpu")
+			}
+		} else if d["os"] == "Mac-10.15.7" {
 			d["cpu"] = "x86-64"
 			d["cores"] = "12"
 			delete(d, "gpu")
