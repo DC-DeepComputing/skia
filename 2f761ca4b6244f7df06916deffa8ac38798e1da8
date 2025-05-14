@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0010fe7d_ed8cb540",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 988,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-14T14:48:09Z",
+      "side": 1,
+      "message": "This change is needed to allow gradients to work at all, since the shader is almost never directly a `kGradientBase` but a `kLocalMatrix` which contains a gradient.",
+      "revId": "2f761ca4b6244f7df06916deffa8ac38798e1da8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
