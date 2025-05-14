@@ -400,6 +400,7 @@ gm_sources = [
   "$_gm/tilemodes_scaled.cpp",
   "$_gm/tinybitmap.cpp",
   "$_gm/transparency.cpp",
+  "$_gm/transparentImageStress.cpp",
   "$_gm/trickycubicstrokes.cpp",
   "$_gm/typeface.cpp",
   "$_gm/unpremul.cpp",
