@@ -18,6 +18,29 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7f92f85_3c33834d",
+        "filename": "tools/graphite/dawn/GraphiteDawnTestContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T04:21:24Z",
+      "side": 1,
+      "message": "WDYT about having\n```\n#if defined(SK_DEBUG)\n        \"use_user_defined_labels_in_backend\",\n#else\n        \"skip_validation\",\n#endif\n        \"disable_lazy_clear_for_mapped_at_creation_buffer\",\n        ....\n```\n\nSo we have one block of debug-only vs. release-only toggles, and then common toggles?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 46,
+        "endChar": 6
+      },
+      "revId": "634b08aeecf856996bc2bcb42fc90ae778fbe623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "dc4a8349_ea99fe04",
@@ -31,6 +54,24 @@
       "writtenOn": "2025-05-13T20:14:01Z",
       "side": 1,
       "message": "I also made the change here for consistency but I\u0027m not really sure what window context is used for (viewer?).",
+      "revId": "634b08aeecf856996bc2bcb42fc90ae778fbe623",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "856906fa_26786226",
+        "filename": "tools/window/GraphiteDawnWindowContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T04:21:24Z",
+      "side": 1,
+      "message": "Yes it\u0027s used for viewer and we haven\u0027t taken the time to consolidate the toggle definitions to share between viewer and dm.",
+      "parentUuid": "dc4a8349_ea99fe04",
       "revId": "634b08aeecf856996bc2bcb42fc90ae778fbe623",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
