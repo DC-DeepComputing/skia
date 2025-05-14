@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e04183f7_ca48c069",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-14T15:40:46Z",
+      "side": 1,
+      "message": "LGTM! I agree that the RP keys will be simplified given our usage of dynamic rendering when available and not exposing subpasses within the RPDesc.",
+      "revId": "e85f3ba64d457401be9ccf98581b6df7130001f6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
