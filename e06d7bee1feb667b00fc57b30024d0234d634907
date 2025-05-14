@@ -33,6 +33,98 @@
       "message": "Ok to review 2.0.",
       "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d05d69eb_7104da4f",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T14:01:26Z",
+      "side": 1,
+      "message": "nit: fields use `f`, constants use `k`",
+      "range": {
+        "startLine": 93,
+        "startChar": 23,
+        "endLine": 93,
+        "endChar": 43
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4167d093_63a46787",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T14:01:26Z",
+      "side": 1,
+      "message": "This sort of flexibility shouldn\u0027t be exposed to clients.  We should follow the model used in `ContextOptions` and `ContextOptionsPriv` to add a `RecorderOptionsPriv`",
+      "range": {
+        "startLine": 81,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 59
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c38ed402_c864f4a0",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T14:01:26Z",
+      "side": 1,
+      "message": "We could move the definition of the `BufferSizes` struct to be in `DrawBufferManager.h`, which will still be visible to the internal `RecorderOptionsPriv`.\n\nHaving this constructor take the struct in as an argument will minimize churn if we ever adjust size fields.",
+      "range": {
+        "startLine": 173,
+        "startChar": 37,
+        "endLine": 175,
+        "endChar": 97
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e17bfa19_6677e688",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-14T14:01:26Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 192,
+        "startChar": 0,
+        "endLine": 192,
+        "endChar": 101
+      },
+      "revId": "e06d7bee1feb667b00fc57b30024d0234d634907",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
