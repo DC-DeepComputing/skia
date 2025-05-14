@@ -30,7 +30,7 @@ namespace skgpu {
 */
 void SetupSamplerYcbcrConversionInfo(VkSamplerYcbcrConversionCreateInfo* outInfo,
                                      const VulkanYcbcrConversionInfo& conversionInfo) {
-#ifdef SK_DEBUG
+#if defined(SK_BUILD_FOR_ANDROID) && defined(SK_DEBUG)
     const VkFormatFeatureFlags& featureFlags = conversionInfo.fFormatFeatures;
 
     // Format feature flags are only representative of an external format's capabilities, so skip
