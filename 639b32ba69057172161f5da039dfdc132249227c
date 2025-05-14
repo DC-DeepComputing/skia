@@ -87,6 +87,48 @@
       ],
       "revId": "639b32ba69057172161f5da039dfdc132249227c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "50b0913c_f05344b2",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T14:15:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9777c5fc_27ce9022",
+      "revId": "639b32ba69057172161f5da039dfdc132249227c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ced38b1_2d3536e2",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1873,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-14T14:15:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1be0b9cb_b66aad64",
+      "range": {
+        "startLine": 1873,
+        "startChar": 18,
+        "endLine": 1873,
+        "endChar": 32
+      },
+      "revId": "639b32ba69057172161f5da039dfdc132249227c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
