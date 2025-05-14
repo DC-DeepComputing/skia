@@ -99,7 +99,34 @@ private:
 */
 class DrawBufferManager {
 public:
-    DrawBufferManager(ResourceProvider*, const Caps*, UploadBufferManager*);
+    struct BufferSizes {
+        BufferSizes(uint32_t vertexBufferMinSize, uint32_t vertexBufferMaxSize,
+                    uint32_t indexBufferSize, uint32_t uniformBufferSize,
+                    uint32_t storageBufferMinSize, uint32_t storageBufferMaxSize) :
+                    fVertexBufferMinSize(vertexBufferMinSize),
+                    fVertexBufferMaxSize(vertexBufferMaxSize),
+                    fIndexBufferSize(indexBufferSize),
+                    fUniformBufferSize(uniformBufferSize),
+                    fStorageBufferMinSize(storageBufferMinSize),
+                    fStorageBufferMaxSize(storageBufferMaxSize) {}
+        const uint32_t fVertexBufferMinSize;
+        const uint32_t fVertexBufferMaxSize;
+        const uint32_t fIndexBufferSize;
+        const uint32_t fUniformBufferSize;
+        const uint32_t fStorageBufferMinSize;
+        const uint32_t fStorageBufferMaxSize;
+    };
+
+    DrawBufferManager(ResourceProvider* resourceProvider,
+                      const Caps* caps,
+                      UploadBufferManager* uploadManager,
+                      BufferSizes buffSizes = {
+                        /* vertexBufferMinSize=*/  16 << 10,   // 16 KB
+                        /* vertexBufferMaxSize=*/  1 << 20,    // 1 MB
+                        /* indexBufferSize=*/      2 << 10,    // 2 KB
+                        /* uniformBufferSize=*/    2 << 10,    // 2 KB
+                        /* storageBufferMinSize=*/ 2 << 10,    // 2 KB
+                        /* storageBufferMaxSize=*/ 1 << 20} ); // 1 MB
     ~DrawBufferManager();
 
     // Let possible users check if the manager is already in a bad mapping state and skip any extra
