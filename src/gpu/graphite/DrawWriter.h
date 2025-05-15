@@ -305,7 +305,6 @@ class DrawWriter::Appender {
 public:
     Appender(DrawWriter& w, SkEnumBitMask<RenderStateFlags> renderState)
             : fDrawer(w)
-            , fAppendVerts(w.fRenderState & RenderStateFlags::kAppendVertices)
             , fReservedCount(0)
             , fNextWriter() {
         SkASSERT(w.fAppendStride > 0);
@@ -324,14 +323,13 @@ public:
 
 protected:
     DrawWriter&     fDrawer;
-    bool            fAppendVerts;
     uint32_t        fReservedCount; // in target stride units
     VertexWriter    fNextWriter;    // writing to the target buffer binding
 
     virtual void prepareFlush() {}
 
     // Reserves 'count' elements, managing potential re-allocation and buffer contiguity.
-    // For vertex appends (fAppendVerts), addresses ARM hardware issue (b/399631317) by:
+    // For vertex appends (appendVerts), addresses ARM hardware issue (b/399631317) by:
     //  1. Requesting 4-count aligned space (for necessary padding).
     //  2. Ensuring the initial buffer offset is 4-count stride aligned after a newPipelineState().
     //  3. Checking whether a new reservation will overflow to a new buffer, and if it will, safely
@@ -340,14 +338,16 @@ protected:
     // bytes are returned to the manager before attempting a new allocation.
     // If the newly allocated chunk isn't contiguous with the current target buffer,
     // pending draws are flushed, and the target is updated to this new chunk.
+    template<bool appendVerts>
     void reserve(unsigned int count) {
-        uint32_t alignedCount =
-                fAppendVerts ? (SkAlign4(fDrawer.fPendingCount + count) - fDrawer.fPendingCount)
-                             : count;
+        uint32_t alignedCount = count;
         uint32_t alignedStride = fDrawer.fAppendStride;
-        if (fDrawer.fShouldAlign4) {
-            alignedStride *= 4;
-            fDrawer.fShouldAlign4 = false;
+        if (appendVerts) {
+            alignedCount = SkAlign4(fDrawer.fPendingCount + count) - fDrawer.fPendingCount;
+            if (fDrawer.fShouldAlign4) {
+                alignedStride *= 4;
+                fDrawer.fShouldAlign4 = false;
+            }
         }
 
         if (fReservedCount >= alignedCount) {
@@ -363,7 +363,7 @@ protected:
 
         // If we are appending verts, we need to check if our requested allocation will overflow the
         // current buffer
-        if (fAppendVerts) {
+        if (appendVerts) {
             // If it does, we need to get a vertex writer to pad and zero out the old buffer
             // *before* we get our new one and lose bufferWriter's mapping to the transfer buffer.
             if (fDrawer.fManager->willVertexOverflow(
@@ -397,9 +397,10 @@ protected:
         fNextWriter = std::move(writer);
     }
 
+    template<bool appendVerts>
     VertexWriter append(unsigned int count) {
         SkASSERT(count > 0);
-        this->reserve(count);
+        this->reserve<appendVerts>(count);
 
         if (!fNextWriter) SK_UNLIKELY {
             // If the GPU mapped buffer failed, ensure we have a sufficiently large CPU address to
@@ -430,8 +431,8 @@ public:
         w.setTemplate({}, {}, w.fAppend, 0);
     }
 
-    using Appender::append;
-    using Appender::reserve;
+    VertexWriter append(unsigned int count)  { return this->Appender::append<true>(count);  }
+    void         reserve(unsigned int count) { return this->Appender::reserve<true>(count); }
 };
 
 class DrawWriter::Instances : private DrawWriter::Appender {
@@ -445,8 +446,8 @@ public:
         w.setTemplate(vertices, indices, w.fAppend, vertexCount);
     }
 
-    using Appender::reserve;
-    using Appender::append;
+    VertexWriter append(unsigned int count)  { return this->Appender::append<false>(count);  }
+    void         reserve(unsigned int count) { return this->Appender::reserve<false>(count); }
 };
 
 template <typename VertexCountProxy>
@@ -464,11 +465,11 @@ public:
         this->updateTemplateCount();
     }
 
-    using Appender::reserve;
+    void reserve(unsigned int count) { return this->Appender::reserve<false>(count); }
 
     template <typename V>
     VertexWriter append(const V& vertexCount, unsigned int instanceCount) {
-        VertexWriter w = this->Appender::append(instanceCount);
+        VertexWriter w = this->Appender::append<false>(instanceCount);
         // Record index count after appending instance data in case the append triggered a flush
         // and the max index count is reset. However, the contents of 'w' will not have been flushed
         // so 'fProxy' will account for 'vertexCount' when it is actually drawn.
