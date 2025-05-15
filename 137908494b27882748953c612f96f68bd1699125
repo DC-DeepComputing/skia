@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "960327f6_4b2d55f9",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-15T19:42:36Z",
+      "side": 1,
+      "message": "To get this one I needed to do a local Bazel build. It looks like not doing so is what is holding up the Dawn roll at the moment.",
+      "revId": "137908494b27882748953c612f96f68bd1699125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
