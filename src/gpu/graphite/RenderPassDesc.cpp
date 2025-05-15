@@ -36,7 +36,7 @@ const char* to_str(StoreOp op) {
 
 } // anonymous namespace
 
-RenderPassDesc RenderPassDesc::Make(const Caps* caps,
+RenderPassDesc RenderPassDesc::Make1(const Caps* caps,
                                     const TextureInfo& targetInfo,
                                     LoadOp loadOp,
                                     StoreOp storeOp,
@@ -54,7 +54,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     desc.fClearDepth = 0.f; // Depth and stencil is currently always cleared to 0 if it's used
     desc.fClearStencil = 0;
     desc.fWriteSwizzle = writeSwizzle;
-    desc.fDstReadStrategy = dstReadStrategy;
+    desc.fDstReadStrategy1 = dstReadStrategy;
 
     TextureFormat colorFormat = TextureInfoPriv::ViewFormat(targetInfo);
     // The render pass's overall sample count will either be the target's sample count
@@ -90,6 +90,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                         loadOp != LoadOp::kLoad ? LoadOp::kDiscard : LoadOp::kLoad,
                                         storeOp,
                                         /*sampleCount=*/1};
+        desc.fLoadMSAAFromResolve1 = loadOp == LoadOp::kLoad;
     } else {
         // The target will be the color attachment and skip configuring the resolve attachment.
         SkASSERT(desc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported);
@@ -115,9 +116,9 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
     return desc;
 }
 
-SkString RenderPassDesc::toString() const {
+SkString RenderPassDesc::toString1() const {
     return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
-                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
+                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u %d)",
                           fColorAttachment.toString().c_str(),
                           fColorResolveAttachment.toString().c_str(),
                           fDepthStencilAttachment.toString().c_str(),
@@ -126,7 +127,8 @@ SkString RenderPassDesc::toString() const {
                           fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
                           fClearDepth,
                           fClearStencil,
-                          (unsigned)fDstReadStrategy);
+                          (unsigned)fDstReadStrategy1,
+                          fLoadMSAAFromResolve1);
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {
