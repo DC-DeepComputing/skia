@@ -9,6 +9,7 @@
 
 #include "include/private/base/SkTArray.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/ContextUtils.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
@@ -413,6 +414,29 @@ void GlobalCache::forceNextEpochOverflow() {
     fEpochCounter = std::numeric_limits<uint16_t>::max();
 }
 
+// Get the offsets and sizes of the renderstep static uploads.
+void GlobalCache::setInitialStaticVertexInfo(skia_private::TArray<uint32_t> vertBufferInfo) {
+    SkAutoSpinlock lock{fSpinLock};
+
+    fInitialStaticVertexInfo = vertBufferInfo;
+}
+
+skia_private::TArray<uint32_t> GlobalCache::getInitialStaticVertexInfo() const {
+    SkAutoSpinlock lock{fSpinLock};
+
+    return fInitialStaticVertexInfo;
+}
+
+std::optional<sk_sp<Buffer>> GlobalCache::getStaticVertexBuffer() {
+    SkAutoSpinlock lock{fSpinLock};
+
+    if (fStaticResource.empty() || strcmp(fStaticResource[0]->getResourceType(), "Buffer") != 0) {
+        return std::nullopt;
+    } else {
+        return sk_ref_sp(static_cast<skgpu::graphite::Buffer*>(fStaticResource[0].get()));
+    }
+}
+
 #endif // defined(GPU_TEST_UTILS)
 
 GlobalCache::PipelineStats GlobalCache::getStats() const {
@@ -423,6 +447,7 @@ GlobalCache::PipelineStats GlobalCache::getStats() const {
 
 sk_sp<ComputePipeline> GlobalCache::findComputePipeline(const UniqueKey& key) {
     SkAutoSpinlock lock{fSpinLock};
+
     sk_sp<ComputePipeline>* entry = fComputePipelineCache.find(key);
     return entry ? *entry : nullptr;
 }
@@ -430,6 +455,7 @@ sk_sp<ComputePipeline> GlobalCache::findComputePipeline(const UniqueKey& key) {
 sk_sp<ComputePipeline> GlobalCache::addComputePipeline(const UniqueKey& key,
                                                        sk_sp<ComputePipeline> pipeline) {
     SkAutoSpinlock lock{fSpinLock};
+
     sk_sp<ComputePipeline>* entry = fComputePipelineCache.find(key);
     if (!entry) {
         entry = fComputePipelineCache.insert(key, std::move(pipeline));
@@ -439,6 +465,7 @@ sk_sp<ComputePipeline> GlobalCache::addComputePipeline(const UniqueKey& key,
 
 void GlobalCache::addStaticResource(sk_sp<Resource> resource) {
     SkAutoSpinlock lock{fSpinLock};
+
     fStaticResource.push_back(std::move(resource));
 }
 

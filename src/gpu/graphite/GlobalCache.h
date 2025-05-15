@@ -109,6 +109,13 @@ public:
     void invokePipelineCallback(SharedContext*,
                                 const GraphicsPipelineDesc&,
                                 const RenderPassDesc&);
+
+    #if defined(GPU_TEST_UTILS)
+        void setInitialStaticVertexInfo(skia_private::TArray<uint32_t>) SK_EXCLUDES(fSpinLock);
+        skia_private::TArray<uint32_t> getInitialStaticVertexInfo() const SK_EXCLUDES(fSpinLock);
+        std::optional<sk_sp<Buffer>> getStaticVertexBuffer() SK_EXCLUDES(fSpinLock);
+        skia_private::TArray<uint32_t> fInitialStaticVertexInfo SK_GUARDED_BY(fSpinLock);
+    #endif
 private:
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }

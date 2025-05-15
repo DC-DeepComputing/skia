@@ -106,6 +106,10 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
         bufInfo.usage |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
     }
 
+    if (accessPattern == AccessPattern::kGpuOnlyCopySrc) {
+        bufInfo.usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+    }
+
     bufInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
     bufInfo.queueFamilyIndexCount = 0;
     bufInfo.pQueueFamilyIndices = nullptr;

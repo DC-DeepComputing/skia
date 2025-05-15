@@ -185,25 +185,36 @@ void ScratchBuffer::returnToPool() {
 // ------------------------------------------------------------------------------------------------
 // DrawBufferManager
 
-DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider,
-                                     const Caps* caps,
-                                     UploadBufferManager* uploadManager)
+DrawBufferManager::DrawBufferManager(ResourceProvider* resourceProvider, const Caps* caps,
+                                     UploadBufferManager* uploadManager,
+                                     uint32_t vertexBufferMinSize, uint32_t vertexBufferMaxSize,
+                                     uint32_t indexBufferSize, uint32_t uniformBufferSize,
+                                     uint32_t storageBufferMinSize, uint32_t storageBufferMaxSize)
         : fResourceProvider(resourceProvider)
         , fCaps(caps)
         , fUploadManager(uploadManager)
         , fCurrentBuffers{{
-            { BufferType::kVertex,        kVertexBufferMinSize,  kVertexBufferMaxSize,  caps },
-            { BufferType::kIndex,         kIndexBufferSize,      kIndexBufferSize,      caps },
-            { BufferType::kUniform,       kUniformBufferSize,    kUniformBufferSize,    caps },
+            { BufferType::kVertex,        vertexBufferMinSize,  vertexBufferMaxSize,  caps },
+            { BufferType::kIndex,         indexBufferSize,      indexBufferSize,      caps },
+            { BufferType::kUniform,       uniformBufferSize,    uniformBufferSize,    caps },
 
             // mapped storage
-            { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMaxSize, caps },
+            { BufferType::kStorage,       storageBufferMinSize, storageBufferMaxSize, caps },
             // GPU-only storage
-            { BufferType::kStorage,       kStorageBufferMinSize, kStorageBufferMinSize, caps },
+            { BufferType::kStorage,       storageBufferMinSize, storageBufferMinSize, caps },
 
-            { BufferType::kVertexStorage, kVertexBufferMinSize,  kVertexBufferMinSize,  caps },
-            { BufferType::kIndexStorage,  kIndexBufferSize,      kIndexBufferSize,      caps },
-            { BufferType::kIndirect,      kStorageBufferMinSize, kStorageBufferMinSize, caps } }} {}
+            { BufferType::kVertexStorage, vertexBufferMinSize,  vertexBufferMinSize,  caps },
+            { BufferType::kIndexStorage,  indexBufferSize,      indexBufferSize,      caps },
+            { BufferType::kIndirect,      storageBufferMinSize, storageBufferMinSize, caps } }} {
+    // Make sure the buffer size constants are all powers of two, so we can align to them efficiently
+    // when dynamically sizing buffers.
+    SkASSERT(SkIsPow2(vertexBufferMinSize));
+    SkASSERT(SkIsPow2(vertexBufferMaxSize));
+    SkASSERT(SkIsPow2(indexBufferSize));
+    SkASSERT(SkIsPow2(uniformBufferSize));
+    SkASSERT(SkIsPow2(storageBufferMinSize));
+    SkASSERT(SkIsPow2(storageBufferMaxSize));
+}
 
 DrawBufferManager::~DrawBufferManager() {}
 
@@ -509,6 +520,18 @@ bool DrawBufferManager::transferToRecording(Recording* recording) {
     return true;
 }
 
+AccessPattern DrawBufferManager::getGpuAccessPattern(bool usesTransferBuffer,
+                                                     bool supportsCpuUpload) const {
+    if (usesTransferBuffer || !supportsCpuUpload) {
+#if defined(GPU_TEST_UTILS)
+        return AccessPattern::kGpuOnlyCopySrc;
+#else
+        return AccessPattern::kGpuOnly;
+#endif
+    } else {
+        return AccessPattern::kHostVisible;
+    }
+}
 std::pair<void*, BindBufferInfo> DrawBufferManager::prepareMappedBindBuffer(
         BufferInfo* info,
         std::string_view label,
@@ -551,9 +574,6 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         return {};
     }
 
-    // A transfer buffer is not necessary if the caller does not intend to upload CPU data to it.
-    bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped();
-
     auto offset = info->fBuffer ? can_offset_fit(requiredBytes,
                                                  SkTo<uint32_t>(info->fBuffer->size()),
                                                  info->fOffset,
@@ -569,6 +589,9 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         info->fOffset = offset.value();
     }
 
+    // A transfer buffer is not necessary if the caller does not intend to upload CPU data to it.
+    bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped();
+
     if (!info->fBuffer) {
         // Create the first buffer with the full fCurBlockSize, but create subsequent buffers with a
         // smaller size if fCurBlockSize has increased from the minimum. This way if we use just a
@@ -582,13 +605,11 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         // This buffer can be GPU-only if
         //     a) the caller does not intend to ever upload CPU data to the buffer; or
         //     b) CPU data will get uploaded to fBuffer only via a transfer buffer
-        AccessPattern accessPattern = (useTransferBuffer || !supportCpuUpload)
-                                              ? AccessPattern::kGpuOnly
-                                              : AccessPattern::kHostVisible;
-
         info->fBuffer = fResourceProvider->findOrCreateBuffer(bufferSize,
                                                               info->fType,
-                                                              accessPattern,
+                                                              this->getGpuAccessPattern(
+                                                                useTransferBuffer,
+                                                                supportCpuUpload),
                                                               std::move(label));
         info->fOffset = 0;
         if (!info->fBuffer) {
@@ -666,8 +687,7 @@ VertexWriter StaticBufferManager::getVertexWriter(size_t count,
                                                   BindBufferInfo* binding) {
     const size_t size = count * stride;
     const size_t alignedCount = SkAlign4(count);
-    const size_t alignedSize = validate_count_and_stride(alignedCount, stride);
-    void* data = this->prepareStaticData(&fVertexBufferInfo, alignedSize, stride * 4, binding);
+    void* data = this->prepareStaticData(&fVertexBufferInfo, size, stride * 4, binding);
     if (alignedCount > count) {
         const uint32_t byteDiff = (alignedCount - count) * stride;
         void* zPtr = SkTAddOffset<void>(data, count * stride);
@@ -698,11 +718,10 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
         return nullptr;
     }
 
+    // Copy data must be aligned to the transfer alignment, so align the reserved size to the LCM
+    // of the minimum alignment (already net buffer and transfer alignment) and the required
+    // alignment stride.
     size32 = align_to_req_min_lcm(size32, requiredAlignment, info->fMinimumAlignment);
-
-    // Copies must copy an amount of bytes aligned to the transfer alignment. For simplicity, we
-    // align the reserved size to the LCM of the minimum alignment (already net buffer and transfer
-    // alignment) and the required alignment stride.
     auto [transferMapPtr, transferBindInfo] =
             fUploadManager.makeBindInfo(size32,
                                         fRequiredTransferAlignment,
@@ -713,7 +732,11 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
         return nullptr;
     }
 
+#if defined(GPU_TEST_UTILS)
+    info->fData.push_back({transferBindInfo, target, requiredAlignment, requiredBytes});
+#else
     info->fData.push_back({transferBindInfo, target, requiredAlignment});
+#endif
     info->fTotalRequiredBytes =
         align_to_req_min_lcm(info->fTotalRequiredBytes,
                              requiredAlignment,
@@ -732,7 +755,7 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
     }
 
     sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateBuffer(
-            fTotalRequiredBytes, fBufferType, AccessPattern::kGpuOnly, std::move(label));
+            fTotalRequiredBytes, fBufferType, getStaticGpuAccessPattern(), std::move(label));
     if (!staticBuffer) {
         SKGPU_LOG_E("Failed to create static buffer for type %d of size %u bytes.\n",
                     (int) fBufferType, fTotalRequiredBytes);
@@ -792,6 +815,9 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
                                                    "StaticVertexBuffer")) {
         return FinishResult::kFailure;
     }
+    #if defined(GPU_TEST_UTILS)
+        globalCache->setInitialStaticVertexInfo(fVertexBufferInfo.getBufferInfo());
+    #endif
 
     if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider,
                                                   context,
