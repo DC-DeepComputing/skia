@@ -435,9 +435,10 @@ bool skip(const char* str) {
 }
 
 // The pipeline strings were created with Android Vulkan but we're going to run the test
-// on Dawn Metal
-bool is_dawn_metal_context_type(skgpu::ContextType type) {
-    return type == skgpu::ContextType::kDawn_Metal;
+// on Dawn Metal and all the Native Vulkan configs
+bool is_acceptable_context_type(skgpu::ContextType type) {
+    return type == skgpu::ContextType::kDawn_Metal ||
+           type == skgpu::ContextType::kVulkan;
 }
 
 } // anonymous namespace
@@ -451,7 +452,7 @@ bool is_dawn_metal_context_type(skgpu::ContextType type) {
 //    PRINT_COVERAGE: list the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 //    PRINT_GENERATED_LABELS: list the Pipeline labels for a specific 'kPrecompileCases' case
 // Also of note, the "skip" method documents the Pipelines we're intentionally skipping and why.
-DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type,
+DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type,
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
     using namespace skgpu::graphite;
 
@@ -499,6 +500,13 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_dawn_metal_context_type
             MSAALoadOnlyCases.find(i) != MSAALoadOnlyCases.end()) {
             // If "w/ msaa load" strings aren't being generated, cases that only handle Pipeline
             // labels with that sub-string will never be matched.
+            continue;
+        }
+
+        if (kPrecompileCases[i].fRenderPassProps.fDSFlags == DepthStencilFlags::kDepth &&
+            caps->getDepthStencilFormat(DepthStencilFlags::kDepth) != TextureFormat::kD16) {
+            // The Pipeline labels in 'kCases' have "D16" for this case (i.e., "D32F" is a
+            // fine Depth buffer type but won't match the strings).
             continue;
         }
 
