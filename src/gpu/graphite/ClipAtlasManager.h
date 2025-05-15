@@ -51,7 +51,8 @@ private:
         sk_sp<TextureProxy> findOrCreateEntry(Recorder* recorder,
                                               const skgpu::UniqueKey&,
                                               const ClipStack::ElementList*,
-                                              SkIRect iBounds,
+                                              SkIRect maskBounds,
+                                              SkIRect keyBounds,
                                               SkIPoint* outPos);
         // Adds to DrawAtlas but not the cache
         sk_sp<TextureProxy> addToAtlas(Recorder* recorder,
