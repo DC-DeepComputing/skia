@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a3e8842_8ab07626",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:50:26Z",
+      "side": 1,
+      "message": "This lgtm, just a few cleanups. I\u0027m good with landing this now and leaving it non-load bearing. It\u0027ll keep reviews for the later portions easier.",
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f5ee8c0_a6ec6960",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:50:26Z",
+      "side": 1,
+      "message": "This comment isn\u0027t quite right.  The current code for `textureMaskSpace` is creating the matrix to map from local coords -\u003e mask coords -\u003e texture coords, which is what we want, but nothing needs to be inverted here.\n\nThe gotcha is that this call to `AsFragmentProcessor` (or `MakeFragmentProcessorFromView`) expects a matrix that maps from local coords -\u003e texture coords, whereas FPs created for the SkPaint normally define matrices that map from texture/shading coords -\u003e local coords.  So the matrix we are constructing directly *is* the inverse of what would normally be set on an SkShader.",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 37
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83dcbe10_f42c5588",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:50:26Z",
+      "side": 1,
+      "message": "Can this use `MakeFragmentProcessorFromView` and then we don\u0027t need to create `image`?\n\nIf we need to use `AsFragmentProcessor`, then I think we can simplify the `view`/`image` creation and just call `mask-\u003easImage()` and then assert that it is ganesh-backed?",
+      "range": {
+        "startLine": 495,
+        "startChar": 53,
+        "endLine": 495,
+        "endChar": 89
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a295500_0039d03f",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:50:26Z",
+      "side": 1,
+      "message": "For simple matrix math like this, it can be more readable to do something like `SkMatrix maskToLocal \u003d SkMatrix::Concat(deviceToLocal, maskToDevice)`, which makes it easier to see the matrix order than remembering which way pre vs. post applies.",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 40
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cd9f04f4_4683fc03",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:50:26Z",
+      "side": 1,
+      "message": "nit: double newline",
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
