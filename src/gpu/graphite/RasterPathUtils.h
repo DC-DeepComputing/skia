@@ -75,7 +75,9 @@ skgpu::UniqueKey GeneratePathMaskKey(const Shape& shape,
 
 skgpu::UniqueKey GenerateClipMaskKey(uint32_t stackRecordID,
                                      const ClipStack::ElementList* elementsForMask,
-                                     SkIRect iBounds,
+                                     SkIRect maskBounds,
+                                     bool includeBounds,
+                                     SkIRect* keyBounds,
                                      bool* usesPathKey);
 
 }  // namespace skgpu::graphite
