@@ -286,6 +286,9 @@ private:
         BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
         BindBufferInfo* fTarget;            // The late-assigned destination of the copy
         size_t          fRequiredAlignment; // The requested stride of the data.
+    #if defined(GPU_TEST_UTILS)
+        size_t          fUnalignedSize;     // The requested size without count-4 alignment
+    #endif
     };
     struct BufferInfo {
         BufferInfo(BufferType type, const Caps* caps);
@@ -304,6 +307,19 @@ private:
 
         skia_private::TArray<CopyRange> fData;
         uint32_t fTotalRequiredBytes;
+
+    #if defined(GPU_TEST_UTILS)
+        skia_private::TArray<uint32_t> getBufferInfo() {
+            skia_private::TArray<uint32_t> info;
+            for (const CopyRange& data : fData) {
+                info.push_back(data.fTarget->fOffset);
+                info.push_back(data.fUnalignedSize);
+                info.push_back(data.fTarget->fSize);
+                info.push_back(data.fRequiredAlignment);
+            }
+            return info;
+        }
+    #endif
     };
 
     void* prepareStaticData(BufferInfo* info,
@@ -322,6 +338,14 @@ private:
     // If mapping failed on Buffers created/managed by this StaticBufferManager or by the mapped
     // transfer buffers from the UploadManager, remember so that finalize() will fail.
     bool fMappingFailed = false;
+
+    static constexpr skgpu::graphite::AccessPattern getStaticAccessPattern() {
+    #if defined(GPU_TEST_UTILS)
+        return skgpu::graphite::AccessPattern::kGpuOnlyCopySrc;
+    #else
+        return skgpu::graphite::AccessPattern::kGpuOnly;
+    #endif
+    }
 };
 
 } // namespace skgpu::graphite
