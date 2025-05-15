@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8882a86e_81be542a",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-15T17:40:24Z",
+      "side": 1,
+      "message": "I understand the matrix constructed is the inverse, what I was trying to say is the SkSpecialImage `mask` is originally in texture coords and we want to transform it local coords, is this accurate?\nWill change comment just want to understand this",
+      "parentUuid": "8f5ee8c0_a6ec6960",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 37
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83dcbe10_f42c5588",
         "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
         "patchSetId": 12
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-15T13:50:26Z",
       "side": 1,
       "message": "Can this use `MakeFragmentProcessorFromView` and then we don\u0027t need to create `image`?\n\nIf we need to use `AsFragmentProcessor`, then I think we can simplify the `view`/`image` creation and just call `mask-\u003easImage()` and then assert that it is ganesh-backed?",
+      "range": {
+        "startLine": 495,
+        "startChar": 53,
+        "endLine": 495,
+        "endChar": 89
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d790f4de_0f9d691a",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 495,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-15T17:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83dcbe10_f42c5588",
       "range": {
         "startLine": 495,
         "startChar": 53,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c71adfcc_d3bc9c56",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-15T17:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5a295500_0039d03f",
+      "range": {
+        "startLine": 508,
+        "startChar": 0,
+        "endLine": 509,
+        "endChar": 40
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd9f04f4_4683fc03",
@@ -100,6 +172,24 @@
       "writtenOn": "2025-05-15T13:50:26Z",
       "side": 1,
       "message": "nit: double newline",
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75324a5d_f154197c",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 511,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-15T17:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cd9f04f4_4683fc03",
       "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
