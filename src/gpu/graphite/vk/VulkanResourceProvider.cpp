@@ -431,13 +431,16 @@ sk_sp<VulkanRenderPass> VulkanResourceProvider::findOrCreateRenderPass(
     static constexpr Shareable kShareable = Shareable::kYes;
     static const ResourceType kType = GraphiteResourceKey::GenerateResourceType();
 
+    const VulkanSharedContext* vkContext = this->vulkanSharedContext();
+    const VulkanCaps& vkCaps = vkContext->vulkanCaps();
+
     VulkanRenderPass::Metadata rpMetadata{renderPassDesc, compatibleOnly};
     GraphiteResourceKey key;
     {
         GraphiteResourceKey::Builder builder(&key, kType, rpMetadata.keySize());
 
         int startingIdx = 0;
-        rpMetadata.addToKey(builder, startingIdx);
+        rpMetadata.addToKey(&vkCaps, builder, startingIdx);
     }
     if (Resource* resource = fResourceCache->findAndRefResource(key, kBudgeted, kShareable)) {
         return sk_sp<VulkanRenderPass>(static_cast<VulkanRenderPass*>(resource));
