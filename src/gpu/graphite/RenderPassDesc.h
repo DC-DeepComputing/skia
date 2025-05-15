@@ -49,7 +49,7 @@ struct AttachmentDesc {
 static_assert(sizeof(AttachmentDesc) == sizeof(uint32_t));
 
 struct RenderPassDesc {
-    static RenderPassDesc Make(const Caps* caps,
+    static RenderPassDesc Make1(const Caps* caps,
                                const TextureInfo& targetInfo,
                                LoadOp loadOp,
                                StoreOp storeOp,
@@ -66,7 +66,8 @@ struct RenderPassDesc {
                 fColorAttachment == other.fColorAttachment &&
                 fColorResolveAttachment == other.fColorResolveAttachment &&
                 fDepthStencilAttachment == other.fDepthStencilAttachment &&
-                fDstReadStrategy == other.fDstReadStrategy);
+                fDstReadStrategy1 == other.fDstReadStrategy1 &&
+                fLoadMSAAFromResolve1 == other.fLoadMSAAFromResolve1);
     }
 
     bool operator!=(const RenderPassDesc& other) const {
@@ -90,13 +91,14 @@ struct RenderPassDesc {
     // within the renderpass require a dst read, this is set to be kNoneRequired. If any draw does
     // read from the dst, then each pipeline used by this RP independently determines if a dst read
     // is needed. When required, this strategy determines how to perform it.
-    DstReadStrategy fDstReadStrategy;
+    DstReadStrategy fDstReadStrategy1;
+    bool fLoadMSAAFromResolve1 = false;
 
     std::array<float, 4> fClearColor;
     float fClearDepth = 0.f;
     uint32_t fClearStencil = 0;
 
-    SkString toString() const;
+    SkString toString1() const;
     // Only includes fixed state relevant to pipeline creation
     SkString toPipelineLabel() const;
 

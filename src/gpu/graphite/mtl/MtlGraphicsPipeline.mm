@@ -298,7 +298,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
                              paintID,
                              useStorageBuffers,
                              renderPassDesc.fWriteSwizzle,
-                             renderPassDesc.fDstReadStrategy);
+                             renderPassDesc.fDstReadStrategy1);
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
@@ -391,7 +391,7 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::MakeLoadMSAAPipeline(
             resourceProvider->findOrCreateCompatibleDepthStencilState({});
 
     std::string pipelineLabel = "LoadMSAAFromResolve + ";
-    pipelineLabel += renderPassDesc.toString().c_str();
+    pipelineLabel += renderPassDesc.toString1().c_str();
 
     PipelineInfo pipelineInfo;
     pipelineInfo.fNumFragTexturesAndSamplers = 1;

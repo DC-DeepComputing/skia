@@ -53,7 +53,7 @@ private:
                                                               Protected::kNo,
                                                               Renderable::kYes);
 
-        RenderPassDesc coverageRenderPassDesc = RenderPassDesc::Make(
+        RenderPassDesc coverageRenderPassDesc = RenderPassDesc::Make1(
                 caps,
                 info,
                 LoadOp::kClear,

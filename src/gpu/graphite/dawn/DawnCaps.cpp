@@ -1114,7 +1114,8 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
 
     renderPassDesc->fSampleCount = colorSamples;
     renderPassDesc->fWriteSwizzle = SwizzleCtorAccessor::Make(rawKeyData[3]);
-    renderPassDesc->fDstReadStrategy = this->getDstReadStrategy();
+    renderPassDesc->fDstReadStrategy1 = this->getDstReadStrategy();
+    renderPassDesc->fLoadMSAAFromResolve1 = loadFromResolve;
 
     return true;
 }

@@ -419,7 +419,7 @@ bool VulkanCommandBuffer::onAddRenderPass(const RenderPassDesc& rpDesc,
     // After loading msaa from resolve (if needed), perform any updates that only need to occur
     // once per renderpass.
     this->performOncePerRPUpdates(
-            viewport, rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput);
+            viewport, rpDesc.fDstReadStrategy1 == DstReadStrategy::kReadFromInput);
 
     for (const auto& drawPass : drawPasses) {
         this->addDrawPass(drawPass.get());
@@ -766,7 +766,7 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
             vulkanResolveTexture,
             vulkanDepthStencilTexture,
             loadMSAAFromResolve,
-            /*rpReadsDstAsInput=*/rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput);
+            /*rpReadsDstAsInput=*/rpDesc.fDstReadStrategy1 == DstReadStrategy::kReadFromInput);
 
     // Gather clear values needed for RenderPassBeginInfo. Indexed by attachment number.
     STArray<kMaxNumAttachments, VkClearValue> clearValues;

@@ -312,7 +312,7 @@ void DrawContext::flush(Recorder* recorder) {
         auto writeSwizzle = caps->getWriteSwizzle(this->colorInfo().colorType(),
                                                   fTarget->textureInfo());
 
-        RenderPassDesc desc = RenderPassDesc::Make(caps, fTarget->textureInfo(), loadOp, storeOp,
+        RenderPassDesc desc = RenderPassDesc::Make1(caps, fTarget->textureInfo(), loadOp, storeOp,
                                                    dsFlags,
                                                    pass->clearColor(),
                                                    drawsRequireMSAA,
