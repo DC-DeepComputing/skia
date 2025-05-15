@@ -16,6 +16,46 @@
       "message": "OK to review.",
       "revId": "dbefe091559a0bba4ce2ac41b43076aa77bff995",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3dc66f5_24c85474",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:36:22Z",
+      "side": 1,
+      "message": "lgtm, just one more suggestion for how BufferSizes is declared",
+      "revId": "dbefe091559a0bba4ce2ac41b43076aa77bff995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1272088d_5fda0df7",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T13:36:22Z",
+      "side": 1,
+      "message": "Since this is just a struct, we can reduce code boilerplate by using default initializers on the fields (instead of below in the DBM ctor), and remove the ctor entirely.  Then aggregate initialization is a convenient way to create these objects.\n\nWe don\u0027t need the fields to be `const`, as we can either take it by value (so mutation doesn\u0027t matter) or have the overall `BufferSizes` parameters be declared const to propagate automatically.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 45
+      },
+      "revId": "dbefe091559a0bba4ce2ac41b43076aa77bff995",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
