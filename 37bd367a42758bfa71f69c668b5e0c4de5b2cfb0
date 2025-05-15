@@ -16,6 +16,199 @@
       "message": "(need another stamp after the last upload)",
       "revId": "37bd367a42758bfa71f69c668b5e0c4de5b2cfb0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae774422_b77ace6e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-15T15:33:32Z",
+      "side": 1,
+      "message": "LGTM with some minor tweaks.",
+      "revId": "37bd367a42758bfa71f69c668b5e0c4de5b2cfb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98c674d_3f00e9a8",
+        "filename": "src/core/SkPath_serial.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-15T15:33:32Z",
+      "side": 1,
+      "message": "nit: the return pattern is boiler-platey, we could use a macro to smooth things out:\n```\n  #define RETURN_PATH_AND_BYTES(p, b)  \\\n    do { if (bytesRead) { *bytesRead \u003d b; }; return p; } while (0)\n\n  ...\n  RETURN_PATH_AND_BYTES(std::nullopt, 0);\n  ... etc\n\n  #undef RETURN_PATH_AND_BYTES\n\n```",
+      "fixSuggestions": [
+        {
+          "fixId": "f2e541b5_207fb461",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 32,
+                "startChar": 0,
+                "endLine": 32,
+                "endChar": 0
+              },
+              "replacement": "#define RETURN_PATH_AND_BYTES(p, b) \\\n    do { if (bytesRead) { *bytesRead \u003d b; }; return p; } while (0)\n\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 207,
+                "startChar": 0,
+                "endLine": 211,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 217,
+                "startChar": 0,
+                "endLine": 221,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 231,
+                "startChar": 0,
+                "endLine": 235,
+                "endChar": 0
+              },
+              "replacement": "            RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 242,
+                "startChar": 0,
+                "endLine": 246,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 253,
+                "startChar": 0,
+                "endLine": 257,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 264,
+                "startChar": 0,
+                "endLine": 268,
+                "endChar": 0
+              },
+              "replacement": "            RETURN_PATH_AND_BYTES(path, buffer.pos());\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 270,
+                "startChar": 0,
+                "endLine": 274,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 287,
+                "startChar": 0,
+                "endLine": 291,
+                "endChar": 0
+              },
+              "replacement": "        RETURN_PATH_AND_BYTES(std::nullopt, 0);\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 294,
+                "startChar": 0,
+                "endLine": 298,
+                "endChar": 0
+              },
+              "replacement": "    RETURN_PATH_AND_BYTES(path, buffer.pos());\n"
+            },
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 299,
+                "startChar": 0,
+                "endLine": 299,
+                "endChar": 0
+              },
+              "replacement": "\n#undef RETURN_PATH_AND_BYTES\n\n"
+            }
+          ]
+        }
+      ],
+      "revId": "37bd367a42758bfa71f69c668b5e0c4de5b2cfb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "de5fb739_8e43b986",
+        "filename": "src/core/SkPath_serial.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-15T15:33:32Z",
+      "side": 1,
+      "message": "We can skip this part since the path is now initialized locally.",
+      "range": {
+        "startLine": 262,
+        "startChar": 12,
+        "endLine": 262,
+        "endChar": 25
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bce496f4_69c2cce9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPath_serial.cpp",
+              "range": {
+                "startLine": 262,
+                "startChar": 0,
+                "endLine": 263,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "37bd367a42758bfa71f69c668b5e0c4de5b2cfb0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
