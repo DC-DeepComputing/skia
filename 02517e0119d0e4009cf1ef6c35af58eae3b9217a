@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c68e9205_42a56c71",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-15T16:06:52Z",
+      "side": 1,
+      "message": "OK to review, fixed nits.",
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "04982831_251ed27f",
@@ -14,6 +31,30 @@
       "writtenOn": "2025-05-15T15:57:12Z",
       "side": 1,
       "message": "nit: This should be `AppendVerts` (but we don\u0027t add `k` as a prefix for template constants, but they should be capitilized).",
+      "range": {
+        "startLine": 341,
+        "startChar": 18,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c377d8f_16edf448",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-15T16:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "04982831_251ed27f",
       "range": {
         "startLine": 341,
         "startChar": 18,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6effe3f1_6a1795eb",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-15T16:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dacb41ea_e4fbe86b",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 38
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "23c92f2e_9899610f",
@@ -60,6 +125,30 @@
       "writtenOn": "2025-05-15T15:57:12Z",
       "side": 1,
       "message": "most compilers do it anyways, but let\u0027s make this `if constexpr (AppendVerts)` here and below to make it clear that it goes away",
+      "range": {
+        "startLine": 345,
+        "startChar": 9,
+        "endLine": 345,
+        "endChar": 11
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cf1303c_c08e7458",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-15T16:06:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "23c92f2e_9899610f",
       "range": {
         "startLine": 345,
         "startChar": 9,
