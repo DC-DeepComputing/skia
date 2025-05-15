@@ -1,5 +1,25 @@
 [workspace]
+resolver = "2"
 
-members = [
-    "src/ports/fontations",
-]
+[package]
+name = "crates"
+edition = "2021"
+version = "0.1.0"
+
+[dependencies]
+# ICU4x
+icu_capi = { git = "https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git", tag="upstream/ind/icu_capi@1.4.1", features = ["provider_test", "icu_casemap", "compiled_data"]}
+
+# Fontations
+read-fonts = "0.27"
+font-types = "0.8"
+skrifa = "0.29"
+# bytemuck = "1.16"
+cxx = "1.0"
+
+# vello
+bytemuck = { version = "1.16.0", features = ["derive"] }
+naga = { version = "0.20.0", features = ["wgsl-in", "msl-out"] }
+peniko = "0.1.1"
+regex = "1.8.1"
+thiserror = "1.0.60"

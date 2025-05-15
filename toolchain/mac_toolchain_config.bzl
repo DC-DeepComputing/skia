@@ -60,6 +60,7 @@ def _mac_toolchain_info(ctx):
             #  rather than the include path"
             # https://bazel.build/rules/lib/cc_common#create_cc_toolchain_config_info.cxx_builtin_include_directories
             "%sysroot%/symlinks/xcode/MacSDK/System/Library/Frameworks/",
+            "%sysroot%/lib/clang/",
         ],
         # If `ctx.attr.cpu` is blank (which is declared as optional below), this config will target
         # the host CPU. Specifying a target_cpu allows this config to be used for cross compilation.

@@ -6,8 +6,6 @@
 
 set -euo pipefail
 
-# Find this file and look for ../../external
-BASE_DIR=$( realpath $( dirname ${BASH_SOURCE[0]}))
-CLANG_DIR=$( dirname $( dirname $BASE_DIR))/external/*clang_mac
+CLANG_DIR=external/*clang_mac
 
 $CLANG_DIR/bin/clang $@
