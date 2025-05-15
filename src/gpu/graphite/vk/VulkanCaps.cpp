@@ -1611,8 +1611,9 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         builder[idx++] = pipelineDesc.paintParamsID().asUInt();
         // Add RenderPass info relevant for pipeline creation that's not captured in RenderPass keys
         builder[idx++] = renderPassDesc.fWriteSwizzle.asKey();
+        SkDebugf("keystart: %u %u %u\n", builder[0], builder[1], builder[2]);
         // Add RenderPassDesc information
-        rpMetadata.addToKey(builder, idx);
+        rpMetadata.addToKey(this, builder, idx);
 
         builder.finish();
     }
@@ -1641,6 +1642,7 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
 
     const uint32_t attachmentCount = rawKeyData[3] & 0xFF;
     const uint32_t subpassCount = rawKeyData[3] >> 8;
+
     SkASSERT(key.dataSize() ==
              4 * (kVulkanGraphicsPipelineKeyHeaderData32Count + 1 + (attachmentCount + 1) / 2 + 1));
     SkASSERT(subpassCount == 1 || subpassCount == 2);
@@ -1673,8 +1675,8 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
     if (resolveIndex < 3) {
         renderPassDesc->fColorResolveAttachment = attachments[resolveIndex];
 
-        const bool loadMSAAFromResolve = subpassCount == 2;
-        if (loadMSAAFromResolve) {
+        renderPassDesc->fLoadMSAAFromResolve1 = subpassCount == 2;
+        if (renderPassDesc->fLoadMSAAFromResolve1 && this->loadOpAffectsMSAAPipelines()) {
             renderPassDesc->fColorResolveAttachment.fLoadOp = LoadOp::kLoad;
             renderPassDesc->fColorResolveAttachment.fStoreOp = StoreOp::kStore;
         }
@@ -1684,7 +1686,7 @@ bool VulkanCaps::extractGraphicsDescs(const UniqueKey& key,
     }
 
     renderPassDesc->fSampleCount = renderPassDesc->fColorAttachment.fSampleCount;
-    renderPassDesc->fDstReadStrategy = this->getDstReadStrategy();
+    renderPassDesc->fDstReadStrategy1 = this->getDstReadStrategy();
 
     return true;
 }

@@ -215,7 +215,10 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     // RenderPassDesc dst read strategy is not serialized as it is not something we key on and does
     // not impact pipeline creation. When deserializing, simply query Caps again for a
     // DstReadStrategy. Leave clear color/depth/stencil as their default values.
-    renderPassDesc->fDstReadStrategy = caps->getDstReadStrategy();
+    renderPassDesc->fDstReadStrategy1 = caps->getDstReadStrategy();
+    renderPassDesc->fLoadMSAAFromResolve1 =
+            renderPassDesc->fColorResolveAttachment.fFormat != TextureFormat::kUnsupported &&
+            renderPassDesc->fColorResolveAttachment.fLoadOp == LoadOp::kLoad; //$$
 
     return true;
 }

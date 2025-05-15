@@ -1034,7 +1034,8 @@ bool MtlCaps::extractGraphicsDescs(const UniqueKey& key,
 
     renderPassDesc->fSampleCount = keyData.fColorSampleCount;
     renderPassDesc->fWriteSwizzle = keyData.fWriteSwizzle;
-    renderPassDesc->fDstReadStrategy = this->getDstReadStrategy();
+    renderPassDesc->fDstReadStrategy1 = this->getDstReadStrategy();
+    renderPassDesc->fLoadMSAAFromResolve1 = false; //$$
 
     // Recreate the GraphicsPipelineDesc
     const RenderStep* renderStep = rendererProvider->lookup(keyData.fRenderStepID);
