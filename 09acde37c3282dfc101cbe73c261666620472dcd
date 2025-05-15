@@ -253,6 +253,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cb5c8c6_fc10b41a",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 378,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T14:00:09Z",
+      "side": 1,
+      "message": "Ah my mistake, thanks for clarifying the differences here.",
+      "parentUuid": "dd7fd2a6_e9c724bf",
+      "range": {
+        "startLine": 371,
+        "startChar": 0,
+        "endLine": 378,
+        "endChar": 26
+      },
+      "revId": "09acde37c3282dfc101cbe73c261666620472dcd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd276cbf_175a4523",

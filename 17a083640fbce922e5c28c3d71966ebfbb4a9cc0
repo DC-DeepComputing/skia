@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "944cf13a_14054f1f",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T14:00:09Z",
+      "side": 1,
+      "message": "nit:\n```suggestion\n    // TODO(b/260368758): cache single texture\u0027s bind group creation.\n```",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 50
+      },
+      "revId": "17a083640fbce922e5c28c3d71966ebfbb4a9cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
