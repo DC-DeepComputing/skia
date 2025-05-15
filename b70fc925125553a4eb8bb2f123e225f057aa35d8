@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e550a05_18c16971",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-15T15:41:31Z",
+      "side": 0,
+      "message": "Note: The idea to use compatible RPs isn\u0027t really relevant given that we cache based on `RenderPassDesc` information already, not the `VulkanRenderPass` itself passed in by the command buffer which is a \"full\" RP.",
+      "range": {
+        "startLine": 534,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 17
+      },
+      "revId": "b70fc925125553a4eb8bb2f123e225f057aa35d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
