@@ -25,7 +25,7 @@ def _c_plus_plus_modules_impl(ctx):
     new_git_repository(
         name = "dawn",
         build_file = "//bazel/external/dawn:BUILD.bazel",
-        commit = "be90a8f836d3a41eae2d8a5152f24b54d7469599",
+        commit = "cef6244f082d848a83099cf599cdd8cdb95997c4",
         remote = "https://dawn.googlesource.com/dawn.git",
     )
 
