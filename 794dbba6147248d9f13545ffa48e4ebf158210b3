@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e05ad7bf_0d87c83a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T19:26:14Z",
+      "side": 1,
+      "message": "Landing as-is, but per offline discussion we still need to adjust how runtime effects in precompile calculate the number of combinations with this new mode of operation.",
+      "revId": "794dbba6147248d9f13545ffa48e4ebf158210b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
