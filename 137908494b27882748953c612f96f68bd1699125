@@ -69,6 +69,24 @@
       "parentUuid": "31051ed0_be98db70",
       "revId": "137908494b27882748953c612f96f68bd1699125",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b687b4bc_7d1810e0",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-15T20:16:39Z",
+      "side": 1,
+      "message": "Unresolve after merge.",
+      "parentUuid": "b9c4989d_c791eab0",
+      "revId": "137908494b27882748953c612f96f68bd1699125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
