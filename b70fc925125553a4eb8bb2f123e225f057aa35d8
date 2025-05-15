@@ -22,6 +22,30 @@
       },
       "revId": "b70fc925125553a4eb8bb2f123e225f057aa35d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb7a9586_e17f541e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 537,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T15:45:57Z",
+      "side": 0,
+      "message": "And even though the provided `renderPassDesc` is the full desc for the RP (and not one that\u0027s been made \"compatible\" like in VulkanRenderPass::Metadata), the only details that it requires for the cached framebuffer are whether or not it loads into the MSAA attachment, so I agree that we are good here.",
+      "parentUuid": "3e550a05_18c16971",
+      "range": {
+        "startLine": 534,
+        "startChar": 0,
+        "endLine": 537,
+        "endChar": 17
+      },
+      "revId": "b70fc925125553a4eb8bb2f123e225f057aa35d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b7e79a8_0dd02262",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T15:45:57Z",
+      "side": 1,
+      "message": "nit: this should have been tabbed over one more time earlier, but can you do it now?",
+      "range": {
+        "startLine": 78,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 26
+      },
+      "revId": "6e484cb7d7e1738d122cb92aeacb87fd68d6b9c9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
