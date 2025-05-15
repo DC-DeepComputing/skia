@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "597f11f1_9fd69b92",
+        "filename": "src/android/SkAndroidFrameworkUtils.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-15T00:07:34Z",
+      "side": 1,
+      "message": "This should probably be an SkSTArray since it is temporary and there is no point going off to the head every time when the reality is most of the time there are two to four stops.",
+      "revId": "794071dad552994083561d1ca4ad735b34e9cd53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "edd4130b_49bd387b",
         "filename": "src/android/SkAndroidFrameworkUtils.cpp",
         "patchSetId": 1
