@@ -105,6 +105,24 @@
       "parentUuid": "b687b4bc_7d1810e0",
       "revId": "137908494b27882748953c612f96f68bd1699125",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29203ade_92827f7b",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-15T20:24:49Z",
+      "side": 1,
+      "message": "I think if we added `bazel mod tidy` after the update that would handle the update for this file",
+      "parentUuid": "f2a68b42_7819ecea",
+      "revId": "137908494b27882748953c612f96f68bd1699125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
