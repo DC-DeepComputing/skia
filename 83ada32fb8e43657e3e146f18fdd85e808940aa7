@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d8dbd76_5df81c07",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-15T16:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e84616ca_1e1865f0",
+      "range": {
+        "startLine": 134,
+        "startChar": 80,
+        "endLine": 134,
+        "endChar": 84
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3c8cae3_1e110cc5",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-15T16:30:47Z",
       "side": 1,
       "message": "shapeBounds ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 17
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5217e530_0f2e87d7",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-15T16:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3c8cae3_1e110cc5",
       "range": {
         "startLine": 61,
         "startChar": 7,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "689b36ef_63ff1ca3",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-15T16:58:02Z",
+      "side": 1,
+      "message": "I think that\u0027s ok. Originally I was thinking that we could have reuse of a stackRecordID clip but with a different bounds, but I don\u0027t think that can happen.",
+      "parentUuid": "17fe4fd5_93d5f95c",
+      "range": {
+        "startLine": 262,
+        "startChar": 17,
+        "endLine": 262,
+        "endChar": 33
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e49c2ccc_7de83dea",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-05-15T16:30:47Z",
       "side": 1,
       "message": "shapeBounds ?\n\nor make the definition use \u0027drawBounds\u0027",
+      "range": {
+        "startLine": 54,
+        "startChar": 34,
+        "endLine": 54,
+        "endChar": 44
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23ece7b2_7c06e01f",
+        "filename": "src/gpu/graphite/RasterPathUtils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-15T16:58:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e49c2ccc_7de83dea",
       "range": {
         "startLine": 54,
         "startChar": 34,
