@@ -74,8 +74,7 @@ public:
 
     VkPipelineLayout mockPipelineLayout() const { return fMockPipelineLayout; }
 
-    // TODO(b/302126809): Should these be cached? e.g. findOrCreateFramebuffer
-    sk_sp<VulkanFramebuffer> createFramebuffer(
+    sk_sp<VulkanFramebuffer> findOrCreateFramebuffer(
         const VulkanSharedContext*,
         VulkanTexture* colorTexture,
         VulkanTexture* resolveTexture,
