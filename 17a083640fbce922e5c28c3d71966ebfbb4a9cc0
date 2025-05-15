@@ -22,6 +22,30 @@
       },
       "revId": "17a083640fbce922e5c28c3d71966ebfbb4a9cc0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "08edf123_9e2f2681",
+        "filename": "src/gpu/graphite/dawn/DawnResourceProvider.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 370,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-15T14:54:39Z",
+      "side": 1,
+      "message": "Done. May I have a +1 again? For some reason the +1 is lost even though this is a trivial change.",
+      "parentUuid": "944cf13a_14054f1f",
+      "range": {
+        "startLine": 369,
+        "startChar": 0,
+        "endLine": 370,
+        "endChar": 50
+      },
+      "revId": "17a083640fbce922e5c28c3d71966ebfbb4a9cc0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
