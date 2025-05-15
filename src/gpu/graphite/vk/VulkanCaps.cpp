@@ -1612,7 +1612,7 @@ UniqueKey VulkanCaps::makeGraphicsPipelineKey(const GraphicsPipelineDesc& pipeli
         // Add RenderPass info relevant for pipeline creation that's not captured in RenderPass keys
         builder[idx++] = renderPassDesc.fWriteSwizzle.asKey();
         // Add RenderPassDesc information
-        rpMetadata.addToKey(builder, idx);
+        rpMetadata.addToKey(this, builder, idx);
 
         builder.finish();
     }
