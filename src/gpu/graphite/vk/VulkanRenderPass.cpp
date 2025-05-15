@@ -151,6 +151,14 @@ void VulkanRenderPass::Metadata::addToKey(ResourceKey::Builder& builder, int& bu
                            static_cast<uint8_t>(desc.fLoadOp) << 6 |
                            static_cast<uint8_t>(desc.fStoreOp) << 4 |
                            desc.fSampleCount;
+#if 0
+        SkDebugf("%d %d %d %d -> %x\n",
+                 static_cast<uint8_t>(desc.fFormat),
+                 static_cast<uint8_t>(desc.fLoadOp),
+                 static_cast<uint8_t>(desc.fStoreOp),
+                 desc.fSampleCount,
+                 descKey);
+#endif
         uint32_t& keySlot = builder[builderIdx + i/2];
         if (i % 2 == 0) {
             keySlot = descKey;
