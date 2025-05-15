@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e84616ca_1e1865f0",
+        "filename": "src/gpu/graphite/ClipAtlasManager.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-15T16:30:47Z",
+      "side": 1,
+      "message": "/* includeBounds\u003d */ ?\n\nHere and above ?",
+      "range": {
+        "startLine": 134,
+        "startChar": 80,
+        "endLine": 134,
+        "endChar": 84
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c8cae3_1e110cc5",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-15T16:30:47Z",
+      "side": 1,
+      "message": "shapeBounds ?",
+      "range": {
+        "startLine": 61,
+        "startChar": 7,
+        "endLine": 61,
+        "endChar": 17
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "17fe4fd5_93d5f95c",
+        "filename": "src/gpu/graphite/RasterPathUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 262,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-15T16:30:47Z",
+      "side": 1,
+      "message": "Should we just set it to be empty in this case ?",
+      "range": {
+        "startLine": 262,
+        "startChar": 17,
+        "endLine": 262,
+        "endChar": 33
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e49c2ccc_7de83dea",
+        "filename": "src/gpu/graphite/RasterPathUtils.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-15T16:30:47Z",
+      "side": 1,
+      "message": "shapeBounds ?\n\nor make the definition use \u0027drawBounds\u0027",
+      "range": {
+        "startLine": 54,
+        "startChar": 34,
+        "endLine": 54,
+        "endChar": 44
+      },
+      "revId": "83ada32fb8e43657e3e146f18fdd85e808940aa7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
