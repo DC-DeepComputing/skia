@@ -87,6 +87,24 @@
       "parentUuid": "b9c4989d_c791eab0",
       "revId": "137908494b27882748953c612f96f68bd1699125",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2a68b42_7819ecea",
+        "filename": "MODULE.bazel.lock",
+        "patchSetId": 3
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-15T20:20:00Z",
+      "side": 1,
+      "message": "To try and answer this, yes that\u0027s the way it looks right now.",
+      "parentUuid": "b687b4bc_7d1810e0",
+      "revId": "137908494b27882748953c612f96f68bd1699125",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
