@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04982831_251ed27f",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T15:57:12Z",
+      "side": 1,
+      "message": "nit: This should be `AppendVerts` (but we don\u0027t add `k` as a prefix for template constants, but they should be capitilized).",
+      "range": {
+        "startLine": 341,
+        "startChar": 18,
+        "endLine": 341,
+        "endChar": 29
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dacb41ea_e4fbe86b",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T15:57:12Z",
+      "side": 1,
+      "message": "Let\u0027s add an assert here like `SkASSERT(kAppendVerts \u003d\u003d SkToBool(w.fRenderState \u0026 RenderStateFlags::kAppendVertices))`",
+      "range": {
+        "startLine": 343,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 38
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23c92f2e_9899610f",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 345,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-15T15:57:12Z",
+      "side": 1,
+      "message": "most compilers do it anyways, but let\u0027s make this `if constexpr (AppendVerts)` here and below to make it clear that it goes away",
+      "range": {
+        "startLine": 345,
+        "startChar": 9,
+        "endLine": 345,
+        "endChar": 11
+      },
+      "revId": "02517e0119d0e4009cf1ef6c35af58eae3b9217a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
