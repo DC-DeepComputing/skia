@@ -419,13 +419,12 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
                                                                   const SkRect& circle,
                                                                   float sigma,
                                                                   float* solidRadius,
-                                                                  float* textureRadius) {
+                                                                  float* textureRadius,
+                                                                  const bool useGrCache) {
     float circleR = circle.width() / 2.0f;
     if (!SkIsFinite(circleR) || circleR < SK_ScalarNearlyZero) {
         return nullptr;
     }
-
-    auto threadSafeCache = rContext->priv().threadSafeCache();
 
     // Profile textures are cached by the ratio of sigma to circle radius and by the size of the
     // profile texture (binned by powers of 2).
@@ -461,17 +460,22 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     // 1 / textureRadius. This is done to avoid overflow in length().
     SkMatrix texM = SkMatrix::Scale(kProfileTextureWidth, 1.f);
 
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+    GrSurfaceProxyView profileView;
+    GrThreadSafeCache* threadSafeCache = nullptr;
     skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "1-D Circular Blur");
-    builder[0] = sigmaToCircleRRatioFixed;
-    builder.finish();
+    if (useGrCache) {
+        threadSafeCache = rContext->priv().threadSafeCache();
+        static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+        skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "1-D Circular Blur");
+        builder[0] = sigmaToCircleRRatioFixed;
+        builder.finish();
 
-    GrSurfaceProxyView profileView = threadSafeCache->find(key);
-    if (profileView) {
-        SkASSERT(profileView.asTextureProxy());
-        SkASSERT(profileView.origin() == kTopLeft_GrSurfaceOrigin);
-        return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
+        profileView = threadSafeCache->find(key);
+        if (profileView) {
+            SkASSERT(profileView.asTextureProxy());
+            SkASSERT(profileView.origin() == kTopLeft_GrSurfaceOrigin);
+            return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
+        }
     }
 
     SkBitmap bm;
@@ -488,13 +492,16 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
         return nullptr;
     }
 
-    profileView = threadSafeCache->add(key, profileView);
+    if (useGrCache) {
+        profileView = threadSafeCache->add(key, profileView);
+    }
     return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext* context,
+std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
                                                              const SkRect& circle,
-                                                             float sigma) {
+                                                             float sigma,
+                                                             const bool useGrCache) {
     if (skgpu::BlurIsEffectivelyIdentity(sigma)) {
         return nullptr;
     }
@@ -502,7 +509,8 @@ static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext*
     float solidRadius;
     float textureRadius;
     std::unique_ptr<GrFragmentProcessor> profile =
-            create_profile_effect(context, circle, sigma, &solidRadius, &textureRadius);
+            create_profile_effect(context, circle, sigma, &solidRadius,
+                                  &textureRadius, useGrCache);
     if (!profile) {
         return nullptr;
     }
@@ -535,26 +543,30 @@ static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext*
 ///////////////////////////////////////////////////////////////////////////////
 
 static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingContext* rContext,
-                                                                  float sixSigma) {
+                                                                  float sixSigma,
+                                                                  const bool useGrCache) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(sixSigma / 6.f));
-    auto threadSafeCache = rContext->priv().threadSafeCache();
 
     int width = skgpu::ComputeIntegralTableWidth(sixSigma);
-
-    static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
-    skgpu::UniqueKey key;
-    skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "Rect Blur Mask");
-    builder[0] = width;
-    builder.finish();
-
     SkMatrix m = SkMatrix::Scale(width / sixSigma, 1.f);
 
-    GrSurfaceProxyView view = threadSafeCache->find(key);
+    GrSurfaceProxyView view;
+    skgpu::UniqueKey key;
+    GrThreadSafeCache* threadSafeCache = nullptr;
+    if (useGrCache) {
+        threadSafeCache = rContext->priv().threadSafeCache();
+        static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
+        skgpu::UniqueKey::Builder builder(&key, kDomain, 1, "Rect Blur Mask");
+        builder[0] = width;
+        builder.finish();
 
-    if (view) {
-        SkASSERT(view.origin() == kTopLeft_GrSurfaceOrigin);
-        return GrTextureEffect::Make(
-                std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
+        view = threadSafeCache->find(key);
+
+        if (view) {
+            SkASSERT(view.origin() == kTopLeft_GrSurfaceOrigin);
+            return GrTextureEffect::Make(
+                    std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
+        }
     }
 
     SkBitmap bitmap = skgpu::CreateIntegralTable(width);
@@ -567,18 +579,22 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
         return {};
     }
 
-    view = threadSafeCache->add(key, view);
+    if (useGrCache) {
+        view = threadSafeCache->add(key, view);
+    }
+
 
     SkASSERT(view.origin() == kTopLeft_GrSurfaceOrigin);
     return GrTextureEffect::Make(
             std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* context,
+std::unique_ptr<GrFragmentProcessor> MakeRectBlur(GrRecordingContext* context,
                                                            const GrShaderCaps& caps,
                                                            const SkRect& srcRect,
                                                            const SkMatrix& viewMatrix,
-                                                           float transformedSigma) {
+                                                           float transformedSigma,
+                                                           const bool useGrCache) {
     SkASSERT(viewMatrix.preservesRightAngles());
     SkASSERT(srcRect.isSorted());
 
@@ -624,7 +640,9 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* c
     }
 
     const float sixSigma = 6 * transformedSigma;
-    std::unique_ptr<GrFragmentProcessor> integral = make_rect_integral_fp(context, sixSigma);
+    std::unique_ptr<GrFragmentProcessor> integral = make_rect_integral_fp(context,
+                                                                          sixSigma,
+                                                                          useGrCache);
     if (!integral) {
         return nullptr;
     }
@@ -820,12 +838,16 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
         GrRecordingContext* rContext,
         const SkRRect& rrectToDraw,
         const SkISize& dimensions,
-        float xformedSigma) {
+        float xformedSigma,
+        const bool useGrCache) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(xformedSigma));
     skgpu::UniqueKey key;
-    make_blurred_rrect_key(&key, rrectToDraw, xformedSigma);
+    GrThreadSafeCache* threadSafeCache = nullptr;
 
-    auto threadSafeCache = rContext->priv().threadSafeCache();
+    if (useGrCache) {
+        make_blurred_rrect_key(&key, rrectToDraw, xformedSigma);
+        threadSafeCache = rContext->priv().threadSafeCache();
+    }
 
     // It seems like we could omit this matrix and modify the shader code to not normalize
     // the coords used to sample the texture effect. However, the "proxyDims" value in the
@@ -836,8 +858,8 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
     auto m = SkMatrix::Scale(dimensions.width(), dimensions.height());
 
     GrSurfaceProxyView view;
-
-    if (GrDirectContext* dContext = rContext->asDirectContext()) {
+    GrDirectContext* dContext = rContext->asDirectContext();
+    if (dContext && useGrCache) {
         // The gpu thread gets priority over the recording threads. If the gpu thread is first,
         // it crams a lazy proxy into the cache and then fills it in later.
         auto [lazyView, trampoline] = GrThreadSafeCache::CreateLazyView(dContext,
@@ -868,11 +890,13 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
             return nullptr;
         }
     } else {
-        view = threadSafeCache->find(key);
-        if (view) {
-            SkASSERT(view.asTextureProxy());
-            SkASSERT(view.origin() == kBlurredRRectMaskOrigin);
-            return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
+        if (useGrCache) {
+            view = threadSafeCache->find(key);
+            if (view) {
+                SkASSERT(view.asTextureProxy());
+                SkASSERT(view.origin() == kBlurredRRectMaskOrigin);
+                return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
+            }
         }
 
         view = create_mask_on_cpu(rContext, rrectToDraw, dimensions, xformedSigma);
@@ -880,7 +904,9 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
             return nullptr;
         }
 
-        view = threadSafeCache->add(key, view);
+        if (useGrCache) {
+            view = threadSafeCache->add(key, view);
+        }
     }
 
     SkASSERT(view.asTextureProxy());
@@ -888,11 +914,12 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
     return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* context,
+std::unique_ptr<GrFragmentProcessor> MakeRRectBlur(GrRecordingContext* context,
                                                             float sigma,
                                                             float xformedSigma,
                                                             const SkRRect& srcRRect,
-                                                            const SkRRect& devRRect) {
+                                                            const SkRRect& devRRect,
+                                                            const bool useGrCache) {
     SkASSERTF(!SkRRectPriv::IsCircle(devRRect),
               "Unexpected circle. %d\n\t%s\n\t%s",
               SkRRectPriv::IsCircle(srcRRect),
@@ -934,7 +961,8 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
     }
 
     std::unique_ptr<GrFragmentProcessor> maskFP =
-            find_or_create_rrect_blur_mask_fp(context, rrectToDraw, dimensions, xformedSigma);
+            find_or_create_rrect_blur_mask_fp(context, rrectToDraw, dimensions,
+                                              xformedSigma, useGrCache);
     if (!maskFP) {
         return nullptr;
     }
@@ -1053,8 +1081,8 @@ static bool direct_filter_mask(GrRecordingContext* context,
 
     if (canBeRect || canBeCircle) {
         if (canBeRect) {
-            fp = make_rect_blur(context, *context->priv().caps()->shaderCaps(),
-                                srcRRect.rect(), viewMatrix, xformedSigma);
+            fp = MakeRectBlur(context, *context->priv().caps()->shaderCaps(),
+                                srcRRect.rect(), viewMatrix, xformedSigma, true);
         } else {
             SkRect devBounds;
             if (devRRectIsCircle) {
@@ -1068,7 +1096,7 @@ static bool direct_filter_mask(GrRecordingContext* context,
                              center.x() + radius,
                              center.y() + radius};
             }
-            fp = make_circle_blur(context, devBounds, xformedSigma);
+            fp = MakeCircleBlur(context, devBounds, xformedSigma, true);
         }
 
         if (!fp) {
@@ -1103,7 +1131,7 @@ static bool direct_filter_mask(GrRecordingContext* context,
         return false;
     }
 
-    fp = make_rrect_blur(context, bmf->sigma(), xformedSigma, srcRRect, devRRect);
+    fp = MakeRRectBlur(context, bmf->sigma(), xformedSigma, srcRRect, devRRect, true);
     if (!fp) {
         return false;
     }

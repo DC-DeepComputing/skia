@@ -218,6 +218,9 @@ public:
 
     void drawCoverageMask(const SkSpecialImage* mask, const SkMatrix& maskToDevice,
                           const SkSamplingOptions& localToDevice, const SkPaint& paint) override;
+    bool drawBlurredRRect(const SkRRect&, const SkPaint&, float deviceSigma) override;
+
+    bool useDrawCoverageMaskForMaskFilters() const override { return true; }
 
     void drawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4], SkCanvas::QuadAAFlags aaFlags,
                         const SkColor4f& color, SkBlendMode mode) override;
