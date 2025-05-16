@@ -67,6 +67,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8452a5a0_434ed0f8",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-16T01:23:28Z",
+      "side": 1,
+      "message": "Yes `mask` should be sampled in texture coords, but the draw (and other paint effects) start out defined / sampled with the local coords.",
+      "parentUuid": "8882a86e_81be542a",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 37
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "83dcbe10_f42c5588",
         "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
         "patchSetId": 12
