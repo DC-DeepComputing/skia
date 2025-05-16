@@ -1682,7 +1682,7 @@ static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
         subdivide_cubic_to(path, &tmp[0], level);
         subdivide_cubic_to(path, &tmp[3], level);
     } else {
-        path->cubicTo(pts[1], pts[2], pts[3]);
+        *path = SkPathBuilder(*path).cubicTo(pts[1], pts[2], pts[3]).detach();
     }
 }
 
@@ -1787,7 +1787,6 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveCl
                 dst->setFirstDirection(SkPathFirstDirection::kUnknown);
             }
         }
-
         SkDEBUGCODE(dst->validate();)
     }
 }
@@ -3341,17 +3340,18 @@ void SkPathPriv::CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNo
     if (SkScalarAbs(sweepAngle) > 3600.0f) {
         sweepAngle = std::copysign(3600.0f, sweepAngle) + std::fmod(sweepAngle, 360.0f);
     }
-    path->reset();
-    path->setIsVolatile(true);
-    path->setFillType(SkPathFillType::kWinding);
+    SkPathBuilder builder;
+    builder.setIsVolatile(true);
+    builder.setFillType(SkPathFillType::kWinding);
     if (isFillNoPathEffect && SkScalarAbs(sweepAngle) >= 360.f) {
-        path->addOval(oval);
-        SkASSERT(path->isConvex() &&
+        builder.addOval(oval);
+        SkASSERT(builder.snapshot().isConvex() &&
                  DrawArcIsConvex(sweepAngle, SkArc::Type::kArc, isFillNoPathEffect));
+        *path = builder.detach();
         return;
     }
     if (arc.isWedge()) {
-        path->moveTo(oval.centerX(), oval.centerY());
+        builder.moveTo(oval.centerX(), oval.centerY());
     }
     auto firstDir =
             sweepAngle > 0 ? SkPathFirstDirection::kCW : SkPathFirstDirection::kCCW;
@@ -3359,25 +3359,26 @@ void SkPathPriv::CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNo
     // Arc to mods at 360 and drawArc is not supposed to.
     bool forceMoveTo = !arc.isWedge();
     while (sweepAngle <= -360.f) {
-        path->arcTo(oval, startAngle, -180.f, forceMoveTo);
+        builder.arcTo(oval, startAngle, -180.f, forceMoveTo);
         startAngle -= 180.f;
-        path->arcTo(oval, startAngle, -180.f, false);
+        builder.arcTo(oval, startAngle, -180.f, false);
         startAngle -= 180.f;
         forceMoveTo = false;
         sweepAngle += 360.f;
     }
     while (sweepAngle >= 360.f) {
-        path->arcTo(oval, startAngle, 180.f, forceMoveTo);
+        builder.arcTo(oval, startAngle, 180.f, forceMoveTo);
         startAngle += 180.f;
-        path->arcTo(oval, startAngle, 180.f, false);
+        builder.arcTo(oval, startAngle, 180.f, false);
         startAngle += 180.f;
         forceMoveTo = false;
         sweepAngle -= 360.f;
     }
-    path->arcTo(oval, startAngle, sweepAngle, forceMoveTo);
+    builder.arcTo(oval, startAngle, sweepAngle, forceMoveTo);
     if (arc.isWedge()) {
-        path->close();
+        builder.close();
     }
+    *path = builder.detach();
     path->setConvexity(convex ? SkPathConvexity::kConvex : SkPathConvexity::kConcave);
     path->setFirstDirection(firstDir);
 }
@@ -3877,8 +3878,7 @@ static SkPath clip(const SkPath& path, const SkHalfPlane& plane) {
         return SkPath();
     }
 
-    SkPath rotated;
-    path.transform(inv, &rotated);
+    SkPath rotated = path.makeTransform(inv);
     if (!rotated.isFinite()) {
         return SkPath();
     }

@@ -15,7 +15,7 @@
 #include "include/core/SkGraphics.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkOpenTypeSVGDecoder.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/effects/SkGradientShader.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkTo.h"
@@ -1477,7 +1477,7 @@ bool colrv1_traverse_paint_bounds(SkMatrix* ctm,
             if (!generateFacePathCOLRv1(face, glyphID, &path)) {
                 return false;
             }
-            path.transform(*ctm);
+            path = SkPathBuilder(path).transform(*ctm).detach();
             bounds->join(path.getBounds());
             return true;
         }
@@ -1913,7 +1913,7 @@ void SkScalerContextFTUtils::generateGlyphImage(FT_Face face, const SkGlyph& gly
 namespace {
 
 class SkFTGeometrySink {
-    SkPath* fPath;
+    SkPathBuilder* fPath;
     bool fStarted;
     FT_Vector fCurrent;
 
@@ -1970,7 +1970,7 @@ class SkFTGeometrySink {
     }
 
 public:
-    SkFTGeometrySink(SkPath* path) : fPath{path}, fStarted{false}, fCurrent{0,0} {}
+    SkFTGeometrySink(SkPathBuilder* path) : fPath{path}, fStarted{false}, fCurrent{0,0} {}
 
     inline static constexpr const FT_Outline_Funcs Funcs{
         /*move_to =*/ SkFTGeometrySink::Move,
@@ -1983,14 +1983,16 @@ public:
 };
 
 bool generateGlyphPathStatic(FT_Face face, SkPath* path) {
-    SkFTGeometrySink sink{path};
+    SkPathBuilder builder = SkPathBuilder(*path);
+    SkFTGeometrySink sink{&builder};
     if (face->glyph->format != FT_GLYPH_FORMAT_OUTLINE ||
         FT_Outline_Decompose(&face->glyph->outline, &SkFTGeometrySink::Funcs, &sink))
     {
-        path->reset();
+        builder.reset();
         return false;
     }
-    path->close();
+    builder.close();
+    *path = builder.detach();
     return true;
 }
 
@@ -2001,7 +2003,6 @@ bool generateFacePathStatic(FT_Face face, SkGlyphID glyphID,
     flags &= ~FT_LOAD_RENDER;  // Don't scan convert.
     flags &= ~FT_LOAD_COLOR;  // Ignore SVG.
     if (FT_Load_Glyph(face, glyphID, flags)) {
-        path->reset();
         return false;
     }
     return generateGlyphPathStatic(face, path);
@@ -2051,12 +2052,10 @@ bool generateFacePathCOLRv1(FT_Face face, SkGlyphID glyphID, SkPath* path) {
 
         err = FT_Load_Glyph(face, glyphID, flags);
         if (err != 0) {
-            path->reset();
             return false;
         }
 
         if (!generateGlyphPathStatic(face, path)) {
-            path->reset();
             return false;
         }
 

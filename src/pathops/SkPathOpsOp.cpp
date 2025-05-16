@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkTypes.h"
@@ -265,11 +266,12 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
             SkPathFillType::kEvenOdd;
     SkRect rect1, rect2;
     if (kIntersect_SkPathOp == op && one.isRect(&rect1) && two.isRect(&rect2)) {
-        result->reset();
-        result->setFillType(fillType);
+        SkPathBuilder tmp;
+        tmp.setFillType(fillType);
         if (rect1.intersect(rect2)) {
-            result->addRect(rect1);
+            tmp.addRect(rect1);
         }
+        *result = tmp.detach();
         return true;
     }
     if (one.isEmpty() || two.isEmpty()) {
@@ -295,7 +297,7 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
                 SkASSERT(0);  // unhandled case
         }
         if (inverseFill != work.isInverseFillType()) {
-            work.toggleInverseFillType();
+            work = work.makeToggleInverseFillType();
         }
         return Simplify(work, result);
     }
@@ -332,8 +334,7 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
     const int xorOpMask = builder.xorMask();
     if (!SortContourList(&contourList, xorMask == kEvenOdd_PathOpsMask,
             xorOpMask == kEvenOdd_PathOpsMask)) {
-        result->reset();
-        result->setFillType(fillType);
+        *result = SkPathBuilder().setFillType(fillType).detach();
         return true;
     }
     // find all intersections between segments
@@ -359,8 +360,7 @@ bool OpDebug(const SkPath& one, const SkPath& two, SkPathOp op, SkPath* result
 #endif
     // construct closed contours
     SkPath original = *result;
-    result->reset();
-    result->setFillType(fillType);
+    *result = SkPathBuilder().setFillType(fillType).detach();
     SkPathWriter wrapper(*result);
     if (!bridgeOp(contourList, op, xorMask, xorOpMask, &wrapper)) {
         *result = original;

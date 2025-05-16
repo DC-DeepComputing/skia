@@ -827,13 +827,13 @@ private:
 
             // We avoid initializing the path unless we have to
             const SkPath* pathPtr = &args.fPath;
-            SkTLazy<SkPath> tmpPath;
             if (viewMatrix->hasPerspective()) {
-                SkPath* tmpPathPtr = tmpPath.init(*pathPtr);
-                tmpPathPtr->setIsVolatile(true);
-                tmpPathPtr->transform(*viewMatrix);
+                SkPath tmp = SkPathBuilder(args.fPath)
+                    .setIsVolatile(true)
+                    .transform(*viewMatrix)
+                    .detach();
+                pathPtr = &tmp;
                 viewMatrix = &SkMatrix::I();
-                pathPtr = tmpPathPtr;
             }
 
             int vertexCount;

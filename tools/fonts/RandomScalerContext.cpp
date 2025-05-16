@@ -140,7 +140,7 @@ void RandomScalerContext::generateImage(const SkGlyph& glyph, void* imageBuffer)
 bool RandomScalerContext::generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) {
     SkGlyph* shadowProxyGlyph = fProxyGlyphs.find(glyph.getPackedID());
     if (shadowProxyGlyph && shadowProxyGlyph->path()) {
-        path->reset();
+        *path = SkPath();
         return false;
     }
     return fProxy->generatePath(glyph, path, modified);

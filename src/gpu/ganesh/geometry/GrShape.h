@@ -10,6 +10,7 @@
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
@@ -119,7 +120,7 @@ public:
     void setInverted(bool inverted) {
         if (this->isPath()) {
             if (inverted != fPath.isInverseFillType()) {
-                fPath.toggleInverseFillType();
+                fPath = fPath.makeToggleInverseFillType();
             }
         } else {
             fInverted = inverted;
