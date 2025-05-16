@@ -88,6 +88,24 @@
       "parentUuid": "5896fad6_85328798",
       "revId": "3b66e71327ed89a26e72a67d84893e04c726cd66",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "701dfaa4_a2c3885f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-16T14:16:38Z",
+      "side": 1,
+      "message": "Sorry, I marked the issue as restricted access but assumed you\u0027d keep it as the reporter on the issue. It\u0027s been fixed and and cherry picked back to M137",
+      "parentUuid": "761ac5b5_ca39f294",
+      "revId": "3b66e71327ed89a26e72a67d84893e04c726cd66",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
