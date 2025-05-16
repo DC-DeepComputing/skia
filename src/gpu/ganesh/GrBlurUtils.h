@@ -11,6 +11,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
 #include "src/gpu/SkBackingFit.h"
+#include "src/gpu/ganesh/GrFragmentProcessor.h"
 
 #include <memory>
 
@@ -113,6 +114,25 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(
         float sigmaY,
         SkTileMode mode,
         SkBackingFit fit = SkBackingFit::kApprox);
+
+std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
+                                                    const SkRect& circle,
+                                                    float sigma,
+                                                    const bool useGrCache);
+
+std::unique_ptr<GrFragmentProcessor> MakeRectBlur(GrRecordingContext* context,
+                                                  const GrShaderCaps& caps,
+                                                  const SkRect& srcRect,
+                                                  const SkMatrix& viewMatrix,
+                                                  float transformedSigma,
+                                                  const bool useGrCache);
+
+std::unique_ptr<GrFragmentProcessor> MakeRRectBlur(GrRecordingContext* context,
+                                                   float sigma,
+                                                   float xformedSigma,
+                                                   const SkRRect& srcRRect,
+                                                   const SkRRect& devRRect,
+                                                   const bool useGrCache);
 
 }  // namespace GrBlurUtils
 
