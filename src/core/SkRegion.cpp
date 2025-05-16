@@ -363,15 +363,9 @@ void SkRegion::BuildRectRuns(const SkIRect& bounds,
     runs[6] = SkRegion_kRunTypeSentinel;
 }
 
-bool SkRegion::contains(int32_t x, int32_t y) const {
+bool SkRegion::complexContains(int32_t x, int32_t y) const {
     SkDEBUGCODE(SkRegionPriv::Validate(*this));
 
-    if (!fBounds.contains(x, y)) {
-        return false;
-    }
-    if (this->isRect()) {
-        return true;
-    }
     SkASSERT(this->isComplex());
 
     const RunType* runs = fRunHead->findScanline(y);

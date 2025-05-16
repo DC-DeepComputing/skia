@@ -279,7 +279,12 @@ public:
 
         example: https://fiddle.skia.org/c/@Region_contains
     */
-    bool contains(int32_t x, int32_t y) const;
+    bool contains(int32_t x, int32_t y) const {
+        if (!fBounds.contains(x, y)) {
+            return false;
+        }
+        return this->isRect() || this->complexContains(x, y);
+    }
 
     /** Returns true if other is completely inside SkRegion.
         Returns false if SkRegion or other is empty.
@@ -616,6 +621,9 @@ public:
     using sk_is_trivially_relocatable = std::true_type;
 
 private:
+    // Assumes the region is complex (has fRunHead)
+    bool complexContains(int32_t x, int32_t y) const;
+
     static constexpr int kOpCount = kReplace_Op + 1;
 
     // T

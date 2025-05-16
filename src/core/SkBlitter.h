@@ -18,6 +18,8 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkAutoMalloc.h"
 
+#include "include/core/SkPixmap.h"
+
 #include <cstddef>
 #include <cstdint>
 
@@ -119,6 +121,13 @@ public:
      * at a time.
      */
     virtual int requestRowsPreserved() const { return 1; }
+
+
+    struct DirectBlit {
+        SkPixmap pm;
+        uint32_t value; // low bits match pixmap's bitdepth
+    };
+    virtual std::optional<DirectBlit> canDirectBlit() const { return {}; }
 
     /**
      * This function allocates memory for the blitter that the blitter then owns.
