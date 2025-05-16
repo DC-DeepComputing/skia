@@ -31,9 +31,15 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     // factory to say what stage the buffer is for. Maybe expand AccessPattern to be
     // GpuOnly_NotVertex or some better name like that.
     bool isProtected = sharedContext->isProtected() == Protected::kYes &&
-                       accessPattern == AccessPattern::kGpuOnly &&
+                       (accessPattern == AccessPattern::kGpuOnly ||
+                        accessPattern == AccessPattern::kGpuOnlyCopySrc) &&
                        type != BufferType::kVertex &&
                        type != BufferType::kIndex;
+
+    // kGpuOnlyCopySrc is used during testing to overwrite buffer accessPatterns that would normally
+    // be AccessPattern::kGpuOnly. So make sure that buffers that *should* be protected, don't
+    // accidentally expose access here.
+    SkASSERT(isProtected ? (accessPattern == AccessPattern::kGpuOnlyCopySrc) : true);
 
     // Protected memory _never_ uses mappable buffers.
     // Otherwise, the only time we don't require mappable buffers is when we're on a device
@@ -102,8 +108,13 @@ sk_sp<Buffer> VulkanBuffer::Make(const VulkanSharedContext* sharedContext,
     // transfer dst usage bit in case we need to do a copy to write data. It doesn't really hurt
     // to set this extra usage flag, but we could narrow the scope of buffers we set it on more than
     // just not dynamic.
-    if (!requiresMappable || accessPattern == AccessPattern::kGpuOnly) {
+    if (!requiresMappable || accessPattern == AccessPattern::kGpuOnly ||
+        accessPattern == AccessPattern::kGpuOnlyCopySrc) {
         bufInfo.usage |= VK_BUFFER_USAGE_TRANSFER_DST_BIT;
+    }
+
+    if (accessPattern == AccessPattern::kGpuOnlyCopySrc) {
+        bufInfo.usage |= VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
     }
 
     bufInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
