@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b922379e_4686f624",
+        "filename": "include/core/SkCPUContext.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-16T01:29:29Z",
+      "side": 1,
+      "message": "Any reason not just to have this just be no-arg Make? and could be defined (at least for now) by just calling `Make({})`",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 58
+      },
+      "revId": "623fea359a2c0e7f8a11f70477593b4bfce5729b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
