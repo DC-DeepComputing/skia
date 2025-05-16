@@ -210,6 +210,7 @@ private:
         uint32_t fUsedSize = 0;
     };
 
+    AccessPattern getGpuAccessPattern(bool usesTransferBuffer, bool supportsCpuUpload) const;
     std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(
             BufferInfo* info,
             std::string_view label,
@@ -347,6 +348,14 @@ private:
     // If mapping failed on Buffers created/managed by this StaticBufferManager or by the mapped
     // transfer buffers from the UploadManager, remember so that finalize() will fail.
     bool fMappingFailed = false;
+
+    static constexpr skgpu::graphite::AccessPattern getStaticAccessPattern() {
+    #if defined(GPU_TEST_UTILS)
+        return skgpu::graphite::AccessPattern::kGpuOnlyCopySrc;
+    #else
+        return skgpu::graphite::AccessPattern::kGpuOnly;
+    #endif
+    }
 };
 
 } // namespace skgpu::graphite
