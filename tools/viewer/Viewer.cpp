@@ -1864,7 +1864,7 @@ void Viewer::drawSlide(SkSurface* surface) {
     }
 
     int count = slideCanvas->save();
-    slideCanvas->clear(SK_ColorWHITE);
+//    slideCanvas->clear(SK_ColorWHITE);
     // Time the painting logic of the slide
     fStatsLayer.beginTiming(fPaintTimer);
     if (fTiled) {
