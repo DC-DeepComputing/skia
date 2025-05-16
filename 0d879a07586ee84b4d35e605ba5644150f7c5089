@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e19be0b_5217f799",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 489,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-16T13:17:14Z",
+      "side": 1,
+      "message": "Okay, the first part of the comment is sufficient then. Done.",
+      "parentUuid": "8452a5a0_434ed0f8",
+      "range": {
+        "startLine": 487,
+        "startChar": 0,
+        "endLine": 489,
+        "endChar": 37
+      },
+      "revId": "0d879a07586ee84b4d35e605ba5644150f7c5089",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "83dcbe10_f42c5588",
