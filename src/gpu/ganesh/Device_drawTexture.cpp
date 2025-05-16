@@ -30,8 +30,12 @@
 #include "include/private/gpu/ganesh/GrImageContext.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/base/SkTLazy.h"
+#include "src/core/SkBlurMaskFilterImpl.h"
 #include "src/core/SkColorData.h"
+#include "src/core/SkMaskFilterBase.h"
+#include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/gpu/BlurUtils.h"
 #include "src/gpu/Swizzle.h"
 #include "src/gpu/TiledTextureUtils.h"
 #include "src/gpu/ganesh/Device.h"
@@ -703,6 +707,111 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
         }
     }
     draw(count);
+}
+
+bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {
+    SkMatrix localToDevice = this->localToDevice();
+    SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
+    const GrClip* clip = this->clip();
+    GrRecordingContext* context = this->recordingContext();
+
+    auto bmf = static_cast<const SkBlurMaskFilterImpl*>(as_MFB(paint.getMaskFilter()));
+    SkPaint skPaint = paint;
+    skPaint.setMaskFilter(nullptr);
+    GrPaint grPaint;
+    SkPaintToGrPaint(sdc, skPaint, localToDevice, &grPaint);
+
+    if (skgpu::BlurIsEffectivelyIdentity(deviceSigma)) {
+        sdc->drawShape(clip, std::move(grPaint), GrAA::kYes, localToDevice, GrStyledShape(rrect));
+        return true;
+    }
+
+    std::unique_ptr<GrFragmentProcessor> fp;
+
+    SkRRect devRRect;
+    bool devRRectIsValid = rrect.transform(localToDevice, &devRRect);
+
+    bool devRRectIsCircle = devRRectIsValid && SkRRectPriv::IsCircle(devRRect);
+
+    bool canBeRect = rrect.isRect() && localToDevice.preservesRightAngles();
+    bool canBeCircle = (SkRRectPriv::IsCircle(rrect) && localToDevice.isSimilarity()) ||
+                       devRRectIsCircle;
+
+    if (canBeRect || canBeCircle) {
+        if (canBeRect) {
+            fp = GrBlurUtils::MakeRectBlur(context, *context->priv().caps()->shaderCaps(),
+                                rrect.rect(), localToDevice, deviceSigma, false);
+        } else {
+            SkRect devBounds;
+            if (devRRectIsCircle) {
+                devBounds = devRRect.getBounds();
+            } else {
+                SkPoint center = {rrect.getBounds().centerX(), rrect.getBounds().centerY()};
+                localToDevice.mapPoints(&center, 1);
+                SkScalar radius = localToDevice.mapVector(0, rrect.width()/2.f).length();
+                devBounds = {center.x() - radius,
+                              center.y() - radius,
+                              center.x() + radius,
+                              center.y() + radius};
+            }
+            fp = GrBlurUtils::MakeCircleBlur(context, devBounds, deviceSigma, false);
+        }
+
+        if (!fp) {
+            return false;
+        }
+
+        SkRect srcProxyRect = rrect.rect();
+        // Determine how much to outset the src rect to ensure we hit pixels within three sigma.
+        SkScalar outsetX = 3.0f*deviceSigma;
+        SkScalar outsetY = 3.0f*deviceSigma;
+        if (localToDevice.isScaleTranslate()) {
+            outsetX /= SkScalarAbs(localToDevice.getScaleX());
+            outsetY /= SkScalarAbs(localToDevice.getScaleY());
+        } else {
+            SkSize scale;
+            if (!localToDevice.decomposeScale(&scale, nullptr)) {
+                return false;
+            }
+            outsetX /= scale.width();
+            outsetY /= scale.height();
+        }
+        srcProxyRect.outset(outsetX, outsetY);
+        grPaint.setCoverageFragmentProcessor(std::move(fp));
+        sdc->drawRect(clip, std::move(grPaint), GrAA::kNo, localToDevice, srcProxyRect);
+        return true;
+    }
+    if (!localToDevice.rectStaysRect()) {
+        return false;
+    }
+    if (!devRRectIsValid || !SkRRectPriv::AllCornersCircular(devRRect)) {
+        return false;
+    }
+
+    fp = GrBlurUtils::MakeRRectBlur(context, bmf->sigma(), deviceSigma, rrect, devRRect, false);
+    if (!fp) {
+        return false;
+    }
+
+    if (!bmf->ignoreXform()) {
+        SkRect srcProxyRect = rrect.rect();
+        srcProxyRect.outset(3.0f*bmf->sigma(), 3.0f*bmf->sigma());
+        grPaint.setCoverageFragmentProcessor(std::move(fp));
+        sdc->drawRect(clip, std::move(grPaint), GrAA::kNo, localToDevice, srcProxyRect);
+    } else {
+        SkMatrix inverse;
+        if (!localToDevice.invert(&inverse)) {
+            return false;
+        }
+
+        SkIRect proxyBounds;
+        float extra=3.f*SkScalarCeilToScalar(deviceSigma-1/6.0f);
+        devRRect.rect().makeOutset(extra, extra).roundOut(&proxyBounds);
+
+        grPaint.setCoverageFragmentProcessor(std::move(fp));
+        sdc->fillPixelsWithLocalMatrix(clip, std::move(grPaint), proxyBounds, inverse);
+    }
+    return true;
 }
 
 }  // namespace skgpu::ganesh
