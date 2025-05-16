@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "299b0907_c6cabd37",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-16T14:29:09Z",
+      "side": 1,
+      "message": "There are some mixed grdawn_vk SKP perf results linked to the change, please triage: https://skia-perf.luci.app/t/?filter\u003dcat%3AProd",
+      "revId": "4412154e83d5753c9d95b97006a8631c2661b911",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
