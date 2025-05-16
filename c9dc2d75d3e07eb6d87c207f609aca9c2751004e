@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5ad7c08_435d9031",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-16T16:55:55Z",
+      "side": 1,
+      "message": "Is it necessary to omit the use of mask filter in the impl (i.e. would it be better to just call direct_mask_filter in the implementation and expose that function instead)?",
+      "revId": "c9dc2d75d3e07eb6d87c207f609aca9c2751004e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
