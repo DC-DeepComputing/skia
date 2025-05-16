@@ -22,6 +22,30 @@
       },
       "revId": "623fea359a2c0e7f8a11f70477593b4bfce5729b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4747936b_6c29e028",
+        "filename": "include/core/SkCPUContext.h",
+        "patchSetId": 32
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-16T13:33:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b922379e_4686f624",
+      "range": {
+        "startLine": 24,
+        "startChar": 42,
+        "endLine": 24,
+        "endChar": 58
+      },
+      "revId": "623fea359a2c0e7f8a11f70477593b4bfce5729b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
