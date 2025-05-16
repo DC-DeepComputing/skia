@@ -376,6 +376,11 @@ void MtlCommandBuffer::addDrawPass(const DrawPass* drawPass) {
         }
 
         switch (type) {
+            case DrawPassCommands::Type::kPipelineDrawBounds: {
+                auto p = static_cast<DrawPassCommands::PipelineDrawBounds*>(cmdPtr);
+                SkDebugf("bounds: %d %d %d %d\n", p->fLeft, p->fTop, p->fRight, p->fBottom);
+                break;
+            }
             case DrawPassCommands::Type::kBindGraphicsPipeline: {
                 auto bgp = static_cast<DrawPassCommands::BindGraphicsPipeline*>(cmdPtr);
                 this->bindGraphicsPipeline(drawPass->getPipeline(bgp->fPipelineIndex));

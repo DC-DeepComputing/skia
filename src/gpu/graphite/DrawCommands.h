@@ -43,7 +43,8 @@ namespace DrawPassCommands {
     M(DrawIndexedInstanced)              \
     M(DrawIndirect)                      \
     M(DrawIndexedIndirect)               \
-    M(AddBarrier)
+    M(AddBarrier)                        \
+    M(PipelineDrawBounds)
 
 // Defines DrawPassCommands::Type, an enum of all draw command types.
 #define ENUM(T) k##T,
@@ -125,6 +126,11 @@ COMMAND(DrawIndexedIndirect,
             PrimitiveType fType);
 COMMAND(AddBarrier,
             BarrierType fType);
+COMMAND(PipelineDrawBounds,
+            int32_t fLeft;
+            int32_t fTop;
+            int32_t fRight;
+            int32_t fBottom);
 
 #undef COMMAND
 
@@ -144,6 +150,9 @@ public:
 
     void bindGraphicsPipeline(uint32_t pipelineIndex) {
         this->add<BindGraphicsPipeline>(pipelineIndex);
+    }
+    void recordPipelineDrawBounds(int32_t left, int32_t top, int32_t right, int32_t bottom) {
+        this->add<PipelineDrawBounds>(left, top, right, bottom);
     }
 
     void setBlendConstants(std::array<float, 4>  blendConstants) {

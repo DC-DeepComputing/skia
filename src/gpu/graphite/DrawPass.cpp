@@ -587,6 +587,8 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     const bool advancedBlendsRequireBarrier =
             caps->blendEquationSupport() == Caps::BlendEquationSupport::kAdvancedNoncoherent;
 
+    Rect pipelineDrawBounds = Rect::InfiniteInverted();
+
     for (const SortKey& key : keys) {
         const DrawList::Draw& draw = key.draw();
         const RenderStep& renderStep = key.renderStep();
@@ -656,6 +658,11 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         // Make state changes before accumulating new draw data
         if (pipelineChange) {
+            if (!pipelineDrawBounds.isEmptyNegativeOrNaN()) {
+                SkIRect bounds = pipelineDrawBounds.roundOut().asSkIRect();
+                drawPass->fCommandList.recordPipelineDrawBounds(bounds.left(), bounds.top(), bounds.right(), bounds.bottom());
+                pipelineDrawBounds = Rect::InfiniteInverted();
+            }
             drawPass->fCommandList.bindGraphicsPipeline(key.pipelineIndex());
             lastPipeline = key.pipelineIndex();
         }
@@ -688,6 +695,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         // Update priorDrawPaintOrder value before iterating to analyze the next draw.
         priorDrawPaintOrder = draw.fDrawParams.order().paintOrder();
+        pipelineDrawBounds.join(draw.fDrawParams.clip().drawBounds());
     }
     // Finish recording draw calls for any collected data still pending at end of the loop
     drawWriter.flush();
