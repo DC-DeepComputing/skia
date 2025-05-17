@@ -18,6 +18,34 @@
 
 namespace skgpu::graphite {
 
+namespace {
+std::tuple<void* /*mappedPtr*/, BindBufferInfo> create_dedicated_buffer(
+        ResourceProvider& rp,
+        std::vector<sk_sp<Buffer>>& usedBuffs,
+        size_t requiredBytes,
+        std::string_view label) {
+    sk_sp<Buffer> buffer = rp.findOrCreateBuffer(requiredBytes, BufferType::kXferCpuToGpu,
+                                                 AccessPattern::kHostVisible, std::move(label));
+    void* bufferMapPtr = buffer ? buffer->map() : nullptr;
+    if (!bufferMapPtr) {
+        // Unlike [Draw|Static]BufferManager, the UploadManager does not track if any buffer
+        // mapping has failed. This is because it's common for uploads to be scoped to a
+        // specific image creation. In that case, the image can be returned as null to signal a
+        // very isolated failure instead of taking down the entire Recording. For the other
+        // managers, failures to map buffers creates unrecoverable scenarios.
+        return {nullptr, BindBufferInfo()};
+    }
+
+    BindBufferInfo bindInfo;
+    bindInfo.fBuffer = buffer.get();
+    bindInfo.fOffset = 0;
+    bindInfo.fSize = requiredBytes;
+
+    usedBuffs.push_back(std::move(buffer));
+    return {bufferMapPtr, bindInfo};
+}
+}
+
 static constexpr size_t kReusedBufferSize = 64 << 10;  // 64 KB
 
 UploadBufferManager::UploadBufferManager(ResourceProvider* resourceProvider,
@@ -49,27 +77,8 @@ std::tuple<void* /*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInf
     uint32_t requiredBytes32 = SkAlignTo(SkTo<uint32_t>(requiredBytes), requiredAlignment32);
     if (requiredBytes32 > kReusedBufferSize) {
         // Create a dedicated buffer for this request.
-        sk_sp<Buffer> buffer = fResourceProvider->findOrCreateBuffer(requiredBytes32,
-                                                                     BufferType::kXferCpuToGpu,
-                                                                     AccessPattern::kHostVisible,
-                                                                     std::move(label));
-        void* bufferMapPtr = buffer ? buffer->map() : nullptr;
-        if (!bufferMapPtr) {
-            // Unlike [Draw|Static]BufferManager, the UploadManager does not track if any buffer
-            // mapping has failed. This is because it's common for uploads to be scoped to a
-            // specific image creation. In that case, the image can be returned as null to signal a
-            // very isolated failure instead of taking down the entire Recording. For the other
-            // managers, failures to map buffers creates unrecoverable scenarios.
-            return {nullptr, BindBufferInfo()};
-        }
-
-        BindBufferInfo bindInfo;
-        bindInfo.fBuffer = buffer.get();
-        bindInfo.fOffset = 0;
-        bindInfo.fSize = requiredBytes32;
-
-        fUsedBuffers.push_back(std::move(buffer));
-        return {bufferMapPtr, bindInfo};
+        return create_dedicated_buffer(*fResourceProvider, fUsedBuffers, requiredBytes32,
+                                       std::move(label));
     }
 
     // Try to reuse an already-allocated buffer.
@@ -129,5 +138,15 @@ void UploadBufferManager::transferToCommandBuffer(CommandBuffer* commandBuffer) 
         commandBuffer->trackResource(std::move(fReusedBuffer));
     }
 }
+
+#if defined(GPU_TEST_UTILS)
+std::tuple<void*/*mappedPtr*/, BindBufferInfo> UploadBufferManager::makeBindInfoNoReuse(
+        size_t requiredBytes, size_t requiredAlignment, std::string_view label) {
+    uint32_t requiredAlignment32 = std::max(SkTo<uint32_t>(requiredAlignment), fMinAlignment);
+    uint32_t requiredBytes32 = SkAlignTo(SkTo<uint32_t>(requiredBytes), requiredAlignment32);
+    return create_dedicated_buffer(*fResourceProvider, fUsedBuffers, requiredBytes32,
+                                   std::move(label));
+}
+#endif
 
 }  // namespace skgpu::graphite

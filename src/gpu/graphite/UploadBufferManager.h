@@ -52,6 +52,12 @@ private:
     uint32_t fReusedBufferOffset = 0;
 
     std::vector<sk_sp<Buffer>> fUsedBuffers;
+
+#if defined(GPU_TEST_UTILS)
+    std::tuple<void*/*mappedPtr*/, BindBufferInfo> makeBindInfoNoReuse(size_t requiredBytes,
+                                                                       size_t requiredAlignment,
+                                                                       std::string_view label);
+#endif
 };
 
 }  // namespace skgpu::graphite
