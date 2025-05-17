@@ -1934,23 +1934,11 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
     }
     SkASSERT(pts != nullptr);
 
-    SkRect bounds;
-    // Compute bounds from points (common for drawing a single line)
-    if (count == 2) {
-        bounds.set(pts[0], pts[1]);
-    } else {
-        bounds.setBounds(pts, SkToInt(count));
-    }
-
     // Enforce paint style matches implicit behavior of drawPoints
     SkPaint strokePaint = paint;
     strokePaint.setStyle(SkPaint::kStroke_Style);
-    if (this->internalQuickReject(bounds, strokePaint)) {
-        return;
-    }
 
-    auto layer = this->aboutToDraw(strokePaint, &bounds);
-    if (layer) {
+    if (auto layer = this->aboutToDraw(strokePaint)) {
         this->topDevice()->drawPoints(mode, count, pts, layer->paint());
     }
 }
