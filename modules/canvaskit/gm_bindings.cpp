@@ -282,6 +282,9 @@ bool IsVulkanContextType(ContextType) { return false; }
 bool IsMetalContextType(ContextType) { return false; }
 bool IsDirect3DContextType(ContextType) { return false; }
 bool IsDawnContextType(ContextType) { return false; }
+bool IsDawnDirectkD3D12ContextType(skgpu::ContextType type) { return false; }
+bool IsDawnMetalContextType(skgpu::ContextType type) { return false; }
+bool IsDawnVulkanContextType(skgpu::ContextType type) { return false; }
 
 void RunWithGaneshTestContexts(GrContextTestFn* testFn, ContextTypeFilterFn* filter,
                                Reporter* reporter, const GrContextOptions& options) {
