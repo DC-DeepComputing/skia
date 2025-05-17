@@ -22,16 +22,48 @@
 #include "tools/ToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 
-class AddArcGM : public skiagm::GM {
-public:
-    AddArcGM() : fRotate(0) {}
+#include "src/base/SkTime.h"
 
+class AddArcGM : public skiagm::GM {
+    SkTDArray<SkPoint> fPts;
+
+public:
+    AddArcGM() : fRotate(0) {
+        SkRandom rand;
+        const float w = 1000, h = 1000;
+        const int N = 100;
+        for (int i = 0; i < N; ++i) {
+            fPts.push_back({rand.nextF()*w, rand.nextF()*h});
+        }
+    }
+
+    void drawPoints(SkCanvas* canvas) {
+        const int K = 1000;
+        SkPaint paint;
+
+        const auto start = SkTime::GetSecs();
+
+        for (int i = 0; i < K; ++i) {
+            canvas->drawPoints(SkCanvas::kPoints_PointMode,
+                               fPts.size(), fPts.data(), paint);
+        }
+
+        const auto end = SkTime::GetSecs();
+
+        static int gCounter;
+        if ((gCounter++ % 60) == 0) {
+            printf("dur %g\n", (end - start) * 1000);
+        }
+
+    }
 protected:
     SkString getName() const override { return SkString("addarc"); }
 
     SkISize getISize() override { return SkISize::Make(1040, 1040); }
 
     void onDraw(SkCanvas* canvas) override {
+        drawPoints(canvas); return;
+
         canvas->translate(20, 20);
 
         SkRect r = SkRect::MakeWH(1000, 1000);
