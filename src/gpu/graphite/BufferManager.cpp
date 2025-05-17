@@ -398,7 +398,7 @@ ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
 #if defined(GPU_TEST_UTILS)
             fUseExactBuffSizes ? info.fCurBlockSize :
 #endif
-                               sufficient_block_size(requiredBytes32, info.fCurBlockSize);
+                                 sufficient_block_size(requiredBytes32, info.fCurBlockSize);
 
     sk_sp<Buffer> buffer = this->findReusableSbo(bufferSize);
     if (!buffer) {
@@ -598,15 +598,20 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         const uint32_t blockSize = overflowedBuffer
                                            ? std::max(info->fCurBlockSize / 4, info->fMinBlockSize)
                                            : info->fCurBlockSize;
-        const uint32_t bufferSize = sufficient_block_size(requiredBytes, blockSize);
+        const uint32_t bufferSize =
+#if defined(GPU_TEST_UTILS)
+            fUseExactBuffSizes ? info->fCurBlockSize :
+#endif
+                                 sufficient_block_size(requiredBytes, blockSize);
 
         // This buffer can be GPU-only if
         //     a) the caller does not intend to ever upload CPU data to the buffer; or
         //     b) CPU data will get uploaded to fBuffer only via a transfer buffer
         info->fBuffer = fResourceProvider->findOrCreateBuffer(bufferSize,
                                                               info->fType,
-                                                              getGpuAccessPattern(useTransferBuffer,
-                                                                                  supportCpuUpload),
+                                                              this->getGpuAccessPattern(
+                                                                useTransferBuffer,
+                                                                supportCpuUpload),
                                                               std::move(label));
         info->fOffset = 0;
         if (!info->fBuffer) {
@@ -617,6 +622,12 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
 
     if (useTransferBuffer && !info->fTransferBuffer) {
         std::tie(info->fTransferMapPtr, info->fTransferBuffer) =
+#if defined(GPU_TEST_UTILS)
+                fUseExactBuffSizes ? fUploadManager->makeBindInfoNoReuse(
+                        info->fBuffer->size(),
+                        fCaps->requiredTransferBufferAlignment(),
+                        "TransferForDataBuffer") :
+#endif
                 fUploadManager->makeBindInfo(info->fBuffer->size(),
                                              fCaps->requiredTransferBufferAlignment(),
                                              "TransferForDataBuffer");
@@ -752,7 +763,7 @@ bool StaticBufferManager::BufferInfo::createAndUpdateBindings(
     }
 
     sk_sp<Buffer> staticBuffer = resourceProvider->findOrCreateBuffer(
-            fTotalRequiredBytes, fBufferType, getStaticAccessPattern(), std::move(label));
+            fTotalRequiredBytes, fBufferType, getStaticGpuAccessPattern(), std::move(label));
     if (!staticBuffer) {
         SKGPU_LOG_E("Failed to create static buffer for type %d of size %u bytes.\n",
                     (int) fBufferType, fTotalRequiredBytes);

@@ -69,7 +69,7 @@ public:
     DrawWriter(DrawWriter&&) = delete;
 
     // flush() should be called before the writer is destroyed
-    ~DrawWriter() { SkASSERT(fPendingCount == 0); }
+    virtual ~DrawWriter() { SkASSERT(fPendingCount == 0); }
 
     DrawBufferManager* bufferManager() { return fManager; }
 
@@ -207,7 +207,47 @@ public:
         this->bindAndFlush(vertices, indices, instances, indexCount, instanceCount);
     }
 
-private:
+    void flushInternal();
+
+    // ARM hardware b/399631317: Unreferenced vertices in sequential indexes of 4 will be
+    // speculatively executed. To work around this, we pad the buffer by requesting additional
+    // space, and then ensure valid, minimally deleterious data by memsetting the padding to zero.
+    void padAndZero() {
+        if (fPendingCount && (fRenderState & RenderStateFlags::kAppendVertices)) {
+            const uint32_t alignedCount = SkAlign4(fPendingCount);
+            if (alignedCount > fPendingCount) {
+                const uint32_t byteDiff = (alignedCount - fPendingCount) * fAppendStride;
+                SkASSERT(!fManager->willVertexOverflow(byteDiff, 1, 1));
+                auto[zWriter, zBuff] = fManager->getVertexWriter(byteDiff, 1, 1);
+                if (zWriter) {
+                    zWriter.zeroBytes(byteDiff);
+                }
+            }
+        }
+    }
+
+    void setTemplate(BindBufferInfo staticData, BindBufferInfo indices, BindBufferInfo appendData,
+                     uint32_t templateCount);
+
+    void bindAndFlush(BindBufferInfo staticData, BindBufferInfo indices, BindBufferInfo appendData,
+                      uint32_t templateCount, unsigned int drawCount) {
+        SkASSERT(drawCount > 0);
+        SkASSERT(!fAppender); // Shouldn't be appending and manually drawing at the same time.
+        SkASSERT(fPendingCount == 0); // Any prior appends must have been flushed by now.
+        // CAUTION: If appending vertices, we make NO checks here to ensure that the initial offset
+        // is four count aligned or that the data is padded. Caller MUST ensure any unaligned data
+        // is safe.
+        this->setTemplate(staticData, indices, appendData, templateCount);
+        fPendingCount = drawCount;
+        this->flush();
+    }
+
+    // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
+    // draws until the Appender is destructed).
+    class Appender;
+    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+
+protected:
     // Both of these pointers must outlive the DrawWriter.
     DrawPassCommands::List* fCommandList;
     DrawBufferManager* fManager;
@@ -258,46 +298,20 @@ private:
 
     std::optional<BarrierType> fBarrierToIssueBeforeDraws = std::nullopt;
 
-    void flushInternal();
-
-    // ARM hardware b/399631317: Unreferenced vertices in sequential indexes of 4 will be
-    // speculatively executed. To work around this, we pad the buffer by requesting additional
-    // space, and then ensure valid, minimally deleterious data by memsetting the padding to zero.
-    void padAndZero() {
-        if (fPendingCount && (fRenderState & RenderStateFlags::kAppendVertices)) {
-            const uint32_t alignedCount = SkAlign4(fPendingCount);
-            if (alignedCount > fPendingCount) {
-                const uint32_t byteDiff = (alignedCount - fPendingCount) * fAppendStride;
-                SkASSERT(!fManager->willVertexOverflow(byteDiff, 1, 1));
-                auto[zWriter, zBuff] = fManager->getVertexWriter(byteDiff, 1, 1);
-                if (zWriter) {
-                    zWriter.zeroBytes(byteDiff);
-                }
-            }
-        }
-    }
-
-    void setTemplate(BindBufferInfo staticData, BindBufferInfo indices, BindBufferInfo appendData,
-                     uint32_t templateCount);
-
-    void bindAndFlush(BindBufferInfo staticData, BindBufferInfo indices, BindBufferInfo appendData,
-                      uint32_t templateCount, unsigned int drawCount) {
-        SkASSERT(drawCount > 0);
-        SkASSERT(!fAppender); // Shouldn't be appending and manually drawing at the same time.
-        SkASSERT(fPendingCount == 0); // Any prior appends must have been flushed by now.
-        // CAUTION: If appending vertices, we make NO checks here to ensure that the initial offset
-        // is four count aligned or that the data is padded. Caller MUST ensure any unaligned data
-        // is safe.
-        this->setTemplate(staticData, indices, appendData, templateCount);
-        fPendingCount = drawCount;
-        this->flush();
-    }
-
-    // RAII - Sets the DrawWriter's template and marks the writer in append mode (disabling direct
-    // draws until the Appender is destructed).
-    class Appender;
-    SkDEBUGCODE(const Appender* fAppender = nullptr;)
+    virtual void issueDraws(uint32_t pendingBaseVerts, uint32_t pendingBaseIndices,
+                            uint32_t pendingBaseInstances);
 };
+
+#if defined(GPU_TEST_UTILS)
+class HeadlessDrawWriter : public DrawWriter {
+public:
+    HeadlessDrawWriter(DrawPassCommands::List* commandList, DrawBufferManager* manager)
+                      : DrawWriter(commandList, manager) {}
+protected:
+    void issueDraws(uint32_t pendingBaseVerts, uint32_t pendingBaseIndices,
+                    uint32_t pendingBaseInstances) override;
+};
+#endif
 
 // Appender implementations for DrawWriter that set the template on creation and provide a
 // template-specific API to accumulate vertex/instance data.
