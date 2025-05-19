@@ -33,6 +33,24 @@
       "message": "Nit if you are so inclined, I\u0027ve seen Ben do this cool kids thing with a range loop over a temp SkSpan - then you don\u0027t need no pesky index:\n\n```\n   for (const SkPoint\u0026 pt : SkSpan(devPts, count)) {\n      ...\n```",
       "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8af01307_d2c46e62",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-19T19:10:26Z",
+      "side": 1,
+      "message": "Even cleaner (to me) is to change the function-ptr signature to *take* a span -- then all the procs/loops would be cleaner. Separate CL?",
+      "parentUuid": "1421850c_baa4a80d",
+      "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
