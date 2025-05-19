@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e5f8a7b_3af4e4d6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T14:02:11Z",
+      "side": 1,
+      "message": "Ok to review. This test contains the testing for the static vertices padding only.",
+      "revId": "55f9cb54995182af040cc4d4a56fb82da1d596ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
