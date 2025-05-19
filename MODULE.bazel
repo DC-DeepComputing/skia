@@ -272,6 +272,18 @@ use_repo(
     "zlib",
 )
 
+cpp_modules = use_extension("//bazel:cpp_modules.bzl", "cpp_modules")
+cpp_modules.use_git(
+    name = "zlib2",
+    build_file = "//bazel/external/zlib:BUILD.bazel",
+    commit = "fbb9ce57675bbc1acc7910c38f88f93b8e1cc2d5",
+    remote = "https://chromium.googlesource.com/chromium/src/third_party/zlib",
+)
+use_repo(
+    cpp_modules,
+    "zlib2",
+)
+
 download_linux_amd64_toolchain = use_repo_rule("//toolchain:download_linux_amd64_toolchain.bzl", "download_linux_amd64_toolchain")
 
 download_linux_amd64_toolchain(name = "clang_linux_amd64")

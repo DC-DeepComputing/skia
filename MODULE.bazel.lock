@@ -264,6 +264,35 @@
         ]
       }
     },
+    "//bazel:cpp_modules.bzl%cpp_modules": {
+      "general": {
+        "bzlTransitiveDigest": "79jfvvFxU7KY4iNRzj4F3vq0HOC7Azau/r3N8BzKoEI=",
+        "usagesDigest": "GUDS/GI6hCsY2092WXHWVeFXBBOWa41n4IGqzgyO8YE=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "zlib2": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:git.bzl%git_repository",
+            "attributes": {
+              "build_file": "@@//bazel/external/zlib:BUILD.bazel",
+              "commit": "fbb9ce57675bbc1acc7910c38f88f93b8e1cc2d5",
+              "patch_cmds": [],
+              "patch_cmds_win": [],
+              "patches": [],
+              "remote": "https://chromium.googlesource.com/chromium/src/third_party/zlib"
+            }
+          }
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "",
+            "bazel_tools",
+            "bazel_tools"
+          ]
+        ]
+      }
+    },
     "//bazel:deps.bzl%c_plus_plus_modules": {
       "general": {
         "bzlTransitiveDigest": "TKaNE472eQoZROQuQynJjRTXALoiEYgLFLzxScVGGzw=",
