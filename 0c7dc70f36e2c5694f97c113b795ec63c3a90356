@@ -34,6 +34,23 @@
       "parentUuid": "7f65a18f_b8e5046f",
       "revId": "0c7dc70f36e2c5694f97c113b795ec63c3a90356",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae6e2e46_7c8bb027",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-19T08:59:59Z",
+      "side": 1,
+      "message": "Trying to rebase this change, I get failures when trying to recreate the MODULE.bazel.lock file:\n\n```\nError in fail: Command [\"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/cargo-bazel\", \"splice\", \"--output-dir\", \"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/crates/splicing-output\", \"--splicing-manifest\", \"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/crates/splicing_manifest.json\", \"--config\", \"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/crates/config.json\", \"--cargo\", \"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/external/rules_rust++rust_host_tools+rust_host_tools/bin/cargo\", \"--rustc\", \"/usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/external/rules_rust++rust_host_tools+rust_host_tools/bin/rustc\"] failed with exit code 1.\nSTDOUT ------------------------------------------------------------------------\n\nSTDERR ------------------------------------------------------------------------\n\n    Updating crates.io index\n    Updating git repository `https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git`\nerror: failed to get `icu_capi` as a dependency of package `direct-cargo-bazel-deps v0.0.1 (/tmp/.tmpXja1ax)`\n\nCaused by:\n  failed to load source for dependency `icu_capi`\n\nCaused by:\n  Unable to update https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git?tag\u003dupstream%2Find%2Ficu_capi%401.4.1\n\nCaused by:\n  failed to clone into: /usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/.cargo_home/git/db/icu4x-2c3618478c6b9f3b\n\nCaused by:\n  invalid argument: \u0027port\u0027; class\u003dInvalid (3\n```\n\nSeems like it has problems retrieving the icu4x branch/tag?",
+      "revId": "0c7dc70f36e2c5694f97c113b795ec63c3a90356",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
