@@ -125,8 +125,8 @@ std::optional<uint32_t> can_offset_fit(uint32_t reqSize,
            std::optional<uint32_t>(startOffset) : std::nullopt;
 }
 
-AccessPattern get_gpu_access_pattern(bool usesTransferBuffer) {
-    if (usesTransferBuffer) {
+AccessPattern get_gpu_access_pattern(bool isBufferGpuOnly) {
+    if (isBufferGpuOnly) {
 #if defined(GPU_TEST_UTILS)
         return AccessPattern::kGpuOnlyCopySrc;
 #else
@@ -605,7 +605,7 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         info->fBuffer = fResourceProvider->findOrCreateBuffer(
             bufferSize,
             info->fType,
-            get_gpu_access_pattern(useTransferBuffer),
+            get_gpu_access_pattern(useTransferBuffer || !supportCpuUpload),
             std::move(label));
         info->fOffset = 0;
         if (!info->fBuffer) {
@@ -728,7 +728,11 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
         return nullptr;
     }
 
+#if defined(GPU_TEST_UTILS)
+    info->fData.push_back({transferBindInfo, target, requiredAlignment, requiredBytes});
+#else
     info->fData.push_back({transferBindInfo, target, requiredAlignment});
+#endif
     info->fTotalRequiredBytes =
         align_to_req_min_lcm(info->fTotalRequiredBytes,
                              requiredAlignment,
@@ -810,6 +814,9 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
                                                    "StaticVertexBuffer")) {
         return FinishResult::kFailure;
     }
+    #if defined(GPU_TEST_UTILS)
+        globalCache->setInitialStaticVertexInfo(fVertexBufferInfo.getBufferInfo());
+    #endif
 
     if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider,
                                                   context,
