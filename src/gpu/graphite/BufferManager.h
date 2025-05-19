@@ -365,11 +365,11 @@ private:
     // transfer buffers from the UploadManager, remember so that finalize() will fail.
     bool fMappingFailed = false;
 
-    static constexpr skgpu::graphite::AccessPattern getStaticAccessPattern() {
+    static constexpr AccessPattern getStaticGpuAccessPattern() {
     #if defined(GPU_TEST_UTILS)
-        return skgpu::graphite::AccessPattern::kGpuOnlyCopySrc;
+        return AccessPattern::kGpuOnlyCopySrc;
     #else
-        return skgpu::graphite::AccessPattern::kGpuOnly;
+        return AccessPattern::kGpuOnly;
     #endif
     }
 };

@@ -97,6 +97,12 @@ void DrawWriter::flushInternal() {
         fCommandList->addBarrier(fBarrierToIssueBeforeDraws.value());
     }
 
+    this->issueDraws(pendingBaseStatic, pendingBaseIndices, pendingBaseAppend);
+}
+
+template<bool ShouldDraw>
+void DrawWriter::issueDrawsInternal(uint32_t pendingBaseStatic, uint32_t pendingBaseIndices,
+                                    uint32_t pendingBaseAppend) {
     // Issue the appropriate draw call (instanced vs. non-instanced) based on the current
     // fTemplateCount. Because of the initial AppendDynamicInstances && fTemplateCount check, any
     // DynamicInstance render step must have valid (non-zero) templateCount data at this point.
@@ -107,17 +113,23 @@ void DrawWriter::flushInternal() {
             // data within fVertices. Simply validate that fIndices holds enough data for the
             // vertex count that's drawn.
             SkASSERT(fTemplateCount*sizeof(uint16_t) <= fIndices.fSize);
-            fCommandList->drawIndexedInstanced(fPrimitiveType,
-                                               pendingBaseIndices,
-                                               fTemplateCount,
-                                               pendingBaseStatic,
-                                               pendingBaseAppend,
-                                               fPendingCount);
-
+            if constexpr (ShouldDraw) {
+                fCommandList->drawIndexedInstanced(fPrimitiveType,
+                                                   pendingBaseIndices,
+                                                   fTemplateCount,
+                                                   pendingBaseStatic,
+                                                   pendingBaseAppend,
+                                                   fPendingCount);
+            }
         } else {
             SkASSERT(fTemplateCount*fStaticStride <= fStatic.fSize);
-            fCommandList->drawInstanced(fPrimitiveType, pendingBaseStatic, fTemplateCount,
-                                        pendingBaseAppend, fPendingCount);
+            if constexpr (ShouldDraw) {
+                fCommandList->drawInstanced(fPrimitiveType,
+                                            pendingBaseStatic,
+                                            fTemplateCount,
+                                            pendingBaseAppend,
+                                            fPendingCount);
+            }
         }
 
         // Clear instancing template state after the draw is recorded for non-Fixed RenderState
@@ -133,13 +145,19 @@ void DrawWriter::flushInternal() {
         if (fIndices) {
             // As before, just validate there is sufficient index data
             SkASSERT(fPendingCount*sizeof(uint16_t) <= fIndices.fSize);
-            fCommandList->drawIndexed(fPrimitiveType,
-                                      pendingBaseIndices,
-                                      fPendingCount,
-                                      pendingBaseAppend);
+            if constexpr (ShouldDraw) {
+                fCommandList->drawIndexed(fPrimitiveType,
+                                          pendingBaseIndices,
+                                          fPendingCount,
+                                          pendingBaseAppend);
+            }
         } else {
             SkASSERT((pendingBaseAppend + fPendingCount)*fStaticStride <= fBoundAppend.fSize);
-            fCommandList->draw(fPrimitiveType, pendingBaseAppend, fPendingCount);
+            if constexpr (ShouldDraw) {
+                fCommandList->draw(fPrimitiveType,
+                                   pendingBaseAppend,
+                                   fPendingCount);
+            }
         }
 
         // Clear vertex template state after the draw is recorded for non-Fixed RenderState
@@ -151,5 +169,17 @@ void DrawWriter::flushInternal() {
     // Mark all appended items as drawn.
     fPendingCount = 0;
 }
+
+void DrawWriter::issueDraws(uint32_t pendingBaseStatic, uint32_t pendingBaseIndices,
+                            uint32_t pendingBaseAppend) {
+    this->issueDrawsInternal<true>(pendingBaseStatic, pendingBaseIndices, pendingBaseAppend);
+}
+
+#if defined(GPU_TEST_UTILS)
+void HeadlessDrawWriter::issueDraws(uint32_t pendingBaseStatic, uint32_t pendingBaseIndices,
+                                    uint32_t pendingBaseAppend) {
+    this->issueDrawsInternal<false>(pendingBaseStatic, pendingBaseIndices, pendingBaseAppend);
+}
+#endif
 
 } // namespace skgpu::graphite
