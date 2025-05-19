@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbdaf3ff_6a6d2f08",
+        "filename": "bench/RectBench.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T18:33:03Z",
+      "side": 1,
+      "message": "I don\u0027t know if it truly matters with the patch, but we should pass a seed to test a stable set of points.",
+      "revId": "3332053e64ea4f65492663148f5696950e6ca6a1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
