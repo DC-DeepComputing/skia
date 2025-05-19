@@ -22,53 +22,101 @@
 #include "tools/ToolUtils.h"
 #include "tools/timer/TimeUtils.h"
 
+#include <vector>
+#include <queue>
+
+struct Person {
+    Person(const std::string& name1, int month, int day, Person* pA, Person* pB)
+            : name(name1)
+            , birthday_month(month)
+            , birthday_day_of_the_month(day)
+            , parentA(pA)
+            , parentB(pB) {}
+
+    std::string name;
+    int birthday_month;
+    int birthday_day_of_the_month;
+    Person* parentA;
+    Person* parentB;
+};
+
+class Mgr {
+public:
+    Mgr(Person* client) {
+        if (client) {
+            this->visit(client->parentA);
+            this->visit(client->parentB);
+        }
+    }
+
+    void doit() {
+        while (!fDays.empty()) {
+            Person* tmp = fDays.top();
+            SkDebugf("%s %d %d\n",
+                     tmp->name.c_str(),
+                     tmp->birthday_month,
+                     tmp->birthday_day_of_the_month);
+            fDays.pop();
+        }
+    }
+
+private:
+    void visit(Person* p) {
+        if (p == nullptr) {
+            return;
+        }
+        fDays.push(p);
+        this->visit(p->parentA);
+        this->visit(p->parentB);
+    }
+
+    class Compare {
+    public:
+        bool operator()(const Person* a, const Person* b) {
+            if (a->birthday_month > b->birthday_month) {
+                return true;
+            }
+            if (a->birthday_month < b->birthday_month) {
+                return false;
+            }
+            if (a->birthday_day_of_the_month > b->birthday_day_of_the_month) {
+                return true;
+            }
+            return false;
+        }
+    };
+
+    std::priority_queue<Person*, std::vector<Person*>, Compare> fDays;
+};
+
+
 class AddArcGM : public skiagm::GM {
 public:
-    AddArcGM() : fRotate(0) {}
+    AddArcGM() {
+        Person gp1("mgdad", 2, 2, nullptr, nullptr);
+        Person p1 ("mom", 1, 1, &gp1, nullptr);
+        Person p2 ("dad", 1, 2, nullptr, nullptr);
+        Person me("me", 1, 3, &p1, &p2);
+
+        Mgr mgr(&me);
+
+        mgr.doit();
+    }
 
 protected:
-    SkString getName() const override { return SkString("addarc"); }
+    SkString getName() const override { return SkString("addarc1"); }
 
     SkISize getISize() override { return SkISize::Make(1040, 1040); }
 
     void onDraw(SkCanvas* canvas) override {
-        canvas->translate(20, 20);
 
-        SkRect r = SkRect::MakeWH(1000, 1000);
-
-        SkPaint paint;
-        paint.setAntiAlias(true);
-        paint.setStroke(true);
-        paint.setStrokeWidth(15);
-
-        const SkScalar inset = paint.getStrokeWidth() + 4;
-        const SkScalar sweepAngle = 345;
-        SkRandom rand;
-
-        SkScalar sign = 1;
-        while (r.width() > paint.getStrokeWidth() * 3) {
-            paint.setColor(ToolUtils::color_to_565(rand.nextU() | (0xFF << 24)));
-            SkScalar startAngle = rand.nextUScalar1() * 360;
-
-            SkScalar speed = SkScalarSqrt(16 / r.width()) * 0.5f;
-            startAngle += fRotate * 360 * speed * sign;
-
-            SkPathBuilder path;
-            path.addArc(r, startAngle, sweepAngle);
-            canvas->drawPath(path.detach().setIsVolatile(true), paint);
-
-            r.inset(inset, inset);
-            sign = -sign;
-        }
     }
 
     bool onAnimate(double nanos) override {
-        fRotate = TimeUtils::Scaled(1e-9 * nanos, 1, 360);
-        return true;
+        return false;
     }
 
 private:
-    SkScalar fRotate;
     using INHERITED = skiagm::GM;
 };
 DEF_GM( return new AddArcGM; )
