@@ -782,4 +782,16 @@ const Sampler* DrawPass::getSampler(size_t index) const {
     return fSamplers[index].get();
 }
 
+#if defined(GPU_TEST_UTILS)
+std::unique_ptr<DrawPass> DrawPass::getTestDrawPass(sk_sp<TextureProxy> target,
+                                                    std::pair<LoadOp, StoreOp> ops,
+                                                    std::array<float, 4> clearColor) {
+    return std::unique_ptr<DrawPass>(new DrawPass(target, ops, clearColor));
+}
+
+std::unique_ptr<HeadlessDrawWriter> DrawPass::getHeadlessDrawWriter(DrawBufferManager* bufferMgr) {
+    return std::make_unique<HeadlessDrawWriter>(&fCommandList, bufferMgr);
+}
+#endif
+
 } // namespace skgpu::graphite
