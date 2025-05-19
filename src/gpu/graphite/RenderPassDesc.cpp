@@ -90,6 +90,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
                                         loadOp != LoadOp::kLoad ? LoadOp::kDiscard : LoadOp::kLoad,
                                         storeOp,
                                         /*sampleCount=*/1};
+        desc.fLoadMSAAFromResolve = loadOp == LoadOp::kLoad;
     } else {
         // The target will be the color attachment and skip configuring the resolve attachment.
         SkASSERT(desc.fColorResolveAttachment.fFormat == TextureFormat::kUnsupported);
@@ -117,7 +118,7 @@ RenderPassDesc RenderPassDesc::Make(const Caps* caps,
 
 SkString RenderPassDesc::toString() const {
     return SkStringPrintf("RP(color: %s, resolve: %s, ds: %s, samples: %u, swizzle: %s, "
-                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u)",
+                          "clear: c(%f,%f,%f,%f), d(%f), s(0x%02x), dst read: %u loadFromMSAA: %d)",
                           fColorAttachment.toString().c_str(),
                           fColorResolveAttachment.toString().c_str(),
                           fDepthStencilAttachment.toString().c_str(),
@@ -126,7 +127,8 @@ SkString RenderPassDesc::toString() const {
                           fClearColor[0], fClearColor[1], fClearColor[2], fClearColor[3],
                           fClearDepth,
                           fClearStencil,
-                          (unsigned)fDstReadStrategy);
+                          (unsigned)fDstReadStrategy,
+                          fLoadMSAAFromResolve);
 }
 
 SkString RenderPassDesc::toPipelineLabel() const {

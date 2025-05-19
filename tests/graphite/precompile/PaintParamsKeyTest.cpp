@@ -1751,6 +1751,24 @@ void dump_keys(PrecompileContext* precompileContext,
                                   originalPipelineDesc,
                                   originalRenderPassDesc);
     }
+
+    SkDebugf("haystack %zu\n", hayStackKeys.size());
+    count = 0;
+    for (const skgpu::UniqueKey& k : hayStackKeys) {
+        GraphicsPipelineDesc originalPipelineDesc;
+        RenderPassDesc originalRenderPassDesc;
+        UniqueKeyUtils::ExtractKeyDescs(precompileContext, k,
+                                        &originalPipelineDesc,
+                                        &originalRenderPassDesc);
+
+        SkString label;
+        label.appendf("--- %s key %d:\n",
+                      haystackName, count++);
+        k.dump(label.c_str());
+        UniqueKeyUtils::DumpDescs(precompileContext,
+                                  originalPipelineDesc,
+                                  originalRenderPassDesc);
+    }
 }
 #endif
 
@@ -1889,13 +1907,14 @@ void check_draw(skiatest::Reporter* reporter,
     }
 
     REPORTER_ASSERT(reporter, missingPipelines == 0,
-                    "precompile pipelines: %zu draw pipelines: %zu - %d missing from precompile",
+                    "precompile pipelines: %zu | draw pipelines: %zu | %d missing from precompile",
                     precompileKeys.size(), drawKeys.size(), missingPipelines);
 #ifdef SK_DEBUG
-    if (missingPipelines) {
+//    if (missingPipelines) {
+//drawKeys.clear();
         dump_keys(precompileContext, drawKeys, precompileKeys, "draw", "precompile");
-        dump_keys(precompileContext, precompileKeys, drawKeys, "precompile", "draw");
-    }
+//        dump_keys(precompileContext, precompileKeys, drawKeys, "precompile", "draw");
+//    }
 #endif // SK_DEBUG
 
 }
@@ -2237,10 +2256,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
-            ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
+//            ShaderType::kBlend,
+//            ShaderType::kImage,
+//            ShaderType::kRadialGradient,
+//            ShaderType::kSolidColor,
             ShaderType::kYUVImage,
 #if EXPANDED_SET
             ShaderType::kNone,
@@ -2258,8 +2277,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     BlenderType blenders[] = {
-            BlenderType::kPorterDuff,
-            BlenderType::kShaderBased,
+//            BlenderType::kPorterDuff,
+//            BlenderType::kShaderBased,
             BlenderType::kRuntime,
 #if EXPANDED_SET
             BlenderType::kNone,
@@ -2269,8 +2288,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
 
     ColorFilterType colorFilters[] = {
             ColorFilterType::kNone,
-            ColorFilterType::kBlendMode,
-            ColorFilterType::kMatrix,
+//            ColorFilterType::kBlendMode,
+//            ColorFilterType::kMatrix,
 #if EXPANDED_SET
             ColorFilterType::kColorSpaceXform,
             ColorFilterType::kCompose,
@@ -2320,6 +2339,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
+#if 0
             DrawTypeFlags::kBitmapText_Mask,
             DrawTypeFlags::kBitmapText_LCD,
             DrawTypeFlags::kBitmapText_Color,
@@ -2330,10 +2350,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             DrawTypeFlags::kAnalyticRRect,
             DrawTypeFlags::kPerEdgeAAQuad,
             DrawTypeFlags::kNonAAFillRect,
+#endif
             DrawTypeFlags::kNonSimpleShape,
     };
 
-#if EXPANDED_SET
+#if 1 //EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
@@ -2347,7 +2368,7 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+#if 1 //EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
 #endif

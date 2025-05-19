@@ -66,7 +66,8 @@ struct RenderPassDesc {
                 fColorAttachment == other.fColorAttachment &&
                 fColorResolveAttachment == other.fColorResolveAttachment &&
                 fDepthStencilAttachment == other.fDepthStencilAttachment &&
-                fDstReadStrategy == other.fDstReadStrategy);
+                fDstReadStrategy == other.fDstReadStrategy &&
+                fLoadMSAAFromResolve == other.fLoadMSAAFromResolve);
     }
 
     bool operator!=(const RenderPassDesc& other) const {
@@ -91,6 +92,7 @@ struct RenderPassDesc {
     // read from the dst, then each pipeline used by this RP independently determines if a dst read
     // is needed. When required, this strategy determines how to perform it.
     DstReadStrategy fDstReadStrategy;
+    bool fLoadMSAAFromResolve = false;
 
     std::array<float, 4> fClearColor;
     float fClearDepth = 0.f;

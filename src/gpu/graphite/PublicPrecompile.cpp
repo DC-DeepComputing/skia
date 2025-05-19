@@ -116,6 +116,10 @@ void Precompile(PrecompileContext* precompileContext,
             numLoadOps = 2;
         }
 
+        SkDebugf("loadOpAffectsMSAAPipelines %s loadOpAffectsMSAAPipelines: %d\n",
+                 BackendApiToStr(precompileContext->priv().sharedContext()->backend()),
+                 caps->loadOpAffectsMSAAPipelines());
+
         for (int loadOpIndex = 0; loadOpIndex < numLoadOps; ++loadOpIndex) {
             const RenderPassDesc renderPassDesc =
                     RenderPassDesc::Make(caps,

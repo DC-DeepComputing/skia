@@ -59,7 +59,7 @@ void add_subpass_info_to_key(ResourceKey::Builder& builder,
 } // anonymous namespace
 
 VulkanRenderPass::Metadata::Metadata(const RenderPassDesc& rpDesc, bool compatibleOnly) {
-    fLoadMSAAFromResolve = RenderPassDescWillLoadMSAAFromResolve(rpDesc);
+    fLoadMSAAFromResolve = rpDesc.fLoadMSAAFromResolve;
 
     // TODO: These represent the attachment refs of the main subpass, RenderPassDesc will allow for
     // more attachments and subpasses in the future. Subpasses will not have more than 1 color,
@@ -137,8 +137,16 @@ int VulkanRenderPass::Metadata::keySize() const {
     return num32DataCnt;
 }
 
-void VulkanRenderPass::Metadata::addToKey(ResourceKey::Builder& builder, int& builderIdx) {
+void VulkanRenderPass::Metadata::addToKey(const VulkanCaps* caps,
+                                          ResourceKey::Builder& builder,
+                                          int& builderIdx) {
     builder[builderIdx++] = fAttachments.size() | (this->subpassCount() << 8);
+
+    SkDebugf("key[%d]: %u - %d %d %d\n",
+             builderIdx-1, builder[builderIdx-1],
+             fAttachments.size(),
+             this->subpassCount(),
+             fLoadMSAAFromResolve);
 
     // Iterate through each renderpass attachment to add its information. Each attachment is packed
     // into 16 bits, so two attachments per key field
@@ -147,6 +155,12 @@ void VulkanRenderPass::Metadata::addToKey(ResourceKey::Builder& builder, int& bu
     // backend as well then we may be able to reduce the key size here.
     for (int i = 0; i < fAttachments.size(); i++) {
         AttachmentDesc desc = fAttachments[i];
+
+        if (!caps->loadOpAffectsMSAAPipelines()) {
+            desc.fLoadOp = LoadOp::kDiscard;
+            desc.fStoreOp = StoreOp::kDiscard;
+        }
+
         uint16_t descKey = static_cast<uint8_t>(desc.fFormat) << 8 |
                            static_cast<uint8_t>(desc.fLoadOp) << 6 |
                            static_cast<uint8_t>(desc.fStoreOp) << 4 |
