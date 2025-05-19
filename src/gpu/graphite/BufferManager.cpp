@@ -728,7 +728,11 @@ void* StaticBufferManager::prepareStaticData(BufferInfo* info,
         return nullptr;
     }
 
+#if defined(GPU_TEST_UTILS)
+    info->fData.push_back({transferBindInfo, target, requiredAlignment, requiredBytes});
+#else
     info->fData.push_back({transferBindInfo, target, requiredAlignment});
+#endif
     info->fTotalRequiredBytes =
         align_to_req_min_lcm(info->fTotalRequiredBytes,
                              requiredAlignment,
@@ -810,6 +814,9 @@ StaticBufferManager::FinishResult StaticBufferManager::finalize(Context* context
                                                    "StaticVertexBuffer")) {
         return FinishResult::kFailure;
     }
+    #if defined(GPU_TEST_UTILS)
+        globalCache->setInitialStaticVertexInfo(fVertexBufferInfo.getBufferInfo());
+    #endif
 
     if (!fIndexBufferInfo.createAndUpdateBindings(fResourceProvider,
                                                   context,
