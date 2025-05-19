@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ef74b75_a7979d30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T19:27:48Z",
+      "side": 1,
+      "message": "Ok to review. Rebased, fixed (silent) edge case in upstream CL.",
+      "revId": "159c99563a44902b15520022fd295468cde206e8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
