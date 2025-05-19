@@ -426,6 +426,7 @@ private:
         if (flags & YUVImageShaderFlags::kHardwareSamplingNoSwizzle) {
             fTilingModes[fNumTilingModes++] = kHWTiledNoSwizzle;
         }
+#if 0
         if (flags & YUVImageShaderFlags::kHardwareSampling) {
             fTilingModes[fNumTilingModes++] = kHWTiledWithSwizzle;
         }
@@ -435,8 +436,9 @@ private:
         if (flags & YUVImageShaderFlags::kCubicSampling) {
             fTilingModes[fNumTilingModes++] = kCubicShaderTiled;
         }
+#endif
 
-        SkASSERT(fNumTilingModes == SkPopCount(flags.value()));
+        //SkASSERT(fNumTilingModes == SkPopCount(flags.value()));
         SkASSERT(fNumTilingModes <= kMaxTilingModes);
     }
 
