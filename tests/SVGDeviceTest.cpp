@@ -674,11 +674,12 @@ DEF_TEST(SVGDevice_relative_path_encoding, reporter) {
     SkDOM dom;
     {
         auto svgCanvas = MakeDOMCanvas(&dom, SkSVGCanvas::kRelativePathEncoding_Flag);
-        SkPath path;
-        path.moveTo(100, 50);
-        path.lineTo(200, 50);
-        path.lineTo(200, 150);
-        path.close();
+        SkPath path = SkPathBuilder()
+            .moveTo(100, 50)
+            .lineTo(200, 50)
+            .lineTo(200, 150)
+            .close()
+            .detach();
 
         svgCanvas->drawPath(path, SkPaint());
     }

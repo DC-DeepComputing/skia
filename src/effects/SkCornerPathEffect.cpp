@@ -64,19 +64,20 @@ public:
         firstStep.set(0, 0);
         lastCorner.set(0, 0);
 
+        SkPathBuilder builder(*dst);
         for (;;) {
             switch (verb = iter.next(pts)) {
                 case SkPath::kMove_Verb:
                     // close out the previous (open) contour
                     if (SkPath::kLine_Verb == prevVerb) {
-                        dst->lineTo(lastCorner);
+                        builder.lineTo(lastCorner);
                     }
                     closed = iter.isClosedContour();
                     if (closed) {
                         moveTo = pts[0];
                         prevIsValid = false;
                     } else {
-                        dst->moveTo(pts[0]);
+                        builder.moveTo(pts[0]);
                         prevIsValid = true;
                     }
                     break;
@@ -84,14 +85,14 @@ public:
                     bool drawSegment = ComputeStep(pts[0], pts[1], fRadius, &step);
                     // prev corner
                     if (!prevIsValid) {
-                        dst->moveTo(moveTo + step);
+                        builder.moveTo(moveTo + step);
                         prevIsValid = true;
                     } else {
-                        dst->quadTo(pts[0].fX, pts[0].fY, pts[0].fX + step.fX,
-                                    pts[0].fY + step.fY);
+                        builder.quadTo(pts[0].fX, pts[0].fY, pts[0].fX + step.fX,
+                                       pts[0].fY + step.fY);
                     }
                     if (drawSegment) {
-                        dst->lineTo(pts[1].fX - step.fX, pts[1].fY - step.fY);
+                        builder.lineTo(pts[1].fX - step.fX, pts[1].fY - step.fY);
                     }
                     lastCorner = pts[1];
                     prevIsValid = true;
@@ -100,46 +101,47 @@ public:
                 case SkPath::kQuad_Verb:
                     // TBD - just replicate the curve for now
                     if (!prevIsValid) {
-                        dst->moveTo(pts[0]);
+                        builder.moveTo(pts[0]);
                         prevIsValid = true;
                     }
-                    dst->quadTo(pts[1], pts[2]);
+                    builder.quadTo(pts[1], pts[2]);
                     lastCorner = pts[2];
                     firstStep.set(0, 0);
                     break;
                 case SkPath::kConic_Verb:
                     // TBD - just replicate the curve for now
                     if (!prevIsValid) {
-                        dst->moveTo(pts[0]);
+                        builder.moveTo(pts[0]);
                         prevIsValid = true;
                     }
-                    dst->conicTo(pts[1], pts[2], iter.conicWeight());
+                    builder.conicTo(pts[1], pts[2], iter.conicWeight());
                     lastCorner = pts[2];
                     firstStep.set(0, 0);
                     break;
                 case SkPath::kCubic_Verb:
                     if (!prevIsValid) {
-                        dst->moveTo(pts[0]);
+                        builder.moveTo(pts[0]);
                         prevIsValid = true;
                     }
                     // TBD - just replicate the curve for now
-                    dst->cubicTo(pts[1], pts[2], pts[3]);
+                    builder.cubicTo(pts[1], pts[2], pts[3]);
                     lastCorner = pts[3];
                     firstStep.set(0, 0);
                     break;
                 case SkPath::kClose_Verb:
                     if (firstStep.fX || firstStep.fY) {
-                        dst->quadTo(lastCorner.fX, lastCorner.fY,
-                                    lastCorner.fX + firstStep.fX,
-                                    lastCorner.fY + firstStep.fY);
+                        builder.quadTo(lastCorner.fX, lastCorner.fY,
+                                       lastCorner.fX + firstStep.fX,
+                                       lastCorner.fY + firstStep.fY);
                     }
-                    dst->close();
+                    builder.close();
                     prevIsValid = false;
                     break;
                 case SkPath::kDone_Verb:
                     if (prevIsValid) {
-                        dst->lineTo(lastCorner);
+                        builder.lineTo(lastCorner);
                     }
+                    *dst = builder.detach();
                     return true;
                 default:
                     SkDEBUGFAIL("default should not be reached");

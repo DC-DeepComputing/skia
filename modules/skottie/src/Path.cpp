@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRefCnt.h"
 #include "modules/jsonreader/SkJSONReader.h"
 #include "modules/skottie/src/Adapter.h"
@@ -31,11 +32,10 @@ private:
     void onSync() override {
         const auto& path_node = this->node();
 
-        SkPath path = fShape;
-
+        SkPath path = SkPath(fShape)
         // FillType is tracked in the SG node, not in keyframes -- make sure we preserve it.
-        path.setFillType(path_node->getFillType());
-        path.setIsVolatile(!this->isStatic());
+            .makeFillType(path_node->getFillType())
+            .makeIsVolatile(!this->isStatic());
 
         path_node->setPath(path);
     }

@@ -499,9 +499,8 @@ static void test_copy_on_write(skiatest::Reporter* reporter, SkSurface* surface)
     const SkRect testRect =
         SkRect::MakeXYWH(SkIntToScalar(0), SkIntToScalar(0),
                          SkIntToScalar(4), SkIntToScalar(5));
-    SkPath testPath;
-    testPath.addRect(SkRect::MakeXYWH(SkIntToScalar(0), SkIntToScalar(0),
-                                      SkIntToScalar(2), SkIntToScalar(1)));
+    SkPath testPath = SkPath::Rect(SkRect::MakeXYWH(SkIntToScalar(0), SkIntToScalar(0),
+                                                    SkIntToScalar(2), SkIntToScalar(1)));
 
     const SkIRect testIRect = SkIRect::MakeXYWH(0, 0, 2, 1);
 

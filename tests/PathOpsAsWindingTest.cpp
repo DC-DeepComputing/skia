@@ -54,7 +54,7 @@ static SkPath build_squircle(SkPath::Verb verb, const SkRect& rect, SkPathDirect
     if (reverse) {
         SkPath temp;
         temp.reverseAddPath(path);
-        path.swap(temp);
+        path = temp;
     }
     return path;
 }
