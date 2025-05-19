@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bed2c3c4_5dc0df6a",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 532,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T17:53:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0a45fdc_95d683b4",
+      "range": {
+        "startLine": 521,
+        "startChar": 0,
+        "endLine": 532,
+        "endChar": 1
+      },
+      "revId": "23c74dfc484a03445d51a7da82b80e696542314d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56896328_068e45c4",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "903e9b1f_9337e49b",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T17:53:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56896328_068e45c4",
+      "range": {
+        "startLine": 42,
+        "startChar": 13,
+        "endLine": 42,
+        "endChar": 83
+      },
+      "revId": "23c74dfc484a03445d51a7da82b80e696542314d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c2dad77_7a52ccfe",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-05-19T14:29:01Z",
       "side": 1,
       "message": "nit: remove extra word",
+      "range": {
+        "startLine": 364,
+        "startChar": 51,
+        "endLine": 364,
+        "endChar": 53
+      },
+      "revId": "23c74dfc484a03445d51a7da82b80e696542314d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "badc765a_a5cbec9c",
+        "filename": "src/gpu/graphite/vk/VulkanBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T17:53:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1c2dad77_7a52ccfe",
       "range": {
         "startLine": 364,
         "startChar": 51,
