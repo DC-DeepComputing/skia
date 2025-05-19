@@ -16,6 +16,304 @@
       "message": "@fmalita@google.com PTAL",
       "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8690fa8_9edf1efa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "Sorry about the delay, looks good with some minor nits and suggestions.",
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffb01868_d6d87fa5",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "naming nit: `kBufferSize`",
+      "range": {
+        "startLine": 80,
+        "startChar": 17,
+        "endLine": 80,
+        "endChar": 27
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9a2987b_5d21c352",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "naming nit: `kInitialHeaderSize`",
+      "range": {
+        "startLine": 83,
+        "startChar": 17,
+        "endLine": 83,
+        "endChar": 36
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "59c001de_425e946c",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "Let\u0027s move this after the check below.",
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a196d783_3249ed60",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "Maybe add a `kChunkHeaderSize` constant for this.",
+      "range": {
+        "startLine": 99,
+        "startChar": 42,
+        "endLine": 99,
+        "endChar": 43
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0728822_d086ed00",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "naming nit: `kVP8UncompressedChunkMinSize`, `kVP8UncompressedChunkMaxSize`.",
+      "range": {
+        "startLine": 108,
+        "startChar": 0,
+        "endLine": 109,
+        "endChar": 62
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e0c93f25_e11b8b45",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "`kImageHeaderSize`",
+      "range": {
+        "startLine": 118,
+        "startChar": 25,
+        "endLine": 118,
+        "endChar": 42
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09c21e19_14a7d1c0",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "`kVP8XPayloadSize`",
+      "range": {
+        "startLine": 135,
+        "startChar": 31,
+        "endLine": 135,
+        "endChar": 33
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8394cf5_140a6a36",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "We weren\u0027t validating the chunk types before, is it necessary to do that now?  I\u0027m thinking it would be more future-proof to just pass-through, in case new chunks types are added to the spec etc.",
+      "range": {
+        "startLine": 161,
+        "startChar": 17,
+        "endLine": 161,
+        "endChar": 38
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dfb9d9f_3b4b0346",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "Can you document why this is needed?  I\u0027m assuming chunk alignment, but what about the last chunk - if we pad the size, wouldn\u0027t reading fail?",
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "01d929c9_390b56e1",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "I wonder if we can do with fewer variables here - would something like this work:\n\n```\n  while (payloadSize) {\n      bytes_read \u003d stream-\u003eread(std::min(payloadSize, bufferSize));\n      if (!bytes_read) {\n          break;\n      }\n      tempStream.write(buffer, bytes_read);\n      payloadSize -\u003d bytes_read;\n  }\n  \n  if (payloadSize) {\n      SkASSERT(stream-\u003eisAtEnd());\n      // Invalid webp\n      return {false, nullptr};\n  }\n```",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 180,
+        "endChar": 17
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "119d1005_577287b4",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "nit: I find structured bindings easier to parse, but up to you\n\n`[onlyHeaderParsed, data] \u003d get_header_from_stream(stream.get());`",
+      "range": {
+        "startLine": 219,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 40
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1a32f7e5_70879b29",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 425,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "nit: `fData \u003d newData.detachAsData();`",
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e3d896d_8b53a5f8",
+        "filename": "src/codec/SkWebpCodec.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-19T20:23:25Z",
+      "side": 1,
+      "message": "This is almost the same as the earlier block, modulo error handling.  Let\u0027s add a helper `bool SkWebpCodec::ensureAllData();` (returning false on for WEBP_DEMUX_PARSE_ERROR) for reuse.",
+      "range": {
+        "startLine": 571,
+        "startChar": 0,
+        "endLine": 585,
+        "endChar": 4
+      },
+      "revId": "56ebafeb1cfe4e3e12a4cbc596d6c7ab7971fe86",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
