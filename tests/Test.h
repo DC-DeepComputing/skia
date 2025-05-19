@@ -227,6 +227,9 @@ extern bool IsGLContextType(GpuContextType);
 extern bool IsVulkanContextType(GpuContextType);
 extern bool IsMetalContextType(GpuContextType);
 extern bool IsDawnContextType(GpuContextType);
+extern bool IsDawnD3D12ContextType(GpuContextType);
+extern bool IsDawnMetalContextType(GpuContextType);
+extern bool IsDawnVulkanContextType(GpuContextType);
 extern bool IsDirect3DContextType(GpuContextType);
 extern bool IsMockContextType(GpuContextType);
 

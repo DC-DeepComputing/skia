@@ -70,6 +70,30 @@ bool IsDawnContextType(skgpu::ContextType type) {
 #endif
 }
 
+bool IsDawnD3D12ContextType(skgpu::ContextType type) {
+#if defined(SK_GRAPHITE)
+    return type == skgpu::ContextType::kDawn_D3D12;
+#else
+    return false;
+#endif
+}
+
+bool IsDawnMetalContextType(skgpu::ContextType type) {
+#if defined(SK_GRAPHITE)
+    return type == skgpu::ContextType::kDawn_Metal;
+#else
+    return false;
+#endif
+}
+
+bool IsDawnVulkanContextType(skgpu::ContextType type) {
+#if defined(SK_GRAPHITE)
+    return type == skgpu::ContextType::kDawn_Vulkan;
+#else
+    return false;
+#endif
+}
+
 bool IsMockContextType(skgpu::ContextType type) {
     return type == skgpu::ContextType::kMock;
 }

@@ -144,25 +144,35 @@ bool copy_and_readback_buffer_sync(Context* context,
     return true;
 }
 
+// Reserve the maximum size of buffer, which which always trigger a new buffer request, but
+// whatever extra bytes will be returned
+void forceNewBuffer(DrawWriter::Vertices& dw, uint32_t vertBuffSize) {
+    dw.reserve(vertBuffSize);
+}
+
+void forceNewBuffer(DrawWriter::Instances& dw, uint32_t vertBuffSize) {
+    dw.reserve(vertBuffSize);
+}
+
 bool is_dawn_or_vulkan_context_type(skiatest::GpuContextType contextType) {
     return skiatest::IsDawnContextType(contextType) || skiatest::IsVulkanContextType(contextType);
 }
 
 } // namespace
 
-#define DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(            \
-        testName, reporterObj, graphiteContext, testContextObj)    \
-    DEF_GRAPHITE_TEST_FOR_CONTEXTS(testName,                       \
-                                   is_dawn_or_vulkan_context_type, \
-                                   reporterObj,                    \
-                                   graphiteContext,                \
-                                   testContextObj,                 \
+#define DEF_GRAPHITE_TEST_FOR_DAWN_OR_NATIVE_VULKAN_CONTEXTS(             \
+        testName, reporterObj, graphiteContext, testContextObj)           \
+    DEF_GRAPHITE_TEST_FOR_CONTEXTS(testName,                              \
+                                   is_dawn_or_native_vulkan_context_type, \
+                                   reporterObj,                           \
+                                   graphiteContext,                       \
+                                   testContextObj,                        \
                                    CtsEnforcement::kNever)
 
-DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(StaticVerticesPaddingTest,
-                                               reporter,
-                                               context,
-                                               testContext) {
+DEF_GRAPHITE_TEST_FOR_DAWN_OR_NATIVE_VULKAN_CONTEXTS(StaticVerticesPaddingTest,
+                                                     reporter,
+                                                     context,
+                                                     testContext) {
     std::unique_ptr<Recorder> recorder = context->makeRecorder();
     auto sharedContext = recorder->priv().sharedContext();
 
@@ -235,10 +245,10 @@ DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(StaticVerticesPaddingTest,
     }
 }
 
-DEF_GRAPHITE_TEST_FOR_DAWN_AND_VULKAN_CONTEXTS(DynamicVerticesPaddingTest,
-                                               reporter,
-                                               context,
-                                               testContext) {
+DEF_GRAPHITE_TEST_FOR_DAWN_OR_NATIVE_VULKAN_CONTEXTS(DynamicVerticesPaddingTest,
+                                                     reporter,
+                                                     context,
+                                                     testContext) {
     constexpr uint32_t stride = 4;
     constexpr uint32_t vertBuffSize = 32; // I.e. blocks of 8 verts (vertBuffSize / stride = 8)
     constexpr uint32_t readbackSize = vertBuffSize / stride;

@@ -278,10 +278,13 @@ bool IsMockContextType(skgpu::ContextType ct) {
     return ct == skgpu::ContextType::kMock;
 }
 // These are not supported
-bool IsVulkanContextType(ContextType) { return false; }
-bool IsMetalContextType(ContextType) { return false; }
-bool IsDirect3DContextType(ContextType) { return false; }
-bool IsDawnContextType(ContextType) { return false; }
+bool IsVulkanContextType(ContextType)     { return false; }
+bool IsMetalContextType(ContextType)      { return false; }
+bool IsDirect3DContextType(ContextType)   { return false; }
+bool IsDawnContextType(ContextType)       { return false; }
+bool IsDawnD3D12ContextType(ContextType)  { return false; }
+bool IsDawnMetalContextType(ContextType)  { return false; }
+bool IsDawnVulkanContextType(ContextType) { return false; }
 
 void RunWithGaneshTestContexts(GrContextTestFn* testFn, ContextTypeFilterFn* filter,
                                Reporter* reporter, const GrContextOptions& options) {

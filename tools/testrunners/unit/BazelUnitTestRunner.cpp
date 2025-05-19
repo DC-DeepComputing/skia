@@ -81,6 +81,18 @@ bool IsVulkanContextType(skgpu::ContextType type) {
 bool IsMetalContextType(skgpu::ContextType type) {
     return skgpu::ganesh::ContextTypeBackend(type) == GrBackendApi::kMetal;
 }
+bool isDawnContextType(skgpu::ContextType type) {
+    return false;
+}
+bool isDawnD3D12ContextType(skgpu::ContextType type) {
+    return false;
+}
+bool isDawnMetalContextType(skgpu::ContextType type) {
+    return false;
+}
+bool isDawnVulkanContextType(skgpu::ContextType type) {
+    return false;
+}
 bool IsDirect3DContextType(skgpu::ContextType type) {
     return skgpu::ganesh::ContextTypeBackend(type) == GrBackendApi::kDirect3D;
 }

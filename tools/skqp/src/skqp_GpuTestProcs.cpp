@@ -41,9 +41,12 @@ bool IsMockContextType(skgpu::ContextType type) {
 }
 
 // These are not supported
-bool IsMetalContextType(skgpu::ContextType type) { return false; }
-bool IsDirect3DContextType(skgpu::ContextType type) { return false; }
-bool IsDawnContextType(skgpu::ContextType type) { return false; }
+bool IsMetalContextType(skgpu::ContextType type)      { return false; }
+bool IsDirect3DContextType(skgpu::ContextType type)   { return false; }
+bool IsDawnContextType(skgpu::ContextType type)       { return false; }
+bool IsDawnD3D12ContextType(skgpu::ContextType type)  { return false; }
+bool IsDawnMetalContextType(skgpu::ContextType type)  { return false; }
+bool IsDawnVulkanContextType(skgpu::ContextType type) { return false; }
 
 static bool vk_has_physical_devices() {
     static bool supported = false;

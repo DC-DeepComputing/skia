@@ -228,6 +228,7 @@ bool RecordingPriv::addCommands(Context* context,
 }
 
 void RecordingPriv::addResourceRef(sk_sp<Resource> resource) {
+    printf("hello\n");
     fRecording->fExtraResourceRefs.push_back(std::move(resource));
 }
 
