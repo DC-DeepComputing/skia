@@ -16,6 +16,7 @@
 
 namespace skgpu::graphite {
 
+class VulkanCaps;
 class VulkanCommandBuffer;
 class VulkanSharedContext;
 
@@ -69,7 +70,7 @@ public:
         int subpassCount() const { return fLoadMSAAFromResolve ? 2 : 1; }
         int subpassDependencyCount() const { return fLoadMSAAFromResolve ? 1 : 0; }
 
-        void addToKey(ResourceKey::Builder&, int& builderIdx);
+        void addToKey(const VulkanCaps*, ResourceKey::Builder&, int& builderIdx);
     };
 
     static sk_sp<VulkanRenderPass> Make(const VulkanSharedContext*, const Metadata& rpMetadata);

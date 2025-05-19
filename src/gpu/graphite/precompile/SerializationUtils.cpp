@@ -216,6 +216,9 @@ static const char kMagic[] = { 's', 'k', 'i', 'a', 'p', 'i', 'p', 'e' };
     // not impact pipeline creation. When deserializing, simply query Caps again for a
     // DstReadStrategy. Leave clear color/depth/stencil as their default values.
     renderPassDesc->fDstReadStrategy = caps->getDstReadStrategy();
+    renderPassDesc->fLoadMSAAFromResolve =
+            renderPassDesc->fColorResolveAttachment.fFormat != TextureFormat::kUnsupported &&
+            renderPassDesc->fColorResolveAttachment.fLoadOp == LoadOp::kLoad; //$$
 
     return true;
 }
