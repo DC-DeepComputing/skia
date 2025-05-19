@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7701aa12_f3267be8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-19T14:01:19Z",
+      "side": 1,
+      "message": "Ok to review. Note: This CL was refactored to only include the changes necessary to integrate AccessPattern::kGpuOnlyCopySrc.",
+      "revId": "af152426e96dd188a3ed3d5e28bc7aedb1d0f818",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
