@@ -272,6 +272,14 @@ use_repo(
     "zlib",
 )
 
+cpp_modules = use_extension("//bazel:cpp_modules.bzl", "cpp_modules")
+cpp_modules.from_file(deps_json = "//:deps.json")
+
+use_repo(
+    cpp_modules,
+    "zlib2",
+)
+
 download_linux_amd64_toolchain = use_repo_rule("//toolchain:download_linux_amd64_toolchain.bzl", "download_linux_amd64_toolchain")
 
 download_linux_amd64_toolchain(name = "clang_linux_amd64")
