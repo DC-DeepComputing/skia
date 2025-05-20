@@ -88,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ea70fa8c_689a1f56",
+        "filename": "src/core/SkBlitter.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-20T14:07:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "dc7d3e13_f6e91856",
+      "range": {
+        "startLine": 127,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 16
+      },
+      "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1421850c_baa4a80d",
@@ -196,6 +220,30 @@
       "side": 1,
       "message": "I think the big wins are:\n- skipping any count logic inside the blitter\n- avoiding a function call, since addr32() is inlined",
       "parentUuid": "09a6d535_643420b7",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 45
+      },
+      "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc837223_325575fe",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-20T14:07:42Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a0d71c11_58bc2b59",
       "range": {
         "startLine": 91,
         "startChar": 16,
