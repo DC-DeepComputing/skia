@@ -449,6 +449,28 @@ public:
         // The following code blocks are just stubs for the Android code. For Skia's testing
         // purposes they only need to have the same name and number of children as the real code.
         // When the following PaintOptions are used in Android the real SkSL must be supplied.
+        static const SkString kCrosstalkAndChunk16x16Code(R"(
+            uniform shader bitmap;
+            uniform float inputMultiplier;
+            vec4 main(vec2 xy) {
+                float3 linear = toLinearSrgb(float3(0.0, 0.0, 0.0));
+                return float4(fromLinearSrgb(linear), 1.0);
+            }
+        )");
+
+        fCrosstalkAndChunk16x16Effect = makeEffect(kCrosstalkAndChunk16x16Code,
+                                                   "RE_MouriMap_CrossTalkAndChunk16x16Effect");
+
+        static const SkString kChunk8x8Code(R"(
+            uniform shader img;
+            vec4 main(vec2 xy) {
+                return float4(0.0, 0.0, 0.0, 1.0);
+            }
+        )");
+
+        fChunk8x8Effect = makeEffect(kChunk8x8Code, "RE_MouriMap_Chunk8x8Effect");
+
+
         static const SkString kBlurCode(R"(
             uniform shader img;
             vec4 main(vec2 xy) {
@@ -470,21 +492,59 @@ public:
         fToneMapEffect = makeEffect(kTonemapCode, "RE_MouriMap_TonemapEffect");
     }
 
+    sk_sp<SkRuntimeEffect> crosstalkAndChunk16x16Effect() const {
+        return fCrosstalkAndChunk16x16Effect;
+    }
+    sk_sp<SkRuntimeEffect> chunk8x8Effect() const { return fChunk8x8Effect; }
     sk_sp<SkRuntimeEffect> blurEffect() const { return fBlurEffect; }
     sk_sp<SkRuntimeEffect> toneMapEffect() const { return fToneMapEffect; }
 
 private:
+    sk_sp<SkRuntimeEffect> fCrosstalkAndChunk16x16Effect;
+    sk_sp<SkRuntimeEffect> fChunk8x8Effect;
     sk_sp<SkRuntimeEffect> fBlurEffect;
     sk_sp<SkRuntimeEffect> fToneMapEffect;
 };
 
 const MouriMap& MouriMap() {
-    static class MouriMap gMouriMap;
+    static class MouriMap MouriMap;
 
-    return gMouriMap;
+    return MouriMap;
 }
 
 } // anonymous namespace
+
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
+            MouriMap().crosstalkAndChunk16x16Effect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(crosstalk) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+skgpu::graphite::PaintOptions MouriMapChunk8x8Effect() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> chunk8x8 = PrecompileRuntimeEffects::MakePrecompileShader(
+            MouriMap().chunk8x8Effect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(chunk8x8) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
 
 skgpu::graphite::PaintOptions MouriMapBlur() {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
@@ -572,6 +632,25 @@ PaintOptions TransparentPaintImagePremulYCbCr240Srcover() {
     return paintOptions;
 }
 
+// 8  "RP((RGBA16F+D16 x1).rgba) + "
+//    "CoverBoundsRenderStep[NonAAFill] + "
+//    "RE_MouriMap_CrossTalkAndChunk16x16Effect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kEwAAPcAAAAAAAAA) ] ColorSpaceTransformPremul ] ] ColorSpaceTransform ColorSpaceTransform ] Src" },
+
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr() {
+    // HardwareImage(3: kEwAAPcAAAAAAAAA)
+    sk_sp<PrecompileShader> img = vulkan_ycbcr_709_image_shader(240,
+                                                                VK_SAMPLER_YCBCR_RANGE_ITU_FULL);
+
+    sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
+            MouriMap().crosstalkAndChunk16x16Effect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(crosstalk) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
 void Base642YCbCr(const char* str) {
 
     size_t expectedDstLength;
@@ -621,7 +700,6 @@ void Base642YCbCr(const char* str) {
 }
 
 #endif // SK_VULKAN
-
 
 namespace {
 
