@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "331033ec_43fb92a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-20T06:49:38Z",
+      "side": 1,
+      "message": "@kjlubick@chromium.org, can we keep bazel from upgrading other packages when we roll Fontations? Here, we seem to face an unrelated test failure in ICU4X Bidi reordering tests - and the lock file is a bit hard to read but I believe, it somehow touched icu4x as well, even though that is clamped to a tag in the module file that was not touched in a year.",
+      "revId": "081b2974d932178239efc523a81d682f915eeade",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
