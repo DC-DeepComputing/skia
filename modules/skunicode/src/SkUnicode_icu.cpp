@@ -5,7 +5,7 @@
 * found in the LICENSE file.
 */
 #include "modules/skunicode/include/SkUnicode_icu.h"
-
+#include "include/private/base/SkAssert.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
@@ -674,6 +674,11 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
+        if (levelsCount == 0) {
+            // To avoid an assert in unicode
+            return;
+        }
+        SkASSERT(runLevels != nullptr);
         fBidiFact->bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 

@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 #include "modules/skunicode/src/SkBidiFactory_icu_full.h"
-
+#include "include/private/base/SkAssert.h"
 #include "modules/skunicode/src/SkUnicode_icupriv.h"
 
 #include <unicode/ubidi.h>
@@ -50,5 +50,10 @@ void SkBidiICUFactory::bidi_setPara(UBiDi* bidi,
 void SkBidiICUFactory::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
                                           int levelsCount,
                                           int32_t logicalFromVisual[]) const {
+    if (levelsCount == 0) {
+        // To avoid an assert in unicode
+        return;
+    }
+    SkASSERT(runLevels != nullptr);
     SkGetICULib()->f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
 }
