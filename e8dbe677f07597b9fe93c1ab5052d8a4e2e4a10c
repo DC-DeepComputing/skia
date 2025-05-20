@@ -22,6 +22,30 @@
       },
       "revId": "e8dbe677f07597b9fe93c1ab5052d8a4e2e4a10c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "605d42af_592b8f96",
+        "filename": "modules/skunicode/src/SkBidiFactory_icu_full.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-05-20T15:30:22Z",
+      "side": 1,
+      "message": "Not sure about that. I mean, you are right that I need to react to this case (levelCounts !\u003d 0 \u0026\u0026 runLevels \u003d\u003d nullptr) but I don\u0027t think I should quietly ignore it. It\u0027s a wrong combination, not just an edge case.\nI could leave it as ICU4X assert, I could add my own assert but it must be stopped, not ignored.",
+      "parentUuid": "be24ed50_1d5583a6",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 19
+      },
+      "revId": "e8dbe677f07597b9fe93c1ab5052d8a4e2e4a10c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
