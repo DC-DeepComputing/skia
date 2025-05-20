@@ -114,6 +114,8 @@ const PrecompileSettings kPrecompileCases[] = {
 // 100% (1/1) handles 6
 /* 30 */ { MouriMapChunk8x8Effect(),           DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
 
+/* 31 */ { Foo(),           DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
+
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 100% (2/2) handles 26 50
 /* 31 */ { ImagePremulYCbCr238Srcover(),       kRRectAndNonAARect,              kRGBA_1_D },
