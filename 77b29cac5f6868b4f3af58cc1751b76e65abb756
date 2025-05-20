@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a55584f_c9ad815c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-20T19:19:38Z",
+      "side": 1,
+      "message": "The failing Android/Protected jobs are already failing on the tree",
+      "revId": "77b29cac5f6868b4f3af58cc1751b76e65abb756",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
