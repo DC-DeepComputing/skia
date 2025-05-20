@@ -1,0 +1,205 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb70e6ff_ca309403",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "I haven\u0027t had the chance to look at the actual unit tests yet, but here\u0027s some feedback on the rest of the supporting code changes",
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78258d5c_732d340b",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "I know you were seeing a boolean table inconsistency before, but with the current definition of `get_gpu_access_pattern` taking `isGpuAccessOnly`, I don\u0027t think we need this change?\n\nThis just removes the choice of kGpuOnlyCopySrc, but I\u0027d think we\u0027d want that still?",
+      "range": {
+        "startLine": 608,
+        "startChar": 12,
+        "endLine": 609,
+        "endChar": 83
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b64dc298_8ff9871d",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "I didn\u0027t notice this in the earlier CL, but now that `get_gpu_access_pattern` takes `isGpuOnlyAccess`, this parameter label should be updated. `true` is still the value to pass in, so behaviorally nothing is going wrong.",
+      "range": {
+        "startLine": 757,
+        "startChar": 35,
+        "endLine": 757,
+        "endChar": 60
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da8fa36b_04820419",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "nit: const",
+      "range": {
+        "startLine": 337,
+        "startChar": 54,
+        "endLine": 337,
+        "endChar": 55
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64a3967a_726b55ac",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "nit: maybe named `testingOnly_getCopyRanges()`",
+      "range": {
+        "startLine": 337,
+        "startChar": 39,
+        "endLine": 337,
+        "endChar": 52
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64c28069_433bac20",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "I think it\u0027ll be clearer/less brittle if we define a struct (guarded by GPU_TEST_UTILS) to hold these 4 values per CopyRange, and then this function returns an array of structs.",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 56
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1ecb3b2_4fc9217d",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "nit: skia style has preprocessor macros not indented with the rest of the C++ code.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 31
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5cad0f4_9f8dd4eb",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "We could grab the fTarget Buffer pointer off of any of the BufferInfos in the StaticBufferManager and pass it into this function so that `getInitialStaticVertexInfo() doesn\u0027t have to depend on searching for the particular named resource.\n\nminor nit: for these sorts of invasive functions, it\u0027s good to prefix them with `testingOnly_`",
+      "range": {
+        "startLine": 119,
+        "startChar": 13,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4a07e01_f1e05d84",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-20T15:31:05Z",
+      "side": 1,
+      "message": "I know it requires more #ifdefs, but this should be private and down below.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 89
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
