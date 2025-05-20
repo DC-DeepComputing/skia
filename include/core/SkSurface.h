@@ -11,6 +11,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
@@ -225,6 +226,12 @@ public:
         @return the recorder, if available; nullptr otherwise
      */
     skgpu::graphite::Recorder* recorder() const;
+
+    /** Returns the base SkRecorder being used by the SkSurface.
+
+        @return the recorder; should not be null.
+    */
+    SkRecorder* baseRecorder() const;
 
     enum class BackendHandleAccess {
         kFlushRead,     //!< back-end object is readable

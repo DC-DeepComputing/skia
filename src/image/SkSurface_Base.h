@@ -10,6 +10,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
@@ -71,6 +72,7 @@ public:
 
     virtual GrRecordingContext* onGetRecordingContext() const;
     virtual skgpu::graphite::Recorder* onGetRecorder() const;
+    virtual SkRecorder* onGetBaseRecorder() const;
 
     /**
      *  Allocate a canvas that will draw into this surface. We will cache this
