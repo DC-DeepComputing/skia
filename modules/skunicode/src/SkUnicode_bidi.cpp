@@ -132,7 +132,9 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
-        fBidiFact->bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        if (levelsCount > 0) {
+            fBidiFact->bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
+        }
     }
 
 private:
