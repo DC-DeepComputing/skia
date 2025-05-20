@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4cfc87ac_e7a3ea57",
+        "filename": "include/core/SkSurface.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-05-20T15:48:25Z",
+      "side": 1,
+      "message": "How true is this? We have SkSurface_Null as well. And for now Ganesh has no concept of a recorder.",
+      "revId": "d8bae62f638d9c6eb2919e59d572d39f80c531d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
