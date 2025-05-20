@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "dc7d3e13_f6e91856",
+        "filename": "src/core/SkBlitter.h",
+        "patchSetId": 17
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-20T14:03:15Z",
+      "side": 1,
+      "message": "It we only ever want this to work for that particular color format, yes. However, I think this is a general construct for any raster config, so I wanted to make it clear that it could return a value for 8 or 16 or 32 buffers (in either RGB or BGR). (hence the comment about the \u0027low\u0027 bits of value).",
+      "parentUuid": "4d9d306a_4023d595",
+      "range": {
+        "startLine": 127,
+        "startChar": 8,
+        "endLine": 127,
+        "endChar": 16
+      },
+      "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1421850c_baa4a80d",
         "filename": "src/core/SkDraw.cpp",
         "patchSetId": 17
@@ -148,6 +172,30 @@
       "writtenOn": "2025-05-20T12:27:29Z",
       "side": 1,
       "message": "I\u0027m trying to come up with a mental model for *why* this is so much faster. IIUC, blitH calls SkBlitRow::Color32 which calls SkOpts::memset32 which I presume would be pretty quick. Is that indirection causing the 2x slow down?\n\nDid you try adding a specialization for SkARGB32_Opaque_Blitter::blitH that skips the branch and just calls memset? If we get a similar performance boost, that would be a bit cleaner than exposing the pixels and color, IMO",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 45
+      },
+      "revId": "d67b452b0403ceaad8e067dda3608eb761d0d0a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0d71c11_58bc2b59",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-20T14:03:15Z",
+      "side": 1,
+      "message": "I think the big wins are:\n- skipping any count logic inside the blitter\n- avoiding a function call, since addr32() is inlined",
+      "parentUuid": "09a6d535_643420b7",
       "range": {
         "startLine": 91,
         "startChar": 16,
