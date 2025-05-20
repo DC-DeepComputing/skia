@@ -10,6 +10,8 @@
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
@@ -18,9 +20,94 @@
 #include <set>
 
 using namespace skgpu::graphite;
+using namespace PrecompileShaders;
 using namespace PrecompileTestUtils;
 
 namespace {
+
+// Note: passing in a name to 'makeEffect' is a difference from Android's factory functions.
+sk_sp<SkRuntimeEffect> makeEffect(const SkString& sksl, const char* name) {
+    SkRuntimeEffect::Options options;
+    options.fName = name;
+
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(sksl, options);
+    if (!effect) {
+        SkDebugf("%s\n", error.c_str());
+    }
+    return effect;
+}
+
+class MouriMap {
+public:
+    MouriMap() {
+        static const SkString kBlurCode(R"(
+            uniform shader bitmap;
+            vec4 main(vec2 xy) {
+                return bitmap.eval(xy);
+            }
+        )");
+
+        fBlurEffect = makeEffect(kBlurCode, "RE_MouriMap_BlurEffect");
+
+        static const SkString kTonemapCode(R"(
+            uniform shader image;
+            uniform shader lux;
+            uniform float scaleFactor;
+            uniform float inputMultiplier;
+            uniform float targetHdrSdrRatio;
+            vec4 main(vec2 xy) {
+                float3 linear = toLinearSrgb(float3(0.0, 0.0, 0.0));
+                return float4(fromLinearSrgb(linear), 1.0);
+            }
+        )");
+
+        fToneMapEffect = makeEffect(kTonemapCode, "RE_MouriMap_TonemapEffect");
+    }
+
+    sk_sp<SkRuntimeEffect> blurEffect() const { return fBlurEffect; }
+    sk_sp<SkRuntimeEffect> toneMapEffect() const { return fToneMapEffect; }
+
+private:
+    sk_sp<SkRuntimeEffect> fBlurEffect;
+    sk_sp<SkRuntimeEffect> fToneMapEffect;
+};
+
+static MouriMap gMouriMap;
+
+skgpu::graphite::PaintOptions MouriMapBlur() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> blur = PrecompileRuntimeEffects::MakePrecompileShader(
+            gMouriMap.blurEffect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(blur) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+//     RE_MouriMap_TonemapEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransformPremul ColorSpaceTransformPremul ] Src
+
+//    "RE_MouriMap_TonemapEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransform ColorSpaceTransform ] Src" },
+skgpu::graphite::PaintOptions MouriMapToneMap() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> toneMap = PrecompileRuntimeEffects::MakePrecompileShader(
+            gMouriMap.toneMapEffect(),
+            { { img }, { img } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(toneMap) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
 
 // For non-Vulkan configs, these settings cover 41 of the 87 cases in 'kCases'.
 // They create 53 Pipelines so only modestly over-generate (12 extra Pipelines - 23%).
@@ -105,6 +192,11 @@ const PrecompileSettings kPrecompileCases[] = {
 // 50% (1/2) handles 74 - due to the w/o msaa load variants not being used
 /* 26 */ { ImagePremulHWOnlySrc(),             DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
 
+// 100% (1/1) handles 5
+/* 27 */ { MouriMapBlur(),                     DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
+//
+/* 28 */ { MouriMapToneMap(),                  DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
+
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 100% (2/2) handles 26 50
 /* 27 */ { ImagePremulYCbCr238Srcover(),       kRRectAndNonAARect,              kRGBA_1_D },
@@ -115,7 +207,68 @@ const PrecompileSettings kPrecompileCases[] = {
 // 50% (1/2) handles 70
 /* 30 */ { TransparentPaintImagePremulYCbCr240Srcover(), DrawTypeFlags::kNonAAFillRect,kRGBA_4_DS },
 #endif
+
+
 };
+
+#if 0
+void edgeEffect() {
+    static const SkString kClampedTextureSample = SkString(R"(
+        uniform shader uContentTexture;
+        uniform vec2 uImgSize;
+
+        vec4 main(vec2 coord) {
+            vec2 clampedCoord = clamp(coord, vec2(0, 0), uImgSize);
+            return uContentTexture.eval(coord);
+        }
+    )");
+
+    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(kClampedTextureSample);
+    if (!result.effect) {
+        SkDebugf("%s\n", result.errorText.c_str());
+        return;
+    }
+
+#if 0
+    SkRuntimeShaderBuilder builder = SkRuntimeShaderBuilder(result->effect);
+
+    builder.child("uContentTexture") = inputShader;
+    if (imageBounds.isEmpty()) {
+        builder.uniform("uImgSize") = SkPoint{layer.geometry.boundaries.getWidth(),
+                                              layer.geometry.boundaries.getHeight()};
+    } else {
+        builder.uniform("uImgSize") = SkPoint{imageBounds.width(), imageBounds.height()};
+    }
+    return builder.makeShader();
+#endif
+}
+
+sk_sp<PrecompileShader> gainEffect() {
+    static const SkString kGainmap = SkString(R"(
+        uniform shader sdr;
+        uniform shader hdr;
+        uniform float mapMaxLog2;
+
+        vec4 main(vec2 xy) {
+            sdr.eval(xy);
+            hdr.eval(xy);
+            return vec4(0, 0, 0, 1);
+        }
+    )");
+
+    SkRuntimeEffect::Result result = SkRuntimeEffect::MakeForShader(kGainmap);
+    if (!result.effect) {
+        SkDebugf("%s\n", result.errorText.c_str());
+        return nullptr;
+    }
+
+    return PrecompileRuntimeEffects::MakePrecompileShader(result.effect, {});
+}
+
+void whatwhat() {
+
+}
+#endif
 
 //
 // These Pipelines are candidates for inclusion in Android's precompile. They were generated
@@ -142,7 +295,7 @@ static const PipelineLabel kCases[] = {
 /*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ SolidColor ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
-/*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+/*   5 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_MouriMap_BlurEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ] Src" },
 /*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
@@ -420,18 +573,18 @@ bool skip(const char* str) {
     if (strstr(str, "RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader")) {
         return true;
     }
-    if (strstr(str, "RE_MouriMap_BlurEffect")) {
-        return true;
-    }
+//    if (strstr(str, "RE_MouriMap_BlurEffect")) {
+//        return true;
+//    }
     if (strstr(str, "RE_MouriMap_Chunk8x8Effect")) {
         return true;
     }
     if (strstr(str, "RE_MouriMap_CrossTalkAndChunk16x16Effect")) {
         return true;
     }
-    if (strstr(str, "RE_MouriMap_TonemapEffect")) {
-        return true;
-    }
+//    if (strstr(str, "RE_MouriMap_TonemapEffect")) {
+//        return true;
+//    }
     return false;
 }
 
@@ -491,7 +644,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 28; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
