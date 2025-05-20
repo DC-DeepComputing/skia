@@ -458,6 +458,11 @@ struct RuntimeEffectBlock {
                               PaintParamsKeyBuilder*,
                               PipelineDataGatherer*,
                               SkRuntimeEffect*);
+
+    static void HandleIntrinsics(const KeyContext&,
+                                 PaintParamsKeyBuilder*,
+                                 PipelineDataGatherer*,
+                                 const SkRuntimeEffect*);
 };
 
 void AddToKey(const KeyContext&,
