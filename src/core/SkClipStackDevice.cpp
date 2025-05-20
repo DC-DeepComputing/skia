@@ -60,7 +60,7 @@ void SkClipStackDevice::clipRegion(const SkRegion& rgn, SkClipOp op) {
     SkRegion tmp;
     SkPath path;
     rgn.getBoundaryPath(&path);
-    path.transform(SkMatrix::Translate(-origin));
+    path = path.makeTransform(SkMatrix::Translate(-origin));
     fClipStack.clipPath(path, SkMatrix::I(), op, false);
 }
 
@@ -117,7 +117,7 @@ void SkClipStackDevice::android_utils_clipAsRgn(SkRegion* rgn) const {
         *rgn = boundsRgn;
         SkClipStack::B2TIter iter(fClipStack);
         while (auto elem = iter.next()) {
-            tmpPath.rewind();
+            tmpPath = SkPath(); // TODO(borenet)
             elem->asDeviceSpacePath(&tmpPath);
             SkRegion tmpRgn;
             tmpRgn.setPath(tmpPath, boundsRgn);

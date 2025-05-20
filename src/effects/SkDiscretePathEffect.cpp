@@ -100,6 +100,7 @@ public:
         SkPoint     p;
         SkVector    v;
 
+        SkPathBuilder builder(*dst);
         do {
             SkScalar    length = meas.getLength();
     #if defined(SK_BUILD_FOR_FUZZER)
@@ -124,20 +125,21 @@ public:
 
                 if (meas.getPosTan(distance, &p, &v)) {
                     Perterb(&p, v, rand.nextSScalar1() * scale);
-                    dst->moveTo(p);
+                    builder.moveTo(p);
                 }
                 while (--n >= 0) {
                     distance += delta;
                     if (meas.getPosTan(distance, &p, &v)) {
                         Perterb(&p, v, rand.nextSScalar1() * scale);
-                        dst->lineTo(p);
+                        builder.lineTo(p);
                     }
                 }
                 if (meas.isClosed()) {
-                    dst->close();
+                    builder.close();
                 }
             }
         } while (meas.nextContour());
+        *dst = builder.detach();
         return true;
     }
 

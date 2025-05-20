@@ -3,6 +3,7 @@
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
@@ -1449,6 +1450,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
 
 int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
     int notConverted = 0;
+    SkPathBuilder b;
     auto& line = fLines[lineNumber];
     line.iterateThroughVisualRuns(
               false,
@@ -1473,12 +1475,12 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                                 line.offset().fY + correctedBaseline);
               SkRect rect = context.clip.makeOffset(offset);
               struct Rec {
-                  SkPath* fPath;
+                  SkPathBuilder* fPath;
                   SkPoint fOffset;
                   const SkPoint* fPos;
                   int fNotConverted;
               } rec =
-                  {dest, SkPoint::Make(rect.left(), rect.top()),
+                  {&b, SkPoint::Make(rect.left(), rect.top()),
                    &run->positions()[context.pos], 0};
               font.getPaths(&run->glyphs()[context.pos], context.size,
                     [](const SkPath* path, const SkMatrix& mx, void* ctx) {
@@ -1487,7 +1489,8 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
                             SkMatrix total = mx;
                             total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                                 rec->fPos->fY + rec->fOffset.fY);
-                            rec->fPath->addPath(*path, total);
+                            SkPath transformed = path->makeTransform(total);
+                            rec->fPath->addPath(transformed).detach();
                         } else {
                             rec->fNotConverted++;
                         }
@@ -1497,6 +1500,7 @@ int ParagraphImpl::getPath(int lineNumber, SkPath* dest) {
           });
         return true;
     });
+    *dest = b.detach();
 
     return notConverted;
 }
@@ -1516,7 +1520,8 @@ SkPath Paragraph::GetPath(SkTextBlob* textBlob) {
                     SkMatrix tmp(mx);
                     tmp.postTranslate(rec->fPos->fX - rec->fOffset.fX,
                                       rec->fPos->fY - rec->fOffset.fY);
-                    rec->fDst->addPath(*src, tmp);
+                    SkPath transformed = src->makeTransform(tmp);
+                    *rec->fDst = SkPathBuilder(*rec->fDst).addPath(transformed).detach();
                 }
                 rec->fPos += 1;
             },
