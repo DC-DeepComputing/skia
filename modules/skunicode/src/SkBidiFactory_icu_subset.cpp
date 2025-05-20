@@ -46,5 +46,10 @@ void SkBidiSubsetFactory::bidi_setPara(UBiDi* bidi,
 void SkBidiSubsetFactory::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
                                              int levelsCount,
                                              int32_t logicalFromVisual[]) const {
+    if (levelsCount == 0) {
+        // To avoid an assert in unicode
+        return;
+    }
+    SkASSERT(runLevels != nullptr);
     ubidi_reorderVisual_skia(runLevels, levelsCount, logicalFromVisual);
 }
