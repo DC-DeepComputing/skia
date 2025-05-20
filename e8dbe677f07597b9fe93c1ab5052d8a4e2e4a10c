@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be24ed50_1d5583a6",
+        "filename": "modules/skunicode/src/SkBidiFactory_icu_full.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-20T15:12:18Z",
+      "side": 1,
+      "message": "suggestion: levelsCount \u003d\u003d 0 || !runLevels",
+      "range": {
+        "startLine": 53,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 19
+      },
+      "revId": "e8dbe677f07597b9fe93c1ab5052d8a4e2e4a10c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
