@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a0a7ffc_794a1117",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-20T17:29:01Z",
+      "side": 1,
+      "message": "PTAL - the 6 failing Android/Protected jobs are also failing on the tree",
+      "revId": "b302b72a56338f83ae70ecd99266c4c593590e75",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
