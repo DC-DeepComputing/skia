@@ -14,6 +14,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPixmap.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -45,6 +46,7 @@ SkSurface_Base::~SkSurface_Base() {
 GrRecordingContext* SkSurface_Base::onGetRecordingContext() const { return nullptr; }
 
 skgpu::graphite::Recorder* SkSurface_Base::onGetRecorder() const { return nullptr; }
+SkRecorder* SkSurface_Base::onGetBaseRecorder() const { return nullptr; }
 
 void SkSurface_Base::onDraw(SkCanvas* canvas, SkScalar x, SkScalar y,
                             const SkSamplingOptions& sampling, const SkPaint* paint) {
