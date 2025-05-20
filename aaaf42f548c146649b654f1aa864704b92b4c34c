@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15c18a3b_0dbfbb4d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-20T14:23:19Z",
+      "side": 1,
+      "message": "Following up on https://review.skia.org/skia/+/978178/comment/d3fdc03e_166ec2f6/",
+      "revId": "aaaf42f548c146649b654f1aa864704b92b4c34c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
