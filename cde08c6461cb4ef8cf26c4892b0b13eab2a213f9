@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "683e59bf_bc3f821c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 753,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-20T20:11:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bcf49036_b86fd120",
+      "revId": "cde08c6461cb4ef8cf26c4892b0b13eab2a213f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9056139b_f0ccd0a8",
@@ -48,6 +66,30 @@
       "writtenOn": "2025-05-20T18:42:03Z",
       "side": 1,
       "message": "I think \"{}\" should work here",
+      "range": {
+        "startLine": 127,
+        "startChar": 57,
+        "endLine": 127,
+        "endChar": 83
+      },
+      "revId": "cde08c6461cb4ef8cf26c4892b0b13eab2a213f9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4e074d6f_0f72d38f",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-20T20:11:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9056139b_f0ccd0a8",
       "range": {
         "startLine": 127,
         "startChar": 57,
