@@ -635,8 +635,12 @@ void deduce_settings_from_label(const char* testStr, PrecompileSettings* result)
         strstr(testStr, "LinearGradient8 ColorSpaceTransformSRGB") ||
         strstr(testStr, "PrimitiveColor ColorSpaceTransformSRGB")) {
         result->fRenderPassProps.fDstCS = SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
-                                                               SkNamedGamut::kAdobeRGB);
+                                                                SkNamedGamut::kAdobeRGB);
     } else if (strstr(testStr, "ColorSpaceTransformSRGB")) {
+        result->fRenderPassProps.fDstCS = SkColorSpace::MakeSRGB();
+    } else if (strstr(testStr, "] ColorSpaceTransform ColorSpaceTransform ]")) {
+        // The above string only appears for RuntimeEffects that use the
+        // toLinearSrgb/fromLinearSrgb intrinsics w/ a destination SRGB color space.
         result->fRenderPassProps.fDstCS = SkColorSpace::MakeSRGB();
     }
 }
@@ -666,7 +670,7 @@ bool PrecompileSettings::isSubsetOf(const PrecompileSettings& superSet) const {
 
     // 'superSet' may have a wider range of DrawTypeFlags
     return (fDrawTypeFlags & superSet.fDrawTypeFlags) &&
-           fRenderPassProps == superSet.fRenderPassProps;
+            fRenderPassProps == superSet.fRenderPassProps;
 }
 
 PipelineLabelInfoCollector::PipelineLabelInfoCollector(SkSpan<const PipelineLabel> cases,
