@@ -175,6 +175,10 @@ public:
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
 
+        if (levelsCount == 0) {
+            // To avoid an assert in unicode
+            return;
+        }
         const auto bidi = ICU4XBidi::create(fDataProvider).ok().value();
         const diplomat::span<const uint8_t> levels(&runLevels[0], levelsCount);
         auto map = bidi.reorder_visual(levels);

@@ -674,6 +674,10 @@ public:
     void reorderVisual(const BidiLevel runLevels[],
                        int levelsCount,
                        int32_t logicalFromVisual[]) override {
+        if (levelsCount == 0) {
+            // To avoid an assert in unicode
+            return;
+        }
         fBidiFact->bidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
     }
 

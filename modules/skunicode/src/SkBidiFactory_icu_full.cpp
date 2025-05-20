@@ -50,5 +50,9 @@ void SkBidiICUFactory::bidi_setPara(UBiDi* bidi,
 void SkBidiICUFactory::bidi_reorderVisual(const SkUnicode::BidiLevel runLevels[],
                                           int levelsCount,
                                           int32_t logicalFromVisual[]) const {
+    if (levelsCount == 0) {
+        // To avoid an assert in unicode
+        return;
+    }
     SkGetICULib()->f_ubidi_reorderVisual(runLevels, levelsCount, logicalFromVisual);
 }
