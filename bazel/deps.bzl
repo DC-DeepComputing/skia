@@ -196,7 +196,7 @@ def _c_plus_plus_modules_impl(ctx):
 
     git_repository(
         name = "spirv_tools",
-        commit = "66fe610946a6d98169f8ebe9ca483f64c4009fa5",
+        commit = "736e415ebaa4290d21e42e370db5e933b9dff06d",
         remote = "https://skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools.git",
     )
 
