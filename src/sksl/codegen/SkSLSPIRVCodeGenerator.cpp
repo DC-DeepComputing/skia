@@ -2098,7 +2098,7 @@ SpvId SPIRVCodeGenerator::writeSpecialIntrinsic(const FunctionCall& c, SpecialIn
                                                 OutputStream& out) {
     const ExpressionArray& arguments = c.arguments();
     const Type& callType = c.type();
-    SpvId result = this->nextId(nullptr);
+    SpvId result = this->nextId(&callType);
     switch (kind) {
         case kAtan_SpecialIntrinsic: {
             STArray<2, SpvId> argumentIds;
