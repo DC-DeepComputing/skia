@@ -10,8 +10,16 @@
 #include "src/base/SkLeanWindows.h"
 #include "tools/library/LoadDynamicLibrary.h"
 
-void* SkLoadDynamicLibrary(const char* libraryName) {
-    return LoadLibraryA(libraryName);
+void* SkLoadDynamicLibrary(const char* libraryName, DynamicLibrarySearch search) {
+    switch (search) {
+        case DynamicLibrarySearch::AlreadyLoaded:
+            return GetModuleHandleA(libraryName);
+        // Note: there is no other option than listed, but `default` is added because msvc is too
+        // basic.
+        default:
+        case DynamicLibrarySearch::Default:
+            return LoadLibraryA(libraryName);
+    }
 }
 
 void* SkGetProcedureAddress(void* library, const char* functionName) {
