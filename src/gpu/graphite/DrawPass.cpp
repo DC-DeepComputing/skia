@@ -55,43 +55,6 @@ struct Bitfield {
     static uint64_t set(uint32_t v) { return (v & kMask) << kOffset; }
 };
 
-// This class maps objects to a dense index which can then be used to look them up later
-template <typename T, typename V = T, typename C = V>
-class DenseBiMap {
-public:
-    using Index = uint32_t;
-
-    // See note below in GeometryUniformField. This value can be round-tripped within the SortKey
-    // packing for all fields but will not be produced when recording actual draw data.
-    static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
-
-    bool empty() const { return fIndexToData.empty(); }
-    size_t size() const { return fIndexToData.size(); }
-
-    Index insert(const T& data) {
-        Index* index = fDataToIndex.find(data);
-        if (!index) {
-            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
-            index = fDataToIndex.set(data, (Index) fIndexToData.size());
-            fIndexToData.push_back(C{data});
-        }
-        return *index;
-    }
-
-    const V& lookup(Index index) {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
-
-    SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
-
-    TArray<V>&& detach() { return std::move(fIndexToData); }
-
-private:
-    THashMap<T, Index> fDataToIndex;
-    TArray<V> fIndexToData;
-};
-
 // NOTE: TextureBinding's use as a key type in DenseBiMap relies on the fact that the underlying
 // data has been de-duplicated by a PipelineDataCache earlier, so that the bit identity of the data
 // blocks (e.g. address+size) is equivalent to the content equality of the texture lists.
