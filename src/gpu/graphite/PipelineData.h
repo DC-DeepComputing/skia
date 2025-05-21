@@ -18,8 +18,11 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -201,15 +204,52 @@ private:
 // Samplers.
 using TextureDataCache = PipelineDataCache<TextureDataBlock>;
 
-// A UniformDataCache is used to deduplicate uniform data blocks uploaded to uniform / storage
-// buffers for a DrawPass pipeline.
-// TODO: This is just a combination of PipelineDataCache and DrawPass's DenseBiMap, ideally we can
-// merge those two classes rather than defining this new class.
-class UniformDataCache {
+// This class maps objects to a dense index which can then be used to look them up later
+template <typename T, typename V = T, typename C = V, typename Hasher = SkGoodHash>
+class DenseBiMap {
 public:
     using Index = uint32_t;
+
+    // See note below in GeometryUniformField. This value can be round-tripped within the SortKey
+    // packing for all fields but will not be produced when recording actual draw data.
     static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
 
+    bool empty() const { return fIndexToData.empty(); }
+    size_t size() const { return fIndexToData.size(); }
+
+    Index insert(const T& data) {
+        Index* index = fDataToIndex.find(data);
+        if (!index) {
+            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
+            index = fDataToIndex.set(data, (Index) fIndexToData.size());
+            fIndexToData.push_back(C{data});
+        }
+        return *index;
+    }
+
+    const V& lookup(Index index) const {
+        SkASSERT(index < kInvalidIndex);
+        return fIndexToData[index];
+    }
+
+    V& lookup(Index index) {
+        SkASSERT(index < kInvalidIndex);
+        return fIndexToData[index];
+    }
+
+    SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
+
+    skia_private::TArray<V>&& detach() { return std::move(fIndexToData); }
+
+private:
+    friend class UniformDataCache;
+    skia_private::THashMap<T, Index, Hasher> fDataToIndex;
+    skia_private::TArray<V> fIndexToData;
+};
+
+// TODO find a way to do this so that UniformDataCache does not have to be a friend of DenseBiMap
+class UniformDataCache {
+public:
     // Tracks uniform data on the CPU and then its transition to storage in a GPU buffer (UBO or
     // SSBO).
     struct Entry {
@@ -220,38 +260,33 @@ public:
         Entry(UniformDataBlock cpuData) : fCpuData(cpuData) {}
     };
 
+    using DenseBiMapType = DenseBiMap<UniformDataBlock, Entry, Entry, UniformDataBlock::Hash>;
+    using Index = DenseBiMapType::Index;
+    static constexpr Index kInvalidIndex = DenseBiMapType::kInvalidIndex;
+
     UniformDataCache() = default;
 
     Index insert(const UniformDataBlock& dataBlock) {
-        Index* index = fDataToIndex.find(dataBlock);
+        Index* index = fDenseBiMap.fDataToIndex.find(dataBlock);
         if (!index) {
-            // Need to make a copy of dataBlock into the arena
-            UniformDataBlock copy = UniformDataBlock::Make(dataBlock, &fArena);
-            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
-            index = fDataToIndex.set(copy, static_cast<Index>(fIndexToData.size()));
-            fIndexToData.push_back(Entry{copy});
+            SkA32Assert(SkToU32(fDenseBiMap.size()) < kInvalidIndex);
+            auto arenaBlock = UniformDataBlock::Make(dataBlock, &fArena);
+            index = fDenseBiMap.fDataToIndex.set(arenaBlock,
+                                                 (Index) fDenseBiMap.fIndexToData.size());
+            fDenseBiMap.fIndexToData.push_back(Entry{arenaBlock});
         }
         return *index;
     }
 
-    const Entry& lookup(Index index) const {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
-
-    Entry& lookup(Index index) {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
+    const Entry& lookup(Index index) const { return fDenseBiMap.lookup(index); }
+    Entry& lookup(Index index) { return fDenseBiMap.lookup(index); }
 
 #if defined(GPU_TEST_UTILS)
-    int count() { return fIndexToData.size(); }
+    int count() const { return fDenseBiMap.size(); }
 #endif
 
 private:
-    skia_private::THashMap<UniformDataBlock, Index, UniformDataBlock::Hash> fDataToIndex;
-    skia_private::TArray<Entry> fIndexToData;
-
+    DenseBiMapType fDenseBiMap;
     // Holds the de-duplicated data.
     SkArenaAlloc fArena{0};
 };

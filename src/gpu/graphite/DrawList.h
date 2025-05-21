@@ -98,6 +98,7 @@ public:
 
 private:
     friend class DrawPass;
+    friend class SortKey;
 
     struct Draw {
         const Renderer* fRenderer; // Owned by SharedContext of Recorder that recorded the draw
