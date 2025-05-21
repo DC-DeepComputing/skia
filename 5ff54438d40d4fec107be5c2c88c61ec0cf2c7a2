@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b860ac37_fd06e43c",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78258d5c_732d340b",
+      "range": {
+        "startLine": 608,
+        "startChar": 12,
+        "endLine": 609,
+        "endChar": 83
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b64dc298_8ff9871d",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-05-20T15:31:05Z",
       "side": 1,
       "message": "I didn\u0027t notice this in the earlier CL, but now that `get_gpu_access_pattern` takes `isGpuOnlyAccess`, this parameter label should be updated. `true` is still the value to pass in, so behaviorally nothing is going wrong.",
+      "range": {
+        "startLine": 757,
+        "startChar": 35,
+        "endLine": 757,
+        "endChar": 60
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd18703_bb629c86",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 757,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b64dc298_8ff9871d",
       "range": {
         "startLine": 757,
         "startChar": 35,
@@ -110,6 +158,54 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "635c23a7_35b151f6",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64a3967a_726b55ac",
+      "range": {
+        "startLine": 337,
+        "startChar": 39,
+        "endLine": 337,
+        "endChar": 52
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1995f5b_f19e47b4",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "da8fa36b_04820419",
+      "range": {
+        "startLine": 337,
+        "startChar": 54,
+        "endLine": 337,
+        "endChar": 55
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "64c28069_433bac20",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-05-20T15:31:05Z",
       "side": 1,
       "message": "I think it\u0027ll be clearer/less brittle if we define a struct (guarded by GPU_TEST_UTILS) to hold these 4 values per CopyRange, and then this function returns an array of structs.",
+      "range": {
+        "startLine": 340,
+        "startChar": 0,
+        "endLine": 343,
+        "endChar": 56
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "642e02ae_7ce3bb3b",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "64c28069_433bac20",
       "range": {
         "startLine": 340,
         "startChar": 0,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "13d3a8fc_2673e35a",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1ecb3b2_4fc9217d",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 118,
+        "endChar": 31
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5cad0f4_9f8dd4eb",
@@ -179,6 +323,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aee2533_9f33fb68",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e5cad0f4_9f8dd4eb",
+      "range": {
+        "startLine": 119,
+        "startChar": 13,
+        "endLine": 119,
+        "endChar": 39
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c4a07e01_f1e05d84",
@@ -192,6 +360,30 @@
       "writtenOn": "2025-05-20T15:31:05Z",
       "side": 1,
       "message": "I know it requires more #ifdefs, but this should be private and down below.",
+      "range": {
+        "startLine": 122,
+        "startChar": 0,
+        "endLine": 122,
+        "endChar": 89
+      },
+      "revId": "5ff54438d40d4fec107be5c2c88c61ec0cf2c7a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ac07c9d_1d43a7d8",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-21T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c4a07e01_f1e05d84",
       "range": {
         "startLine": 122,
         "startChar": 0,
