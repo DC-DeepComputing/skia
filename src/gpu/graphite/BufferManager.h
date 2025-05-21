@@ -13,6 +13,7 @@
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 
@@ -311,6 +312,9 @@ private:
         BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
         BindBufferInfo* fTarget;            // The late-assigned destination of the copy
         size_t          fRequiredAlignment; // The requested stride of the data.
+#if defined(GPU_TEST_UTILS)
+        size_t          fUnalignedSize;     // The requested size without count-4 alignment
+#endif
     };
     struct BufferInfo {
         BufferInfo(BufferType type, const Caps* caps);
@@ -329,6 +333,20 @@ private:
 
         skia_private::TArray<CopyRange> fData;
         uint32_t fTotalRequiredBytes;
+
+#if defined(GPU_TEST_UTILS)
+        skia_private::TArray<GlobalCache::StaticVertexCopyRanges> testingOnly_getCopyRanges()
+                const {
+            skia_private::TArray<GlobalCache::StaticVertexCopyRanges> info;
+            for (const CopyRange& data : fData) {
+                info.push_back({data.fTarget->fOffset,
+                                data.fUnalignedSize,
+                                data.fTarget->fSize,
+                                data.fRequiredAlignment});
+            }
+            return info;
+        }
+#endif
     };
 
     void* prepareStaticData(BufferInfo* info,
