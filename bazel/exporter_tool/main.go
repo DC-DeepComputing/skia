@@ -611,6 +611,14 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			Rules: []string{
 				"//src/gpu/android:shared_android_srcs",
 			}},
+		{Var: "skia_shared_renderdoc_headers",
+			Rules: []string{
+				"//src/gpu/renderdoc:renderdoc_hdrs",
+			}},
+		{Var: "skia_shared_renderdoc_sources",
+			Rules: []string{
+				"//src/gpu/renderdoc:renderdoc_srcs",
+			}},
 	}},
 	{GNI: "modules/svg/svg.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_svg_public",

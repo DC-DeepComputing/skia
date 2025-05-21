@@ -179,6 +179,10 @@ static DEFINE_string(properties, "",
 
 static DEFINE_bool(rasterize_pdf, false, "Rasterize PDFs when possible.");
 
+static DEFINE_bool(gpuCapture,
+                   false,
+                   "Automatically capture the test as a frame in GPU capture tools (if present).");
+
 using namespace DM;
 
 #if !defined(SK_DISABLE_LEGACY_TESTS)
@@ -959,10 +963,13 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
         Name name() const override { return "justOneRect"; }
     } justOneRect;
 
+    TestOptions dmOptions;
+    dmOptions.fGpuCapture = FLAGS_gpuCapture;
+
     SkBitmap bitmap;
     SkDynamicMemoryWStream stream;
     SkString log;
-    Result result = sink->draw(justOneRect, &bitmap, &stream, &log);
+    Result result = sink->draw(justOneRect, dmOptions, &bitmap, &stream, &log);
     if (result.isFatal()) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
         exit(1);
@@ -1169,9 +1176,11 @@ static SkTaskGroup* gDefinitelyThreadSafeWork = new SkTaskGroup;
 // The finest-grained unit of work we can run: draw a single Src into a single Sink,
 // report any errors, and perhaps write out the output: a .png of the bitmap, or a raw stream.
 struct Task {
-    Task(const TaggedSrc& src, const TaggedSink& sink) : src(src), sink(sink) {}
+    Task(const TaggedSrc& src, const TaggedSink& sink, const DM::TestOptions testOptions)
+            : src(src), sink(sink), testOptions(testOptions) {}
     const TaggedSrc&  src;
     const TaggedSink& sink;
+    DM::TestOptions testOptions;
 
     static void Run(const Task& task) {
         AutoreleasePool pool;
@@ -1183,7 +1192,7 @@ struct Task {
             SkDynamicMemoryWStream stream;
             start(task.sink.tag.c_str(), task.src.tag.c_str(),
                   task.src.options.c_str(), name.c_str());
-            Result result = task.sink->draw(*task.src, &bitmap, &stream, &log);
+            Result result = task.sink->draw(*task.src, task.testOptions, &bitmap, &stream, &log);
             if (!log.isEmpty()) {
                 info("%s %s %s %s:\n%s\n", task.sink.tag.c_str()
                                          , task.src.tag.c_str()
@@ -1600,9 +1609,13 @@ int main(int argc, char** argv) {
         gVLog = stderr;
     }
 
+    DM::TestOptions dmOptions;
+    dmOptions.fGpuCapture = FLAGS_gpuCapture;
+
 #if defined(SK_GRAPHITE)
     skiatest::graphite::TestOptions graphiteOptions;
     CommonFlags::SetTestOptions(&graphiteOptions);
+    graphiteOptions.fGpuCapture = FLAGS_gpuCapture;
 #endif
 
     GrContextOptions grCtxOptions;
@@ -1668,8 +1681,10 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            Task task(src, sink);
-            if (src->serial() || sink->serial()) {
+            Task task(src, sink, dmOptions);
+            // When --gpuCapture is specified, run the tests serially so they can be captured
+            // without interfering with each other.
+            if (src->serial() || sink->serial() || FLAGS_gpuCapture) {
                 serial.push_back(task);
             } else {
                 parallel.add([task] { Task::Run(task); });

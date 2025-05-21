@@ -15,6 +15,7 @@
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/renderdoc/RenderDoc.h"
 
 namespace skgpu {
 class SingleOwner;
@@ -60,6 +61,10 @@ public:
 
     virtual void deviceTick(Context*) {}
 
+#if defined(GPU_TEST_UTILS)
+    const RenderDoc* renderDoc() const { return &fRenderDoc; }
+#endif
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
@@ -77,6 +82,13 @@ private:
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
+
+#if defined(GPU_TEST_UTILS)
+    // The RenderDoc API is accessible via a shared object inserted by RenderDoc if the test is
+    // running through it. This object is owned by SharedContext as RenderDoc capture can be used by
+    // multiple backends, though it is only implemented in Vulkan currently.
+    RenderDoc fRenderDoc;
+#endif
 };
 
 } // namespace skgpu::graphite

@@ -28,9 +28,8 @@ private:
     OutstandingSubmission onSubmitToGpu() override;
 
 #if defined(GPU_TEST_UTILS)
-    // TODO: Implement these
-    void startCapture() override {}
-    void stopCapture() override {}
+    void startCapture() override;
+    void stopCapture() override;
 #endif
 
     VkQueue fQueue;

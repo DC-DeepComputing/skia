@@ -38,6 +38,8 @@ struct TestOptions {
     bool fUseTintIR = false;
     bool fUseWGPUTextureView = false;
 #endif
+
+    bool fGpuCapture = false;
 };
 
 }  // namespace skiatest::graphite

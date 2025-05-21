@@ -1213,6 +1213,7 @@ optional("graphite") {
   public = skia_graphite_public
   sources = skia_graphite_sources
   sources += skia_sksl_graphite_modules_sources
+  sources += skia_shared_renderdoc_headers
 
   if (is_android) {
     sources += skia_graphite_android_private
@@ -1254,6 +1255,10 @@ optional("graphite") {
   }
   if (is_debug) {
     public_defines += [ "SK_PIPELINE_LIFETIME_LOGGING" ]
+  }
+  if (skia_enable_tools) {
+    sources += skia_shared_renderdoc_sources
+    deps += [ ":load_dynamic_library" ]
   }
 }
 
@@ -2131,9 +2136,10 @@ if (skia_enable_tools) {
     }
   }
 
-  test_lib("load_dynamic_library") {
+  skia_source_set("load_dynamic_library") {
+    check_includes = false
+    include_dirs = [ "." ]
     configs = [ ":skia_private" ]
-    deps = [ ":skia" ]
     sources = [ "tools/library/LoadDynamicLibrary.h" ]
     if (is_win) {
       sources += [ "tools/library/LoadDynamicLibrary_win.cpp" ]
@@ -2644,6 +2650,7 @@ if (skia_enable_tools) {
       "//third_party/libpng",
     ]
   }
+
   if (target_cpu != "wasm") {
     test_app("convert-to-nia") {
       sources = [ "tools/convert-to-nia.cpp" ]
