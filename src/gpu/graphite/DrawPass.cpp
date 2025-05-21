@@ -55,43 +55,6 @@ struct Bitfield {
     static uint64_t set(uint32_t v) { return (v & kMask) << kOffset; }
 };
 
-// This class maps objects to a dense index which can then be used to look them up later
-template <typename T, typename V = T, typename C = V>
-class DenseBiMap {
-public:
-    using Index = uint32_t;
-
-    // See note below in GeometryUniformField. This value can be round-tripped within the SortKey
-    // packing for all fields but will not be produced when recording actual draw data.
-    static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
-
-    bool empty() const { return fIndexToData.empty(); }
-    size_t size() const { return fIndexToData.size(); }
-
-    Index insert(const T& data) {
-        Index* index = fDataToIndex.find(data);
-        if (!index) {
-            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
-            index = fDataToIndex.set(data, (Index) fIndexToData.size());
-            fIndexToData.push_back(C{data});
-        }
-        return *index;
-    }
-
-    const V& lookup(Index index) {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
-
-    SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
-
-    TArray<V>&& detach() { return std::move(fIndexToData); }
-
-private:
-    THashMap<T, Index> fDataToIndex;
-    TArray<V> fIndexToData;
-};
-
 // NOTE: TextureBinding's use as a key type in DenseBiMap relies on the fact that the underlying
 // data has been de-duplicated by a PipelineDataCache earlier, so that the bit identity of the data
 // blocks (e.g. address+size) is equivalent to the content equality of the texture lists.
@@ -116,92 +79,6 @@ struct TextureBinding {
 
 using TextureBindingCache = DenseBiMap<TextureBinding>;
 using GraphicsPipelineCache = DenseBiMap<GraphicsPipelineDesc>;
-
-// Writes uniform data either to uniform buffers or to shared storage buffers, and tracks when
-// bindings need to change between draws.
-class UniformTracker {
-public:
-    UniformTracker(bool useStorageBuffers) : fUseStorageBuffers(useStorageBuffers) {}
-
-    bool writeUniforms(UniformDataCache& uniformCache,
-                       DrawBufferManager* bufferMgr,
-                       UniformDataCache::Index index) {
-        if (index >= UniformDataCache::kInvalidIndex) {
-            return false;
-        }
-
-        if (index == fLastIndex) {
-            return false;
-        }
-        fLastIndex = index;
-
-        UniformDataCache::Entry& uniformData = uniformCache.lookup(index);
-        const size_t uniformDataSize = uniformData.fCpuData.size();
-
-        // Upload the uniform data if we haven't already.
-        // Alternatively, re-upload the uniform data to avoid a rebind if we're using storage
-        // buffers. This will result in more data uploaded, but the tradeoff seems worthwhile.
-        if (!uniformData.fBufferBinding.fBuffer ||
-            (fUseStorageBuffers && uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer)) {
-            UniformWriter writer;
-            std::tie(writer, uniformData.fBufferBinding) =
-                    fUseStorageBuffers ? bufferMgr->getAlignedSsboWriter(1, uniformDataSize)
-                                       : bufferMgr->getUniformWriter(1, uniformDataSize);
-
-            // Early out if buffer mapping failed.
-            if (!writer) {
-                return {};
-            }
-
-            writer.write(uniformData.fCpuData.data(), uniformDataSize);
-
-            if (fUseStorageBuffers) {
-                // When using storage buffers, store the SSBO index in the binding's offset field
-                // and always use the entire buffer's size in the size field.
-                SkASSERT(uniformData.fBufferBinding.fOffset % uniformDataSize == 0);
-                uniformData.fBufferBinding.fOffset /= uniformDataSize;
-                uniformData.fBufferBinding.fSize = uniformData.fBufferBinding.fBuffer->size();
-            }
-        }
-
-        const bool needsRebind =
-                uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer ||
-                (!fUseStorageBuffers && uniformData.fBufferBinding.fOffset != fLastBinding.fOffset);
-
-        fLastBinding = uniformData.fBufferBinding;
-
-        return needsRebind;
-    }
-
-    void bindUniforms(UniformSlot slot, DrawPassCommands::List* commandList) {
-        BindBufferInfo binding = fLastBinding;
-        if (fUseStorageBuffers) {
-            // Track the SSBO index in fLastBinding, but set offset = 0 in the actual used binding.
-            binding.fOffset = 0;
-        }
-        commandList->bindUniformBuffer(binding, slot);
-    }
-
-    uint32_t ssboIndex() const {
-        // The SSBO index for the last-bound storage buffer is stored in the binding's offset field.
-        return fLastBinding.fOffset;
-    }
-
-private:
-    // Internally track the last binding returned, so that we know whether new uploads or rebindings
-    // are necessary. If we're using SSBOs, this is treated specially -- the fOffset field holds the
-    // index in the storage buffer of the last-written uniforms, and the offsets used for actual
-    // bindings are always zero.
-    BindBufferInfo fLastBinding;
-
-    // This keeps track of the last index used for writing uniforms from a provided uniform cache.
-    // If a provided index matches the last index, the uniforms are assumed to already be written
-    // and no additional uploading is performed. This assumes a UniformTracker will always be
-    // provided with the same uniform cache.
-    UniformDataCache::Index fLastIndex = UniformDataCache::kInvalidIndex;
-
-    const bool fUseStorageBuffers;
-};
 
 // Automatically merges and manages texture bindings and uniform bindings sourced from either the
 // paint or the RenderStep. Tracks the bound state based on last-provided unique index to write

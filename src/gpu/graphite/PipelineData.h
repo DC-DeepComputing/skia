@@ -18,8 +18,11 @@
 #include "src/base/SkArenaAlloc.h"
 #include "src/core/SkColorData.h"
 #include "src/core/SkTHash.h"
+#include "src/gpu/graphite/Buffer.h"
+#include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawPass.h"
 #include "src/gpu/graphite/DrawTypes.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/UniformManager.h"
@@ -201,15 +204,52 @@ private:
 // Samplers.
 using TextureDataCache = PipelineDataCache<TextureDataBlock>;
 
-// A UniformDataCache is used to deduplicate uniform data blocks uploaded to uniform / storage
-// buffers for a DrawPass pipeline.
-// TODO: This is just a combination of PipelineDataCache and DrawPass's DenseBiMap, ideally we can
-// merge those two classes rather than defining this new class.
-class UniformDataCache {
+// This class maps objects to a dense index which can then be used to look them up later
+template <typename T, typename V = T, typename C = V, typename Hasher = SkGoodHash>
+class DenseBiMap {
 public:
     using Index = uint32_t;
+
+    // See note below in GeometryUniformField. This value can be round-tripped within the SortKey
+    // packing for all fields but will not be produced when recording actual draw data.
     static constexpr Index kInvalidIndex{1 << SkNextLog2_portable(DrawList::kMaxRenderSteps)};
 
+    bool empty() const { return fIndexToData.empty(); }
+    size_t size() const { return fIndexToData.size(); }
+
+    Index insert(const T& data) {
+        Index* index = fDataToIndex.find(data);
+        if (!index) {
+            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
+            index = fDataToIndex.set(data, (Index) fIndexToData.size());
+            fIndexToData.push_back(C{data});
+        }
+        return *index;
+    }
+
+    const V& lookup(Index index) const {
+        SkASSERT(index < kInvalidIndex);
+        return fIndexToData[index];
+    }
+
+    V& lookup(Index index) {
+        SkASSERT(index < kInvalidIndex);
+        return fIndexToData[index];
+    }
+
+    SkSpan<V> data() { return {fIndexToData.data(), fIndexToData.size()}; }
+
+    skia_private::TArray<V>&& detach() { return std::move(fIndexToData); }
+
+private:
+    friend class UniformDataCache;
+    skia_private::THashMap<T, Index, Hasher> fDataToIndex;
+    skia_private::TArray<V> fIndexToData;
+};
+
+// TODO find a way to do this so that UniformDataCache does not have to be a friend of DenseBiMap
+class UniformDataCache {
+public:
     // Tracks uniform data on the CPU and then its transition to storage in a GPU buffer (UBO or
     // SSBO).
     struct Entry {
@@ -220,38 +260,33 @@ public:
         Entry(UniformDataBlock cpuData) : fCpuData(cpuData) {}
     };
 
+    using DenseBiMapType = DenseBiMap<UniformDataBlock, Entry, Entry, UniformDataBlock::Hash>;
+    using Index = DenseBiMapType::Index;
+    static constexpr Index kInvalidIndex = DenseBiMapType::kInvalidIndex;
+
     UniformDataCache() = default;
 
     Index insert(const UniformDataBlock& dataBlock) {
-        Index* index = fDataToIndex.find(dataBlock);
+        Index* index = fDenseBiMap.fDataToIndex.find(dataBlock);
         if (!index) {
-            // Need to make a copy of dataBlock into the arena
-            UniformDataBlock copy = UniformDataBlock::Make(dataBlock, &fArena);
-            SkASSERT(SkToU32(fIndexToData.size()) < kInvalidIndex);
-            index = fDataToIndex.set(copy, static_cast<Index>(fIndexToData.size()));
-            fIndexToData.push_back(Entry{copy});
+            SkA32Assert(SkToU32(fDenseBiMap.size()) < kInvalidIndex);
+            auto arenaBlock = UniformDataBlock::Make(dataBlock, &fArena);
+            index = fDenseBiMap.fDataToIndex.set(arenaBlock,
+                                                 (Index) fDenseBiMap.fIndexToData.size());
+            fDenseBiMap.fIndexToData.push_back(Entry{arenaBlock});
         }
         return *index;
     }
 
-    const Entry& lookup(Index index) const {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
-
-    Entry& lookup(Index index) {
-        SkASSERT(index < kInvalidIndex);
-        return fIndexToData[index];
-    }
+    const Entry& lookup(Index index) const { return fDenseBiMap.lookup(index); }
+    Entry& lookup(Index index) { return fDenseBiMap.lookup(index); }
 
 #if defined(GPU_TEST_UTILS)
-    int count() { return fIndexToData.size(); }
+    int count() const { return fDenseBiMap.size(); }
 #endif
 
 private:
-    skia_private::THashMap<UniformDataBlock, Index, UniformDataBlock::Hash> fDataToIndex;
-    skia_private::TArray<Entry> fIndexToData;
-
+    DenseBiMapType fDenseBiMap;
     // Holds the de-duplicated data.
     SkArenaAlloc fArena{0};
 };
@@ -374,6 +409,92 @@ private:
     UniformExpectationsValidator &operator=(const UniformExpectationsValidator &) = delete;
 };
 #endif // SK_DEBUG
+
+// Writes uniform data either to uniform buffers or to shared storage buffers, and tracks when
+// bindings need to change between draws.
+class UniformTracker {
+public:
+    UniformTracker(bool useStorageBuffers) : fUseStorageBuffers(useStorageBuffers) {}
+
+    bool writeUniforms(UniformDataCache& uniformCache,
+                       DrawBufferManager* bufferMgr,
+                       UniformDataCache::Index index) {
+        if (index >= UniformDataCache::kInvalidIndex) {
+            return false;
+        }
+
+        if (index == fLastIndex) {
+            return false;
+        }
+        fLastIndex = index;
+
+        UniformDataCache::Entry& uniformData = uniformCache.lookup(index);
+        const size_t uniformDataSize = uniformData.fCpuData.size();
+
+        // Upload the uniform data if we haven't already.
+        // Alternatively, re-upload the uniform data to avoid a rebind if we're using storage
+        // buffers. This will result in more data uploaded, but the tradeoff seems worthwhile.
+        if (!uniformData.fBufferBinding.fBuffer ||
+            (fUseStorageBuffers && uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer)) {
+            UniformWriter writer;
+            std::tie(writer, uniformData.fBufferBinding) =
+                    fUseStorageBuffers ? bufferMgr->getAlignedSsboWriter(1, uniformDataSize)
+                                       : bufferMgr->getUniformWriter(1, uniformDataSize);
+
+            // Early out if buffer mapping failed.
+            if (!writer) {
+                return {};
+            }
+
+            writer.write(uniformData.fCpuData.data(), uniformDataSize);
+
+            if (fUseStorageBuffers) {
+                // When using storage buffers, store the SSBO index in the binding's offset field
+                // and always use the entire buffer's size in the size field.
+                SkASSERT(uniformData.fBufferBinding.fOffset % uniformDataSize == 0);
+                uniformData.fBufferBinding.fOffset /= uniformDataSize;
+                uniformData.fBufferBinding.fSize = uniformData.fBufferBinding.fBuffer->size();
+            }
+        }
+
+        const bool needsRebind =
+                uniformData.fBufferBinding.fBuffer != fLastBinding.fBuffer ||
+                (!fUseStorageBuffers && uniformData.fBufferBinding.fOffset != fLastBinding.fOffset);
+
+        fLastBinding = uniformData.fBufferBinding;
+
+        return needsRebind;
+    }
+
+    void bindUniforms(UniformSlot slot, DrawPassCommands::List* commandList) {
+        BindBufferInfo binding = fLastBinding;
+        if (fUseStorageBuffers) {
+            // Track the SSBO index in fLastBinding, but set offset = 0 in the actual used binding.
+            binding.fOffset = 0;
+        }
+        commandList->bindUniformBuffer(binding, slot);
+    }
+
+    uint32_t ssboIndex() const {
+        // The SSBO index for the last-bound storage buffer is stored in the binding's offset field.
+        return fLastBinding.fOffset;
+    }
+
+private:
+    // Internally track the last binding returned, so that we know whether new uploads or rebindings
+    // are necessary. If we're using SSBOs, this is treated specially -- the fOffset field holds the
+    // index in the storage buffer of the last-written uniforms, and the offsets used for actual
+    // bindings are always zero.
+    BindBufferInfo fLastBinding;
+
+    // This keeps track of the last index used for writing uniforms from a provided uniform cache.
+    // If a provided index matches the last index, the uniforms are assumed to already be written
+    // and no additional uploading is performed. This assumes a UniformTracker will always be
+    // provided with the same uniform cache.
+    UniformDataCache::Index fLastIndex = UniformDataCache::kInvalidIndex;
+
+    const bool fUseStorageBuffers;
+};
 
 } // namespace skgpu::graphite
 
