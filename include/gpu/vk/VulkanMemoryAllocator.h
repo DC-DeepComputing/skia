@@ -110,6 +110,11 @@ public:
     // amount of memory in use by an allocation from this allocator.
     // Return 1st param is total allocated memory, 2nd is total used memory.
     virtual std::pair<uint64_t, uint64_t> totalAllocatedAndUsedMemory() const = 0;
+
+    // Returns the total amount of memory that is lazily allocated from this allocator.
+    virtual uint64_t totalLazyAllocatedMemory() const {
+        return 0;
+    };
 };
 
 } // namespace skgpu
