@@ -16,6 +16,7 @@
 #include "src/capture/SkCaptureManager.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
+#include "src/gpu/renderdoc/RenderDoc.h"
 
 class SkCaptureManager;
 
@@ -65,6 +66,10 @@ public:
 
     SkCaptureManager* captureManager() { return fCaptureManager.get(); }
 
+#if defined(GPU_TEST_UTILS)
+    const RenderDoc* renderDoc() const { return &fRenderDoc; }
+#endif
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
@@ -85,6 +90,13 @@ private:
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
+
+#if defined(GPU_TEST_UTILS)
+    // The RenderDoc API is accessible via a shared object inserted by RenderDoc if the test is
+    // running through it. This object is owned by SharedContext as RenderDoc capture can be used by
+    // multiple backends, though it is only implemented in Vulkan currently.
+    RenderDoc fRenderDoc;
+#endif
 };
 
 } // namespace skgpu::graphite

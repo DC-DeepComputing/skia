@@ -36,6 +36,8 @@ struct TestOptions {
     bool fNeverYieldToWebGPU = false;
     bool fUseWGPUTextureView = false;
 #endif
+
+    bool fGpuCapture = false;
 };
 
 }  // namespace skiatest::graphite

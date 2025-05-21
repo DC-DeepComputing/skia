@@ -116,6 +116,26 @@ public:
                                                 const ContextOptions&);
 };
 
+#if defined(GPU_TEST_UTILS)
+class [[nodiscard]] AutoCaptureFrame {
+public:
+    AutoCaptureFrame(ContextPriv context, bool capture) : fContext(context), fCapture(capture) {
+        if (fCapture) {
+            fContext.startCapture();
+        }
+    }
+    ~AutoCaptureFrame() {
+        if (fCapture) {
+            fContext.stopCapture();
+        }
+    }
+
+private:
+    ContextPriv fContext;
+    bool fCapture = false;
+};
+#endif
+
 } // namespace skgpu::graphite
 
 #endif // skgpu_graphite_ContextPriv_DEFINED
