@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "37bb575b_03a64088",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-21T12:14:37Z",
+      "side": 1,
+      "message": "Using Bazelisk, and Bazel 8.2.1, I cannot update the lock file:\n\n```\n\n    Updating crates.io index\n    Updating git repository `https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git`\nerror: failed to get `icu_capi` as a dependency of package `direct-cargo-bazel-deps v0.0.1 (/tmp/.tmpkoPnkw)`\n\nCaused by:\n  failed to load source for dependency `icu_capi`\n\nCaused by:\n  Unable to update https://chromium.googlesource.com/external/github.com/unicode-org/icu4x.git?tag\u003dupstream%2Find%2Ficu_capi%401.4.1\n\nCaused by:\n  failed to clone into: /usr/local/google/home/drott/.cache/bazel/_bazel_drott/6be5a9a270ff53a4d96862380bb6da7c/modextwd/rules_rust++crate/.cargo_home/git/db/icu4x-2c3618478c6b9f3b\n\nCaused by:\n  invalid argument: \u0027port\u0027; class\u003dInvalid (3)\n```",
+      "revId": "b358051644522b756483045cfcd3cef763346b59",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
