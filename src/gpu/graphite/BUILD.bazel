@@ -203,6 +203,7 @@ skia_cc_library(
         "//src/gpu/graphite/render:render_hdrs",
         "//src/gpu/graphite/task:task_hdrs",
         "//src/gpu/graphite/text:text_hdrs",
+        "//src/gpu/renderdoc:renderdoc_hdrs",
     ],
     defines = [
         "SK_GRAPHITE",
@@ -231,6 +232,7 @@ skia_cc_library(
         "//src/gpu/graphite/render:render_srcs",
         "//src/gpu/graphite/task:task_srcs",
         "//src/gpu/graphite/text:text_srcs",
+        "//src/gpu/renderdoc:renderdoc_srcs",
         "//src/sksl:sksl_graphite_modules_hdrs",
         "//src/sksl:sksl_graphite_modules_srcs",
         "//src/text/gpu:gpu_hdrs",
@@ -245,6 +247,7 @@ skia_cc_library(
         "//src/gpu/graphite/render:render_hdrs",
         "//src/gpu/graphite/task:task_hdrs",
         "//src/gpu/graphite/text:text_hdrs",
+        "//src/gpu/renderdoc:renderdoc_hdrs",
     ],
     defines = [
         "SK_GRAPHITE",
@@ -263,5 +266,6 @@ skia_cc_library(
         "//src/core:core_priv",
         "//src/gpu",
         "//src/sksl/codegen:gpu",
+        "//tools/library:load_dynamic_library",
     ],
 )

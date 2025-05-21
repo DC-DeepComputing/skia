@@ -43,6 +43,10 @@ namespace skiatools::graphite {
 }
 namespace DM {
 
+struct TestOptions {
+    bool fGpuCapture = false;
+};
+
 // This is just convenience.  It lets you use either return "foo" or return SkStringPrintf(...).
 struct ImplicitString : public SkString {
     // This constructor is intentionally not explicit to allow for convenient implicit conversions.
@@ -132,7 +136,14 @@ struct Src {
 struct Sink {
     virtual ~Sink() {}
     // You may write to either the bitmap or stream.  If you write to log, we'll print that out.
-    [[nodiscard]] virtual Result draw(const Src&, SkBitmap*, SkWStream*, SkString* log) const = 0;
+    // If `testOptions.gpuCapture` is provided, the test's draw call (and read pixels) is captured
+    // via the context-private's startCapture() and stopCapture().  Currently, only GraphiteSink
+    // does this, but this functionality can be added to other sinks as well as needed.
+    [[nodiscard]] virtual Result draw(const Src&,
+                                      const TestOptions& testOptions,
+                                      SkBitmap*,
+                                      SkWStream*,
+                                      SkString* log) const = 0;
 
     virtual void done() const {}
 
@@ -380,7 +391,8 @@ class NullSink : public Sink {
 public:
     NullSink() {}
 
-    Result draw(const Src& src, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(
+            const Src& src, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return ""; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kNull, SinkFlags::kDirect }; }
 };
@@ -390,8 +402,12 @@ class GPUSink : public Sink {
 public:
     GPUSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
-    Result onDraw(const Src&, SkBitmap*, SkWStream*, SkString*,
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result onDraw(const Src&,
+                  const TestOptions&,
+                  SkBitmap*,
+                  SkWStream*,
+                  SkString*,
                   const GrContextOptions& baseOptions,
                   std::function<void(GrDirectContext*)> initContext = nullptr,
                   std::function<SkCanvas*(SkCanvas*)> wrapCanvas = nullptr) const;
@@ -437,28 +453,28 @@ class GPUSlugSink : public GPUSink {
 public:
     GPUSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class GPUSerializeSlugSink : public GPUSink {
 public:
     GPUSerializeSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class GPURemoteSlugSink : public GPUSink {
 public:
     GPURemoteSlugSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class GPUPersistentCacheTestingSink : public GPUSink {
 public:
     GPUPersistentCacheTestingSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
     const char* fileExtension() const override {
         // Suppress writing out results from this config - we just want to do our matching test
@@ -475,7 +491,7 @@ class GaneshPrecompileTestingSink : public GPUSink {
 public:
     GaneshPrecompileTestingSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
     const char* fileExtension() const override {
         // Suppress writing out results from this config - we just want to do our matching test
@@ -498,7 +514,7 @@ class GPUDDLSink : public GPUSink {
 public:
     GPUDDLSink(const SkCommandLineConfigGpu*, const GrContextOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
 private:
     Result ddlDraw(const Src&,
@@ -518,7 +534,7 @@ private:
 class PDFSink : public Sink {
 public:
     PDFSink(bool pdfa, SkScalar rasterDpi) : fPDFA(pdfa), fRasterDpi(rasterDpi) {}
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "pdf"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
 
@@ -530,7 +546,7 @@ class XPSSink : public Sink {
 public:
     XPSSink();
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "xps"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
 };
@@ -539,7 +555,7 @@ class RasterSink : public Sink {
 public:
     explicit RasterSink(SkColorType);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kRaster, SinkFlags::kDirect }; }
     void setColorSpace(sk_sp<SkColorSpace> colorSpace) override { fColorSpace = colorSpace; }
@@ -561,14 +577,14 @@ class SKPSink : public Sink {
 public:
     SKPSink();
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "skp"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
 };
 
 class DebugSink : public Sink {
 public:
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "json"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
 };
@@ -577,7 +593,7 @@ class SVGSink : public Sink {
 public:
     explicit SVGSink(int pageIndex = 0);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     const char* fileExtension() const override { return "svg"; }
     SinkFlags flags() const override { return SinkFlags{ SinkFlags::kVector, SinkFlags::kDirect }; }
 
@@ -591,7 +607,7 @@ class GraphiteSink : public Sink {
 public:
     GraphiteSink(const SkCommandLineConfigGraphite*, const skiatest::graphite::TestOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
     bool serial() const override { return true; }
     const char* fileExtension() const override { return "png"; }
     SinkFlags flags() const override { return SinkFlags{SinkFlags::kGPU, SinkFlags::kDirect}; }
@@ -615,7 +631,7 @@ public:
     GraphitePersistentPipelineStorageTestingSink(const SkCommandLineConfigGraphite*,
                                                  const skiatest::graphite::TestOptions&);
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
     const char* fileExtension() const override {
         // Suppress writing out results from this config - we just want to do our matching test
@@ -658,7 +674,7 @@ public:
                                   const skiatest::graphite::TestOptions&);
     ~GraphitePrecompileTestingSink() override;
 
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
     const char* fileExtension() const override {
         // Suppress writing out results from this config - we just want to check that
@@ -716,7 +732,7 @@ protected:
 class ViaMatrix : public Via {
 public:
     ViaMatrix(SkMatrix, Sink*);
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
 private:
     const SkMatrix fMatrix;
@@ -725,7 +741,7 @@ private:
 class ViaUpright : public Via {
 public:
     ViaUpright(SkMatrix, Sink*);
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 
 private:
     const SkMatrix fMatrix;
@@ -734,25 +750,25 @@ private:
 class ViaSerialization : public Via {
 public:
     explicit ViaSerialization(Sink* sink) : Via(sink) {}
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class ViaPicture : public Via {
 public:
     explicit ViaPicture(Sink* sink) : Via(sink) {}
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class ViaRuntimeBlend : public Via {
 public:
     explicit ViaRuntimeBlend(Sink* sink) : Via(sink) {}
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 class ViaSVG : public Via {
 public:
     explicit ViaSVG(Sink* sink) : Via(sink) {}
-    Result draw(const Src&, SkBitmap*, SkWStream*, SkString*) const override;
+    Result draw(const Src&, const TestOptions&, SkBitmap*, SkWStream*, SkString*) const override;
 };
 
 }  // namespace DM

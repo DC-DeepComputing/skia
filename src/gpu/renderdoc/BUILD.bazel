@@ -1,0 +1,21 @@
+load("//bazel:skia_rules.bzl", "split_srcs_and_hdrs")
+
+package(
+    default_applicable_licenses = ["//:license"],
+)
+
+licenses(["notice"])
+
+TEXT_FILES = [
+    "RenderDoc.cpp",
+    "RenderDoc.h",
+    "third_party/renderdoc_app.h",
+]
+
+split_srcs_and_hdrs(
+    name = "renderdoc",
+    files = TEXT_FILES,
+    visibility = [
+        "//src/gpu/graphite:__pkg__",
+    ],
+)

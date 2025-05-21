@@ -36,7 +36,11 @@ SharedContext::SharedContext(std::unique_ptr<const Caps> caps,
     , fBackend(backend)
     , fGlobalCache()
     , fPipelineManager() // TODO(robertphillips): pass in executor here
-    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {}
+    , fShaderDictionary(get_binding_layout(fCaps.get()), userDefinedKnownRuntimeEffects) {
+#if defined(GPU_TEST_UTILS)
+    fRenderDoc.attach();
+#endif
+}
 
 SharedContext::~SharedContext() {
     // TODO: add disconnect?
