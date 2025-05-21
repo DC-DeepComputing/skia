@@ -226,6 +226,11 @@ private:
     // Tracking for whether an indirect buffer should be rebound.
     VkBuffer fBoundIndirectBuffer = VK_NULL_HANDLE;
     size_t fBoundIndirectBufferOffset = 0;
+    std::array<const Buffer*, 2> fBoundInputBuffers;
+    std::array<size_t, 2> fBoundInputBufferOffsets;
+
+    const Buffer* fBoundIndexBuffer;
+    size_t fBoundIndexOffset;
 
     float fCachedBlendConstant[4];
 };

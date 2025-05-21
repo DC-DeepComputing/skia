@@ -266,6 +266,25 @@ void VulkanBuffer::onUnmap() {
 
 namespace {
 
+const char* access_to_string(VkAccessFlags access) {
+    switch (access) {
+        case VK_ACCESS_NONE: return "none";
+        case VK_ACCESS_INDIRECT_COMMAND_READ_BIT: return "indirect-command";
+        case VK_ACCESS_INDEX_READ_BIT: return "index-read";
+        case VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT: return "vertex-read";
+        case VK_ACCESS_UNIFORM_READ_BIT: return "uniform-read";
+        case VK_ACCESS_INPUT_ATTACHMENT_READ_BIT: return "input-attachment-read";
+        case VK_ACCESS_SHADER_READ_BIT: return "shader-read";
+        case VK_ACCESS_TRANSFER_READ_BIT: return "transfer-read";
+        case VK_ACCESS_TRANSFER_WRITE_BIT: return "transfer-write";
+        case VK_ACCESS_HOST_READ_BIT: return "host-read";
+        case VK_ACCESS_HOST_WRITE_BIT: return "host-write";
+        case VK_ACCESS_MEMORY_READ_BIT: return "mem-read";
+        case VK_ACCESS_MEMORY_WRITE_BIT: return "mem-write";
+        default: return "other";
+    }
+}
+
 VkPipelineStageFlags access_to_pipeline_srcStageFlags(const VkAccessFlags srcAccess) {
     // For now this function assumes the access flags equal a specific bit and don't act like true
     // flags (i.e. set of bits). If we ever start having buffer usages that have multiple accesses
@@ -354,6 +373,8 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
         needsBarrier = false;
     }
 
+    // SkDebugf("barrier access on %p from %s to %s\n", this, access_to_string(fCurrentAccess), access_to_string(dstAccess));
+
     if (needsBarrier) {
         VkBufferMemoryBarrier bufferMemoryBarrier = {
             VK_STRUCTURE_TYPE_BUFFER_MEMORY_BARRIER,  // sType
@@ -366,6 +387,7 @@ void VulkanBuffer::setBufferAccess(VulkanCommandBuffer* cmdBuffer,
             0,                                        // offset
             this->size(),                             // size
         };
+        // SkDebugf("adding buffer barrier for %p\n", this);
         cmdBuffer->addBufferMemoryBarrier(srcStageMask, dstStageMask, &bufferMemoryBarrier);
     }
 
