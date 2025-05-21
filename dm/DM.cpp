@@ -40,6 +40,7 @@
 #include "tools/flags/CommonFlagsConfig.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 #include "tools/fonts/FontToolUtils.h"
+#include "tools/renderdoc/RenderDoc.h"
 #include "tools/trace/ChromeTracingTracer.h"
 #include "tools/trace/EventTracingPriv.h"
 #include "tools/trace/SkDebugfTracer.h"
@@ -178,6 +179,10 @@ static DEFINE_string(properties, "",
                      "Space-separated key/value pairs to add to JSON identifying this run.");
 
 static DEFINE_bool(rasterize_pdf, false, "Rasterize PDFs when possible.");
+
+static DEFINE_bool(renderdoc,
+                   false,
+                   "Automatically capture the test as a frame in RenderDoc (if present).");
 
 using namespace DM;
 
@@ -962,7 +967,7 @@ static void push_sink(const SkCommandLineConfig& config, Sink* s) {
     SkBitmap bitmap;
     SkDynamicMemoryWStream stream;
     SkString log;
-    Result result = sink->draw(justOneRect, &bitmap, &stream, &log);
+    Result result = sink->draw(justOneRect, &bitmap, &stream, &log, /*renderdoc=*/nullptr);
     if (result.isFatal()) {
         info("Could not run %s: %s\n", config.getTag().c_str(), result.c_str());
         exit(1);
@@ -1166,6 +1171,12 @@ static bool should_skip(const char* sink, const char* src,
 // .png encoding are definitely thread safe.  This lets us offload that work to CPU threads.
 static SkTaskGroup* gDefinitelyThreadSafeWork = new SkTaskGroup;
 
+// The RenderDoc API, accessible via a shared object inserted by RenderDoc if the test is running
+// through it.  With `--renderdoc`, the tests are run serially and each triggers a capture start/end
+// so the test can be captured as a frame.  This is necessary because there is no "swap buffers" in
+// these tests which is the trigger RenderDoc uses to capture frames.
+RenderDoc gRenderDoc;
+
 // The finest-grained unit of work we can run: draw a single Src into a single Sink,
 // report any errors, and perhaps write out the output: a .png of the bitmap, or a raw stream.
 struct Task {
@@ -1183,7 +1194,7 @@ struct Task {
             SkDynamicMemoryWStream stream;
             start(task.sink.tag.c_str(), task.src.tag.c_str(),
                   task.src.options.c_str(), name.c_str());
-            Result result = task.sink->draw(*task.src, &bitmap, &stream, &log);
+            Result result = task.sink->draw(*task.src, &bitmap, &stream, &log, &gRenderDoc);
             if (!log.isEmpty()) {
                 info("%s %s %s %s:\n%s\n", task.sink.tag.c_str()
                                          , task.src.tag.c_str()
@@ -1650,6 +1661,10 @@ int main(int argc, char** argv) {
          gSrcs->size(), gSinks->size(), testCount,
          gPending);
 
+    if (FLAGS_renderdoc) {
+        gRenderDoc.attach();
+    }
+
 #if !defined(SK_DISABLE_LEGACY_TESTS)
     // Kick off as much parallel work as we can, making note of any serial work we'll need to do.
     // However, execute all CPU-serial tests first so that they don't have races with parallel tests
@@ -1670,7 +1685,7 @@ int main(int argc, char** argv) {
             }
 
             Task task(src, sink);
-            if (src->serial() || sink->serial()) {
+            if (src->serial() || sink->serial() || FLAGS_renderdoc) {
                 serial.push_back(task);
             } else {
                 parallel.add([task] { Task::Run(task); });
