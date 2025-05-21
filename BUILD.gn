@@ -2623,6 +2623,20 @@ if (skia_enable_tools) {
       "//third_party/libpng",
     ]
   }
+
+  test_lib("renderdoc") {
+    sources = [
+      "third_party/renderdoc/renderdoc_app.h",
+      "tools/renderdoc/RenderDoc.cpp",
+      "tools/renderdoc/RenderDoc.h",
+    ]
+    deps = [
+      ":flags",
+      ":load_dynamic_library",
+      ":skia",
+    ]
+  }
+
   if (target_cpu != "wasm") {
     test_app("convert-to-nia") {
       sources = [ "tools/convert-to-nia.cpp" ]
@@ -2655,6 +2669,7 @@ if (skia_enable_tools) {
         ":gm",
         ":gpu_tool_utils",
         ":hash_and_encode",
+        ":renderdoc",
         ":skia",
         ":tests",
         ":tool_utils",
