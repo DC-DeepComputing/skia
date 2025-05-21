@@ -52,7 +52,8 @@ local_path_override(
 # from the registry, but some of them aren't there, so you may have to make
 # your own rules. Feel free to crib them off Skia's bazel/external directory.
 
-skia_deps = use_extension("@skia//bazel:deps.bzl", "c_plus_plus_modules")
+skia_deps = use_extension("@skia//bazel:cpp_modules.bzl", "cpp_modules")
+skia_deps.from_file(deps_json = "@skia//bazel:deps.json")
 use_repo(
     skia_deps,
     "vulkan_headers",
