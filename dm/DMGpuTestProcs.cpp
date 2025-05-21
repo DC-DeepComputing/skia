@@ -14,6 +14,7 @@
 
 #if defined(SK_GRAPHITE)
 #include "include/gpu/graphite/Context.h"
+#include "src/gpu/graphite/ContextPriv.h"
 #include "tools/graphite/ContextFactory.h"
 #endif
 
@@ -135,6 +136,7 @@ void RunWithGraphiteTestContexts(GraphiteTestFn* test,
         }
 
         ReporterContext ctx(reporter, SkString(skgpu::ContextTypeName(contextType)));
+        skgpu::graphite::AutoCaptureFrame gpuFrame(ctxInfo.fContext->priv(), options.fGpuCapture);
         (*test)(reporter, ctxInfo.fContext, ctxInfo.fTestContext, options);
     }
 }
