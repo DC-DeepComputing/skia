@@ -11,8 +11,10 @@
 
 #include <dlfcn.h>
 
-void* SkLoadDynamicLibrary(const char* libraryName) {
-    return dlopen(libraryName, RTLD_LAZY);
+void* SkLoadDynamicLibrary(const char* libraryName, DynamicLibrarySearch search) {
+    const int flags =
+            search == DynamicLibrarySearch::AlreadyLoaded ? RTLD_NOLOAD | RTLD_NOW : RTLD_LAZY;
+    return dlopen(libraryName, flags);
 }
 
 void* SkGetProcedureAddress(void* library, const char* functionName) {

@@ -8,7 +8,16 @@
 #ifndef SkOSLibrary_DEFINED
 #define SkOSLibrary_DEFINED
 
-void* SkLoadDynamicLibrary(const char* libraryName);
+// Where to find the library.
+enum class DynamicLibrarySearch {
+    // The library should be searched for in the default paths
+    Default,
+    // The library is expected to already be pre-loaded
+    AlreadyLoaded,
+};
+
+void* SkLoadDynamicLibrary(const char* libraryName,
+                           DynamicLibrarySearch search = DynamicLibrarySearch::Default);
 void* SkGetProcedureAddress(void* library, const char* functionName);
 bool  SkFreeDynamicLibrary(void* library);
 
