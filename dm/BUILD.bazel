@@ -41,6 +41,7 @@ skia_cc_binary(
         "//tools:ddl_utils",
         "//tools:gpu_tool_utils",
         "//tools:hash_and_encode",
+        "//tools/renderdoc:renderdoc",
         "//tools:runtime_blend_utils",
         "//tools:stats",
         "//tools:test_font_data_provider",
