@@ -33,8 +33,11 @@ protected:
     bool isSuitableFor(Backend backend) override;
     void onPerCanvasPreDraw(SkCanvas*) override;
     void onPerCanvasPostDraw(SkCanvas*) override;
-    void onDraw(int loops, SkCanvas*) override;
+    void onDraw(int loops, SkCanvas*) override { SkASSERT(false); }
+    void onDrawFrame(int loops, SkCanvas*, std::function<void()>) override;
     SkISize onGetSize() override;
+
+    bool submitsInternalFrames() override { return true; }
 
 private:
     std::unique_ptr<skiagm::GM> fGM;

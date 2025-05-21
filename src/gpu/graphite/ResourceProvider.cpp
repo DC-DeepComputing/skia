@@ -82,7 +82,7 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
         TRACE_EVENT1_ALWAYS(
                 "skia.shaders", "createGraphicsPipeline", "desc",
                 TRACE_STR_COPY(to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str()));
-
+        SkDebugf("compile %s\n", to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str());
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
         bool forPrecompile =
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);

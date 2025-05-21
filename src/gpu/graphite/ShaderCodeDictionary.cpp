@@ -1358,11 +1358,24 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     };
 
     // SkColorFilter snippets
-    // TODO(b/349572157): investigate the implications of having separate hlsa and rgba matrix
-    // colorfilters. It may be that having them separate will not contribute to an explosion.
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kMatrixColorFilter] = {
             /*name=*/"MatrixColorFilter",
             /*staticFn=*/"sk_matrix_colorfilter",
+            SnippetRequirementFlags::kPriorStageOutput,
+            /*uniforms=*/{ { "colorMatrix",    SkSLType::kHalf4x4 },
+                           { "colorTranslate", SkSLType::kHalf4 },
+                           { "maxRGBA",        SkSLType::kHalf4 } }
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHSLMatrixColorFilter] = {
+            /*name=*/"HSLMatrixColorFilter",
+            /*staticFn=*/"sk_hsl_matrix_colorfilter",
+            SnippetRequirementFlags::kPriorStageOutput,
+            /*uniforms=*/{ { "colorMatrix",    SkSLType::kHalf4x4 },
+                           { "colorTranslate", SkSLType::kHalf4 } }
+    };
+    fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kMatrixColorFilterFull] = {
+            /*name=*/"MatrixColorFilterFull",
+            /*staticFn=*/"sk_matrix_colorfilter_full",
             SnippetRequirementFlags::kPriorStageOutput,
             /*uniforms=*/{ { "matrix",    SkSLType::kFloat4x4 },
                            { "translate", SkSLType::kFloat4 },
