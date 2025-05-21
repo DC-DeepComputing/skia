@@ -199,3 +199,4 @@ examples you might find handy.
     out/Debug/dm --nogpu       # Test only CPU-backed work.
     out/Debug/dm --match blur  # Run only work with "blur" in its name.
     out/Debug/dm --dryRun      # Don't really do anything, just print out what we'd do.
+    out/Debug/dm --gpuCatpure  # If run through RenderDoc, captures every test as one frame

@@ -63,4 +63,10 @@ QueueManager::OutstandingSubmission VulkanQueueManager::onSubmitToGpu() {
     return submission;
 }
 
+#if defined(GPU_TEST_UTILS)
+void VulkanQueueManager::startCapture() { fSharedContext->renderDoc()->startFrame(); }
+
+void VulkanQueueManager::stopCapture() { fSharedContext->renderDoc()->endFrame(); }
+#endif
+
 } // namespace skgpu::graphite
