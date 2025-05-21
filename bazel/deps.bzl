@@ -60,7 +60,7 @@ def _c_plus_plus_modules_impl(ctx):
     new_git_repository(
         name = "freetype",
         build_file = "//bazel/external/freetype:BUILD.bazel",
-        commit = "7172bd11badd468f6a86dba0b1769d624ead885c",
+        commit = "11fa9da720e7376f61f4a30f802bd001b3cf5ef2",
         remote = "https://chromium.googlesource.com/chromium/src/third_party/freetype2.git",
         patches = ["//bazel/external/freetype:config_files.patch"],
     )
