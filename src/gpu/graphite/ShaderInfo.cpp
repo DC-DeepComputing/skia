@@ -786,8 +786,6 @@ std::string dst_read_strategy_to_str(DstReadStrategy strategy) {
             return "NoneRequired";
         case DstReadStrategy::kTextureCopy:
             return "TextureCopy";
-        case DstReadStrategy::kTextureSample:
-            return "TextureSample";
         case DstReadStrategy::kReadFromInput:
             return "ReadFromInput";
         case DstReadStrategy::kFramebufferFetch:
@@ -909,8 +907,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     const bool useGradientStorageBuffer = caps->gradientBufferSupport() &&
                                           (allReqFlags & SnippetRequirementFlags::kGradientBuffer);
 
-    const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy ||
-                               fDstReadStrategy == DstReadStrategy::kTextureSample;
+    const bool useDstSampler = fDstReadStrategy == DstReadStrategy::kTextureCopy;
 
     const std::vector<LiftedExpression> liftedExpr = collect_lifted_expressions(fRootNodes);
 

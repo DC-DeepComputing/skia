@@ -31,7 +31,6 @@ SK_MAKE_BITMASK_OPS(DepthStencilFlags)
 enum class DstReadStrategy : uint8_t {
     kNoneRequired,
     kTextureCopy,
-    kTextureSample,
     kReadFromInput,
     kFramebufferFetch,
 
