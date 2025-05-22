@@ -70,8 +70,7 @@ VulkanRenderPass::Metadata::Metadata(const RenderPassDesc& rpDesc, bool compatib
     // based on what was recorded into it). For non-compatible-only renderpasses, mark the input
     // attachment as unused. This will allow the VkRenderPass to use a more optimal layout, although
     // it will still have an input attachment to remain compatible.
-    fUsesInputAttachment = compatibleOnly ||
-                           rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput;
+    fUsesInputAttachment = rpDesc.fDstReadStrategy == DstReadStrategy::kReadFromInput;
 
     // Accumulate attachments into a container to mimic future structure in RenderPassDesc
     if (rpDesc.fColorAttachment.fFormat != TextureFormat::kUnsupported) {

@@ -41,14 +41,19 @@ void GMBench::onPerCanvasPostDraw(SkCanvas*) {
     fGpuSetupFailed = false;
 }
 
-void GMBench::onDraw(int loops, SkCanvas* canvas) {
+void GMBench::onDrawFrame(int loops, SkCanvas* canvas, std::function<void()> submitFrame) {
     if (fGpuSetupFailed) {
         return;
     }
 
     fGM->drawBackground(canvas);
     for (int i = 0; i < loops; ++i) {
+        // SkDebugf("*** Loop start %d\n", i);
         fGM->drawContent(canvas);
+        if (submitFrame) {
+            submitFrame();
+        }
+        // SkDebugf("*** Loop end %d\n\n", i);
     }
 }
 
