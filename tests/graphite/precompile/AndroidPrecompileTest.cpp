@@ -119,6 +119,8 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 32 */ { KawaseBlurHighSrc(),                DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
 // 100% (1/1) handler 52
 /* 33 */ { BlurFilterMix(),                    DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
+//
+/* 34 */ { GainMapToneMap(),                   DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 100% (2/2) handles 26 50
@@ -416,9 +418,6 @@ bool skip(const char* str) {
         return true;
     }
 #endif // SK_VULKAN
-    if (strstr(str, "RE_GainmapEffect")) {
-        return true;
-    }
     if (strstr(str, "RE_LinearEffect_BT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader")) {
         return true;
     }
@@ -487,7 +486,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 34; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
