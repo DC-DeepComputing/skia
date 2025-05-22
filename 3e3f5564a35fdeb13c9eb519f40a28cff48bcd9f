@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6033edc4_4f2d4eec",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d5270862_cfb7041f",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d2ebbf74_892bf3aa",
@@ -91,6 +109,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd3663c8_f0c4da84",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d2ebbf74_892bf3aa",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51ff86e9_1f33c1fc",
@@ -104,6 +140,24 @@
       "writtenOn": "2025-05-22T18:40:44Z",
       "side": 1,
       "message": "A couple of thoughts on this one:\n\n1) copying the verbs out is a safe decoupling, in case we change our mind about how verbs are stored internally, but if the client just wants read access it\u0027s kind of getting in the way\n\n2) there aren\u0027t any external callers afaict, can we take this out of the public API?\n\nMaybe we can make it private (e.g. as a SkPathPriv helper) and have it return an SkSpan pointing to the actual verb storage - then clients can choose whether to copy or not:\n\n`static SkSpan\u003cconst uint8_t\u003e SkPathPriv::getVerbs(const SkPathBuilder\u0026 b) { return b.fVerbs; }`\n\nEven if we discover that it\u0027s needed for external clients, I doubt SkPathBuilder will ever store verbs in a non-contiguous fashion, so returning a span should be fairly future-proof regardless.",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25f27ad2_b9845791",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "Done. Made GetPoint part of SkPathPriv as well.",
+      "parentUuid": "51ff86e9_1f33c1fc",
       "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -125,6 +179,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba578b76_2468004d",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "SGTM",
+      "parentUuid": "217b94b9_29e8e4b7",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6083b81a_abf13fdb",
@@ -138,6 +210,30 @@
       "writtenOn": "2025-05-22T18:40:44Z",
       "side": 1,
       "message": "nit: can be consolidated as `const SkMatrix matrix \u003d SkMatrix::Translate(dx, dy);`",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 827,
+        "endChar": 32
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8195eb5_cf7c15f3",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6083b81a_abf13fdb",
       "range": {
         "startLine": 825,
         "startChar": 0,
@@ -173,6 +269,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "815e4e7a_4ded14b1",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "Done.  Tests pass this way too.",
+      "parentUuid": "266fdf00_9131b396",
+      "range": {
+        "startLine": 849,
+        "startChar": 29,
+        "endLine": 849,
+        "endChar": 74
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "2a075396_fd3861ad",
         "filename": "src/core/SkPathBuilder.cpp",
         "patchSetId": 6
@@ -184,6 +304,30 @@
       "writtenOn": "2025-05-22T18:40:44Z",
       "side": 1,
       "message": "Interesting that this doesn\u0027t perform the same perspective weight adjustment as SkPath{Builder}::transform()... also no conversion for cubics and quads.  I\u0027ll make a note to circle back and investigate what\u0027s going on.",
+      "range": {
+        "startLine": 890,
+        "startChar": 60,
+        "endLine": 890,
+        "endChar": 61
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49b0b34a_6a2974a1",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-05-22T19:53:57Z",
+      "side": 1,
+      "message": "I wonder if there\u0027s a way to share some code, since there are a handful of implementations which look pretty similar.",
+      "parentUuid": "2a075396_fd3861ad",
       "range": {
         "startLine": 890,
         "startChar": 60,
