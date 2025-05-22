@@ -119,6 +119,8 @@ GrVkRenderPass* GrVkRenderPass::Create(GrVkGpu* gpu,
              (SkToBool(attachmentFlags & kColor_AttachmentFlag) &&
               SkToBool(attachmentFlags & kResolve_AttachmentFlag)));
 
+    SkDebugf("ganesh color ops: %d %d\n", (int) colorOp.fLoadOp, (int) colorOp.fStoreOp);
+
 #ifdef SK_DEBUG
     if (loadFromResolve == LoadFromResolve::kLoad) {
         // If we are loading the resolve image into the msaa color attachment then we should not be

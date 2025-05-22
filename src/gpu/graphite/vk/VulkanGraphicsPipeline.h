@@ -85,16 +85,16 @@ private:
 
 class VulkanGraphicsPipeline final : public GraphicsPipeline {
 public:
-    inline static constexpr unsigned int kRenderStepUniformBufferIndex = 0;
-    inline static constexpr unsigned int kPaintUniformBufferIndex = 1;
+    inline static constexpr unsigned int kRenderStepUniformBufferIndex = 1;
+    inline static constexpr unsigned int kPaintUniformBufferIndex = 0;
     inline static constexpr unsigned int kGradientBufferIndex = 2;
     inline static constexpr unsigned int kNumUniformBuffers = 3;
 
     // For now, rigidly assign all descriptor types to be at statically-defined set indices.
     // TODO(b/274762935): Make the bindings and descriptor set organization more flexible.
-    inline static constexpr unsigned int kDstAsInputDescSetIndex = 0;
-    inline static constexpr unsigned int kUniformBufferDescSetIndex = 1;
-    inline static constexpr unsigned int kTextureBindDescSetIndex = 2;
+    inline static constexpr unsigned int kDstAsInputDescSetIndex = 2;
+    inline static constexpr unsigned int kUniformBufferDescSetIndex = 0;
+    inline static constexpr unsigned int kTextureBindDescSetIndex = 1;
     inline static constexpr unsigned int kLoadMsaaFromResolveInputDescSetIndex = 3;
     inline static constexpr unsigned int kMaxNumDescSets = 4;
 
