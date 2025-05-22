@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "591d5d47_978664d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T15:53:00Z",
+      "side": 1,
+      "message": "A simplified version of [1], since we don\u0027t have to deal with derived properties (yet).\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkPath.cpp;drc\u003d1f9f3d7d4227fc2021915926b0e9f934cd610201;l\u003d1689",
+      "revId": "5cebcc22a940fbd02647abc1eb18cb918c7e1e54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
