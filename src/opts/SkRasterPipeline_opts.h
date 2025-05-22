@@ -4649,8 +4649,10 @@ template <typename T>
 SI void div_fn(T* dst, T* src) {
     T divisor = *src;
     if constexpr (!std::is_same_v<T, F>) {
-        // We will crash if we integer-divide against zero. Convert 0 to ~0 to avoid this.
-        divisor |= (T)cond_to_mask(divisor == 0);
+        // Integer division crashes when we divide by 0, but we can divide by -2 (aka ~1) to not
+        // crash. The result will be non-sensical, but so is dividing by 0. We can't divide by
+        // -1 (~0) because if dst was INT_MIN, this would overflow (i.e. to INT_MAX+1)
+        divisor |= ((T)cond_to_mask(divisor == 0) & ~1);
     }
     *dst /= divisor;
 }
