@@ -22,6 +22,30 @@
       },
       "revId": "78fbc3ee6940ab3d4ab29f8ccdd0dd4908126912",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0b30b2a6_34966769",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-22T17:56:11Z",
+      "side": 1,
+      "message": "Thanks. I\u0027ve spent too much time in Rust land where formatting is handled automatically. Done.",
+      "parentUuid": "ca1497ea_e434f7d5",
+      "range": {
+        "startLine": 366,
+        "startChar": 16,
+        "endLine": 366,
+        "endChar": 17
+      },
+      "revId": "78fbc3ee6940ab3d4ab29f8ccdd0dd4908126912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
