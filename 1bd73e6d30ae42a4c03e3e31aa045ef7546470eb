@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1820e6a_ff14fef2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T15:32:34Z",
+      "side": 1,
+      "message": "nit: Fix double space",
+      "range": {
+        "startLine": 158,
+        "startChar": 90,
+        "endLine": 158,
+        "endChar": 91
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a171bb9e_7750ad5d",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T15:32:34Z",
+      "side": 1,
+      "message": "Would this be a clean ternary?\n```\n// AMD advertises support for MAX_UINT vertex attributes but in reality only supports 32.\nfMaxVertexAttributes \u003d \n\t\tvendorID \u003d\u003d kAMD_VkVendor ? 32 : deviceLimits.maxVertexInputAttributes;\n```\nCould also allow us to mark it `const` as well (along with `fMaxUniformBufferRange` and `fMaxStorageBufferRange`)",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 5
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "143db0e7_f92b9339",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T15:32:34Z",
+      "side": 1,
+      "message": "nit: Wrap with some of the text on the first line, e.g.\n```\n        SKGPU_LOG_W(\"VK_KHR_driver_properties is not enabled; driver workarounds cannot be \"\n                    \"correctly applied\");\n```",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 27
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
