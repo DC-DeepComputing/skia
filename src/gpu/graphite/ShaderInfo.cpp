@@ -923,7 +923,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
 
-    preamble += emit_intrinsic_constants(bindingReqs);
+    // preamble += emit_intrinsic_constants(bindingReqs);
 
     if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
         // If this shader reads the dst texture as an input attachment, assert that a valid set

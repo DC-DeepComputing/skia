@@ -658,6 +658,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
     SkSL::ProgramSettings settings;
     settings.fSharpenTextures = true;
     settings.fForceNoRTFlip = true;
+    settings.fInlineThreshold = INT_MAX;
 
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 

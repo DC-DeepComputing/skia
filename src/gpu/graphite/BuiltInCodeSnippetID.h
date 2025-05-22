@@ -59,6 +59,8 @@ enum class BuiltInCodeSnippetID : int32_t {
 
     // SkColorFilter code snippets
     kMatrixColorFilter,
+    kHSLMatrixColorFilter,
+    kMatrixColorFilterFull,
     kTableColorFilter,
     kGaussianColorFilter,
 
