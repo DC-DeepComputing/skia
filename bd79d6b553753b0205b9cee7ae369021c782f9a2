@@ -22,6 +22,30 @@
       },
       "revId": "bd79d6b553753b0205b9cee7ae369021c782f9a2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bd8e626_5cb0bfd8",
+        "filename": "platform_tools/android/apps/gradle/wrapper/gradle-wrapper.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-22T14:31:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5e91c42_af9769ac",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 78
+      },
+      "revId": "bd79d6b553753b0205b9cee7ae369021c782f9a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
