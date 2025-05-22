@@ -357,11 +357,20 @@ public:
                 SkScalerContextRec::PreMatrixScale::kVertical, &fScale, &fRemainingMatrix);
 
         fDoLinearMetrics = this->isLinearMetrics();
+
         // See below for the exception for SkFontHinting::kSlight.
+        bool forceAutoHinting = SkToBool(fRec.fFlags & kForceAutohinting_Flag);
         fontations_ffi::AutoHintingControl autoHintingControl =
-                SkToBool(fRec.fFlags & kForceAutohinting_Flag)
+                forceAutoHinting
                         ? fontations_ffi::AutoHintingControl::ForceForGlyfAndCff
-                        : fontations_ffi::AutoHintingControl::AutoAsFallback;
+                        : fontations_ffi::AutoHintingControl::Fallback;
+
+#ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
+        // On Android, match the FreeType backend and disable autohinting completely
+        // unless the force flag is set.
+        if (!forceAutoHinting)
+            autoHintingControl = fontations_ffi::AutoHintingControl::ForceOff;
+#endif
 
         // Hinting-reliant fonts exist that display incorrect contours when not executing their
         // hinting instructions. Detect those and force-enable hinting for them.
@@ -388,9 +397,11 @@ public:
                     case SkFontHinting::kSlight:
                         // Unhinted metrics.
                         if (autoHintingControl !=
-                            fontations_ffi::AutoHintingControl::ForceForGlyfAndCff) {
+                            fontations_ffi::AutoHintingControl::ForceForGlyfAndCff &&
+                            autoHintingControl !=
+                            fontations_ffi::AutoHintingControl::ForceOff) {
                             autoHintingControl =
-                                    fontations_ffi::AutoHintingControl::PreferAutoOverHintsForGlyf;
+                                    fontations_ffi::AutoHintingControl::ForceForGlyf;
                         }
                         fHintingInstance = fontations_ffi::make_hinting_instance(
                                 fOutlines,
