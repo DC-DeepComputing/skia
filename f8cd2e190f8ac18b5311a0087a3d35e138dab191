@@ -46,6 +46,30 @@
       },
       "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44a9854e_f1bd8a6d",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T14:29:32Z",
+      "side": 0,
+      "message": "Eh it\u0027s so vague that I\u0027m not sure. Maybe ask Rob what he meant or lean towards opening a new one that we can later mark as a duplicate if need be.",
+      "parentUuid": "ef49e3fc_efb5b545",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
