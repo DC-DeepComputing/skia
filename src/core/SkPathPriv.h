@@ -431,6 +431,21 @@ public:
         builder->privateReverseAddPath(reverseMe);
     }
 
+    static std::optional<SkPoint> GetPoint(const SkPathBuilder& builder, int index) {
+        if ((unsigned)index < (unsigned)builder.fPts.size()) {
+            return builder.fPts.at(index);
+        }
+        return std::nullopt;
+    }
+
+    static SkSpan<const uint8_t> GetVerbs(const SkPathBuilder& builder) {
+        return builder.fVerbs;
+    }
+
+    static int CountVerbs(const SkPathBuilder& builder) {
+        return builder.fVerbs.size();
+    }
+
     static SkPath MakePath(const SkPathVerbAnalysis& analysis,
                            const SkPoint points[],
                            const uint8_t verbs[],
