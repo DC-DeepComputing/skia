@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "af842fe5_d79b8b43",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-22T23:01:48Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?",
+      "revId": "6fc4e319e56304429e8af12f9fa3dc824b02f67c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b54fdd9_cc624232",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-22T23:01:48Z",
+      "side": 1,
+      "message": "The new behavior more closely mimics the legacy code at https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/encode/SkPngEncoderImpl.cpp;l\u003d136-140;drc\u003d25bba45c7b253ed3a735ae6c6d32173fbf5cc9e7",
+      "range": {
+        "startLine": 44,
+        "startChar": 12,
+        "endLine": 44,
+        "endChar": 13
+      },
+      "revId": "6fc4e319e56304429e8af12f9fa3dc824b02f67c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
