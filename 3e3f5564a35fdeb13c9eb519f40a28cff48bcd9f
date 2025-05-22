@@ -1,0 +1,197 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5270862_cfb7041f",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 788,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "nit: line break @100",
+      "fixSuggestions": [
+        {
+          "fixId": "e911d290_df792713",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 788,
+                "startChar": 0,
+                "endLine": 789,
+                "endChar": 0
+              },
+              "replacement": "    SkPathBuilder\u0026 addPath(const SkPath\u0026 src,\n                           SkPath::AddPathMode mode \u003d SkPath::kAppend_AddPathMode) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d2ebbf74_892bf3aa",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "We could also return `std::optional\u003cSkPoint\u003e` to signal invalid indices instead of (0,0).",
+      "fixSuggestions": [
+        {
+          "fixId": "c6db248f_fb0320f9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 887,
+                "startChar": 0,
+                "endLine": 888,
+                "endChar": 0
+              },
+              "replacement": "        Returns nullopt if index is out of range.\n"
+            },
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 890,
+                "startChar": 0,
+                "endLine": 891,
+                "endChar": 0
+              },
+              "replacement": "        @return       SkPoint array value or nullopt\n"
+            },
+            {
+              "path": "include/core/SkPathBuilder.h",
+              "range": {
+                "startLine": 894,
+                "startChar": 0,
+                "endLine": 895,
+                "endChar": 0
+              },
+              "replacement": "    std::optional\u003cSkPoint\u003e getPoint(int index) const;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51ff86e9_1f33c1fc",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 903,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "A couple of thoughts on this one:\n\n1) copying the verbs out is a safe decoupling, in case we change our mind about how verbs are stored internally, but if the client just wants read access it\u0027s kind of getting in the way\n\n2) there aren\u0027t any external callers afaict, can we take this out of the public API?\n\nMaybe we can make it private (e.g. as a SkPathPriv helper) and have it return an SkSpan pointing to the actual verb storage - then clients can choose whether to copy or not:\n\n`static SkSpan\u003cconst uint8_t\u003e SkPathPriv::getVerbs(const SkPathBuilder\u0026 b) { return b.fVerbs; }`\n\nEven if we discover that it\u0027s needed for external clients, I doubt SkPathBuilder will ever store verbs in a non-contiguous fashion, so returning a span should be fairly future-proof regardless.",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "217b94b9_29e8e4b7",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "I guess this is the conservative thing to do for now, though we could probably make it more exact:\n\n - if the current builder is empty or JustMoves, use the type of the path (which we\u0027ll need to infer somehow)\n - if the path is empty, keep the current type\n \nWe can look at that as a follow up, but for now let\u0027s move this to the numVerbs conditional below (we don\u0027t need to reset the type if `path` has no verbs).",
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6083b81a_abf13fdb",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 827,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "nit: can be consolidated as `const SkMatrix matrix \u003d SkMatrix::Translate(dx, dy);`",
+      "range": {
+        "startLine": 825,
+        "startChar": 0,
+        "endLine": 827,
+        "endChar": 32
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "266fdf00_9131b396",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "I think this should be `~(src.fLastMoveToIndex) + this-\u003ecountPoints()`, but maybe the tests will prove me wrong:\n\n  - the idea is to offset the last moveto index by countPoints, since we\u0027re appending after the existing pts.\n  - for the negative case, subtracting achieves the correct result in SkPath (increases the absolute value), but it doesn\u0027t work out for SkPathBuilder - we always store a positive value so addition makes more sense.",
+      "range": {
+        "startLine": 849,
+        "startChar": 29,
+        "endLine": 849,
+        "endChar": 74
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a075396_fd3861ad",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 890,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-22T18:40:44Z",
+      "side": 1,
+      "message": "Interesting that this doesn\u0027t perform the same perspective weight adjustment as SkPath{Builder}::transform()... also no conversion for cubics and quads.  I\u0027ll make a note to circle back and investigate what\u0027s going on.",
+      "range": {
+        "startLine": 890,
+        "startChar": 60,
+        "endLine": 890,
+        "endChar": 61
+      },
+      "revId": "3e3f5564a35fdeb13c9eb519f40a28cff48bcd9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
