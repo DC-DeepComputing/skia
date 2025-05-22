@@ -42,6 +42,7 @@ std::string get_uniform_header(int set, int bufferID, const char* name) {
 std::string get_uniforms(UniformOffsetCalculator* offsetter,
                          SkSpan<const Uniform> uniforms,
                          int manglingSuffix,
+                         bool includeUniforms,
                          bool* wrotePaintColor) {
     std::string result;
     std::string uniformName;
@@ -62,17 +63,21 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
             }
         }
 
-        SkSL::String::appendf(&result,
-                              "    layout(offset=%d) %s %s",
-                              offsetter->advanceOffset(u.type(), u.count()),
-                              SkSLTypeString(u.type()),
-                              uniformName.c_str());
-        if (u.count()) {
-            result.append("[");
-            result.append(std::to_string(u.count()));
-            result.append("]");
+        int offset = offsetter->advanceOffset(u.type(), u.count());
+
+        if (includeUniforms) {
+            SkSL::String::appendf(&result,
+                                "    layout(offset=%d) %s %s",
+                                offset,
+                                SkSLTypeString(u.type()),
+                                uniformName.c_str());
+            if (u.count()) {
+                result.append("[");
+                result.append(std::to_string(u.count()));
+                result.append("]");
+            }
+            result.append(";\n");
         }
-        result.append(";\n");
     }
 
     return result;
@@ -80,10 +85,18 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
 
 std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
                               const ShaderNode* node,
+                              bool inFragShader,
                               bool* wrotePaintColor) {
     std::string result;
     SkSpan<const Uniform> uniforms = node->entry()->fUniforms;
 
+    const bool emitVaryingInFS =
+            static_cast<bool>(node->requiredFlags() & SnippetRequirementFlags::kLiftExpression);
+    const bool emitExpressionInVS =
+            emitVaryingInFS ||
+            (node->requiredFlags() & SnippetRequirementFlags::kOmitExpression);
+    const bool includeUniforms = (!inFragShader && emitExpressionInVS) ||
+                (inFragShader && !emitExpressionInVS);
     if (!uniforms.empty()) {
         if (node->entry()->fUniformStructName) {
             auto substruct = UniformOffsetCalculator::ForStruct(offsetter->layout());
@@ -92,22 +105,25 @@ std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
             }
 
             const int structOffset = offsetter->advanceStruct(substruct);
-            SkSL::String::appendf(&result,
-                                  "layout(offset=%d) %s node_%d;",
-                                  structOffset,
-                                  node->entry()->fUniformStructName,
-                                  node->keyIndex());
+
+            if (includeUniforms) {
+                SkSL::String::appendf(&result,
+                                    "layout(offset=%d) %s node_%d;",
+                                    structOffset,
+                                    node->entry()->fUniformStructName,
+                                    node->keyIndex());
+                }
         } else {
 #if defined(SK_DEBUG)
             SkSL::String::appendf(&result, "// %d - %s uniforms\n",
                                   node->keyIndex(), node->entry()->fName);
 #endif
-            result += get_uniforms(offsetter, uniforms, node->keyIndex(), wrotePaintColor);
+            result += get_uniforms(offsetter, uniforms, node->keyIndex(), includeUniforms, wrotePaintColor);
         }
     }
 
     for (const ShaderNode* child : node->children()) {
-        result += get_node_uniforms(offsetter, child, wrotePaintColor);
+        result += get_node_uniforms(offsetter, child, inFragShader, wrotePaintColor);
     }
     return result;
 }
@@ -181,7 +197,7 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
                                     bindingReqs.fIntrinsicBufferBinding,
                                     "Intrinsic");
     }
-    result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
+    result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, true, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
     SkASSERTF(bindingReqs.fUseVulkanPushConstantsForIntrinsicConstants ||
               result.find('[') == std::string::npos,
@@ -193,13 +209,14 @@ std::string emit_paint_params_uniforms(int set,
                                        int bufferID,
                                        const Layout layout,
                                        SkSpan<const ShaderNode*> nodes,
+                                       bool inFragShader,
                                        bool* hasUniforms,
                                        bool* wrotePaintColor) {
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
     std::string result = get_uniform_header(set, bufferID, "FS");
     for (const ShaderNode* n : nodes) {
-        result += get_node_uniforms(&offsetter, n, wrotePaintColor);
+        result += get_node_uniforms(&offsetter, n, inFragShader, wrotePaintColor);
     }
     result.append("};\n\n");
 
@@ -219,7 +236,7 @@ std::string emit_render_step_uniforms(int set,
     auto offsetter = UniformOffsetCalculator::ForTopLevel(layout);
 
     std::string result = get_uniform_header(set, bufferID, "Step");
-    result += get_uniforms(&offsetter, uniforms, -1, /* wrotePaintColor= */ nullptr);
+    result += get_uniforms(&offsetter, uniforms, -1, true, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
 
     return result;
@@ -923,7 +940,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     // The uniforms are mangled by having their index in 'fEntries' as a suffix (i.e., "_%d")
     const ResourceBindingRequirements& bindingReqs = caps->resourceBindingRequirements();
 
-    preamble += emit_intrinsic_constants(bindingReqs);
+    // preamble += emit_intrinsic_constants(bindingReqs);
 
     if (fDstReadStrategy == DstReadStrategy::kReadFromInput) {
         // If this shader reads the dst texture as an input attachment, assert that a valid set
@@ -967,6 +984,7 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
                                                bindingReqs.fPaintParamsBufferBinding,
                                                bindingReqs.fUniformBufferLayout,
                                                fRootNodes,
+                                               true,
                                                &fHasPaintUniforms,
                                                &wrotePaintColor);
     }
@@ -1267,6 +1285,7 @@ void ShaderInfo::generateVertexSkSL(const Caps* caps,
                                                bindingReqs.fPaintParamsBufferBinding,
                                                bindingReqs.fUniformBufferLayout,
                                                fRootNodes,
+                                               false,
                                                &unusedHasPaintUniforms,
                                                &unusedWrotePaintColor);
         }

@@ -12,6 +12,16 @@
 
 namespace skgpu::graphite {
 
+static constexpr DepthStencilSettings kDisabled = {
+        /*front=*/       {},
+        /*back=*/        {},
+        /*stencilRef=*/  0,
+        /*stencilTest=*/ false,
+        /*depthCompare=*/CompareOp::kAlways,
+        /*depthTest=*/   false,
+        /*depthWrite=*/  false
+};
+
 /**
  * DepthStencilSettings reusable by RenderSteps that can shade directly in a single pass, using
  * GREATER or GEQUAL depth tests depending on if they allow self-intersections.
