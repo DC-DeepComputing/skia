@@ -16,6 +16,24 @@
       "message": "Unless we want to report it with-in skia too (i.e [here](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/ganesh/vk/GrVkGpu.cpp;drc\u003d1f9f3d7d4227fc2021915926b0e9f934cd610201;l\u003d2237)), we don\u0027t have to add it for chrome side change. We should just store subclass and remove override.\n\nI\u0027m not sure how much those histograms from skia are useful, because they are reported on each submit instead of every N minutes and so have skewed results.",
       "revId": "5bc369c4f727693e3480bdefff4578716675ae1c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26333476_92fee8ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18114
+      },
+      "writtenOn": "2025-05-22T18:06:10Z",
+      "side": 1,
+      "message": "I wasn\u0027t planning on reporting it within Skia so storing subclass and removing override for chromium-side change sounds good to me, unless Michael/Kyle have other thoughts.",
+      "parentUuid": "530bdcb5_081fe867",
+      "revId": "5bc369c4f727693e3480bdefff4578716675ae1c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
