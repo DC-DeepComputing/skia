@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb7a606_2dade9b2",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T14:20:31Z",
+      "side": 0,
+      "message": "while this is unused right now, we plan to eventually once backends that can support direct dst texture reads offer support to do so. Maybe instead add a comment? \n\nPerhaps make a bug in taskflow for implementing direct texture sampling.\n`kTextureSample, // TODO([new bug #]: To be used once direct texture sampling is implemented`",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
