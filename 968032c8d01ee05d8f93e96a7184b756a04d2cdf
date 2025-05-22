@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17cf24f_7fe45cca",
+        "filename": "src/gpu/graphite/Texture.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 5065
+      },
+      "writtenOn": "2025-05-22T17:20:23Z",
+      "side": 1,
+      "message": "In principle the CL looks ok, I\u0027m just not sure this is the right term here. Lazy memory is a Vulkan-only thing, right?",
+      "range": {
+        "startLine": 44,
+        "startChar": 17,
+        "endLine": 44,
+        "endChar": 31
+      },
+      "revId": "968032c8d01ee05d8f93e96a7184b756a04d2cdf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
