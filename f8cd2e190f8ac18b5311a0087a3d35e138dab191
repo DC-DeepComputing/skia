@@ -22,6 +22,30 @@
       },
       "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef49e3fc_efb5b545",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-22T14:25:56Z",
+      "side": 0,
+      "message": "Ah! That\u0027s my misunderstanding. It isn\u0027t super descriptive, but is this bug appropriate do you think? https://g-issues.chromium.org/issues/238756862",
+      "parentUuid": "2fb7a606_2dade9b2",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
