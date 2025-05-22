@@ -596,6 +596,50 @@ void SkBitmapDevice::drawSpecial(SkSpecialImage* src,
     }
 }
 
+void SkBitmapDevice::drawCoverageMask(const SkSpecialImage* mask,
+                                      const SkMatrix& maskToDevice,
+                                      const SkSamplingOptions& sampling,
+                                      const SkPaint& paint) {
+    SkASSERT(!mask->isGaneshBacked());
+    SkASSERT(!mask->isGraphiteBacked());
+
+    SkMatrix deviceToLocal;
+    if (!this->localToDevice().invert(&deviceToLocal)) {
+        return;
+    }
+    SkMatrix maskToLocal = SkMatrix::Concat(deviceToLocal, maskToDevice);
+    SkMatrix localToMask;
+    if (!maskToLocal.invert(&localToMask)) {
+        return;
+    }
+
+    SkBitmap maskBM;
+    if (!SkSpecialImages::AsBitmap(mask, &maskBM)) {
+        return;
+    }
+
+    SkBitmap paintBM;
+    if (!paintBM.tryAllocN32Pixels(maskBM.width(), maskBM.height())) {
+        return;
+    }
+    SkCanvas paintCanvas(paintBM);
+    paintCanvas.concat(localToMask);
+    paintCanvas.drawPaint(paint);
+    paintCanvas.concat(maskToLocal);
+
+    SkPaint blendPaint;
+    blendPaint.setBlendMode(SkBlendMode::kDstIn);
+    paintCanvas.drawImage(maskBM.asImage(), 0, 0, SkSamplingOptions{}, &blendPaint);
+
+    SkDraw draw;
+    if (!this->accessPixels(&draw.fDst)) {
+      return; // no pixels to draw to so skip it
+    }
+    draw.fRC = &fRCStack.rc();
+    draw.fCTM = &maskToDevice;
+    draw.drawBitmap(paintBM, SkMatrix::I(), nullptr, sampling, paint);
+}
+
 sk_sp<SkSpecialImage> SkBitmapDevice::snapSpecial(const SkIRect& bounds, bool forceCopy) {
     if (forceCopy) {
         return SkSpecialImages::CopyFromRaster(bounds, fBitmap, this->surfaceProps());
