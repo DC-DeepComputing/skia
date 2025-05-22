@@ -70,6 +70,30 @@
       },
       "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2427c3ff_d36a1087",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 13824
+      },
+      "writtenOn": "2025-05-22T18:17:52Z",
+      "side": 0,
+      "message": "Confirmed with Rob, updated bug, and added back enum with a TODO",
+      "parentUuid": "44a9854e_f1bd8a6d",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 18
+      },
+      "revId": "f8cd2e190f8ac18b5311a0087a3d35e138dab191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
