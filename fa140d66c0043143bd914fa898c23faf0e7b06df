@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8f336ddf_c5c80600",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-22T17:42:35Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc934875_9bc7a91b",
+      "range": {
+        "startLine": 402,
+        "startChar": 74,
+        "endLine": 402,
+        "endChar": 75
+      },
+      "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4a753ef_2d2ccd0c",
         "filename": "src/ports/SkTypeface_fontations.cpp",
         "patchSetId": 3
@@ -37,6 +61,24 @@
       "writtenOn": "2025-05-22T17:29:38Z",
       "side": 1,
       "message": "The line wrapping here is... not the best. I think a number of lines in this functions would benefit from a\n\n```\nusing AutoHinting \u003d fontations_ffi::AutoHintingControl;\n```\n\nup near the top of this function and some substitution.",
+      "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16caf137_434a6a8a",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-22T17:42:35Z",
+      "side": 1,
+      "message": "Good call. Also done.",
+      "parentUuid": "d4a753ef_2d2ccd0c",
       "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
