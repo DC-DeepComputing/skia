@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "116b1690_0d100977",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19969
+      },
+      "writtenOn": "2025-05-22T15:38:18Z",
+      "side": 1,
+      "message": "cc myself and add Ben and Dominik as reviewers.\n\nThis is my attempt to match FreeType behavior for autohinting selection on Android to address performance regressions we\u0027re seeing.",
+      "revId": "e63471be6228f48334605db927cbd26c34113e90",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
