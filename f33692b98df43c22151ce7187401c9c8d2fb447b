@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "408a75a4_a704cf8c",
+        "filename": "platform_tools/android/apps/build.gradle",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T14:18:08Z",
+      "side": 1,
+      "message": "Maybe in addition to the updated docs, let\u0027s add a comment here w/ the link to the android gradle plugin page and explain that this differs from the actual gradle version",
+      "range": {
+        "startLine": 13,
+        "startChar": 50,
+        "endLine": 13,
+        "endChar": 55
+      },
+      "revId": "f33692b98df43c22151ce7187401c9c8d2fb447b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
