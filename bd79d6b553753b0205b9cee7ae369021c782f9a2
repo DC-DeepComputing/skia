@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5e91c42_af9769ac",
+        "filename": "platform_tools/android/apps/gradle/wrapper/gradle-wrapper.properties",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-22T14:28:39Z",
+      "side": 1,
+      "message": "Sorry, another suggestion: add a comment above this w/ something like\n`The gradle version defined here must be compatible with the Android gradle plugin version defined in platform_tools/android/apps/build.gradle. Additionally, you must use a version of Java that is compatible per https://docs.gradle.org/current/userguide/compatibility.html.`",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 78
+      },
+      "revId": "bd79d6b553753b0205b9cee7ae369021c782f9a2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
