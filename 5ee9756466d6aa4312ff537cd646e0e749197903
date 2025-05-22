@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c4b84f5_6550b316",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-22T17:20:45Z",
+      "side": 1,
+      "message": "This change doesn\u0027t appear to change any of the FreeType output or cause any of the FreeType / Fontations unhinted paths are the same tests to fail.",
+      "revId": "5ee9756466d6aa4312ff537cd646e0e749197903",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
