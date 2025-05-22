@@ -55,7 +55,7 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
                           local2Dev,
                           targetColorInfo,
                           geometry.isShape() || geometry.isEdgeAAQuad()
-                                  ? KeyGenFlags::kDefault
+                                  ? KeyGenFlags::kDisableSamplingOptimization
                                   : KeyGenFlags::kDisableSamplingOptimization,
                           p.color());
     p.toKey(keyContext, builder, gatherer);

@@ -107,7 +107,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     initFromStep(&fNonAABoundsFill,
                  std::make_unique<CoverBoundsRenderStep>(
                         RenderStep::RenderStepID::kCoverBounds_NonAAFill,
-                        kDirectDepthGreaterPass),
+                        kDisabled),
                  DrawTypeFlags::kNonAAFillRect);
     initFromStep(&fCircularArc,
                  std::make_unique<CircularArcRenderStep>(bufferManager),
