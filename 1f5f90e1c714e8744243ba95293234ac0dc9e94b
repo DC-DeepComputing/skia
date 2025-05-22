@@ -1,0 +1,182 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5c9bd0b_df79d6ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "Thanks for the contribution!",
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42ddf526_e80d0c79",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 717,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "nit: remove trailing spaces here and below\n\nI usually handle this by running `git clang-format` https://github.com/google/skia/blob/main/.clang-format#L19",
+      "range": {
+        "startLine": 717,
+        "startChar": 96,
+        "endLine": 717,
+        "endChar": 97
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca3f8736_6b4a13b4",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "Should we reject the draw if the total quads are above the maxQuads instead of clamping?",
+      "range": {
+        "startLine": 719,
+        "startChar": 48,
+        "endLine": 719,
+        "endChar": 62
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1243b5a7_7b2e5837",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "What went into determining this limit? Can we pull it out as a named constant?",
+      "range": {
+        "startLine": 723,
+        "startChar": 26,
+        "endLine": 723,
+        "endChar": 37
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1b93ffa_02852626",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "driveby: can we mark this as \"a pointer to const Desc\". I\u0027m pretty sure we just read from Desc, but that can help make the intent clearer",
+      "range": {
+        "startLine": 742,
+        "startChar": 31,
+        "endLine": 742,
+        "endChar": 35
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "67a661e5_fc371a34",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "nit: wrap comments to 100 cols (and we generally try to wrap code to 100 cols as well)",
+      "range": {
+        "startLine": 768,
+        "startChar": 95,
+        "endLine": 768,
+        "endChar": 101
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1dde376c_c9c90ddb",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "startMark is a debug only variable at the moment. It needs to be declared in release mode too (i.e. not in SkDEBUGCODE",
+      "range": {
+        "startLine": 770,
+        "startChar": 51,
+        "endLine": 770,
+        "endChar": 60
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "148cdb7b_7497096f",
+        "filename": "src/gpu/ganesh/ops/TextureOp.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 771,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T13:51:46Z",
+      "side": 1,
+      "message": "suggestion: calculate the multiplication outside the loop since I think it is constant (and the named variable will hopefully make it a bit more readable)",
+      "range": {
+        "startLine": 771,
+        "startChar": 30,
+        "endLine": 771,
+        "endChar": 41
+      },
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
