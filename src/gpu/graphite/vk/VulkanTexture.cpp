@@ -205,6 +205,21 @@ VkImageAspectFlags vk_format_to_aspect_flags(VkFormat format) {
     }
 }
 
+const char* layout_to_string(VkImageLayout layout) {
+    switch (layout) {
+        case VK_IMAGE_LAYOUT_UNDEFINED: return "undefined";
+        case VK_IMAGE_LAYOUT_GENERAL: return "general";
+        case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL: return "color_attachment_optimal";
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL: return "depth_stencil_attachment_optimal";
+        case VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL: return "depth_stencil_readonly_optimal";
+        case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL: return "shader_readonly_optimal";
+        case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL: return "transfer_src_optimal";
+        case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL: return "transfer_dst_optimal";
+        case VK_IMAGE_LAYOUT_PREINITIALIZED: return "preinitialized";
+        default: return "other";
+    }
+}
+
 void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
                                                 VkImageLayout newLayout,
                                                 VkAccessFlags dstAccessMask,
@@ -298,6 +313,7 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
         { aspectFlags, 0, numMipLevels, 0, 1 }           // subresourceRange
     };
     SkASSERT(srcAccessMask == imageMemoryBarrier.srcAccessMask);
+    // SkDebugf("image layout on %p from %s to %s\n", this, layout_to_string(currentLayout), layout_to_string(newLayout));
     cmdBuffer->addImageMemoryBarrier(this, srcStageMask, dstStageMask, byRegion,
                                      &imageMemoryBarrier);
 
