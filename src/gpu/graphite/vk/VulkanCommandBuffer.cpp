@@ -123,6 +123,12 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     VULKAN_CALL_ERRCHECK(fSharedContext, ResetCommandPool(fSharedContext->device(), fPool, 0));
     fActiveGraphicsPipeline = nullptr;
     fBindUniformBuffers = true;
+    fBoundIndexBuffer = nullptr;
+    fBoundIndexOffset = 0;
+    fBoundInputBuffers[0] = nullptr;
+    fBoundInputBuffers[1] = nullptr;
+    fBoundInputBufferOffsets[0] = 0;
+    fBoundInputBufferOffsets[1] = 0;
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
     fTargetTexture = nullptr;
@@ -806,20 +812,13 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
         return false;
     }
 
-    VkExtent2D granularity;
-    // Get granularity for this render pass
-    VULKAN_CALL(fSharedContext->interface(),
-                GetRenderAreaGranularity(fSharedContext->device(),
-                                         vulkanRenderPass->renderPass(),
-                                         &granularity));
-
     bool useFullBounds = loadMSAAFromResolve &&
                          fSharedContext->vulkanCaps().mustLoadFullImageForMSAA();
 
     VkRect2D renderArea = get_render_area(useFullBounds ? SkIRect::MakeWH(frameBufferWidth,
                                                                           frameBufferHeight)
                                                         : renderPassBounds,
-                                          granularity,
+                                          vulkanRenderPass->granularity(),
                                           frameBufferWidth,
                                           frameBufferHeight);
 
@@ -1139,7 +1138,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
 
 void VulkanCommandBuffer::bindInputBuffer(const Buffer* inputBuffer, VkDeviceSize offset,
                                           uint32_t binding) {
-    if (inputBuffer) {
+    if (inputBuffer && (inputBuffer != fBoundInputBuffers[binding] ||
+                        offset != fBoundInputBufferOffsets[binding])) {
         SkASSERT(inputBuffer->isProtected() == Protected::kNo);
         VkBuffer vkBuffer = static_cast<const VulkanBuffer*>(inputBuffer)->vkBuffer();
         SkASSERT(vkBuffer != VK_NULL_HANDLE);
@@ -1148,11 +1148,13 @@ void VulkanCommandBuffer::bindInputBuffer(const Buffer* inputBuffer, VkDeviceSiz
                                                                       /*bindingCount=*/1,
                                                                       &vkBuffer,
                                                                       &offset));
+        fBoundInputBuffers[binding] = inputBuffer;
+        fBoundInputBufferOffsets[binding] = offset;
     }
 }
 
 void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offset) {
-    if (indexBuffer) {
+    if (indexBuffer && (indexBuffer != fBoundIndexBuffer || offset != fBoundIndexOffset)) {
         SkASSERT(indexBuffer->isProtected() == Protected::kNo);
         VkBuffer vkBuffer = static_cast<const VulkanBuffer*>(indexBuffer)->vkBuffer();
         SkASSERT(vkBuffer != VK_NULL_HANDLE);
@@ -1160,6 +1162,8 @@ void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offs
                                                                      vkBuffer,
                                                                      offset,
                                                                      VK_INDEX_TYPE_UINT16));
+        fBoundIndexBuffer = indexBuffer;
+        fBoundIndexOffset = offset;
     }
 }
 
@@ -1657,11 +1661,35 @@ bool VulkanCommandBuffer::onClearBuffer(const Buffer*, size_t offset, size_t siz
     return false;
 }
 
+std::string stage_flags_to_string(VkPipelineStageFlags stages) {
+    std::string flags = "";
+    if (stages & VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT) { flags += "top-of-pipe "; }
+    if (stages & VK_PIPELINE_STAGE_DRAW_INDIRECT_BIT) { flags += "draw-indirect "; }
+    if (stages & VK_PIPELINE_STAGE_VERTEX_INPUT_BIT) { flags += "vertex-input "; }
+    if (stages & VK_PIPELINE_STAGE_VERTEX_SHADER_BIT) { flags += "vertex-shader "; }
+    if (stages & VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT) { flags += "fragment-shader "; }
+    if (stages & VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT) { flags += "early-frag-tests "; }
+    if (stages & VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT) { flags += "late-frag-tests "; }
+    if (stages & VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT) { flags += "color-output "; }
+    if (stages & VK_PIPELINE_STAGE_COMPUTE_SHADER_BIT) { flags += "compute-shader "; }
+    if (stages & VK_PIPELINE_STAGE_TESSELLATION_CONTROL_SHADER_BIT) { flags += "tess-control-shader "; }
+    if (stages & VK_PIPELINE_STAGE_TESSELLATION_EVALUATION_SHADER_BIT) { flags += "tess-eval-shader"; }
+    if (stages & VK_PIPELINE_STAGE_GEOMETRY_SHADER_BIT) { flags += "geom-shader "; }
+    if (stages & VK_PIPELINE_STAGE_TRANSFER_BIT) { flags += "transfer "; }
+    if (stages & VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT) { flags += "bottom-of-pipe "; }
+    if (stages & VK_PIPELINE_STAGE_HOST_BIT) { flags += "host "; }
+    if (stages & VK_PIPELINE_STAGE_ALL_GRAPHICS_BIT) { flags += "all-graphics "; }
+    if (stages & VK_PIPELINE_STAGE_ALL_COMMANDS_BIT) { flags += "all-commands "; }
+
+    return flags;
+}
+
 void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
                                                  VkPipelineStageFlags srcStageMask,
                                                  VkPipelineStageFlags dstStageMask,
                                                  VkBufferMemoryBarrier* barrier) {
     SkASSERT(resource);
+    // SkDebugf("buffer barrier on %p from %s to %s\n", resource, stage_flags_to_string(srcStageMask).c_str(), stage_flags_to_string(dstStageMask).c_str());
     this->pipelineBarrier(resource,
                           srcStageMask,
                           dstStageMask,
@@ -1673,6 +1701,8 @@ void VulkanCommandBuffer::addBufferMemoryBarrier(const Resource* resource,
 void VulkanCommandBuffer::addBufferMemoryBarrier(VkPipelineStageFlags srcStageMask,
                                                  VkPipelineStageFlags dstStageMask,
                                                  VkBufferMemoryBarrier* barrier) {
+    // SkDebugf("buffer barrier on nullptr from %s to %s\n", stage_flags_to_string(srcStageMask).c_str(), stage_flags_to_string(dstStageMask).c_str());
+
     // We don't pass in a resource here to the command buffer. The command buffer only is using it
     // to hold a ref, but every place where we add a buffer memory barrier we are doing some other
     // command with the buffer on the command buffer. Thus those other commands will already cause
@@ -1690,6 +1720,7 @@ void VulkanCommandBuffer::addImageMemoryBarrier(const Resource* resource,
                                                 VkPipelineStageFlags dstStageMask,
                                                 bool byRegion,
                                                 VkImageMemoryBarrier* barrier) {
+    // SkDebugf("image barrier on %p from %s to %s\n", resource, stage_flags_to_string(srcStageMask).c_str(), stage_flags_to_string(dstStageMask).c_str());
     SkASSERT(resource);
     this->pipelineBarrier(resource,
                           srcStageMask,
