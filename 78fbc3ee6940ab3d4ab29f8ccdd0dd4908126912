@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca1497ea_e434f7d5",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-22T17:51:52Z",
+      "side": 1,
+      "message": "nit: better to line this up under the `?`.",
+      "range": {
+        "startLine": 366,
+        "startChar": 16,
+        "endLine": 366,
+        "endChar": 17
+      },
+      "revId": "78fbc3ee6940ab3d4ab29f8ccdd0dd4908126912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

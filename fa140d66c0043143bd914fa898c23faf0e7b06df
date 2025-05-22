@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0786d864_b74b2343",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 402,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-22T17:51:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8f336ddf_c5c80600",
+      "range": {
+        "startLine": 402,
+        "startChar": 74,
+        "endLine": 402,
+        "endChar": 75
+      },
+      "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4a753ef_2d2ccd0c",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "Good call. Also done.",
       "parentUuid": "d4a753ef_2d2ccd0c",
+      "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51199706_b16f5f05",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-22T17:51:52Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "16caf137_434a6a8a",
       "revId": "fa140d66c0043143bd914fa898c23faf0e7b06df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
