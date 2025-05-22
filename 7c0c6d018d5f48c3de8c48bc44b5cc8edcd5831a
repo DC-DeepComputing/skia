@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6495600a_94305a2a",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 25
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-22T13:44:27Z",
+      "side": 1,
+      "message": "This pattern makes me think `SkRecorder` should have `asXRecorder()` functions on it that wrap this logic and casting for the callers. \n\nWe could make them skia src/ functions and be static/top-level so that you could do something like:\n\n    skgpu::graphite::Recorder* graphiteRecorder \u003d AsGraphiteRecorder(recorder);\n    if (!graphiteRecorder) {\n        return nullptr;\n    }",
+      "range": {
+        "startLine": 212,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 5
+      },
+      "revId": "7c0c6d018d5f48c3de8c48bc44b5cc8edcd5831a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
