@@ -41,7 +41,7 @@ protected:
     Texture(const SharedContext*,
             SkISize dimensions,
             const TextureInfo& info,
-            bool hasTransientUsage,
+            bool usesLazyMemory,
             sk_sp<MutableTextureState> mutableState,
             Ownership);
 
