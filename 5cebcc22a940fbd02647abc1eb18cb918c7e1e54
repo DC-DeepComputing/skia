@@ -16,6 +16,29 @@
       "message": "A simplified version of [1], since we don\u0027t have to deal with derived properties (yet).\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkPath.cpp;drc\u003d1f9f3d7d4227fc2021915926b0e9f934cd610201;l\u003d1689",
       "revId": "5cebcc22a940fbd02647abc1eb18cb918c7e1e54",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "853345b9_7b472825",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-22T16:52:41Z",
+      "side": 1,
+      "message": "nit: Does this need to be static *and* in an anonymous namespace?",
+      "range": {
+        "startLine": 29,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 9
+      },
+      "revId": "5cebcc22a940fbd02647abc1eb18cb918c7e1e54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
