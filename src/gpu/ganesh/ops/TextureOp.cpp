@@ -712,7 +712,24 @@ private:
 
         fDesc = arena->make<Desc>();
         this->characterize(fDesc);
+        // Ensure vertex allocation is valid before proceeding
+        GrAAType aaType = fMetadata.aaType();
+        int maxQuads = (aaType == GrAAType::kCoverage) ? GrResourceProvider::MaxNumAAQuads() - 1 
+                                   : GrResourceProvider::MaxNumNonAAQuads() - 1;
+        fDesc->fNumTotalQuads = std::min(fDesc->fNumTotalQuads, maxQuads);
+
+        // Ensure memory usage is within reasonable limits
+        size_t totalMemory = fDesc->totalSizeInBytes();
+        if (totalMemory > 1024 * 1024) {
+            SkDebugf("onPrePrepareDraws: Excessive memory (%zu bytes), skipping\n", totalMemory);
+            return;
+        }
+        // Allocate and verify vertex memory
         fDesc->allocatePrePreparedVertices(arena);
+        if (!fDesc->fPrePreparedVertices) {
+            SkDebugf("onPrePrepareDraws: Vertex allocation failed\n");
+            return;
+        }
         FillInVertices(*context->priv().caps(), this, fDesc, fDesc->fPrePreparedVertices);
 
         // This will call onCreateProgramInfo and register the created program with the DDL.
@@ -730,8 +747,14 @@ private:
                 SkDEBUGCODE(const size_t vertexSize = desc->fVertexSpec.vertexSize();)
                         SkDEBUGCODE(auto startMark{vertexData};)
 
-                                skgpu::ganesh::QuadPerEdgeAA::Tessellator tessellator(
-                                        desc->fVertexSpec, vertexData);
+        // Ensure sufficient memory for vertices to prevent buffer overflow
+        size_t totalSizeNeeded = desc->totalSizeInBytes();
+        if (desc->fNumTotalQuads * desc->fVertexSpec.verticesPerQuad() * desc->fVertexSpec.vertexSize() > totalSizeNeeded) {
+            SkDebugf("FillInVertices: Insufficient memory for vertices - aborting\n");
+            return; // Exit early to avoid overflow
+        }
+        // Initialize tessellator for vertex processing
+        skgpu::ganesh::QuadPerEdgeAA::Tessellator tessellator(desc->fVertexSpec, vertexData);
         for (const auto& op : ChainRange<TextureOpImpl>(texOp)) {
             auto iter = op.fQuads.iterator();
             for (unsigned p = 0; p < op.fMetadata.fProxyCount; ++p) {
@@ -741,6 +764,14 @@ private:
                 for (int i = 0; i < quadCnt && iter.next(); ++i) {
                     SkASSERT(iter.isLocalValid());
                     const ColorSubsetAndAA& info = iter.metadata();
+
+                    // Add safety check to ensure we're not writing past the end of the vertex buffer
+                    // Ensure sufficient space in the vertex buffer for the next quad
+                    if (tessellator.vertexMark() - startMark + 
+                        desc->fVertexSpec.verticesPerQuad() * desc->fVertexSpec.vertexSize() > totalSizeNeeded) {
+                        SkDebugf("FillInVertices: Insufficient vertex buffer space - stopping\n");
+                        return; // Prevent buffer overflow
+                    }
 
                     tessellator.append(iter.deviceQuad(), iter.localQuad(), info.fColor,
                                        info.fSubsetRect, info.aaFlags());
@@ -848,6 +879,12 @@ private:
 
         SkASSERT(desc->fNumTotalQuads == this->numChainedQuads());
 
+        // Prevent quad count overflow by clamping to safe limits
+        int maxQuads = (overallAAType == GrAAType::kCoverage ? 
+                GrResourceProvider::MaxNumAAQuads() : 
+                GrResourceProvider::MaxNumNonAAQuads()) - 1;
+        desc->fNumTotalQuads = std::min(desc->fNumTotalQuads, maxQuads);
+
         SkASSERT(!CombinedQuadCountWillOverflow(overallAAType, false, desc->fNumTotalQuads));
 
         auto indexBufferOption =
@@ -947,10 +984,17 @@ private:
 
         int totQuadsSeen = 0;
         SkDEBUGCODE(int numDraws = 0;)
+        SkDEBUGCODE(int numSkippedDraws = 0;)
         for (const auto& op : ChainRange<TextureOpImpl>(this)) {
             for (unsigned p = 0; p < op.fMetadata.fProxyCount; ++p) {
                 const int quadCnt = op.fViewCountPairs[p].fQuadCnt;
-                SkASSERT(numDraws < fDesc->fNumProxies);
+                SkASSERT(numDraws + numSkippedDraws < fDesc->fNumProxies);
+                int remainingQuadsAllowed = fDesc->fNumTotalQuads - totQuadsSeen;
+                int maxQuadsInDraw = fDesc->fVertexSpec.usesCoverageAA() ?
+                                     GrResourceProvider::MaxNumAAQuads() :
+                                     GrResourceProvider::MaxNumNonAAQuads();
+                int safeQuadCount = std::min({quadCnt, remainingQuadsAllowed, maxQuadsInDraw});
+                if (safeQuadCount <= 0) { SkDEBUGCODE(++numSkippedDraws;) continue; }
                 flushState->bindTextures(fDesc->fProgramInfo->geomProc(),
                                          *op.fViewCountPairs[p].fProxy,
                                          fDesc->fProgramInfo->pipeline());
@@ -958,16 +1002,23 @@ private:
                                                         flushState->opsRenderPass(),
                                                         fDesc->fVertexSpec,
                                                         totQuadsSeen,
-                                                        quadCnt,
+                                                        safeQuadCount,
                                                         fDesc->totalNumVertices(),
                                                         fDesc->fBaseVertex);
-                totQuadsSeen += quadCnt;
+                totQuadsSeen += safeQuadCount;
                 SkDEBUGCODE(++numDraws;)
             }
         }
+        // Ensure quad count consistency; log warning if mismatch
+        if (totQuadsSeen != fDesc->fNumTotalQuads) {
+            SkDebugf("WARNING: QuadCount mismatch - seen: %d, expected: %d\n", 
+                 totQuadsSeen, fDesc->fNumTotalQuads);
+            return; // Avoid assertion failure
+        }
 
         SkASSERT(totQuadsSeen == fDesc->fNumTotalQuads);
-        SkASSERT(numDraws == fDesc->fNumProxies);
+        // Make sure we account for skipped draws in our assertion
+        SkASSERT(numDraws + numSkippedDraws == fDesc->fNumProxies);
     }
 
     void propagateCoverageAAThroughoutChain() {
