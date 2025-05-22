@@ -9,6 +9,7 @@
 
 #include <limits>
 #include <memory>
+#include <optional>
 #include <utility>
 
 #include "experimental/rust_png/encoder/SkPngRustEncoder.h"
@@ -29,12 +30,18 @@
 
 namespace {
 
-rust_png::ColorType ToColorType(SkEncodedInfo::Color color) {
+rust_png::ColorType ToColorType(
+        SkEncodedInfo::Color color,
+        const std::optional<SkImageInfo>& maybeDstRowInfo) {
     switch (color) {
         case SkEncodedInfo::kRGB_Color:
             return rust_png::ColorType::Rgb;
         case SkEncodedInfo::kRGBA_Color:
-            return rust_png::ColorType::Rgba;
+            if (maybeDstRowInfo && maybeDstRowInfo->isOpaque()) {
+              return rust_png::ColorType::Rgb;
+            } else {
+              return rust_png::ColorType::Rgba;
+            }
         case SkEncodedInfo::kGray_Color:
             return rust_png::ColorType::Grayscale;
         case SkEncodedInfo::kGrayAlpha_Color:
@@ -143,6 +150,7 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
         return nullptr;
     }
     const SkEncodedInfo& dstInfo = maybeTargetInfo->fDstInfo;
+    const std::optional<SkImageInfo>& maybeDstRowInfo = maybeTargetInfo->fDstRowInfo;
 
     SkSafeMath safe;
     uint32_t width = safe.castTo<uint32_t>(dstInfo.width());
@@ -166,7 +174,7 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
             rust_png::new_writer(std::move(writeTraitAdapter),
                                  width,
                                  height,
-                                 ToColorType(dstInfo.color()),
+                                 ToColorType(dstInfo.color(), maybeDstRowInfo),
                                  dstInfo.bitsPerComponent(),
                                  ToCompression(options.fCompressionLevel),
                                  encodedProfileSlice);
