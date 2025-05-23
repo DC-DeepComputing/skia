@@ -16,6 +16,40 @@
       "message": "I\u0027ve implemented what we ended up at after discussion on https://docs.google.com/document/d/1lfXIIzhGZP4rVX9_0jfZfn2vZA7KlD0ysdfNF4UDtzM/edit?tab\u003dt.0",
       "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3747a828_7cf00842",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-23T19:51:36Z",
+      "side": 1,
+      "message": "This all seems like a lot of possible ODR issues for what looks like \"pass a function pointer\". I mean, in G3 an application would need to be super careful that all transitive dependencies (including itself) are using the same one of these. That being said, I understand there are a lot of places a function pointer would need to be passed. On the other hand, said functions pointer / list of codecs could be used by the DirectWrite (currently uses `SkImages::DeferredFromEncodedData`) as well. (FreeType always decodes things itself and has its own special png decoder, and CoreText doesn\u0027t expose anything.)\n\nIs there any reason the DirectWrite approach cannot be used here, and the user can compile in or register whichever PNG decoders they want to use?",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27fc0ec7_b0abbdf1",
+        "filename": "src/ports/SkFontMgr_fontconfig_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-23T19:51:36Z",
+      "side": 1,
+      "message": "I can see the point in pulling the (existing) implementation of the FreeType SkFontMgr_New_FontConfig out of SkFontMgr_fontconfig.cpp (so that file doesn\u0027t depend on FreeType at all) but I\u0027m not sure what the motivation is for adding this file?",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
