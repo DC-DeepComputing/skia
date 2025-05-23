@@ -65,6 +65,11 @@ using namespace skia_private;
 template <typename T> struct sk_is_trivially_relocatable;
 template <> struct sk_is_trivially_relocatable<dng_exception> : std::true_type {};
 
+// This type doesn't exist on older dng versions; forward declare it so
+// we can always use the pointer type in method signatures regardless
+// of the dng_sdk version
+class dng_area_task_progress;
+
 namespace {
 
 // Calculates the number of tiles of tile_size that fit into the area in vertical and horizontal
@@ -120,11 +125,35 @@ std::vector<dng_rect> compute_task_areas(const int maxTasks, const dng_rect& are
   return taskAreas;
 }
 
+template <typename F, typename... Args>
+auto invoke_if_invocable(F&& f, Args&&... args)
+    -> std::enable_if_t<std::is_invocable_v<F, Args...>, decltype(std::invoke(std::forward<F>(f), std::forward<Args>(args)...))> {
+  return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+}
+
+template <typename F, typename... Args>
+std::enable_if_t<!std::is_invocable_v<F, Args...>> invoke_if_invocable(F&& f, Args&&... args) {
+    SK_ABORT("Unreachable");
+}
+
 class SkDngHost : public dng_host {
 public:
     explicit SkDngHost(dng_memory_allocator* allocater) : dng_host(allocater) {}
 
-    void PerformAreaTask(dng_area_task& task, const dng_rect& area) override {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Winconsistent-missing-override"
+
+    virtual void PerformAreaTask(dng_area_task& task, const dng_rect& area, dng_area_task_progress*) {
+        doPerformAreaTask(task, area);
+    }
+
+    virtual void PerformAreaTask(dng_area_task& task, const dng_rect& area) {
+        doPerformAreaTask(task, area);
+    }
+
+#pragma GCC diagnostic pop
+
+    void doPerformAreaTask(dng_area_task& task, const dng_rect& area) {
         SkTaskGroup taskGroup;
 
         // tileSize is typically 256x256
@@ -135,11 +164,26 @@ public:
 
         SkMutex mutex;
         TArray<dng_exception> exceptions;
-        task.Start(numTasks, tileSize, &Allocator(), Sniffer());
+        // TODO: This is kinda sketchy since there's no good way to assert that if a path is
+        // taken that it'll actually be invoked. Remove this as soon as Android has finished
+        // updating to DNG SDK 1.7.1
+        if constexpr (std::is_invocable_v<decltype(&dng_area_task::Start), dng_area_task&, uint32_t,
+                const dng_rect&, const dng_point&, dng_memory_allocator*, dng_abort_sniffer*>) {
+            invoke_if_invocable(&dng_area_task::Start, task, numTasks, area, tileSize, &Allocator(), Sniffer());
+        } else {
+            invoke_if_invocable(&dng_area_task::Start, task, numTasks, tileSize, &Allocator(), Sniffer());
+        }
         for (int taskIndex = 0; taskIndex < numTasks; ++taskIndex) {
             taskGroup.add([&mutex, &exceptions, &task, this, taskIndex, taskAreas, tileSize] {
                 try {
-                    task.ProcessOnThread(taskIndex, taskAreas[taskIndex], tileSize, this->Sniffer());
+                    if constexpr (std::is_invocable_v<decltype(&dng_area_task::ProcessOnThread), dng_area_task&,
+                            uint32_t, const dng_rect&, const dng_point&, dng_abort_sniffer*, dng_area_task_progress*>) {
+                        invoke_if_invocable(&dng_area_task::ProcessOnThread, task,
+                                taskIndex, taskAreas[taskIndex], tileSize, this->Sniffer(), (dng_area_task_progress*) nullptr);
+                    } else {
+                        invoke_if_invocable(&dng_area_task::ProcessOnThread, task,
+                            taskIndex, taskAreas[taskIndex], tileSize, this->Sniffer());
+                    }
                 } catch (dng_exception& exception) {
                     SkAutoMutexExclusive lock(mutex);
                     exceptions.push_back(exception);
