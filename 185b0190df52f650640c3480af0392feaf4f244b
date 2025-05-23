@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47573605_df5022b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:22:50Z",
+      "side": 1,
+      "message": "🙈 LGTM",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9615a6f_01d12db2",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:22:50Z",
+      "side": 1,
+      "message": "Can you add a TODO and a bug number to the code indicating this should be cleaned up soon?",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 11
+      },
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63276c24_07ab5937",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:22:50Z",
+      "side": 1,
+      "message": "nit: typo",
+      "range": {
+        "startLine": 130,
+        "startChar": 72,
+        "endLine": 130,
+        "endChar": 75
+      },
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
