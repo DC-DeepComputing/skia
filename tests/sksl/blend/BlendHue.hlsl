@@ -50,9 +50,9 @@ float4 blend_hslc_h4h2h4h4(float2 _45, float4 _46, float4 _47)
     if (_45.y != 0.0f)
     {
         float _92 = min(min(_72.x, _72.y), _72.z);
-        float _RESERVED_IDENTIFIER_FIXUP_2_mn = _92;
+        float _RESERVED_IDENTIFIER_FIXUP_14_mn = _92;
         float _98 = max(max(_72.x, _72.y), _72.z);
-        float _RESERVED_IDENTIFIER_FIXUP_3_mx = _98;
+        float _RESERVED_IDENTIFIER_FIXUP_15_mx = _98;
         float3 _101 = 0.0f.xxx;
         if (_98 > _92)
         {
@@ -67,16 +67,16 @@ float4 blend_hslc_h4h2h4h4(float2 _45, float4 _46, float4 _47)
         r = _67;
     }
     float _117 = dot(float3(0.300000011920928955078125f, 0.589999973773956298828125f, 0.10999999940395355224609375f), r);
-    float _RESERVED_IDENTIFIER_FIXUP_4_lum = _117;
+    float _RESERVED_IDENTIFIER_FIXUP_16_lum = _117;
     float3 _129 = (_117 - dot(float3(0.300000011920928955078125f, 0.589999973773956298828125f, 0.10999999940395355224609375f), l)).xxx + l;
-    float3 _RESERVED_IDENTIFIER_FIXUP_5_result = _129;
+    float3 _RESERVED_IDENTIFIER_FIXUP_17_result = _129;
     float _133 = _129.x;
     float _134 = _129.y;
     float _135 = _129.z;
     float _131 = min(min(_133, _134), _135);
-    float _RESERVED_IDENTIFIER_FIXUP_6_minComp = _131;
+    float _RESERVED_IDENTIFIER_FIXUP_18_minComp = _131;
     float _137 = max(max(_133, _134), _135);
-    float _RESERVED_IDENTIFIER_FIXUP_7_maxComp = _137;
+    float _RESERVED_IDENTIFIER_FIXUP_19_maxComp = _137;
     bool _143 = false;
     if (_131 < 0.0f)
     {
@@ -89,7 +89,7 @@ float4 blend_hslc_h4h2h4h4(float2 _45, float4 _46, float4 _47)
     if (_143)
     {
         float3 _146 = _117.xxx;
-        _RESERVED_IDENTIFIER_FIXUP_5_result = _146 + ((_129 - _146) * (_117 / (((_117 - _131) + 6.103515625e-05f) + _kGuardedDivideEpsilon)));
+        _RESERVED_IDENTIFIER_FIXUP_17_result = _146 + ((_129 - _146) * (_117 / (((_117 - _131) + 6.103515625e-05f) + _kGuardedDivideEpsilon)));
     }
     bool _160 = false;
     if (_137 > _55)
@@ -103,9 +103,9 @@ float4 blend_hslc_h4h2h4h4(float2 _45, float4 _46, float4 _47)
     if (_160)
     {
         float3 _164 = _117.xxx;
-        _RESERVED_IDENTIFIER_FIXUP_5_result = _164 + (((_RESERVED_IDENTIFIER_FIXUP_5_result - _164) * (_55 - _117)) * (1.0f / (((_137 - _117) + 6.103515625e-05f) + _kGuardedDivideEpsilon)));
+        _RESERVED_IDENTIFIER_FIXUP_17_result = _164 + (((_RESERVED_IDENTIFIER_FIXUP_17_result - _164) * (_55 - _117)) * (1.0f / (((_137 - _117) + 6.103515625e-05f) + _kGuardedDivideEpsilon)));
     }
-    return float4((((_RESERVED_IDENTIFIER_FIXUP_5_result + _47.xyz) - _67) + _46.xyz) - _61, (_46.w + _47.w) - _55);
+    return float4((((_RESERVED_IDENTIFIER_FIXUP_17_result + _47.xyz) - _67) + _46.xyz) - _61, (_46.w + _47.w) - _55);
 }
 
 void frag_main()

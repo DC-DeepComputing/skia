@@ -13,13 +13,9 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
-half blend_overlay_component_Qhh2h2(half2 s, half2 d);
 half4 blend_overlay_h4h4h4(half4 src, half4 dst);
-half blend_overlay_component_Qhh2h2(half2 s, half2 d) {
-    return 2.0h * d.x <= d.y ? (2.0h * s.x) * d.x : s.y * d.y - (2.0h * (d.y - d.x)) * (s.y - s.x);
-}
 half4 blend_overlay_h4h4h4(half4 src, half4 dst) {
-    half4 result = half4(blend_overlay_component_Qhh2h2(src.xw, dst.xw), blend_overlay_component_Qhh2h2(src.yw, dst.yw), blend_overlay_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0h - src.w) * dst.w);
+    half4 result = half4(2.0h * dst.x <= dst.w ? (2.0h * src.x) * dst.x : src.w * dst.w - (2.0h * (dst.w - dst.x)) * (src.w - src.x), 2.0h * dst.y <= dst.w ? (2.0h * src.y) * dst.y : src.w * dst.w - (2.0h * (dst.w - dst.y)) * (src.w - src.y), 2.0h * dst.z <= dst.w ? (2.0h * src.z) * dst.z : src.w * dst.w - (2.0h * (dst.w - dst.z)) * (src.w - src.z), src.w + (1.0h - src.w) * dst.w);
     result.xyz = result.xyz + (dst.xyz * (1.0h - src.w) + src.xyz * (1.0h - dst.w));
     return result;
 }

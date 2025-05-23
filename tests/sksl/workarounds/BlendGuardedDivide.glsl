@@ -5,21 +5,9 @@ out vec4 sk_FragColor;
 in vec4 src;
 in vec4 dst;
 float guarded_divide_Qhhh(float n, float d);
-float color_burn_component_Qhh2h2(vec2 s, vec2 d);
-float color_dodge_component_Qhh2h2(vec2 s, vec2 d);
 float soft_light_component_Qhh2h2(vec2 s, vec2 d);
 float guarded_divide_Qhhh(float n, float d) {
     return n / (d + sk_PrivkGuardedDivideEpsilon);
-}
-float color_burn_component_Qhh2h2(vec2 s, vec2 d) {
-    float dyTerm = d.y == d.x ? d.y : 0.0;
-    float delta = abs(s.x) >= sk_PrivkMinNormalHalf ? d.y - min(d.y, guarded_divide_Qhhh((d.y - d.x) * s.y, s.x)) : dyTerm;
-    return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
-}
-float color_dodge_component_Qhh2h2(vec2 s, vec2 d) {
-    float dxScale = float(d.x == 0.0 ? 0 : 1);
-    float delta = dxScale * min(d.y, abs(s.y - s.x) >= sk_PrivkMinNormalHalf ? guarded_divide_Qhhh(d.x * s.y, s.y - s.x) : d.y);
-    return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
 }
 float soft_light_component_Qhh2h2(vec2 s, vec2 d) {
     if (2.0 * s.x <= s.y) {
@@ -35,7 +23,19 @@ float soft_light_component_Qhh2h2(vec2 s, vec2 d) {
     }
 }
 void main() {
-    sk_FragColor = vec4(color_dodge_component_Qhh2h2(src.xw, dst.xw), color_dodge_component_Qhh2h2(src.yw, dst.yw), color_dodge_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0 - src.w) * dst.w);
-    sk_FragColor = vec4(color_burn_component_Qhh2h2(src.xw, dst.xw), color_burn_component_Qhh2h2(src.yw, dst.yw), color_burn_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0 - src.w) * dst.w);
+    float _0_dxScale = float(dst.x == 0.0 ? 0 : 1);
+    float _1_delta = _0_dxScale * min(dst.w, abs(src.w - src.x) >= sk_PrivkMinNormalHalf ? guarded_divide_Qhhh(dst.x * src.w, src.w - src.x) : dst.w);
+    float _2_dxScale = float(dst.y == 0.0 ? 0 : 1);
+    float _3_delta = _2_dxScale * min(dst.w, abs(src.w - src.y) >= sk_PrivkMinNormalHalf ? guarded_divide_Qhhh(dst.y * src.w, src.w - src.y) : dst.w);
+    float _4_dxScale = float(dst.z == 0.0 ? 0 : 1);
+    float _5_delta = _4_dxScale * min(dst.w, abs(src.w - src.z) >= sk_PrivkMinNormalHalf ? guarded_divide_Qhhh(dst.z * src.w, src.w - src.z) : dst.w);
+    sk_FragColor = vec4((_1_delta * src.w + src.x * (1.0 - dst.w)) + dst.x * (1.0 - src.w), (_3_delta * src.w + src.y * (1.0 - dst.w)) + dst.y * (1.0 - src.w), (_5_delta * src.w + src.z * (1.0 - dst.w)) + dst.z * (1.0 - src.w), src.w + (1.0 - src.w) * dst.w);
+    float _6_dyTerm = dst.w == dst.x ? dst.w : 0.0;
+    float _7_delta = abs(src.x) >= sk_PrivkMinNormalHalf ? dst.w - min(dst.w, guarded_divide_Qhhh((dst.w - dst.x) * src.w, src.x)) : _6_dyTerm;
+    float _8_dyTerm = dst.w == dst.y ? dst.w : 0.0;
+    float _9_delta = abs(src.y) >= sk_PrivkMinNormalHalf ? dst.w - min(dst.w, guarded_divide_Qhhh((dst.w - dst.y) * src.w, src.y)) : _8_dyTerm;
+    float _10_dyTerm = dst.w == dst.z ? dst.w : 0.0;
+    float _11_delta = abs(src.z) >= sk_PrivkMinNormalHalf ? dst.w - min(dst.w, guarded_divide_Qhhh((dst.w - dst.z) * src.w, src.z)) : _10_dyTerm;
+    sk_FragColor = vec4((_7_delta * src.w + src.x * (1.0 - dst.w)) + dst.x * (1.0 - src.w), (_9_delta * src.w + src.y * (1.0 - dst.w)) + dst.y * (1.0 - src.w), (_11_delta * src.w + src.z * (1.0 - dst.w)) + dst.z * (1.0 - src.w), src.w + (1.0 - src.w) * dst.w);
     sk_FragColor = dst.w == 0.0 ? src : vec4(soft_light_component_Qhh2h2(src.xw, dst.xw), soft_light_component_Qhh2h2(src.yw, dst.yw), soft_light_component_Qhh2h2(src.zw, dst.zw), src.w + (1.0 - src.w) * dst.w);
 }

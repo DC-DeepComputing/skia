@@ -312,7 +312,7 @@ bool Compiler::optimizeModuleAfterLoading(ProgramKind kind, Module& module) {
     SkASSERT(this->errorCount() == 0);
 
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
-    // Create a temporary program configuration with default settings.
+    // Create a temporary program configuration with default settings
     ProgramConfig config;
     config.fModuleType = module.fModuleType;
     config.fKind = kind;

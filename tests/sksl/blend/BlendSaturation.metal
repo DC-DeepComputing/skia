@@ -27,22 +27,22 @@ half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst) {
     half3 l = bool(flipSat.x) ? dsa : sda;
     half3 r = bool(flipSat.x) ? sda : dsa;
     if (bool(flipSat.y)) {
-        half _2_mn = min(min(l.x, l.y), l.z);
-        half _3_mx = max(max(l.x, l.y), l.z);
-        l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : half3(0.0h);
+        half _14_mn = min(min(l.x, l.y), l.z);
+        half _15_mx = max(max(l.x, l.y), l.z);
+        l = _15_mx > _14_mn ? ((l - _14_mn) * blend_color_saturation_Qhh3(r)) / (_15_mx - _14_mn) : half3(0.0h);
         r = dsa;
     }
-    half _4_lum = dot(half3(0.3h, 0.59h, 0.11h), r);
-    half3 _5_result = (_4_lum - dot(half3(0.3h, 0.59h, 0.11h), l)) + l;
-    half _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
-    half _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
-    if (_6_minComp < 0.0h && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+    half _16_lum = dot(half3(0.3h, 0.59h, 0.11h), r);
+    half3 _17_result = (_16_lum - dot(half3(0.3h, 0.59h, 0.11h), l)) + l;
+    half _18_minComp = min(min(_17_result.x, _17_result.y), _17_result.z);
+    half _19_maxComp = max(max(_17_result.x, _17_result.y), _17_result.z);
+    if (_18_minComp < 0.0h && _16_lum != _18_minComp) {
+        _17_result = _16_lum + (_17_result - _16_lum) * (_16_lum / (((_16_lum - _18_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
     }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+    if (_19_maxComp > alpha && _19_maxComp != _16_lum) {
+        _17_result = _16_lum + ((_17_result - _16_lum) * (alpha - _16_lum)) / (((_19_maxComp - _16_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
     }
-    return half4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
+    return half4((((_17_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
 }
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;

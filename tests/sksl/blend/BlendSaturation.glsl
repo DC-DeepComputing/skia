@@ -16,22 +16,22 @@ vec4 blend_hslc_h4h2h4h4(vec2 flipSat, vec4 src, vec4 dst) {
     vec3 l = bool(flipSat.x) ? dsa : sda;
     vec3 r = bool(flipSat.x) ? sda : dsa;
     if (bool(flipSat.y)) {
-        float _2_mn = min(min(l.x, l.y), l.z);
-        float _3_mx = max(max(l.x, l.y), l.z);
-        l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : vec3(0.0);
+        float _14_mn = min(min(l.x, l.y), l.z);
+        float _15_mx = max(max(l.x, l.y), l.z);
+        l = _15_mx > _14_mn ? ((l - _14_mn) * blend_color_saturation_Qhh3(r)) / (_15_mx - _14_mn) : vec3(0.0);
         r = dsa;
     }
-    float _4_lum = dot(vec3(0.3, 0.59, 0.11), r);
-    vec3 _5_result = (_4_lum - dot(vec3(0.3, 0.59, 0.11), l)) + l;
-    float _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
-    float _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
-    if (_6_minComp < 0.0 && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+    float _16_lum = dot(vec3(0.3, 0.59, 0.11), r);
+    vec3 _17_result = (_16_lum - dot(vec3(0.3, 0.59, 0.11), l)) + l;
+    float _18_minComp = min(min(_17_result.x, _17_result.y), _17_result.z);
+    float _19_maxComp = max(max(_17_result.x, _17_result.y), _17_result.z);
+    if (_18_minComp < 0.0 && _16_lum != _18_minComp) {
+        _17_result = _16_lum + (_17_result - _16_lum) * (_16_lum / (((_16_lum - _18_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
     }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+    if (_19_maxComp > alpha && _19_maxComp != _16_lum) {
+        _17_result = _16_lum + ((_17_result - _16_lum) * (alpha - _16_lum)) / (((_19_maxComp - _16_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
     }
-    return vec4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
+    return vec4((((_17_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
 }
 void main() {
     sk_FragColor = blend_hslc_h4h2h4h4(vec2(1.0), src, dst);

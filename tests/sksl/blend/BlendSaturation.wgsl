@@ -30,14 +30,14 @@ fn blend_hslc_h4h2h4h4(flipSat: vec2<f32>, src: vec4<f32>, dst: vec4<f32>) -> ve
       {
         let _skTemp4 = min(l.x, l.y);
         let _skTemp5 = min(_skTemp4, l.z);
-        let _2_mn: f32 = _skTemp5;
+        let _14_mn: f32 = _skTemp5;
         let _skTemp6 = max(l.x, l.y);
         let _skTemp7 = max(_skTemp6, l.z);
-        let _3_mx: f32 = _skTemp7;
+        let _15_mx: f32 = _skTemp7;
         var _skTemp8: vec3<f32>;
-        if _3_mx > _2_mn {
+        if _15_mx > _14_mn {
           let _skTemp9 = blend_color_saturation_Qhh3(r);
-          _skTemp8 = ((l - _2_mn) * _skTemp9) / (_3_mx - _2_mn);
+          _skTemp8 = ((l - _14_mn) * _skTemp9) / (_15_mx - _14_mn);
         } else {
           _skTemp8 = vec3<f32>(0.0);
         }
@@ -46,26 +46,26 @@ fn blend_hslc_h4h2h4h4(flipSat: vec2<f32>, src: vec4<f32>, dst: vec4<f32>) -> ve
       }
     }
     let _skTemp10 = dot(vec3<f32>(0.3, 0.59, 0.11), r);
-    let _4_lum: f32 = _skTemp10;
+    let _16_lum: f32 = _skTemp10;
     let _skTemp11 = dot(vec3<f32>(0.3, 0.59, 0.11), l);
-    var _5_result: vec3<f32> = (_4_lum - _skTemp11) + l;
-    let _skTemp12 = min(_5_result.x, _5_result.y);
-    let _skTemp13 = min(_skTemp12, _5_result.z);
-    let _6_minComp: f32 = _skTemp13;
-    let _skTemp14 = max(_5_result.x, _5_result.y);
-    let _skTemp15 = max(_skTemp14, _5_result.z);
-    let _7_maxComp: f32 = _skTemp15;
-    if (_6_minComp < 0.0) && (_4_lum != _6_minComp) {
+    var _17_result: vec3<f32> = (_16_lum - _skTemp11) + l;
+    let _skTemp12 = min(_17_result.x, _17_result.y);
+    let _skTemp13 = min(_skTemp12, _17_result.z);
+    let _18_minComp: f32 = _skTemp13;
+    let _skTemp14 = max(_17_result.x, _17_result.y);
+    let _skTemp15 = max(_skTemp14, _17_result.z);
+    let _19_maxComp: f32 = _skTemp15;
+    if (_18_minComp < 0.0) && (_16_lum != _18_minComp) {
       {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+        _17_result = _16_lum + (_17_result - _16_lum) * (_16_lum / (((_16_lum - _18_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
       }
     }
-    if (_7_maxComp > alpha) && (_7_maxComp != _4_lum) {
+    if (_19_maxComp > alpha) && (_19_maxComp != _16_lum) {
       {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+        _17_result = _16_lum + ((_17_result - _16_lum) * (alpha - _16_lum)) / (((_19_maxComp - _16_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
       }
     }
-    return vec4<f32>((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
+    return vec4<f32>((((_17_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
   }
 }
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
