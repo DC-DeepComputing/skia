@@ -12,6 +12,8 @@
     "cq_config": {}
   },
   {"name": "BazelBuild-dm-release-linux_x64"},
+  {"name": "BazelBuild-fontations_libpng-release-linux_x64"},
+  {"name": "BazelBuild-fontations_rustpng-release-linux_x64"},
   {
     "name": "BazelBuild-full_library-enforce_iwyu-linux_x64",
     "cq_config": {}
