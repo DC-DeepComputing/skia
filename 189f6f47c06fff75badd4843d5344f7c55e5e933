@@ -1,0 +1,100 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb32984d_886af185",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-23T08:02:14Z",
+      "side": 1,
+      "message": "Suggest to file a bug under crbug.com/skia and add one for tracking here.",
+      "revId": "189f6f47c06fff75badd4843d5344f7c55e5e933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7822cbe_aa3079ae",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-23T08:02:14Z",
+      "side": 1,
+      "message": "Ok, I am a bit late... :) and just realized this landed already, anyway, logic looks good, just minor comments below.",
+      "revId": "189f6f47c06fff75badd4843d5344f7c55e5e933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6110cb7a_eaf01d3c",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-23T08:02:14Z",
+      "side": 1,
+      "message": "Suggest to move this up to after header includes.",
+      "fixSuggestions": [
+        {
+          "fixId": "fe87df11_3782e373",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/ports/SkTypeface_fontations.cpp",
+              "range": {
+                "startLine": 27,
+                "startChar": 0,
+                "endLine": 27,
+                "endChar": 0
+              },
+              "replacement": "using AutoHinting \u003d fontations_ffi::AutoHintingControl;\n\n"
+            },
+            {
+              "path": "src/ports/SkTypeface_fontations.cpp",
+              "range": {
+                "startLine": 356,
+                "startChar": 0,
+                "endLine": 358,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "189f6f47c06fff75badd4843d5344f7c55e5e933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8e2072b_f9c5d833",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-23T08:02:14Z",
+      "side": 1,
+      "message": "Suggest to specify where to find this bit in the code of the FreeType backend, maybe not with an unstable line number, but on the function level, plus a prose description of where in the function.",
+      "revId": "189f6f47c06fff75badd4843d5344f7c55e5e933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
