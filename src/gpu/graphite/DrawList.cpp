@@ -49,6 +49,8 @@ void DrawList::recordDraw(const Renderer* renderer,
         fDstReadBounds.join(clip.drawBounds());
     }
 
+    fDrawsBounds.join(clip.drawBounds());
+
 #if defined(SK_DEBUG)
     if (geometry.isCoverageMaskShape()) {
         fCoverageMaskShapeDrawCount++;
