@@ -24,7 +24,11 @@ skia_cc_library(
     name = "decoder",
     srcs = [":srcs"],
     hdrs = [":hdrs"],
+    defines = ["SK_CODEC_DECODES_PNG_WITH_RUST"],
     features = ["layering_check"],
+    visibility = [
+        "//src/ports:__pkg__",
+    ],
     deps = [
         "//:core",
         "//experimental/rust_png/ffi:cxx_bridge",
