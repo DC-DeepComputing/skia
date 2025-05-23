@@ -136,7 +136,7 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "fontations_support",
+    name = "fontations_support_libpng",
     srcs = [":typeface_fontations_srcs"],
     hdrs = [
         ":typeface_fontations_hdrs",
@@ -146,6 +146,32 @@ skia_cc_library(
     implementation_deps = [
         "//:pathops",
         "//src/ports/fontations:deps",
+        # For color bitmap fonts.
+        "//src/codec:png_decode",
+    ],
+    visibility = [
+        "//tests:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
+    deps = [
+        "//:core",
+        "//src/utils:char_to_glyphcache",
+    ],
+)
+
+skia_cc_library(
+    name = "fontations_support_rustpng",
+    srcs = [":typeface_fontations_srcs"],
+    hdrs = [
+        ":typeface_fontations_hdrs",
+        "//include/ports:typeface_fontations_hdrs",
+    ],
+    defines = ["SK_TYPEFACE_FACTORY_FONTATIONS"],
+    implementation_deps = [
+        "//:pathops",
+        "//src/ports/fontations:deps",
+        # For color bitmap fonts.
+        "//experimental/rust_png/decoder",
     ],
     visibility = [
         "//tests:__pkg__",
@@ -315,7 +341,7 @@ skia_filegroup(
 )
 
 skia_cc_library(
-    name = "fontmgr_fontations_empty",
+    name = "fontmgr_fontations_libpng_empty",
     srcs = [
         ":fontmgr_fontations_empty_srcs",
     ],
@@ -328,7 +354,28 @@ skia_cc_library(
         "//tools/fonts:__pkg__",
     ],
     deps = [
-        ":fontations_support",
+        ":fontations_support_libpng",
+        "//:core",
+        "//:pathops",
+        "//src/ports/fontations:deps",
+    ],
+)
+
+skia_cc_library(
+    name = "fontmgr_fontations_rustpng_empty",
+    srcs = [
+        ":fontmgr_fontations_empty_srcs",
+    ],
+    hdrs = [
+        "//include/ports:fontmgr_fontations_hdrs",
+    ],
+    defines = ["SK_FONTMGR_FONTATIONS_AVAILABLE"],
+    visibility = [
+        "//:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
+    deps = [
+        ":fontations_support_rustpng",
         "//:core",
         "//:pathops",
         "//src/ports/fontations:deps",
@@ -348,6 +395,7 @@ skia_cc_library(
     name = "fontmgr_fontconfig_freetype",
     srcs = [
         "SkFontMgr_fontconfig.cpp",
+        "SkFontMgr_fontconfig_freetype.cpp",
     ],
     hdrs = [
         "//include/ports:fontconfig_fontmgr_hdrs",
@@ -371,9 +419,10 @@ skia_cc_library(
 )
 
 skia_cc_library(
-    name = "fontmgr_fontconfig_fontations",
+    name = "fontmgr_fontconfig_fontations_libpng",
     srcs = [
         "SkFontMgr_fontconfig.cpp",
+        "SkFontMgr_fontconfig_fontations.cpp",
     ],
     hdrs = [
         "//include/ports:fontconfig_fontmgr_hdrs",
@@ -387,7 +436,35 @@ skia_cc_library(
         "//tools/fonts:__pkg__",
     ],
     deps = [
-        ":fontations_support",
+        ":fontations_support_libpng",
+        ":typeface_proxy",
+        "//:core",
+        "//bazel/external/fontconfig",
+        "//src/base",
+        "//src/core:core_priv",
+    ],
+)
+
+skia_cc_library(
+    name = "fontmgr_fontconfig_fontations_rustpng",
+    srcs = [
+        "SkFontMgr_fontconfig.cpp",
+        "SkFontMgr_fontconfig_fontations.cpp",
+    ],
+    hdrs = [
+        "//include/ports:fontconfig_fontmgr_hdrs",
+    ],
+    defines = ["SK_FONTMGR_FONTCONFIG_AVAILABLE"],
+    target_compatible_with = supports_platforms(
+        "@platforms//os:linux",
+    ),
+    visibility = [
+        "//:__pkg__",
+        "//tools/fonts:__pkg__",
+    ],
+    deps = [
+        ":fontations_support_rustpng",
+        ":typeface_proxy",
         "//:core",
         "//bazel/external/fontconfig",
         "//src/base",
