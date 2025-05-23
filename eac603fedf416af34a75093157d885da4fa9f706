@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c46402fa_afa125b6",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 762,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-05-23T12:15:17Z",
+      "side": 1,
+      "message": "Note that with the middle `e;` here, we\u0027ll drop out of this loop if `e` is null...",
+      "revId": "eac603fedf416af34a75093157d885da4fa9f706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cd83696_8c32c22d",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 763,
+      "author": {
+        "id": 9300
+      },
+      "writtenOn": "2025-05-23T12:15:17Z",
+      "side": 1,
+      "message": "...and thus this check is always `false`.\n\nIt looks like this CL is trying to catch a null pointer issue, but I don\u0027t think this check will ever prevent one.",
+      "revId": "eac603fedf416af34a75093157d885da4fa9f706",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
