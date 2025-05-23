@@ -37,6 +37,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ae330c8f_240450bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:25:37Z",
+      "side": 1,
+      "message": "hmmm clang-tidy doesn\u0027t respect the pragmas, I\u0027m unsure how to get this to go away...\n\n```\nFAILED: obj/src/codec/raw.SkRawCodec.o \n/b/s/w/ir/skia/tools/clang-tidy.sh -MD -MF obj/src/codec/raw.SkRawCodec.o.d -DSK_TRIVIAL_ABI\u003d\\[\\[clang::trivial_abi\\]\\] -DSK_CODEC_DECODES_BMP -DSK_CODEC_DECODES_WBMP -DSK_R32_SHIFT\u003d16 -DSK_ENABLE_PRECOMPILE -DSK_GANESH -DSK_GRAPHITE -DSK_USE_PERFETTO -DSK_GAMMA_APPLY_TO_A8 -DSK_ALLOW_STATIC_GLOBAL_INITIALIZERS\u003d1 -DGPU_TEST_UTILS\u003d1 -DSK_USE_VMA -DSK_ENABLE_AVX512_OPTS -DSKIA_IMPLEMENTATION\u003d1 -DSK_CODEC_DECODES_RAW -DqDNGBigEndian\u003d0 -I../../../../../../skia -Wno-attributes -ffp-contract\u003doff -fPIC -fvisibility\u003dhidden -fstrict-aliasing -g -gdwarf-4 -B/b/s/w/ir/clang_linux/bin -DPLACEHOLDER_clang_linux_version\u003d30 -O1 -Werror -Wall -Wextra -Winit-self -Wpointer-arith -Wsign-compare -Wvla -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wno-psabi -Wno-switch-default -Wno-unused-parameter -fcolor-diagnostics -Weverything -Wno-unknown-warning-option -Wno-weak-template-vtables -fno-lax-vector-conversions -Wno-nonportable-include-path -Wno-nonportable-system-include-path -Wno-cast-align -Wno-conversion -Wno-disabled-macro-expansion -Wno-documentation -Wno-documentation-unknown-command -Wno-double-promotion -Wno-exit-time-destructors -Wno-float-equal -Wno-global-constructors -Wno-missing-prototypes -Wno-missing-variable-declarations -Wno-pedantic -Wno-reserved-id-macro -Wno-reserved-identifier -Wno-shift-sign-overflow -Wno-signed-enum-bitfield -Wno-switch-enum -Wno-thread-safety-negative -Wno-undef -Wno-unreachable-code-break -Wno-unreachable-code-return -Wno-unused-macros -Wno-unused-member-function -Wno-non-c-typedef-for-linkage -Wno-cast-function-type-strict -Wno-covered-switch-default -Wno-deprecated -Wno-missing-noreturn -Wno-old-style-cast -Wno-newline-eof -Wno-padded -Wno-return-std-move-in-c++11 -Wno-shadow-field-in-constructor -Wno-shadow-uncaptured-local -Wno-zero-as-null-pointer-constant -Wno-declaration-after-statement -Wno-unsafe-buffer-usage -Wno-range-loop-analysis -Wrange-loop-construct -Wdeprecated-anon-enum-enum-conversion -Wdeprecated-array-compare -Wdeprecated-attributes -Wdeprecated-comma-subscript -Wdeprecated-copy -Wdeprecated-copy-dtor -Wdeprecated-dynamic-exception-spec -Wdeprecated-enum-compare -Wdeprecated-enum-compare-conditional -Wdeprecated-enum-enum-conversion -Wdeprecated-enum-float-conversion -Wdeprecated-increment-bool -Wdeprecated-register -Wdeprecated-this-capture -Wdeprecated-volatile -Wdeprecated-writable-str -Wextra-semi -isystem /b/s/w/ir/skia/third_party/externals/dng_sdk/source -isystem /b/s/w/ir/skia/third_party/libjpeg-turbo -isystem /b/s/w/ir/skia/third_party/externals/libjpeg-turbo -isystem /b/s/w/ir/skia/third_party/externals/libjpeg-turbo/src -isystem /b/s/w/ir/skia/third_party/externals/piex -fvisibility-inlines-hidden -std\u003dc++20 -fno-exceptions -fno-rtti -Wnon-virtual-dtor -Wno-noexcept-type -Wno-abstract-vbase-init -Wno-weak-vtables -Wno-c++98-compat -Wno-c++98-compat-pedantic -Wno-undefined-func-template -fexceptions -c ../../../../../../skia/src/codec/SkRawCodec.cpp -o obj/src/codec/raw.SkRawCodec.o\n588 warnings generated.\n/b/s/w/ir/cache/work/skia/out/Build-Ubuntu24.04-Clang-x86_64-Debug-Tidy/Debug/../../../../../../skia/src/codec/SkRawCodec.cpp:163:18: error: prefer using \u0027override\u0027 or (rarely) \u0027final\u0027 instead of \u0027virtual\u0027 [modernize-use-override,-warnings-as-errors]\n    virtual void PerformAreaTask(dng_area_task\u0026 task, const dng_rect\u0026 area) {\n    ~~~~~~~~     ^\n                                                                            override\n```",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9615a6f_01d12db2",
         "filename": "src/codec/SkRawCodec.cpp",
         "patchSetId": 9
