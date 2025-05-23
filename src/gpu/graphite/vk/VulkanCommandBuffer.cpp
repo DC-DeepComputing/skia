@@ -123,6 +123,12 @@ void VulkanCommandBuffer::onResetCommandBuffer() {
     VULKAN_CALL_ERRCHECK(fSharedContext, ResetCommandPool(fSharedContext->device(), fPool, 0));
     fActiveGraphicsPipeline = nullptr;
     fBindUniformBuffers = true;
+    fBoundIndexBuffer = nullptr;
+    fBoundIndexOffset = 0;
+    fBoundInputBuffers[0] = nullptr;
+    fBoundInputBuffers[1] = nullptr;
+    fBoundInputBufferOffsets[0] = 0;
+    fBoundInputBufferOffsets[1] = 0;
     fBoundIndirectBuffer = VK_NULL_HANDLE;
     fBoundIndirectBufferOffset = 0;
     fTargetTexture = nullptr;
@@ -806,20 +812,13 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
         return false;
     }
 
-    VkExtent2D granularity;
-    // Get granularity for this render pass
-    VULKAN_CALL(fSharedContext->interface(),
-                GetRenderAreaGranularity(fSharedContext->device(),
-                                         vulkanRenderPass->renderPass(),
-                                         &granularity));
-
     bool useFullBounds = loadMSAAFromResolve &&
                          fSharedContext->vulkanCaps().mustLoadFullImageForMSAA();
 
     VkRect2D renderArea = get_render_area(useFullBounds ? SkIRect::MakeWH(frameBufferWidth,
                                                                           frameBufferHeight)
                                                         : renderPassBounds,
-                                          granularity,
+                                          vulkanRenderPass->granularity(),
                                           frameBufferWidth,
                                           frameBufferHeight);
 
@@ -1144,7 +1143,8 @@ void VulkanCommandBuffer::bindUniformBuffers() {
 
 void VulkanCommandBuffer::bindInputBuffer(const Buffer* inputBuffer, VkDeviceSize offset,
                                           uint32_t binding) {
-    if (inputBuffer) {
+    if (inputBuffer && (inputBuffer != fBoundInputBuffers[binding] ||
+                        offset != fBoundInputBufferOffsets[binding])) {
         SkASSERT(inputBuffer->isProtected() == Protected::kNo);
         VkBuffer vkBuffer = static_cast<const VulkanBuffer*>(inputBuffer)->vkBuffer();
         SkASSERT(vkBuffer != VK_NULL_HANDLE);
@@ -1153,11 +1153,13 @@ void VulkanCommandBuffer::bindInputBuffer(const Buffer* inputBuffer, VkDeviceSiz
                                                                       /*bindingCount=*/1,
                                                                       &vkBuffer,
                                                                       &offset));
+        fBoundInputBuffers[binding] = inputBuffer;
+        fBoundInputBufferOffsets[binding] = offset;
     }
 }
 
 void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offset) {
-    if (indexBuffer) {
+    if (indexBuffer && (indexBuffer != fBoundIndexBuffer || offset != fBoundIndexOffset)) {
         SkASSERT(indexBuffer->isProtected() == Protected::kNo);
         VkBuffer vkBuffer = static_cast<const VulkanBuffer*>(indexBuffer)->vkBuffer();
         SkASSERT(vkBuffer != VK_NULL_HANDLE);
@@ -1165,6 +1167,8 @@ void VulkanCommandBuffer::bindIndexBuffer(const Buffer* indexBuffer, size_t offs
                                                                      vkBuffer,
                                                                      offset,
                                                                      VK_INDEX_TYPE_UINT16));
+        fBoundIndexBuffer = indexBuffer;
+        fBoundIndexOffset = offset;
     }
 }
 

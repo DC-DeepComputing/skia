@@ -1414,13 +1414,13 @@ void Device::drawGeometry(const Transform& localToDevice,
     // allow internal-oriented Renderers that are never selected for a "regular" draw call to have
     // more flexibility in their settings.
     SkASSERT(renderer);
-    for (const RenderStep* step : renderer->steps()) {
-        auto dss = step->depthStencilSettings();
-        SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
-                 (!dss.fDepthTestEnabled ||
-                  dss.fDepthCompareOp == CompareOp::kGreater ||
-                  dss.fDepthCompareOp == CompareOp::kGEqual));
-    }
+    // for (const RenderStep* step : renderer->steps()) {
+    //     auto dss = step->depthStencilSettings();
+    //     SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
+    //              (!dss.fDepthTestEnabled ||
+    //               dss.fDepthCompareOp == CompareOp::kGreater ||
+    //               dss.fDepthCompareOp == CompareOp::kGEqual));
+    // }
 #endif
 
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after

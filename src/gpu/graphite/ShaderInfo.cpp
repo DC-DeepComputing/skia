@@ -63,10 +63,10 @@ std::string get_uniforms(UniformOffsetCalculator* offsetter,
         }
 
         SkSL::String::appendf(&result,
-                              "    layout(offset=%d) %s %s",
-                              offsetter->advanceOffset(u.type(), u.count()),
-                              SkSLTypeString(u.type()),
-                              uniformName.c_str());
+                            "    layout(offset=%d) %s %s",
+                            offsetter->advanceOffset(u.type(), u.count()),
+                            SkSLTypeString(u.type()),
+                            uniformName.c_str());
         if (u.count()) {
             result.append("[");
             result.append(std::to_string(u.count()));
@@ -100,11 +100,12 @@ std::string get_node_uniforms(UniformOffsetCalculator* offsetter,
             }
 
             const int structOffset = offsetter->advanceStruct(substruct);
+
             SkSL::String::appendf(&result,
-                                  "layout(offset=%d) %s node_%d;",
-                                  structOffset,
-                                  node->entry()->fUniformStructName,
-                                  node->keyIndex());
+                                "layout(offset=%d) %s node_%d;",
+                                structOffset,
+                                node->entry()->fUniformStructName,
+                                node->keyIndex());
         } else {
 #if defined(SK_DEBUG)
             SkSL::String::appendf(&result, "// %d - %s uniforms\n",
