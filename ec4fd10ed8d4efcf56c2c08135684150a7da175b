@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "550cd269_81755b0a",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:39:01Z",
+      "side": 1,
+      "message": "Historically, the CPU backend used to actually treat A8 images as coverage, whereas GPU treated it as alpha. Now the CPU backend also treats it as alpha by default, but if there\u0027s `SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE` defined, it goes back to the old behavior (which is what we explicitly want here).\n\nAndroid wants regular A8 draws to be treated as coverage, whereas everywhere less leaves out the define. The define is applied pretty liberally though and cuts out all of the actually implementation code, which we would benefit from here.  In particular, on `SkDraw` there is `drawBitmapAsCoverage` which almost does everything we need (in particular I think it skips the extra bitmaps and the dst-in blending).  The main issue to workout is how to manage the SkDraw\u0027s transform and the localmatrix for the SkPaint that shades it.",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 70
+      },
+      "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
