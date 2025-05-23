@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e3c81d0c_4cae307a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:27:16Z",
+      "side": 1,
+      "message": "yeah, I might have to go that route because now clang-tidy is cranky. It\u0027s more cross-repository dancing to do that, but since it turns out skia is pulling its dng_sdk _from Android_ ( https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/DEPS;drc\u003d956fd8b14e2205fa33f36de216e6231314e67d03;l\u003d44 ) I might just be stuck doing a SkUserConfig.h dance anyway",
+      "parentUuid": "4e275e2a_6b04d426",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9615a6f_01d12db2",
         "filename": "src/codec/SkRawCodec.cpp",
         "patchSetId": 9
