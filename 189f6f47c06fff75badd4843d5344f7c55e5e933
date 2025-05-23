@@ -35,6 +35,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07da8631_ec0060fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-05-23T08:19:54Z",
+      "side": 1,
+      "message": "Also, suggest to add Fontations bots to Fontations related changes through a Cq-include-trybot: line generated from the Checks tab of Gerrit.",
+      "revId": "189f6f47c06fff75badd4843d5344f7c55e5e933",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6110cb7a_eaf01d3c",
