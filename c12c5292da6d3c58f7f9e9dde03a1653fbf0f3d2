@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fae027c0_682d33ef",
+        "filename": "src/gpu/ganesh/Device_drawTexture.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 721,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:30:39Z",
+      "side": 1,
+      "message": "Since this is used only in the final rrect case, we should move it and the `deviceToLocal` calculations there.\n\nAlternatively, we can still use fillPixelsWithLocalMatrix to keep the final rrect case closer to the `direct_filter_mask`",
+      "range": {
+        "startLine": 721,
+        "startChar": 0,
+        "endLine": 721,
+        "endChar": 60
+      },
+      "revId": "c12c5292da6d3c58f7f9e9dde03a1653fbf0f3d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2a44456a_6a6d2e92",
+        "filename": "src/gpu/ganesh/GrBlurUtils.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:30:39Z",
+      "side": 1,
+      "message": "I think we will always want to use this caching actually. The textures being cached by the these fast paths are more like data representing the gaussian curve, and can then be applied to a larger range of input geometry.  Graphite actually *does* have a similar internal cache for this sort of texture.\n\nThe caching that will be moved to SkCanvas is what Ganesh currently does inside the `hw_create_filtered_mask` function, where these textures are basically equivalent to the output of the maskfilter-\u003eimagefilter A8 coverage mask.",
+      "range": {
+        "startLine": 121,
+        "startChar": 52,
+        "endLine": 121,
+        "endChar": 73
+      },
+      "revId": "c12c5292da6d3c58f7f9e9dde03a1653fbf0f3d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
