@@ -4,42 +4,38 @@ const float sk_PrivkMinNormalHalf = 6.10351562e-05;
 out vec4 sk_FragColor;
 uniform vec4 color;
 float blend_color_saturation_Qhh3(vec3 color);
-vec4 blend_hslc_h4h2h4h4(vec2 flipSat, vec4 src, vec4 dst);
 vec4 blend_dst_in_h4h4h4(vec4 src, vec4 dst);
 vec4 blend_hue_h4h4h4(vec4 src, vec4 dst);
 vec4 blend_src_in_h4h4h4(vec4 src, vec4 dst);
 float blend_color_saturation_Qhh3(vec3 color) {
     return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);
 }
-vec4 blend_hslc_h4h2h4h4(vec2 flipSat, vec4 src, vec4 dst) {
-    float alpha = dst.w * src.w;
-    vec3 sda = src.xyz * dst.w;
-    vec3 dsa = dst.xyz * src.w;
-    vec3 l = bool(flipSat.x) ? dsa : sda;
-    vec3 r = bool(flipSat.x) ? sda : dsa;
-    if (bool(flipSat.y)) {
-        float _2_mn = min(min(l.x, l.y), l.z);
-        float _3_mx = max(max(l.x, l.y), l.z);
-        l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : vec3(0.0);
-        r = dsa;
-    }
-    float _4_lum = dot(vec3(0.3, 0.59, 0.11), r);
-    vec3 _5_result = (_4_lum - dot(vec3(0.3, 0.59, 0.11), l)) + l;
-    float _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
-    float _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
-    if (_6_minComp < 0.0 && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
-    }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
-    }
-    return vec4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
-}
 vec4 blend_dst_in_h4h4h4(vec4 src, vec4 dst) {
     return dst * src.w;
 }
 vec4 blend_hue_h4h4h4(vec4 src, vec4 dst) {
-    return blend_hslc_h4h2h4h4(vec2(0.0, 1.0), src, dst);
+    float _24_alpha = dst.w * src.w;
+    vec3 _25_sda = src.xyz * dst.w;
+    vec3 _26_dsa = dst.xyz * src.w;
+    vec3 _27_l = _25_sda;
+    vec3 _28_r = _26_dsa;
+    {
+        float _29_mn = min(min(_27_l.x, _27_l.y), _27_l.z);
+        float _30_mx = max(max(_27_l.x, _27_l.y), _27_l.z);
+        _27_l = _30_mx > _29_mn ? ((_27_l - _29_mn) * blend_color_saturation_Qhh3(_28_r)) / (_30_mx - _29_mn) : vec3(0.0);
+        _28_r = _26_dsa;
+    }
+    float _31_lum = dot(vec3(0.3, 0.59, 0.11), _28_r);
+    vec3 _32_result = (_31_lum - dot(vec3(0.3, 0.59, 0.11), _27_l)) + _27_l;
+    float _33_minComp = min(min(_32_result.x, _32_result.y), _32_result.z);
+    float _34_maxComp = max(max(_32_result.x, _32_result.y), _32_result.z);
+    if (_33_minComp < 0.0 && _31_lum != _33_minComp) {
+        _32_result = _31_lum + (_32_result - _31_lum) * (_31_lum / (((_31_lum - _33_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+    }
+    if (_34_maxComp > _24_alpha && _34_maxComp != _31_lum) {
+        _32_result = _31_lum + ((_32_result - _31_lum) * (_24_alpha - _31_lum)) / (((_34_maxComp - _31_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+    }
+    return vec4((((_32_result + dst.xyz) - _26_dsa) + src.xyz) - _25_sda, (src.w + dst.w) - _24_alpha);
 }
 vec4 blend_src_in_h4h4h4(vec4 src, vec4 dst) {
     return src * dst.w;

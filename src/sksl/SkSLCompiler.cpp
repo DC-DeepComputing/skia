@@ -252,6 +252,8 @@ bool Compiler::optimizeModuleBeforeMinifying(ProgramKind kind, Module& module, b
     auto m = SkSL::ModuleLoader::Get();
 
     // Create a temporary program configuration with default settings.
+    // This is similar to optimize(Program) but does not perform inlining, so we don't bother
+    // overriding the ProgramSettings to set the inline threshold to kDefaultModuleInlineThreshold
     ProgramConfig config;
     config.fModuleType = module.fModuleType;
     config.fKind = kind;
@@ -312,10 +314,16 @@ bool Compiler::optimizeModuleAfterLoading(ProgramKind kind, Module& module) {
     SkASSERT(this->errorCount() == 0);
 
 #ifndef SK_ENABLE_OPTIMIZE_SIZE
-    // Create a temporary program configuration with default settings.
+    // Create a temporary program configuration with default settings, but an increased inline
+    // threshold. Many small functions in the modules are used as helpers in larger module functions
+    // appearing to exceed the default program inline threshold, but their effective usage once
+    // included in a program tends to be low. Since dynamic program compilation runs only a single
+    // iteration of the inliner, it is often unable to re-inline these small helpers at that time,
+    // so using a higher threshold here creates a similar effect.
     ProgramConfig config;
     config.fModuleType = module.fModuleType;
     config.fKind = kind;
+    config.fSettings.fInlineThreshold = kDefaultModuleInlineThreshold;
     AutoProgramConfig autoConfig(this->context(), &config);
 
     std::unique_ptr<ProgramUsage> usage = Analysis::GetUsage(module);

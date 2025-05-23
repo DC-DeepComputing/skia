@@ -15,28 +15,42 @@ fn guarded_divide_Qhhh(n: f32, d: f32) -> f32 {
     return n / (d + sk_PrivkGuardedDivideEpsilon);
   }
 }
-fn color_dodge_component_Qhh2h2(s: vec2<f32>, d: vec2<f32>) -> f32 {
-  {
-    let dxScale: f32 = f32(select(1, 0, d.x == 0.0));
-    var _skTemp0: f32;
-    let _skTemp1 = abs(s.y - s.x);
-    if _skTemp1 >= sk_PrivkMinNormalHalf {
-      let _skTemp2 = guarded_divide_Qhhh(d.x * s.y, s.y - s.x);
-      _skTemp0 = _skTemp2;
-    } else {
-      _skTemp0 = d.y;
-    }
-    let _skTemp3 = min(d.y, _skTemp0);
-    let delta: f32 = dxScale * _skTemp3;
-    return (delta * s.y + s.x * (1.0 - d.y)) + d.x * (1.0 - s.y);
-  }
-}
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    let _skTemp4 = color_dodge_component_Qhh2h2(_globalUniforms.src.xw, _globalUniforms.dst.xw);
-    let _skTemp5 = color_dodge_component_Qhh2h2(_globalUniforms.src.yw, _globalUniforms.dst.yw);
-    let _skTemp6 = color_dodge_component_Qhh2h2(_globalUniforms.src.zw, _globalUniforms.dst.zw);
-    (*_stageOut).sk_FragColor = vec4<f32>(_skTemp4, _skTemp5, _skTemp6, _globalUniforms.src.w + (1.0 - _globalUniforms.src.w) * _globalUniforms.dst.w);
+    let _0_dxScale: f32 = f32(select(1, 0, _globalUniforms.dst.x == 0.0));
+    var _skTemp0: f32;
+    let _skTemp1 = abs(_globalUniforms.src.w - _globalUniforms.src.x);
+    if _skTemp1 >= sk_PrivkMinNormalHalf {
+      let _skTemp2 = guarded_divide_Qhhh(_globalUniforms.dst.x * _globalUniforms.src.w, _globalUniforms.src.w - _globalUniforms.src.x);
+      _skTemp0 = _skTemp2;
+    } else {
+      _skTemp0 = _globalUniforms.dst.w;
+    }
+    let _skTemp3 = min(_globalUniforms.dst.w, _skTemp0);
+    let _1_delta: f32 = _0_dxScale * _skTemp3;
+    let _2_dxScale: f32 = f32(select(1, 0, _globalUniforms.dst.y == 0.0));
+    var _skTemp4: f32;
+    let _skTemp5 = abs(_globalUniforms.src.w - _globalUniforms.src.y);
+    if _skTemp5 >= sk_PrivkMinNormalHalf {
+      let _skTemp6 = guarded_divide_Qhhh(_globalUniforms.dst.y * _globalUniforms.src.w, _globalUniforms.src.w - _globalUniforms.src.y);
+      _skTemp4 = _skTemp6;
+    } else {
+      _skTemp4 = _globalUniforms.dst.w;
+    }
+    let _skTemp7 = min(_globalUniforms.dst.w, _skTemp4);
+    let _3_delta: f32 = _2_dxScale * _skTemp7;
+    let _4_dxScale: f32 = f32(select(1, 0, _globalUniforms.dst.z == 0.0));
+    var _skTemp8: f32;
+    let _skTemp9 = abs(_globalUniforms.src.w - _globalUniforms.src.z);
+    if _skTemp9 >= sk_PrivkMinNormalHalf {
+      let _skTemp10 = guarded_divide_Qhhh(_globalUniforms.dst.z * _globalUniforms.src.w, _globalUniforms.src.w - _globalUniforms.src.z);
+      _skTemp8 = _skTemp10;
+    } else {
+      _skTemp8 = _globalUniforms.dst.w;
+    }
+    let _skTemp11 = min(_globalUniforms.dst.w, _skTemp8);
+    let _5_delta: f32 = _4_dxScale * _skTemp11;
+    (*_stageOut).sk_FragColor = vec4<f32>((_1_delta * _globalUniforms.src.w + _globalUniforms.src.x * (1.0 - _globalUniforms.dst.w)) + _globalUniforms.dst.x * (1.0 - _globalUniforms.src.w), (_3_delta * _globalUniforms.src.w + _globalUniforms.src.y * (1.0 - _globalUniforms.dst.w)) + _globalUniforms.dst.y * (1.0 - _globalUniforms.src.w), (_5_delta * _globalUniforms.src.w + _globalUniforms.src.z * (1.0 - _globalUniforms.dst.w)) + _globalUniforms.dst.z * (1.0 - _globalUniforms.src.w), _globalUniforms.src.w + (1.0 - _globalUniforms.src.w) * _globalUniforms.dst.w);
   }
 }
 @fragment fn main() -> FSOut {

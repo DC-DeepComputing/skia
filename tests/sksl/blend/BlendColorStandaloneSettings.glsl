@@ -4,35 +4,21 @@ const float sk_PrivkMinNormalHalf = 6.10351562e-05;
 out vec4 sk_FragColor;
 uniform vec4 src;
 uniform vec4 dst;
-float blend_color_saturation_Qhh3(vec3 color);
-vec4 blend_hslc_h4h2h4h4(vec2 flipSat, vec4 src, vec4 dst);
-float blend_color_saturation_Qhh3(vec3 color) {
-    return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);
-}
-vec4 blend_hslc_h4h2h4h4(vec2 flipSat, vec4 src, vec4 dst) {
-    float alpha = dst.w * src.w;
-    vec3 sda = src.xyz * dst.w;
-    vec3 dsa = dst.xyz * src.w;
-    vec3 l = bool(flipSat.x) ? dsa : sda;
-    vec3 r = bool(flipSat.x) ? sda : dsa;
-    if (bool(flipSat.y)) {
-        float _2_mn = min(min(l.x, l.y), l.z);
-        float _3_mx = max(max(l.x, l.y), l.z);
-        l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : vec3(0.0);
-        r = dsa;
-    }
-    float _4_lum = dot(vec3(0.3, 0.59, 0.11), r);
-    vec3 _5_result = (_4_lum - dot(vec3(0.3, 0.59, 0.11), l)) + l;
-    float _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
-    float _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
-    if (_6_minComp < 0.0 && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
-    }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
-    }
-    return vec4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
-}
 void main() {
-    sk_FragColor = blend_hslc_h4h2h4h4(vec2(0.0), src, dst);
+    float _0_alpha = dst.w * src.w;
+    vec3 _1_sda = src.xyz * dst.w;
+    vec3 _2_dsa = dst.xyz * src.w;
+    vec3 _3_l = _1_sda;
+    vec3 _4_r = _2_dsa;
+    float _5_lum = dot(vec3(0.3, 0.59, 0.11), _4_r);
+    vec3 _6_result = (_5_lum - dot(vec3(0.3, 0.59, 0.11), _3_l)) + _3_l;
+    float _7_minComp = min(min(_6_result.x, _6_result.y), _6_result.z);
+    float _8_maxComp = max(max(_6_result.x, _6_result.y), _6_result.z);
+    if (_7_minComp < 0.0 && _5_lum != _7_minComp) {
+        _6_result = _5_lum + (_6_result - _5_lum) * (_5_lum / (((_5_lum - _7_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+    }
+    if (_8_maxComp > _0_alpha && _8_maxComp != _5_lum) {
+        _6_result = _5_lum + ((_6_result - _5_lum) * (_0_alpha - _5_lum)) / (((_8_maxComp - _5_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+    }
+    sk_FragColor = vec4((((_6_result + dst.xyz) - _2_dsa) + src.xyz) - _1_sda, (src.w + dst.w) - _0_alpha);
 }
