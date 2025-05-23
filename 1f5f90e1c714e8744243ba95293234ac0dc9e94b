@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50df006d_ae9a2f5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:15:46Z",
+      "side": 1,
+      "message": "I do not think this is the correct approach to deal with the encountered problems in BatchSizeLimiter. If there are internal limits that were overflowing, then the BatchSizeLimiter needs to take those into account and not allow the op to be batched or chained.\n\nArbitrarily skipping draws after they\u0027ve been recorded is not a good policy for skia to have in order to maintain performance under high load. That is something that the controlling application should be choosing to do based on their content. Skia draws everything that was sent to it.",
+      "revId": "1f5f90e1c714e8744243ba95293234ac0dc9e94b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "42ddf526_e80d0c79",
