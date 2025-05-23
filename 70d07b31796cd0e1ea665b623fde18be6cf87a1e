@@ -72,6 +72,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e51d57d_aeadf3b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:25:43Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "22f16361_609c7081",
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0b8a594c_facf6f32",
@@ -133,6 +151,30 @@
       "side": 1,
       "message": "Flags like that do not work with G3. I\u0027ll help you on the design note.",
       "parentUuid": "eb4c2285_493d436b",
+      "range": {
+        "startLine": 26,
+        "startChar": 12,
+        "endLine": 26,
+        "endChar": 44
+      },
+      "revId": "70d07b31796cd0e1ea665b623fde18be6cf87a1e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16c4066c_0c62f464",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:25:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c8e65e9_915678be",
       "range": {
         "startLine": 26,
         "startChar": 12,
