@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "54eb46b1_42a00bd0",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 4655,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T18:05:05Z",
+      "side": 1,
+      "message": "I suppose this might not be a great fix because a fuzzer could find a way to naturally get the divisor to be -1.",
+      "range": {
+        "startLine": 4655,
+        "startChar": 8,
+        "endLine": 4655,
+        "endChar": 15
+      },
+      "revId": "956c76aebcf6523c800544d9fa6c489b521330c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
