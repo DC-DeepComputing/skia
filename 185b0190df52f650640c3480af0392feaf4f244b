@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4e275e2a_6b04d426",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-23T19:24:41Z",
+      "side": 1,
+      "message": "Another option could be to add our own #ifdef guard that would be set in SkUserConfig.h like\n\n`#if defined(SK_USE_NEW_DNG_SDK)`\n\nAnd then set that when Android updates dng, then remove it and then the define in follow-ups",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9615a6f_01d12db2",
         "filename": "src/codec/SkRawCodec.cpp",
         "patchSetId": 9
