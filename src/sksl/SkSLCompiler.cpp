@@ -187,6 +187,7 @@ std::unique_ptr<Module> Compiler::compileModule(ProgramKind kind,
     // Compile the module from source, using default program settings (but no memory pooling).
     ProgramSettings settings;
     settings.fUseMemoryPool = false;
+    settings.fInlineThreshold = INT_MAX;
     this->initializeContext(parentModule, kind, settings, *sourcePtr, moduleType);
 
     std::unique_ptr<Module> module = SkSL::Parser(this, settings, kind, std::move(sourcePtr))
