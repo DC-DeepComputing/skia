@@ -16,6 +16,98 @@
       "message": "OK to review.",
       "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "948e6397_e80c8069",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:47:16Z",
+      "side": 1,
+      "message": "whereas in this case, because we\u0027re creating the array as part of the function, returning the array is the right thing to do.",
+      "range": {
+        "startLine": 342,
+        "startChar": 8,
+        "endLine": 342,
+        "endChar": 65
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08ac9800_fe040c8a",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:47:16Z",
+      "side": 1,
+      "message": "We could move this to be inlined right before the call to SetStaticVertexInfo in BufferManager.cpp, I believe the base StaticBufferManager still has visibility into all of the copy ranges of the BufferInfo. This would minimize the impact of GPU_TEST_UTILS on the header, which slightly improves readability, but it\u0027s not huge.",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 24
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4c3ca796_b4e2a0fc",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:47:16Z",
+      "side": 1,
+      "message": "nit: For returning arrays/lists, where the backing data is stable, we should return an `SkSpan\u003cStaticVertexCopyRanges\u003e`.  I also don\u0027t think wrapping it in optional provides much more signal than just having it return the empty span.",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 63
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae2086bc_b921ad3a",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:47:16Z",
+      "side": 1,
+      "message": "nit: similarly, wrapping the pointer in optional doesn\u0027t add much signal over just returning null",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 32
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
