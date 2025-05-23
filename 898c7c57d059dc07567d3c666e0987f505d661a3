@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c56a0d09_6e218e8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-23T13:18:32Z",
+      "side": 1,
+      "message": "No, it\u0027s where it should be. That semicolon is part of the varDeclaration+, not the final semicolon at the end of the interface block.",
+      "revId": "898c7c57d059dc07567d3c666e0987f505d661a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
