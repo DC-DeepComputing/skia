@@ -70,6 +70,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3538e53_70f0a1ff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae330c8f_240450bd",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88bb3730_f815f71c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:55:49Z",
+      "side": 1,
+      "message": "honestly this is probably just *way* cleaner even if it does require clients to manually configure things, switched to an SkUserConfig.h + ifdef",
+      "parentUuid": "e3c81d0c_4cae307a",
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9615a6f_01d12db2",
@@ -93,6 +129,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c60e5ec3_76a29b1d",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:55:49Z",
+      "side": 1,
+      "message": "no longer relevant, switched approach",
+      "parentUuid": "b9615a6f_01d12db2",
+      "range": {
+        "startLine": 128,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 11
+      },
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "63276c24_07ab5937",
@@ -106,6 +166,30 @@
       "writtenOn": "2025-05-23T19:22:50Z",
       "side": 1,
       "message": "nit: typo",
+      "range": {
+        "startLine": 130,
+        "startChar": 72,
+        "endLine": 130,
+        "endChar": 75
+      },
+      "revId": "185b0190df52f650640c3480af0392feaf4f244b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f1f8b88a_16127171",
+        "filename": "src/codec/SkRawCodec.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-23T19:55:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63276c24_07ab5937",
       "range": {
         "startLine": 130,
         "startChar": 72,
