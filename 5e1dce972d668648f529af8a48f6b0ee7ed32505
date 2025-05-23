@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f923b027_538868cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-23T18:02:33Z",
+      "side": 1,
+      "message": "It doesn\u0027t cover all the dm test kinds, but it\u0027s a start. Capturing dm tests on desktop without this is impossible as RenderDoc refuses to capture without vkQueuePresentKHR 😞",
+      "revId": "5e1dce972d668648f529af8a48f6b0ee7ed32505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
