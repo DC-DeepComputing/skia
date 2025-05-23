@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d2ead64_24369fbb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-23T18:05:38Z",
+      "side": 1,
+      "message": "I kept this change separate because of the potential issue you mentioned with sampling (easier to blame). IIUC your particular problem was with the coordinate being RelaxedPrecision, not the sampling operation, so this is unlikely to cause trouble.\n\nIf sampling _has_ to be done in fp32, I can rework this so everything else isn\u0027t also done in fp32.",
+      "revId": "0b4c9fb4f4f69d61d3a8181179e8a7ab99e32b5c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
