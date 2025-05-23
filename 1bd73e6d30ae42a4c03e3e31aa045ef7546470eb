@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4a4a528_3cf1f343",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-23T01:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a1820e6a_ff14fef2",
+      "range": {
+        "startLine": 158,
+        "startChar": 90,
+        "endLine": 158,
+        "endChar": 91
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a171bb9e_7750ad5d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de9e5277_e2b41d88",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-23T01:46:06Z",
+      "side": 1,
+      "message": "Sure, done. Those are member variables though, can\u0027t make them const.",
+      "parentUuid": "a171bb9e_7750ad5d",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 237,
+        "endChar": 5
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "143db0e7_f92b9339",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-05-22T15:32:34Z",
       "side": 1,
       "message": "nit: Wrap with some of the text on the first line, e.g.\n```\n        SKGPU_LOG_W(\"VK_KHR_driver_properties is not enabled; driver workarounds cannot be \"\n                    \"correctly applied\");\n```",
+      "range": {
+        "startLine": 297,
+        "startChar": 0,
+        "endLine": 299,
+        "endChar": 27
+      },
+      "revId": "1bd73e6d30ae42a4c03e3e31aa045ef7546470eb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b09000f9_28766b19",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 299,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-23T01:46:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "143db0e7_f92b9339",
       "range": {
         "startLine": 297,
         "startChar": 0,
