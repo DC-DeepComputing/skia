@@ -289,6 +289,17 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     fShaderCaps->fDualSourceBlendingSupport = enabledFeatures.fDualSrcBlend;
 
+    // FIXME include?
+    fShaderCaps->fRewriteMatrixVectorMultiply = true;
+
+    // FIXME these seem like graphite-level defaults all backends should get
+    fShaderCaps->fExplicitTextureLodSupport = true;
+    fShaderCaps->fIntegerSupport = true;
+    fShaderCaps->fFloatIs32Bits = true;
+    // fShaderCaps->fHalfIs32Bits = false;
+    fShaderCaps->fUsesPrecisionModifiers = true;
+    fShaderCaps->fFlatInterpolationSupport = true;
+
     // Note: Do not add extension/feature checks after this; driver workarounds should be done last.
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(physDevProperties);
