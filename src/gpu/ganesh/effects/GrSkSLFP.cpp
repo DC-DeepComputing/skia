@@ -321,7 +321,7 @@ GrFragmentProcessor::OptimizationFlags GrSkSLFP::DetermineOptimizationFlags(
         OptFlags of, SkRuntimeEffect* effect) {
     OptimizationFlags optFlags = static_cast<OptimizationFlags>(of);
     if (SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect)) {
-        optFlags |= kConstantOutputForConstantInput_OptimizationFlag;
+        // optFlags |= kConstantOutputForConstantInput_OptimizationFlag;
     }
     return optFlags;
 }

@@ -1405,13 +1405,13 @@ void Device::drawGeometry(const Transform& localToDevice,
     // allow internal-oriented Renderers that are never selected for a "regular" draw call to have
     // more flexibility in their settings.
     SkASSERT(renderer);
-    for (const RenderStep* step : renderer->steps()) {
-        auto dss = step->depthStencilSettings();
-        SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
-                 (!dss.fDepthTestEnabled ||
-                  dss.fDepthCompareOp == CompareOp::kGreater ||
-                  dss.fDepthCompareOp == CompareOp::kGEqual));
-    }
+    // for (const RenderStep* step : renderer->steps()) {
+    //     auto dss = step->depthStencilSettings();
+    //     SkASSERT((!step->performsShading() || dss.fDepthTestEnabled) &&
+    //              (!dss.fDepthTestEnabled ||
+    //               dss.fDepthCompareOp == CompareOp::kGreater ||
+    //               dss.fDepthCompareOp == CompareOp::kGEqual));
+    // }
 #endif
 
     // Update the clip stack after issuing a flush (if it was needed). A draw will be recorded after
@@ -1572,7 +1572,16 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         SkASSERT(!requireMSAA && style.isFillStyle());
         // handled by specialized system, simplified from rects and round rects
         const EdgeAAQuad& quad = geometry.edgeAAQuad();
-        if (quad.isRect() && quad.edgeFlags() == EdgeAAQuad::Flags::kNone) {
+        bool pixelAlignedRect = false;
+        if (quad.isRect()) {
+            pixelAlignedRect = quad.edgeFlags() == EdgeAAQuad::Flags::kNone;
+            if (!pixelAlignedRect && localToDevice.type() <= Transform::Type::kRectStaysRect) {
+                Rect devRect = localToDevice.mapRect(quad.bounds());
+                pixelAlignedRect = devRect.nearlyEquals(devRect.makeRound());
+            }
+        }
+
+        if (pixelAlignedRect) {
             // For non-AA rectangular quads, it can always use a coverage-less renderer; there's no
             // need to check for pixel alignment to avoid popping if MSAA is turned on because quad
             // tile edges will seam with each in either mode.

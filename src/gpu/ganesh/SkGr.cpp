@@ -478,6 +478,8 @@ static inline bool skpaint_to_grpaint_impl(
         }
     }
 
+    applyColorFilterToPaintColor = false;
+
     SkColorFilter* colorFilter = skPaint.getColorFilter();
     if (colorFilter) {
         if (applyColorFilterToPaintColor) {
