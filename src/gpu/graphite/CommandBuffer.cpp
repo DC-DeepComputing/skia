@@ -113,9 +113,13 @@ bool CommandBuffer::addRenderPass(const RenderPassDesc& renderPassDesc,
     }
 
     dstReadBounds.offset(fReplayTranslation);
-    if (!dstReadBounds.intersect(fRenderPassBounds)) {
+    if (!SkIRect::Intersects(dstReadBounds, fRenderPassBounds)) {
         // The draws within the RenderPass that would sample from the dstCopy have been translated
         // off screen. Set the bounds to empty and let the GPU clipping do its job.
+        // Note: we don't clip the dstReadBounds to be within fRenderPassBounds, because if the
+        // render pass is a tile, dstReadBounds can be bigger than fRenderPassBounds and can contain
+        // areas outside it. It's also unnecessary to clip dstReadBounds because fragments outside
+        // fRenderPassBounds won't be executed.
         dstReadBounds = SkIRect::MakeEmpty();
     }
     // Save the dstCopy texture so that it can be embedded into texture bind commands later on.
