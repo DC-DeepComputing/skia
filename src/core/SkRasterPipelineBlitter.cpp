@@ -28,6 +28,7 @@
 #include "src/core/SkBlitter.h"
 #include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkColorSpaceXformSteps.h"
+#include "src/core/SkConvertPixels.h"
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkMask.h"
@@ -77,6 +78,7 @@ public:
     void blitMask  (const SkMask&, const SkIRect& clip)             override;
     void blitRect  (int x, int y, int width, int height)            override;
     void blitV     (int x, int y, int height, SkAlpha alpha)        override;
+    std::optional<DirectBlit> canDirectBlit()                       override;
 
 private:
     void appendLoadDst      (SkRasterPipeline*) const;
@@ -94,6 +96,10 @@ private:
     std::optional<SkBlendMode> fBlendMode;
     // set to pipeline storage (for alpha) if we have a clipShader
     void*                  fClipShaderBuffer = nullptr; // "native" : float or U16
+
+    bool fCanDirectBlit, fDirectBlitValueIsValid;
+    SkColor4f fPaintColor;
+    uint64_t fDirectBlitValue;
 
     SkRasterPipelineContexts::MemoryCtx
         fDstPtr       = {nullptr,0},  // Always points to the top-left of fDst.
@@ -266,6 +272,24 @@ SkBlitter* SkCreateRasterPipelineBlitter(const SkPixmap& dst,
                                            clipShader.get());
 }
 
+static bool can_direct_blit(const SkPaint& paint) {
+    if (paint.getShader() || paint.getColorFilter() || paint.isDither()) {
+        return {};
+    }
+    if (auto mode = paint.asBlendMode()) {
+        switch (mode.value()) {
+            case SkBlendMode::kClear: [[fallthrough]];
+            case SkBlendMode::kSrc:
+                return true;
+            case SkBlendMode::kSrcOver:
+                return paint.getAlphaf() == 1;
+            default:
+                break;
+        }
+    }
+    return false;
+}
+
 SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                                            const SkPaint& paint,
                                            const SkColor4f& dstPaintColor,
@@ -275,6 +299,10 @@ SkBlitter* SkRasterPipelineBlitter::Create(const SkPixmap& dst,
                                            bool is_constant,
                                            const SkShader* clipShader) {
     auto blitter = alloc->make<SkRasterPipelineBlitter>(dst, alloc);
+
+    blitter->fDirectBlitValueIsValid = false;
+    blitter->fCanDirectBlit = can_direct_blit(paint);
+    blitter->fPaintColor = paint.getColor4f();
 
     // Our job in this factory is to fill out the blitter's color and blend pipelines.
     // The color pipeline is the common front of the full blit pipeline. The blend pipeline is just
@@ -688,4 +716,40 @@ void SkRasterPipelineBlitter::blitMask(const SkMask& mask, const SkIRect& clip) 
 
     SkASSERT(blitter);
     (*blitter)(clip.left(),clip.top(), clip.width(),clip.height());
+}
+
+template <typename T> T get_as(const uint8_t* buffer) {
+    return reinterpret_cast<const T*>(buffer)[0];
+}
+
+std::optional<SkBlitter::DirectBlit> SkRasterPipelineBlitter::canDirectBlit() {
+    if (fCanDirectBlit) {
+        if (!fDirectBlitValueIsValid) {
+            // want maximum alignment (8) but legal punning for smaller int types
+            union {
+                uint64_t u8[1];
+                uint32_t u4[2];
+                uint16_t u2[4];
+                 uint8_t u1[8];
+            } dstBuffer;
+            auto dst = SkImageInfo::Make(1, 1, fDst.info().colorType(), fDst.info().alphaType());
+            auto src = SkImageInfo::Make(1, 1, kRGBA_F32_SkColorType, kUnpremul_SkAlphaType);
+            if (!SkConvertPixels(dst, &dstBuffer, sizeof(dstBuffer),
+                                 src, &fPaintColor, sizeof(fPaintColor))) {
+                goto FAIL;
+            }
+            switch (dst.bytesPerPixel()) {
+                case 1: fDirectBlitValue = dstBuffer.u1[0]; break;
+                case 2: fDirectBlitValue = dstBuffer.u2[0]; break;
+                case 4: fDirectBlitValue = dstBuffer.u4[0]; break;
+                case 8: fDirectBlitValue = dstBuffer.u8[0]; break;
+                default: goto FAIL;
+            }
+            fDirectBlitValueIsValid = true;
+        }
+        return {{fDst, fDirectBlitValue}};
+    }
+FAIL:
+    fCanDirectBlit = false;
+    return {};
 }
