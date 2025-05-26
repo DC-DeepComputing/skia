@@ -16,6 +16,24 @@
       "message": "No, it\u0027s where it should be. That semicolon is part of the varDeclaration+, not the final semicolon at the end of the interface block.",
       "revId": "898c7c57d059dc07567d3c666e0987f505d661a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f80ea77_791076c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-26T14:05:32Z",
+      "side": 1,
+      "message": "There are two loops here, the inner loop handles scenarios like `type var1, var2, var3,..., ;`. If the semicolon check is placed in its original position, it would result in a situation where semicolons and commas are adjacent, which I can\u0027t imagine being the case.",
+      "parentUuid": "c56a0d09_6e218e8c",
+      "revId": "898c7c57d059dc07567d3c666e0987f505d661a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
