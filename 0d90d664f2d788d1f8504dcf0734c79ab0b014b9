@@ -97,6 +97,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e7cfde2d_046641ec",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-27T19:22:27Z",
+      "side": 1,
+      "message": "This is correct, currently SkConvertPixels wouldn\u0027t be able to support this. Using `png_set_filler` was used originally for the encoder, so using equivalent logic in the rust implementation seems okay to me. \nThis can also simplify some logic in SkPNGEncoder base now since we are already doing the conversion to big endian here, we can go back to using libpng\u0027s \u0027PNG_TRANSFORM_SWAP_ENDIAN\u0027 in `SkPngEncoderImpl.cpp`, and delete the skcms logic in \u0027SkPNGEncoderBase::onEncodeRows()` -- but that can be done in a future CL.",
+      "parentUuid": "7ad49800_7e6c5feb",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "b0bb989e_30d802e1",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 3
