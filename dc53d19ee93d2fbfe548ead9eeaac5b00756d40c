@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a425bbe9_cd14de45",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-27T20:40:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4d167fe2_f0b2c990",
+      "range": {
+        "startLine": 254,
+        "startChar": 3,
+        "endLine": 305,
+        "endChar": 5
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e5b6597b_e51b9a23",
@@ -109,6 +133,30 @@
       "side": 1,
       "message": "(leaving open for manual fix just before landing)",
       "parentUuid": "e5b6597b_e51b9a23",
+      "range": {
+        "startLine": 1097,
+        "startChar": 8,
+        "endLine": 1103,
+        "endChar": 62
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "949755dd_93cc8321",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1103,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-27T20:40:04Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e00b447f_970ece13",
       "range": {
         "startLine": 1097,
         "startChar": 8,
