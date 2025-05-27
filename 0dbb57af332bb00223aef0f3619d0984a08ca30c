@@ -64,6 +64,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f2edbf2_63f74add",
+        "filename": "src/gpu/graphite/BufferManager.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-27T15:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08ac9800_fe040c8a",
+      "range": {
+        "startLine": 344,
+        "startChar": 0,
+        "endLine": 351,
+        "endChar": 24
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4c3ca796_b4e2a0fc",
@@ -87,6 +111,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c59711da_918f9de8",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-27T15:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c3ca796_b4e2a0fc",
+      "range": {
+        "startLine": 127,
+        "startChar": 4,
+        "endLine": 127,
+        "endChar": 63
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae2086bc_b921ad3a",
@@ -100,6 +148,30 @@
       "writtenOn": "2025-05-23T13:47:16Z",
       "side": 1,
       "message": "nit: similarly, wrapping the pointer in optional doesn\u0027t add much signal over just returning null",
+      "range": {
+        "startLine": 129,
+        "startChar": 4,
+        "endLine": 129,
+        "endChar": 32
+      },
+      "revId": "0dbb57af332bb00223aef0f3619d0984a08ca30c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f364efb_bd171eb7",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-27T15:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2086bc_b921ad3a",
       "range": {
         "startLine": 129,
         "startChar": 4,
