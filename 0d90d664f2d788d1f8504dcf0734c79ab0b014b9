@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf02d65e_9f4b777c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-27T15:39:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1de43fb_40d165a7",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 34
+      },
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bbe6fa0_c79fb8dd",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-27T15:15:23Z",
       "side": 1,
       "message": "@fmalita and @danieldilan - can you PTAL?  Ideally we would use the single, `SkConvertPixels`-based code path from the `SkPngEncoderBase.cpp` layer, rather than using `png_set_filler` in `SkPngEncoderImpl.cpp` and `skcms_Transform` in this CL.  OTOH, I **think** that `SkConvertPixels` can\u0027t handle this transformation today.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ad49800_7e6c5feb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-27T15:39:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "0bbe6fa0_c79fb8dd",
       "range": {
         "startLine": 22,
         "startChar": 0,
