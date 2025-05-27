@@ -13,6 +13,14 @@ Look for the first match in the format
 '''
 def find_msvc():
   if sys.platform.startswith('win'):
+    default_dir = r'C:\Program Files\Microsoft Visual Studio'
+    for release in ['2022']:
+      for version in ['Enterprise', 'Professional', 'Community', 'BuildTools', 'Preview']:
+        path = os.path.join(default_dir, release, version, 'VC')
+        if os.path.isdir(path):
+          return path
+    # The latest compiler with 2019 does not support HarfBuzz
+    # https://developercommunity.visualstudio.com/t/-countonebits-intrinsics-are-not-defined-for-arm64/957551
     default_dir = r'C:\Program Files (x86)\Microsoft Visual Studio'
     for release in ['2019', '2017']:
       for version in ['Enterprise', 'Professional', 'Community', 'BuildTools', 'Preview']:
