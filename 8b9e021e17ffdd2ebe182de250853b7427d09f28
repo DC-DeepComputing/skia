@@ -16,6 +16,24 @@
       "message": "LGTM, but would like to see the results of the (pending) Android canary to confirm",
       "revId": "8b9e021e17ffdd2ebe182de250853b7427d09f28",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df793d55_47db96dd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-05-27T14:32:02Z",
+      "side": 1,
+      "message": "Looks good, resolving",
+      "parentUuid": "30ecbb6d_4b7a6cbd",
+      "revId": "8b9e021e17ffdd2ebe182de250853b7427d09f28",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
