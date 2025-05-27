@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ad2513a_c97944fa",
+        "filename": "src/ports/BUILD.bazel",
+        "patchSetId": 8
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-27T18:29:34Z",
+      "side": 1,
+      "message": "That idea had originally been rejected due to adding unknown burden to clients, but I did a bit of asking around and it seems like not as big a lift as originally thought. Done.",
+      "parentUuid": "3747a828_7cf00842",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "27fc0ec7_b0abbdf1",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-05-23T19:51:36Z",
       "side": 1,
       "message": "I can see the point in pulling the (existing) implementation of the FreeType SkFontMgr_New_FontConfig out of SkFontMgr_fontconfig.cpp (so that file doesn\u0027t depend on FreeType at all) but I\u0027m not sure what the motivation is for adding this file?",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "facbba06_9728b8ad",
+        "filename": "src/ports/SkFontMgr_fontconfig_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-27T18:29:34Z",
+      "side": 1,
+      "message": "It seemed like a clean way to split out the legacy constructor (of which there\u0027s both a Freetype and Fontations impl) and then have a shared \"fontconfig_support\" module that overlapped.",
+      "parentUuid": "27fc0ec7_b0abbdf1",
       "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
