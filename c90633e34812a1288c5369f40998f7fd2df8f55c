@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "47b8008b_d3cb1ee5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-27T17:06:29Z",
+      "side": 1,
+      "message": "You can remove this `Disable:` tag. It\u0027s just in there to prevent git from treating the `https:` as a git tag when creating the initial roll commit.",
+      "revId": "c90633e34812a1288c5369f40998f7fd2df8f55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "a7450e03_6d2ad4fc",
