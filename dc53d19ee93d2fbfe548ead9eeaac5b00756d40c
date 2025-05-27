@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d167fe2_f0b2c990",
+        "filename": "src/gpu/graphite/DrawTypes.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T18:03:44Z",
+      "side": 1,
+      "message": "If anything, I\u0027d imagine we need something akin to `basicDynamicStatesAreEqual()` rather than a front-facing means to check each field (or a bitmask representing which fields need to be updated?). Then this class can decide what would make that equivalence true. I say go ahead and make the change IMO.",
+      "parentUuid": "bcf937c1_38c46eb8",
+      "range": {
+        "startLine": 254,
+        "startChar": 3,
+        "endLine": 305,
+        "endChar": 5
+      },
+      "revId": "dc53d19ee93d2fbfe548ead9eeaac5b00756d40c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e5b6597b_e51b9a23",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 5
