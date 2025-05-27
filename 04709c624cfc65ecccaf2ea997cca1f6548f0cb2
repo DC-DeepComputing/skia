@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "769f642a_056c9895",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 4669,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-27T17:44:16Z",
+      "side": 1,
+      "message": "Why is this okay to do for generic type?",
+      "range": {
+        "startLine": 4669,
+        "startChar": 1,
+        "endLine": 4669,
+        "endChar": 17
+      },
+      "revId": "04709c624cfc65ecccaf2ea997cca1f6548f0cb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
