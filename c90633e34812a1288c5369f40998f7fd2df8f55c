@@ -33,6 +33,24 @@
       "message": "Seems like most Fontations tests are passing with the revert to older Fontations which didn\u0027t have https://github.com/googlefonts/fontations/commit/83287c73da1327ce00479f8228462a2407005176 - so we can activate the optimisation again, and then roll forward to a new Fontations version, together with this FreeType roll, I suggest. What do you think, Ben?",
       "revId": "c90633e34812a1288c5369f40998f7fd2df8f55c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "43cb16b1_4704ca06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-27T17:04:24Z",
+      "side": 1,
+      "message": "That should work.",
+      "parentUuid": "02283c45_8704483e",
+      "revId": "c90633e34812a1288c5369f40998f7fd2df8f55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
