@@ -142,7 +142,7 @@ struct DrawRectData {
 static sk_sp<SkData> create_data(const SkIRect& drawRect, const SkIRect& origDevBounds) {
 
     DrawRectData drawRectData { {drawRect.fLeft - origDevBounds.fLeft,
-                                 drawRect.fTop - origDevBounds.fTop},
+                                drawRect.fTop - origDevBounds.fTop},
                                 drawRect.size() };
 
     return SkData::MakeWithCopy(&drawRectData, sizeof(drawRectData));
@@ -152,9 +152,9 @@ static SkIRect extract_draw_rect_from_data(SkData* data, const SkIRect& origDevB
     auto drawRectData = static_cast<const DrawRectData*>(data->data());
 
     return SkIRect::MakeXYWH(origDevBounds.fLeft + drawRectData->fOffset.fX,
-                             origDevBounds.fTop + drawRectData->fOffset.fY,
-                             drawRectData->fSize.fWidth,
-                             drawRectData->fSize.fHeight);
+                            origDevBounds.fTop + drawRectData->fOffset.fY,
+                            drawRectData->fSize.fWidth,
+                            drawRectData->fSize.fHeight);
 }
 
 static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
@@ -267,15 +267,15 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
     // needed to guarantee at least 1px of padding on all sides.
     auto approxSize = skgpu::GetApproxSize(maskRect.size());
     auto sdc = skgpu::ganesh::SurfaceDrawContext::MakeWithFallback(rContext,
-                                                                   GrColorType::kAlpha_8,
-                                                                   nullptr,
-                                                                   SkBackingFit::kExact,
-                                                                   approxSize,
-                                                                   defaultSurfaceProps,
-                                                                   sampleCnt,
-                                                                   skgpu::Mipmapped::kNo,
-                                                                   GrProtected::kNo,
-                                                                   kMaskOrigin);
+                                                                  GrColorType::kAlpha_8,
+                                                                  nullptr,
+                                                                  SkBackingFit::kExact,
+                                                                  approxSize,
+                                                                  defaultSurfaceProps,
+                                                                  sampleCnt,
+                                                                  skgpu::Mipmapped::kNo,
+                                                                  GrProtected::kNo,
+                                                                  kMaskOrigin);
     if (!sdc) {
         return nullptr;
     }
@@ -297,7 +297,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> create_mask_GPU(
 }
 
 static bool get_unclipped_shape_dev_bounds(const GrStyledShape& shape, const SkMatrix& matrix,
-                                           SkIRect* devBounds) {
+                                          SkIRect* devBounds) {
     SkRect shapeDevBounds;
     if (shape.inverseFilled()) {
         shapeDevBounds = {SK_ScalarNegativeInfinity, SK_ScalarNegativeInfinity,
@@ -347,28 +347,28 @@ static bool get_shape_and_clip_bounds(skgpu::ganesh::SurfaceDrawContext* sdc,
 }
 
 /**
- *  If we cannot create a FragmentProcess for a mask filter, we might have special logic for
- *  it here. That code path requires constructing a src mask as input. Since that is a potentially
- *  expensive operation, this function tests if filter_mask would succeed if the mask
- *  were to be created.
- *
- *  'maskRect' returns the device space portion of the mask that the filter needs. The mask
- *  passed into 'filter_mask' should have the same extent as 'maskRect' but be
- *  translated to the upper-left corner of the mask (i.e., (maskRect.fLeft, maskRect.fTop)
- *  appears at (0, 0) in the mask).
- *
- * Logically, how this works is:
- *    can_filter_mask is called
- *    if (it returns true)
- *        the returned mask rect is used for quick rejecting
- *            the mask rect is used to generate the mask
- *            filter_mask is called to filter the mask
- *
- * TODO: this should work as:
- *    if (can_filter_mask(devShape, ...)) // rect, rrect, drrect, path
- *        filter_mask(devShape, ...)
- * this would hide the RRect special case and the mask generation
- */
+*  If we cannot create a FragmentProcess for a mask filter, we might have special logic for
+*  it here. That code path requires constructing a src mask as input. Since that is a potentially
+*  expensive operation, this function tests if filter_mask would succeed if the mask
+*  were to be created.
+*
+*  'maskRect' returns the device space portion of the mask that the filter needs. The mask
+*  passed into 'filter_mask' should have the same extent as 'maskRect' but be
+*  translated to the upper-left corner of the mask (i.e., (maskRect.fLeft, maskRect.fTop)
+*  appears at (0, 0) in the mask).
+*
+* Logically, how this works is:
+*    can_filter_mask is called
+*    if (it returns true)
+*        the returned mask rect is used for quick rejecting
+*            the mask rect is used to generate the mask
+*            filter_mask is called to filter the mask
+*
+* TODO: this should work as:
+*    if (can_filter_mask(devShape, ...)) // rect, rrect, drrect, path
+*        filter_mask(devShape, ...)
+* this would hide the RRect special case and the mask generation
+*/
 static bool can_filter_mask(const SkMaskFilterBase* maskFilter,
                             const GrStyledShape& shape,
                             const SkIRect& devSpaceShapeBounds,
@@ -492,9 +492,9 @@ static std::unique_ptr<GrFragmentProcessor> create_profile_effect(GrRecordingCon
     return GrTextureEffect::Make(std::move(profileView), kPremul_SkAlphaType, texM);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext* context,
-                                                             const SkRect& circle,
-                                                             float sigma) {
+std::unique_ptr<GrFragmentProcessor> MakeCircleBlur(GrRecordingContext* context,
+                                                            const SkRect& circle,
+                                                            float sigma) {
     if (skgpu::BlurIsEffectivelyIdentity(sigma)) {
         return nullptr;
     }
@@ -522,9 +522,9 @@ static std::unique_ptr<GrFragmentProcessor> make_circle_blur(GrRecordingContext*
 
     SkV4 circleData = {circle.centerX(), circle.centerY(), solidRadius, 1.f / textureRadius};
     auto circleBlurFP = GrSkSLFP::Make(effect, "CircleBlur", /*inputFP=*/nullptr,
-                                       GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
-                                       "blurProfile", GrSkSLFP::IgnoreOptFlags(std::move(profile)),
-                                       "circleData", circleData);
+                                      GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
+                                      "blurProfile", GrSkSLFP::IgnoreOptFlags(std::move(profile)),
+                                      "circleData", circleData);
     // Modulate blur with the input color.
     return GrBlendFragmentProcessor::Make<SkBlendMode::kModulate>(std::move(circleBlurFP),
                                                                   /*dst=*/nullptr);
@@ -574,11 +574,11 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_integral_fp(GrRecordingCon
             std::move(view), kPremul_SkAlphaType, m, GrSamplerState::Filter::kLinear);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* context,
-                                                           const GrShaderCaps& caps,
-                                                           const SkRect& srcRect,
-                                                           const SkMatrix& viewMatrix,
-                                                           float transformedSigma) {
+std::unique_ptr<GrFragmentProcessor> MakeRectBlur(GrRecordingContext* context,
+                                                          const GrShaderCaps& caps,
+                                                          const SkRect& srcRect,
+                                                          const SkMatrix& viewMatrix,
+                                                          float transformedSigma) {
     SkASSERT(viewMatrix.preservesRightAngles());
     SkASSERT(srcRect.isSorted());
 
@@ -693,10 +693,10 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* c
 
     std::unique_ptr<GrFragmentProcessor> fp =
             GrSkSLFP::Make(effect, "RectBlur", /*inputFP=*/nullptr,
-                           GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
-                           "integral", GrSkSLFP::IgnoreOptFlags(std::move(integral)),
-                           "rect", insetRect,
-                           "isFast", GrSkSLFP::Specialize<int>(isFast));
+                          GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
+                          "integral", GrSkSLFP::IgnoreOptFlags(std::move(integral)),
+                          "rect", insetRect,
+                          "isFast", GrSkSLFP::Specialize<int>(isFast));
     // Modulate blur with the input color.
     fp = GrBlendFragmentProcessor::Make<SkBlendMode::kModulate>(std::move(fp),
                                                                 /*dst=*/nullptr);
@@ -713,8 +713,8 @@ static std::unique_ptr<GrFragmentProcessor> make_rect_blur(GrRecordingContext* c
 static constexpr auto kBlurredRRectMaskOrigin = kTopLeft_GrSurfaceOrigin;
 
 static void make_blurred_rrect_key(skgpu::UniqueKey* key,
-                                   const SkRRect& rrectToDraw,
-                                   float xformedSigma) {
+                                  const SkRRect& rrectToDraw,
+                                  float xformedSigma) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(xformedSigma));
     static const skgpu::UniqueKey::Domain kDomain = skgpu::UniqueKey::GenerateDomain();
 
@@ -724,9 +724,9 @@ static void make_blurred_rrect_key(skgpu::UniqueKey* key,
     int index = 1;
     // TODO: this is overkill for _simple_ circular rrects
     for (auto c : {SkRRect::kUpperLeft_Corner,
-                   SkRRect::kUpperRight_Corner,
-                   SkRRect::kLowerRight_Corner,
-                   SkRRect::kLowerLeft_Corner}) {
+                  SkRRect::kUpperRight_Corner,
+                  SkRRect::kLowerRight_Corner,
+                  SkRRect::kLowerLeft_Corner}) {
         SkASSERT(SkScalarIsInt(rrectToDraw.radii(c).fX) && SkScalarIsInt(rrectToDraw.radii(c).fY));
         builder[index++] = SkScalarCeilToInt(rrectToDraw.radii(c).fX);
         builder[index++] = SkScalarCeilToInt(rrectToDraw.radii(c).fY);
@@ -735,11 +735,11 @@ static void make_blurred_rrect_key(skgpu::UniqueKey* key,
 }
 
 static bool fillin_view_on_gpu(GrDirectContext* dContext,
-                               const GrSurfaceProxyView& lazyView,
-                               GrThreadSafeCache::Trampoline* trampoline,
-                               const SkRRect& rrectToDraw,
-                               const SkISize& dimensions,
-                               float xformedSigma) {
+                              const GrSurfaceProxyView& lazyView,
+                              GrThreadSafeCache::Trampoline* trampoline,
+                              const SkRRect& rrectToDraw,
+                              const SkISize& dimensions,
+                              float xformedSigma) {
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(xformedSigma));
 
     // We cache blur masks. Use default surface props here so we can use the same cached mask
@@ -765,25 +765,25 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
 
     sdc->clear(SK_PMColor4fTRANSPARENT);
     sdc->drawRRect(nullptr,
-                   std::move(paint),
-                   GrAA::kYes,
-                   SkMatrix::I(),
-                   rrectToDraw,
-                   GrStyle::SimpleFill());
+                  std::move(paint),
+                  GrAA::kYes,
+                  SkMatrix::I(),
+                  rrectToDraw,
+                  GrStyle::SimpleFill());
 
     GrSurfaceProxyView srcView = sdc->readSurfaceView();
     SkASSERT(srcView.asTextureProxy());
     auto rtc2 = GaussianBlur(dContext,
-                             std::move(srcView),
-                             sdc->colorInfo().colorType(),
-                             sdc->colorInfo().alphaType(),
-                             nullptr,
-                             SkIRect::MakeSize(dimensions),
-                             SkIRect::MakeSize(dimensions),
-                             xformedSigma,
-                             xformedSigma,
-                             SkTileMode::kClamp,
-                             SkBackingFit::kExact);
+                            std::move(srcView),
+                            sdc->colorInfo().colorType(),
+                            sdc->colorInfo().alphaType(),
+                            nullptr,
+                            SkIRect::MakeSize(dimensions),
+                            SkIRect::MakeSize(dimensions),
+                            xformedSigma,
+                            xformedSigma,
+                            SkTileMode::kClamp,
+                            SkBackingFit::kExact);
     if (!rtc2 || !rtc2->readSurfaceView()) {
         return false;
     }
@@ -799,9 +799,9 @@ static bool fillin_view_on_gpu(GrDirectContext* dContext,
 // Create a cpu-side blurred-rrect mask that is close to the version the gpu would've produced.
 // The match needs to be close bc the cpu- and gpu-generated version must be interchangeable.
 static GrSurfaceProxyView create_mask_on_cpu(GrRecordingContext* rContext,
-                                             const SkRRect& rrectToDraw,
-                                             const SkISize& dimensions,
-                                             float xformedSigma) {
+                                            const SkRRect& rrectToDraw,
+                                            const SkISize& dimensions,
+                                            float xformedSigma) {
     SkBitmap result = skgpu::CreateRRectBlurMask(rrectToDraw, dimensions, xformedSigma);
     if (result.empty()) {
         return {};
@@ -888,7 +888,7 @@ static std::unique_ptr<GrFragmentProcessor> find_or_create_rrect_blur_mask_fp(
     return GrTextureEffect::Make(std::move(view), kPremul_SkAlphaType, m);
 }
 
-static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* context,
+std::unique_ptr<GrFragmentProcessor> MakeRRectBlur(GrRecordingContext* context,
                                                             float sigma,
                                                             float xformedSigma,
                                                             const SkRRect& srcRRect,
@@ -920,15 +920,15 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
     SkScalar ignored[kBlurRRectMaxDivisions];
 
     bool ninePatchable = ComputeBlurredRRectParams(srcRRect,
-                                                   devRRect,
-                                                   sigma,
-                                                   xformedSigma,
-                                                   &rrectToDraw,
-                                                   &dimensions,
-                                                   ignored,
-                                                   ignored,
-                                                   ignored,
-                                                   ignored);
+                                                  devRRect,
+                                                  sigma,
+                                                  xformedSigma,
+                                                  &rrectToDraw,
+                                                  &dimensions,
+                                                  ignored,
+                                                  ignored,
+                                                  ignored,
+                                                  ignored);
     if (!ninePatchable) {
         return nullptr;
     }
@@ -1003,16 +1003,16 @@ static std::unique_ptr<GrFragmentProcessor> make_rrect_blur(GrRecordingContext* 
 }
 
 /**
- *  Try to directly render the mask filter into the target. Returns true if drawing was
- *  successful. If false is returned then paint is unmodified.
- */
+*  Try to directly render the mask filter into the target. Returns true if drawing was
+*  successful. If false is returned then paint is unmodified.
+*/
 static bool direct_filter_mask(GrRecordingContext* context,
-                               const SkMaskFilterBase* maskFilter,
-                               skgpu::ganesh::SurfaceDrawContext* sdc,
-                               GrPaint&& paint,
-                               const GrClip* clip,
-                               const SkMatrix& viewMatrix,
-                               const GrStyledShape& shape) {
+                              const SkMaskFilterBase* maskFilter,
+                              skgpu::ganesh::SurfaceDrawContext* sdc,
+                              GrPaint&& paint,
+                              const GrClip* clip,
+                              const SkMatrix& viewMatrix,
+                              const GrStyledShape& shape) {
     SkASSERT(sdc);
     if (maskFilter->type() != SkMaskFilterBase::Type::kBlur) {
         return false;
@@ -1049,11 +1049,11 @@ static bool direct_filter_mask(GrRecordingContext* context,
 
     bool canBeRect = srcRRect.isRect() && viewMatrix.preservesRightAngles();
     bool canBeCircle = (SkRRectPriv::IsCircle(srcRRect) && viewMatrix.isSimilarity()) ||
-                       devRRectIsCircle;
+                      devRRectIsCircle;
 
     if (canBeRect || canBeCircle) {
         if (canBeRect) {
-            fp = make_rect_blur(context, *context->priv().caps()->shaderCaps(),
+            fp = MakeRectBlur(context, *context->priv().caps()->shaderCaps(),
                                 srcRRect.rect(), viewMatrix, xformedSigma);
         } else {
             SkRect devBounds;
@@ -1064,11 +1064,11 @@ static bool direct_filter_mask(GrRecordingContext* context,
                 viewMatrix.mapPoints(&center, 1);
                 SkScalar radius = viewMatrix.mapVector(0, srcRRect.width()/2.f).length();
                 devBounds = {center.x() - radius,
-                             center.y() - radius,
-                             center.x() + radius,
-                             center.y() + radius};
+                            center.y() - radius,
+                            center.x() + radius,
+                            center.y() + radius};
             }
-            fp = make_circle_blur(context, devBounds, xformedSigma);
+            fp = MakeCircleBlur(context, devBounds, xformedSigma);
         }
 
         if (!fp) {
@@ -1103,7 +1103,7 @@ static bool direct_filter_mask(GrRecordingContext* context,
         return false;
     }
 
-    fp = make_rrect_blur(context, bmf->sigma(), xformedSigma, srcRRect, devRRect);
+    fp = MakeRRectBlur(context, bmf->sigma(), xformedSigma, srcRRect, devRRect);
     if (!fp) {
         return false;
     }
@@ -1219,12 +1219,12 @@ static bool compute_key_and_clip_bounds(skgpu::UniqueKey* maskKey,
 }
 
 /**
- * This function is used to implement filters that require an explicit src mask. It should only
- * be called if can_filter_mask returned true and the maskRect param should be the output from
- * that call.
- * Implementations are free to get the GrContext from the src texture in order to create
- * additional textures and perform multiple passes.
- */
+* This function is used to implement filters that require an explicit src mask. It should only
+* be called if can_filter_mask returned true and the maskRect param should be the output from
+* that call.
+* Implementations are free to get the GrContext from the src texture in order to create
+* additional textures and perform multiple passes.
+*/
 static GrSurfaceProxyView filter_mask(GrRecordingContext* context,
                                       const SkMaskFilterBase* maskFilter,
                                       GrSurfaceProxyView srcView,
@@ -1295,7 +1295,7 @@ static GrSurfaceProxyView hw_create_filtered_mask(GrDirectContext* dContext,
                                                   SkIRect* maskRect,
                                                   skgpu::UniqueKey* key) {
     if (!can_filter_mask(filter, shape, unclippedDevShapeBounds, clipBounds, viewMatrix,
-                         maskRect)) {
+                        maskRect)) {
         return {};
     }
 
@@ -1408,11 +1408,11 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
 
     // If the path is hairline, ignore inverse fill.
     bool inverseFilled = shape->inverseFilled() &&
-                         !GrIsStrokeHairlineOrEquivalent(shape->style(), viewMatrix, nullptr);
+                        !GrIsStrokeHairlineOrEquivalent(shape->style(), viewMatrix, nullptr);
 
     SkIRect unclippedDevShapeBounds, devClipBounds;
     if (!get_shape_and_clip_bounds(sdc, clip, *shape, viewMatrix,
-                                   &unclippedDevShapeBounds, &devClipBounds)) {
+                                  &unclippedDevShapeBounds, &devClipBounds)) {
         // TODO: just cons up an opaque mask here
         if (!inverseFilled) {
             return;
@@ -1422,11 +1422,11 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
     skgpu::UniqueKey maskKey;
     SkIRect boundsForClip;
     if (!compute_key_and_clip_bounds(&maskKey, &boundsForClip,
-                                     sdc->caps(),
-                                     viewMatrix, inverseFilled,
-                                     maskFilter, *shape,
-                                     unclippedDevShapeBounds,
-                                     devClipBounds)) {
+                                    sdc->caps(),
+                                    viewMatrix, inverseFilled,
+                                    maskFilter, *shape,
+                                    unclippedDevShapeBounds,
+                                    devClipBounds)) {
         return; // 'shape' was entirely clipped out
     }
 
@@ -1435,9 +1435,9 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
 
     if (auto dContext = rContext->asDirectContext()) {
         filteredMaskView = hw_create_filtered_mask(dContext, sdc,
-                                                   viewMatrix, *shape, maskFilter,
-                                                   unclippedDevShapeBounds, boundsForClip,
-                                                   &maskRect, &maskKey);
+                                                  viewMatrix, *shape, maskFilter,
+                                                  unclippedDevShapeBounds, boundsForClip,
+                                                  &maskRect, &maskKey);
         if (filteredMaskView) {
             if (draw_mask(sdc, clip, viewMatrix, maskRect, std::move(paint),
                           std::move(filteredMaskView))) {
@@ -1450,9 +1450,9 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
 
     // Either HW mask rendering failed or we're in a DDL recording thread
     filteredMaskView = sw_create_filtered_mask(rContext,
-                                               viewMatrix, *shape, maskFilter,
-                                               unclippedDevShapeBounds, boundsForClip,
-                                               &maskRect, &maskKey);
+                                              viewMatrix, *shape, maskFilter,
+                                              unclippedDevShapeBounds, boundsForClip,
+                                              &maskRect, &maskKey);
     if (filteredMaskView) {
         if (draw_mask(sdc, clip, viewMatrix, maskRect, std::move(paint),
                       std::move(filteredMaskView))) {
@@ -1463,15 +1463,15 @@ static void draw_shape_with_mask_filter(GrRecordingContext* rContext,
 }
 
 bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
-                               const SkRRect& devRRect,
-                               SkScalar sigma,
-                               SkScalar xformedSigma,
-                               SkRRect* rrectToDraw,
-                               SkISize* widthHeight,
-                               SkScalar rectXs[kBlurRRectMaxDivisions],
-                               SkScalar rectYs[kBlurRRectMaxDivisions],
-                               SkScalar texXs[kBlurRRectMaxDivisions],
-                               SkScalar texYs[kBlurRRectMaxDivisions]) {
+                              const SkRRect& devRRect,
+                              SkScalar sigma,
+                              SkScalar xformedSigma,
+                              SkRRect* rrectToDraw,
+                              SkISize* widthHeight,
+                              SkScalar rectXs[kBlurRRectMaxDivisions],
+                              SkScalar rectYs[kBlurRRectMaxDivisions],
+                              SkScalar texXs[kBlurRRectMaxDivisions],
+                              SkScalar texYs[kBlurRRectMaxDivisions]) {
     unsigned int devBlurRadius = 3 * SkScalarCeilToInt(xformedSigma - 1 / 6.0f);
     SkScalar srcBlurRadius = 3.0f * sigma;
 
@@ -1544,22 +1544,22 @@ bool ComputeBlurredRRectParams(const SkRRect& srcRRect,
 }
 
 void DrawShapeWithMaskFilter(GrRecordingContext* rContext,
-                             skgpu::ganesh::SurfaceDrawContext* sdc,
-                             const GrClip* clip,
-                             const GrStyledShape& shape,
-                             GrPaint&& paint,
-                             const SkMatrix& viewMatrix,
-                             const SkMaskFilter* mf) {
+                            skgpu::ganesh::SurfaceDrawContext* sdc,
+                            const GrClip* clip,
+                            const GrStyledShape& shape,
+                            GrPaint&& paint,
+                            const SkMatrix& viewMatrix,
+                            const SkMaskFilter* mf) {
     draw_shape_with_mask_filter(rContext, sdc, clip, std::move(paint),
                                 viewMatrix, as_MFB(mf), shape);
 }
 
 void DrawShapeWithMaskFilter(GrRecordingContext* rContext,
-                             skgpu::ganesh::SurfaceDrawContext* sdc,
-                             const GrClip* clip,
-                             const SkPaint& paint,
-                             const SkMatrix& ctm,
-                             const GrStyledShape& shape) {
+                            skgpu::ganesh::SurfaceDrawContext* sdc,
+                            const GrClip* clip,
+                            const SkPaint& paint,
+                            const SkMatrix& ctm,
+                            const GrStyledShape& shape) {
     if (rContext->abandoned()) {
         return;
     }
@@ -1586,54 +1586,54 @@ namespace {
 enum class Direction { kX, kY };
 
 std::unique_ptr<GrFragmentProcessor> make_texture_effect(const GrCaps* caps,
-                                                         GrSurfaceProxyView srcView,
-                                                         SkAlphaType srcAlphaType,
-                                                         const GrSamplerState& sampler,
-                                                         const SkIRect& srcSubset,
-                                                         const SkIRect& srcRelativeDstRect,
-                                                         const SkISize& radii) {
+                                                        GrSurfaceProxyView srcView,
+                                                        SkAlphaType srcAlphaType,
+                                                        const GrSamplerState& sampler,
+                                                        const SkIRect& srcSubset,
+                                                        const SkIRect& srcRelativeDstRect,
+                                                        const SkISize& radii) {
     // It's pretty common to blur a subset of an input texture. In reduced shader mode we always
     // apply the wrap mode in the shader.
     if (caps->reducedShaderMode()) {
         return GrTextureEffect::MakeSubset(std::move(srcView),
-                                           srcAlphaType,
-                                           SkMatrix::I(),
-                                           sampler,
-                                           SkRect::Make(srcSubset),
-                                           *caps,
-                                           GrTextureEffect::kDefaultBorder,
-                                           /*alwaysUseShaderTileMode=*/true);
+                                          srcAlphaType,
+                                          SkMatrix::I(),
+                                          sampler,
+                                          SkRect::Make(srcSubset),
+                                          *caps,
+                                          GrTextureEffect::kDefaultBorder,
+                                          /*alwaysUseShaderTileMode=*/true);
     } else {
         // Inset because we expect to be invoked at pixel centers
         SkRect domain = SkRect::Make(srcRelativeDstRect);
         domain.inset(0.5f, 0.5f);
         domain.outset(radii.width(), radii.height());
         return GrTextureEffect::MakeSubset(std::move(srcView),
-                                           srcAlphaType,
-                                           SkMatrix::I(),
-                                           sampler,
-                                           SkRect::Make(srcSubset),
-                                           domain,
-                                           *caps);
+                                          srcAlphaType,
+                                          SkMatrix::I(),
+                                          sampler,
+                                          SkRect::Make(srcSubset),
+                                          domain,
+                                          *caps);
     }
 }
 
 } // end namespace
 
 /**
- * Draws 'dstRect' into 'surfaceFillContext' evaluating a 1D Gaussian over 'srcView'. The src rect
- * is 'dstRect' offset by 'dstToSrcOffset'. 'mode' and 'bounds' are applied to the src coords.
- */
+* Draws 'dstRect' into 'surfaceFillContext' evaluating a 1D Gaussian over 'srcView'. The src rect
+* is 'dstRect' offset by 'dstToSrcOffset'. 'mode' and 'bounds' are applied to the src coords.
+*/
 static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
-                                 GrSurfaceProxyView srcView,
-                                 const SkIRect& srcSubset,
-                                 SkIVector dstToSrcOffset,
-                                 const SkIRect& dstRect,
-                                 SkAlphaType srcAlphaType,
-                                 Direction direction,
-                                 int radius,
-                                 float sigma,
-                                 SkTileMode mode) {
+                                GrSurfaceProxyView srcView,
+                                const SkIRect& srcSubset,
+                                SkIVector dstToSrcOffset,
+                                const SkIRect& dstRect,
+                                SkAlphaType srcAlphaType,
+                                Direction direction,
+                                int radius,
+                                float sigma,
+                                SkTileMode mode) {
     SkASSERT(radius && !skgpu::BlurIsEffectivelyIdentity(sigma));
     auto srcRect = dstRect.makeOffset(dstToSrcOffset);
 
@@ -1644,23 +1644,23 @@ static void convolve_gaussian_1d(skgpu::ganesh::SurfaceFillContext* sfc,
     GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kLinear};
 
     SkISize radii = {direction == Direction::kX ? radius : 0,
-                     direction == Direction::kY ? radius : 0};
+                    direction == Direction::kY ? radius : 0};
     std::unique_ptr<GrFragmentProcessor> child = make_texture_effect(sfc->caps(),
-                                                                     std::move(srcView),
-                                                                     srcAlphaType,
-                                                                     sampler,
-                                                                     srcSubset,
-                                                                     srcRect,
-                                                                     radii);
+                                                                    std::move(srcView),
+                                                                    srcAlphaType,
+                                                                    sampler,
+                                                                    srcSubset,
+                                                                    srcRect,
+                                                                    radii);
 
     auto conv = GrSkSLFP::Make(skgpu::GetLinearBlur1DEffect(radius),
-                               "GaussianBlur1D",
-                               /*inputFP=*/nullptr,
-                               GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
-                               "offsetsAndKernel", SkSpan<SkV4>{offsetsAndKernel},
-                               "dir", direction == Direction::kX ? SkV2{1.f, 0.f}
-                                                                 : SkV2{0.f, 1.f},
-                               "child", std::move(child));
+                              "GaussianBlur1D",
+                              /*inputFP=*/nullptr,
+                              GrSkSLFP::OptFlags::kCompatibleWithCoverageAsAlpha,
+                              "offsetsAndKernel", SkSpan<SkV4>{offsetsAndKernel},
+                              "dir", direction == Direction::kX ? SkV2{1.f, 0.f}
+                                                                : SkV2{0.f, 1.f},
+                              "child", std::move(child));
     sfc->fillRectToRectWithFP(srcRect, dstRect, std::move(conv));
 }
 
@@ -1679,7 +1679,7 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
         SkBackingFit dstFit) {
     SkASSERT(radiusX && radiusY);
     SkASSERT(!skgpu::BlurIsEffectivelyIdentity(sigmaX) &&
-             !skgpu::BlurIsEffectivelyIdentity(sigmaY));
+            !skgpu::BlurIsEffectivelyIdentity(sigmaY));
     // Create the sdc with default SkSurfaceProps. Gaussian blurs will soon use a
     // SurfaceFillContext, at which point the SkSurfaceProps won't exist anymore.
     auto sdc = skgpu::ganesh::SurfaceDrawContext::Make(
@@ -1708,19 +1708,19 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian_2d(
 
     GrSamplerState sampler{SkTileModeToWrapMode(mode), GrSamplerState::Filter::kNearest};
     auto child = make_texture_effect(sdc->caps(),
-                                     std::move(srcView),
-                                     kPremul_SkAlphaType,
-                                     sampler,
-                                     srcBounds,
-                                     dstBounds,
-                                     radii);
+                                    std::move(srcView),
+                                    kPremul_SkAlphaType,
+                                    sampler,
+                                    srcBounds,
+                                    dstBounds,
+                                    radii);
     auto conv = GrSkSLFP::Make(skgpu::GetBlur2DEffect(radii),
-                               "GaussianBlur2D",
-                               /*inputFP=*/nullptr,
-                               GrSkSLFP::OptFlags::kNone,
-                               "kernel", SkSpan<SkV4>{kernel},
-                               "offsets", SkSpan<SkV4>{offsets},
-                               "child", std::move(child));
+                              "GaussianBlur2D",
+                              /*inputFP=*/nullptr,
+                              GrSkSLFP::OptFlags::kNone,
+                              "kernel", SkSpan<SkV4>{kernel},
+                              "offsets", SkSpan<SkV4>{offsets},
+                              "child", std::move(child));
 
     GrPaint paint;
     paint.setColorFragmentProcessor(std::move(conv));
@@ -1789,15 +1789,15 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian(
     if (!canSplit || canHWTile) {
         auto dstRect = SkIRect::MakeSize(dstBounds.size());
         convolve_gaussian_1d(dstSDC.get(),
-                             std::move(srcView),
-                             srcBounds,
-                             rtcToSrcOffset,
-                             dstRect,
-                             srcAlphaType,
-                             direction,
-                             radius,
-                             sigma,
-                             mode);
+                            std::move(srcView),
+                            srcBounds,
+                            rtcToSrcOffset,
+                            dstRect,
+                            srcAlphaType,
+                            direction,
+                            radius,
+                            sigma,
+                            mode);
         return dstSDC;
     }
 
@@ -1851,15 +1851,15 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> convolve_gaussian(
         // Transform rect into the render target's coord system.
         rect.offset(-rtcToSrcOffset);
         convolve_gaussian_1d(dstSDC.get(),
-                             srcView,
-                             srcBounds,
-                             rtcToSrcOffset,
-                             rect,
-                             srcAlphaType,
-                             direction,
-                             radius,
-                             sigma,
-                             mode);
+                            srcView,
+                            srcBounds,
+                            rtcToSrcOffset,
+                            rect,
+                            srcAlphaType,
+                            direction,
+                            radius,
+                            sigma,
+                            mode);
     };
     auto clear = [&](SkIRect rect) {
         // Transform rect into the render target's coord system.
@@ -2066,17 +2066,17 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> two_pass_gaussian(
             }
         }
         dstSDC = convolve_gaussian(rContext,
-                                   std::move(srcView),
-                                   srcColorType,
-                                   srcAlphaType,
-                                   srcBounds,
-                                   xPassDstBounds,
-                                   Direction::kX,
-                                   radiusX,
-                                   sigmaX,
-                                   mode,
-                                   colorSpace,
-                                   xFit);
+                                  std::move(srcView),
+                                  srcColorType,
+                                  srcAlphaType,
+                                  srcBounds,
+                                  xPassDstBounds,
+                                  Direction::kX,
+                                  radiusX,
+                                  sigmaX,
+                                  mode,
+                                  colorSpace,
+                                  xFit);
         if (!dstSDC) {
             return nullptr;
         }
@@ -2091,17 +2091,17 @@ static std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> two_pass_gaussian(
     }
 
     return convolve_gaussian(rContext,
-                             std::move(srcView),
-                             srcColorType,
-                             srcAlphaType,
-                             srcBounds,
-                             dstBounds,
-                             Direction::kY,
-                             radiusY,
-                             sigmaY,
-                             mode,
-                             std::move(colorSpace),
-                             fit);
+                            std::move(srcView),
+                            srcColorType,
+                            srcAlphaType,
+                            srcBounds,
+                            dstBounds,
+                            Direction::kY,
+                            radiusY,
+                            sigmaY,
+                            mode,
+                            std::move(colorSpace),
+                            fit);
 }
 
 std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingContext* rContext,
@@ -2229,20 +2229,20 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
         // This will automatically degenerate into a single pass of X or Y if only one of the
         // radii are non-zero.
         SkASSERT(skgpu::BlurLinearKernelWidth(radiusX) <= skgpu::kMaxBlurSamples &&
-                 skgpu::BlurLinearKernelWidth(radiusY) <= skgpu::kMaxBlurSamples);
+                skgpu::BlurLinearKernelWidth(radiusY) <= skgpu::kMaxBlurSamples);
         return two_pass_gaussian(rContext,
-                                 std::move(srcView),
-                                 srcColorType,
-                                 srcAlphaType,
-                                 std::move(colorSpace),
-                                 srcBounds,
-                                 dstBounds,
-                                 sigmaX,
-                                 sigmaY,
-                                 radiusX,
-                                 radiusY,
-                                 mode,
-                                 fit);
+                                std::move(srcView),
+                                srcColorType,
+                                srcAlphaType,
+                                std::move(colorSpace),
+                                srcBounds,
+                                dstBounds,
+                                sigmaX,
+                                sigmaY,
+                                radiusX,
+                                radiusY,
+                                mode,
+                                fit);
     }
 
     GrColorInfo colorInfo(srcColorType, srcAlphaType, colorSpace);
@@ -2317,10 +2317,10 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
         rescaledSDC->clear(SkPMColor4f{0, 0, 0, 0});
     }
     if (!srcCtx->rescaleInto(rescaledSDC.get(),
-                             SkIRect::MakeSize(rescaledSize).makeOffset(padX, padY),
-                             srcBounds,
-                             SkSurface::RescaleGamma::kSrc,
-                             SkSurface::RescaleMode::kRepeatedLinear)) {
+                            SkIRect::MakeSize(rescaledSize).makeOffset(padX, padY),
+                            srcBounds,
+                            SkSurface::RescaleGamma::kSrc,
+                            SkSurface::RescaleMode::kRepeatedLinear)) {
         return nullptr;
     }
     if (mode == SkTileMode::kClamp) {
@@ -2330,18 +2330,18 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
         // to rescale these with better quality but without 4 separate multi-pass downscales.
         auto cheapDownscale = [&](SkIRect dstRect, SkIRect srcRect) {
             rescaledSDC->drawTexture(nullptr,
-                                     srcCtx->readSurfaceView(),
-                                     srcAlphaType,
-                                     GrSamplerState::Filter::kLinear,
-                                     GrSamplerState::MipmapMode::kNone,
-                                     SkBlendMode::kSrc,
-                                     SK_PMColor4fWHITE,
-                                     SkRect::Make(srcRect),
-                                     SkRect::Make(dstRect),
-                                     GrQuadAAFlags::kNone,
-                                     SkCanvas::SrcRectConstraint::kFast_SrcRectConstraint,
-                                     SkMatrix::I(),
-                                     nullptr);
+                                    srcCtx->readSurfaceView(),
+                                    srcAlphaType,
+                                    GrSamplerState::Filter::kLinear,
+                                    GrSamplerState::MipmapMode::kNone,
+                                    SkBlendMode::kSrc,
+                                    SK_PMColor4fWHITE,
+                                    SkRect::Make(srcRect),
+                                    SkRect::Make(dstRect),
+                                    GrQuadAAFlags::kNone,
+                                    SkCanvas::SrcRectConstraint::kFast_SrcRectConstraint,
+                                    SkMatrix::I(),
+                                    nullptr);
         };
         auto [dw, dh] = rescaledSize;
         // The are the src rows and columns from the source that we will scale into the dst padding.
@@ -2368,7 +2368,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
         cheapDownscale(SkIRect::MakeXYWH(0, 0, 1, 1), SkIRect::MakeXYWH(sLCol, sTRow, 1, 1));
         cheapDownscale(SkIRect::MakeXYWH(dw + 1, 0, 1, 1), SkIRect::MakeXYWH(sRCol, sTRow, 1, 1));
         cheapDownscale(SkIRect::MakeXYWH(dw + 1, dh + 1, 1, 1),
-                       SkIRect::MakeXYWH(sRCol, sBRow, 1, 1));
+                      SkIRect::MakeXYWH(sRCol, sBRow, 1, 1));
         cheapDownscale(SkIRect::MakeXYWH(0, dh + 1, 1, 1), SkIRect::MakeXYWH(sLCol, sBRow, 1, 1));
     }
     srcView = rescaledSDC->readSurfaceView();
@@ -2415,7 +2415,7 @@ std::unique_ptr<skgpu::ganesh::SurfaceDrawContext> GaussianBlur(GrRecordingConte
     }
 
     SkASSERT(sdc->width() == scaledDstBoundsI.width() &&
-             sdc->height() == scaledDstBoundsI.height());
+            sdc->height() == scaledDstBoundsI.height());
     // We rounded out the integer scaled dst bounds. Select the fractional dst bounds from the
     // integer dimension blurred result when we scale back up. This also accounts for the padding
     // added to 'scaledDstBoundsI' when sampling from the blurred result.
