@@ -51,6 +51,24 @@
       "parentUuid": "1bb5dc7a_39943e94",
       "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d444cb1b_06e0871e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T16:57:43Z",
+      "side": 1,
+      "message": "If we can avoid the .hpp files, then I\u0027m happy to take the extra files to simplify future updates as well given their churn.  All the big files appear to be .hpp anyways.",
+      "parentUuid": "d6488d9b_cf437e12",
+      "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
