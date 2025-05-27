@@ -16,6 +16,23 @@
       "message": "Adding gardeners, but the revert bot should get this automatically.",
       "revId": "9e9f55b6997b8df616dc55f23544c96cd1b868e0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9928beb5_d6ef1be2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:10:17Z",
+      "side": 1,
+      "message": "Also led to a unit test failure on a pixel 6 with graphite-vulkan:\n\nFailures:\n\t../../../../../../skia/tests/SkSLTest.cpp:633\tExpected: solid green. Actual output from Mali-G78 using Vulkan:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLIntrinsicClampFloat_Graphite, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:633\tExpected (Unoptimized): solid green. Actual output from Mali-G78 using Vulkan:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLIntrinsicClampFloat_Graphite, Vulkan]\n2 failures\nFailures:\n\t../../../../../../skia/tests/SkSLTest.cpp:633\tExpected: solid green. Actual output from Mali-G78 using Vulkan:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLIntrinsicClampFloat_Graphite, Vulkan]\n\t../../../../../../skia/tests/SkSLTest.cpp:633\tExpected (Unoptimized): solid green. Actual output from Mali-G78 using Vulkan:\nRRGGBBAA RRGGBBAA\nFF0000FF FF0000FF\nFF0000FF FF0000FF [SkSLIntrinsicClampFloat_Graphite, Vulkan]\n2 failures",
+      "revId": "9e9f55b6997b8df616dc55f23544c96cd1b868e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
