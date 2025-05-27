@@ -22,6 +22,30 @@
       },
       "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe29586_e6492c00",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-27T13:35:08Z",
+      "side": 1,
+      "message": "Would you want to define a new function special image -\u003e A8 bitmap? Or is using something like SkConvertPixels okay to transform the specialImage bitmap mask (which is 8888) to A8",
+      "parentUuid": "550cd269_81755b0a",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 70
+      },
+      "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
