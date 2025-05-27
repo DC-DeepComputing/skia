@@ -231,11 +231,6 @@ Backend::Backend(sk_sp<SkImageFilterCache> cache,
 Backend::~Backend() = default;
 
 sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, SkColorType colorType) {
-    // TODO (skbug:14286): Remove this forcing to 8888. Many legacy image filters only support
-    // N32 on CPU, but once they are implemented in terms of draws and SkSL they will support
-    // all color types, like the GPU backends.
-    colorType = kN32_SkColorType;
-
     return sk_make_sp<RasterBackend>(surfaceProps, colorType);
 }
 
