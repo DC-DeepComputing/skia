@@ -16,6 +16,23 @@
       "message": "Adding Michael as code owner.",
       "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bb5dc7a_39943e94",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T15:58:26Z",
+      "side": 1,
+      "message": "Do we need all of these vulkan headers to compile? In particular, I\u0027m wondering if we need the `vulkan_fuchsia.h` or `vulkan_wayland.h` and `vulkan_structs.hpp` is massive.\n\nIn particular, following the approach outlined inhttps://skia-review.googlesource.com/c/skia/+/798718, our precedent is to only take the headers absolutely required to build, not all of vulkan.",
+      "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
