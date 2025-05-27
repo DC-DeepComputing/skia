@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1de43fb_40d165a7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-27T15:15:23Z",
+      "side": 1,
+      "message": "@fmalita - these changes are new.  They are needed to fix the Skia test that started to fail in the patch set that was LGTM-ed earlier.  I missed the unit test failure when running tests locally, because I forgot that (when experimenting with other changes) I switched my `args.gn` to only enable Rust-based decoding (but use `libpng`-based encoding).",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 34
+      },
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bbe6fa0_c79fb8dd",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-27T15:15:23Z",
+      "side": 1,
+      "message": "@fmalita and @danieldilan - can you PTAL?  Ideally we would use the single, `SkConvertPixels`-based code path from the `SkPngEncoderBase.cpp` layer, rather than using `png_set_filler` in `SkPngEncoderImpl.cpp` and `skcms_Transform` in this CL.  OTOH, I **think** that `SkConvertPixels` can\u0027t handle this transformation today.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 43
+      },
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0bb989e_30d802e1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-27T15:15:23Z",
+      "side": 1,
+      "message": "@danieldilan, can you PTAL?  @fmalita, can you PTAL again?  See the CL description and my comments below for a bit more context.",
+      "revId": "0d90d664f2d788d1f8504dcf0734c79ab0b014b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
