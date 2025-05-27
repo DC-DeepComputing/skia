@@ -46,6 +46,30 @@
       },
       "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a01d3bf_e2a5a06a",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:48:34Z",
+      "side": 1,
+      "message": "Ah right, we\u0027ve got one more dependency for the CPU backend before we can really use this.\n\nRight now in the `skif::MakeRasterBackend` hardcodes the color type to be kN32_SkColorType.  This was a historic limitation that has almost completely been removed.  Now the only remaining issue is that if we remove that override, the image filter blur code for an A8 image will use SkRasterPipeline instead of a SIMD optimized blur (which is defined for BGRA8 and RGBA8).\n\nFor now, this is probably fine, because we aren\u0027t turning it on yet.  And eventually we can expose the SkMask blur code and use it as the A8 image filter blur implementation.\n\nI think we should first do a CL to remove the color type restriction in `MakeRasterBackend` and land that, make sure everything is good.  Then we can rebase this and not worry about converting an 8888 image to A8, and you can decide whether or not you want to implement an A8 SkBlurAlgorithm that reuses the code in `SkMaskBlurFilter.cpp` before or after this CL.",
+      "parentUuid": "cbe29586_e6492c00",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 70
+      },
+      "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
