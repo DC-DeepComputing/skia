@@ -22,6 +22,30 @@
       },
       "revId": "f7eca510628c8938d0b97ad97f47cba0b1ead378",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c070ca46_acc330de",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-27T15:48:00Z",
+      "side": 1,
+      "message": "I certainly thought about it; however, since it also requires adding logic to the copy buffer commands, I think placing `#ifdef` guards there would get messy. Instead, the `#ifdef` guards are all downstream at the buffer creation. WDYT?",
+      "parentUuid": "ee3a27e4_5f2e3644",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 19
+      },
+      "revId": "f7eca510628c8938d0b97ad97f47cba0b1ead378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
