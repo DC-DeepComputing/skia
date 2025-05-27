@@ -70,6 +70,30 @@
       },
       "revId": "04709c624cfc65ecccaf2ea997cca1f6548f0cb2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a3504d8_9180c17d",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 4669,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-27T19:15:03Z",
+      "side": 1,
+      "message": "Good point. There\u0027s only the 3 types. I32, U32, and F32, so I got rid of the template and just hardcoded float. (float division by 0 is fine in that it doesn\u0027t crash). U32 doesn\u0027t have negative numbers, so it only needs the divide by 0 logic.\n\nHad I not removed the template, yeah the above specializations would have been the impl for the I32 and U32 and everything else would have used the templated version.",
+      "parentUuid": "ec6b9c15_82f01e32",
+      "range": {
+        "startLine": 4669,
+        "startChar": 1,
+        "endLine": 4669,
+        "endChar": 17
+      },
+      "revId": "04709c624cfc65ecccaf2ea997cca1f6548f0cb2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
