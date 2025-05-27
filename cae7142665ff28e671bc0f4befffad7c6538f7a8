@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10f646f8_37d5d4ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T14:44:15Z",
+      "side": 1,
+      "message": "LGTM - the task failures seem unrelated.",
+      "revId": "cae7142665ff28e671bc0f4befffad7c6538f7a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
