@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f81f3383_24e3298b",
+        "filename": "src/gpu/ganesh/GrBlurUtils.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 497,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:42:50Z",
+      "side": 1,
+      "message": "nit: line up the args for the 3 MakeXBlur functions.",
+      "range": {
+        "startLine": 496,
+        "startChar": 61,
+        "endLine": 497,
+        "endChar": 75
+      },
+      "revId": "b16dae71b1e94d8645c303ef57f112ebd6b36276",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
