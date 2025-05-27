@@ -33,6 +33,24 @@
       "message": "Do we need all of these vulkan headers to compile? In particular, I\u0027m wondering if we need the `vulkan_fuchsia.h` or `vulkan_wayland.h` and `vulkan_structs.hpp` is massive.\n\nIn particular, following the approach outlined inhttps://skia-review.googlesource.com/c/skia/+/798718, our precedent is to only take the headers absolutely required to build, not all of vulkan.",
       "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6488d9b_cf437e12",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-27T16:10:57Z",
+      "side": 1,
+      "message": "I was trying to do the same (pick only needed headers), but these headers keep getting split and things move around. I had to add more headers since that last roll.\n\nI figured unused headers are harmless so I rolled everything instead of trying to find the new minimum set. If I remove the hpp files, is it ok to have a few unused headers?",
+      "parentUuid": "1bb5dc7a_39943e94",
+      "revId": "a3d065cd482c207ba47a2590f8601de2859983df",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
