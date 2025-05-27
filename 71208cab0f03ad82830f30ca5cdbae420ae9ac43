@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a150796_d159d08d",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:54:09Z",
+      "side": 1,
+      "message": "nit: will be ignored if the backend doesn\u0027t support it, or if a more optimal HW feature is available.",
+      "range": {
+        "startLine": 55,
+        "startChar": 25,
+        "endLine": 55,
+        "endChar": 78
+      },
+      "revId": "71208cab0f03ad82830f30ca5cdbae420ae9ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "016f8598_e16f2a25",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:54:09Z",
+      "side": 1,
+      "message": "nit: Can we name this `fInternalMSAATileSize`?",
+      "range": {
+        "startLine": 57,
+        "startChar": 27,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "71208cab0f03ad82830f30ca5cdbae420ae9ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
