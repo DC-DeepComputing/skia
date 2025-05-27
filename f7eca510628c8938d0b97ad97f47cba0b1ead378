@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee3a27e4_5f2e3644",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T14:47:54Z",
+      "side": 1,
+      "message": "If this is only used in debug / testing, do we want to put it behind an `#ifdef`?",
+      "range": {
+        "startLine": 122,
+        "startChar": 4,
+        "endLine": 122,
+        "endChar": 19
+      },
+      "revId": "f7eca510628c8938d0b97ad97f47cba0b1ead378",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
