@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5edf961f_5d6a4648",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T14:08:24Z",
+      "side": 1,
+      "message": "Adding gardeners, but the revert bot should get this automatically.",
+      "revId": "12b66e8a6dcce384749b4e9fac8e9253dbcc878b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
