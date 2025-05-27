@@ -8,23 +8,27 @@ struct _GlobalUniforms {
   dst: vec4<f32>,
 };
 @binding(0) @group(0) var<uniform> _globalUniforms: _GlobalUniforms;
-fn blend_overlay_component_Qhh2h2(s: vec2<f32>, d: vec2<f32>) -> f32 {
-  {
-    var _skTemp0: f32;
-    if (2.0 * d.x) <= d.y {
-      _skTemp0 = (2.0 * s.x) * d.x;
-    } else {
-      _skTemp0 = s.y * d.y - (2.0 * (d.y - d.x)) * (s.y - s.x);
-    }
-    return _skTemp0;
-  }
-}
 fn _skslMain(_stageOut: ptr<function, FSOut>) {
   {
-    let _skTemp1 = blend_overlay_component_Qhh2h2(_globalUniforms.src.xw, _globalUniforms.dst.xw);
-    let _skTemp2 = blend_overlay_component_Qhh2h2(_globalUniforms.src.yw, _globalUniforms.dst.yw);
-    let _skTemp3 = blend_overlay_component_Qhh2h2(_globalUniforms.src.zw, _globalUniforms.dst.zw);
-    var _0_result: vec4<f32> = vec4<f32>(_skTemp1, _skTemp2, _skTemp3, _globalUniforms.src.w + (1.0 - _globalUniforms.src.w) * _globalUniforms.dst.w);
+    var _skTemp0: f32;
+    if (2.0 * _globalUniforms.dst.x) <= _globalUniforms.dst.w {
+      _skTemp0 = (2.0 * _globalUniforms.src.x) * _globalUniforms.dst.x;
+    } else {
+      _skTemp0 = _globalUniforms.src.w * _globalUniforms.dst.w - (2.0 * (_globalUniforms.dst.w - _globalUniforms.dst.x)) * (_globalUniforms.src.w - _globalUniforms.src.x);
+    }
+    var _skTemp1: f32;
+    if (2.0 * _globalUniforms.dst.y) <= _globalUniforms.dst.w {
+      _skTemp1 = (2.0 * _globalUniforms.src.y) * _globalUniforms.dst.y;
+    } else {
+      _skTemp1 = _globalUniforms.src.w * _globalUniforms.dst.w - (2.0 * (_globalUniforms.dst.w - _globalUniforms.dst.y)) * (_globalUniforms.src.w - _globalUniforms.src.y);
+    }
+    var _skTemp2: f32;
+    if (2.0 * _globalUniforms.dst.z) <= _globalUniforms.dst.w {
+      _skTemp2 = (2.0 * _globalUniforms.src.z) * _globalUniforms.dst.z;
+    } else {
+      _skTemp2 = _globalUniforms.src.w * _globalUniforms.dst.w - (2.0 * (_globalUniforms.dst.w - _globalUniforms.dst.z)) * (_globalUniforms.src.w - _globalUniforms.src.z);
+    }
+    var _0_result: vec4<f32> = vec4<f32>(_skTemp0, _skTemp1, _skTemp2, _globalUniforms.src.w + (1.0 - _globalUniforms.src.w) * _globalUniforms.dst.w);
     _0_result = vec4<f32>((_0_result.xyz + (_globalUniforms.dst.xyz * (1.0 - _globalUniforms.src.w) + _globalUniforms.src.xyz * (1.0 - _globalUniforms.dst.w))), _0_result.w);
     (*_stageOut).sk_FragColor = _0_result;
   }

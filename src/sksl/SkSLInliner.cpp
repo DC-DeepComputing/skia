@@ -701,6 +701,7 @@ struct InlineCandidate {
     std::unique_ptr<Statement>* fEnclosingStmt;   // the Statement containing the candidate
     std::unique_ptr<Expression>* fCandidateExpr;  // the candidate FunctionCall to be inlined
     FunctionDefinition* fEnclosingFunction;       // the Function containing the candidate
+    bool fSideEffectsNotAllowed;                  // enclosing scope does not allow side effects
 };
 
 struct InlineCandidateList {
@@ -721,6 +722,11 @@ public:
     std::vector<std::unique_ptr<Statement>*> fEnclosingStmtStack;
     // The function that we're currently processing (i.e. inlining into).
     FunctionDefinition* fEnclosingFunction = nullptr;
+    // Whether or not we're inside a statement/expression that requires inlining to have no
+    // side effects that would run before the expression, such as a ternary's true/false path or
+    // the RHS of a short-circuited expression. We can still inline in those scenarios if the
+    // resulting expression would not leak before the short-circuiting check.
+    bool fSideEffectsNotAllowed = false;
 
     void visit(const std::vector<std::unique_ptr<ProgramElement>>& elements,
                SymbolTable* symbols,
@@ -900,15 +906,15 @@ public:
                 // expressions like these:
                 //    (false && x())   // always false
                 //    (true || y())    // always true
-                // It is illegal for side-effects from x() or y() to occur. The simplest way to
-                // enforce that rule is to avoid inlining the right side entirely. However, it is
-                // safe for other types of binary expression to inline both sides.
+                // It is illegal for side-effects from x() or y() to occur. Flag the RHS as not
+                // allowing side effects for any of its encountered candidates.
                 Operator op = binaryExpr.getOperator();
                 bool shortCircuitable = (op.kind() == Operator::Kind::LOGICALAND ||
                                          op.kind() == Operator::Kind::LOGICALOR);
-                if (!shortCircuitable) {
-                    this->visitExpression(&binaryExpr.right());
-                }
+                bool restoreSideEffects = fSideEffectsNotAllowed;
+                fSideEffectsNotAllowed |= shortCircuitable;
+                this->visitExpression(&binaryExpr.right());
+                fSideEffectsNotAllowed = restoreSideEffects;
                 break;
             }
             case Expression::Kind::kChildCall: {
@@ -966,8 +972,12 @@ public:
                 TernaryExpression& ternaryExpr = (*expr)->as<TernaryExpression>();
                 // The test expression is a candidate for inlining.
                 this->visitExpression(&ternaryExpr.test());
-                // The true- and false-expressions cannot be inlined, because we are only allowed to
-                // evaluate one side.
+                // The true- and false-expressions can only be inlined if they have no side effects.
+                bool restoreSideEffects = fSideEffectsNotAllowed;
+                fSideEffectsNotAllowed = true;
+                this->visitExpression(&ternaryExpr.ifTrue());
+                this->visitExpression(&ternaryExpr.ifFalse());
+                fSideEffectsNotAllowed = restoreSideEffects;
                 break;
             }
             default:
@@ -981,7 +991,8 @@ public:
                                 find_parent_statement(fEnclosingStmtStack),
                                 fEnclosingStmtStack.back(),
                                 candidate,
-                                fEnclosingFunction});
+                                fEnclosingFunction,
+                                fSideEffectsNotAllowed});
     }
 };
 
@@ -1009,14 +1020,27 @@ bool Inliner::candidateCanBeInlined(const InlineCandidate& candidate,
         return false;
     }
 
+    // If side effects aren't allowed, we require the function to be a single return statement.
+    if (candidate.fSideEffectsNotAllowed) {
+        const FunctionDefinition* fnDef = funcDecl.definition();
+        SkASSERT(fnDef);
+        if (Analysis::GetReturnComplexity(*fnDef) > Analysis::ReturnComplexity::kSingleSafeReturn ||
+            fnDef->body()->as<Block>().children().size() != 1) {
+            return false;
+        }
+    }
+
     // Even if the function is safe, the arguments we are passing may not be. In particular, we
     // can't make copies of opaque values, so we need to reject inline candidates that would need to
     // do this. Every call has different arguments, so this part is not cacheable. (skia:13824)
+    //
+    // Similarly, if side effects aren't allowed but an argument would require a scratch variable,
+    // it cannot be inlined.
     const FunctionCall& call = candidate.fCandidateExpr->get()->as<FunctionCall>();
     const ExpressionArray& arguments = call.arguments();
     for (int i = 0; i < arguments.size(); ++i) {
         const Expression* arg = arguments[i].get();
-        if (arg->type().isOpaque()) {
+        if (arg->type().isOpaque() || candidate.fSideEffectsNotAllowed) {
             const Variable* param = funcDecl.parameters()[i];
             if (argument_needs_scratch_variable(arg, param, usage)) {
                 return false;
@@ -1031,8 +1055,16 @@ int Inliner::getFunctionSize(const FunctionDeclaration& funcDecl, FunctionSizeCa
     if (const int* cachedSize = cache->find(&funcDecl)) {
         return *cachedSize;
     }
+
+    // The node count includes a block and a return statement that are irrelevant if we inline.
+    // We also subtract the number of nodes equal to its parameter count, as they will be inlined
+    // directly if possible.
+    int overhead = 2 + funcDecl.parameters().size();
+
+    // The inline threshold is inclusive, so we can stop counting nodes once we've exceeded it.
     int size = Analysis::NodeCountUpToLimit(*funcDecl.definition(),
-                                            this->settings().fInlineThreshold);
+                                            this->settings().fInlineThreshold + 1 + overhead);
+    size -= overhead;
     cache->set(&funcDecl, size);
     return size;
 }
@@ -1074,10 +1106,33 @@ void Inliner::buildCandidateList(const std::vector<std::unique_ptr<ProgramElemen
     // than `inlineThreshold` nodes. (i.e. if Func() would be inlined six times and its size is
     // 10 nodes, it should be inlined if the inlineThreshold is 60 or higher.)
     FunctionSizeCache functionSizeCache;
-    FunctionSizeCache candidateTotalCost;
+    FunctionSizeCache inlineSizeCost;
+
     for (InlineCandidate& candidate : candidates) {
         const FunctionDeclaration& fnDecl = candidate_func(candidate);
-        candidateTotalCost[&fnDecl] += this->getFunctionSize(fnDecl, &functionSizeCache);
+        const FunctionDeclaration& fnParent = candidate.fEnclosingFunction->declaration();
+
+        int inlineIncrease = this->getFunctionSize(fnDecl, &functionSizeCache) + inlineSizeCost[&fnDecl];
+        inlineSizeCost[&fnParent] += inlineIncrease;
+    }
+
+
+    skia_private::THashMap<const FunctionDeclaration*, FunctionSizeCache> candidateTotalCost;
+    bool costPerFunction = fContext->fConfig->fModuleType != ModuleType::program;
+    // FunctionSizeCache candidateTotalCost;
+    for (InlineCandidate& candidate : candidates) {
+        const FunctionDeclaration& fnDecl = candidate_func(candidate);
+        SkDebugf("function size: %s = %d + %d (in %s, %d)\n", std::string(fnDecl.name()).c_str(),
+                this->getFunctionSize(fnDecl, &functionSizeCache),
+                inlineSizeCost[&fnDecl],
+                std::string(candidate.fEnclosingFunction->declaration().name()).c_str(),
+                this->getFunctionSize(candidate.fEnclosingFunction->declaration(), &functionSizeCache));
+        // Accumulate cost based on enclosing function if the module type is not program?
+        // but the problem with that is that if we inline into a parent, and then parent is an inline
+        // candidate into another, we need to update its total cost as well
+        const FunctionDeclaration* parent = costPerFunction ?
+                &candidate.fEnclosingFunction->declaration() : nullptr;
+        candidateTotalCost[parent][&fnDecl] += inlineSizeCost[&fnDecl] + this->getFunctionSize(fnDecl, &functionSizeCache);
     }
 
     candidates.erase(std::remove_if(candidates.begin(), candidates.end(),
@@ -1091,11 +1146,29 @@ void Inliner::buildCandidateList(const std::vector<std::unique_ptr<ProgramElemen
                                 // If a function is only used once, it's cost-free to inline.
                                 return false;
                             }
-                            if (candidateTotalCost[&fnDecl] <= this->settings().fInlineThreshold) {
+
+                            const FunctionDeclaration* parent = costPerFunction ?
+                                    &candidate.fEnclosingFunction->declaration() : nullptr;
+                            if (candidateTotalCost[parent][&fnDecl] <= this->settings().fInlineThreshold) {
                                 // We won't exceed the inline threshold by inlining this.
                                 return false;
                             }
+
+                            if (parent &&
+                                candidateTotalCost[parent][&fnDecl] == inlineSizeCost[parent]) {
+                                // The parent function is fairly trivial, so don't worry about
+                                // increasing its complexity.
+                                return false;
+                            }
+
                             // Inlining this function will add too many IRNodes.
+                            SkDebugf("not inlining %s in %s, cost %d (estimate %d) x %d = %d\n",
+                                    std::string(fnDecl.name()).c_str(),
+                                    parent ? std::string(parent->name()).c_str() : "",
+                                    this->getFunctionSize(fnDecl, &functionSizeCache),
+                                    inlineSizeCost[&fnDecl],
+                                    usage->get(fnDecl),
+                                    candidateTotalCost[parent][&fnDecl]);
                             return true;
                         }),
          candidates.end());
@@ -1126,12 +1199,16 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
     for (const InlineCandidate& candidate : candidateList.fCandidates) {
         const FunctionCall& funcCall = (*candidate.fCandidateExpr)->as<FunctionCall>();
 
+        SkDebugf("trying to inline %s\n", std::string(funcCall.function().name()).c_str());
+
+
         // Convert the function call to its inlined equivalent.
         InlinedCall inlinedCall = this->inlineCall(funcCall, candidate.fSymbols, *usage,
                                                    &candidate.fEnclosingFunction->declaration());
 
         // Stop if an error was detected during the inlining process.
         if (!inlinedCall.fInlinedBody && !inlinedCall.fReplacementExpr) {
+            SkDebugf("error state from %s\n", std::string(funcCall.function().name()).c_str());
             break;
         }
 
@@ -1174,6 +1251,7 @@ bool Inliner::analyze(const std::vector<std::unique_ptr<ProgramElement>>& elemen
 
         // Stop inlining if we've reached our hard cap on new statements.
         if (this->overInlineStatementLimit()) {
+            SkDebugf("over statement limit...\n");
             break;
         }
 

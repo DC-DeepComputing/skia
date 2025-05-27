@@ -44,8 +44,8 @@ const float $kLengthTermPow2 = (($kDegree * $kDegree) * (($kDegree - 1) * ($kDeg
                                ($kPrecision * $kPrecision);
 
 // Returns the length squared of the largest forward difference from Wang's cubic formula.
-$pure float $wangs_formula_max_fdiff_p2(float2 p0, float2 p1, float2 p2, float2 p3,
-                                        float2x2 matrix) {
+$pure inline float $wangs_formula_max_fdiff_p2(float2 p0, float2 p1, float2 p2, float2 p3,
+                                               float2x2 matrix) {
     float2 d0 = matrix * (fma(float2(-2), p1, p2) + p0);
     float2 d1 = matrix * (fma(float2(-2), p2, p3) + p1);
     return max(dot(d0,d0), dot(d1,d1));
@@ -63,7 +63,7 @@ $pure float $wangs_formula_cubic_log2(float2 p0, float2 p1, float2 p2, float2 p3
     return ceil(log2(max($kLengthTermPow2 * m, 1.0)) * .25);
 }
 
-$pure float $wangs_formula_conic_p2(float2 p0, float2 p1, float2 p2, float w) {
+$pure inline float $wangs_formula_conic_p2(float2 p0, float2 p1, float2 p2, float w) {
     // Translate the bounding box center to the origin.
     float2 C = (min(min(p0, p1), p2) + max(max(p0, p1), p2)) * 0.5;
     p0 -= C;
@@ -132,13 +132,13 @@ $pure float $num_radial_segments_per_radian(float approxDevStrokeRadius) {
 // Unlike mix(), this does not return b when t==1. But it otherwise seems to get better
 // precision than "a*(1 - t) + b*t" for things like chopping cubics on exact cusp points.
 // We override this result anyway when t==1 so it shouldn't be a problem.
-$pure float $unchecked_mix(float a, float b, float T) {
+$pure inline float $unchecked_mix(float a, float b, float T) {
     return fma(b - a, T, a);
 }
-$pure float2 $unchecked_mix(float2 a, float2 b, float T) {
+$pure inline float2 $unchecked_mix(float2 a, float2 b, float T) {
     return fma(b - a, float2(T), a);
 }
-$pure float4 $unchecked_mix(float4 a, float4 b, float4 T) {
+$pure inline float4 $unchecked_mix(float4 a, float4 b, float4 T) {
     return fma(b - a, T, a);
 }
 

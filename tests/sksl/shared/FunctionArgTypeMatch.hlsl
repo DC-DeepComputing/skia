@@ -1,7 +1,7 @@
 cbuffer _UniformBuffer : register(b0, space0)
 {
-    float4 _30_colorGreen : packoffset(c0);
-    float4 _30_colorRed : packoffset(c1);
+    float4 _7_colorGreen : packoffset(c0);
+    float4 _7_colorRed : packoffset(c1);
 };
 
 
@@ -12,368 +12,231 @@ struct SPIRV_Cross_Output
     float4 sk_FragColor : SV_Target0;
 };
 
-bool takes_void_b()
+float4 main(float2 _21)
 {
-    return true;
-}
-
-bool takes_float_bf(float _49)
-{
-    return true;
-}
-
-bool takes_float2_bf2(float2 _52)
-{
-    return true;
-}
-
-bool takes_float3_bf3(float3 _57)
-{
-    return true;
-}
-
-bool takes_float4_bf4(float4 _61)
-{
-    return true;
-}
-
-bool takes_float2x2_bf22(float2x2 _66)
-{
-    return true;
-}
-
-bool takes_float3x3_bf33(float3x3 _71)
-{
-    return true;
-}
-
-bool takes_float4x4_bf44(float4x4 _76)
-{
-    return true;
-}
-
-bool takes_half_bh(float _78)
-{
-    return true;
-}
-
-bool takes_half2_bh2(float2 _80)
-{
-    return true;
-}
-
-bool takes_half3_bh3(float3 _82)
-{
-    return true;
-}
-
-bool takes_half4_bh4(float4 _84)
-{
-    return true;
-}
-
-bool takes_half2x2_bh22(float2x2 _86)
-{
-    return true;
-}
-
-bool takes_half3x3_bh33(float3x3 _88)
-{
-    return true;
-}
-
-bool takes_half4x4_bh44(float4x4 _90)
-{
-    return true;
-}
-
-bool takes_bool_bb(bool _94)
-{
-    return true;
-}
-
-bool takes_bool2_bb2(bool2 _99)
-{
-    return true;
-}
-
-bool takes_bool3_bb3(bool3 _104)
-{
-    return true;
-}
-
-bool takes_bool4_bb4(bool4 _109)
-{
-    return true;
-}
-
-bool takes_int_bi(int _114)
-{
-    return true;
-}
-
-bool takes_int2_bi2(int2 _119)
-{
-    return true;
-}
-
-bool takes_int3_bi3(int3 _124)
-{
-    return true;
-}
-
-bool takes_int4_bi4(int4 _129)
-{
-    return true;
-}
-
-float4 main(float2 _132)
-{
-    bool _138 = false;
+    bool _28 = false;
     if (true)
     {
-        _138 = takes_void_b();
+        _28 = true;
     }
     else
     {
-        _138 = false;
+        _28 = false;
     }
-    bool _144 = false;
-    if (_138)
+    bool _31 = false;
+    if (_28)
     {
-        float _142 = 1.0f;
-        _144 = takes_float_bf(_142);
+        _31 = true;
     }
     else
     {
-        _144 = false;
+        _31 = false;
     }
-    bool _151 = false;
-    if (_144)
+    bool _34 = false;
+    if (_31)
     {
-        float2 _149 = 2.0f.xx;
-        _151 = takes_float2_bf2(_149);
+        _34 = true;
     }
     else
     {
-        _151 = false;
+        _34 = false;
     }
-    bool _158 = false;
-    if (_151)
+    bool _37 = false;
+    if (_34)
     {
-        float3 _156 = 3.0f.xxx;
-        _158 = takes_float3_bf3(_156);
+        _37 = true;
     }
     else
     {
-        _158 = false;
+        _37 = false;
     }
-    bool _165 = false;
-    if (_158)
+    bool _40 = false;
+    if (_37)
     {
-        float4 _163 = 4.0f.xxxx;
-        _165 = takes_float4_bf4(_163);
+        _40 = true;
     }
     else
     {
-        _165 = false;
+        _40 = false;
     }
-    bool _173 = false;
-    if (_165)
+    bool _43 = false;
+    if (_40)
     {
-        float2x2 _171 = float2x2(float2(2.0f, 0.0f), float2(0.0f, 2.0f));
-        _173 = takes_float2x2_bf22(_171);
+        _43 = true;
     }
     else
     {
-        _173 = false;
+        _43 = false;
     }
-    bool _182 = false;
-    if (_173)
+    bool _46 = false;
+    if (_43)
     {
-        float3x3 _180 = float3x3(float3(3.0f, 0.0f, 0.0f), float3(0.0f, 3.0f, 0.0f), float3(0.0f, 0.0f, 3.0f));
-        _182 = takes_float3x3_bf33(_180);
+        _46 = true;
     }
     else
     {
-        _182 = false;
+        _46 = false;
     }
-    bool _192 = false;
-    if (_182)
+    bool _49 = false;
+    if (_46)
     {
-        float4x4 _190 = float4x4(float4(4.0f, 0.0f, 0.0f, 0.0f), float4(0.0f, 4.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 4.0f, 0.0f), float4(0.0f, 0.0f, 0.0f, 4.0f));
-        _192 = takes_float4x4_bf44(_190);
+        _49 = true;
     }
     else
     {
-        _192 = false;
+        _49 = false;
     }
-    bool _197 = false;
-    if (_192)
+    bool _52 = false;
+    if (_49)
     {
-        float _195 = 1.0f;
-        _197 = takes_half_bh(_195);
+        _52 = true;
     }
     else
     {
-        _197 = false;
+        _52 = false;
     }
-    bool _202 = false;
-    if (_197)
+    bool _55 = false;
+    if (_52)
     {
-        float2 _200 = 2.0f.xx;
-        _202 = takes_half2_bh2(_200);
+        _55 = true;
     }
     else
     {
-        _202 = false;
+        _55 = false;
     }
-    bool _207 = false;
-    if (_202)
+    bool _58 = false;
+    if (_55)
     {
-        float3 _205 = 3.0f.xxx;
-        _207 = takes_half3_bh3(_205);
+        _58 = true;
     }
     else
     {
-        _207 = false;
+        _58 = false;
     }
-    bool _212 = false;
-    if (_207)
+    bool _61 = false;
+    if (_58)
     {
-        float4 _210 = 4.0f.xxxx;
-        _212 = takes_half4_bh4(_210);
+        _61 = true;
     }
     else
     {
-        _212 = false;
+        _61 = false;
     }
-    bool _217 = false;
-    if (_212)
+    bool _64 = false;
+    if (_61)
     {
-        float2x2 _215 = float2x2(float2(2.0f, 0.0f), float2(0.0f, 2.0f));
-        _217 = takes_half2x2_bh22(_215);
+        _64 = true;
     }
     else
     {
-        _217 = false;
+        _64 = false;
     }
-    bool _222 = false;
-    if (_217)
+    bool _67 = false;
+    if (_64)
     {
-        float3x3 _220 = float3x3(float3(3.0f, 0.0f, 0.0f), float3(0.0f, 3.0f, 0.0f), float3(0.0f, 0.0f, 3.0f));
-        _222 = takes_half3x3_bh33(_220);
+        _67 = true;
     }
     else
     {
-        _222 = false;
+        _67 = false;
     }
-    bool _227 = false;
-    if (_222)
+    bool _70 = false;
+    if (_67)
     {
-        float4x4 _225 = float4x4(float4(4.0f, 0.0f, 0.0f, 0.0f), float4(0.0f, 4.0f, 0.0f, 0.0f), float4(0.0f, 0.0f, 4.0f, 0.0f), float4(0.0f, 0.0f, 0.0f, 4.0f));
-        _227 = takes_half4x4_bh44(_225);
+        _70 = true;
     }
     else
     {
-        _227 = false;
+        _70 = false;
     }
-    bool _232 = false;
-    if (_227)
+    bool _73 = false;
+    if (_70)
     {
-        bool _230 = true;
-        _232 = takes_bool_bb(_230);
+        _73 = true;
     }
     else
     {
-        _232 = false;
+        _73 = false;
     }
-    bool _238 = false;
-    if (_232)
+    bool _76 = false;
+    if (_73)
     {
-        bool2 _236 = bool2(true, true);
-        _238 = takes_bool2_bb2(_236);
+        _76 = true;
     }
     else
     {
-        _238 = false;
+        _76 = false;
     }
-    bool _244 = false;
-    if (_238)
+    bool _79 = false;
+    if (_76)
     {
-        bool3 _242 = bool3(true, true, true);
-        _244 = takes_bool3_bb3(_242);
+        _79 = true;
     }
     else
     {
-        _244 = false;
+        _79 = false;
     }
-    bool _250 = false;
-    if (_244)
+    bool _82 = false;
+    if (_79)
     {
-        bool4 _248 = bool4(true, true, true, true);
-        _250 = takes_bool4_bb4(_248);
+        _82 = true;
     }
     else
     {
-        _250 = false;
+        _82 = false;
     }
-    bool _256 = false;
-    if (_250)
+    bool _85 = false;
+    if (_82)
     {
-        int _254 = 1;
-        _256 = takes_int_bi(_254);
+        _85 = true;
     }
     else
     {
-        _256 = false;
+        _85 = false;
     }
-    bool _263 = false;
-    if (_256)
+    bool _88 = false;
+    if (_85)
     {
-        int2 _261 = int2(2, 2);
-        _263 = takes_int2_bi2(_261);
+        _88 = true;
     }
     else
     {
-        _263 = false;
+        _88 = false;
     }
-    bool _270 = false;
-    if (_263)
+    bool _91 = false;
+    if (_88)
     {
-        int3 _268 = int3(3, 3, 3);
-        _270 = takes_int3_bi3(_268);
+        _91 = true;
     }
     else
     {
-        _270 = false;
+        _91 = false;
     }
-    bool _277 = false;
-    if (_270)
+    bool _94 = false;
+    if (_91)
     {
-        int4 _275 = int4(4, 4, 4, 4);
-        _277 = takes_int4_bi4(_275);
+        _94 = true;
     }
     else
     {
-        _277 = false;
+        _94 = false;
     }
-    float4 _278 = 0.0f.xxxx;
-    if (_277)
+    float4 _95 = 0.0f.xxxx;
+    if (_94)
     {
-        _278 = _30_colorGreen;
+        _95 = _7_colorGreen;
     }
     else
     {
-        _278 = _30_colorRed;
+        _95 = _7_colorRed;
     }
-    return _278;
+    return _95;
 }
 
 void frag_main()
 {
-    float2 _40 = 0.0f.xx;
-    sk_FragColor = main(_40);
+    float2 _17 = 0.0f.xx;
+    sk_FragColor = main(_17);
 }
 
 SPIRV_Cross_Output main()

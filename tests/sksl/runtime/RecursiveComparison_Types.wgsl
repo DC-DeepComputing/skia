@@ -67,17 +67,6 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
     let F47: f32 = f32(_globalUniforms.colorGreen.y * 47.0);
     const EQ: bool = true;
     const NE: bool = false;
-    let _0_one: f32 = f32(_globalUniforms.colorGreen.x + 1.0);
-    var _1_a: array<S, 2>;
-    _1_a[0].f1 = F42;
-    _1_a[0].v2 = vec2<f32>(ZM, ZP);
-    _1_a[1].f1 = F43;
-    _1_a[1].v2 = vec2<f32>(F44, F45);
-    var _2_b: array<S, 2>;
-    _2_b[0].f1 = F42 * _0_one;
-    _2_b[0].v2 = vec2<f32>(ZM * _0_one, ZP * _0_one);
-    _2_b[1].f1 = F43 * _0_one;
-    _2_b[1].v2 = vec2<f32>(F44 * _0_one, F45 * _0_one);
     var _skTemp2: vec4<f32>;
     var _skTemp3: bool;
     var _skTemp4: bool;
@@ -86,12 +75,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
     var _skTemp7: bool;
     var _skTemp8: bool;
     var _skTemp9: bool;
-    var _skTemp10: bool;
-    if EQ {
-      _skTemp10 = (((_1_a[0].f1 == _2_b[0].f1) && all(_1_a[0].v2 == _2_b[0].v2)) && ((_1_a[1].f1 == _2_b[1].f1) && all(_1_a[1].v2 == _2_b[1].v2)));
-    } else {
-      _skTemp10 = (((_1_a[0].f1 != _2_b[0].f1) || any(_1_a[0].v2 != _2_b[0].v2)) || ((_1_a[1].f1 != _2_b[1].f1) || any(_1_a[1].v2 != _2_b[1].v2)));
-    }
+    let _skTemp10 = test_same_types_bbffffff(EQ, F42, ZM, ZP, F43, F44, F45);
     if _skTemp10 {
       let _skTemp11 = test_same_types_bbffffff(NE, F42, ZM, ZP, F43, F44, F45);
       _skTemp9 = !_skTemp11;

@@ -39,7 +39,7 @@ static constexpr int kDefaultInlineThreshold = 50;
 
 // A hard upper limit on the number of variable slots allowed in a function/global scope.
 // This is an arbitrary limit, but is needed to prevent code generation from taking unbounded
-// amounts of time or space.
+// amounts of time or space. This applies only to programs, not modules.
 static constexpr int kVariableSlotLimit = 100000;
 
 }  // namespace SkSL

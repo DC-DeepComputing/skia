@@ -29,6 +29,7 @@ def executeWorklist(input, worklist):
     try:
         output = subprocess.check_output([
             skslc, worklist.name], stderr=subprocess.STDOUT).decode('utf-8', errors='ignore')
+        print(output)
     except subprocess.CalledProcessError as err:
         if err.returncode != 1:
             print("### " + input + " skslc error:\n")

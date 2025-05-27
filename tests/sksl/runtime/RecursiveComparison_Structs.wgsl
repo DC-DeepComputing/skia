@@ -61,15 +61,6 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
     let F44: f32 = f32(_globalUniforms.colorGreen.y * 44.0);
     const EQ: bool = true;
     const NE: bool = false;
-    let _0_one: f32 = f32(_globalUniforms.colorGreen.x + 1.0);
-    var _1_a: S;
-    _1_a.f1 = F42;
-    _1_a.f2 = ZM;
-    _1_a.f3 = ZP;
-    var _2_b: S;
-    _2_b.f1 = F42 * _0_one;
-    _2_b.f2 = ZM * _0_one;
-    _2_b.f3 = ZP * _0_one;
     var _skTemp2: vec4<f32>;
     var _skTemp3: bool;
     var _skTemp4: bool;
@@ -78,12 +69,7 @@ fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
     var _skTemp7: bool;
     var _skTemp8: bool;
     var _skTemp9: bool;
-    var _skTemp10: bool;
-    if EQ {
-      _skTemp10 = ((_1_a.f1 == _2_b.f1) && (_1_a.f2 == _2_b.f2) && (_1_a.f3 == _2_b.f3));
-    } else {
-      _skTemp10 = ((_1_a.f1 != _2_b.f1) || (_1_a.f2 != _2_b.f2) || (_1_a.f3 != _2_b.f3));
-    }
+    let _skTemp10 = test_same_structs_bbfff(EQ, F42, ZM, ZP);
     if _skTemp10 {
       let _skTemp11 = test_same_structs_bbfff(NE, F42, ZM, ZP);
       _skTemp9 = !_skTemp11;

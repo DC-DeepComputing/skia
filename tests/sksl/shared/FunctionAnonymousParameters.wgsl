@@ -11,27 +11,9 @@ struct _GlobalUniforms {
 struct S {
   i: i32,
 };
-fn fnGreen_h4bf2(b: bool, _skParam1: vec2<f32>) -> vec4<f32> {
-  {
-    return _globalUniforms.colorGreen;
-  }
-}
-fn fnRed_h4ifS(_skParam0: i32, f: f32, _skParam2: S) -> vec4<f32> {
-  {
-    return _globalUniforms.colorRed;
-  }
-}
 fn _skslMain(coords: vec2<f32>) -> vec4<f32> {
   {
-    var _skTemp0: vec4<f32>;
-    if bool(_globalUniforms.colorGreen.y) {
-      let _skTemp1 = fnGreen_h4bf2(true, coords);
-      _skTemp0 = _skTemp1;
-    } else {
-      let _skTemp2 = fnRed_h4ifS(123, 3.14, S(0));
-      _skTemp0 = _skTemp2;
-    }
-    return _skTemp0;
+    return select(_globalUniforms.colorRed, _globalUniforms.colorGreen, vec4<bool>(bool(_globalUniforms.colorGreen.y)));
   }
 }
 @fragment fn main() -> FSOut {

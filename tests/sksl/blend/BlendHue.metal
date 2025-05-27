@@ -15,38 +15,30 @@ struct Inputs {
 struct Outputs {
     half4 sk_FragColor [[color(0)]];
 };
-half blend_color_saturation_Qhh3(half3 color);
-half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst);
-half blend_color_saturation_Qhh3(half3 color) {
-    return max(max(color.x, color.y), color.z) - min(min(color.x, color.y), color.z);
-}
-half4 blend_hslc_h4h2h4h4(half2 flipSat, half4 src, half4 dst) {
-    half alpha = dst.w * src.w;
-    half3 sda = src.xyz * dst.w;
-    half3 dsa = dst.xyz * src.w;
-    half3 l = bool(flipSat.x) ? dsa : sda;
-    half3 r = bool(flipSat.x) ? sda : dsa;
-    if (bool(flipSat.y)) {
-        half _2_mn = min(min(l.x, l.y), l.z);
-        half _3_mx = max(max(l.x, l.y), l.z);
-        l = _3_mx > _2_mn ? ((l - _2_mn) * blend_color_saturation_Qhh3(r)) / (_3_mx - _2_mn) : half3(0.0h);
-        r = dsa;
-    }
-    half _4_lum = dot(half3(0.3h, 0.59h, 0.11h), r);
-    half3 _5_result = (_4_lum - dot(half3(0.3h, 0.59h, 0.11h), l)) + l;
-    half _6_minComp = min(min(_5_result.x, _5_result.y), _5_result.z);
-    half _7_maxComp = max(max(_5_result.x, _5_result.y), _5_result.z);
-    if (_6_minComp < 0.0h && _4_lum != _6_minComp) {
-        _5_result = _4_lum + (_5_result - _4_lum) * (_4_lum / (((_4_lum - _6_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
-    }
-    if (_7_maxComp > alpha && _7_maxComp != _4_lum) {
-        _5_result = _4_lum + ((_5_result - _4_lum) * (alpha - _4_lum)) / (((_7_maxComp - _4_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
-    }
-    return half4((((_5_result + dst.xyz) - dsa) + src.xyz) - sda, (src.w + dst.w) - alpha);
-}
 fragment Outputs fragmentMain(Inputs _in [[stage_in]], constant Uniforms& _uniforms [[buffer(0)]], bool _frontFacing [[front_facing]], float4 _fragCoord [[position]]) {
     Outputs _out;
     (void)_out;
-    _out.sk_FragColor = blend_hslc_h4h2h4h4(half2(0.0h, 1.0h), _uniforms.src, _uniforms.dst);
+    half _0_alpha = _uniforms.dst.w * _uniforms.src.w;
+    half3 _1_sda = _uniforms.src.xyz * _uniforms.dst.w;
+    half3 _2_dsa = _uniforms.dst.xyz * _uniforms.src.w;
+    half3 _3_l = _1_sda;
+    half3 _4_r = _2_dsa;
+    {
+        half _5_mn = min(min(_3_l.x, _3_l.y), _3_l.z);
+        half _6_mx = max(max(_3_l.x, _3_l.y), _3_l.z);
+        _3_l = _6_mx > _5_mn ? ((_3_l - _5_mn) * (max(max(_4_r.x, _4_r.y), _4_r.z) - min(min(_4_r.x, _4_r.y), _4_r.z))) / (_6_mx - _5_mn) : half3(0.0h);
+        _4_r = _2_dsa;
+    }
+    half _7_lum = dot(half3(0.3h, 0.59h, 0.11h), _4_r);
+    half3 _8_result = (_7_lum - dot(half3(0.3h, 0.59h, 0.11h), _3_l)) + _3_l;
+    half _9_minComp = min(min(_8_result.x, _8_result.y), _8_result.z);
+    half _10_maxComp = max(max(_8_result.x, _8_result.y), _8_result.z);
+    if (_9_minComp < 0.0h && _7_lum != _9_minComp) {
+        _8_result = _7_lum + (_8_result - _7_lum) * (_7_lum / (((_7_lum - _9_minComp) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon));
+    }
+    if (_10_maxComp > _0_alpha && _10_maxComp != _7_lum) {
+        _8_result = _7_lum + ((_8_result - _7_lum) * (_0_alpha - _7_lum)) / (((_10_maxComp - _7_lum) + sk_PrivkMinNormalHalf) + sk_PrivkGuardedDivideEpsilon);
+    }
+    _out.sk_FragColor = half4((((_8_result + _uniforms.dst.xyz) - _2_dsa) + _uniforms.src.xyz) - _1_sda, (_uniforms.src.w + _uniforms.dst.w) - _0_alpha);
     return _out;
 }

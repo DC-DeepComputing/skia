@@ -255,11 +255,11 @@ $pure $es3 $genHType fwidth($genHType p);
 // SkSL utility functions
 
 // The max() guards against division by zero when the incoming color is transparent black
-$pure half4  unpremul(half4  color) { return half4 (color.rgb / max(color.a, 0.0001), color.a); }
-$pure float4 unpremul(float4 color) { return float4(color.rgb / max(color.a, 0.0001), color.a); }
+$pure inline half4  unpremul(half4  color) { return half4 (color.rgb / max(color.a, 0.0001), color.a); }
+$pure inline float4 unpremul(float4 color) { return float4(color.rgb / max(color.a, 0.0001), color.a); }
 
 // Similar, but used for polar-space CSS colors
-$export $pure half4 $unpremul_polar(half4 color) {
+$export $pure inline half4 $unpremul_polar(half4 color) {
     return half4(color.r, color.gb / max(color.a, 0.0001), color.a);
 }
 
@@ -320,7 +320,7 @@ $export $pure half3 $hsl_to_rgb(half3 hsl) {
     return (q - 0.5) * C + hsl.z;
 }
 
-$export $pure half4 $hsl_to_rgb(half3 hsl, half a) {
+$export $pure inline half4 $hsl_to_rgb(half3 hsl, half a) {
     return saturate(half4($hsl_to_rgb(hsl) * a, a));
 }
 
@@ -352,7 +352,7 @@ $export $pure half3 $css_lab_to_xyz(half3 lab) {
 // Skia stores all polar colors with hue in the first component, so this "LCH -> Lab" transform
 // actually takes "HCL". This is also used to do the same polar transform for OkHCL to OkLAB.
 // See similar comments & logic in SkGradientShaderBase.cpp.
-$pure half3 $css_hcl_to_lab(half3 hcl) {
+$pure inline half3 $css_hcl_to_lab(half3 hcl) {
     return half3(
         hcl[2],
         hcl[1] * cos(radians(hcl[0])),

@@ -110,7 +110,7 @@ $pure half4 blend_modulate(half4 src, half4 dst) { return src*dst; }
 
 $pure half4 blend_screen(half4 src, half4 dst) { return src + (1 - src)*dst; }
 
-$pure half $blend_overlay_component(half2 s, half2 d) {
+$pure inline half $blend_overlay_component(half2 s, half2 d) {
     return (2*d.x <= d.y) ? 2*s.x*d.x
                           : s.y*d.y - 2*(d.y - d.x)*(s.y - s.x);
 }
@@ -165,7 +165,7 @@ $pure inline half3 $guarded_divide(half3 n, half d) {
     return n / (d + $kGuardedDivideEpsilon);
 }
 
-$pure half $color_dodge_component(half2 s, half2 d) {
+$pure inline half $color_dodge_component(half2 s, half2 d) {
     // The following is a single flow of control implementation of:
     //     if (d.x == 0) {
     //         return s.x*(1 - d.y);
@@ -196,7 +196,7 @@ $pure half4 blend_color_dodge(half4 src, half4 dst) {
                  src.a + (1 - src.a)*dst.a);
 }
 
-$pure half $color_burn_component(half2 s, half2 d) {
+$pure inline half $color_burn_component(half2 s, half2 d) {
     // The following is a single flow of control implementation of:
     //     if (d.y == d.x) {
     //         return s.y*d.y + s.x*(1 - d.y) + d.x*(1 - s.y);
@@ -331,23 +331,23 @@ $pure half4 blend_luminosity(half4 src, half4 dst) {
     return blend_hslc(half2(1, 0), src, dst);
 }
 
-$pure float2 proj(float3 p) { return p.xy / p.z; }
+$pure inline float2 proj(float3 p) { return p.xy / p.z; }
 
 // Implement cross() as a determinant to communicate our intent more clearly to the compiler.
 // NOTE: Due to precision issues, it might be the case that cross(a, a) != 0.
-$pure float cross_length_2d(float2 a, float2 b) {
+$pure inline float cross_length_2d(float2 a, float2 b) {
     return determinant(float2x2(a, b));
 }
 
-$pure half cross_length_2d(half2 a, half2 b) {
+$pure inline half cross_length_2d(half2 a, half2 b) {
     return determinant(half2x2(a, b));
 }
 
-$pure float2 perp(float2 v) {
+$pure inline float2 perp(float2 v) {
     return float2(-v.y, v.x);
 }
 
-$pure half2 perp(half2 v) {
+$pure inline half2 perp(half2 v) {
     return half2(-v.y, v.x);
 }
 
@@ -355,6 +355,6 @@ $pure half2 perp(half2 v) {
 // a per-pixel coverage value, automatically widening the visible coverage ramp for subpixel
 // dimensions. The 'scale' must already be equal to the narrowest dimension of the shape and clamped
 // to [0, 1.0].
-$pure float coverage_bias(float scale) {
+$pure inline float coverage_bias(float scale) {
     return 1.0 - 0.5 * scale;
 }
