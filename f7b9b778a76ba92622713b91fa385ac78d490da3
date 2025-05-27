@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc8a54fe_c8caa87f",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T15:47:36Z",
+      "side": 1,
+      "message": "nit: align the `\"be...` with the `\"VK_KHR....`",
+      "range": {
+        "startLine": 322,
+        "startChar": 21,
+        "endLine": 323,
+        "endChar": 25
+      },
+      "revId": "f7b9b778a76ba92622713b91fa385ac78d490da3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
