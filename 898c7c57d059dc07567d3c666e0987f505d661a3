@@ -34,6 +34,24 @@
       "parentUuid": "c56a0d09_6e218e8c",
       "revId": "898c7c57d059dc07567d3c666e0987f505d661a3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38e6d06b_052f5d8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-27T13:43:21Z",
+      "side": 1,
+      "message": "Ah you\u0027re right, thanks for clarifying, I got my scope goofed up.  Can you add a a test SkSL file to `resources/errors/InterfaceBlockMixedCommasAndSemicolons.sksl` and add it in the right position in the \"sksl_error_tests\" list of `resources/sksl/BUILD.bazel` and either manually in `sksl_tests.gni`.\n\nYou can confirm that it \"passes\" before your change and correctly generates a parsing compiler error message with your change. These are generated if `skia_compile_sksl_tests\u003dtrue` in your GN args. The output will be generated and committed in `tests/sksl/errors/InterfaceBlockMixedCommasAndSemicolons.glsl`",
+      "parentUuid": "9f80ea77_791076c7",
+      "revId": "898c7c57d059dc07567d3c666e0987f505d661a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
