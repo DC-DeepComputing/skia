@@ -86,6 +86,24 @@
       "parentUuid": "27fc0ec7_b0abbdf1",
       "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf3d682b_f7053c49",
+        "filename": "src/ports/SkFontMgr_fontconfig_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-27T20:47:34Z",
+      "side": 1,
+      "message": "But there isn\u0027t a legacy constructor for both FreeType and Fontations, just the FreeType one (for back compat). This file is introducing a Fontations one, which doesn\u0027t seem to be wanted (instead the user should create the proper scanner and pass it in, as they would have done before).",
+      "parentUuid": "facbba06_9728b8ad",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
