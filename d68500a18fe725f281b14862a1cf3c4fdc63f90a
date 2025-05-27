@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3c6262_2d739cc3",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 4648,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-27T14:57:38Z",
+      "side": 1,
+      "message": "This was getting a bit muddy, so I just declared an I32 and U32 vector specialization explicitly to make the `if constexpr` not necessary any more (and hopefully make this all easier to read).",
+      "range": {
+        "startLine": 4648,
+        "startChar": 8,
+        "endLine": 4648,
+        "endChar": 14
+      },
+      "revId": "d68500a18fe725f281b14862a1cf3c4fdc63f90a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
