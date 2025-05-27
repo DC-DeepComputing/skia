@@ -104,6 +104,24 @@
       "parentUuid": "facbba06_9728b8ad",
       "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b4290a_7f7b369b",
+        "filename": "src/ports/SkFontMgr_fontconfig_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-27T21:00:46Z",
+      "side": 1,
+      "message": "Ah, I see. Removed.",
+      "parentUuid": "bf3d682b_f7053c49",
+      "revId": "1dd5650ae1a22eb273c93086afc522145850e26e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
