@@ -16,6 +16,24 @@
       "message": "Looks like the commit message might be out of date?",
       "revId": "e21d9e139e5870567db4a452c4840d3b2895b7b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0745323_cc1959a4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-05-27T20:56:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "434650e4_b128d207",
+      "revId": "e21d9e139e5870567db4a452c4840d3b2895b7b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
