@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a17ab4d0_baef4715",
+        "filename": "src/gpu/ganesh/vk/GrVkUtil.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T14:49:49Z",
+      "side": 1,
+      "message": "nit: capitalize (`Uncomment`)",
+      "range": {
+        "startLine": 26,
+        "startChar": 3,
+        "endLine": 26,
+        "endChar": 12
+      },
+      "revId": "2f6977ab7427ead3749cf340de67d183f2796a23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39d8d135_1d75046f",
+        "filename": "src/gpu/ganesh/vk/GrVkUtil.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-27T14:49:49Z",
+      "side": 1,
+      "message": "nit: while in this file, capitalize to `Makes`",
+      "range": {
+        "startLine": 29,
+        "startChar": 3,
+        "endLine": 29,
+        "endChar": 8
+      },
+      "revId": "2f6977ab7427ead3749cf340de67d183f2796a23",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
