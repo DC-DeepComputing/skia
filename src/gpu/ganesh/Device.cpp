@@ -456,6 +456,42 @@ void Device::drawPoints(SkCanvas::PointMode mode,
         return;
     }
 
+    // If there is an image filter or mask filter these bounds were already checked in
+    // the canvas.
+    if (!paint.getImageFilter() && !paint.getMaskFilter()) {
+        SkRect bounds;
+        // Compute bounds from points (common for drawing a single line)
+        if (count == 2) {
+            bounds.set(pts[0], pts[1]);
+        } else {
+          bounds.setBounds(pts, SkToInt(count));
+        }
+
+        if (!bounds.isFinite() || paint.nothingToDraw()) {
+            return;
+        }
+        if (paint.canComputeFastBounds()) {
+            const SkRect fastBounds = paint.computeFastBounds(bounds, &bounds);
+            SkM44 localToGlobal = SkM44(this->deviceToGlobal(), this->localToDevice44());
+            SkRect devRect = SkMatrixPriv::MapRect(localToGlobal, fastBounds);
+
+            SkRect quickRejectBounds;
+            if (this->isClipEmpty()) {
+                quickRejectBounds = SkRect::MakeEmpty();
+            } else {
+                quickRejectBounds =
+                    SkMatrixPriv::MapRect(this->deviceToGlobal(), SkRect::Make(this->devClipBounds()));
+                // Expand bounds out by 1 in case we are anti-aliasing.  We store the
+                // bounds as floats to enable a faster quick reject implementation.
+                quickRejectBounds.outset(1.f, 1.f);
+            }
+
+            if (!devRect.isFinite() || !devRect.intersects(quickRejectBounds)) {
+                return;
+            }
+        }
+    }
+
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
 
     if (count == 2 && mode == SkCanvas::kLines_PointMode) {
