@@ -22,6 +22,30 @@
       },
       "revId": "d2850a3e2157216debe5970ed8ed402f10b744dd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c34b0a42_a3fdc425",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T15:37:07Z",
+      "side": 1,
+      "message": "No. Quite contrary in fact, pipeline bind doesn\u0027t force the driver to diff the state only to realize it hasn\u0027t changed.",
+      "parentUuid": "f7454eae_9e16a8d6",
+      "range": {
+        "startLine": 661,
+        "startChar": 0,
+        "endLine": 661,
+        "endChar": 78
+      },
+      "revId": "d2850a3e2157216debe5970ed8ed402f10b744dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
