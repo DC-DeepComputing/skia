@@ -46,6 +46,30 @@
       },
       "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b3060e0_adc863f9",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:41:38Z",
+      "side": 1,
+      "message": "That is just an incompatibility with the presubmit validation script and uploading from windows (it\u0027s assuming `/` for path separators and ignores BUILD.bazel file paths that begin with \"resources/`\" whereas on your machine, the path is being reported with `\\`).\n\nYou can bypass this by just doing `git cl upload --bypass-hooks` and everything should be okay.",
+      "parentUuid": "a7422141_f24a63a4",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
