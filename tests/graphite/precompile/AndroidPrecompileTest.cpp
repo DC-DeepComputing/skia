@@ -15,6 +15,10 @@
 #include "src/sksl/SkSLUtil.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
+#include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
+
 #include <set>
 
 using namespace skgpu::graphite;
@@ -117,8 +121,89 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 31 */ { KawaseBlurLowSrcSrcOver(),          DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
 // 100% (1/1) handles 54
 /* 32 */ { KawaseBlurHighSrc(),                DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
-// 100% (1/1) handler 52
+// 100% (1/1) handles 52
 /* 33 */ { BlurFilterMix(),                    DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
+
+// These two are solid colors drawn w/ a LinearEffect
+
+// 100% (1/1) handles 4
+/* 34 */ { LinearEffect("UNKNOWN__SRGB__false__UNKNOWN",
+                        ChildType::kSolidColor,
+                        SkBlendMode::kSrcOver),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA16F_1_D_SRGB },
+// 100% (1/1) handles 57
+/* 35 */ { LinearEffect("BT2020_ITU_PQ__BT2020__false__UNKNOWN",
+                        ChildType::kSolidColor,
+                        SkBlendMode::kSrc),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA_1_D_SRGB },
+
+// 100% (1/1) handles 2
+/* 36 */ { LinearEffect("UNKNOWN__SRGB__false__UNKNOWN",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA16F_1_D_SRGB },
+
+// These next two only differ by dst surface
+
+// 100% (1/1) handles 27
+/* 37 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1_D_SRGB },
+// 50% (1/2) handles 67 - due to the w/o msaa load variants not being used
+/* 38 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_4_DS_SRGB },
+
+// These next two are the same as the above two but w/ transparent paints
+
+// 100% (1/1) handles 11
+/* 39 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver,
+                        /* paintColorIsOpaque= */ false),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1_D_SRGB },
+// 50% (1/2) handlers 65 - due to the w/o msaa load variants not being used
+/* 40 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver,
+                        /* paintColorIsOpaque= */ false),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_4_DS_SRGB },
+
+// The next 3 have a RE_LinearEffect and a MatrixFilter along w/ different ancillary additions
+// 100% (1/1) handles 20
+/* 41 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver,
+                        /* paintColorIsOpaque= */ true,
+                        /* matrixColorFilter= */ true),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1_D_SRGB },
+// 100% (1/1) handles 13
+/* 42 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver,
+                        /* paintColorIsOpaque= */ false,
+                        /* matrixColorFilter= */ true),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1_D_SRGB },
+// 100% (1/1) handles 18
+/* 43 */ { LinearEffect("0x188a0000__DISPLAY_P3__false__0x90a0000",
+                        ChildType::kHWTexture,
+                        SkBlendMode::kSrcOver,
+                        /* paintColorIsOpaque= */ true,
+                        /* matrixColorFilter= */ true,
+                        /* dither= */ true),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1_D_SRGB },
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 100% (2/2) handles 26 50
@@ -150,13 +235,13 @@ static const PipelineLabel kCases[] = {
 /*   1 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+/*   2 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
 /*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ RE_MouriMap_TonemapEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kEwAAPcAAAAAAAAA) ] ColorSpaceTransform ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransform ColorSpaceTransform ] ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
-/*   X */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+/*   4 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ SolidColor ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
 /*   5 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
@@ -177,13 +262,13 @@ static const PipelineLabel kCases[] = {
 /*  10 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  11 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
 /*  12 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] MatrixColorFilter ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  13 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ BlendCompose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] AlphaOnlyPaintColor SrcIn ] MatrixColorFilter ] SrcOver" },
 /*  14 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -198,13 +283,13 @@ static const PipelineLabel kCases[] = {
 /*  17 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ Compose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] MatrixColorFilter ] Dither ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  18 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ Compose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] MatrixColorFilter ] Dither ] SrcOver" },
 /*  19 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] MatrixColorFilter ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  20 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "Compose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] MatrixColorFilter ] SrcOver" },
 /*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -225,7 +310,7 @@ static const PipelineLabel kCases[] = {
 /*  26 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  27 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
 /*  28 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -315,7 +400,7 @@ static const PipelineLabel kCases[] = {
 /*  56 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_KawaseBlurDualFilter_LowSampleBlurEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] Passthrough ] ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*  57 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_BT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader [ SolidColor ColorSpaceTransform ColorSpaceTransform ] Src" },
 /*  58 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -339,13 +424,13 @@ static const PipelineLabel kCases[] = {
 /*  64 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  65 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
 /*  66 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "AnalyticRRectRenderStep + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver" },
-/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  67 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "AnalyticRRectRenderStep + "
                 "RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
 /*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
@@ -419,6 +504,7 @@ bool skip(const char* str) {
     if (strstr(str, "RE_GainmapEffect")) {
         return true;
     }
+#if 0
     if (strstr(str, "RE_LinearEffect_BT2020_ITU_PQ__BT2020__false__UNKNOWN__Shader")) {
         return true;
     }
@@ -428,6 +514,7 @@ bool skip(const char* str) {
     if (strstr(str, "RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader")) {
         return true;
     }
+#endif
     return false;
 }
 
@@ -487,9 +574,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+//    static const size_t kChosenCase = 36; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
-        if (kChosenCase != -1 && kChosenCase != i) {
+//        if (kChosenCase != -1 && kChosenCase != i) {
+        if (i < 34 || i > 43) {
             continue;
         }
 
