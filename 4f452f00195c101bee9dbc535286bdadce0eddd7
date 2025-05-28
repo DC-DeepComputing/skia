@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68ebf5b4_90e76f2e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:54:20Z",
+      "side": 1,
+      "message": "General comment:\nI agree this is a valuable + promising extension, though I wanted to note that it is only supported for Pixels 4a and 9 Pro XL. I found this interesting. So I\u0027m not sure how much usage or utility we will actually get from this given the low device coverage.\n\nThat being said, if we want to make sure this works as intended, perhaps it would be beneficial to have a GM or unit test that captures this so we can run that on supported devices? Even if we don\u0027t have a Pixel 9 Pro XL on the tree, we could use a Windows or Linux machine to at least make sure the functionality is preserved as more changes are made to this area of code.",
+      "range": {
+        "startLine": 7,
+        "startChar": 23,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a06b6a87_752ab327",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:54:20Z",
+      "side": 1,
+      "message": "It may be helpful for clarity / brevity when this extension is unavailable to break this logic out into an anonymous helper function?",
+      "range": {
+        "startLine": 1012,
+        "startChar": 0,
+        "endLine": 1078,
+        "endChar": 66
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
