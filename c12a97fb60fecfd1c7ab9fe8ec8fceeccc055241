@@ -16,6 +16,24 @@
       "message": "It seems strange to set both `public_configs` (applies to self and immediate dependents) and `all_dependent_configs` (applies to self and all dependents). Is there something that is fixed by adding `public_configs` here? If it means we can remove `all_dependent_configs` that would be nice, but having both seems confusing.",
       "revId": "c12a97fb60fecfd1c7ab9fe8ec8fceeccc055241",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efdd4af3_79593896",
+        "filename": "BUILD.gn",
+        "patchSetId": 14
+      },
+      "lineNbr": 225,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-28T13:16:11Z",
+      "side": 1,
+      "message": "Leftover from earlier attempt. Removed.",
+      "parentUuid": "333baaec_72109651",
+      "revId": "c12a97fb60fecfd1c7ab9fe8ec8fceeccc055241",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
