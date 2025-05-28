@@ -33,6 +33,24 @@
       "message": "I\u0027m also good to land what you have, since it fixes the known fuzzer thing. We can always try out other ideas after the fact.",
       "revId": "2340fed7dd06e24e381d6d782fc8d218dc41e5fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4020300a_9fc0bf1b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-28T21:43:59Z",
+      "side": 1,
+      "message": "From offline discussion, just do the simple thing of checking the finiteness and not crash. In fact, checking for inside the clip is already done when rendering.\nA future CL is to create a new internalQuickReject() function for draws that don\u0027t care about the bounds and just check the validity of the matrix. Then adding that to other places in SkCanvas where that would be useful.",
+      "parentUuid": "06bc5968_899b1c2b",
+      "revId": "2340fed7dd06e24e381d6d782fc8d218dc41e5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
