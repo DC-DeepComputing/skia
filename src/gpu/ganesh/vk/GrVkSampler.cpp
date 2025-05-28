@@ -107,21 +107,13 @@ GrVkSampler* GrVkSampler::Create(GrVkGpu* gpu,
 
         createInfo.pNext = &conversionInfo;
 
-        VkFilter chromaFilter = ycbcrInfo.fChromaFilter;
         VkFormatFeatureFlags flags = ycbcrInfo.fFormatFeatures;
-        if (!SkToBool(flags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
+        if (ycbcrConversion->requiredFilter().has_value()) {
+            createInfo.magFilter = ycbcrConversion->requiredFilter().value();
+            createInfo.minFilter = ycbcrConversion->requiredFilter().value();
+        } else if (!SkToBool(flags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT)) {
             createInfo.magFilter = VK_FILTER_NEAREST;
             createInfo.minFilter = VK_FILTER_NEAREST;
-            // This doesn't explicitly do anything itself, but if we don't support separate
-            // reconstruction filters below, then we need the chromaFilter to match the mag/min here
-            // so we set it nearest. Because we don't currently update the VulkanYcbcrConversionInfo
-            // that we're querying here, this logic around the chromaFilter must match the logic in
-            // the SetupSamplerYcbcrConversionInfo helper function.
-            chromaFilter = VK_FILTER_NEAREST;
-        }
-        if (!(flags & VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER_BIT)) {
-            createInfo.magFilter = chromaFilter;
-            createInfo.minFilter = chromaFilter;
         }
 
         // Required values when using ycbcr conversion
