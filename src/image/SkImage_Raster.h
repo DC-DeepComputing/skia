@@ -41,7 +41,6 @@ public:
     ~SkImage_Raster() override;
 
     // From SkImage.h
-    bool isValid(GrRecordingContext*) const override { return true; }
     bool isValid(SkRecorder* recorder) const override {
         if (!recorder) {
             return false;
@@ -51,6 +50,10 @@ public:
         }
         return true;
     }
+    sk_sp<SkImage> makeColorTypeAndColorSpace(SkRecorder*,
+                                              SkColorType targetColorType,
+                                              sk_sp<SkColorSpace> targetColorSpace,
+                                              RequiredProperties) const override;
 
     // From SkImage_Base.h
     bool onReadPixels(GrDirectContext*, const SkImageInfo&, void*, size_t, int srcX, int srcY,
@@ -59,19 +62,13 @@ public:
     const SkBitmap* onPeekBitmap() const override { return &fBitmap; }
 
     bool getROPixels(GrDirectContext*, SkBitmap*, CachingHint) const override;
-    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
-    sk_sp<SkImage> onMakeSubset(SkRecorder*,
-                                const SkIRect&,
-                                RequiredProperties) const override;
+    sk_sp<SkImage> onMakeSubset(SkRecorder*, const SkIRect&, RequiredProperties) const override;
 
     sk_sp<SkSurface> onMakeSurface(SkRecorder*, const SkImageInfo&) const final;
 
     SkPixelRef* getPixelRef() const { return fBitmap.pixelRef(); }
 
     bool onAsLegacyBitmap(GrDirectContext*, SkBitmap*) const override;
-
-    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType, sk_sp<SkColorSpace>,
-                                                GrDirectContext*) const override;
 
     sk_sp<SkImage> onReinterpretColorSpace(sk_sp<SkColorSpace>) const override;
 
@@ -109,6 +106,14 @@ public:
 
     SkBitmap bitmap() const { return fBitmap; }
 
+#if !defined(SK_DISABLE_LEGACY_NONRECORDER_IMAGE_APIS)
+    bool isValid(GrRecordingContext*) const override { return true; }
+    sk_sp<SkImage> onMakeSubset(GrDirectContext*, const SkIRect&) const override;
+    sk_sp<SkImage> onMakeColorTypeAndColorSpace(SkColorType,
+                                                sk_sp<SkColorSpace>,
+                                                GrDirectContext*) const override;
+    using SkImage_Base::makeColorTypeAndColorSpace;
+#endif
 private:
     SkBitmap fBitmap;
 };
