@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5c6f80e_d2d81a36",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "For future reference, the load-msaa-from-resolve (unresolve, as I call it) cannot in fact be done efficiently with dynamic rendering, but:\n\n* VK_EXT_multisampled_render_to_single_sampled solves this for tilers\n* Where not available (desktop GPUs), two-subpass render pass and two render passes are identical in performance (i.e. dynamic rendering works, just with two render passes)",
+      "parentUuid": "e19db2bc_bf898815",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "56ef2d42_61c6799c",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-28T15:20:41Z",
       "side": 1,
       "message": "We should call out the input attachment here as well (always included for compatibility purposes between pipelines that require dst reads for advanced blending and those that do not (when that is the case))",
+      "range": {
+        "startLine": 1794,
+        "startChar": 23,
+        "endLine": 1794,
+        "endChar": 90
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7080c347_965b7df7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "56ef2d42_61c6799c",
       "range": {
         "startLine": 1794,
         "startChar": 23,
@@ -72,6 +120,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "0233b77d_366282d7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1798,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "92c93a0f_72f4992e",
+      "range": {
+        "startLine": 1798,
+        "startChar": 23,
+        "endLine": 1798,
+        "endChar": 39
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7134e877_d8af9c36",
         "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
         "patchSetId": 7
@@ -83,6 +155,30 @@
       "writtenOn": "2025-05-28T15:20:41Z",
       "side": 1,
       "message": "No suggestion, just commenting to say that this is beautiful formatting and a great way to demonstrate the makeup. A++; will be stealing this format for the future. :)",
+      "range": {
+        "startLine": 1803,
+        "startChar": 0,
+        "endLine": 1807,
+        "endChar": 74
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65565e79_5d3878c7",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "ASCII art for the win :)\n\n(and oops, MSB was unaligned)",
+      "parentUuid": "7134e877_d8af9c36",
       "range": {
         "startLine": 1803,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcdc9ab0_8e4d9567",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ed5280aa_6ed5cd57",
+      "range": {
+        "startLine": 1831,
+        "startChar": 0,
+        "endLine": 1832,
+        "endChar": 41
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1933c631_12c321f0",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-05-28T15:20:41Z",
       "side": 1,
       "message": "Perhaps instead of hard coding `0` and `2` for indexing into the raw key data we define static values for the meaning of indices within the key?\nPerhaps such that both this method and the one above for pipeline key creation to have visibility to it.\n\ne.g. `renderStepKeyIdx \u003d 0`, `paintParamKeyIdx \u003d 1`, etc.?\nLMKWYT, because I could also see that approach being overkill.",
+      "range": {
+        "startLine": 1862,
+        "startChar": 0,
+        "endLine": 1869,
+        "endChar": 46
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "27cf1d84_2a1fb987",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:43Z",
+      "side": 1,
+      "message": "Done, sorry I was being lazy copy-pasting from other backends, lol",
+      "parentUuid": "1933c631_12c321f0",
       "range": {
         "startLine": 1862,
         "startChar": 0,
