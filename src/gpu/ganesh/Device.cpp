@@ -456,6 +456,31 @@ void Device::drawPoints(SkCanvas::PointMode mode,
         return;
     }
 
+    SkRect bounds;
+    // Compute bounds from points (common for drawing a single line)
+    if (count == 2) {
+        bounds.set(pts[0], pts[1]);
+    } else {
+       bounds.setBounds(pts, SkToInt(count));
+    }
+
+    // Enforce paint style matches implicit behavior of drawPoints
+    SkPaint strokePaint = paint;
+    strokePaint.setStyle(SkPaint::kStroke_Style);
+    if (bounds.isFinite() && !strokePaint.nothingToDraw()) {
+        return;
+    }
+    if (strokePaint.canComputeFastBounds()) {
+        const SkRect fastBounds = strokePaint.computeFastBounds(bounds, &bounds);
+
+        SkRect devRect = SkMatrixPriv::MapRect(this->localToDevice44(), fastBounds);
+        SkRect devClipBounds =
+            SkMatrixPriv::MapRect(this->deviceToGlobal(), SkRect::Make(this->devClipBounds()));
+        if (!devRect.isFinite() || !devRect.intersects(devClipBounds)) {
+            return;
+        }
+    }
+
     GrAA aa = fSurfaceDrawContext->chooseAA(paint);
 
     if (count == 2 && mode == SkCanvas::kLines_PointMode) {
