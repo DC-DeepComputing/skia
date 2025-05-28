@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "406e1971_a067490a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-28T18:00:01Z",
+      "side": 1,
+      "message": "I plan to reland after making the new behavior conditional on a new `#define`.  Then Chromium-side CL can enable the `#define` as a separate step + rebase the test expectations.  And then we can remove the `#define` from Skia. :-/",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 148
+      },
+      "revId": "abc90993d134eb408817b9284d9b7d3199817b07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "c5dc3fc6_75b4af78",
