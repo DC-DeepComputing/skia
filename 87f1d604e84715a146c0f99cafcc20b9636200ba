@@ -22,6 +22,30 @@
       },
       "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7422141_f24a63a4",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-28T14:17:42Z",
+      "side": 1,
+      "message": "If I don\u0027t add this information, `git cl upload` will report the following error:\n**********************************************************************\n** Presubmit ERRORS: 2 **\nresources\\sksl\\BUILD.bazel needs to have\nlicenses([\"notice\"])\nimmediately after the load() calls to comply with G3 policies.\n\nresources\\sksl\\BUILD.bazel needs to have\npackage(default_applicable_licenses \u003d [\"//:license\"])\nto comply with G3 policies\n\nPresubmit checks took 5.5s to calculate.\nThere were presubmit errors.\n**********************************************************************",
+      "parentUuid": "5e1eb715_6d7bcea1",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
