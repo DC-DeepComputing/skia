@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7454eae_9e16a8d6",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:31:13Z",
+      "side": 1,
+      "message": "Is there a cost to turning on dynamic state that we never use at all?",
+      "range": {
+        "startLine": 661,
+        "startChar": 0,
+        "endLine": 661,
+        "endChar": 78
+      },
+      "revId": "d2850a3e2157216debe5970ed8ed402f10b744dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

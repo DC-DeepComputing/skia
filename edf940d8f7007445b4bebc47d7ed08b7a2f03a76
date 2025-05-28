@@ -236,6 +236,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9b549b6_f2f2ac59",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:31:13Z",
+      "side": 1,
+      "message": "Yes we can definitely do something more efficient here, possible similar to the RenderStep ID check in the next change for dynamic vertex attributes.\n\nI don\u0027t think checking render step ID is ideal here, though, because there are far fewer sets of DepthStencilSettings values that are used by all of the RenderSteps.  The ones chosen are defined in CommonDepthStencilSettings.h so we could easily assign them IDs or stable addresses to make a quick equality check trivial.",
+      "parentUuid": "1c4e1492_7ad3a2a3",
+      "range": {
+        "startLine": 1127,
+        "startChar": 67,
+        "endLine": 1127,
+        "endChar": 98
+      },
+      "revId": "edf940d8f7007445b4bebc47d7ed08b7a2f03a76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd9cf0af_2a0c1bb4",
