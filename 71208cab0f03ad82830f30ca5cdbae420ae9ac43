@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1066926_88e73fda",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-28T12:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a150796_d159d08d",
+      "range": {
+        "startLine": 55,
+        "startChar": 25,
+        "endLine": 55,
+        "endChar": 78
+      },
+      "revId": "71208cab0f03ad82830f30ca5cdbae420ae9ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "016f8598_e16f2a25",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-27T14:54:09Z",
       "side": 1,
       "message": "nit: Can we name this `fInternalMSAATileSize`?",
+      "range": {
+        "startLine": 57,
+        "startChar": 27,
+        "endLine": 57,
+        "endChar": 56
+      },
+      "revId": "71208cab0f03ad82830f30ca5cdbae420ae9ac43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c2cf013_f820a545",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-28T12:25:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "016f8598_e16f2a25",
       "range": {
         "startLine": 57,
         "startChar": 27,
