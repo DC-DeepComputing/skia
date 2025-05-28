@@ -22,6 +22,46 @@
       },
       "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0ca2d81_d86077a1",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-28T15:12:29Z",
+      "side": 1,
+      "message": "missing space(s) ?",
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "910cb512_f261f95d",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-05-28T15:12:29Z",
+      "side": 1,
+      "message": "Aren\u0027t we guaranteed this at this point?",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 26
+      },
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
