@@ -47,6 +47,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "92e7db15_9721e1d2",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T21:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "41b236a2_363c0379",
+      "range": {
+        "startLine": 100,
+        "startChar": 25,
+        "endLine": 100,
+        "endChar": 48
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86162907_d7796db6",
@@ -88,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5eb3ff99_cf208131",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T21:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "86162907_d7796db6",
+      "range": {
+        "startLine": 277,
+        "startChar": 15,
+        "endLine": 277,
+        "endChar": 17
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df6956b6_7ebc789d",
@@ -101,6 +149,30 @@
       "writtenOn": "2025-05-28T16:11:50Z",
       "side": 1,
       "message": "Can we initialize these in the constructor instead?",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 46
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42aa0558_839a4923",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T21:37:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df6956b6_7ebc789d",
       "range": {
         "startLine": 303,
         "startChar": 0,
