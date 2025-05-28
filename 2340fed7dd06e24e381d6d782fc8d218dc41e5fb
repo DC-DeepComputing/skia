@@ -16,6 +16,23 @@
       "message": "@kjlubick@google.com I had to add an extra matrix multiply due to transforms done to the canvas that aren\u0027t readily available by the Device, some gm\u0027s were not correct without it. -- Do you think it\u0027s worth it to do this or just check for finiteness as Mike mentioned in the other comment?",
       "revId": "2340fed7dd06e24e381d6d782fc8d218dc41e5fb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "802214d3_240d9594",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T19:06:02Z",
+      "side": 1,
+      "message": "I\u0027m also good to land what you have, since it fixes the known fuzzer thing. We can always try out other ideas after the fact.",
+      "revId": "2340fed7dd06e24e381d6d782fc8d218dc41e5fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
