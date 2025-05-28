@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eab15569_a273ff59",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:42:11Z",
+      "side": 1,
+      "message": "Suggestion: Do we want to run all possible combinations of functionality within this one DM or a unit test? Like HDR + blur, neither, HDR only, blur only? \n\nPerhaps even having bools for each would be even more clear (like define `useHDR` and reference that bool when choosing the color space)",
+      "range": {
+        "startLine": 59,
+        "startChar": 12,
+        "endLine": 59,
+        "endChar": 92
+      },
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
