@@ -260,6 +260,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50763d17_948aa05f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1127,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T17:18:12Z",
+      "side": 1,
+      "message": "I agree the front end is likely to do better than the backend performing these checks - I moreso wonder about whether using the dynamic state in this way as opposed to not at all (as we do now). I was just curious if you had confidence that this would be an improvement even if we are delegating this work in a less efficient way to just the Vulkan backend for now, though I think that\u0027s answered via Michael\u0027s comment.",
+      "parentUuid": "1c4e1492_7ad3a2a3",
+      "range": {
+        "startLine": 1127,
+        "startChar": 67,
+        "endLine": 1127,
+        "endChar": 98
+      },
+      "revId": "edf940d8f7007445b4bebc47d7ed08b7a2f03a76",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd9cf0af_2a0c1bb4",
