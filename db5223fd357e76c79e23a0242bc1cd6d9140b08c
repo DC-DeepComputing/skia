@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a253954_dca64af0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T17:11:57Z",
+      "side": 1,
+      "message": "lgtm\n\nnote, if you\u0027re just worried about producing infinities/nans, it might be simpler to just map all the points by the ctm (faster) and compute the bounds, and see if the bounds is finite. This is simple, and works even when canComputeFastBounds() returns false... Just a thought.",
+      "revId": "db5223fd357e76c79e23a0242bc1cd6d9140b08c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
