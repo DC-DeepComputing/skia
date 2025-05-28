@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14615a49_022fbb4d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:34:47Z",
+      "side": 1,
+      "message": "We could make these references (instead passing in `vertexBindingDescriptions` rather than `\u0026vertexBindingDescriptions`)",
+      "range": {
+        "startLine": 903,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 70
+      },
+      "revId": "6c8b34d1cf980b03215d4afd52e04a7e6d7f6743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1268bac0_6b27fd96",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:34:47Z",
+      "side": 1,
+      "message": "Perhaps we can make this simply `VertexInputBindingDescriptions*` allowing us to pass in nullptr when not relevant / present?",
+      "range": {
+        "startLine": 164,
+        "startChar": 57,
+        "endLine": 164,
+        "endChar": 60
+      },
+      "revId": "6c8b34d1cf980b03215d4afd52e04a7e6d7f6743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

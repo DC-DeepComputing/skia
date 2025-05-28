@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "527b1f25_dc6314ad",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:34:47Z",
+      "side": 1,
+      "message": "This makes it sound as though Skia is **requiring** this feature be enabled such that we can use it (so long as the extension is present). Is that intentional?\n\nIf no, then perhaps change the verbiage to something like \n`In order to use dynamic vertex input state, we must check the physical device for feature support. To enable using it, an instance of VkPhysicalDeviceVertexInputDynamicStateFeaturesEXT with vertexInputDynamicState set to VK_TRUE must be passed in during device creation.`",
+      "range": {
+        "startLine": 235,
+        "startChar": 37,
+        "endLine": 235,
+        "endChar": 40
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ceec9c_c34e6a1d",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:34:47Z",
+      "side": 1,
+      "message": "We should actually be able to just use `attributeDescs-\u003ebegin()` - if the (previously declared) underlying `TArray` is empty that should give us `nullptr`. We could pass in `bindingDescs` and `attributeDescs` as references to enforce that `nullptr` itself is not passed in.",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 73
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b97456a6_6be57807",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T14:34:47Z",
+      "side": 1,
+      "message": "As above, these ternaries should be able to just be `fVertexAttributeDescriptions.begin()` which should give us nullptr if empty.",
+      "range": {
+        "startLine": 1348,
+        "startChar": 25,
+        "endLine": 1354,
+        "endChar": 91
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
