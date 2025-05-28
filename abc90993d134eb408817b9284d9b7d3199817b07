@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5dc3fc6_75b4af78",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-28T17:58:52Z",
+      "side": 1,
+      "message": "@fmalita or @danieldilan, can you PTAL?",
+      "revId": "abc90993d134eb408817b9284d9b7d3199817b07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
