@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ceb6bfe_33db775a",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:33Z",
+      "side": 1,
+      "message": "It\u0027s just trying to say that if the ext is available, the feature is required to be supported by the spec. Reworded this a bit, it doesn\u0027t matter much for Graphite what the spec says, just that the app enabled the feature.\n\nI avoided the wordy explanation though, since I intend to start using quite a few other extensions in Graphite and it feels like explaining that features need to be enabled in general belong somewhere else.",
+      "parentUuid": "527b1f25_dc6314ad",
+      "range": {
+        "startLine": 235,
+        "startChar": 37,
+        "endLine": 235,
+        "endChar": 40
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "82ceec9c_c34e6a1d",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f265c1c7_740a7b1f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:33Z",
+      "side": 1,
+      "message": "Ah nice, didn\u0027t know that. Done.",
+      "parentUuid": "82ceec9c_c34e6a1d",
+      "range": {
+        "startLine": 168,
+        "startChar": 8,
+        "endLine": 168,
+        "endChar": 73
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b97456a6_6be57807",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-05-28T14:34:47Z",
       "side": 1,
       "message": "As above, these ternaries should be able to just be `fVertexAttributeDescriptions.begin()` which should give us nullptr if empty.",
+      "range": {
+        "startLine": 1348,
+        "startChar": 25,
+        "endLine": 1354,
+        "endChar": 91
+      },
+      "revId": "5d807f83f122e07b3d76a5715b870d87ce82cb67",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "762d14fc_10487178",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1354,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b97456a6_6be57807",
       "range": {
         "startLine": 1348,
         "startChar": 25,

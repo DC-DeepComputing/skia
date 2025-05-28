@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa3eb9f0_9042b5f2",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:33Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14615a49_022fbb4d",
+      "range": {
+        "startLine": 903,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 70
+      },
+      "revId": "6c8b34d1cf980b03215d4afd52e04a7e6d7f6743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1268bac0_6b27fd96",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-28T14:34:47Z",
       "side": 1,
       "message": "Perhaps we can make this simply `VertexInputBindingDescriptions*` allowing us to pass in nullptr when not relevant / present?",
+      "range": {
+        "startLine": 164,
+        "startChar": 57,
+        "endLine": 164,
+        "endChar": 60
+      },
+      "revId": "6c8b34d1cf980b03215d4afd52e04a7e6d7f6743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fa105e9_4b8db1ec",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:33Z",
+      "side": 1,
+      "message": "The benefit of `\u0026\u0026` is that at call site it\u0027s clear that the vectors are being _consumed_. After `f(\u0026x)`, one might accidentally continue using `x`. After `f(std::move(x))`, chances of that mistake is lower.",
+      "parentUuid": "1268bac0_6b27fd96",
       "range": {
         "startLine": 164,
         "startChar": 57,
