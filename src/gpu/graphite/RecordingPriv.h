@@ -50,6 +50,8 @@ public:
     uint32_t recorderID() const { return fRecording->fRecorderID; }
     uint32_t uniqueID() const { return fRecording->fUniqueID; }
 
+    std::vector<sk_sp<Resource>> getExtraResourceRefs() const;
+
 #if defined(GPU_TEST_UTILS)
     bool isTargetProxyInstantiated() const;
     int numVolatilePromiseImages() const;
