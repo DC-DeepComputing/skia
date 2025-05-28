@@ -16,6 +16,23 @@
       "message": "FYI to Mike who might want to re-work that preflight.",
       "revId": "30a2519a4df93659c926885b84ec98d8be909d13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bcc0e9f1_1a070378",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-28T15:10:56Z",
+      "side": 1,
+      "message": "Sounds like this is only an issue on the GPU side?\nThe CPU side already does a bounds check after applying the CTM, so it really doesn\u0027t want to pay twice. \nInstead of reverting, can we just add a bounds check that is specific to the GPU?",
+      "revId": "30a2519a4df93659c926885b84ec98d8be909d13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
