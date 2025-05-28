@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e19db2bc_bf898815",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "As a note for anyone stumbling across this review who is wondering why this simplification was made (or not made in the first place):\n\nOriginally, we intended to expose subpass makeup more at the graphite level. After conversations with Shahbaz, it was determined that this is actually likely unideal and introduces complications with minimal benefit. Additionally, we suspect we are actually able to load MSAA from resolve with dynamic rendering after all (in 2 different render passes which theoretically should not be a huge performance hit). Devices adhering to Vulkan profile requirements going forward will have support for dynamic rendering (available in Vulkan 1.3 onward). \n\nThe minimum version for graphite is still 1.1 to accommodate devices released before this requirement (which may later update drivers), so while we want to preserve functionality with that more outdated driver, we now care less about having the pipeline keys be as meticulous and granular seeing as subpass makeup will be less flexible.",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 21
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56ef2d42_61c6799c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1794,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "We should call out the input attachment here as well (always included for compatibility purposes between pipelines that require dst reads for advanced blending and those that do not (when that is the case))",
+      "range": {
+        "startLine": 1794,
+        "startChar": 23,
+        "endLine": 1794,
+        "endChar": 90
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "92c93a0f_72f4992e",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1798,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "nit: `or not which informs everything else.`",
+      "range": {
+        "startLine": 1798,
+        "startChar": 23,
+        "endLine": 1798,
+        "endChar": 39
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7134e877_d8af9c36",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1807,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "No suggestion, just commenting to say that this is beautiful formatting and a great way to demonstrate the makeup. A++; will be stealing this format for the future. :)",
+      "range": {
+        "startLine": 1803,
+        "startChar": 0,
+        "endLine": 1807,
+        "endChar": 74
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ed5280aa_6ed5cd57",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1832,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "This is no longer relevant and can be deleted.",
+      "range": {
+        "startLine": 1831,
+        "startChar": 0,
+        "endLine": 1832,
+        "endChar": 41
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1933c631_12c321f0",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1869,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-05-28T15:20:41Z",
+      "side": 1,
+      "message": "Perhaps instead of hard coding `0` and `2` for indexing into the raw key data we define static values for the meaning of indices within the key?\nPerhaps such that both this method and the one above for pipeline key creation to have visibility to it.\n\ne.g. `renderStepKeyIdx \u003d 0`, `paintParamKeyIdx \u003d 1`, etc.?\nLMKWYT, because I could also see that approach being overkill.",
+      "range": {
+        "startLine": 1862,
+        "startChar": 0,
+        "endLine": 1869,
+        "endChar": 46
+      },
+      "revId": "fedce8c9267a0534d3aec14b40c14f3b5599f520",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
