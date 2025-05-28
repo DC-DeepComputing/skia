@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d256440b_a679eb4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-28T22:55:28Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?",
+      "revId": "8f9c12489400d45e5bcd37c11c49ab8265a236fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34e8a95c_ec641150",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-28T22:55:28Z",
+      "side": 1,
+      "message": "Introducing this `#ifdef` is the main change compared to http://review.skia.org/997836",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 31
+      },
+      "revId": "8f9c12489400d45e5bcd37c11c49ab8265a236fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
