@@ -1,0 +1,114 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90298c28_7dd9a5e5",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-28T16:11:50Z",
+      "side": 1,
+      "message": "I\u0027m guessing an indirect call (to avoid \"template\" bloat) would slow things down, but I don\u0027t have an intuition of how much.  Maybe I\u0027ll try after this lands.\n\nA hackier way would be to just pass in a rowbytes multiplier and compute the address manually.",
+      "range": {
+        "startLine": 101,
+        "startChar": 37,
+        "endLine": 101,
+        "endChar": 51
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "41b236a2_363c0379",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-28T16:11:50Z",
+      "side": 1,
+      "message": "I think we could get rid of this if we use `std::optional\u003cuint64_t\u003e fDirectBlitValue`.",
+      "range": {
+        "startLine": 100,
+        "startChar": 25,
+        "endLine": 100,
+        "endChar": 48
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86162907_d7796db6",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-28T16:11:50Z",
+      "side": 1,
+      "message": "nit: `false`",
+      "range": {
+        "startLine": 277,
+        "startChar": 15,
+        "endLine": 277,
+        "endChar": 17
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "325776b4_8d1a946d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkRasterPipelineBlitter.cpp",
+              "range": {
+                "startLine": 277,
+                "startChar": 0,
+                "endLine": 278,
+                "endChar": 0
+              },
+              "replacement": "        return false;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df6956b6_7ebc789d",
+        "filename": "src/core/SkRasterPipelineBlitter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-28T16:11:50Z",
+      "side": 1,
+      "message": "Can we initialize these in the constructor instead?",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 305,
+        "endChar": 46
+      },
+      "revId": "bd2fc088f5c502d57130ebc7a4bc7ffb82dc235f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
