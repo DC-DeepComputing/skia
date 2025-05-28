@@ -1942,13 +1942,13 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
     const SkRect* boundsPtr = nullptr;
 
     /*
-     *  Computing the bounds can actually slow us down (since we check inside).
-     *  But if there is a filter, then it is useful to limit the size of
-     *  its offscreen, hence we only compute it in those cases.
-     *
-     *  Note: it would be "correct" to never compute this, it is just considered
-     *        an optimization opportunity.
-     */
+    *  Computing the bounds can actually slow us down (since we check inside).
+    *  But if there is a filter, then it is useful to limit the size of
+    *  its offscreen, hence we only compute it in those cases.
+    *
+    *  Note: it would be "correct" to never compute this, it is just considered
+    *        an optimization opportunity.
+    */
     if (paint.getImageFilter() || paint.getMaskFilter()) {
         if (count == 2) {
             boundsStorage.set(pts[0], pts[1]);
@@ -1966,6 +1966,7 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
         this->topDevice()->drawPoints(mode, count, pts, layer->paint());
     }
 }
+
 
 const SkBlurMaskFilterImpl* SkCanvas::canAttemptBlurredRRectDraw(const SkPaint& paint) const {
     if (!this->topDevice()->useDrawCoverageMaskForMaskFilters()) {
@@ -2757,6 +2758,7 @@ void SkCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry imageSet[], int count,
 
                 // Call drawEdgeAAImageSet on each image one at a time, to correctly
                 // paint the image.
+                // SkDebugf("here2\n");
                 this->topDevice()->drawEdgeAAQuad(drawDst,
                                                   imageSet[i].fHasClip ? dstClips + dstClipIndex
                                                                         : nullptr,
