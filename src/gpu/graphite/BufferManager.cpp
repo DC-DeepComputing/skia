@@ -398,7 +398,7 @@ ScratchBuffer DrawBufferManager::getScratchStorage(size_t requiredBytes) {
 #if defined(GPU_TEST_UTILS)
             fUseExactBuffSizes ? info.fCurBlockSize :
 #endif
-                               sufficient_block_size(requiredBytes32, info.fCurBlockSize);
+                                 sufficient_block_size(requiredBytes32, info.fCurBlockSize);
 
     sk_sp<Buffer> buffer = this->findReusableSbo(bufferSize);
     if (!buffer) {
@@ -588,8 +588,8 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         info->fOffset = offset.value();
     }
 
-     // A transfer buffer is not necessary if the caller does not intend to upload CPU data to it.
-    bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped();
+    // A transfer buffer is not necessary if the caller does not intend to upload CPU data to it.
+    const bool useTransferBuffer = supportCpuUpload && !fCaps->drawBufferCanBeMapped();
     if (!info->fBuffer) {
         // Create the first buffer with the full fCurBlockSize, but create subsequent buffers with a
         // smaller size if fCurBlockSize has increased from the minimum. This way if we use just a
@@ -598,7 +598,11 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
         const uint32_t blockSize = overflowedBuffer
                                            ? std::max(info->fCurBlockSize / 4, info->fMinBlockSize)
                                            : info->fCurBlockSize;
-        const uint32_t bufferSize = sufficient_block_size(requiredBytes, blockSize);
+        const uint32_t bufferSize =
+#if defined(GPU_TEST_UTILS)
+            fUseExactBuffSizes ? info->fCurBlockSize :
+#endif
+                                 sufficient_block_size(requiredBytes, blockSize);
 
         // This buffer can be GPU-only if
         //     a) the caller does not intend to ever upload CPU data to the buffer; or
@@ -617,6 +621,12 @@ BindBufferInfo DrawBufferManager::prepareBindBuffer(BufferInfo* info,
 
     if (useTransferBuffer && !info->fTransferBuffer) {
         std::tie(info->fTransferMapPtr, info->fTransferBuffer) =
+#if defined(GPU_TEST_UTILS)
+                fUseExactBuffSizes ? fUploadManager->makeBindInfoNoReuse(
+                        info->fBuffer->size(),
+                        fCaps->requiredTransferBufferAlignment(),
+                        "TransferForDataBuffer") :
+#endif
                 fUploadManager->makeBindInfo(info->fBuffer->size(),
                                              fCaps->requiredTransferBufferAlignment(),
                                              "TransferForDataBuffer");
