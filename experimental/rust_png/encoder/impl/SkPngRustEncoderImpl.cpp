@@ -161,6 +161,34 @@ std::unique_ptr<SkEncoder> SkPngRustEncoderImpl::Make(SkWStream* dst,
         }
     }
 
+    rust_png::ColorType rustEncoderColorType;
+    ExtraRowTransform extraRowTransform = kNone_ExtraRowTransform;
+    switch (dstInfo.color()) {
+        case SkEncodedInfo::kRGB_Color:
+            rustEncoderColorType = rust_png::ColorType::Rgb;
+            break;
+        case SkEncodedInfo::kRGBA_Color:
+#ifdef SKIA_FIX_CRBUG_419011374
+            if (maybeDstRowInfo && maybeDstRowInfo->isOpaque()) {
+              rustEncoderColorType = rust_png::ColorType::Rgb;
+              extraRowTransform = kRgbaToRgb_ExtraRowTransform;
+            } else {
+              rustEncoderColorType = rust_png::ColorType::Rgba;
+            }
+#else
+            rustEncoderColorType = rust_png::ColorType::Rgba;
+#endif
+            break;
+        case SkEncodedInfo::kGray_Color:
+            rustEncoderColorType = rust_png::ColorType::Grayscale;
+            break;
+        case SkEncodedInfo::kGrayAlpha_Color:
+            rustEncoderColorType = rust_png::ColorType::GrayscaleAlpha;
+            break;
+        default:
+            SkUNREACHABLE;
+    }
+
     auto writeTraitAdapter = std::make_unique<WriteTraitAdapterForSkWStream>(dst);
     rust::Box<rust_png::ResultOfWriter> resultOfWriter =
             rust_png::new_writer(std::move(writeTraitAdapter),
