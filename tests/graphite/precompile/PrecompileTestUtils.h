@@ -13,15 +13,15 @@
 #include "include/gpu/graphite/precompile/Precompile.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
-//#define PRINT_GENERATED_LABELS
+#define PRINT_GENERATED_LABELS
 
 namespace PrecompileTestUtils {
 
@@ -124,6 +124,7 @@ skgpu::graphite::PaintOptions ImagePremulHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageSRGBHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageHWOnlySRGBSrcover();
 
+sk_sp<SkRuntimeEffect> MakeEffect(const SkString& sksl, const char* name);
 skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16();
 skgpu::graphite::PaintOptions MouriMapChunk8x8Effect();
 skgpu::graphite::PaintOptions MouriMapBlur();
@@ -131,6 +132,22 @@ skgpu::graphite::PaintOptions MouriMapToneMap();
 skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver();
 skgpu::graphite::PaintOptions KawaseBlurHighSrc();
 skgpu::graphite::PaintOptions BlurFilterMix();
+
+
+enum class ChildType {
+    kSolidColor,
+    kHWTexture,
+#if defined(SK_VULKAN)
+    kHWTextureYCbCr247,
+#endif
+};
+
+skgpu::graphite::PaintOptions LinearEffect(const char* linearEffectName,
+                                           ChildType childType,
+                                           SkBlendMode blendMode,
+                                           bool paintColorIsOpaque = true,
+                                           bool matrixColorFilter = false,
+                                           bool dither = false);
 
 #if defined(SK_VULKAN)
 skgpu::graphite::PaintOptions ImagePremulYCbCr238Srcover();
