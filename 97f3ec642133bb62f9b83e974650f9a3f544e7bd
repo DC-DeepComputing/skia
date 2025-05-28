@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "873fbdd0_fe2cabac",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:19:25Z",
+      "side": 1,
+      "message": "I chose to remove these comments that had been there to help with testing. And at one point I did have bools to switch from using HDR or doing blurring etc. to narrow down the regression.  At this point, though, I don\u0027t think we need to preserve that complexity.",
+      "parentUuid": "eab15569_a273ff59",
+      "range": {
+        "startLine": 59,
+        "startChar": 12,
+        "endLine": 59,
+        "endChar": 92
+      },
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f0ca2d81_d86077a1",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "55b77370_c3ac2847",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:19:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0ca2d81_d86077a1",
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "910cb512_f261f95d",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-05-28T15:12:29Z",
       "side": 1,
       "message": "Aren\u0027t we guaranteed this at this point?",
+      "range": {
+        "startLine": 100,
+        "startChar": 0,
+        "endLine": 100,
+        "endChar": 26
+      },
+      "revId": "97f3ec642133bb62f9b83e974650f9a3f544e7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f9112d52_2db8356e",
+        "filename": "gm/hdr_pip_blur.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-28T15:19:25Z",
+      "side": 1,
+      "message": "Ah yes, that was a holdover from a version that had more variety.",
+      "parentUuid": "910cb512_f261f95d",
       "range": {
         "startLine": 100,
         "startChar": 0,
