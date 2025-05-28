@@ -1934,36 +1934,24 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
     }
     SkASSERT(pts != nullptr);
 
+    SkRect bounds;
+    // Compute bounds from points (common for drawing a single line)
+    if (count == 2) {
+        bounds.set(pts[0], pts[1]);
+    } else {
+       bounds.setBounds(pts, SkToInt(count));
+    }
+
     // Enforce paint style matches implicit behavior of drawPoints
     SkPaint strokePaint = paint;
     strokePaint.setStyle(SkPaint::kStroke_Style);
-
-    SkRect boundsStorage;
-    const SkRect* boundsPtr = nullptr;
-
-    /*
-     *  Computing the bounds can actually slow us down (since we check inside).
-     *  But if there is a filter, then it is useful to limit the size of
-     *  its offscreen, hence we only compute it in those cases.
-     *
-     *  Note: it would be "correct" to never compute this, it is just considered
-     *        an optimization opportunity.
-     */
-    if (paint.getImageFilter() || paint.getMaskFilter()) {
-        if (count == 2) {
-            boundsStorage.set(pts[0], pts[1]);
-        } else {
-            boundsStorage.setBounds(pts, SkToInt(count));
-        }
-        if (this->internalQuickReject(boundsStorage, strokePaint)) {
-            return;
-        }
-        boundsPtr = &boundsStorage;
+    if (this->internalQuickReject(bounds, strokePaint)) {
+        return;
     }
 
-    auto layer = this->aboutToDraw(strokePaint, boundsPtr);
+    auto layer = this->aboutToDraw(strokePaint, &bounds);
     if (layer) {
-        this->topDevice()->drawPoints(mode, count, pts, layer->paint());
+       this->topDevice()->drawPoints(mode, count, pts, layer->paint());
     }
 }
 
