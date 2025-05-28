@@ -29,6 +29,12 @@ public:
 
     VkSamplerYcbcrConversion ycbcrConversion() const { return fYcbcrConversion; }
 
+    // If the format does not support
+    // VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_SEPARATE_RECONSTRUCTION_FILTER_BIT,
+    // sampler's minFilter and magFilter must match the conversion's chromaFilter, which can be
+    // found in fRequiredFilter. If not set, minFilter and magFilter can be independently set.
+    std::optional<VkFilter> requiredFilter() const { return fRequiredFilter; }
+
     SK_BEGIN_REQUIRE_DENSE
     struct Key {
         Key() = default;
@@ -68,15 +74,19 @@ public:
 #endif
 
 private:
-    GrVkSamplerYcbcrConversion(const GrVkGpu* gpu, VkSamplerYcbcrConversion ycbcrConversion,
+    GrVkSamplerYcbcrConversion(const GrVkGpu* gpu,
+                               VkSamplerYcbcrConversion ycbcrConversion,
+                               std::optional<VkFilter> requiredFilter,
                                Key key)
             : INHERITED(gpu)
             , fYcbcrConversion(ycbcrConversion)
+            , fRequiredFilter(requiredFilter)
             , fKey(key) {}
 
     void freeGPUData() const override;
 
     VkSamplerYcbcrConversion fYcbcrConversion;
+    std::optional<VkFilter> fRequiredFilter;
     Key                      fKey;
 
     using INHERITED = GrVkManagedResource;
