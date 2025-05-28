@@ -71,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "51ae8815_eb4095b1",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:29Z",
+      "side": 1,
+      "message": "1. Early out doesn\u0027t interact well with the next change; there could be different _sets_ of dynamic state from different extensions. Applied your other suggestions though, thanks.",
+      "parentUuid": "c35085a7_7db528ca",
+      "range": {
+        "startLine": 1131,
+        "startChar": 0,
+        "endLine": 1132,
+        "endChar": 93
+      },
+      "revId": "d2850a3e2157216debe5970ed8ed402f10b744dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "531dfff4_e6c17b70",
@@ -84,6 +108,30 @@
       "writtenOn": "2025-05-28T17:18:12Z",
       "side": 1,
       "message": "Add comment above explaining that calling this when dynamic state updates are not available is simply a no-op (just to make clear that calling it without querying the caps flag is expected usage), or in the method itself per my suggestion in another comment",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 145,
+        "endChar": 74
+      },
+      "revId": "d2850a3e2157216debe5970ed8ed402f10b744dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "823fdf81_060d0087",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "531dfff4_e6c17b70",
       "range": {
         "startLine": 143,
         "startChar": 0,
