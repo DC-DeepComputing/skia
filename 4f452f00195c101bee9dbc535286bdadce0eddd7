@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2f9aa64f_5a0187de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:38Z",
+      "side": 1,
+      "message": "Any new ARM device should have this extension, Qualcomm and Imagination support is upcoming. This is _the_ way to actually fix the pipeline explosion problem^, unfortunately we have no choice but to wait for devices to catch up. Fortunately the situation can only get better with time :)\n\nIn terms of testing:\n\n* Every pipeline is created with GPL in this change, so _functionally_ it\u0027s being tested just fine. FYI, I added GPL support to SwiftShader for testing purposes, so this should already be exercised on that bot\n* In terms of making sure pipelines are reduced, I\u0027ve tried this change on a Pixel 8 with a new driver (that has GPL support) and used VK_EXT_pipeline_creation_feedback to log how many times pipeline creation has hit the cache. I don\u0027t know which test would create lots of pipelines that only differ in blend state, but just running lots of dm tests, I did verify that the pipeline cache is hit more often (like pipelines of later tests hit those of earlier tests more often).\n\nSo I\u0027m not sure what exactly you have in mind for a test. I _do_ want to add some test that exercises different blend modes with the same pipeline, but I actually don\u0027t know how to do that :P That test would be useful especially for when the _front-end_ is made aware of GPL and so it would have a separate \"shaders pipeline\" cache vs \"full pipeline\"; it would make sure the implementation of that cache is ok whenever it happens.\n\n---\n\n^The dynamic state stuff lets the frontend have fewer pipelines and reduces CPU overhead, but in terms of creating expensive pipelines it doesn\u0027t really help. Where state is internally dynamic, only the first pipeline is expensive, other pipelines where that state is different would hit the cache.",
+      "parentUuid": "68ebf5b4_90e76f2e",
+      "range": {
+        "startLine": 7,
+        "startChar": 23,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a06b6a87_752ab327",
         "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
         "patchSetId": 8
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-28T14:54:20Z",
       "side": 1,
       "message": "It may be helpful for clarity / brevity when this extension is unavailable to break this logic out into an anonymous helper function?",
+      "range": {
+        "startLine": 1012,
+        "startChar": 0,
+        "endLine": 1078,
+        "endChar": 66
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f9cc2f5_74c15d97",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1078,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-28T22:00:38Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a06b6a87_752ab327",
       "range": {
         "startLine": 1012,
         "startChar": 0,
