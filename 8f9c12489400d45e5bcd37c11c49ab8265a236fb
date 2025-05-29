@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "31e1e293_b17cbb57",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-29T12:52:30Z",
+      "side": 1,
+      "message": "We should also add the define to the default encoder flags, so that Skia starts testing the new code right away.",
+      "parentUuid": "34e8a95c_ec641150",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 31
+      },
+      "revId": "8f9c12489400d45e5bcd37c11c49ab8265a236fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ec92ca54_2e47a843",
