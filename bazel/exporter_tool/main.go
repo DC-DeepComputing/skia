@@ -118,13 +118,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/text:text_hdrs",
 				"//src/text:text_srcs",
 			}},
-		{Var: "skia_pathops_public",
-			Rules: []string{"//include/pathops:public_hdrs"}},
-		{Var: "skia_pathops_sources",
-			Rules: []string{
-				"//src/pathops:_pathops_hdrs",
-				"//src/pathops:_pathops_srcs",
-			}},
 		{Var: "skia_encode_public",
 			Rules: []string{"//include/encode:encode_hdrs"}},
 		{Var: "skia_encode_srcs",
@@ -612,15 +605,24 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/gpu/android:shared_android_srcs",
 			}},
 	}},
-	{GNI: "modules/svg/svg.gni", Vars: []exporter.GNIFileListExportDesc{
-		{Var: "skia_svg_public",
-			Rules: []string{"//modules/svg/include:public_hdrs"}},
-		{Var: "skia_svg_sources",
-			Rules: []string{
-				"//modules/svg/src:private_hdrs",
-				"//modules/svg/src:srcs",
-			}},
-	}},
+    {GNI: "modules/svg/svg.gni", Vars: []exporter.GNIFileListExportDesc{
+        {Var: "skia_svg_public",
+            Rules: []string{"//modules/svg/include:public_hdrs"}},
+        {Var: "skia_svg_sources",
+            Rules: []string{
+                "//modules/svg/src:private_hdrs",
+                "//modules/svg/src:srcs",
+            }},
+    }},
+    {GNI: "modules/pathops/pathops.gni", Vars: []exporter.GNIFileListExportDesc{
+        {Var: "skia_pathops_public",
+            Rules: []string{"//modules/pathops/include:hdrs"}},
+        {Var: "skia_pathops_sources",
+            Rules: []string{
+                "//modules/pathops/src:core_hdrs",
+                "//modules/pathops/src:core_srcs",
+            }},
+    }},
 	{GNI: "modules/bentleyottmann/bentleyottmann.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "bentleyottmann_public",
 			Rules: []string{
