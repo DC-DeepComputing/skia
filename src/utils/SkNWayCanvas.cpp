@@ -226,7 +226,7 @@ void SkNWayCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[
                                 const SkPaint& paint) {
     Iter iter(fList);
     while (iter.next()) {
-        iter->drawPoints(mode, count, pts, paint);
+        iter->drawPoints(mode, {pts, count}, paint);
     }
 }
 
