@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f3d07b7_bd8e40b4",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:12:23Z",
+      "side": 1,
+      "message": "Do these commands need to be within a renderpass? Or could they be done one time at the start of the command buffer itself?",
+      "range": {
+        "startLine": 836,
+        "startChar": 0,
+        "endLine": 838,
+        "endChar": 60
+      },
+      "revId": "3bd0f4147687a0783b7d66ea560a559a1594f216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
