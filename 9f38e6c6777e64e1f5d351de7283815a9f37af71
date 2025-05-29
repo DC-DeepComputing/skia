@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f36244f3_dd9e9173",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-29T15:39:20Z",
+      "side": 1,
+      "message": "Unfortunately on the Chrome side the newly picked PNG decoder decodes differently. The new decoder looks (probably?) more correct. The old decoder looks like it composited the alpha with transparent black? In any event, the bitmap emoji Chromium side changed a bit and is causing issues with the roll.",
+      "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
