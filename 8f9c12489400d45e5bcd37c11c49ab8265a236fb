@@ -67,6 +67,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d1c11f03_766d6747",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-29T15:14:29Z",
+      "side": 1,
+      "message": "Done\n\nI checked that AFAIU `forward_variables_from` will forward the new `defines` in `template(\"optional\")`.",
+      "parentUuid": "31e1e293_b17cbb57",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 31
+      },
+      "revId": "8f9c12489400d45e5bcd37c11c49ab8265a236fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ec92ca54_2e47a843",
         "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
         "patchSetId": 3
@@ -78,6 +102,30 @@
       "writtenOn": "2025-05-29T11:57:52Z",
       "side": 1,
       "message": "nit: Don\u0027t think this matters but you could have a separate var for rust::Slice with `rust::Slice\u003cconst uint8_t\u003e(row)` being in the `kNone_ExtraRowTransform` case, and use that for the fStreamWriter-\u003ewrite() call so doesn\u0027t have to call rust::Slice constructor twice, up to you though",
+      "range": {
+        "startLine": 263,
+        "startChar": 18,
+        "endLine": 263,
+        "endChar": 44
+      },
+      "revId": "8f9c12489400d45e5bcd37c11c49ab8265a236fb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33fb5ca3_7bae51b8",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-29T15:14:29Z",
+      "side": 1,
+      "message": "Done.\n\nOn one hand slices/spans are almost as cheap as pointers and compilers should be able to optimize their construction quite well.  OTOH, what I wrote is really weird - I am explicitly constructing a `rust::Slice` and then assigning to a variable that holds `SkSpan`.  Ooops.\n\nPS. I wondered whether to initialize the new variable with a default constructed `rust::Slice` vs with one constructed from `row`.  I guess it doesn\u0027t matter that much in the end.",
+      "parentUuid": "ec92ca54_2e47a843",
       "range": {
         "startLine": 263,
         "startChar": 18,
