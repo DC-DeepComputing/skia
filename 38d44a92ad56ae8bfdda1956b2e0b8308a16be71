@@ -34,6 +34,24 @@
       "parentUuid": "bdc35ff1_03d807c8",
       "revId": "38d44a92ad56ae8bfdda1956b2e0b8308a16be71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "827ff7fe_500c06f6",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 1389,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-29T03:35:07Z",
+      "side": 1,
+      "message": "Thanks, fixed!",
+      "parentUuid": "86f4f769_5f15302b",
+      "revId": "38d44a92ad56ae8bfdda1956b2e0b8308a16be71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
