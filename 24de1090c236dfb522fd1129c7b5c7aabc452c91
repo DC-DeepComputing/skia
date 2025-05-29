@@ -46,6 +46,30 @@
       },
       "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d45a150_4e9f82fc",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:37:11Z",
+      "side": 1,
+      "message": "Yeah, we should look further into it.  I suspect that what is happening is we\u0027re using a different blitter from before (when the drawn image is n32 the legacy blitter gets chosen), but on platforms where n32 is different from rgba8888 we would now stop using the legacy blitter (good, that means we\u0027re now correctly respecting the requested colortype).\n\nBut some of these tests have pretty tight fuzzy pixel tolerances, so we may need to look at the generated images and see if they are okay and just bump the tolerances up.",
+      "parentUuid": "dcec034b_617ea5df",
+      "range": {
+        "startLine": 623,
+        "startChar": 46,
+        "endLine": 623,
+        "endChar": 62
+      },
+      "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
