@@ -1835,8 +1835,9 @@ skia_static_library("pathkit") {
   deps = [ ":hsw" ]
 
   sources = []
-  sources += skia_pathops_sources
-  sources += skia_pathops_public
+
+  #  sources += skia_pathops_sources
+  #  sources += skia_pathops_public
   sources += [
     "src/base/SkArenaAlloc.cpp",
     "src/base/SkBezierCurves.cpp",
@@ -1895,6 +1896,7 @@ skia_static_library("pathkit") {
 group("modules") {
   deps = [
     "modules/bentleyottmann",
+    "modules/pathops",
     "modules/skottie",
     "modules/skparagraph",
     "modules/skshaper",
@@ -1932,6 +1934,7 @@ if (skia_enable_tools) {
     "include/svg",
     "include/utils",
     "include/utils/mac",
+    "modules/pathops/include",
     "modules/skottie/include",
     "modules/skparagraph/include",
     "modules/skshaper/include",
@@ -1979,6 +1982,7 @@ if (skia_enable_tools) {
         ":gpu_tool_utils",
         ":skia",
         ":skia.h",
+        "modules/pathops",
         "modules/skottie",
         "modules/skparagraph",
         "modules/skshaper",
@@ -2007,6 +2011,7 @@ if (skia_enable_tools) {
     deps = [
       ":skia",
       ":skia.h",
+      "modules/pathops",
       "modules/skottie",
       "modules/skshaper",
     ]
@@ -2463,6 +2468,7 @@ if (skia_enable_tools) {
       ":flags",
       ":skia",
       ":tool_utils",
+      "modules/pathops",
       "modules/skottie",
       "modules/skottie:gm",
       "modules/skparagraph",
@@ -2656,6 +2662,7 @@ if (skia_enable_tools) {
         ":tests",
         ":tool_utils",
         ":trace",
+        "modules/pathops",
         "modules/skottie",
         "modules/skottie:utils",
         "modules/skshaper",
