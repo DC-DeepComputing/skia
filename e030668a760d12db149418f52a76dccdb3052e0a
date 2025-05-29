@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9618758d_f0cec07c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-29T13:32:27Z",
+      "side": 1,
+      "message": "This hopefully would have avoided confusion in http://review.skia.org/996096",
+      "revId": "e030668a760d12db149418f52a76dccdb3052e0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
