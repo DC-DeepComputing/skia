@@ -16,6 +16,24 @@
       "message": "ptal ... is this how we update skcms?",
       "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2843bb5_48072c60",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-29T13:49:55Z",
+      "side": 1,
+      "message": "We make changes in the skcms repo and then an autoroller syncs to Skia https://skia.googlesource.com/skcms/+/main",
+      "parentUuid": "a6f39632_04c6c55f",
+      "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
