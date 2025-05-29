@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6efc710_a9e68145",
+        "filename": "gm/makecolorspace.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-29T15:11:19Z",
+      "side": 1,
+      "message": "This is (and the other similar asserts are) causing `Test-Mac14-Clang-MacMini9.1-CPU-AppleM1-arm64-Debug-All-NativeFonts_PDF` to fail since the `SkPDFDevice` doesn\u0027t override this new `baseRecorder()`. (Same with XPS, though apparently we aren\u0027t testing that config at the moment, looks like the job got removed.)\n\nIs the intent that `SkPDFDocument` or `SkXPSDocument` (or something like them) extend `SkRecorder` and be added to the base enum? Or is it ok for PDF and XPS to not have a recorder?",
+      "revId": "f42bb59753feff1eb831991ad29075150bbec626",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
