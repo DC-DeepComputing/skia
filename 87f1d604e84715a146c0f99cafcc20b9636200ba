@@ -70,6 +70,30 @@
       },
       "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e3a88af_22f34650",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 3
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-29T11:50:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b3060e0_adc863f9",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "87f1d604e84715a146c0f99cafcc20b9636200ba",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
