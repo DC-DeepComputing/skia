@@ -333,7 +333,7 @@ def _CheckBazelBUILDFiles(input_api, output_api):
                       "tests/", "resources/", "bazel/deps_parser/", "bazel/exporter_tool/",
                       "tools/gpu/gl/interface/", "bazel/utils/", "include/config/",
                       "bench/", "example/external_client/"]
-    is_excluded = any(affected_file_path.startswith(n) for n in excluded_paths)
+    is_excluded = any(affected_file_path.startswith(os.path.normpath(n)) for n in excluded_paths)
     if is_bazel and not is_excluded:
       with open(affected_file_path, 'r') as file:
         contents = file.read()
