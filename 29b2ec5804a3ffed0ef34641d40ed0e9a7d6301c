@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6f39632_04c6c55f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-05-29T13:35:38Z",
+      "side": 1,
+      "message": "ptal ... is this how we update skcms?",
+      "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
