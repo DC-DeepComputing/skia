@@ -46,6 +46,30 @@
       },
       "revId": "b029c60ae4544048aea882e7fc1716b39ff49bf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abd46f85_9aadea01",
+        "filename": "gn/core.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-29T21:33:41Z",
+      "side": 0,
+      "message": "Sorry for jumping to conclusions.",
+      "parentUuid": "f61aba04_fc131cfe",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "b029c60ae4544048aea882e7fc1716b39ff49bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
