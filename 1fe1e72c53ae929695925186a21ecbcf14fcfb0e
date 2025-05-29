@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aeb7299_855ecd28",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3943009
+      },
+      "writtenOn": "2025-05-29T14:46:48Z",
+      "side": 1,
+      "message": "Thank you everyone for upvoting the change. I was unable to submit it due to insufficient permissions. Could you please advise on how I can obtain the necessary permissions to submit?\n\nAlternatively, we would appreciate it if someone from the Skia team could submit it on our behalf.",
+      "revId": "1fe1e72c53ae929695925186a21ecbcf14fcfb0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
