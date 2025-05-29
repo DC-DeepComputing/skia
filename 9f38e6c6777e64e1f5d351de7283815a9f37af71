@@ -16,6 +16,24 @@
       "message": "Unfortunately on the Chrome side the newly picked PNG decoder decodes differently. The new decoder looks (probably?) more correct. The old decoder looks like it composited the alpha with transparent black? In any event, the bitmap emoji Chromium side changed a bit and is causing issues with the roll.",
       "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cff0777c_503c67b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-29T16:48:51Z",
+      "side": 1,
+      "message": "Hmm... We are using libpng in both cases. This might be a difference between using SkPngDecoder directly and SkImages (the latter does some finagling with premul, IIRC). I\u0027m going to revert and reland with a guard define.",
+      "parentUuid": "f36244f3_dd9e9173",
+      "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
