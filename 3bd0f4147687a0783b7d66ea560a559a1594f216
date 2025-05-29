@@ -22,6 +22,30 @@
       },
       "revId": "3bd0f4147687a0783b7d66ea560a559a1594f216",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17e92cee_5cf49f64",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 838,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-05-29T15:23:58Z",
+      "side": 1,
+      "message": "Oh nice, I didn\u0027t realize they could be set outside the render pass. Moved, thanks!",
+      "parentUuid": "0f3d07b7_bd8e40b4",
+      "range": {
+        "startLine": 836,
+        "startChar": 0,
+        "endLine": 838,
+        "endChar": 60
+      },
+      "revId": "3bd0f4147687a0783b7d66ea560a559a1594f216",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
