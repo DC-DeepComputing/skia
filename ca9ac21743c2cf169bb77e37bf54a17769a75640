@@ -1,0 +1,257 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e490c7fa_63f16934",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 31
+      },
+      "lineNbr": 327,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "nit: it will be broken",
+      "range": {
+        "startLine": 327,
+        "startChar": 26,
+        "endLine": 327,
+        "endChar": 27
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ecafc13_034ecafd",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "Can we add a comment here along the lines of:\n\nFor a tiled draw pass, the RenderPassDesc and the target reflect the full final surface. Internally, RenderPassTask will use the bounds of the DrawPass to resolve smaller MSAA attachments into the appropriate location of the target. The only differences between the renderpasses of the tiles are when a specific tile can skip stencil\u0027ing or being MSAA\u0027ed.\n\n(otherwise its tempting to think that we can just hoist `desc` out of the loop and use the aggregate list properties).",
+      "range": {
+        "startLine": 316,
+        "startChar": 11,
+        "endLine": 325,
+        "endChar": 0
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f964497_d190b42f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 598,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "This could be simpler, perhaps, if the builder had an array of optional\u003cDrawPassStates\u003e so we can have DrawPassState itself be constructed fully valid?",
+      "range": {
+        "startLine": 598,
+        "startChar": 0,
+        "endLine": 598,
+        "endChar": 46
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f0d6ccd_54480d83",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "It should be valid to accumulate this state during the the `forEachTile` call that creates the draw keys. Then we don\u0027t have to iterate the draws twice.  This would require creating a DrawPassState per tile and then coelescing them together if the tiles ended up being single sampled.\n\nI think we may want to do this for other reasons, outlined below.",
+      "range": {
+        "startLine": 733,
+        "startChar": 0,
+        "endLine": 742,
+        "endChar": 5
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54bba324_b6316b8c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "I\u0027m not sure that this will do what we want when there\u0027s a draw covering a large number of tiles, and those tiles all point to the same single-sampled DrawPassState.\n\nWe\u0027ll end up recording a SortKey for into the shared fDrawKeys list for each tile intersecting the draw. Currently there\u0027s nothing that I saw inside `generateDrawCommandsForTile` that would filter out the redundant SortKeys. Perhaps instead we collect the SortKeys and DrawCommands into separate single-sampled DrawPassStates and TileStates, but then concatentate them together into a single command list for the final DrawPass?",
+      "range": {
+        "startLine": 795,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 15
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c88f325_62288c3c",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 829,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 829,
+        "startChar": 29,
+        "endLine": 829,
+        "endChar": 56
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da7a595c_b0fc2351",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 849,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 849,
+        "startChar": 24,
+        "endLine": 849,
+        "endChar": 38
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "15e3eb7d_482d7229",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 867,
+        "startChar": 24,
+        "endLine": 867,
+        "endChar": 38
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0f7b51e_d73cc524",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "I think this loop would be simpler if `finishDrawPass()` returned nullptr if its final command list was empty",
+      "range": {
+        "startLine": 867,
+        "startChar": 24,
+        "endLine": 867,
+        "endChar": 38
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b37a577e_bb2e6490",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "nit: generate",
+      "range": {
+        "startLine": 882,
+        "startChar": 26,
+        "endLine": 882,
+        "endChar": 27
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb831437_7dca05a6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 929,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T18:45:51Z",
+      "side": 1,
+      "message": "Can these be moved into DrawPassState?",
+      "range": {
+        "startLine": 928,
+        "startChar": 0,
+        "endLine": 929,
+        "endChar": 60
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
