@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb7ee7bf_c7a4c26c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-29T14:52:25Z",
+      "side": 1,
+      "message": "Okay, no big deal.",
+      "parentUuid": "1238b8c0_3b5e3d6d",
+      "revId": "1ba138bb74dbc9f09aefc13b507288e4a6e26323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ba6c53ad_7007e719",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "678ca52a_a56bfe37",
+        "filename": "resources/sksl/errors/InterfaceBlockMixedCommasAndSemicolons.sksl",
+        "patchSetId": 4
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-29T14:52:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ba6c53ad_7007e719",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 55
+      },
+      "revId": "1ba138bb74dbc9f09aefc13b507288e4a6e26323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "aa225ff9_54a2b9c0",
@@ -71,6 +113,30 @@
       "writtenOn": "2025-05-29T13:45:38Z",
       "side": 1,
       "message": "It turns out that moving this expect call changes the start/end character range associated with the field, so it no longer includes any trailing semicolon.  That seems fine to me, but means that all of the error tests actually need to be re-generated because their error messages now have one fewer `^` character.\n\nThis can be done by adding `skia_compile_sksl_tests\u003dtrue` to your GN args and then doing a `ninja -C [out]` w/o any specific target to build everything.",
+      "range": {
+        "startLine": 1367,
+        "startChar": 8,
+        "endLine": 1370,
+        "endChar": 0
+      },
+      "revId": "1ba138bb74dbc9f09aefc13b507288e4a6e26323",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de95fe40_7053f2d8",
+        "filename": "src/sksl/SkSLParser.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1370,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-29T14:52:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa225ff9_54a2b9c0",
       "range": {
         "startLine": 1367,
         "startChar": 8,
