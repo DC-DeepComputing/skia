@@ -16,6 +16,98 @@
       "message": "Ok to review.",
       "revId": "3d09135e2d3da0b3cc3124e96a1e7c847e4cd685",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d824d560_666a89b8",
+        "filename": "src/gpu/graphite/BufferManager.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:35:01Z",
+      "side": 1,
+      "message": "Do we need this? If we\u0027re still using the exact buffer size for the vertex data, does it matter whether or not the transfer buffer for the source data is a bigger or suballocated?",
+      "range": {
+        "startLine": 624,
+        "startChar": 0,
+        "endLine": 629,
+        "endChar": 6
+      },
+      "revId": "3d09135e2d3da0b3cc3124e96a1e7c847e4cd685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1bed9c6f_3d0e9ead",
+        "filename": "src/gpu/graphite/DrawWriter.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:35:01Z",
+      "side": 1,
+      "message": "Would it not be valuable for tests to also see the draw commands in the CommandList? It can still be headless because the command list isn\u0027t ever going to be executed.  That would simplify how HeadlessDrawWriter hooks in, maybe just a subtype that exposes some of the protected functionality for test convenience.",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 94
+      },
+      "revId": "3d09135e2d3da0b3cc3124e96a1e7c847e4cd685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b31b26_90231b03",
+        "filename": "src/gpu/graphite/DrawWriter.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 254,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:35:01Z",
+      "side": 1,
+      "message": "Can these stay private?",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 254,
+        "endChar": 53
+      },
+      "revId": "3d09135e2d3da0b3cc3124e96a1e7c847e4cd685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57e5e00b_e0e24569",
+        "filename": "tests/graphite/VerticesPaddingTest.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-29T13:35:01Z",
+      "side": 1,
+      "message": "We don\u0027t want the target of a draw pass to the texture proxy associated with a cached bitmap. CreateCachedProxy is meant for sample-only immutable images, and it may or may not be renderable.\n\nWe can just create a new target proxy by calling `TextureProxy::Make(...)` with `Caps::getDefaultSampledTextureInfo(colortype, Mipmapped::kNo, Protected::kNo, Renderable::kYes`",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "3d09135e2d3da0b3cc3124e96a1e7c847e4cd685",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
