@@ -22,6 +22,30 @@
       },
       "revId": "b029c60ae4544048aea882e7fc1716b39ff49bf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f61aba04_fc131cfe",
+        "filename": "gn/core.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-29T19:06:55Z",
+      "side": 0,
+      "message": "The latest version was generated with `make -C bazel generate_gni`.",
+      "parentUuid": "9e267e53_fed20ec5",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "b029c60ae4544048aea882e7fc1716b39ff49bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
