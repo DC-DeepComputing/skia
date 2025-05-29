@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "067b38e1_ce2dd6c1",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-29T20:33:45Z",
+      "side": 1,
+      "message": "So the plan looks like to land like this, then for each user of Skia remove this bit locally and fix what breaks, and then once the users are all updated to remove this bit?",
+      "revId": "38c7e1879e4d0308c073a2dd14d1b615da145e95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
