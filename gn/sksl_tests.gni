@@ -112,6 +112,7 @@ sksl_error_tests = [
   "errors/InterfaceBlockWithInvalidNestedStruct.sksl",
   "errors/InterfaceBlockWithInvalidStruct.sksl",
   "errors/InterfaceBlockWithNoMembers.sksl",
+  "errors/InterfaceBlockMixedCommasAndSemicolons.sksl",
   "errors/IntrinsicInGlobalVariable.sksl",
   "errors/InvalidAssignment.rts",
   "errors/InvalidAssignmentPipelineInputs.sksl",
