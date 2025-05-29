@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8736ab5d_cfcfb8b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-05-29T11:20:53Z",
+      "side": 1,
+      "message": "ptal -- a pre-emptive change to not break on skcms roll",
+      "revId": "8573fdafd01fd4b50f9d725caef5018422085e03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
