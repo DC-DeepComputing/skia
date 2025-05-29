@@ -34,6 +34,24 @@
       "parentUuid": "f36244f3_dd9e9173",
       "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11b1207f_7bbe62d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-29T21:38:21Z",
+      "side": 1,
+      "message": "`SkMask::kARGB32_Format` claims to be in `SkPMColor`. Following though the old `SkPngDecoder::Decode` route it looks like the image will be `kUnpremul_SkAlphaType` but then drawn into a canvas backed by a bitmap with `kPremul_SkAlphaType`. Actually checking confirms this. With the new code the bitmap comes back `kPremul_SkAlphaType`.",
+      "parentUuid": "cff0777c_503c67b3",
+      "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
