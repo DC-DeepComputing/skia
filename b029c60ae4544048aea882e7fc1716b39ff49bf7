@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9e267e53_fed20ec5",
+        "filename": "gn/core.gni",
+        "patchSetId": 4
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-29T19:01:35Z",
+      "side": 0,
+      "message": "Don\u0027t edit this by hand.\n\nhttps://github.com/google/skia/blob/191ef95dbe5483104ef6aaf8842b77fc97af8ae3/bazel/exporter_tool/main.go#L121-L127",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 17
+      },
+      "revId": "b029c60ae4544048aea882e7fc1716b39ff49bf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
