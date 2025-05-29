@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c003a560_89edf52b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-05-29T15:15:16Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL again?  Your LGTM got lost after touching a new file (Skia\u0027s `//BUILD.gn`) in the latest patchset.",
+      "revId": "39479b8722e26a90dc09347ea76a4ffb0ee1a08e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
