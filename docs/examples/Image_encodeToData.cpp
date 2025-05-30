@@ -11,7 +11,7 @@ void draw(SkCanvas* canvas) {
         options.fQuality = quality;
         sk_sp<SkData> data(SkJpegEncoder::Encode(nullptr, image.get(), options));
         sk_sp<SkImage> filtered = SkImages::DeferredFromEncodedData(data)->
-                makeSubset(nullptr, subset);
+                makeSubset(nullptr, subset, {});
         canvas->drawImage(filtered, x, 0);
         x += 16;
     }

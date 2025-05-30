@@ -109,9 +109,8 @@ protected:
 
     DrawResult onDraw(SkCanvas* canvas,
                       SkString* errorMsg) override {
-        auto context = GrAsDirectContext(canvas->recordingContext());
         SkRecorder* recorder = canvas->baseRecorder();
-        if (!context && !recorder) {
+        if (!recorder) {
             *errorMsg = kErrorMsg_DrawSkippedGpuOnly;
             return DrawResult::kSkip;
         }
@@ -154,12 +153,7 @@ protected:
                 paint.setColor(SK_ColorBLACK);
                 canvas->drawRect(rect, paint);
                 if (subset) {
-                    sk_sp<SkImage> subsetImg;
-                    if (recorder) {
-                        subsetImg = fYUVImage->makeSubset(recorder, *subset, {false});
-                    } else {
-                        subsetImg = fYUVImage->makeSubset(context, *subset);
-                    }
+                    sk_sp<SkImage> subsetImg = fYUVImage->makeSubset(recorder, *subset, {false});
                     SkASSERT(subsetImg);
                     paint.setShader(subsetImg->makeShader(tm, tm,
                                                           sampling, SkMatrix::Translate(2, 2)));
