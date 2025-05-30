@@ -93,6 +93,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89533788_13e47417",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 742,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-30T12:57:43Z",
+      "side": 1,
+      "message": "Disregard this, it was premature.  But I do think we could avoid iterating over all the draws if the tile tracker is single-tiled.",
+      "parentUuid": "9f0d6ccd_54480d83",
+      "range": {
+        "startLine": 733,
+        "startChar": 0,
+        "endLine": 742,
+        "endChar": 5
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "54bba324_b6316b8c",
@@ -106,6 +130,30 @@
       "writtenOn": "2025-05-29T18:45:51Z",
       "side": 1,
       "message": "I\u0027m not sure that this will do what we want when there\u0027s a draw covering a large number of tiles, and those tiles all point to the same single-sampled DrawPassState.\n\nWe\u0027ll end up recording a SortKey for into the shared fDrawKeys list for each tile intersecting the draw. Currently there\u0027s nothing that I saw inside `generateDrawCommandsForTile` that would filter out the redundant SortKeys. Perhaps instead we collect the SortKeys and DrawCommands into separate single-sampled DrawPassStates and TileStates, but then concatentate them together into a single command list for the final DrawPass?",
+      "range": {
+        "startLine": 795,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 15
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd208880_8270e05a",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-30T12:57:43Z",
+      "side": 1,
+      "message": "I spent more time thinking about this, but my proposed idea doesn\u0027t do anything different.  Then I thought maybe we should try skipping separate tile state command lists when things are single sampled, to minimize the buffer calculations and vertex writing, and then replay the single sampled command list into tiles as necessary.  The replaying could be done more flexibly, by using an SkRegion\u0027s rectangle iterator to break it into as large as possible scissor regions that don\u0027t overlap with any MSAA.\n\nBut this gets tricky since a single-sampled draw may still need to be recorded with the MSAA tile if it overlaps those too. We might be able to detect this during the tile iteration and add the SortKey for a single-sampled draw to all MSAA-requiring tiles and to the single-sampled drawpass state at most once.\n\nThis might strike a good balance between avoiding redundant vertex creation but also allowing draws to be skipped per some tiles.",
+      "parentUuid": "54bba324_b6316b8c",
       "range": {
         "startLine": 795,
         "startChar": 0,
