@@ -15,7 +15,9 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
 
+#include <cstddef>
 #include <cstdint>
+#include <vector>
 
 namespace skgpu {
 
