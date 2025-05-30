@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c7f7be_4d475402",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-30T02:04:30Z",
+      "side": 1,
+      "message": "Ready to review! Reverted most of the invasive changes to `UploadBufferManager` and `DrawWriter`. We now get buffers through the draw writer. Tested on both use mappable buffers and use transfer devices.",
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
