@@ -164,7 +164,11 @@ enum class Shareable : uint8_t {
  * buffers created by DrawBufferManager).
  */
 struct BindBufferInfo {
+#if defined(GPU_TEST_UTILS)
+    Buffer* fBuffer = nullptr;
+#else
     const Buffer* fBuffer = nullptr;
+#endif
     uint32_t fOffset = 0;
     uint32_t fSize = 0;
 
