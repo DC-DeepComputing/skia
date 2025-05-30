@@ -110,6 +110,9 @@ public:
     int count() const { return fCount; }
     const SkGlyphID* glyphs() const { return fGlyphs; }
 
+    int size() const { return fCount; }
+    const SkGlyphID* data() const { return fGlyphs; }
+
 private:
     skia_private::AutoSTArray<32, SkGlyphID> fStorage;
     const SkGlyphID* fGlyphs;
