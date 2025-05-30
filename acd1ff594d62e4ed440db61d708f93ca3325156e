@@ -16,6 +16,23 @@
       "message": "Corresponding Chromium change: https://chromium-review.googlesource.com/c/chromium/src/+/6604460",
       "revId": "acd1ff594d62e4ed440db61d708f93ca3325156e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39ab9c4b_166885ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-30T21:04:44Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "acd1ff594d62e4ed440db61d708f93ca3325156e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
