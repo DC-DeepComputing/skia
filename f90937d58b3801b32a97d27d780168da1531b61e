@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9396d35c_db866023",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-30T15:59:50Z",
+      "side": 1,
+      "message": "Handing off to Florin and Kaylee to explore preparing clients",
+      "revId": "f90937d58b3801b32a97d27d780168da1531b61e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
