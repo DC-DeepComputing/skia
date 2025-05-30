@@ -70,6 +70,30 @@
       },
       "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3da52980_ade1d19f",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-30T17:00:45Z",
+      "side": 1,
+      "message": "The `FilterResult_raster_Rescale` tests are failing due to the test case having to create a new image instead of referencing the original. This is because in `FilterResult::rescale()` it checks if the source image colortype is the same as the backend colortype [1], if they are then we can do a noop. This all seems like WAI, so maybe change test expectations?\n\n[1] https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkImageFilterTypes.cpp;drc\u003d52d06100a044877d985442dadf5d2f810f7cc74c;l\u003d1668",
+      "parentUuid": "7d45a150_4e9f82fc",
+      "range": {
+        "startLine": 623,
+        "startChar": 46,
+        "endLine": 623,
+        "endChar": 62
+      },
+      "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
