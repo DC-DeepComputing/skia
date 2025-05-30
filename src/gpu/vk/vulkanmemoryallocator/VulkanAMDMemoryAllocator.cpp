@@ -17,7 +17,6 @@
 #include "src/gpu/vk/VulkanUtilsPriv.h"
 #include "src/gpu/vk/vulkanmemoryallocator/VulkanMemoryAllocatorPriv.h"
 
-#include <algorithm>
 #include <cstring>
 
 namespace skgpu {
