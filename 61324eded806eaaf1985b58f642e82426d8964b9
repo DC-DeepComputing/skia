@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8766d40b_f47573c5",
+        "filename": "gn/sksl_tests.gni",
+        "patchSetId": 5
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-30T14:38:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4fdcfb0_7dd2d9b5",
+      "range": {
+        "startLine": 115,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 55
+      },
+      "revId": "61324eded806eaaf1985b58f642e82426d8964b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9a98f6e4_5e606d22",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-05-29T19:10:54Z",
       "side": 1,
       "message": "One final error, this needs to be right after \"errors/InterfaceBlockMemberReservedName.sksl\" to keep the list in alphabetical order.",
+      "range": {
+        "startLine": 302,
+        "startChar": 0,
+        "endLine": 302,
+        "endChar": 61
+      },
+      "revId": "61324eded806eaaf1985b58f642e82426d8964b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63a0e361_5155c831",
+        "filename": "resources/sksl/BUILD.bazel",
+        "patchSetId": 5
+      },
+      "lineNbr": 302,
+      "author": {
+        "id": 3835478
+      },
+      "writtenOn": "2025-05-30T14:38:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9a98f6e4_5e606d22",
       "range": {
         "startLine": 302,
         "startChar": 0,
