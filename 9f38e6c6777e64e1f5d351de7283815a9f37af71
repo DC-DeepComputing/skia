@@ -52,6 +52,24 @@
       "parentUuid": "cff0777c_503c67b3",
       "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d65c23d2_7e714c08",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-05-30T11:53:42Z",
+      "side": 1,
+      "message": "Guard added Chromium side in https://crrev.com/c/6603473. Going to add that in and re-land",
+      "parentUuid": "11b1207f_7bbe62d2",
+      "revId": "9f38e6c6777e64e1f5d351de7283815a9f37af71",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
