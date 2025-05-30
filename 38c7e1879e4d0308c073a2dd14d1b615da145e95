@@ -16,6 +16,24 @@
       "message": "So the plan looks like to land like this, then for each user of Skia remove this bit locally and fix what breaks, and then once the users are all updated to remove this bit?",
       "revId": "38c7e1879e4d0308c073a2dd14d1b615da145e95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b47b7cd9_60158c49",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-30T00:16:22Z",
+      "side": 1,
+      "message": "Indeed.\n\nI think a technique we used in the past was to move this into the \"config\" files for each client, so we could remove it from this header. That way no new clients will see the old api, and each client can update at their own pace.\n\nFor the moment, this is in the head just so we can locally test.",
+      "parentUuid": "067b38e1_ce2dd6c1",
+      "revId": "38c7e1879e4d0308c073a2dd14d1b615da145e95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
