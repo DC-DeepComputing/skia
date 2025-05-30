@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61613ef4_0952d847",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-05-30T16:33:07Z",
+      "side": 1,
+      "message": "This fixes non-intel uhd gold diffs from that hsl \u003c-\u003e regular matrix splitting CL. It unfortunately does not appear to sidestep the driver bug impacting intel uhd. Since it\u0027s only grmtl and that\u0027s not deploy anywhere, I\u0027ll file a bug to investigate intel later.",
+      "revId": "54da34e27c837db93eaf13aab9db686568b3a172",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
