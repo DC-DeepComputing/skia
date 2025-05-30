@@ -382,11 +382,15 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
     }
 #endif
 
-    auto ycbcrFeatures = skgpu::GetExtensionFeatureStruct<
-            VkPhysicalDeviceSamplerYcbcrConversionFeatures>(
-                    features,
-                    VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES);
-    if (ycbcrFeatures && ycbcrFeatures->samplerYcbcrConversion &&
+    const auto ycbcrFeatures =
+            skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceSamplerYcbcrConversionFeatures>(
+                    features, VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SAMPLER_YCBCR_CONVERSION_FEATURES);
+    const auto vk11Features = skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceVulkan11Features>(
+            features, VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_1_FEATURES);
+    const bool samplerYcbcrConversionSupport =
+            (ycbcrFeatures && ycbcrFeatures->samplerYcbcrConversion) ||
+            (vk11Features && vk11Features->samplerYcbcrConversion);
+    if (samplerYcbcrConversionSupport &&
         (physicalDeviceVersion >= VK_MAKE_VERSION(1, 1, 0) ||
          (extensions.hasExtension(VK_KHR_SAMPLER_YCBCR_CONVERSION_EXTENSION_NAME, 1) &&
           this->supportsMaintenance1() && this->supportsBindMemory2() &&
@@ -1190,7 +1194,7 @@ void GrVkCaps::initFormatTable(const GrContextOptions& contextOptions,
         auto rgba10x6Feature =
                 skgpu::GetExtensionFeatureStruct<VkPhysicalDeviceRGBA10X6FormatsFeaturesEXT>(
                         features, VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_RGBA10X6_FORMATS_FEATURES_EXT);
-        // Technically without this extension and exabled feature we could still use this format to
+        // Technically without this extension and enabled feature we could still use this format to
         // sample with a ycbcr sampler. But for simplicity until we have clients requesting that, we
         // limit the use of this format to cases where we have the extension supported.
         supportsRGBA10x6 = rgba10x6Feature  && rgba10x6Feature->formatRgba10x6WithoutYCbCrSampler;
