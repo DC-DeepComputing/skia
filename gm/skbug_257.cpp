@@ -50,7 +50,7 @@ static void exercise_draw_pos_text(SkCanvas* canvas,
     SkTextBlobBuilder builder;
     auto rec = builder.allocRunPos(font, count);
     font.textToGlyphs(text, strlen(text), SkTextEncoding::kUTF8, rec.glyphs, count);
-    font.getPos(rec.glyphs, count, rec.points(), {x, y});
+    font.getPos({rec.glyphs, count}, {rec.points(), count}, {x, y});
     canvas->drawTextBlob(builder.make(), 0, 0, paint);
 }
 
@@ -62,7 +62,7 @@ static void exercise_draw_pos_text_h(SkCanvas* canvas,
     SkTextBlobBuilder builder;
     auto rec = builder.allocRunPosH(font, count, 0);
     font.textToGlyphs(text, strlen(text), SkTextEncoding::kUTF8, rec.glyphs, count);
-    font.getXPos(rec.glyphs, count, rec.pos);
+    font.getXPos({rec.glyphs, count}, {rec.pos, count});
     canvas->drawTextBlob(builder.make(), x, y, paint);
 }
 
