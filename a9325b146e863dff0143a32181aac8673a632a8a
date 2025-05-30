@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22069f1d_dc4916fb",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 234,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T21:02:43Z",
+      "side": 1,
+      "message": "Might be nicer to write this as\n\n`span.first(std::min(span.size(), limit))`\n\nand just inline that, like\n\n`for (auto glyph : glyphs.first(std::min(glyphs.size(), bounds.size()))) {`\n\nSince that makes it a bit easier to see what\u0027s going on. Really this wants a SkZip as well, something like\n\n```\nsize_t numBounds \u003d std::min(bounds.size(), glyphs.size());\nfor (auto [bound, glyph] : SkMakeZip(bounds.first(numBounds), glyphs.first(numBounds))) {\n    scaleMat.mapRectScaleTranslate(\u0026bound, glyph-\u003erect());\n}\n```\n\nIt would be nice to be able to just write `glyphs.",
+      "revId": "a9325b146e863dff0143a32181aac8673a632a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd205c07_91489378",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T21:02:43Z",
+      "side": 1,
+      "message": "Did this just start warning? I\u0027d rather keep the warning (or better return `size_t` from this).",
+      "range": {
+        "startLine": 391,
+        "startChar": 19,
+        "endLine": 391,
+        "endChar": 27
+      },
+      "revId": "a9325b146e863dff0143a32181aac8673a632a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
