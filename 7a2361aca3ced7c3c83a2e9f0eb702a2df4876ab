@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e57ea35c_6f858e19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T14:56:56Z",
+      "side": 1,
+      "message": "I started looking at this and wanted to make sure what I was asking for was even possible or worked, so I just went and wrote https://skia-review.googlesource.com/c/skia/+/1000981 .",
+      "revId": "7a2361aca3ced7c3c83a2e9f0eb702a2df4876ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1444908_ae81e6ea",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1320,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T14:56:56Z",
+      "side": 1,
+      "message": "And the encoder?",
+      "range": {
+        "startLine": 1320,
+        "startChar": 12,
+        "endLine": 1320,
+        "endChar": 32
+      },
+      "revId": "7a2361aca3ced7c3c83a2e9f0eb702a2df4876ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddae0d99_1da06e5f",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1529,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T14:56:56Z",
+      "side": 1,
+      "message": "And here?",
+      "range": {
+        "startLine": 1529,
+        "startChar": 34,
+        "endLine": 1529,
+        "endChar": 53
+      },
+      "revId": "7a2361aca3ced7c3c83a2e9f0eb702a2df4876ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9c79098_da268ce7",
+        "filename": "BUILD.gn",
+        "patchSetId": 1
+      },
+      "lineNbr": 1534,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T14:56:56Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this (and above) be deps\u0027ing in `skia_codec_png_base`? I realize that the `skia` target is a bit of a ball of mud (I mean, this target logically depends on `skia`) but it seems like it would be clearer here to state what depends on what.",
+      "revId": "7a2361aca3ced7c3c83a2e9f0eb702a2df4876ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
