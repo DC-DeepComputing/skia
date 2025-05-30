@@ -148,7 +148,7 @@ static void draw_text_on_path(SkCanvas* canvas, const void* text, size_t length,
 
     AutoTArray<SkGlyphID> glyphs(count);
     font.textToGlyphs(text, length, SkTextEncoding::kUTF8, glyphs.get(), count);
-    font.getWidths(glyphs.get(), count, widths);
+    font.getWidths(glyphs, {widths, count});
 
     for (int i = 0; i < count; ++i) {
         // we want to position each character on the center of its advance

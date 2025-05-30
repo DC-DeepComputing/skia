@@ -759,7 +759,7 @@ DEF_TEST(CustomTypeface_invalid_glyphid, reporter) {
 
     SkGlyphID glyph_ids[] = {0, 1};
     SkRect bounds[2];
-    custom_font.getBounds(glyph_ids, 2, bounds, nullptr);
+    custom_font.getBounds(glyph_ids, bounds, nullptr);
 
     REPORTER_ASSERT(reporter, bounds[0] == SkRect::MakeLTRB(10, 20, 30, 40));
     REPORTER_ASSERT(reporter, bounds[1] == SkRect::MakeLTRB(0, 0, 0, 0));
