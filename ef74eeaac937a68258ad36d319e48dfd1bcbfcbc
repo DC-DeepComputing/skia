@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9ee94e_b473cde4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-05-30T14:13:10Z",
+      "side": 1,
+      "message": "lgtm once iwyu jobs are satisfied",
+      "revId": "ef74eeaac937a68258ad36d319e48dfd1bcbfcbc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
