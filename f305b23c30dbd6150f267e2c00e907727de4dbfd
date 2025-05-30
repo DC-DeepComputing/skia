@@ -16,6 +16,24 @@
       "message": "Hi! PTAL, and also can you help me figure out what broke? Pretty sure it\u0027s unrelated to this change, looks like Skia build doesn\u0027t like this CL (which is also from me) - yet the dawn-skia autoroll succeeded https://dawn-review.googlesource.com/c/dawn/+/243695",
       "revId": "f305b23c30dbd6150f267e2c00e907727de4dbfd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f70915b9_7625d4cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-05-30T20:53:16Z",
+      "side": 1,
+      "message": "Kaylee\u0027s already on it! https://skia-review.googlesource.com/c/skia/+/1000977\nRetrying now.",
+      "parentUuid": "1056e169_c8c0817c",
+      "revId": "f305b23c30dbd6150f267e2c00e907727de4dbfd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
