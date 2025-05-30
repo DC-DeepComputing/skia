@@ -53,15 +53,16 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
         bm.eraseColor(SK_ColorBLACK);
         bm.setImmutable();
         auto rasterImg = bm.asImage();
-        REPORTER_ASSERT(reporter, rasterImg->isValid(static_cast<GrRecordingContext*>(nullptr)));
+        REPORTER_ASSERT(reporter, rasterImg->isValid(static_cast<SkRecorder*>(nullptr)));
 
         // raster + context:
-        auto subImg1 = rasterImg->makeSubset(dContext, subsetBounds);
-        REPORTER_ASSERT(reporter, subImg1->isValid(dContext));
+        auto recorder = dContext->asRecorder();
+        auto subImg1 = rasterImg->makeSubset(recorder, subsetBounds, {});
+        REPORTER_ASSERT(reporter, subImg1->isValid(recorder));
 
         // raster + no context:
-        auto subImg2 = rasterImg->makeSubset(nullptr, subsetBounds);
-        REPORTER_ASSERT(reporter, subImg2->isValid(static_cast<GrRecordingContext*>(nullptr)));
+        auto subImg2 = rasterImg->makeSubset(nullptr, subsetBounds, {});
+        REPORTER_ASSERT(reporter, subImg2->isValid(static_cast<SkRecorder*>(nullptr)));
 
         // Texture image:
         auto surf = SkSurfaces::RenderTarget(dContext, skgpu::Budgeted::kNo, ii);
@@ -79,14 +80,14 @@ DEF_GANESH_TEST(GrDDLImage_MakeSubset, reporter, options, CtsEnforcement::kApiLe
                                                     ii.colorType(),
                                                     ii.alphaType(),
                                                     ii.refColorSpace());
-        REPORTER_ASSERT(reporter, gpuImage->isValid(dContext));
+        REPORTER_ASSERT(reporter, gpuImage->isValid(recorder));
 
         // gpu image + context:
-        auto subImg5 = gpuImage->makeSubset(dContext, subsetBounds);
-        REPORTER_ASSERT(reporter, subImg5->isValid(dContext));
+        auto subImg5 = gpuImage->makeSubset(recorder, subsetBounds, {});
+        REPORTER_ASSERT(reporter, subImg5->isValid(recorder));
 
         // gpu image + nullptr:
-        REPORTER_ASSERT(reporter, !gpuImage->makeSubset(nullptr, subsetBounds));
+        REPORTER_ASSERT(reporter, !gpuImage->makeSubset(nullptr, subsetBounds, {}));
 
         dContext->flush();
         dContext->submit(GrSyncCpu::kYes);
