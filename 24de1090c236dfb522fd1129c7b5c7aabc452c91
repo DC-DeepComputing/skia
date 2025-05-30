@@ -118,6 +118,30 @@
       },
       "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f157da9_10362746",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-05-30T20:44:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6b6fb265_1090104a",
+      "range": {
+        "startLine": 623,
+        "startChar": 46,
+        "endLine": 623,
+        "endChar": 62
+      },
+      "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
