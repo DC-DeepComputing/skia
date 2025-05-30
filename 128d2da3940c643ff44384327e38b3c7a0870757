@@ -1,0 +1,49 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9eac77bf_6cf3395c",
+        "filename": "tools/flags/CommandLineFlags.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-05-30T15:41:41Z",
+      "side": 1,
+      "message": "Should this be deleted?",
+      "fixSuggestions": [
+        {
+          "fixId": "af6de706_1cdcd67e",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tools/flags/CommandLineFlags.h",
+              "range": {
+                "startLine": 185,
+                "startChar": 0,
+                "endLine": 186,
+                "endChar": 0
+              },
+              "replacement": "    private:\n"
+            },
+            {
+              "path": "tools/flags/CommandLineFlags.h",
+              "range": {
+                "startLine": 195,
+                "startChar": 0,
+                "endLine": 195,
+                "endChar": 0
+              },
+              "replacement": "        friend class CommandLineFlags;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "128d2da3940c643ff44384327e38b3c7a0870757",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
