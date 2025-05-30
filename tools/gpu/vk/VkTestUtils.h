@@ -22,6 +22,15 @@ class VulkanExtensions;
 }
 
 namespace sk_gpu_test {
+    struct TestVkFeatures {
+        VkPhysicalDeviceFeatures2 features;
+
+        // Note: Any struct that CreateVkBackendContext may chain to VkPhysicalDeviceFeatures2
+        // should remain in scope together with the physical device features.
+        skgpu::VulkanPreferredFeatures skiaFeatures;
+        VkPhysicalDeviceProtectedMemoryFeatures protectedMemoryFeatures;
+    };
+
     bool LoadVkLibraryAndGetProcAddrFuncs(PFN_vkGetInstanceProcAddr*);
 
     using CanPresentFn = std::function<bool(VkInstance, VkPhysicalDevice,
@@ -30,13 +39,11 @@ namespace sk_gpu_test {
     bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
                                 skgpu::VulkanBackendContext* ctx,
                                 skgpu::VulkanExtensions*,
-                                VkPhysicalDeviceFeatures2*,
+                                TestVkFeatures*,
                                 VkDebugUtilsMessengerEXT* debugMessenger,
                                 uint32_t* presentQueueIndexPtr = nullptr,
                                 const CanPresentFn& canPresent = CanPresentFn(),
                                 bool isProtected = false);
-
-    void FreeVulkanFeaturesStructs(const VkPhysicalDeviceFeatures2*);
 
 }  // namespace sk_gpu_test
 
