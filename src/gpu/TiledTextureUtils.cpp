@@ -429,7 +429,7 @@ std::tuple<bool, size_t> TiledTextureUtils::DrawAsTiledImageRect(
             // surface, and the SkPicture could have GPU data.
             if (as_IB(image)->type() == SkImage_Base::Type::kLazyPicture) {
                 auto imageProc = [&](SkIRect iTileR) {
-                    return image->makeSubset(nullptr, iTileR);
+                    return image->makeSubset(nullptr, iTileR, {});
                 };
 
                 size_t tiles = draw_tiled_image(canvas,

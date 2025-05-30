@@ -118,6 +118,7 @@ static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) 
     return bitmap;
 }
 
+#if !defined(SK_DISABLE_LEGACY_NONRECORDER_IMAGE_APIS)
 sk_sp<SkImage> SkImage_Raster::onMakeSubset(GrDirectContext*, const SkIRect& subset) const {
     SkBitmap copy = copy_bitmap_subset(fBitmap, subset);
     if (copy.isNull()) {
@@ -126,6 +127,7 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(GrDirectContext*, const SkIRect& sub
         return SkImages::RasterFromBitmap(copy);
     }
 }
+#endif
 
 static sk_sp<SkMipmap> copy_mipmaps(const SkBitmap& src, SkMipmap* srcMips) {
     if (!srcMips) {
@@ -224,14 +226,16 @@ bool SkImage_Raster::onAsLegacyBitmap(GrDirectContext*, SkBitmap* bitmap) const 
 
 ///////////////////////////////////////////////////////////////////////////////
 
-sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(SkColorType targetCT,
-                                                            sk_sp<SkColorSpace> targetCS,
-                                                            GrDirectContext*) const {
+sk_sp<SkImage> SkImage_Raster::makeColorTypeAndColorSpace(SkRecorder*,
+                                                          SkColorType targetColorType,
+                                                          sk_sp<SkColorSpace> targetColorSpace,
+                                                          RequiredProperties) const {
     SkPixmap src;
     SkAssertResult(fBitmap.peekPixels(&src));
 
     SkBitmap dst;
-    if (!dst.tryAllocPixels(fBitmap.info().makeColorType(targetCT).makeColorSpace(targetCS))) {
+    if (!dst.tryAllocPixels(
+                fBitmap.info().makeColorType(targetColorType).makeColorSpace(targetColorSpace))) {
         return nullptr;
     }
 
@@ -239,6 +243,14 @@ sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(SkColorType targetCT
     dst.setImmutable();
     return SkImages::RasterFromBitmap(dst);
 }
+
+#if !defined(SK_DISABLE_LEGACY_NONRECORDER_IMAGE_APIS)
+sk_sp<SkImage> SkImage_Raster::onMakeColorTypeAndColorSpace(SkColorType targetCT,
+                                                            sk_sp<SkColorSpace> targetCS,
+                                                            GrDirectContext*) const {
+    return this->makeColorTypeAndColorSpace(nullptr, targetCT, targetCS, {});
+}
+#endif
 
 sk_sp<SkImage> SkImage_Raster::onReinterpretColorSpace(sk_sp<SkColorSpace> newCS) const {
     // TODO: If our bitmap is immutable, then we could theoretically create another image sharing
