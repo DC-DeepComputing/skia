@@ -11,6 +11,9 @@
 #include "include/gpu/graphite/Context.h"
 #include "src/gpu/AsyncReadTypes.h"
 #include "src/gpu/graphite/Buffer.h"
+#include "include/private/base/SkTArray.h"
+
+#include <forward_list>
 
 namespace skgpu::graphite {
 
