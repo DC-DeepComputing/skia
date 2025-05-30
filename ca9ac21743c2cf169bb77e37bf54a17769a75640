@@ -166,6 +166,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ad19956a_aca89b64",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-05-30T18:05:25Z",
+      "side": 1,
+      "message": "Is buffer writing expensive? I do think a good alternative would be calculating all the vertices once in compute shader and reuse them.\nThere are more things to consider:\n- If we reuse the same SortKeys for all single-sampled tiles, then repeatedly redraw with different scissors, we would draw more than necessary. Even more than using separate SortKeys for each tiles. Is buffer writing more expensive the repeated draws that it\u0027s worth to trade off?\n- Alternatively, we could issue the draws once for all single sampled tiles and use stencil buffer to mask out the regions that overlap MSAA tiles. I\u0027m not sure how easy it is to implement this in graphite with current architecture.",
+      "parentUuid": "dd208880_8270e05a",
+      "range": {
+        "startLine": 795,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 15
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c88f325_62288c3c",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 31
