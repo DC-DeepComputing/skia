@@ -16,6 +16,64 @@
       "message": "ptal",
       "revId": "9e249655fe36f9f33cc238568c45505a6f43b24c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e33bdb2_89e57653",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-30T12:26:20Z",
+      "side": 1,
+      "message": "Before landing we should figure out the client conversion story.\n\nFor Chromium I think the easiest would be adding an empty/stub module first.  Not sure about Android and Flutter, hopefully the same works for them.",
+      "revId": "9e249655fe36f9f33cc238568c45505a6f43b24c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa242988_48e253ac",
+        "filename": "BUILD.gn",
+        "patchSetId": 7
+      },
+      "lineNbr": 1848,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-05-30T12:26:20Z",
+      "side": 1,
+      "message": "I think we can just delete these, PK has explicit pathops deps in its modult build files.",
+      "range": {
+        "startLine": 1847,
+        "startChar": 0,
+        "endLine": 1848,
+        "endChar": 35
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f0fb2b08_673dc2ca",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "BUILD.gn",
+              "range": {
+                "startLine": 1847,
+                "startChar": 0,
+                "endLine": 1849,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "9e249655fe36f9f33cc238568c45505a6f43b24c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
