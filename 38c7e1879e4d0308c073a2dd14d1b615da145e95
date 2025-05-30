@@ -34,6 +34,24 @@
       "parentUuid": "067b38e1_ce2dd6c1",
       "revId": "38c7e1879e4d0308c073a2dd14d1b615da145e95",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "026bbead_52ebad9a",
+        "filename": "include/core/SkCanvas.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-30T15:00:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b47b7cd9_60158c49",
+      "revId": "38c7e1879e4d0308c073a2dd14d1b615da145e95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
