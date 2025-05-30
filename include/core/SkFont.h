@@ -11,6 +11,7 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypeface.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTo.h"
@@ -18,7 +19,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <type_traits>
 #include <vector>
 
 class SkMatrix;
@@ -297,7 +297,11 @@ public:
         @return              number of glyphs represented by text of length byteLength
     */
     int textToGlyphs(const void* text, size_t byteLength, SkTextEncoding encoding,
-                     SkGlyphID glyphs[], int maxGlyphCount) const;
+                     SkSpan<SkGlyphID> glyphs) const;
+    int textToGlyphs(const void* text, size_t byteLength, SkTextEncoding encoding,
+                     SkGlyphID glyphs[], int maxGlyphCount) const {
+        return this->textToGlyphs(text, byteLength, encoding, {glyphs, maxGlyphCount});
+    }
 
     /** Returns glyph index for Unicode character.
 
@@ -308,7 +312,10 @@ public:
     */
     SkGlyphID unicharToGlyph(SkUnichar uni) const;
 
-    void unicharsToGlyphs(const SkUnichar uni[], int count, SkGlyphID glyphs[]) const;
+    void unicharsToGlyphs(SkSpan<const SkUnichar> src, SkSpan<SkGlyphID> dst) const;
+    void unicharsToGlyphs(const SkUnichar uni[], int count, SkGlyphID glyphs[]) const {
+        this->unicharsToGlyphs({uni, count}, {glyphs, count});
+    }
 
     /** Returns number of glyphs represented by text.
 
@@ -352,66 +359,52 @@ public:
     SkScalar measureText(const void* text, size_t byteLength, SkTextEncoding encoding,
                          SkRect* bounds, const SkPaint* paint) const;
 
-    /** DEPRECATED
-        Retrieves the advance and bounds for each glyph in glyphs.
-        Both widths and bounds may be nullptr.
-        If widths is not nullptr, widths must be an array of count entries.
-        if bounds is not nullptr, bounds must be an array of count entries.
-
-        @param glyphs      array of glyph indices to be measured
-        @param count       number of glyphs
-        @param widths      returns text advances for each glyph; may be nullptr
-        @param bounds      returns bounds for each glyph relative to (0, 0); may be nullptr
-    */
-    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[]) const {
-        this->getWidthsBounds(glyphs, count, widths, bounds, nullptr);
-    }
-
-    // DEPRECATED
-    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[], std::nullptr_t) const {
-        this->getWidths(glyphs, count, widths);
-    }
-
     /** Retrieves the advance and bounds for each glyph in glyphs.
         Both widths and bounds may be nullptr.
         If widths is not nullptr, widths must be an array of count entries.
         if bounds is not nullptr, bounds must be an array of count entries.
 
         @param glyphs      array of glyph indices to be measured
-        @param count       number of glyphs
-        @param widths      returns text advances for each glyph
-     */
-    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[]) const {
-        this->getWidthsBounds(glyphs, count, widths, nullptr, nullptr);
-    }
-
-    /** Retrieves the advance and bounds for each glyph in glyphs.
-        Both widths and bounds may be nullptr.
-        If widths is not nullptr, widths must be an array of count entries.
-        if bounds is not nullptr, bounds must be an array of count entries.
-
-        @param glyphs      array of glyph indices to be measured
-        @param count       number of glyphs
-        @param widths      returns text advances for each glyph; may be nullptr
-        @param bounds      returns bounds for each glyph relative to (0, 0); may be nullptr
+        @param widths      returns text advances for each glyph; may be empty
+        @param bounds      returns bounds for each glyph relative to (0, 0); may be empty
         @param paint       optional, specifies stroking, SkPathEffect and SkMaskFilter
      */
-    void getWidthsBounds(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[],
+    void getWidthsBounds(SkSpan<const SkGlyphID> glyphs, SkSpan<SkScalar> widths, SkSpan<SkRect> bounds,
                          const SkPaint* paint) const;
 
+    /** Retrieves the advance and bounds for each glyph in glyphs.
+        Both widths and bounds may be nullptr.
+        If widths is not nullptr, widths must be an array of count entries.
+        if bounds is not nullptr, bounds must be an array of count entries.
+
+        @param glyphs      array of glyph indices to be measured
+        @param widths      returns text advances for each glyph
+     */
+    void getWidths(SkSpan<const SkGlyphID> glyphs, SkSpan<SkScalar> widths) const {
+        this->getWidthsBounds(glyphs, widths, {}, nullptr);
+    }
+    SkScalar getWidth(SkGlyphID glyph) const {
+        SkScalar width;
+        this->getWidthsBounds({&glyph, 1}, {&width, 1}, {}, nullptr);
+        return width;
+    }
 
     /** Retrieves the bounds for each glyph in glyphs.
         bounds must be an array of count entries.
         If paint is not nullptr, its stroking, SkPathEffect, and SkMaskFilter fields are respected.
 
         @param glyphs      array of glyph indices to be measured
-        @param count       number of glyphs
         @param bounds      returns bounds for each glyph relative to (0, 0); may be nullptr
         @param paint       optional, specifies stroking, SkPathEffect, and SkMaskFilter
      */
-    void getBounds(const SkGlyphID glyphs[], int count, SkRect bounds[],
+    void getBounds(SkSpan<const SkGlyphID> glyphs, SkSpan<SkRect> bounds,
                    const SkPaint* paint) const {
-        this->getWidthsBounds(glyphs, count, nullptr, bounds, paint);
+        this->getWidthsBounds(glyphs, {}, bounds, paint);
+    }
+    SkRect getBounds(SkGlyphID glyph, const SkPaint* paint) const {
+        SkRect bounds;
+        this->getBounds({&glyph, 1}, {&bounds, 1}, paint);
+        return bounds;
     }
 
     /** Retrieves the positions for each glyph, beginning at the specified origin. The caller
@@ -422,7 +415,7 @@ public:
         @param pos      returns glyphs positions
         @param origin   location of the first glyph. Defaults to {0, 0}.
      */
-    void getPos(const SkGlyphID glyphs[], int count, SkPoint pos[], SkPoint origin = {0, 0}) const;
+    void getPos(SkSpan<const SkGlyphID> glyphs, SkSpan<SkPoint> pos, SkPoint origin = {0, 0}) const;
 
     /** Retrieves the x-positions for each glyph, beginning at the specified origin. The caller
         must allocated at least count number of elements in the xpos[] array.
@@ -432,7 +425,7 @@ public:
         @param xpos     returns glyphs x-positions
         @param origin   x-position of the first glyph. Defaults to 0.
      */
-    void getXPos(const SkGlyphID glyphs[], int count, SkScalar xpos[], SkScalar origin = 0) const;
+    void getXPos(SkSpan<const SkGlyphID> glyphs, SkSpan<SkScalar> xpos, SkScalar origin = 0) const;
 
     /** Returns intervals [start, end] describing lines parallel to the advance that intersect
      *  with the glyphs.
@@ -466,7 +459,7 @@ public:
         @param glyphPathProc function returning one glyph description as path
         @param ctx           function context
    */
-    void getPaths(const SkGlyphID glyphIDs[], int count,
+    void getPaths(SkSpan<const SkGlyphID> glyphIDs,
                   void (*glyphPathProc)(const SkPath* pathOrNull, const SkMatrix& mx, void* ctx),
                   void* ctx) const;
 
@@ -499,6 +492,42 @@ public:
     void dump() const;
 
     using sk_is_trivially_relocatable = std::true_type;
+
+#ifdef SK_SUPPORT_UNSPANNED_APIS
+    void getPos(const SkGlyphID glyphs[], int count, SkPoint pos[], SkPoint origin = {0, 0}) const {
+        this->getPos({glyphs, count}, {pos, count}, origin);
+    }
+    void getXPos(const SkGlyphID glyphs[], int count, SkScalar xpos[], SkScalar origin = 0) const {
+        this->getXPos({glyphs, count}, {xpos, count}, origin);
+    }
+    void getPaths(const SkGlyphID glyphIDs[], int count,
+                  void (*glyphPathProc)(const SkPath* pathOrNull, const SkMatrix& mx, void* ctx),
+                  void* ctx) const {
+        this->getPaths({glyphIDs, count}, glyphPathProc, ctx);
+    }
+    void getWidthsBounds(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[],
+                         const SkPaint* paint) const {
+        const auto nw = widths ? count : 0;
+        const auto nb = bounds ? count : 0;
+        this->getWidthsBounds({glyphs, count}, {widths, nw}, {bounds, nb}, paint);
+    }
+    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[], SkRect bounds[]) const {
+        const auto nw = widths ? count : 0;
+        const auto nb = bounds ? count : 0;
+        this->getWidthsBounds({glyphs, count}, {widths, nw}, {bounds, nb}, nullptr);
+    }
+    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[], std::nullptr_t) const {
+        this->getWidthsBounds({glyphs, count}, {widths, count}, {}, nullptr);
+    }
+    void getWidths(const SkGlyphID glyphs[], int count, SkScalar widths[]) const {
+        this->getWidthsBounds({glyphs, count}, {widths, count}, {}, nullptr);
+    }
+    void getBounds(const SkGlyphID glyphs[], int count, SkRect bounds[],
+                   const SkPaint* paint) const {
+        this->getWidthsBounds({glyphs, count}, {}, {bounds, count}, paint);
+    }
+#endif
+
 
 private:
     enum PrivFlags {

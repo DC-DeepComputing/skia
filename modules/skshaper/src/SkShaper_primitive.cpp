@@ -195,7 +195,7 @@ void SkShaperPrimitive::shape(const char* utf8,
     font.textToGlyphs(utf8, utf8Bytes, SkTextEncoding::kUTF8, glyphs.get(), glyphCount);
 
     std::unique_ptr<SkScalar[]> advances(new SkScalar[glyphCount]);
-    font.getWidthsBounds(glyphs.get(), glyphCount, advances.get(), nullptr, nullptr);
+    font.getWidths({glyphs.get(), glyphCount}, {advances.get(), glyphCount});
 
     size_t glyphOffset = 0;
     size_t utf8Offset = 0;

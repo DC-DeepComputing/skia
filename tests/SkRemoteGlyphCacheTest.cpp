@@ -722,8 +722,7 @@ sk_sp<SkTextBlob> make_blob_causing_fallback(
     SkFont(sk_ref_sp(glyphTf)).textToGlyphs(s, strlen(s), SkTextEncoding::kUTF8,
                                             runBuffer.glyphs, runSize);
 
-    SkRect glyphBounds;
-    font.getWidths(runBuffer.glyphs, 1, nullptr, &glyphBounds);
+    SkRect glyphBounds = font.getBounds(runBuffer.glyphs[0], nullptr);
 
     REPORTER_ASSERT(reporter, glyphBounds.width() > SkGlyphDigest::kSkSideTooBigForAtlas);
 
