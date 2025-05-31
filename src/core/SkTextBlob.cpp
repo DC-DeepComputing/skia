@@ -287,7 +287,7 @@ SkRect SkTextBlobBuilder::TightRunBounds(const SkTextBlob::RunRecord& run) {
     }
 
     AutoSTArray<16, SkRect> glyphBounds(run.glyphCount());
-    font.getBounds(run.glyphBuffer(), run.glyphCount(), glyphBounds.get(), nullptr);
+    font.getBounds({run.glyphBuffer(), run.glyphCount()}, glyphBounds, nullptr);
 
     if (SkTextBlob::kRSXform_Positioning == run.positioning()) {
         bounds.setEmpty();
@@ -795,8 +795,8 @@ sk_sp<SkTextBlob> SkTextBlob::MakeFromText(const void* text, size_t byteLength, 
     }
     SkTextBlobBuilder builder;
     auto buffer = builder.allocRunPos(font, count);
-    font.textToGlyphs(text, byteLength, encoding, buffer.glyphs, count);
-    font.getPos(buffer.glyphs, count, buffer.points(), {0, 0});
+    font.textToGlyphs(text, byteLength, encoding, {buffer.glyphs, count});
+    font.getPos({buffer.glyphs, count}, {buffer.points(), count}, {0, 0});
     return builder.make();
 }
 
@@ -809,7 +809,7 @@ sk_sp<SkTextBlob> SkTextBlob::MakeFromPosText(const void* text, size_t byteLengt
     }
     SkTextBlobBuilder builder;
     auto buffer = builder.allocRunPos(font, count);
-    font.textToGlyphs(text, byteLength, encoding, buffer.glyphs, count);
+    font.textToGlyphs(text, byteLength, encoding, {buffer.glyphs, count});
     memcpy(buffer.points(), pos, count * sizeof(SkPoint));
     return builder.make();
 }
@@ -823,7 +823,7 @@ sk_sp<SkTextBlob> SkTextBlob::MakeFromPosTextH(const void* text, size_t byteLeng
     }
     SkTextBlobBuilder builder;
     auto buffer = builder.allocRunPosH(font, count, constY);
-    font.textToGlyphs(text, byteLength, encoding, buffer.glyphs, count);
+    font.textToGlyphs(text, byteLength, encoding, {buffer.glyphs, count});
     memcpy(buffer.pos, xpos, count * sizeof(SkScalar));
     return builder.make();
 }
@@ -837,7 +837,7 @@ sk_sp<SkTextBlob> SkTextBlob::MakeFromRSXform(const void* text, size_t byteLengt
     }
     SkTextBlobBuilder builder;
     auto buffer = builder.allocRunRSXform(font, count);
-    font.textToGlyphs(text, byteLength, encoding, buffer.glyphs, count);
+    font.textToGlyphs(text, byteLength, encoding, {buffer.glyphs, count});
     memcpy(buffer.xforms(), xform, count * sizeof(SkRSXform));
     return builder.make();
 }
