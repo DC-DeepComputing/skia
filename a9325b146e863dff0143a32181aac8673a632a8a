@@ -63,6 +63,30 @@
       },
       "revId": "a9325b146e863dff0143a32181aac8673a632a8a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e66b9a5_5c5a401d",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 391,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-05-31T15:52:16Z",
+      "side": 1,
+      "message": "That function is used by SkTypeface, in connection with its public unicodetoglyphs -- which takes an int. I suggest I defer changing CountTextElements until a CL where we spanify SkTypeface.\n\nI will revert the cast in this CL.",
+      "parentUuid": "7e4da8cd_405b76f0",
+      "range": {
+        "startLine": 391,
+        "startChar": 19,
+        "endLine": 391,
+        "endChar": 27
+      },
+      "revId": "a9325b146e863dff0143a32181aac8673a632a8a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
