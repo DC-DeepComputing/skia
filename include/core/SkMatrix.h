@@ -1419,6 +1419,24 @@ public:
         return result;
     }
 
+    SkPoint mapPointAffine(SkPoint p) const {
+        SkASSERT(!this->hasPerspective());
+        return {
+            (p.fX * fMat[0] + p.fY * fMat[1]) + fMat[2],
+            (p.fX * fMat[3] + p.fY * fMat[4]) + fMat[5],
+        };
+    }
+
+    SkPoint mapPointCheck(SkPoint p) const {
+        if (this->hasPerspective()) {
+            return this->mapPoint(p);
+        } else {
+            return {
+                (p.fX * fMat[0] + p.fY * fMat[1]) + fMat[2],
+                (p.fX * fMat[3] + p.fY * fMat[4]) + fMat[5],
+            };
+        }
+    }
 
     /** Returns (0, 0) multiplied by SkMatrix. Given:
 
