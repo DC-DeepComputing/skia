@@ -1356,25 +1356,29 @@ public:
      */
     void mapHomogeneousPoints(SkPoint3 dst[], const SkPoint src[], int count) const;
 
-    /** Returns SkPoint pt multiplied by SkMatrix. Given:
+    SkPoint mapPointAffine(SkPoint p) const {
+        SkASSERT(!this->hasPerspective());
+        return {
+            (p.fX * fMat[0] + p.fY * fMat[1]) + fMat[2],
+            (p.fX * fMat[3] + p.fY * fMat[4]) + fMat[5],
+        };
+    }
 
-                     | A B C |        | x |
-            Matrix = | D E F |,  pt = | y |
-                     | G H I |        | 1 |
-
-        result is computed as:
-
-                          |A B C| |x|                               Ax+By+C   Dx+Ey+F
-            Matrix * pt = |D E F| |y| = |Ax+By+C Dx+Ey+F Gx+Hy+I| = ------- , -------
-                          |G H I| |1|                               Gx+Hy+I   Gx+Hy+I
-
-        @param p  SkPoint to map
-        @return   mapped SkPoint
-    */
-    SkPoint mapPoint(SkPoint pt) const {
+    SkPoint mapPoint(SkPoint p) const {
         SkPoint result;
-        this->mapXY(pt.x(), pt.y(), &result);
+        this->getMapXYProc()(*this, p.fX, p.fY, &result);
         return result;
+    }
+
+    SkPoint mapPointCheck(SkPoint p) const {
+        if (this->hasPerspective()) {
+            return this->mapPoint(p);
+        } else {
+            return {
+                (p.fX * fMat[0] + p.fY * fMat[1]) + fMat[2],
+                (p.fX * fMat[3] + p.fY * fMat[4]) + fMat[5],
+            };
+        }
     }
 
     /** Maps SkPoint (x, y) to result. SkPoint is mapped by multiplying by SkMatrix. Given:
