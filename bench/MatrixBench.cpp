@@ -227,6 +227,157 @@ DEF_BENCH( return new MapPointsMatrixBench("mappoints_trans", make_trans()); )
 DEF_BENCH( return new MapPointsMatrixBench("mappoints_scale", make_scale()); )
 DEF_BENCH( return new MapPointsMatrixBench("mappoints_affine", make_afine()); )
 
+static inline SkPoint mapcheck(const SkMatrix& m, SkPoint p) {
+    if (m.hasPerspective()) {
+        return m.mapPoint(p);
+    }
+    return {
+        (p.fX * m[0] + p.fY * m[1]) + m[2],
+        (p.fX * m[3] + p.fY * m[4]) + m[5],
+    };
+}
+
+class MapSinglePointMatrixBench : public Benchmark {
+public:
+    enum class Use {
+        kPoints,
+        kSingle,
+        kCheck,
+        kAffine,
+    };
+
+    const SkMatrix fM;
+    const Use      fUse;
+
+    enum { N = 32 };
+    SkPoint fDst[N];
+
+    SkString fName;
+
+    static const char* usename(Use u) {
+        switch (u) {
+            case Use::kPoints: return "p";
+            case Use::kSingle: return "s";
+            case Use::kCheck:  return "c";
+            case Use::kAffine: return "a";
+        }
+        return "oops";
+    }
+
+    MapSinglePointMatrixBench(const SkMatrix& m, Use use)
+        : fM(m), fUse(use)
+    {
+        const auto t = m.getType();
+
+        fName = "mappt_";
+        fName.append(usename(use));
+        if (use != Use::kAffine && use != Use::kCheck) {
+            if (t == SkMatrix::kIdentity_Mask) {
+                fName.append("_identity");
+            } else {
+                if (t & SkMatrix::kAffine_Mask) {
+                    fName.append("_affine");
+                }
+                if (t & SkMatrix::kScale_Mask) {
+                    fName.append("_scale");
+                }
+                if (t & SkMatrix::kTranslate_Mask) {
+                    fName.append("_trans");
+                }
+            }
+        }
+    }
+
+    bool isSuitableFor(Backend backend) override {
+        return backend == Backend::kNonRendering;
+    }
+
+    const char* onGetName() override {
+        return fName.c_str();
+    }
+
+    void onDraw(int loops, SkCanvas*) override {
+        for (int i = 0; i < loops; i++) {
+            this->performTest();
+        }
+    }
+
+    void performTest() {
+        constexpr int K = 1000;
+        SkRandom rand;
+
+        switch (fUse) {
+            case Use::kPoints:
+                for (int i = 0; i < K; ++i) {
+                    auto src = SkPoint{rand.nextSScalar1(), rand.nextSScalar1()};
+                    for (int j = 0; j < N; ++j) {
+                        fM.mapPoints(&fDst[j], &src, 1);
+                        src.fX += 1;
+                    }
+                    this->handle(fDst);
+                }
+                break;
+            case Use::kSingle:
+                for (int i = 0; i < K; ++i) {
+                    auto src = SkPoint{rand.nextSScalar1(), rand.nextSScalar1()};
+                    for (int j = 0; j < N; ++j) {
+                        fM.mapXY(src.fX, src.fY, &fDst[j]);
+                        src.fX += 1;
+                    }
+                    this->handle(fDst);
+                }
+                break;
+            case Use::kCheck:
+                for (int i = 0; i < K; ++i) {
+                    auto src = SkPoint{rand.nextSScalar1(), rand.nextSScalar1()};
+                    for (int j = 0; j < N; ++j) {
+//                        fDst[j] = fM.mapPointCheck(src);
+                        fDst[j] = mapcheck(fM, src);
+                        src.fX += 1;
+                    }
+                    this->handle(fDst);
+                }
+                break;
+            case Use::kAffine:
+                for (int i = 0; i < K; ++i) {
+                    auto src = SkPoint{rand.nextSScalar1(), rand.nextSScalar1()};
+                    for (int j = 0; j < N; ++j) {
+                        fDst[j] = fM.mapPointAffine(src);
+                        src.fX += 1;
+                    }
+                    this->handle(fDst);
+                }
+                break;
+        }
+    }
+
+    virtual void handle(SkPoint[]) {}
+};
+
+const SkMatrix m0 = SkMatrix::I();
+const SkMatrix m1 = SkMatrix::MakeAll(1, 0, 1,
+                                      0, 1, 2,
+                                      0, 0, 1);
+const SkMatrix m2 = SkMatrix::MakeAll(2, 0, 1,
+                                      0, 3, 2,
+                                      0, 0, 1);
+const SkMatrix m3 = SkMatrix::MakeAll(2, 1, 1,
+                                      1, 3, 2,
+                                      0, 0, 1);
+
+DEF_BENCH( return new MapSinglePointMatrixBench(m0, MapSinglePointMatrixBench::Use::kAffine); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m0, MapSinglePointMatrixBench::Use::kCheck); )
+
+DEF_BENCH( return new MapSinglePointMatrixBench(m0, MapSinglePointMatrixBench::Use::kSingle); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m1, MapSinglePointMatrixBench::Use::kSingle); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m2, MapSinglePointMatrixBench::Use::kSingle); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m3, MapSinglePointMatrixBench::Use::kSingle); )
+
+DEF_BENCH( return new MapSinglePointMatrixBench(m0, MapSinglePointMatrixBench::Use::kPoints); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m1, MapSinglePointMatrixBench::Use::kPoints); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m2, MapSinglePointMatrixBench::Use::kPoints); )
+DEF_BENCH( return new MapSinglePointMatrixBench(m3, MapSinglePointMatrixBench::Use::kPoints); )
+
 ///////////////////////////////////////////////////////////////////////////////
 
 class MapRectMatrixBench : public MatrixBench {

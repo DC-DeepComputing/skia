@@ -899,8 +899,8 @@ bool SkMatrix::invertNonIdentity(SkMatrix* inv) const {
 void SkMatrix::Identity_pts(const SkMatrix& m, SkPoint dst[], const SkPoint src[], int count) {
     SkASSERT(m.getType() == 0);
 
-    if (dst != src && count > 0) {
-        memcpy(dst, src, count * sizeof(SkPoint));
+    for (int i = 0; i < count; ++i) {
+        dst[i] = src[i];
     }
 }
 
