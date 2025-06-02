@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91dffccd_ee768bf9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-02T15:32:06Z",
+      "side": 1,
+      "message": "QQ: which of these are before and which are after? The bench name is kinda opaque to me.",
+      "range": {
+        "startLine": 13,
+        "startChar": 96,
+        "endLine": 13,
+        "endChar": 122
+      },
+      "revId": "7bdb027b99d881bb10055cbbff5a7bb69a7cda25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
