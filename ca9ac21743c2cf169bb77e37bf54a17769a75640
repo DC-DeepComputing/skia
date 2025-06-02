@@ -190,6 +190,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "975a45a3_622c889d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:02:30Z",
+      "side": 1,
+      "message": "Buffer writing can be expensive for paths, although those would be currently pushed into MSAA tiles anyways. \n\nMy hope with using the single pass and dispatch would be that the SkRegion would coelesce most single-sampled tiles into one larger rectangle and then there\u0027d be a scattering of remaining tiles.\n\nBut the idea of masking out the MSAA tiles is very interesting. It would actually be pretty easy to do using the depth buffer with the current architecture.  We would record nonAARenderer() draws with no paint (so depth-only) per tile bounds at the start of the single sampled pass.  We\u0027d assign a depth value that was greater than highest Z value of the draws and it\u0027ll then block everything.\n\nWe could restrict this to single-sampled tiles within the bounding box of single-sampled tiles (so we wouldn\u0027t be touching every pixel if for instance the border tiles were MSAA\u0027ed).",
+      "parentUuid": "ad19956a_aca89b64",
+      "range": {
+        "startLine": 795,
+        "startChar": 0,
+        "endLine": 812,
+        "endChar": 15
+      },
+      "revId": "ca9ac21743c2cf169bb77e37bf54a17769a75640",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c88f325_62288c3c",
         "filename": "src/gpu/graphite/DrawPass.cpp",
         "patchSetId": 31
