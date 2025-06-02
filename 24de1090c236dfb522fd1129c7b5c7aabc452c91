@@ -142,6 +142,30 @@
       },
       "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99c80577_0db38de6",
+        "filename": "tests/FilterResultTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 623,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:22:51Z",
+      "side": 1,
+      "message": "Good catch, that\u0027s nice cleanup!",
+      "parentUuid": "4f157da9_10362746",
+      "range": {
+        "startLine": 623,
+        "startChar": 46,
+        "endLine": 623,
+        "endChar": 62
+      },
+      "revId": "24de1090c236dfb522fd1129c7b5c7aabc452c91",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

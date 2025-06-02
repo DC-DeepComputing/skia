@@ -34,6 +34,24 @@
       "parentUuid": "8515a23f_81b9d6b3",
       "revId": "7891c32014c176b95f30143edd2a3c062d1f2927",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eed2b08a_bfe3746e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:22:51Z",
+      "side": 1,
+      "message": "No we don\u0027t need that flag anymore. I had started to put together a lot of cleanup there: https://skia-review.googlesource.com/c/skia/+/919698 but this never landed because I had to hack in `SK_AVOID_SLOW_RASTER_PIPELINE_BLURS` for chrome.  \n\nAs part of removing that hack, I started to implement a new blur algorithm variant for the raster pipeline that could apply color type conversion and a more accurate algorithm for small kernels. This would significantly impact the linked CL\u0027s changes in SkBlurEngine.cpp.  But I don\u0027t think there\u0027s any reason we couldn\u0027t land everything else from that CL and revisit the blur algorithm update separately.",
+      "parentUuid": "3547e8de_bc6095be",
+      "revId": "7891c32014c176b95f30143edd2a3c062d1f2927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
