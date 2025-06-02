@@ -300,6 +300,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "85bf7718_853a818c",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T19:49:08Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "90bc8099_003984bd",
+      "range": {
+        "startLine": 366,
+        "startChar": 14,
+        "endLine": 366,
+        "endChar": 29
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3d59f9ef_6d936439",
