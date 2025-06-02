@@ -110,7 +110,7 @@ bool valid_client_provided_image(const SkImage* clientProvided,
 }
 
 // This class is the lazy instantiation callback for promise images. It manages calling the
-// client's Fulfill, ImageRelease, and TextureRelease procs.
+// client's Fulfill, ImageRelease, and TextureRelease procs
 class PromiseLazyInstantiateCallback {
 public:
     PromiseLazyInstantiateCallback(sk_sp<RefCntedCallback> releaseHelper,
