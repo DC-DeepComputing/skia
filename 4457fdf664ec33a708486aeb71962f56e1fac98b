@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a252086_64245965",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T21:23:07Z",
+      "side": 1,
+      "message": "ptal -- needed manual rebase just in SkFont.cpp (trivial)",
+      "revId": "4457fdf664ec33a708486aeb71962f56e1fac98b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
