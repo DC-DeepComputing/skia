@@ -16,6 +16,75 @@
       "message": "ptal",
       "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d77a3c27_37843649",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T12:56:46Z",
+      "side": 1,
+      "message": "here and some of the others: docs are out of date",
+      "range": {
+        "startLine": 290,
+        "startChar": 11,
+        "endLine": 290,
+        "endChar": 24
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ef45c09_7caf76f1",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T12:56:46Z",
+      "side": 1,
+      "message": "\"empty\"",
+      "range": {
+        "startLine": 356,
+        "startChar": 38,
+        "endLine": 356,
+        "endChar": 45
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "656cc115_bb049b29",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T12:56:46Z",
+      "side": 1,
+      "message": "`std::min(uni.size(), glyphs.size())`?",
+      "range": {
+        "startLine": 177,
+        "startChar": 54,
+        "endLine": 177,
+        "endChar": 64
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
