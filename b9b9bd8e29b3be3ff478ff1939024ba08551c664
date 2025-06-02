@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7549b62_3762d921",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:06:21Z",
+      "side": 1,
+      "message": "IIRC, this was fine as-is, and was only reverted to get to the failing special intrinsics, so given this is a unmodified reland, lgtm.",
+      "revId": "b9b9bd8e29b3be3ff478ff1939024ba08551c664",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
