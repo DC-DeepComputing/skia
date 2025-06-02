@@ -96,6 +96,9 @@ public:
     // Whether a subpass self-dependency is required and a barrier to read from input attachments or
     // not.
     bool isInputAttachmentReadCoherent() const { return fIsInputAttachmentReadCoherent; }
+    bool supportsRasterizationOrderColorAttachmentAccess() const {
+        return fSupportsRasterizationOrderColorAttachmentAccess;
+    }
 
     uint32_t maxVertexAttributes()   const { return fMaxVertexAttributes;   }
     uint64_t maxUniformBufferRange() const { return fMaxUniformBufferRange; }
@@ -263,6 +266,7 @@ private:
     bool fGpuOnlyBuffersMorePerformant = false;
     bool fShouldPersistentlyMapCpuToGpuBuffers = true;
     bool fSupportsDeviceFaultInfo = false;
+    bool fSupportsRasterizationOrderColorAttachmentAccess = false;
     bool fIsInputAttachmentReadCoherent = false;
 
     // Flags to enable workarounds for driver bugs
