@@ -231,7 +231,7 @@ Backend::Backend(sk_sp<SkImageFilterCache> cache,
 Backend::~Backend() = default;
 
 sk_sp<Backend> MakeRasterBackend(const SkSurfaceProps& surfaceProps, SkColorType colorType) {
-    // TODO (skbug:14286): Remove this forcing to 8888. Many legacy image filters only support
+    // TODO (skbug.com/40042849): Remove this forcing to 8888. Many legacy image filters only support
     // N32 on CPU, but once they are implemented in terms of draws and SkSL they will support
     // all color types, like the GPU backends.
     colorType = kN32_SkColorType;
@@ -1456,7 +1456,7 @@ sk_sp<SkShader> FilterResult::getAnalyzedShaderView(
 
     if (analysis & BoundsAnalysis::kRequiresDecalInLayerSpace) {
         SkASSERT(fTileMode == SkTileMode::kDecal);
-        // TODO(skbug:12784) - As part of fully supporting subsets in image shaders, it probably
+        // TODO(skbug.com/40043877) - As part of fully supporting subsets in image shaders, it probably
         // makes sense to share the subset tiling logic that's in GrTextureEffect as dedicated
         // SkShaders. Graphite can then add those to its program as-needed vs. always doing
         // shader-based tiling, and CPU can have raster-pipeline tiling applied more flexibly than
