@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0752809_92da2771",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T13:31:23Z",
+      "side": 1,
+      "message": "These are the results I\u0027m seeing on an M4:\n\n```\ncurr/maxrss\tloops\tmin\tmedian\tmean\tmax\tstddev\tsamples   \tconfig\tbench\n  20/20  MB\t6\t45.2µs\t47.1µs\t46.9µs\t49.2µs\t3%\t▁▆▂▄▅▃▂▁▇█\tnonrendering\tmappt_p_affine_scale_trans\n  20/20  MB\t4\t50.5µs\t52.8µs\t54.9µs\t69.6µs\t11%\t▅█▁▁▁▂▁▂▂▃\tnonrendering\tmappt_p_scale_trans\n  20/20  MB\t5\t50.5µs\t50.5µs\t51.6µs\t55µs\t3%\t▇█▁▁▁▄▁▁▁▁\tnonrendering\tmappt_p_trans\n  20/20  MB\t6\t37µs\t37µs\t37.1µs\t37.8µs\t1%\t█▁▁▁▁▁▁▅▁▁\tnonrendering\tmappt_p_identity\n  20/20  MB\t7\t29.3µs\t29.3µs\t29.8µs\t32µs\t3%\t▄▃█▁▁▁▁▁▁▄\tnonrendering\tmappt_x_affine_scale_trans\n  20/20  MB\t8\t29.3µs\t30.8µs\t31.1µs\t35.3µs\t6%\t█▁▁▅▂▂▂▃▅▃\tnonrendering\tmappt_x_scale_trans\n  20/20  MB\t8\t29.3µs\t29.3µs\t30.1µs\t33.8µs\t5%\t▅▁▁▁▁█▁▁▁▃\tnonrendering\tmappt_x_trans\n  20/20  MB\t8\t29.3µs\t29.3µs\t30.2µs\t33.6µs\t5%\t▃▁▂▁▆▁▁▁▁█\tnonrendering\tmappt_x_identity\n  20/20  MB\t9\t23.6µs\t26.2µs\t25.9µs\t27.8µs\t5%\t█▅▄▁▅▃▆▆▇▄\tnonrendering\tmappt_c\n  20/20  MB\t13\t16.2µs\t18.2µs\t17.8µs\t20µs\t6%\t▅▅▃▃▅▁▂▅▂█\tnonrendering\tmappt_a\n```",
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ae21f01_32e245d9",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T13:31:23Z",
+      "side": 1,
+      "message": "Since this is faster than current `mapXY`, can we just replace that instead?",
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb568e55_a646980c",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1437,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-02T13:31:23Z",
+      "side": 1,
+      "message": "`return mapPointAffine(p);`?",
+      "range": {
+        "startLine": 1434,
+        "startChar": 0,
+        "endLine": 1437,
+        "endChar": 14
+      },
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
