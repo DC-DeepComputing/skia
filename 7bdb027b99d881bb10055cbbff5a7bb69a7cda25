@@ -22,6 +22,30 @@
       },
       "revId": "7bdb027b99d881bb10055cbbff5a7bb69a7cda25",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "77eaef8c_928cf47f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T15:52:05Z",
+      "side": 1,
+      "message": "_p (points) and _x (xy) are all we had before.\n_c (check) and _a (affine) are the new methods.",
+      "parentUuid": "91dffccd_ee768bf9",
+      "range": {
+        "startLine": 13,
+        "startChar": 96,
+        "endLine": 13,
+        "endChar": 122
+      },
+      "revId": "7bdb027b99d881bb10055cbbff5a7bb69a7cda25",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
