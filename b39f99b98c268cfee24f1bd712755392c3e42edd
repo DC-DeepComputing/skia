@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9df546c6_edaebf74",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T16:45:34Z",
+      "side": 1,
+      "message": "patch #16 is the \"follow-up\" \nit removes calls to mapXY() and also removes its impl",
+      "revId": "b39f99b98c268cfee24f1bd712755392c3e42edd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
