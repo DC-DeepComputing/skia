@@ -16,6 +16,24 @@
       "message": "Do we still need legacy blur raster and the `useBlurEngine` paramter(s) in SkBlurImageFilter.cpp?",
       "revId": "7891c32014c176b95f30143edd2a3c062d1f2927",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3547e8de_bc6095be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-02T13:11:29Z",
+      "side": 1,
+      "message": "Edit: I am referring to the `SK_USE_LEGACY_BLUR_RASTER` macro",
+      "parentUuid": "8515a23f_81b9d6b3",
+      "revId": "7891c32014c176b95f30143edd2a3c062d1f2927",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
