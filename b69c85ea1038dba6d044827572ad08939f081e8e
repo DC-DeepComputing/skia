@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63fe75bf_06aaa3cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-02T15:58:40Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com Added the rest of that cleanup to this CL",
+      "revId": "b69c85ea1038dba6d044827572ad08939f081e8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
