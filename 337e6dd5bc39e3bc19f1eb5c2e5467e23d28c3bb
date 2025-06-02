@@ -16,6 +16,167 @@
       "message": "ptal",
       "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c29eeb34_c035566f",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "`unis`?",
+      "range": {
+        "startLine": 157,
+        "startChar": 50,
+        "endLine": 157,
+        "endChar": 53
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5eaeb51_4eced779",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "Need to update",
+      "range": {
+        "startLine": 236,
+        "startChar": 29,
+        "endLine": 236,
+        "endChar": 69
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34d4273b_04adc83b",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 240,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "nit: should fix",
+      "range": {
+        "startLine": 240,
+        "startChar": 8,
+        "endLine": 240,
+        "endChar": 13
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "009a2885_a1eff16e",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "Need to update this.",
+      "range": {
+        "startLine": 242,
+        "startChar": 8,
+        "endLine": 245,
+        "endChar": 63
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecbd2574_8b5decaf",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "`unis`?",
+      "range": {
+        "startLine": 364,
+        "startChar": 58,
+        "endLine": 364,
+        "endChar": 61
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34184dd0_cf279b78",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "Yeah, this change is awkward without updating the implementations. The issue being that logically one should fill out the min(unis.size, glyph.glyphs) into glyphs. Or better, just make it not possible to provide different length spans (something like SkZip which cannot really be made public).\n\nDoes this need to do the same as getKerningPairAdjustments for now?",
+      "range": {
+        "startLine": 366,
+        "startChar": 14,
+        "endLine": 366,
+        "endChar": 29
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3d59f9ef_6d936439",
+        "filename": "src/core/SkTypeface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 457,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-02T13:56:02Z",
+      "side": 1,
+      "message": "spans",
+      "range": {
+        "startLine": 457,
+        "startChar": 43,
+        "endLine": 457,
+        "endChar": 49
+      },
+      "revId": "337e6dd5bc39e3bc19f1eb5c2e5467e23d28c3bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
