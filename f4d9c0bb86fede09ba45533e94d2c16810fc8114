@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b93653e_77c9d0b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-02T18:54:11Z",
+      "side": 1,
+      "message": "See https://issues.chromium.org/issues/421629753#comment6 for more context",
+      "revId": "f4d9c0bb86fede09ba45533e94d2c16810fc8114",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
