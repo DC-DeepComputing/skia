@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "52140b51_b06bca5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T15:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d46a7a50_5a0fd2a0",
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "a0752809_92da2771",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 13
@@ -48,6 +66,30 @@
       "writtenOn": "2025-06-02T15:26:37Z",
       "side": 1,
       "message": "nit: cleanup",
+      "range": {
+        "startLine": 334,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 58
+      },
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "989bdde4_66da156f",
+        "filename": "bench/MatrixBench.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T15:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63affaf7_16e1775b",
       "range": {
         "startLine": 334,
         "startChar": 0,
@@ -95,6 +137,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9499ecd6_84f6b169",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T15:29:17Z",
+      "side": 1,
+      "message": "There is a slight code-size increase if all call-site today that use mapXY were to switch -- so perhaps we can make that decision in a separate CL. (increase because the new one is faster somewhat due to inlining).",
+      "parentUuid": "1ae21f01_32e245d9",
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "eb568e55_a646980c",
         "filename": "include/core/SkMatrix.h",
         "patchSetId": 13
@@ -106,6 +166,30 @@
       "writtenOn": "2025-06-02T13:31:23Z",
       "side": 1,
       "message": "`return mapPointAffine(p);`?",
+      "range": {
+        "startLine": 1434,
+        "startChar": 0,
+        "endLine": 1437,
+        "endChar": 14
+      },
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04a35a0b_7dd46eb6",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1437,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T15:29:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb568e55_a646980c",
       "range": {
         "startLine": 1434,
         "startChar": 0,
