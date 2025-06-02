@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3538acec_857a02dd",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T19:28:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d77a3c27_37843649",
+      "range": {
+        "startLine": 290,
+        "startChar": 11,
+        "endLine": 290,
+        "endChar": 24
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4ef45c09_7caf76f1",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f9ed89b_633f3da8",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T19:28:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ef45c09_7caf76f1",
+      "range": {
+        "startLine": 356,
+        "startChar": 38,
+        "endLine": 356,
+        "endChar": 45
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "656cc115_bb049b29",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-06-02T12:56:46Z",
       "side": 1,
       "message": "`std::min(uni.size(), glyphs.size())`?",
+      "range": {
+        "startLine": 177,
+        "startChar": 54,
+        "endLine": 177,
+        "endChar": 64
+      },
+      "revId": "dfa62fe533a7d8c84e2d4f0a710d0044c9584595",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cb535c2_0f525dfe",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-02T19:28:52Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "656cc115_bb049b29",
       "range": {
         "startLine": 177,
         "startChar": 54,
