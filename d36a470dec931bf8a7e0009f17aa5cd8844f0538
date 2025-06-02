@@ -37,6 +37,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "63affaf7_16e1775b",
+        "filename": "bench/MatrixBench.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 334,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:26:37Z",
+      "side": 1,
+      "message": "nit: cleanup",
+      "range": {
+        "startLine": 334,
+        "startChar": 0,
+        "endLine": 334,
+        "endChar": 58
+      },
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1ae21f01_32e245d9",
         "filename": "include/core/SkMatrix.h",
         "patchSetId": 13
@@ -48,6 +71,24 @@
       "writtenOn": "2025-06-02T13:31:23Z",
       "side": 1,
       "message": "Since this is faster than current `mapXY`, can we just replace that instead?",
+      "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1b7dc648_3bc4b4a0",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 1430,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-02T15:26:37Z",
+      "side": 1,
+      "message": "+1, that would avoid questions about what is being \"checked\" in the name. I would also be in favor of removing the xyproc table for this simple inlined branch call.",
+      "parentUuid": "1ae21f01_32e245d9",
       "revId": "d36a470dec931bf8a7e0009f17aa5cd8844f0538",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
