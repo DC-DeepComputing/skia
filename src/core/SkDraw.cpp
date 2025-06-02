@@ -264,19 +264,17 @@ PtProcRec::Proc PtProcRec::chooseProc(SkBlitter** blitterPtr) {
 // must be even for lines/polygon to work
 #define MAX_DEV_PTS     32
 
-void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
-                        const SkPoint pts[], const SkPaint& paint,
-                        SkDevice* device) const {
+void SkDraw::drawPoints(SkCanvas::PointMode mode, SkSpan<const SkPoint> points,
+                        const SkPaint& paint, SkDevice* device) const {
     // if we're in lines mode, force count to be even
     if (SkCanvas::kLines_PointMode == mode) {
-        count &= ~(size_t)1;
+        points = points.first(points.size() & ~1);   // force it to be even
     }
 
-    SkASSERT(pts != nullptr);
     SkDEBUGCODE(this->validate();)
 
      // nothing to draw
-    if (!count || fRC->isEmpty()) {
+    if (points.empty() || fRC->isEmpty()) {
         return;
     }
 
@@ -290,6 +288,8 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
         // we have to back up subsequent passes if we're in polygon mode
         const size_t backup = (SkCanvas::kPolygon_PointMode == mode);
 
+        auto count = points.size();
+        auto pts = points.data();
         do {
             int n = SkToInt(count);
             if (n > MAX_DEV_PTS) {
@@ -308,7 +308,7 @@ void SkDraw::drawPoints(SkCanvas::PointMode mode, size_t count,
             }
         } while (count != 0);
     } else {
-        this->drawDevicePoints(mode, count, pts, paint, device);
+        this->drawDevicePoints(mode, points, paint, device);
     }
 }
 

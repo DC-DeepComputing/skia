@@ -48,8 +48,7 @@ public:
 
     void drawPaint(const SkPaint& paint) override;
     void drawAnnotation(const SkRect& rect, const char key[], SkData* value) override;
-    void drawPoints(SkCanvas::PointMode mode, size_t count,
-                    const SkPoint[], const SkPaint& paint) override;
+    void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
     void drawImageRect(const SkImage* image, const SkRect* src, const SkRect& dst,
                        const SkSamplingOptions&, const SkPaint& paint,
                        SkCanvas::SrcRectConstraint constraint) override;

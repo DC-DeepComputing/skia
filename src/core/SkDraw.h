@@ -50,8 +50,7 @@ public:
 
     void paintMasks(SkZip<const SkGlyph*, SkPoint> accepted, const SkPaint& paint) const override;
 
-    void drawPoints(SkCanvas::PointMode, size_t count, const SkPoint[],
-                    const SkPaint&, SkDevice*) const;
+    void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&, SkDevice*) const;
     /* If skipColorXform, skips color conversion when assigning per-vertex colors */
     void drawVertices(const SkVertices*,
                       sk_sp<SkBlender>,
