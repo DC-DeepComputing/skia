@@ -267,7 +267,6 @@ bool SkBitmapProcState::chooseProcs() {
 
     SkASSERT(fTileModeX != SkTileMode::kDecal);
 
-    fInvProc            = SkMatrixPriv::GetMapXYProc(fInvMatrix);
     fInvSxFractionalInt = SkScalarToFractionalInt(fInvMatrix.getScaleX());
     fInvKyFractionalInt = SkScalarToFractionalInt(fInvMatrix.getSkewY ());
 
