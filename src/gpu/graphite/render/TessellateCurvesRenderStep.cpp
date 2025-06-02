@@ -81,7 +81,9 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
                                                        StaticBufferManager* bufferManager)
         : RenderStep(evenOdd ? RenderStepID::kTessellateCurves_EvenOdd
                              : RenderStepID::kTessellateCurves_Winding,
-                     Flags::kRequiresMSAA | Flags::kAppendDynamicInstances,
+                     Flags::kRequiresMSAA |
+                     Flags::kAppendDynamicInstances |
+                     Flags::kIgnoreInverseFill,
                      /*uniforms=*/{{"localToDevice", SkSLType::kFloat4x4}},
                      PrimitiveType::kTriangles,
                      evenOdd ? kEvenOddStencilPass : kWindingStencilPass,
