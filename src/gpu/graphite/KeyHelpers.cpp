@@ -1077,8 +1077,8 @@ void add_matrix_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
     if (data.fClamp) {
         gatherer->writeHalf(SkV2{0.f, 1.f});
     } else {
-        // Alpha is always clamped to 1. RGB clamp to the max finite half value.
-        static constexpr float kUnclamped = 65504.f; // SK_HalfMax converted back to float
+        // Alpha is always clamped to 1.
+        static constexpr float kUnclamped = 65500.f;
         SkASSERT(SkHalfToFloat(SkFloatToHalf(kUnclamped)) == kUnclamped);
         SkASSERT(SkHalfToFloat(SkFloatToHalf(-kUnclamped)) == -kUnclamped);
         gatherer->writeHalf(SkV2{-kUnclamped, kUnclamped});
