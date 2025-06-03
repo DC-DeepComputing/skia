@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb7fcc81_8203f3c6",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T02:36:40Z",
+      "side": 1,
+      "message": "Would it make sense to use this pattern instead, which allows clients to opt out using something like SK_DISABLE_UNSPANNED_APIS?",
+      "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
