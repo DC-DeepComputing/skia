@@ -88,6 +88,7 @@ public:
 
     bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
     bool isApple() const { return fGPUFamily == GPUFamily::kApple; }
+    bool isIntel() const { return fIntelGPU; }
 
     size_t getMinBufferAlignment() const { return this->isMac() ? 4 : 1; }
 
@@ -102,6 +103,7 @@ public:
     void onDumpJSON(SkJSONWriter*) const override;
 
 private:
+    void initIfIntelGPU(const id<MTLDevice> device);
     void initGPUFamily(id<MTLDevice> device);
 
     void initStencilFormat(id<MTLDevice> device);
@@ -189,6 +191,7 @@ private:
 
     GPUFamily fGPUFamily;
     int fFamilyGroup;
+    bool fIntelGPU;
 
     SkTDArray<int> fSampleCounts;
 

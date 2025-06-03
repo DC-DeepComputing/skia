@@ -107,6 +107,9 @@ bool MtlCaps::GetGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* grou
 }
 
 void MtlCaps::initGPUFamily(id<MTLDevice> device) {
+    // Check if we have an Intel GPU
+    initIfIntelGPU(device);
+
     if (@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)) {
         if (GetGPUFamily(device, &fGPUFamily, &fFamilyGroup)) {
             return;
@@ -189,7 +192,7 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
 
     // Init sample counts. All devices support 1 (i.e. 0 in skia).
     fColorSampleCounts.push_back(1);
-    if (![device.name containsString:@"Intel"]) {
+    if (!this->isIntel()) {
         if (@available(macOS 10.11, iOS 9.0, tvOS 9.0, *)) {
             for (auto sampleCnt : {2, 4, 8}) {
                 if ([device supportsTextureSampleCount:sampleCnt]) {
@@ -221,6 +224,10 @@ void MtlCaps::initShaderCaps() {
             shaderCaps->fFBFetchSupport = true;
             shaderCaps->fFBFetchColorName = "sk_LastFragColor";
         }
+    }
+
+    if (this->isIntel()) {
+        shaderCaps->fVectorClampMinMaxSupport = false;
     }
 
     shaderCaps->fIntegerSupport = true;
@@ -1250,6 +1257,10 @@ void MtlCaps::buildKeyForTexture(SkISize dimensions,
                  (static_cast<uint32_t>(mtlInfo.fStorageMode) << 10)|
                  (static_cast<uint32_t>(isFBOnly)             << 12);
 
+}
+
+void MtlCaps::initIfIntelGPU(const id<MTLDevice> device) {
+    fIntelGPU = [device.name containsString:@"Intel"];
 }
 
 } // namespace skgpu::graphite

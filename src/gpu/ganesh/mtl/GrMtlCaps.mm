@@ -239,6 +239,9 @@ bool GrMtlCaps::getGPUFamily(id<MTLDevice> device, GPUFamily* gpuFamily, int* gr
 }
 
 void GrMtlCaps::initGPUFamily(id<MTLDevice> device) {
+    // Check if we have an Intel GPU
+    initIfIntelGPU(device);
+
     if (@available(macOS 10.15, iOS 13.0, tvOS 13.0, *)) {
         if (this->getGPUFamily(device, &fGPUFamily, &fFamilyGroup)) {
             return;
@@ -543,6 +546,10 @@ void GrMtlCaps::initShaderCaps() {
         shaderCaps->fDualSourceBlendingSupport = true;
     } else {
         shaderCaps->fDualSourceBlendingSupport = false;
+    }
+
+    if (this->isIntel()) {
+        shaderCaps->fVectorClampMinMaxSupport = false;
     }
 
     // TODO(skia:8270): Re-enable this once bug 8270 is fixed. Will also need to remove asserts in
@@ -1261,6 +1268,10 @@ bool GrMtlCaps::renderTargetSupportsDiscardableMSAA(const GrMtlRenderTarget* rt)
     return rt->resolveAttachment() &&
            !rt->resolveAttachment()->framebufferOnly() &&
            (rt->numSamples() > 1 && this->preferDiscardableMSAAAttachment());
+}
+
+void GrMtlCaps::initIfIntelGPU(const id<MTLDevice> device) {
+    fIntelGPU = [device.name containsString:@"Intel"];
 }
 
 #if defined(GPU_TEST_UTILS)

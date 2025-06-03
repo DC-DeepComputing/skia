@@ -240,6 +240,8 @@ protected:
 
     void writeSimpleIntrinsic(const FunctionCall& c);
 
+    void writeScalarizedIntrinsicCall(const char* intrinsicName, const FunctionCall& c);
+
     bool writeIntrinsicCall(const FunctionCall& c, IntrinsicKind kind);
 
     void writeConstructorCompound(const ConstructorCompound& c, Precedence parentPrecedence);
@@ -875,6 +877,81 @@ void MetalCodeGenerator::writeArgumentList(const ExpressionArray& arguments) {
     this->write(")");
 }
 
+void MetalCodeGenerator::writeScalarizedIntrinsicCall(const char* intrinsicName,
+                                                      const FunctionCall& c) {
+    const ExpressionArray& arguments = c.arguments();
+    SkASSERT(!arguments.empty());
+    const Expression& primaryArg = *arguments[0];
+    int columns = primaryArg.type().columns();
+
+    if (columns > 1) {
+        std::vector<std::string> argTemporaries(arguments.size());
+        bool needsSequenceExpr = false;
+
+        for (int32_t i = 0; i < arguments.size(); ++i) {
+            const Expression& arg = *arguments[i];
+            if (arg.type().isVector() && !Analysis::IsTrivialExpression(arg)) {
+                argTemporaries[i] = this->getTempVariable(arg.type());
+                needsSequenceExpr = true;
+            }
+        }
+
+        if (needsSequenceExpr) {
+            this->write("((");
+            const char* separator = "";
+            for (int32_t i = 0; i < arguments.size(); ++i) {
+                if (!argTemporaries[i].empty()) {
+                    this->write(separator);
+                    this->write(argTemporaries[i]);
+                    this->write(" = ");
+                    this->writeExpression(*arguments[i], Precedence::kAssignment);
+                    separator = ", ";
+                }
+            }
+            this->write("), ");
+        }
+
+        this->writeType(primaryArg.type());
+        this->write("(");
+
+        static constexpr const char* kSwizzleChars = "xyzw";
+        for (int i = 0; i < columns; ++i) {
+            if (i) {
+                this->write(", ");
+            }
+
+            this->write(intrinsicName);
+            this->write("(");
+
+            const char* argSeparator = "";
+            for (int32_t j = 0; j < arguments.size(); ++j) {
+                this->write(argSeparator);
+                argSeparator = ", ";
+                if (arguments[j]->type().isScalar()) {
+                    this->writeExpression(*arguments[j], Precedence::kSequence);
+                } else if (!argTemporaries[j].empty()) {
+                    this->write(argTemporaries[j]);
+                    this->write(".");
+                    this->write(std::string_view(&kSwizzleChars[i], 1));
+                } else {
+                    this->writeExpression(*arguments[j], Precedence::kPostfix);
+                    this->write(".");
+                    this->write(std::string_view(&kSwizzleChars[i], 1));
+                }
+            }
+            this->write(")");
+        }
+        this->write(")");
+
+        if (needsSequenceExpr) {
+            this->write(")");
+        }
+    } else {
+        this->write(intrinsicName);
+        this->writeArgumentList(arguments);
+    }
+}
+
 bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind kind) {
     const ExpressionArray& arguments = c.arguments();
     switch (kind) {
@@ -1319,6 +1396,28 @@ bool MetalCodeGenerator::writeIntrinsicCall(const FunctionCall& c, IntrinsicKind
             this->write(", ");
             this->writeExpression(*c.arguments()[1], Precedence::kSequence);
             this->write(", memory_order_relaxed)");
+            return true;
+        case k_clamp_IntrinsicKind:
+            if (fCaps.fVectorClampMinMaxSupport) {
+                this->writeSimpleIntrinsic(c);
+            } else {
+                this->writeScalarizedIntrinsicCall("clamp", c);
+            }
+            return true;
+        case k_min_IntrinsicKind:
+            if (fCaps.fVectorClampMinMaxSupport) {
+                this->writeSimpleIntrinsic(c);
+            } else {
+                this->writeScalarizedIntrinsicCall("min", c);
+            }
+            return true;
+        case k_max_IntrinsicKind:
+            if (fCaps.fVectorClampMinMaxSupport) {
+                this->writeSimpleIntrinsic(c);
+            } else {
+                this->writeScalarizedIntrinsicCall("max", c);
+            }
+            printf("heloo!\n");
             return true;
         default:
             return false;
