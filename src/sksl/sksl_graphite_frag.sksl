@@ -1160,17 +1160,21 @@ $pure half4 sk_conical_grad_buf_shader(float2 coords,
 
 $pure half4 sk_hsl_matrix_colorfilter(half4 color, half4x4 m, half4 v) {
     color = $rgb_to_hsl(color.rgb, color.a); // includes unpremul
-    color = (m * color) + v;
+    color = half4((float4x4(m) * float4(color)) + float4(v));
     return $hsl_to_rgb(color.rgb, color.a); // includes clamp and premul
 }
 
 $pure half4 sk_matrix_colorfilter(half4 color, half4x4 m, half4 v, half2 minMaxRGB) {
     color = unpremul(color);
-    color = half4((m * color) + v);
+    color = half4((float4x4(m) * float4(color)) + float4(v));
+
     // minMaxRGB is a tuple that stores [minRGB, maxRGB]. minA and maxA are always 0 and 1. minRGB
     // and maxRGB are either 0 and 1 for clamped color filters, or very large negative/positive
     // values to be unclamped.
-    color = clamp(color, minMaxRGB.xxx0, minMaxRGB.yyy1);
+    color.x = max(minMaxRGB.x, min(color.x, minMaxRGB.y));
+    color.y = max(minMaxRGB.x, min(color.y, minMaxRGB.y));
+    color.z = max(minMaxRGB.x, min(color.z, minMaxRGB.y));
+    color.w = max(0, min(color.w, 1));
     color.rgb *= color.a;
     return color;
 }
