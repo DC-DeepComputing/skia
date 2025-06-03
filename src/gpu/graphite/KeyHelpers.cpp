@@ -644,13 +644,13 @@ bool can_do_tiling_in_hw(const Caps* caps, const ImageShaderBlock::ImageData& im
     return imgData.fSubset.contains(SkRect::Make(imgData.fImgSize));
 }
 
-void add_sampler_data_to_key(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
+void add_sampler_data_to_key1(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
     if (samplerDesc.isImmutable()) {
-        builder->addData(samplerDesc.asSpan());
+        builder->addData1(samplerDesc.asSpan());
     } else {
         // Means we have a regular dynamic sampler. Append a default SamplerDesc to convey this,
         // allowing the key to maintain and convey sampler binding order.
-        builder->addData({});
+        builder->addData1({});
     }
 }
 
@@ -712,7 +712,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
                              doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
                              info};
     gatherer->add(imgData.fTextureProxy, samplerDesc);
-    add_sampler_data_to_key(builder, samplerDesc);
+    add_sampler_data_to_key1(builder, samplerDesc);
 
     builder->endBlock();
 
