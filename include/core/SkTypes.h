@@ -77,7 +77,7 @@
     #undef free
 #endif
 
-#ifndef SK_ALLOW_STATIC_GLOBAL_INITIALIZERS
+#if !defined(SK_ALLOW_STATIC_GLOBAL_INITIALIZERS)
     #define SK_ALLOW_STATIC_GLOBAL_INITIALIZERS 0
 #endif
 
@@ -105,32 +105,32 @@
 #  define SK_HISTOGRAMS_ENABLED 0
 #endif
 
-#ifndef SK_HISTOGRAM_BOOLEAN
+#if !defined(SK_HISTOGRAM_BOOLEAN)
 #  define SK_HISTOGRAM_BOOLEAN(name, sample)
 #endif
 
-#ifndef SK_HISTOGRAM_ENUMERATION
+#if !defined(SK_HISTOGRAM_ENUMERATION)
 #  define SK_HISTOGRAM_ENUMERATION(name, sampleEnum, enumSize)
 #endif
 
-#ifndef SK_HISTOGRAM_EXACT_LINEAR
+#if !defined(SK_HISTOGRAM_EXACT_LINEAR)
 #  define SK_HISTOGRAM_EXACT_LINEAR(name, sample, valueMax)
 #endif
 
-#ifndef SK_HISTOGRAM_CUSTOM_EXACT_LINEAR
+#if !defined(SK_HISTOGRAM_CUSTOM_EXACT_LINEAR)
 #  define SK_HISTOGRAM_CUSTOM_EXACT_LINEAR(name, sample, value_min, \
                                            value_max, bucket_count)
 #endif
 
-#ifndef SK_HISTOGRAM_MEMORY_KB
+#if !defined(SK_HISTOGRAM_MEMORY_KB)
 #  define SK_HISTOGRAM_MEMORY_KB(name, sample)
 #endif
 
-#ifndef SK_HISTOGRAM_CUSTOM_COUNTS
+#if !defined(SK_HISTOGRAM_CUSTOM_COUNTS)
 #  define SK_HISTOGRAM_CUSTOM_COUNTS(name, sample, countMin, countMax, bucketCount)
 #endif
 
-#ifndef SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES
+#if !defined(SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES)
 #  define SK_HISTOGRAM_CUSTOM_MICROSECONDS_TIMES(name, sampleUSec, minUSec, maxUSec, bucketCount)
 #endif
 
@@ -145,8 +145,12 @@
     #define SK_DISABLE_SDF_TEXT
 #endif
 
-#ifndef SK_DISABLE_LEGACY_SHADERCONTEXT
+#if !defined(SK_DISABLE_LEGACY_SHADERCONTEXT)
 #   define SK_ENABLE_LEGACY_SHADERCONTEXT
+#endif
+
+#if !defined(SK_SUPPORT_UNSPANNED_APIS)
+    #define SK_SUPPORT_UNSPANNED_APIS
 #endif
 
 #if defined(SK_BUILD_FOR_LIBFUZZER) || defined(SK_BUILD_FOR_AFL_FUZZ)
