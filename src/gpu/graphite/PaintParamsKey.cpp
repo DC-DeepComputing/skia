@@ -16,6 +16,11 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+#include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/graphite/vk/VulkanYcbcrConversion.h"
+#endif
+
 using namespace skia_private;
 
 namespace skgpu::graphite {
@@ -269,7 +274,25 @@ static int key_to_string(SkString* str,
         // We shorten the string for the common case of no extra data.
         if (dataIndexCount == 0) {
             str->append("(0)");
-        } else {
+        }
+#if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+        else if (dataIndexCount == 3) {
+            SamplerDesc desc;
+            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
+
+            skgpu::VulkanYcbcrConversionInfo info =
+                    VulkanYcbcrConversion::FromImmutableSamplerInfo(s.immutableSamplerInfo());
+
+            if (info.isValid()) {
+                str->append("(");
+                str->append(info.toStr());
+                str->append(")");
+            } else {
+                str->append("(invalid)");
+            }
+        }
+#endif
+        else {
             str->append("(");
             str->appendU32(dataIndexCount);
             str->append(": ");
@@ -281,6 +304,7 @@ static int key_to_string(SkString* str,
             str->append(dst, encodedLen);
             str->append(")");
         }
+
         // Increment current index past the indices which contain data
         currentIndex += dataIndexCount;
     }
