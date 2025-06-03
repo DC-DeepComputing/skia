@@ -240,4 +240,36 @@ bool TextureFormatIsMultiplanar(TextureFormat format) {
     }
 }
 
+bool TextureFormatAutoClamps(TextureFormat format) {
+    // In Graphite's curated TextureFormat list, almost every format is unorm or srgb+unorm. It's
+    // easier to write out the floating point formats and other special cases.
+    switch (format) {
+        case TextureFormat::kR16F:       [[fallthrough]];
+        case TextureFormat::kR32F:
+        case TextureFormat::kRG16F:
+        case TextureFormat::kRG32F:
+        case TextureFormat::kRGB16F:
+        case TextureFormat::kRGB32F:
+        case TextureFormat::kRGBA16F:
+        case TextureFormat::kRGBA32F:
+        case TextureFormat::kD32F:
+        case TextureFormat::kD32F_S8:
+            // Floating point formats don't auto clamp
+            return false;
+
+        case TextureFormat::kBGR10_XR:
+        case TextureFormat::kBGRA10x6_XR:
+            // Extended range formats don't clamp to [0,1]
+            return false;
+
+        case TextureFormat::kS8:
+            // Non-normalized integral formats don't clamp to [0,1]
+            return false;
+
+        default:
+            // Everything else is unorm or unorm-srgb (we don't bother checking for renderability)
+            return true;
+    }
+}
+
 } // namespace skgpu::graphite
