@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a45e86f7_11540672",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-03T11:04:26Z",
+      "side": 1,
+      "message": "Do you think its hard to land the guard in the clients? Once that is done, it amounts to the same options, right?",
+      "parentUuid": "cb7fcc81_8203f3c6",
+      "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5679f9a7_3bfb78b5",
         "filename": "include/core/SkTypes.h",
         "patchSetId": 1
@@ -55,6 +73,30 @@
           ]
         }
       ],
+      "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "264c344e_517234ca",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-03T11:04:26Z",
+      "side": 1,
+      "message": "except for the guard right next to it :)",
+      "parentUuid": "5679f9a7_3bfb78b5",
+      "range": {
+        "startLine": 152,
+        "startChar": 1,
+        "endLine": 152,
+        "endChar": 7
+      },
       "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
