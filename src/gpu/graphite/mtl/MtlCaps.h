@@ -58,6 +58,7 @@ public:
 
     bool isMac() const { return fGPUFamily == GPUFamily::kMac; }
     bool isApple() const { return fGPUFamily == GPUFamily::kApple; }
+    bool isIntel() const { return fIntelGPU; }
 
     bool isRenderable(const TextureInfo&) const override;
     bool isStorage(const TextureInfo&) const override;
@@ -68,6 +69,7 @@ public:
                             GraphiteResourceKey*) const override;
 
 private:
+    void initIfIntelGPU(const id<MTLDevice>);
     void initGPUFamily(const id<MTLDevice>);
 
     void initCaps(const id<MTLDevice>);
@@ -149,6 +151,7 @@ private:
 
     GPUFamily fGPUFamily;
     int fFamilyGroup;
+    bool fIntelGPU;
 };
 
 } // namespace skgpu::graphite
