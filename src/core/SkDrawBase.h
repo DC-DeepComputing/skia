@@ -83,7 +83,7 @@ public:
                        customBlitter);
     }
 
-    void drawDevicePoints(SkCanvas::PointMode, size_t count, const SkPoint[], const SkPaint&,
+    void drawDevicePoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&,
                           SkDevice*) const;
 
     /** Helper function that creates a mask from a path and a required maskfilter.
