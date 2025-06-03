@@ -93,9 +93,7 @@ static inline SkPoint compute_stroke_size(const SkPaint& paint, const SkMatrix& 
     SkASSERT(matrix.rectStaysRect());
     SkASSERT(SkPaint::kFill_Style != paint.getStyle());
 
-    SkVector size;
-    SkPoint pt = { paint.getStrokeWidth(), paint.getStrokeWidth() };
-    matrix.mapVectors(&size, &pt, 1);
+    SkVector size = matrix.mapVector({paint.getStrokeWidth(), paint.getStrokeWidth()});
     return SkPoint::Make(SkScalarAbs(size.fX), SkScalarAbs(size.fY));
 }
 
@@ -186,7 +184,7 @@ void SkDrawBase::drawRect(const SkRect& prePaintRect, const SkPaint& paint,
     SkRect devRect;
     const SkRect& paintRect = paintMatrix ? *postPaintRect : prePaintRect;
     // skip the paintMatrix when transforming the rect by the CTM
-    fCTM->mapPoints(rect_points(devRect), rect_points(paintRect), 2);
+    fCTM->mapPoints({rect_points(devRect), 2}, {rect_points(paintRect), 2});
     devRect.sort();
 
     // look for the quick exit, before we build a blitter
@@ -273,7 +271,7 @@ bool SkDrawTreatAAStrokeAsHairline(SkScalar strokeWidth, const SkMatrix& matrix,
     SkVector src[2], dst[2];
     src[0].set(strokeWidth, 0);
     src[1].set(0, strokeWidth);
-    matrix.mapVectors(dst, src, 2);
+    matrix.mapVectors(dst, src);
     SkScalar len0 = fast_len(dst[0]);
     SkScalar len1 = fast_len(dst[1]);
     if (len0 <= SK_Scalar1 && len1 <= SK_Scalar1) {
