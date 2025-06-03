@@ -423,20 +423,24 @@ private:
     void setupTilingModes(SkEnumBitMask<YUVImageShaderFlags> flags) {
         fNumTilingModes = 0;
 
+#if 0
         if (flags & YUVImageShaderFlags::kHardwareSamplingNoSwizzle) {
             fTilingModes[fNumTilingModes++] = kHWTiledNoSwizzle;
         }
+#endif
         if (flags & YUVImageShaderFlags::kHardwareSampling) {
             fTilingModes[fNumTilingModes++] = kHWTiledWithSwizzle;
         }
+#if 0
         if (flags & YUVImageShaderFlags::kShaderBasedSampling) {
             fTilingModes[fNumTilingModes++] = kShaderTiled;
         }
         if (flags & YUVImageShaderFlags::kCubicSampling) {
             fTilingModes[fNumTilingModes++] = kCubicShaderTiled;
         }
+#endif
 
-        SkASSERT(fNumTilingModes == SkPopCount(flags.value()));
+        //SkASSERT(fNumTilingModes == SkPopCount(flags.value()));
         SkASSERT(fNumTilingModes <= kMaxTilingModes);
     }
 
