@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd8627d1_e09f3eda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-03T18:14:06Z",
+      "side": 1,
+      "message": "ptal -- this structure ok, or should we change it?",
+      "revId": "f3780e64c28c0ab35bd47bdea6f8aa2692918ab8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
