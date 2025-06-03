@@ -380,7 +380,7 @@ public:
 
 protected:
     // needed until onGetTableTags() is updated to take a span
-    enum { MAX_REASONABLE_TABLE_COUNT = 1 << 30 };
+    enum { MAX_REASONABLE_TABLE_COUNT = 1 << 16 };
 
     explicit SkTypeface(const SkFontStyle& style, bool isFixedPitch = false);
     ~SkTypeface() override;
