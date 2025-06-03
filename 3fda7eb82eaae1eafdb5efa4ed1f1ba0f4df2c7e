@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28d73084_3fb30936",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-03T23:25:51Z",
+      "side": 1,
+      "message": "Ok to review. Right now I\u0027m forcing the scalar version on every Metal + intel which might be overkill?",
+      "revId": "3fda7eb82eaae1eafdb5efa4ed1f1ba0f4df2c7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
