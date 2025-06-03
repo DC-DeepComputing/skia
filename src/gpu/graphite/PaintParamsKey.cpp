@@ -269,6 +269,29 @@ static int key_to_string(SkString* str,
         // We shorten the string for the common case of no extra data.
         if (dataIndexCount == 0) {
             str->append("(0)");
+        } else if (true && dataIndexCount == 3) {
+            SamplerDesc desc;
+            SamplerDesc s(keyData[currentIndex], keyData[currentIndex+1], keyData[currentIndex+2]);
+
+            skgpu::VulkanYcbcrConversionInfo info =
+                    VulkanYcbcrConversion::FromImmutableSamplerInfo(s.immutableSamplerInfo());
+
+            str->append("(");
+            str->appendf("%d %llu %d %d %d %d %d %u %u r %d g %d b %d a %d\n",
+                         info.fFormat,
+                         (unsigned long long) info.fExternalFormat,
+                         info.fYcbcrModel,
+                         info.fYcbcrRange,
+                         info.fXChromaOffset,
+                         info.fYChromaOffset,
+                         info.fChromaFilter,
+                         info.fForceExplicitReconstruction,
+                         info.fFormatFeatures,
+                         info.fComponents.r,
+                         info.fComponents.g,
+                         info.fComponents.b,
+                         info.fComponents.a);
+            str->append(")");
         } else {
             str->append("(");
             str->appendU32(dataIndexCount);
@@ -281,6 +304,7 @@ static int key_to_string(SkString* str,
             str->append(dst, encodedLen);
             str->append(")");
         }
+
         // Increment current index past the indices which contain data
         currentIndex += dataIndexCount;
     }
