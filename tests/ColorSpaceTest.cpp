@@ -379,3 +379,46 @@ DEF_TEST(ColorSpace_equiv, r) {
     // Most important to test in debug mode that we don't SkASSERT().
     REPORTER_ASSERT(r, SkColorSpace::Equals(x.get(), y.get()));
 }
+
+DEF_TEST(ColorSpace_pq, r) {
+    constexpr float k100Signal = 0.508078421517399f;
+    constexpr float k100 = 0.0100f;
+    constexpr float k203Signal = 0.580688881041611f;
+    constexpr float k203 = 0.0203f;
+    skcms_TransferFunction tf;
+    skcms_TransferFunction_makePQ(&tf, 203.f);
+    REPORTER_ASSERT(r, almost_equal(k100, skcms_TransferFunction_eval(&tf, k100Signal)));
+    REPORTER_ASSERT(r, almost_equal(k203, skcms_TransferFunction_eval(&tf, k203Signal)));
+    skcms_TransferFunction_makePQ(&tf, 100.f);
+    REPORTER_ASSERT(r, almost_equal(k100, skcms_TransferFunction_eval(&tf, k100Signal)));
+    REPORTER_ASSERT(r, almost_equal(k203, skcms_TransferFunction_eval(&tf, k203Signal)));
+
+    REPORTER_ASSERT(r, !skcms_TransferFunction_isPQish(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_isPQ(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_getType(&tf) == skcms_TFType_PQ);
+}
+
+DEF_TEST(ColorSpace_hlg, r) {
+    const float kWhiteBeforeOotf = std::pow(203/1000.f, 1/1.2f);
+    skcms_TransferFunction tf;
+    skcms_TransferFunction_makeHLG(&tf, 203.f, 1000.f, 1.2f);
+    REPORTER_ASSERT(r, tf.a == 203.f);
+    REPORTER_ASSERT(r, tf.b == 1000.f);
+    REPORTER_ASSERT(r, tf.c == 1.2f);
+    REPORTER_ASSERT(r, almost_equal(1/48.f, skcms_TransferFunction_eval(&tf, 0.25f)));
+    REPORTER_ASSERT(r, almost_equal(kWhiteBeforeOotf,
+                                    skcms_TransferFunction_eval(&tf, 0.75f)));
+    skcms_TransferFunction_makeHLG(&tf, 314.f, 314.f, 1.f);
+    REPORTER_ASSERT(r, tf.a == 314.f);
+    REPORTER_ASSERT(r, tf.b == 314.f);
+    REPORTER_ASSERT(r, tf.c == 1.f);
+    REPORTER_ASSERT(r, almost_equal(1/48.f, skcms_TransferFunction_eval(&tf, 0.25f)));
+    REPORTER_ASSERT(r, almost_equal(kWhiteBeforeOotf,
+                                    skcms_TransferFunction_eval(&tf, 0.75f)));
+
+    REPORTER_ASSERT(r, !skcms_TransferFunction_isHLGish(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_isHLG(&tf));
+    REPORTER_ASSERT(r, skcms_TransferFunction_getType(&tf) == skcms_TFType_HLG);
+}
+
+
