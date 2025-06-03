@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7f7789f0_69bb85f8",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:45:27Z",
+      "side": 1,
+      "message": "The one nice thing about adding `const` is that it lets the reader know \"there is no intent to change this value inside this loop\". Which is nice when chasing down issues and looking at places where the value might change. (Unless one has a reproducer, in which case `rr` and watchpoints are all you need, but sometimes it\u0027s Windows only...)",
+      "parentUuid": "5c682436_68d5d28b",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "661bfffc_521a0a1e",
         "filename": "src/core/SkPathEffectBase.h",
         "patchSetId": 6
