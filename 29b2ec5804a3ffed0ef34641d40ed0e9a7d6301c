@@ -38,6 +38,41 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "73a5cc48_0fe1f442",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-03T08:55:58Z",
+      "side": 1,
+      "message": "Got it. Moved this over here:\nhttps://skia-review.googlesource.com/c/skcms/+/1002396",
+      "parentUuid": "c2843bb5_48072c60",
+      "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "959ddf64_da7b0a00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-03T08:55:58Z",
+      "side": 1,
+      "message": "Moved over here:\nhttps://skia-review.googlesource.com/c/skcms/+/1002396",
+      "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1a43857c_9ec14395",
         "filename": "modules/skcms/skcms.cc",
         "patchSetId": 4
@@ -49,6 +84,30 @@
       "writtenOn": "2025-05-29T14:24:46Z",
       "side": 1,
       "message": "I thought these new TFTypes would do their own calculation and *not* re-use the ish versions?",
+      "range": {
+        "startLine": 265,
+        "startChar": 13,
+        "endLine": 265,
+        "endChar": 29
+      },
+      "revId": "29b2ec5804a3ffed0ef34641d40ed0e9a7d6301c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ba56829_8625ce80",
+        "filename": "modules/skcms/skcms.cc",
+        "patchSetId": 4
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-03T08:55:58Z",
+      "side": 1,
+      "message": "I was convinced to do it this way by how SkColorSpaceXformSteps turned out. It was much easier to share the math, and then, when it\u0027s time to remove the old TFTypes, just inline the constants.",
+      "parentUuid": "1a43857c_9ec14395",
       "range": {
         "startLine": 265,
         "startChar": 13,
