@@ -184,7 +184,7 @@ public:
         this->endBlock();
     }
 
-    void addData(SkSpan<const uint32_t> data) {
+    void addData1(SkSpan<const uint32_t> data) {
         // First push the data size followed by the actual data.
         SkDEBUGCODE(this->validateData(data.size()));
         fData.push_back(data.size());
