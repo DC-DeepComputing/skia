@@ -158,12 +158,29 @@ sk_sp<SkImageFilterCache> SkImageFilterCache::Create(size_t maxBytes) {
 
 sk_sp<SkImageFilterCache> SkImageFilterCache::Get(CreateIfNecessary createIfNecessary) {
     static SkOnce once;
+<<<<<<< HEAD   (114d33 Merge 1 release note into RELEASE_NOTES.md)
     static sk_sp<SkImageFilterCache> cache;
+||||||| BASE
+    static sk_sp<SkImageFilterCache> cache;
+    SkAutoMutexExclusive ame(mutex);
+=======
+    static SkImageFilterCache* cache = nullptr;
+>>>>>>> CHANGE (0c3787 Remove destructor calls on shutdown for static local variabl)
 
     if (createIfNecessary == CreateIfNecessary::kNo) {
-        return cache;
+        return sk_ref_sp(cache);
     }
+<<<<<<< HEAD   (114d33 Merge 1 release note into RELEASE_NOTES.md)
 
     once([]{ cache = SkImageFilterCache::Create(kDefaultCacheSize); });
     return cache;
+||||||| BASE
+    if (!cache) {
+        cache = SkImageFilterCache::Create(kDefaultCacheSize);
+    }
+    return cache;
+=======
+    once([] { cache = SkImageFilterCache::Create(kDefaultCacheSize).release(); });
+    return sk_ref_sp(cache);
+>>>>>>> CHANGE (0c3787 Remove destructor calls on shutdown for static local variabl)
 }
