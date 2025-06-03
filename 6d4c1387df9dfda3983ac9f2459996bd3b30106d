@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27543078_125d3037",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-03T00:08:56Z",
+      "side": 1,
+      "message": "Unfortunately this is also the most common intrinsic. Is it possible to add driver bug workarounds here? Or given build flags like `skia_compile_sksl_tests`, the SPIR-V cannot be tailored to the running GPU?\n\nIf we could instead tailor this to YCbCr, that would also work.",
+      "revId": "6d4c1387df9dfda3983ac9f2459996bd3b30106d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
