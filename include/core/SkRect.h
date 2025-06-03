@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkSafe32.h"

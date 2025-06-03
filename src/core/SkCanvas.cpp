@@ -1967,7 +1967,7 @@ void SkCanvas::onDrawPoints(PointMode mode, size_t count, const SkPoint pts[],
 
     auto layer = this->aboutToDraw(strokePaint, boundsPtr);
     if (layer) {
-        this->topDevice()->drawPoints(mode, count, pts, layer->paint());
+        this->topDevice()->drawPoints(mode, {pts, count}, layer->paint());
     }
 }
 
