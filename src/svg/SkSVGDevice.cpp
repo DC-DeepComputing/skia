@@ -921,7 +921,7 @@ void SkSVGDevice::drawPoints(SkCanvas::PointMode mode, size_t count,
             break;
         case SkCanvas::kPolygon_PointMode:
             if (count > 1) {
-                path.addPolygon(pts, SkToInt(count), false);
+                path.addPolygon({pts, count}, false);
             }
             break;
     }
