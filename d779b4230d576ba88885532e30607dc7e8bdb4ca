@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c682436_68d5d28b",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T20:31:50Z",
+      "side": 1,
+      "message": "nit: Most other loops use plain `auto`, we should settle on one variant for consistency.  I prefer `const auto\u0026` in general, and I think Ben favors `auto\u0026\u0026` - but not sure if it makes a difference in this case.",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "661bfffc_521a0a1e",
+        "filename": "src/core/SkPathEffectBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T20:31:50Z",
+      "side": 1,
+      "message": "I can\u0027t easily spot uses of the non-const version, double-checking that this is needed.",
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5c604ffd_45389975",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T20:31:50Z",
+      "side": 1,
+      "message": "SkCanvas should be checking for this, can we assert instead?\n\n(same for other devices)",
+      "range": {
+        "startLine": 988,
+        "startChar": 0,
+        "endLine": 990,
+        "endChar": 5
+      },
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
