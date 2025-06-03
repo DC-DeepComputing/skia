@@ -22,6 +22,30 @@
       },
       "revId": "7dfcbe2f2799011777510b045cc93e760fea7c13",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588b0b02_b80fb465",
+        "filename": "include/core/SkRect.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-03T11:02:01Z",
+      "side": 1,
+      "message": "agreed -- but that need not hold-up landing this now...?",
+      "parentUuid": "b6df3fab_1a8502dd",
+      "range": {
+        "startLine": 914,
+        "startChar": 0,
+        "endLine": 922,
+        "endChar": 5
+      },
+      "revId": "7dfcbe2f2799011777510b045cc93e760fea7c13",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
