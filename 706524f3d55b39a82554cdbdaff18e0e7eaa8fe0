@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae9f2991_c0ff789c",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 372,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T15:23:06Z",
+      "side": 1,
+      "message": "Reverted with https://skia-review.googlesource.com/c/skia/+/1002457 because SkSpan asserts that the \"length of the span\" * \"the size of T\" fits inside a size_t. It looks like MAX_REASONABLE_TABLE_COUNT could be at most \"SIZE_MAX / sizeof(SkFontTableTag)` though it probably makes sense to make it significantly smaller that this (even like 1024) since no practical font has more than 100 top level tables. The idea is to remove this hack (and these unspanned APIs) soon in any event.",
+      "range": {
+        "startLine": 372,
+        "startChar": 36,
+        "endLine": 372,
+        "endChar": 62
+      },
+      "revId": "706524f3d55b39a82554cdbdaff18e0e7eaa8fe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
