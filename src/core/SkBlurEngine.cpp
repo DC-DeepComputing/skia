@@ -31,10 +31,13 @@
 #include "include/private/base/SkMath.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/base/SkSafeMath.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkBitmapDevice.h"
 #include "src/core/SkDevice.h"
+#include "src/core/SkGaussFilter.h"
 #include "src/core/SkKnownRuntimeEffects.h"
+#include "src/core/SkMaskBlurFilter.h"
 #include "src/core/SkSpecialImage.h"
 
 #include <algorithm>
@@ -712,6 +715,219 @@ private:
     skvx::Vec<4, uint32_t>* fBuffer1Cursor;
 };
 
+class RasterA8BlurAlgorithm : public SkBlurEngine::Algorithm {
+public:
+    // See analysis in description of TentPass for the max supported sigma.
+    float maxSigma() const override {
+        static constexpr float kMaxSigma = 135.f;
+        SkASSERT(SkBlurEngine::BoxBlurWindow(kMaxSigma) <= 255);
+        return kMaxSigma;
+    }
+
+    // TODO: Implement CPU backend for different fTileMode. This is still worth doing inline with
+    // the blur; at the moment the tiling is applied via the CropImageFilter and carried as metadata
+    // on the FilterResult. This is forcefully applied in FilterResult::Builder::blur() when
+    // supportsOnlyDecalTiling() returns true.
+    bool supportsOnlyDecalTiling() const override { return true; }
+
+    // TODO: assuming sigmaW = sigmaH. Allow different sigmas.
+    sk_sp<SkSpecialImage> blur(SkSize sigma,
+                               sk_sp<SkSpecialImage> input,
+                               const SkIRect& originalSrcBounds,
+                               SkTileMode tileMode,
+                               const SkIRect& originalDstBounds) const override {
+        if (sigma.fHeight < 2.0 && sigma.fWidth < 2.0) {
+            return this->smallA8Blur(sigma, input, originalSrcBounds, tileMode, originalDstBounds);
+        }
+
+        SkASSERT(tileMode == SkTileMode::kDecal);
+        SkASSERT(SkIRect::MakeSize(input->dimensions()).contains(originalSrcBounds));
+
+        SkBitmap src;
+        if (!SkSpecialImages::AsBitmap(input.get(), &src)) {
+            return nullptr; // Should only have been called by CPU-backed images
+        }
+        // The blur engine shoul dnot have picked this algorithm for a non-8-bit color type.
+        SkASSERT(src.colorType() == kAlpha_8_SkColorType);
+
+        // 1024 is a place holder guess until more analysis can be done.
+        SkSTArenaAlloc<1024> alloc;
+
+        PlanGauss planW(sigma.fWidth);
+        PlanGauss planH(sigma.fHeight);
+
+        int borderW = planW.border(),
+            borderH = planH.border();
+        SkASSERT(borderH >= 0 && borderW >= 0);
+
+        SkSafeMath safe;
+        // dstW = srcW + 2 * radiusX
+        size_t dstWToAlloc = safe.add(src.width(), safe.add(borderW, borderW));
+        // dstH = srcH + 2 * radiusY
+        size_t dstHToAlloc = safe.add(src.height(), safe.add(borderH, borderH));
+        size_t toAlloc = safe.mul(dstWToAlloc, dstHToAlloc);
+
+        SkBitmap dst;
+        SkImageInfo dstInfo;
+        // We can only deal with masks that fit in INT_MAX and sides that fit in int.
+        if (!SkTFitsIn<int>(dstWToAlloc) || !SkTFitsIn<int>(dstHToAlloc) || toAlloc > INT_MAX || !safe) {
+            dstInfo = src.info().makeWH(0, 0);
+        } else {
+            dstInfo = src.info().makeWH(dstWToAlloc, dstHToAlloc);
+        }
+
+        if (!dst.tryAllocPixels(dstInfo)) {
+            return nullptr;
+        }
+
+        int srcW = originalSrcBounds.width(),
+            srcH = originalSrcBounds.height(),
+            dstW = dst.width(),
+            dstH = dst.height();
+        SkASSERT(srcW >= 0 && srcH >= 0 && dstW >= 0 && dstH >= 0);
+
+        auto bufferSize = std::max(planW.bufferSize(), planH.bufferSize());
+        auto buffer = alloc.makeArrayDefault<uint32_t>(bufferSize);
+
+        // Blur both directions.
+        int tmpW = srcH,
+            tmpH = dstW;
+
+        // Make sure not to overflow the multiply for the tmp buffer size.
+        if (tmpH > std::numeric_limits<int>::max() / tmpW) {
+            return nullptr;
+        }
+        auto tmp = alloc.makeArrayDefault<uint8_t>(tmpW * tmpH);
+
+        // Blur horizontally, and transpose.
+        const PlanGauss::Scan& scanW = planW.makeBlurScan(srcW, buffer);
+        const uint8_t* a8Start = src.getAddr8(originalSrcBounds.fLeft, originalSrcBounds.fTop);
+        auto start = RasterA8BlurAlgorithm::AlphaIter(a8Start);
+        auto end = RasterA8BlurAlgorithm::AlphaIter(a8Start + originalDstBounds.width());
+        for (int y = 0; y < srcH; ++y, start >>= originalSrcBounds.width(), end >>= originalSrcBounds.width()) {
+            auto tmpStart = &tmp[y];
+            scanW.blur(start, end, tmpStart, tmpW, tmpStart + tmpW * tmpH);
+        }
+
+        // Blur vertically (scan in memory order because of the transposition),
+        // and transpose back to the original orientation.
+        const PlanGauss::Scan& scanH = planH.makeBlurScan(tmpW, buffer);
+        for (int y = 0; y < tmpH; y++) {
+            auto tmpStart = &tmp[y * tmpW];
+            auto dstStart = &dst.getAddr8(0, 0)[y];
+
+            scanH.blur(tmpStart, tmpStart + tmpW,
+                      dstStart, dst.rowBytes(), dstStart + dst.rowBytes() * dstH);
+        }
+
+        return SkSpecialImages::MakeFromRaster(dstInfo.bounds(), dst, SkSurfaceProps{});
+    }
+private:
+    sk_sp<SkSpecialImage> smallA8Blur(SkSize sigma,
+                                      sk_sp<SkSpecialImage> input,
+                                      const SkIRect& originalSrcBounds,
+                                      SkTileMode tileMode,
+                                      const SkIRect& originalDstBounds) const {
+          SkASSERT(sigma.width() == sigma.height()); //TODO
+          SkASSERT(0.01 <= sigma.width() && sigma.width() < 2);
+          SkASSERT(0.01 <= sigma.height() && sigma.height() < 2);
+
+          SkBitmap src;
+          if (!SkSpecialImages::AsBitmap(input.get(), &src)) {
+              return nullptr; // Should only have been called by CPU-backed images
+          }
+          // The blur engine shoul dnot have picked this algorithm for a non-8-bit color type.
+          SkASSERT(src.colorType() == kAlpha_8_SkColorType);
+
+          SkGaussFilter filterX{sigma.width()},
+                        filterY{sigma.height()};
+
+          int radiusX = filterX.radius(),
+              radiusY = filterY.radius();
+
+          SkASSERT(radiusX <= 4 && radiusY <= 4);
+          auto prepareGauss = [](const SkGaussFilter& filter, uint16_t* factors) {
+              int i = 0;
+              for (double d : filter) {
+                  factors[i++] = static_cast<uint16_t>(round(d * (1 << 16)));
+              }
+            };
+
+            uint16_t gaussFactorsX[SkGaussFilter::kGaussArrayMax],
+                    gaussFactorsY[SkGaussFilter::kGaussArrayMax];
+
+            prepareGauss(filterX, gaussFactorsX);
+            prepareGauss(filterY, gaussFactorsY);
+
+            PlanGauss planW(sigma.fWidth);
+            PlanGauss planH(sigma.fHeight);
+
+            SkSafeMath safe;
+            // dstW = srcW + 2 * radiusX
+            size_t dstWToAlloc = safe.add(src.width(), safe.add(radiusX, radiusX));
+            // dstH = srcH + 2 * radiusY
+            size_t dstHToAlloc = safe.add(src.height(), safe.add(radiusY, radiusY));
+            size_t toAlloc = safe.mul(dstWToAlloc, dstHToAlloc);
+
+            SkBitmap dst;
+            SkImageInfo dstInfo;
+            // We can only deal with masks that fit in INT_MAX and sides that fit in int.
+            if (!SkTFitsIn<int>(dstWToAlloc) || !SkTFitsIn<int>(dstHToAlloc) || toAlloc > INT_MAX || !safe) {
+                dstInfo = src.info().makeWH(0, 0);
+            } else {
+                dstInfo = src.info().makeWH(dstWToAlloc, dstHToAlloc);
+            }
+
+            if (!dst.tryAllocPixels(dstInfo)) {
+                return nullptr;
+            }
+
+            int srcW = originalSrcBounds.width(),
+                srcH = originalSrcBounds.height(),
+                dstW = dst.width(),
+                dstH = dst.height();
+
+            size_t srcRB = src.rowBytes(),
+                   dstRB = dst.rowBytes();
+
+            //TODO: handle bluring in only one direction.
+
+            // Blur vertically and copy to destination.
+            SkMaskBlurFilter::DirectBlurY(nullptr, 8,
+                                          radiusY, gaussFactorsY,
+                                          src.getAddr8(0, 0), srcRB, srcW, srcH,
+                                          dst.getAddr8(0, 0) + radiusX, dstRB);
+
+            // Blur horizontally in place.
+            SkMaskBlurFilter::DirectBlurX(radiusX, gaussFactorsX,
+                                          dst.getAddr8(0, 0) + radiusX,  dstRB, srcW,
+                                          dst.getAddr8(0, 0),            dstRB, dstW, dstH);
+
+            return SkSpecialImages::MakeFromRaster(dstInfo.bounds(), dst, SkSurfaceProps{});
+      }
+
+
+
+      struct AlphaIter {
+          AlphaIter(const uint8_t* ptr) : fPtr(ptr) {}
+          AlphaIter(const AlphaIter& that) : fPtr(that.fPtr) {}
+          AlphaIter& operator++() { ++fPtr; return *this; }
+          AlphaIter& operator--() { --fPtr; return *this; }
+          AlphaIter& operator>>=(uint32_t rb) {
+              fPtr = SkTAddOffset<const uint8_t>(fPtr, rb);
+              return *this;
+          }
+          uint8_t operator*() const { return *fPtr; }
+          bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
+          const uint8_t* fPtr;
+      };
+
+      //todo need PlanGauss
+      //todo need alphaiters
+      //(maybe expose these two things from skmaskfilter in different way to access them here?)
+      //do we still need SkMaskBlurFilter class ?? -> ask michael
+};
+
 class Raster8888BlurAlgorithm : public SkBlurEngine::Algorithm {
 public:
     // See analysis in description of TentPass for the max supported sigma.
@@ -911,8 +1127,13 @@ public:
         // The box blur doesn't actually care about channel order as long as it's 4 8-bit channels.
         const bool rgba8Blur = colorType == kRGBA_8888_SkColorType ||
                                colorType == kBGRA_8888_SkColorType;
-        // TODO: Specialize A8 color types as well by reusing the mask filter blur impl
-        if (smallBlur || !rgba8Blur) {
+
+        const bool a8Blur = colorType == kAlpha_8_SkColorType;
+        const bool sigmasAreEqual = sigma.width() == sigma.height();
+
+        if (a8Blur && sigmasAreEqual) {
+            return &fA8BlurAlgorithm;
+        } else if (smallBlur || !rgba8Blur) {
             return &fShaderBlurAlgorithm;
         } else {
             return &fRGBA8BlurAlgorithm;
@@ -920,10 +1141,12 @@ public:
     }
 
 private:
-    // For small sigmas and non-8888 or A8 color types, use the shader algorithm
+    // For small sigmas and non-8888, use the shader algorithm
     RasterShaderBlurAlgorithm fShaderBlurAlgorithm;
     // For large blurs with RGBA8 or BGRA8, use consecutive box blurs
     Raster8888BlurAlgorithm fRGBA8BlurAlgorithm;
+    // For any size blurs with A8, use consecutive box blurs
+    RasterA8BlurAlgorithm fA8BlurAlgorithm;
 };
 
 } // anonymous namespace
