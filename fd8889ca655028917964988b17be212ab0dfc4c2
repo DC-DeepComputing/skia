@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b3d5965_ea8b228f",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T18:27:46Z",
+      "side": 1,
+      "message": "Yeah, I guess in the end it\u0027s not much of a difference.",
+      "parentUuid": "a45e86f7_11540672",
+      "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5679f9a7_3bfb78b5",
