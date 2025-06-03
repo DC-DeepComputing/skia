@@ -68,6 +68,24 @@
       "parentUuid": "02283c45_8704483e",
       "revId": "c90633e34812a1288c5369f40998f7fd2df8f55c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f90fe00_7549ae04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T15:51:06Z",
+      "side": 1,
+      "message": "Skiafa 0.31.2 (post 0.31.1) has the \"don\u0027t touch the default instance\" change re-applied.",
+      "parentUuid": "43cb16b1_4704ca06",
+      "revId": "c90633e34812a1288c5369f40998f7fd2df8f55c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
