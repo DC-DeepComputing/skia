@@ -1198,6 +1198,13 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);
 
+    SkDebugf("x: %d y: %d - want (x || y) == true\n",
+             xformNeedsGamutOrXferFn, swizzleNeedsGamutTransform);
+
+    SkDebugf("z: %d w: %d - want (z == false || w == false)\n",
+             skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF),
+             skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv));
+
     // Use a specialized shader if we don't need transfer function or gamut transforms.
     if (!(xformNeedsGamutOrXferFn || swizzleNeedsGamutTransform)) {
         // When enabled, the most specialized is to do nothing at all. To simplify calling code,

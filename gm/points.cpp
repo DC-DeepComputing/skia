@@ -18,6 +18,8 @@
 
 #include <stddef.h>
 
+#include <vector>
+
 namespace skiagm {
 
 class PointsGM : public GM {
