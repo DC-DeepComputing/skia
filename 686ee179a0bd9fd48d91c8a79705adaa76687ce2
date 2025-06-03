@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56af0a22_b9e410db",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-03T08:58:48Z",
+      "side": 1,
+      "message": "ptal -- adds test for the expected skcms behavior.\n\n(This will have to wait for the autoroll)",
+      "revId": "686ee179a0bd9fd48d91c8a79705adaa76687ce2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
