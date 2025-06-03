@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7943caed_c8c96a5d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T18:16:51Z",
+      "side": 1,
+      "message": "https://docs.flutter.dev/reference/supported-platforms (10.14!?)\nhttps://support.google.com/chrome/a/answer/7100626?hl\u003den (11, soon to be 12)\nhttps://firefox-source-docs.mozilla.org/contributing/build/supported.html#supported-build-targets (10.15)\nhttps://developer.android.com/studio/install#mac (12)",
+      "revId": "44af93a893b7d174a63136de170ef2d9f6837016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
