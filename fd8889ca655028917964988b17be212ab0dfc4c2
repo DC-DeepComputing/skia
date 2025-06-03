@@ -16,6 +16,47 @@
       "message": "Would it make sense to use this pattern instead, which allows clients to opt out using something like SK_DISABLE_UNSPANNED_APIS?",
       "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5679f9a7_3bfb78b5",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-03T02:37:50Z",
+      "side": 1,
+      "message": "nit: `!defined()` seems to be preferred these days.",
+      "range": {
+        "startLine": 152,
+        "startChar": 1,
+        "endLine": 152,
+        "endChar": 7
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "21054d90_586bb104",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "include/core/SkTypes.h",
+              "range": {
+                "startLine": 152,
+                "startChar": 0,
+                "endLine": 153,
+                "endChar": 0
+              },
+              "replacement": "#if !defined(SK_SUPPORT_UNSPANNED_APIS)\n"
+            }
+          ]
+        }
+      ],
+      "revId": "fd8889ca655028917964988b17be212ab0dfc4c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
