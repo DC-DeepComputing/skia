@@ -16,6 +16,144 @@
       "message": "ptal",
       "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52ec9b72_919d670c",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "I think this makes a copy, but maybe the copy goes away? Generally, if we\u0027re going to use `auto` like this I prefer `auto\u0026\u0026` everywhere. See https://quuxplusone.github.io/blog/2018/12/15/autorefref-always-works/ . I prefer not to use `auto` if just typing out the fully qualified name isn\u0027t too long (here I think `const SkPoint\u0026` would be nice over the `SkPoint` which is implied), since saving typing for the writer is immaterial to the amount of time wasted by the readers / maintainers over time trying to read through all the `auto`.",
+      "range": {
+        "startLine": 638,
+        "startChar": 25,
+        "endLine": 638,
+        "endChar": 32
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18e9d06f_5fdb7606",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "Like here, might as well just write out the `SkPoint` or go with `auto\u0026\u0026` which will deduce to `const SkPoint\u0026` anyway.",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c7742c9_69b1f84d",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "`size_t`",
+      "range": {
+        "startLine": 458,
+        "startChar": 10,
+        "endLine": 458,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e07f4756_9e9f0345",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "`size_t`",
+      "range": {
+        "startLine": 991,
+        "startChar": 4,
+        "endLine": 991,
+        "endChar": 8
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e50fb3af_62681d29",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "Just `size_t`. There isn\u0027t any other correct type and as a reader I don\u0027t want to have to think about what it might be.",
+      "range": {
+        "startLine": 540,
+        "startChar": 10,
+        "endLine": 540,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3667e3_6d074d8f",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-03T20:41:43Z",
+      "side": 1,
+      "message": "`size_t`",
+      "range": {
+        "startLine": 911,
+        "startChar": 4,
+        "endLine": 911,
+        "endChar": 8
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
