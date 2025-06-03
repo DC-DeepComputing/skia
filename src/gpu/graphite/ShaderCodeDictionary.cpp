@@ -1363,16 +1363,16 @@ ShaderCodeDictionary::ShaderCodeDictionary(
             /*staticFn=*/"sk_matrix_colorfilter",
             SnippetRequirementFlags::kPriorStageOutput,
             /*uniforms=*/{
-                           { "colorMatrix",    SkSLType::kHalf4x4 },
-                           { "colorTranslate", SkSLType::kHalf4 },
+                           { "colorMatrix",    SkSLType::kFloat4x4 },
+                           { "colorTranslate", SkSLType::kFloat4 },
                            { "minMaxRGB",      SkSLType::kHalf2 } }
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kHSLMatrixColorFilter] = {
             /*name=*/"HSLMatrixColorFilter",
             /*staticFn=*/"sk_hsl_matrix_colorfilter",
             SnippetRequirementFlags::kPriorStageOutput,
-            /*uniforms=*/{ { "colorMatrix",    SkSLType::kHalf4x4 },
-                           { "colorTranslate", SkSLType::kHalf4 } }
+            /*uniforms=*/{ { "colorMatrix",    SkSLType::kFloat4x4 },
+                           { "colorTranslate", SkSLType::kFloat4 } }
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kTableColorFilter] = {
             /*name=*/"TableColorFilter",
