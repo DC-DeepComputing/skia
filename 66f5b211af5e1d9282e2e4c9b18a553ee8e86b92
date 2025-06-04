@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd86bf4e_88757136",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T17:22:58Z",
+      "side": 1,
+      "message": "Will keep as-is for now.",
+      "parentUuid": "a7649c81_eb9fe149",
+      "range": {
+        "startLine": 1251,
+        "startChar": 45,
+        "endLine": 1251,
+        "endChar": 73
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cfed7172_453e95cb",
@@ -85,6 +109,30 @@
       "side": 1,
       "message": "1. true\n2. I\u0027d vote to introduce a stricter notion of a valid path -- close verbs w/ no moves seem quite illegal to me\n3. I removed the pts check",
       "parentUuid": "cfed7172_453e95cb",
+      "range": {
+        "startLine": 3549,
+        "startChar": 8,
+        "endLine": 3549,
+        "endChar": 19
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4b28589_a8ac5b2e",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3549,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T17:22:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fca0885e_9db6984b",
       "range": {
         "startLine": 3549,
         "startChar": 8,
