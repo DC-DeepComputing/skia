@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3d422ea_0be45483",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:25:40Z",
+      "side": 1,
+      "message": "Thanks for the many comments. At least 2 unresolved (in my mind)\n\n1. style for looping on points\n2. graphite/drawPoints and count-1 checking",
+      "revId": "7e86c9fb21fe0ec57779e2b7555ab1cbd74a22a6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
