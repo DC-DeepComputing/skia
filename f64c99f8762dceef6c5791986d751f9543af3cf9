@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1c5ce94_7d36b778",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-04T15:30:32Z",
+      "side": 1,
+      "message": "Ok to review. Removed use of DrawPass in the test.",
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6265c8d4_8e7f584f",
@@ -41,6 +58,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "caa5aa90_66a46cd5",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-04T15:30:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6265c8d4_8e7f584f",
+      "range": {
+        "startLine": 792,
+        "startChar": 0,
+        "endLine": 793,
+        "endChar": 66
+      },
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c5cf922c_76a89760",
@@ -54,6 +95,30 @@
       "writtenOn": "2025-06-04T13:26:20Z",
       "side": 1,
       "message": "Can we just use a `const_cast` in the unit test to avoid modifying the core type?",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 6
+      },
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4386f1f_4739370b",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-04T15:30:32Z",
+      "side": 1,
+      "message": "I did not know you could do this.",
+      "parentUuid": "c5cf922c_76a89760",
       "range": {
         "startLine": 167,
         "startChar": 0,
