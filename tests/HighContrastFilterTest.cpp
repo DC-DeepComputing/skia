@@ -21,10 +21,10 @@ DEF_TEST(HighContrastFilter_SmokeTest, reporter) {
     REPORTER_ASSERT(reporter, filter->isAlphaUnchanged());
 
     SkColorSpace* cs = nullptr;
-    SkColor4f white_inverted = filter->filterColor4f(SkColors::kWhite, cs, cs);
+    SkColor4f white_inverted = filter->filterColor4f1(SkColors::kWhite, cs, cs);
     REPORTER_ASSERT(reporter, white_inverted == SkColors::kBlack);
 
-    SkColor4f black_inverted = filter->filterColor4f(SkColors::kBlack, cs, cs);
+    SkColor4f black_inverted = filter->filterColor4f1(SkColors::kBlack, cs, cs);
     REPORTER_ASSERT(reporter, black_inverted == SkColors::kWhite);
 }
 

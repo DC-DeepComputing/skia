@@ -127,7 +127,7 @@ bool SkPaintPriv::ShouldDither(const SkPaint& p, SkColorType dstCT) {
 
     // Otherwise, dither is only needed for non-const paints.
     return p.getImageFilter() || p.getMaskFilter() ||
-           (p.getShader() && !as_SB(p.getShader())->isConstant());
+           (p.getShader() && !as_SB(p.getShader())->isConstant1());
 }
 
 // return true if the paint is just a single color (i.e. not a shader). If its
@@ -142,7 +142,7 @@ static bool just_a_color(const SkPaint& paint, SkColor4f* color) {
     if (paint.getColorFilter()) {
         // TODO: This colorspace is meaningless, replace it with something else
         SkColorSpace* cs = nullptr;
-        c = paint.getColorFilter()->filterColor4f(c, cs, cs);
+        c = paint.getColorFilter()->filterColor4f1(c, cs, cs);
     }
     if (color) {
         *color = c;
@@ -158,7 +158,7 @@ SkColor SkPaintPriv::ComputeLuminanceColor(const SkPaint& paint) {
     return c.toSkColor();
 }
 
-void SkPaintPriv::RemoveColorFilter(SkPaint* p, SkColorSpace* dstCS) {
+void SkPaintPriv::RemoveColorFilter1(SkPaint* p, SkColorSpace* dstCS) {
     if (SkColorFilter* filter = p->getColorFilter()) {
         if (SkShader* shader = p->getShader()) {
             // SkColorFilterShader will modulate the shader color by paint alpha
@@ -168,7 +168,7 @@ void SkPaintPriv::RemoveColorFilter(SkPaint* p, SkColorSpace* dstCS) {
                                                    sk_ref_sp(filter)));
             p->setAlphaf(1.0f);
         } else {
-            p->setColor(filter->filterColor4f(p->getColor4f(), sk_srgb_singleton(), dstCS), dstCS);
+            p->setColor(filter->filterColor4f1(p->getColor4f(), sk_srgb_singleton(), dstCS), dstCS);
         }
         p->setColorFilter(nullptr);
     }
