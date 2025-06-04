@@ -22,6 +22,30 @@
       },
       "revId": "852c021a14f86b4682c2634492a9e18c985be0d8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "12baf2cc_f2618dd8",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T15:06:59Z",
+      "side": 0,
+      "message": "So, asking around, it seems like ideally these would all (except for the NativeFonts job) come back as Mac11.",
+      "parentUuid": "cb539580_18b2eead",
+      "range": {
+        "startLine": 559,
+        "startChar": 0,
+        "endLine": 559,
+        "endChar": 110
+      },
+      "revId": "852c021a14f86b4682c2634492a9e18c985be0d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
