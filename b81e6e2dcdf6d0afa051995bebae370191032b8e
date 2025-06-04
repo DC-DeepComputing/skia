@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e60939f5_1af693a7",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-04T18:27:25Z",
+      "side": 1,
+      "message": "If we add support for a new texture format where this may be false, it\u0027s possible we get into a circumstance where we mistakenly default to returning true here.\n\nTo avoid that potential (though niche and probably unlikely) pitfall, I\u0027m inclined to add all format coverage here; i.e., explicate the other formats and fallthrough to return true, asserting that we don\u0027t hit a default case of encountering an unexpected format (or otherwise asserting that if a new format is added, whether or not it auto-clamps is considered).",
+      "range": {
+        "startLine": 269,
+        "startChar": 2,
+        "endLine": 271,
+        "endChar": 24
+      },
+      "revId": "b81e6e2dcdf6d0afa051995bebae370191032b8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
