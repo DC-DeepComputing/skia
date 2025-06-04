@@ -16,6 +16,23 @@
       "message": "Thomas has stolen your thunder: https://skia-review.googlesource.com/c/skia/+/1003176",
       "revId": "b9ffa32defb59eb523047818955e7c4d8ac4c084",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1b86ed3_f9e7168c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T18:05:43Z",
+      "side": 1,
+      "message": "Looks like https://skia-review.googlesource.com/c/skia/+/1003176 landed first",
+      "revId": "b9ffa32defb59eb523047818955e7c4d8ac4c084",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
