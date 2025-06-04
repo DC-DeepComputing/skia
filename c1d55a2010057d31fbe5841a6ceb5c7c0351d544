@@ -16,6 +16,24 @@
       "message": "The only known user who might care is Flutter, but at this point iOS12 devices are a rounding error. It looks like iOS13 and iOS14 are also rounding errors, with iOS15 being the oldest with any significant use. However, our physical test devices are mostly iOS13 and the most benefit is from removing iOS12 support.\n\nIn addition, the \"iOS12\" devices are actually iOS13 anyway. It\u0027s just the build target that is set to iOS12. There hasn\u0027t actually been any testing on an iOS12 device in quite some time.",
       "revId": "c1d55a2010057d31fbe5841a6ceb5c7c0351d544",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "34a30119_4ea59732",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T20:09:48Z",
+      "side": 1,
+      "message": "Just to give an idea, the last device that could not update to iOS13 was the iPhone 6 (last sold September 12, 2018). The iPhone 6s, iPhone 6s Plus, and iPhone 7 go to iOS15, which is probably why 13 and 14 aren\u0027t seen very often. (There may be an iPad that was sold later with this restriction, but I\u0027m having difficulty tracking that down.)",
+      "parentUuid": "0483c09f_477bf148",
+      "revId": "c1d55a2010057d31fbe5841a6ceb5c7c0351d544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
