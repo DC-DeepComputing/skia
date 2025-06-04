@@ -14,6 +14,8 @@
 #include "include/core/SkPicture.h"
 #include "include/private/base/SkNoncopyable.h"
 
+#include <cstddef>
+
 class SkDrawable;
 class SkRecord;
 struct SkRect;
