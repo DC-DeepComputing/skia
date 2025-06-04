@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c6562a9_e984f7b7",
+        "filename": "docs/examples/mapradius.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42149272_387f1b2c",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 8
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f909bfd1_c0bd3741",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-06-04T13:33:46Z",
       "side": 1,
       "message": "nit: line length\n\nAlso I think we should carry this message to the other updated functions",
+      "range": {
+        "startLine": 1302,
+        "startChar": 0,
+        "endLine": 1302,
+        "endChar": 103
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f3f83d3_87393820",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1302,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f909bfd1_c0bd3741",
       "range": {
         "startLine": 1302,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c6afe3c8_be592a91",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "I agree -- I was being too tricky",
+      "parentUuid": "30b8f3df_f0729f5e",
+      "range": {
+        "startLine": 1355,
+        "startChar": 0,
+        "endLine": 1357,
+        "endChar": 22
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8f50f05a_351bbeab",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-06-04T13:33:46Z",
       "side": 1,
       "message": "and here",
+      "range": {
+        "startLine": 1366,
+        "startChar": 0,
+        "endLine": 1368,
+        "endChar": 22
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01f96813_515e2ded",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f50f05a_351bbeab",
       "range": {
         "startLine": 1366,
         "startChar": 0,
@@ -127,6 +223,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ad2b485_c31fde2c",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "good call!",
+      "parentUuid": "7bb4c1fd_6581cef3",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5a046125_254c6ee1",
@@ -140,6 +254,24 @@
       "writtenOn": "2025-06-04T13:05:12Z",
       "side": 1,
       "message": "nit: looks like we should be able to just pass dst and src here.",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06e2f281_abada357",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "sweet!",
+      "parentUuid": "5a046125_254c6ee1",
       "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -161,6 +293,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3427ebf6_e9b238e1",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "sweet!",
+      "parentUuid": "719b0aa3_0ced3bb7",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3242ac4_28d87048",
@@ -174,6 +324,30 @@
       "writtenOn": "2025-06-04T13:05:12Z",
       "side": 1,
       "message": "nit: `const SkVector v \u003d matrix.mapVector(geom.fX, geom.fY);`?",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 31
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6676e953_7efcc15f",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a3242ac4_28d87048",
       "range": {
         "startLine": 363,
         "startChar": 0,
@@ -207,6 +381,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "07fb03bb_8603c949",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "312122de_e4f9e6bf",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 31
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b609bff_02742b50",
@@ -224,6 +422,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b32b8861_c9023bef",
+        "filename": "src/core/SkMatrixPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2b609bff_02742b50",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5783e6fc_03454501",
@@ -237,6 +453,30 @@
       "writtenOn": "2025-06-04T13:05:12Z",
       "side": 1,
       "message": "nit: just `srcPts`?",
+      "range": {
+        "startLine": 547,
+        "startChar": 38,
+        "endLine": 547,
+        "endChar": 66
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "02515838_691e53ff",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5783e6fc_03454501",
       "range": {
         "startLine": 547,
         "startChar": 38,
@@ -270,6 +510,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5165024f_ba9bf687",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bc642985_c21a36e1",
+      "range": {
+        "startLine": 609,
+        "startChar": 41,
+        "endLine": 609,
+        "endChar": 70
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2b356105_65c4e2d0",
@@ -293,6 +557,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90f4ab99_e9e95d57",
+        "filename": "src/core/SkRSXform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "can\u0027t deduce the size from the param\n... and we never compile this code ???",
+      "parentUuid": "2b356105_65c4e2d0",
+      "range": {
+        "startLine": 17,
+        "startChar": 34,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b8de3892_0275431e",
@@ -306,6 +594,24 @@
       "writtenOn": "2025-06-04T13:05:12Z",
       "side": 1,
       "message": "nit: just `devPts`, `srcSpaceQuadPts`?",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "113b387d_38eac914",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:50:47Z",
+      "side": 1,
+      "message": "dstPts yes\nsrc no -- can\u0027t deduce size",
+      "parentUuid": "b8de3892_0275431e",
       "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
