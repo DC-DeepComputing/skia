@@ -16,6 +16,24 @@
       "message": "I think we will also want to update the logic in VulkanInterface to validate that 1.1 was requested, and possibly simplify some of the extension checks there: https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/vk/VulkanUtilsPriv.cpp;drc\u003daaceb0ff7dcbc44c661bae12fba36279b3dee7c4;l\u003d391\n\nI also want to hold off landing this until there\u0027s been some time for people to respond to https://groups.google.com/g/skia-discuss/c/ZS_vEtlAwNU",
       "revId": "a8a641f705e4c627efe322380e58b3907126c27f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cecd8ec0_ed408946",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-04T14:44:51Z",
+      "side": 1,
+      "message": "Oh yeah, forgot about those. Done.",
+      "parentUuid": "9c1e3eeb_c3265e57",
+      "revId": "a8a641f705e4c627efe322380e58b3907126c27f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
