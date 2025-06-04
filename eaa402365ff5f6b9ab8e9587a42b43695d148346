@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf39bdc_da1f5bd5",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T14:33:29Z",
+      "side": 0,
+      "message": "Oh, SkSpan also constructs from an initializer list?  That\u0027s so cool, we can inline a bunch of things in tests etc.",
+      "range": {
+        "startLine": 101,
+        "startChar": 26,
+        "endLine": 101,
+        "endChar": 63
+      },
+      "revId": "eaa402365ff5f6b9ab8e9587a42b43695d148346",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

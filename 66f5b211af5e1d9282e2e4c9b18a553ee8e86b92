@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f0d901e_34605117",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T14:33:29Z",
+      "side": 1,
+      "message": "Since this is expected to be exactly 8 scalars, it\u0027d be nicer to use something that enforces that constraint explicitly.  Maybe `std::array\u003cSkScalar, 8\u003e`, or more flexible (to be implemented) `SkSpan\u003cSkScalar, 8\u003e`?  `std::span` does support static extents, we should add them to SkSpan too.",
+      "range": {
+        "startLine": 1251,
+        "startChar": 45,
+        "endLine": 1251,
+        "endChar": 73
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cfed7172_453e95cb",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3549,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T14:33:29Z",
+      "side": 1,
+      "message": "Hmm, this is subtly different for paths with no points (just Close verbs).  Clients may expect us to not drop those on the floor.  Maybe just test for empty verbs like before?",
+      "range": {
+        "startLine": 3549,
+        "startChar": 8,
+        "endLine": 3549,
+        "endChar": 19
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1e257ef_f2e76aa3",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3554,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T14:33:29Z",
+      "side": 1,
+      "message": "Interesting, I didn\u0027t realize we validate the counts, I guess it makes sense for a public API.  But for a trusted client like SkPathBuilder this is unneeded - I think it\u0027d make sense to add a check-free private version at some point.",
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
