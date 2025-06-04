@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb539580_18b2eead",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 3
+      },
+      "lineNbr": 559,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-06-04T14:41:26Z",
+      "side": 0,
+      "message": "Do we want to replace these jobs with new equivalents after the machines update to 12?  Alternatively we can just ask that these machines be recycled.",
+      "range": {
+        "startLine": 559,
+        "startChar": 0,
+        "endLine": 559,
+        "endChar": 110
+      },
+      "revId": "852c021a14f86b4682c2634492a9e18c985be0d8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
