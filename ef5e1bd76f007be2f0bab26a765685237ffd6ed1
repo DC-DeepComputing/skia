@@ -90,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ee2f1920_8608f945",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T16:40:00Z",
+      "side": 1,
+      "message": "The ones that force a copy often do end up doing more work and produce longer code, even after optimization. In some cases it doesn\u0027t matter, but `const \u0026` is almost always what we want logically, since it points out that we are dealing with the thing itself (the reference) and not mutating it (the const). How that is written isn\u0027t super particular.",
+      "parentUuid": "4d487e0e_abf243ca",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c7742c9_69b1f84d",
         "filename": "src/gpu/ganesh/Device.cpp",
         "patchSetId": 7
@@ -219,6 +243,30 @@
       "side": 1,
       "message": "... and as the reader, I now have to wonder if size_t somehow disagress with what size() actually returns :)",
       "parentUuid": "e50fb3af_62681d29",
+      "range": {
+        "startLine": 540,
+        "startChar": 10,
+        "endLine": 540,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79e8f0a3_ef402835",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T16:40:00Z",
+      "side": 1,
+      "message": "All functions named `size()` that do not return `size_t` are logically buggy. I realize that Skia has a number of these, and they should really get cleaned up (which is the correct fix for the confusion). At the very least if it doesn\u0027t return `size_t` it should be renamed something else.",
+      "parentUuid": "b48bf09d_236c2f7d",
       "range": {
         "startLine": 540,
         "startChar": 10,
