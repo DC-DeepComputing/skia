@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "937bd749_ed6f00fb",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T16:59:48Z",
+      "side": 1,
+      "message": "This maximum of 135 comes from the GaussPass, which applies here.",
+      "range": {
+        "startLine": 724,
+        "startChar": 38,
+        "endLine": 724,
+        "endChar": 46
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fb6cd8a_1fbb47c0",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T16:59:48Z",
+      "side": 1,
+      "message": "We should just have this be a separate subclass of SkBlurEngine::Algorithm",
+      "range": {
+        "startLine": 743,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 9
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9ef241b3_424be279",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T16:59:48Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to worry about these details if we\u0027re using SkIRect (which uses safe math internally) or with SkBitmap to handle our allocations.",
+      "range": {
+        "startLine": 908,
+        "startChar": 0,
+        "endLine": 926,
+        "endChar": 11
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc882fe_90c9282e",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T16:59:48Z",
+      "side": 1,
+      "message": "Do you think it\u0027s possible to implement a subclass of the `Pass` type defined in this file by delegating the blur work to the `PassGauss` or `DirectBlurX/Y` functions you\u0027ve exposed? \n\nThen we could generalize this algorithm by having it pick the A8 pass, and not have to the large controlling loop that we have in `RasterA8BlurAlgorithm::blur` (but the small A8 blur would be isolated into its own class)",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1053,
+        "endChar": 10
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36e2b278_92360042",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T16:59:48Z",
+      "side": 1,
+      "message": "Do we actually require the sigmas to be equal? It looks like the algorithm and the mask code have support for separate sigmas for X and Y.",
+      "range": {
+        "startLine": 1201,
+        "startChar": 0,
+        "endLine": 1201,
+        "endChar": 68
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
