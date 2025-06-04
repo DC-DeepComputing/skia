@@ -16,6 +16,23 @@
       "message": "@fmalita@google.com This CL is ready for review.",
       "revId": "686cc6661080eb999d9fb661072a4f1647214bab",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2750f4f_ebc7de54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T18:30:05Z",
+      "side": 1,
+      "message": "neat!",
+      "revId": "686cc6661080eb999d9fb661072a4f1647214bab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
