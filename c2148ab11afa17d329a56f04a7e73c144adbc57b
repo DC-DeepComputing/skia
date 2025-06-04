@@ -18,6 +18,23 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ba6a07f_38944ab2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-06-04T13:49:15Z",
+      "side": 1,
+      "message": "Thanks!",
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9286707e_de5b6899",
@@ -43,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49a7dd61_3ae4b6c6",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-06-04T13:49:15Z",
+      "side": 1,
+      "message": "I ran this and it didn\u0027t have an effect, but I ran through the patch and updated the spaces.",
+      "parentUuid": "9286707e_de5b6899",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 2
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "450f416a_0e62923c",
         "filename": "src/core/SkColorSpaceXformSteps.cpp",
         "patchSetId": 5
@@ -54,6 +95,30 @@
       "writtenOn": "2025-06-04T11:37:38Z",
       "side": 1,
       "message": "Will this be subject to floating point error? Does that matter?",
+      "range": {
+        "startLine": 170,
+        "startChar": 66,
+        "endLine": 170,
+        "endChar": 72
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26dfdf51_ac3342aa",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-06-04T13:49:15Z",
+      "side": 1,
+      "message": "In theory yes. I tested the most common version (1.2 cancelling 1.2) and this worked, so I didn\u0027t bother adding a tolerance.",
+      "parentUuid": "450f416a_0e62923c",
       "range": {
         "startLine": 170,
         "startChar": 66,
@@ -100,6 +165,30 @@
       "writtenOn": "2025-06-04T11:37:38Z",
       "side": 1,
       "message": "nit: constexpr",
+      "range": {
+        "startLine": 249,
+        "startChar": 4,
+        "endLine": 249,
+        "endChar": 9
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e38ac53e_7928e31b",
+        "filename": "tests/SkColorSpaceXformStepsTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-06-04T13:49:15Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b523e81b_5b7f6282",
       "range": {
         "startLine": 249,
         "startChar": 4,
