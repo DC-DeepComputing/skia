@@ -1,0 +1,136 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d22c157_999c362b",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "My preference would be to add a `kMacIntel` enum here that is documented as `kMac` with an intel device instead of adding an additional bool and `initIfIntelGPU` function.\n\nThen we just modify `initGPUFamily` to refine `kMac` to `kMacIntel` if the device name contains \"Intel\".  The `isMac()` function would return true for both `kMac and kMacIntel`.\n\nWe\u0027d make similar changes to MtlCaps in Graphite as well.",
+      "range": {
+        "startLine": 185,
+        "startChar": 1,
+        "endLine": 186,
+        "endChar": 15
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e0a055a_ba3e3f2c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "Maybe assert that columns \u003e 1 and delete the else branch?",
+      "range": {
+        "startLine": 887,
+        "startChar": 0,
+        "endLine": 887,
+        "endChar": 22
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "853d7592_efbe131d",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "I think a lot of this could be simplified by using `writeIndexInnerExpression` when writing each original argument before we add the swizzle expression for the scalar component.  This handles de-duplicating and trivial expressions and creating the sequence expression.\n\nI think our core loop to scalarize each one would be inside a lambda passed into `writeWithIndexSubstitution`",
+      "range": {
+        "startLine": 888,
+        "startChar": 0,
+        "endLine": 948,
+        "endChar": 9
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a859978_4b1aaf61",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "And instead of having to have the else fallback in writeScalarizedIntrinsicCall, we just check if `c.arguments()[0].type().isScalar()` in this if.",
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d1dab0d_50af89e4",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "We can have these be `[[fallthrough]];` cases with `k_clamp_IntrinsicKind` and leverage just passing in `c.function().name().c_str()` to be \"clamp\", \"min\", or \"max\".",
+      "range": {
+        "startLine": 1407,
+        "startChar": 0,
+        "endLine": 1414,
+        "endChar": 33
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "459e5949_d9b0ad85",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1420,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T15:27:16Z",
+      "side": 1,
+      "message": "nit: cleanup",
+      "range": {
+        "startLine": 1420,
+        "startChar": 0,
+        "endLine": 1420,
+        "endChar": 31
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
