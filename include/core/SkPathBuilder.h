@@ -20,6 +20,8 @@
 #include "include/private/base/SkTArray.h"
 #include "include/private/base/SkTo.h"
 
+#include "include/core/SkPathSink.h"
+
 #include <initializer_list>
 #include <optional>
 #include <tuple>
