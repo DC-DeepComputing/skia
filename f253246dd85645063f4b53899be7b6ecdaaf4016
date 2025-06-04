@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "134f2785_9ff5fb5d",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 724,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T18:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "937bd749_ed6f00fb",
+      "range": {
+        "startLine": 724,
+        "startChar": 38,
+        "endLine": 724,
+        "endChar": 46
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fb6cd8a_1fbb47c0",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9e3742_85ca6138",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 745,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T18:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fb6cd8a_1fbb47c0",
+      "range": {
+        "startLine": 743,
+        "startChar": 0,
+        "endLine": 745,
+        "endChar": 9
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9ef241b3_424be279",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-06-04T16:59:48Z",
       "side": 1,
       "message": "I don\u0027t think we need to worry about these details if we\u0027re using SkIRect (which uses safe math internally) or with SkBitmap to handle our allocations.",
+      "range": {
+        "startLine": 908,
+        "startChar": 0,
+        "endLine": 926,
+        "endChar": 11
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0258cf2d_0c73e706",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T18:19:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ef241b3_424be279",
       "range": {
         "startLine": 908,
         "startChar": 0,
@@ -95,6 +167,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a9c097d_648cc92a",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T18:19:29Z",
+      "side": 1,
+      "message": "I\u0027m unclear on the benefit of doing this, will we be able to allocate less tmp memory?",
+      "parentUuid": "dcc882fe_90c9282e",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1053,
+        "endChar": 10
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36e2b278_92360042",
         "filename": "src/core/SkBlurEngine.cpp",
         "patchSetId": 7
@@ -106,6 +202,30 @@
       "writtenOn": "2025-06-04T16:59:48Z",
       "side": 1,
       "message": "Do we actually require the sigmas to be equal? It looks like the algorithm and the mask code have support for separate sigmas for X and Y.",
+      "range": {
+        "startLine": 1201,
+        "startChar": 0,
+        "endLine": 1201,
+        "endChar": 68
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93441a6a_3c2d1a9b",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T18:19:29Z",
+      "side": 1,
+      "message": "Hm, I\u0027m not actually sure. Comments and Asserts indicate this in SkMaskBlurFilter.cpp and its only usage in SkBlurMask.cpp uses the same sigma. I can keep looking into it.",
+      "parentUuid": "36e2b278_92360042",
       "range": {
         "startLine": 1201,
         "startChar": 0,
