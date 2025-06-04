@@ -66,6 +66,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d487e0e_abf243ca",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:24:58Z",
+      "side": 1,
+      "message": "There are clearly lots of ways to express this (when we don\u0027t really want a mutable-ref\n\n(auto pt : points)\n(const auto\u0026 pt : points)\n(SkPoint pt : points)\n(const SkPoint pt : points)\n(auto\u0026\u0026 pt : points)\n(SkPoint\u0026\u0026 pt : points)\n\nI have landed on the first in my recent other work (when pt is a modest simple struct) -- but I bet ALL of these compile to exactly the same code for these loops.\n\nSounds like (...I think) you want me to use (auto\u0026\u0026...) ?",
+      "parentUuid": "18e9d06f_5fdb7606",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c7742c9_69b1f84d",
         "filename": "src/gpu/ganesh/Device.cpp",
         "patchSetId": 7
@@ -77,6 +101,30 @@
       "writtenOn": "2025-06-03T20:41:43Z",
       "side": 1,
       "message": "`size_t`",
+      "range": {
+        "startLine": 458,
+        "startChar": 10,
+        "endLine": 458,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b4657bd_9e451d28",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:24:58Z",
+      "side": 1,
+      "message": "Sounds like another style pref that I misguessed -- will do.",
+      "parentUuid": "0c7742c9_69b1f84d",
       "range": {
         "startLine": 458,
         "startChar": 10,
@@ -110,6 +158,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93a12be3_7b9afc30",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 991,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:24:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e07f4756_9e9f0345",
+      "range": {
+        "startLine": 991,
+        "startChar": 4,
+        "endLine": 991,
+        "endChar": 8
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e50fb3af_62681d29",
@@ -133,6 +205,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b48bf09d_236c2f7d",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 540,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:24:58Z",
+      "side": 1,
+      "message": "... and as the reader, I now have to wonder if size_t somehow disagress with what size() actually returns :)",
+      "parentUuid": "e50fb3af_62681d29",
+      "range": {
+        "startLine": 540,
+        "startChar": 10,
+        "endLine": 540,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ff3667e3_6d074d8f",
@@ -146,6 +242,30 @@
       "writtenOn": "2025-06-03T20:41:43Z",
       "side": 1,
       "message": "`size_t`",
+      "range": {
+        "startLine": 911,
+        "startChar": 4,
+        "endLine": 911,
+        "endChar": 8
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9bfa00ab_40e6f9fd",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:24:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff3667e3_6d074d8f",
       "range": {
         "startLine": 911,
         "startChar": 4,
