@@ -449,8 +449,7 @@ private:
                                            : this->adjustAndMap(op.path.getBounds(), &op.paint);
     }
     Bounds bounds(const DrawPoints& op) const {
-        SkRect dst;
-        dst.setBounds(op.pts, op.count);
+        SkRect dst = SkRect::BoundsOrEmpty({op.pts, op.count});
 
         // Pad the bounding box a little to make sure hairline points' bounds aren't empty.
         SkScalar stroke = std::max(op.paint.getStrokeWidth(), 0.01f);
@@ -459,8 +458,7 @@ private:
         return this->adjustAndMap(dst, &op.paint);
     }
     Bounds bounds(const DrawPatch& op) const {
-        SkRect dst;
-        dst.setBounds(op.cubics, SkPatchUtils::kNumCtrlPts);
+        const auto dst = SkRect::BoundsOrEmpty({op.cubics, (size_t)SkPatchUtils::kNumCtrlPts});
         return this->adjustAndMap(dst, &op.paint);
     }
     Bounds bounds(const DrawVertices& op) const {
@@ -510,10 +508,7 @@ private:
         return this->adjustAndMap(op.rect, nullptr);
     }
     Bounds bounds(const DrawEdgeAAQuad& op) const {
-        SkRect bounds = op.rect;
-        if (op.clip) {
-            bounds.setBounds(op.clip, 4);
-        }
+        const auto bounds = op.clip ? SkRect::BoundsOrEmpty({op.clip, 4}) : op.rect;
         return this->adjustAndMap(bounds, nullptr);
     }
     Bounds bounds(const DrawEdgeAAImageSet& op) const {
@@ -522,7 +517,7 @@ private:
         for (int i = 0; i < op.count; ++i) {
             SkRect entryBounds = op.set[i].fDstRect;
             if (op.set[i].fHasClip) {
-                entryBounds.setBounds(op.dstClips + clipIndex, 4);
+                entryBounds = SkRect::BoundsOrEmpty({op.dstClips + clipIndex, 4});
                 clipIndex += 4;
             }
             if (op.set[i].fMatrixIndex >= 0) {

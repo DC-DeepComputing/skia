@@ -10,6 +10,7 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkSafe32.h"
@@ -19,6 +20,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <optional>
 
 struct SkRect;
 class SkString;
@@ -875,6 +877,21 @@ struct SK_API SkRect {
         fTop    = top;
         fRight  = right;
         fBottom = bottom;
+    }
+
+    /**
+     * Compute the bounds of the span of points.
+     * If the span is empty, returns the empty-rect {0, 0, 0, 0.
+     * If the span contains non-finite values (inf or nan), returns {}
+     */
+    static std::optional<SkRect> Bounds(SkSpan<const SkPoint> pts);
+
+    static SkRect BoundsOrEmpty(SkSpan<const SkPoint> pts) {
+        if (auto bounds = Bounds(pts)) {
+            return bounds.value();
+        } else {
+            return MakeEmpty();
+        }
     }
 
     /** Sets to bounds of SkPoint array with count entries. If count is zero or smaller,
