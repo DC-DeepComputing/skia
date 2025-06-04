@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4856281_36039c6d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-04T10:11:45Z",
+      "side": 1,
+      "message": "These tests got moved over into skcms\n(here: https://skia-review.googlesource.com/c/skcms/+/1002396)",
+      "revId": "f0ee9dbf2dadef566fb55ff8d53818dad2531527",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
