@@ -204,15 +204,6 @@ bool SkPngEncoderBase::onEncodeRows(int numRows) {
           {
               return false;
           }
-          // We need to convert from little endian to big endian so we use skcms.
-          if (fTargetInfo.fDstRowInfo.value().colorType() == kR16G16B16A16_unorm_SkColorType) {
-              if (!skcms_Transform((char*)fStorage.get(), skcms_PixelFormat_RGBA_16161616LE,
-                                  skcms_AlphaFormat_Unpremul, nullptr, fStorage.get(),
-                                  skcms_PixelFormat_RGBA_16161616BE, skcms_AlphaFormat_Unpremul,
-                                  nullptr, fSrc.width())) {
-                  return false;
-              }
-          }
         }
 
         SkSpan<const uint8_t> rowToEncode(fStorage.get(), fTargetInfo.fDstRowSize);
