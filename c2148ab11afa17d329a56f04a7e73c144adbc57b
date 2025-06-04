@@ -16,6 +16,98 @@
       "message": "This doesn\u0027t add raster, ganesh, or graphite, but does land enough to add tests to the \"transform steps\" machinery.",
       "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9286707e_de5b6899",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T11:37:38Z",
+      "side": 1,
+      "message": "nit: we typically have 4 space indents. Can you run `git clang-format origin/main` on this CL?\n\nhttps://github.com/google/skia/blob/main/.clang-format#L2-L19",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 2
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "450f416a_0e62923c",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T11:37:38Z",
+      "side": 1,
+      "message": "Will this be subject to floating point error? Does that matter?",
+      "range": {
+        "startLine": 170,
+        "startChar": 66,
+        "endLine": 170,
+        "endChar": 72
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c73dbdc0_d87d710f",
+        "filename": "tests/SkColorSpaceXformStepsTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T11:37:38Z",
+      "side": 1,
+      "message": "These lists of bools have gotten quite unreadable. Note to self to refactor these to used some named enums to see if that helps",
+      "range": {
+        "startLine": 160,
+        "startChar": 43,
+        "endLine": 160,
+        "endChar": 47
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b523e81b_5b7f6282",
+        "filename": "tests/SkColorSpaceXformStepsTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T11:37:38Z",
+      "side": 1,
+      "message": "nit: constexpr",
+      "range": {
+        "startLine": 249,
+        "startChar": 4,
+        "endLine": 249,
+        "endChar": 9
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
