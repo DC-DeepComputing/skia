@@ -16,6 +16,24 @@
       "message": "Unfortunately this is also the most common intrinsic. Is it possible to add driver bug workarounds here? Or given build flags like `skia_compile_sksl_tests`, the SPIR-V cannot be tailored to the running GPU?\n\nIf we could instead tailor this to YCbCr, that would also work.",
       "revId": "6d4c1387df9dfda3983ac9f2459996bd3b30106d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2664aee1_bb7f5fcd",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T14:35:01Z",
+      "side": 1,
+      "message": "The checked-in spirv won\u0027t ever be executed, so it\u0027s not a problem if it doesn\u0027t have the workaround.  But we can also create sksl tests that embed pragma settings for compilation, so it\u0027s possible to create a workaround variant and confirm that it drops the RelaxedPrecision when the workaround is turned on.\n\nThis is typically done by adding a boolean to ShaderCaps defined in `src/sksl/SkSLUtil.h` and then checking that when visiting the IR here.\nou can see how settings are parsed in `tools/skslc/Main.cpp`\u0027s `detect_shader_settings` to modify the ShaderCaps object before compiling the spirv.\n\nI\u0027d hoped we might have a way to know at this point of compilation whether or not  the sampler being used was a ycbcr function so that we could still apply relaxed precision to regular textures.  Previously we added support for specializing function calls that passed samplers as arguments to allow ycbcr samplers to have their own functions (https://skia-review.googlesource.com/c/skia/+/874997) so the driver could patch them separately. Unfortunately, it looks like that applies to all sampler parameters and doesn\u0027t detect when a sampler is immutable.\n\nSince we have to embed the immutable sampling into the pipeline creation, we could probably collect whether or not the samplers are immutable and convey that to the spir-v compiler but it\u0027s pretty low priority, as we would not be taking this workaround on mobile GPUs anyways and they are most likely to show the benefit over an nvidia GPU.",
+      "parentUuid": "27543078_125d3037",
+      "revId": "6d4c1387df9dfda3983ac9f2459996bd3b30106d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
