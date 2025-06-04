@@ -16,6 +16,52 @@
       "message": "Ready to review! Reverted most of the invasive changes to `UploadBufferManager` and `DrawWriter`. We now get buffers through the draw writer. Tested on both use mappable buffers and use transfer devices.",
       "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6265c8d4_8e7f584f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:26:20Z",
+      "side": 1,
+      "message": "WDYT about having the unit test just create a DrawCommands::List on the stack and then pass that into a DrawWriter it creates on its own? \n\nNow that we aren\u0027t really using the headless-ness of the DrawPass anymore since the commands aren\u0027t being submitted, I don\u0027t think we necessarily need to change DrawPass anymore.",
+      "range": {
+        "startLine": 792,
+        "startChar": 0,
+        "endLine": 793,
+        "endChar": 66
+      },
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5cf922c_76a89760",
+        "filename": "src/gpu/graphite/ResourceTypes.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:26:20Z",
+      "side": 1,
+      "message": "Can we just use a `const_cast` in the unit test to avoid modifying the core type?",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 6
+      },
+      "revId": "f64c99f8762dceef6c5791986d751f9543af3cf9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
