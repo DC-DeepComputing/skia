@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a1779b06_ad4da462",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T20:16:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2642520f_f153e617",
+      "range": {
+        "startLine": 510,
+        "startChar": 17,
+        "endLine": 510,
+        "endChar": 21
+      },
+      "revId": "6401aea7d830272dd6edfd7c270426dad1c3dc46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "721229e9_5d37c217",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-04T20:05:05Z",
       "side": 1,
       "message": "Use reference.",
+      "range": {
+        "startLine": 911,
+        "startChar": 17,
+        "endLine": 911,
+        "endChar": 21
+      },
+      "revId": "6401aea7d830272dd6edfd7c270426dad1c3dc46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "613e58bd_cdcfbe77",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T20:16:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "721229e9_5d37c217",
       "range": {
         "startLine": 911,
         "startChar": 17,
