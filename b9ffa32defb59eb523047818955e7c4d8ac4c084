@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1be6b9a4_2ff9d660",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-04T15:50:02Z",
+      "side": 1,
+      "message": "Thomas has stolen your thunder: https://skia-review.googlesource.com/c/skia/+/1003176",
+      "revId": "b9ffa32defb59eb523047818955e7c4d8ac4c084",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
