@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a8e13a8b_fda3e45f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-06-04T23:28:12Z",
+      "side": 1,
+      "message": "is this in ganesh or graphite or both? And what do you by it works now?",
+      "range": {
+        "startLine": 14,
+        "startChar": 13,
+        "endLine": 14,
+        "endChar": 67
+      },
+      "revId": "05d1778206a8aef9228565099c53df6a3bbd2e63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6170803b_1b5cbf3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-06-04T23:28:12Z",
+      "side": 1,
+      "message": "I like the requiredFilter field you added, but I\u0027m not sure all the logic is what we want exactly. Also check out this comment and ones after it in a recent-ish bug where I was talking about all this code, b/391248621#comment8.",
+      "revId": "05d1778206a8aef9228565099c53df6a3bbd2e63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30de62ed_4a1a182a",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 5036
+      },
+      "writtenOn": "2025-06-04T23:28:12Z",
+      "side": 1,
+      "message": "This isn\u0027t correct. If we do support separate reconstruction, then it is possible to have a linear chromaFilter while needing nearest sampling.",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "05d1778206a8aef9228565099c53df6a3bbd2e63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
