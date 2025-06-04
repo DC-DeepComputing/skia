@@ -16,6 +16,252 @@
       "message": "ptal",
       "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "42149272_387f1b2c",
+        "filename": "docs/examples/mapradius.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: let\u0027s spell out the type for these",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 8
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bb4c1fd_6581cef3",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: can `rect_points()` return a span instead?",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a046125_254c6ee1",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1719,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: looks like we should be able to just pass dst and src here.",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "719b0aa3_0ced3bb7",
+        "filename": "src/core/SkGeometry.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: here too, I don\u0027t think an explicit size is required.",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3242ac4_28d87048",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: `const SkVector v \u003d matrix.mapVector(geom.fX, geom.fY);`?",
+      "range": {
+        "startLine": 363,
+        "startChar": 0,
+        "endLine": 364,
+        "endChar": 31
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "312122de_e4f9e6bf",
+        "filename": "src/core/SkImageFilterTypes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: same",
+      "range": {
+        "startLine": 370,
+        "startChar": 0,
+        "endLine": 371,
+        "endChar": 31
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b609bff_02742b50",
+        "filename": "src/core/SkMatrixPriv.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: or `*dst \u003d mx.mapPoint(*src);`?",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5783e6fc_03454501",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 547,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: just `srcPts`?",
+      "range": {
+        "startLine": 547,
+        "startChar": 38,
+        "endLine": 547,
+        "endChar": 66
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc642985_c21a36e1",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 609,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: just `unitPts`?",
+      "range": {
+        "startLine": 609,
+        "startChar": 41,
+        "endLine": 609,
+        "endChar": 70
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b356105_65c4e2d0",
+        "filename": "src/core/SkRSXform.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: just `quad`?\n\n(unless, I\u0027m starting to think, there\u0027s some ambiguity preventing span deduction in some of these cases)",
+      "range": {
+        "startLine": 17,
+        "startChar": 34,
+        "endLine": 17,
+        "endChar": 43
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b8de3892_0275431e",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 369,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "nit: just `devPts`, `srcSpaceQuadPts`?",
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f486348_eb8019f9",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T13:05:12Z",
+      "side": 1,
+      "message": "Yeah, I guess there\u0027s definitely something preventing span deduction...",
+      "range": {
+        "startLine": 437,
+        "startChar": 36,
+        "endLine": 437,
+        "endChar": 48
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
