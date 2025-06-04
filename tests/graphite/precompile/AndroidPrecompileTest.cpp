@@ -580,7 +580,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 45; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
