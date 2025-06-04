@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef506e5_fc96e578",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7f7789f0_69bb85f8",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "661bfffc_521a0a1e",
@@ -79,6 +103,24 @@
       "side": 1,
       "message": "correct.\nremoved.",
       "parentUuid": "661bfffc_521a0a1e",
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc649728_0ca829ed",
+        "filename": "src/core/SkPathEffectBase.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f3fefa6_c920a8ea",
       "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -120,6 +162,30 @@
       "side": 1,
       "message": "Hmmmm.\n\n1. I\u0027ve added a check to canvas for empty\n2. I removed what I had added to svgdevice\n3. THIS device seems the be the only one that IF an empty span arrived, we\u0027d crash due to us possibly saying count - 1 and then running a loop.... so I\u0027m nervous to remove the check...",
       "parentUuid": "5c604ffd_45389975",
+      "range": {
+        "startLine": 988,
+        "startChar": 0,
+        "endLine": 990,
+        "endChar": 5
+      },
+      "revId": "d779b4230d576ba88885532e30607dc7e8bdb4ca",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a551f915_16429d3f",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 990,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07a36728_ff319bf3",
       "range": {
         "startLine": 988,
         "startChar": 0,

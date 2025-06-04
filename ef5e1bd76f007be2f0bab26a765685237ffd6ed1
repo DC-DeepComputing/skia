@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "601e76f5_5bfd0968",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52ec9b72_919d670c",
+      "range": {
+        "startLine": 638,
+        "startChar": 25,
+        "endLine": 638,
+        "endChar": 32
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "18e9d06f_5fdb7606",
@@ -160,6 +184,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e60741d8_13c7bb8f",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b179571_d052f127",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0c7742c9_69b1f84d",
@@ -197,6 +245,30 @@
       "side": 1,
       "message": "Sounds like another style pref that I misguessed -- will do.",
       "parentUuid": "0c7742c9_69b1f84d",
+      "range": {
+        "startLine": 458,
+        "startChar": 10,
+        "endLine": 458,
+        "endChar": 14
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8396c225_880e949d",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 458,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T18:06:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9b4657bd_9e451d28",
       "range": {
         "startLine": 458,
         "startChar": 10,
