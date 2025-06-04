@@ -661,6 +661,30 @@
       },
       "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b8934f7_d9632928",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T17:58:59Z",
+      "side": 1,
+      "message": "Yeah, it works for any container that supports std::data and std::size.  The one thing that threw me off is array arguments - as Mike pointed out their declared size is decorative and deduction fails.",
+      "parentUuid": "072c1601_82134c2c",
+      "range": {
+        "startLine": 437,
+        "startChar": 36,
+        "endLine": 437,
+        "endChar": 48
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
