@@ -34,6 +34,24 @@
       ],
       "revId": "f56e0748b189cfb970e233e6dbfe266ff2499ee2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c01b67a8_3eb3c7d2",
+        "filename": "src/core/SkVertices.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T19:23:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6206e9b3_fef444e5",
+      "revId": "f56e0748b189cfb970e233e6dbfe266ff2499ee2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
