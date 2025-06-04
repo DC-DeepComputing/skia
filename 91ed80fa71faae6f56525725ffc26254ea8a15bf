@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4bd61f6_bc60d16a",
+        "filename": "src/image/SkImage_Raster.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T18:45:40Z",
+      "side": 1,
+      "message": "One thing to ponder for the future would be whether this should fall into `skcpu::AsRecorder(recorder)`? or is there a distinction to know whether or not the passed in recorder has to delegate to a separate CPU recorder? For instance, `SkImage_Raster::isValid` returns false if it\u0027s not a CPU recorder even though all GPU recorders can produce a CPU recorder.\n\nI haven\u0027t figured out what the best policy is for this case (I don\u0027t think it is relevant for the GPU recorders since it\u0027s not possible to switch types to one of them).",
+      "range": {
+        "startLine": 94,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 77
+      },
+      "revId": "91ed80fa71faae6f56525725ffc26254ea8a15bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
