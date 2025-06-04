@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "071e223b_37a3fd17",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-04T20:35:11Z",
+      "side": 1,
+      "message": "nit: sorry to be pedantic, but could we link the relevant bug that we have for exposing more of this to the frontend here as well? (We may need to expand that bug description or create a new one).",
+      "range": {
+        "startLine": 404,
+        "startChar": 30,
+        "endLine": 404,
+        "endChar": 88
+      },
+      "revId": "e983b07e3e238e09aeb2da79e984fb01df3ae5b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

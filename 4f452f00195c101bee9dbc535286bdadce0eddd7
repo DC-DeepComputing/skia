@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4d871a2_f7ecf9bc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-04T20:35:11Z",
+      "side": 1,
+      "message": "Thank you, this is helpful for my understanding. I wasn\u0027t sure if Imagination support was coming or not, but I suppose it makes sense that it is and that is good news.\n\nI am adequately placated by this being functionally tested on one of our bots. I was just afraid of a scenario where this somehow got broken and we didn\u0027t catch it.",
+      "parentUuid": "2f9aa64f_5a0187de",
+      "range": {
+        "startLine": 7,
+        "startChar": 23,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a06b6a87_752ab327",
