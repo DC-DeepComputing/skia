@@ -43,6 +43,75 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f909bfd1_c0bd3741",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1302,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:33:46Z",
+      "side": 1,
+      "message": "nit: line length\n\nAlso I think we should carry this message to the other updated functions",
+      "range": {
+        "startLine": 1302,
+        "startChar": 0,
+        "endLine": 1302,
+        "endChar": 103
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30b8f3df_f0729f5e",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1357,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:33:46Z",
+      "side": 1,
+      "message": "You can just do `SkPoint3 dst;` and create a singleton span `{\u0026dst, 1}` to mirror how src is handled.",
+      "range": {
+        "startLine": 1355,
+        "startChar": 0,
+        "endLine": 1357,
+        "endChar": 22
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f50f05a_351bbeab",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 1368,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:33:46Z",
+      "side": 1,
+      "message": "and here",
+      "range": {
+        "startLine": 1366,
+        "startChar": 0,
+        "endLine": 1368,
+        "endChar": 22
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7bb4c1fd_6581cef3",
         "filename": "src/core/SkDrawBase.cpp",
         "patchSetId": 2
@@ -254,6 +323,30 @@
       "writtenOn": "2025-06-04T13:05:12Z",
       "side": 1,
       "message": "Yeah, I guess there\u0027s definitely something preventing span deduction...",
+      "range": {
+        "startLine": 437,
+        "startChar": 36,
+        "endLine": 437,
+        "endChar": 48
+      },
+      "revId": "677d0bebe79bf55f04724058886a308f8ba35103",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "072c1601_82134c2c",
+        "filename": "src/gpu/ganesh/ops/AAHairLinePathRenderer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 437,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T13:33:46Z",
+      "side": 1,
+      "message": "Is it meant to work with C style arrays? It should work for other types.",
+      "parentUuid": "1f486348_eb8019f9",
       "range": {
         "startLine": 437,
         "startChar": 36,
