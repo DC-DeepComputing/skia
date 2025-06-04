@@ -149,6 +149,14 @@ void SkDevice::drawDRRect(const SkRRect& outer,
     this->drawPath(path, paint, true);
 }
 
+void SkDevice::drawPolygon(SkSpan<const SkPoint> pts, bool closed, SkPathFillType fillType,
+                           const SkPaint& paint) {
+    // default impl : we defer to drawPath()
+    const bool isVolatile = true;
+    const bool isMutable = true;
+    this->drawPath(SkPath::Polygon(pts, closed, fillType, isVolatile), paint, isMutable);
+}
+
 void SkDevice::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
                          const SkPoint texCoords[4], sk_sp<SkBlender> blender,
                          const SkPaint& paint) {
@@ -242,7 +250,7 @@ void SkDevice::drawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], SkCanvas::
 
     if (clip) {
         // Draw the clip directly as a quad since it's a filled color with no local coords
-        this->drawPath(SkPath::Polygon({clip, 4}, true), paint, true);
+        this->drawPolygon({clip, 4}, true, paint);
     } else {
         this->drawRect(r, paint);
     }
@@ -275,8 +283,8 @@ void SkDevice::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry images[], int co
         if (images[i].fHasClip) {
             // Since drawImageRect requires a srcRect, the dst clip is implemented as a true clip
             this->pushClipStack();
-            SkPath clipPath = SkPath::Polygon({dstClips + clipIndex, 4}, true);
-            this->clipPath(clipPath, SkClipOp::kIntersect, entryPaint.isAntiAlias());
+            this->clipPolygon({dstClips + clipIndex, 4}, SkPathFillType::kWinding,
+                              SkClipOp::kIntersect, entryPaint.isAntiAlias());
             clipIndex += 4;
         }
         this->drawImageRect(images[i].fImage.get(), &images[i].fSrcRect, images[i].fDstRect,
@@ -294,6 +302,13 @@ void SkDevice::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry images[], int co
 
 void SkDevice::drawDrawable(SkCanvas* canvas, SkDrawable* drawable, const SkMatrix* matrix) {
     drawable->draw(canvas, matrix);
+}
+
+void SkDevice::clipPolygon(SkSpan<const SkPoint> pts, SkPathFillType ft, SkClipOp op, bool aa) {
+    // if we weren't overridden, just convert to a path
+    constexpr bool isClosed = true;
+    constexpr bool isVolatile = true;
+    this->clipPath(SkPath::Polygon(pts, isClosed, ft, isVolatile), op, aa);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -576,6 +591,19 @@ void SkNoPixelsDevice::clipRect(const SkRect& rect, SkClipOp op, bool aa) {
 void SkNoPixelsDevice::clipRRect(const SkRRect& rrect, SkClipOp op, bool aa) {
     this->writableClip().op(op, this->localToDevice44(), rrect.getBounds(),
                             aa, /*fillsBounds=*/rrect.isRect());
+}
+
+void SkNoPixelsDevice::clipPolygon(SkSpan<const SkPoint> pts, SkPathFillType ft,
+                                   SkClipOp op, bool aa) {
+    SkRect bounds;
+    if (!bounds.setBoundsCheck(pts)) {
+        return;
+    }
+    // Toggle op if the path is inverse filled
+    if (SkPathFillType_IsInverse(ft)) {
+        op = (op == SkClipOp::kDifference ? SkClipOp::kIntersect : SkClipOp::kDifference);
+    }
+    this->writableClip().op(op, this->localToDevice44(), bounds, aa, /*fillsBounds=*/false);
 }
 
 void SkNoPixelsDevice::clipPath(const SkPath& path, SkClipOp op, bool aa) {

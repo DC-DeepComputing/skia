@@ -1472,6 +1472,19 @@ void SkCanvas::onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edge
     this->topDevice()->clipRRect(rrect, op, isAA);
 }
 
+void SkCanvas::clipPolygon(SkSpan<const SkPoint> pts, SkPathFillType ft, SkClipOp op, bool doAA) {
+    this->checkForDeferredSave();
+    ClipEdgeStyle edgeStyle = doAA ? kSoft_ClipEdgeStyle : kHard_ClipEdgeStyle;
+    this->onClipPolygon(pts, ft, op, edgeStyle);
+}
+
+void SkCanvas::onClipPolygon(SkSpan<const SkPoint> pts, SkPathFillType ft, SkClipOp op,
+                             ClipEdgeStyle edgeStyle) {
+    const bool isAA = kSoft_ClipEdgeStyle == edgeStyle;
+    AutoUpdateQRBounds aqr(this);
+    this->topDevice()->clipPolygon(pts, ft, op, isAA);
+}
+
 void SkCanvas::clipPath(const SkPath& path, SkClipOp op, bool doAA) {
     this->checkForDeferredSave();
     ClipEdgeStyle edgeStyle = doAA ? kSoft_ClipEdgeStyle : kHard_ClipEdgeStyle;
@@ -1765,6 +1778,12 @@ void SkCanvas::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPa
         blender = SkBlender::Mode(SkBlendMode::kModulate);
     }
     this->onDrawMesh(mesh, std::move(blender), paint);
+}
+
+void SkCanvas::drawPolygon(SkSpan<const SkPoint> pts, bool isClosed, SkPathFillType fillType,
+                           const SkPaint& paint) {
+    TRACE_EVENT0("skia", TRACE_FUNC);
+    this->onDrawPolygon(pts, isClosed, fillType, paint);
 }
 
 void SkCanvas::drawPath(const SkPath& path, const SkPaint& paint) {
@@ -2200,6 +2219,32 @@ void SkCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const Sk
     auto layer = this->aboutToDraw(paint, &bounds);
     if (layer) {
         this->topDevice()->drawDRRect(outer, inner, layer->paint());
+    }
+}
+
+void SkCanvas::onDrawPolygon(SkSpan<const SkPoint> pts, bool isClosed, SkPathFillType fillType,
+                             const SkPaint& paint) {
+    SkRect bounds;
+    if (pts.empty()) {
+        bounds = SkRect::MakeEmpty();
+    } else if (!bounds.setBoundsCheck(pts.data(), pts.size())) {
+        return;
+    }
+
+    const auto isInverse = SkPathFillType_IsInverse(fillType);
+
+    if (!isInverse && this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+
+    if (isInverse && bounds.isEmpty()) {
+        this->internalDrawPaint(paint);
+        return;
+    }
+
+    auto layer = this->aboutToDraw(paint, isInverse ? nullptr : &bounds);
+    if (layer) {
+        this->topDevice()->drawPolygon(pts, isClosed, fillType, layer->paint());
     }
 }
 
