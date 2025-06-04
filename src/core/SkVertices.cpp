@@ -152,7 +152,11 @@ void SkVertices::Builder::init(const Desc& desc) {
 
 sk_sp<SkVertices> SkVertices::Builder::detach() {
     if (fVertices) {
-        fVertices->fBounds.setBounds(fVertices->fPositions, fVertices->fVertexCount);
+        auto bounds = SkRect::Bounds({fVertices->fPositions, fVertices->fVertexCount});
+        if (!bounds) {
+            return nullptr;
+        }
+        fVertices->fBounds = bounds.value();
         if (fVertices->fMode == kTriangleFan_VertexMode) {
             if (fIntermediateFanIndices) {
                 SkASSERT(fVertices->fIndexCount);

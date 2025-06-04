@@ -2600,18 +2600,22 @@ void SkCanvas::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
 void SkCanvas::onDrawPatch(const SkPoint cubics[12], const SkColor colors[4],
                            const SkPoint texCoords[4], SkBlendMode bmode,
                            const SkPaint& paint) {
+    auto bounds = SkRect::Bounds({cubics, (size_t)SkPatchUtils::kNumCtrlPts});
+    if (!bounds) {
+        return; // we don't draw if the bounds are not finite
+    }
+
     // drawPatch has the same behavior restrictions as drawVertices
     SkPaint simplePaint = clean_paint_for_drawVertices(paint);
 
     // Since a patch is always within the convex hull of the control points, we discard it when its
     // bounding rectangle is completely outside the current clip.
-    SkRect bounds;
-    bounds.setBounds(cubics, SkPatchUtils::kNumCtrlPts);
-    if (this->internalQuickReject(bounds, simplePaint)) {
+    if (this->internalQuickReject(bounds.value(), simplePaint)) {
         return;
     }
 
-    auto layer = this->aboutToDraw(simplePaint, &bounds);
+    auto r = bounds.value();
+    auto layer = this->aboutToDraw(simplePaint, &r);
     if (layer) {
         this->topDevice()->drawPatch(cubics, colors, texCoords, SkBlender::Mode(bmode),
                                      layer->paint());
