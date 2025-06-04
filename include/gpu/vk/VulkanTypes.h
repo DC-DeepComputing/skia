@@ -21,6 +21,8 @@
 #error Skia requires the use of Vulkan 1.1 headers
 #endif
 
+class SkString;
+
 namespace skgpu {
 
 using VulkanGetProc = std::function<PFN_vkVoidFunction(
@@ -91,6 +93,8 @@ struct VulkanYcbcrConversionInfo {
         return fYcbcrModel != VK_SAMPLER_YCBCR_MODEL_CONVERSION_RGB_IDENTITY ||
                fExternalFormat != 0;
     }
+
+    SkString toString() const;
 
     // Format of the source image. Must be set to VK_FORMAT_UNDEFINED for external images or
     // a valid image format otherwise.
