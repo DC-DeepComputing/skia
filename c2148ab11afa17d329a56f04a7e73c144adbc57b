@@ -82,6 +82,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a127b5bb_064e5ed2",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T16:07:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "49a7dd61_3ae4b6c6",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 2
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "450f416a_0e62923c",
@@ -119,6 +143,30 @@
       "side": 1,
       "message": "In theory yes. I tested the most common version (1.2 cancelling 1.2) and this worked, so I didn\u0027t bother adding a tolerance.",
       "parentUuid": "450f416a_0e62923c",
+      "range": {
+        "startLine": 170,
+        "startChar": 66,
+        "endLine": 170,
+        "endChar": 72
+      },
+      "revId": "c2148ab11afa17d329a56f04a7e73c144adbc57b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6ca64b6_e6dc29dc",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-06-04T16:07:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "26dfdf51_ac3342aa",
       "range": {
         "startLine": 170,
         "startChar": 66,
