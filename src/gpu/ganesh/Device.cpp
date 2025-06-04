@@ -109,6 +109,7 @@
 #include <cstdint>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <utility>
 
 class GrBackendSemaphore;
@@ -459,19 +460,12 @@ void Device::drawPoints(SkCanvas::PointMode mode,
     // If there is an image filter or mask filter these bounds were already checked in
     // the canvas.
     if (!paint.getImageFilter() && !paint.getMaskFilter()) {
-        SkRect bounds;
-        // Compute bounds from points (common for drawing a single line)
-        if (count == 2) {
-            bounds.set(pts[0], pts[1]);
-        } else {
-            bounds.setBounds(pts, SkToInt(count));
-        }
-
-        if (!bounds.isFinite() || paint.nothingToDraw()) {
+        auto bounds = SkRect::Bounds({pts, count});
+        if (!bounds || paint.nothingToDraw()) {
             return;
         }
 
-        SkRect devBounds = SkMatrixPriv::MapRect(this->localToDevice44(), bounds);
+        SkRect devBounds = SkMatrixPriv::MapRect(this->localToDevice44(), bounds.value());
         if (!devBounds.isFinite()) {
             return;
         }

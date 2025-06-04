@@ -22,6 +22,7 @@
 #include <atomic>
 #include <cstdint>
 #include <new>
+#include <optional>
 #include <utility>
 
 static uint32_t next_id() {
@@ -152,7 +153,8 @@ void SkVertices::Builder::init(const Desc& desc) {
 
 sk_sp<SkVertices> SkVertices::Builder::detach() {
     if (fVertices) {
-        fVertices->fBounds.setBounds(fVertices->fPositions, fVertices->fVertexCount);
+        fVertices->fBounds = SkRect::BoundsOrEmpty({fVertices->fPositions,
+                                                    fVertices->fVertexCount});
         if (fVertices->fMode == kTriangleFan_VertexMode) {
             if (fIntermediateFanIndices) {
                 SkASSERT(fVertices->fIndexCount);
