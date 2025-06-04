@@ -22,6 +22,30 @@
       },
       "revId": "b81e6e2dcdf6d0afa051995bebae370191032b8e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "81bcdbd7_d246da36",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T18:42:18Z",
+      "side": 1,
+      "message": "Done, and moved it up by the other TextureFormat functions that included all cases.",
+      "parentUuid": "e60939f5_1af693a7",
+      "range": {
+        "startLine": 269,
+        "startChar": 2,
+        "endLine": 271,
+        "endChar": 24
+      },
+      "revId": "b81e6e2dcdf6d0afa051995bebae370191032b8e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
