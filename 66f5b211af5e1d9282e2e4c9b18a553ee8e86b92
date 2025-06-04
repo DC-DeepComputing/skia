@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a7649c81_eb9fe149",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 1251,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:30:14Z",
+      "side": 1,
+      "message": "... what should I do today? (not sure I like std::array)",
+      "parentUuid": "0f0d901e_34605117",
+      "range": {
+        "startLine": 1251,
+        "startChar": 45,
+        "endLine": 1251,
+        "endChar": 73
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cfed7172_453e95cb",
         "filename": "src/core/SkPath.cpp",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-04T14:33:29Z",
       "side": 1,
       "message": "Hmm, this is subtly different for paths with no points (just Close verbs).  Clients may expect us to not drop those on the floor.  Maybe just test for empty verbs like before?",
+      "range": {
+        "startLine": 3549,
+        "startChar": 8,
+        "endLine": 3549,
+        "endChar": 19
+      },
+      "revId": "66f5b211af5e1d9282e2e4c9b18a553ee8e86b92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fca0885e_9db6984b",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 3549,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T16:30:14Z",
+      "side": 1,
+      "message": "1. true\n2. I\u0027d vote to introduce a stricter notion of a valid path -- close verbs w/ no moves seem quite illegal to me\n3. I removed the pts check",
+      "parentUuid": "cfed7172_453e95cb",
       "range": {
         "startLine": 3549,
         "startChar": 8,
