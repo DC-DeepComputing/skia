@@ -70,6 +70,30 @@
       },
       "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccca24b1_891f5ea0",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 640,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-04T19:40:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a01d3bf_e2a5a06a",
+      "range": {
+        "startLine": 603,
+        "startChar": 0,
+        "endLine": 640,
+        "endChar": 70
+      },
+      "revId": "ec4fd10ed8d4efcf56c2c08135684150a7da175b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
