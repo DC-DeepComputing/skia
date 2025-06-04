@@ -53,7 +53,7 @@ public:
      * Converts the src color (in src colorspace), into the dst colorspace,
      * then applies this filter to it, returning the filtered color in the dst colorspace.
      */
-    SkColor4f filterColor4f(const SkColor4f& srcColor, SkColorSpace* srcCS,
+    SkColor4f filterColor4f1(const SkColor4f& srcColor, SkColorSpace* srcCS,
                             SkColorSpace* dstCS) const;
 
     /** Construct a colorfilter whose effect is to first apply the inner filter and then apply

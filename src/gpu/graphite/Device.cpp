@@ -162,7 +162,7 @@ std::optional<SkColor4f> extract_paint_color(const SkPaint& paint,
 
     if (SkColorFilter* filter = paint.getColorFilter()) {
         SkColorSpace* dstCS = dstColorInfo.colorSpace();
-        return filter->filterColor4f(dstPaintColor, dstCS, dstCS);
+        return filter->filterColor4f1(dstPaintColor, dstCS, dstCS);
     }
     return dstPaintColor;
 }
