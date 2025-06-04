@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b179571_d052f127",
+        "filename": "src/core/SkDrawBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-04T17:27:26Z",
+      "side": 1,
+      "message": "... florin says: (const auto\u0026 pt : points) !\nI\u0027ll do that.",
+      "parentUuid": "4423ada6_933750f4",
+      "range": {
+        "startLine": 648,
+        "startChar": 25,
+        "endLine": 648,
+        "endChar": 36
+      },
+      "revId": "ef5e1bd76f007be2f0bab26a765685237ffd6ed1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0c7742c9_69b1f84d",
         "filename": "src/gpu/ganesh/Device.cpp",
         "patchSetId": 7
