@@ -1,0 +1,39 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6206e9b3_fef444e5",
+        "filename": "src/core/SkVertices.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-04T19:15:16Z",
+      "side": 1,
+      "message": "prolly not needed",
+      "fixSuggestions": [
+        {
+          "fixId": "1464b7e7_5227fbb5",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkVertices.cpp",
+              "range": {
+                "startLine": 25,
+                "startChar": 0,
+                "endLine": 26,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "f56e0748b189cfb970e233e6dbfe266ff2499ee2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
