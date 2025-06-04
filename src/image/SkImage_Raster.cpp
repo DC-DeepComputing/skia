@@ -89,12 +89,9 @@ sk_sp<SkSurface> SkImage_Raster::onMakeSurface(SkRecorder* recorder,
         // TODO(kjlubick) remove this after old SkImage::makeScaled(image info, sampling) API gone
         recorder = skcpu::Recorder::TODO();
     }
-    if (recorder->type() != SkRecorder::Type::kCPU) {
-        return nullptr;
-    }
     const SkSurfaceProps* props = nullptr;
     constexpr size_t rowBytes = 0;
-    return static_cast<skcpu::Recorder*>(recorder)->makeBitmapSurface(info, rowBytes, props);
+    return recorder->cpuRecorder()->makeBitmapSurface(info, rowBytes, props);
 }
 
 static SkBitmap copy_bitmap_subset(const SkBitmap& orig, const SkIRect& subset) {
