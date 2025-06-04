@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2642520f_f153e617",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 510,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T20:05:05Z",
+      "side": 1,
+      "message": "`auto\u0026\u0026` to match the one below or `const auto\u0026` or whatever we\u0027re using. (Just not a copy.)",
+      "range": {
+        "startLine": 510,
+        "startChar": 17,
+        "endLine": 510,
+        "endChar": 21
+      },
+      "revId": "6401aea7d830272dd6edfd7c270426dad1c3dc46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "721229e9_5d37c217",
+        "filename": "src/svg/SkSVGDevice.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-04T20:05:05Z",
+      "side": 1,
+      "message": "Use reference.",
+      "range": {
+        "startLine": 911,
+        "startChar": 17,
+        "endLine": 911,
+        "endChar": 21
+      },
+      "revId": "6401aea7d830272dd6edfd7c270426dad1c3dc46",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
