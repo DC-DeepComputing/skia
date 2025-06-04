@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a8d298d_cc246a85",
+        "filename": "src/gpu/graphite/TextureFormat.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T18:26:24Z",
+      "side": 1,
+      "message": "lucky that fits on one line still :)",
+      "parentUuid": "1cd7b0fd_e216afa8",
+      "range": {
+        "startLine": 270,
+        "startChar": 24,
+        "endLine": 270,
+        "endChar": 27
+      },
+      "revId": "67b1fcc8673a05d8ca05e95362825926a65d7ca2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "90c5cb0e_558ad049",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-04T12:47:15Z",
       "side": 1,
       "message": "Shader",
+      "range": {
+        "startLine": 142,
+        "startChar": 43,
+        "endLine": 142,
+        "endChar": 48
+      },
+      "revId": "67b1fcc8673a05d8ca05e95362825926a65d7ca2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41b8006e_f90d9759",
+        "filename": "tests/graphite/KeyTest.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-04T18:26:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90c5cb0e_558ad049",
       "range": {
         "startLine": 142,
         "startChar": 43,
