@@ -16,6 +16,23 @@
       "message": "ptal",
       "revId": "cb70a828252729b32aace7d34bc2bd117630b7ef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b176b881_bb8c65b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-06-04T17:29:12Z",
+      "side": 1,
+      "message": "(LGTM from my perspective, but not looking forward to all the merge conflicts :P)",
+      "revId": "cb70a828252729b32aace7d34bc2bd117630b7ef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
