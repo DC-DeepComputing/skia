@@ -1767,6 +1767,12 @@ void SkCanvas::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPa
     this->onDrawMesh(mesh, std::move(blender), paint);
 }
 
+void SkCanvas::drawPolygon(SkSpan<const SkPoint> pts, bool isClosed, SkPathFillType fillType,
+                           const SkPaint& paint) {
+    TRACE_EVENT0("skia", TRACE_FUNC);
+    this->onDrawPolygon(pts, isClosed, fillType, paint);
+}
+
 void SkCanvas::drawPath(const SkPath& path, const SkPaint& paint) {
     TRACE_EVENT0("skia", TRACE_FUNC);
     this->onDrawPath(path, paint);
@@ -2200,6 +2206,32 @@ void SkCanvas::onDrawDRRect(const SkRRect& outer, const SkRRect& inner, const Sk
     auto layer = this->aboutToDraw(paint, &bounds);
     if (layer) {
         this->topDevice()->drawDRRect(outer, inner, layer->paint());
+    }
+}
+
+void SkCanvas::onDrawPolygon(SkSpan<const SkPoint> pts, bool isClosed, SkPathFillType fillType,
+                             const SkPaint& paint) {
+    SkRect bounds;
+    if (pts.empty()) {
+        bounds = SkRect::MakeEmpty();
+    } else if (!bounds.setBoundsCheck(pts.data(), pts.size())) {
+        return;
+    }
+
+    const auto isInverse = SkPathFillType_IsInverse(fillType);
+
+    if (!isInverse && this->internalQuickReject(bounds, paint)) {
+        return;
+    }
+
+    if (isInverse && bounds.isEmpty()) {
+        this->internalDrawPaint(paint);
+        return;
+    }
+
+    auto layer = this->aboutToDraw(paint, isInverse ? nullptr : &bounds);
+    if (layer) {
+        this->topDevice()->drawPolygon(pts, isClosed, fillType, layer->paint());
     }
 }
 

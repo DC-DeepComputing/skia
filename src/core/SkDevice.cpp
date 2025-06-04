@@ -149,6 +149,14 @@ void SkDevice::drawDRRect(const SkRRect& outer,
     this->drawPath(path, paint, true);
 }
 
+void SkDevice::drawPolygon(SkSpan<const SkPoint> pts, bool closed, SkPathFillType fillType,
+                           const SkPaint& paint) {
+    const bool isVolatile = true;
+    const bool isMutable = true;
+    this->drawPath(SkPath::Polygon(pts.data(), pts.size(), closed, fillType, isVolatile),
+                   paint, isMutable);
+}
+
 void SkDevice::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
                          const SkPoint texCoords[4], sk_sp<SkBlender> blender,
                          const SkPaint& paint) {
@@ -242,9 +250,7 @@ void SkDevice::drawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], SkCanvas::
 
     if (clip) {
         // Draw the clip directly as a quad since it's a filled color with no local coords
-        SkPath clipPath;
-        clipPath.addPoly(clip, 4, true);
-        this->drawPath(clipPath, paint, true);
+        this->drawPolygon({clip, 4}, true, paint);
     } else {
         this->drawRect(r, paint);
     }

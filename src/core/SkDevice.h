@@ -22,6 +22,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkSurfaceProps.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkNoncopyable.h"
@@ -350,6 +351,13 @@ public:
     // Default impl calls drawPath()
     virtual void drawDRRect(const SkRRect& outer,
                             const SkRRect& inner, const SkPaint&);
+
+    // Default impl calls drawPath()
+    virtual void drawPolygon(SkSpan<const SkPoint>, bool isClosed, SkPathFillType, const SkPaint&);
+
+    void drawPolygon(SkSpan<const SkPoint> pts, bool isClosed, const SkPaint& paint) {
+        this->drawPolygon(pts, isClosed, SkPathFillType::kWinding, paint);
+    }
 
     /**
      *  If pathIsMutable, then the implementation is allowed to cast path to a
