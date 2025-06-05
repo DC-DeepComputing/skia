@@ -229,7 +229,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "(highOffset==lowOffset)return lowColor;else{half4 highColor=$half4_from_array"
 "(colorAndOffsetData,highColorIndex);return half4(mix(float4(lowColor),float4"
 "(highColor),(t.x-lowOffset)/(highOffset-lowOffset)));}}}$pure float2 $linear_grad_layout"
-"(float2 pos){return float2(pos.x+1e-05,1.);}$pure float2 $radial_grad_layout"
+"(float2 pos){return float2(pos.x+2e-07,1.);}$pure float2 $radial_grad_layout"
 "(float2 pos){float t=length(pos);return float2(t,1.);}$pure float2 $sweep_grad_layout"
 "(float biasParam,float scaleParam,float2 pos){float angle;if(sk_Caps.atan2ImplementedAsAtanYOverX"
 ")angle=2.*atan(-pos.y,length(pos)-pos.x);else angle=pos.x!=0.?atan(-pos.y,-"
