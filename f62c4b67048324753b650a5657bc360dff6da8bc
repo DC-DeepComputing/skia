@@ -16,6 +16,24 @@
       "message": "It looks like this CL is blocking the Chrome roll w/ a failure on this line:\n\nhttps://source.chromium.org/chromium/chromium/src/+/main:components/viz/service/display/skia_renderer.cc;l\u003d578\n\nWith the error:\n\n../../third_party/skia/include/private/base/SkSpan_impl.h:79:46: error: no matching function for call to \u0027data\u0027\n   79 |     constexpr SkSpan(Container\u0026\u0026 c) : SkSpan(std::data(c), std::size(c)) { }\n      |                                              ^~~~~~~~~\n../../components/viz/service/display/skia_renderer.cc:578:30: note: in instantiation of function template specialization \u0027SkSpan\u003cconst SkPoint\u003e::SkSpan\u003cconst SkPoint *\u003e\u0027 requested here\n  578 |       return SkPath::Polygon(draw_region-\u003epoints.data(),\n      |                              ^\n../../third_party/libc++/src/include/__iterator/data.h:25:38: note: candidate template ignored: substitution failure [with _Cont \u003d const SkPoint *]: member reference type \u0027const SkPoint *\u0027 is a pointer; did you mean to use \u0027-\u003e\u0027?\n   25 | constexpr _LIBCPP_HIDE_FROM_ABI auto data(_Cont\u0026 __c) noexcept(noexcept(__c.data())) -\u003e decltype(__c.data()) {\n      |                                      ^                                                              ~\n../../third_party/libc++/src/include/__iterator/data.h:30:38: note: candidate template ignored: substitution failure [with _Cont \u003d const SkPoint *]: member reference type \u0027const SkPoint *const\u0027 is a pointer; did you mean to use \u0027-\u003e\u0027?\n   30 | constexpr _LIBCPP_HIDE_FROM_ABI auto data(const _Cont\u0026 __c) noexcept(noexcept(__c.data())) -\u003e decltype(__c.data()) {\n      |                                      ^                                                                    ~\n../../third_party/libc++/src/include/__iterator/data.h:35:38: note: candidate template ignored: could not match \u0027_Tp[_Sz]\u0027 against \u0027const SkPoint *\u0027\n   35 | _LIBCPP_HIDE_FROM_ABI constexpr _Tp* data(_Tp (\u0026__array)[_Sz]) noexcept {\n      |                                      ^\n../../third_party/libc++/src/include/__iterator/data.h:40:44: note: candidate template ignored: could not match \u0027initializer_list\u003c_Ep\u003e\u0027 against \u0027const SkPoint *\u0027\n   40 | _LIBCPP_HIDE_FROM_ABI constexpr const _Ep* data(initializer_list\u003c_Ep\u003e __il) noexcept {\n      |                                            ^",
       "revId": "f62c4b67048324753b650a5657bc360dff6da8bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a15fe31b_b2e9d552",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-05T12:20:52Z",
+      "side": 1,
+      "message": "https://skia-review.googlesource.com/c/skia/+/1002961 should fix that.",
+      "parentUuid": "d0a88d17_aff0187e",
+      "revId": "f62c4b67048324753b650a5657bc360dff6da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
