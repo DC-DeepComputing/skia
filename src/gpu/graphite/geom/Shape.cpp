@@ -49,8 +49,7 @@ bool Shape::conservativeContains(const Rect& rect) const {
         case Type::kRRect: return fRRect.contains(rect.asSkRect());
         case Type::kPath:  // We need to ensure the path is non-inverted.
                            if (this->inverted()) {
-                               SkPath nonInverted(fPath);
-                               nonInverted.toggleInverseFillType();
+                               SkPath nonInverted = fPath.makeToggleInverseFillType();
                                return nonInverted.conservativelyContainsRect(rect.asSkRect());
                            } else {
                                return fPath.conservativelyContainsRect(rect.asSkRect());
@@ -58,7 +57,7 @@ bool Shape::conservativeContains(const Rect& rect) const {
         case Type::kArc:   if (fArc.fType == SkArc::Type::kWedge) {
                                SkPath arc = this->asPath();
                                if (this->inverted()) {
-                                   arc.toggleInverseFillType();
+                                   arc = arc.makeToggleInverseFillType();
                                }
                                return arc.conservativelyContainsRect(rect.asSkRect());
                            } else {
@@ -76,8 +75,7 @@ bool Shape::conservativeContains(skvx::float2 point) const {
         case Type::kRRect: return SkRRectPriv::ContainsPoint(fRRect, {point.x(), point.y()});
         case Type::kPath:  // We need to ensure the path is non-inverted.
                            if (this->inverted()) {
-                               SkPath nonInverted(fPath);
-                               nonInverted.toggleInverseFillType();
+                               SkPath nonInverted = fPath.makeToggleInverseFillType();
                                return nonInverted.contains(point.x(), point.y());
                            } else {
                                return fPath.contains(point.x(), point.y());
@@ -117,15 +115,17 @@ SkPath Shape::asPath() const {
     }
 
     if (fType == Type::kArc) {
-        SkPath out;
+        SkPathBuilder out;
+        SkPathConvexity conv;
+        SkPathFirstDirection firstDir;
         // Filled ovals are already culled out so we assume no simple fills
-        SkPathPriv::CreateDrawArcPath(&out, fArc, /*isFillNoPathEffect=*/false);
+        SkPathPriv::CreateDrawArcPath(&out, &conv, &firstDir, fArc, /*isFillNoPathEffect=*/false);
         // CreateDrawArcPath resets the output path and configures its fill
         // type, so we just have to ensure invertedness is correct.
         if (fInverted) {
             out.toggleInverseFillType();
         }
-        return out;
+        return SkPathPriv::Detach(&out, conv, firstDir);
     }
 
     SkPathBuilder builder(this->fillType());

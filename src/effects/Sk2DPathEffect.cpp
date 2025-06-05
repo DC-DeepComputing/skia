@@ -77,10 +77,9 @@ protected:
             return false;
         }
 
-        SkPath  tmp;
+        SkPath  tmp = src.makeTransform(fInverse);
         SkIRect ir;
 
-        src.transform(fInverse, &tmp);
         tmp.getBounds().round(&ir);
         if (!ir.isEmpty()) {
             this->begin(ir, dst);
@@ -143,8 +142,10 @@ public:
             src[1].set(SkIntToScalar(u+ucount) + SK_ScalarHalf, SkIntToScalar(v) + SK_ScalarHalf);
             this->getMatrix().mapPoints(dstP, src, 2);
 
-            dst->moveTo(dstP[0]);
-            dst->lineTo(dstP[1]);
+            *dst = SkPathBuilder(*dst)
+                .moveTo(dstP[0])
+                .lineTo(dstP[1])
+                .detach();
         }
     }
 
@@ -176,7 +177,10 @@ public:
     SkPath2DPathEffectImpl(const SkMatrix& m, const SkPath& p) : INHERITED(m), fPath(p) {}
 
     void next(const SkPoint& loc, int u, int v, SkPath* dst) const override {
-        dst->addPath(fPath, loc.fX, loc.fY);
+        SkMatrix m;
+        m.setTranslate(loc.fX, loc.fY);
+        SkPath transformed = fPath.makeTransform(m);
+        *dst = SkPathBuilder(*dst).addPath(transformed).detach();
     }
 
     static sk_sp<SkFlattenable> CreateProc(SkReadBuffer& buffer) {

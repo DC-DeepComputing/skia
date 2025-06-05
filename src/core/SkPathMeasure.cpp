@@ -49,6 +49,10 @@ bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, boo
     return fContour && fContour->getSegment(startD, stopD, dst, startWithMoveTo);
 }
 
+bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo) {
+    return fContour && fContour->getSegment(startD, stopD, dst, startWithMoveTo);
+}
+
 bool SkPathMeasure::isClosed() {
     return fContour && fContour->isClosed();
 }

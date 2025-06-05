@@ -23,17 +23,18 @@
 #include <utility>
 
 static void test_small_segment3(skiatest::Reporter* reporter) {
-    SkPath path;
     const SkPoint pts[] = {
         { 0, 0 },
         { 100000000000.0f, 100000000000.0f }, { 0, 0 }, { 10, 10 },
         { 10, 10 }, { 0, 0 }, { 10, 10 }
     };
 
-    path.moveTo(pts[0]);
+    SkPathBuilder b;
+    b.moveTo(pts[0]);
     for (size_t i = 1; i < std::size(pts); i += 3) {
-        path.cubicTo(pts[i], pts[i + 1], pts[i + 2]);
+        b.cubicTo(pts[i], pts[i + 1], pts[i + 2]);
     }
+    SkPath path = b.detach();
 
     SkPathMeasure meas(path, false);
     meas.getLength();

@@ -9,6 +9,7 @@
 #define SkPathMeasure_DEFINED
 
 #include "include/core/SkContourMeasure.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -71,6 +72,7 @@ public:
         Begin the segment with a moveTo if startWithMoveTo is true
     */
     bool getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo);
+    bool getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo);
 
     /** Return true if the current contour is closed()
     */

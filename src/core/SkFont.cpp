@@ -12,6 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -294,18 +295,20 @@ void SkFont::getPaths(SkSpan<const SkGlyphID> glyphIDs,
 }
 
 bool SkFont::getPath(SkGlyphID glyphID, SkPath* path) const {
+    SkPathBuilder b;
     struct Pair {
-        SkPath* fPath;
+        SkPathBuilder fPath;
         bool    fWasSet;
-    } pair = { path, false };
+    } pair = { b, false };
 
     this->getPaths({&glyphID, 1}, [](const SkPath* orig, const SkMatrix& mx, void* ctx) {
         Pair* pair = static_cast<Pair*>(ctx);
         if (orig) {
-            orig->transform(mx, pair->fPath);
+            pair->fPath.transform(mx);
             pair->fWasSet = true;
         }
     }, &pair);
+    *path = b.detach();
     return pair.fWasSet;
 }
 

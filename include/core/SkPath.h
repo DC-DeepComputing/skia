@@ -36,7 +36,7 @@ enum class SkPathFirstDirection;
 struct SkPathVerbAnalysis;
 
 // WIP -- define this locally, and fix call-sites to use SkPathBuilder (skbug.com/9000)
-//#define SK_HIDE_PATH_EDIT_METHODS
+#define SK_HIDE_PATH_EDIT_METHODS
 
 /** \class SkPath
     SkPath contain geometry. SkPath may be empty, or contain one or more verbs that
@@ -962,6 +962,9 @@ private:
         return this->arcTo(p1.fX, p1.fY, p2.fX, p2.fY, radius);
     }
 
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+public:
+#endif
     /** \enum SkPath::ArcSize
         Four oval parts with radii (rx, ry) start at last SkPath SkPoint and ends at (x, y).
         ArcSize and Direction select one of the four oval parts.
@@ -970,6 +973,9 @@ private:
         kSmall_ArcSize, //!< smaller of arc pair
         kLarge_ArcSize, //!< larger of arc pair
     };
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+private:
+#endif
 
     /** Appends arc to SkPath. Arc is implemented by one or more conics weighted to
         describe part of oval with radii (rx, ry) rotated by xAxisRotate degrees. Arc
@@ -1296,6 +1302,9 @@ private:
     */
     SkPath& addPoly(SkSpan<const SkPoint> pts, bool close);
 
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+public:
+#endif
     /** \enum SkPath::AddPathMode
         AddPathMode chooses how addPath() appends. Adding one SkPath to another can extend
         the last contour or start a new contour.
@@ -1312,6 +1321,9 @@ private:
         */
         kExtend_AddPathMode,
     };
+#ifdef SK_HIDE_PATH_EDIT_METHODS
+private:
+#endif
 
     /** Appends src to SkPath, offset by (dx, dy).
 

@@ -12,6 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
@@ -66,12 +67,12 @@ static void test_big_aa_rect(skiatest::Reporter* reporter) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-static void moveToH(SkPath* path, const uint32_t raw[]) {
+static void moveToH(SkPathBuilder* path, const uint32_t raw[]) {
     const float* fptr = (const float*)raw;
     path->moveTo(fptr[0], fptr[1]);
 }
 
-static void cubicToH(SkPath* path, const uint32_t raw[]) {
+static void cubicToH(SkPathBuilder* path, const uint32_t raw[]) {
     const float* fptr = (const float*)raw;
     path->cubicTo(fptr[0], fptr[1], fptr[2], fptr[3], fptr[4], fptr[5]);
 }
@@ -106,7 +107,7 @@ static void test_crbug131181() {
         0x419728fc, 0x43011ed4, 0x4194064b, 0x43012197
     };
 
-    SkPath path;
+    SkPathBuilder path;
     moveToH(&path, &data[0]);
     cubicToH(&path, &data[2]);
 
@@ -114,7 +115,7 @@ static void test_crbug131181() {
 
     SkPaint paint;
     paint.setAntiAlias(true);
-    surface->getCanvas()->drawPath(path, paint);
+    surface->getCanvas()->drawPath(path.detach(), paint);
 }
 
 // This used to assert in debug builds (and crash writing bad memory in release)
@@ -127,7 +128,11 @@ static void test_crbug_140803() {
 
     SkPaint paint;
     paint.setAntiAlias(true);
-    canvas.drawPath(SkPath().moveTo(2762, 20).quadTo(11, 21702, 10, 21706), paint);
+    SkPath path = SkPathBuilder()
+        .moveTo(2762, 20)
+        .quadTo(11, 21702, 10, 21706)
+        .detach();
+    canvas.drawPath(path, paint);
 }
 
 static void test_crbug_1239558(skiatest::Reporter* reporter) {
@@ -146,17 +151,18 @@ static void test_crbug_1239558(skiatest::Reporter* reporter) {
     // left edge to the left bounds, and the right edge to the right bounds. After this clamping,
     // the left and right edges are no longer sorted. This then led to incorrect behavior in various
     // forms (described below).
-    SkPath path;
-    path.setFillType(SkPathFillType::kWinding);
-    path.moveTo(7.00649e-45f,  2.f);
-    path.moveTo(0.0160219f,    7.45063e-09f);
-    path.moveTo(192.263f,      8.40779e-44f);
-    path.moveTo(7.34684e-40f,  194.25f);
-    path.moveTo(2.3449e-38f,   6.01858e-36f);
-    path.moveTo(7.34684e-40f,  194.25f);
-    path.cubicTo(5.07266e-39f, 56.0488f,
-                 0.0119172f,   0.f,
-                 7.34684e-40f, 194.25f);
+    SkPath path = SkPathBuilder()
+        .setFillType(SkPathFillType::kWinding)
+        .moveTo(7.00649e-45f,  2.f)
+        .moveTo(0.0160219f,    7.45063e-09f)
+        .moveTo(192.263f,      8.40779e-44f)
+        .moveTo(7.34684e-40f,  194.25f)
+        .moveTo(2.3449e-38f,   6.01858e-36f)
+        .moveTo(7.34684e-40f,  194.25f)
+        .cubicTo(5.07266e-39f, 56.0488f,
+                    0.0119172f,   0.f,
+                    7.34684e-40f, 194.25f)
+        .detach();
 
     SkPaint paint;
     paint.setColor(SK_ColorRED);
@@ -184,11 +190,11 @@ static void test_crbug_1239558(skiatest::Reporter* reporter) {
 // In the debug build, we used to assert in this case, until it was fixed.
 //
 static void test_inversepathwithclip() {
-    SkPath path;
-
-    path.moveTo(0, 20);
-    path.quadTo(10, 10, 20, 20);
-    path.toggleInverseFillType();
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 20)
+        .quadTo(10, 10, 20, 20)
+        .toggleInverseFillType()
+        .detach();
 
     SkPaint paint;
 
@@ -207,9 +213,11 @@ static void test_inversepathwithclip() {
     // Now do the test again, with the path flipped, so we only draw in the
     // top half of our bounds, and have the clip intersect our bounds at the
     // bottom.
-    path.reset();   // preserves our filltype
-    path.moveTo(0, 10);
-    path.quadTo(10, 20, 20, 10);
+    path = SkPathBuilder()
+        .moveTo(0, 10)
+        .quadTo(10, 20, 20, 10)
+        .toggleInverseFillType()
+        .detach();
     canvas->clipRect(SkRect::MakeXYWH(0, 19, 19, 11));
 
     paint.setAntiAlias(false);
@@ -224,9 +232,10 @@ static void test_bug533() {
         This particular test/bug only applies to the float case, where the
         coordinates are very large.
      */
-    SkPath path;
-    path.moveTo(64, 3);
-    path.quadTo(-329936, -100000000, 1153, 330003);
+    SkPath path = SkPathBuilder()
+        .moveTo(64, 3)
+        .quadTo(-329936, -100000000, 1153, 330003)
+        .detach();
 
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -266,9 +275,10 @@ static void test_crbug_124652() {
 }
 
 static void test_bigcubic() {
-    SkPath path;
-    path.moveTo(64, 3);
-    path.cubicTo(-329936, -100000000, -329936, 100000000, 1153, 330003);
+    SkPath path = SkPathBuilder()
+        .moveTo(64, 3)
+        .cubicTo(-329936, -100000000, -329936, 100000000, 1153, 330003)
+        .detach();
 
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -280,26 +290,26 @@ static void test_bigcubic() {
 // asserts if halfway case is not handled
 static void test_halfway() {
     SkPaint paint;
-    SkPath path;
-    path.moveTo(16365.5f, 1394);
-    path.lineTo(16365.5f, 1387.5f);
-    path.quadTo(16365.5f, 1385.43f, 16367, 1383.96f);
-    path.quadTo(16368.4f, 1382.5f, 16370.5f, 1382.5f);
-    path.lineTo(16465.5f, 1382.5f);
-    path.quadTo(16467.6f, 1382.5f, 16469, 1383.96f);
-    path.quadTo(16470.5f, 1385.43f, 16470.5f, 1387.5f);
-    path.lineTo(16470.5f, 1394);
-    path.quadTo(16470.5f, 1396.07f, 16469, 1397.54f);
-    path.quadTo(16467.6f, 1399, 16465.5f, 1399);
-    path.lineTo(16370.5f, 1399);
-    path.quadTo(16368.4f, 1399, 16367, 1397.54f);
-    path.quadTo(16365.5f, 1396.07f, 16365.5f, 1394);
-    path.close();
-    SkPath p2;
+    SkPath path = SkPathBuilder()
+        .moveTo(16365.5f, 1394)
+        .lineTo(16365.5f, 1387.5f)
+        .quadTo(16365.5f, 1385.43f, 16367, 1383.96f)
+        .quadTo(16368.4f, 1382.5f, 16370.5f, 1382.5f)
+        .lineTo(16465.5f, 1382.5f)
+        .quadTo(16467.6f, 1382.5f, 16469, 1383.96f)
+        .quadTo(16470.5f, 1385.43f, 16470.5f, 1387.5f)
+        .lineTo(16470.5f, 1394)
+        .quadTo(16470.5f, 1396.07f, 16469, 1397.54f)
+        .quadTo(16467.6f, 1399, 16465.5f, 1399)
+        .lineTo(16370.5f, 1399)
+        .quadTo(16368.4f, 1399, 16367, 1397.54f)
+        .quadTo(16365.5f, 1396.07f, 16365.5f, 1394)
+        .close()
+        .detach();
     SkMatrix m;
     m.reset();
     m.postTranslate(0.001f, 0.001f);
-    path.transform(m, &p2);
+    SkPath p2 = SkPathBuilder(path).transform(m).detach();
 
     auto surface(SkSurfaces::Raster(SkImageInfo::MakeN32Premul(640, 480)));
     SkCanvas* canvas = surface->getCanvas();
@@ -308,11 +318,11 @@ static void test_halfway() {
 
     m.reset();
     m.postTranslate(-0.001f, -0.001f);
-    path.transform(m, &p2);
+    p2 = SkPathBuilder(path).transform(m).detach();
     canvas->drawPath(p2, paint);
 
     m.reset();
-    path.transform(m, &p2);
+    p2 = SkPathBuilder(path).transform(m).detach();
     canvas->drawPath(p2, paint);
 }
 
@@ -326,8 +336,7 @@ static void test_giantaa() {
 
     SkPaint paint;
     paint.setAntiAlias(true);
-    SkPath path;
-    path.addOval(SkRect::MakeXYWH(-10, -10, 20 + W, 20 + H));
+    SkPath path = SkPath::Oval(SkRect::MakeXYWH(-10, -10, 20 + W, 20 + H));
     surface->getCanvas()->drawPath(path, paint);
 }
 
@@ -336,9 +345,10 @@ static void test_giantaa() {
 // The test is quite expensive, but it should get much faster after the fix
 // for http://crbug.com/165432 goes in.
 static void test_infinite_dash(skiatest::Reporter* reporter) {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.lineTo(5000000, 0);
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 0)
+        .lineTo(5000000, 0)
+        .detach();
 
     SkScalar intervals[] = { 0.2f, 0.2f };
     sk_sp<SkPathEffect> dash(SkDashPathEffect::Make(intervals, 2, 0));
@@ -356,9 +366,10 @@ static void test_infinite_dash(skiatest::Reporter* reporter) {
 // http://crbug.com/165432
 // Limit extreme dash path effects to avoid exhausting the system memory.
 static void test_crbug_165432(skiatest::Reporter* reporter) {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.lineTo(10000000, 0);
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 0)
+        .lineTo(10000000, 0)
+        .detach();
 
     SkScalar intervals[] = { 0.5f, 0.5f };
     sk_sp<SkPathEffect> dash(SkDashPathEffect::Make(intervals, 2, 0));
