@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3213fb25_e467d146",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-05T14:04:53Z",
+      "side": 1,
+      "message": "(making myself a hostage to fortune by sending this out at the end of the day before the tryjobs finish)\n\nptal. This adds the new graphite code that will be needed, but doesn\u0027t activate it. It makes the patch that will add the new HDR functions ([this one](https://skia-review.googlesource.com/c/skia/+/1003076)) smaller and less conflict-ridden",
+      "revId": "2edc5eea27cae0c6da102ac9ef00592966def815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
