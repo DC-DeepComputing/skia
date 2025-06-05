@@ -34,6 +34,24 @@
       "parentUuid": "0483c09f_477bf148",
       "revId": "c1d55a2010057d31fbe5841a6ceb5c7c0351d544",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "07ddfea0_8079a5ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-05T15:05:18Z",
+      "side": 1,
+      "message": "Just as an example of the age of iOS12, somewhat recently the WhatsApp app and the Facebook app dropped support for iOS12 (moved to iOS15 since everything that could run 13 and 14 can update to 15). Landing this is going to be entirely depend on convincing Flutter though.",
+      "parentUuid": "34a30119_4ea59732",
+      "revId": "c1d55a2010057d31fbe5841a6ceb5c7c0351d544",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
