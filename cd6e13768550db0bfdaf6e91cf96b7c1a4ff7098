@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31549c16_bf4e1de8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-05T12:22:18Z",
+      "side": 1,
+      "message": "Maybe add a unit test (in a follow up CL) ?",
+      "revId": "cd6e13768550db0bfdaf6e91cf96b7c1a4ff7098",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
