@@ -585,6 +585,26 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
         gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, dstW});
     }
+
+    if (steps.fFlags.src_ootf) {
+      if (readSwizzle == ReadSwizzle::kBGRA) {
+          gatherer->writeHalf(SkV4{steps.fSrcOOTF[2], steps.fSrcOOTF[1], steps.fSrcOOTF[0], steps.fSrcOOTF[3]});
+      } else {
+          gatherer->writeHalf(SkV4{steps.fSrcOOTF[0], steps.fSrcOOTF[1], steps.fSrcOOTF[2], steps.fSrcOOTF[3]});
+      }
+    } else {
+        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
+    }
+
+    if (steps.fFlags.dst_ootf) {
+      if (readSwizzle == ReadSwizzle::kBGRA) {
+          gatherer->writeHalf(SkV4{steps.fDstOOTF[2], steps.fDstOOTF[1], steps.fDstOOTF[0], steps.fDstOOTF[3]});
+      } else {
+          gatherer->writeHalf(SkV4{steps.fDstOOTF[0], steps.fDstOOTF[1], steps.fDstOOTF[2], steps.fDstOOTF[3]});
+      }
+    } else {
+        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
+    }
 }
 
 void add_image_uniform_data(const ShaderCodeDictionary* dict,
@@ -1192,6 +1212,7 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
     const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize || data.fSteps.fFlags.encode ||
+                                         data.fSteps.fFlags.src_ootf || data.fSteps.fFlags.dst_ootf ||
                                          data.fSteps.fFlags.gamut_transform;
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);

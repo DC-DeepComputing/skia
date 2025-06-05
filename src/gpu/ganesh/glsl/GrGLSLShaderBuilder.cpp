@@ -193,16 +193,39 @@ void GrGLSLShaderBuilder::appendColorGamutXform(SkString* out,
         return funcName;
     };
 
+    auto emitOOTFFunc = [this, &uniformHandler](const char* name,
+                                                GrGLSLProgramDataManager::UniformHandle uniform) {
+        const GrShaderVar gTFArgs[] = { GrShaderVar("color", SkSLType::kFloat3) };
+        const char* coeffs = uniformHandler->getUniformCStr(uniform);
+        SkString body;
+        body.appendf("float Y = dot(color, %s.rgb);", coeffs);
+        body.appendf("return color * sign(Y) * pow(abs(Y), %s.a);", coeffs);
+        SkString funcName = this->getMangledFunctionName(name);
+        this->emitFunction(SkSLType::kFloat3, funcName.c_str(), {gTFArgs, std::size(gTFArgs)},
+                           body.c_str());
+        return funcName;
+    };
+
     SkString srcTFFuncName;
     if (colorXformHelper->applySrcTF()) {
         srcTFFuncName = emitTFFunc("src_tf", colorXformHelper->srcTFUniform(),
                                    colorXformHelper->srcTFType());
     }
 
+    SkString srcOOTFFuncName;
+    if (colorXformHelper->applySrcOOTF()) {
+        srcOOTFFuncName = emitOOTFFunc("src_ootf", colorXformHelper->srcOOTFUniform());
+    }
+
     SkString dstTFFuncName;
     if (colorXformHelper->applyDstTF()) {
         dstTFFuncName = emitTFFunc("dst_tf", colorXformHelper->dstTFUniform(),
                                    colorXformHelper->dstTFType());
+    }
+
+    SkString dstOOTFFuncName;
+    if (colorXformHelper->applyDstOOTF()) {
+        dstOOTFFuncName = emitOOTFFunc("dst_ootf", colorXformHelper->dstOOTFUniform());
     }
 
     SkString gamutXformFuncName;
@@ -229,8 +252,14 @@ void GrGLSLShaderBuilder::appendColorGamutXform(SkString* out,
             body.appendf("color.g = %s(color.g);", srcTFFuncName.c_str());
             body.appendf("color.b = %s(color.b);", srcTFFuncName.c_str());
         }
+        if (colorXformHelper->applySrcOOTF()) {
+            body.appendf("color.rgb = %s(color.rgb);", srcOOTFFuncName.c_str());
+        }
         if (colorXformHelper->applyGamutXform()) {
             body.appendf("color = %s(color);", gamutXformFuncName.c_str());
+        }
+        if (colorXformHelper->applyDstOOTF()) {
+            body.appendf("color.rgb = %s(color.rgb);", dstOOTFFuncName.c_str());
         }
         if (colorXformHelper->applyDstTF()) {
             body.appendf("color.r = %s(color.r);", dstTFFuncName.c_str());
