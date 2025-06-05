@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d34bd58c_ec5f161d",
+        "filename": "src/core/SkDraw.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 454,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-05T15:21:39Z",
+      "side": 1,
+      "message": "nit line length",
+      "range": {
+        "startLine": 454,
+        "startChar": 0,
+        "endLine": 454,
+        "endChar": 103
+      },
+      "revId": "48976ab42bc0531e9c15702b00063025b16e6ead",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
