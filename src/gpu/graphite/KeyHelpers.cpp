@@ -585,6 +585,10 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, dstW});
     }
+
+    // TODO(https://issues.skia.org/issues/420956739): Populate OOTF parameters.
+    gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
+    gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
 }
 
 void add_image_uniform_data(const ShaderCodeDictionary* dict,
