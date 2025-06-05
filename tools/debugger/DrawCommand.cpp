@@ -2011,10 +2011,7 @@ DrawAtlasCommand::DrawAtlasCommand(const SkImage*  image,
 
 void DrawAtlasCommand::execute(SkCanvas* canvas) const {
     canvas->drawAtlas(fImage.get(),
-                      fXform.begin(),
-                      fTex.begin(),
-                      fColors.empty() ? nullptr : fColors.begin(),
-                      fXform.size(),
+                      fXform, fTex, fColors,
                       fBlendMode,
                       fSampling,
                       fCull.getMaybeNull(),
