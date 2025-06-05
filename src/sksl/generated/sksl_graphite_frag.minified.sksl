@@ -120,7 +120,7 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "(d.x<a[j])g=j;else f=j;}int h=e+(f-b)*4;float i=a[f];half4 j=$y(a,h);int k="
 "e+(g-b)*4;float l=a[g];if(l==i)return j;else{half4 m=$y(a,k);return half4(mix"
 "(float4(j),float4(m),(d.x-i)/(l-i)));}}}$pure float2 $A(float2 a){return float2"
-"(a.x+1e-05,1.);}$pure float2 $B(float2 a){float b=length(a);return float2(b"
+"(a.x+2e-07,1.);}$pure float2 $B(float2 a){float b=length(a);return float2(b"
 ",1.);}$pure float2 $C(float a,float b,float2 c){float d;if(sk_Caps.atan2ImplementedAsAtanYOverX"
 ")d=2.*atan(-c.y,length(c)-c.x);else d=c.x!=0.?atan(-c.y,-c.x):sign(c.y)*-1.57079637"
 ";float e=((d*.159154937+.5)+a)*b;return float2(e,1.);}$pure float2 $D(float"
