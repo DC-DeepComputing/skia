@@ -13,8 +13,8 @@ class SkImage;
 enum class SkTileMode;
 struct SkStageRec;
 
-bool SkLocalMatrixShader::isConstant() const {
-    return as_SB(fWrappedShader)->isConstant();
+bool SkLocalMatrixShader::isConstant1() const {
+    return as_SB(fWrappedShader)->isConstant1();
 }
 
 SkShaderBase::GradientType SkLocalMatrixShader::asGradient(GradientInfo* info,
@@ -72,13 +72,17 @@ bool SkLocalMatrixShader::appendStages(const SkStageRec& rec,
 SkCTMShader::SkCTMShader(sk_sp<SkShader> proxy, const SkMatrix& ctm)
         : fProxyShader(std::move(proxy)), fCTM(ctm) {}
 
-bool SkCTMShader::isConstant() const {
-    return as_SB(fProxyShader)->isConstant();
+bool SkCTMShader::isConstant1() const {
+    return as_SB(fProxyShader)->isConstant1();
 }
 
 SkShaderBase::GradientType SkCTMShader::asGradient(GradientInfo* info,
                                                    SkMatrix* localMatrix) const {
     return as_SB(fProxyShader)->asGradient(info, localMatrix);
+}
+
+bool SkCTMShader::onAsLuminanceColor(SkColor4f* color) const {
+    return as_SB(fProxyShader)->asLuminanceColor(color);
 }
 
 bool SkCTMShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const {

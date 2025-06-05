@@ -162,7 +162,7 @@ std::optional<SkColor4f> extract_paint_color(const SkPaint& paint,
 
     if (SkColorFilter* filter = paint.getColorFilter()) {
         SkColorSpace* dstCS = dstColorInfo.colorSpace();
-        return filter->filterColor4f(dstPaintColor, dstCS, dstCS);
+        return filter->filterColor4f1(dstPaintColor, dstCS, dstCS);
     }
     return dstPaintColor;
 }
@@ -1327,7 +1327,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                         clip.nonMSAAClip(),
                         sk_ref_sp(clip.shader()),
                         dstReadRequired,
-                        skipColorXform};
+                        skipColorXform,
+                        this->imageInfo().colorSpace()}; //$$
     const bool dependsOnDst = paint_depends_on_dst(shading) ||
                               clip.shader() || !clip.nonMSAAClip().isEmpty();
 

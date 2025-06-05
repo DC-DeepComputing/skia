@@ -45,7 +45,7 @@ bool should_dither(const PaintParams& p, SkColorType dstCT) {
     }
 
     // Otherwise, dither is only needed for non-const paints.
-    return p.shader() && !as_SB(p.shader())->isConstant();
+    return p.shader() && !as_SB(p.shader())->isConstant1();
 }
 
 } // anonymous namespace
@@ -55,7 +55,8 @@ PaintParams::PaintParams(const SkPaint& paint,
                          const NonMSAAClip& nonMSAAClip,
                          sk_sp<SkShader> clipShader,
                          bool dstReadRequired,
-                         bool skipColorXform)
+                         bool skipColorXform,
+                         SkColorSpace* dstCS)
         : fColor(paint.getColor4f())
         , fFinalBlender(paint.refBlender())
         , fShader(paint.refShader())
@@ -65,7 +66,32 @@ PaintParams::PaintParams(const SkPaint& paint,
         , fClipShader(std::move(clipShader))
         , fDstReadRequired(dstReadRequired)
         , fSkipColorXform(skipColorXform)
-        , fDither(paint.isDither()) {}
+        , fDither(paint.isDither()) {
+    //$$
+    if (!fPrimitiveBlender) {
+        // fColor is un-premul sRGB
+        if (fShader && as_SB(fShader)->isConstant1()) {
+            SkDebugf("---- resolving constant shader\n");
+            float origA = fColor.fA;
+            SkDebugf("Paint Color %.2f %.2f %.2f %.2f\n", fColor.fR, fColor.fG, fColor.fB, fColor.fA);
+            fColor = as_SB(fShader)->constantColor(); // returns un-premul sRGB
+            SkDebugf("Shader Color %.2f %.2f %.2f %.2f\n", fColor.fR, fColor.fG, fColor.fB, fColor.fA);
+            fColor.fA *= origA;
+            fShader = nullptr;
+        }
+        if (!fShader && fColorFilter) {
+            // SkPaint.fColor is stored in sRGB
+            SkDebugf("---- resolving constant color filter\n");
+            SkDebugf("Input Color %.2f %.2f %.2f %.2f\n", fColor.fR, fColor.fG, fColor.fB, fColor.fA);
+            SkColor4f filteredColor = fColorFilter->filterColor4f1(fColor,
+                                                                   sk_srgb_singleton(),
+                                                                   sk_srgb_singleton());
+            fColor = filteredColor;
+            SkDebugf("Result Color %.2f %.2f %.2f %.2f\n", fColor.fR, fColor.fG, fColor.fB, fColor.fA);
+            fColorFilter = nullptr;
+        }
+    }
+}
 
 PaintParams::PaintParams(const PaintParams& other) = default;
 PaintParams::~PaintParams() = default;

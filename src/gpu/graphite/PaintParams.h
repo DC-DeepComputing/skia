@@ -38,7 +38,8 @@ public:
                          const NonMSAAClip& nonMSAAClip,
                          sk_sp<SkShader> clipShader,
                          bool dstReadRequired,
-                         bool skipColorXform);
+                         bool skipColorXform,
+                         SkColorSpace* dstCS);
 
     PaintParams(const PaintParams&);
     ~PaintParams();

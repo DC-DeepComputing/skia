@@ -1347,7 +1347,7 @@ DEF_TEST(SkRuntimeColorFilterSingleColor, r) {
     sk_sp<SkColorFilter> cf = effect->makeColorFilter(SkData::MakeEmpty());
     REPORTER_ASSERT(r, cf);
 
-    SkColor4f c = cf->filterColor4f({0.25, 0.5, 0.75, 1.0},
+    SkColor4f c = cf->filterColor4f1({0.25, 0.5, 0.75, 1.0},
                                     sk_srgb_singleton(), sk_srgb_singleton());
     REPORTER_ASSERT(r, c.fR == 0.0625f);
     REPORTER_ASSERT(r, c.fG == 0.25f);

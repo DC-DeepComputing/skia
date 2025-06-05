@@ -177,7 +177,7 @@ static bool create_pipeline_for_blitter(const SkPixmap& dst,
     SkColorSpace* dstCS = dst.colorSpace();
     SkColorType dstCT = dst.colorType();
     *isOpaqueOut = shader->isOpaque() && dstPaintColor->fA == 1.0f;
-    *isConstantOut = shader->isConstant();
+    *isConstantOut = shader->isConstant1();
     if (shader->appendRootStages(
                 SkStageRec{shaderPipeline, alloc, dstCT, dstCS, *dstPaintColor, props}, ctm)) {
         if (dstPaintColor->fA != 1.0f) {

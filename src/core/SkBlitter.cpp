@@ -695,7 +695,7 @@ SkBlitter* SkBlitter::Choose(const SkPixmap& device,
     }
 
     if (paint->getColorFilter()) {
-        SkPaintPriv::RemoveColorFilter(paint.writable(), device.colorSpace());
+        SkPaintPriv::RemoveColorFilter1(paint.writable(), device.colorSpace());
     }
     SkASSERT(!paint->getColorFilter());
 

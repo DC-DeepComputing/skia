@@ -52,7 +52,7 @@ public:
     virtual Type type() const = 0;
 
     bool affectsTransparentBlack() const {
-        return this->filterColor4f(SkColors::kTransparent, nullptr, nullptr) !=
+        return this->filterColor4f1(SkColors::kTransparent, nullptr, nullptr) !=
                SkColors::kTransparent;
     }
 

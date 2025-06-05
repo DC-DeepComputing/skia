@@ -41,7 +41,7 @@ sk_sp<SkColorFilter> SkColorFilter::Deserialize(const void* data, size_t size,
                                 kSkColorFilter_Type, data, size, procs).release()));
 }
 
-SkColor4f SkColorFilter::filterColor4f(const SkColor4f& origSrcColor, SkColorSpace* srcCS,
+SkColor4f SkColorFilter::filterColor4f1(const SkColor4f& origSrcColor, SkColorSpace* srcCS,
                                        SkColorSpace* dstCS) const {
     SkPMColor4f color = { origSrcColor.fR, origSrcColor.fG, origSrcColor.fB, origSrcColor.fA };
     SkColorSpaceXformSteps(srcCS, kUnpremul_SkAlphaType,

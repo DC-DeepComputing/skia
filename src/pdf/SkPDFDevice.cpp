@@ -270,7 +270,7 @@ static SkTCopyOnFirstWrite<SkPaint> clean_paint(const SkPaint& srcPaint) {
     }
     if (paint->getColorFilter()) {
         // We assume here that PDFs all draw in sRGB.
-        SkPaintPriv::RemoveColorFilter(paint.writable(), sk_srgb_singleton());
+        SkPaintPriv::RemoveColorFilter1(paint.writable(), sk_srgb_singleton());
     }
     SkASSERT(!paint->getColorFilter());
     return paint;

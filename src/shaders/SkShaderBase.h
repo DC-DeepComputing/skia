@@ -193,7 +193,11 @@ public:
      *  Returns true if the shader is guaranteed to produce only a single color.
      *  Subclasses can override this to allow loop-hoisting optimization.
      */
-    virtual bool isConstant() const { return false; }
+    virtual bool isConstant1() const { return false; }
+    virtual SkColor4f constantColor() const {
+        SkASSERT(0);
+        return SkColors::kTransparent;
+    }
 
     enum class ShaderType {
 #define M(type) k##type,
