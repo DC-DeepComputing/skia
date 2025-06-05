@@ -1987,7 +1987,8 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                              {}, // TODO (jvanverth): add analytic clip to test
                                              std::move(modifiedClipShader),
                                              dstReadRequired,
-                                             /* skipColorXform= */ false),
+                                             /* skipColorXform= */ false,
+                                             precompileKeyContext.dstColorInfo().colorSpace()),
                                  {},
                                  precompileKeyContext.dstColorInfo());
 

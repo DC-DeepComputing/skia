@@ -43,7 +43,10 @@ public:
 
     bool isOpaque() const override { return as_SB(fWrappedShader)->isOpaque(); }
 
-    bool isConstant() const override;
+    bool isConstant1() const override;
+    SkColor4f constantColor() const override {
+        return as_SB(fWrappedShader)->constantColor();
+    }
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
     ShaderType type() const override { return ShaderType::kLocalMatrix; }
 
@@ -88,7 +91,10 @@ public:
 
     bool isOpaque() const override { return fProxyShader->isOpaque(); }
 
-    bool isConstant() const override;
+    bool isConstant1() const override;
+    SkColor4f constantColor() const override {
+        return as_SB(fProxyShader)->constantColor();
+    }
     GradientType asGradient(GradientInfo* info, SkMatrix* localMatrix) const override;
 
     ShaderType type() const override { return ShaderType::kCTM; }
@@ -98,6 +104,8 @@ public:
 
 protected:
     void flatten(SkWriteBuffer&) const override { SkASSERT(false); }
+
+    bool onAsLuminanceColor(SkColor4f* color) const override;
 
     bool appendStages(const SkStageRec& rec, const SkShaders::MatrixRec&) const override;
 

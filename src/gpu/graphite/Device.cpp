@@ -1336,7 +1336,8 @@ void Device::drawGeometry(const Transform& localToDevice,
                         clip.nonMSAAClip(),
                         sk_ref_sp(clip.shader()),
                         dstReadRequired,
-                        skipColorXform};
+                        skipColorXform,
+                        this->imageInfo().colorSpace()}; //$$
     const bool dependsOnDst = paint_depends_on_dst(shading) ||
                               clip.shader() || !clip.nonMSAAClip().isEmpty();
 
