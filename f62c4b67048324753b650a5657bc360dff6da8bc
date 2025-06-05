@@ -34,6 +34,23 @@
       "parentUuid": "d0a88d17_aff0187e",
       "revId": "f62c4b67048324753b650a5657bc360dff6da8bc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7ee8fc06_c0bd1c1c",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-06-05T15:31:21Z",
+      "side": 1,
+      "message": "This signature change seemed to break Dawn since it\u0027s expecting the `count` in some of its files (bubble_border.cc).\n\nUsage:\nhttps://github.com/chromium/chromium/blob/main/ui/views/bubble/bubble_border.cc#L133\n\nIs this safe to revert?",
+      "revId": "f62c4b67048324753b650a5657bc360dff6da8bc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
