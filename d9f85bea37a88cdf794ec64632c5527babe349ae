@@ -50,6 +50,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a39ef312_1c9090f9",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-05T13:46:56Z",
+      "side": 1,
+      "message": "No, there are no mobile Metal devices that have non-Apple silicon. Intel is only coming from the older macbooks/desktops/minis.",
+      "parentUuid": "2d11baaa_2891196a",
+      "range": {
+        "startLine": 185,
+        "startChar": 1,
+        "endLine": 186,
+        "endChar": 15
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e0a055a_ba3e3f2c",
         "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
         "patchSetId": 13
