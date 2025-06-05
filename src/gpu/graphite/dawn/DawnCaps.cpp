@@ -542,7 +542,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
         // reuse MSAA textures better to reduce memory usage.
         // TODO(b/399640773): Avoid this when Dawn implements the partial resolve feature
         // that can support mismatched sized MSAA & resolve attachments.
-        fEmulateLoadStoreResolve = true;
+        fEmulateLoadStoreResolve = info.backendType != wgpu::BackendType::D3D11;
         fDifferentResolveAttachmentSizeSupport = true;
     }
 

@@ -308,7 +308,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     // Set up color attachment.
 #if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
-    wgpu::RenderPassDescriptorExpandResolveRect wgpuPartialRect = {};
+    wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
 #endif
 
 #if WGPU_TIMESTAMP_WRITES_DEFINED
@@ -382,9 +382,10 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                     wgpuColorAttachment.loadOp = *resolveLoadOp;
 #if !defined(__EMSCRIPTEN__)
                     if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
-                        SkASSERT(resolveOffset.isZero());
-                        wgpuPartialRect.x = renderPassBounds.x();
-                        wgpuPartialRect.y = renderPassBounds.y();
+                        wgpuPartialRect.colorOffsetX = renderPassBounds.x();
+                        wgpuPartialRect.colorOffsetY = renderPassBounds.y();
+                        wgpuPartialRect.resolveOffsetX = resolveOffset.x();
+                        wgpuPartialRect.resolveOffsetY = resolveOffset.y();
                         wgpuPartialRect.width = renderPassBounds.width();
                         wgpuPartialRect.height = renderPassBounds.height();
                         wgpuRenderPass.nextInChain = &wgpuPartialRect;
