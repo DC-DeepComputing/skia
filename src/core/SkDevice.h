@@ -15,6 +15,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -248,6 +249,9 @@ public:
     virtual void clipPath(const SkPath& path, SkClipOp op, bool aa) = 0;
     virtual void clipRegion(const SkRegion& region, SkClipOp op) = 0;
 
+    // default impl converts to path
+    virtual void clipPolygon(SkSpan<const SkPoint>, SkPathFillType, SkClipOp, bool aa);
+
     void clipShader(sk_sp<SkShader> sh, SkClipOp op) {
         sh = as_SB(sh)->makeWithCTM(this->localToDevice());
         if (op == SkClipOp::kDifference) {
@@ -349,6 +353,13 @@ public:
     // Default impl calls drawPath()
     virtual void drawDRRect(const SkRRect& outer,
                             const SkRRect& inner, const SkPaint&);
+
+    // Default impl calls drawPath()
+    virtual void drawPolygon(SkSpan<const SkPoint>, bool isClosed, SkPathFillType, const SkPaint&);
+
+    void drawPolygon(SkSpan<const SkPoint> pts, bool isClosed, const SkPaint& paint) {
+        this->drawPolygon(pts, isClosed, SkPathFillType::kWinding, paint);
+    }
 
     /**
      *  If pathIsMutable, then the implementation is allowed to cast path to a
@@ -576,6 +587,7 @@ public:
     void popClipStack() override;
     void clipRect(const SkRect& rect, SkClipOp op, bool aa) override;
     void clipRRect(const SkRRect& rrect, SkClipOp op, bool aa) override;
+    void clipPolygon(SkSpan<const SkPoint>, SkPathFillType, SkClipOp, bool aa) override;
     void clipPath(const SkPath& path, SkClipOp op, bool aa) override;
     void clipRegion(const SkRegion& globalRgn, SkClipOp op) override;
     void replaceClip(const SkIRect& rect) override;
