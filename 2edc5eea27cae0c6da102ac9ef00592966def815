@@ -16,6 +16,29 @@
       "message": "(making myself a hostage to fortune by sending this out at the end of the day before the tryjobs finish)\n\nptal. This adds the new graphite code that will be needed, but doesn\u0027t activate it. It makes the patch that will add the new HDR functions ([this one](https://skia-review.googlesource.com/c/skia/+/1003076)) smaller and less conflict-ridden",
       "revId": "2edc5eea27cae0c6da102ac9ef00592966def815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b48d14_1146deea",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1416,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-05T16:09:52Z",
+      "side": 1,
+      "message": "Looks like you may have to add the extra uniforms here too and update the sksl code for it",
+      "range": {
+        "startLine": 1408,
+        "startChar": 0,
+        "endLine": 1416,
+        "endChar": 65
+      },
+      "revId": "2edc5eea27cae0c6da102ac9ef00592966def815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
