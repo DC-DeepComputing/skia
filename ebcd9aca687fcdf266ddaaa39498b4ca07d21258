@@ -16,6 +16,75 @@
       "message": "Ok to review.",
       "revId": "ebcd9aca687fcdf266ddaaa39498b4ca07d21258",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c903d44d_31fa5659",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 899,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-05T14:12:52Z",
+      "side": 1,
+      "message": "NOTE for future: If necessary, we could add a `getIndexInnerExpression` that handles mapping to any temporary variable but does not actually write out the final expression. Then we could pass this into `SkSL::Swizzle::Convert(...)` with the appropriate swizzle component based on `i`, and then just call `this-\u003ewriteExpression(...)`. \n\nThis would allow pre-evaluation of any chain of swizzles that had been part of some of the vector arguments.  But for now, manually building the swizzle expression seems totally fine, since I\u0027d expect the msl compiler to do the collapsing of swizzles anyways.",
+      "range": {
+        "startLine": 899,
+        "startChar": 0,
+        "endLine": 899,
+        "endChar": 67
+      },
+      "revId": "ebcd9aca687fcdf266ddaaa39498b4ca07d21258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e638c85_a121594a",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 901,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-05T14:12:52Z",
+      "side": 1,
+      "message": "Can you do `this-\u003ewrite(kSwizzleChars[i]);`?",
+      "range": {
+        "startLine": 901,
+        "startChar": 32,
+        "endLine": 901,
+        "endChar": 69
+      },
+      "revId": "ebcd9aca687fcdf266ddaaa39498b4ca07d21258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a6e4e25c_a624485f",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 1362,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-05T14:12:52Z",
+      "side": 1,
+      "message": "We can assert that rows \u003d\u003d1, these intrinsics aren\u0027t available for matrix types.",
+      "range": {
+        "startLine": 1362,
+        "startChar": 12,
+        "endLine": 1362,
+        "endChar": 39
+      },
+      "revId": "ebcd9aca687fcdf266ddaaa39498b4ca07d21258",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
