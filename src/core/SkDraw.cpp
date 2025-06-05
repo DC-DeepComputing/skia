@@ -32,6 +32,7 @@
 #include "src/core/SkDrawTypes.h"
 #include "src/core/SkImageInfoPriv.h"
 #include "src/core/SkImagePriv.h"
+#include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixUtils.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRectPriv.h"
@@ -39,11 +40,6 @@
 
 #include <cstddef>
 #include <optional>
-
-#if defined(SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE)
-#include "src/core/SkMaskFilterBase.h"
-#endif
-
 using namespace skia_private;
 
 static SkPaint make_paint_with_image(const SkPaint& origPaint, const SkBitmap& bitmap,
@@ -391,7 +387,7 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
     // for some Android apps (b/231400686). Thus: keep the old behavior in the framework.
 #if defined(SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE)
     if (bitmap.colorType() == kAlpha_8_SkColorType && !paint->getColorFilter()) {
-        draw.drawBitmapAsMask(bitmap, sampling, *paint);
+        draw.drawBitmapAsMask(bitmap, sampling, *paint, nullptr);
         return;
     }
 #endif
@@ -455,8 +451,8 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
     draw.drawRect(r, paintWithShader);
 }
 
-#if defined(SK_SUPPORT_LEGACY_ALPHA_BITMAP_AS_COVERAGE)
-void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint) const {
+void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint,
+                         const SkMatrix* paintMatrix) const {
     if (srcM.fBounds.isEmpty()) {
         return;
     }
@@ -470,7 +466,7 @@ void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint) const {
     }
     SkAutoMaskFreeImage ami(dstM.image());
 
-    SkAutoBlitterChoose blitterChooser(*this, nullptr, paint);
+    SkAutoBlitterChoose blitterChooser(*this, paintMatrix, paint);
     SkBlitter* blitter = blitterChooser.get();
 
     SkAAClipBlitterWrapper wrapper;
@@ -487,7 +483,7 @@ void SkDraw::drawDevMask(const SkMask& srcM, const SkPaint& paint) const {
 }
 
 void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& sampling,
-                              const SkPaint& paint) const {
+                              const SkPaint& paint, const SkMatrix* paintMatrix) const {
     SkASSERT(bitmap.colorType() == kAlpha_8_SkColorType);
 
     // nothing to draw
@@ -509,7 +505,7 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
                     SkToU32(pmap.rowBytes()),
                     SkMask::kA8_Format);
 
-        this->drawDevMask(mask, paint);
+        this->drawDevMask(mask, paint, paintMatrix);
     } else {    // need to xform the bitmap first
         SkRect  r;
         SkMaskBuilder mask;
@@ -565,7 +561,6 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
             rr.setIWH(bitmap.width(), bitmap.height());
             c.drawRect(rr, paintWithShader);
         }
-        this->drawDevMask(mask, paint);
+        this->drawDevMask(mask, paint, paintMatrix);
     }
 }
-#endif
