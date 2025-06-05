@@ -9,6 +9,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
@@ -40,18 +41,18 @@ SkScalar SkContourMeasure::Segment::getScalarT() const {
 }
 
 void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
-                            SkScalar startT, SkScalar stopT, SkPath* dst) {
+                            SkScalar startT, SkScalar stopT, SkPathBuilder* builder) {
     SkASSERT(startT >= 0 && startT <= SK_Scalar1);
     SkASSERT(stopT >= 0 && stopT <= SK_Scalar1);
     SkASSERT(startT <= stopT);
 
     if (startT == stopT) {
-        if (!dst->isEmpty()) {
+        if (!builder->isEmpty()) {
             /* if the dash as a zero-length on segment, add a corresponding zero-length line.
                The stroke code will add end caps to zero length lines as appropriate */
-            SkPoint lastPt;
-            SkAssertResult(dst->getLastPt(&lastPt));
-            dst->lineTo(lastPt);
+            std::optional<SkPoint> lastPt = builder->getLastPt();
+            SkAssertResult(lastPt != std::nullopt);
+            builder->lineTo(lastPt.value());
         }
         return;
     }
@@ -61,27 +62,27 @@ void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
     switch (segType) {
         case kLine_SegType:
             if (SK_Scalar1 == stopT) {
-                dst->lineTo(pts[1]);
+                builder->lineTo(pts[1]);
             } else {
-                dst->lineTo(SkScalarInterp(pts[0].fX, pts[1].fX, stopT),
+                builder->lineTo(SkScalarInterp(pts[0].fX, pts[1].fX, stopT),
                             SkScalarInterp(pts[0].fY, pts[1].fY, stopT));
             }
             break;
         case kQuad_SegType:
             if (0 == startT) {
                 if (SK_Scalar1 == stopT) {
-                    dst->quadTo(pts[1], pts[2]);
+                    builder->quadTo(pts[1], pts[2]);
                 } else {
                     SkChopQuadAt(pts, tmp0, stopT);
-                    dst->quadTo(tmp0[1], tmp0[2]);
+                    builder->quadTo(tmp0[1], tmp0[2]);
                 }
             } else {
                 SkChopQuadAt(pts, tmp0, startT);
                 if (SK_Scalar1 == stopT) {
-                    dst->quadTo(tmp0[3], tmp0[4]);
+                    builder->quadTo(tmp0[3], tmp0[4]);
                 } else {
                     SkChopQuadAt(&tmp0[2], tmp1, (stopT - startT) / (1 - startT));
-                    dst->quadTo(tmp1[1], tmp1[2]);
+                    builder->quadTo(tmp1[1], tmp1[2]);
                 }
             }
             break;
@@ -90,41 +91,41 @@ void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
 
             if (0 == startT) {
                 if (SK_Scalar1 == stopT) {
-                    dst->conicTo(conic.fPts[1], conic.fPts[2], conic.fW);
+                    builder->conicTo(conic.fPts[1], conic.fPts[2], conic.fW);
                 } else {
                     SkConic tmp[2];
                     if (conic.chopAt(stopT, tmp)) {
-                        dst->conicTo(tmp[0].fPts[1], tmp[0].fPts[2], tmp[0].fW);
+                        builder->conicTo(tmp[0].fPts[1], tmp[0].fPts[2], tmp[0].fW);
                     }
                 }
             } else {
                 if (SK_Scalar1 == stopT) {
                     SkConic tmp[2];
                     if (conic.chopAt(startT, tmp)) {
-                        dst->conicTo(tmp[1].fPts[1], tmp[1].fPts[2], tmp[1].fW);
+                        builder->conicTo(tmp[1].fPts[1], tmp[1].fPts[2], tmp[1].fW);
                     }
                 } else {
                     SkConic tmp;
                     conic.chopAt(startT, stopT, &tmp);
-                    dst->conicTo(tmp.fPts[1], tmp.fPts[2], tmp.fW);
+                    builder->conicTo(tmp.fPts[1], tmp.fPts[2], tmp.fW);
                 }
             }
         } break;
         case kCubic_SegType:
             if (0 == startT) {
                 if (SK_Scalar1 == stopT) {
-                    dst->cubicTo(pts[1], pts[2], pts[3]);
+                    builder->cubicTo(pts[1], pts[2], pts[3]);
                 } else {
                     SkChopCubicAt(pts, tmp0, stopT);
-                    dst->cubicTo(tmp0[1], tmp0[2], tmp0[3]);
+                    builder->cubicTo(tmp0[1], tmp0[2], tmp0[3]);
                 }
             } else {
                 SkChopCubicAt(pts, tmp0, startT);
                 if (SK_Scalar1 == stopT) {
-                    dst->cubicTo(tmp0[4], tmp0[5], tmp0[6]);
+                    builder->cubicTo(tmp0[4], tmp0[5], tmp0[6]);
                 } else {
                     SkChopCubicAt(&tmp0[3], tmp1, (stopT - startT) / (1 - startT));
-                    dst->cubicTo(tmp1[1], tmp1[2], tmp1[3]);
+                    builder->cubicTo(tmp1[1], tmp1[2], tmp1[3]);
                 }
             }
             break;
@@ -656,6 +657,15 @@ bool SkContourMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlag
 bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
                                   bool startWithMoveTo) const {
     SkASSERT(dst);
+    SkPathBuilder builder;
+    bool rv = this->getSegment(startD, stopD, &builder, startWithMoveTo);
+    *dst = builder.detach();
+    return rv;
+}
+
+bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* builder,
+                                  bool startWithMoveTo) const {
+    SkASSERT(builder);
 
     SkScalar length = this->length();    // ensure we have built our segments
 
@@ -685,20 +695,19 @@ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
     SkASSERT(seg <= stopSeg);
     if (startWithMoveTo) {
         compute_pos_tan(&fPts[seg->fPtIndex], seg->fType, startT, &p, nullptr);
-        dst->moveTo(p);
+        builder->moveTo(p);
     }
 
     if (seg->fPtIndex == stopSeg->fPtIndex) {
-        SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, startT, stopT, dst);
+        SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, startT, stopT, builder);
     } else {
         do {
-            SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, startT, SK_Scalar1, dst);
+            SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, startT, SK_Scalar1, builder);
             seg = SkContourMeasure::Segment::Next(seg);
             startT = 0;
         } while (seg->fPtIndex < stopSeg->fPtIndex);
-        SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, 0, stopT, dst);
+        SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, 0, stopT, builder);
     }
-
     return true;
 }
 

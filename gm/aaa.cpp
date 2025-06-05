@@ -140,7 +140,7 @@ DEF_SIMPLE_GM(analytic_antialias_inverse, canvas, W, H) {
         canvas->save();
 
         SkPath path = SkPath::Circle(100, 100, 30);
-        path.setFillType(SkPathFillType::kInverseWinding);
+        path = path.makeFillType(SkPathFillType::kInverseWinding);
         canvas->drawPath(path, p);
         canvas->restore();
 }

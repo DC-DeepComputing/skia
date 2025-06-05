@@ -373,7 +373,7 @@ void Device::clearAll() {
 void Device::clipPath(const SkPath& path, SkClipOp op, bool aa) {
 #if defined(GPU_TEST_UTILS)
     if (fContext->priv().options().fAllPathsVolatile && !path.isVolatile()) {
-        this->clipPath(SkPath(path).setIsVolatile(true), op, aa);
+        this->clipPath(SkPathBuilder(path).setIsVolatile(true).detach(), op, aa);
         return;
     }
 #endif
@@ -410,7 +410,7 @@ void Device::android_utils_clipAsRgn(SkRegion* region) const {
         } else {
             SkPath tmpPath;
             e.fShape.asPath(&tmpPath);
-            tmpPath.transform(e.fLocalToDevice);
+            tmpPath = SkPathBuilder(tmpPath).transform(e.fLocalToDevice).detach();
             tmp.setPath(tmpPath, deviceBounds);
         }
 
@@ -488,7 +488,7 @@ void Device::drawPoints(SkCanvas::PointMode mode,
                                  paint,
                                  this->localToDevice(),
                                  &grPaint)) {
-                SkPath path;
+                SkPathBuilder path;
                 path.setIsVolatile(true);
                 path.moveTo(pts[0]);
                 path.lineTo(pts[1]);
@@ -496,7 +496,7 @@ void Device::drawPoints(SkCanvas::PointMode mode,
                                               std::move(grPaint),
                                               aa,
                                               this->localToDevice(),
-                                              path,
+                                              path.snapshot(),
                                               GrStyle(paint, SkPaint::kStroke_Style));
             }
             return;
@@ -698,7 +698,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
         }
     }
 
-    SkPath path;
+    SkPathBuilder path;
     path.setIsVolatile(true);
     path.addRRect(outer);
     path.addRRect(inner);
@@ -706,7 +706,7 @@ void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPain
 
     // TODO: We are losing the possible mutability of the path here but this should probably be
     // fixed by upgrading GrStyledShape to handle DRRects.
-    GrStyledShape shape(path, paint);
+    GrStyledShape shape(path.snapshot(), paint);
 
     GrBlurUtils::DrawShapeWithMaskFilter(fContext.get(), fSurfaceDrawContext.get(), this->clip(),
                                          paint, this->localToDevice(), shape);
@@ -720,7 +720,7 @@ void Device::drawRegion(const SkRegion& region, const SkPaint& paint) {
     if (paint.getMaskFilter()) {
         SkPath path;
         region.getBoundaryPath(&path);
-        path.setIsVolatile(true);
+        path = SkPathBuilder(path).setIsVolatile(true).detach();
         return this->drawPath(path, paint, true);
     }
 
@@ -782,7 +782,7 @@ void Device::drawArc(const SkArc& arc, const SkPaint& paint) {
 void Device::drawPath(const SkPath& origSrcPath, const SkPaint& paint, bool pathIsMutable) {
 #if defined(GPU_TEST_UTILS)
     if (fContext->priv().options().fAllPathsVolatile && !origSrcPath.isVolatile()) {
-        this->drawPath(SkPath(origSrcPath).setIsVolatile(true), paint, true);
+        this->drawPath(SkPathBuilder(origSrcPath).setIsVolatile(true).detach(), paint, true);
         return;
     }
 #endif
@@ -1096,7 +1096,7 @@ void Device::drawMesh(const SkMesh& mesh, sk_sp<SkBlender> blender, const SkPain
 void Device::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShadowRec& rec) {
 #if defined(GPU_TEST_UTILS)
     if (fContext->priv().options().fAllPathsVolatile && !path.isVolatile()) {
-        this->drawShadow(canvas, SkPath(path).setIsVolatile(true), rec);
+        this->drawShadow(canvas, SkPathBuilder(path).setIsVolatile(true).detach(), rec);
         return;
     }
 #endif

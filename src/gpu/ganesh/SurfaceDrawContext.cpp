@@ -1335,7 +1335,7 @@ void SurfaceDrawContext::drawRegion(const GrClip* clip,
     if (complexStyle || GrAA::kYes == aa) {
         SkPath path;
         region.getBoundaryPath(&path);
-        path.setIsVolatile(true);
+        path = path.makeIsVolatile(true);
 
         return this->drawPath(clip, std::move(paint), aa, viewMatrix, path, style);
     }

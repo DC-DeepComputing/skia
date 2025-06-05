@@ -8,6 +8,7 @@
 #ifndef SkRegion_DEFINED
 #define SkRegion_DEFINED
 
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAssert.h"
@@ -187,6 +188,7 @@ public:
         example: https://fiddle.skia.org/c/@Region_getBoundaryPath
     */
     bool getBoundaryPath(SkPath* path) const;
+    bool getBoundaryPath(SkPathBuilder* builder) const;
 
     /** Constructs an empty SkRegion. SkRegion is set to empty bounds
         at (0, 0) with zero width and height. Always returns false.
