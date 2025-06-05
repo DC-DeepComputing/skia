@@ -9,7 +9,9 @@
 #define skgpu_graphite_Device_DEFINED
 
 #include "include/core/SkImage.h"
+#include "include/core/SkRecorder.h"
 #include "include/gpu/GpuTypes.h"
+#include "include/gpu/graphite/Recorder.h"
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkDevice.h"
 #include "src/gpu/graphite/ClipStack.h"
@@ -34,7 +36,6 @@ class Geometry;
 class Image;
 enum class LoadOp : uint8_t;
 class PaintParams;
-class Recorder;
 class Renderer;
 class Shape;
 class StrokeStyle;
@@ -70,6 +71,8 @@ public:
     Device* asGraphiteDevice() override { return this; }
 
     Recorder* recorder() const override { return fRecorder; }
+    SkRecorder* baseRecorder() const override { return fRecorder; }
+
     // This call is triggered from the Recorder on its registered Devices. It is typically called
     // when the Recorder is abandoned or deleted.
     void abandonRecorder() { fRecorder = nullptr; }
@@ -146,8 +149,7 @@ public:
     void drawOval(const SkRect& oval, const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
     void drawArc(const SkArc& arc, const SkPaint& paint) override;
-    void drawPoints(SkCanvas::PointMode mode, size_t count,
-                    const SkPoint[], const SkPaint& paint) override;
+    void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
     void drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable = false) override;
 
     // No need to specialize drawDRRect, drawRegion, drawPatch as the default impls all

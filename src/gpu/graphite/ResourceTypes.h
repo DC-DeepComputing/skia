@@ -31,7 +31,7 @@ SK_MAKE_BITMASK_OPS(DepthStencilFlags)
 enum class DstReadStrategy : uint8_t {
     kNoneRequired,
     kTextureCopy,
-    kTextureSample,
+    kTextureSample,  // TODO(b/238756862): To be used once direct texture sampling is implemented
     kReadFromInput,
     kFramebufferFetch,
 
@@ -117,6 +117,9 @@ enum class AccessPattern : uint8_t {
 
     // The resource needs to be CPU visible, e.g. for read-back or as a copy/upload source.
     kHostVisible,
+
+    // Use to debug GPU only buffers.
+    kGpuOnlyCopySrc,
 };
 
 /**
