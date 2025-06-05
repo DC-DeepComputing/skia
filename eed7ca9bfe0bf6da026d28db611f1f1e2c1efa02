@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ff3c8220_5aad901c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-05T16:02:33Z",
+      "side": 1,
+      "message": "RFC: The promotion rules make the code a little annoying, but we can at least contain all of the complication to one spot and not have to have users deal with features and extensions anymore.\n\nWhat do you think of this change?",
+      "revId": "eed7ca9bfe0bf6da026d28db611f1f1e2c1efa02",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
