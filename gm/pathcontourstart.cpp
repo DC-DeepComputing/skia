@@ -108,8 +108,8 @@ private:
 
             const int n = path.countPoints();
             AutoTArray<SkPoint> points(n);
-            path.getPoints(points.get(), n);
-            canvas->drawPoints(SkCanvas::kPoints_PointMode, n, points.get(), fPointsPaint);
+            path.getPoints(points);
+            canvas->drawPoints(SkCanvas::kPoints_PointMode, points, fPointsPaint);
 
             canvas->translate(0, kImageHeight / 8);
         }

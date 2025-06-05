@@ -7,6 +7,7 @@
 #include "include/gpu/graphite/Recorder.h"
 
 #include "include/core/SkBitmap.h"
+#include "include/core/SkCPURecorder.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
@@ -140,12 +141,12 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
 
 #if defined(GPU_TEST_UTILS)
     if (options.fRecorderOptionsPriv) {
-        if (options.fRecorderOptionsPriv->fBufferSizes.has_value()) {
+        if (options.fRecorderOptionsPriv->fDbmOptions.has_value()) {
             fDrawBufferManager = std::make_unique<DrawBufferManager>(
                     fResourceProvider,
                     fSharedContext->caps(),
                     fUploadBufferManager.get(),
-                    options.fRecorderOptionsPriv->fBufferSizes.value());
+                    options.fRecorderOptionsPriv->fDbmOptions.value());
         }
     } else {
         fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
@@ -182,6 +183,10 @@ Recorder::~Recorder() {
 }
 
 BackendApi Recorder::backend() const { return fSharedContext->backend(); }
+
+skcpu::Recorder* Recorder::cpuRecorder() {
+    return skcpu::Recorder::TODO();
+}
 
 std::unique_ptr<Recording> Recorder::snap() {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);

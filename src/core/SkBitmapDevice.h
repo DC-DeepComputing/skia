@@ -14,11 +14,11 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
+#include "include/core/SkSpan.h"
+#include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDevice.h"
 #include "src/core/SkGlyphRunPainter.h"
 #include "src/core/SkRasterClipStack.h"
-
-#include <cstddef>
 
 class SkBlender;
 class SkImage;
@@ -29,6 +29,7 @@ class SkPath;
 class SkPixmap;
 class SkRRect;
 class SkRasterHandleAllocator;
+class SkRecorder;
 class SkRegion;
 class SkShader;
 class SkSpecialImage;
@@ -39,7 +40,6 @@ enum class SkClipOp;
 struct SkImageInfo;
 struct SkPoint;
 struct SkRSXform;
-namespace skcpu { class RecorderImpl; }
 namespace sktext { class GlyphRunList; }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,8 +70,7 @@ public:
                                         SkRasterHandleAllocator* = nullptr);
 
     void drawPaint(const SkPaint& paint) override;
-    void drawPoints(SkCanvas::PointMode mode, size_t count,
-                            const SkPoint[], const SkPaint& paint) override;
+    void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
     void drawRect(const SkRect& r, const SkPaint& paint) override;
     void drawOval(const SkRect& oval, const SkPaint& paint) override;
     void drawRRect(const SkRRect& rr, const SkPaint& paint) override;
@@ -110,6 +109,9 @@ public:
     void drawSpecial(SkSpecialImage*, const SkMatrix&, const SkSamplingOptions&,
                      const SkPaint&, SkCanvas::SrcRectConstraint) override;
 
+    void drawCoverageMask(const SkSpecialImage*, const SkMatrix&, const SkSamplingOptions&,
+                          const SkPaint&) override;
+
     sk_sp<SkSpecialImage> snapSpecial(const SkIRect&, bool forceCopy = false) override;
 
     sk_sp<SkDevice> createDevice(const CreateInfo&, const SkPaint*) override;
@@ -119,6 +121,8 @@ public:
     void setImmutable() override { fBitmap.setImmutable(); }
 
     void* getRasterHandle() const override { return fRasterHandle; }
+
+    SkRecorder* baseRecorder() const override { return fRecorder; }
 
 private:
     friend class SkDraw;

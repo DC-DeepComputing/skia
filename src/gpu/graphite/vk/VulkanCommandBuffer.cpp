@@ -148,6 +148,50 @@ void VulkanCommandBuffer::begin() {
     VULKAN_CALL_ERRCHECK(fSharedContext,
                          BeginCommandBuffer(fPrimaryCommandBuffer, &cmdBufferBeginInfo));
     fActive = true;
+
+    // Set all the dynamic state that Graphite never changes once at the beginning of the command
+    // buffer.  The following state are constants in Graphite:
+    //
+    // * lineWidth
+    // * depthBiasEnable, depthBiasConstantFactor, depthBiasClamp, depthBiasSlopeFactor
+    // * min/maxDepthBounds, depthBoundsTestEnable
+    // * primitiveRestartEnable
+    // * cullMode
+    // * frontFace
+    // * rasterizerDiscardEnable
+
+    if (fSharedContext->caps()->useBasicDynamicState()) {
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetLineWidth(fPrimaryCommandBuffer,
+                                    /*lineWidth=*/1.0));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBias(fPrimaryCommandBuffer,
+                                    /*depthBiasConstantFactor=*/0.0f,
+                                    /*depthBiasClamp=*/0.0f,
+                                    /*depthBiasSlopeFactor=*/0.0f));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBounds(fPrimaryCommandBuffer,
+                                      /*minDepthBounds=*/0.0f,
+                                      /*maxDepthBounds=*/1.0f));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBoundsTestEnable(fPrimaryCommandBuffer,
+                                                /*depthBoundsTestEnable=*/VK_FALSE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetDepthBiasEnable(fPrimaryCommandBuffer,
+                                          /*depthBiasEnable=*/VK_FALSE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetPrimitiveRestartEnable(fPrimaryCommandBuffer,
+                                                 /*primitiveRestartEnable=*/VK_FALSE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetCullMode(fPrimaryCommandBuffer,
+                                   /*cullMode=*/VK_CULL_MODE_NONE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetFrontFace(fPrimaryCommandBuffer,
+                                    /*frontFace=*/VK_FRONT_FACE_COUNTER_CLOCKWISE));
+        VULKAN_CALL(fSharedContext->interface(),
+                    CmdSetRasterizerDiscardEnable(fPrimaryCommandBuffer,
+                                                  /*rasterizerDiscardEnable=*/VK_FALSE));
+    }
 }
 
 void VulkanCommandBuffer::end() {
@@ -566,7 +610,7 @@ bool VulkanCommandBuffer::loadMSAAFromResolve(const RenderPassDesc& rpDesc,
     // After loading the resolve attachment, proceed to the next subpass.
     this->nextSubpass();
     // While transitioning to the next subpass, the layout of the resolve texture gets changed
-    // internally to accommodate its usage within the following subpass. Thus, we need  to update
+    // internally to accommodate its usage within the following subpass. Thus, we need to update
     // our tracking of the layout to match the new/final layout. We do not need to use a general
     // layout because we do not expect to later treat the resolve texture as a dst to read from.
     resolveTexture.updateImageLayout(VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
@@ -806,20 +850,13 @@ bool VulkanCommandBuffer::beginRenderPass(const RenderPassDesc& rpDesc,
         return false;
     }
 
-    VkExtent2D granularity;
-    // Get granularity for this render pass
-    VULKAN_CALL(fSharedContext->interface(),
-                GetRenderAreaGranularity(fSharedContext->device(),
-                                         vulkanRenderPass->renderPass(),
-                                         &granularity));
-
     bool useFullBounds = loadMSAAFromResolve &&
                          fSharedContext->vulkanCaps().mustLoadFullImageForMSAA();
 
     VkRect2D renderArea = get_render_area(useFullBounds ? SkIRect::MakeWH(frameBufferWidth,
                                                                           frameBufferHeight)
                                                         : renderPassBounds,
-                                          granularity,
+                                          vulkanRenderPass->granularity(),
                                           frameBufferWidth,
                                           frameBufferHeight);
 
@@ -971,6 +1008,11 @@ void VulkanCommandBuffer::addDrawPass(const DrawPass* drawPass) {
 
 void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsPipeline) {
     SkASSERT(fActiveRenderPass);
+    // TODO(b/414645289): Once the front-end is made aware of dynamic state, it could recognize when
+    // only dynamic state has changed.  In that case, since the pipeline doesn't change, this call
+    // can be avoided.  The logic after this would then have to move to another place; for example
+    // setting dynamic states should move to a separate VulkanCommandBuffer call.
+    const auto* previousGraphicsPipeline = fActiveGraphicsPipeline;
     fActiveGraphicsPipeline = static_cast<const VulkanGraphicsPipeline*>(graphicsPipeline);
     VULKAN_CALL(fSharedContext->interface(), CmdBindPipeline(fPrimaryCommandBuffer,
                                                              VK_PIPELINE_BIND_POINT_GRAPHICS,
@@ -988,6 +1030,9 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
         // up front in this case.
         this->recordTextureAndSamplerDescSet(/*drawPass=*/nullptr, /*command=*/nullptr);
     }
+
+    fActiveGraphicsPipeline->updateDynamicState(
+            fSharedContext, fPrimaryCommandBuffer, previousGraphicsPipeline);
 }
 
 void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
@@ -1008,6 +1053,11 @@ void VulkanCommandBuffer::addBarrier(BarrierType type) {
         dstStage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
         dstAccess = VK_ACCESS_COLOR_ATTACHMENT_READ_NONCOHERENT_BIT_EXT;
     } else {
+        // If input reads are coherent, no barrier is needed
+        if (fSharedContext->vulkanCaps().isInputAttachmentReadCoherent()) {
+            return;
+        }
+
         SkASSERT(type == BarrierType::kReadDstFromInput);
         dstStage = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
         dstAccess = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
@@ -1486,16 +1536,22 @@ bool VulkanCommandBuffer::onCopyBufferToBuffer(const Buffer* srcBuffer,
     // we allow to be used as the dst of a transfer are vertex and index buffers. So we check the
     // buffers usages for either of those and then set the corresponding access flag.
     VkAccessFlags dstAccess = 0;
-    VkPipelineStageFlags dstStageMask = VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
+    VkPipelineStageFlags dstStageMask = 0;
     VkBufferUsageFlags bufferUsageFlags = vkDstBuffer->bufferUsageFlags();
     if (bufferUsageFlags & VK_BUFFER_USAGE_VERTEX_BUFFER_BIT) {
         dstAccess = VK_ACCESS_VERTEX_ATTRIBUTE_READ_BIT;
+        dstStageMask = VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
     } else if (bufferUsageFlags & VK_BUFFER_USAGE_INDEX_BUFFER_BIT) {
         dstAccess = VK_ACCESS_INDEX_READ_BIT;
+        dstStageMask = VK_PIPELINE_STAGE_VERTEX_INPUT_BIT;
+    } else if (vkDstBuffer->bufferUsedForCpuRead()) {
+        dstAccess = VK_ACCESS_HOST_READ_BIT;
+        dstStageMask = VK_PIPELINE_STAGE_HOST_BIT;
     } else {
-        SkDEBUGFAIL("Trying to copy to non vertex or index buffer\n");
+        SkDEBUGFAIL("Unhandled type of buffer to buffer copy\n");
         return false;
     }
+    SkASSERT(dstAccess);
     vkDstBuffer->setBufferAccess(this, dstAccess, dstStageMask);
 
     return true;
