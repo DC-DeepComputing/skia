@@ -22,6 +22,7 @@ class RenderStep;
 class RuntimeEffectDictionary;
 class ShaderCodeDictionary;
 class ShaderNode;
+enum class TextureFormat : uint8_t;
 
 // ShaderInfo holds all root ShaderNodes defined for a PaintParams as well as the extracted fixed
 // function blending parameters and other aggregate requirements for the effect trees that have
@@ -49,6 +50,7 @@ public:
                                             const RenderStep*,
                                             UniquePaintParamsID,
                                             bool useStorageBuffers,
+                                            TextureFormat targetFormat,
                                             skgpu::Swizzle writeSwizzle,
                                             DstReadStrategy dstReadStrategy,
                                             skia_private::TArray<SamplerDesc>* outDescs = nullptr);
@@ -90,13 +92,15 @@ private:
                             const RenderStep*,
                             bool useStorageBuffers);
 
-    // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasGradientBuffer, and if a
-    // valid SamplerDesc ptr is passed in, any immutable sampler SamplerDescs.
+    // Determines fNumFragmentTexturesAndSamplers, fHasPaintUniforms, fHasGradientBuffer,
+    // fHasSsboIndicesVarying, and if a valid SamplerDesc ptr is passed in, any immutable
+    // sampler SamplerDescs.
     void generateFragmentSkSL(const Caps*,
                               const ShaderCodeDictionary*,
                               const RenderStep*,
                               UniquePaintParamsID,
                               bool useStorageBuffers,
+                              TextureFormat targetFormat,
                               skgpu::Swizzle writeSwizzle,
                               skia_private::TArray<SamplerDesc>* outDescs);
 
@@ -137,7 +141,9 @@ private:
     int fNumFragmentTexturesAndSamplers = 0;
     bool fHasStepUniforms = false;
     bool fHasPaintUniforms = false;
+    bool fHasLiftedPaintUniforms = false;
     bool fHasGradientBuffer = false;
+    bool fHasSsboIndicesVarying = false;
 };
 
 }  // namespace skgpu::graphite

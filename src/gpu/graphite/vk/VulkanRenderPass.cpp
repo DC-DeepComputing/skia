@@ -316,7 +316,8 @@ void populate_attachment_refs(const VulkanRenderPass::Metadata& rpMetadata,
     inputAttachRef.layout = VK_IMAGE_LAYOUT_GENERAL;
 }
 
-void populate_subpass_dependencies(skia_private::STArray<2, VkSubpassDependency>& deps,
+void populate_subpass_dependencies(const VulkanSharedContext* context,
+                                   skia_private::STArray<2, VkSubpassDependency>& deps,
                                    bool loadMSAAFromResolve) {
     const int mainSubpassIdx = loadMSAAFromResolve ? 1 : 0;
 
@@ -324,14 +325,16 @@ void populate_subpass_dependencies(skia_private::STArray<2, VkSubpassDependency>
     // one to every RenderPass which has an input attachment on the main subpass. This is useful
     // because it means that as we perform draw calls, if we encounter a draw that uses a blend
     // operation requiring a dst read, we can avoid having to switch RenderPasses.
-    VkSubpassDependency& selfDependency = deps.push_back();
-    selfDependency.srcSubpass = mainSubpassIdx;
-    selfDependency.dstSubpass = mainSubpassIdx;
-    selfDependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
-    selfDependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    selfDependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
-    selfDependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
-    selfDependency.dstAccessMask = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+    if (!context->vulkanCaps().supportsRasterizationOrderColorAttachmentAccess()) {
+        VkSubpassDependency& selfDependency = deps.push_back();
+        selfDependency.srcSubpass = mainSubpassIdx;
+        selfDependency.dstSubpass = mainSubpassIdx;
+        selfDependency.dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
+        selfDependency.srcStageMask = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        selfDependency.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+        selfDependency.dstStageMask = VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT;
+        selfDependency.dstAccessMask = VK_ACCESS_INPUT_ATTACHMENT_READ_BIT;
+    }
 
     // If loading MSAA from resolve, enforce that subpass goes first with a subpass dependency.
     if (loadMSAAFromResolve) {
@@ -347,7 +350,8 @@ void populate_subpass_dependencies(skia_private::STArray<2, VkSubpassDependency>
     }
 }
 
-void populate_subpass_descs(skia_private::TArray<VkSubpassDescription>& descs,
+void populate_subpass_descs(const VulkanCaps& caps,
+                            skia_private::TArray<VkSubpassDescription>& descs,
                             const VkAttachmentReference& colorRef,
                             const VkAttachmentReference& resolveRef,
                             const VkAttachmentReference& resolveLoadInputRef,
@@ -374,6 +378,11 @@ void populate_subpass_descs(skia_private::TArray<VkSubpassDescription>& descs,
     mainSubpassDesc.pColorAttachments = &colorRef;
     mainSubpassDesc.pResolveAttachments = &resolveRef;
     mainSubpassDesc.pDepthStencilAttachment = &depthStencilRef;
+
+    if (caps.supportsRasterizationOrderColorAttachmentAccess()) {
+        mainSubpassDesc.flags =
+                VK_SUBPASS_DESCRIPTION_RASTERIZATION_ORDER_ATTACHMENT_COLOR_ACCESS_BIT_EXT;
+    }
 }
 
 } // anonymous namespace
@@ -400,14 +409,15 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
     // subpass dependency (self-dependency for reading the dst texture). If loading MSAA from
     // resolve, that adds another subpass and an additional dependency.
     skia_private::STArray<2, VkSubpassDescription> subpassDescs;
-    populate_subpass_descs(subpassDescs,
+    populate_subpass_descs(context->vulkanCaps(),
+                           subpassDescs,
                            colorRef,
                            resolveRef,
                            resolveLoadInputRef,
                            depthStencilRef,
                            inputAttachRef);
     skia_private::STArray<2, VkSubpassDependency> dependencies;
-    populate_subpass_dependencies(dependencies, rpMetadata.fLoadMSAAFromResolve);
+    populate_subpass_dependencies(context, dependencies, rpMetadata.fLoadMSAAFromResolve);
 
     // Create VkRenderPass
     VkRenderPassCreateInfo renderPassInfo = {};

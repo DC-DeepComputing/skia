@@ -4,7 +4,6 @@ FT_GIT_REPO="https://chromium.googlesource.com/chromium/src/third_party/freetype
 FT_GIT_REF="origin/master"
 FT_GIT_DIR="third_party/externals/freetype"
 FT_BUILD_DIR="$(dirname -- "$0")"
-SKIA_BUILD_DIR=$(dirname $(dirname -- "$0"))
 
 notshallow() {
   STEP="check ${FT_GIT_DIR} not shallow"
@@ -21,7 +20,8 @@ previousrev() {
 nextrev() {
   STEP="next revision" &&
   git -C "${FT_GIT_DIR}" fetch &&
-  FT_NEXT_REV=$(git -C "${FT_GIT_DIR}" rev-parse "${FT_GIT_REF}")
+  FT_NEXT_REV=$1 &&
+  : ${FT_NEXT_REV:=$(git -C "${FT_GIT_DIR}" rev-parse "${FT_GIT_REF}")}
 }
 
 rolldeps() {
@@ -33,8 +33,8 @@ rolldeps() {
 
 rollbazel() {
   STEP="roll-bazel" &&
-  sed -i'' -e "s!commit = \"${FT_PREVIOUS_REV}\",!commit = \"${FT_NEXT_REV}\",!" bazel/deps.bzl &&
-  git add bazel/deps.bzl
+  sed -i'' -e "s!\"${FT_PREVIOUS_REV}\",!\"${FT_NEXT_REV}\",!" bazel/deps.json &&
+  git add bazel/deps.json
 }
 
 rolldepsgen() {
@@ -55,7 +55,7 @@ mergeinclude() {
 }
 
 update_bazel_patch() {
-  cd ${SKIA_BUILD_DIR} &&
+  STEP="Update Bazel patch" &&
   python3 tools/generate_patches.py \
     ${FT_BUILD_DIR}/include/freetype-android/freetype/config/ftmodule.h builds/android-ftmodule.h \
     ${FT_BUILD_DIR}/include/freetype-android/freetype/config/ftoption.h builds/android-ftoption.h \
@@ -79,8 +79,8 @@ Disable: treat-URL-as-trailer"
 
 notshallow &&
 previousrev &&
-nextrev &&
-rolldeps "$@" &&
+nextrev "$1" &&
+rolldeps &&
 rollbazel &&
 rolldepsgen &&
 mergeinclude freetype-android freetype/config/ftoption.h &&

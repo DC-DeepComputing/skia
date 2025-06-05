@@ -102,6 +102,8 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/base:private_hdrs",
 				"//src/base:skslc_srcs",
 				"//src/base:srcs",
+				"//src/capture:capture_hdrs",
+				"//src/capture:capture_srcs",
 				"//src/core:core_priv_hdrs",
 				"//src/core:core_priv_srcs",
 				"//src/core:core_srcs",
@@ -116,9 +118,9 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/text:text_hdrs",
 				"//src/text:text_srcs",
 			}},
-		{Var: "skia_pathops_public",
+		{Var: "skia_legacy_pathops_public",
 			Rules: []string{"//include/pathops:public_hdrs"}},
-		{Var: "skia_pathops_sources",
+		{Var: "skia_legacy_pathops_sources",
 			Rules: []string{
 				"//src/pathops:_pathops_hdrs",
 				"//src/pathops:_pathops_srcs",
@@ -270,6 +272,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_fontmgr_fontconfig_sources",
 			Rules: []string{
+				"//src/ports:fontconfig_support",
 				"//src/ports:fontmgr_fontconfig_freetype",
 			}},
 		{Var: "skia_ports_fontmgr_fontations_public",
@@ -752,10 +755,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 	{GNI: "modules/jsonreader/jsonreader.gni", Vars: []exporter.GNIFileListExportDesc{
 		{Var: "skia_jsonreader_sources",
 			Rules: []string{"//modules/jsonreader:jsonreader"}},
-	}},
-	{GNI: "modules/skcapture/skcapture.gni", Vars: []exporter.GNIFileListExportDesc{
-		{Var: "skia_skcapture_sources",
-			Rules: []string{"//modules/skcapture:skcapture"}},
 	}},
 }
 

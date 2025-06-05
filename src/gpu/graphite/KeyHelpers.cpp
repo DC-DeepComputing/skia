@@ -566,11 +566,11 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
                            type == skcms_TFType_PQish ? -2.f :
                            type == skcms_TFType_HLGish ? -1.f :
                                                          0.f;
-        gatherer->writeHalf(SkV4{srcG, steps.fSrcTF.a, steps.fSrcTF.b, steps.fSrcTF.c});
-        gatherer->writeHalf(SkV4{steps.fSrcTF.d, steps.fSrcTF.e, steps.fSrcTF.f, srcW});
+        gatherer->write(SkV4{srcG, steps.fSrcTF.a, steps.fSrcTF.b, steps.fSrcTF.c});
+        gatherer->write(SkV4{steps.fSrcTF.d, steps.fSrcTF.e, steps.fSrcTF.f, srcW});
     } else {
-        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
-        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, srcW});
+        gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
+        gatherer->write(SkV4{0.f, 0.f, 0.f, srcW});
     }
 
     if (steps.fFlags.encode) {
@@ -579,11 +579,11 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
                            type == skcms_TFType_PQish ? -2.f :
                            type == skcms_TFType_HLGinvish ? -1.f :
                                                             0.f;
-        gatherer->writeHalf(SkV4{dstG, steps.fDstTFInv.a, steps.fDstTFInv.b, steps.fDstTFInv.c});
-        gatherer->writeHalf(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e, steps.fDstTFInv.f, dstW});
+        gatherer->write(SkV4{dstG, steps.fDstTFInv.a, steps.fDstTFInv.b, steps.fDstTFInv.c});
+        gatherer->write(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e, steps.fDstTFInv.f, dstW});
     } else {
-        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
-        gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, dstW});
+        gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
+        gatherer->write(SkV4{0.f, 0.f, 0.f, dstW});
     }
 }
 
@@ -1071,10 +1071,27 @@ void add_matrix_colorfilter_uniform_data(const ShaderCodeDictionary* dict,
                                          const MatrixColorFilterBlock::MatrixColorFilterData& data,
                                          PipelineDataGatherer* gatherer) {
     BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kMatrixColorFilter)
-    gatherer->write(data.fMatrix);
-    gatherer->write(data.fTranslate);
-    gatherer->write(static_cast<int>(data.fInHSLA));
-    gatherer->write(static_cast<int>(data.fClamp));
+
+    gatherer->writeHalf(data.fMatrix);
+    gatherer->writeHalf(data.fTranslate);
+    if (data.fClamp) {
+        gatherer->writeHalf(SkV2{0.f, 1.f});
+    } else {
+        // Alpha is always clamped to 1. RGB clamp to the max finite half value.
+        static constexpr float kUnclamped = 65504.f; // SK_HalfMax converted back to float
+        SkASSERT(SkHalfToFloat(SkFloatToHalf(kUnclamped)) == kUnclamped);
+        SkASSERT(SkHalfToFloat(SkFloatToHalf(-kUnclamped)) == -kUnclamped);
+        gatherer->writeHalf(SkV2{-kUnclamped, kUnclamped});
+    }
+}
+
+void add_hsl_matrix_colorfilter_uniform_data(
+        const ShaderCodeDictionary* dict,
+        const MatrixColorFilterBlock::MatrixColorFilterData& data,
+        PipelineDataGatherer* gatherer) {
+    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kHSLMatrixColorFilter)
+    gatherer->writeHalf(data.fMatrix);
+    gatherer->writeHalf(data.fTranslate);
 }
 
 } // anonymous namespace
@@ -1083,10 +1100,15 @@ void MatrixColorFilterBlock::AddBlock(const KeyContext& keyContext,
                                       PaintParamsKeyBuilder* builder,
                                       PipelineDataGatherer* gatherer,
                                       const MatrixColorFilterData& matrixCFData) {
+    if (matrixCFData.fInHSLA) {
+        add_hsl_matrix_colorfilter_uniform_data(keyContext.dict(), matrixCFData, gatherer);
 
-    add_matrix_colorfilter_uniform_data(keyContext.dict(), matrixCFData, gatherer);
+        builder->addBlock(BuiltInCodeSnippetID::kHSLMatrixColorFilter);
+    } else {
+        add_matrix_colorfilter_uniform_data(keyContext.dict(), matrixCFData, gatherer);
 
-    builder->addBlock(BuiltInCodeSnippetID::kMatrixColorFilter);
+        builder->addBlock(BuiltInCodeSnippetID::kMatrixColorFilter);
+    }
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -1396,6 +1418,39 @@ void RuntimeEffectBlock::AddNoOpEffect(const KeyContext& keyContext,
     }
 }
 
+void RuntimeEffectBlock::HandleIntrinsics(const KeyContext& keyContext,
+                                          PaintParamsKeyBuilder* builder,
+                                          PipelineDataGatherer* gatherer,
+                                          const SkRuntimeEffect* effect) {
+    // Runtime effects that reference color transform intrinsics have two extra children that
+    // are bound to the colorspace xform snippet with values to go to and from the linear srgb
+    // to the current working/dst color space.
+    if (SkRuntimeEffectPriv::UsesColorTransform(effect)) {
+        SkColorSpace* dstCS = keyContext.dstColorInfo().colorSpace();
+        if (!dstCS) {
+            dstCS = sk_srgb_linear_singleton(); // turn colorspace conversion into a noop
+        }
+
+        // TODO(b/332565302): If the runtime shader only uses one of these transforms, we could
+        // upload only one set of uniforms.
+
+        // NOTE: This must be kept in sync with the logic used to generate the toLinearSrgb() and
+        // fromLinearSrgb() expressions for each runtime effect. toLinearSrgb() is assumed to be
+        // the second to last child, and fromLinearSrgb() is assumed to be the last.
+        ColorSpaceTransformBlock::ColorSpaceTransformData dstToLinear(dstCS,
+                                                                      kUnpremul_SkAlphaType,
+                                                                      sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType);
+        ColorSpaceTransformBlock::ColorSpaceTransformData linearToDst(sk_srgb_linear_singleton(),
+                                                                      kUnpremul_SkAlphaType,
+                                                                      dstCS,
+                                                                      kUnpremul_SkAlphaType);
+
+        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, dstToLinear);
+        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, linearToDst);
+    }
+}
+
 // ==================================================================
 
 namespace {
@@ -1453,33 +1508,7 @@ void add_children_to_key(const KeyContext& keyContext,
         }
     }
 
-    // Runtime effects that reference color transform intrinsics have two extra children that
-    // are bound to the colorspace xform snippet with values to go to and from the linear srgb
-    // to the current working/dst color space.
-    if (SkRuntimeEffectPriv::UsesColorTransform(effect)) {
-        SkColorSpace* dstCS = keyContext.dstColorInfo().colorSpace();
-        if (!dstCS) {
-            dstCS = sk_srgb_linear_singleton(); // turn colorspace conversion into a noop
-        }
-
-        // TODO(b/332565302): If the runtime shader only uses one of these transforms, we could
-        // upload only one set of uniforms.
-
-        // NOTE: This must be kept in sync with the logic used to generate the toLinearSrgb() and
-        // fromLinearSrgb() expressions for each runtime effect. toLinearSrgb() is assumed to be
-        // the second to last child, and fromLinearSrgb() is assumed to be the last.
-        ColorSpaceTransformBlock::ColorSpaceTransformData dstToLinear(dstCS,
-                                                                      kUnpremul_SkAlphaType,
-                                                                      sk_srgb_linear_singleton(),
-                                                                      kUnpremul_SkAlphaType);
-        ColorSpaceTransformBlock::ColorSpaceTransformData linearToDst(sk_srgb_linear_singleton(),
-                                                                      kUnpremul_SkAlphaType,
-                                                                      dstCS,
-                                                                      kUnpremul_SkAlphaType);
-
-        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, dstToLinear);
-        ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, linearToDst);
-    }
+    RuntimeEffectBlock::HandleIntrinsics(keyContext, builder, gatherer, effect);
 }
 
 void add_to_key(const KeyContext& keyContext,

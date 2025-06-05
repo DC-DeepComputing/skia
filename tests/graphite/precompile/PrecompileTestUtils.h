@@ -124,10 +124,35 @@ skgpu::graphite::PaintOptions ImagePremulHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageSRGBHWOnlyMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions ImageHWOnlySRGBSrcover();
 
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16();
+skgpu::graphite::PaintOptions MouriMapChunk8x8Effect();
+skgpu::graphite::PaintOptions MouriMapBlur();
+skgpu::graphite::PaintOptions MouriMapToneMap();
+skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver();
+skgpu::graphite::PaintOptions KawaseBlurHighSrc();
+skgpu::graphite::PaintOptions BlurFilterMix();
+
+// Specifies the child shader to be created for a RE_LinearEffect
+enum class ChildType {
+    kSolidColor,
+    kHWTexture,
+#if defined(SK_VULKAN)
+    kHWTextureYCbCr247,
+#endif
+};
+
+skgpu::graphite::PaintOptions LinearEffect(const char* parameterStr,
+                                           ChildType childType,
+                                           SkBlendMode blendMode,
+                                           bool paintColorIsOpaque = true,
+                                           bool matrixColorFilter = false,
+                                           bool dither = false);
+
 #if defined(SK_VULKAN)
 skgpu::graphite::PaintOptions ImagePremulYCbCr238Srcover();
 skgpu::graphite::PaintOptions ImagePremulYCbCr240Srcover();
 skgpu::graphite::PaintOptions TransparentPaintImagePremulYCbCr240Srcover();
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr247();
 
 // Prints out the VulkanYcbcrConversionInfo retrieved from a Vulkan YCbCr Pipeline label
 // (e.g., base64 part of HardwareImage(3: kEwAAPcAAAAAAAAA)).
@@ -219,7 +244,7 @@ const skgpu::graphite::RenderPassProperties kBGRA_1_D_Adobe {
     skgpu::graphite::DepthStencilFlags::kDepth,
     kBGRA_8888_SkColorType,
     SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
-                       SkNamedGamut::kAdobeRGB),
+                          SkNamedGamut::kAdobeRGB),
     /* fRequiresMSAA= */ false
 };
 
@@ -244,7 +269,7 @@ const skgpu::graphite::RenderPassProperties kBGRA_4_DS_Adobe {
     skgpu::graphite::DepthStencilFlags::kDepthStencil,
     kBGRA_8888_SkColorType,
     SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
-                        SkNamedGamut::kAdobeRGB),
+                          SkNamedGamut::kAdobeRGB),
     /* fRequiresMSAA= */ true
 };
 

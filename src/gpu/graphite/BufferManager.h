@@ -13,6 +13,7 @@
 #include "src/gpu/BufferWriter.h"
 #include "src/gpu/graphite/Buffer.h"
 #include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 
@@ -99,8 +100,8 @@ private:
 */
 class DrawBufferManager {
 public:
-    struct BufferSizes {
-        BufferSizes() {
+    struct DrawBufferManagerOptions {
+        DrawBufferManagerOptions() {
             fVertexBufferMinSize  = 16 << 10; // 16 KB
             fVertexBufferMaxSize  = 1 << 20;  // 1  MB
             fIndexBufferSize      = 2 << 10;  // 2  KB
@@ -108,6 +109,7 @@ public:
             fStorageBufferMinSize = 2 << 10;  // 2  KB
             fStorageBufferMaxSize = 1 << 20;  // 1  MB
             fUseExactBuffSizes    = false;    // Use sufficient_block_size ?
+            fAllowCopyingGpuOnly  = false;    // Override kGpuOnly -> kGpuOnlyCopySrc
         }
 
         uint32_t fVertexBufferMinSize;
@@ -117,10 +119,11 @@ public:
         uint32_t fStorageBufferMinSize;
         uint32_t fStorageBufferMaxSize;
         bool     fUseExactBuffSizes;
+        bool     fAllowCopyingGpuOnly;
     };
 
     DrawBufferManager(ResourceProvider* resourceProvider, const Caps* caps,
-                      UploadBufferManager* uploadManager, BufferSizes buffSize = BufferSizes());
+                      UploadBufferManager* uploadManager, DrawBufferManagerOptions dbmOpts = {});
     ~DrawBufferManager();
 
     // Let possible users check if the manager is already in a bad mapping state and skip any extra
@@ -210,6 +213,7 @@ private:
         uint32_t fUsedSize = 0;
     };
 
+    AccessPattern getGpuAccessPattern(bool isGpuOnlyAccess) const;
     std::pair<void* /*mappedPtr*/, BindBufferInfo> prepareMappedBindBuffer(
             BufferInfo* info,
             std::string_view label,
@@ -266,6 +270,7 @@ private:
 
 #if defined(GPU_TEST_UTILS)
     const bool fUseExactBuffSizes;
+    const bool fAllowCopyingGpuOnly;
 #endif
 };
 
@@ -311,6 +316,9 @@ private:
         BindBufferInfo  fSource;            // The CPU-to-GPU buffer and offset for the source of the copy
         BindBufferInfo* fTarget;            // The late-assigned destination of the copy
         size_t          fRequiredAlignment; // The requested stride of the data.
+#if defined(GPU_TEST_UTILS)
+        size_t          fUnalignedSize;     // The requested size without count-4 alignment
+#endif
     };
     struct BufferInfo {
         BufferInfo(BufferType type, const Caps* caps);

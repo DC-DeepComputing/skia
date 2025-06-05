@@ -389,9 +389,7 @@ void Device::drawEdgeAAImage(const SkImage* image,
         GrStyledShape shape;
         if (dstClip) {
             // Represent it as an SkPath formed from the dstClip
-            SkPath path;
-            path.addPoly(dstClip, 4, true);
-            shape = GrStyledShape(path);
+            shape = GrStyledShape(SkPath::Polygon({dstClip, 4}, true));
         } else {
             shape = GrStyledShape(dst);
         }
@@ -712,6 +710,10 @@ void Device::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry set[], int count,
 bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float deviceSigma) {
     SkMatrix localToDevice = this->localToDevice();
 
+    SkMatrix deviceToLocal;
+    if (!localToDevice.invert(&deviceToLocal)){
+        return false;
+    }
     SurfaceDrawContext* sdc = fSurfaceDrawContext.get();
     const GrClip* clip = this->clip();
     GrRecordingContext* context = this->recordingContext();
@@ -795,9 +797,15 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
     float localSigma = deviceToLocal.mapRadius(deviceSigma);
 
     fp = GrBlurUtils::MakeRRectBlur(context, localSigma, deviceSigma, rrect, devRRect);
+    fp = GrBlurUtils::MakeRRectBlur(context, localSigma, deviceSigma, rrect, devRRect, false);
     if (!fp) {
         return false;
     }
+    SkRect srcProxyRect = rrect.rect();
+    srcProxyRect.outset(3.0f*localSigma, 3.0f*localSigma);
+    grPaint.setCoverageFragmentProcessor(std::move(fp));
+    sdc->drawRect(clip, std::move(grPaint), GrAA::kNo, localToDevice, srcProxyRect);
+
     SkRect srcProxyRect = rrect.rect();
     srcProxyRect.outset(3.0f*localSigma, 3.0f*localSigma);
     grPaint.setCoverageFragmentProcessor(std::move(fp));
