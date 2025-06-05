@@ -34,6 +34,24 @@
       "parentUuid": "27543078_125d3037",
       "revId": "6d4c1387df9dfda3983ac9f2459996bd3b30106d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "99b5fc69_3cb2dd3f",
+        "filename": "src/sksl/codegen/SkSLSPIRVCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 2166,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-05T19:37:03Z",
+      "side": 1,
+      "message": "Thanks, trying that here: https://skia-review.googlesource.com/c/skia/+/1003661\n\nAgreed there\u0027s little reason to be too specific about YCbCr if it\u0027s just nvidia.",
+      "parentUuid": "2664aee1_bb7f5fcd",
+      "revId": "6d4c1387df9dfda3983ac9f2459996bd3b30106d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
