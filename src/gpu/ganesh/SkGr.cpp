@@ -482,6 +482,7 @@ static inline bool skpaint_to_grpaint_impl(
     if (colorFilter) {
         if (applyColorFilterToPaintColor) {
             SkColorSpace* dstCS = dstColorInfo.colorSpace();
+            //$$
             grPaint->setColor4f(colorFilter->filterColor4f(origColor, dstCS, dstCS).premul());
         } else {
             auto [success, fp] = GrFragmentProcessors::Make(
