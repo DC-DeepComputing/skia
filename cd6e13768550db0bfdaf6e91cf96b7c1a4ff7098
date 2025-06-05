@@ -69,6 +69,23 @@
       "parentUuid": "30cbd64d_19ef8f4e",
       "revId": "cd6e13768550db0bfdaf6e91cf96b7c1a4ff7098",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4038e1d_8872c940",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-05T14:51:19Z",
+      "side": 1,
+      "message": "`Test-Ubuntu18-Clang-Golo-GPU-QuadroP400-x86_64-Debug-All-DDL3_Vulkan` normally takes three minutes (once the task starts) but this particular task appears to have hung and has been going for two hours.",
+      "revId": "cd6e13768550db0bfdaf6e91cf96b7c1a4ff7098",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
