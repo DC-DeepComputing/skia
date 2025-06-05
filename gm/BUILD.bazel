@@ -328,6 +328,7 @@ CPU_GMS = [
     # "overdrawcolorfilter.cpp",
     # "overstroke.cpp",
     # "p3.cpp",
+    # "paintfolding.cpp",
     # "palette.cpp",
     # "patch.cpp",
     # "patharcto.cpp",

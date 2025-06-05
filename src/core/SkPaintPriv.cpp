@@ -127,7 +127,7 @@ bool SkPaintPriv::ShouldDither(const SkPaint& p, SkColorType dstCT) {
 
     // Otherwise, dither is only needed for non-const paints.
     return p.getImageFilter() || p.getMaskFilter() ||
-           (p.getShader() && !as_SB(p.getShader())->isConstant());
+           (p.getShader() && !as_SB(p.getShader())->isConstant1());
 }
 
 // return true if the paint is just a single color (i.e. not a shader). If its
@@ -168,6 +168,7 @@ void SkPaintPriv::RemoveColorFilter(SkPaint* p, SkColorSpace* dstCS) {
                                                    sk_ref_sp(filter)));
             p->setAlphaf(1.0f);
         } else {
+            //$$
             p->setColor(filter->filterColor4f(p->getColor4f(), sk_srgb_singleton(), dstCS), dstCS);
         }
         p->setColorFilter(nullptr);
