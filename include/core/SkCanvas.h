@@ -18,6 +18,7 @@
 #include "include/core/SkM44.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRSXform.h"
 #include "include/core/SkRasterHandleAllocator.h"
@@ -1094,6 +1095,11 @@ public:
         this->clipRRect(rrect, SkClipOp::kIntersect, doAntiAlias);
     }
 
+    void clipPolygon(SkSpan<const SkPoint> pts, SkPathFillType, SkClipOp, bool doAntiAlias);
+    void clipPolygon(SkSpan<const SkPoint> pts, bool doAntiAlias = false) {
+        this->clipPolygon(pts, SkPathFillType::kWinding, SkClipOp::kIntersect, doAntiAlias);
+    }
+
     /** Replaces clip with the intersection or difference of clip and path,
         with an aliased or anti-aliased clip edge. SkPath::FillType determines if path
         describes the area inside or outside its contours; and if path contour overlaps
@@ -1566,6 +1572,12 @@ public:
         example: https://fiddle.skia.org/c/@Canvas_drawRoundRect
     */
     void drawRoundRect(const SkRect& rect, SkScalar rx, SkScalar ry, const SkPaint& paint);
+
+    void drawPolygon(SkSpan<const SkPoint>, bool isClosed, SkPathFillType, const SkPaint&);
+
+    void drawPolygon(SkSpan<const SkPoint> pts, bool isClosed, const SkPaint& paint) {
+        this->drawPolygon(pts, isClosed, SkPathFillType::kWinding, paint);
+    }
 
     /** Draws SkPath path using clip, SkMatrix, and SkPaint paint.
         SkPath contains an array of path contour, each of which may be open or closed.
@@ -2371,6 +2383,7 @@ protected:
     virtual void onDrawOval(const SkRect& rect, const SkPaint& paint);
     virtual void onDrawArc(const SkRect& rect, SkScalar startAngle, SkScalar sweepAngle,
                            bool useCenter, const SkPaint& paint);
+    virtual void onDrawPolygon(SkSpan<const SkPoint>, bool closed, SkPathFillType, const SkPaint&);
     virtual void onDrawPath(const SkPath& path, const SkPaint& paint);
     virtual void onDrawRegion(const SkRegion& region, const SkPaint& paint);
 
@@ -2418,6 +2431,7 @@ protected:
 
     virtual void onClipRect(const SkRect& rect, SkClipOp op, ClipEdgeStyle edgeStyle);
     virtual void onClipRRect(const SkRRect& rrect, SkClipOp op, ClipEdgeStyle edgeStyle);
+    virtual void onClipPolygon(SkSpan<const SkPoint> pts, SkPathFillType, SkClipOp, ClipEdgeStyle);
     virtual void onClipPath(const SkPath& path, SkClipOp op, ClipEdgeStyle edgeStyle);
     virtual void onClipShader(sk_sp<SkShader>, SkClipOp);
     virtual void onClipRegion(const SkRegion& deviceRgn, SkClipOp op);
