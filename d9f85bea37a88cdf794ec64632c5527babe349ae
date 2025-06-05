@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2d11baaa_2891196a",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Is it possible to be Intel but not Mac (mobile Intel maybe)? My thinking here was to cover both `kIntelANDMac` `kIntelNOTMac`.",
+      "parentUuid": "4d22c157_999c362b",
+      "range": {
+        "startLine": 185,
+        "startChar": 1,
+        "endLine": 186,
+        "endChar": 15
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4e0a055a_ba3e3f2c",
         "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
         "patchSetId": 13
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-04T15:27:16Z",
       "side": 1,
       "message": "Maybe assert that columns \u003e 1 and delete the else branch?",
+      "range": {
+        "startLine": 887,
+        "startChar": 0,
+        "endLine": 887,
+        "endChar": 22
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e059af19_e36e1ea7",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 887,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4e0a055a_ba3e3f2c",
       "range": {
         "startLine": 887,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb0e6ef_67eeb59b",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 948,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "853d7592_efbe131d",
+      "range": {
+        "startLine": 888,
+        "startChar": 0,
+        "endLine": 948,
+        "endChar": 9
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a859978_4b1aaf61",
@@ -83,6 +155,24 @@
       "writtenOn": "2025-06-04T15:27:16Z",
       "side": 1,
       "message": "And instead of having to have the else fallback in writeScalarizedIntrinsicCall, we just check if `c.arguments()[0].type().isScalar()` in this if.",
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b00fcb19_70e1892c",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1401,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a859978_4b1aaf61",
       "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -110,6 +200,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5610217_1e09202b",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1414,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9d1dab0d_50af89e4",
+      "range": {
+        "startLine": 1407,
+        "startChar": 0,
+        "endLine": 1414,
+        "endChar": 33
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "459e5949_d9b0ad85",
@@ -123,6 +237,30 @@
       "writtenOn": "2025-06-04T15:27:16Z",
       "side": 1,
       "message": "nit: cleanup",
+      "range": {
+        "startLine": 1420,
+        "startChar": 0,
+        "endLine": 1420,
+        "endChar": 31
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bfa982fc_785410f3",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 1420,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:35:44Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "459e5949_d9b0ad85",
       "range": {
         "startLine": 1420,
         "startChar": 0,
