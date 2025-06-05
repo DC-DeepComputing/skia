@@ -585,6 +585,10 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, dstW});
     }
+
+    // TODO(https://issues.skia.org/issues/420956739): Populate OOTF parameters.
+    gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
+    gatherer->writeHalf(SkV4{0.f, 0.f, 0.f, 0.f});
 }
 
 void add_image_uniform_data(const ShaderCodeDictionary* dict,
@@ -1194,6 +1198,7 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
     const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize || data.fSteps.fFlags.encode ||
+                                         data.fSteps.fFlags.src_ootf || data.fSteps.fFlags.dst_ootf ||
                                          data.fSteps.fFlags.gamut_transform;
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);
@@ -1214,10 +1219,13 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
         return;
     }
 
-    // Use a specialized shader if we're transferring to and from sRGB-ish color spaces.
+    // Use a specialized shader if we're transferring to and from sRGB-ish color spaces with no
+    // opt-optical transfer function.
     if (data.fSteps.fFlags.linearize && data.fSteps.fFlags.encode &&
         skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF) &&
         skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv)) {
+        SkASSERT(!data.fSteps.fFlags.src_ootf);
+        SkASSERT(!data.fSteps.fFlags.dst_ootf);
         add_color_space_xform_srgb_uniform_data(keyContext.dict(), data, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformSRGB);
         return;
