@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "9892fb6d_f801166a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-05T06:51:35Z",
+      "side": 1,
+      "message": "The VVL error said that minFilter was NEAREST but chromaFilter was LINEAR (without separate reconstruction). With this change, minFilter is turned to LINEAR to match chromaFilter. Both Ganesh and Graphite.\n\nIt works as in, VVL is happy :D",
+      "parentUuid": "a8e13a8b_fda3e45f",
+      "range": {
+        "startLine": 14,
+        "startChar": 13,
+        "endLine": 14,
+        "endChar": 67
+      },
+      "revId": "05d1778206a8aef9228565099c53df6a3bbd2e63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "6170803b_1b5cbf3b",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
@@ -54,6 +78,30 @@
       "writtenOn": "2025-06-04T23:28:12Z",
       "side": 1,
       "message": "This isn\u0027t correct. If we do support separate reconstruction, then it is possible to have a linear chromaFilter while needing nearest sampling.",
+      "range": {
+        "startLine": 60,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 5
+      },
+      "revId": "05d1778206a8aef9228565099c53df6a3bbd2e63",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9894c550_a3b17347",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-05T06:51:35Z",
+      "side": 1,
+      "message": "Oh, I probably read this as `VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT` instead of `VK_FORMAT_FEATURE_SAMPLED_IMAGE_FILTER_LINEAR_BIT`, what was there before now makes more sense :)\n\nI reverted this bit here, thanks for catching this: https://skia-review.googlesource.com/c/skia/+/1003396\n\nDo we want to guard against `VK_FORMAT_FEATURE_SAMPLED_IMAGE_YCBCR_CONVERSION_LINEAR_FILTER_BIT` missing but `fChromeFilter` is linear? There\u0027s an assert about it that it shouldn\u0027t happen above, but I\u0027m not sure that\u0027s guarding against a Skia bug or a driver bug.",
+      "parentUuid": "30de62ed_4a1a182a",
       "range": {
         "startLine": 60,
         "startChar": 4,
