@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1d65e777_2ae658cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-05T06:53:14Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com Greg caught a bug in https://skia-review.googlesource.com/c/skia/+/1000036, this reverts the incorrect logic change. PTAL in case Greg does not come back to +1 this himself",
+      "revId": "c611e1b402ba25849af2b0d71b58751bb9ea8c1a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
