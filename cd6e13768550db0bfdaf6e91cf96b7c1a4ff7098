@@ -16,6 +16,24 @@
       "message": "Maybe add a unit test (in a follow up CL) ?",
       "revId": "cd6e13768550db0bfdaf6e91cf96b7c1a4ff7098",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30cbd64d_19ef8f4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-05T12:25:46Z",
+      "side": 1,
+      "message": "I guess we can do that just to ensure the old APIs are still available, although the plan is to remove these as soon as we can migrate clients.",
+      "parentUuid": "31549c16_bf4e1de8",
+      "revId": "cd6e13768550db0bfdaf6e91cf96b7c1a4ff7098",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
