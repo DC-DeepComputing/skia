@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f78a7f86_dd98542a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-05T21:46:38Z",
+      "side": 1,
+      "message": "Ah found the issue, in the Rust impl, we would have to still do the skcms transform for the kNone_extrarowtransform case...",
+      "revId": "eb43d9f2ea3cf92c722562a72262b3c5b6483cd2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
