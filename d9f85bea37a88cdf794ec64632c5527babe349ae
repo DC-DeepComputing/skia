@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "664c0af2_c20d06c3",
+        "filename": "src/gpu/ganesh/mtl/GrMtlCaps.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-05T13:55:05Z",
+      "side": 1,
+      "message": "That makes sense. I preemptively made the `GPUFamily` changes in the latest patchset so it should be good to review.",
+      "parentUuid": "a39ef312_1c9090f9",
+      "range": {
+        "startLine": 185,
+        "startChar": 1,
+        "endLine": 186,
+        "endChar": 15
+      },
+      "revId": "d9f85bea37a88cdf794ec64632c5527babe349ae",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4e0a055a_ba3e3f2c",
