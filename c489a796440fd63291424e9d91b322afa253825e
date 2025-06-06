@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b63b68_4e84fc9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-06T18:37:13Z",
+      "side": 1,
+      "message": "Ok to review. Fixed turned out to be minor.",
+      "revId": "c489a796440fd63291424e9d91b322afa253825e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
