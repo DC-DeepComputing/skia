@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab3b1241_ffd6654d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-06T17:30:25Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  Subsampling is not used by Chromium AFAICT, but we need to support it to integrate SkPngRustCodec with Skia tests (and it is probably needed if Android wants to adopt SkPngRustCodec one day).\n\n/cc @danieldilan as FYI",
+      "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
