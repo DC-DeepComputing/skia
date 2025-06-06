@@ -316,6 +316,8 @@ DEF_TEST(Encode_png_roundtrip_for_different_source_formats, r) {
     test_png_encoding_roundtrip_from_specific_source_format(
             r, kRGBA_F16_SkColorType, kOpaque_SkAlphaType, 0);
     test_png_encoding_roundtrip_from_specific_source_format(
+            r, kRGBA_F16_SkColorType, kPremul_SkAlphaType, 1);
+    test_png_encoding_roundtrip_from_specific_source_format(
             r, kRGBA_F32_SkColorType, kOpaque_SkAlphaType, 0);
 }
 
