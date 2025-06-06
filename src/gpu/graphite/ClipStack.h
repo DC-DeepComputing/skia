@@ -94,7 +94,7 @@ public:
     // unaffected by any of the clip elements.
     using ElementList = skia_private::STArray<4, const Element*>;
     Clip visitClipStackForDraw(const Transform&,
-                               const Geometry&,
+                               Geometry*,
                                const SkStrokeRec&,
                                bool outsetBoundsForAA,
                                bool msaaSupported,
@@ -144,6 +144,14 @@ private:
         kBoth
     };
     static SimplifyResult Simplify(const TransformedShape& a, const TransformedShape& b);
+
+    // Returns how this element affects the draw after more detailed analysis.
+    enum class DrawInfluence {
+        kNone,       // The element does not affect the draw
+        kClipOut,    // The element causes the draw shape to be entirely clipped out
+        kClipOnly,   // The element is fully covered, so the draw's shape can be ignored
+        kIntersect,  // The element intersects the draw shape in a complex way
+    };
 
     // Wraps the geometric Element data with logic for containment and bounds testing.
     class RawElement : public Element {
@@ -198,12 +206,6 @@ private:
         // is handled by modifying 'added'.
         void updateForElement(RawElement* added, const SaveRecord& current);
 
-        // Returns how this element affects the draw after more detailed analysis.
-        enum class DrawInfluence {
-            kNone,       // The element does not affect the draw
-            kClipOut,    // The element causes the draw shape to be entirely clipped out
-            kIntersect,  // The element intersects the draw shape in a complex way
-        };
         DrawInfluence testForDraw(const TransformedShape& draw) const;
 
         // Updates usage tracking to incorporate the bounds and Z value for the new draw call.
@@ -280,7 +282,9 @@ private:
         int  oldestElementIndex()      const { return fOldestValidIndex;         }
         bool canBeUpdated()            const { return (fDeferredSaveCount == 0); }
 
-        Rect scissor(const Rect& deviceBounds, const Rect& drawBounds) const;
+        // Rect scissor(const Rect& deviceBounds, const Rect& drawBounds) const;
+
+        DrawInfluence testForDraw(const TransformedShape& draw) const;
 
         // Deferred save manipulation
         void pushSave() {
