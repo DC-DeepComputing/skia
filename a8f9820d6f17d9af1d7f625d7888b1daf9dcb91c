@@ -33,6 +33,23 @@
       "message": "@michaelludwig@google.com adding as a reviewer for another plus one + sksl/color knowledge",
       "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e71e4be2_684d3403",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-06T15:34:42Z",
+      "side": 1,
+      "message": "For Ganesh, the places to modify will be GrColorSpaceXform, GrGLSLColorSpaceXformHelper, and GrGLSLShaderBuilder::appendColorGamutXform.  It may be fine as-is (based on types being baked into the program keys already), but we should make sure the ganesh program keys account for these new operations.  It should be pretty straight forward to implement this in ganesh since we can just conditionally compile in the new expressions and OOTF operations.",
+      "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
