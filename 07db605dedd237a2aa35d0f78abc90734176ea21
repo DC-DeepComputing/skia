@@ -16,6 +16,47 @@
       "message": "@fmalita, can you PTAL?  Subsampling is not used by Chromium AFAICT, but we need to support it to integrate SkPngRustCodec with Skia tests (and it is probably needed if Android wants to adopt SkPngRustCodec one day).\n\n/cc @danieldilan as FYI",
       "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca6f856_930e8334",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-06T18:33:42Z",
+      "side": 1,
+      "message": "Looks like `initializeSwizzler` resets `fXformMode` to either `kSwizzleOnly_XformMode` or `kSwizzleColor_XformMode`.  Can we just assert instead?",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 5
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "7d51b997_ccc09846",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCodecBase.cpp",
+              "range": {
+                "startLine": 271,
+                "startChar": 0,
+                "endLine": 279,
+                "endChar": 0
+              },
+              "replacement": "    SkASSERT(fXformMode \u003d\u003d kSwizzleOnly_XformMode || fXformMode \u003d\u003d kSwizzleColor_XformMode);\n"
+            }
+          ]
+        }
+      ],
+      "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
