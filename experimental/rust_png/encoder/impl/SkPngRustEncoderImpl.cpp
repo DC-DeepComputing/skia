@@ -213,50 +213,52 @@ SkPngRustEncoderImpl::~SkPngRustEncoderImpl() = default;
 
 bool SkPngRustEncoderImpl::onEncodeRow(SkSpan<const uint8_t> row) {
     rust::Slice<const uint8_t> rustRow;
-    switch (this->fExtraRowTransform) {
-        case kNone_ExtraRowTransform:
-            rustRow = rust::Slice<const uint8_t>(row);
-            break;
-        case kRgbaToRgb_ExtraRowTransform: {
-            skcms_PixelFormat srcFmt, dstFmt;
-            switch (this->targetInfo().fDstRowInfo->colorType()) {
-                case kRGB_888x_SkColorType:
-                    srcFmt = skcms_PixelFormat_RGBA_8888;
-                    dstFmt = skcms_PixelFormat_RGB_888;
-                    break;
-                case kR16G16B16A16_unorm_SkColorType:
-                    srcFmt = skcms_PixelFormat_RGBA_16161616BE;
+    if (this->fExtraRowTransform == kRgbaToRgb_ExtraRowTransform ||
+        (this->targetInfo().fDstRowInfo.has_value() &&
+        this->targetInfo().fDstRowInfo->colorType() == kR16G16B16A16_unorm_SkColorType)) {
+        skcms_PixelFormat srcFmt, dstFmt;
+        size_t srcRowBytes = this->targetInfo().fDstRowInfo->minRowBytes();
+        size_t dstRowBytes;
+        switch (this->targetInfo().fDstRowInfo->colorType()) {
+            case kRGB_888x_SkColorType:
+                srcFmt = skcms_PixelFormat_RGBA_8888;
+                dstFmt = skcms_PixelFormat_RGB_888;
+                dstRowBytes = srcRowBytes - (srcRowBytes / 4);
+                break;
+            case kR16G16B16A16_unorm_SkColorType:
+                srcFmt = skcms_PixelFormat_RGBA_16161616LE;
+                if (this->targetInfo().fDstRowInfo->isOpaque()) {
                     dstFmt = skcms_PixelFormat_RGB_161616BE;
-                    break;
-                default:
-                    SkUNREACHABLE;
-            }
-
-            size_t srcRowBytes = this->targetInfo().fDstRowInfo->minRowBytes();
-            size_t dstRowBytes = srcRowBytes - (srcRowBytes / 4);
-            fExtraRowBuffer.resize(dstRowBytes, 0x00);
-
-            SkSafeMath safe;
-            size_t width = safe.castTo<size_t>(this->targetInfo().fDstRowInfo->width());
-            if (!safe.ok()) {
-                return false;
-            }
-
-            bool success = skcms_Transform(
-                    row.data(), srcFmt, skcms_AlphaFormat_Unpremul, nullptr,
-                    fExtraRowBuffer.data(), dstFmt, skcms_AlphaFormat_Unpremul, nullptr,
-                    width);
-            if (!success) {
-                return false;
-            }
-
-            rustRow = rust::Slice<const uint8_t>(fExtraRowBuffer);
-            break;
+                    dstRowBytes = srcRowBytes - (srcRowBytes / 4);
+                } else {
+                    dstFmt = skcms_PixelFormat_RGBA_16161616BE;
+                    dstRowBytes = srcRowBytes;
+                }
+                break;
+            default:
+                SkUNREACHABLE;
         }
-        default:
-            SkUNREACHABLE;
-    }
 
+        fExtraRowBuffer.resize(dstRowBytes, 0x00);
+        SkSafeMath safe;
+        size_t width = safe.castTo<size_t>(this->targetInfo().fDstRowInfo->width());
+        if (!safe.ok()) {
+            return false;
+        }
+
+        bool success = skcms_Transform(
+                row.data(), srcFmt, skcms_AlphaFormat_Unpremul, nullptr,
+                fExtraRowBuffer.data(), dstFmt, skcms_AlphaFormat_Unpremul, nullptr,
+                width);
+        if (!success) {
+            return false;
+        }
+
+        rustRow = rust::Slice<const uint8_t>(fExtraRowBuffer);
+    } else {
+        SkASSERT(this->fExtraRowTransform == kNone_ExtraRowTransform);
+        rustRow = rust::Slice<const uint8_t>(row);
+    }
     return fStreamWriter->write(rustRow) == rust_png::EncodingResult::Success;
 }
 
