@@ -39,6 +39,30 @@
       },
       "revId": "2edc5eea27cae0c6da102ac9ef00592966def815",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "648c369c_4e32b87e",
+        "filename": "src/gpu/graphite/ShaderCodeDictionary.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1416,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-06T13:16:59Z",
+      "side": 1,
+      "message": "Thanks! The sRGB version won\u0027t use it, so I added a parameter to the common uniform setter to avoid setting these.",
+      "parentUuid": "88b48d14_1146deea",
+      "range": {
+        "startLine": 1408,
+        "startChar": 0,
+        "endLine": 1416,
+        "endChar": 65
+      },
+      "revId": "2edc5eea27cae0c6da102ac9ef00592966def815",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
