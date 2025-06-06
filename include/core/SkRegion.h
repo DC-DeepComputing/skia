@@ -8,6 +8,7 @@
 #ifndef SkRegion_DEFINED
 #define SkRegion_DEFINED
 
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAssert.h"
@@ -16,6 +17,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 #include <type_traits>
 
 class SkPath;
@@ -177,16 +179,24 @@ public:
     */
     int computeRegionComplexity() const;
 
-    /** Appends outline of SkRegion to path.
-        Returns true if SkRegion is not empty; otherwise, returns false, and leaves path
+    /** Returns outline of SkRegion as path.
+
+        @return  SkPath if SkRegion is non-empty.
+
+        example: https://fiddle.skia.org/c/@Region_getBoundaryPath
+    */
+    std::optional<SkPath> getBoundaryPath() const;
+
+    /** Appends outline of SkRegion to PathBuilder.
+        Returns true if SkRegion is not empty; otherwise, returns false, and leaves PathBuilder
         unmodified.
 
-        @param path  SkPath to append to
+        @param path  SkPathBuilder to append to
         @return      true if path changed
 
         example: https://fiddle.skia.org/c/@Region_getBoundaryPath
     */
-    bool getBoundaryPath(SkPath* path) const;
+    bool getBoundaryPath(SkPathBuilder* path) const;
 
     /** Constructs an empty SkRegion. SkRegion is set to empty bounds
         at (0, 0) with zero width and height. Always returns false.

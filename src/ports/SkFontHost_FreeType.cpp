@@ -13,6 +13,7 @@
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkStream.h"
@@ -1507,7 +1508,6 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, 
     SkGlyphID glyphID = glyph.getGlyphID();
     // FT_IS_SCALABLE is documented to mean the face contains outline glyphs.
     if (!FT_IS_SCALABLE(fFace) || this->setupSize()) {
-        path->reset();
         return false;
     }
 
@@ -1517,13 +1517,11 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, 
 
     FT_Error err = FT_Load_Glyph(fFace, glyphID, flags);
     if (err != 0 || fFace->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
-        path->reset();
         return false;
     }
     *modified |= emboldenIfNeeded(fFace, fFace->glyph, glyphID);
 
     if (!fUtils.generateGlyphPath(fFace, path)) {
-        path->reset();
         return false;
     }
 
@@ -1534,7 +1532,8 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, 
         vector.x = fFace->glyph->metrics.vertBearingX - fFace->glyph->metrics.horiBearingX;
         vector.y = -fFace->glyph->metrics.vertBearingY - fFace->glyph->metrics.horiBearingY;
         FT_Vector_Transform(&vector, &fMatrix22);
-        path->offset(SkFDot6ToScalar(vector.x), -SkFDot6ToScalar(vector.y));
+        *path = SkPathBuilder(*path).offset(
+            SkFDot6ToScalar(vector.x), -SkFDot6ToScalar(vector.y)).detach();
         *modified = true;
     }
     return true;

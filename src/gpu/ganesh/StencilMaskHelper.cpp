@@ -434,11 +434,12 @@ bool StencilMaskHelper::drawPath(const SkPath& path,
     PathRenderer::StencilSupport stencilSupport;
 
     // Make path canonical with regards to fill type (inverse handled by stencil settings).
+    SkPath localPath = path;
     bool fillInverted = path.isInverseFillType();
-    SkTCopyOnFirstWrite<SkPath> clipPath(path);
     if (fillInverted) {
-        clipPath.writable()->toggleInverseFillType();
+        localPath = SkPathBuilder(path).toggleInverseFillType().detach();
     }
+    SkTCopyOnFirstWrite<SkPath> clipPath(localPath);
 
     GrStyledShape shape(*clipPath, GrStyle::SimpleFill());
     SkASSERT(!shape.inverseFilled());
