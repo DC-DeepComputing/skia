@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "abba8e7c_a4d8d66a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-06T15:49:24Z",
+      "side": 1,
+      "message": "sorry\nanother rebase, another ping\nptal",
+      "revId": "f9fa40952f8e6f96ea90d60149a1820fa5bb27e0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
