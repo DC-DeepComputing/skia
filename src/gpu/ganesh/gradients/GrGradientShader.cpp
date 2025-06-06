@@ -132,12 +132,12 @@ static std::unique_ptr<GrFragmentProcessor> make_textured_colorizer(
 static std::unique_ptr<GrFragmentProcessor> make_single_interval_colorizer(const SkPMColor4f& start,
                                                                            const SkPMColor4f& end) {
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        "uniform half4 start;"
-        "uniform half4 end;"
-        "half4 main(float2 coord) {"
+        "uniform float4 start;"
+        "uniform float4 end;"
+        "float4 main(float2 coord) {"
             // Clamping and/or wrapping was already handled by the parent shader so the output
             // color is a simple lerp.
-            "return mix(start, end, half(coord.x));"
+            "return mix(start, end, coord.x);"
         "}"
     );
     return GrSkSLFP::Make(effect, "SingleIntervalColorizer", /*inputFP=*/nullptr,
@@ -154,10 +154,10 @@ static std::unique_ptr<GrFragmentProcessor> make_dual_interval_colorizer(const S
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "uniform float4 scale[2];"
         "uniform float4 bias[2];"
-        "uniform half threshold;"
+        "uniform float threshold;"
 
-        "half4 main(float2 coord) {"
-            "half t = half(coord.x);"
+        "float4 main(float2 coord) {"
+            "float t = coord.x;"
 
             "float4 s, b;"
             "if (t < threshold) {"
@@ -168,7 +168,7 @@ static std::unique_ptr<GrFragmentProcessor> make_dual_interval_colorizer(const S
                 "b = bias[1];"
             "}"
 
-            "return half4(t * s + b);"
+            "return t * s + b;"
         "}"
     );
 
@@ -233,8 +233,8 @@ static std::unique_ptr<GrFragmentProcessor> make_unrolled_colorizer(int interval
         // count checks are constant expressions, which are then optimized to the minimal number
         // of branches for the specific interval count.
         sksl.appendf(
-        "half4 main(float2 coord) {"
-            "half t = half(coord.x);"
+        "float4 main(float2 coord) {"
+            "float t = coord.x;"
             "float4 s, b;"
             // thresholds1_7.w is mid point for intervals (0,7) and (8,15)
             "if (%d <= 4 || t < thresholds1_7.w) {"
@@ -346,7 +346,7 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
         "uniform float4 scale[%d];"
         "uniform float4 bias[%d];"
 
-        "half4 main(float2 coord) {"
+        "float4 main(float2 coord) {"
             "float t = coord.x;"
 
             // Choose a chunk from thresholds via binary search in a loop.
@@ -374,13 +374,13 @@ static std::unique_ptr<GrFragmentProcessor> make_looping_colorizer(int intervalC
             "}"
             "return t * scale[pos] + bias[pos];"
         "}"
-        , /* thresholds: */ intervalChunks,
-            /* scale: */ intervalCount,
-            /* bias: */ intervalCount,
-            /* high: */ intervalChunks - 1,
-            /* chunk: */ (intervalChunks - 1) / 2,
-            /* loopCount: */ loopCount,
-            /* if (loopCount > 0): */ loopCount);
+        , /* thresholds:         */ intervalChunks,
+          /* scale:              */ intervalCount,
+          /* bias:               */ intervalCount,
+          /* high:               */ intervalChunks - 1,
+          /* chunk:              */ (intervalChunks - 1) / 2,
+          /* loopCount:          */ loopCount,
+          /* if (loopCount > 0): */ loopCount);
 
         auto result = SkRuntimeEffect::MakeForShader(std::move(sksl));
         SkASSERTF(result.effect, "%s", result.errorText.c_str());
@@ -606,14 +606,14 @@ static std::unique_ptr<GrFragmentProcessor> make_clamped_gradient(
         "uniform shader colorizer;"
         "uniform shader gradLayout;"
 
-        "uniform half4 leftBorderColor;"  // t < 0.0
-        "uniform half4 rightBorderColor;" // t > 1.0
+        "uniform float4 leftBorderColor;"  // t < 0.0
+        "uniform float4 rightBorderColor;" // t > 1.0
 
         "uniform int layoutPreservesOpacity;"  // specialized
 
-        "half4 main(float2 coord) {"
-            "half4 t = gradLayout.eval(coord);"
-            "half4 outColor;"
+        "float4 main(float2 coord) {"
+            "float4 t = gradLayout.eval(coord);"
+            "float4 outColor;"
 
             // If t.x is below 0, use the left border color without invoking the child processor.
             // If any t.x is above 1, use the right border color. Otherwise, t is in the [0, 1]
@@ -744,7 +744,7 @@ static std::unique_ptr<GrFragmentProcessor> make_interpolated_to_dst(
         "uniform int colorSpace;"    // specialized
         "uniform int do_unpremul;"   // specialized
 
-        "half4 main(half4 color) {"
+        "float4 main(float4 color) {"
             "return $interpolated_to_rgb_unpremul(color, colorSpace, do_unpremul);"
         "}"
     );
@@ -970,8 +970,8 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     // likely. crbug.com/938592
     // If/when we add filtering of the gradient this can be removed.
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        "half4 main(float2 coord) {"
-            "return half4(half(coord.x) + 0.00001, 1, 0, 0);" // y = 1 for always valid
+        "float4 main(float2 coord) {"
+            "return float4(coord.x + 0.00001, 1, 0, 0);" // y = 1 for always valid
         "}"
     );
     // The linear gradient never rejects a pixel so it doesn't change opacity
