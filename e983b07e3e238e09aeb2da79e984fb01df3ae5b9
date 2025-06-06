@@ -22,6 +22,30 @@
       },
       "revId": "e983b07e3e238e09aeb2da79e984fb01df3ae5b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "61d18d2b_ee368526",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-06T03:32:21Z",
+      "side": 1,
+      "message": "Done. Bug description is brief, but already mentions the benefit is to create fewer pipelines (and allow more specialized shaders instead)",
+      "parentUuid": "071e223b_37a3fd17",
+      "range": {
+        "startLine": 404,
+        "startChar": 30,
+        "endLine": 404,
+        "endChar": 88
+      },
+      "revId": "e983b07e3e238e09aeb2da79e984fb01df3ae5b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

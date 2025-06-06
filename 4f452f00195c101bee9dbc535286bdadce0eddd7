@@ -72,6 +72,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2961432e_71537271",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-06T03:32:21Z",
+      "side": 1,
+      "message": "I also managed to find a test that creates multiple pipelines whose only difference is in blend mode (or _something_ in fragment output state), so the scenario I was worried about also seems covered.\n\nThe `F16DrawTest_Graphite` test creates 10 pipelines. Using `VK_EXT_pipeline_creation_feedback` on Pixel 8 with a recent driver, before this change 4 of those pipelines hit the cache (i.e. 6 real pipelines created). After this change, 8 of them do (i.e. 2 real pipelines created).",
+      "parentUuid": "a4d871a2_f7ecf9bc",
+      "range": {
+        "startLine": 7,
+        "startChar": 23,
+        "endLine": 7,
+        "endChar": 55
+      },
+      "revId": "4f452f00195c101bee9dbc535286bdadce0eddd7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a06b6a87_752ab327",
