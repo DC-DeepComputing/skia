@@ -121,6 +121,30 @@
       },
       "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48ca48da_dc37ee10",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-06T17:43:03Z",
+      "side": 1,
+      "message": "That is my preference as well; CS conversion is one of the hottest bottlenecks we\u0027ve encountered so far with Graphite so I don\u0027t want to regress it given we\u0027re in the middle of trying to launch/detect regressions on android for RE and clank.",
+      "parentUuid": "13bade07_b708a31c",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 5
+      },
+      "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
