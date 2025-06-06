@@ -8,6 +8,7 @@
 #ifndef SkContourMeasure_DEFINED
 #define SkContourMeasure_DEFINED
 
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -18,6 +19,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 
 class SkMatrix;
 class SkPath;
@@ -54,7 +56,9 @@ public:
      then return false (and leave dst untouched).
      Begin the segment with a moveTo if startWithMoveTo is true
      */
-    [[nodiscard]] bool getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+    [[nodiscard]] std::optional<SkPath> getSegment(SkScalar startD, SkScalar stopD,
+                                                   bool startWithMoveTo) const;
+    [[nodiscard]] bool getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst,
                                   bool startWithMoveTo) const;
 
     /** Return true if the contour is closed()

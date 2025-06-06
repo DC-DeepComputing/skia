@@ -57,27 +57,27 @@ protected:
     SkISize getISize() override { return SkISize::Make(388, 780); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPath path = SkPathBuilder()
-                        .moveTo(0,   50)
-                        .quadTo(0,   0,   50,  0)
-                        .lineTo(175, 0)
-                        .quadTo(200, 0,   200, 25)
-                        .lineTo(200, 150)
-                        .quadTo(200, 200, 150, 200)
-                        .lineTo(0,   200)
-                        .close()
-                        .moveTo(50,  50)
-                        .lineTo(150, 50)
-                        .lineTo(150, 125)
-                        .quadTo(150, 150, 125, 150)
-                        .lineTo(50,  150)
-                        .close()
-                        .detach();
+        SkPathBuilder builder;
+        builder.moveTo(0,   50)
+               .quadTo(0,   0,   50,  0)
+               .lineTo(175, 0)
+               .quadTo(200, 0,   200, 25)
+               .lineTo(200, 150)
+               .quadTo(200, 200, 150, 200)
+               .lineTo(0,   200)
+               .close()
+               .moveTo(50,  50)
+               .lineTo(150, 50)
+               .lineTo(150, 125)
+               .quadTo(150, 150, 125, 150)
+               .lineTo(50,  150)
+               .close();
         if (fInvertDraw) {
-            path.setFillType(SkPathFillType::kInverseEvenOdd);
+            builder.setFillType(SkPathFillType::kInverseEvenOdd);
         } else {
-            path.setFillType(SkPathFillType::kEvenOdd);
+            builder.setFillType(SkPathFillType::kEvenOdd);
         }
+        SkPath path = builder.detach();
         SkPaint pathPaint;
         pathPaint.setAntiAlias(true);
         pathPaint.setColor(gPathColor);
@@ -127,10 +127,10 @@ protected:
                 bool doInvB = SkToBool(invBits & 2);
                 canvas->save();
                     // set clip
-                    clipA.setFillType(doInvA ? SkPathFillType::kInverseEvenOdd :
-                                      SkPathFillType::kEvenOdd);
-                    clipB.setFillType(doInvB ? SkPathFillType::kInverseEvenOdd :
-                                      SkPathFillType::kEvenOdd);
+                    clipA = clipA.makeFillType(doInvA ? SkPathFillType::kInverseEvenOdd :
+                                               SkPathFillType::kEvenOdd);
+                    clipB = clipB.makeFillType(doInvB ? SkPathFillType::kInverseEvenOdd :
+                                               SkPathFillType::kEvenOdd);
                     canvas->clipPath(clipA, fDoAAClip);
                     canvas->clipPath(clipB, gOps[op].fOp, fDoAAClip);
 
@@ -303,20 +303,21 @@ DEF_SIMPLE_GM(clip_shader_nested, canvas, 256, 256) {
     canvas->translate(0.f, 2.f * h);
 
     // A small blue rect, with clip shader and path clipping
-    SkPath starPath;
-    starPath.moveTo(0.0f, -33.3333f);
-    starPath.lineTo(9.62f, -16.6667f);
-    starPath.lineTo(28.867f, -16.6667f);
-    starPath.lineTo(19.24f, 0.0f);
-    starPath.lineTo(28.867f, 16.6667f);
-    starPath.lineTo(9.62f, 16.6667f);
-    starPath.lineTo(0.0f, 33.3333f);
-    starPath.lineTo(-9.62f, 16.6667f);
-    starPath.lineTo(-28.867f, 16.6667f);
-    starPath.lineTo(-19.24f, 0.0f);
-    starPath.lineTo(-28.867f, -16.6667f);
-    starPath.lineTo(-9.62f, -16.6667f);
-    starPath.close();
+    SkPath starPath = SkPathBuilder()
+        .moveTo(0.0f, -33.3333f)
+        .lineTo(9.62f, -16.6667f)
+        .lineTo(28.867f, -16.6667f)
+        .lineTo(19.24f, 0.0f)
+        .lineTo(28.867f, 16.6667f)
+        .lineTo(9.62f, 16.6667f)
+        .lineTo(0.0f, 33.3333f)
+        .lineTo(-9.62f, 16.6667f)
+        .lineTo(-28.867f, 16.6667f)
+        .lineTo(-19.24f, 0.0f)
+        .lineTo(-28.867f, -16.6667f)
+        .lineTo(-9.62f, -16.6667f)
+        .close()
+        .detach();
 
     canvas->save();
     canvas->clipShader(s);
@@ -517,17 +518,17 @@ DEF_SIMPLE_GM(clip_shader_difference, canvas, 512, 512) {
         canvas->translate(0, 256);
         canvas->clipShader(shader, SkClipOp::kDifference);
 
-        SkPath path;
-        path.moveTo(0.f, 128.f);
-        path.lineTo(128.f, 256.f);
-        path.lineTo(256.f, 128.f);
-        path.lineTo(128.f, 0.f);
-
         SkScalar d = 64.f * SK_ScalarSqrt2;
-        path.moveTo(128.f - d, 128.f - d);
-        path.lineTo(128.f - d, 128.f + d);
-        path.lineTo(128.f + d, 128.f + d);
-        path.lineTo(128.f + d, 128.f - d);
+        SkPath path = SkPathBuilder()
+            .moveTo(0.f, 128.f)
+            .lineTo(128.f, 256.f)
+            .lineTo(256.f, 128.f)
+            .lineTo(128.f, 0.f)
+            .moveTo(128.f - d, 128.f - d)
+            .lineTo(128.f - d, 128.f + d)
+            .lineTo(128.f + d, 128.f + d)
+            .lineTo(128.f + d, 128.f - d)
+            .detach();
         canvas->drawPath(path, paint);
         canvas->restore();
     }

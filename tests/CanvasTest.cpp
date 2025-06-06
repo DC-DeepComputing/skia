@@ -243,9 +243,7 @@ DEF_TEST(CanvasNewRasterTest, reporter) {
 }
 
 static SkPath make_path_from_rect(SkRect r) {
-    SkPath path;
-    path.addRect(r);
-    return path;
+    return SkPath::Rect(r);
 }
 
 static SkRegion make_region_from_irect(SkIRect r) {
@@ -343,11 +341,12 @@ static CanvasTest kCanvasTests[] = {
         SkPaint paint;
         paint.setStrokeWidth(SkIntToScalar(1));
         paint.setStyle(SkPaint::kStroke_Style);
-        SkPath path;
-        path.moveTo(SkPoint{ 0, 0 });
-        path.lineTo(SkPoint{ 0, SK_ScalarNearlyZero });
-        path.lineTo(SkPoint{ SkIntToScalar(1), 0 });
-        path.lineTo(SkPoint{ SkIntToScalar(1), SK_ScalarNearlyZero/2 });
+        SkPath path = SkPathBuilder()
+            .moveTo(SkPoint{ 0, 0 })
+            .lineTo(SkPoint{ 0, SK_ScalarNearlyZero })
+            .lineTo(SkPoint{ SkIntToScalar(1), 0 })
+            .lineTo(SkPoint{ SkIntToScalar(1), SK_ScalarNearlyZero/2 })
+            .detach();
         // test nearly zero length path
         c->drawPath(path, paint);
     },
@@ -450,16 +449,16 @@ DEF_TEST(Canvas_SaveState, reporter) {
 DEF_TEST(Canvas_ClipEmptyPath, reporter) {
     SkCanvas canvas(10, 10);
     canvas.save();
-    SkPath path;
-    canvas.clipPath(path);
+    SkPathBuilder path;
+    canvas.clipPath(path.snapshot());
     canvas.restore();
     canvas.save();
     path.moveTo(5, 5);
-    canvas.clipPath(path);
+    canvas.clipPath(path.snapshot());
     canvas.restore();
     canvas.save();
     path.moveTo(7, 7);
-    canvas.clipPath(path);  // should not assert here
+    canvas.clipPath(path.snapshot());  // should not assert here
     canvas.restore();
 }
 
