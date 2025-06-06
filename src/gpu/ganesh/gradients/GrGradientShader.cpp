@@ -668,7 +668,7 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
         "uniform int useFloorAbsWorkaround;"   // specialized
 
         "half4 main(float2 coord) {"
-            "float4 t = gradLayout.eval(coord);"
+            "half4 t = gradLayout.eval(coord);"
 
             "if (!bool(layoutPreservesOpacity) && t.y < 0) {"
                 // layout has rejected this fragment (rely on sksl to remove this branch if the
@@ -676,8 +676,8 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
                 "return half4(0);"
             "} else {"
                 "if (bool(mirror)) {"
-                    "float t_1 = t.x - 1;"
-                    "float tiled_t = t_1 - 2 * floor(t_1 * 0.5) - 1;"
+                    "half t_1 = t.x - 1;"
+                    "half tiled_t = t_1 - 2 * floor(t_1 * 0.5) - 1;"
                     "if (bool(useFloorAbsWorkaround)) {"
                         // At this point the expected value of tiled_t should between -1 and 1, so
                         // this clamp has no effect other than to break up the floor and abs calls
@@ -971,7 +971,7 @@ std::unique_ptr<GrFragmentProcessor> MakeLinear(const SkLinearGradient& shader,
     // If/when we add filtering of the gradient this can be removed.
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
         "half4 main(float2 coord) {"
-            "return half4(half(coord.x) + 0.00001, 1, 0, 0);" // y = 1 for always valid
+            "return half4(half(coord.x + 0.00001), 1, 0, 0);" // y = 1 for always valid
         "}"
     );
     // The linear gradient never rejects a pixel so it doesn't change opacity
