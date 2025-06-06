@@ -67,7 +67,7 @@ SkJpegMarkerList get_sk_marker_list(jpeg_decompress_struct* dinfo) {
 
 static SkEncodedOrigin get_exif_orientation(sk_sp<SkData> exifData) {
     SkEncodedOrigin origin = kDefault_SkEncodedOrigin;
-    if (exifData && SkParseEncodedOrigin(exifData->bytes(), exifData->size(), &origin)) {
+    if (exifData && SkParseEncodedOrigin(exifData->data(), exifData->size(), &origin)) {
         return origin;
     }
     return kDefault_SkEncodedOrigin;

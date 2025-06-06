@@ -9,9 +9,11 @@
 #define SkData_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkAssert.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <cstdio>
 
@@ -27,22 +29,31 @@ public:
     /**
      *  Returns the number of bytes stored.
      */
-    size_t size() const { return fSize; }
+    size_t size() const { return fSpan.size(); }
 
-    bool isEmpty() const { return 0 == fSize; }
+    bool isEmpty() const { return fSpan.empty(); }
 
     /**
      *  Returns the ptr to the data.
      */
-    const void* data() const { return fPtr; }
+    const std::byte* data() const { return fSpan.data(); }
+    std::byte* data() { return fSpan.data(); }
+
+    template <typename T> T* cast() { return (T*)fSpan.data(); }
+    template <typename T> const T* cast() const { return (const T*)fSpan.data(); }
+
+    template <typename T> SkSpan<T> span() {
+        return { (T*)data(), size()/sizeof(T) };
+    }
+    template <typename T> SkSpan<const T> span() const {
+        return { (const T*)data(), size()/sizeof(T) };
+    }
 
     /**
      *  Like data(), returns a read-only ptr into the data, but in this case
      *  it is cast to uint8_t*, to make it easy to add an offset to it.
      */
-    const uint8_t* bytes() const {
-        return reinterpret_cast<const uint8_t*>(fPtr);
-    }
+    const uint8_t* bytes() const { return this->cast<uint8_t>(); }
 
     /**
      *  USE WITH CAUTION.
@@ -50,12 +61,17 @@ public:
      *  contents when another client/thread has access to the data.
      */
     void* writable_data() {
-        if (fSize) {
+        if (!fSpan.empty()) {
             // only assert we're unique if we're not empty
             SkASSERT(this->unique());
         }
-        return const_cast<void*>(fPtr);
+        return (void*)fSpan.data();
     }
+
+    // These return nullptr if offset or length are out of range
+    sk_sp<SkData> copySubset(size_t offset, size_t length) const;
+    sk_sp<SkData> shareSubset(size_t offset, size_t length);
+    sk_sp<const SkData> shareSubset(size_t offset, size_t length) const;
 
     /**
      *  Helper to copy a range of the data into a caller-provided buffer.
@@ -157,8 +173,13 @@ public:
     /**
      *  Create a new dataref using a subset of the data in the specified
      *  src dataref.
+     *
+     *  DEPRECATED -- as it mixes const and non-const
+     *  Use shareSubset() variants instead
      */
-    static sk_sp<SkData> MakeSubset(const SkData* src, size_t offset, size_t length);
+    static sk_sp<SkData> MakeSubset(const SkData* src, size_t offset, size_t length) {
+        return const_cast<SkData*>(src)->shareSubset(offset, length);
+    }
 
     /**
      *  Returns a new empty dataref (or a reference to a shared empty dataref).
@@ -168,12 +189,11 @@ public:
 
 private:
     friend class SkNVRefCnt<SkData>;
-    ReleaseProc fReleaseProc;
-    void*       fReleaseProcContext;
-    const void* fPtr;
-    size_t      fSize;
+    ReleaseProc         fReleaseProc;
+    void*               fReleaseProcContext;
+    SkSpan<std::byte>   fSpan;
 
-    SkData(const void* ptr, size_t size, ReleaseProc, void* context);
+    SkData(SkSpan<std::byte>, ReleaseProc, void* context);
     explicit SkData(size_t size);   // inplace new/delete
     ~SkData();
 

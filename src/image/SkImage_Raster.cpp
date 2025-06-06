@@ -48,7 +48,7 @@ static void release_data(void* addr, void* context) {
 SkImage_Raster::SkImage_Raster(const SkImageInfo& info, sk_sp<SkData> data, size_t rowBytes,
                                uint32_t id)
         : SkImage_Base(info, id) {
-    void* addr = const_cast<void*>(data->data());
+    void* addr = data->data();
 
     fBitmap.installPixels(info, addr, rowBytes, release_data, data.release());
     fBitmap.setImmutable();

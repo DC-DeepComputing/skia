@@ -459,7 +459,7 @@ bool Preshape(const sk_sp<SkData>& json, SkWStream* stream,
               const sk_sp<SkFontMgr>& fmgr,
               const sk_sp<SkShapers::Factory>& sfact,
               const sk_sp<ResourceProvider>& rp) {
-    return Preshape(static_cast<const char*>(json->data()), json->size(), stream, fmgr, sfact, rp);
+    return Preshape(json->cast<char>(), json->size(), stream, fmgr, sfact, rp);
 }
 
 } //  namespace skottie_utils
