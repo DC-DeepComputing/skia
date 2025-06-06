@@ -9,6 +9,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkClipOp.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/private/base/SkAssert.h"
@@ -72,7 +73,7 @@ SkRect Merge::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {
 
     SkOpBuilder builder;
 
-    fMerged.reset();
+    fMerged = SkPath();
     bool in_builder = false;
 
     auto append = [&](const SkPath& path) {
@@ -85,7 +86,7 @@ SkRect Merge::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {
             // First merge path determines the fill type.
             fMerged = path;
         } else {
-            fMerged.addPath(path);
+            fMerged = SkPathBuilder(fMerged).addPath(path).detach();
         }
     };
 
@@ -93,7 +94,7 @@ SkRect Merge::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {
         rec.fGeo->revalidate(ic, ctm);
 
         if (rec.fMode == Mode::kMerge) {
-            // Merge (append) is not supported by SkOpBuidler.
+            // Merge (append) is not supported by SkOpBuilder.
             append(rec.fGeo->asPath());
             continue;
         }

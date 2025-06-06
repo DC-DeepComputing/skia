@@ -66,13 +66,12 @@ SkPath quad_path() {
 }
 
 SkPath cubic_path() {
-    SkPath path;
-    path.moveTo(0, 0);
-    path.cubicTo(25, 75,
+    return SkPathBuilder()
+        .moveTo(0, 0)
+        .cubicTo(25, 75,
                  75, -50,
-                 100, 0);
-
-    return path;
+                 100, 0)
+        .detach();
 }
 
 SkPath oval_path() {
@@ -82,7 +81,7 @@ SkPath oval_path() {
 }
 
 SkPath ribs_path(SkPath path, SkScalar radius) {
-    SkPath ribs;
+    SkPathBuilder ribs;
 
     const SkScalar spacing = 5.0f;
     float accum = 0.0f;
@@ -102,7 +101,7 @@ SkPath ribs_path(SkPath path, SkScalar radius) {
         accum += spacing;
     }
 
-    return ribs;
+    return ribs.detach();
 }
 
 void draw_ribs(SkCanvas *canvas, SkPath path) {

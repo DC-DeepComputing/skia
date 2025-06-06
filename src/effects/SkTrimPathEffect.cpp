@@ -30,7 +30,7 @@ struct SkRect;
 namespace {
 
 // Returns the number of contours iterated to satisfy the request.
-static size_t add_segments(const SkPath& src, SkScalar start, SkScalar stop, SkPath* dst,
+static size_t add_segments(const SkPath& src, SkScalar start, SkScalar stop, SkPathBuilder* dst,
                            bool requires_moveto = true) {
     SkASSERT(start < stop);
 
@@ -81,10 +81,11 @@ bool SkTrimPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec*, const 
                arcStop  = len * fStopT;
 
     // Second pass: actually add segments.
+    SkPathBuilder b(*dst);
     if (fMode == SkTrimPathEffect::Mode::kNormal) {
         // Normal mode -> one span.
         if (arcStart < arcStop) {
-            add_segments(src, arcStart, arcStop, dst);
+            add_segments(src, arcStart, arcStop, &b);
         }
     } else {
         // Inverted mode -> one logical span which wraps around at the end -> two actual spans.
@@ -97,7 +98,7 @@ bool SkTrimPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec*, const 
         bool requires_moveto = true;
         if (arcStop < len) {
             // since we're adding the "tail" first, this is the total number of contours
-            const auto contour_count = add_segments(src, arcStop, len, dst);
+            const auto contour_count = add_segments(src, arcStop, len, &b);
 
             // if the path consists of a single closed contour, we don't want to disconnect
             // the two parts with a moveto.
@@ -106,9 +107,10 @@ bool SkTrimPE::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec*, const 
             }
         }
         if (0 <  arcStart) {
-            add_segments(src, 0, arcStart, dst, requires_moveto);
+            add_segments(src, 0, arcStart, &b, requires_moveto);
         }
     }
+    *dst = b.detach();
 
     return true;
 }
