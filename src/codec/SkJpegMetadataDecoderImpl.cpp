@@ -267,7 +267,7 @@ static bool marker_has_signature(const SkJpegMarker& marker,
     if (marker.fData->size() <= signatureSize) {
         return false;
     }
-    if (memcmp(marker.fData->bytes(), signature, signatureSize) != 0) {
+    if (memcmp(marker.fData->data(), signature, signatureSize) != 0) {
         return false;
     }
     return true;
@@ -334,7 +334,7 @@ static sk_sp<SkData> read_metadata(const SkJpegMarkerList& markerList,
 
         // Read this part's index and count as big-endian (if they are present, otherwise hard-code
         // them to 1).
-        const uint8_t* data = marker.fData->bytes();
+        const uint8_t* data = marker.fData->cast<uint8_t>();
         uint32_t partIndex = 0;
         uint32_t partCount = 0;
         if (bytesInIndex == 0) {
