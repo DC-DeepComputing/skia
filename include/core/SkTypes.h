@@ -150,7 +150,7 @@
 #endif
 
 #ifndef SK_SUPPORT_UNSPANNED_APIS
-    #define SK_SUPPORT_UNSPANNED_APIS
+//    #define SK_SUPPORT_UNSPANNED_APIS
 #endif
 
 #if defined(SK_BUILD_FOR_LIBFUZZER) || defined(SK_BUILD_FOR_AFL_FUZZ)
