@@ -170,13 +170,13 @@ static void test_files(skiatest::Reporter* reporter) {
     sk_sp<SkData> r1(SkData::MakeFromFILE(file));
     REPORTER_ASSERT(reporter, r1.get() != nullptr);
     REPORTER_ASSERT(reporter, r1->size() == 26);
-    REPORTER_ASSERT(reporter, strncmp(static_cast<const char*>(r1->data()), s, 26) == 0);
+    REPORTER_ASSERT(reporter, strncmp(r1->cast<char>(), s, 26) == 0);
 
     int fd = sk_fileno(file);
     sk_sp<SkData> r2(SkData::MakeFromFD(fd));
     REPORTER_ASSERT(reporter, r2.get() != nullptr);
     REPORTER_ASSERT(reporter, r2->size() == 26);
-    REPORTER_ASSERT(reporter, strncmp(static_cast<const char*>(r2->data()), s, 26) == 0);
+    REPORTER_ASSERT(reporter, strncmp(r2->cast<char>(), s, 26) == 0);
 }
 
 DEF_TEST(Data, reporter) {
