@@ -95,7 +95,6 @@ private:
 
     bool computeFastBounds(SkRect* bounds) const override { return true; }
 
-    int                                 fCount;
     skia_private::AutoTArray<SkScalar>  fIntervals;
     SkScalar                            fPhase;
     SkScalar                            fInitialDashLength;

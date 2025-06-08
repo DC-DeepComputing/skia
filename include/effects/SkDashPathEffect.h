@@ -10,6 +10,7 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkTypes.h"
 
 class SkPathEffect;
@@ -37,7 +38,13 @@ public:
 
         Note: only affects stroked paths.
     */
-    static sk_sp<SkPathEffect> Make(const SkScalar intervals[], int count, SkScalar phase);
+    static sk_sp<SkPathEffect> Make(SkSpan<const SkScalar> intervals, SkScalar phase);
+
+#ifdef SK_SUPPORT_UNSPANNED_APIS
+    static sk_sp<SkPathEffect> Make(const SkScalar intervals[], int count, SkScalar phase) {
+        return intervals ? Make({intervals, count}, phase) : nullptr;
+    }
+#endif
 };
 
 #endif
