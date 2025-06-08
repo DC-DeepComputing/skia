@@ -66,8 +66,26 @@ sk_sp<SkImage> SkImage_Picture::onMakeSubset(GrDirectContext*, const SkIRect& su
     auto sharedGenerator = this->generator();
     auto pictureIG = static_cast<SkPictureImageGenerator*>(sharedGenerator->fGenerator.get());
 
+    // The translation is meant to shift the top-left of the subset to the origin.
+    float tx = -SkIntToScalar(subset.left());
+    float ty = -SkIntToScalar(subset.top());
+
+    // For tiling, the integer part of the translation is irrelevant, but a huge translation value
+    // can cause floating point errors (NaN) on the GPU. Use fmodf to wrap the translation to the
+    // image's dimensions, sending a much smaller, well-behaved value to the GPU that produces the
+    // same tiled result.
+    const int w = this->width();
+    const int h = this->height();
+    if (w > 0) {
+        tx = fmodf(tx, SkIntToScalar(w));
+    }
+    if (h > 0) {
+        ty = fmodf(ty, SkIntToScalar(h));
+    }
+
     SkMatrix matrix = pictureIG->fMatrix;
-    matrix.postTranslate(-subset.left(), -subset.top());
+    matrix.postTranslate(tx, ty);
+
     SkImages::BitDepth bitDepth =
             this->colorType() == kRGBA_F16_SkColorType ? SkImages::BitDepth::kF16
                                                        : SkImages::BitDepth::kU8;
