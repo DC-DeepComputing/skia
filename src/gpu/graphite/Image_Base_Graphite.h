@@ -41,6 +41,7 @@ public:
     // Always copy this image, even if 'subset' and mipmapping match this image exactly.
     // The base implementation performs all copies as draws.
     virtual sk_sp<Image> copyImage(Recorder*,
+                                   sk_sp<DrawContext> drawContext,
                                    const SkIRect& subset,
                                    Budgeted,
                                    Mipmapped,

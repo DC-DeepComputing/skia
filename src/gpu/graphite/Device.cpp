@@ -581,7 +581,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
         label += "_DeviceCopy";
     }
 
-    return Image::Copy(fRecorder, srcView, colorInfo, subset, budgeted, mipmapped, backingFit,
+    return Image::Copy(fRecorder, fDC, srcView, colorInfo, subset, budgeted, mipmapped, backingFit,
                        label);
 }
 

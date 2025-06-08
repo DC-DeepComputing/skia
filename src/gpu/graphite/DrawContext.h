@@ -51,11 +51,11 @@ public:
 
     ~DrawContext() override;
 
-    const SkImageInfo& imageInfo() const { return fImageInfo;    }
-    const SkColorInfo& colorInfo() const { return fImageInfo.colorInfo(); }
-    TextureProxy* target()                { return fTarget.get(); }
-    const TextureProxy* target()    const { return fTarget.get(); }
-    sk_sp<TextureProxy> refTarget() const { return fTarget; }
+    const SkImageInfo& imageInfo() const  { return fImageInfo;             }
+    const SkColorInfo& colorInfo() const  { return fImageInfo.colorInfo(); }
+    TextureProxy* target()                { return fTarget.get();          }
+    const TextureProxy* target()    const { return fTarget.get();          }
+    sk_sp<TextureProxy> refTarget() const { return fTarget;                }
 
     // May be null if the target is not texturable.
     const TextureProxyView& readSurfaceView() const { return fReadView; }
