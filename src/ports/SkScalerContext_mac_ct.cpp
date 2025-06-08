@@ -729,7 +729,7 @@ void SkScalerContext_Mac::generateFontMetrics(SkFontMetrics* metrics) {
         // result, if there is a valid 'OS/2' table available use the values from the table if they
         // aren't too strange.
         if (sizeof(SkOTTableOS2_V2) <= os2->size()) {
-            const SkOTTableOS2_V2* os2v2 = static_cast<const SkOTTableOS2_V2*>(os2->data());
+            const SkOTTableOS2_V2* os2v2 = os2->cast<SkOTTableOS2_V2>();
             uint16_t xHeight = SkEndian_SwapBE16(os2v2->sxHeight);
             if (xHeight && xHeight < maxSaneHeight) {
                 metrics->fXHeight = SkScalarFromCGFloat(xHeight * fontSize / upem);
@@ -742,7 +742,7 @@ void SkScalerContext_Mac::generateFontMetrics(SkFontMetrics* metrics) {
 
         // CoreText does not provide the strikeout metrics, which are available in OS/2 version 0.
         if (sizeof(SkOTTableOS2_V0) <= os2->size()) {
-            const SkOTTableOS2_V0* os2v0 = static_cast<const SkOTTableOS2_V0*>(os2->data());
+            const SkOTTableOS2_V0* os2v0 = os2->cast<SkOTTableOS2_V0>();
             uint16_t strikeoutSize = SkEndian_SwapBE16(os2v0->yStrikeoutSize);
             if (strikeoutSize && strikeoutSize < maxSaneHeight) {
                 metrics->fStrikeoutThickness = SkScalarFromCGFloat(strikeoutSize * fontSize / upem);

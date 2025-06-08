@@ -496,8 +496,7 @@ void DrawCommand::MakeJsonPath(SkJSONWriter& writer, const SkPath& path) {
     SkDynamicMemoryWStream wstream;
     path.dump(&wstream, false);
     auto data = wstream.detachAsData();
-    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DUMP,
-                        static_cast<const char*>(data->data()), data->size());
+    writer.appendString(DEBUGCANVAS_ATTRIBUTE_DUMP, data->cast<char>(), data->size());
 
     switch (path.getFillType()) {
         case SkPathFillType::kWinding:
@@ -1181,7 +1180,7 @@ void DrawAnnotationCommand::toJSON(SkJSONWriter& writer, UrlDataManager& urlData
     MakeJsonRect(writer, fRect);
     writer.appendString("key", fKey);
     if (fValue) {
-        writer.appendString("value", static_cast<const char*>(fValue->data()), fValue->size());
+        writer.appendString("value", fValue->cast<char>(), fValue->size());
     }
 
     SkString desc;

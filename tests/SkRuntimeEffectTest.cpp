@@ -518,7 +518,7 @@ public:
         SkDynamicMemoryWStream wstream;
         debugTrace->dump(&wstream);
         sk_sp<SkData> streamData = wstream.detachAsData();
-        return std::string(static_cast<const char*>(streamData->data()), streamData->size());
+        return std::string(streamData->cast<char>(), streamData->size());
     }
 
     void test(GrColor expected, PreTestFn preTestCallback = nullptr) {
