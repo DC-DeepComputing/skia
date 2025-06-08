@@ -1285,17 +1285,16 @@ make_sdft_strike_spec(const SkFont& font, const SkPaint& paint,
     if (SkPathEffect* pathEffect = paint.getPathEffect(); pathEffect != nullptr) {
         SkPathEffectBase::DashInfo dashInfo;
         if (as_PEB(pathEffect)->asADash(&dashInfo) == SkPathEffectBase::DashType::kDash) {
-            if (dashInfo.fCount > 0) {
+            if (dashInfo.fIntervals.size() > 0) {
                 // Allocate the intervals.
-                std::vector<SkScalar> scaledIntervals(dashInfo.fCount);
-                dashInfo.fIntervals = scaledIntervals.data();
+                std::vector<SkScalar> scaledIntervals(dashInfo.fIntervals.size());
+                dashInfo.fIntervals = scaledIntervals;
                 // Call again to get the interval data.
                 (void)as_PEB(pathEffect)->asADash(&dashInfo);
                 for (SkScalar& interval : scaledIntervals) {
                     interval /= strikeToSourceScale;
                 }
-                auto scaledDashes = SkDashPathEffect::Make(scaledIntervals.data(),
-                                                           scaledIntervals.size(),
+                auto scaledDashes = SkDashPathEffect::Make(scaledIntervals,
                                                            dashInfo.fPhase / strikeToSourceScale);
                 dfPaint.setPathEffect(scaledDashes);
             }

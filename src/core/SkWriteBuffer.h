@@ -14,6 +14,7 @@
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSerialProcs.h"
+#include "include/core/SkSpan.h"
 #include "src/core/SkTHash.h"
 #include "src/core/SkWriter32.h"
 
@@ -84,6 +85,11 @@ public:
     virtual void writeImage(const SkImage*) = 0;
     virtual void writeTypeface(SkTypeface* typeface) = 0;
     virtual void writePaint(const SkPaint& paint) = 0;
+
+    // todo: maybe make SkSpan be our virtual signature
+    void writeScalars(SkSpan<const SkScalar> values) {
+        this->writeScalarArray(values.data(), values.size());
+    }
 
     const SkSerialProcs& serialProcs() const { return fProcs; }
 

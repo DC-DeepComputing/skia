@@ -117,13 +117,13 @@ public:
     };
 
     struct DashInfo {
-        DashInfo() : fIntervals(nullptr), fCount(0), fPhase(0) {}
-        DashInfo(SkScalar* intervals, int32_t count, SkScalar phase)
-            : fIntervals(intervals), fCount(count), fPhase(phase) {}
+        DashInfo() : fIntervals{}, fPhase(0) {}
+        DashInfo(SkSpan<SkScalar> intervals, SkScalar phase)
+            : fIntervals(intervals), fPhase(phase) {}
 
-        SkScalar*   fIntervals;         //!< Length of on/off intervals for dashed lines
+        SkSpan<SkScalar> fIntervals;    //!< Length of on/off intervals for dashed lines
                                         //   Even values represent ons, and odds offs
-        int32_t     fCount;             //!< Number of intervals in the dash. Should be even number
+                                        //   Number of intervals in the dash hould be even number.
         SkScalar    fPhase;             //!< Offset into the dashed interval pattern
                                         //   mod the sum of all intervals
     };

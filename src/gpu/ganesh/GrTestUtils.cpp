@@ -17,6 +17,7 @@
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
+#include "include/core/SkSpan.h"
 #include "include/private/base/SkMacros.h"
 #include "include/private/base/SkOnce.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
@@ -300,26 +301,26 @@ void TestStyle(SkRandom* random, GrStyle* style) {
 }
 
 TestDashPathEffect::TestDashPathEffect(const SkScalar* intervals, int count, SkScalar phase) {
-    fCount = count;
     fIntervals.reset(count);
     memcpy(fIntervals.get(), intervals, count * sizeof(SkScalar));
-    SkDashPath::CalcDashParameters(phase, intervals, count, &fInitialDashLength,
+    SkDashPath::CalcDashParameters(phase, fIntervals, &fInitialDashLength,
                                    &fInitialDashIndex, &fIntervalLength, &fPhase);
 }
 
 bool TestDashPathEffect::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
                                       const SkRect* cullRect, const SkMatrix&) const {
-    return SkDashPath::InternalFilter(dst, src, rec, cullRect, fIntervals.get(), fCount,
+    return SkDashPath::InternalFilter(dst, src, rec, cullRect, fIntervals,
                                       fInitialDashLength, fInitialDashIndex, fIntervalLength,
                                       fPhase);
 }
 
 SkPathEffectBase::DashType TestDashPathEffect::asADash(DashInfo* info) const {
     if (info) {
-        if (info->fCount >= fCount && info->fIntervals) {
-            memcpy(info->fIntervals, fIntervals.get(), fCount * sizeof(SkScalar));
+        size_t count = fIntervals.size();
+        if (count < info->fIntervals.size()) {
+            memcpy(info->fIntervals.data(), fIntervals.get(), count * sizeof(SkScalar));
         }
-        info->fCount = fCount;
+        info->fIntervals = {info->fIntervals.data(), count};    // update their count
         info->fPhase = fPhase;
     }
     return DashType::kDash;
