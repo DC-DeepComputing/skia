@@ -669,32 +669,33 @@ static std::unique_ptr<GrFragmentProcessor> make_tiled_gradient(
 
         "half4 main(float2 coord) {"
             "float4 t = gradLayout.eval(coord);"
+            "return float4(t.x, t.x, t.x, 1.0);"
 
-            "if (!bool(layoutPreservesOpacity) && t.y < 0) {"
-                // layout has rejected this fragment (rely on sksl to remove this branch if the
-                // layout FP preserves opacity is false)
-                "return half4(0);"
-            "} else {"
-                "if (bool(mirror)) {"
-                    "float t_1 = t.x - 1;"
-                    "float tiled_t = t_1 - 2 * floor(t_1 * 0.5) - 1;"
-                    "if (bool(useFloorAbsWorkaround)) {"
-                        // At this point the expected value of tiled_t should between -1 and 1, so
-                        // this clamp has no effect other than to break up the floor and abs calls
-                        // and make sure the compiler doesn't merge them back together.
-                        "tiled_t = clamp(tiled_t, -1, 1);"
-                    "}"
-                    "t.x = abs(tiled_t);"
-                "} else {"
-                    // Simple repeat mode
-                    "t.x = fract(t.x);"
-                "}"
+            // "if (!bool(layoutPreservesOpacity) && t.y < 0) {"
+            //     // layout has rejected this fragment (rely on sksl to remove this branch if the
+            //     // layout FP preserves opacity is false)
+            //     "return half4(0);"
+            // "} else {"
+            //     "if (bool(mirror)) {"
+            //         "float t_1 = t.x - 1;"
+            //         "float tiled_t = t_1 - 2 * floor(t_1 * 0.5) - 1;"
+            //         "if (bool(useFloorAbsWorkaround)) {"
+            //             // At this point the expected value of tiled_t should between -1 and 1, so
+            //             // this clamp has no effect other than to break up the floor and abs calls
+            //             // and make sure the compiler doesn't merge them back together.
+            //             "tiled_t = clamp(tiled_t, -1, 1);"
+            //         "}"
+            //         "t.x = abs(tiled_t);"
+            //     "} else {"
+            //         // Simple repeat mode
+            //         "t.x = fract(t.x);"
+            //     "}"
 
-                // Always sample from (x, 0), discarding y, since the layout FP can use y as a
-                // side-channel.
-                "half4 outColor = colorizer.eval(t.x0);"
-                "return outColor;"
-            "}"
+            //     // Always sample from (x, 0), discarding y, since the layout FP can use y as a
+            //     // side-channel.
+            //     "half4 outColor = colorizer.eval(t.x0);"
+            //     "return outColor;"
+            // "}"
         "}"
     );
 
