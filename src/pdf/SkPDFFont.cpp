@@ -122,18 +122,18 @@ static bool scale_paint(SkPaint& paint, SkScalar fontToEMScale) {
     }
     if (SkPathEffectBase* peb = as_PEB(paint.getPathEffect())) {
         AutoSTMalloc<4, SkScalar> intervals;
-        SkPathEffectBase::DashInfo dashInfo(intervals, 4, 0);
+        SkPathEffectBase::DashInfo dashInfo({intervals, 4}, 0);
         if (peb->asADash(&dashInfo) == SkPathEffectBase::DashType::kDash) {
-            if (dashInfo.fCount > 4) {
-                intervals.realloc(dashInfo.fCount);
+            if (dashInfo.fIntervals.size() > 4) {
+                intervals.realloc(dashInfo.fIntervals.size());
                 peb->asADash(&dashInfo);
             }
-            for (int32_t i = 0; i < dashInfo.fCount; ++i) {
+            for (size_t i = 0; i < dashInfo.fIntervals.size(); ++i) {
                 dashInfo.fIntervals[i] *= fontToEMScale;
             }
             dashInfo.fPhase *= fontToEMScale;
             paint.setPathEffect(
-                SkDashPathEffect::Make(dashInfo.fIntervals, dashInfo.fCount, dashInfo.fPhase));
+                SkDashPathEffect::Make(dashInfo.fIntervals, dashInfo.fPhase));
         } else {
             return false;
         }

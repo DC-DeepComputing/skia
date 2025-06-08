@@ -117,9 +117,9 @@ void GrStyle::initPathEffect(sk_sp<SkPathEffect> pe) {
         SkStrokeRec::Style recStyle = fStrokeRec.getStyle();
         if (recStyle != SkStrokeRec::kFill_Style && recStyle != SkStrokeRec::kStrokeAndFill_Style) {
             fDashInfo.fType = SkPathEffectBase::DashType::kDash;
-            fDashInfo.fIntervals.reset(info.fCount);
+            fDashInfo.fIntervals.reset(info.fIntervals.size());
             fDashInfo.fPhase = info.fPhase;
-            info.fIntervals = fDashInfo.fIntervals.get();
+            info.fIntervals = fDashInfo.fIntervals;
             as_PEB(pe)->asADash(&info);
             fPathEffect = std::move(pe);
         }
@@ -142,15 +142,13 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
         // depends on the strokeRec being applied separately.
         SkASSERT(!fPathEffect->needsCTM());  // Make sure specified PE doesn't need CTM
         SkScalar phase = fDashInfo.fPhase;
-        const SkScalar* intervals = fDashInfo.fIntervals.get();
-        int intervalCnt = fDashInfo.fIntervals.count();
         SkScalar initialLength;
-        int initialIndex;
+        int32_t initialIndex;
         SkScalar intervalLength;
-        SkDashPath::CalcDashParameters(phase, intervals, intervalCnt, &initialLength,
+        SkDashPath::CalcDashParameters(phase, fDashInfo.fIntervals, &initialLength,
                                        &initialIndex, &intervalLength);
         if (!SkDashPath::InternalFilter(dst, src, strokeRec,
-                                        nullptr, intervals, intervalCnt,
+                                        nullptr, fDashInfo.fIntervals,
                                         initialLength, initialIndex, intervalLength, phase,
                                         SkDashPath::StrokeRecApplication::kDisallow)) {
             return false;
