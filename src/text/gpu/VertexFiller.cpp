@@ -73,7 +73,7 @@ void VertexFiller::flatten(SkWriteBuffer &buffer) const {
     buffer.writeBool(fCanDrawDirect);
     buffer.writeMatrix(fCreationMatrix);
     buffer.writeRect(fCreationBounds);
-    buffer.writePointArray(fLeftTop.data(), SkCount(fLeftTop));
+    buffer.writePointArray(fLeftTop);
 }
 
 SkMatrix VertexFiller::viewDifference(const SkMatrix &positionMatrix) const {
