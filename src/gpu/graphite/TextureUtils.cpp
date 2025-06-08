@@ -356,8 +356,11 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
                         Mipmapped mipmapped,
                         SkBackingFit backingFit,
                         std::string_view label) {
+    // If the image is backed by a texture, its proxy must be instantiated before it can be used as
+    // a source for a draw operation.
+    TextureProxyView srcView = AsView(image);
     SkColorType ct = recorder->priv().caps()->getRenderableColorType(dstColorInfo.colorType());
-    if (ct == kUnknown_SkColorType) {
+    if (ct == kUnknown_SkColorType || !srcView.proxy()->isInstantiated()) {
         return nullptr;
     }
     SkImageInfo dstInfo = SkImageInfo::Make(subset.size(),

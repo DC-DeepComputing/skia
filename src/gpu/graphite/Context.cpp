@@ -930,7 +930,7 @@ bool ContextPriv::readPixels(const SkPixmap& pm,
     if (!fContext->fSharedContext->caps()->supportsReadPixels(textureProxy->textureInfo())) {
         // Since this is a synchronous testing-only API, callers should have flushed any pending
         // work that modifies this texture proxy already. This means we don't have to worry about
-        // re-wrapping the proxy in a new Image (that wouldn't tbe connected to any Device, etc.).
+        // re-wrapping the proxy in a new Image (that wouldn't be connected to any Device, etc.).
         sk_sp<SkImage> image{new Image(TextureProxyView(sk_ref_sp(textureProxy)), srcColorInfo)};
         Context::AsyncParams<SkImage> params {image.get(), rect, pm.info(),
                                               asyncCallback, &asyncContext};

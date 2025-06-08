@@ -140,6 +140,7 @@ bool Image_Base::isDynamic() const {
 }
 
 sk_sp<Image> Image_Base::copyImage(Recorder* recorder,
+                                   sk_sp<DrawContext> drawContext,
                                    const SkIRect& subset,
                                    Budgeted budgeted,
                                    Mipmapped mipmapped,
@@ -188,6 +189,7 @@ sk_sp<SkImage> Image_Base::onMakeSubset(Recorder* recorder,
     // The copied image is not considered budgeted because this is a client-invoked API and they
     // will own the image.
     return this->copyImage(recorder,
+                           {}, //TODO
                            subset,
                            Budgeted::kNo,
                            requiredProps.fMipmapped ? Mipmapped::kYes : Mipmapped::kNo,

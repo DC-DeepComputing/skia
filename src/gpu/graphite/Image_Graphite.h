@@ -34,6 +34,7 @@ public:
     // Create an Image by copying the provided texture proxy view into a new texturable proxy.
     // The source texture does not have to be texturable if it is blittable.
     static sk_sp<Image> Copy(Recorder*,
+                             sk_sp<DrawContext> drawContext,
                              const TextureProxyView& srcView,
                              const SkColorInfo&,
                              const SkIRect& subset,
@@ -57,6 +58,7 @@ public:
     size_t textureSize() const override;
 
     sk_sp<Image> copyImage(Recorder*,
+                           sk_sp<DrawContext> drawContext,
                            const SkIRect& subset,
                            Budgeted,
                            Mipmapped,
