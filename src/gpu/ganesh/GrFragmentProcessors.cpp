@@ -373,7 +373,7 @@ static GrFPResult make_colorfilter_fp(skgpu::ganesh::SurfaceDrawContext*,
 static std::unique_ptr<GrFragmentProcessor> rgb_to_hsl(std::unique_ptr<GrFragmentProcessor> child) {
     static const SkRuntimeEffect* effect =
             SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
-                                "half4 main(half4 color) {"
+                                "float4 main(float4 color) {"
                                 "return $rgb_to_hsl(color.rgb, color.a);"
                                 "}");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
@@ -384,7 +384,7 @@ static std::unique_ptr<GrFragmentProcessor> rgb_to_hsl(std::unique_ptr<GrFragmen
 static std::unique_ptr<GrFragmentProcessor> hsl_to_rgb(std::unique_ptr<GrFragmentProcessor> child) {
     static const SkRuntimeEffect* effect =
             SkMakeRuntimeEffect(SkRuntimeEffect::MakeForColorFilter,
-                                "half4 main(half4 color) {"
+                                "float4 main(float4 color) {"
                                 "return $hsl_to_rgb(color.rgb, color.a);"
                                 "}");
     SkASSERT(SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(effect));
@@ -551,7 +551,7 @@ static std::unique_ptr<GrFragmentProcessor> make_shader_fp(const SkCoordClampSha
             SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                                 "uniform shader c;"
                                 "uniform float4 s;"
-                                "half4 main(float2 p) {"
+                                "float4 main(float2 p) {"
                                     "return c.eval(clamp(p, s.LT, s.RB));"
                                 "}");
 
@@ -868,16 +868,16 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
             static const SkRuntimeEffect* kEffect =
                 SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                         "uniform half r0_2;"
-                        "half4 main(float2 p) {"
+                        "float4 main(float2 p) {"
                             // validation flag, set to negative to discard fragment later.
-                            "half v = 1;"
+                            "float v = 1;"
                             "float t = r0_2 - p.y * p.y;"
                             "if (t >= 0) {"
                                 "t = p.x + sqrt(t);"
                             "} else {"
                                 "v = -1;"
                             "}"
-                            "return half4(half(t), v, 0, 0);"
+                            "return float4(t, v, 0, 0);"
                         "}"
                     );
             float r0 = shader->getStartRadius() / shader->getCenterX1();
@@ -894,11 +894,11 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                 SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
                         "uniform half r0;"
                         "uniform half lengthScale;"
-                        "half4 main(float2 p) {"
+                        "float4 main(float2 p) {"
                             // validation flag, set to negative to discard fragment later
                             "half v = 1;"
                             "float t = length(p) * lengthScale - r0;"
-                            "return half4(half(t), v, 0, 0);"
+                            "return float4(t, v, 0, 0);"
                         "}"
                     );
             float dr = shader->getDiffRadius();
@@ -933,12 +933,12 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                         "uniform int isSwapped;"
                         "uniform int isNativelyFocal;"
 
-                        "uniform half invR1;"  // 1/r1
-                        "uniform half fx;"     // focalX = r0/(r0-r1)
+                        "uniform float invR1;"  // 1/r1
+                        "uniform float fx;"     // focalX = r0/(r0-r1)
 
-                        "half4 main(float2 p) {"
+                        "float4 main(float2 p) {"
                             "float t = -1;"
-                            "half v = 1;" // validation flag,set to negative to discard fragment later
+                            "float v = 1;" // validation flag,set to negative to discard fragment later
 
                             "float x_t = -1;"
                             "if (bool(isFocalOnCircle)) {"
@@ -993,7 +993,7 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkConicalGrad
                                 "t = 1 - t;"
                             "}"
 
-                            "return half4(half(t), v, 0, 0);"
+                            "return float4(t, v, 0, 0);"
                         "}"
                     );
 
@@ -1049,24 +1049,24 @@ static std::unique_ptr<GrFragmentProcessor> make_gradient_fp(const SkSweepGradie
     int useAtanWorkaround =
             args.fSurfaceDrawContext->caps()->shaderCaps()->fAtan2ImplementedAsAtanYOverX;
     static const SkRuntimeEffect* effect = SkMakeRuntimeEffect(SkRuntimeEffect::MakeForShader,
-        "uniform half bias;"
-        "uniform half scale;"
+        "uniform float bias;"
+        "uniform float scale;"
         "uniform int useAtanWorkaround;"  // specialized
 
-        "half4 main(float2 coord) {"
-            "half angle;"
+        "float4 main(float2 coord) {"
+            "float angle;"
             "if (bool(useAtanWorkaround)) {"
-                "angle = half(2 * atan(-coord.y, length(coord) - coord.x));"
+                "angle = 2 * atan(-coord.y, length(coord) - coord.x);"
             "} else {"
                 // Hardcode pi/2 for the angle when x == 0, to avoid undefined behavior in this
                 // case. This hasn't proven to be necessary in the atan workaround case.
-                "angle = (coord.x != 0) ? half(atan(-coord.y, -coord.x)) :"
+                "angle = (coord.x != 0) ? atan(-coord.y, -coord.x) :"
                                         " sign(coord.y) * -1.5707963267949;"
             "}"
 
             // 0.1591549430918 is 1/(2*pi), used since atan returns values [-pi, pi]
-            "half t = (angle * 0.1591549430918 + 0.5 + bias) * scale;"
-            "return half4(t, 1, 0, 0);" // y = 1 for always valid
+            "float t = (angle * 0.1591549430918 + 0.5 + bias) * scale;"
+            "return float4(t, 1, 0, 0);" // y = 1 for always valid
         "}"
     );
 
