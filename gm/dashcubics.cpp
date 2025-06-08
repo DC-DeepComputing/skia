@@ -13,6 +13,7 @@
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
+#include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
@@ -29,7 +30,7 @@ using namespace skia_private;
 /*
  *  Inspired by http://code.google.com/p/chromium/issues/detail?id=112145
  */
-static void flower(SkCanvas* canvas, const SkPath& path, SkScalar intervals[2],
+static void flower(SkCanvas* canvas, const SkPath& path, SkSpan<SkScalar> intervals,
                    SkPaint::Join join) {
     SkPaint paint;
     paint.setAntiAlias(true);
@@ -40,7 +41,7 @@ static void flower(SkCanvas* canvas, const SkPath& path, SkScalar intervals[2],
 
     paint.setColor(SK_ColorRED);
     paint.setStrokeWidth(21);
-    paint.setPathEffect(SkDashPathEffect::Make(intervals, 2, 0));
+    paint.setPathEffect(SkDashPathEffect::Make(intervals, 0));
     canvas->drawPath(path, paint);
 
     paint.setColor(SK_ColorGREEN);

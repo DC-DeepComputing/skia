@@ -85,6 +85,11 @@ public:
     virtual void writeTypeface(SkTypeface* typeface) = 0;
     virtual void writePaint(const SkPaint& paint) = 0;
 
+    // todo: maybe make SkSpan be our virtual signature
+    void writeScalars(SkSpan<const SkScalar> values) {
+        this->writeScalarArray(values.data(), values.size());
+    }
+
     const SkSerialProcs& serialProcs() const { return fProcs; }
 
 protected:

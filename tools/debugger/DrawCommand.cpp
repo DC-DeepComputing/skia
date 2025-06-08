@@ -878,15 +878,17 @@ static void apply_paint_patheffect(const SkPaint&  paint,
         SkPathEffectBase::DashInfo dashInfo;
         SkPathEffectBase::DashType dashType = as_PEB(pathEffect)->asADash(&dashInfo);
         if (dashType == SkPathEffectBase::DashType::kDash) {
-            dashInfo.fIntervals = (SkScalar*)sk_malloc_throw(dashInfo.fCount * sizeof(SkScalar));
+
+            skia_private::AutoTArray<SkScalar> intervals(dashInfo.fIntervals.size());
+            dashInfo.fIntervals = intervals;
             as_PEB(pathEffect)->asADash(&dashInfo);
             writer.beginObject(DEBUGCANVAS_ATTRIBUTE_DASHING);
             writer.beginArray(DEBUGCANVAS_ATTRIBUTE_INTERVALS, false);
-            for (int32_t i = 0; i < dashInfo.fCount; i++) {
-                writer.appendFloat(dashInfo.fIntervals[i]);
+            for (auto interval : dashInfo.fIntervals) {
+                writer.appendFloat(interval);
             }
             writer.endArray();  // intervals
-            sk_free(dashInfo.fIntervals);
+
             writer.appendFloat(DEBUGCANVAS_ATTRIBUTE_PHASE, dashInfo.fPhase);
             writer.endObject();  // dashing
         } else {
