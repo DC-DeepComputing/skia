@@ -364,16 +364,18 @@ struct GrTriangulator::Line {
         : fA(static_cast<double>(q.fY) - p.fY)      // a = dY
         , fB(static_cast<double>(p.fX) - q.fX)      // b = -dX
         , fC(static_cast<double>(p.fY) * q.fX -     // c = cross(q, p)
-             static_cast<double>(p.fX) * q.fY) {}
+             static_cast<double>(p.fX) * q.fY) {
+        fLength = sqrt(this->magSq());
+        this->normalize();                          // Always normalize now!!!!
+    }
     double dist(const SkPoint& p) const { return fA * p.fX + fB * p.fY + fC; }
     Line operator*(double v) const { return Line(fA * v, fB * v, fC * v); }
     double magSq() const { return fA * fA + fB * fB; }
     void normalize() {
-        double len = sqrt(this->magSq());
-        if (len == 0.0) {
+        if (fLength == 0.0) {
             return;
         }
-        double scale = 1.0f / len;
+        double scale = 1.0 / fLength;
         fA *= scale;
         fB *= scale;
         fC *= scale;
@@ -385,6 +387,7 @@ struct GrTriangulator::Line {
     // Compute the intersection of two (infinite) Lines.
     bool intersect(const Line& other, SkPoint* point) const;
     double fA, fB, fC;
+    double fLength;
 };
 
 /**
@@ -426,7 +429,8 @@ struct GrTriangulator::Edge {
         , fUsedInLeftPoly(false)
         , fUsedInRightPoly(false)
         , fLine(top, bottom) {
-        }
+        this->InitEpsilon();
+    }
     int      fWinding;          // 1 == edge goes downward; -1 = edge goes upward.
     Vertex*  fTop;              // The top vertex in vertex-sort-order (sweep_lt).
     Vertex*  fBottom;           // The bottom vertex in vertex-sort-order.
@@ -446,6 +450,7 @@ struct GrTriangulator::Edge {
     bool     fUsedInLeftPoly;
     bool     fUsedInRightPoly;
     Line     fLine;
+    double   fEpsilon;          // The per-edge tolerance for geometric checks.
 
     double dist(const SkPoint& p) const {
         // Coerce points coincident with the vertices to have dist = 0, since converting from
@@ -453,14 +458,44 @@ struct GrTriangulator::Edge {
         // longer on the ideal line.
         return (p == fTop->fPoint || p == fBottom->fPoint) ? 0.0 : fLine.dist(p);
     }
-    bool isRightOf(const Vertex& v) const { return this->dist(v.fPoint) < 0.0; }
-    bool isLeftOf(const Vertex& v) const { return this->dist(v.fPoint) > 0.0; }
-    void recompute() { fLine = Line(fTop, fBottom); }
+
+    // void InitEpsilon() {
+    //     // The tolerance must be proportional to the absolute magnitude of the coordinates
+    //     // involved, as this determines the scale of potential floating-point error in
+    //     // the line distance calculation.
+    //     double max_coord = std::max({fabs(fTop->fPoint.fX), fabs(fTop->fPoint.fY),
+    //                                  fabs(fBottom->fPoint.fX), fabs(fBottom->fPoint.fY)});
+
+    //     constexpr double kMachineEpsilon = std::numeric_limits<double>::epsilon();
+    //     // The error is proportional to the max coordinate. We use a small multiplier
+    //     // on machine epsilon as a safety factor and add a minimum tolerance for
+    //     // paths near the origin.
+    //     fEpsilon = max_coord * kMachineEpsilon * 8 + 1e-9;
+    // }
+
+    // Todo better epsilon calculation?
+    void InitEpsilon() {
+        constexpr double kLargeCoordThreshold = 1e6;
+        if (fabs(fTop->fPoint.fX) > kLargeCoordThreshold ||
+            fabs(fTop->fPoint.fY) > kLargeCoordThreshold ||
+            fabs(fBottom->fPoint.fX) > kLargeCoordThreshold ||
+            fabs(fBottom->fPoint.fY) > kLargeCoordThreshold) {
+            fEpsilon = 1e-1;  // Use the large epsilon for extreme-coordinate paths
+        } else {
+            fEpsilon = 1e-6; // Use the default small epsilon for all other paths
+        }
+    }
+
+    bool isRightOf(const Vertex& v) const { return this->dist(v.fPoint) < -fEpsilon; }
+    bool isLeftOf(const Vertex& v)  const { return this->dist(v.fPoint) > fEpsilon;  }
     void insertAbove(Vertex*, const Comparator&);
     void insertBelow(Vertex*, const Comparator&);
     void disconnect();
     bool intersect(const Edge& other, SkPoint* p, uint8_t* alpha = nullptr) const;
-    bool hasTopAndBottom() const { return fTop != nullptr && fBottom != nullptr; }
+    void recompute() {
+        fLine = Line(fTop, fBottom);
+        this->InitEpsilon();
+    }
 };
 
 struct GrTriangulator::EdgeList {

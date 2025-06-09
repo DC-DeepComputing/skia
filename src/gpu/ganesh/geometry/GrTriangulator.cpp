@@ -160,7 +160,7 @@ bool GrTriangulator::Line::intersect(const Line& other, SkPoint* point) const {
     double scale = 1.0 / denom;
     point->fX = double_to_clamped_scalar((fB * other.fC - other.fB * fC) * scale);
     point->fY = double_to_clamped_scalar((other.fA * fC - fA * other.fC) * scale);
-     round(point);
+    round(point);
     return point->isFinite();
 }
 
@@ -768,9 +768,7 @@ static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
             }
             leftEdge = e;
             Vertex* top = e->fTop;
-            if (!top ||
-                (top->fLeftEnclosingEdge && !top->fLeftEnclosingEdge->hasTopAndBottom()) ||
-                (top->fRightEnclosingEdge && !top->fRightEnclosingEdge->hasTopAndBottom())) {
+            if (!top) {
                 return false;
             }
             if (c.sweep_lt(top->fPoint, dst->fPoint) &&
@@ -879,6 +877,34 @@ bool GrTriangulator::setBottom(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     return this->mergeCollinearEdges(edge, activeEdges, current, c);
 }
 
+/*
+ * NOTE: Also used in mergeEdgeBelow()
+ * Merges two adjacent, collinear edges. This is a complex operation with two main cases:
+ *
+ * 1. Coincident endpoints: If the edges share the exact same top/bottom vertex, one edge's winding
+ *    is absorbed into the other. The now-unused "zombie" edge is fully disconnected and also
+ *    explicitly removed from the activeEdges list to prevent state corruption that can lead to
+ *    null-pointer dereferences (b/419397557).
+ *
+ * 2. Non-coincident (overlapping) endpoints: One edge is shortened to meet the endpoint of the
+ *    other. Modifying an edge's geometry while it resides in the sorted activeEdges list is fragile
+ *    and can break the list's geometric ordering. To handle this robustly, this function uses a
+ *    "remove-modify-reinsert" pattern that prevents debug assertion failures (b/421959607):
+ *
+ *      a. The initial rewind() call sets the sweep-line state to the correct point in time for the
+ *      merge operation to begin.
+ *
+ *      b. The edge to be modified is explicitly REMOVED from the activeEdges list.
+ *
+ *      c. setTop()/setBottom() is called with null for activeEdges, telling it to ONLY modify the
+ *      edge's geometry and not attempt its own fragile list management.
+ *
+ *      d. The now-updated edge is RE-INSERTED into the activeEdges list at its new correct position
+ *      relative to its neighbor.
+ *
+ * This two-pronged approach correctly handles both the zombie edge lifecycle and the list ordering,
+ * resolving both release-build crashes and debug-build assertions.
+ */
 bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -893,27 +919,43 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fTop->fPoint, other->fTop->fPoint)) {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
             return false;
         }
         other->fWinding += edge->fWinding;
-        if (!this->setBottom(edge, other->fTop, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
+        if (!this->setBottom(edge, other->fTop, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(edge, other);
         }
     } else {
         if (!rewind(activeEdges, current, other->fTop, c)) {
             return false;
         }
         edge->fWinding += other->fWinding;
-        if (!this->setBottom(other, edge->fTop, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(other);
+        }
+        if (!this->setBottom(other, edge->fTop, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(other, edge);
         }
     }
     return true;
 }
 
+// NOTE: See mergeEdgesAbove() comment
 bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -928,22 +970,37 @@ bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         if (!rewind(activeEdges, current, other->fTop, c)) {
             return false;
         }
         edge->fWinding += other->fWinding;
-        if (!this->setTop(other, edge->fBottom, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(other);
+        }
+        if (!this->setTop(other, edge->fBottom, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(other, edge);
         }
     } else {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
             return false;
         }
         other->fWinding += edge->fWinding;
-        if (!this->setTop(edge, other->fBottom, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
+        if (!this->setTop(edge, other->fBottom, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(edge, other);
         }
     }
     return true;
@@ -1190,18 +1247,26 @@ static SkPoint clamp(SkPoint p, SkPoint min, SkPoint max, const Comparator& c) {
 
 void GrTriangulator::computeBisector(Edge* edge1, Edge* edge2, Vertex* v) const {
     SkASSERT(fEmitCoverage);  // Edge-AA only!
+    // line1 and line2 are guaranteed to be normalized because they are copies
+    // of the edge's line, which is normalized in its constructor.
     Line line1 = edge1->fLine;
     Line line2 = edge2->fLine;
-    line1.normalize();
-    line2.normalize();
+
     double cosAngle = line1.fA * line2.fA + line1.fB * line2.fB;
     if (cosAngle > 0.999) {
         return;
     }
-    line1.fC += edge1->fWinding > 0 ? -1 : 1;
-    line2.fC += edge2->fWinding > 0 ? -1 : 1;
+
+    // Create temporary, parallel lines offset by 1 unit to find the miter join.
+    // Modifying only the C component of a normalized line shifts it without
+    // changing its direction.
+    Line offsetLine1 = line1;
+    Line offsetLine2 = line2;
+    offsetLine1.fC += edge1->fWinding > 0 ? -1 : 1;
+    offsetLine2.fC += edge2->fWinding > 0 ? -1 : 1;
+
     SkPoint p;
-    if (line1.intersect(line2, &p)) {
+    if (offsetLine1.intersect(offsetLine2, &p)) {
         uint8_t alpha = edge1->fType == EdgeType::kOuter ? 255 : 0;
         v->fPartner = fAlloc->make<Vertex>(p, alpha);
         TESS_LOG("computed bisector (%g,%g) alpha %d for vertex %g\n", p.fX, p.fY, alpha, v->fID);
@@ -1537,7 +1602,6 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                     ++numSelfIntersections;
                 }
             }
-
             // In pathological cases, a path can intersect itself millions of times. After 500,000
             // self-intersections are found, reject the path.
             if (numSelfIntersections > 500000) {
