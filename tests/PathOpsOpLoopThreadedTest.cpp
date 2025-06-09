@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
@@ -56,7 +57,7 @@ static void testOpLoopsMain(PathOpsThreadState* data) {
                           midA.fY + v.fX * state.fC / 3 };
         SkPoint endD = { midB.fX - v.fY * state.fD / 3,
                           midB.fY + v.fX * state.fD / 3 };
-        SkPath pathA, pathB;
+        SkPathBuilder pathA, pathB;
         pathA.moveTo(SkIntToScalar(a), SkIntToScalar(b));
         pathA.cubicTo(SkIntToScalar(c), SkIntToScalar(d), endC.fX, endC.fY, endD.fX, endD.fY);
         pathA.close();
@@ -89,7 +90,7 @@ static void testOpLoopsMain(PathOpsThreadState* data) {
         }
         SkString testName;
         testName.printf("thread_loops%d", ++gLoopsTestNo);
-        testPathOp(state.fReporter, pathA, pathB, kIntersect_SkPathOp, testName.c_str());
+        testPathOp(state.fReporter, pathA.detach(), pathB.detach(), kIntersect_SkPathOp, testName.c_str());
         if (PathOpsDebug::gCheckForDuplicateNames) return;
                 }
             }

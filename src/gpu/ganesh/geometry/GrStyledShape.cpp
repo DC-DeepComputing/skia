@@ -560,7 +560,7 @@ void GrStyledShape::simplify() {
             // Stroke styles don't differentiate between winding and even/odd. There is no
             // distinction between even/odd and non-zero winding count for convex paths.
             // Moreover, dashing ignores inverseness (skbug.com/5421)
-            fShape.path().setFillType(GrShape::kDefaultFillType);
+            fShape.setPath(fShape.path().makeFillType(GrShape::kDefaultFillType));
         }
     } else {
         fInheritedKey.reset(0);

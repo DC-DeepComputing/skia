@@ -10,6 +10,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkStrokeRec.h"
@@ -41,16 +42,18 @@
 #include <memory>
 #include <utility>
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
+
 struct GrContextOptions;
 
 static SkPath create_concave_path() {
-    SkPath path;
-    path.moveTo(100, 0);
-    path.lineTo(200, 200);
-    path.lineTo(100, 150);
-    path.lineTo(0, 200);
-    path.close();
-    return path;
+    return SkPathBuilder()
+        .moveTo(100, 0)
+        .lineTo(200, 200)
+        .lineTo(100, 150)
+        .lineTo(0, 200)
+        .close()
+        .detach();
 }
 
 static void draw_path(GrRecordingContext* rContext,
@@ -214,3 +217,4 @@ DEF_GANESH_TEST(SoftwarePathRendererCacheTest,
     test_path(reporter, create_concave_path, createPR, kExpectedResources, true,
               GrAAType::kCoverage, std::move(style));
 }
+#endif  // SK_HIDE_PATH_EDIT_METHODS

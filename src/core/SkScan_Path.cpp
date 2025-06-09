@@ -7,6 +7,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
@@ -735,7 +736,9 @@ void SkScan::FillTriangle(const SkPoint pts[], const SkRasterClip& clip,
     // Use FixedMax/2 as the limit so we can subtract two edges and still store that in Fixed.
     const SkScalar limit = SK_MaxS16 >> 1;
     if (!SkRect::MakeLTRB(-limit, -limit, limit, limit).contains(r)) {
-        FillPath(SkPath::Polygon({pts, 3}, false), clip, blitter);
+        SkPathBuilder path;
+        path.addPolygon({pts, 3}, false);
+        FillPath(path.detach(), clip, blitter);
         return;
     }
 

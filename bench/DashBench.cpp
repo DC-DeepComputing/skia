@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkString.h"
 #include "include/core/SkStrokeRec.h"
@@ -24,9 +25,11 @@
  *  3. hline, vline, diagonal, rect, oval
  *  4. dots [1,1] ([N,N] where N=strokeWidth?) or arbitrary (e.g. [2,1] or [1,2,3,2])
  */
-static void path_hline(SkPath* path) {
-    path->moveTo(SkIntToScalar(10), SkIntToScalar(10));
-    path->lineTo(SkIntToScalar(600), SkIntToScalar(10));
+static SkPath path_hline() {
+    return SkPathBuilder()
+        .moveTo(SkIntToScalar(10), SkIntToScalar(10))
+        .lineTo(SkIntToScalar(600), SkIntToScalar(10))
+        .detach();
 }
 
 class DashBench : public Benchmark {
@@ -52,8 +55,8 @@ public:
         fPts[1].set(SkIntToScalar(600), SkIntToScalar(10));
     }
 
-    virtual void makePath(SkPath* path) {
-        path_hline(path);
+    virtual SkPath makePath() {
+        return path_hline();
     }
 
 protected:
@@ -68,8 +71,7 @@ protected:
         paint.setStrokeWidth(SkIntToScalar(fWidth));
         paint.setAntiAlias(false);
 
-        SkPath path;
-        this->makePath(&path);
+        SkPath path = this->makePath();
 
         paint.setPathEffect(SkDashPathEffect::Make(fIntervals.begin(), fIntervals.size(), 0));
 
@@ -136,7 +138,7 @@ private:
     using INHERITED = DashBench;
 };
 
-static void make_unit_star(SkPath* path, int n) {
+static void make_unit_star(SkPathBuilder* path, int n) {
     SkScalar rad = -SK_ScalarPI / 2;
     const SkScalar drad = (n >> 1) * SK_ScalarPI * 2 / n;
 
@@ -149,31 +151,36 @@ static void make_unit_star(SkPath* path, int n) {
 }
 
 static void make_poly(SkPath* path) {
-    make_unit_star(path, 9);
+    SkPathBuilder builder;
+    make_unit_star(&builder, 9);
     const SkMatrix matrix = SkMatrix::Scale(100, 100);
-    path->transform(matrix);
+    *path = builder.transform(matrix).detach();
 }
 
 static void make_quad(SkPath* path) {
     SkScalar x0 = SkIntToScalar(10);
     SkScalar y0 = SkIntToScalar(10);
-    path->moveTo(x0, y0);
-    path->quadTo(x0,                    y0 + 400 * SK_Scalar1,
-                 x0 + 600 * SK_Scalar1, y0 + 400 * SK_Scalar1);
+    *path = SkPathBuilder()
+        .moveTo(x0, y0)
+        .quadTo(x0,                    y0 + 400 * SK_Scalar1,
+                x0 + 600 * SK_Scalar1, y0 + 400 * SK_Scalar1)
+        .detach();
 }
 
 static void make_cubic(SkPath* path) {
     SkScalar x0 = SkIntToScalar(10);
     SkScalar y0 = SkIntToScalar(10);
-    path->moveTo(x0, y0);
-    path->cubicTo(x0,                    y0 + 400 * SK_Scalar1,
-                  x0 + 600 * SK_Scalar1, y0 + 400 * SK_Scalar1,
-                  x0 + 600 * SK_Scalar1, y0);
+    *path = SkPathBuilder()
+        .moveTo(x0, y0)
+        .cubicTo(x0,                    y0 + 400 * SK_Scalar1,
+                 x0 + 600 * SK_Scalar1, y0 + 400 * SK_Scalar1,
+                 x0 + 600 * SK_Scalar1, y0)
+        .detach();
 }
 
 class MakeDashBench : public Benchmark {
     SkString fName;
-    SkPath   fPath;
+    SkPath fPath;
     sk_sp<SkPathEffect> fPE;
 
 public:
@@ -196,7 +203,7 @@ protected:
             SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
 
             fPE->filterPath(&dst, fPath, &rec, nullptr);
-            dst.rewind();
+            dst = SkPath(); // TODO(borenet): Rewind?
         }
     }
 

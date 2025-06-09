@@ -102,8 +102,8 @@ protected:
                 for (size_t j = 0; j < std::size(gRects); ++j) {
                     const SkRect& r = gRects[j];
 
-                    SkPath path, fillPath;
-                    path.addRect(r);
+                    SkPath path = SkPath::Rect(r);
+                    SkPath fillPath;
                     skpathutils::FillPathWithPaint(path, paint, &fillPath);
                     draw_path(canvas, fillPath, r, join, doFill);
 
