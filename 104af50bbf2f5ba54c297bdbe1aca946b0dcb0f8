@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9951022_2dc8646e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-09T12:55:50Z",
+      "side": 1,
+      "message": "If you can run `path.dump(hex\u003dtrue)` on the fuzz cases, it\u0027s a good idea to capture these in `TriangulatingPathRendererTests.cpp`.  We\u0027ve collected a number of paths as unit tests that basically say if this runs without crashing, then it passes.",
+      "revId": "104af50bbf2f5ba54c297bdbe1aca946b0dcb0f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
