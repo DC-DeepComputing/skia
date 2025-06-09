@@ -145,6 +145,30 @@
       },
       "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38345c8c_2ded3437",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-09T08:02:54Z",
+      "side": 1,
+      "message": "I worked through the details of this ([here](https://skia-review.googlesource.com/c/skia/+/1004676)), and it ends up really complicating the development of this feature. In particular, my plan was to share the existing PQ and HLG transfer functions rather than duplicate them, and this just isn\u0027t compatible with that.\n\nThis path will only be hit when we\u0027re using a non-sRGB-ish ([this branch](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/gpu/graphite/KeyHelpers.cpp;l\u003d1217;drc\u003df0cb0ae3f9b142a11fdc5efc77e27a5d53b6b6cf))transfer function, which is basically \"HDR video and nothing else\", and HDR video is also going to hit tone mapping, so I don\u0027t see this causing regressions.\n\n(BTW, on the topic of tone mapping and optimizations, I would like to add a version of `makeWithWorkingColorSpace` that also takes a \"working alpha multiplicaiton\" parameter, because I see that many users, e.g, tone mapping, want to work in alpha unmultiplied space. At some point...)\n\nGiven all of that, is this okay to land as-is?",
+      "parentUuid": "48ca48da_dc37ee10",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 5
+      },
+      "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
