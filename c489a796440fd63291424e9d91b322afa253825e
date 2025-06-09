@@ -16,6 +16,29 @@
       "message": "Ok to review. Fixed turned out to be minor.",
       "revId": "c489a796440fd63291424e9d91b322afa253825e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb0e7042_e6f4d1c2",
+        "filename": "src/sksl/codegen/SkSLMetalCodeGenerator.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1363,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-09T12:59:55Z",
+      "side": 1,
+      "message": "nit: testing hold-over, back to `fCaps.fVectorClampMinMaxSupport` right?",
+      "range": {
+        "startLine": 1363,
+        "startChar": 16,
+        "endLine": 1363,
+        "endChar": 21
+      },
+      "revId": "c489a796440fd63291424e9d91b322afa253825e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
