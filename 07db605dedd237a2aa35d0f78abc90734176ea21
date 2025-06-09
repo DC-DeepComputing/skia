@@ -57,6 +57,30 @@
       ],
       "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1409519_cf1bfeb4",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-09T16:55:48Z",
+      "side": 1,
+      "message": "Good catch - thanks!  But this is probably a bit more complicated than that: in this code path it is okay if initializing the swizzler fails - when that happens we should keep the old `fXformMode` value.  This means that:\n\n1. I should fix `initializeSwizzler` to retain the old `fXformMode` value upon failure\n2. We can\u0027t add the assert you are proposing (the assert may fail if creating a swizzler failed).\n\nBut... it seems that CQ fails in the latest patchset, so there has to be something else going on here.  I\u0027ll try to repro locally, because I can\u0027t see anything actionable in test logs at https://ci.chromium.org/raw/build/logs.chromium.org/skia/716e4fc9d78acf11/+/annotations nor https://ci.chromium.org/raw/build/logs.chromium.org/skia/716e4158e7b5d311/+/annotations",
+      "parentUuid": "8ca6f856_930e8334",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 5
+      },
+      "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
