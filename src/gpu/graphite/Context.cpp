@@ -139,6 +139,9 @@ Context::Context(sk_sp<SharedContext> sharedContext,
                                                        options.fPipelineCallbackContext);
 
     fCPUContext = std::make_unique<skcpu::ContextImpl>();
+    if (options.fEnableCapture) {
+        fSharedContext->initCaptureManager();
+    }
 }
 
 Context::~Context() {
@@ -889,6 +892,19 @@ bool Context::supportsProtectedContent() const {
 
 GpuStatsFlags Context::supportedGpuStats() const {
     return fSharedContext->caps()->supportedGpuStats();
+}
+
+void Context::startCapture() {
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->toggleCapture(true);
+    }
+}
+
+void Context::endCapture() {
+    // TODO: return something
+    if (fSharedContext->captureManager()) {
+        fSharedContext->captureManager()->toggleCapture(false);
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

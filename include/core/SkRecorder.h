@@ -7,8 +7,10 @@
 #ifndef SkRecorder_DEFINED
 #define SkRecorder_DEFINED
 
+#include "include/core/SkCanvas.h"
 #include "include/private/base/SkAPI.h"
 
+class SkCaptureCanvas;
 class SK_API SkRecorder {
 public:
     SkRecorder() = default;
@@ -24,6 +26,11 @@ public:
     };
 
     virtual Type type() const = 0;
+
+private:
+    virtual SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+
+    friend SkSurface_Base;
 };
 
 #endif

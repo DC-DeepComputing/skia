@@ -21,6 +21,7 @@
 #include "include/gpu/graphite/ImageProvider.h"
 #include "include/gpu/graphite/Recording.h"
 #include "include/gpu/graphite/TextureInfo.h"
+#include "src/capture/SkCaptureCanvas.h"
 #include "src/core/SkMipmap.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/AtlasTypes.h"
@@ -286,6 +287,13 @@ SkCanvas* Recorder::makeDeferredCanvas(const SkImageInfo& imageInfo,
                                       LoadOp::kLoad);
     fTargetProxyCanvas = std::make_unique<SkCanvas>(fTargetProxyDevice);
     return fTargetProxyCanvas.get();
+}
+
+SkCaptureCanvas* Recorder::makeCaptureCanvas(SkCanvas* canvas) {
+    if (fSharedContext->captureManager()) {
+        return fSharedContext->captureManager()->makeCaptureCanvas(canvas);
+    }
+    return nullptr;
 }
 
 void Recorder::registerDevice(sk_sp<Device> device) {

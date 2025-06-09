@@ -8,6 +8,7 @@
 #ifndef skcpu_Recorder_DEFINED
 #define skcpu_Recorder_DEFINED
 
+#include "include/core/SkCanvas.h"
 #include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
@@ -28,6 +29,7 @@ public:
     static Recorder* TODO();
 
     SkRecorder::Type type() const final { return SkRecorder::Type::kRaster; }
+    SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
 
     /** Allocates a bitmap-backed SkSurface. SkCanvas returned by SkSurface draws directly into
      *  those allocated pixels, which are zeroed before use. Pixel memory size is imageInfo.height()

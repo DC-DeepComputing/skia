@@ -98,6 +98,7 @@ public:
     BackendApi backend() const;
 
     Type type() const override { return SkRecorder::Type::kGraphite; }
+    SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) override;
 
     std::unique_ptr<Recording> snap();
 
