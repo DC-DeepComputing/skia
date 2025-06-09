@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7598e46e_d3309ba5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T20:43:45Z",
+      "side": 1,
+      "message": "- use reinterpret_cast\n- remove other mutable methods\n- rename to use \"as\"\nptal",
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd5dd6fe_0349a360",
