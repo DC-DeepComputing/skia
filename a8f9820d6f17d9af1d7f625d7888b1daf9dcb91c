@@ -193,6 +193,30 @@
       },
       "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9cf4e2d7_80d00a2e",
+        "filename": "src/sksl/sksl_graphite_frag.sksl",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-09T22:15:19Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "6fc16cc7_8f2a52a7",
+      "range": {
+        "startLine": 112,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 5
+      },
+      "revId": "a8f9820d6f17d9af1d7f625d7888b1daf9dcb91c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
