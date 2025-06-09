@@ -88,7 +88,7 @@ static std::vector<SkQP::SkSLErrorTest> get_sksl_error_tests(SkQPAssetManager* a
             }
             skslErrorTests.push_back({
                 name.c_str(),
-                std::string(static_cast<const char*>(shaderText->data()), shaderText->size())
+                std::string(shaderText->as<char>(), shaderText->size())
             });
         }
     };

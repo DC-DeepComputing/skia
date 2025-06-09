@@ -146,7 +146,7 @@ DEF_TEST(JSON_Parse, reporter) {
         str.write8('\0');
 
         auto data = str.detachAsData();
-        REPORTER_ASSERT(reporter, !strcmp(tst.out, static_cast<const char*>(data->data())));
+        REPORTER_ASSERT(reporter, !strcmp(tst.out, data->as<char>()));
     }
 
 }

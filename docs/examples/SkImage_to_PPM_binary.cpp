@@ -24,7 +24,7 @@ sk_sp<SkData> Encode_PPM_B(const SkPixmap& src) {
     }
     SkString s = SkStringPrintf("P6\n%d %d\n255\n", src.width(), src.height());
     auto result = SkData::MakeUninitialized(s.size() + 3 * src.width() * src.height());
-    uint8_t* ptr = static_cast<uint8_t*>(result->writable_data());
+    uint8_t* ptr = reinterpret_cast<uint8_t*>(result->writable_data());
     memcpy(ptr, s.c_str(), s.size());
     ptr += s.size();
     for (int y = 0; y < src.height(); ++y) {

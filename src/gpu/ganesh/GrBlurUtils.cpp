@@ -149,7 +149,7 @@ static sk_sp<SkData> create_data(const SkIRect& drawRect, const SkIRect& origDev
 }
 
 static SkIRect extract_draw_rect_from_data(SkData* data, const SkIRect& origDevBounds) {
-    auto drawRectData = static_cast<const DrawRectData*>(data->data());
+    auto drawRectData = data->as<DrawRectData>();
 
     return SkIRect::MakeXYWH(origDevBounds.fLeft + drawRectData->fOffset.fX,
                              origDevBounds.fTop + drawRectData->fOffset.fY,

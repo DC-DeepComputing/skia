@@ -18,8 +18,8 @@ class OboeAudioPlayer final : public SkAudioPlayer, oboe::AudioStreamCallback {
 public:
     explicit OboeAudioPlayer(sk_sp<SkData> data)
         : fData(std::move(data))
-        , fMemInputStream(const_cast<unsigned char *>
-          (static_cast<const unsigned char *>(fData->data())), static_cast<int32_t>(fData->size()))
+        , fMemInputStream(reinterpret_cast<uint8_t*>
+          (fData->writable_data_nocheck()), static_cast<int32_t>(fData->size()))
     {
       // wrap data in MemInputStream to parse WAV header
       fReader = std::make_unique<parselib::WavStreamReader>(&fMemInputStream);

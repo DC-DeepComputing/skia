@@ -3402,7 +3402,7 @@ void Viewer::updateUIState() {
     auto data = memStream.detachAsData();
 
     // TODO: would be cool to avoid this copy
-    const SkString cstring(static_cast<const char*>(data->data()), data->size());
+    const SkString cstring(data->as<char>(), data->size());
 
     fWindow->setUIState(cstring.c_str());
 }

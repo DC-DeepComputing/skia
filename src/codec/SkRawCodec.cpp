@@ -312,7 +312,7 @@ public:
 
             const size_t remaining = size - alreadyBuffered;
             if (remaining) {
-                auto* dst = static_cast<uint8_t*>(data->writable_data()) + alreadyBuffered;
+                auto* dst = data->writable_data() + alreadyBuffered;
                 const size_t bytesRead = fStream->read(dst, remaining);
                 size_t newSize;
                 if (bytesRead < remaining) {
