@@ -558,16 +558,17 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
     // To encode which transfer function to apply, we use the src and dst gamma values:
     // - identity: 0
     // - sRGB: g > 0
-    // - PQ: -2
-    // - HLG: -1
+    // - PQish: -2, PQ: -5
+    // - HLGish: -3, HLG: -6
     if (steps.fFlags.linearize) {
         const skcms_TFType type = skcms_TransferFunction_getType(&steps.fSrcTF);
-        const float srcG = type == skcms_TFType_sRGBish ? steps.fSrcTF.g :
-                           type == skcms_TFType_PQish ? -2.f :
-                           type == skcms_TFType_HLGish ? -1.f :
-                                                         0.f;
-        gatherer->write(SkV4{srcG, steps.fSrcTF.a, steps.fSrcTF.b, steps.fSrcTF.c});
-        gatherer->write(SkV4{steps.fSrcTF.d, steps.fSrcTF.e, steps.fSrcTF.f, srcW});
+        if (type == skcms_TFType_HLG) {
+            gatherer->write(SkV4{steps.fSrcTF.g, steps.fSrcTF.c, 0.f, 0.f});
+            gatherer->write(SkV4{steps.fSrcOotf[0], steps.fSrcOotf[1], steps.fSrcOotf[2], srcW});
+        } else {
+            gatherer->write(SkV4{steps.fSrcTF.g, steps.fSrcTF.a, steps.fSrcTF.b, steps.fSrcTF.c});
+            gatherer->write(SkV4{steps.fSrcTF.d, steps.fSrcTF.e, steps.fSrcTF.f, srcW});
+        }
     } else {
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, srcW});
@@ -575,12 +576,13 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
 
     if (steps.fFlags.encode) {
         const skcms_TFType type = skcms_TransferFunction_getType(&steps.fDstTFInv);
-        const float dstG = type == skcms_TFType_sRGBish ? steps.fDstTFInv.g :
-                           type == skcms_TFType_PQish ? -2.f :
-                           type == skcms_TFType_HLGinvish ? -1.f :
-                                                            0.f;
-        gatherer->write(SkV4{dstG, steps.fDstTFInv.a, steps.fDstTFInv.b, steps.fDstTFInv.c});
-        gatherer->write(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e, steps.fDstTFInv.f, dstW});
+        if (type == skcms_TFType_HLG) {
+            gatherer->write(SkV4{steps.fDstTFInv.g, steps.fDstTFInv.c, 0.f, 0.f});
+            gatherer->write(SkV4{steps.fDstOotf[0], steps.fDstOotf[1], steps.fDstOotf[2], dstW});
+        } else {
+            gatherer->write(SkV4{steps.fDstTFInv.g, steps.fDstTFInv.a, steps.fDstTFInv.b, steps.fDstTFInv.c});
+            gatherer->write(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e, steps.fDstTFInv.f, dstW});
+        }
     } else {
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, dstW});
