@@ -83,6 +83,30 @@
       ],
       "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4da65405_d736ae03",
+        "filename": "src/core/SkTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T18:06:00Z",
+      "side": 1,
+      "message": "What about this (instead)?\nhttps://skia-review.googlesource.com/c/skia/+/1004919",
+      "parentUuid": "a02eeeb2_75cd2811",
+      "range": {
+        "startLine": 807,
+        "startChar": 34,
+        "endLine": 807,
+        "endChar": 42
+      },
+      "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
