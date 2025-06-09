@@ -8,9 +8,11 @@
 #include "src/shaders/SkColorFilterShader.h"
 
 #include "include/core/SkColorFilter.h"
+#include "include/core/SkColorSpace.h"
 #include "include/core/SkShader.h"
 #include "include/private/base/SkAssert.h"
 #include "src/base/SkArenaAlloc.h"
+#include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpList.h"
@@ -38,6 +40,14 @@ sk_sp<SkShader> SkColorFilterShader::Make(sk_sp<SkShader> shader,
         return nullptr;
     } else if (!filter) {
         return shader;
+    } else if (alpha == 1.0f && as_SB(shader)->isConstant()) {
+        SkColor4f inputColor;  // this will be in un-premul sRGB
+        SkAssertResult(as_SB(shader)->isConstant(&inputColor));
+
+        SkColor4f newColor = filter->filterColor4f(inputColor,
+                                                   sk_srgb_singleton(),
+                                                   sk_srgb_singleton());
+        return SkShaders::Color(newColor, SkColorSpace::MakeSRGB());
     } else {
         return sk_sp(new SkColorFilterShader(std::move(shader), alpha, std::move(filter)));
     }
