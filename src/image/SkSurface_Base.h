@@ -10,11 +10,13 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkRecorder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
+#include "src/capture/SkCaptureCanvas.h"
 
 #include <cstdint>
 #include <memory>
@@ -195,7 +197,12 @@ private:
 
 SkCanvas* SkSurface_Base::getCachedCanvas() {
     if (nullptr == fCachedCanvas) {
-        fCachedCanvas = std::unique_ptr<SkCanvas>(this->onNewCanvas());
+        auto baseCanvas = this->onNewCanvas();
+        if (auto captureCanvas = this->baseRecorder()->makeCaptureCanvas(baseCanvas)) {
+            fCachedCanvas = std::unique_ptr<SkCanvas>(captureCanvas);
+        } else {
+            fCachedCanvas = std::unique_ptr<SkCanvas>(baseCanvas);
+        }
         if (fCachedCanvas) {
             fCachedCanvas->setSurfaceBase(this);
         }
