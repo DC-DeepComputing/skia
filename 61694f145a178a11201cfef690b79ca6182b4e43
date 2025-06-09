@@ -107,6 +107,30 @@
       },
       "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "58e1ca85_dfdbfc1a",
+        "filename": "src/core/SkTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T23:56:22Z",
+      "side": 1,
+      "message": "Applied new size_t return values to avoid cast",
+      "parentUuid": "4da65405_d736ae03",
+      "range": {
+        "startLine": 807,
+        "startChar": 34,
+        "endLine": 807,
+        "endChar": 42
+      },
+      "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
