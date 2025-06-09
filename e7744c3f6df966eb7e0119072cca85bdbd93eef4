@@ -46,6 +46,30 @@
       },
       "revId": "e7744c3f6df966eb7e0119072cca85bdbd93eef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ac17da1b_f2fc2831",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3965310
+      },
+      "writtenOn": "2025-06-09T15:00:42Z",
+      "side": 1,
+      "message": "ack.\n\nby the way, if you have some time, could you briefly explain how the external format logic path works?\n\nWith the revert, for `AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM`, `GetGLBackendFormat` now returns an invalid `GrBackendFormat` or `GrBackendFormat` with `GR_GL_RGBA8`, which doesn\u0027t reflect the actual format. Is there a pixel conversion step from BGRA to RGBA somewhere in Skia?",
+      "parentUuid": "e6c696ee_5a3b2f5d",
+      "range": {
+        "startLine": 16,
+        "startChar": 23,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "e7744c3f6df966eb7e0119072cca85bdbd93eef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
