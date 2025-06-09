@@ -16,6 +16,23 @@
       "message": "Looks good, let\u0027s go all the way and make it work well with serialization and client interceptors.  So a couple of missing things:\n\n 1) serialization round trip\n 2) SkCanvasVirtualEnforcer.h overrides to alert clients that there\u0027s a new API in town (which may require guards/staging, oh well)\n 3) GM for testing?",
       "revId": "eee309ab9861608fba11309507432ffc41822868",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cd2e3ef_579bfd59",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T20:03:04Z",
+      "side": 1,
+      "message": "ptal",
+      "revId": "eee309ab9861608fba11309507432ffc41822868",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
