@@ -187,7 +187,7 @@ private:
 
         sk_sp<SkData> dataCopy = SkData::MakeWithCopy(originalData->data(), originalData->size());
 
-        SkSFNTHeader* sfntHeader = static_cast<SkSFNTHeader*>(dataCopy->writable_data());
+        SkSFNTHeader* sfntHeader = reinterpret_cast<SkSFNTHeader*>(dataCopy->writable_data());
 
         SkASSERT_RELEASE(memcmp(sfntHeader, originalData->data(), originalData->size()) == 0);
 

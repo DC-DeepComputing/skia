@@ -546,7 +546,7 @@ int main(int argc, char** argv) {
             .setPrecompInterceptor(pint)
             .setResourceProvider(rp)
             .setTextShapingFactory(SkShapers::BestAvailable())
-            .make(static_cast<const char*>(data->data()), data->size());
+            .make(data->as<char>(), data->size());
     };
 
     // Instantiate an animation on the main thread for two reasons:

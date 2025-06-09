@@ -408,7 +408,7 @@ DEF_TEST(StreamPeek_BlockMemoryStream, rep) {
     }
     std::unique_ptr<SkStreamAsset> asset(dynamicMemoryWStream.detachAsStream());
     sk_sp<SkData> expected(SkData::MakeUninitialized(asset->getLength()));
-    uint8_t* expectedPtr = static_cast<uint8_t*>(expected->writable_data());
+    uint8_t* expectedPtr = reinterpret_cast<uint8_t*>(expected->writable_data());
     valueSource.setSeed(kSeed);  // reseed.
     // We want the exact same same "random" string of numbers to put
     // in expected. i.e.: don't rely on SkDynamicMemoryStream to work
