@@ -702,7 +702,6 @@ SkCodec::Result SkPngRustCodec::incrementalDecode(DecodingState& decodingState,
 
             // `static_cast` is ok, because `startDecoding` already validated `fFrameIndex`.
             fFrameHolder.markFrameAsFullyReceived(static_cast<size_t>(this->options().fFrameIndex));
-            fIncrementalDecodingState.reset();
             return kSuccess;
         }
 
@@ -765,7 +764,11 @@ SkCodec::Result SkPngRustCodec::onStartIncrementalDecode(const SkImageInfo& dstI
 
 SkCodec::Result SkPngRustCodec::onIncrementalDecode(int* rowsDecoded) {
     SkASSERT(fIncrementalDecodingState.has_value());
-    return this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
+    Result result = this->incrementalDecode(*fIncrementalDecodingState, rowsDecoded);
+    if (result != kIncompleteInput) {
+        fIncrementalDecodingState.reset();
+    }
+    return result;
 }
 
 int SkPngRustCodec::onGetFrameCount() {
