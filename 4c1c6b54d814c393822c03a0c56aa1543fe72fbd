@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "449dc526_e469ad08",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T13:27:47Z",
+      "side": 1,
+      "message": "Makes me wonder why this doesn\u0027t take a `uint8_t*`.",
+      "range": {
+        "startLine": 285,
+        "startChar": 40,
+        "endLine": 285,
+        "endChar": 55
+      },
+      "revId": "4c1c6b54d814c393822c03a0c56aa1543fe72fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee2733c_8b97ee7d",
+        "filename": "src/core/SkReadBuffer.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T13:27:47Z",
+      "side": 1,
+      "message": "Could all these be replaced with something like\n\n```\ntemplate \u003ctypename T\u003e\nbool readArray(SkSpan\u003cT\u003e values) {\n  return this-\u003ereadArray(values.data(), values.size(), sizeof(T));\n}\n```\n\n?",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 43
+      },
+      "revId": "4c1c6b54d814c393822c03a0c56aa1543fe72fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "334d27a1_7620039e",
+        "filename": "src/effects/colorfilters/SkMatrixColorFilter.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T13:27:47Z",
+      "side": 1,
+      "message": "unrelated: this should be a `static_assert`, or we could drop it now that the size is no longer hard coded.",
+      "range": {
+        "startLine": 41,
+        "startChar": 4,
+        "endLine": 41,
+        "endChar": 12
+      },
+      "revId": "4c1c6b54d814c393822c03a0c56aa1543fe72fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
