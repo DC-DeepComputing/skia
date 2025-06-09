@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -62,7 +63,7 @@ private:
         const auto input_bounds = input.computeTightBounds();
         const SkPoint center{input_bounds.centerX(), input_bounds.centerY()};
 
-        SkPath path;
+        SkPathBuilder path;
 
         SkPoint contour_start = {0, 0};
         std::vector<CubicInfo> cubics;
@@ -133,7 +134,7 @@ private:
             }
         }
 
-        return path;
+        return path.detach();
     }
 
     float fAmount = 0;

@@ -8,11 +8,12 @@
 #include "gm/gm.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "src/base/SkFloatBits.h"
 
 static SkPath get_path() {
-    SkPath path;
+    SkPathBuilder path;
     path.setFillType(SkPathFillType::kWinding);
     path.moveTo(SkBits2Float(0x45034ec4), SkBits2Float(0x42e7fb80));  // 2100.92f, 115.991f
     path.quadTo(SkBits2Float(0x4500f46c),
@@ -28,7 +29,7 @@ static SkPath get_path() {
                 SkBits2Float(0x45034ec4),
                 SkBits2Float(0x42e7fb80));  // 2083.27f, 115.991f, 2100.92f, 115.991f
     path.close();
-    return path;
+    return path.detach();
 }
 
 // Reproduces the underlying problem from skbug.com/12866.
@@ -70,10 +71,10 @@ DEF_SIMPLE_GM(bug12866, canvas, 128, 64) {
 DEF_SIMPLE_GM(bug40810065, canvas, 256, 512) {
     canvas->scale(2.f, 2.f);
 
-    SkPath path1;
+    SkPathBuilder path1;
     path1.moveTo(108.87f, 3.78f);
     path1.cubicTo(201.1f, -128.61f, 34.21f, 82.54f, 134.14f, 126.01f);
-    SkPath path2;
+    SkPathBuilder path2;
     path2.moveTo(108.87f, 3.78f);
     path2.cubicTo(201.f, -128.61f, 34.21f, 82.54f, 134.14f, 126.f);
 
@@ -86,12 +87,12 @@ DEF_SIMPLE_GM(bug40810065, canvas, 256, 512) {
 
     canvas->save();
     canvas->translate(-75.f, 50.f);
-    canvas->drawPath(path1, stroke);
+    canvas->drawPath(path1.detach(), stroke);
     canvas->restore();
 
     canvas->save();
     canvas->translate(-20.f, 100.f);
-    canvas->drawPath(path2, stroke);
+    canvas->drawPath(path2.detach(), stroke);
     canvas->restore();
 }
 
@@ -104,12 +105,12 @@ DEF_SIMPLE_GM_BG(bug41422450, canvas, 863, 473, SK_ColorWHITE) {
               0, 0, 0, 1};
     canvas->concat(mat);
 
-    SkPath strokePath;
+    SkPathBuilder strokePath;
     SkRect circle = SkRect::MakeLTRB(-3299135.5f, -12312541.0f, 9897407.0f, 884000.812f);
     strokePath.arcTo(circle, 59.9999962f, 59.9999962f, true);
 
     SkPaint strokePaint;
     strokePaint.setStyle(SkPaint::kStroke_Style);
     strokePaint.setStrokeWidth(2);
-    canvas->drawPath(strokePath, strokePaint);
+    canvas->drawPath(strokePath.detach(), strokePaint);
 }

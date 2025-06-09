@@ -333,7 +333,7 @@ DEF_TEST(M44_mapRect, reporter) {
             REPORTER_ASSERT(reporter, leftFound && topFound && rightFound && bottomFound);
         }
 
-        const SkPath path = SkPathBuilder()
+        SkPath path = SkPathBuilder()
             .addRect(src)
             .transform(m.asM33(), SkApplyPerspectiveClip::kYes)
             .detach();
