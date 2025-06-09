@@ -42,7 +42,7 @@ sk_sp<SkShader> SkShader::makeWithLocalMatrix(const SkMatrix& localMatrix) const
 }
 
 sk_sp<SkShader> SkShader::makeWithColorFilter(sk_sp<SkColorFilter> filter) const {
-    return SkColorFilterShader::Make(sk_ref_sp(this), 1.0f, std::move(filter));
+    return SkColorFilterShader::Make1(sk_ref_sp(this), 1.0f, std::move(filter));
 }
 
 sk_sp<SkShader> SkShader::makeWithWorkingColorSpace(sk_sp<SkColorSpace> workingSpace) const {
