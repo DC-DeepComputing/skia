@@ -40,7 +40,13 @@ void compile(const RendererProvider* rendererProvider,
              const RenderPassDesc& renderPassDesc,
              bool withPrimitiveBlender,
              Coverage coverage) {
+    SkDebugf("Considering: ");
     for (const Renderer* r : rendererProvider->renderers()) {
+        for (int i = 0; i < r->numRenderSteps(); ++i) {
+            SkDebugf("%s ", r->step(i).name());
+        }
+        SkDebugf("\n");
+
         if (!(r->drawTypes() & drawTypes)) {
             continue;
         }
