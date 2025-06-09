@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ad1e32_3a11debe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T21:47:18Z",
+      "side": 1,
+      "message": "Note: I had to add writable_data_nocheck() as well.\n\nWe have multiple places (in the old code) where clients just manually casted away the constness. When I replaced those with writable_data(), the \"check\" fired -- their object had more than one owner...\n\nBut this was fine for them: they (e.g.) might have stashed away a ref to the data somewhere else, and then wanted to write into it.\n\nI\u0027ll do whatever you guys want -- my 2cents is that I think this was always a flawed idea that we could enforce single-ownership for writing. I think we\u0027re in C++, and we should say that a \u0027const SkData\" is immutable, and that a SkData isn\u0027t, and let the language (and our clients\u0027 discipline) take it from there.\n\nBut, as I said, I will do whatever you want for this CL.",
+      "revId": "98e8a130eb646ae2775db826528105123ea93b7b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
