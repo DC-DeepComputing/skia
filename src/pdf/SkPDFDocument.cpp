@@ -62,7 +62,7 @@ static SkString ToValidUtf8String(const SkData& d) {
         return SkString();
     }
 
-    const char* c_str = static_cast<const char*>(d.data());
+    const char* c_str = d.as<char>();
     if (c_str[d.size() - 1] != 0) {
         SkDEBUGFAIL("Not a valid string, not null-terminated.");
         return SkString();

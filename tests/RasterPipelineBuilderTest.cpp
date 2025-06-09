@@ -20,7 +20,7 @@ static sk_sp<SkData> get_program_dump(SkSL::RP::Program& program) {
 }
 
 static std::string_view as_string_view(const sk_sp<SkData>& dump) {
-    return std::string_view(static_cast<const char*>(dump->data()), dump->size());
+    return std::string_view(dump->as<char>(), dump->size());
 }
 
 static void check(skiatest::Reporter* r, SkSL::RP::Program& program, std::string_view expected) {
@@ -28,7 +28,7 @@ static void check(skiatest::Reporter* r, SkSL::RP::Program& program, std::string
     sk_sp<SkData> dump = get_program_dump(program);
     REPORTER_ASSERT(r, as_string_view(dump) == expected,
                     "Output did not match expectation:\n%.*s",
-                    (int)dump->size(), static_cast<const char*>(dump->data()));
+                    (int)dump->size(), dump->as<char>());
 }
 
 static SkSL::RP::SlotRange one_slot_at(SkSL::RP::Slot index) {

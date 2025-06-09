@@ -290,7 +290,7 @@ public:
                 return false;
             }
 
-            const int* cachedID = static_cast<const int*>(xtraData->data());
+            const int* cachedID = xtraData->as<int>();
             if (*cachedID != expectedID) {
                 return false;
             }
@@ -376,7 +376,7 @@ public:
                 return false;
             }
 
-            const int* cachedID = static_cast<const int*>(xtraData->data());
+            const int* cachedID = xtraData->as<int>();
             if (*cachedID != expectedID) {
                 return false;
             }
@@ -745,7 +745,7 @@ GrSurfaceProxyView TestHelper::AccessCachedView(GrRecordingContext* rContext,
         } else if (id != kNoID) {
             // Make sure, in this case, that the customData stuck
             SkASSERT(data);
-            SkDEBUGCODE(const int* cachedID = static_cast<const int*>(data->data());)
+            SkDEBUGCODE(const int* cachedID = data->as<int>();)
             SkASSERT(*cachedID == id);
         }
 
@@ -783,7 +783,7 @@ GrSurfaceProxyView TestHelper::AccessCachedView(GrRecordingContext* rContext,
         if (view == newView && id != kNoID) {
             // Make sure, in this case, that the customData stuck
             SkASSERT(data);
-            SkDEBUGCODE(const int* cachedID = static_cast<const int*>(data->data());)
+            SkDEBUGCODE(const int* cachedID = data->as<int>();)
             SkASSERT(*cachedID == id);
         }
         return newView;

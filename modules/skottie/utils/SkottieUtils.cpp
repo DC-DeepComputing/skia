@@ -290,7 +290,7 @@ sk_sp<skottie::ExternalLayer> ExternalAnimationPrecompInterceptor::onLoadPrecomp
     auto anim = skottie::Animation::Builder()
                     .setPrecompInterceptor(sk_ref_sp(this))
                     .setResourceProvider(fResourceProvider)
-                    .make(static_cast<const char*>(data->data()), data->size());
+                    .make(data->as<char>(), data->size());
 
     return anim ? sk_make_sp<ExternalAnimationLayer>(std::move(anim), size)
                 : nullptr;

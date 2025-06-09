@@ -39,7 +39,7 @@ protected:
         if (!fData) return;
 
         for (int i = 0; i < loops; i++) {
-            skjson::DOM dom(static_cast<const char*>(fData->data()), fData->size());
+            skjson::DOM dom(fData->as<char>(), fData->size());
             if (dom.root().is<skjson::NullValue>()) {
                 SkDebugf("!! Parsing failed.\n");
                 return;

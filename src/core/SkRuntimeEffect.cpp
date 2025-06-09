@@ -283,8 +283,7 @@ SkSpan<const float> SkRuntimeEffectPriv::UniformsAsSpan(
         return SkSpan{uniformsInAlloc, numFloats};
     }
     // It's safe to return a pointer into existing data.
-    return SkSpan{static_cast<const float*>(originalData->data()),
-                  originalData->size() / sizeof(float)};
+    return originalData->asSpan<float>();
 }
 
 bool RuntimeEffectRPCallbacks::appendShader(int index) {

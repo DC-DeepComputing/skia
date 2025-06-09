@@ -598,7 +598,7 @@ void SkSVGDevice::AutoElement::addImageShaderResources(const SkShader* shader, c
             imageTag.addAttribute("y", 0);
             imageTag.addAttribute("width", image->width());
             imageTag.addAttribute("height", image->height());
-            imageTag.addAttribute("xlink:href", static_cast<const char*>(dataUri->data()));
+            imageTag.addAttribute("xlink:href", dataUri->as<char>());
         }
     }
     resources->fPaintServer.printf("url(#%s)", patternID.c_str());
@@ -889,7 +889,7 @@ void SkSVGDevice::drawAnnotation(const SkRect& rect, const char key[], SkData* v
             return;
         }
 
-        SkString url(static_cast<const char*>(value->data()), value->size() - 1);
+        SkString url(value->as<char>(), value->size() - 1);
         AutoElement a("a", fWriter);
         a.addAttribute("xlink:href", url.c_str());
         {
