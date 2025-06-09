@@ -1,0 +1,88 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2606cb2_33e95439",
+        "filename": "include/core/SkTextBlob.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T13:10:59Z",
+      "side": 1,
+      "message": "I like the new name better, but if we wanted to stay consistent this would be `MakeFromPosGlyphsH`.  Your call.",
+      "range": {
+        "startLine": 162,
+        "startChar": 29,
+        "endLine": 162,
+        "endChar": 47
+      },
+      "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a02eeeb2_75cd2811",
+        "filename": "src/core/SkTextBlob.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 807,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T13:10:59Z",
+      "side": 1,
+      "message": "nit here and below: `SkToSizeT` or `static_cast`.",
+      "range": {
+        "startLine": 807,
+        "startChar": 34,
+        "endLine": 807,
+        "endChar": 42
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "bee9fc4b_9e2d56a7",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkTextBlob.cpp",
+              "range": {
+                "startLine": 807,
+                "startChar": 0,
+                "endLine": 808,
+                "endChar": 0
+              },
+              "replacement": "    if (count \u003c 1 || pos.size() \u003c SkToSizeT(count)) {\n"
+            },
+            {
+              "path": "src/core/SkTextBlob.cpp",
+              "range": {
+                "startLine": 821,
+                "startChar": 0,
+                "endLine": 822,
+                "endChar": 0
+              },
+              "replacement": "    if (count \u003c 1 || xpos.size() \u003c SkToSizeT(count)) {\n"
+            },
+            {
+              "path": "src/core/SkTextBlob.cpp",
+              "range": {
+                "startLine": 835,
+                "startChar": 0,
+                "endLine": 836,
+                "endChar": 0
+              },
+              "replacement": "    if (count \u003c 1 || xform.size() \u003c SkToSizeT(count)) {\n"
+            }
+          ]
+        }
+      ],
+      "revId": "61694f145a178a11201cfef690b79ca6182b4e43",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
