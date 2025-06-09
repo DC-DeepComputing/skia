@@ -63,7 +63,7 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
 
     initFromStep(&fConvexTessellatedWedges,
                  std::make_unique<TessellateWedgesRenderStep>(
-                        RenderStep::RenderStepID::kTessellateWedges_Convex,
+                        RenderStep::RenderStepID::kTessellateWedges_Convex, //$$
                         infinitySupport, kDirectDepthGreaterPass, bufferManager),
                  DrawTypeFlags::kNonSimpleShape);
     initFromStep(&fTessellatedStrokes,
@@ -141,10 +141,10 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
                 evenOdd, infinitySupport, bufferManager);
         auto stencilWedge =
                 evenOdd ? std::make_unique<TessellateWedgesRenderStep>(
-                                RenderStep::RenderStepID::kTessellateWedges_EvenOdd,
+                                RenderStep::RenderStepID::kTessellateWedges_EvenOdd, //$$
                                 infinitySupport, kEvenOddStencilPass, bufferManager)
                         : std::make_unique<TessellateWedgesRenderStep>(
-                                RenderStep::RenderStepID::kTessellateWedges_Winding,
+                                RenderStep::RenderStepID::kTessellateWedges_Winding,  //$$
                                 infinitySupport, kWindingStencilPass, bufferManager);
 
         for (bool inverse : {false, true}) {

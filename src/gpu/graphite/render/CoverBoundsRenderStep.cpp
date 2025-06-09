@@ -39,7 +39,9 @@ CoverBoundsRenderStep::CoverBoundsRenderStep(RenderStep::RenderStepID renderStep
                                       {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
                                       {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
                                       {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
-                                      {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {}
+                                      {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3}}) {
+    SkDebugf("here\n");
+}
 
 CoverBoundsRenderStep::~CoverBoundsRenderStep() {}
 

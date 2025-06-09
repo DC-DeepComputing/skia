@@ -92,6 +92,9 @@ TessellateCurvesRenderStep::TessellateCurvesRenderStep(bool evenOdd,
                                        VertexAttribType::kFloat2, SkSLType::kFloat2}},
                      /*appendAttrs=*/kAttributes[infinitySupport])
         , fInfinitySupport(infinitySupport) {
+    if (evenOdd) {
+        SkDebugf("here\n");
+    }
     SkASSERT(this->appendDataStride() ==
              PatchStride(infinitySupport ? kAttribs : kAttribsWithCurveType));
 

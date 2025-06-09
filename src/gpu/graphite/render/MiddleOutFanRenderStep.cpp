@@ -38,7 +38,11 @@ MiddleOutFanRenderStep::MiddleOutFanRenderStep(bool evenOdd)
                      /*appendAttrs=*/
                      {{"position", VertexAttribType::kFloat2, SkSLType::kFloat2},
                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat},
-                     {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}}) {}
+                     {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2}}) {
+    if (evenOdd) {
+        SkDebugf("here\n");
+    }
+}
 
 MiddleOutFanRenderStep::~MiddleOutFanRenderStep() {}
 

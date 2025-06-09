@@ -96,6 +96,7 @@ TessellateWedgesRenderStep::TessellateWedgesRenderStep(RenderStepID renderStepID
                                        VertexAttribType::kFloat2, SkSLType::kFloat2}},
                      /*appendAttrs=*/kAttributes[infinitySupport])
         , fInfinitySupport(infinitySupport) {
+    SkDebugf("here\n");
     SkASSERT(this->appendDataStride() ==
              PatchStride(infinitySupport ? kAttribs : kAttribsWithCurveType));
 
