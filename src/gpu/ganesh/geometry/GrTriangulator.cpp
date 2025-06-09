@@ -160,7 +160,7 @@ bool GrTriangulator::Line::intersect(const Line& other, SkPoint* point) const {
     double scale = 1.0 / denom;
     point->fX = double_to_clamped_scalar((fB * other.fC - other.fB * fC) * scale);
     point->fY = double_to_clamped_scalar((other.fA * fC - fA * other.fC) * scale);
-     round(point);
+    round(point);
     return point->isFinite();
 }
 
@@ -768,9 +768,7 @@ static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
             }
             leftEdge = e;
             Vertex* top = e->fTop;
-            if (!top ||
-                (top->fLeftEnclosingEdge && !top->fLeftEnclosingEdge->hasTopAndBottom()) ||
-                (top->fRightEnclosingEdge && !top->fRightEnclosingEdge->hasTopAndBottom())) {
+            if (!top) {
                 return false;
             }
             if (c.sweep_lt(top->fPoint, dst->fPoint) &&
@@ -879,6 +877,35 @@ bool GrTriangulator::setBottom(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     return this->mergeCollinearEdges(edge, activeEdges, current, c);
 }
 
+/*
+ * NOTE: Also used in mergeEdgesBelow()
+ * Merges two adjacent, collinear edges. This is a complex operation with two main cases:
+ *
+ * 1. Coincident endpoints: If the edges share the exact same top/bottom vertex, one edge's
+ * winding is absorbed into the other. The now-unused "zombie" edge is fully disconnected and
+ * also explicitly removed from the activeEdges list to prevent state corruption that can lead
+ * to null-pointer dereferences (b/419397557, b/421959607).
+ *
+ * 2. Non-coincident (overlapping) endpoints: One edge is shortened to meet the endpoint of the
+ * other by modifying it in-place. This is a fragile operation that relies on several
+ * robustness measures to succeed:
+ *
+ * a. The initial rewind() call sets the sweep-line state to a stable point in time
+ * before the merge begins.
+ *
+ * b. The line equations are always normalized and the geometric checks (`isLeftOf`, etc.)
+ * use an adaptive, per-edge epsilon. This ensures that the decision to merge is
+ * mathematically sound, even with pathological floating-point coordinates, and
+ * prevents hangs from phantom intersections (b/337080025, b/40799501).
+ *
+ * c. After the edge is modified, `rewind_if_necessary()` is called. Because its underlying
+ * geometric checks are now robust, it can reliably detect and fix any resulting list
+ * ordering violations, preventing debug assertions (b/421959607).
+ *
+ * This combination of correct state management for "zombie" edges and robust, adaptive
+ * mathematics for all geometric checks allows the original in-place modification logic to
+ * work correctly across all known pathological cases.
+ */
 bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -893,6 +920,9 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fTop->fPoint, other->fTop->fPoint)) {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
@@ -914,6 +944,7 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
     return true;
 }
 
+// NOTE: See mergeEdgesAbove() comment
 bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -928,6 +959,9 @@ bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         if (!rewind(activeEdges, current, other->fTop, c)) {
@@ -1190,18 +1224,26 @@ static SkPoint clamp(SkPoint p, SkPoint min, SkPoint max, const Comparator& c) {
 
 void GrTriangulator::computeBisector(Edge* edge1, Edge* edge2, Vertex* v) const {
     SkASSERT(fEmitCoverage);  // Edge-AA only!
+    // line1 and line2 are guaranteed to be normalized because they are copies
+    // of the edge's line, which is normalized in its constructor.
     Line line1 = edge1->fLine;
     Line line2 = edge2->fLine;
-    line1.normalize();
-    line2.normalize();
+
     double cosAngle = line1.fA * line2.fA + line1.fB * line2.fB;
     if (cosAngle > 0.999) {
         return;
     }
-    line1.fC += edge1->fWinding > 0 ? -1 : 1;
-    line2.fC += edge2->fWinding > 0 ? -1 : 1;
+
+    // Create temporary, parallel lines offset by 1 unit to find the miter join.
+    // Modifying only the C component of a normalized line shifts it without
+    // changing its direction.
+    Line offsetLine1 = line1;
+    Line offsetLine2 = line2;
+    offsetLine1.fC += edge1->fWinding > 0 ? -1 : 1;
+    offsetLine2.fC += edge2->fWinding > 0 ? -1 : 1;
+
     SkPoint p;
-    if (line1.intersect(line2, &p)) {
+    if (offsetLine1.intersect(offsetLine2, &p)) {
         uint8_t alpha = edge1->fType == EdgeType::kOuter ? 255 : 0;
         v->fPartner = fAlloc->make<Vertex>(p, alpha);
         TESS_LOG("computed bisector (%g,%g) alpha %d for vertex %g\n", p.fX, p.fY, alpha, v->fID);
@@ -1464,17 +1506,10 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
     TESS_LOG("simplifying complex polygons\n");
 
     int initialNumEdges = fNumEdges;
-    int initialNumVertices = 0;
-    for (Vertex* v = mesh->fHead; v != nullptr; v = v->fNext) {
-        ++initialNumVertices;
-    }
-    int numSelfIntersections = 0;
 
     EdgeList activeEdges;
     auto result = SimplifyResult::kAlreadySimple;
-    int numVisitedVertices = 0;
     for (Vertex* v = mesh->fHead; v != nullptr; v = v->fNext) {
-        ++numVisitedVertices;
         if (!v->isConnected()) {
             continue;
         }
@@ -1483,10 +1518,6 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
         // renderers enabled and with the triangulator's maxVerbCount set to the Chrome value is
         // 17x.
         if (fNumEdges > 170*initialNumEdges) {
-            return SimplifyResult::kFailed;
-        }
-
-        if (numVisitedVertices > 170*initialNumVertices) {
             return SimplifyResult::kFailed;
         }
 
@@ -1506,14 +1537,12 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                             leftEnclosingEdge, edge, &activeEdges, &v, mesh, c);
                     if (l == BoolFail::kFail) {
                         return SimplifyResult::kFailed;
-                    }
-                    if (l == BoolFail::kFalse) {
+                    } else if (l == BoolFail::kFalse) {
                         BoolFail r = this->checkForIntersection(
                                 edge, rightEnclosingEdge, &activeEdges, &v, mesh, c);
                         if (r == BoolFail::kFail) {
                             return SimplifyResult::kFailed;
-                        }
-                        if (r == BoolFail::kFalse) {
+                        } else if (r == BoolFail::kFalse) {
                             // Neither l and r are both false.
                             continue;
                         }
@@ -1522,7 +1551,6 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                     // Either l or r are true.
                     result = SimplifyResult::kFoundSelfIntersection;
                     restartChecks = true;
-                    ++numSelfIntersections;
                     break;
                 }  // for
             } else {
@@ -1534,14 +1562,7 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
                 if (bf == BoolFail::kTrue) {
                     result = SimplifyResult::kFoundSelfIntersection;
                     restartChecks = true;
-                    ++numSelfIntersections;
                 }
-            }
-
-            // In pathological cases, a path can intersect itself millions of times. After 500,000
-            // self-intersections are found, reject the path.
-            if (numSelfIntersections > 500000) {
-                return SimplifyResult::kFailed;
             }
         } while (restartChecks);
 #ifdef SK_DEBUG
