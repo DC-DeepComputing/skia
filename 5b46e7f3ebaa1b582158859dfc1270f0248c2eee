@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "294f9cd8_14be01ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-09T14:08:55Z",
+      "side": 1,
+      "message": "There\u0027s been no public requests to keep Vulkan 1.0 support, so I think we can for this.",
+      "revId": "5b46e7f3ebaa1b582158859dfc1270f0248c2eee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "258b80e4_0ff5c460",
+        "filename": "src/gpu/vk/VulkanUtilsPriv.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 466,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-09T14:08:55Z",
+      "side": 1,
+      "message": "I know if this were called on a Vulkan instance/device that was not \u003e\u003d 1.1, we\u0027d end up failing validate(), but could we add an explicit check against these two values here before we go through all that hassle?",
+      "range": {
+        "startLine": 464,
+        "startChar": 0,
+        "endLine": 466,
+        "endChar": 58
+      },
+      "revId": "5b46e7f3ebaa1b582158859dfc1270f0248c2eee",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
