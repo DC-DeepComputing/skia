@@ -168,6 +168,7 @@ void SkPaintPriv::RemoveColorFilter(SkPaint* p, SkColorSpace* dstCS) {
                                                    sk_ref_sp(filter)));
             p->setAlphaf(1.0f);
         } else {
+            //$$
             p->setColor(filter->filterColor4f(p->getColor4f(), sk_srgb_singleton(), dstCS), dstCS);
         }
         p->setColorFilter(nullptr);
