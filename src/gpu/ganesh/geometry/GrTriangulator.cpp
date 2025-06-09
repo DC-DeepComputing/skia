@@ -768,9 +768,7 @@ static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
             }
             leftEdge = e;
             Vertex* top = e->fTop;
-            if (!top ||
-                (top->fLeftEnclosingEdge && !top->fLeftEnclosingEdge->hasTopAndBottom()) ||
-                (top->fRightEnclosingEdge && !top->fRightEnclosingEdge->hasTopAndBottom())) {
+            if (!top) {
                 return false;
             }
             if (c.sweep_lt(top->fPoint, dst->fPoint) &&
@@ -893,22 +891,37 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fTop->fPoint, other->fTop->fPoint)) {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
             return false;
         }
         other->fWinding += edge->fWinding;
-        if (!this->setBottom(edge, other->fTop, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
+        if (!this->setBottom(edge, other->fTop, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(edge, other);
         }
     } else {
         if (!rewind(activeEdges, current, other->fTop, c)) {
             return false;
         }
         edge->fWinding += other->fWinding;
-        if (!this->setBottom(other, edge->fTop, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(other);
+        }
+        if (!this->setBottom(other, edge->fTop, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(other, edge);
         }
     }
     return true;
@@ -928,22 +941,37 @@ bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         if (!rewind(activeEdges, current, other->fTop, c)) {
             return false;
         }
         edge->fWinding += other->fWinding;
-        if (!this->setTop(other, edge->fBottom, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(other);
+        }
+        if (!this->setTop(other, edge->fBottom, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(other, edge);
         }
     } else {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
             return false;
         }
         other->fWinding += edge->fWinding;
-        if (!this->setTop(edge, other->fBottom, activeEdges, current, c)) {
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
+        if (!this->setTop(edge, other->fBottom, nullptr, nullptr, c)) {
             return false;
+        }
+        if (activeEdges) {
+            activeEdges->insert(edge, other);
         }
     }
     return true;
