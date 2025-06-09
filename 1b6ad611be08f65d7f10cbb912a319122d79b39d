@@ -16,6 +16,29 @@
       "message": "@fmalita@google.com PS4 (last reviewed patchset) was wrong, crashed because bounds were wrong for the transform, this is now corrected. This then made me ask/realize why it passed the locally, it was because I had a typo in the macro define to use it in the test... oops. Anyhow, now that this is being rolled out more we should this in the dry run in some form, not sure how to proceed with that. PTAL",
       "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b75c66c_cbea1f98",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-09T22:39:55Z",
+      "side": 1,
+      "message": "This constant is not correctly named (...RgbaToRgb...) after this CL, because the new transformation is between RGBA and RGBA (just changing LE to BE).\n\nI wonder if having 4 separate values (calculated in or underneath `SkPngRustEncoderImpl::Make`;  used here) would help to avoid some of the complexity.  For example, the check for `fDstRowInfo-\u003eisOpaque()` on new line 230 seems to be redoing some of the logic already done in `SkPngRustEncoderImpl::Make` when deciding that RGBA \u003d\u003e RGB transformation is needed.  So, maybe we can calculate the exact transformation upfront?:\n\n* None\n* Rgba8ToRgb8\n* Rgba16le8ToRgb8\n* Rgba16le8ToRgb16be",
+      "range": {
+        "startLine": 216,
+        "startChar": 36,
+        "endLine": 216,
+        "endChar": 64
+      },
+      "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
