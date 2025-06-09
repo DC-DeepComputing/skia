@@ -81,6 +81,30 @@
       },
       "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "583391bd_04ec0a32",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T17:30:15Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1409519_cf1bfeb4",
+      "range": {
+        "startLine": 268,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 5
+      },
+      "revId": "07db605dedd237a2aa35d0f78abc90734176ea21",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

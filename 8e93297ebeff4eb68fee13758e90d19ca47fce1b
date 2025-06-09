@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ef2de21_250ba50a",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T17:30:15Z",
+      "side": 1,
+      "message": "newXformMode",
+      "range": {
+        "startLine": 213,
+        "startChar": 8,
+        "endLine": 213,
+        "endChar": 18
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "6d5d8d9b_871644b9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCodecBase.cpp",
+              "range": {
+                "startLine": 213,
+                "startChar": 0,
+                "endLine": 214,
+                "endChar": 0
+              },
+              "replacement": "        newXformMode \u003d kSwizzleColor_XformMode;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "8e93297ebeff4eb68fee13758e90d19ca47fce1b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
