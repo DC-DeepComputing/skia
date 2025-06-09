@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "43d413f8_2712de74",
+        "filename": "gm/colrv1.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-09T14:27:21Z",
+      "side": 1,
+      "message": "And today I learned that in C++11 they were introduced with a grammar that parsed the operator separately from the constant (allowing space between) and then in a later (retroactive) correction the grammar itself was changed and the space is no longer allowed.",
+      "parentUuid": "79b464be_c8d7947a",
+      "range": {
+        "startLine": 241,
+        "startChar": 24,
+        "endLine": 241,
+        "endChar": 36
+      },
+      "revId": "f9161d978d533613af9152f404b9ff507bb8691e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "152e59dd_871148b1",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-09T13:05:19Z",
       "side": 1,
       "message": "I\u0027m assuming this is because `fastMathEnabled` is deprecated?",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 38
+      },
+      "revId": "f9161d978d533613af9152f404b9ff507bb8691e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "16315e52_ea259b8f",
+        "filename": "src/gpu/ganesh/mtl/GrMtlUtil.mm",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-09T14:27:21Z",
+      "side": 1,
+      "message": "Yes, it is deprecated starting from macOS 15 and iOS 18. The replacement `MTLMathMode` now has three values `Fast`, `Relaxed` (handles Inf/NaN, is the default), and `Safe`.",
+      "parentUuid": "152e59dd_871148b1",
       "range": {
         "startLine": 71,
         "startChar": 0,
