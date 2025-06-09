@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c10482f5_54a5a90d",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-09T19:52:29Z",
+      "side": 0,
+      "message": "These two went away",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 93
+      },
+      "revId": "dc44e2cf45c505b1773c26aff33d0f345c750cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
