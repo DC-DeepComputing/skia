@@ -234,6 +234,30 @@
       },
       "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "58a910a1_3b655ead",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-09T17:29:41Z",
+      "side": 1,
+      "message": "From visual testing, seems like we can blur unequal sigmas with this algorithm.",
+      "parentUuid": "93441a6a_3c2d1a9b",
+      "range": {
+        "startLine": 1201,
+        "startChar": 0,
+        "endLine": 1201,
+        "endChar": 68
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

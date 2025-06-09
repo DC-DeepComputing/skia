@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a8da149_5f3dbabc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-09T17:29:41Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com With this implementation we allocate a new bitmap that blurs the whole available source, then takes our dstRect subset out of that to return. Not as memory efficient but it\u0027s still much faster than blurring with shader. wdyt?",
+      "revId": "90bbe0357831ca8dbefce019c98ee71ee1c6be80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
