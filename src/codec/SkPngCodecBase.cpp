@@ -95,24 +95,6 @@ SkCodec::Result SkPngCodecBase::initializeXforms(const SkImageInfo& dstInfo,
     }
     fXformWidth = frameWidth;
 
-    {
-        size_t encodedBitsPerPixel = static_cast<size_t>(getEncodedInfo().bitsPerPixel());
-
-        // We assume that `frameWidth` and `bitsPerPixel` have been already sanitized
-        // earlier (and that the multiplication and addition below won't overflow).
-        SkASSERT(0 < frameWidth);
-        SkASSERT(frameWidth < 0xFFFFFF);
-        SkASSERT(encodedBitsPerPixel < 128);
-
-        size_t encodedBitsPerRow = static_cast<size_t>(frameWidth) * encodedBitsPerPixel;
-        fEncodedRowBytes = (encodedBitsPerRow + 7) / 8;  // Round up to the next byte.
-
-#if defined(SK_DEBUG)
-        size_t dstBytesPerPixel = dstInfo.bytesPerPixel();
-        fDstRowBytes = static_cast<size_t>(frameWidth) * dstBytesPerPixel;
-#endif
-    }
-
     // Reset fSwizzler and this->colorXform().  We can't do this in onRewind() because the
     // interlaced scanline decoder may need to rewind.
     fSwizzler.reset(nullptr);
@@ -161,8 +143,32 @@ SkCodec::Result SkPngCodecBase::initializeXforms(const SkImageInfo& dstInfo,
 }
 
 void SkPngCodecBase::initializeXformParams() {
-    if (fXformMode == kSwizzleColor_XformMode) {
-        fXformWidth = this->swizzler()->swizzleWidth();
+    switch (fXformMode) {
+        case kSwizzleOnly_XformMode:
+        case kSwizzleColor_XformMode:
+            fXformWidth = this->swizzler()->swizzleWidth();
+            break;
+        case kColorOnly_XformMode:
+            SkASSERT(!fSwizzler);
+            break;
+    }
+
+    {
+        size_t encodedBitsPerPixel = static_cast<size_t>(getEncodedInfo().bitsPerPixel());
+
+        // We assume that `fXfromWidth` and `bitsPerPixel` have been already sanitized
+        // earlier (and that the multiplication and addition below won't overflow).
+        SkASSERT(0 < fXformWidth);
+        SkASSERT(fXformWidth < 0xFFFFFF);
+        SkASSERT(encodedBitsPerPixel < 128);
+
+        size_t encodedBitsPerRow = static_cast<size_t>(fXformWidth) * encodedBitsPerPixel;
+        fEncodedRowBytes = (encodedBitsPerRow + 7) / 8;  // Round up to the next byte.
+
+#if defined(SK_DEBUG)
+        size_t dstBytesPerPixel = this->dstInfo().bytesPerPixel();
+        fDstRowBytes = static_cast<size_t>(fXformWidth) * dstBytesPerPixel;
+#endif
     }
 }
 
@@ -193,7 +199,7 @@ SkCodec::Result SkPngCodecBase::initializeSwizzler(const SkImageInfo& dstInfo,
                                                    int frameWidth) {
     SkImageInfo swizzlerInfo = dstInfo;
     Options swizzlerOptions = options;
-    fXformMode = kSwizzleOnly_XformMode;
+    XformMode newXformMode = kSwizzleOnly_XformMode;
     if (this->colorXform() && this->xformOnDecode()) {
         if (SkEncodedInfo::kGray_Color == this->getEncodedInfo().color()) {
             swizzlerInfo = swizzlerInfo.makeColorType(kGray_8_SkColorType);
@@ -246,7 +252,11 @@ SkCodec::Result SkPngCodecBase::initializeSwizzler(const SkImageInfo& dstInfo,
                 this->getEncodedInfo(), colors, swizzlerInfo, swizzlerOptions, frameRectPtr);
     }
 
-    return !!fSwizzler ? kSuccess : kUnimplemented;
+    if (!fSwizzler) {
+        return kUnimplemented;
+    }
+    fXformMode = newXformMode;
+    return kSuccess;
 }
 
 SkSampler* SkPngCodecBase::getSampler(bool createIfNecessary) {
@@ -259,7 +269,6 @@ SkSampler* SkPngCodecBase::getSampler(bool createIfNecessary) {
     // failure.
     std::ignore = this->initializeSwizzler(
             this->dstInfo(), this->options(), true, this->dstInfo().width());
-
     return fSwizzler.get();
 }
 
@@ -278,6 +287,7 @@ void SkPngCodecBase::applyXformRow(void* dstRow, const uint8_t* srcRow) {
             this->applyColorXform(dstRow, srcRow, fXformWidth);
             break;
         case kSwizzleColor_XformMode:
+            SkASSERT(fSwizzler->swizzleWidth() == fXformWidth);
             fSwizzler->swizzle(fStorage.get(), srcRow);
             this->applyColorXform(dstRow, fStorage.get(), fXformWidth);
             break;
