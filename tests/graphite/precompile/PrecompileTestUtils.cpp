@@ -50,15 +50,6 @@ PaintOptions SolidSrcover() {
     return paintOptions;
 }
 
-PaintOptions SolidMatrixCFSrcover() {
-    PaintOptions paintOptions;
-
-    paintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
-    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
-
-    return paintOptions;
-}
-
 PaintOptions LinearGradSmSrcover() {
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::LinearGradient(GradientShaderFlags::kSmall) });
