@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8424c46c_8601ff12",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd5dd6fe_0349a360",
+      "range": {
+        "startLine": 47,
+        "startChar": 4,
+        "endLine": 47,
+        "endChar": 14
+      },
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "db17e0ea_7c88f4d9",
@@ -101,6 +125,54 @@
       "side": 1,
       "message": "And to avoid the dangerous implicit `const_cast` that some of these other changes here depend on.",
       "parentUuid": "8c631062_86408c5f",
+      "range": {
+        "startLine": 49,
+        "startChar": 45,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "583c0d60_c4f03fcb",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T20:42:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d86f4a82_75c7029b",
+      "range": {
+        "startLine": 49,
+        "startChar": 29,
+        "endLine": 49,
+        "endChar": 33
+      },
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8f4afb3f_ea9c411c",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-09T20:42:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8f3de0aa_e3b3c526",
       "range": {
         "startLine": 49,
         "startChar": 45,
