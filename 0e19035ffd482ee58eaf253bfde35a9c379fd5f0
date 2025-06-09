@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db17e0ea_7c88f4d9",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T14:14:06Z",
+      "side": 1,
+      "message": "I\u0027m not sure this is safe in general under strict aliasing rules.  IIRC it\u0027s always fine to alias through char/byte ptrs, but that is one way and aliasing char/byte through a different pointer type is still undefined?\n\n+Ben\n\nLooks like most callers cast to char-like types, which is probably fine.  Maybe we could restrict to those types?\n\n(although I do see some exceptions, but I presume those are already SAR violations)",
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c631062_86408c5f",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T14:14:06Z",
+      "side": 1,
+      "message": "`reinterpret_cast` for clarity.",
+      "range": {
+        "startLine": 49,
+        "startChar": 45,
+        "endLine": 49,
+        "endChar": 49
+      },
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d86f4a82_75c7029b",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-09T14:14:06Z",
+      "side": 1,
+      "message": "naming nit: `as` seems to be the more common name for this pattern.",
+      "range": {
+        "startLine": 49,
+        "startChar": 29,
+        "endLine": 49,
+        "endChar": 33
+      },
+      "revId": "0e19035ffd482ee58eaf253bfde35a9c379fd5f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
