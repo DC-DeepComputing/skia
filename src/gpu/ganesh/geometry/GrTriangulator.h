@@ -364,7 +364,9 @@ struct GrTriangulator::Line {
         : fA(static_cast<double>(q.fY) - p.fY)      // a = dY
         , fB(static_cast<double>(p.fX) - q.fX)      // b = -dX
         , fC(static_cast<double>(p.fY) * q.fX -     // c = cross(q, p)
-             static_cast<double>(p.fX) * q.fY) {}
+             static_cast<double>(p.fX) * q.fY) {
+        //this->normalize();                          // always normalize now!
+    }
     double dist(const SkPoint& p) const { return fA * p.fX + fB * p.fY + fC; }
     Line operator*(double v) const { return Line(fA * v, fB * v, fC * v); }
     double magSq() const { return fA * fA + fB * fB; }
@@ -426,7 +428,8 @@ struct GrTriangulator::Edge {
         , fUsedInLeftPoly(false)
         , fUsedInRightPoly(false)
         , fLine(top, bottom) {
-        }
+        this->AdaptiveEpsilon();
+    }
     int      fWinding;          // 1 == edge goes downward; -1 = edge goes upward.
     Vertex*  fTop;              // The top vertex in vertex-sort-order (sweep_lt).
     Vertex*  fBottom;           // The bottom vertex in vertex-sort-order.
@@ -446,6 +449,7 @@ struct GrTriangulator::Edge {
     bool     fUsedInLeftPoly;
     bool     fUsedInRightPoly;
     Line     fLine;
+    double   fEpsilon;
 
     double dist(const SkPoint& p) const {
         // Coerce points coincident with the vertices to have dist = 0, since converting from
@@ -453,9 +457,25 @@ struct GrTriangulator::Edge {
         // longer on the ideal line.
         return (p == fTop->fPoint || p == fBottom->fPoint) ? 0.0 : fLine.dist(p);
     }
+
+    void AdaptiveEpsilon() {
+        // The tolerance must be proportional to the absolute magnitude of the coordinates
+        // involved, as this determines the scale of potential floating-point error.
+        double max_coord = std::max({fabs(fTop->fPoint.fX), fabs(fTop->fPoint.fY),
+                                     fabs(fBottom->fPoint.fX), fabs(fBottom->fPoint.fY)});
+
+        constexpr double kMachineEpsilon = std::numeric_limits<double>::epsilon();
+        // We use a multiplier on machine epsilon as a safety factor and add a minimum
+        // tolerance for paths near the origin.
+        fEpsilon = max_coord * kMachineEpsilon * 8 + 1e-9;
+    }
+
     bool isRightOf(const Vertex& v) const { return this->dist(v.fPoint) < 0.0; }
     bool isLeftOf(const Vertex& v) const { return this->dist(v.fPoint) > 0.0; }
-    void recompute() { fLine = Line(fTop, fBottom); }
+    void recompute() {
+        fLine = Line(fTop, fBottom);
+        this->AdaptiveEpsilon();
+    }
     void insertAbove(Vertex*, const Comparator&);
     void insertBelow(Vertex*, const Comparator&);
     void disconnect();
