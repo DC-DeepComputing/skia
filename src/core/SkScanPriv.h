@@ -12,9 +12,6 @@
 #include "src/core/SkBlitter.h"
 #include "src/core/SkScan.h"
 
-// controls how much we super-sample (when we use that scan convertion)
-#define SK_SUPERSAMPLE_SHIFT    2
-
 class SkScanClipper {
 public:
     SkScanClipper(SkBlitter* blitter, const SkRegion* clip, const SkIRect& bounds,
