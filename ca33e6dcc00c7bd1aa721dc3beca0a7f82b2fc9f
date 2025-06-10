@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d791ad_491078fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T15:08:33Z",
+      "side": 1,
+      "message": "This change seems to be causing a huge regression on Intel Xe devices: https://skia-perf.luci.app/e/?begin\u003d1747726405\u0026end\u003d1749544311\u0026keys\u003dX6e3681a03faaf78a3b410114c3cc6fe6\u0026num_commits\u003d50\u0026request_type\u003d0\u0026xbaroffset\u003d75483\n\nThe old code ignored sample counts \u003e 1 for intel vendors, which got lost in this CL.\n\nCan we add a follow-up that brings that back by changing which sample count mask we apply to `properties.sampleCounts`?",
+      "revId": "ca33e6dcc00c7bd1aa721dc3beca0a7f82b2fc9f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
