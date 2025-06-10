@@ -70,6 +70,30 @@
       },
       "revId": "e7744c3f6df966eb7e0119072cca85bdbd93eef4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252d59b3_273c36f9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 3876051
+      },
+      "writtenOn": "2025-06-10T15:08:23Z",
+      "side": 1,
+      "message": "@zzyiwei@google.com explains better than I could in http://b/417492034#comment7",
+      "parentUuid": "ac17da1b_f2fc2831",
+      "range": {
+        "startLine": 16,
+        "startChar": 23,
+        "endLine": 17,
+        "endChar": 29
+      },
+      "revId": "e7744c3f6df966eb7e0119072cca85bdbd93eef4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
