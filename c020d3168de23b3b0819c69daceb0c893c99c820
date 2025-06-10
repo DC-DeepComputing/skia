@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3be28dab_67292094",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T13:49:03Z",
+      "side": 1,
+      "message": "Drive-by, but another simplification we could do would be for the local matrix constructor to skip creating a new shader if the input is constant.",
+      "revId": "c020d3168de23b3b0819c69daceb0c893c99c820",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
