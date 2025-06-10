@@ -63,6 +63,30 @@
       },
       "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0272274_b036b967",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-10T16:11:03Z",
+      "side": 1,
+      "message": "Thanks!  (reading back what I wrote, some of the constant names were quite wrong - sorry about that / thanks for following up on the main idea)",
+      "parentUuid": "c3084c16_42a2d643",
+      "range": {
+        "startLine": 216,
+        "startChar": 36,
+        "endLine": 216,
+        "endChar": 64
+      },
+      "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
