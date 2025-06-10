@@ -516,9 +516,6 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 					skip(ALL, "gm", ALL, "aaxfermodes")
 					// Could not instantiate texture proxy for UploadTask!
 					skip(ALL, "test", ALL, "BigImageTest_Graphite")
-					// Test failures
-					skip(ALL, "test", ALL, "MultisampleRetainTest")
-					skip(ALL, "test", ALL, "PaintParamsKeyTest")
 					if b.matchOs("Android") {
 						// Currently broken on Android Vulkan (skbug.com/310180104)
 						skip(ALL, "test", ALL, "ImageAsyncReadPixelsGraphite")
