@@ -825,6 +825,8 @@ void Device::drawRect(const SkRect& r, const SkPaint& paint) {
 
 void Device::drawVertices(const SkVertices* vertices, sk_sp<SkBlender> blender,
                           const SkPaint& paint, bool skipColorXform)  {
+    // Detect whether we can skip the color transform
+
     this->drawGeometry(this->localToDeviceTransform(),
                        Geometry(sk_ref_sp(vertices)),
                        paint,
