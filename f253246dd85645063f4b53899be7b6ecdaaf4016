@@ -191,6 +191,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a06f2cf3_23fff892",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1053,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T14:04:26Z",
+      "side": 1,
+      "message": "All three of the CPU blur algorithms involve scanline X passes and then oriented Y scanlines (either by using a stride in the 8888 case or by copying into a temporary row for the A8 mask code), but all the logic to determine the size of the dst image and to iterate over the pixels of the src, etc. are basically the same.  By having a Pass subclass for A8 and small A8, we can move the bulk of the 8888\u0027s blur() implementation to a single function shared by all of them.",
+      "parentUuid": "6a9c097d_648cc92a",
+      "range": {
+        "startLine": 1040,
+        "startChar": 0,
+        "endLine": 1053,
+        "endChar": 10
+      },
+      "revId": "f253246dd85645063f4b53899be7b6ecdaaf4016",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "36e2b278_92360042",
         "filename": "src/core/SkBlurEngine.cpp",
         "patchSetId": 7

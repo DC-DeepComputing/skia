@@ -16,6 +16,24 @@
       "message": "@michaelludwig@google.com With this implementation we allocate a new bitmap that blurs the whole available source, then takes our dstRect subset out of that to return. Not as memory efficient but it\u0027s still much faster than blurring with shader. wdyt?",
       "revId": "90bbe0357831ca8dbefce019c98ee71ee1c6be80",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f546824_32710754",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 16
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T14:04:26Z",
+      "side": 1,
+      "message": "If we are able to use the blur() function for 8888 and both A8 versions, we should be able to get it to work with blurring over the intersection of dstRect and the original srcRect.\n\nIn practice, for most A8 masks, the original srcRect will probably already have been created to match the dst rect pretty closely, but it will often contain the blur radii outset that we don\u0027t necessarily need to evaluate in dstRect.\n\nThis situation comes up when the draw is clipped, so for a dst pixel on the edge of the clip, we do need to read beyond the clip to see what the src coverage should be, but those src pixels are only used to calculate the blur up to the clip edge.  Any src pixel that would be clipped out doesn\u0027t have to have the blur kernel evaluated at that location since the blurred output won\u0027t be visible.",
+      "parentUuid": "9a8da149_5f3dbabc",
+      "revId": "90bbe0357831ca8dbefce019c98ee71ee1c6be80",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
