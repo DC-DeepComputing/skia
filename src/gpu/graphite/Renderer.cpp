@@ -81,6 +81,32 @@ std::optional<SkIRect> RenderStep::getScissor(const DrawParams& params,
         return {};
     }
 
+    if (drawBounds == params.clip().transformedShapeBounds()) {
+        // We need to change the scissor, but the registered scissor is a no-op so
+        // use the device bounds as a canonical scissor.
+        return deviceBounds;
+    }
+
+     if (this->requiresMSAA() && this->coverage() == Coverage::kNone) {
+         SkDebugf("odd\n");
+     }
+
+     bool isEmptyInverse = params.geometry().isShape() && params.geometry().shape().isEmpty() && params.geometry().shape().inverted();
+     SkDebugf("step %s, flood fill = %d\n", this->name(), isEmptyInverse);
+     SkDebugf("needs scissor change: %d %d %d %d for (%f %f %f %f)\n",
+         params.clip().scissor().fLeft, params.clip().scissor().fTop, params.clip().scissor().fRight, params.clip().scissor().fBottom,
+         drawBounds.left(), drawBounds.top(), drawBounds.right(), drawBounds.bot());
+     SkDebugf(" vs                 : %d %d %d %d for (%f %f %f %f)\n",
+         currentScissor.fLeft, currentScissor.fTop, currentScissor.fRight, currentScissor.fBottom,
+         currentClippedBounds.left(), currentClippedBounds.top(), currentClippedBounds.right(), currentClippedBounds.bot());
+     Rect fromCS = params.clip().transformedShapeBounds();
+     Rect shape = params.geometry().bounds();
+     Rect mapped = params.transform().mapRect(shape);
+     SkDebugf("transformed bounds = %f %f %f %f, shape bounds = %f %f %f %f, mapped = %f %f %f %f\n",
+              fromCS.left(), fromCS.top(), fromCS.right(), fromCS.bot(),
+              shape.left(), shape.top(), shape.right(), shape.bot(),
+              mapped.left(), mapped.top(), mapped.right(), mapped.bot());
+
     return params.clip().scissor();
 }
 

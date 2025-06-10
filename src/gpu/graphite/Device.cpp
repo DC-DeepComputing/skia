@@ -265,7 +265,7 @@ Rect get_inner_bounds(const Geometry& geometry, const Transform& localToDevice) 
         rect.inset(aaInset);
         // Only add a second draw if it will have a reasonable number of covered pixels; otherwise
         // we are just adding draws to sort and pipelines to switch around.
-        static constexpr float kInnerFillArea = 64*64;
+        static constexpr float kInnerFillArea = 256*256;
         // Approximate the device-space area based on the minimum scale factor of the transform.
         float scaleFactor = sk_ieee_float_divide(1.f, aaInset);
         return scaleFactor*rect.area() >= kInnerFillArea ? rect : Rect::InfiniteInverted();
@@ -805,6 +805,11 @@ void Device::drawPaint(const SkPaint& paint) {
 }
 
 void Device::drawRect(const SkRect& r, const SkPaint& paint) {
+    if ((true)) {
+        this->drawPaint(paint);
+        return;
+    }
+
     Rect rectToDraw(r);
     SkStrokeRec style(paint);
     if (!paint.isAntiAlias()) {
@@ -1203,7 +1208,7 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
 }
 
 void Device::drawGeometry(const Transform& localToDevice,
-                          const Geometry& geometry,
+                          Geometry&& geometry,
                           const SkPaint& paint,
                           const SkStrokeRec& style,
                           SkEnumBitMask<DrawFlags> flags,
@@ -1250,7 +1255,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             return;
         } else {
             SKGPU_LOG_W("Path effect failed to apply, drawing original path.");
-            this->drawGeometry(localToDevice, geometry, paint, style,
+            this->drawGeometry(localToDevice, std::move(geometry), paint, style,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
                                skipColorXform);
             return;
@@ -1279,29 +1284,60 @@ void Device::drawGeometry(const Transform& localToDevice,
     // drawing twice--one stroke and one fill--using the same depth value.
     SkASSERT(!SkToBool(paint.getPathEffect()) || (flags & DrawFlags::kIgnorePathEffect));
 
-    // TODO: Some renderer decisions could depend on the clip (see PathAtlas::addShape for
-    // one workaround) so we should figure out how to remove this circular dependency.
+    // Technically if a Renderer uses MSAA, we could set outsetBoundsForAA to false since the AA
+    // will be reflected directly from the rasterization and sample hits. But that creates a cycle
+    // between knowing the Renderer and visiting the ClipStack. It is slightly conservative to
+    // assume outsets are required for paths (tessellating path renderer wouldn't require it) but
+    // all other shapes have an analytic coverage Renderer. The Geometries that don't have bounds
+    // outsets are all mask-based and their mask bounds already reflect any original AA outset.
+    const bool outsetBoundsForAA = geometry.isShape() || geometry.isEdgeAAQuad();
+
+    // if (fClip.conservativeBounds().left() >= 1182.f && fClip.conservativeBounds().left() <= 1184.f && fClip.conservativeBounds().top() <= 400.f) {
+    //     SkDebugf("stop here\n");
+    // } else {
+    //     return;
+    // }
+
+    // Calculate the clipped bounds of the draw and determine the clip elements that affect the
+    // draw without updating the clip stack (in case we have to flush). This may also apply the
+    // clip to `geometry` directly, or return shader elements that have to be included in the final
+    // PaintParams used for shading.
+    ClipStack::ElementList clipElements;
+    Clip clip =
+            fClip.visitClipStackForDraw(localToDevice, &geometry, style, outsetBoundsForAA,
+                                        fMSAASupported, &clipElements);
+    // if (clip.fScissor.left() >= 1182.f) {
+    //     SkDebugf("here we are again\n");
+    // }
+
+    if (clip.isClippedOut()) {
+        // Clipped out, so don't record anything.
+        return;
+    }
 
     // We assume that we will receive a renderer, or a PathAtlas. If it's a PathAtlas,
     // then we assume that the renderer chosen in PathAtlas::addShape() will have
     // single-channel coverage, require AA bounds outsetting, and have a single renderStep.
     auto [renderer, pathAtlas] =
-            this->chooseRenderer(localToDevice, geometry, style, /*requireMSAA=*/false);
+            this->chooseRenderer(localToDevice, geometry, style, clip.drawBounds(), /*requireMSAA=*/false);
     if (!renderer && !pathAtlas) {
         SKGPU_LOG_W("Skipping draw with no supported renderer or PathAtlas.");
         return;
     }
 
-    // Calculate the clipped bounds of the draw and determine the clip elements that affect the
-    // draw without updating the clip stack.
-    const bool outsetBoundsForAA = renderer ? renderer->outsetBoundsForAA() : true;
-    ClipStack::ElementList clipElements;
-    const Clip clip =
-            fClip.visitClipStackForDraw(localToDevice, geometry, style, outsetBoundsForAA,
-                                        fMSAASupported, &clipElements);
-    if (clip.isClippedOut()) {
-        // Clipped out, so don't record anything.
-        return;
+    if (outsetBoundsForAA && renderer && !renderer->outsetBoundsForAA() &&
+        style.isFillStyle() && geometry.isShape()) {
+        // The calculated transformed shape bounds were conservative and included AA, so redo it
+        // to avoid a common case of thinking we need the scissor solely do the AA outset (which no
+        // longer applies).
+        SkASSERT(style.isFillStyle());
+        if (geometry.shape().inverted()) {
+            clip.fTransformedShapeBounds = clip.fScissor;
+            clip.fDrawBounds = clip.fScissor;
+        } else {
+            clip.fTransformedShapeBounds = localToDevice.mapRect(geometry.shape().bounds());
+            clip.fDrawBounds = clip.fTransformedShapeBounds.makeIntersect(clip.fScissor);
+        }
     }
 
     // Figure out what dst color requirements we have, if any.
@@ -1523,6 +1559,7 @@ void Device::drawClipShape(const Transform& localToDevice,
     auto [renderer, pathAtlas] = this->chooseRenderer(localToDevice,
                                                       geometry,
                                                       DefaultFillStyle(),
+                                                      clip.drawBounds(),
                                                       /*requireMSAA=*/true);
     if (!renderer) {
         SKGPU_LOG_W("Skipping clip with no supported path renderer.");
@@ -1564,6 +1601,7 @@ void Device::drawClipShape(const Transform& localToDevice,
 std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& localToDevice,
                                                               const Geometry& geometry,
                                                               const SkStrokeRec& style,
+                                                              const Rect& drawBounds,
                                                               bool requireMSAA) const {
     const RendererProvider* renderers = fRecorder->priv().rendererProvider();
     SkASSERT(renderers);
@@ -1679,19 +1717,13 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
     // Prefer compute atlas draws if supported. This currently implicitly filters out clip draws as
     // they require MSAA. Eventually we may want to route clip shapes to the atlas as well but not
     // if hardware MSAA is required.
-    std::optional<Rect> drawBounds;
     if (atlasProvider->isAvailable(AtlasProvider::PathAtlasFlags::kCompute) &&
         use_compute_atlas_when_available(strategy)) {
         PathAtlas* atlas = fDC->getComputePathAtlas(fRecorder);
         SkASSERT(atlas);
 
         // Don't use the compute renderer if it can't handle the shape efficiently.
-        //
-        // Use the conservative clip bounds for a rough estimate of the mask size (this avoids
-        // having to evaluate the entire clip stack before choosing the renderer as it will have to
-        // get evaluated again if we fall back to a different renderer).
-        drawBounds = localToDevice.mapRect(shape.bounds());
-        if (atlas->isSuitableForAtlasing(*drawBounds, fClip.conservativeBounds())) {
+        if (atlas->isSuitableForAtlasing(drawBounds, fClip.conservativeBounds())) {
             pathAtlas = atlas;
         }
     }
@@ -1740,20 +1772,11 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         // would be pretty trivial to spin up.
         return {renderers->convexTessellatedWedges(), nullptr};
     } else {
-        if (!drawBounds.has_value()) {
-            drawBounds = localToDevice.mapRect(shape.bounds());
-        }
-        drawBounds->intersect(fClip.conservativeBounds());
         const bool preferWedges =
-                // If the draw bounds don't intersect with the clip stack's conservative bounds,
-                // we'll be drawing a very small area at most, accounting for coverage, so just
-                // stick with drawing wedges in that case.
-                drawBounds->isEmptyNegativeOrNaN() ||
-
                 // TODO: Combine this heuristic with what is used in PathStencilCoverOp to choose
                 // between wedges curves consistently in Graphite and Ganesh.
                 (shape.isPath() && shape.path().countVerbs() < 50) ||
-                drawBounds->area() <= (256 * 256);
+                drawBounds.area() <= (256 * 256);
 
         if (preferWedges) {
             return {renderers->stencilTessellatedWedges(shape.fillType()), nullptr};

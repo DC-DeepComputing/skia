@@ -109,7 +109,7 @@ public:
 
     bool needsCoverage() const { return SkToBool(fShader) || !fNonMSAAClip.isEmpty(); }
 
-private:
+// private:
     // DrawList assumes the DrawBounds are correct for a given shape, transform, and style. They
     // are provided to the DrawList to avoid re-calculating the same bounds.
     Rect              fDrawBounds;

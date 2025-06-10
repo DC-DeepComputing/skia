@@ -235,7 +235,7 @@ private:
     // Ignores geometric style on the paint in favor of explicitly provided SkStrokeRec and flags.
     // All overridden SkDevice::draw() functions should bottom-out with calls to drawGeometry().
     void drawGeometry(const Transform&,
-                      const Geometry&,
+                      Geometry&&,
                       const SkPaint&,
                       const SkStrokeRec&,
                       SkEnumBitMask<DrawFlags> = DrawFlags::kNone,
@@ -277,6 +277,7 @@ private:
     std::pair<const Renderer*, PathAtlas*> chooseRenderer(const Transform& localToDevice,
                                                           const Geometry&,
                                                           const SkStrokeRec&,
+                                                          const Rect& drawBounds,
                                                           bool requireMSAA) const;
 
     // TODO(b/390458117): Vulkan must fall back from reading the dst as an input to using dst copies
