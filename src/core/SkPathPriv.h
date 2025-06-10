@@ -11,6 +11,7 @@
 #include "include/core/SkArc.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathRaw.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -457,6 +458,17 @@ public:
                            SkPathFillType fillType,
                            bool isVolatile) {
         return SkPath::MakeInternal(analysis, points, verbs, verbCount, conics, fillType, isVolatile);
+    }
+
+    static SkPathRaw Raw(const SkPath& path) {
+        return {
+            path.fPathRef->fPoints,
+            path.fPathRef->fVerbs,
+            path.fPathRef->fConicWeights,
+            path.getBounds(),
+            path.getFillType(),
+            path.isConvex(),
+        };
     }
 };
 
