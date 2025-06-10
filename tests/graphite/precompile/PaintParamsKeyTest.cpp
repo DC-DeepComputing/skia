@@ -82,6 +82,10 @@
 // SkPicture.
 bool gNeedSKPPaintOption = false;
 
+struct ExtraDrawState {
+    bool fAnalyticClip = false;
+};
+
 constexpr uint32_t kDefaultSeed = 0;
 
 using namespace skgpu::graphite;
@@ -242,16 +246,18 @@ const char* to_str(ColorFilterType cf) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_CLIPS(M) \
-    M(None)            \
-    M(Shader)          \
-    M(Shader_Diff)
+    M(None)                  \
+    M(Shader)                \
+    M(Shader_Diff)           \
+    M(Analytic)              \
+    M(AnalyticAndShader)
 
 enum class ClipType {
 #define M(type) k##type,
     SK_ALL_TEST_CLIPS(M)
 #undef M
 
-    kLast = kShader_Diff
+    kLast = kAnalyticAndShader
 };
 
 static constexpr int kClipTypeCount = static_cast<int>(ClipType::kLast) + 1;
@@ -1580,13 +1586,16 @@ std::pair<sk_sp<SkMaskFilter>, sk_sp<PrecompileMaskFilter>> create_maskfilter(Sk
 }
 
 //--------------------------------------------------------------------------------------------------
-std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
-                                              Recorder* recorder,
-                                              ShaderType shaderType,
-                                              BlenderType blenderType,
-                                              ColorFilterType colorFilterType,
-                                              MaskFilterType maskFilterType,
-                                              ImageFilterType imageFilterType) {
+std::tuple<SkPaint, ExtraDrawState, PaintOptions> create_paint(
+        SkRandom* rand,
+        Recorder* recorder,
+        ShaderType shaderType,
+        BlenderType blenderType,
+        ColorFilterType colorFilterType,
+        MaskFilterType maskFilterType,
+        ImageFilterType imageFilterType) {
+    ExtraDrawState extraDrawState;
+
     SkColor paintColor = random_color(rand, ColorConstraint::kNone);
 
     SkPaint paint;
@@ -1650,7 +1659,14 @@ std::pair<SkPaint, PaintOptions> create_paint(SkRandom* rand,
         paintOptions.setDither(true);
     }
 
-    return { paint, paintOptions };
+#if 0
+    if (rand->nextBool()) {
+        extraDrawState.fAnalyticClip = true;
+        paintOptions.setAnalyticClip(true);
+    }
+#endif
+
+    return { paint, extraDrawState, paintOptions };
 }
 
 SkPath make_path() {
@@ -1798,6 +1814,13 @@ void check_draw(skiatest::Reporter* reporter,
             case ClipType::kShader_Diff:
                 SkASSERT(clipShader);
                 canvas->clipShader(clipShader, SkClipOp::kDifference);
+                break;
+            case ClipType::kAnalytic:
+                canvas->clipRRect({});
+                break;
+            case ClipType::kAnalyticAndShader:
+                SkASSERT(clipShader);
+                canvas->clipShader(clipShader, SkClipOp::kIntersect);
                 break;
         }
 
@@ -2139,13 +2162,16 @@ void run_test(skiatest::Reporter* reporter,
     sk_sp<SkShader> clipShader;
     sk_sp<PrecompileShader> clipShaderOption;
 
-    if (clip == ClipType::kShader || clip == ClipType::kShader_Diff) {
+    if (clip == ClipType::kShader ||
+        clip == ClipType::kShader_Diff ||
+        clip == ClipType::kAnalyticAndShader) {
         std::tie(clipShader, clipShaderOption) = create_clip_shader(&rand, recorder.get());
         SkASSERT(!clipShader == !clipShaderOption);
     }
 
     gNeedSKPPaintOption = false;
-    auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf, imageFilter);
+    auto [paint, extraDrawState, paintOptions] = create_paint(&rand, recorder.get(), s,
+                                                              bm, cf, mf, imageFilter);
 
     // The PaintOptions' clipShader can be handled here while the SkPaint's clipShader handling
     // must be performed later (in ExtractPaintData or when an SkCanvas is accessible for
@@ -2317,6 +2343,8 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             ClipType::kShader,        // w/ a SkClipOp::kIntersect
             ClipType::kShader_Diff,   // w/ a SkClipOp::kDifference
 #endif
+            ClipType::kAnalytic,
+            ClipType::kAnalyticAndShader, // w/ a SkClipOp::kIntersect
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
