@@ -39,6 +39,30 @@
       },
       "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c3084c16_42a2d643",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 216,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-10T13:54:37Z",
+      "side": 1,
+      "message": "Yeah that\u0027s a good idea, done.",
+      "parentUuid": "8b75c66c_cbea1f98",
+      "range": {
+        "startLine": 216,
+        "startChar": 36,
+        "endLine": 216,
+        "endChar": 64
+      },
+      "revId": "1b6ad611be08f65d7f10cbb912a319122d79b39d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
