@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2441fe2c_8012eb76",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-10T18:39:23Z",
+      "side": 1,
+      "message": "Colortype should be rgb_888x here, Done.",
+      "parentUuid": "6d2bdb53_fde63fd3",
+      "range": {
+        "startLine": 164,
+        "startChar": 27,
+        "endLine": 164,
+        "endChar": 28
+      },
+      "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "69c0ae10_b3d1b86d",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-10T16:11:03Z",
       "side": 1,
       "message": "One more question: is the LE/BE swap sometimes needed for other color types (G16, GA16, RGB16)?",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 62
+      },
+      "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f2a7bff_62c19aab",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-10T18:39:23Z",
+      "side": 1,
+      "message": "From SkPngEncoderBase, we convert all other color types to either A8 (or GrayA8), RGBA8, or RGBA16, so we only have to worry about this LE/BE swap for RGBA16",
+      "parentUuid": "69c0ae10_b3d1b86d",
       "range": {
         "startLine": 239,
         "startChar": 0,
