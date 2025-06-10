@@ -1783,7 +1783,7 @@ static HRESULT create_unique_font_name(char* buffer, size_t bufferSize) {
 static HANDLE activate_font(SkData* fontData) {
     DWORD numFonts = 0;
     //AddFontMemResourceEx just copies the data, but does not specify const.
-    HANDLE fontHandle = AddFontMemResourceEx(const_cast<void*>(fontData->data()),
+    HANDLE fontHandle = AddFontMemResourceEx(fontData->writable_data_nocheck(),
                                              static_cast<DWORD>(fontData->size()),
                                              nullptr,
                                              &numFonts);
