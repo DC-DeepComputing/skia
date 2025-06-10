@@ -16,6 +16,23 @@
       "message": "@fmalita, can you PTAL?",
       "revId": "cf69243ab083dc7217b6e1675bc0ee4143ad98e1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22917b84_ae3c0d68",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 768,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-10T12:51:42Z",
+      "side": 1,
+      "message": "Maybe add a comment describing why this is needed.",
+      "revId": "cf69243ab083dc7217b6e1675bc0ee4143ad98e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
