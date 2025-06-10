@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cf0a39d_b2d48bbd",
+        "filename": "tests/SimplifyPaintTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T13:48:15Z",
+      "side": 1,
+      "message": "I think new tests need to be `kNextRelease`",
+      "range": {
+        "startLine": 205,
+        "startChar": 57,
+        "endLine": 205,
+        "endChar": 73
+      },
+      "revId": "b18e0a741a0e781223f6d908132fbd0436b9a026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

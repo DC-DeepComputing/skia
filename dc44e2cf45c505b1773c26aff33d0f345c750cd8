@@ -22,6 +22,30 @@
       },
       "revId": "dc44e2cf45c505b1773c26aff33d0f345c750cd8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a644ee3_cd89d461",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-10T13:48:15Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "c10482f5_54a5a90d",
+      "range": {
+        "startLine": 88,
+        "startChar": 0,
+        "endLine": 91,
+        "endChar": 93
+      },
+      "revId": "dc44e2cf45c505b1773c26aff33d0f345c750cd8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
