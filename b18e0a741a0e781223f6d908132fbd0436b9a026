@@ -22,6 +22,30 @@
       },
       "revId": "b18e0a741a0e781223f6d908132fbd0436b9a026",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38e59ba5_ea02a29e",
+        "filename": "tests/SimplifyPaintTest.cpp",
+        "patchSetId": 20
+      },
+      "lineNbr": 205,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-10T14:49:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6cf0a39d_b2d48bbd",
+      "range": {
+        "startLine": 205,
+        "startChar": 57,
+        "endLine": 205,
+        "endChar": 73
+      },
+      "revId": "b18e0a741a0e781223f6d908132fbd0436b9a026",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
