@@ -74,7 +74,7 @@ sk_sp<SkPixelRef> SkMallocPixelRef::MakeWithData(const SkImageInfo& info,
         PixelRef(int w, int h, void* s, size_t r, sk_sp<SkData> d)
             : SkPixelRef(w, h, s, r), fData(std::move(d)) {}
     };
-    void* pixels = const_cast<void*>(data->data());
+    void* pixels = data->writable_data_nocheck();
     sk_sp<SkPixelRef> pr(new PixelRef(info.width(), info.height(), pixels, rowBytes,
                                       std::move(data)));
     pr->setImmutable(); // since we were created with (immutable) data

@@ -102,15 +102,15 @@ static sk_sp<SkData> create_data(int numVertices, bool isLinear, SkScalar tol) {
 bool cache_match(const SkData* data, SkScalar tol) {
     SkASSERT(data);
 
-    const TessInfo* info = static_cast<const TessInfo*>(data->data());
+    const TessInfo* info = data->as<TessInfo>();
 
     return info->fIsLinear || info->fTolerance < 3.0f * tol;
 }
 
 // Should 'challenger' replace 'incumbent' in the cache if there is a collision?
 bool is_newer_better(SkData* incumbent, SkData* challenger) {
-    const TessInfo* i = static_cast<const TessInfo*>(incumbent->data());
-    const TessInfo* c = static_cast<const TessInfo*>(challenger->data());
+    const TessInfo* i = incumbent->as<TessInfo>();
+    const TessInfo* c = challenger->as<TessInfo>();
 
     if (i->fIsLinear || i->fTolerance <= c->fTolerance) {
         return false;  // prefer the incumbent

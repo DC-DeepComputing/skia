@@ -1577,7 +1577,7 @@ DEF_FUZZ(SerializedImageFilter, fuzz) {
         return;
     }
     auto data = filter->serialize();
-    const unsigned char* ptr = static_cast<const unsigned char*>(data->data());
+    const unsigned char* ptr = data->as<unsigned char>();
     size_t len = data->size();
 #ifdef SK_ADD_RANDOM_BIT_FLIPS
     unsigned char* p = const_cast<unsigned char*>(ptr);

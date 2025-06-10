@@ -53,7 +53,7 @@ static void TypefaceStyle_test(skiatest::Reporter* reporter,
         dataCopy = SkData::MakeWithCopy(data->data(), data->size());
         data = dataCopy.get();
     }
-    SkSFNTHeader* sfntHeader = static_cast<SkSFNTHeader*>(data->writable_data());
+    SkSFNTHeader* sfntHeader = reinterpret_cast<SkSFNTHeader*>(data->writable_data());
 
     SkSFNTHeader::TableDirectoryEntry* tableEntry =
         SkTAfter<SkSFNTHeader::TableDirectoryEntry>(sfntHeader);

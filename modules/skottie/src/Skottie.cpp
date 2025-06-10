@@ -363,7 +363,7 @@ sk_sp<Animation> Animation::Builder::make(SkStream* stream) {
         return nullptr;
     }
 
-    return this->make(static_cast<const char*>(data->data()), data->size());
+    return this->make(data->as<char>(), data->size());
 }
 
 sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
@@ -459,8 +459,7 @@ sk_sp<Animation> Animation::Builder::make(const char* data, size_t data_len) {
 sk_sp<Animation> Animation::Builder::makeFromFile(const char path[]) {
     const auto data = SkData::MakeFromFileName(path);
 
-    return data ? this->make(static_cast<const char*>(data->data()), data->size())
-                : nullptr;
+    return data ? this->make(data->as<char>(), data->size()) : nullptr;
 }
 
 Animation::Animation(sk_sp<sksg::RenderNode> scene_root,

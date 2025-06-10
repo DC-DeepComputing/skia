@@ -964,7 +964,7 @@ SkString Value::toString() const {
     Write(*this, &wstream);
     const auto data = wstream.detachAsData();
     // TODO: is there a better way to pass data around without copying?
-    return SkString(static_cast<const char*>(data->data()), data->size());
+    return SkString(data->as<char>(), data->size());
 }
 
 static constexpr size_t kMinChunkSize = 4096;

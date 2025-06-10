@@ -170,9 +170,9 @@ DEF_TEST(ExifParse, r) {
         // Zero out the denominators of signed and unsigned rationals, to verify that we do not
         // divide by zero.
         data = SkData::MakeWithCopy(data->bytes(), data->size());
-        memset(static_cast<uint8_t*>(data->writable_data()) + 186, 0, 4);
-        memset(static_cast<uint8_t*>(data->writable_data()) + 2171, 0, 4);
-        memset(static_cast<uint8_t*>(data->writable_data()) + 2240, 0, 4);
+        memset(data->writable_data() + 186, 0, 4);
+        memset(data->writable_data() + 2171, 0, 4);
+        memset(data->writable_data() + 2240, 0, 4);
 
         // Parse the corrupted Exif.
         SkExif::Metadata exif;
