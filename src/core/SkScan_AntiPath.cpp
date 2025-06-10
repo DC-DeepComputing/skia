@@ -19,42 +19,6 @@
 
 #include <cstdint>
 
-static SkIRect safeRoundOut(const SkRect& src) {
-    // roundOut will pin huge floats to max/min int
-    SkIRect dst = src.roundOut();
-
-    // intersect with a smaller huge rect, so the rect will not be considered empty for being
-    // too large. e.g. { -SK_MaxS32 ... SK_MaxS32 } is considered empty because its width
-    // exceeds signed 32bit.
-    const int32_t limit = SK_MaxS32 >> SK_SUPERSAMPLE_SHIFT;
-    (void)dst.intersect({ -limit, -limit, limit, limit});
-
-    return dst;
-}
-
-static int overflows_short_shift(int value, int shift) {
-    const int s = 16 + shift;
-    return (SkLeftShift(value, s) >> s) - value;
-}
-
-/**
-  Would any of the coordinates of this rectangle not fit in a short,
-  when left-shifted by shift?
-*/
-static int rect_overflows_short_shift(SkIRect rect, int shift) {
-    SkASSERT(!overflows_short_shift(8191, shift));
-    SkASSERT(overflows_short_shift(8192, shift));
-    SkASSERT(!overflows_short_shift(32767, 0));
-    SkASSERT(overflows_short_shift(32768, 0));
-
-    // Since we expect these to succeed, we bit-or together
-    // for a tiny extra bit of speed.
-    return overflows_short_shift(rect.fLeft, shift) |
-           overflows_short_shift(rect.fRight, shift) |
-           overflows_short_shift(rect.fTop, shift) |
-           overflows_short_shift(rect.fBottom, shift);
-}
-
 void SkScan::AntiFillPath(const SkPath& path, const SkRegion& origClip,
                           SkBlitter* blitter, bool forceRLE) {
     if (origClip.isEmpty()) {
@@ -62,7 +26,7 @@ void SkScan::AntiFillPath(const SkPath& path, const SkRegion& origClip,
     }
 
     const bool isInverse = path.isInverseFillType();
-    SkIRect ir = safeRoundOut(path.getBounds());
+    SkIRect ir = path.getBounds().roundOut();
     if (ir.isEmpty()) {
         if (isInverse) {
             blitter->blitRegion(origClip);
@@ -83,17 +47,12 @@ void SkScan::AntiFillPath(const SkPath& path, const SkRegion& origClip,
            return;
        }
     }
-    if (rect_overflows_short_shift(clippedIR, SK_SUPERSAMPLE_SHIFT)) {
-        SkScan::FillPath(path, origClip, blitter);
-        return;
-    }
 
     // Our antialiasing can't handle a clip larger than 32767, so we restrict
     // the clip to that limit here. (the runs[] uses int16_t for its index).
     //
     // A more general solution (one that could also eliminate the need to
-    // disable aa based on ir bounds (see overflows_short_shift) would be
-    // to tile the clip/target...
+    // disable aa based on ir bounds would be to tile the clip/target...
     SkRegion tmpClipStorage;
     const SkRegion* clipRgn = &origClip;
     {
