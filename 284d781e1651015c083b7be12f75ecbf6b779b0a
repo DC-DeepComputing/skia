@@ -117,6 +117,30 @@
       },
       "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b0d9778b_ebc72087",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-10T20:11:04Z",
+      "side": 1,
+      "message": "I will see if there is a way to make this more obvious in a follow up CL. I think in the kNone_ExtraRowTransform case we could also have 1 or 2 bit channels, but seems like a fine place to check, thanks.",
+      "parentUuid": "c2012798_42a4c2b2",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 62
+      },
+      "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
