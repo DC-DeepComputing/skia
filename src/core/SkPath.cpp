@@ -9,6 +9,7 @@
 
 #include "include/core/SkArc.h"
 #include "include/core/SkPathBuilder.h"
+#include "include/core/SkPathRaw.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkSpan.h"
@@ -3214,6 +3215,17 @@ int SkPath::ConvertConicToQuads(const SkPoint& p0, const SkPoint& p1, const SkPo
                                 SkScalar w, SkPoint pts[], int pow2) {
     const SkConic conic(p0, p1, p2, w);
     return conic.chopIntoQuadsPOW2(pts, pow2);
+}
+
+SkPathRaw SkPath::raw() const {
+    return {
+        fPathRef->fPoints,
+        fPathRef->fVerbs,
+        fPathRef->fConicWeights,
+        this->getBounds(),
+        this->getFillType(),
+        this->isConvex(),
+    };
 }
 
 bool SkPathPriv::IsSimpleRect(const SkPath& path, bool isSimpleFill, SkRect* rect,

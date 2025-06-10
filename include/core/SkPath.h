@@ -29,6 +29,7 @@
 struct SkArc;
 class SkData;
 class SkPathRef;
+struct SkPathRaw;
 class SkRRect;
 class SkWStream;
 enum class SkPathConvexity;
@@ -1512,6 +1513,8 @@ public:
         kClose_Verb = static_cast<int>(SkPathVerb::kClose),
         kDone_Verb  = kClose_Verb + 1
     };
+
+    SkPathRaw raw() const;
 
     /** \class SkPath::Iter
         Iterates through verb array, and associated SkPoint array and conic weight.
