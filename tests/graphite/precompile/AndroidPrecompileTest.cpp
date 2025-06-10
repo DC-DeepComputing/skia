@@ -54,8 +54,8 @@ const PrecompileSettings kPrecompileCases[] = {
 
 // 75% (2/2) handles 28 59 60
 /*  8 */ { SolidSrcSrcover(),                  kRRectAndNonAARect,              kRGBA_1_D },
-// 50% (1/2) handles 77 - due to the w/o msaa load variants not being used
-/*  9 */ { SolidSrcover(),                     DrawTypeFlags::kNonAAFillRect,   kRGBA_4_DS },
+// 50% (2/4) handles 77 90
+/*  9 */ { SolidSrcover(),                     kRRectAndNonAARect,              kRGBA_4_DS },
 
 // 100% (2/2) handles 19 39
 /* 10 */ { ImagePremulHWOnlyMatrixCFSrcover(), kRRectAndNonAARect,              kRGBA_1_D },
@@ -201,7 +201,20 @@ const PrecompileSettings kPrecompileCases[] = {
            DrawTypeFlags::kAnalyticRRect,
            kRGBA_1_D_SRGB },
 
+// 59% (13/22) handles 78 79 84 85 87 88 (98 99 100 101 102 103 104)
+/* 44 */ { SolidSrcover(), DrawTypeFlags::kNonSimpleShape, kRGBA_4_DS },
+
+///* 45 */ { SolidSrcover(), DrawTypeFlags::kNonSimpleShape, kRGBA_4_DS }
+
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
+
+// 100% (2/2) handles 91 92
+/* ?? */ { ImagePremulYCbCr238Srcover(),       kRRectAndNonAARect,              kRGBA_4_DS },
+
+// 50% (1/2) handles 97
+/* ?? */ { TransparentPaintImagePremulYCbCr238Srcover(), kRRectAndNonAARect,    kRGBA_1_D },
+//----------
+
 // 100% (2/2) handles 26 50
 /* 44 */ { ImagePremulYCbCr238Srcover(),       kRRectAndNonAARect,              kRGBA_1_D },
 // 100% (1/1) handles 49
@@ -236,6 +249,33 @@ const PrecompileSettings kPrecompileCases[] = {
            kRGBA_4_DS_SRGB },
 #endif
 };
+
+    static const char* kNewCases[] = {
+#if 0
+/* 63 */    "RP((RGBA8+D16 x1).rgba) + VerticesRenderStep[TrisColor] + Compose [ BlendCompose [ RGBPaintColor Compose [ PrimitiveColor ColorSpaceTransformPremul ] Modulate ] Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver",
+/* 61 */    "RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + SolidColor SrcOver AnalyticClip",
+/* 51 */    "RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
+#endif
+/* 87 */    "RP((RGBA8+D24_S8 x4->1).rgba) + TessellateWedgesRenderStep[EvenOdd] + (empty)",
+/* 88 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[RegularCover] + SolidColor SrcOver",
+/* 89 */    "RP((RGBA8+D24_S8 x4->1).rgba) + AnalyticBlurRenderStep + SolidColor SrcOver",
+/* 90 */    "RP((RGBA8+D24_S8 x4->1).rgba) + AnalyticRRectRenderStep + SolidColor SrcOver",
+/* 91 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver",
+/* 92 */    "RP((RGBA8+D24_S8 x4->1).rgba) + AnalyticRRectRenderStep + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver",
+/* 93 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[NonAAFill] + SolidColor SrcOver AnalyticClip",
+/* 94 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
+/* 95 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
+/* 96 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[NonAAFill] + SolidColor Src AnalyticClip",
+/* 97 */    "RP((RGBA8+D16 x1).rgba) + AnalyticRRectRenderStep + BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver",
+
+#if 0
+/* 46 */    "RP((RGBA8+D16 x1).rgba) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip",
+/* 84 */    "RP((RGBA8+D24_S8 x4->1).rgba) + MiddleOutFanRenderStep[EvenOdd] + (empty)",
+/* 85 */    "RP((RGBA8+D24_S8 x4->1).rgba) + TessellateCurvesRenderStep[EvenOdd] + (empty)",
+/* 81 */    "RP((RGBA8+D24_S8 x4->1).rgba) + CoverBoundsRenderStep[InverseCover] + (empty)",
+#endif
+/* 87 */    "RP((RGBA8+D24_S8 x4->1).rgba) + TessellateWedgesRenderStep[EvenOdd] + (empty)",
+    };
 
 // These Pipelines are candidates for inclusion in Android's precompile. They were generated
 // by collecting all the Pipelines from the main Android CUJs, including various HDR cases.
@@ -480,10 +520,10 @@ static const PipelineLabel kCases[] = {
 /*  77 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "SolidColor SrcOver" },
-/*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  78 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "MiddleOutFanRenderStep[EvenOdd] + "
                 "(empty)" },
-/*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/*  79 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "TessellateCurvesRenderStep[EvenOdd] + "
                 "(empty)" },
 /*  80 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
@@ -498,15 +538,73 @@ static const PipelineLabel kCases[] = {
 /*  83 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "Compose [ SolidColor MatrixColorFilter ] SrcOver" },
-/*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+/*  84 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "MiddleOutFanRenderStep[EvenOdd] + "
                 "(empty)" },
-/*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+/*  85 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "TessellateCurvesRenderStep[EvenOdd] + "
                 "(empty)" },
 /*   ? */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "VerticesRenderStep[TrisColor] + "
                 "Compose [ BlendCompose [ RGBPaintColor Compose [ PrimitiveColor ColorSpaceTransformPremul ] Modulate ] Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver" },
+
+                // New Cases 6/10/25
+/*  87 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "TessellateWedgesRenderStep[EvenOdd] + "
+                "(empty)" },
+/*  88 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[RegularCover] + "
+                "SolidColor SrcOver" },
+/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "AnalyticBlurRenderStep + "
+                "SolidColor SrcOver" },
+/*  90 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "AnalyticRRectRenderStep + "
+                "SolidColor SrcOver" },
+/*  91 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
+/*  92 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "AnalyticRRectRenderStep + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
+/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "SolidColor SrcOver AnalyticClip" },
+/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip" },
+/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver AnalyticClip" },
+/*   X */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "SolidColor Src AnalyticClip" },
+/*  97 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+                "AnalyticRRectRenderStep + "
+                "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
+
+                // Synthetic placeholders for non-convex draw helpers
+/*  98 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "MiddleOutFanRenderStep[Winding] + "
+                "(empty)" },
+/*  99 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "MiddleOutFanRenderStep[Winding] + "
+                "(empty)" },
+/* 100 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "TessellateCurvesRenderStep[Winding] + "
+                "(empty)" },
+/* 101 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "TessellateCurvesRenderStep[Winding] + "
+                "(empty)" },
+/* 102 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "TessellateWedgesRenderStep[Winding] + "
+                "(empty)" },
+/* 103 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "TessellateWedgesRenderStep[Winding] + "
+                "(empty)" },
+/* 104 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "TessellateWedgesRenderStep[EvenOdd] + "
+                "(empty)" },
 };
 
 bool skip(const char* str) {
@@ -546,6 +644,16 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
                                reporter, context, /* testContext */, CtsEnforcement::kNever) {
     using namespace skgpu::graphite;
 
+#if 0
+    for (size_t i = 0; i < std::size(kNewCases); ++i) {
+        for (size_t j = 0; j < std::size(kCases); ++j) {
+            if (!strcmp(kNewCases[i], kCases[j].fString)) {
+                SkDebugf("dup: new %zu old %zu\n", i, j);
+            }
+        }
+    }
+#endif
+
 #if defined(SK_VULKAN)
     // Use this call to map back from a HardwareImage sub-string to a VulkanYcbcrConversionInfo
     //Base642YCbCr("kEwAAPcAAAAAAAAA");
@@ -580,7 +688,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 9; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
