@@ -487,17 +487,17 @@ static void run_test_case(skiatest::Reporter* r, const TestCase& test) {
 }
 
 static SkPath make_octagon(const SkRect& r, SkScalar lr, SkScalar tb) {
-    SkPath p;
-    p.moveTo(r.fLeft + lr, r.fTop);
-    p.lineTo(r.fRight - lr, r.fTop);
-    p.lineTo(r.fRight, r.fTop + tb);
-    p.lineTo(r.fRight, r.fBottom - tb);
-    p.lineTo(r.fRight - lr, r.fBottom);
-    p.lineTo(r.fLeft + lr, r.fBottom);
-    p.lineTo(r.fLeft, r.fBottom - tb);
-    p.lineTo(r.fLeft, r.fTop + tb);
-    p.close();
-    return p;
+    return SkPathBuilder()
+        .moveTo(r.fLeft + lr, r.fTop)
+        .lineTo(r.fRight - lr, r.fTop)
+        .lineTo(r.fRight, r.fTop + tb)
+        .lineTo(r.fRight, r.fBottom - tb)
+        .lineTo(r.fRight - lr, r.fBottom)
+        .lineTo(r.fLeft + lr, r.fBottom)
+        .lineTo(r.fLeft, r.fBottom - tb)
+        .lineTo(r.fLeft, r.fTop + tb)
+        .close()
+        .detach();
 }
 
 static SkPath make_octagon(const SkRect& r) {
@@ -814,16 +814,18 @@ DEF_TEST(ClipStack_PathSimplify, r) {
                               .actual().path(empty).finishElements()
                               .state(ClipState::kEmpty)
                               .finishTest());
-    SkPath point;
-    point.moveTo({0.f, 0.f});
+    SkPath point = SkPathBuilder()
+        .moveTo({0.f, 0.f})
+        .detach();
     run_test_case(r, TestCase::Build("point", kDeviceBounds)
                               .actual().path(point).finishElements()
                               .state(ClipState::kEmpty)
                               .finishTest());
 
-    SkPath line;
-    line.moveTo({0.f, 0.f});
-    line.lineTo({10.f, 5.f});
+    SkPath line = SkPathBuilder()
+        .moveTo({0.f, 0.f})
+        .lineTo({10.f, 5.f})
+        .detach();
     run_test_case(r, TestCase::Build("line", kDeviceBounds)
                               .actual().path(line).finishElements()
                               .state(ClipState::kEmpty)
@@ -831,8 +833,7 @@ DEF_TEST(ClipStack_PathSimplify, r) {
 
     // Rect path -> rect element
     SkRect rect = {0.f, 2.f, 10.f, 15.4f};
-    SkPath rectPath;
-    rectPath.addRect(rect);
+    SkPath rectPath = SkPath::Rect(rect);
     run_test_case(r, TestCase::Build("rect", kDeviceBounds)
                               .actual().path(rectPath).finishElements()
                               .expect().rect(rect).finishElements()
@@ -840,8 +841,7 @@ DEF_TEST(ClipStack_PathSimplify, r) {
                               .finishTest());
 
     // Oval path -> rrect element
-    SkPath ovalPath;
-    ovalPath.addOval(rect);
+    SkPath ovalPath = SkPath::Oval(rect);
     run_test_case(r, TestCase::Build("oval", kDeviceBounds)
                               .actual().path(ovalPath).finishElements()
                               .expect().rrect(SkRRect::MakeOval(rect)).finishElements()
@@ -850,8 +850,7 @@ DEF_TEST(ClipStack_PathSimplify, r) {
 
     // RRect path -> rrect element
     SkRRect rrect = SkRRect::MakeRectXY(rect, 2.f, 2.f);
-    SkPath rrectPath;
-    rrectPath.addRRect(rrect);
+    SkPath rrectPath = SkPath::RRect(rrect);
     run_test_case(r, TestCase::Build("rrect", kDeviceBounds)
                               .actual().path(rrectPath).finishElements()
                               .expect().rrect(rrect).finishElements()
@@ -910,12 +909,13 @@ DEF_TEST(ClipStack_RepeatElement, r) {
                               .finishTest());
 
     // Same complicated path by gen-id but not ==
-    SkPath path; // an hour glass
-    path.moveTo({0.f, 0.f});
-    path.lineTo({20.f, 20.f});
-    path.lineTo({0.f, 20.f});
-    path.lineTo({20.f, 0.f});
-    path.close();
+    SkPath path = SkPathBuilder() // an hour glass
+        .moveTo({0.f, 0.f})
+        .lineTo({20.f, 20.f})
+        .lineTo({0.f, 20.f})
+        .lineTo({20.f, 0.f})
+        .close()
+        .detach();
 
     run_test_case(r, TestCase::Build("same-path", kDeviceBounds)
                               .actual().path(path).path(path).path(path).finishElements()
@@ -936,15 +936,12 @@ DEF_TEST(ClipStack_InverseFilledPath, r) {
     using ClipState = skgpu::ganesh::ClipStack::ClipState;
 
     SkRect rect = {0.f, 0.f, 16.f, 17.f};
-    SkPath rectPath;
-    rectPath.addRect(rect);
+    SkPath rectPath = SkPath::Rect(rect);
 
-    SkPath inverseRectPath = rectPath;
-    inverseRectPath.toggleInverseFillType();
+    SkPath inverseRectPath = rectPath.makeToggleInverseFillType();
 
     SkPath complexPath = make_octagon(rect);
-    SkPath inverseComplexPath = complexPath;
-    inverseComplexPath.toggleInverseFillType();
+    SkPath inverseComplexPath = complexPath.makeToggleInverseFillType();
 
     // Inverse filled rect + intersect -> diff rect
     run_test_case(r, TestCase::Build("inverse-rect-intersect", kDeviceBounds)
@@ -2107,10 +2104,11 @@ DEF_GANESH_TEST_FOR_CONTEXTS(ClipStack_SWMask,
     std::unique_ptr<ClipStack> cs(new ClipStack(kDeviceBounds, &SkMatrix::I(), false));
 
     auto addMaskRequiringClip = [&](SkScalar x, SkScalar y, SkScalar radius) {
-        SkPath path;
-        path.addCircle(x, y, radius);
-        path.addCircle(x + radius / 2.f, y + radius / 2.f, radius);
-        path.setFillType(SkPathFillType::kEvenOdd);
+        SkPath path = SkPathBuilder()
+            .addCircle(x, y, radius)
+            .addCircle(x + radius / 2.f, y + radius / 2.f, radius)
+            .setFillType(SkPathFillType::kEvenOdd)
+            .detach();
 
         // Use AA so that clip application does not route through the stencil buffer
         cs->clipPath(SkMatrix::I(), path, GrAA::kYes, SkClipOp::kIntersect);

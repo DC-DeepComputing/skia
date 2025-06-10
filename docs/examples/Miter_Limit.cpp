@@ -10,10 +10,11 @@ void draw(SkCanvas* canvas) {
     const SkScalar strokeWidth = 20;
     SkScalar miterLimit = 1 / SkScalarSin((angle2 - angle1) / 2);
     SkScalar miterLength = strokeWidth * miterLimit;
-    SkPath path;
-    path.moveTo(pts[0]);
-    path.lineTo(pts[1]);
-    path.lineTo(pts[2]);
+    SkPath path = SkPathBuilder()
+        .moveTo(pts[0])
+        .lineTo(pts[1])
+        .lineTo(pts[2])
+        .detach();
     SkPaint paint;  // set to default kMiter_Join
     paint.setAntiAlias(true);
     paint.setStyle(SkPaint::kStroke_Style);

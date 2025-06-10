@@ -7,6 +7,7 @@
 
 #include "bench/Benchmark.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/gpu/ganesh/GrEagerVertexAllocator.h"
 #include "src/gpu/ganesh/geometry/GrInnerFanTriangulator.h"
@@ -39,7 +40,7 @@ public:
 protected:
     void onDelayedSetup() override {
         for (int i = 0; i < kNumTigerPaths; ++i) {
-            SkPath& path = fPaths.push_back();
+            SkPathBuilder path;
             const std::vector<SkPoint>& pts = kTigerPaths[i].fPoints;
             int ptsIdx = 0;
             for (const char* v = kTigerPaths[i].fVerbs; *v; ++v) {
@@ -65,6 +66,7 @@ protected:
                         break;
                 }
             }
+            fPaths.push_back(path.detach());
             SkASSERT(ptsIdx == (int)pts.size());
         }
     }

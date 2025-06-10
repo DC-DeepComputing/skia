@@ -152,7 +152,7 @@ static void draw_test(SkCanvas* canvas, SkPaint::Cap cap, SkPaint::Join join) {
         canvas->concat(matrix);
         strokePaint.setStrokeWidth(kStrokeWidth / matrix.getMaxScale());
         strokePaint.setColor(rand.nextU() | 0xff808080);
-        SkPath path = SkPath().moveTo(p[0]);
+        SkPathBuilder path = SkPathBuilder().moveTo(p[0]);
         if (numPts == 4) {
             path.cubicTo(p[1], p[2], p[3]);
         } else if (w == 1) {
@@ -162,7 +162,7 @@ static void draw_test(SkCanvas* canvas, SkPaint::Cap cap, SkPaint::Join join) {
             SkASSERT(numPts == 3);
             path.conicTo(p[1], p[2], w);
         }
-        canvas->drawPath(path, strokePaint);
+        canvas->drawPath(path.detach(), strokePaint);
     }
 }
 

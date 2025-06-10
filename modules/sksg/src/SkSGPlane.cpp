@@ -8,7 +8,7 @@
 #include "modules/sksg/include/SkSGPlane.h"
 
 #include "include/core/SkCanvas.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkAssert.h"
@@ -34,10 +34,9 @@ SkRect Plane::onRevalidate(InvalidationController*, const SkMatrix&) {
 }
 
 SkPath Plane::onAsPath() const {
-    SkPath path;
+    SkPathBuilder path;
     path.setFillType(SkPathFillType::kInverseWinding);
-
-    return path;
+    return path.detach();
 }
 
 }  // namespace sksg

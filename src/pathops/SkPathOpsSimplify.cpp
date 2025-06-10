@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
@@ -210,12 +211,11 @@ bool SimplifyDebug(const SkPath& path, SkPath* result
 
     if (path.isConvex()) {
         // If the path is trivially convex, simplify to empty.
+        SkPathBuilder builder = SkPathBuilder(path);
         if (path_is_trivial(path)) {
-            result->reset();
-        } else if (result != &path) {
-            *result = path;
+            builder.reset();
         }
-        result->setFillType(fillType);
+        *result = builder.setFillType(fillType).detach();
         return true;
     }
     // turn path into list of segments
@@ -244,8 +244,10 @@ bool SimplifyDebug(const SkPath& path, SkPath* result
     contour.dumpSegments();
 #endif
     if (!SortContourList(&contourList, false, false)) {
-        result->reset();
-        result->setFillType(fillType);
+        *result = SkPathBuilder(path)
+            .reset()
+            .setFillType(fillType)
+            .detach();
         return true;
     }
     // find all intersections between segments
@@ -269,8 +271,7 @@ bool SimplifyDebug(const SkPath& path, SkPath* result
     contour.dumpSegments("aligned");
 #endif
     // construct closed contours
-    result->reset();
-    result->setFillType(fillType);
+    *result = SkPathBuilder(path).reset().setFillType(fillType).detach();
     SkPathWriter wrapper(*result);
     if (builder.xorMask() == kWinding_PathOpsMask ? !bridgeWinding(contourList, &wrapper)
             : !bridgeXor(contourList, &wrapper)) {

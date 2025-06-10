@@ -10,6 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -116,7 +117,7 @@ public:
         this->sliceConic(halves[1].fPts[1], halves[1].fPts[2], halves[1].fW, numSubdivisions - 1);
     }
 
-    const SkPath& path() const { return fPath; }
+    SkPath path() const { return fPath.snapshot(); }
 
 private:
     float chooseChopT(int numSubdivisions) {
@@ -130,7 +131,7 @@ private:
     }
 
     SkRandom fRand;
-    SkPath fPath;
+    SkPathBuilder fPath;
     SkPoint fAnchorPt;
     SkPoint fLastPt;
 };
