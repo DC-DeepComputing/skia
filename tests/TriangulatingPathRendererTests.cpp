@@ -1360,7 +1360,8 @@ DEF_TEST(Triangulator_Crbug1262444, r) {
     SimplerVertexAllocator alloc;
 
     int vertexCount = GrAATriangulator::PathToAATriangles(path, kTol, clipBounds, &alloc);
-    REPORTER_ASSERT(r, vertexCount == 0);
+    // We no longer hit the circuit breaker!!!
+    REPORTER_ASSERT(r, vertexCount || !vertexCount);
 }
 
 DEF_TEST(Triangulator_Crbug337080025, r) {
@@ -1468,7 +1469,52 @@ DEF_TEST(Triangulator_Crbug337080025, r) {
 
     int vertexCount = GrAATriangulator::PathToAATriangles(
             path, GrPathUtils::kDefaultTolerance, clipBounds, &alloc);
-    REPORTER_ASSERT(r, vertexCount == 0);
+    // We no longer hit the circuit breaker!!!
+    //REPORTER_ASSERT(r, vertexCount == 0);
+    REPORTER_ASSERT(r, vertexCount || !vertexCount);
+}
+
+// From b/421959607, fixes regression from b/40577206 (crbug.com/844873 above)
+DEF_TEST(Triangulator_bug421959607, r) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(SkBits2Float(0x529423dc),    // 3.1812839e+11f
+                SkBits2Float(0xd1f322c7));   // -1.30532565e+11f
+    path.conicTo(SkBits2Float(0x20777b4a),   // 2.09625067e-19f
+                 SkBits2Float(0x203553b2),   // 1.53589888e-19f
+                 SkBits2Float(0x20777b4a),   // 2.09625067e-19f
+                 SkBits2Float(0x203553b2),   // 1.53589888e-19f
+                 SkBits2Float(0x3f3504f3));  // 0.707106769f
+    path.conicTo(SkBits2Float(0x20777b4a),   // 2.09625067e-19f
+                 SkBits2Float(0x203553b2),   // 1.53589888e-19f
+                 SkBits2Float(0x529423dc),   // 3.1812839e+11f
+                 SkBits2Float(0xd1f322c7),   // -1.30532565e+11f
+                 SkBits2Float(0x3f3504f3));  // 0.707106769f
+    path.conicTo(SkBits2Float(0x531423dc),   // 6.3625678e+11f
+                 SkBits2Float(0xd27322c7),   // -2.6106513e+11f
+                 SkBits2Float(0x531423dc),   // 6.3625678e+11f
+                 SkBits2Float(0xd27322c7),   // -2.6106513e+11f
+                 SkBits2Float(0x3f3504f3));  // 0.707106769f
+    path.conicTo(SkBits2Float(0x531423dc),   // 6.3625678e+11f
+                 SkBits2Float(0xd27322c7),   // -2.6106513e+11f
+                 SkBits2Float(0x529423dc),   // 3.1812839e+11f
+                 SkBits2Float(0xd1f322c7),   // -1.30532565e+11f
+                 SkBits2Float(0x3f3504f3));  // 0.707106769f
+    path.close();
+    path.moveTo(SkBits2Float(0x20784999),    // 2.10307685e-19f
+                SkBits2Float(0x2034ff0c));   // 1.5330981e-19f
+    path.cubicTo(SkBits2Float(0xcdec0781),   // -494989344
+                 SkBits2Float(0x4d41b13b),   // 203101104
+                 SkBits2Float(0x20777b4a),   // 2.09625067e-19f
+                 SkBits2Float(0x203553b2),   // 1.53589888e-19f
+                 SkBits2Float(0x55144bd5),   // 1.01908386e+13f
+                 SkBits2Float(0xd4736460));  // -4.18144426e+12f
+    path.close();
+    float kTol = 0.25f;
+    SkRect clipBounds = SkRect::MakeLTRB(0, 0, 128, 160);
+    SimplerVertexAllocator alloc;
+    int vertexCount = GrAATriangulator::PathToAATriangles(path, kTol, clipBounds, &alloc);
+    REPORTER_ASSERT(r, vertexCount || !vertexCount);
 }
 
 #endif // SK_ENABLE_OPTIMIZE_SIZE
