@@ -46,7 +46,7 @@ public:
             return;
         }
         auto [effect, error] = SkRuntimeEffect::MakeForShader(
-                SkString(static_cast<const char*>(shaderData->data()), shaderData->size()));
+                SkString(shaderData->as<char>(), shaderData->size()));
         if (!effect) {
             SkDebugf("Ripple shader failed to compile\n\n%s\n", error.c_str());
         }
