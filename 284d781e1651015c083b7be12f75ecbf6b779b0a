@@ -93,6 +93,30 @@
       },
       "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c2012798_42a4c2b2",
+        "filename": "experimental/rust_png/encoder/impl/SkPngRustEncoderImpl.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-10T19:48:49Z",
+      "side": 1,
+      "message": "Thanks for explaining.  This seems a bit subtle/fragile (e.g. it may be possible to change `SkPngEncoderBase` and forget to change its subclasses;  or vice versa).  But I don\u0027t really have any smart ideas how to make this better.  Maybe assert that in the `kNone_ExtraRowTransform` case we always deal with 8-bit rows (I am not sure how exactly to assert that / when `fDstRowInfo` is available and if it would be the right place to check).",
+      "parentUuid": "6f2a7bff_62c19aab",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 62
+      },
+      "revId": "284d781e1651015c083b7be12f75ecbf6b779b0a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
