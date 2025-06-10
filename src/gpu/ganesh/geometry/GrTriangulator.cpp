@@ -160,7 +160,7 @@ bool GrTriangulator::Line::intersect(const Line& other, SkPoint* point) const {
     double scale = 1.0 / denom;
     point->fX = double_to_clamped_scalar((fB * other.fC - other.fB * fC) * scale);
     point->fY = double_to_clamped_scalar((other.fA * fC - fA * other.fC) * scale);
-     round(point);
+    round(point);
     return point->isFinite();
 }
 
@@ -879,6 +879,35 @@ bool GrTriangulator::setBottom(Edge* edge, Vertex* v, EdgeList* activeEdges, Ver
     return this->mergeCollinearEdges(edge, activeEdges, current, c);
 }
 
+/*
+ * NOTE: Also used in mergeEdgesBelow()
+ * Merges two adjacent, collinear edges. This is a complex operation with two main cases:
+ *
+ * 1. Coincident endpoints: If the edges share the exact same top/bottom vertex, one edge's
+ * winding is absorbed into the other. The now-unused "zombie" edge is fully disconnected and
+ * also explicitly removed from the activeEdges list to prevent state corruption that can lead
+ * to null-pointer dereferences (b/419397557, b/421959607).
+ *
+ * 2. Non-coincident (overlapping) endpoints: One edge is shortened to meet the endpoint of the
+ * other by modifying it in-place. This is a fragile operation that relies on several
+ * robustness measures to succeed:
+ *
+ * a. The initial rewind() call sets the sweep-line state to a stable point in time
+ * before the merge begins.
+ *
+ * b. The line equations are always normalized and the geometric checks (`isLeftOf`, etc.)
+ * use an adaptive, per-edge epsilon. This ensures that the decision to merge is
+ * mathematically sound, even with pathological floating-point coordinates, and
+ * prevents hangs from phantom intersections (b/337080025, b/40799501).
+ *
+ * c. After the edge is modified, `rewind_if_necessary()` is called. Because its underlying
+ * geometric checks are now robust, it can reliably detect and fix any resulting list
+ * ordering violations, preventing debug assertions (b/421959607).
+ *
+ * This combination of correct state management for "zombie" edges and robust, adaptive
+ * mathematics for all geometric checks allows the original in-place modification logic to
+ * work correctly across all known pathological cases.
+ */
 bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -893,6 +922,9 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fTop->fPoint, other->fTop->fPoint)) {
         if (!rewind(activeEdges, current, edge->fTop, c)) {
@@ -914,6 +946,7 @@ bool GrTriangulator::mergeEdgesAbove(Edge* edge, Edge* other, EdgeList* activeEd
     return true;
 }
 
+// NOTE: See mergeEdgesAbove() comment
 bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEdges,
                                      Vertex** current, const Comparator& c) const {
     if (!edge || !other) {
@@ -928,6 +961,9 @@ bool GrTriangulator::mergeEdgesBelow(Edge* edge, Edge* other, EdgeList* activeEd
         }
         other->fWinding += edge->fWinding;
         edge->disconnect();
+        if (activeEdges) {
+            activeEdges->remove(edge);
+        }
         edge->fTop = edge->fBottom = nullptr;
     } else if (c.sweep_lt(edge->fBottom->fPoint, other->fBottom->fPoint)) {
         if (!rewind(activeEdges, current, other->fTop, c)) {
