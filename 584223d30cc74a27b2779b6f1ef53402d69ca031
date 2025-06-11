@@ -636,6 +636,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ca48e02_55b88e3a",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:28:38Z",
+      "side": 1,
+      "message": "Disregard, if this is because the preferred features API takes in vector, since we don\u0027t expose TArray to the client and there isn\u0027t a suitable replacement for mutable container that the caller can use other than vector :/",
+      "parentUuid": "169c4418_569e6b4e",
+      "range": {
+        "startLine": 794,
+        "startChar": 4,
+        "endLine": 794,
+        "endChar": 16
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6d144f9_9292717c",
         "filename": "tools/gpu/vk/VkTestUtils.cpp",
         "patchSetId": 8
