@@ -172,6 +172,7 @@ private:
                    PipelineDataGatherer*,
                    int desiredCombination,
                    bool addPrimitiveBlender,
+                   bool addAnalyticClip,
                    Coverage coverage) const;
 
     typedef std::function<void(UniquePaintParamsID id,

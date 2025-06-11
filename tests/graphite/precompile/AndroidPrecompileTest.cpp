@@ -35,6 +35,7 @@ const PrecompileSettings kPrecompileCases[] = {
 /*  0 */ { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
 // 100% (2/2) handles: 22 42
 /*  1 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_1_D },
+
 // 50% (2/4) handles: 63 72 - due to the w/o msaa load variants not being used
 /*  2 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_4_DS },
 
@@ -51,7 +52,7 @@ const PrecompileSettings kPrecompileCases[] = {
 // 100% (2/2) handles 10 29
 /*  7 */ { TransparentPaintImageSRGBHWOnlySrcover(), kRRectAndNonAARect,        kRGBA_1_D_SRGB },
 
-// 75% (2/2) handles 27 56 57
+// 75% (3/4) handles 27 56 57
 /*  8 */ { SolidSrcSrcover(),                  kRRectAndNonAARect,              kRGBA_1_D },
 
 // 50% (2/4) handles 74 86
@@ -73,6 +74,7 @@ const PrecompileSettings kPrecompileCases[] = {
 
 // 100% (2/2) handles 16 32
 /* 14 */ { ImagePremulHWOnlyMatrixCFDitherSrcover(), kRRectAndNonAARect,        kRGBA_1_D },
+
 // 50% (1/2) handles 69 - due to the w/o msaa load variants not being used
 /* 15 */ { ImagePremulHWOnlyMatrixCFDitherSrcover(), DrawTypeFlags::kNonAAFillRect, kRGBA_4_DS },
 
@@ -82,11 +84,13 @@ const PrecompileSettings kPrecompileCases[] = {
 
 // 100% (2/2) handles 17 34
 /* 17 */ { ImageSRGBHWOnlyMatrixCFDitherSrcover(), kRRectAndNonAARect,          kRGBA_1_D_SRGB },
+
 // 50% (1/2) handles 77 - due to the w/o msaa load variants not being used
 /* 18 */ { ImageSRGBHWOnlyMatrixCFDitherSrcover(), DrawTypeFlags::kAnalyticRRect, kRGBA_4_DS_SRGB },
 
 // 100% (1/1) handles 36
 /* 19 */ { ImageAlphaPremulHWOnlyMatrixCFSrcover(), DrawTypeFlags::kNonAAFillRect, kRGBA_1_D },
+
 // 50% (1/2) handles 70 - due to the w/o msaa load variants not being used
 /* 20 */ { ImageAlphaPremulHWOnlyMatrixCFSrcover(), DrawTypeFlags::kNonAAFillRect, kRGBA_4_DS },
 
@@ -198,6 +202,21 @@ const PrecompileSettings kPrecompileCases[] = {
 
 // 59% (13/22) handles 75 76 80 81 83 84 (94 95 96 97 98 99 100)
 /* 42 */ { SolidSrcover(), DrawTypeFlags::kNonSimpleShape, kRGBA_4_DS },
+
+// 100% (2/2) handles: 23 43
+/*  1+ac */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect|DrawTypeFlags::kAnalyticClip,  kRGBA_1_D },
+
+// 50% (1/2) handles: 45
+/*  4+ac */ { ImageHWOnlySRGBSrcover(),           kRRectAndNonAARect|DrawTypeFlags::kAnalyticClip,              kRGBA_1_D_SRGB },
+
+// 50% (1/2) handles 58
+/*  8+ac */ { SolidSrcSrcover(),                  DrawTypeFlags::kNonAAFillRect|DrawTypeFlags::kAnalyticClip,              kRGBA_1_D },
+
+// 50% (1/2) handles 33
+/* 14+ac */ { ImagePremulHWOnlyMatrixCFDitherSrcover(), kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,        kRGBA_1_D },
+
+// 50% (1/2) handles 35
+/* 17+ac */ { ImageSRGBHWOnlyMatrixCFDitherSrcover(), kRRectAndNonAARect|DrawTypeFlags::kAnalyticClip,          kRGBA_1_D_SRGB },
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 238 block ----------------
@@ -566,9 +585,6 @@ static const PipelineLabel kCases[] = {
 };
 
 bool skip(const char* str) {
-    if (strstr(str, "AnalyticClip")) {  // we have to think about this a bit more
-        return true;
-    }
     if (strstr(str, "AnalyticBlurRenderStep")) { // currently internal only
         return true;
     }
