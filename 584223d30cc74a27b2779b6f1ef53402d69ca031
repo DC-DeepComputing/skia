@@ -18,6 +18,92 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9b19e26a_04e2a371",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "I also agree that this is a great direction to be moving towards and will help ease adoption of features.  I have not done a thorough look at the specific features that are being included, so my main thought there would be that while we add this public API in this CL, we should start with having it turn on the set of features we expect Chrome/Android to already be providing us so that we aren\u0027t also triggering a bunch of new features at once.\n\nThen once they migrate to this API, it\u0027d be a no-op on their end hopefully, and we can make 1-off CLs that turn on each block of new features that would be valuable (that we have code to also actually use; we shouldn\u0027t turn on features that are only planned for future use).",
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab8ea4de_a13dfc23",
+        "filename": "example/VulkanBasic.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "It\u0027s a bit pedantic, but the example code shouldn\u0027t really rely on our test-only code. Could this use the `VulkanPreferredFeatures` function directly and replace the comment you added below?",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7dc5f59_3ac1d130",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "nit: select",
+      "range": {
+        "startLine": 76,
+        "startChar": 31,
+        "endLine": 76,
+        "endChar": 41
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d69e6df8_3c0201d5",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "Since init() is not failing, can we make it the only explicit constructor of VulkanPreferredFeatures?\n\nOr does that hurt common allocation patterns, forcing it to instead be a `std::unique_ptr\u003cVulkanPreferredFeatures\u003e` is appAPIVersion is not immediately available to the owner?",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 95,
+        "endChar": 38
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ad2c3534_7cf6489d",
@@ -36,6 +122,75 @@
         "startChar": 0,
         "endLine": 161,
         "endChar": 61
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a3d2369f_f9d78f06",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "Should this be 1.1?",
+      "range": {
+        "startLine": 163,
+        "startChar": 31,
+        "endLine": 163,
+        "endChar": 33
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5809570_643d1556",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "Out of curiosity, how do these differ from the `VkPhysicalDeviceFeatures` and `VkPhysicalDeviceFeatures2` struct pointers that are held on `VulkanBackendContext` above?",
+      "range": {
+        "startLine": 163,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 52
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8745706_74c84a29",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "WDYT about adding some state tracking so that if a caller doesn\u0027t call the appropriate functions in the order expected (e.g. they skip adding features to query, but ask to enable them anyways), we log a warning and assert?",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 2
       },
       "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
@@ -77,6 +232,30 @@
       "writtenOn": "2025-06-11T15:45:54Z",
       "side": 1,
       "message": "Is there a reason this is not broken up into a .h and .cpp file (`src/gpu/vk/VulkanPreferredFeatures.h` and `src/gpu/vk/VulkanPreferredFeatures.cpp`) as opposed to this one conglomerate cpp file?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ad1b174_37dac8a4",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "VulkanPreferredFeatures.h would have to be in `include/gpu/vk/` next to `include/gpu/vk/VulkanBackendContext.h` instead of declaring the the type in that header.  But given the size of VulkanPreferredFeatures API, I\u0027m open to having it in a dedicated public header.",
+      "parentUuid": "5a4c4ece_c0c00584",
       "range": {
         "startLine": 1,
         "startChar": 0,
@@ -434,6 +613,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "169c4418_569e6b4e",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 794,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "Keep this as a TArray?",
+      "range": {
+        "startLine": 794,
+        "startChar": 4,
+        "endLine": 794,
+        "endChar": 16
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b6d144f9_9292717c",
         "filename": "tools/gpu/vk/VkTestUtils.cpp",
         "patchSetId": 8
@@ -473,6 +675,29 @@
         "startChar": 34,
         "endLine": 26,
         "endChar": 42
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7e90dd1_4970fbf2",
+        "filename": "tools/gpu/vk/VkTestUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-11T20:26:39Z",
+      "side": 1,
+      "message": "For some reason this comment threw me for a loop, and I think it was because the comment talks about generic features that could be chained, but really it\u0027s that these struct fields might be chained so they *have* to live as long as `features` does.\n\nWDYT about:\n\n// `protectedMemoryFeatures` and structs from `skiaFeatures` may be chained into `features`, so must share the same lifetime.",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 29,
+        "endChar": 77
       },
       "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
