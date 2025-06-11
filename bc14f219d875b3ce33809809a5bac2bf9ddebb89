@@ -1,0 +1,124 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63498214_9a8b6e58",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "Let\u0027s also document what this is and why we want it.",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc7620c6_d71ddafa",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "Should we make this an enum instead?  Might also come in hand to have an option for unknown convexity at some point.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 8
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca1d15d_3ce1afc8",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "Since all fields are public, do we need these accessors?",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0838be1c_cbd7f56c",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "Do we expect this to be called outside of SkPathRaw.cpp?  If not, I think it could be hidden from the API, all fields are public now.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7743607_6900b806",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "remove for now?",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7054f7b_058447d2",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-11T14:00:34Z",
+      "side": 1,
+      "message": "same",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
