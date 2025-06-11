@@ -68,10 +68,9 @@ static void load_color(SkRasterPipelineContexts::UniformColorCtx* ctx, const flo
     ctx->rgba[3] = SkScalarRoundToInt(rgba[3]*255); ctx->a = rgba[3];
 }
 
-void SkDraw::drawAtlas(const SkRSXform xform[],
-                       const SkRect textures[],
-                       const SkColor colors[],
-                       int count,
+void SkDraw::drawAtlas(SkSpan<const SkRSXform> xform,
+                       SkSpan<const SkRect> textures,
+                       SkSpan<const SkColor> colors,
                        sk_sp<SkBlender> blender,
                        const SkPaint& paint) {
     sk_sp<SkShader> atlasShader = paint.refShader();
@@ -105,7 +104,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     SkRasterPipelineContexts::UniformColorCtx* uniformCtx = nullptr;
     SkColorSpaceXformSteps steps(sk_srgb_singleton(), kUnpremul_SkAlphaType,
                                  rec.fDstCS, kUnpremul_SkAlphaType);
-    if (colors) {
+    if (!colors.empty()) {
         // we will late-bind the values in ctx, once for each color in the loop
         uniformCtx = alloc.make<SkRasterPipelineContexts::UniformColorCtx>();
         rec.fPipeline->append(SkRasterPipelineOp::uniform_color_dst, uniformCtx);
@@ -116,7 +115,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
         SkBlendMode_AppendStages(*bm, rec.fPipeline);
     }
 
-    bool isOpaque = !colors && transformShader->isOpaque();
+    bool isOpaque = colors.empty() && transformShader->isOpaque();
     if (p.getAlphaf() != 1) {
         rec.fPipeline->append(SkRasterPipelineOp::scale_1_float, alloc.make<float>(p.getAlphaf()));
         isOpaque = false;
@@ -129,8 +128,8 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     }
     SkPath scratchPath;
 
-    for (int i = 0; i < count; ++i) {
-        if (colors) {
+    for (size_t i = 0; i < xform.size(); ++i) {
+        if (!colors.empty()) {
             SkColor4f c4 = SkColor4f::FromColor(colors[i]);
             steps.apply(c4.vec());
             load_color(uniformCtx, c4.premul().vec());
