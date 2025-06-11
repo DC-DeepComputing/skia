@@ -1,0 +1,481 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aff375e3_dfa9ffa8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Okay, took a first pass - thank you so much for all of this, I think this is a great step forward in ensuring best functionality for those using Skia\u0027s Vulkan backend now + going forward!",
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad2c3534_7cf6489d",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Let\u0027s move this comment below the instantiation of each versions\u0027 physical device features to be closer located to the actual list of device extensions + features.\n\nSmall grammar/wording nits:\n```\n    // The list of device features Skia is interested in. If any are included in\n    // VkPhysicalDeviceFeatures2::pNext by the app, it is not included again by Skia. However, to take\n    // best advantage of the Vulkan API, the app should not intentionally include these feature\n    // structs only to forcefully disable the feature - this blocks Skia from leveraging it.\n    //\n    // When ambiguous, the extension name is included to determine which extension a feature struct\n    // has come from. This is usually needed when addFeaturesToQuery has included a feature struct\n    // that is present in multiple extensions (e.g. due to extension promotion). It is later used by\n    // addFeaturesToEnable to know which extension to enable.\n```",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 61
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6466a91_b871aaa0",
+        "filename": "relnotes/vulkan-feature-api.md",
+        "patchSetId": 8
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "WDYT about:\n\n`that Skia would benefit from having available. Clients that use this API to allow Skia to enable its preferred extensions and features are then automatically opted in to future Skia support for leveraging more of these and do not need to manually turn on newly-supported features.`",
+      "range": {
+        "startLine": 1,
+        "startChar": 104,
+        "endLine": 1,
+        "endChar": 136
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a4c4ece_c0c00584",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Is there a reason this is not broken up into a .h and .cpp file (`src/gpu/vk/VulkanPreferredFeatures.h` and `src/gpu/vk/VulkanPreferredFeatures.cpp`) as opposed to this one conglomerate cpp file?",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 0
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7881b791_b99ddc51",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Meta suggestion:\nIt would be valuable to have a comment outlining the process for:\n* Updating the core Vulkan version (i.e., check for existing features/extensions currently utilized that got promoted and update logic accordingly)\n* Adding support for a new Vulkan feature / extension \n    * explaining the meta structure of the relationship between `DeviceExtensions` and how that relates to `FeaturesToAdd` - you have some of this below where you mention device extension support for determining features we can or cannot add, but having one large comment doc at the top of this file seems like a good idea.\n    * The process of incorporating it: adding it to the preferred features test, adding the extension bool to `DeviceExtensions`, adding a feature enabling bool to `FeaturesToAdd`, where else one would need to add additional checks into these helpers\n\n\nPerhaps add an `SkASSERT` that the vulkan version is not \u003e1.4 somewhere in here such that if the version *does* get upgraded, the assert will fail, signaling to the person updating it that processes should be followed + things updated here? (Same within the test file for this)",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 11
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4847c9a7_d754397b",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "nit: `may benefit from enabling`",
+      "range": {
+        "startLine": 22,
+        "startChar": 28,
+        "endLine": 22,
+        "endChar": 48
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d5aefcd_56976352",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "nit: Perhaps `fVulkan1_1`, `fVulkan1_2`, etc to denote the major + minor version numbers? I know a Vulkan twelve etc. doesn\u0027t exist, but just for readability sake",
+      "range": {
+        "startLine": 147,
+        "startChar": 1,
+        "endLine": 150,
+        "endChar": 26
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3572fd9_d201d0f0",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "I know this will be annoying, but I think for each batch of manual enabling/disabling (setting `toAdd` attributes to T/F) it may be helpful to have a brief comment explaining why - i.e. tying features to the extension + why we can enable/disable it on certain versions / with(out) certain extensions)",
+      "range": {
+        "startLine": 172,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 32
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4532a959_02b91269",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "```\n// The following features are within extensions that were promoted to 1.4:\ntoAdd.fDynamicRenderingLocalRead \u003d false; // VK_KHR_dynamic_rendering\ntoAdd.fHostImageCopy \u003d false; // VK_EXT_host_image_copy\n```",
+      "range": {
+        "startLine": 175,
+        "startChar": 0,
+        "endLine": 176,
+        "endChar": 37
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4abd7e7_3fceff75",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "WDYT about shortening these `if`s to reassignments? I imagine the compiler may be able to optimize similarly with that approach as opposed to the multi-line checks you have here? \n```\n// If using an older version, check if we have support for these features via extensions.\nfDynamicRenderingLocalRead \u003d exts.fDynamicRenderingLocalReadKHR;\ntoAdd.fHostImageCopy \u003d exts.fHostImageCopyEXT;\n```",
+      "range": {
+        "startLine": 178,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 5
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a96c3f77_b62e9f72",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "```\n// The following features are within extensions that were promoted to 1.3:\ntoAdd.fSynchronization2 \u003d false; // VK_KHR_synchronization2\ntoAdd.fDynamicRendering \u003d false; // VK_KHR_dynamic_rendering\ntoAdd.fPipelineCreationCacheControl \u003d false; // VK_EXT_pipeline_creation_cache_control\ntoAdd.fExtendedDynamicState \u003d false; // VK_EXT_extended_dynamic_state\n```",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 191,
+        "endChar": 44
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e104748_915ba571",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Similar to above:\n```\n// If using an older version, check if we have support for these features via extensions.\ntoAdd.fSynchronization2 \u003d exts.fSynchronization2KHR;\ntoAdd.fDynamicRendering \u003d exts.fDynamicRenderingKHR;\ntoAdd.fPipelineCreationCacheControl \u003d exts.fPipelineCreationCacheControlEXT;\ntoAdd.fExtendedDynamicState \u003d exts.fExtendedDynamicStateEXT;\ntoAdd.fExtendedDynamicState2 \u003d exts.fExtendedDynamicState2EXT;\n```",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 214,
+        "endChar": 9
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39de6014_b2843a16",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "I believe VK_KHR_sampler_ycbcr_conversion was actually promoted to 1.1 so should always be available unless I\u0027m misinterpreting (https://registry.khronos.org/vulkan/specs/latest/man/html/VK_KHR_sampler_ycbcr_conversion.html)",
+      "range": {
+        "startLine": 217,
+        "startChar": 8,
+        "endLine": 217,
+        "endChar": 46
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "208ec790_97c8ace6",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 228,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Do we always want to be checking for `fRasterizationOrderAttachmentAccessARM` even on non-ARM GPUs? I imagine this should look something more like:",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 228,
+        "endChar": 55
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2f96636_a5b29008",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Add a comment above this chunk; shorten like other suggested edits above:\n```\n// Check for features currently only supported within extensions (not promoted into a Vulkan version):\ntoAdd.fRasterizationOrderAttachmentAccess \u003d exts.fRasterizationOrderAttachmentAccessARM \u0026\u0026 exts.fRasterizationOrderAttachmentAccessEXT;\ntoAdd.fBlendOperationAdvanced \u003d exts.fBlendOperationAdvancedEXT;\ntoAdd.fVertexInputDynamicState \u003d exts.fVertexInputDynamicStateEXT;\ntoAdd.fGraphicsPipelineLibrary \u003d exts.fGraphicsPipelineLibraryEXT;\ntoAdd.fRGBA10x6Formats \u003d exts.fRGBA10x6FormatsEXT;\ntoAdd.fMultisampledRenderToSingleSampled \u003d exts.fMultisampledRenderToSingleSampledEXT;\n```",
+      "range": {
+        "startLine": 226,
+        "startChar": 0,
+        "endLine": 245,
+        "endChar": 5
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fdf45c7_920a6f95",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "nit: We usually do `// anonymous namespace`",
+      "range": {
+        "startLine": 320,
+        "startChar": 2,
+        "endLine": 320,
+        "endChar": 15
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad04198c_58379a1a",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "If we update this to be `Vulkan1_X`, these comments will need to be updated as well",
+      "range": {
+        "startLine": 656,
+        "startChar": 36,
+        "endLine": 656,
+        "endChar": 38
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f3d635b_c282f296",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 748,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "nit: `to not bother`",
+      "range": {
+        "startLine": 748,
+        "startChar": 45,
+        "endLine": 748,
+        "endChar": 55
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3125707e_b2036320",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 493,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "Maybe let\u0027s rename this to `testVkFeatures` to avoid same-name variable accesses below (e.g. `features.features.features`)",
+      "range": {
+        "startLine": 493,
+        "startChar": 43,
+        "endLine": 493,
+        "endChar": 51
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6d144f9_9292717c",
+        "filename": "tools/gpu/vk/VkTestUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "`must stay in scope until`?",
+      "range": {
+        "startLine": 803,
+        "startChar": 51,
+        "endLine": 803,
+        "endChar": 75
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "376004ec_82ae409f",
+        "filename": "tools/gpu/vk/VkTestUtils.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T15:45:54Z",
+      "side": 1,
+      "message": "nit: Maybe rename to `deviceFeatures` or `devFeatures` (such that an access into this struct to differentiate from Vulkan struct attributes which can include `features`)",
+      "range": {
+        "startLine": 26,
+        "startChar": 34,
+        "endLine": 26,
+        "endChar": 42
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
