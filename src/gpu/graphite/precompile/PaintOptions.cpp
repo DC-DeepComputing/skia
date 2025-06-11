@@ -204,7 +204,8 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                        /*dstReadRequired=*/!CanUseHardwareBlending(keyContext.caps(),
                                                                    blendMode,
                                                                    coverage),
-                       fDither);
+                       fDither,
+                       fAnalyticClip);
 
     option.toKey(keyContext, keyBuilder, gatherer);
 }

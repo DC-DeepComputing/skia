@@ -566,9 +566,6 @@ static const PipelineLabel kCases[] = {
 };
 
 bool skip(const char* str) {
-    if (strstr(str, "AnalyticClip")) {  // we have to think about this a bit more
-        return true;
-    }
     if (strstr(str, "AnalyticBlurRenderStep")) { // currently internal only
         return true;
     }
