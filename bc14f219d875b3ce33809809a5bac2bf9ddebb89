@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2617f3d4_8b8a7878",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 9
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "63498214_9a8b6e58",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cc7620c6_d71ddafa",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-06-11T14:00:34Z",
       "side": 1,
       "message": "Should we make this an enum instead?  Might also come in hand to have an option for unknown convexity at some point.",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 8
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "426a38d4_c8aeee3d",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Hmmm, I guess. Maybe we change it when we see the need?",
+      "parentUuid": "cc7620c6_d71ddafa",
       "range": {
         "startLine": 30,
         "startChar": 4,
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d28ba53c_cbcef45d",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8ca1d15d_3ce1afc8",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 47
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0838be1c_cbd7f56c",
@@ -77,6 +143,30 @@
       "writtenOn": "2025-06-11T14:00:34Z",
       "side": 1,
       "message": "Do we expect this to be called outside of SkPathRaw.cpp?  If not, I think it could be hidden from the API, all fields are public now.",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 6
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bb7eaba_b273d36e",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0838be1c_cbd7f56c",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -104,6 +194,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e97fa94e_2d1e4c59",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7743607_6900b806",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c7054f7b_058447d2",
@@ -117,6 +225,24 @@
       "writtenOn": "2025-06-11T14:00:34Z",
       "side": 1,
       "message": "same",
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb5d6719_a1728051",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-11T18:17:26Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c7054f7b_058447d2",
       "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
