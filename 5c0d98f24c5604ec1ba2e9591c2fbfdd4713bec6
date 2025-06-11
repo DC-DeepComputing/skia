@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7499a6a_e8ee76cb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T14:30:20Z",
+      "side": 1,
+      "message": "Whoops, sorry, wrong CL!",
+      "revId": "5c0d98f24c5604ec1ba2e9591c2fbfdd4713bec6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
