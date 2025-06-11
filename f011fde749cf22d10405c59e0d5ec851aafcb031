@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8310d40_ccb56f07",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 482,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T14:30:02Z",
+      "side": 1,
+      "message": "`implicitly uses it as VK_IMAGE_LAYOUT_GENERAL due to how we set up RenderPasses.` (or some other way of communicating the rationale for why this is the case).",
+      "range": {
+        "startLine": 482,
+        "startChar": 6,
+        "endLine": 482,
+        "endChar": 53
+      },
+      "revId": "f011fde749cf22d10405c59e0d5ec851aafcb031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d8ddf6b3_90d368d9",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 608,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-11T14:30:02Z",
+      "side": 1,
+      "message": "Let\u0027s add a comment here explaining why we no longer make this the optimal layout:\n`Even if loading MSAA from resolve, we can use VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL rather than VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL since we assign VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL to be the initial layout for the subpass",
+      "range": {
+        "startLine": 608,
+        "startChar": 27,
+        "endLine": 608,
+        "endChar": 67
+      },
+      "revId": "f011fde749cf22d10405c59e0d5ec851aafcb031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
