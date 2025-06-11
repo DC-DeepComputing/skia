@@ -178,26 +178,31 @@ void PaintParams::handlePrimitiveColor(const KeyContext& keyContext,
                                        PaintParamsKeyBuilder* keyBuilder,
                                        PipelineDataGatherer* gatherer) const {
     if (fPrimitiveBlender) {
-        Blend(keyContext, keyBuilder, gatherer,
-              /* addBlendToKey= */ [&] () -> void {
-                  AddToKey(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get());
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  // When fSkipColorXform is true, it's assumed that the primitive color is
-                  // already in the dst color space. We could change the paint key to not have
-                  // any colorspace block wrapping the primitive color block, but for now just
-                  // use the dst color space as the src color space to produce an identity CS
-                  // transform.
-                  //
-                  // When fSkipColorXform is false (most cases), it's assumed to be in sRGB.
-                  const SkColorSpace* primitiveCS =
-                        fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
-                                        : sk_srgb_singleton();
-                  AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
-              });
+        // if the primitive CS
+        if (fSkipColorXform) {
+            AddPrimitiveColor(keyContext, keyBuilder, gatherer, keyContext.dstColorInfo().colorSpace());
+        } else {
+            Blend(keyContext, keyBuilder, gatherer,
+                /* addBlendToKey= */ [&] () -> void {
+                    AddToKey(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get());
+                },
+                /* addSrcToKey= */ [&]() -> void {
+                    this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+                },
+                /* addDstToKey= */ [&]() -> void {
+                    // When fSkipColorXform is true, it's assumed that the primitive color is
+                    // already in the dst color space. We could change the paint key to not have
+                    // any colorspace block wrapping the primitive color block, but for now just
+                    // use the dst color space as the src color space to produce an identity CS
+                    // transform.
+                    //
+                    // When fSkipColorXform is false (most cases), it's assumed to be in sRGB.
+                    const SkColorSpace* primitiveCS =
+                            fSkipColorXform ? keyContext.dstColorInfo().colorSpace()
+                                            : sk_srgb_singleton();
+                    AddPrimitiveColor(keyContext, keyBuilder, gatherer, primitiveCS);
+            });
+        }
     } else {
         this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
     }

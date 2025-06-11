@@ -462,12 +462,20 @@ bool draw_shadow(const FACTORY& factory,
         }
     }
 
+    // Opaque black
     SkPaint paint;
     // Run the vertex color through a GaussianColorFilter and then modulate the grayscale result of
     // that against our 'color' param.
+
     paint.setColorFilter(
          SkColorFilters::Blend(color, SkBlendMode::kModulate)->makeComposed(
                                                                 SkColorFilterPriv::MakeGaussian()));
+    // SkASSERT(SkColorGetA(color) == 0xFF || SkColorGetA(color) == 0x00);
+    // paint.setColor(color);
+
+    // paint.setColor(color);
+    // paint.setBlendMode(SkBlendMode::kDst);
+    // paint.setColorFilter()
 
     drawProc(vertices.get(), SkBlendMode::kModulate, paint,
              context.fTranslate.fX, context.fTranslate.fY, path.viewMatrix().hasPerspective());
@@ -659,7 +667,7 @@ void SkDevice::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShad
                 // or transparent and their real contribution to the final blended color is via
                 // their alpha. We can skip expensive per-vertex color conversion for this.
                 this->drawVertices(vertices.get(),
-                                   SkBlender::Mode(SkBlendMode::kModulate),
+                                   SkBlender::Mode(SkBlendMode::kDst),
                                    paint,
                                    /*skipColorXform=*/true);
                 success = true;
@@ -756,7 +764,7 @@ void SkDevice::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShad
                 // or transparent and their real contribution to the final blended color is via
                 // their alpha. We can skip expensive per-vertex color conversion for this.
                 this->drawVertices(vertices.get(),
-                                   SkBlender::Mode(SkBlendMode::kModulate),
+                                   SkBlender::Mode(SkBlendMode::kDst),
                                    paint,
                                    /*skipColorXform=*/true);
                 success = true;

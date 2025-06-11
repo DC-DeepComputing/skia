@@ -1199,7 +1199,10 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
-    const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize || data.fSteps.fFlags.encode ||
+    // if ()
+
+    const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize ||
+                                         data.fSteps.fFlags.encode ||
                                          data.fSteps.fFlags.gamut_transform;
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);
