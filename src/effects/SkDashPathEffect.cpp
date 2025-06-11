@@ -372,15 +372,8 @@ bool SkDashImpl::onAsPoints(PointData* results, const SkPath& src, const SkStrok
     return true;
 }
 
-SkPathEffectBase::DashType SkDashImpl::asADash(DashInfo* info) const {
-    if (info) {
-        if (info->fCount >= fCount && info->fIntervals) {
-            memcpy(info->fIntervals, fIntervals, fCount * sizeof(SkScalar));
-        }
-        info->fCount = fCount;
-        info->fPhase = fPhase;
-    }
-    return DashType::kDash;
+std::optional<SkPathEffectBase::DashInfo> SkDashImpl::asADash() const {
+    return {{{fIntervals, fCount}, fPhase}};
 }
 
 void SkDashImpl::flatten(SkWriteBuffer& buffer) const {

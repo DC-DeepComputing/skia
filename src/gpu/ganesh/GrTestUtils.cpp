@@ -314,15 +314,8 @@ bool TestDashPathEffect::onFilterPath(SkPath* dst, const SkPath& src, SkStrokeRe
                                       fPhase);
 }
 
-SkPathEffectBase::DashType TestDashPathEffect::asADash(DashInfo* info) const {
-    if (info) {
-        if (info->fCount >= fCount && info->fIntervals) {
-            memcpy(info->fIntervals, fIntervals.get(), fCount * sizeof(SkScalar));
-        }
-        info->fCount = fCount;
-        info->fPhase = fPhase;
-    }
-    return DashType::kDash;
+std::optional<SkPathEffectBase::DashInfo> TestDashPathEffect::asADash() const {
+    return {{{fIntervals.data(), fCount}, fPhase}};
 }
 
 sk_sp<SkColorSpace> TestColorSpace(SkRandom* random) {
