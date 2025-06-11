@@ -16,6 +16,29 @@
       "message": "PTAL",
       "revId": "5381ccc4439ce6af9ee29caf2ef5d0f9f1e5f399",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "adaa77fd_c8af885f",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 18
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-11T18:10:26Z",
+      "side": 1,
+      "message": "Drop these refs too ?",
+      "range": {
+        "startLine": 217,
+        "startChar": 43,
+        "endLine": 217,
+        "endChar": 82
+      },
+      "revId": "5381ccc4439ce6af9ee29caf2ef5d0f9f1e5f399",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
