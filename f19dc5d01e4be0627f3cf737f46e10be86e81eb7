@@ -16,6 +16,24 @@
       "message": "super nit: wrong order",
       "revId": "f19dc5d01e4be0627f3cf737f46e10be86e81eb7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76e9cfe_6e1b4105",
+        "filename": "infra/bots/gen_tasks_logic/dm_flags.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-11T14:49:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "932a946a_4c43d10e",
+      "revId": "f19dc5d01e4be0627f3cf737f46e10be86e81eb7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
