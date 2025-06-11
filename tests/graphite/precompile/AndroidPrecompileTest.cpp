@@ -35,6 +35,10 @@ const PrecompileSettings kPrecompileCases[] = {
 /*  0 */ { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
 // 100% (2/2) handles: 22 42
 /*  1 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_1_D },
+
+// 100% (2/2) handles: 23 43
+/*  2 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect|DrawTypeFlags::kAnalyticClip,  kRGBA_1_D },
+
 // 50% (2/4) handles: 63 72 - due to the w/o msaa load variants not being used
 /*  2 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_4_DS },
 
@@ -566,9 +570,6 @@ static const PipelineLabel kCases[] = {
 };
 
 bool skip(const char* str) {
-    if (strstr(str, "AnalyticClip")) {  // we have to think about this a bit more
-        return true;
-    }
     if (strstr(str, "AnalyticBlurRenderStep")) { // currently internal only
         return true;
     }
@@ -638,7 +639,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+    static const size_t kChosenCase = 2; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
             continue;
