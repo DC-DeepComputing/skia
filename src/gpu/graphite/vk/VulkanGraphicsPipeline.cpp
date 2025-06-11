@@ -746,6 +746,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
                              step,
                              pipelineDesc.paintParamsID(),
                              useStorageBuffers,
+                             renderPassDesc.fColorAttachment.fFormat,
                              renderPassDesc.fWriteSwizzle,
                              renderPassDesc.fDstReadStrategy,
                              &descContainer);
