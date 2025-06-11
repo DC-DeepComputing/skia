@@ -31,7 +31,8 @@ public:
                 bool hasPrimitiveBlender,
                 const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
                 bool dstReadRequired,
-                bool dither)
+                bool dither,
+                bool analyticClip)
         : fOpaquePaintColor(opaquePaintColor)
         , fFinalBlender(finalBlender)
         , fShader(shader)
@@ -39,7 +40,8 @@ public:
         , fHasPrimitiveBlender(hasPrimitiveBlender)
         , fClipShader(clipShader)
         , fDstReadRequired(dstReadRequired)
-        , fDither(dither) {
+        , fDither(dither)
+        , fAnalyticClip(analyticClip) {
     }
 
     const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
@@ -55,6 +57,7 @@ private:
     void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
     bool shouldDither(SkColorType dstCT) const;
     void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
 
     bool fOpaquePaintColor;
     std::pair<sk_sp<PrecompileBlender>, int> fFinalBlender;
@@ -64,6 +67,7 @@ private:
     std::pair<sk_sp<PrecompileShader>, int> fClipShader;
     bool fDstReadRequired;
     bool fDither;
+    bool fAnalyticClip;
 };
 
 } // namespace skgpu::graphite

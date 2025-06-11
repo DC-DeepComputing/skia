@@ -144,6 +144,9 @@ public:
     }
     bool isPaintColorOpaque() const { return fPaintColorIsOpaque; }
 
+    void setAnalyticClip(bool analyticClip) { fAnalyticClip = analyticClip; }
+    bool isAnalyticClip() const { return fAnalyticClip; }
+
     // Provides access to functions that aren't part of the public API.
     PaintOptionsPriv priv();
     const PaintOptionsPriv priv() const;  // NOLINT(readability-const-return-type)
@@ -199,6 +202,7 @@ private:
 
     bool fDither = false;
     bool fPaintColorIsOpaque = true;
+    bool fAnalyticClip = false;
 };
 
 } // namespace skgpu::graphite
