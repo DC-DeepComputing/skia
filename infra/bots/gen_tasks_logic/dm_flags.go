@@ -326,6 +326,7 @@ func (b *taskBuilder) dmFlags(internalHardwareLabel string) {
 			skip(ALL, "test", ALL, "ShaderTestNestedBlendsGanesh")
 			skip(ALL, "test", ALL, "ShaderTestNestedBlendsGraphite")
 			skip(ALL, "test", ALL, "skbug6653")
+			skip(ALL, "test", ALL, "SimplifyPaintTest")
 			skip(ALL, "test", ALL, "SkImage_makeNonTextureImage")
 			skip(ALL, "test", ALL, "SkipCopyTaskTest")
 			skip(ALL, "test", ALL, "SkipOpsTaskTest")
