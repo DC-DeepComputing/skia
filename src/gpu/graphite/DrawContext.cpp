@@ -23,14 +23,17 @@
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/DrawList.h"
 #include "src/gpu/graphite/DrawPass.h"
+#include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RasterPathAtlas.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/SharedContext.h"
+#include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/TextureProxy.h"
 #include "src/gpu/graphite/TextureProxyView.h"
+#include "src/gpu/graphite/TextureUtils.h"
 #include "src/gpu/graphite/compute/DispatchGroup.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
 #include "src/gpu/graphite/geom/Geometry.h"
@@ -287,24 +290,52 @@ void DrawContext::flush(Recorder* recorder) {
 
             // TODO: Right now this assert is ensuring that the dstCopy will be texturable since it
             // uses the same texture info as fTarget. Ideally, if fTarget were not texturable but
-            // still readable, we would perform a fallback to a compatible texturable info. We also
-            // should decide whether or not a copy-as-draw fallback is necessary here too. All of
-            // this is handled inside Image::Copy() except we would need it to expose the task in
-            // order to link it correctly.
+            // still readable, we would perform a fallback to a compatible texturable info.
+            // TODO: This logic duplicates much of Image::Copy() so ideally it would be lifted into
+            // into there.
             SkASSERT(recorder->priv().caps()->isTexturable(fTarget->textureInfo()));
-            // Use approx size for better reuse.
-            SkISize dstCopyTextureSize = GetApproxSize(dstReadPixelBounds.size());
-            dstCopy = TextureProxy::Make(recorder->priv().caps(),
-                                         recorder->priv().resourceProvider(),
-                                         dstCopyTextureSize,
-                                         fTarget->textureInfo(),
-                                         "DstCopyTexture",
-                                         skgpu::Budgeted::kYes);
-            SkASSERT(dstCopy);
+            if (recorder->priv().caps()->supportsReadPixels(fTarget->textureInfo())) {
+                // Use approx size for better reuse.
+                SkISize dstCopyTextureSize = GetApproxSize(dstReadPixelBounds.size());
+                dstCopy = TextureProxy::Make(recorder->priv().caps(),
+                                             recorder->priv().resourceProvider(),
+                                             dstCopyTextureSize,
+                                             fTarget->textureInfo(),
+                                             "DstCopyTexture",
+                                             skgpu::Budgeted::kYes);
+                SkASSERT(dstCopy);
 
-            // Add the copy task to initialize dstCopy before the render pass task.
-            fCurrentDrawTask->addTask(CopyTextureToTextureTask::Make(
-                    fTarget, dstReadPixelBounds, dstCopy, /*dstPoint=*/{0, 0}));
+                // Add the copy task to initialize dstCopy before the render pass task.
+                fCurrentDrawTask->addTask(CopyTextureToTextureTask::Make(
+                        fTarget, dstReadPixelBounds, dstCopy, /*dstPoint=*/{0, 0}));
+            } else {
+                // Fallback: Perform the copy by drawing the source image into a temporary,
+                // texturable surface.
+                sk_sp<Image> srcImage(new Image(fReadView, fImageInfo.colorInfo()));
+                sk_sp<Surface> surface = Surface::MakeScratch(recorder,
+                                                              fImageInfo,
+                                                              "DstCopyFallback");
+                if (!surface) {
+                    SKGPU_LOG_W("DrawContext CopyAsDraw surface creation failed;",
+                                "dropping draw pass!");
+                    return;
+                }
+                SkPaint paint;
+                paint.setBlendMode(SkBlendMode::kSrc);
+                surface->getCanvas()->drawImage(srcImage,
+                                                -dstReadPixelBounds.left(),
+                                                -dstReadPixelBounds.top(),
+                                                SkFilterMode::kNearest,
+                                                &paint);
+                sk_sp<Image> drawnImage = surface->asImage();
+                if (!drawnImage) {
+                    SKGPU_LOG_W("DrawContext CopyAsDraw draw image failed;",
+                                "dropping draw pass!");
+                    return;
+                }
+                dstCopy = drawnImage->textureProxyView().refProxy();
+                SkASSERT(dstCopy);
+            }
         }
 
         const Caps* caps = recorder->priv().caps();
