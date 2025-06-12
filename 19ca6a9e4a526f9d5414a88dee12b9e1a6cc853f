@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0129e1e_bcaa624b",
+        "filename": "src/gpu/TiledTextureUtils.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-12T14:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76edd9cd_52004454",
+      "range": {
+        "startLine": 77,
+        "startChar": 57,
+        "endLine": 77,
+        "endChar": 78
+      },
+      "revId": "19ca6a9e4a526f9d5414a88dee12b9e1a6cc853f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7ec8a608_6e8a5e9b",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e3291b3_9fd172a8",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-12T14:51:48Z",
+      "side": 1,
+      "message": "Switched to using the existing shader cap, so no longer needed, but I missed that.",
+      "parentUuid": "7ec8a608_6e8a5e9b",
+      "revId": "19ca6a9e4a526f9d5414a88dee12b9e1a6cc853f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "903b17d0_b53dfcae",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-06-12T14:12:18Z",
       "side": 1,
       "message": "There is a GrShaderCaps::fHasLowFragmentPrecision that is this same check, and is also the real reason why we shouldn\u0027t try to render these large picture tiles on the mali GPUs.\n\nI\u0027d vote for having the ganesh device just query that shader cap directly with a comment about like:\n\n    \"if we render a subset of a very large SkPicture into a GPU texture \"tile\", it\u0027ll require intermediate coordinates that need high precision. If we don\u0027t have that, bite the bullet and render the lazy picture tiles on the CPU and upload the data instead.\"",
+      "range": {
+        "startLine": 875,
+        "startChar": 0,
+        "endLine": 875,
+        "endChar": 78
+      },
+      "revId": "19ca6a9e4a526f9d5414a88dee12b9e1a6cc853f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd7ae973_67d01d50",
+        "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 875,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-12T14:51:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "903b17d0_b53dfcae",
       "range": {
         "startLine": 875,
         "startChar": 0,
