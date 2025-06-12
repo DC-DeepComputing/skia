@@ -8,6 +8,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkScalar.h"
@@ -512,7 +513,7 @@ static void find_link(Edge* base, Edge* stop) {
     base->fFlags = Edge::kCompleteLink;
 }
 
-static int extract_path(Edge* edge, Edge* stop, SkPath* path) {
+static int extract_path(Edge* edge, Edge* stop, SkPathBuilder* path) {
     while (0 == edge->fFlags) {
         edge++; // skip over "used" edges
     }
@@ -548,7 +549,15 @@ struct EdgeLT {
     }
 };
 
-bool SkRegion::getBoundaryPath(SkPath* path) const {
+std::optional<SkPath> SkRegion::getBoundaryPath() const {
+    SkPathBuilder builder;
+    if (!getBoundaryPath(&builder)) {
+        return std::nullopt;
+    }
+    return builder.detach();
+}
+
+bool SkRegion::getBoundaryPath(SkPathBuilder* path) const {
     // path could safely be nullptr if we're empty, but the caller shouldn't
     // *know* that
     SkASSERT(path);

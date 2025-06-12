@@ -206,39 +206,40 @@ static void fuzz_drawPath(Fuzz* fuzz) {
     // other common things (e.g. rects, lines)
     uint8_t i, j;
     fuzz->nextRange(&i, 0, 10); // set i to number of operations to perform
-    SkPath path;
+    SkPathBuilder pb;
     SkScalar a, b, c, d, e, f;
     for (int k = 0; k < i; ++k) {
         fuzz->nextRange(&j, 0, 5); // set j to choose operation to perform
         switch (j) {
             case 0:
                 fuzz->next(&a, &b);
-                path.moveTo(a, b);
+                pb.moveTo(a, b);
                 break;
             case 1:
                 fuzz->next(&a, &b);
-                path.lineTo(a, b);
+                pb.lineTo(a, b);
                 break;
             case 2:
                 fuzz->next(&a, &b, &c, &d);
-                path.quadTo(a, b, c, d);
+                pb.quadTo(a, b, c, d);
                 break;
             case 3:
                 fuzz->next(&a, &b, &c, &d, &e);
-                path.conicTo(a, b, c, d, e);
+                pb.conicTo(a, b, c, d, e);
                 break;
             case 4:
                 fuzz->next(&a, &b, &c, &d, &e, &f);
-                path.cubicTo(a, b, c, d, e, f);
+                pb.cubicTo(a, b, c, d, e, f);
                 break;
             case 5:
                 fuzz->next(&a, &b, &c, &d, &e);
-                path.arcTo(a, b, c, d, e);
+                pb.arcTo({a, b}, {c, d}, e);
                 break;
         }
     }
-    path.close();
+    pb.close();
 
+    SkPath path = pb.detach();
     SkCanvas* cnv = surface->getCanvas();
     cnv->drawPath(path, p);
 

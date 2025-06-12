@@ -8,6 +8,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/utils/SkParsePath.h"
 #include "tools/viewer/ClickHandlerSlide.h"
@@ -415,8 +416,7 @@ public:
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(0xFFEEEEEE);
 
-        SkPath path;
-        this->makePath(&path);
+        SkPath path = this->makePath();
 
         fStrokePaint.setStrokeWidth(fWidth);
 
@@ -472,11 +472,13 @@ protected:
 private:
     void toggle(bool& value) { value = !value; }
 
-    void makePath(SkPath* path) {
-        path->moveTo(fPts[0]);
+    SkPath makePath() {
+        SkPathBuilder path;
+        path.moveTo(fPts[0]);
         for (int i = 1; i < kN; ++i) {
-            path->lineTo(fPts[i]);
+            path.lineTo(fPts[i]);
         }
+        return path.detach();
     }
 
 };

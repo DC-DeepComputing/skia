@@ -13,6 +13,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -164,7 +165,7 @@ private:
         this->setupSkeletonPaint(&paint);
         SkPath path;
 
-        fRectAsOval ? path.addOval(r) : path.addRect(r);
+        fRectAsOval ? path = SkPath::Oval(r) : path = SkPath::Rect(r);
         max->drawPath(path, paint);
     }
 
@@ -237,7 +238,7 @@ void FatBits::drawLineSkeleton(SkCanvas* max, const SkPoint pts[]) {
     SkPaint paint;
     this->setupSkeletonPaint(&paint);
 
-    SkPath path;
+    SkPathBuilder path;
     path.moveTo(pts[0]);
     path.lineTo(pts[1]);
 
@@ -247,13 +248,13 @@ void FatBits::drawLineSkeleton(SkCanvas* max, const SkPoint pts[]) {
         p.setStrokeWidth(fStrokeWidth * fZoom);
         p.setStrokeCap(fStrokeCap);
         SkPath dst;
-        skpathutils::FillPathWithPaint(path, p, &dst);
+        skpathutils::FillPathWithPaint(path.detach(), p, &dst);
         path = dst;
 
         path.moveTo(pts[0]);
         path.lineTo(pts[1]);
     }
-    max->drawPath(path, paint);
+    max->drawPath(path.detach(), paint);
 }
 
 void FatBits::drawLine(SkCanvas* canvas, SkPoint pts[2]) {
@@ -322,11 +323,12 @@ void FatBits::drawTriangleSkeleton(SkCanvas* max, const SkPoint pts[]) {
     SkPaint paint;
     this->setupSkeletonPaint(&paint);
 
-    SkPath path;
-    path.moveTo(pts[0]);
-    path.lineTo(pts[1]);
-    path.lineTo(pts[2]);
-    path.close();
+    SkPath path = SkPathBuilder()
+        .moveTo(pts[0])
+        .lineTo(pts[1])
+        .lineTo(pts[2])
+        .close()
+        .detach();
 
     max->drawPath(path, paint);
 }
@@ -340,11 +342,12 @@ void FatBits::drawTriangle(SkCanvas* canvas, SkPoint pts[3]) {
         apply_grid(pts, 3);
     }
 
-    SkPath path;
-    path.moveTo(pts[0]);
-    path.lineTo(pts[1]);
-    path.lineTo(pts[2]);
-    path.close();
+    SkPath path = SkPathBuilder()
+        .moveTo(pts[0])
+        .lineTo(pts[1])
+        .lineTo(pts[2])
+        .close()
+        .detach();
 
     erase(fMinSurface.get());
     this->setupPaint(&paint);

@@ -355,6 +355,19 @@ public:
 
     // Relative versions of segments, relative to the previous position.
 
+    /** Adds beginning of contour relative to last point.
+        If SkPathBuilder is empty, starts contour at (dx, dy).
+        Otherwise, start contour at last point offset by (dx, dy).
+        Function name stands for "relative move to".
+
+        @param dx  offset from last point to contour start on x-axis
+        @param dy  offset from last point to contour start on y-axis
+        @return    reference to SkPathBuilder
+
+        example: https://fiddle.skia.org/c/@Path_rMoveTo
+    */
+    SkPathBuilder& rMoveTo(SkScalar dx, SkScalar dy);
+
     /** Adds line from last point to vector given by pt. If SkPathBuilder is empty, or last
         SkPath::Verb is kClose_Verb, last point is set to (0, 0) before adding line.
 
@@ -931,6 +944,9 @@ private:
     }
 
     SkPath make(sk_sp<SkPathRef>) const;
+    SkPath make(sk_sp<SkPathRef>, SkPathConvexity, SkPathFirstDirection) const;
+
+    SkPath detach(SkPathConvexity, SkPathFirstDirection);
 
     bool isZeroLengthSincePoint(int startPtIndex) const;
 

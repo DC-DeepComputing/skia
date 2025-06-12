@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkRandom.h"
 
@@ -37,32 +38,25 @@ static void gen_paths(const SkTDArray<SkScalar>& topData,
                       SkScalar xLeft, SkScalar xDelta,
                       int leftShift,
                       SkPath* plot, SkPath* fill) {
-    plot->rewind();
-    fill->rewind();
-    plot->incReserve(topData.size());
-    if (nullptr == bottomData) {
-        fill->incReserve(topData.size() + 2);
-    } else {
-        fill->incReserve(2 * topData.size());
-    }
+    SkPathBuilder plotBuilder, fillBuilder;
 
     leftShift %= topData.size();
     SkScalar x = xLeft;
 
     // Account for the leftShift using two loops
     int shiftToEndCount = topData.size() - leftShift;
-    plot->moveTo(x, topData[leftShift]);
-    fill->moveTo(x, topData[leftShift]);
+    plotBuilder.moveTo(x, topData[leftShift]);
+    fillBuilder.moveTo(x, topData[leftShift]);
 
     for (int i = 1; i < shiftToEndCount; ++i) {
-        plot->lineTo(x, topData[i + leftShift]);
-        fill->lineTo(x, topData[i + leftShift]);
+        plotBuilder.lineTo(x, topData[i + leftShift]);
+        fillBuilder.lineTo(x, topData[i + leftShift]);
         x += xDelta;
     }
 
     for (int i = 0; i < leftShift; ++i) {
-        plot->lineTo(x, topData[i]);
-        fill->lineTo(x, topData[i]);
+        plotBuilder.lineTo(x, topData[i]);
+        fillBuilder.lineTo(x, topData[i]);
         x += xDelta;
     }
 
@@ -72,16 +66,18 @@ static void gen_paths(const SkTDArray<SkScalar>& topData,
         // area (and account for leftShift).
         for (int i = 0; i < leftShift; ++i) {
             x -= xDelta;
-            fill->lineTo(x, (*bottomData)[leftShift - 1 - i]);
+            fillBuilder.lineTo(x, (*bottomData)[leftShift - 1 - i]);
         }
         for (int i = 0; i < shiftToEndCount; ++i) {
             x -= xDelta;
-            fill->lineTo(x, (*bottomData)[bottomData->size() - 1 - i]);
+            fillBuilder.lineTo(x, (*bottomData)[bottomData->size() - 1 - i]);
         }
     } else {
-        fill->lineTo(x - xDelta, yBase);
-        fill->lineTo(xLeft, yBase);
+        fillBuilder.lineTo(x - xDelta, yBase);
+        fillBuilder.lineTo(xLeft, yBase);
     }
+    *plot = plotBuilder.detach();
+    *fill = fillBuilder.detach();
 }
 
 // A set of scrolling line plots with the area between each plot filled. Stresses out GPU path

@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkShader.h"
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
@@ -40,7 +41,7 @@ public:
     }
 
     virtual void appendName(SkString*) = 0;
-    virtual void makePath(SkPath*) = 0;
+    virtual void makePath(SkPathBuilder*) = 0;
 
 protected:
     const char* onGetName() override {
@@ -57,12 +58,13 @@ protected:
 
         paint.setAntiAlias(fFlags & kAA_Flag ? true : false);
 
-        SkPath path;
-        this->makePath(&path);
+        SkPathBuilder pb;
+        this->makePath(&pb);
         if (fFlags & kBig_Flag) {
             const SkMatrix m = SkMatrix::Scale(3, 3);
-            path.transform(m);
+            pb.transform(m);
         }
+        SkPath path = pb.detach();
 
         for (int i = 0; i < loops; i++) {
             for (int j = 0; j < 100; ++j) {
@@ -85,7 +87,7 @@ public:
     void appendName(SkString* name) override {
         name->append("line");
     }
-    void makePath(SkPath* path) override {
+    void makePath(SkPathBuilder* path) override {
         SkRandom rand;
         int size = std::size(points);
         int hSize = size / 2;
@@ -117,7 +119,7 @@ public:
     void appendName(SkString* name) override {
         name->append("quad");
     }
-    void makePath(SkPath* path) override {
+    void makePath(SkPathBuilder* path) override {
         SkRandom rand;
         int size = std::size(points);
         int hSize = size / 2;
@@ -149,7 +151,7 @@ public:
     void appendName(SkString* name) override {
         name->append("conic");
     }
-    void makePath(SkPath* path) override {
+    void makePath(SkPathBuilder* path) override {
         SkRandom rand;
         SkRandom randWeight;
         int size = std::size(points);
@@ -185,7 +187,7 @@ public:
     void appendName(SkString* name) override {
         name->append("cubic");
     }
-    void makePath(SkPath* path) override {
+    void makePath(SkPathBuilder* path) override {
         SkRandom rand;
         int size = std::size(points);
         int hSize = size / 2;

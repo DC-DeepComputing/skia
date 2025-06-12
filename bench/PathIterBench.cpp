@@ -47,25 +47,27 @@ public:
     PathIterBench(PathIterType t) : fType(t) {
         fName.printf("pathiter_%s", gPathIterNames[static_cast<unsigned>(t)]);
 
+        SkPathBuilder pb;
         SkRandom rand;
         for (int i = 0; i < 1000; ++i) {
             SkPoint pts[4];
             int n = rand_pts(rand, pts);
             switch (n) {
                 case 1:
-                    fPath.moveTo(pts[0]);
+                    pb.moveTo(pts[0]);
                     break;
                 case 2:
-                    fPath.lineTo(pts[1]);
+                    pb.lineTo(pts[1]);
                     break;
                 case 3:
-                    fPath.quadTo(pts[1], pts[2]);
+                    pb.quadTo(pts[1], pts[2]);
                     break;
                 case 4:
-                    fPath.cubicTo(pts[1], pts[2], pts[3]);
+                    pb.cubicTo(pts[1], pts[2], pts[3]);
                     break;
             }
         }
+        fPath = pb.detach();
     }
 
     bool isSuitableFor(Backend backend) override {

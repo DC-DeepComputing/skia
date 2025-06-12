@@ -5,17 +5,17 @@ REG_FIDDLE(Canvas_clipPath_2, 256, 256, false, 0) {
 void draw(SkCanvas* canvas) {
     SkPaint paint;
     paint.setAntiAlias(true);
-    SkPath path;
+    SkPathBuilder path;
     path.addRect({20, 15, 100, 95});
     path.addRect({50, 65, 130, 135});
     path.setFillType(SkPathFillType::kWinding);
     canvas->save();
-    canvas->clipPath(path, SkClipOp::kIntersect);
+    canvas->clipPath(path.snapshot(), SkClipOp::kIntersect);
     canvas->drawCircle(70, 85, 60, paint);
     canvas->restore();
     canvas->translate(100, 100);
     path.setFillType(SkPathFillType::kEvenOdd);
-    canvas->clipPath(path, SkClipOp::kIntersect);
+    canvas->clipPath(path.detach(), SkClipOp::kIntersect);
     canvas->drawCircle(70, 85, 60, paint);
 }
 }  // END FIDDLE

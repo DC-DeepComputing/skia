@@ -8,6 +8,7 @@
 #define AtlasRenderTask_DEFINED
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkNoncopyable.h"
@@ -93,7 +94,7 @@ private:
                                                  fPathDrawList);
             if (path.isInverseFillType()) {
                 // The atlas never has inverse paths. The inversion happens later.
-                fPathDrawList->fPath.toggleInverseFillType();
+                fPathDrawList->fPath = SkPathBuilder(fPathDrawList->fPath).toggleInverseFillType().detach();
             }
             fTotalCombinedPathVerbCnt += path.countVerbs();
             ++fPathCount;
