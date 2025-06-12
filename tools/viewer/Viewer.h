@@ -26,10 +26,11 @@
 #include "tools/viewer/TouchGesture.h"
 #include "tools/window/DisplayParams.h"
 
-#include <cstdint>
 #include <atomic>
+#include <cstdint>
 #include <functional>
 #include <string>
+#include <vector>
 
 class SkImage;
 class SkSurface;
@@ -266,7 +267,8 @@ private:
         SkString            fKeyDescription;
 
         SkFourByteTag            fShaderType;
-        std::string              fShader[kGrShaderTypeCount];
+        std::string fTextShader[kGrShaderTypeCount];
+        std::vector<uint32_t> fBinaryShader[kGrShaderTypeCount];
         SkSL::Program::Interface fInterfaces[kGrShaderTypeCount];
     };
 

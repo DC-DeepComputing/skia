@@ -64,7 +64,7 @@ struct RenderPassDesc;
 enum class TextureFormat : uint8_t;
 
 VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext*,
-                                        const std::string& spirv,
+                                        const std::vector<uint32_t>& spirv,
                                         VkShaderStageFlagBits);
 
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType);

@@ -34,8 +34,16 @@ inline bool SkSLToMSL(const SkSL::ShaderCaps* caps,
                       std::string* msl,
                       SkSL::ProgramInterface* outInterface,
                       ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToMetal, "MSL",
-                         sksl, programKind, settings, msl, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToMetal,
+                         "MSL",
+                         sksl,
+                         programKind,
+                         settings,
+                         msl,
+                         /*binaryOutput=*/nullptr,
+                         outInterface,
+                         errorHandler);
 }
 
 bool MtlFormatIsCompressed(MTLPixelFormat);

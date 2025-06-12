@@ -110,7 +110,8 @@ bool GrD3DPipelineStateBuilder::loadHLSLFromCache(SkReadBuffer* reader, gr_cp<ID
     std::string hlsl[kGrShaderTypeCount];
     SkSL::Program::Interface intfs[kGrShaderTypeCount];
 
-    if (!GrPersistentCacheUtils::UnpackCachedShaders(reader, hlsl, intfs, kGrShaderTypeCount)) {
+    if (!GrPersistentCacheUtils::UnpackCachedShaders(
+                reader, hlsl, /*binaryShaders=*/nullptr, intfs, kGrShaderTypeCount)) {
         return false;
     }
 
@@ -567,7 +568,10 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
         std::string hlsl[kGrShaderTypeCount];
 
         if (kSKSL_Tag == shaderType) {
-            if (GrPersistentCacheUtils::UnpackCachedShaders(&reader, cached_sksl, intfs,
+            if (GrPersistentCacheUtils::UnpackCachedShaders(&reader,
+                                                            cached_sksl,
+                                                            /*binaryShaders=*/nullptr,
+                                                            intfs,
                                                             kGrShaderTypeCount)) {
                 for (int i = 0; i < kGrShaderTypeCount; ++i) {
                     sksl[i] = &cached_sksl[i];
@@ -599,8 +603,12 @@ std::unique_ptr<GrD3DPipelineState> GrD3DPipelineStateBuilder::finalize() {
             sk_sp<SkData> key =
                     SkData::MakeWithoutCopy(this->desc().asKey(), this->desc().initialKeyLength());
             SkString description = GrProgramDesc::Describe(fProgramInfo, *this->caps());
-            sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(
-                    cacheSkSL ? kSKSL_Tag : kHLSL_Tag, hlsl, intfs, kGrShaderTypeCount);
+            sk_sp<SkData> data =
+                    GrPersistentCacheUtils::PackCachedShaders(cacheSkSL ? kSKSL_Tag : kHLSL_Tag,
+                                                              hlsl,
+                                                              /*binaryShaders=*/nullptr,
+                                                              intfs,
+                                                              kGrShaderTypeCount);
             persistentCache->store(*key, *data, description);
         }
     }
