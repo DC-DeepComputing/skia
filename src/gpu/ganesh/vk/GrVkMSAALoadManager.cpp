@@ -38,6 +38,7 @@
 #include <string.h>
 #include <string>
 #include <utility>
+#include <vector>
 
 class GrGpuBuffer;
 
@@ -74,7 +75,7 @@ bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu* gpu) {
             "}");
 
     SkSL::ProgramSettings settings;
-    std::string spirv;
+    std::vector<uint32_t> spirv;
     SkSL::Program::Interface interface;
     if (!GrCompileVkShaderModule(gpu, vertShaderText, VK_SHADER_STAGE_VERTEX_BIT,
                                  &fVertShaderModule, &fShaderStageInfo[0], settings, &spirv,

@@ -213,7 +213,11 @@ void GrGLProgramBuilder::storeShaderInCache(const SkSL::Program::Interface& inte
         }
 
         auto data = GrPersistentCacheUtils::PackCachedShaders(isSkSL ? kSKSL_Tag : kGLSL_Tag,
-                                                              shaders, &interface, 1, &meta);
+                                                              shaders,
+                                                              /*binaryShaders=*/nullptr,
+                                                              &interface,
+                                                              1,
+                                                              &meta);
         this->gpu()->getContext()->priv().getPersistentCache()->store(*key, *data, description);
     }
 }
@@ -307,13 +311,14 @@ sk_sp<GrGLProgram> GrGLProgramBuilder::finalize(const GrGLPrecompiledProgram* pr
 
             case kGLSL_Tag:
                 // Source cache hit, we don't need to compile the SkSL->GLSL
-                GrPersistentCacheUtils::UnpackCachedShaders(&reader, glsl, &interface, 1);
+                GrPersistentCacheUtils::UnpackCachedShaders(
+                        &reader, glsl, /*binaryShaders=*/nullptr, &interface, 1);
                 break;
 
             case kSKSL_Tag:
                 // SkSL cache hit, this should only happen in tools overriding the generated SkSL
                 if (GrPersistentCacheUtils::UnpackCachedShaders(
-                            &reader, cached_sksl, &interface, 1)) {
+                            &reader, cached_sksl, /*binaryShaders=*/nullptr, &interface, 1)) {
                     for (int i = 0; i < kGrShaderTypeCount; ++i) {
                         sksl[i] = &cached_sksl[i];
                     }
@@ -482,7 +487,8 @@ bool GrGLProgramBuilder::PrecompileProgram(GrDirectContext* dContext,
 
     std::string shaders[kGrShaderTypeCount];
     SkSL::Program::Interface interface;
-    if (!GrPersistentCacheUtils::UnpackCachedShaders(&reader, shaders, &interface, 1, &meta)) {
+    if (!GrPersistentCacheUtils::UnpackCachedShaders(
+                &reader, shaders, /*binaryShaders=*/nullptr, &interface, 1, &meta)) {
         return false;
     }
 

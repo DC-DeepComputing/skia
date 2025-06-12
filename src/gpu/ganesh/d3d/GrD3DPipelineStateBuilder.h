@@ -89,8 +89,16 @@ inline bool SkSLToHLSL(const SkSL::ShaderCaps* caps,
                        std::string* hlsl,
                        SkSL::ProgramInterface* outInterface,
                        ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToHLSL, "HLSL",
-                         sksl, programKind, settings, hlsl, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToHLSL,
+                         "HLSL",
+                         sksl,
+                         programKind,
+                         settings,
+                         hlsl,
+                         /*binaryOutput=*/nullptr,
+                         outInterface,
+                         errorHandler);
 }
 
 }  // namespace skgpu

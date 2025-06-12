@@ -98,11 +98,19 @@ inline bool SkSLToSPIRV(const SkSL::ShaderCaps* caps,
                         const std::string& sksl,
                         SkSL::ProgramKind programKind,
                         const SkSL::ProgramSettings& settings,
-                        std::string* spirv,
+                        std::vector<uint32_t>* spirv,
                         SkSL::ProgramInterface* outInterface,
                         ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToSPIRV, /*backendLabel=*/nullptr,
-                         sksl, programKind, settings, spirv, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToSPIRV,
+                         "SPIRV",
+                         sksl,
+                         programKind,
+                         settings,
+                         /*textOutput=*/nullptr,
+                         spirv,
+                         outInterface,
+                         errorHandler);
 }
 
 static constexpr uint32_t VkFormatChannels(VkFormat vkFormat) {

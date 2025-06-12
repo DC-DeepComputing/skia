@@ -40,8 +40,16 @@ inline bool SkSLToWGSL(const SkSL::ShaderCaps* caps,
                        std::string* wgsl,
                        SkSL::ProgramInterface* outInterface,
                        ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToWGSL, "WGSL",
-                         sksl, programKind, settings, wgsl, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToWGSL,
+                         "WGSL",
+                         sksl,
+                         programKind,
+                         settings,
+                         wgsl,
+                         /*binaryOutput=*/nullptr,
+                         outInterface,
+                         errorHandler);
 }
 
 }  // namespace skgpu

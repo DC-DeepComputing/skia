@@ -78,8 +78,8 @@ void GrMtlPipelineStateBuilder::storeShadersInCache(const std::string shaders[],
     meta.fSettings = settings;
     meta.fPlatformData = std::move(pipelineData);
     SkFourByteTag tag = isSkSL ? kSKSL_Tag : kMSL_Tag;
-    sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(tag, shaders, interfaces,
-                                                                   kGrShaderTypeCount, &meta);
+    sk_sp<SkData> data = GrPersistentCacheUtils::PackCachedShaders(
+            tag, shaders, /*binaryShaders=*/nullptr, interfaces, kGrShaderTypeCount, &meta);
     fGpu->getContext()->priv().getPersistentCache()->store(*key, *data, description);
 }
 
@@ -560,15 +560,21 @@ GrMtlPipelineState* GrMtlPipelineStateBuilder::finalize(
         if (cached) {
             switch (shaderType) {
                 case kMSL_Tag: {
-                    GrPersistentCacheUtils::UnpackCachedShaders(
-                            &reader, msl, interfaces, kGrShaderTypeCount);
+                    GrPersistentCacheUtils::UnpackCachedShaders(&reader,
+                                                                msl,
+                                                                /*binaryShaders=*/nullptr,
+                                                                interfaces,
+                                                                kGrShaderTypeCount);
                     break;
                 }
 
                 case kSKSL_Tag: {
                     std::string cached_sksl[kGrShaderTypeCount];
-                    if (GrPersistentCacheUtils::UnpackCachedShaders(
-                                &reader, cached_sksl, interfaces, kGrShaderTypeCount)) {
+                    if (GrPersistentCacheUtils::UnpackCachedShaders(&reader,
+                                                                    cached_sksl,
+                                                                    /*binaryShaders=*/nullptr,
+                                                                    interfaces,
+                                                                    kGrShaderTypeCount)) {
                         bool success = skgpu::SkSLToMSL(mtlCaps->shaderCaps(),
                                                         cached_sksl[kVertex_GrShaderType],
                                                         SkSL::ProgramKind::kVertex,
@@ -723,8 +729,12 @@ bool GrMtlPipelineStateBuilder::PrecompileShaders(GrMtlGpu* gpu, const SkData& c
 
     std::string shaders[kGrShaderTypeCount];
     SkSL::Program::Interface interfaces[kGrShaderTypeCount];
-    if (!GrPersistentCacheUtils::UnpackCachedShaders(
-                &reader, shaders, interfaces, kGrShaderTypeCount, &meta)) {
+    if (!GrPersistentCacheUtils::UnpackCachedShaders(&reader,
+                                                     shaders,
+                                                     /*binaryShaders=*/nullptr,
+                                                     interfaces,
+                                                     kGrShaderTypeCount,
+                                                     &meta)) {
         return false;
     }
 
