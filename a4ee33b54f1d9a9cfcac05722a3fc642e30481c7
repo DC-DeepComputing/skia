@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc388b80_9739fb6c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-12T18:22:25Z",
+      "side": 1,
+      "message": "Nit: maybe elaborate more in the subject, e.g. `gn_to_bp.py tweaks for libdng_sdk dep and libskia_skcms` (unsure how detail, but to help with skimming recent change subjects if e.g. a roll fails)",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 23
+      },
+      "revId": "a4ee33b54f1d9a9cfcac05722a3fc642e30481c7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
