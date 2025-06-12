@@ -26,6 +26,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7ec8a608_6e8a5e9b",
+        "filename": "src/gpu/ganesh/GrCaps.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-12T14:39:15Z",
+      "side": 1,
+      "message": "Don\u0027t we also need an update to GrCaps::dumpJSON ?",
+      "revId": "19ca6a9e4a526f9d5414a88dee12b9e1a6cc853f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "903b17d0_b53dfcae",
         "filename": "src/gpu/ganesh/gl/GrGLCaps.cpp",
         "patchSetId": 3
