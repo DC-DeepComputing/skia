@@ -22,7 +22,8 @@ struct ShaderCaps;
 using ValidateSPIRVProc = bool (*)(ErrorReporter&, const std::vector<uint32_t>&);
 
 /**
- * Converts a Program into a SPIR-V binary.
+ * Converts a Program into a SPIR-V binary. Prefer the std::vector<uint32_t> variant bacause the
+ * OutputStream variant incurs an additional copy.
  */
 bool ToSPIRV(Program& program, const ShaderCaps* caps, OutputStream& out, ValidateSPIRVProc = nullptr);
 bool ToSPIRV(Program& program,
