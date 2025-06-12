@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4cd4672_9fea10fd",
+        "filename": "tests/CodecTest.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2413,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-12T14:53:12Z",
+      "side": 1,
+      "message": "Would be kind of cool to do this with SkVx (untested):\n\n```\n  const skvx::float4 a4 \u003d skvx::cast\u003cfloat\u003e(skvx::byte4::Load(\u0026a)),\n                     b4 \u003d skvx::cast\u003cfloat\u003e(skvx::byte4::Load(\u0026b));\n\n  return skvx::all(skvx::abs(a4 - b4) \u003c static_cast\u003cfloat\u003e(tolerance));\n```",
+      "range": {
+        "startLine": 2399,
+        "startChar": 0,
+        "endLine": 2413,
+        "endChar": 5
+      },
+      "revId": "abdb5b04d014c8beaa765e5846e5ce0c97db4134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
