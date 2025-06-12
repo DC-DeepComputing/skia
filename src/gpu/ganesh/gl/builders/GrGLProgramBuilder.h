@@ -23,7 +23,6 @@
 
 #include <cstddef>
 #include <memory>
-#include <string>
 
 class GrCaps;
 class GrDirectContext;
@@ -35,6 +34,9 @@ class GrProgramInfo;
 
 namespace SkSL {
 struct ProgramSettings;
+}
+namespace skgpu {
+struct NativeShader;
 }
 
 struct GrGLPrecompiledProgram {
@@ -72,7 +74,7 @@ private:
     GrGLProgramBuilder(GrGLGpu*, const GrProgramDesc&, const GrProgramInfo&);
 
     void addInputVars(const SkSL::Program::Interface&);
-    bool compileAndAttachShaders(const std::string& glsl,
+    bool compileAndAttachShaders(const skgpu::NativeShader& glsl,
                                  GrGLuint programId,
                                  GrGLenum type,
                                  SkTDArray<GrGLuint>* shaderIds,
@@ -84,7 +86,7 @@ private:
                                  bool bindAttribLocations);
     void storeShaderInCache(const SkSL::Program::Interface&,
                             GrGLuint programID,
-                            const std::string shaders[],
+                            const skgpu::NativeShader shaders[],
                             bool isSkSL,
                             SkSL::ProgramSettings* settings);
     sk_sp<GrGLProgram> finalize(const GrGLPrecompiledProgram*);

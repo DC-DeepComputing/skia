@@ -16,6 +16,7 @@
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/gpu/GpuRefCnt.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/ganesh/GrAttachment.h"
 #include "src/gpu/ganesh/GrBuffer.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
@@ -34,8 +35,8 @@
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
-#include <stdint.h>
 #include <string.h>
+#include <cstdint>
 #include <string>
 #include <utility>
 
@@ -74,7 +75,7 @@ bool GrVkMSAALoadManager::createMSAALoadProgram(GrVkGpu* gpu) {
             "}");
 
     SkSL::ProgramSettings settings;
-    std::string spirv;
+    skgpu::NativeShader spirv;
     SkSL::Program::Interface interface;
     if (!GrCompileVkShaderModule(gpu, vertShaderText, VK_SHADER_STAGE_VERTEX_BIT,
                                  &fVertShaderModule, &fShaderStageInfo[0], settings, &spirv,
