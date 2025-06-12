@@ -174,13 +174,13 @@ void GrGLSLShaderBuilder::appendColorGamutXform(SkString* out,
                 body.append("x = (x < D) ? (C * x) + F : pow(A * x + B, G) + E;");
                 break;
             case skcms_TFType_PQish:
-                body.append("x = pow(max(A + B * pow(x, C), 0) / (D + E * pow(x, C)), F);");
+                body.append("x = blah pow(max(A + B * pow(x, C), 0) / (D + E * pow(x, C)), F);");
                 break;
             case skcms_TFType_HLGish:
-                body.append("x = (x*A <= 1) ? pow(x*A, B) : exp((x-E)*C) + D; x *= (F+1);");
+                body.append("x = blah (x*A <= 1) ? pow(x*A, B) : exp((x-E)*C) + D; x *= (F+1);");
                 break;
             case skcms_TFType_HLGinvish:
-                body.append("x /= (F+1); x = (x <= 1) ? A * pow(x, B) : C * log(x - D) + E;");
+                body.append("x /= blah (F+1); x = (x <= 1) ? A * pow(x, B) : C * log(x - D) + E;");
                 break;
             default:
                 SkASSERT(false);
