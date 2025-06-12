@@ -207,6 +207,19 @@ SkPathBuilder& SkPathBuilder::close() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+SkPathBuilder& SkPathBuilder::rMoveTo(SkScalar x, SkScalar y) {
+    SkPoint pt = {0,0};
+    int count = fPts.size();
+    if (count > 0) {
+        if (fLastMoveIndex >= 0) {
+            pt = fPts.at(count - 1);
+        } else {
+            pt = fPts.at(~fLastMoveIndex);
+        }
+    }
+    return this->moveTo(pt.fX + x, pt.fY + y);
+}
+
 SkPathBuilder& SkPathBuilder::rLineTo(SkPoint p1) {
     this->ensureMove();
     return this->lineTo(fPts.back() + p1);
@@ -249,7 +262,10 @@ SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr) const {
             break;
         default: break;
     }
+    return this->make(pr, convexity, dir);
+}
 
+SkPath SkPathBuilder::make(sk_sp<SkPathRef> pr, SkPathConvexity convexity, SkPathFirstDirection dir) const {
     // Wonder if we can combine convexity and dir internally...
     //  unknown, convex_cw, convex_ccw, concave
     // Do we ever have direction w/o convexity, or viceversa (inside path)?
@@ -282,6 +298,16 @@ SkPath SkPathBuilder::detach() {
                                                           std::move(fVerbs),
                                                           std::move(fConicWeights),
                                                           fSegmentMask)));
+    this->reset();
+    return path;
+}
+
+SkPath SkPathBuilder::detach(SkPathConvexity convexity, SkPathFirstDirection dir) {
+    auto path = this->make(sk_sp<SkPathRef>(new SkPathRef(std::move(fPts),
+                                                          std::move(fVerbs),
+                                                          std::move(fConicWeights),
+                                                          fSegmentMask)),
+                           convexity, dir);
     this->reset();
     return path;
 }

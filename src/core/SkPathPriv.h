@@ -132,6 +132,13 @@ public:
      * assumes empty ovals and zero sweeps have already been filtered out.
      */
     static void CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNoPathEffect);
+    static void CreateDrawArcPath(SkPathBuilder* path, SkPathConvexity* convexity,
+                                  SkPathFirstDirection* firstDir, const SkArc& arc,
+                                  bool isFillNoPathEffect);
+
+    static SkPath Detach(SkPathBuilder* path, SkPathConvexity convexity, SkPathFirstDirection firstDir) {
+        return path->detach(convexity, firstDir);
+    }
 
     /**
      * Determines whether an arc produced by CreateDrawArcPath will be convex. Assumes a non-empty
@@ -447,6 +454,14 @@ public:
 
     static int CountVerbs(const SkPathBuilder& builder) {
         return builder.fVerbs.size();
+    }
+
+    static void ReversePathTo(SkPathBuilder* builder, const SkPath& path) {
+        builder->privateReversePathTo(path);
+    }
+
+    static bool IsZeroLengthSincePoint(const SkPathBuilder& builder, int startPtIndex) {
+        return builder.isZeroLengthSincePoint(startPtIndex);
     }
 
     static SkPath MakePath(const SkPathVerbAnalysis& analysis,

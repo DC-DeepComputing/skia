@@ -45,7 +45,14 @@ bool SkPathMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlags f
     return fContour && fContour->getMatrix(distance, matrix, (SkContourMeasure::MatrixFlags)flags);
 }
 
-bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo) {
+std::optional<SkPath> SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, bool startWithMoveTo) {
+    if (!fContour) {
+        return std::nullopt;
+    }
+    return fContour->getSegment(startD, stopD, startWithMoveTo);
+}
+
+bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo) {
     return fContour && fContour->getSegment(startD, stopD, dst, startWithMoveTo);
 }
 

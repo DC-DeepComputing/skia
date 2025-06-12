@@ -30,18 +30,20 @@ void draw(SkCanvas* canvas) {
     SkPoint c{64, 448};
     SkPoint d{384, 64};
 
-    SkPath threeSegments;
-    threeSegments.moveTo(a);
-    threeSegments.lineTo(b);
-    threeSegments.lineTo(c);
-    threeSegments.lineTo(d);
+    SkPath threeSegments = SkPathBuilder()
+     .moveTo(a)
+     .lineTo(b)
+     .lineTo(c)
+     .lineTo(d)
+     .detach();
 
     canvas->drawPath(threeSegments, paint);
 
     paint.setColor(SkColorSetARGB(255, 0, 0, 255));
-    SkPath cubicCurve;
-    cubicCurve.moveTo(a);
-    cubicCurve.cubicTo(b, c, d);
+    SkPath cubicCurve = SkPathBuilder()
+     .moveTo(a)
+     .cubicTo(b, c, d)
+     .detach();
     canvas->drawPath(cubicCurve, paint);
 
     SkPaint textPaint;

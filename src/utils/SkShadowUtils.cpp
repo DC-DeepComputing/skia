@@ -17,6 +17,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRect.h"
@@ -684,8 +685,8 @@ void SkDevice::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShad
         // All else has failed, draw with blur
         if (!success) {
             // Pretransform the path to avoid transforming the stroke, below.
-            SkPath devSpacePath;
-            path.transform(canvas->getLocalToDeviceAs3x3(), &devSpacePath);
+            SkPathBuilder devSpacePath(path);
+            devSpacePath.transform(canvas->getLocalToDeviceAs3x3());
             devSpacePath.setIsVolatile(true);
 
             // The tesselator outsets by AmbientBlurRadius (or 'r') to get the outer ring of
@@ -729,7 +730,7 @@ void SkDevice::drawShadow(SkCanvas* canvas, const SkPath& path, const SkDrawShad
             SkScalar sigma = SkBlurMask::ConvertRadiusToSigma(blurRadius);
             paint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, sigma,
                                                        /*respectCTM=*/false));
-            canvas->drawPath(devSpacePath, paint);
+            canvas->drawPath(devSpacePath.detach(), paint);
         }
     }
 

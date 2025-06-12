@@ -267,9 +267,11 @@ void SkReadBuffer::readRegion(SkRegion* region) {
 void SkReadBuffer::readPath(SkPath* path) {
     size_t size = 0;
     if (!fError) {
-        size = path->readFromMemory(fCurr, this->available());
-        if (!this->validate((SkAlign4(size) == size) && (0 != size))) {
-            path->reset();
+        std::optional<SkPath> rv = SkPath::ReadFromMemory(fCurr, this->available(), &size);
+        if (rv && this->validate((SkAlign4(size) == size) && (0 != size))) {
+            *path = rv.value();
+        } else {
+            *path = SkPath();
         }
     }
     (void)this->skip(size);

@@ -9,16 +9,18 @@ void draw(SkCanvas* canvas) {
     canvas->scale(0.5, 0.5);
 
     p.setStrokeWidth(195.23635741822847);
-    SkPath path;
-    path.moveTo(488, 182.10368918639688);
-    path.cubicTo(572, 182.10368918639688, 572, 97.61817870911423, 655, 97.61817870911423);
+    SkPath path = SkPathBuilder()
+        .moveTo(488, 182.10368918639688)
+        .cubicTo(572, 182.10368918639688, 572, 97.61817870911423, 655, 97.61817870911423)
+        .detach();
     p.setColor(SK_ColorGREEN);
     canvas->drawPath(path, p);
 
     p.setStrokeWidth(504.6189756548017);
-    path.reset();
-    path.moveTo(20, 252.30948782740091);
-    path.cubicTo(31, 252.30948782740091, 31, 278.79312771879796, 41, 278.79312771879796);
+    path = SkPathBuilder()
+        .moveTo(20, 252.30948782740091)
+        .cubicTo(31, 252.30948782740091, 31, 278.79312771879796, 41, 278.79312771879796)
+        .detach();
     p.setColor(SK_ColorRED);
     canvas->drawPath(path, p);
 }

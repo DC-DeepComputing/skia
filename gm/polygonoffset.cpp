@@ -10,6 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
@@ -552,7 +553,7 @@ protected:
         }
 
         {
-            SkPath path;
+            SkPathBuilder path;
             path.moveTo(data.get()[0]);
             for (int i = 1; i < numPts; ++i) {
                 path.lineTo(data.get()[i]);
@@ -560,7 +561,7 @@ protected:
             path.close();
             canvas->save();
             canvas->translate(center.fX, center.fY);
-            canvas->drawPath(path, paint);
+            canvas->drawPath(path.detach(), paint);
             canvas->restore();
         }
 
@@ -579,7 +580,7 @@ protected:
                 result = SkOffsetSimplePolygon(data.get(), numPts, bounds, offset, &offsetPoly);
             }
             if (result) {
-                SkPath path;
+                SkPathBuilder path;
                 path.moveTo(offsetPoly[0]);
                 for (int j = 1; j < offsetPoly.size(); ++j) {
                     path.lineTo(offsetPoly[j]);
@@ -589,7 +590,7 @@ protected:
                 paint.setColor(ToolUtils::color_to_565(colors[i]));
                 canvas->save();
                 canvas->translate(center.fX, center.fY);
-                canvas->drawPath(path, paint);
+                canvas->drawPath(path.detach(), paint);
                 canvas->restore();
             }
         }

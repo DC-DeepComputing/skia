@@ -13,6 +13,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "src/core/SkGeometry.h"
 #include "tools/fonts/FontToolUtils.h"
 #include "tools/viewer/ClickHandlerSlide.h"
@@ -114,24 +115,25 @@ void StrokeVerbSlide::draw(SkCanvas* canvas) {
 }
 
 void StrokeVerbSlide::updatePath() {
-    fPath.reset();
-    fPath.moveTo(fPoints[0]);
+    SkPathBuilder path;
+    path.moveTo(fPoints[0]);
     switch (fVerbType) {
         case VerbType::kCubics:
-            fPath.cubicTo(fPoints[1], fPoints[2], fPoints[3]);
+            path.cubicTo(fPoints[1], fPoints[2], fPoints[3]);
             break;
         case VerbType::kQuadratics:
-            fPath.quadTo(fPoints[1], fPoints[3]);
+            path.quadTo(fPoints[1], fPoints[3]);
             break;
         case VerbType::kConics:
-            fPath.conicTo(fPoints[1], fPoints[3], fConicWeight);
+            path.conicTo(fPoints[1], fPoints[3], fConicWeight);
             break;
         case VerbType::kTriangles:
-            fPath.lineTo(fPoints[1]);
-            fPath.lineTo(fPoints[3]);
-            fPath.close();
+            path.lineTo(fPoints[1]);
+            path.lineTo(fPoints[3]);
+            path.close();
             break;
     }
+    fPath = path.detach();
 }
 
 class StrokeVerbSlide::Click : public ClickHandlerSlide::Click {

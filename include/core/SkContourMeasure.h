@@ -18,9 +18,11 @@
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 
 class SkMatrix;
 class SkPath;
+class SkPathBuilder;
 enum class SkPathVerb;
 
 class SK_API SkContourMeasure : public SkRefCnt {
@@ -54,7 +56,9 @@ public:
      then return false (and leave dst untouched).
      Begin the segment with a moveTo if startWithMoveTo is true
      */
-    [[nodiscard]] bool getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+    [[nodiscard]] std::optional<SkPath> getSegment(SkScalar startD, SkScalar stopD,
+                                                   bool startWithMoveTo) const;
+    [[nodiscard]] bool getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst,
                                   bool startWithMoveTo) const;
 
     /** Return true if the contour is closed()

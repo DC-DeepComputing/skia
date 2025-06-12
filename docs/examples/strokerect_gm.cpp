@@ -36,8 +36,8 @@ void draw(SkCanvas* canvas) {
                         (i + doFill * std::size(gJoins)) * (H + 2 * kStrokeWidth));
                 const SkRect& rect = gRects[j];
 
-                SkPath path, fillPath;
-                path.addRect(rect);
+                SkPath path = SkPath::Rect(rect);
+                SkPath fillPath;
                 SkPaint paint;
 
                 paint.setStrokeWidth(kStrokeWidth);

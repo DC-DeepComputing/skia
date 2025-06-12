@@ -68,7 +68,7 @@ void RasterMaskHelper::drawShape(const Shape& shape,
     SkPath path = shape.asPath();
     if (path.isInverseFillType()) {
         // The shader will handle the inverse fill in this case
-        path.toggleInverseFillType();
+        path = path.makeToggleInverseFillType();
     }
     fDraw.drawPathCoverage(path, paint);
 }

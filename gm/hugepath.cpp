@@ -9,6 +9,7 @@
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
@@ -26,14 +27,16 @@ DEF_SIMPLE_GM(path_huge_crbug_800804, canvas, 50, 600) {
     for (float w : widths) {
         paint.setStrokeWidth(w);
 
-        path.reset();
-        path.moveTo(-1000,12345678901234567890.f);
-        path.lineTo(10.5f,200);
+        path = SkPathBuilder()
+            .moveTo(-1000,12345678901234567890.f)
+            .lineTo(10.5f,200)
+            .detach();
         canvas->drawPath(path, paint);
 
-        path.reset();
-        path.moveTo(30.5f,400);
-        path.lineTo(1000,-9.8765432109876543210e+19f);
+        path = SkPathBuilder()
+            .moveTo(30.5f,400)
+            .lineTo(1000,-9.8765432109876543210e+19f)
+            .detach();
         canvas->drawPath(path, paint);
 
         canvas->translate(3, 0);
@@ -48,8 +51,7 @@ static void draw_huge_path(SkCanvas* canvas, int w, int h, bool manual) {
     auto can = surf->getCanvas();
 
     SkPaint paint;
-    SkPath path;
-    path.addRoundRect(SkRect::MakeXYWH(4, 4, w - 8, h - 8), 12, 12);
+    SkPath path = SkPath::RRect(SkRect::MakeXYWH(4, 4, w - 8, h - 8), 12, 12);
 
     canvas->save();
     canvas->clipRect(SkRect::MakeXYWH(4, 4, 64, 64));

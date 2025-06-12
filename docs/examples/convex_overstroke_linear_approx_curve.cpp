@@ -22,15 +22,16 @@ void draw(SkCanvas* canvas) {
         points[i] = SkPoint::Make(65 + 15 * cos(i * PI / 10), 50 - 15 * sin(i * PI / 10));
     }
 
-    SkPath path;
-    path.moveTo(p1);
-    path.lineTo(p2);
+    SkPathBuilder pb;
+    pb.moveTo(p1);
+    pb.lineTo(p2);
 
     for (int i = 0; i < 10; i++) {
-        path.lineTo(points[i]);
+        pb.lineTo(points[i]);
     }
-    path.lineTo(p1);
-    // path.close();
+    pb.lineTo(p1);
+    // pb.close();
+    SkPath path = pb.detach();
 
     SkPaint p;
     p.setColor(SK_ColorRED);

@@ -9,6 +9,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkPathUtils.h"
 #include "include/utils/SkParsePath.h"
@@ -359,20 +360,20 @@ void PathVerbMeasure::nextVerb() {
         verb = fIter.next(pts);
     }
 
-    fCurrVerb.rewind();
-    fCurrVerb.moveTo(fPreviousPoint);
+    SkPathBuilder verbPath;
+    verbPath.moveTo(fPreviousPoint);
     switch (verb) {
         case SkPath::kLine_Verb:
-            fCurrVerb.lineTo(pts[1]);
+            verbPath.lineTo(pts[1]);
             break;
         case SkPath::kQuad_Verb:
-            fCurrVerb.quadTo(pts[1], pts[2]);
+            verbPath.quadTo(pts[1], pts[2]);
             break;
         case SkPath::kCubic_Verb:
-            fCurrVerb.cubicTo(pts[1], pts[2], pts[3]);
+            verbPath.cubicTo(pts[1], pts[2], pts[3]);
             break;
         case SkPath::kConic_Verb:
-            fCurrVerb.conicTo(pts[1], pts[2], fIter.conicWeight());
+            verbPath.conicTo(pts[1], pts[2], fIter.conicWeight());
             break;
         case SkPath::kDone_Verb:
             break;
@@ -381,6 +382,7 @@ void PathVerbMeasure::nextVerb() {
             SkASSERT(false);
             break;
     }
+    fCurrVerb = verbPath.detach();
 
     fCurrVerb.getLastPt(&fPreviousPoint);
     fMeas.setPath(&fCurrVerb, false);
@@ -478,7 +480,7 @@ private:
               const OffsetSegments& curr);
 
     /** Appends path in reverse to result */
-    static void appendPathReversed(const SkPath& path, SkPath* result);
+    static void appendPathReversed(const SkPath& path, SkPathBuilder* result);
 
     /** Returns the segment unit normal and unit tangent if not nullptr */
     static SkPoint unitNormal(const PathSegment& seg, float t, SkPoint* tangentOut);
@@ -505,7 +507,7 @@ private:
     float fRadius;
     SkPaint::Cap fCap;
     SkPaint::Join fJoin;
-    SkPath fInner, fOuter;
+    SkPathBuilder fInner, fOuter;
     ScalarBezCurve fVarWidth, fVarWidthInner;
     float fCurrT;
 };
@@ -514,8 +516,8 @@ void SkVarWidthStroker::initForPath(const SkPath& path, const SkPaint& paint) {
     fRadius = paint.getStrokeWidth() / 2;
     fCap = paint.getStrokeCap();
     fJoin = paint.getStrokeJoin();
-    fInner.rewind();
-    fOuter.rewind();
+    fInner.reset();
+    fOuter.reset();
     fCurrT = 0;
 }
 
@@ -618,10 +620,10 @@ SkPath SkVarWidthStroker::getFillPath(const SkPath& path,
     }
 
     // Walk inner path in reverse, appending to result
-    appendPathReversed(fInner, &fOuter);
+    appendPathReversed(fInner.snapshot(), &fOuter);
     endcap(CapLocation::Start);
 
-    return fOuter;
+    return fOuter.snapshot();
 }
 
 SkVarWidthStroker::OffsetSegments SkVarWidthStroker::strokeSegment(
@@ -710,9 +712,10 @@ std::vector<SkVarWidthStroker::PathSegment> SkVarWidthStroker::strokeSegment(
         if (viz::outerErr == nullptr) {
             using namespace viz;
             outerErr = std::make_unique<ScalarBezCurve>(E);
-            outerFirstApprox.rewind();
-            outerFirstApprox.moveTo(quadApprox.fPoints[0]);
-            outerFirstApprox.quadTo(quadApprox.fPoints[1], quadApprox.fPoints[2]);
+            outerFirstApprox = SkPathBuilder()
+                .moveTo(quadApprox.fPoints[0])
+                .quadTo(quadApprox.fPoints[1], quadApprox.fPoints[2])
+                .detach();
         }
 
         // Compute maxErr, which is just the max coefficient of eps (using convex hull property
@@ -748,9 +751,10 @@ void SkVarWidthStroker::endcap(CapLocation loc) {
             fOuter.close();
         } else {
             // Inner last pt == first pt when appending in reverse
-            SkPoint innerLastPt;
-            fInner.getLastPt(&innerLastPt);
-            fOuter.lineTo(innerLastPt);
+            std::optional<SkPoint> innerLastPt = fInner.getLastPt();
+            if (innerLastPt.has_value()) {
+                fOuter.lineTo(innerLastPt.value());
+            }
         }
     };
 
@@ -779,7 +783,7 @@ void SkVarWidthStroker::join(const SkPoint& common,
         // need an "inner" or an "outer" join. So we call the two sides "left" and
         // "right" and they can each independently get an inner or outer join.
         const auto makeJoin = [this, &common, &prev, &curr](bool left, float radius) {
-            SkPath* path = left ? &fOuter : &fInner;
+            SkPathBuilder* path = left ? &fOuter : &fInner;
             const auto& prevSegs = left ? prev.fOuter : prev.fInner;
             const auto& currSegs = left ? curr.fOuter : curr.fInner;
             SkASSERT(!prevSegs.empty());
@@ -847,7 +851,7 @@ void SkVarWidthStroker::join(const SkPoint& common,
     }
 }
 
-void SkVarWidthStroker::appendPathReversed(const SkPath& path, SkPath* result) {
+void SkVarWidthStroker::appendPathReversed(const SkPath& path, SkPathBuilder* result) {
     const int numVerbs = path.countVerbs();
     const int numPoints = path.countPoints();
     std::vector<uint8_t> verbs;
@@ -1100,8 +1104,7 @@ public:
     void draw(SkCanvas* canvas) override {
         canvas->drawColor(0xFFEEEEEE);
 
-        SkPath path;
-        this->makePath(&path);
+        SkPath path = this->makePath();
 
         fStrokePaint.setStrokeWidth(fWidth);
 
@@ -1112,7 +1115,7 @@ public:
         SkVarWidthStroker stroker;
         SkPath fillPath =
                 stroker.getFillPath(path, fStrokePaint, distFnc, distFncInner, fLengthMetric);
-        fillPath.setFillType(SkPathFillType::kWinding);
+        fillPath = fillPath.makeFillType(SkPathFillType::kWinding);
         canvas->drawPath(fillPath, fNewFillPaint);
 
         if (fShowHidden) {
@@ -1196,10 +1199,12 @@ private:
         fDistFncsInner = fDefaultsDistFncs;
     }
 
-    void makePath(SkPath* path) {
-        path->moveTo(fPathPts[0]);
-        path->quadTo(fPathPts[1], fPathPts[2]);
-        path->quadTo(fPathPts[3], fPathPts[4]);
+    SkPath makePath() {
+        return SkPathBuilder()
+            .moveTo(fPathPts[0])
+            .quadTo(fPathPts[1], fPathPts[2])
+            .quadTo(fPathPts[3], fPathPts[4])
+            .detach();
     }
 
     static ScalarBezCurve makeDistFnc(const std::vector<DistFncMenuItem>& fncs, float strokeWidth) {
@@ -1256,7 +1261,7 @@ private:
         constexpr float dt = 1.0f / nsegs;
         constexpr float dx = 10.0f;
         const int deg = E.degree();
-        SkPath path;
+        SkPathBuilder pb;
         for (int i = 0; i < nsegs; i++) {
             const float tmin = i * dt, tmax = (i + 1) * dt;
             ScalarBezCurve left(deg), right(deg);
@@ -1267,10 +1272,11 @@ private:
 
             const float x = i * dx;
             if (i == 0) {
-                path.moveTo(x, -rr[0]);
+                pb.moveTo(x, -rr[0]);
             }
-            path.lineTo(x + dx, -rr[deg]);
+            pb.lineTo(x + dx, -rr[deg]);
         }
+        SkPath path = pb.detach();
 
         SkPaint paint;
         paint.setStyle(SkPaint::kStroke_Style);
@@ -1286,11 +1292,12 @@ private:
         canvas->scale(sx, sy);
         canvas->drawPath(path, paint);
 
-        SkPath axes;
-        axes.moveTo(0, 0);
-        axes.lineTo(pathBounds.width(), 0);
-        axes.moveTo(0, -yAxisMax);
-        axes.lineTo(0, yAxisMax);
+        SkPath axes = SkPathBuilder()
+            .moveTo(0, 0)
+            .lineTo(pathBounds.width(), 0)
+            .moveTo(0, -yAxisMax)
+            .lineTo(0, yAxisMax)
+            .detach();
         paint.setColor(SK_ColorBLACK);
         paint.setAntiAlias(false);
         canvas->drawPath(axes, paint);

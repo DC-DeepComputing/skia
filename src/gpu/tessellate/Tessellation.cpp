@@ -7,6 +7,7 @@
 #include "src/gpu/tessellate/Tessellation.h"
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/private/base/SkFloatingPoint.h"
@@ -52,7 +53,7 @@ public:
         fPath.setIsVolatile(true);
     }
 
-    SkPath path() const { return fPath; }
+    SkPath path() const { return fPath.snapshot(); }
 
     void moveTo(SkPoint p) { fPath.moveTo(p); }
     void lineTo(const SkPoint p[2]) { fPath.lineTo(p[1]); }
@@ -148,11 +149,15 @@ public:
         }
     }
 
+    void setFillType(SkPathFillType ft) {
+        fPath.setFillType(ft);
+    }
+
 private:
     const float fTessellationPrecision;
     const CullTest fCullTest;
     const wangs_formula::VectorXform fVectorXform;
-    SkPath fPath;
+    SkPathBuilder fPath;
 
     // Used for stack-based recursion (instead of using the runtime stack).
     STArray<8, SkPoint> fPointStack;
@@ -197,9 +202,8 @@ SkPath PreChopPathCurves(float tessellationPrecision,
         }
     }
     // Must preserve the input path's fill type (see crbug.com/1472747)
-    SkPath chopped = chopper.path();
-    chopped.setFillType(path.getFillType());
-    return chopped;
+    chopper.setFillType(path.getFillType());
+    return chopper.path();
 }
 
 int FindCubicConvex180Chops(const SkPoint pts[], float T[2], bool* areCusps) {

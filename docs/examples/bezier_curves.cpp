@@ -12,10 +12,11 @@ void draw(SkCanvas* canvas) {
     paint.setAntiAlias(true);
     paint.setStrokeCap(SkPaint::kRound_Cap);
 
-    SkPath path;
-    path.moveTo(10, 10);
-    path.quadTo(256, 64, 128, 128);
-    path.quadTo(10, 192, 250, 250);
+    SkPath path = SkPathBuilder()
+        .moveTo(10, 10)
+        .quadTo(256, 64, 128, 128)
+        .quadTo(10, 192, 250, 250)
+        .detach();
     canvas->drawPath(path, paint);
 }
 }  // END FIDDLE

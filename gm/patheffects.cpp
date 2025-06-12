@@ -140,7 +140,6 @@ protected:
         }
         canvas->restore();
 
-        path.reset();
         SkRect r = { 0, 0, 250, 120 };
         path = SkPathBuilder().addOval(r, SkPathDirection::kCW)
                               .addRect(r.makeInset(50, 50), SkPathDirection::kCCW)
@@ -215,11 +214,13 @@ public:
         }
         n = invCtm.mapVector(mappedN.fX, mappedN.fY);
 
-        dst->moveTo(pts[0] + n);
-        dst->lineTo(pts[1] + n);
-        dst->lineTo(pts[1] - n);
-        dst->lineTo(pts[0] - n);
-        dst->close();
+        *dst = SkPathBuilder()
+            .moveTo(pts[0] + n)
+            .lineTo(pts[1] + n)
+            .lineTo(pts[1] - n)
+            .lineTo(pts[0] - n)
+            .close()
+            .detach();
 
         rec->setFillStyle();
 
@@ -259,9 +260,10 @@ protected:
         const float pxInflate = 0.5f;
         sk_sp<SkPathEffect> pathEffect(new StrokeLineInflated(strokeWidth, pxInflate));
 
-        SkPath path;
-        path.moveTo(100, 100);
-        path.lineTo(200, 200);
+        SkPath path = SkPathBuilder()
+            .moveTo(100, 100)
+            .lineTo(200, 200)
+            .detach();
 
         // Draw the inflated path, and a scaled version, in blue.
         SkPaint paint;

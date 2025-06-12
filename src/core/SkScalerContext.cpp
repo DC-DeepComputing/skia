@@ -15,6 +15,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkStrokeRec.h"
@@ -798,12 +799,12 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
         SkFixed dy = glyphID.getSubYFixed();
         if (dx | dy) {
             pathModified = true;
-            path.offset(SkFixedToScalar(dx), SkFixedToScalar(dy));
+            path = SkPathBuilder(path).offset(SkFixedToScalar(dx), SkFixedToScalar(dy)).detach();
         }
     }
 
     if (fRec.fFrameWidth < 0 && fPathEffect == nullptr) {
-        devPath.swap(path);
+        devPath = path.snapshot();
     } else {
         pathModified = true; // It could still end up the same, but it's probably going to change.
 
@@ -811,15 +812,15 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
         // so that our stroking and effects will operate the same way they
         // would if the user had extracted the path themself, and then
         // called drawPath
-        SkPath localPath;
         SkMatrix matrix;
         SkMatrix inverse;
 
         fRec.getMatrixFrom2x2(&matrix);
         if (!matrix.invert(&inverse)) {
-            glyph.setPath(alloc, &devPath, hairline, pathModified);
+            SkPath tmp = devPath.snapshot();
+            glyph.setPath(alloc, &tmp, hairline, pathModified);
         }
-        path.transform(inverse, &localPath);
+        SkPath localPath = path.makeTransform(inverse);
         // now localPath is only affected by the paint settings, and not the canvas matrix
 
         SkStrokeRec rec(SkStrokeRec::kFill_InitStyle);
@@ -837,14 +838,14 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
         if (fPathEffect) {
             SkPath effectPath;
             if (fPathEffect->filterPath(&effectPath, localPath, &rec, nullptr, matrix)) {
-                localPath.swap(effectPath);
+                localPath = SkPath(effectPath);
             }
         }
 
         if (rec.needToApply()) {
             SkPath strokePath;
             if (rec.applyToPath(&strokePath, localPath)) {
-                localPath.swap(strokePath);
+                localPath = SkPath(strokePath);
             }
         }
 
@@ -853,7 +854,7 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
             hairline = true;
         }
 
-        localPath.transform(matrix, &devPath);
+        devPath = localPath.makeTransform(matrix);
     }
     glyph.setPath(alloc, &devPath, hairline, pathModified);
 }
@@ -1319,7 +1320,7 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
         }
         void generateImage(const SkGlyph&, void*) override {}
         bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override {
-            path->reset();
+            *path = SkPath();
             return false;
         }
         void generateFontMetrics(SkFontMetrics* metrics) override {

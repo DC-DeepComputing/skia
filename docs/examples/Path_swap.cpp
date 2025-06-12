@@ -3,6 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_swap, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     SkPath path1, path2;
     path1.addRect({10, 20, 30, 40});
     path1.swap(path2);
@@ -10,5 +11,6 @@ void draw(SkCanvas* canvas) {
     SkDebugf("path1 bounds = %g, %g, %g, %g\n", b1.fLeft, b1.fTop, b1.fRight, b1.fBottom);
     const SkRect& b2 = path2.getBounds();
     SkDebugf("path2 bounds = %g, %g, %g, %g\n", b2.fLeft, b2.fTop, b2.fRight, b2.fBottom);
+#endif
 }
 }  // END FIDDLE

@@ -6,9 +6,10 @@ void draw(SkCanvas* canvas) {
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setStrokeWidth(10);
-    SkPath strokePath;
-    strokePath.moveTo(20, 20);
-    strokePath.lineTo(100, 100);
+    SkPath strokePath = SkPathBuilder()
+        .moveTo(20, 20)
+        .lineTo(100, 100)
+        .detach();
     canvas->drawPath(strokePath, paint);
     SkPath fillPath;
     skpathutils::FillPathWithPaint(strokePath, paint, &fillPath);

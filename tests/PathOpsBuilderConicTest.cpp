@@ -8,6 +8,7 @@
 #include "include/core/SkBitmap.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRegion.h"
@@ -36,12 +37,11 @@ static void testOvalSet(const OvalSet& set, const SkPath& oval, SkOpBuilder* bui
     for (int x = 0; x < set.fColumns; ++x) {
         for (int y = 0; y < set.fRows; ++y) {
             for (SkScalar r = 0; r < 360; r += 360.f / set.fRotations) {
-                SkPath rotated;
                 SkMatrix matrix;
                 matrix.reset();
                 matrix.postRotate(r, 0, 0);
                 matrix.postTranslate(x * set.fXSpacing, y * set.fYSpacing);
-                oval.transform(matrix, &rotated);
+                SkPath rotated = oval.makeTransform(matrix);
                 if (builder) {
                     builder->add(rotated, kUnion_SkPathOp);
                 } else if (!region) {
@@ -58,14 +58,19 @@ static void testOvalSet(const OvalSet& set, const SkPath& oval, SkOpBuilder* bui
     if (builder) {
         builder->resolve(result);
     } else if (region) {
-        region->getBoundaryPath(result);
+        std::optional<SkPath> tmp = region->getBoundaryPath();
+        if (tmp.has_value()) {
+            *result = tmp.value();
+        }
     }
 }
 
 static void testOne(skiatest::Reporter* reporter, const OvalSet& set) {
-    SkPath oval, regionResult, builderResult, opResult;
-    oval.setFillType(SkPathFillType::kWinding);
-    oval.addOval(set.fBounds);
+    SkPath regionResult, builderResult, opResult;
+    SkPath oval = SkPathBuilder()
+        .setFillType(SkPathFillType::kWinding)
+        .addOval(set.fBounds)
+        .detach();
     SkOpBuilder builder;
     SkRegion region;
     testOvalSet(set, oval, nullptr, &region, &regionResult);
@@ -175,7 +180,7 @@ static SkPath subset_simplify_fail(skiatest::Reporter* reporter, const SkPath& p
 #endif
 
 DEF_TEST(SixtyOvals_2_2_9_73, reporter) {
-    SkPath path;
+    SkPathBuilder path;
     path.moveTo(SkBits2Float(0x434d53ca), SkBits2Float(0x43ad6ab0));  // 205.327f, 346.833f
 path.conicTo(SkBits2Float(0x434d53ca), SkBits2Float(0x40a00000), SkBits2Float(0x42d253ca), SkBits2Float(0x40a00000), SkBits2Float(0x3f3504f3));  // 205.327f, 5, 105.164f, 5, 0.707107f
 path.conicTo(SkBits2Float(0x40a00000), SkBits2Float(0x40a00000), SkBits2Float(0x40a00000), SkBits2Float(0x43ad6ab0), SkBits2Float(0x3f3504f3));  // 5, 5, 5, 346.833f, 0.707107f
@@ -392,7 +397,7 @@ path.conicTo(SkBits2Float(0x4330ea74), SkBits2Float(0x43e3de28), SkBits2Float(0x
 path.conicTo(SkBits2Float(0x441a1798), SkBits2Float(0x4474dd1c), SkBits2Float(0x442d464c), SkBits2Float(0x4464c489), SkBits2Float(0x3f3504f3));  // 616.369f, 979.455f, 693.098f, 915.071f, 0.707107f
 path.conicTo(SkBits2Float(0x44407502), SkBits2Float(0x4454abf6), SkBits2Float(0x44098684), SkBits2Float(0x441334f2), SkBits2Float(0x3f3504f3));  // 769.828f, 850.687f, 550.102f, 588.827f, 0.707107f
 path.close();
-SkPath lastFailed = path;
+SkPath lastFailed = path.detach();
 #if DEBUG_SIMPLIFY_FAILS
     for (;;) {
         SkPath failed = subset_simplify_fail(reporter, lastFailed);
@@ -406,7 +411,7 @@ SkPath lastFailed = path;
 }
 
 DEF_TEST(SixtyOvals_2_2_9_73_reduced, reporter) {
-    SkPath path;
+    SkPathBuilder path;
 path.moveTo(377.219f, -141.981f);
 path.conicTo(40.5787f, -201.34f, 23.1855f, -102.698f, 0.707107f);
 path.lineTo(377.219f, -141.981f);
@@ -415,11 +420,11 @@ path.moveTo(306.588f, -227.984f);
 path.conicTo(212.465f, -262.242f, 95.5512f, 58.9764f, 0.707107f);
 path.lineTo(306.588f, -227.984f);
 path.close();
-testSimplify(reporter, path, __FUNCTION__);
+testSimplify(reporter, path.detach(), __FUNCTION__);
 }
 
 DEF_TEST(SixtyOvalsA, reporter) {
-SkPath path;
+SkPathBuilder path;
 path.setFillType(SkPathFillType::kEvenOdd);
 path.moveTo(11.1722f, -8.10398f);
 path.conicTo(22.9143f, -10.3787f, 23.7764f, -7.72542f, 1.00863f);
@@ -445,7 +450,7 @@ path.conicTo(4.27813f, -13.1264f, 4.29822f, -13.1479f, 1.03158f);
 path.conicTo(12.44f, -21.8635f, 14.6946f, -20.2254f, 1.00811f);
 path.conicTo(16.9933f, -18.5554f, 11.1722f, -8.10398f, 0.989875f);
 path.close();
-SkPath one(path);
+SkPath one(path.snapshot());
 path.reset();
 path.setFillType(SkPathFillType::kWinding);
 path.moveTo(-1.54509f, -4.75528f);
@@ -454,13 +459,13 @@ path.conicTo(25.3215f, -2.97014f, 1.54509f, 4.75528f, 0.707107f);
 path.conicTo(-22.2313f, 12.4807f, -23.7764f, 7.72543f, 0.707107f);
 path.conicTo(-25.3215f, 2.97014f, -1.54509f, -4.75528f, 0.707107f);
 path.close();
-SkPath two(path);
+SkPath two(path.detach());
 SkPath result;
 Op(one, two, kUnion_SkPathOp, &result);
 }
 
 DEF_TEST(SixtyOvalsAX, reporter) {
-SkPath path;
+SkPathBuilder path;
 path.setFillType(SkPathFillType::kEvenOdd);
 path.moveTo(SkBits2Float(0x4132c174), SkBits2Float(0xc101a9e5));  // 11.1722f, -8.10398f
 path.conicTo(SkBits2Float(0x41b7508a), SkBits2Float(0xc1260efe), SkBits2Float(0x41be3618), SkBits2Float(0xc0f736ad), SkBits2Float(0x3f811abd));  // 22.9143f, -10.3787f, 23.7764f, -7.72542f, 1.00863f
@@ -487,7 +492,7 @@ path.conicTo(SkBits2Float(0x41470a56), SkBits2Float(0xc1aee870), SkBits2Float(0x
 path.conicTo(SkBits2Float(0x4187f23a), SkBits2Float(0xc1947162), SkBits2Float(0x4132c174), SkBits2Float(0xc101a9e5), SkBits2Float(0x3f7d6873));  // 16.9933f, -18.5554f, 11.1722f, -8.10398f, 0.989875f
 path.close();
 path.close();
-SkPath one(path);
+SkPath one(path.snapshot());
 path.reset();
 path.setFillType(SkPathFillType::kWinding);
 path.moveTo(SkBits2Float(0xbfc5c55c), SkBits2Float(0xc0982b46));  // -1.54509f, -4.75528f
@@ -496,7 +501,7 @@ path.conicTo(SkBits2Float(0x41ca926e), SkBits2Float(0xc03e16da), SkBits2Float(0x
 path.conicTo(SkBits2Float(0xc1b1d9c2), SkBits2Float(0x4147b0fc), SkBits2Float(0xc1be3618), SkBits2Float(0x40f736b3), SkBits2Float(0x3f3504f3));  // -22.2313f, 12.4807f, -23.7764f, 7.72543f, 0.707107f
 path.conicTo(SkBits2Float(0xc1ca926e), SkBits2Float(0x403e16da), SkBits2Float(0xbfc5c55c), SkBits2Float(0xc0982b46), SkBits2Float(0x3f3504f3));  // -25.3215f, 2.97014f, -1.54509f, -4.75528f, 0.707107f
 path.close();
-SkPath two(path);
+SkPath two(path.detach());
 SkPath result;
 Op(one, two, kUnion_SkPathOp, &result);
 }

@@ -8,6 +8,7 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
@@ -32,11 +33,12 @@ static void test_assign_and_comparison(skiatest::Reporter* reporter) {
     s.save();
     REPORTER_ASSERT(reporter, 1 == s.getSaveCount());
 
-    SkPath p;
-    p.moveTo(5, 6);
-    p.lineTo(7, 8);
-    p.lineTo(5, 9);
-    p.close();
+    SkPath p = SkPathBuilder()
+        .moveTo(5, 6)
+        .lineTo(7, 8)
+        .lineTo(5, 9)
+        .close()
+        .detach();
     s.clipPath(p, SkMatrix::I(), SkClipOp::kIntersect, doAA);
 
     s.save();
@@ -81,8 +83,7 @@ static void test_assign_and_comparison(skiatest::Reporter* reporter) {
     // Test that version constructed with rect-path rather than a rect is still considered equal.
     s.restore();
     s.save();
-    SkPath rp;
-    rp.addRect(r);
+    SkPath rp = SkPath::Rect(r);
     s.clipPath(rp, SkMatrix::I(), SkClipOp::kDifference, doAA);
     REPORTER_ASSERT(reporter, s == copy);
 
@@ -114,7 +115,7 @@ static void test_assign_and_comparison(skiatest::Reporter* reporter) {
     s.save();
     REPORTER_ASSERT(reporter, 1 == s.getSaveCount());
 
-    p.addRect(r);
+    p = SkPathBuilder(p).addRect(r).detach();
     s.clipPath(p, SkMatrix::I(), SkClipOp::kIntersect, doAA);
     REPORTER_ASSERT(reporter, s != copy);
 }
@@ -229,10 +230,8 @@ static void test_bounds(skiatest::Reporter* reporter,
     rrectA.setOval(rectA);
     rrectB.setRectXY(rectB, SkIntToScalar(1), SkIntToScalar(2));
 
-    SkPath pathA, pathB;
-
-    pathA.addRoundRect(rectA, SkIntToScalar(5), SkIntToScalar(5));
-    pathB.addRoundRect(rectB, SkIntToScalar(5), SkIntToScalar(5));
+    SkPath pathA = SkPath::RRect(rectA, SkIntToScalar(5), SkIntToScalar(5));
+    SkPath pathB = SkPath::RRect(rectB, SkIntToScalar(5), SkIntToScalar(5));
 
     SkClipStack stack;
     SkRect devClipBound;
@@ -247,10 +246,10 @@ static void test_bounds(skiatest::Reporter* reporter,
             bool doInvA = SkToBool(invBits & 1);
             bool doInvB = SkToBool(invBits & 2);
 
-            pathA.setFillType(doInvA ? SkPathFillType::kInverseEvenOdd :
-                                       SkPathFillType::kEvenOdd);
-            pathB.setFillType(doInvB ? SkPathFillType::kInverseEvenOdd :
-                                       SkPathFillType::kEvenOdd);
+            pathA = pathA.makeFillType(doInvA ? SkPathFillType::kInverseEvenOdd :
+                                                SkPathFillType::kEvenOdd);
+            pathB = pathB.makeFillType(doInvB ? SkPathFillType::kInverseEvenOdd :
+                                                SkPathFillType::kEvenOdd);
 
             switch (primType) {
                 case SkClipStack::Element::DeviceSpaceType::kShader:
@@ -363,9 +362,10 @@ static void test_rect_inverse_fill(skiatest::Reporter* reporter) {
     // non-intersecting rectangles
     SkRect rect  = SkRect::MakeLTRB(0, 0, 10, 10);
 
-    SkPath path;
-    path.addRect(rect);
-    path.toggleInverseFillType();
+    SkPath path = SkPathBuilder()
+        .addRect(rect)
+        .toggleInverseFillType()
+        .detach();
     SkClipStack stack;
     stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
 
@@ -459,8 +459,7 @@ static void test_path_replace(skiatest::Reporter* reporter) {
         stack->clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, doAA);
     };
     SkRect rect = SkRect::MakeWH(100, 100);
-    SkPath path;
-    path.addCircle(50, 50, 50);
+    SkPath path = SkPath::Circle(50, 50, 50);
 
     // Emulating replace operations with more complex geometry is not atomic, it's a replace
     // with a wide-open rect and then an intersection with the complex geometry. The replace can
@@ -585,14 +584,10 @@ static void test_quickContains(skiatest::Reporter* reporter) {
     SkRect outsideRect = SkRect::MakeLTRB(0, 0, 50, 50);
     SkRect nonIntersectingRect = SkRect::MakeLTRB(100, 100, 110, 110);
 
-    SkPath insideCircle;
-    insideCircle.addCircle(25, 25, 5);
-    SkPath intersectingCircle;
-    intersectingCircle.addCircle(25, 40, 10);
-    SkPath outsideCircle;
-    outsideCircle.addCircle(25, 25, 50);
-    SkPath nonIntersectingCircle;
-    nonIntersectingCircle.addCircle(100, 100, 5);
+    SkPath insideCircle = SkPath::Circle(25, 25, 5);
+    SkPath intersectingCircle = SkPath::Circle(25, 40, 10);
+    SkPath outsideCircle = SkPath::Circle(25, 25, 50);
+    SkPath nonIntersectingCircle = SkPath::Circle(100, 100, 5);
 
     {
         SkClipStack stack;
@@ -688,36 +683,40 @@ static void test_quickContains(skiatest::Reporter* reporter) {
     // Intersect Op tests with inverse filled rectangles
     {
         SkClipStack stack;
-        SkPath path;
-        path.addRect(outsideRect);
-        path.toggleInverseFillType();
+        SkPath path = SkPathBuilder()
+            .addRect(outsideRect)
+            .toggleInverseFillType()
+            .detach();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path;
-        path.addRect(insideRect);
-        path.toggleInverseFillType();
+        SkPath path = SkPathBuilder()
+            .addRect(insideRect)
+            .toggleInverseFillType()
+            .detach();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path;
-        path.addRect(intersectingRect);
-        path.toggleInverseFillType();
+        SkPath path = SkPathBuilder()
+            .addRect(intersectingRect)
+            .toggleInverseFillType()
+            .detach();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path;
-        path.addRect(nonIntersectingRect);
-        path.toggleInverseFillType();
+        SkPath path = SkPathBuilder()
+            .addRect(nonIntersectingRect)
+            .toggleInverseFillType()
+            .detach();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, true == stack.quickContains(testRect));
     }
@@ -725,32 +724,28 @@ static void test_quickContains(skiatest::Reporter* reporter) {
     // Intersect Op tests with inverse filled circles
     {
         SkClipStack stack;
-        SkPath path = outsideCircle;
-        path.toggleInverseFillType();
+        SkPath path = outsideCircle.makeToggleInverseFillType();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path = insideCircle;
-        path.toggleInverseFillType();
+        SkPath path = insideCircle.makeToggleInverseFillType();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path = intersectingCircle;
-        path.toggleInverseFillType();
+        SkPath path = intersectingCircle.makeToggleInverseFillType();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, false == stack.quickContains(testRect));
     }
 
     {
         SkClipStack stack;
-        SkPath path = nonIntersectingCircle;
-        path.toggleInverseFillType();
+        SkPath path = nonIntersectingCircle.makeToggleInverseFillType();
         stack.clipPath(path, SkMatrix::I(), SkClipOp::kIntersect, false);
         REPORTER_ASSERT(reporter, true == stack.quickContains(testRect));
     }
@@ -783,9 +778,10 @@ static void test_invfill_diff_bug(skiatest::Reporter* reporter) {
     SkClipStack stack;
     stack.clipRect({10, 10, 20, 20}, SkMatrix::I(), SkClipOp::kIntersect, false);
 
-    SkPath path;
-    path.addRect({30, 10, 40, 20});
-    path.setFillType(SkPathFillType::kInverseWinding);
+    SkPath path = SkPathBuilder()
+        .addRect({30, 10, 40, 20})
+        .setFillType(SkPathFillType::kInverseWinding)
+        .detach();
     stack.clipPath(path, SkMatrix::I(), SkClipOp::kDifference, false);
 
     REPORTER_ASSERT(reporter, SkClipStack::kEmptyGenID == stack.getTopmostGenID());

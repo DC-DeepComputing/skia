@@ -3,7 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Canvas_drawPath, 256, 256, false, 0) {
 void draw(SkCanvas* canvas) {
-    SkPath path;
+    SkPathBuilder path;
     path.moveTo(20, 20);
     path.quadTo(60, 20, 60, 60);
     path.close();
@@ -17,7 +17,7 @@ void draw(SkCanvas* canvas) {
         paint.setStrokeJoin(join);
         for (auto cap: { SkPaint::kButt_Cap, SkPaint::kSquare_Cap, SkPaint::kRound_Cap  } ) {
             paint.setStrokeCap(cap);
-            canvas->drawPath(path, paint);
+            canvas->drawPath(path.snapshot(), paint);
             canvas->translate(80, 0);
         }
         canvas->translate(-240, 60);
@@ -29,7 +29,7 @@ void draw(SkCanvas* canvas) {
         path.setFillType(fill);
         canvas->save();
         canvas->clipRect({0, 10, 80, 70});
-        canvas->drawPath(path, paint);
+        canvas->drawPath(path.snapshot(), paint);
         canvas->restore();
         canvas->translate(80, 0);
     }

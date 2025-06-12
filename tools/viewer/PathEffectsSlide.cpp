@@ -7,9 +7,11 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkRegion.h"
+#include "include/core/SkRRect.h"
 #include "include/core/SkShader.h"
 #include "include/effects/Sk1DPathEffect.h"
 #include "include/effects/SkCornerPathEffect.h"
@@ -31,14 +33,14 @@ static sk_sp<SkPathEffect> make_pe(int flags, SkScalar phase) {
         return SkCornerPathEffect::Make(SkIntToScalar(CORNER_RADIUS));
     }
 
-    SkPath  path;
+    SkPathBuilder path;
     path.moveTo(SkIntToScalar(gXY[0]), SkIntToScalar(gXY[1]));
     for (unsigned i = 2; i < std::size(gXY); i += 2)
         path.lineTo(SkIntToScalar(gXY[i]), SkIntToScalar(gXY[i+1]));
     path.close();
     path.offset(SkIntToScalar(-6), 0);
 
-    auto outer = SkPath1DPathEffect::Make(path, 12, phase, SkPath1DPathEffect::kRotate_Style);
+    auto outer = SkPath1DPathEffect::Make(path.detach(), 12, phase, SkPath1DPathEffect::kRotate_Style);
 
     if (flags == 2)
         return outer;
@@ -49,7 +51,7 @@ static sk_sp<SkPathEffect> make_pe(int flags, SkScalar phase) {
 }
 
 static sk_sp<SkPathEffect> make_warp_pe(SkScalar phase) {
-    SkPath  path;
+    SkPathBuilder path;
     path.moveTo(SkIntToScalar(gXY[0]), SkIntToScalar(gXY[1]));
     for (unsigned i = 2; i < std::size(gXY); i += 2) {
         path.lineTo(SkIntToScalar(gXY[i]), SkIntToScalar(gXY[i+1]));
@@ -58,7 +60,7 @@ static sk_sp<SkPathEffect> make_warp_pe(SkScalar phase) {
     path.offset(SkIntToScalar(-6), 0);
 
     auto outer = SkPath1DPathEffect::Make(
-        path, 12, phase, SkPath1DPathEffect::kMorph_Style);
+        path.detach(), 12, phase, SkPath1DPathEffect::kMorph_Style);
     auto inner = SkCornerPathEffect::Make(SkIntToScalar(CORNER_RADIUS));
 
     return SkPathEffect::MakeCompose(outer, inner);
@@ -83,14 +85,15 @@ public:
         SkScalar    x = SkIntToScalar(20);
         SkScalar    y = SkIntToScalar(50);
 
-        fPath.moveTo(x, y);
+        SkPathBuilder path;
+        path.moveTo(x, y);
         for (int i = 0; i < steps; i++) {
             x += dist/steps;
             SkScalar tmpY = y + SkIntToScalar(rand.nextS() % 25);
             if (i == steps/2) {
-                fPath.moveTo(x, tmpY);
+                path.moveTo(x, tmpY);
             } else {
-                fPath.lineTo(x, tmpY);
+                path.lineTo(x, tmpY);
             }
         }
 
@@ -98,10 +101,11 @@ public:
             SkRect  oval;
             oval.setLTRB(20, 30, 100, 60);
             oval.offset(x, 0);
-            fPath.addRoundRect(oval, SkIntToScalar(8), SkIntToScalar(8));
+            path.addRRect(SkRRect::MakeRectXY(oval, SkIntToScalar(8), SkIntToScalar(8)));
         }
 
         fClickPt.set(SkIntToScalar(200), SkIntToScalar(200));
+        fPath = path.detach();
     }
 
     void draw(SkCanvas* canvas) override {

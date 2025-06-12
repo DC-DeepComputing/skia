@@ -15,8 +15,11 @@
 #include "include/private/base/SkAPI.h"
 #include "include/private/base/SkDebug.h"
 
+#include <optional>
+
 class SkMatrix;
 class SkPath;
+class SkPathBuilder;
 
 class SK_API SkPathMeasure {
 public:
@@ -70,7 +73,8 @@ public:
         then return false (and leave dst untouched).
         Begin the segment with a moveTo if startWithMoveTo is true
     */
-    bool getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo);
+    std::optional<SkPath> getSegment(SkScalar startD, SkScalar stopD, bool startWithMoveTo);
+    bool getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst, bool startWithMoveTo);
 
     /** Return true if the current contour is closed()
     */
