@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43594fd6_20b82475",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6270
+      },
+      "writtenOn": "2025-06-12T21:18:42Z",
+      "side": 1,
+      "message": "Still a bit WIP since it\u0027s untested (although a straightforward port of Android\u0027s current code), but posting for review if there\u0027s something objectionable about this",
+      "revId": "93e240c5d14e4a11a3c9a3e39fb212f406aefc3a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
