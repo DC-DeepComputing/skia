@@ -9,7 +9,10 @@
 #define SkGainmapShader_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkTileMode.h"
 #include "include/private/base/SkAPI.h"
+
+#include <functional>
 
 class SkColorSpace;
 class SkShader;
@@ -55,6 +58,18 @@ public:
                                 const SkRect& dstRect,
                                 float dstHdrRatio,
                                 sk_sp<SkColorSpace> dstColorSpace);
+
+    static sk_sp<SkShader> MakeDeferred(const sk_sp<const SkImage>& baseImage,
+                                        const SkRect& baseRect,
+                                        const SkSamplingOptions& baseSamplingOptions,
+                                        const sk_sp<const SkImage>& gainmapImage,
+                                        const SkRect& gainmapRect,
+                                        const SkSamplingOptions& gainmapSamplingOptions,
+                                        const SkGainmapInfo& gainmapInfo,
+                                        const SkRect& dstRect,
+                                        SkTileMode tileModeX,
+                                        SkTileMode tileModeY,
+                                        std::function<float(const SkColorSpace*)> dstHdrRatio);
 };
 
 #endif
