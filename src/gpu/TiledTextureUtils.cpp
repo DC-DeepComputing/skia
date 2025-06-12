@@ -369,7 +369,8 @@ std::tuple<bool, size_t> TiledTextureUtils::DrawAsTiledImageRect(
         SkCanvas::SrcRectConstraint constraint,
         bool sharpenMM,
         size_t cacheSize,
-        size_t maxTextureSize) {
+        size_t maxTextureSize,
+        bool shouldUseSubsets) {
     if (canvas->isClipEmpty()) {
         return {true, 0};
     }
@@ -427,7 +428,7 @@ std::tuple<bool, size_t> TiledTextureUtils::DrawAsTiledImageRect(
             // If it's a Picture-backed image we should subset the SkPicture directly rather than
             // converting to a Bitmap and then subsetting. Rendering to a bitmap will use a Raster
             // surface, and the SkPicture could have GPU data.
-            if (as_IB(image)->type() == SkImage_Base::Type::kLazyPicture) {
+            if (shouldUseSubsets && as_IB(image)->type() == SkImage_Base::Type::kLazyPicture) {
                 auto imageProc = [&](SkIRect iTileR) {
                     return image->makeSubset(nullptr, iTileR);
                 };

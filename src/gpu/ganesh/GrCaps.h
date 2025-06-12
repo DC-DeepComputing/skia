@@ -570,6 +570,8 @@ public:
     virtual std::vector<GrTest::TestFormatColorTypeCombination> getTestingCombinations() const = 0;
 #endif
 
+    bool useSubsettedTileGradients() const { return fUseSubsettedTileGradients; }
+
 protected:
     // Subclasses must call this at the end of their init method in order to do final processing on
     // the caps (including overrides requested by the client).
@@ -624,6 +626,7 @@ protected:
     bool fReadPixelsRowBytesSupport                  : 1;
     bool fShouldCollapseSrcOverToSrcWhenAble         : 1;
     bool fMustSyncGpuDuringAbandon                   : 1;
+    bool fUseSubsettedTileGradients                  : 1;
 
     // Driver workaround
     bool fDisableTessellationPathRenderer            : 1;

@@ -68,6 +68,7 @@ GrCaps::GrCaps(const GrContextOptions& options) {
     fShouldCollapseSrcOverToSrcWhenAble = false;
     fMustSyncGpuDuringAbandon = true;
     fDisableTessellationPathRenderer = false;
+    fUseSubsettedTileGradients = true;
 
     fBlendEquationSupport = kBasic_BlendEquationSupport;
     fAdvBlendEqDisableFlags = 0;

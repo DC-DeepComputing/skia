@@ -872,6 +872,8 @@ void GrGLCaps::init(const GrContextOptions& contextOptions,
         fShouldCollapseSrcOverToSrcWhenAble = true;
     }
 
+    fUseSubsettedTileGradients = ctxInfo.renderer() != GrGLRenderer::kMali4xx;
+
 #ifdef SK_BUILD_FOR_ANDROID_FRAMEWORK
     if (ctxInfo.renderer() == GrGLRenderer::kPowerVRRogue) {
         // https://b/195281495

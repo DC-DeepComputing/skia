@@ -882,7 +882,8 @@ bool Device::drawAsTiledImageRect(SkCanvas* canvas,
                                                            constraint,
                                                            /* sharpenMM= */ true,
                                                            cacheSize,
-                                                           maxTextureSize);
+                                                           maxTextureSize,
+                                                           /* shouldUseSubsets */ true);
 #if defined(GPU_TEST_UTILS)
     gNumTilesDrawnGraphite.store(numTiles, std::memory_order_relaxed);
 #endif
