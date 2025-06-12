@@ -152,6 +152,7 @@ protected:
                 SK_ABORT("shader compilation failed: %s\n", fCompiler.errorText().c_str());
             }
             std::string result;
+            std::vector<uint32_t> resultBinary;
             switch (fOutput) {
                 case Output::kNone:
                     break;
@@ -166,7 +167,7 @@ protected:
                     break;
 
                 case Output::kSPIRV:
-                    SkAssertResult(SkSL::ToSPIRV(*program, fCaps.shaderCaps(), &result));
+                    SkAssertResult(SkSL::ToSPIRV(*program, fCaps.shaderCaps(), &resultBinary));
                     break;
 
                 case Output::kGrWGSL:

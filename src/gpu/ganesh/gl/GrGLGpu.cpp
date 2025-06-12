@@ -3372,7 +3372,7 @@ bool GrGLGpu::createCopyProgram(GrTexture* srcTex) {
     std::string fragmentSkSL{fshaderTxt.c_str(), fshaderTxt.size()};
 
     auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
-    std::string glsl[kGrShaderTypeCount];
+    skgpu::NativeShader glsl[kGrShaderTypeCount];
     SkSL::ProgramSettings settings;
     SkSL::Program::Interface interface;
     skgpu::SkSLToGLSL(shaderCaps, vertexSkSL, SkSL::ProgramKind::kVertex, settings,
@@ -3556,7 +3556,7 @@ bool GrGLGpu::createMipmapProgram(int progIdx) {
     std::string fragmentSkSL{fshaderTxt.c_str(), fshaderTxt.size()};
 
     auto errorHandler = this->getContext()->priv().getShaderErrorHandler();
-    std::string glsl[kGrShaderTypeCount];
+    skgpu::NativeShader glsl[kGrShaderTypeCount];
     SkSL::ProgramSettings settings;
     SkSL::Program::Interface interface;
 

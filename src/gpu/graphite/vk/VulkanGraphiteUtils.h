@@ -11,6 +11,7 @@
 #include "include/core/SkSpan.h"
 #include "include/gpu/graphite/vk/VulkanGraphiteTypes.h"
 #include "include/gpu/vk/VulkanTypes.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/graphite/DescriptorData.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/vk/VulkanInterface.h"
@@ -64,7 +65,7 @@ struct RenderPassDesc;
 enum class TextureFormat : uint8_t;
 
 VkShaderModule CreateVulkanShaderModule(const VulkanSharedContext*,
-                                        const std::string& spirv,
+                                        const skgpu::NativeShader& spirv,
                                         VkShaderStageFlagBits);
 
 VkDescriptorType DsTypeEnumToVkDs(DescriptorType);

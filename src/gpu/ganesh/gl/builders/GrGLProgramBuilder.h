@@ -14,6 +14,7 @@
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "include/gpu/ganesh/gl/GrGLTypes.h"
 #include "include/private/base/SkTDArray.h"  // IWYU pragma: keep
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/ganesh/GrGeometryProcessor.h"
 #include "src/gpu/ganesh/gl/GrGLProgram.h"
 #include "src/gpu/ganesh/gl/GrGLUniformHandler.h"
@@ -72,7 +73,7 @@ private:
     GrGLProgramBuilder(GrGLGpu*, const GrProgramDesc&, const GrProgramInfo&);
 
     void addInputVars(const SkSL::Program::Interface&);
-    bool compileAndAttachShaders(const std::string& glsl,
+    bool compileAndAttachShaders(const skgpu::NativeShader& glsl,
                                  GrGLuint programId,
                                  GrGLenum type,
                                  SkTDArray<GrGLuint>* shaderIds,
@@ -84,7 +85,7 @@ private:
                                  bool bindAttribLocations);
     void storeShaderInCache(const SkSL::Program::Interface&,
                             GrGLuint programID,
-                            const std::string shaders[],
+                            const skgpu::NativeShader shaders[],
                             bool isSkSL,
                             SkSL::ProgramSettings* settings);
     sk_sp<GrGLProgram> finalize(const GrGLPrecompiledProgram*);

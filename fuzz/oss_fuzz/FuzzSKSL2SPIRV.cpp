@@ -29,7 +29,7 @@ bool FuzzSKSL2SPIRV(const uint8_t *data, size_t size) {
             compiler.convertProgram(SkSL::ProgramKind::kFragment,
                                     std::string(reinterpret_cast<const char*>(data), size),
                                     settings);
-    std::string output;
+    std::vector<uint32_t> output;
     if (!program || !SkSL::ToSPIRV(*program, SkSL::ShaderCapsFactory::Default(), &output)) {
         return false;
     }

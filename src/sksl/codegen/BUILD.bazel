@@ -136,10 +136,12 @@ skia_cc_library(
         "SkSLSPIRVCodeGenerator.cpp",
         ":codegen_shared_priv",
         "//src/sksl:gpu_hdrs",
+        "//src/utils:shader_utils_srcs",
     ],
     hdrs = [
         "SkSLSPIRVCodeGenerator.h",
         ":codegen_shared_exported",
+        "//src/utils:shader_utils_hdrs",
     ],
     features = ["layering_check"],
     visibility = [

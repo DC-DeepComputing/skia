@@ -13,9 +13,12 @@
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
+#include "src/gpu/NativeShader.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 class SkReadBuffer;
 namespace SkSL { struct ProgramSettings; }
@@ -35,7 +38,7 @@ struct ShaderMetadata {
 int GetCurrentVersion();
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const std::string shaders[],
+                                const skgpu::NativeShader shaders[],
                                 const SkSL::Program::Interface[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta = nullptr);
@@ -43,7 +46,8 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
 SkFourByteTag GetType(SkReadBuffer* reader);
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         std::string shaders[],
+                         skgpu::NativeShader shaders[],
+                         bool areShadersBinary,
                          SkSL::Program::Interface[],
                          int numInterfaces,
                          ShaderMetadata* meta = nullptr);

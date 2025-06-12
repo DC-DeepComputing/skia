@@ -13,6 +13,7 @@
 #include "include/gpu/vk/VulkanTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/SkSLToBackend.h"
 #include "src/sksl/codegen/SkSLSPIRVCodeGenerator.h"
 
@@ -25,6 +26,7 @@
 #include <optional>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 class SkStream;
 class SkWStream;
@@ -98,11 +100,18 @@ inline bool SkSLToSPIRV(const SkSL::ShaderCaps* caps,
                         const std::string& sksl,
                         SkSL::ProgramKind programKind,
                         const SkSL::ProgramSettings& settings,
-                        std::string* spirv,
+                        skgpu::NativeShader* spirv,
                         SkSL::ProgramInterface* outInterface,
                         ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToSPIRV, /*backendLabel=*/nullptr,
-                         sksl, programKind, settings, spirv, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToSPIRV,
+                         "SPIRV",
+                         sksl,
+                         programKind,
+                         settings,
+                         spirv,
+                         outInterface,
+                         errorHandler);
 }
 
 static constexpr uint32_t VkFormatChannels(VkFormat vkFormat) {

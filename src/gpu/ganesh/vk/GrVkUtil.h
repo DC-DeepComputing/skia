@@ -13,6 +13,7 @@
 #include "include/private/base/SkMacros.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
 #include "include/private/gpu/vk/SkiaVulkan.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/vk/VulkanInterface.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
@@ -122,11 +123,11 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              VkShaderModule* shaderModule,
                              VkPipelineShaderStageCreateInfo* stageInfo,
                              const SkSL::ProgramSettings& settings,
-                             std::string* outSPIRV,
+                             skgpu::NativeShader* outSPIRV,
                              SkSL::Program::Interface* outInterface);
 
 bool GrInstallVkShaderModule(GrVkGpu* gpu,
-                             const std::string& spirv,
+                             const skgpu::NativeShader& spirv,
                              VkShaderStageFlagBits stage,
                              VkShaderModule* shaderModule,
                              VkPipelineShaderStageCreateInfo* stageInfo);
