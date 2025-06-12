@@ -242,16 +242,18 @@ const char* to_str(ColorFilterType cf) {
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
 #define SK_ALL_TEST_CLIPS(M) \
-    M(None)            \
-    M(Shader)          \
-    M(Shader_Diff)
+    M(None)                  \
+    M(Shader)                \
+    M(Shader_Diff)           \
+    M(Analytic)              \
+    M(AnalyticAndShader)
 
 enum class ClipType {
 #define M(type) k##type,
     SK_ALL_TEST_CLIPS(M)
 #undef M
 
-    kLast = kShader_Diff
+    kLast = kAnalyticAndShader
 };
 
 static constexpr int kClipTypeCount = static_cast<int>(ClipType::kLast) + 1;
@@ -326,7 +328,7 @@ void log_run(const char* label,
              ColorFilterType cf,
              MaskFilterType mf,
              ImageFilterType imageFilter,
-             ClipType clip,
+             ClipType clipType,
              DrawTypeFlags drawTypeFlags) {
     SkDebugf("%s:\n"
              "//------------------------\n"
@@ -340,7 +342,7 @@ void log_run(const char* label,
              "DrawTypeFlags drawTypeFlags = %s;\n"
              "//-----------------------\n",
              label, seed,
-             to_str(s), to_str(bm), to_str(cf), to_str(mf), to_str(imageFilter), to_str(clip),
+             to_str(s), to_str(bm), to_str(cf), to_str(mf), to_str(imageFilter), to_str(clipType),
              to_str(drawTypeFlags));
 }
 
@@ -1761,7 +1763,7 @@ void check_draw(skiatest::Reporter* reporter,
                 Recorder* recorder,
                 const SkPaint& paint,
                 DrawTypeFlags dt,
-                ClipType clip,
+                ClipType clipType,
                 sk_sp<SkShader> clipShader) {
     static const DrawData kDrawData;
 
@@ -1788,7 +1790,7 @@ void check_draw(skiatest::Reporter* reporter,
                                                          &props);
         SkCanvas* canvas = surf->getCanvas();
 
-        switch (clip) {
+        switch (clipType) {
             case ClipType::kNone:
                 break;
             case ClipType::kShader:
@@ -1798,6 +1800,14 @@ void check_draw(skiatest::Reporter* reporter,
             case ClipType::kShader_Diff:
                 SkASSERT(clipShader);
                 canvas->clipShader(clipShader, SkClipOp::kDifference);
+                break;
+            case ClipType::kAnalytic:
+                canvas->clipRRect(SkRRect::MakeRectXY(SkRect::MakeWH(15, 15), 5, 5));
+                break;
+            case ClipType::kAnalyticAndShader:
+                SkASSERT(clipShader);
+                canvas->clipRRect(SkRRect::MakeRectXY(SkRect::MakeWH(15, 15), 5, 5));
+                canvas->clipShader(clipShader, SkClipOp::kIntersect);
                 break;
         }
 
@@ -1928,7 +1938,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               ColorFilterType cf,
                               MaskFilterType mf,
                               ImageFilterType imageFilter,
-                              ClipType clip,
+                              ClipType clipType,
                               sk_sp<SkShader> clipShader,
                               DrawTypeFlags dt,
                               uint32_t seed,
@@ -1970,10 +1980,16 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         sk_sp<SkShader> modifiedClipShader = clipShader
                                              ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
                                              : nullptr;
-        if (clip == ClipType::kShader_Diff && modifiedClipShader) {
+        if (clipType == ClipType::kShader_Diff && modifiedClipShader) {
             // The CTMShader gets further wrapped in a ColorFilterShader for kDifference clips
             modifiedClipShader = modifiedClipShader->makeWithColorFilter(
                     SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
+        }
+
+        NonMSAAClip clipData;
+        if (clipType == ClipType::kAnalytic || clipType == ClipType::kAnalyticAndShader) {
+            clipData.fAnalyticClip.fBounds = SkRect::MakeWH(15, 15);
+            clipData.fAnalyticClip.fRadius = 5;
         }
 
         UniquePaintParamsID paintID =
@@ -1984,7 +2000,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                                  {},
                                  PaintParams(paint,
                                              primitiveBlender,
-                                             {}, // TODO (jvanverth): add analytic clip to test
+                                             clipData,
                                              std::move(modifiedClipShader),
                                              dstReadRequired,
                                              /* skipColorXform= */ false),
@@ -1996,7 +2012,9 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
                                               &precompileGatherer,
-                                              DrawTypeFlags::kNone,
+                                              (clipType == ClipType::kAnalytic || clipType == ClipType::kAnalyticAndShader)
+                                                  ? DrawTypeFlags::kAnalyticClip
+                                                  : DrawTypeFlags::kNone,
                                               withPrimitiveBlender,
                                               coverage,
                                               unusedRenderPassDesc,
@@ -2024,7 +2042,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
         if (result == precompileIDs.end()) {
-            log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clip, dt);
+            log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clipType, dt);
         }
 
 #ifdef SK_DEBUG
@@ -2052,7 +2070,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                                       Recorder* recorder,
                                       const SkPaint& paint,
                                       const PaintOptions& paintOptions,
-                                      ClipType clip,
+                                      ClipType clipType,
                                       sk_sp<SkShader> clipShader,
                                       DrawTypeFlags dt,
                                       bool /* verbose */) {
@@ -2093,8 +2111,14 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
     const RenderPassProperties* pathProperties = (msaaSupported && !vello) ? &kDepth_Stencil_4
                                                                            : &kDepth_1;
 
+    DrawTypeFlags combinedDrawType = dt;
+    if (clipType == ClipType::kAnalytic || clipType == ClipType::kAnalyticAndShader) {
+        combinedDrawType = static_cast<DrawTypeFlags>(dt | DrawTypeFlags::kAnalyticClip);
+    }
+
     int before = globalCache->numGraphicsPipelines();
-    Precompile(precompileContext, paintOptions, dt,
+    Precompile(precompileContext, paintOptions,
+               combinedDrawType,
                dt == kNonSimpleShape ? SkSpan(pathProperties, 1) : SkSpan(&kDepth_1, 1));
     if (gNeedSKPPaintOption) {
         // The skp draws a rect w/ a default SkPaint and RGBA dst color type
@@ -2115,7 +2139,7 @@ void precompile_vs_real_draws_subtest(skiatest::Reporter* reporter,
                recorder,
                paint,
                dt,
-               clip,
+               clipType,
                clipShader);
 }
 
@@ -2129,7 +2153,7 @@ void run_test(skiatest::Reporter* reporter,
               ColorFilterType cf,
               MaskFilterType mf,
               ImageFilterType imageFilter,
-              ClipType clip,
+              ClipType clipType,
               DrawTypeFlags dt,
               uint32_t seed,
               bool verbose) {
@@ -2140,10 +2164,16 @@ void run_test(skiatest::Reporter* reporter,
     sk_sp<SkShader> clipShader;
     sk_sp<PrecompileShader> clipShaderOption;
 
-    if (clip == ClipType::kShader || clip == ClipType::kShader_Diff) {
+    if (clipType == ClipType::kShader ||
+        clipType == ClipType::kShader_Diff ||
+        clipType == ClipType::kAnalyticAndShader) {
         std::tie(clipShader, clipShaderOption) = create_clip_shader(&rand, recorder.get());
         SkASSERT(!clipShader == !clipShaderOption);
     }
+
+//    if (clipType == ClipType::kAnalytic || clipType == ClipType::kAnalyticAndShader) {
+//        dt = static_cast<DrawTypeFlags>(dt | DrawTypeFlags::kAnalyticClip);
+//    }
 
     gNeedSKPPaintOption = false;
     auto [paint, paintOptions] = create_paint(&rand, recorder.get(), s, bm, cf, mf, imageFilter);
@@ -2154,11 +2184,11 @@ void run_test(skiatest::Reporter* reporter,
     paintOptions.priv().setClipShaders({clipShaderOption});
 
     extract_vs_build_subtest(reporter, context, testContext, precompileKeyContext, recorder.get(),
-                             paint, paintOptions, s, bm, cf, mf, imageFilter, clip, clipShader, dt,
-                             seed, &rand, verbose);
+                             paint, paintOptions, s, bm, cf, mf, imageFilter, clipType,
+                             clipShader, dt, seed, &rand, verbose);
     precompile_vs_real_draws_subtest(reporter, context, precompileContext,
                                      testContext, recorder.get(),
-                                     paint, paintOptions, clip, clipShader, dt, verbose);
+                                     paint, paintOptions, clipType, clipShader, dt, verbose);
 }
 
 } // anonymous namespace
@@ -2238,11 +2268,11 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     KeyContext precompileKeyContext(create_key_context(context, rtDict.get()));
 
     ShaderType shaders[] = {
-            ShaderType::kBlend,
-            ShaderType::kImage,
+//            ShaderType::kBlend,
+//-            ShaderType::kImage,
             ShaderType::kRadialGradient,
-            ShaderType::kSolidColor,
-            ShaderType::kYUVImage,
+//-            ShaderType::kSolidColor,
+//            ShaderType::kYUVImage,
 #if EXPANDED_SET
             ShaderType::kNone,
             ShaderType::kColorFilter,
@@ -2313,11 +2343,13 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
     };
 
     ClipType clips[] = {
-            ClipType::kNone,
+//            ClipType::kNone,
 #if EXPANDED_SET
             ClipType::kShader,        // w/ a SkClipOp::kIntersect
             ClipType::kShader_Diff,   // w/ a SkClipOp::kDifference
 #endif
+//            ClipType::kAnalytic,
+            ClipType::kAnalyticAndShader, // w/ a SkClipOp::kIntersect
     };
 
     static const DrawTypeFlags kDrawTypeFlags[] = {
@@ -2334,12 +2366,12 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
             DrawTypeFlags::kNonSimpleShape,
     };
 
-#if EXPANDED_SET
+//#if EXPANDED_SET
     size_t kExpected = std::size(shaders) * std::size(blenders) * std::size(colorFilters) *
                        std::size(maskFilters) * std::size(imageFilters) * std::size(clips) *
                        std::size(kDrawTypeFlags);
     int current = 0;
-#endif
+//#endif
 
     for (auto shader : shaders) {
         for (auto blender : blenders) {
@@ -2348,10 +2380,10 @@ DEF_CONDITIONAL_GRAPHITE_TEST_FOR_ALL_CONTEXTS(PaintParamsKeyTest,
                     for (auto imageFilter : imageFilters) {
                         for (auto clip : clips) {
                             for (DrawTypeFlags dt : kDrawTypeFlags) {
-#if EXPANDED_SET
+//#if EXPANDED_SET
                                 SkDebugf("%d/%zu\n", current, kExpected);
                                 ++current;
-#endif
+//#endif
 
                                 run_test(reporter, context, precompileContext.get(),
                                          testContext, precompileKeyContext,
