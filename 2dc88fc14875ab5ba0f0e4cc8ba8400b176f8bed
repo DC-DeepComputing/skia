@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "812d4774_8db262d9",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-12T15:22:47Z",
+      "side": 1,
+      "message": "I guess the overall count should be sanitized at this point, maybe add some asserts before the loop for extra peace of mind.",
+      "range": {
+        "startLine": 135,
+        "startChar": 48,
+        "endLine": 135,
+        "endChar": 57
+      },
+      "revId": "2dc88fc14875ab5ba0f0e4cc8ba8400b176f8bed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
