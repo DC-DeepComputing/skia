@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20efc31f_9cf3f3fd",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-12T18:55:14Z",
+      "side": 1,
+      "message": "There\u0027s a subtle difference - `SkPath::getLastPt` resets the out param to {0,0} on failure, but with the `std::optional` version we don\u0027t get that behavior (and `SkPoint` does not have a default initializer).  So we need to initialize it explicitly in case of failure.\n\n... or, `std::optional` has this cool `value_or` helper to handle this pattern:\n\n```\n   const SkPoint currentPoint \u003d this-\u003egetLastPt().value_or({0, 0});\n\n   return this-\u003earcTo(...);\n```",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 442,
+        "endChar": 5
+      },
+      "revId": "e897c93f5f6ebc08e0c0ebdd438965dd6a3bd42e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
