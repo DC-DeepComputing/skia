@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d8497c8_3ced5eec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20234
+      },
+      "writtenOn": "2025-06-12T06:52:33Z",
+      "side": 1,
+      "message": "Hello, could you please review this patch? thanks.",
+      "revId": "7f93173ed0702c7b3be17f96e7bfe61fdffed47d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
