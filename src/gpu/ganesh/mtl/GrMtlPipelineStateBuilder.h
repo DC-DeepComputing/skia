@@ -9,6 +9,7 @@
 #define GrMtlPipelineStateBuilder_DEFINED
 
 #include "include/gpu/ganesh/GrContextOptions.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/ganesh/GrPipeline.h"
 #include "src/gpu/ganesh/glsl/GrGLSLProgramBuilder.h"
 #include "src/gpu/ganesh/mtl/GrMtlUniformHandler.h"
@@ -60,10 +61,10 @@ private:
 
     void finalizeFragmentSecondaryColor(GrShaderVar& outputColor) override;
 
-    id<MTLLibrary> compileMtlShaderLibrary(const std::string& shader,
+    id<MTLLibrary> compileMtlShaderLibrary(const skgpu::NativeShader& shader,
                                            SkSL::Program::Interface,
                                            GrContextOptions::ShaderErrorHandler* errorHandler);
-    void storeShadersInCache(const std::string shaders[],
+    void storeShadersInCache(const skgpu::NativeShader shaders[],
                              const SkSL::Program::Interface[],
                              SkSL::ProgramSettings*,
                              sk_sp<SkData>,

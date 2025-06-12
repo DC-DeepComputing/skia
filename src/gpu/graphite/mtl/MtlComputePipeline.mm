@@ -41,7 +41,7 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
         }
         entryPointName = std::move(nativeShader.fEntryPoint);
     } else {
-        std::string msl;
+        skgpu::NativeShader msl;
         SkSL::Program::Interface interface;
         SkSL::ProgramSettings settings;
 
@@ -58,10 +58,8 @@ sk_sp<MtlComputePipeline> MtlComputePipeline::Make(const MtlSharedContext* share
                        errorHandler)) {
             return nullptr;
         }
-        library = MtlCompileShaderLibrary(sharedContext,
-                                          pipelineDesc.computeStep()->name(),
-                                          msl,
-                                          errorHandler);
+        library = MtlCompileShaderLibrary(
+                sharedContext, pipelineDesc.computeStep()->name(), msl.fText, errorHandler);
         if (library == nil) {
             return nullptr;
         }

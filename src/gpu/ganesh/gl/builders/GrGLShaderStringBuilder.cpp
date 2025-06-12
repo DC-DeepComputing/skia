@@ -11,6 +11,7 @@
 #include "include/private/base/SkTo.h"
 #include "src/base/SkAutoMalloc.h"
 #include "src/core/SkTraceEvent.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/ganesh/gl/GrGLDefines.h"
 #include "src/gpu/ganesh/gl/GrGLGpu.h"
 #include "src/gpu/ganesh/gl/GrGLUtil.h"
@@ -21,7 +22,7 @@
 GrGLuint GrGLCompileAndAttachShader(const GrGLContext& glCtx,
                                     GrGLuint programId,
                                     GrGLenum type,
-                                    const std::string& glsl,
+                                    const skgpu::NativeShader& glsl,
                                     bool shaderWasCached,
                                     GrThreadSafePipelineBuilder::Stats* stats,
                                     GrContextOptions::ShaderErrorHandler* errorHandler) {
@@ -34,8 +35,8 @@ GrGLuint GrGLCompileAndAttachShader(const GrGLContext& glCtx,
     if (0 == shaderId) {
         return 0;
     }
-    const GrGLchar* source = glsl.c_str();
-    GrGLint sourceLength = SkToInt(glsl.size());
+    const GrGLchar* source = glsl.fText.c_str();
+    GrGLint sourceLength = SkToInt(glsl.fText.size());
     GR_GL_CALL(gli, ShaderSource(shaderId, 1, &source, &sourceLength));
 
     stats->incShaderCompilations();
@@ -57,7 +58,7 @@ GrGLuint GrGLCompileAndAttachShader(const GrGLContext& glCtx,
                 GR_GL_CALL(gli, GetShaderInfoLog(shaderId, infoLen+1, &length, (char*)log.get()));
             }
             errorHandler->compileError(
-                    glsl.c_str(), infoLen > 0 ? (const char*)log.get() : "", shaderWasCached);
+                    glsl.fText.c_str(), infoLen > 0 ? (const char*)log.get() : "", shaderWasCached);
             GR_GL_CALL(gli, DeleteShader(shaderId));
             return 0;
         }
@@ -76,7 +77,7 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
                          bool shaderWasCached,
                          GrContextOptions::ShaderErrorHandler* errorHandler,
                          const std::string* sksl[kGrShaderTypeCount],
-                         const std::string glsl[kGrShaderTypeCount]) {
+                         const skgpu::NativeShader glsl[kGrShaderTypeCount]) {
     const GrGLInterface* gli = gpu->glInterface();
 
     GrGLint linked = GR_GL_INIT_ZERO;
@@ -94,9 +95,10 @@ bool GrGLCheckLinkStatus(const GrGLGpu* gpu,
                                                sksl[kFragment_GrShaderType]->c_str());
         }
         if (glsl) {
-            SkSL::String::appendf(&allShaders, SKSL_FORMAT,
-                                               glsl[kVertex_GrShaderType].c_str(),
-                                               glsl[kFragment_GrShaderType].c_str());
+            SkSL::String::appendf(&allShaders,
+                                  SKSL_FORMAT,
+                                  glsl[kVertex_GrShaderType].fText.c_str(),
+                                  glsl[kFragment_GrShaderType].fText.c_str());
         }
 #undef SKSL_FORMAT
         GrGLint infoLen = GR_GL_INIT_ZERO;

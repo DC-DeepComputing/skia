@@ -16,6 +16,7 @@
 #include "src/gpu/ganesh/vk/GrVkVaryingHandler.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
+#include <cstdint>
 #include <string>
 
 class GrCaps;
@@ -29,6 +30,9 @@ class GrVkPipelineState;
 class SkReadBuffer;
 namespace SkSL {
 struct ProgramSettings;
+}
+namespace skgpu {
+struct NativeShader;
 }
 
 class GrVkPipelineStateBuilder : public GrGLSLProgramBuilder {
@@ -61,23 +65,22 @@ private:
     int loadShadersFromCache(SkReadBuffer* cached, VkShaderModule outShaderModules[],
                              VkPipelineShaderStageCreateInfo* outStageInfo);
 
-    void storeShadersInCache(const std::string shaders[],
-                             const SkSL::Program::Interface[],
-                             bool isSkSL);
+    void storeShadersInCache(const skgpu::NativeShader binaryShaders[],
+                             const SkSL::Program::Interface[]);
 
     bool createVkShaderModule(VkShaderStageFlagBits stage,
                               const std::string& sksl,
                               VkShaderModule* shaderModule,
                               VkPipelineShaderStageCreateInfo* stageInfo,
                               const SkSL::ProgramSettings& settings,
-                              std::string* outSPIRV,
+                              skgpu::NativeShader* outSPIRV,
                               SkSL::Program::Interface* outInterface);
 
     bool installVkShaderModule(VkShaderStageFlagBits stage,
                                const GrGLSLShaderBuilder& builder,
                                VkShaderModule* shaderModule,
                                VkPipelineShaderStageCreateInfo* stageInfo,
-                               std::string spirv,
+                               const skgpu::NativeShader& spirv,
                                SkSL::Program::Interface);
 
     GrGLSLUniformHandler* uniformHandler() override { return &fUniformHandler; }

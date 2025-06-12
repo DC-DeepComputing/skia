@@ -8,7 +8,9 @@
 #ifndef SKSL_GLSLCODEGENERATOR
 #define SKSL_GLSLCODEGENERATOR
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace SkSL {
 
@@ -20,7 +22,10 @@ struct ShaderCaps;
 /** Converts a Program into GLSL code. */
 bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out, PrettyPrint);
 bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-bool ToGLSL(Program& program, const ShaderCaps* caps, std::string* out);
+bool ToGLSL(Program& program,
+            const ShaderCaps* caps,
+            std::string* textOut,
+            std::vector<uint32_t>* binaryOut = nullptr);
 
 }  // namespace SkSL
 

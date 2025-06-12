@@ -12,6 +12,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTFitsIn.h"
 #include "include/private/base/SkTo.h"
+#include "src/gpu/NativeShader.h"
 #include "src/gpu/vk/VulkanInterface.h"
 
 #include <algorithm>

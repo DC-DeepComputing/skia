@@ -3721,12 +3721,15 @@ bool ToMetal(Program& program, const ShaderCaps* caps, OutputStream& out) {
     return ToMetal(program, caps, out, defaultPrintOpts);
 }
 
-bool ToMetal(Program& program, const ShaderCaps* caps, std::string* out) {
+bool ToMetal(Program& program,
+             const ShaderCaps* caps,
+             std::string* textOut,
+             std::vector<uint32_t>*) {
     StringStream buffer;
     if (!ToMetal(program, caps, buffer)) {
         return false;
     }
-    *out = buffer.str();
+    *textOut = buffer.str();
     return true;
 }
 

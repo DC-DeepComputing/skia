@@ -19,6 +19,9 @@
 
 class SkReadBuffer;
 namespace SkSL { struct ProgramSettings; }
+namespace skgpu {
+struct NativeShader;
+}
 
 // The GrPersistentCache stores opaque blobs, as far as clients are concerned. It's helpful to
 // inspect certain kinds of cached data within our tools, so for those cases (GLSL, SPIR-V), we
@@ -35,7 +38,7 @@ struct ShaderMetadata {
 int GetCurrentVersion();
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const std::string shaders[],
+                                const skgpu::NativeShader shaders[],
                                 const SkSL::Program::Interface[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta = nullptr);
@@ -43,7 +46,8 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
 SkFourByteTag GetType(SkReadBuffer* reader);
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         std::string shaders[],
+                         skgpu::NativeShader shaders[],
+                         bool areShadersBinary,
                          SkSL::Program::Interface[],
                          int numInterfaces,
                          ShaderMetadata* meta = nullptr);

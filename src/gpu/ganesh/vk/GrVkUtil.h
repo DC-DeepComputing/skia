@@ -22,6 +22,9 @@ class GrVkGpu;
 namespace SkSL {
 struct ProgramSettings;
 }
+namespace skgpu {
+struct NativeShader;
+}
 
 // Uncomment to log all Ganesh Vulkan calls
 #define GR_VK_LOG(X) // SkDebugf("vk%s\n", #X);
@@ -122,11 +125,11 @@ bool GrCompileVkShaderModule(GrVkGpu* gpu,
                              VkShaderModule* shaderModule,
                              VkPipelineShaderStageCreateInfo* stageInfo,
                              const SkSL::ProgramSettings& settings,
-                             std::string* outSPIRV,
+                             skgpu::NativeShader* outSPIRV,
                              SkSL::Program::Interface* outInterface);
 
 bool GrInstallVkShaderModule(GrVkGpu* gpu,
-                             const std::string& spirv,
+                             const skgpu::NativeShader& spirv,
                              VkShaderStageFlagBits stage,
                              VkShaderModule* shaderModule,
                              VkPipelineShaderStageCreateInfo* stageInfo);
