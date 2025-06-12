@@ -313,6 +313,7 @@ gm_sources = [
   "$_gm/polygons.cpp",
   "$_gm/postercircle.cpp",
   "$_gm/preservefillrule.cpp",
+  "$_gm/primitiveblends.cpp",
   "$_gm/quadpaths.cpp",
   "$_gm/radial_gradient_precision.cpp",
   "$_gm/rasterhandleallocator.cpp",

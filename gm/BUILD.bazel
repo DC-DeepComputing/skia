@@ -358,6 +358,7 @@ CPU_GMS = [
     # "polygons.cpp",
     # "postercircle.cpp",
     # "preservefillrule.cpp",
+    # "primitiveblends.cpp",
     # "quadpaths.cpp",
     # "radial_gradient_precision.cpp",
     # "rasterhandleallocator.cpp",
