@@ -432,6 +432,18 @@ SkPathBuilder& SkPathBuilder::arcTo(const SkRect& oval, SkScalar startAngle, SkS
     return *this;
 }
 
+SkPathBuilder& SkPathBuilder::rArcTo(SkScalar rx, SkScalar ry, SkScalar xAxisRotate,
+                                     SkPathBuilder::ArcSize largeArc,
+                                     SkPathDirection sweep, SkScalar dx, SkScalar dy) {
+    SkPoint currentPoint;
+    std::optional<SkPoint> gotPoint = this->getLastPt();
+    if (!gotPoint.has_value()) {
+        currentPoint = gotPoint.value();
+    }
+    return this->arcTo({rx, ry}, xAxisRotate, largeArc, sweep,
+                       {currentPoint.fX + dx, currentPoint.fY + dy});
+}
+
 SkPathBuilder& SkPathBuilder::addArc(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle) {
     if (oval.isEmpty() || 0 == sweepAngle) {
         return *this;
