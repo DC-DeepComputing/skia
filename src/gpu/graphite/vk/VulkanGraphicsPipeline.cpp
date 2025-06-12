@@ -30,6 +30,7 @@
 #include "src/sksl/SkSLProgramKind.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "src/utils/SkShaderUtils.h"
 
 namespace skgpu::graphite {
 
@@ -867,7 +868,7 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     const std::string& fsSkSL = shaderInfo->fragmentSkSL();
     const bool hasFragmentSkSL = !fsSkSL.empty();
-    std::string vsSPIRV, fsSPIRV;
+    std::vector<uint32_t> vsSPIRV, fsSPIRV;
     SkSL::Program::Interface vsInterface, fsInterface;
     if (hasFragmentSkSL) {
         if (!skgpu::SkSLToSPIRV(sharedContext->caps()->shaderCaps(),
@@ -943,8 +944,8 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
         PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
                                     pipelineKey.hash(), compilationID };
 #if defined(GPU_TEST_UTILS)
-        pipelineInfo.fNativeVertexShader   = "SPIR-V disassembly not available";
-        pipelineInfo.fNativeFragmentShader = "SPIR-V disassmebly not available";
+        pipelineInfo.fNativeVertexShader = SkShaderUtils::SpirvAsHexStream(vsSPIRV);
+        pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV);
 #endif
 
         pipeline = sk_sp<VulkanGraphicsPipeline>(
@@ -1125,7 +1126,7 @@ std::unique_ptr<VulkanProgramInfo> VulkanGraphicsPipeline::CreateLoadMSAAProgram
         const VulkanSharedContext* sharedContext) {
     SkSL::ProgramSettings settings;
     settings.fForceNoRTFlip = true;
-    std::string vsSPIRV, fsSPIRV;
+    std::vector<uint32_t> vsSPIRV, fsSPIRV;
     ShaderErrorHandler* errorHandler = sharedContext->caps()->shaderErrorHandler();
 
     std::string vertShaderText;

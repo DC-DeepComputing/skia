@@ -90,29 +90,50 @@ void MemoryCache::writeShadersToDisk(const char* path, GrBackendApi api) {
         SkString md5 = digest.toLowercaseHexString();
 
         SkSL::Program::Interface interfacesIgnored[kGrShaderTypeCount];
-        std::string shaders[kGrShaderTypeCount];
         const SkData* data = it->second.fData.get();
         const SkString& description = it->second.fDescription;
         SkReadBuffer reader(data->data(), data->size());
-        GrPersistentCacheUtils::GetType(&reader); // Shader type tag
-        GrPersistentCacheUtils::UnpackCachedShaders(&reader, shaders,
-                                                    interfacesIgnored, kGrShaderTypeCount);
+        const SkFourByteTag shaderType =
+                GrPersistentCacheUtils::GetType(&reader);  // Shader type tag
+        const bool isBinaryShader =
+                GrBackendApi::kVulkan == api && shaderType == SkSetFourByteTag('S', 'P', 'R', 'V');
+
+        std::string textShaders[kGrShaderTypeCount];
+        std::vector<uint32_t> binaryShaders[kGrShaderTypeCount];
+        GrPersistentCacheUtils::UnpackCachedShaders(&reader,
+                                                    isBinaryShader ? nullptr : textShaders,
+                                                    isBinaryShader ? binaryShaders : nullptr,
+                                                    interfacesIgnored,
+                                                    kGrShaderTypeCount);
 
         // Even with the SPIR-V switches, it seems like we must use .spv, or malisc tries to
         // run glslang on the input.
-        {
-            const char* ext = GrBackendApi::kOpenGL == api ? "frag" : "frag.spv";
-            SkString filename = SkStringPrintf("%s/%s.%s", path, md5.c_str(), ext);
-            SkFILEWStream file(filename.c_str());
-            file.write(shaders[kFragment_GrShaderType].c_str(),
-                       shaders[kFragment_GrShaderType].size());
-        }
-        {
-            const char* ext = GrBackendApi::kOpenGL == api ? "vert" : "vert.spv";
-            SkString filename = SkStringPrintf("%s/%s.%s", path, md5.c_str(), ext);
-            SkFILEWStream file(filename.c_str());
-            file.write(shaders[kVertex_GrShaderType].c_str(),
-                       shaders[kVertex_GrShaderType].size());
+        if (isBinaryShader) {
+            {
+                SkString filename = SkStringPrintf("%s/%s.frag.spv", path, md5.c_str());
+                SkFILEWStream file(filename.c_str());
+                file.write(binaryShaders[kFragment_GrShaderType].data(),
+                           binaryShaders[kFragment_GrShaderType].size() * sizeof(uint32_t));
+            }
+            {
+                SkString filename = SkStringPrintf("%s/%s.vert.spv", path, md5.c_str());
+                SkFILEWStream file(filename.c_str());
+                file.write(binaryShaders[kVertex_GrShaderType].data(),
+                           binaryShaders[kVertex_GrShaderType].size() * sizeof(uint32_t));
+            }
+        } else {
+            {
+                SkString filename = SkStringPrintf("%s/%s.frag", path, md5.c_str());
+                SkFILEWStream file(filename.c_str());
+                file.write(textShaders[kFragment_GrShaderType].c_str(),
+                           textShaders[kFragment_GrShaderType].size());
+            }
+            {
+                SkString filename = SkStringPrintf("%s/%s.vert", path, md5.c_str());
+                SkFILEWStream file(filename.c_str());
+                file.write(textShaders[kVertex_GrShaderType].c_str(),
+                           textShaders[kVertex_GrShaderType].size());
+            }
         }
 
         if (!description.isEmpty()) {

@@ -8,7 +8,9 @@
 #ifndef SKSL_WGSLCODEGENERATOR
 #define SKSL_WGSLCODEGENERATOR
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace SkSL {
 
@@ -35,7 +37,10 @@ bool ToWGSL(Program& program,
             IncludeSyntheticCode,
             ValidateWGSLProc);
 bool ToWGSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-bool ToWGSL(Program& program, const ShaderCaps* caps, std::string* out);
+bool ToWGSL(Program& program,
+            const ShaderCaps* caps,
+            std::string* textOut,
+            std::vector<uint32_t>* binaryOut = nullptr);
 
 }  // namespace SkSL
 
