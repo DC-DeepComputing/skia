@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c9ab999_40ae498c",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 301,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-12T14:00:19Z",
+      "side": 1,
+      "message": "line up ?",
+      "revId": "acd01f6d36578613d8f8c026636dff3c7d86c059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef899f8c_39c92d61",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-12T14:00:19Z",
+      "side": 1,
+      "message": "line up ?",
+      "revId": "acd01f6d36578613d8f8c026636dff3c7d86c059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11dc12a9_bdf77d0b",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-12T14:00:19Z",
+      "side": 1,
+      "message": "Here (and in the following return), I think we should have something like:\n        SKGPU_LOG_W(\"XXX failed; dropping draw pass!\");",
+      "revId": "acd01f6d36578613d8f8c026636dff3c7d86c059",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
