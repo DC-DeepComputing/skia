@@ -670,7 +670,7 @@ std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
 
 } // anonymous namespace
 
-#if defined(SK_DEBUG)
+//#if defined(SK_DEBUG)
 bool ShaderCodeDictionary::isValidID(int snippetID) const {
     if (snippetID < 0) {
         return false;
@@ -700,7 +700,7 @@ bool ShaderCodeDictionary::isValidID(int snippetID) const {
 void ShaderCodeDictionary::dump(UniquePaintParamsID id) const {
     this->lookup(id).dump(this, id);
 }
-#endif
+//#endif
 
 static SkSLType uniform_type_to_sksl_type(const SkRuntimeEffect::Uniform& u) {
     using Type = SkRuntimeEffect::Uniform::Type;

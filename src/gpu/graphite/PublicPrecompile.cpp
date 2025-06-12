@@ -155,7 +155,8 @@ void Precompile(PrecompileContext* precompileContext,
                                        precompileContext->priv().resourceProvider(),
                                        tmp,
                                        keyContext,
-                                       DrawTypeFlags::kBitmapText_Color,
+                                       static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_Color |
+                                                                               DrawTypeFlags::kAnalyticClip)),
                                        /* withPrimitiveBlender= */ true,
                                        Coverage::kNone,
                                        renderPassDesc);
@@ -168,7 +169,8 @@ void Precompile(PrecompileContext* precompileContext,
                         precompileContext->priv().resourceProvider(),
                         options, keyContext,
                         static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kBitmapText_LCD |
-                                                                DrawTypeFlags::kSDFText_LCD)),
+                                                                DrawTypeFlags::kSDFText_LCD |
+                                                                DrawTypeFlags::kAnalyticClip)),
                         /* withPrimitiveBlender= */ false,
                         Coverage::kLCD,
                         renderPassDesc);
@@ -181,7 +183,8 @@ void Precompile(PrecompileContext* precompileContext,
                     PrecompileCombinations(precompileContext->priv().rendererProvider(),
                                            precompileContext->priv().resourceProvider(),
                                            options, keyContext,
-                                           DrawTypeFlags::kDrawVertices,
+                                           static_cast<DrawTypeFlags>(drawTypes & (DrawTypeFlags::kDrawVertices |
+                                                                                   DrawTypeFlags::kAnalyticClip)),
                                            withPrimitiveBlender,
                                            Coverage::kNone,
                                            renderPassDesc);
