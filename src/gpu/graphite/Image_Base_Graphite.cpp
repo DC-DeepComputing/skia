@@ -139,13 +139,15 @@ bool Image_Base::isDynamic() const {
     return emptyCount > 0;
 }
 
+// TODO should this be nullptr?
 sk_sp<Image> Image_Base::copyImage(Recorder* recorder,
                                    const SkIRect& subset,
                                    Budgeted budgeted,
                                    Mipmapped mipmapped,
                                    SkBackingFit backingFit,
                                    std::string_view label) const {
-    return CopyAsDraw(recorder, this, subset, this->imageInfo().colorInfo(),
+    return CopyAsDraw(recorder,
+                      /*drawContext=*/nullptr, this, subset, this->imageInfo().colorInfo(),
                       budgeted, mipmapped, backingFit, std::move(label));
 }
 
@@ -231,6 +233,7 @@ sk_sp<SkImage> Image_Base::makeColorTypeAndColorSpace(SkRecorder* recorder,
     // Use CopyAsDraw directly to perform the color space changes. The copied image is not
     // considered budgeted because this is a client-invoked API and they will own the image.
     return CopyAsDraw(gRecorder,
+                      /*drawContext=*/nullptr,
                       this,
                       this->bounds(),
                       dstColorInfo,
