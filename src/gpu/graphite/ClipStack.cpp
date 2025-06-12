@@ -137,12 +137,29 @@ bool intersect_shape(const Transform& otherToDevice, const Shape& otherShape,
         // NOTE: This case arises in clip-clip combinations when both were axis-aligned and pre-
         // transformed to device space.
         localToOther = nullptr;
+    } else if (otherToDevice.type() == Transform::Type::kIdentity &&
+               localToDevice.type() <= Transform::Type::kRectStaysRect) {
+        // Relative transform is the inverse of localToDevice
+        // NOTE: This case arises in clip-draw combinations when an axis-aligned draw is clipped
+        // to a pre-transformed axis-aligned clip. This is why we track `localToOther` over the
+        // more intuitive `otherToLocal`, to avoid a more expensive Transform creation.
+        localToOther = &localToDevice;
+    } else if (otherToDevice.type() <= Transform::Type::kRectStaysRect &&
+               localToDevice.type() == Transform::Type::kIdentity) {
+        // Relative transform is otherToDevice^-1 (may not occur in a common scenario but is
+        // harmless). Inverse() is mostly shuffling bytes around, not recomputing the inverse.
+        storage = Transform::Inverse(otherToDevice);
+        localToOther = &storage;
     } else {
-        // `otherShape` can't be trivially mapped to the local coordinate space
-        // TODO(b/424507089): This isn't actually true, if the relative transforms between the two
-        // preserve rects. The current code preserves the prior behavior for clip-clip combinations
-        // and more complex transform comparisons will be added in follow-up work to measure perf.
-        return false;
+        // Calculate (otherToDevice)^-1 * localToDevice and see if the relative transform is
+        // of the right type.
+        storage = Transform(localToDevice.inverse() * otherToDevice);
+        if (storage.type() <= Transform::Type::kRectStaysRect) {
+            localToOther = &storage;
+        } else {
+            // `otherShape` can't be trivially mapped to the local coordinate space
+            return false;
+        }
     }
 
     SkRRect localOtherRRect;
