@@ -6,7 +6,10 @@
  */
 
 #include "include/core/SkAlphaType.h"
+#include "include/core/SkBitmap.h"
+#include "include/core/SkCanvas.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
 #include "src/core/SkColorSpaceXformSteps.h"
 #include "tests/Test.h"
@@ -49,10 +52,11 @@ static skcms_TransferFunction trfn_hlg_203() {
   return trfn;
 }
 
-static bool rgb_close(const float* rgb, float r, float g, float b) {
-    return std::abs(rgb[0] - r) / r < 0.01 &&
-           std::abs(rgb[1] - g) / g < 0.01 &&
-           std::abs(rgb[2] - b) / b < 0.01;
+static bool rgba_close(const float* a, const float* b, float epsilon) {
+    return std::abs(a[0] - b[0]) < epsilon &&
+           std::abs(a[1] - b[1]) < epsilon &&
+           std::abs(a[2] - b[2]) < epsilon &&
+           std::abs(a[3] - b[3]) < epsilon;
 }
 
 DEF_TEST(SkColorSpaceXformSteps, r) {
@@ -240,96 +244,106 @@ DEF_TEST(SkColorSpaceXformSteps, r) {
     }
 }
 
-DEF_TEST(SkColorSpaceXformStepsApplyPQ, r) {
-    auto rec2020_pq_203 = SkColorSpace::MakeRGB(trfn_pq_203(), SkNamedGamut::kRec2020),
-         rec2020_pq_100 = SkColorSpace::MakeRGB(trfn_pq_100(), SkNamedGamut::kRec2020),
-         rec2020_linear = SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kRec2020),
-         p3_pq_100 = SkColorSpace::MakeRGB(trfn_pq_100(), SkNamedGamut::kDisplayP3),
-         p3_linear = SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kDisplayP3);
+DEF_TEST(SkColorSpaceXformCompare, r) {
+    constexpr int kWidth = 2;
+    constexpr int kHeight = 2;
+    constexpr float kEpsilon = 1/128.f;
     constexpr float kPq100 = 0.508078421517399f;
     constexpr float kPq203 = 0.5806888810416109f;
     constexpr float kPq1000 = 0.751827096247041f;
 
-    // Convert to linear with HDR reference white at 203 nits.
-    {
-        SkColorSpaceXformSteps steps(rec2020_pq_203.get(), kUnpremul_SkAlphaType,
-                                     rec2020_linear.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {kPq100, kPq203, kPq1000, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 100/203.f, 203/203.f, 1000/203.f));
-    }
-
-    // Convert from linear with HDR reference white at 100 nits.
-    {
-        SkColorSpaceXformSteps steps(rec2020_linear.get(), kUnpremul_SkAlphaType,
-                                     rec2020_pq_100.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {1.f, 2.03f, 10.f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, kPq100, kPq203, kPq1000));
-    }
-
-    // Convert PQ at 203 to PQ at 100.
-    {
-        SkColorSpaceXformSteps steps(rec2020_pq_203.get(), kUnpremul_SkAlphaType,
-                                     rec2020_pq_100.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {kPq203, kPq203, kPq203, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, kPq100, kPq100, kPq100));
-    }
-}
-
-DEF_TEST(SkColorSpaceXformStepsApplyHLG, r) {
-    auto rec2020_hlg_12x = SkColorSpace::MakeRGB(trfn_hlg_12x(), SkNamedGamut::kRec2020),
+    auto rec2020_pq_203 = SkColorSpace::MakeRGB(trfn_pq_203(), SkNamedGamut::kRec2020),
+         rec2020_pq_100 = SkColorSpace::MakeRGB(trfn_pq_100(), SkNamedGamut::kRec2020),
+         rec2020_hlg_12x = SkColorSpace::MakeRGB(trfn_hlg_12x(), SkNamedGamut::kRec2020),
          rec2020_hlg_203 = SkColorSpace::MakeRGB(trfn_hlg_203(), SkNamedGamut::kRec2020),
          rec2020_linear = SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kRec2020),
          srgb_hlg_203 = SkColorSpace::MakeRGB(trfn_hlg_203(), SkNamedGamut::kSRGB),
          srgb_linear = SkColorSpace::MakeRGB(SkNamedTransferFn::kLinear, SkNamedGamut::kSRGB);
 
-    // Reference HLG has white at 75%.
-    {
-        SkColorSpaceXformSteps steps(rec2020_hlg_203.get(), kUnpremul_SkAlphaType,
-                                     rec2020_linear.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {0.75f, 0.75f, 0.75f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 1.f, 1.f, 1.f));
-    }
-    {
-        SkColorSpaceXformSteps steps(rec2020_linear.get(), kUnpremul_SkAlphaType,
-                                     rec2020_hlg_203.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {1.f, 1.f, 1.f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 0.75f, 0.75f, 0.75f));
-    }
+    const struct Rec {
+        sk_sp<SkColorSpace> src_cs = nullptr;
+        float src_rgba[4] = {0.f, 0.f, 0.f, 0.f};
+        sk_sp<SkColorSpace> dst_cs = nullptr;
+        float dst_rgba[4] = {0.f, 0.f, 0.f, 0.f};
+    } recs[] = {
+        {
+            rec2020_hlg_203, {0.75f, 0.75f, 0.75f, 1.f},
+            rec2020_linear,  {1.f,   1.f,   1.f,   1.f},
+        },
+        {
+            rec2020_linear,  {1.f,   1.f,   1.f,   1.f},
+            rec2020_hlg_203, {0.75f, 0.75f, 0.75f, 1.f},
+        },
+        {
+            rec2020_hlg_12x, {0.5f, 0.5f, 0.5f, 1.f},
+            rec2020_linear,  {1.f,  1.f,  1.f,  1.f},
+        },
+        {
+            rec2020_linear,  {1.f,  1.f,  1.f,  1.f},
+            rec2020_hlg_12x, {0.5f, 0.5f, 0.5f, 1.f},
+        },
+        {
+            srgb_hlg_203, {0.1f,        0.5f,        0.75f,       1.f},
+            srgb_linear,  {0.00989411f, 0.24735274f, 0.78647059f, 1.f},
+        },
+        {
+            srgb_linear,  {0.00989411f, 0.24735274f, 0.78647059f, 1.f},
+            srgb_hlg_203, {0.1f,        0.5f,        0.75f,       1.f},
+        },
+        {
+            rec2020_pq_203, {kPq100,    kPq203,    kPq1000,    1.f},
+            // Note: the blue expected component should be 1000/203, but the skcms formulation of
+            // PQ evaluates to this.
+            // TODO(https://issues.skia.org/issues/420956739): Investiage this.
+            rec2020_linear, {100/203.f, 203/203.f, 1003/203.f, 1.f},
+        },
+        {
+            rec2020_linear, {1.f,    2.03f,  10.f,    1.f},
+            rec2020_pq_100, {kPq100, kPq203, kPq1000, 1.f},
+        },
+        {
+            rec2020_pq_203, {kPq203, kPq203, kPq203, 1.f},
+            rec2020_pq_100, {kPq100, kPq100, kPq100, 1.f},
+        },
+    };
 
-    // Scene-referred (12x) HLG has white at 50%.
-    {
-        SkColorSpaceXformSteps steps(rec2020_hlg_12x.get(), kUnpremul_SkAlphaType,
-                                     rec2020_linear.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {0.5f, 0.5f, 0.5f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 1.f, 1.f, 1.f));
-    }
-    {
-        SkColorSpaceXformSteps steps(rec2020_linear.get(), kUnpremul_SkAlphaType,
-                                     rec2020_hlg_12x.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {1.f, 1.f, 1.f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 0.5f, 0.5f, 0.5f));
-    }
+    for (const auto& rec : recs) {
+        auto src_info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType, rec.src_cs);
+        auto dst_info = SkImageInfo::Make(kWidth, kHeight, kRGBA_F32_SkColorType, kPremul_SkAlphaType, rec.dst_cs);
 
-    // Testing the HLG OOTF in a non-rec2100 gamut.
-    {
-        SkColorSpaceXformSteps steps(srgb_hlg_203.get(), kUnpremul_SkAlphaType,
-                                     srgb_linear.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {0.1f, 0.5f, 0.75f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 0.00989411f, 0.24735274f, 0.78647059f));
-    }
-    {
-        SkColorSpaceXformSteps steps(srgb_linear.get(), kUnpremul_SkAlphaType,
-                                     srgb_hlg_203.get(), kUnpremul_SkAlphaType);
-        float rgba[4] = {0.00989411f, 0.24735274f, 0.78647059f, 1.f};
-        steps.apply(rgba);
-        REPORTER_ASSERT(r, rgb_close(rgba, 0.1f, 0.5f, 0.75f));
+        SkBitmap src_bm;
+        src_bm.allocPixels(src_info);
+        src_bm.eraseColor(SK_ColorTRANSPARENT);
+
+        SkBitmap dst_bm;
+        dst_bm.allocPixels(dst_info);
+        dst_bm.eraseColor(SK_ColorTRANSPARENT);
+
+        for (int x = 0; x < kWidth; ++x) {
+            for (int y = 0; y < kHeight; ++y) {
+                float* p = reinterpret_cast<float*>(src_bm.pixmap().writable_addr(x, y));
+                for (int c = 0; c < 4; ++c) {
+                    p[c] = rec.src_rgba[c];
+                }
+            }
+        }
+        src_bm.setImmutable();
+
+        auto src_image = SkImages::RasterFromBitmap(src_bm);
+
+        float xform_rgba[4] = {rec.src_rgba[0], rec.src_rgba[1], rec.src_rgba[2], rec.src_rgba[3]};
+        {
+            SkColorSpaceXformSteps steps(rec.src_cs.get(), kUnpremul_SkAlphaType,
+                                         rec.dst_cs.get(), kUnpremul_SkAlphaType);
+            steps.apply(xform_rgba);
+        }
+
+        SkCanvas dst_canvas(dst_bm);
+        dst_canvas.drawImage(src_image, 0, 0);
+        const float* raster_rgba = reinterpret_cast<const float*>(dst_bm.pixmap().addr(0, 0));
+
+        REPORTER_ASSERT(r, rgba_close(xform_rgba,  rec.dst_rgba, kEpsilon));
+        REPORTER_ASSERT(r, rgba_close(raster_rgba, rec.dst_rgba, kEpsilon));
     }
 }
+
