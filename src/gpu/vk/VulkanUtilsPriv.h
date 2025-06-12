@@ -40,6 +40,7 @@ struct ShaderCaps;
 
 namespace skgpu {
 
+struct NativeShader;
 class ShaderErrorHandler;
 struct VulkanInterface;
 struct VulkanBackendContext;
@@ -98,11 +99,18 @@ inline bool SkSLToSPIRV(const SkSL::ShaderCaps* caps,
                         const std::string& sksl,
                         SkSL::ProgramKind programKind,
                         const SkSL::ProgramSettings& settings,
-                        std::string* spirv,
+                        skgpu::NativeShader* spirv,
                         SkSL::ProgramInterface* outInterface,
                         ShaderErrorHandler* errorHandler) {
-    return SkSLToBackend(caps, &SkSL::ToSPIRV, /*backendLabel=*/nullptr,
-                         sksl, programKind, settings, spirv, outInterface, errorHandler);
+    return SkSLToBackend(caps,
+                         &SkSL::ToSPIRV,
+                         "SPIRV",
+                         sksl,
+                         programKind,
+                         settings,
+                         spirv,
+                         outInterface,
+                         errorHandler);
 }
 
 static constexpr uint32_t VkFormatChannels(VkFormat vkFormat) {

@@ -28,7 +28,7 @@ static void test(skiatest::Reporter* r,
         SkDebugf("Unexpected error compiling %s\n%s", src, compiler.errorText().c_str());
         REPORTER_ASSERT(r, program);
     } else {
-        std::string output;
+        std::vector<uint32_t> output;
         REPORTER_ASSERT(r, SkSL::ToSPIRV(*program, SkSL::ShaderCapsFactory::Default(), &output));
     }
 }

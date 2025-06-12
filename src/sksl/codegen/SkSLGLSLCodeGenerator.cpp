@@ -2068,12 +2068,15 @@ bool ToGLSL(Program& program, const ShaderCaps* caps, OutputStream& out) {
     return ToGLSL(program, caps, out, defaultPrintOpts);
 }
 
-bool ToGLSL(Program& program, const ShaderCaps* caps, std::string* out) {
+bool ToGLSL(Program& program,
+            const ShaderCaps* caps,
+            std::string* textOut,
+            std::vector<uint32_t>*) {
     StringStream buffer;
     if (!ToGLSL(program, caps, buffer)) {
         return false;
     }
-    *out = buffer.str();
+    *textOut = buffer.str();
     return true;
 }
 

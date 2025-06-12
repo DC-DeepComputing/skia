@@ -8,7 +8,9 @@
 #ifndef SKSL_METALCODEGENERATOR
 #define SKSL_METALCODEGENERATOR
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace SkSL {
 
@@ -22,7 +24,10 @@ struct ShaderCaps;
  */
 bool ToMetal(Program& program, const ShaderCaps* caps, OutputStream& out, PrettyPrint);
 bool ToMetal(Program& program, const ShaderCaps* caps, OutputStream& out);
-bool ToMetal(Program& program, const ShaderCaps* caps, std::string* out);
+bool ToMetal(Program& program,
+             const ShaderCaps* caps,
+             std::string* textOut,
+             std::vector<uint32_t>* binaryOut = nullptr);
 
 }  // namespace SkSL
 

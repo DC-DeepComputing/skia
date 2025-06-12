@@ -918,6 +918,7 @@ skia_shared_gpu_sources = [
   "$_src/gpu/KeyBuilder.h",
   "$_src/gpu/MutableTextureState.cpp",
   "$_src/gpu/MutableTextureStatePriv.h",
+  "$_src/gpu/NativeShader.h",
   "$_src/gpu/Rectanizer.h",
   "$_src/gpu/RectanizerPow2.cpp",
   "$_src/gpu/RectanizerPow2.h",

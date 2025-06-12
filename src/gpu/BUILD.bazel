@@ -26,6 +26,7 @@ SHARED_FILES = [
     "KeyBuilder.h",
     "MutableTextureState.cpp",
     "MutableTextureStatePriv.h",
+    "NativeShader.h",
     "Rectanizer.h",
     "RectanizerPow2.cpp",
     "RectanizerPow2.h",

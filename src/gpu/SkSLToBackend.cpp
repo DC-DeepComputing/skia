@@ -9,6 +9,7 @@
 
 #include "include/gpu/ShaderErrorHandler.h"
 #include "include/private/base/SkDebug.h"
+#include "src/gpu/NativeShader.h"
 #include "src/sksl/SkSLCompiler.h"
 #include "src/sksl/ir/SkSLProgram.h"
 #include "src/utils/SkShaderUtils.h"
@@ -19,12 +20,15 @@
 namespace skgpu {
 
 bool SkSLToBackend(const SkSL::ShaderCaps* caps,
-                   bool (*toBackend)(SkSL::Program&, const SkSL::ShaderCaps*, std::string*),
+                   bool (*toBackend)(SkSL::Program&,
+                                     const SkSL::ShaderCaps*,
+                                     std::string*,
+                                     std::vector<uint32_t>*),
                    const char* backendLabel,
                    const std::string& sksl,
                    SkSL::ProgramKind programKind,
                    const SkSL::ProgramSettings& settings,
-                   std::string* output,
+                   NativeShader* output,
                    SkSL::ProgramInterface* outInterface,
                    ShaderErrorHandler* errorHandler) {
 #ifdef SK_DEBUG
@@ -34,7 +38,7 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
 #endif
     SkSL::Compiler compiler;
     std::unique_ptr<SkSL::Program> program = compiler.convertProgram(programKind, src, settings);
-    if (!program || !(*toBackend)(*program, caps, output)) {
+    if (!program || !(*toBackend)(*program, caps, &output->fText, &output->fBinary)) {
         errorHandler->compileError(src.c_str(),
                                    compiler.errorText().c_str(),
                                    /*shaderWasCached=*/false);
@@ -65,7 +69,12 @@ bool SkSLToBackend(const SkSL::ShaderCaps* caps,
         }
         if (printBackendSL) {
             SkDebugf("%s:\n", backendLabel);
-            SkShaderUtils::PrintLineByLine(*output);
+            if (output->isBinary()) {
+                const std::string asHex = SkShaderUtils::SpirvAsHexStream(output->fBinary);
+                SkShaderUtils::PrintLineByLine(asHex);
+            } else {
+                SkShaderUtils::PrintLineByLine(output->fText);
+            }
         }
     }
 
