@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10cabd68_8516bbc1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-06-12T21:25:56Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\nThe CQ dry run didn\u0027t complete, but I assume that the failures are unrelated to this CL (after all - it only removes an `SkASSERT` + tweaks some comments).\n\nTo some extent this CL goes in the almost-but-not-quite-entirely-opposite direction than my recent http://review.skia.org/1004622:\n\n* It is still desirable to reset `fIncrementalDecodingState` in `onIncrementalDecode` if it can\u0027t be called again.\n* But the reason stated in the comment added in the previous CL was wrong - it **is** ok to call `startIncrementalDecode` after an incomplete `incrementalDecode`.  So **this** CL removes the `SkASSERT` to reflect this new understanding.  Example of when such `startIncrementalDecode` call happens can be seen in the new testcase added in https://crrev.com/c/6641690.",
+      "revId": "21d3bdbfed1bdd0f84a6e55c8621c184d0edaff3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
