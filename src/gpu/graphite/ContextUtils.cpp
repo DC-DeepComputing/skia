@@ -51,12 +51,18 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
 
     gatherer->resetWithNewLayout(layout);
 
+    SkEnumBitMask<KeyGenFlags> keyGenFlags = KeyGenFlags::kDefault;
+    if (!(geometry.isShape() || geometry.isEdgeAAQuad())) {
+        keyGenFlags |= KeyGenFlags::kDisableSamplingOptimization;
+    }
+    if (p.skipColorXform()) {
+        keyGenFlags |= KeyGenFlags::kEnableIdentityColorSpaceXform;
+    }
+
     KeyContext keyContext(recorder,
                           local2Dev,
                           targetColorInfo,
-                          geometry.isShape() || geometry.isEdgeAAQuad()
-                                  ? KeyGenFlags::kDefault
-                                  : KeyGenFlags::kDisableSamplingOptimization,
+                          keyGenFlags,
                           p.color());
     p.toKey(keyContext, builder, gatherer);
 
