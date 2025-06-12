@@ -15,7 +15,9 @@
 #include "include/private/base/SkTArray.h"
 #include "src/sksl/ir/SkSLProgram.h"
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 class SkReadBuffer;
 namespace SkSL { struct ProgramSettings; }
@@ -34,16 +36,20 @@ struct ShaderMetadata {
 
 int GetCurrentVersion();
 
+// Either textShaders or binaryShaders must be provided, but not both.
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const std::string shaders[],
+                                const std::string textShaders[],
+                                const std::vector<uint32_t> binaryShaders[],
                                 const SkSL::Program::Interface[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta = nullptr);
 
 SkFourByteTag GetType(SkReadBuffer* reader);
 
+// Either textShaders or binaryShaders must be provided, but not both.
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         std::string shaders[],
+                         std::string textShaders[],
+                         std::vector<uint32_t> binaryShaders[],
                          SkSL::Program::Interface[],
                          int numInterfaces,
                          ShaderMetadata* meta = nullptr);

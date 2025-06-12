@@ -36,19 +36,28 @@ int GetCurrentVersion() {
 }
 
 sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
-                                const std::string shaders[],
+                                const std::string textShaders[],
+                                const std::vector<uint32_t> binaryShaders[],
                                 const SkSL::Program::Interface interfaces[],
                                 int numInterfaces,
                                 const ShaderMetadata* meta) {
     // For consistency (so tools can blindly pack and unpack cached shaders), we always write
     // kGrShaderTypeCount interfaces. If the backend gives us fewer, we just replicate the last one.
     SkASSERT(numInterfaces >= 1 && numInterfaces <= kGrShaderTypeCount);
+    // Only one of text or binary shaders must be provided.
+    SkASSERT((textShaders != nullptr) != (binaryShaders != nullptr));
 
     SkBinaryWriteBuffer writer({});
     writer.writeInt(kCurrentVersion);
     writer.writeUInt(shaderType);
     for (int i = 0; i < kGrShaderTypeCount; ++i) {
-        writer.writeByteArray(shaders[i].c_str(), shaders[i].size());
+        if (textShaders) {
+            writer.writeByteArray(textShaders[i].c_str(), textShaders[i].size());
+        } else {
+            writer.writeByteArray(binaryShaders[i].data(),
+                                  binaryShaders[i].size() * sizeof(uint32_t));
+        }
+
         writer.writePad32(&interfaces[std::min(i, numInterfaces - 1)],
                           sizeof(SkSL::Program::Interface));
     }
@@ -84,15 +93,26 @@ SkFourByteTag GetType(SkReadBuffer* reader) {
 }
 
 bool UnpackCachedShaders(SkReadBuffer* reader,
-                         std::string shaders[],
+                         std::string textShaders[],
+                         std::vector<uint32_t> binaryShaders[],
                          SkSL::Program::Interface interfaces[],
                          int numInterfaces,
                          ShaderMetadata* meta) {
+    // Only one of text or binary shaders must be provided.
+    SkASSERT((textShaders != nullptr) != (binaryShaders != nullptr));
+
     for (int i = 0; i < kGrShaderTypeCount; ++i) {
         size_t shaderLen = 0;
-        const char* shaderBuf = static_cast<const char*>(reader->skipByteArray(&shaderLen));
+        const void* shaderBuf = reader->skipByteArray(&shaderLen);
         if (shaderBuf) {
-            shaders[i].assign(shaderBuf, shaderLen);
+            if (textShaders) {
+                textShaders[i].assign(static_cast<const char*>(shaderBuf), shaderLen);
+            } else {
+                const uint32_t* words = static_cast<const uint32_t*>(shaderBuf);
+                SkASSERT(shaderLen % 4 == 0);
+                binaryShaders[i].insert(
+                        binaryShaders[i].end(), words, words + shaderLen / sizeof(uint32_t));
+            }
         }
 
         // GL, for example, only wants one Interface
@@ -128,7 +148,11 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
 
     if (!reader->isValid()) {
         for (int i = 0; i < kGrShaderTypeCount; ++i) {
-            shaders[i].clear();
+            if (textShaders) {
+                textShaders[i].clear();
+            } else {
+                binaryShaders[i].clear();
+            }
         }
     }
     return reader->isValid();

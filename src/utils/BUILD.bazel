@@ -77,7 +77,7 @@ skia_filegroup(
     srcs = [
         "SkShaderUtils.h",
     ],
-    visibility = ["//src/gpu:__subpackages__"],
+    visibility = ["//src/gpu:__subpackages__", "//src/sksl/codegen:__subpackages__"],
 )
 
 skia_filegroup(
@@ -85,7 +85,7 @@ skia_filegroup(
     srcs = [
         "SkShaderUtils.cpp",
     ],
-    visibility = ["//src/gpu:__subpackages__"],
+    visibility = ["//src/gpu:__subpackages__", "//src/sksl/codegen:__subpackages__"],
 )
 
 skia_cc_library(

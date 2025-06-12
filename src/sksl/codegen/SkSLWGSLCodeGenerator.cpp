@@ -4621,12 +4621,15 @@ bool ToWGSL(Program& program, const ShaderCaps* caps, OutputStream& out) {
     return ToWGSL(program, caps, out, defaultPrintOpts, IncludeSyntheticCode::kNo, nullptr);
 }
 
-bool ToWGSL(Program& program, const ShaderCaps* caps, std::string* out) {
+bool ToWGSL(Program& program,
+            const ShaderCaps* caps,
+            std::string* textOut,
+            std::vector<uint32_t>* binaryOut) {
     StringStream buffer;
     if (!ToWGSL(program, caps, buffer)) {
         return false;
     }
-    *out = buffer.str();
+    *textOut = buffer.str();
     return true;
 }
 
