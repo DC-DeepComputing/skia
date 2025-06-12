@@ -191,6 +191,7 @@ gensrcs {
 
 cc_library_static {
     name: "libskia_skcms",
+    sdk_version: "current",
     srcs: [
         $skcms_srcs
     ],
@@ -313,7 +314,6 @@ cc_defaults {
     name: "skia_deps",
     defaults: ["skia_renderengine_deps"],
     shared_libs: [
-        "libdng_sdk",
         "libjpeg",
         "libpiex",
         "libexpat",
@@ -336,14 +336,23 @@ cc_defaults {
       android: {
         shared_libs: [
             "libmediandk", // Needed to link libcrabbyavif_ffi in some configurations.
+            "libdng_sdk",
         ],
         whole_static_libs: [
             "libcrabbyavif_ffi",
         ],
       },
+      host_linux: {
+        static_libs: [
+          "libdng_sdk",
+        ],
+      },
       darwin: {
         host_ldlibs: [
             "-framework AppKit",
+        ],
+        static_libs: [
+          "libdng_sdk",
         ],
       },
       windows: {
