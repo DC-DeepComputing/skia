@@ -16,6 +16,52 @@
       "message": "Fixed comments! PTAL",
       "revId": "f29b4d0f532cefee10d237f31dd7a1c13d5a6256",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4aba4d17_c5172b66",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 314,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-12T14:30:44Z",
+      "side": 1,
+      "message": "We\u0027re in trouble if we don\u0027t have an fReadView and also don\u0027t have a copyable texture, so that should also force the draw pass to be discarded.",
+      "range": {
+        "startLine": 314,
+        "startChar": 0,
+        "endLine": 314,
+        "endChar": 84
+      },
+      "revId": "f29b4d0f532cefee10d237f31dd7a1c13d5a6256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7fc3b36_99e913d7",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 316,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-12T14:30:44Z",
+      "side": 1,
+      "message": "The surface for the copy should be sized to dstReadPixelBounds.width()/height() not the fImageInfo, which might be bigger.",
+      "range": {
+        "startLine": 316,
+        "startChar": 62,
+        "endLine": 316,
+        "endChar": 72
+      },
+      "revId": "f29b4d0f532cefee10d237f31dd7a1c13d5a6256",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
