@@ -8,11 +8,13 @@
 #ifndef SKSL_SPIRVTOHLSL
 #define SKSL_SPIRVTOHLSL
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace SkSL {
 
-void SPIRVtoHLSL(const std::string& spirv, std::string* hlsl);
+void SPIRVtoHLSL(const std::vector<uint32_t>& spirv, std::string* hlsl);
 
 }  // namespace SkSL
 

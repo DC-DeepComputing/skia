@@ -8,11 +8,14 @@
 #ifndef SKSL_WGSLCODEGENERATOR
 #define SKSL_WGSLCODEGENERATOR
 
+#include <cstdint>
 #include <string>
+#include <vector>
 
 namespace SkSL {
 
 class ErrorReporter;
+struct NativeShader;
 class OutputStream;
 enum class PrettyPrint : bool;
 struct Program;
@@ -35,7 +38,7 @@ bool ToWGSL(Program& program,
             IncludeSyntheticCode,
             ValidateWGSLProc);
 bool ToWGSL(Program& program, const ShaderCaps* caps, OutputStream& out);
-bool ToWGSL(Program& program, const ShaderCaps* caps, std::string* out);
+bool ToWGSL(Program& program, const ShaderCaps* caps, NativeShader* out);
 
 }  // namespace SkSL
 
