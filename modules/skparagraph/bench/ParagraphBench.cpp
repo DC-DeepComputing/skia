@@ -27,7 +27,9 @@ struct ParagraphBench : public Benchmark {
     SkScalar fWidth;
     const char* onGetName() override { return fName; }
     bool isSuitableFor(Backend backend) override { return backend == Backend::kNonRendering; }
-    void onDelayedSetup() override { fData = GetResourceAsData(fResource); }
+    void onDelayedSetup() override {
+        fData = GetResourceAsData(fResource);
+    }
     void onDraw(int loops, SkCanvas*) override {
         if (!fData) {
             return;
@@ -47,10 +49,13 @@ struct ParagraphBench : public Benchmark {
         SkCanvas* canvas = rec.beginRecording({0,0, 2000,3000});
         while (loops-- > 0) {
             paragraph->layout(fWidth);
-            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
-            paragraph->paint(canvas, 0, 0);
+
+            paragraph->extendedVisit([](int lineNo, const Paragraph::ExtendedVisitorInfo* info) {
+            });
+//            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
+//            paragraph->paint(canvas, 0, 0);
             paragraph->markDirty();
-            impl->resetCache();
+  //          impl->resetCache();
         }
     }
 };
@@ -60,6 +65,7 @@ struct ParagraphBench : public Benchmark {
 //PARAGRAPH_BENCH(arabic)
 //PARAGRAPH_BENCH(emoji)
 PARAGRAPH_BENCH(english)
+PARAGRAPH_BENCH(moby6)
 #undef PARAGRAPH_BENCH
 
 #endif  // !defined(SK_BUILD_FOR_ANDROID_FRAMEWORK) && !defined(SK_BUILD_FOR_GOOGLE3)
