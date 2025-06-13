@@ -22,6 +22,30 @@
       },
       "revId": "ed6264bd78821102abe307ca2ed4324ca61ebdec",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "179cfa3f_127fb18f",
+        "filename": "modules/canvaskit/canvaskit_bindings.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 2448,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-13T21:30:10Z",
+      "side": 1,
+      "message": "Yea, any method that takes \"text\" instead of glyphs is really suspect. Super hard to know how many \"corresponding\" values to send in: rsxform, positions, etc.\n\n1. Converting to glyphs first, explcitly is great\n2. Relying on Paragraph is also great\n3. everything else is meh",
+      "parentUuid": "9a18bf81_df1cdebd",
+      "range": {
+        "startLine": 2447,
+        "startChar": 0,
+        "endLine": 2448,
+        "endChar": 91
+      },
+      "revId": "ed6264bd78821102abe307ca2ed4324ca61ebdec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
