@@ -16,6 +16,24 @@
       "message": "It turned out that we didn\u0027t have any tests for this functionality. See [this patch](https://skia-review.googlesource.com/c/skia/+/1005376), which turns HLG and PQ conversions (the old ones, not the new ones) to no-ops. Nothing breaks :(\n\nSo I reworked this test that I made just for SkColorSpaceXformSteps::apply to also test raster, ganesh, and graphite. It only tests the new HLG/PQ spaces, but we should probably expand it.",
       "revId": "6676d454a292c3c6e80b14a2447270d515225bd6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba3718ae_600e9f11",
+        "filename": "tests/SkColorSpaceXformStepsTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-13T15:27:13Z",
+      "side": 0,
+      "message": "Acknowledged",
+      "parentUuid": "624851dd_dc3831de",
+      "revId": "6676d454a292c3c6e80b14a2447270d515225bd6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
