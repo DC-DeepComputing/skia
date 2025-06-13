@@ -19,7 +19,6 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPoint.h"
-#include "include/core/SkRSXform.h"
 #include "include/core/SkRasterHandleAllocator.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -68,6 +67,7 @@ class SkPath;
 class SkPicture;
 class SkPixmap;
 class SkRRect;
+struct SkRSXform;
 class SkRegion;
 class SkRecorder;
 class SkShader;
