@@ -581,8 +581,9 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
         label += "_DeviceCopy";
     }
 
-    return Image::Copy(fRecorder, srcView, colorInfo, subset, budgeted, mipmapped, backingFit,
-                       label);
+    // Although we have a drawContext here, we want this to go on the root task list.
+    return Image::Copy(fRecorder, nullptr, srcView, colorInfo, subset, budgeted, mipmapped,
+                       backingFit, label);
 }
 
 bool Device::onReadPixels(const SkPixmap& pm, int srcX, int srcY) {
@@ -1816,16 +1817,21 @@ void Device::flushPendingWorkToRecorder() {
 
     if (drawTask) {
         fRecorder->priv().add(std::move(drawTask));
-
-        // TODO(b/297344089): This always regenerates mipmaps on the draw target when it's drawn to.
-        // This could be wasteful if we draw to a target multiple times before reading from it with
-        // downscaling.
-        if (fDC->target()->mipmapped() == Mipmapped::kYes) {
-            if (!GenerateMipmaps(fRecorder, fDC->refTarget(), fDC->colorInfo())) {
-                SKGPU_LOG_W("Device::flushPendingWorkToRecorder: Failed to generate mipmaps");
-            }
-        }
     }
+
+    // Can this be removed now as we now call Copy (generates mipmaps)?
+    // if (drawTask) {
+    //     fRecorder->priv().add(std::move(drawTask));
+
+    //     // TODO(b/297344089): This always regenerates mipmaps on the draw target when it's drawn to.
+    //     // This could be wasteful if we draw to a target multiple times before reading from it with
+    //     // downscaling.
+    //     if (fDC->target()->mipmapped() == Mipmapped::kYes) {
+    //         if (!GenerateMipmaps(fRecorder, fDC, fDC->refTarget(), fDC->colorInfo())) {
+    //             SKGPU_LOG_W("Device::flushPendingWorkToRecorder: Failed to generate mipmaps");
+    //         }
+    //     }
+    // }
 
     // Upon flushing, reset the last recorded dst read strategy. We do not want a dst read
     // performed in a prior draw pass to impact draws in a fresh pass.
