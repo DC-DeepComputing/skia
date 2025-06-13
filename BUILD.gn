@@ -1856,7 +1856,10 @@ skia_static_library("pathkit") {
   public_configs = [ ":skia_public" ]
   configs = skia_library_configs
 
-  deps = [ ":hsw" ]
+  deps = [
+    ":hsw",
+    "modules/pathops",
+  ]
 
   sources = [
     "src/base/SkArenaAlloc.cpp",
