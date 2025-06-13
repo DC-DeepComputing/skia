@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbcd39f5_f077f1e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T13:52:46Z",
+      "side": 1,
+      "message": "Drive-by, I am fine with this change as I don\u0027t anticipate needing the ShaderNode tree outside of generating the SkSL. The other data extracted from the key and ordered by the ShaderNode tree is the immutable sampler descs, but those are now explicitly exported to client-owned memory.\n\nIn terms of memory guarantees, the ShaderCodeDictionary lives for the duration of the SharedContext and guarantees all of its de-duplicated PaintParamsKeys (which it assigns the unique ID to) live forever, so the ShaderNodes aren\u0027t at risk of memory getting removed from under it.",
+      "revId": "70838dcd8e36056ce35f5dbfc0a2386344e869e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
