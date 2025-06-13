@@ -11,6 +11,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -122,11 +123,11 @@ DEF_SIMPLE_GM(inverse_paths, canvas, 800, 1200) {
                     canvas->save();
                     canvas->clipRect(clipRect);
 
-                    SkPath path = paths[pathIndex](cx, cy, size);
-                    path.setFillType(SkPathFillType::kInverseWinding);
+                    SkPath path = paths[pathIndex](cx, cy, size)
+                        .makeFillType(SkPathFillType::kInverseWinding);
                     canvas->drawPath(path, paint);
 
-                    path.setFillType(SkPathFillType::kWinding);
+                    path = path.makeFillType(SkPathFillType::kWinding);
                     canvas->drawPath(path, outlinePaint);
 
                     canvas->restore();
@@ -141,8 +142,10 @@ DEF_SIMPLE_GM(inverse_paths, canvas, 800, 1200) {
 
 DEF_SIMPLE_GM(inverse_fill_filters, canvas, 384, 128) {
     auto draw = [canvas](const SkPaint& paint) {
-        SkPath path = SkPath::Circle(65.f, 65.f, 30.f);
-        path.setFillType(SkPathFillType::kInverseWinding);
+        SkPath path = SkPathBuilder()
+            .addCircle(65.f, 65.f, 30.f)
+            .setFillType(SkPathFillType::kInverseWinding)
+            .detach();
 
         canvas->save();
         canvas->clipRect({0, 0, 128, 128});
@@ -171,7 +174,7 @@ DEF_SIMPLE_GM(inverse_fill_filters, canvas, 384, 128) {
 }
 
 DEF_SIMPLE_GM(inverse_windingmode_filters, canvas, 256, 100) {
-    SkPath path;
+    SkPathBuilder path;
     path.addRect({10, 10, 30, 30}, SkPathDirection::kCW);
     path.addRect({20, 20, 40, 40}, SkPathDirection::kCW);
     path.addRect({10, 60, 30, 80}, SkPathDirection::kCW);
@@ -179,7 +182,7 @@ DEF_SIMPLE_GM(inverse_windingmode_filters, canvas, 256, 100) {
     SkPaint strokePaint;
     strokePaint.setStyle(SkPaint::kStroke_Style);
     SkRect clipRect = {0, 0, 51, 99};
-    canvas->drawPath(path, strokePaint);
+    canvas->drawPath(path.snapshot(), strokePaint);
     SkPaint fillPaint;
     fillPaint.setMaskFilter(SkMaskFilter::MakeBlur(kNormal_SkBlurStyle, 1.0f));
     for (auto fillType : { SkPathFillType::kWinding,
@@ -190,7 +193,7 @@ DEF_SIMPLE_GM(inverse_windingmode_filters, canvas, 256, 100) {
         canvas->save();
         canvas->clipRect(clipRect);
         path.setFillType(fillType);
-        canvas->drawPath(path, fillPaint);
+        canvas->drawPath(path.snapshot(), fillPaint);
         canvas->restore();
         SkPaint clipPaint;
         clipPaint.setColor(SK_ColorRED);

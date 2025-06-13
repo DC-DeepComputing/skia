@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
@@ -44,7 +45,8 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
                             for (int dXAlign = 0; dXAlign < 5; ++dXAlign) {
     for (int dYAlign = 0; dYAlign < 5; ++dYAlign) {
         SkString pathStr;
-        SkPath path, out;
+        SkPathBuilder path;
+        SkPath out;
         int l SK_INIT_TO_AVOID_WARNING, t SK_INIT_TO_AVOID_WARNING,
             r SK_INIT_TO_AVOID_WARNING, b SK_INIT_TO_AVOID_WARNING;
         if (aShape) {
@@ -68,7 +70,7 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
                     aXAlign = 5;
                     break;
             }
-            path.addRect(SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b),
+            path.addRect({SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b)},
                     aCW);
             if (state.fReporter->verbose()) {
                 pathStr.appendf("    path.addRect(%d, %d, %d, %d,"
@@ -100,7 +102,7 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
                     bXAlign = 5;
                     break;
             }
-            path.addRect(SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b),
+            path.addRect({SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b)},
                     bCW);
             if (state.fReporter->verbose()) {
                 pathStr.appendf("    path.addRect(%d, %d, %d, %d,"
@@ -132,7 +134,7 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
                     cXAlign = 5;
                     break;
             }
-            path.addRect(SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b),
+            path.addRect({SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b)},
                     cCW);
             if (state.fReporter->verbose()) {
                 pathStr.appendf("    path.addRect(%d, %d, %d, %d,"
@@ -164,7 +166,7 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
                     dXAlign = 5;
                     break;
             }
-            path.addRect(SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b),
+            path.addRect({SkIntToScalar(l), SkIntToScalar(t), SkIntToScalar(r), SkIntToScalar(b)},
                     dCW);
             if (state.fReporter->verbose()) {
                 pathStr.appendf("    path.addRect(%d, %d, %d, %d,"
@@ -176,14 +178,15 @@ static void testSimplify4x4RectsMain(PathOpsThreadState* data)
             dYAlign = 5;
         }
         path.close();
+        SkPath finalPath = path.detach();
         if (state.fReporter->verbose()) {
             state.outputProgress(pathStr.c_str(), SkPathFillType::kWinding);
         }
-        testSimplify(path, false, out, state, pathStr.c_str());
+        testSimplify(finalPath, false, out, state, pathStr.c_str());
         if (state.fReporter->verbose()) {
             state.outputProgress(pathStr.c_str(), SkPathFillType::kEvenOdd);
         }
-        testSimplify(path, true, out, state, pathStr.c_str());
+        testSimplify(finalPath, true, out, state, pathStr.c_str());
     }
                             }
                         }

@@ -155,23 +155,25 @@ private:
 class PathTessellatorsSlide : public ClickHandlerSlide {
 public:
     PathTessellatorsSlide() {
+        SkPathBuilder pb;
 #if 0
         // For viewing middle-out triangulations of the inner fan.
-        fPath.moveTo(1, 0);
+        pb.moveTo(1, 0);
         int numSides = 32 * 3;
         for (int i = 1; i < numSides; ++i) {
             float theta = 2*3.1415926535897932384626433832785 * i / numSides;
-            fPath.lineTo(std::cos(theta), std::sin(theta));
+            pb.lineTo(std::cos(theta), std::sin(theta));
         }
-        fPath.transform(SkMatrix::Scale(200, 200));
-        fPath.transform(SkMatrix::Translate(300, 300));
+        pb.transform(SkMatrix::Scale(200, 200));
+        pb.transform(SkMatrix::Translate(300, 300));
 #else
-        fPath.moveTo(100, 500);
-        fPath.cubicTo(300, 400, -100, 300, 100, 200);
-        fPath.quadTo(250, 0, 400, 200);
-        fPath.conicTo(600, 350, 400, 500, fConicWeight);
-        fPath.close();
+        pb.moveTo(100, 500);
+        pb.cubicTo(300, 400, -100, 300, 100, 200);
+        pb.quadTo(250, 0, 400, 200);
+        pb.conicTo(600, 350, 400, 500, fConicWeight);
+        pb.close();
 #endif
+        fPath = pb.detach();
         fName = "PathTessellators";
     }
 
@@ -222,8 +224,7 @@ void PathTessellatorsSlide::draw(SkCanvas* canvas) {
     SkPaint pointsPaint;
     pointsPaint.setColor(SK_ColorBLUE);
     pointsPaint.setStrokeWidth(8);
-    SkPath devPath = fPath;
-    devPath.transform(canvas->getTotalMatrix());
+    SkPath devPath = fPath.makeTransform(canvas->getTotalMatrix());
     {
         SkAutoCanvasRestore acr(canvas, true);
         canvas->setMatrix(SkMatrix::I());
@@ -270,7 +271,7 @@ bool PathTessellatorsSlide::onClick(ClickHandlerSlide::Click* click) {
 }
 
 static SkPath update_weight(const SkPath& path, float w) {
-    SkPath path_;
+    SkPathBuilder path_;
     for (auto [verb, pts, _] : SkPathPriv::Iterate(path)) {
         switch (verb) {
             case SkPathVerb::kMove:
@@ -292,7 +293,7 @@ static SkPath update_weight(const SkPath& path, float w) {
                 break;
         }
     }
-    return path_;
+    return path_.detach();
 }
 
 bool PathTessellatorsSlide::onChar(SkUnichar unichar) {

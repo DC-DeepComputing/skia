@@ -42,7 +42,7 @@ void SkSVGTransformableNode::onSetAttribute(SkSVGAttribute attr, const SkSVGValu
 
 void SkSVGTransformableNode::mapToParent(SkPath* path) const {
     // transforms the path to parent node coordinates.
-    path->transform(fTransform);
+    *path = path->makeTransform(fTransform);
 }
 
 void SkSVGTransformableNode::mapToParent(SkRect* rect) const {

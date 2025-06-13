@@ -80,7 +80,7 @@ public:
 
     void setInverted(bool inverted) {
         if (fType == Type::kPath && inverted != fPath.isInverseFillType()) {
-            fPath.toggleInverseFillType();
+            fPath = fPath.makeToggleInverseFillType();
         }
         fInverted = inverted;
     }

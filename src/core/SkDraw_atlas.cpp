@@ -10,7 +10,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRSXform.h"
@@ -44,7 +44,7 @@ class SkBlitter;
 enum class SkBlendMode;
 
 static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
-                      const SkRect& r, SkBlitter* blitter, SkPath* scratchPath) {
+                      const SkRect& r, SkBlitter* blitter, SkPathBuilder* scratchPath) {
     if (ctm.rectStaysRect()) {
         SkRect dr;
         ctm.mapRect(&dr, r);
@@ -54,9 +54,9 @@ static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
         r.toQuad(pts);
         ctm.mapPoints(pts);
 
-        scratchPath->rewind();
-        scratchPath->addPoly(pts, true);
-        SkScan::FillPath(*scratchPath, rc, blitter);
+        scratchPath->reset();  // TODO(borenet): Should we implement rewind() instead?
+        scratchPath->addPolygon(pts, true);
+        SkScan::FillPath(scratchPath->detach(), rc, blitter);
     }
 }
 
@@ -127,7 +127,7 @@ void SkDraw::drawAtlas(const SkRSXform xform[],
     if (!blitter) {
         return;
     }
-    SkPath scratchPath;
+    SkPathBuilder scratchPath;
 
     for (int i = 0; i < count; ++i) {
         if (colors) {

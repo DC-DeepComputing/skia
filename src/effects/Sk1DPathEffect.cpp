@@ -10,6 +10,7 @@
 #include "include/core/SkFlattenable.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkPoint.h"
@@ -175,7 +176,7 @@ Need differentially more subdivisions when the follow-path is curvy. Not sure ho
 determine that, but we need it. I guess a cheap answer is let the caller tell us,
 but that seems like a cop-out. Another answer is to get Rob Johnson to figure it out.
 */
-static void morphpath(SkPath* dst, const SkPath& src, SkPathMeasure& meas,
+static void morphpath(SkPathBuilder* dst, const SkPath& src, SkPathMeasure& meas,
                       SkScalar dist) {
     SkPath::Iter    iter(src, false);
     SkPoint         srcP[4], dstP[3];
@@ -225,23 +226,29 @@ SkScalar SkPath1DPathEffectImpl::next(SkPath* dst, SkScalar distance,
         return fAdvance;
     }
 #endif
+    SkPathBuilder builder(*dst);
     switch (fStyle) {
         case SkPath1DPathEffect::kTranslate_Style: {
             SkPoint pos;
             if (meas.getPosTan(distance, &pos, nullptr)) {
-                dst->addPath(fPath, pos.fX, pos.fY);
+                SkMatrix matrix;
+                matrix.setTranslate(pos.fX, pos.fY);
+                SkPath transformedPath = fPath.makeTransform(matrix);
+                builder.addPath(transformedPath);
             }
         } break;
         case SkPath1DPathEffect::kRotate_Style: {
             SkMatrix matrix;
             if (meas.getMatrix(distance, &matrix)) {
-                dst->addPath(fPath, matrix);
+                SkPath transformedPath = fPath.makeTransform(matrix);
+                builder.addPath(transformedPath);
             }
         } break;
         case SkPath1DPathEffect::kMorph_Style:
-            morphpath(dst, fPath, meas, distance);
+            morphpath(&builder, fPath, meas, distance);
             break;
     }
+    *dst = builder.detach();
     return fAdvance;
 }
 

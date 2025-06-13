@@ -17,6 +17,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSize.h"
@@ -60,7 +61,7 @@ static SkPath make_gear(SkISize dimensions, int numTeeth) {
 
     float angle = 0.0f;
 
-    SkPath tmp;
+    SkPathBuilder tmp;
     tmp.setFillType(SkPathFillType::kWinding);
 
     tmp.moveTo(gen_pt(angle, outerRad));
@@ -79,7 +80,7 @@ static SkPath make_gear(SkISize dimensions, int numTeeth) {
         tmp.addCircle(0.0f, 0.0f, fInnerRad, SkPathDirection::kCCW);
     }
 
-    return tmp;
+    return tmp.detach();
 }
 
 // Render one level of a mipmap

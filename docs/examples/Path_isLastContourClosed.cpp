@@ -7,13 +7,13 @@ void draw(SkCanvas* canvas) {
         SkDebugf("%s last contour is %s" "closed\n", prefix,
                  path.isLastContourClosed() ? "" : "not ");
     };
-    SkPath path;
-    debugster("initial", path);
+    SkPathBuilder path;
+    debugster("initial", path.snapshot());
     path.close();
-    debugster("after close", path);
+    debugster("after close", path.snapshot());
     path.lineTo(0, 0);
-    debugster("after lineTo", path);
+    debugster("after lineTo", path.snapshot());
     path.close();
-    debugster("after close", path);
+    debugster("after close", path.snapshot());
 }
 }  // END FIDDLE
