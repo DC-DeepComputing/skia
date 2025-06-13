@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ece2cdeb_51695b1d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-13T13:45:03Z",
+      "side": 1,
+      "message": "ptal ... again optimistically sending out before all tests have run, to try to get this landed before being out next week",
+      "revId": "9637d5c8520cb6620997092f76d260fdf529e5de",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
