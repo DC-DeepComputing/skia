@@ -1387,8 +1387,36 @@ std::vector<Paragraph::FontInfo> ParagraphImpl::getFonts() const {
     return results;
 }
 
+template <typename T> class TScratch {
+    T* fStorage;
+    size_t fCapacity;
+public:
+    TScratch() : fStorage(nullptr), fCapacity(0) {}
+
+    ~TScratch() {
+        delete[] fStorage;
+    }
+
+    void reset(size_t count) {
+        if (count > fCapacity) {
+            delete[] fStorage;
+            fCapacity = count;
+            fStorage = new T[count];
+        }
+    }
+
+    T* data() const { return fStorage; }
+    size_t size() const { return fCapacity; }
+
+    T& operator[](size_t index) {
+        SkASSERT(index < fCapacity);
+        return fStorage[index];
+    }
+};
+
 void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
     int lineNumber = 0;
+    TScratch<SkRect> scratchGlyphBounds;
     for (auto& line : fLines) {
         line.iterateThroughVisualRuns(
             false,
@@ -1411,9 +1439,8 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                         SkPoint::Make(line.offset().fX + context.fTextShift,
                                       line.offset().fY + correctedBaseline);
                     SkRect rect = context.clip.makeOffset(line.offset());
-                    AutoSTArray<16, SkRect> glyphBounds;
-                    glyphBounds.reset(SkToInt(run->size()));
-                    run->font().getBounds(run->glyphs(), glyphBounds, nullptr);
+                    scratchGlyphBounds.reset(SkToInt(run->size()));
+                    run->font().getBounds(run->glyphs(), scratchGlyphBounds, nullptr);
                     STArray<128, uint32_t> clusterStorage;
                     const uint32_t* clusterPtr = run->clusterIndexes().data();
                     if (run->fClusterStart > 0) {
@@ -1431,7 +1458,7 @@ void ParagraphImpl::extendedVisit(const ExtendedVisitor& visitor) {
                         SkToS16(context.size),
                         &run->glyphs()[context.pos],
                         &run->fPositions[context.pos],
-                        &glyphBounds[context.pos],
+                        &scratchGlyphBounds[context.pos],
                         clusterPtr,
                         0,  // flags
                     };
