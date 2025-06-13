@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b043172a_a3bae7a6",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 435,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-13T20:02:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2c3d18d5_3b2a1211",
+      "range": {
+        "startLine": 435,
+        "startChar": 23,
+        "endLine": 435,
+        "endChar": 24
+      },
+      "revId": "dce175e7700aebecd85360b5c1483e86994f50ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c54392df_6a39364f",
@@ -82,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "21eba229_2e04e0fd",
+        "filename": "src/gpu/ganesh/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 963,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-13T20:02:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c54392df_6a39364f",
+      "range": {
+        "startLine": 963,
+        "startChar": 12,
+        "endLine": 963,
+        "endChar": 71
+      },
+      "revId": "dce175e7700aebecd85360b5c1483e86994f50ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "175395d2_8cd543f4",
@@ -95,6 +143,30 @@
       "writtenOn": "2025-06-13T13:22:16Z",
       "side": 1,
       "message": "We can remove this since Graphite won\u0027t be used on devices that don\u0027t support full precision",
+      "range": {
+        "startLine": 885,
+        "startChar": 73,
+        "endLine": 886,
+        "endChar": 97
+      },
+      "revId": "dce175e7700aebecd85360b5c1483e86994f50ff",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5da26ef3_368be200",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 886,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-13T20:02:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "175395d2_8cd543f4",
       "range": {
         "startLine": 885,
         "startChar": 73,
