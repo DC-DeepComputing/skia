@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1c5c284a_94b54fe0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T13:17:10Z",
+      "side": 1,
+      "message": "That sounds like a good strategy to me.",
+      "parentUuid": "994c74f9_78655fed",
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ab8ea4de_a13dfc23",
         "filename": "example/VulkanBasic.cpp",
         "patchSetId": 8
@@ -108,6 +126,30 @@
       "side": 1,
       "message": "I completely agree, _buuuuut_ that\u0027s like 200 lines of Vulkan initialization code. Given this code is already using a couple functions from `sk_gpu_test::`, I\u0027d say that\u0027s best done in an independent change?",
       "parentUuid": "ab8ea4de_a13dfc23",
+      "range": {
+        "startLine": 48,
+        "startChar": 0,
+        "endLine": 48,
+        "endChar": 91
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "23c29967_207dc4ce",
+        "filename": "example/VulkanBasic.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T13:17:10Z",
+      "side": 1,
+      "message": "Oops, I completely missed that! No worries then.",
+      "parentUuid": "40f3e63f_20ed8409",
       "range": {
         "startLine": 48,
         "startChar": 0,
