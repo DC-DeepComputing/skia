@@ -12,6 +12,7 @@
 #include "include/core/SkColorSpace.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkSamplingOptions.h"
@@ -271,7 +272,7 @@ GrFPResult analytic_clip_fp(const skgpu::ganesh::ClipStack::Element& e,
     if (e.fShape.segmentMask() == SkPath::kLine_SegmentMask && e.fShape.convex()) {
         SkPath devicePath;
         e.fShape.asPath(&devicePath);
-        devicePath.transform(e.fLocalToDevice);
+        devicePath = devicePath.makeTransform(e.fLocalToDevice);
         return GrConvexPolyEffect::Make(std::move(fp), edgeType, devicePath);
     }
 
@@ -295,7 +296,7 @@ GrFPResult clip_atlas_fp(const skgpu::ganesh::SurfaceDrawContext* sdc,
     SkASSERT(!path.isInverseFillType());
     if (e.fOp == SkClipOp::kDifference) {
         // Toggling fill type does not affect the path's "generationID" key.
-        path.toggleInverseFillType();
+        path = SkPathBuilder(path).toggleInverseFillType().detach();
     }
     return atlasPathRenderer->makeAtlasClipEffect(sdc, opBeingClipped, std::move(inputFP),
                                                   scissorBounds, e.fLocalToDevice, path);

@@ -11,6 +11,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -197,8 +198,8 @@ static int pathsDrawTheSame(const SkPath& one, const SkPath& two, SkBitmap& bits
         SkPath& scaledTwo, int& error2x2) {
     SkMatrix scale;
     scaleMatrix(one, two, scale);
-    one.transform(scale, &scaledOne);
-    two.transform(scale, &scaledTwo);
+    scaledOne = one.makeTransform(scale);
+    scaledTwo = two.makeTransform(scale);
     return pathsDrawTheSame(bits, scaledOne, scaledTwo, error2x2);
 }
 
@@ -377,7 +378,7 @@ bool testSimplify(SkPath& path, bool useXor, SkPath& out, PathOpsThreadState& st
                   const char* pathStr) {
     static SkMutex& simplifyDebugOut = *(new SkMutex);
     SkPathFillType fillType = useXor ? SkPathFillType::kEvenOdd : SkPathFillType::kWinding;
-    path.setFillType(fillType);
+    path = path.makeFillType(fillType);
     state.fReporter->bumpTestCount();
     if (!Simplify(path, &out)) {
         SkDebugf("%s did not expect failure\n", __FUNCTION__);
@@ -591,24 +592,28 @@ static bool innerPathOp(skiatest::Reporter* reporter, const SkPath& a, const SkP
     rgnA.setPath(a, openClip);
     rgnB.setPath(b, openClip);
     rgnOut.op(rgnA, rgnB, (SkRegion::Op) shapeOp);
-    rgnOut.getBoundaryPath(&pathOut);
+    pathOut = rgnOut.getBoundaryPath().value();
 
     SkMatrix scale;
     scaleMatrix(a, b, scale);
     SkRegion scaledRgnA, scaledRgnB, scaledRgnOut;
-    SkPath scaledA, scaledB;
-    scaledA.addPath(a, scale);
-    scaledA.setFillType(a.getFillType());
-    scaledB.addPath(b, scale);
-    scaledB.setFillType(b.getFillType());
+    SkPath scaledA = SkPathBuilder()
+        .addPath(a, scale)
+        .setFillType(a.getFillType())
+        .detach();
+    SkPath scaledB = SkPathBuilder()
+        .addPath(b, scale)
+        .setFillType(b.getFillType())
+        .detach();
     scaledRgnA.setPath(scaledA, openClip);
     scaledRgnB.setPath(scaledB, openClip);
     scaledRgnOut.op(scaledRgnA, scaledRgnB, (SkRegion::Op) shapeOp);
-    scaledRgnOut.getBoundaryPath(&scaledPathOut);
+    scaledPathOut = scaledRgnOut.getBoundaryPath().value();
     SkBitmap bitmap;
-    SkPath scaledOut;
-    scaledOut.addPath(out, scale);
-    scaledOut.setFillType(out.getFillType());
+    SkPath scaledOut = SkPathBuilder()
+        .addPath(out, scale)
+        .setFillType(out.getFillType())
+        .detach();
     int result = comparePaths(reporter, testName, pathOut, scaledPathOut, out, scaledOut, bitmap,
             a, b, shapeOp, scale, expectMatch);
     reporter->bumpTestCount();
@@ -635,8 +640,7 @@ bool testPathOpFuzz(skiatest::Reporter* reporter, const SkPath& a, const SkPath&
 
 bool testPathOpFail(skiatest::Reporter* reporter, const SkPath& a, const SkPath& b,
                  const SkPathOp shapeOp, const char* testName) {
-    SkPath orig;
-    orig.lineTo(54, 43);
+    SkPath orig = SkPathBuilder().lineTo(54, 43).detach();
     SkPath out = orig;
     if (Op(a, b, shapeOp, &out) ) {
         SkDebugf("%s test is expected to fail\n", __FUNCTION__);

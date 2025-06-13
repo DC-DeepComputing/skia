@@ -8,13 +8,13 @@ void draw(SkCanvas* canvas) {
             SkDebugf("%s bounds = %g, %g, %g, %g\n", prefix,
                      bounds.fLeft, bounds.fTop, bounds.fRight, bounds.fBottom);
     };
-    SkPath path;
-    debugster("empty", path);
+    SkPathBuilder path;
+    debugster("empty", path.snapshot());
     path.addCircle(50, 45, 25);
-    debugster("circle", path);
+    debugster("circle", path.snapshot());
     SkMatrix matrix;
     matrix.setRotate(45, 50, 45);
     path.transform(matrix);
-    debugster("rotated circle", path);
+    debugster("rotated circle", path.snapshot());
 }
 }  // END FIDDLE

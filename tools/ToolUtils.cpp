@@ -256,7 +256,8 @@ void get_text_path(const SkFont&  font,
                       if (src) {
                           SkMatrix tmp(mx);
                           tmp.postTranslate(rec->fPos->fX, rec->fPos->fY);
-                          rec->fDst->addPath(*src, tmp);
+                          SkPath transformed = src->makeTransform(tmp);
+                          *rec->fDst = SkPathBuilder(*rec->fDst).addPath(transformed).detach();
                       }
                       rec->fPos += 1;
                   },
@@ -275,9 +276,9 @@ SkPath make_star(const SkRect& bounds, int numPts, int step) {
         SkScalar y     = -SkScalarSin(theta);
         builder.lineTo(x, y);
     }
-    SkPath path = builder.detach();
-    path.transform(SkMatrix::RectToRect(path.getBounds(), bounds));
-    return path;
+    SkPath path = builder.snapshot();
+    builder.transform(SkMatrix::RectToRect(path.getBounds(), bounds));
+    return builder.detach();
 }
 
 static inline void norm_to_rgb(SkBitmap* bm, int x, int y, const SkVector3& norm) {

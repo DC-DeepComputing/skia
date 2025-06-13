@@ -10,6 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
@@ -116,11 +117,15 @@ protected:
         SkAssertResult(SkParsePath::FromSVGString("M 0 0 Q 0 0 0 0", &fQuadPath));
         SkAssertResult(SkParsePath::FromSVGString("M 0 0 L 0 0", &fLinePath));
 
+        SkPathBuilder refPathBuilders[4];
         for (int i = 0; i < 3; ++i) {
-            fRefPath[0].addCircle(i * 10.f, 0, 5);
-            fRefPath[1].addCircle(i * 10.f, 0, 10);
-            fRefPath[2].addRect(i * 10.f - 4, -2, i * 10.f + 4, 6);
-            fRefPath[3].addRect(i * 10.f - 10, -10, i * 10.f + 10, 10);
+            refPathBuilders[0].addCircle(i * 10.f, 0, 5);
+            refPathBuilders[1].addCircle(i * 10.f, 0, 10);
+            refPathBuilders[2].addRect({i * 10.f - 4, -2, i * 10.f + 4, 6});
+            refPathBuilders[3].addRect({i * 10.f - 10, -10, i * 10.f + 10, 10});
+        }
+        for (int i = 0; i < 4; ++i) {
+            fRefPath[i] = refPathBuilders[i].detach();
         }
     }
 
@@ -210,9 +215,10 @@ DEF_SIMPLE_GM(CubicStroke, canvas, 384, 384) {
     p.setAntiAlias(true);
     p.setStyle(SkPaint::kStroke_Style);
     p.setStrokeWidth(1.0720f);
-    SkPath path;
-    path.moveTo(-6000,-6000);
-    path.cubicTo(-3500,5500,-500,5500,2500,-6500);
+    SkPath path = SkPathBuilder()
+        .moveTo(-6000,-6000)
+        .cubicTo(-3500,5500,-500,5500,2500,-6500)
+        .detach();
     canvas->drawPath(path, p);
     p.setStrokeWidth(1.0721f);
     canvas->translate(10, 10);
@@ -229,22 +235,25 @@ DEF_SIMPLE_GM(zerolinestroke, canvas, 90, 120) {
     paint.setAntiAlias(true);
     paint.setStrokeCap(SkPaint::kRound_Cap);
 
-    SkPath path;
-    path.moveTo(30, 90);
-    path.lineTo(30, 90);
-    path.lineTo(60, 90);
-    path.lineTo(60, 90);
+    SkPath path = SkPathBuilder()
+        .moveTo(30, 90)
+        .lineTo(30, 90)
+        .lineTo(60, 90)
+        .lineTo(60, 90)
+        .detach();
     canvas->drawPath(path, paint);
 
-    path.reset();
-    path.moveTo(30, 30);
-    path.lineTo(60, 30);
+    path = SkPathBuilder()
+        .moveTo(30, 30)
+        .lineTo(60, 30)
+        .detach();
     canvas->drawPath(path, paint);
 
-    path.reset();
-    path.moveTo(30, 60);
-    path.lineTo(30, 60);
-    path.lineTo(60, 60);
+    path = SkPathBuilder()
+        .moveTo(30, 60)
+        .lineTo(30, 60)
+        .lineTo(60, 60)
+        .detach();
     canvas->drawPath(path, paint);
 }
 
@@ -253,7 +262,6 @@ DEF_SIMPLE_GM(quadcap, canvas, 200, 200) {
     p.setAntiAlias(true);
     p.setStyle(SkPaint::kStroke_Style);
     p.setStrokeWidth(0);
-    SkPath path;
     SkPoint pts[] = {{105.738571f,13.126318f},
             {105.738571f,13.126318f},
             {123.753784f,1.f}};
@@ -268,13 +276,16 @@ DEF_SIMPLE_GM(quadcap, canvas, 200, 200) {
     pts2[1].fY += tangent.fY * capOutset;
     pts2[2].fX += -tangent.fX * capOutset;
     pts2[2].fY += -tangent.fY * capOutset;
-    path.moveTo(pts2[0]);
-    path.quadTo(pts2[1], pts2[2]);
+    SkPath path = SkPathBuilder()
+        .moveTo(pts2[0])
+        .quadTo(pts2[1], pts2[2])
+        .detach();
     canvas->drawPath(path, p);
 
-    path.reset();
-    path.moveTo(pts[0]);
-    path.quadTo(pts[1], pts[2]);
+    path = SkPathBuilder()
+        .moveTo(pts[0])
+        .quadTo(pts[1], pts[2])
+        .detach();
     p.setStrokeCap(SkPaint::kRound_Cap);
     canvas->translate(30, 0);
     canvas->drawPath(path, p);
@@ -285,12 +296,14 @@ class Strokes2GM : public skiagm::GM {
 protected:
     void onOnceBeforeDraw() override {
         SkRandom rand;
-        fPath.moveTo(0, 0);
+        SkPathBuilder b;
+        b.moveTo(0, 0);
         for (int i = 0; i < 13; i++) {
             SkScalar x = rand.nextUScalar1() * (W >> 1);
             SkScalar y = rand.nextUScalar1() * (H >> 1);
-            fPath.lineTo(x, y);
+            b.lineTo(x, y);
         }
+        fPath = b.detach();
     }
 
     SkString getName() const override { return SkString("strokes_poly"); }
@@ -337,42 +350,54 @@ static SkRect inset(const SkRect& r) {
 
 class Strokes3GM : public skiagm::GM {
     static void make0(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addRect(bounds, SkPathDirection::kCW);
-        path->addRect(inset(bounds), SkPathDirection::kCW);
+        *path = SkPathBuilder()
+            .addRect(bounds, SkPathDirection::kCW)
+            .addRect(inset(bounds), SkPathDirection::kCW)
+            .detach();
         title->set("CW CW");
     }
 
     static void make1(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addRect(bounds, SkPathDirection::kCW);
-        path->addRect(inset(bounds), SkPathDirection::kCCW);
+        *path = SkPathBuilder()
+            .addRect(bounds, SkPathDirection::kCW)
+            .addRect(inset(bounds), SkPathDirection::kCCW)
+            .detach();
         title->set("CW CCW");
     }
 
     static void make2(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addOval(bounds, SkPathDirection::kCW);
-        path->addOval(inset(bounds), SkPathDirection::kCW);
+        *path = SkPathBuilder()
+            .addOval(bounds, SkPathDirection::kCW)
+            .addOval(inset(bounds), SkPathDirection::kCW)
+            .detach();
         title->set("CW CW");
     }
 
     static void make3(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addOval(bounds, SkPathDirection::kCW);
-        path->addOval(inset(bounds), SkPathDirection::kCCW);
+        *path = SkPathBuilder()
+            .addOval(bounds, SkPathDirection::kCW)
+            .addOval(inset(bounds), SkPathDirection::kCCW)
+            .detach();
         title->set("CW CCW");
     }
 
     static void make4(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addRect(bounds, SkPathDirection::kCW);
         SkRect r = bounds;
         r.inset(bounds.width() / 10, -bounds.height() / 10);
-        path->addOval(r, SkPathDirection::kCW);
+        *path = SkPathBuilder()
+            .addRect(bounds, SkPathDirection::kCW)
+            .addOval(r, SkPathDirection::kCW)
+            .detach();
         title->set("CW CW");
     }
 
     static void make5(SkPath* path, const SkRect& bounds, SkString* title) {
-        path->addRect(bounds, SkPathDirection::kCW);
         SkRect r = bounds;
         r.inset(bounds.width() / 10, -bounds.height() / 10);
-        path->addOval(r, SkPathDirection::kCCW);
+        *path = SkPathBuilder()
+            .addRect(bounds, SkPathDirection::kCW)
+            .addOval(r, SkPathDirection::kCCW)
+            .detach();
         title->set("CW CCW");
     }
 
@@ -467,30 +492,36 @@ protected:
         p.setStrokeWidth(40);
         p.setStrokeCap(SkPaint::kButt_Cap);
 
-        SkPath path;
-        path.moveTo(157.474f,111.753f);
-        path.cubicTo(128.5f,111.5f,35.5f,29.5f,35.5f,29.5f);
+        SkPath path = SkPathBuilder()
+            .moveTo(157.474f,111.753f)
+            .cubicTo(128.5f,111.5f,35.5f,29.5f,35.5f,29.5f)
+            .detach();
         canvas->drawPath(path, p);
-        path.reset();
-        path.moveTo(250, 50);
-        path.quadTo(280, 80, 280, 80);
+        path = SkPathBuilder()
+            .moveTo(250, 50)
+            .quadTo(280, 80, 280, 80)
+            .detach();
         canvas->drawPath(path, p);
-        path.reset();
-        path.moveTo(150, 50);
-        path.conicTo(180, 80, 180, 80, 0.707f);
+        path = SkPathBuilder()
+            .moveTo(150, 50)
+            .conicTo(180, 80, 180, 80, 0.707f)
+            .detach();
         canvas->drawPath(path, p);
 
-        path.reset();
-        path.moveTo(157.474f,311.753f);
-        path.cubicTo(157.474f,311.753f,85.5f,229.5f,35.5f,229.5f);
+        path = SkPathBuilder()
+            .moveTo(157.474f,311.753f)
+            .cubicTo(157.474f,311.753f,85.5f,229.5f,35.5f,229.5f)
+            .detach();
         canvas->drawPath(path, p);
-        path.reset();
-        path.moveTo(280, 250);
-        path.quadTo(280, 250, 310, 280);
+        path = SkPathBuilder()
+            .moveTo(280, 250)
+            .quadTo(280, 250, 310, 280)
+            .detach();
         canvas->drawPath(path, p);
-        path.reset();
-        path.moveTo(180, 250);
-        path.conicTo(180, 250, 210, 280, 0.707f);
+        path = SkPathBuilder()
+            .moveTo(180, 250)
+            .conicTo(180, 250, 210, 280, 0.707f)
+            .detach();
         canvas->drawPath(path, p);
     }
 
@@ -603,18 +634,19 @@ DEF_SIMPLE_GM(skbug12244, canvas, 150, 150) {
     // renderer that's the source of the problem, and not the stroking operation. The original
     // path was a simple:
     // m(0,0), l(100, 40), l(0, 80), l(0,0) with a stroke width of 15px
-    SkPath path;
-    path.moveTo(2.7854299545288085938, -6.9635753631591796875);
-    path.lineTo( 120.194366455078125,                   40);
-    path.lineTo(-7.5000004768371582031, 91.07775115966796875);
-    path.lineTo(-7.5000004768371582031, -11.077748298645019531);
-    path.lineTo(2.7854299545288085938, -6.9635753631591796875);
-    path.moveTo(-2.7854299545288085938, 6.9635753631591796875);
-    path.lineTo(                   0,                    0);
-    path.lineTo(                 7.5,                    0);
-    path.lineTo(7.5000004768371582031, 68.92224884033203125);
-    path.lineTo(  79.805633544921875,                   40);
-    path.lineTo(-2.7854299545288085938, 6.9635753631591796875);
+    SkPath path = SkPathBuilder()
+        .moveTo(2.7854299545288085938, -6.9635753631591796875)
+        .lineTo( 120.194366455078125,                   40)
+        .lineTo(-7.5000004768371582031, 91.07775115966796875)
+        .lineTo(-7.5000004768371582031, -11.077748298645019531)
+        .lineTo(2.7854299545288085938, -6.9635753631591796875)
+        .moveTo(-2.7854299545288085938, 6.9635753631591796875)
+        .lineTo(                   0,                    0)
+        .lineTo(                 7.5,                    0)
+        .lineTo(7.5000004768371582031, 68.92224884033203125)
+        .lineTo(  79.805633544921875,                   40)
+        .lineTo(-2.7854299545288085938, 6.9635753631591796875)
+        .detach();
 
     SkPaint p;
     p.setColor(SK_ColorGREEN);
@@ -627,27 +659,29 @@ DEF_SIMPLE_GM(b_340982297, canvas, 80, 50) {
     SkPaint paint;
     paint.setAntiAlias(true);
 
-    SkPath path;
-    path.moveTo(30.23983f, 48.5674667f);
-    path.lineTo(1.30884242f, 45.5222702f);
-    path.lineTo(2.97688866f, 29.6749554f);
-    path.lineTo(17.4423828f, 31.1975555f);
-    path.lineTo(2.94269657f, 30.0452003f);
-    path.lineTo(4.38597536f, 11.8849154f);
-    path.lineTo(33.3853493f, 14.1896257f);
-    path.close();
+    SkPath path = SkPathBuilder()
+        .moveTo(30.23983f, 48.5674667f)
+        .lineTo(1.30884242f, 45.5222702f)
+        .lineTo(2.97688866f, 29.6749554f)
+        .lineTo(17.4423828f, 31.1975555f)
+        .lineTo(2.94269657f, 30.0452003f)
+        .lineTo(4.38597536f, 11.8849154f)
+        .lineTo(33.3853493f, 14.1896257f)
+        .close()
+        .detach();
 
     canvas->drawPath(path, paint);
 
-    path.reset();
-    path.moveTo(73.3853455f, 4.18963623f);
-    path.lineTo(69.995636f, 39.1360626f);
-    path.lineTo(42.83145142f, 21.056778f);
-    path.lineTo(42.97689819f, 19.6749573f);
-    path.lineTo(57.4423828f, 21.1975555f);
-    path.lineTo(42.94268799f, 20.0451965f);
-    path.lineTo(44.38595581f, 1.88491821f);
-    path.close();
+    path = SkPathBuilder()
+        .moveTo(73.3853455f, 4.18963623f)
+        .lineTo(69.995636f, 39.1360626f)
+        .lineTo(42.83145142f, 21.056778f)
+        .lineTo(42.97689819f, 19.6749573f)
+        .lineTo(57.4423828f, 21.1975555f)
+        .lineTo(42.94268799f, 20.0451965f)
+        .lineTo(44.38595581f, 1.88491821f)
+        .close()
+        .detach();
 
     canvas->drawPath(path, paint);
 }

@@ -210,10 +210,10 @@ bool RequiresViewportReset(const SkPaint& paint) {
 
 void AddPath(const sktext::GlyphRun& glyphRun, const SkPoint& offset, SkPath* path) {
     struct Rec {
-        SkPath*        fPath;
+        SkPathBuilder  fPath;
         const SkPoint  fOffset;
         const SkPoint* fPos;
-    } rec = { path, offset, glyphRun.positions().data() };
+    } rec = { SkPathBuilder(*path), offset, glyphRun.positions().data() };
 
     glyphRun.font().getPaths(glyphRun.glyphsIDs(),
             [](const SkPath* path, const SkMatrix& mx, void* ctx) {
@@ -222,12 +222,14 @@ void AddPath(const sktext::GlyphRun& glyphRun, const SkPoint& offset, SkPath* pa
                     SkMatrix total = mx;
                     total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                         rec->fPos->fY + rec->fOffset.fY);
-                    rec->fPath->addPath(*path, total);
+                    // TODO(borenet): This is inefficient.
+                    rec->fPath.addPath(SkPathBuilder(*path).transform(total).detach());
                 } else {
                     // TODO: this is going to drop color emojis.
                 }
                 rec->fPos += 1; // move to the next glyph's position
             }, &rec);
+    *path = rec.fPath.detach();
 }
 
 }  // namespace

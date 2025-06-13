@@ -37,7 +37,7 @@ void draw(SkCanvas* canvas) {
     makePaint(&fOutlinePaint, 0xFF000000);
     fOutlinePaint.setStyle(SkPaint::kStroke_Style);
 
-    SkPath one, two;
+    SkPathBuilder one, two;
     int yPos = 0;
     for (int oneFill = 0; oneFill <= 1; ++oneFill) {
         SkPathFillType oneF =
@@ -55,19 +55,23 @@ void draw(SkCanvas* canvas) {
 
             two.reset();
             two.setFillType(twoF);
-            two.addRect(40, 40, 100, 100);
+            two.addRect({40, 40, 100, 100});
+
+            SkPath oneSnap = one.snapshot();
+            SkPath twoSnap = two.snapshot();
+
             canvas->save();
             canvas->translate(0, SkIntToScalar(yPos));
             canvas->clipRect(SkRect::MakeWH(110, 110), SkClipOp::kIntersect, true);
-            canvas->drawPath(one, fOnePaint);
-            canvas->drawPath(one, fOutlinePaint);
-            canvas->drawPath(two, fTwoPaint);
-            canvas->drawPath(two, fOutlinePaint);
+            canvas->drawPath(oneSnap, fOnePaint);
+            canvas->drawPath(oneSnap, fOutlinePaint);
+            canvas->drawPath(twoSnap, fTwoPaint);
+            canvas->drawPath(twoSnap, fOutlinePaint);
             canvas->restore();
             int xPos = 150;
             for (int op = kDifference_SkPathOp; op <= kReverseDifference_SkPathOp; ++op) {
                 SkPath result;
-                Op(one, two, (SkPathOp)op, &result);
+                Op(oneSnap, twoSnap, (SkPathOp)op, &result);
                 canvas->save();
                 canvas->translate(SkIntToScalar(xPos), SkIntToScalar(yPos));
                 canvas->clipRect(SkRect::MakeWH(110, 110), SkClipOp::kIntersect, true);

@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -13,13 +14,14 @@
 #include "include/core/SkTypes.h"
 #include "include/pathops/SkPathOps.h"
 #include "include/utils/SkParsePath.h"
+#include "src/core/SkPathPriv.h"
 #include "tests/Test.h"
 
 #include <initializer_list>
 #include <string>
 
 static SkPath build_squircle(SkPath::Verb verb, const SkRect& rect, SkPathDirection dir) {
-    SkPath path;
+    SkPathBuilder path;
     bool reverse = SkPathDirection::kCCW == dir;
     switch (verb) {
         case SkPath::kLine_Verb:
@@ -52,15 +54,15 @@ static SkPath build_squircle(SkPath::Verb verb, const SkRect& rect, SkPathDirect
             SkASSERT(0);
     }
     if (reverse) {
-        SkPath temp;
-        temp.reverseAddPath(path);
-        path.swap(temp);
+        SkPathBuilder temp;
+        SkPathPriv::ReverseAddPath(&temp, path.detach());
+        path = temp;
     }
-    return path;
+    return path.detach();
 }
 
 void bug12040_1(skiatest::Reporter* reporter) {
-    SkPath path;
+    SkPathBuilder path;
     path.setFillType(SkPathFillType::kWinding);
     path.moveTo(375, -30);
     path.cubicTo(578, -30, 749, 176, 749, 422);
@@ -111,7 +113,7 @@ void bug12040_1(skiatest::Reporter* reporter) {
     path.cubicTo(463, 301, 463, 269, 463, 269);
     path.close();
 
-    SkPath path2;
+    SkPathBuilder path2;
     path2.setFillType(SkPathFillType::kWinding);
     path2.moveTo(-83.5464f, 188);
     path2.cubicTo(-83.5464f, 184.285f, -84.8599f, 181.114f, -87.4868f, 178.487f);
@@ -125,7 +127,7 @@ void bug12040_1(skiatest::Reporter* reporter) {
     path2.close();
 
     SkPath opResult;
-    Op(path, path2, kDifference_SkPathOp, &opResult);
+    Op(path.detach(), path2.detach(), kDifference_SkPathOp, &opResult);
 
     SkPath winding;
     REPORTER_ASSERT(reporter, AsWinding(opResult, &winding));
@@ -137,7 +139,7 @@ void bug12040_1(skiatest::Reporter* reporter) {
 }
 
 void bug12040_2(skiatest::Reporter* reporter) {
-    SkPath path;
+    SkPathBuilder path;
     path.setFillType(SkPathFillType::kWinding);
     path.moveTo(375, -30);
     path.cubicTo(578, -30, 749, 176, 749, 422);
@@ -188,7 +190,7 @@ void bug12040_2(skiatest::Reporter* reporter) {
     path.cubicTo(463, 301, 463, 269, 463, 269);
     path.close();
 
-    SkPath path2;
+    SkPathBuilder path2;
     path2.setFillType(SkPathFillType::kWinding);
     path2.moveTo(269.134f, 71.3392f);
     path2.cubicTo(269.134f, 67.6241f, 267.82f, 64.453f, 265.193f, 61.826f);
@@ -202,7 +204,7 @@ void bug12040_2(skiatest::Reporter* reporter) {
     path2.close();
 
     SkPath opResult;
-    Op(path, path2, kDifference_SkPathOp, &opResult);
+    Op(path.detach(), path2.snapshot(), kDifference_SkPathOp, &opResult);
 
     // This produces the correct result in all the cases I've tried.
     // So it appears to be a winding issue.
@@ -219,7 +221,7 @@ void bug12040_2(skiatest::Reporter* reporter) {
 }
 
 void bug12040_3(skiatest::Reporter* reporter) {
-    SkPath path;
+    SkPathBuilder path;
     path.setFillType(SkPathFillType::kWinding);
     path.moveTo(375, -30);
     path.cubicTo(578, -30, 749, 176, 749, 422);
@@ -270,7 +272,7 @@ void bug12040_3(skiatest::Reporter* reporter) {
     path.cubicTo(463, 301, 463, 269, 463, 269);
     path.close();
 
-    SkPath path2;
+    SkPathBuilder path2;
     path2.setFillType(SkPathFillType::kWinding);
     path2.moveTo(492.041f, 525.339f);
     path2.cubicTo(492.041f, 521.624f, 490.727f, 518.453f, 488.1f, 515.826f);
@@ -284,7 +286,7 @@ void bug12040_3(skiatest::Reporter* reporter) {
     path2.close();
 
     SkPath opResult;
-    Op(path, path2, kDifference_SkPathOp, &opResult);
+    Op(path.detach(), path2.snapshot(), kDifference_SkPathOp, &opResult);
 
     SkPath winding;
     path2.setFillType(SkPathFillType::kWinding);
@@ -301,11 +303,11 @@ void bug12040_4(skiatest::Reporter* reporter) {
         for (int moveY = 299; moveY <= 301; ++moveY) {
             for (int lineX = 199; lineX <= 201; ++lineX) {
                 for (int lineY = 199; lineY <= 201; ++lineY) {
-                    SkPath path;
+                    SkPathBuilder path;
                     path.setFillType(SkPathFillType::kWinding);
                     path.addCircle(250, 250, 150);
 
-                    SkPath path2;
+                    SkPathBuilder path2;
                     path2.setFillType(SkPathFillType::kWinding);
                     path2.moveTo(moveX, moveY);  // 200, 300 works... But not 200, 301!!
                     path2.lineTo(lineX, lineY);  // 200, 200 works... But not 199, 200!!
@@ -313,7 +315,7 @@ void bug12040_4(skiatest::Reporter* reporter) {
                     path2.close();
 
                     SkPath opResult;
-                    Op(path, path2, kDifference_SkPathOp, &opResult);
+                    Op(path.detach(), path2.detach(), kDifference_SkPathOp, &opResult);
 
                     SkPath winding;
                     REPORTER_ASSERT(reporter, AsWinding(opResult, &winding));
@@ -333,11 +335,11 @@ void bug12040_5(skiatest::Reporter* reporter) {
         for (int moveY = 299; moveY <= 301; ++moveY) {
             for (int lineX = 199; lineX <= 201; ++lineX) {
                 for (int lineY = 199; lineY <= 201; ++lineY) {
-                    SkPath path;
+                    SkPathBuilder path;
                     path.setFillType(SkPathFillType::kWinding);
-                    path.addRect(100, 100, 400, 400);
+                    path.addRect({100, 100, 400, 400});
 
-                    SkPath path2;
+                    SkPathBuilder path2;
                     path2.setFillType(SkPathFillType::kWinding);
                     path2.moveTo(moveX, moveY);
                     path2.lineTo(lineX, lineY);  // 200, 200 works... But not 199, 200!!
@@ -345,7 +347,7 @@ void bug12040_5(skiatest::Reporter* reporter) {
                     path2.close();
 
                     SkPath opResult;
-                    Op(path, path2, kDifference_SkPathOp, &opResult);
+                    Op(path.detach(), path2.detach(), kDifference_SkPathOp, &opResult);
 
                     SkPath winding;
                     REPORTER_ASSERT(reporter, AsWinding(opResult, &winding));
@@ -440,68 +442,70 @@ void bug13496_3(skiatest::Reporter* reporter) {
 }
 
 DEF_TEST(PathOpsAsWinding, reporter) {
-    SkPath test, result;
+    SkPath result;
+    SkPathBuilder test;
     test.addRect({1, 2, 3, 4});
     // if test is winding
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // if test is empty
     test.reset();
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, result.isEmpty());
     REPORTER_ASSERT(reporter, result.getFillType() == SkPathFillType::kWinding);
     // if test is convex
     test.addCircle(5, 5, 10);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, result.isConvex());
     test.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // if test has infinity
     test.reset();
     test.addRect({1, 2, 3, SK_ScalarInfinity});
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, !AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, !AsWinding(test.snapshot(), &result));
     // if test has only one contour
     test.reset();
     SkPoint ell[] = {{0, 0}, {4, 0}, {4, 1}, {1, 1}, {1, 4}, {0, 4}};
-    test.addPoly(ell, true);
+    test.addPolygon(ell, true);
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, !result.isConvex());
     test.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // test two contours that do not overlap or share bounds
     test.addRect({5, 2, 6, 3});
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, !result.isConvex());
     test.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // test two contours that do not overlap but share bounds
     test.reset();
-    test.addPoly(ell, true);
+    test.addPolygon(ell, true);
     test.addRect({2, 2, 3, 3});
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, !result.isConvex());
     test.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // test two contours that partially overlap
     test.reset();
     test.addRect({0, 0, 3, 3});
     test.addRect({1, 1, 4, 4});
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &result));
+    REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
     REPORTER_ASSERT(reporter, !result.isConvex());
     test.setFillType(SkPathFillType::kWinding);
-    REPORTER_ASSERT(reporter, test == result);
+    REPORTER_ASSERT(reporter, test.snapshot() == result);
     // test that result may be input
-    SkPath copy = test;
+    SkPath copy = test.snapshot();
     test.setFillType(SkPathFillType::kEvenOdd);
-    REPORTER_ASSERT(reporter, AsWinding(test, &test));
-    REPORTER_ASSERT(reporter, !test.isConvex());
-    REPORTER_ASSERT(reporter, test == copy);
+    SkPath testSnap = test.snapshot();
+    REPORTER_ASSERT(reporter, AsWinding(testSnap, &testSnap));
+    REPORTER_ASSERT(reporter, !testSnap.isConvex());
+    REPORTER_ASSERT(reporter, testSnap == copy);
     // test a in b, b in a, cw/ccw
     constexpr SkRect rectA = {0, 0, 3, 3};
     constexpr SkRect rectB = {1, 1, 2, 2};
@@ -519,8 +523,8 @@ DEF_TEST(PathOpsAsWinding, reporter) {
                     test.addRect(rectB, dirB);
                     test.addRect(rectA, dirA);
                 }
-                SkPath original = test;
-                REPORTER_ASSERT(reporter, AsWinding(test, &result));
+                SkPath original = test.snapshot();
+                REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
                 REPORTER_ASSERT(reporter, result.getFillType() == SkPathFillType::kWinding);
                 test.reset();
                 if (aFirst) {
@@ -529,12 +533,12 @@ DEF_TEST(PathOpsAsWinding, reporter) {
                 if (dirA != dirB) {
                     test.addRect(rectB, dirB);
                 } else {
-                    test.addPoly(SkPathDirection::kCW == dirA ? revBccw : revBcw, true);
+                    test.addPolygon(SkPathDirection::kCW == dirA ? revBccw : revBcw, true);
                 }
                 if (!aFirst) {
                     test.addRect(rectA, dirA);
                 }
-                REPORTER_ASSERT(reporter, test == result);
+                REPORTER_ASSERT(reporter, test.snapshot() == result);
                 // test that result may be input
                 REPORTER_ASSERT(reporter, AsWinding(original, &original));
                 REPORTER_ASSERT(reporter, original.getFillType() == SkPathFillType::kWinding);
@@ -558,11 +562,12 @@ DEF_TEST(PathOpsAsWinding, reporter) {
                             test.addPath(pathA);
                         }
                         test.setFillType(SkPathFillType::kEvenOdd);
-                        REPORTER_ASSERT(reporter, AsWinding(test, &result));
-                       REPORTER_ASSERT(reporter, result.getFillType() == SkPathFillType::kWinding);
+                        REPORTER_ASSERT(reporter, AsWinding(test.snapshot(), &result));
+                        REPORTER_ASSERT(reporter, result.getFillType() == SkPathFillType::kWinding);
+                        SkPath testSnap = test.snapshot();
                         for (SkScalar x = rectA.fLeft - 1; x <= rectA.fRight + 1; ++x) {
                             for (SkScalar y = rectA.fTop - 1; y <= rectA.fBottom + 1; ++y) {
-                                bool evenOddContains = test.contains(x, y);
+                                bool evenOddContains = testSnap.contains(x, y);
                                 bool windingContains = result.contains(x, y);
                                 REPORTER_ASSERT(reporter, evenOddContains == windingContains);
                             }

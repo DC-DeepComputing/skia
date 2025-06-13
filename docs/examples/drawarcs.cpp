@@ -24,9 +24,10 @@ void draw(SkCanvas* canvas) {
         SkScalar x = randScalar(0, 200);
         SkScalar y = randScalar(0, 200);
 
-        path.rewind();
-        path.addArc(SkRect::MakeXYWH(x, y, 70, 70), randScalar(0, 360),
-                    randScalar(0, 360));
+        path = SkPathBuilder()
+            .addArc(SkRect::MakeXYWH(x, y, 70, 70), randScalar(0, 360),
+                    randScalar(0, 360))
+            .detach();
         paint.setColor(randOpaqueColor());
         canvas->drawPath(path, paint);
     }

@@ -25,6 +25,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
@@ -595,7 +596,7 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
     SkStrokeRec::InitStyle initStyle = skpathutils::FillPathWithPaint(path, *paint, &path)
                                      ? SkStrokeRec::kFill_InitStyle
                                      : SkStrokeRec::kHairline_InitStyle;
-    path.transform(ctm, &path);
+    path = SkPathBuilder(path).transform(ctm).detach();
 
     SkIRect bounds = clipStack.bounds(this->bounds()).roundOut();
     SkMaskBuilder sourceMask;
@@ -697,7 +698,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
             pathPtr = &modifiedPath;
             pathIsMutable = true;
         }
-        pathPtr->transform(matrix);
+        *pathPtr = SkPathBuilder(*pathPtr).transform(matrix).detach();
         if (paint->getShader()) {
             transform_shader(paint.writable(), matrix);
         }
@@ -858,13 +859,12 @@ static bool contains(const SkRect& r, SkPoint p) {
 void SkPDFDevice::drawGlyphRunAsPath(
         const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint) {
     const SkFont& font = glyphRun.font();
-    SkPath path;
 
     struct Rec {
-        SkPath* fPath;
-        SkPoint fOffset;
+        SkPathBuilder  fPath;
+        SkPoint        fOffset;
         const SkPoint* fPos;
-    } rec = {&path, offset, glyphRun.positions().data()};
+    } rec = {SkPathBuilder(), offset, glyphRun.positions().data()};
 
     font.getPaths(glyphRun.glyphsIDs(),
                   [](const SkPath* path, const SkMatrix& mx, void* ctx) {
@@ -873,10 +873,12 @@ void SkPDFDevice::drawGlyphRunAsPath(
                           SkMatrix total = mx;
                           total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                               rec->fPos->fY + rec->fOffset.fY);
-                          rec->fPath->addPath(*path, total);
+                          // TODO(borenet): This is inefficient.
+                          rec->fPath.addPath(SkPathBuilder(*path).transform(total).detach());
                       }
                       rec->fPos += 1; // move to the next glyph's position
                   }, &rec);
+    SkPath path = rec.fPath.detach();
     this->internalDrawPath(this->cs(), this->localToDevice(), path, runPaint, true);
 
     SkFont transparentFont = glyphRun.font();
@@ -1214,7 +1216,7 @@ bool SkPDFDevice::handleInversePath(const SkPath& origPath,
         } else {
             // To be consistent with the raster output, hairline strokes
             // are rendered as non-inverted.
-            modifiedPath.toggleInverseFillType();
+            modifiedPath = SkPathBuilder(modifiedPath).toggleInverseFillType().detach();
             this->internalDrawPath(this->cs(), this->localToDevice(), modifiedPath, paint, true);
             return true;
         }
@@ -1856,8 +1858,10 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
     if (!content) {
         return;
     }
-    SkPath shape = SkPath::Rect(SkRect::Make(device->imageInfo().dimensions()));
-    shape.transform(matrix);
+    SkPath shape = SkPathBuilder()
+        .addRect(SkRect::Make(device->imageInfo().dimensions()))
+        .transform(matrix)
+        .detach();
     if (content.needShape()) {
         content.setShape(shape);
     }

@@ -15,6 +15,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkSize.h"
@@ -254,7 +255,7 @@ std::vector<SkScalar> getTValuesForSegment(std::deque<float>* tValuesToAdd, floa
 * Helper function that takes a vector of t-values and chops a cubic at those correct
 * values, added it to the path |out|.
 */
-void addSegmentsFromTValues(const SkPoint cubic_pts[4], std::vector<SkScalar> t_values, SkPath* out) {
+void addSegmentsFromTValues(const SkPoint cubic_pts[4], std::vector<SkScalar> t_values, SkPathBuilder* out) {
     const size_t arr_size = t_values.size();
     const int dst_size = (3*arr_size) + 4;
     std::vector<SkPoint> split_pts(dst_size);
@@ -270,9 +271,11 @@ void addSegmentsFromTValues(const SkPoint cubic_pts[4], std::vector<SkScalar> t_
 * (sorted), returns a new path that is all cubic beziers, with verbs at each of
 * those t-values.
 */
-bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std::vector<float> tValues, SkPath* out) {
+SkPath createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std::vector<float> tValues) {
     SkPath::Iter iter(in, false);
     bool fBreak = false;
+
+    SkPathBuilder out;
 
     // Only increment if we draw on the path.
     size_t t_value_idx = 0;
@@ -299,7 +302,7 @@ bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std
         switch (verb) {
             case SkPath::kMove_Verb:
                // Only supports one contour currently.
-               out->moveTo(pts[0]);
+               out.moveTo(pts[0]);
             break;
             case SkPath::kLine_Verb: {
                 t_value_idx++;
@@ -307,11 +310,11 @@ bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std
                 pt1 = pts[0]*(1.0f / 3.0f) + pts[1]*(2.0f / 3.0f);
                 pt2 = pts[0]*(2.0f / 3.0f) + pts[1]*(1.0f / 3.0f);
                 if (!needToSplit) {
-                    out->cubicTo(pt1, pt2, pts[1]);
+                    out.cubicTo(pt1, pt2, pts[1]);
                 } else {
                     std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
                     const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[1]};
-                    addSegmentsFromTValues(cubic_pts, tVector, out);
+                    addSegmentsFromTValues(cubic_pts, tVector, &out);
                 }
                 break;
             }
@@ -321,35 +324,35 @@ bool createPathFromTValues(const SkPath& in, std::deque<float> tValuesToAdd, std
                 pt1 = pts[0] + (pts[1]-pts[0])*(2.0f / 3.0f);
                 pt2 = pts[2] + (pts[1]-pts[2])*(2.0f / 3.0f);
                 if (!needToSplit) {
-                    out->cubicTo(pt1, pt2, pts[2]);
+                    out.cubicTo(pt1, pt2, pts[2]);
                 } else {
                     std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
                     const SkPoint cubic_pts[4] = {pts[0], pt1, pt2, pts[2]};
-                    addSegmentsFromTValues(cubic_pts, tVector, out);
+                    addSegmentsFromTValues(cubic_pts, tVector, &out);
                 }
                 break;
             }
             case SkPath::kCubic_Verb:
                 t_value_idx++;
                 if (!needToSplit) {
-                    out->cubicTo(pts[1], pts[2], pts[3]);
+                    out.cubicTo(pts[1], pts[2], pts[3]);
                 } else {
                     std::vector<SkScalar> tVector = getTValuesForSegment(&tValuesToAdd, t, tNext);
-                    addSegmentsFromTValues(pts, tVector, out);
+                    addSegmentsFromTValues(pts, tVector, &out);
                 }
                 break;
             case SkPath::kConic_Verb:
                 // Conic not yet supported.
-                return false;
+                return SkPath();
             case SkPath::kClose_Verb:
                 // Close not yet supported.
-                out->close();
+                out.close();
                 break;
             case SkPath::kDone_Verb:
                 fBreak = true;
         }
     }
-    return true;
+    return out.detach();
 }
 
 /*
@@ -422,19 +425,14 @@ std::deque<float> getTValuesToAdd(std::vector<SkScalar> original, std::vector<Sk
 bool generalInterpolate(const SkPath& beginning, const SkPath& ending, SkScalar weight, SkPath* out) {
     // Use existing path interpolation if possible.
     if (beginning.isInterpolatable(ending)) {
-        return beginning.interpolate(ending, weight, out);
+        *out = beginning.makeInterpolate(ending, weight);
+        return true;
     }
 
     // TODO: Check if isValid()?
     if (beginning.isEmpty() || !beginning.isFinite() || ending.isEmpty() || !ending.isFinite()) {
         return false;
     }
-
-    // New paths to store the transformed paths.
-    SkPath beginningCubic;
-    SkPath endingCubic;
-    beginningCubic.reset();
-    endingCubic.reset();
 
     // Append the total distances up to each verb in the path into a vector.
     std::vector<SkScalar> tValues1 = getTValues(beginning);
@@ -448,10 +446,11 @@ bool generalInterpolate(const SkPath& beginning, const SkPath& ending, SkScalar 
     std::deque<float> tValuesToAdd2 = getTValuesToAdd(tValues2, tValues1);
 
     // Form the cubic versions of each path with the new points along it.
-    createPathFromTValues(beginning, tValuesToAdd1, tValues1, &beginningCubic);
-    createPathFromTValues(ending, tValuesToAdd2, tValues2, &endingCubic);
+    SkPath beginningCubic = createPathFromTValues(beginning, tValuesToAdd1, tValues1);
+    SkPath endingCubic = createPathFromTValues(ending, tValuesToAdd2, tValues2);
 
-    return beginningCubic.interpolate(endingCubic, weight, out);
+    *out = beginningCubic.makeInterpolate(endingCubic, weight);
+    return true;
 }
 
 class PathLerpSlide final : public Slide {
@@ -597,9 +596,10 @@ private:
         // Transform all paths to a normalized size, such that they occupy roughly the same space.
         static constexpr SkRect kNormRect = {0, 0, 512, 512};
 
+        p0 = p0.makeTransform(SkMatrix::MakeRectToRect(b0, kNormRect, SkMatrix::kCenter_ScaleToFit));
+        p1 = p1.makeTransform(SkMatrix::MakeRectToRect(b1, kNormRect, SkMatrix::kCenter_ScaleToFit));
         fPaths = {
-            p0.transform(SkMatrix::MakeRectToRect(b0, kNormRect, SkMatrix::kCenter_ScaleToFit)),
-            p1.transform(SkMatrix::MakeRectToRect(b1, kNormRect, SkMatrix::kCenter_ScaleToFit)),
+            p0, p1,
         };
 
 

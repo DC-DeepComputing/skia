@@ -10,6 +10,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
@@ -58,10 +59,10 @@ void SkClipStackDevice::onClipShader(sk_sp<SkShader> shader) {
 void SkClipStackDevice::clipRegion(const SkRegion& rgn, SkClipOp op) {
     SkIPoint origin = this->getOrigin();
     SkRegion tmp;
-    SkPath path;
+    SkPathBuilder path;
     rgn.getBoundaryPath(&path);
     path.transform(SkMatrix::Translate(-origin));
-    fClipStack.clipPath(path, SkMatrix::I(), op, false);
+    fClipStack.clipPath(path.detach(), SkMatrix::I(), op, false);
 }
 
 void SkClipStackDevice::replaceClip(const SkIRect& rect) {
@@ -117,7 +118,7 @@ void SkClipStackDevice::android_utils_clipAsRgn(SkRegion* rgn) const {
         *rgn = boundsRgn;
         SkClipStack::B2TIter iter(fClipStack);
         while (auto elem = iter.next()) {
-            tmpPath.rewind();
+            tmpPath = SkPath(); // TODO(borenet)
             elem->asDeviceSpacePath(&tmpPath);
             SkRegion tmpRgn;
             tmpRgn.setPath(tmpPath, boundsRgn);

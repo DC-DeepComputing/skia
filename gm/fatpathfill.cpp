@@ -10,6 +10,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -64,9 +65,11 @@ DEF_SIMPLE_GM(fatpathfill, canvas,
         paint.setStrokeWidth(SK_Scalar1);
 
         for (int i = 0; i < REPEAT_LOOP; ++i) {
-            SkPath line, path;
-            line.moveTo(1, 2);
-            line.lineTo(SkIntToScalar(4 + i), 1);
+            SkPath line = SkPathBuilder()
+                .moveTo(1, 2)
+                .lineTo(SkIntToScalar(4 + i), 1)
+                .detach();
+            SkPath path;
             skpathutils::FillPathWithPaint(line, paint, &path);
             draw_fatpath(canvas, surface.get(), path);
 

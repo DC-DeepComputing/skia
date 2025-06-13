@@ -663,8 +663,8 @@ bool SkScalerContext_Mac::generatePath(const SkGlyph& glyph, SkPath* path, bool*
     CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
     SkUniqueCFRef<CGPathRef> cgPath(CTFontCreatePathForGlyph(fCTFont.get(), cgGlyph, &xform));
 
-    path->reset();
     if (!cgPath) {
+        *path = SkPath();
         return false;
     }
 
@@ -674,7 +674,7 @@ bool SkScalerContext_Mac::generatePath(const SkGlyph& glyph, SkPath* path, bool*
     if (fDoSubPosition) {
         SkMatrix m;
         m.setScale(SkScalarInvert(scaleX), SkScalarInvert(scaleY));
-        path->transform(m);
+        *path = path->makeTransform(m);
     }
     return true;
 }

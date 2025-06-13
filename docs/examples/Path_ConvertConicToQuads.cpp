@@ -12,15 +12,15 @@ void draw(SkCanvas* canvas) {
       for (auto weight : { .25f, .5f, .707f, .85f, 1.f } ) {
           SkPoint quads[5];
           SkPath::ConvertConicToQuads(conic[0], conic[1], conic[2], weight, quads, 1);
-          SkPath path;
+          SkPathBuilder path;
           path.moveTo(conic[0]);
           path.conicTo(conic[1], conic[2], weight);
-          canvas->drawPath(path, conicPaint);
-          path.rewind();
+          canvas->drawPath(path.snapshot(), conicPaint);
+          path.reset();
           path.moveTo(quads[0]);
           path.quadTo(quads[1], quads[2]);
           path.quadTo(quads[3], quads[4]);
-          canvas->drawPath(path, quadPaint);
+          canvas->drawPath(path.detach(), quadPaint);
           canvas->translate(50, -50);
       }
 }

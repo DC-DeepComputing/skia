@@ -29,7 +29,7 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
 bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
                        const SkRect* cullRect, const SkMatrix& ctm) {
     if (!src.isFinite()) {
-        dst->reset();
+        *dst = SkPath();
         return false;
     }
 
@@ -57,14 +57,14 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
             // As it is, we want to save making a deep-copy from tmpPath -> dst
             // since we know we're just going to delete tmpPath when we return,
             // so the swap saves that copy.
-            dst->swap(tmpPath);
+            *dst = SkPath(tmpPath);
         } else {
             *dst = *srcPtr;
         }
     }
 
     if (!dst->isFinite()) {
-        dst->reset();
+        *dst = SkPath();
         return false;
     }
     return !rec.isHairlineStyle();

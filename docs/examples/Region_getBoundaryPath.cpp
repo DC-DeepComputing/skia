@@ -7,9 +7,8 @@ void draw(SkCanvas* canvas) {
     region.setRect({10, 20, 90, 60});
     region.op({30, 40, 60, 80}, SkRegion::kXOR_Op);
     canvas->drawRegion(region, SkPaint());
-    SkPath path;
-    region.getBoundaryPath(&path);
-    path.offset(100, 0);
+    std::optional<SkPath> optPath = region.getBoundaryPath();
+    SkPath path = optPath.value().makeOffset(100, 0);
     canvas->drawPath(path, SkPaint());
 }
 }  // END FIDDLE

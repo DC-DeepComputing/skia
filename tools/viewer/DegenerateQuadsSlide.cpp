@@ -62,10 +62,8 @@ static SkScalar signed_distance(const SkPoint& p, const SkPoint& l0, const SkPoi
 
 static SkScalar get_area_coverage(const bool edgeAA[4], const SkPoint corners[4],
                                   const SkPoint& point) {
-    SkPath shape;
-    shape.addPoly({corners, 4}, true);
-    SkPath pixel;
-    pixel.addRect(SkRect::MakeXYWH(point.fX - 0.5f, point.fY - 0.5f, 1.f, 1.f));
+    SkPath shape = SkPath::Polygon({corners, 4}, true);
+    SkPath pixel = SkPath::Rect(SkRect::MakeXYWH(point.fX - 0.5f, point.fY - 0.5f, 1.f, 1.f));
 
     SkPath intersection;
     if (!Op(shape, pixel, kIntersect_SkPathOp, &intersection) || intersection.isEmpty()) {
@@ -348,13 +346,11 @@ public:
             linePaint.setPathEffect(nullptr);
             // What is tessellated using GrQuadPerEdgeAA
             if (fCoverageMode == CoverageMode::kGPUMesh) {
-                SkPath outsetPath;
-                outsetPath.addPoly({gpuOutset, 4}, true);
+                SkPath outsetPath = SkPath::Polygon({gpuOutset, 4}, true);
                 linePaint.setColor(SK_ColorBLUE);
                 canvas->drawPath(outsetPath, linePaint);
 
-                SkPath insetPath;
-                insetPath.addPoly({gpuInset, 4}, true);
+                SkPath insetPath = SkPath::Polygon({gpuInset, 4}, true);
                 linePaint.setColor(SK_ColorGREEN);
                 canvas->drawPath(insetPath, linePaint);
 
@@ -366,14 +362,12 @@ public:
             }
 
             // Draw the edges of the true quad as a solid line
-            SkPath path;
-            path.addPoly({fCorners, 4}, true);
+            SkPath path = SkPath::Polygon({fCorners, 4}, true);
             linePaint.setColor(SK_ColorBLACK);
             canvas->drawPath(path, linePaint);
         } else {
             // Draw the edges of the true quad as a solid *red* line
-            SkPath path;
-            path.addPoly({fCorners, 4}, true);
+            SkPath path = SkPath::Polygon({fCorners, 4}, true);
             linePaint.setColor(SK_ColorRED);
             linePaint.setPathEffect(nullptr);
             canvas->drawPath(path, linePaint);
@@ -406,8 +400,7 @@ private:
     CoverageMode fCoverageMode;
 
     bool isValid() const {
-        SkPath path;
-        path.addPoly({fCorners, 4}, true);
+        SkPath path = SkPath::Polygon({fCorners, 4}, true);
         return path.isConvex();
     }
 
