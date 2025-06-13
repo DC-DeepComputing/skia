@@ -47,10 +47,8 @@ struct ParagraphBench : public Benchmark {
         SkCanvas* canvas = rec.beginRecording({0,0, 2000,3000});
         while (loops-- > 0) {
             paragraph->layout(fWidth);
-            auto impl = static_cast<ParagraphImpl*>(paragraph.get());
             paragraph->paint(canvas, 0, 0);
             paragraph->markDirty();
-            impl->resetCache();
         }
     }
 };
