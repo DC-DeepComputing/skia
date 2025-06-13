@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "42e01c52_ee0df93c",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 1796,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "Sounds good, done.",
+      "parentUuid": "1e954404_afe62f12",
+      "range": {
+        "startLine": 1796,
+        "startChar": 21,
+        "endLine": 1796,
+        "endChar": 52
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e97e684f_085dd3c8",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-13T13:41:41Z",
       "side": 1,
       "message": "8 bits",
+      "range": {
+        "startLine": 51,
+        "startChar": 35,
+        "endLine": 52,
+        "endChar": 56
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ad4f6db_ac8f6d9a",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "This meant to say how many bits the type needs, changed it to `fits in 6 bits` to be clearer.",
+      "parentUuid": "e97e684f_085dd3c8",
       "range": {
         "startLine": 51,
         "startChar": 35,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d7dbef88_d128dc25",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "83e32928_8b980073",
+      "range": {
+        "startLine": 63,
+        "startChar": 0,
+        "endLine": 63,
+        "endChar": 79
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "77702240_17da43d8",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-06-13T13:41:41Z",
       "side": 1,
       "message": "We should assert that all the attachments sample counts match what we expect so that we can consolidate down to a single sample count value.",
+      "range": {
+        "startLine": 80,
+        "startChar": 26,
+        "endLine": 80,
+        "endChar": 27
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba0000cf_1339aeae",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "This is asserted above with:\n\n```\n    SkASSERT(depthStencil.fFormat \u003d\u003d TextureFormat::kUnsupported ||\n             depthStencil.fSampleCount \u003d\u003d color.fSampleCount);\n```\n\nand\n\n```\n    SkASSERT(color.fSampleCount \u003d\u003d renderPassDesc.fSampleCount ||\n             isMultisampledRenderToSingleSampled);\n```",
+      "parentUuid": "77702240_17da43d8",
       "range": {
         "startLine": 80,
         "startChar": 26,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d91b7af_95cd36fb",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.h",
+        "patchSetId": 19
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "Done, bad advice from the other backends :P",
+      "parentUuid": "997cc6dc_0bdf2119",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 42
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b53efcd6_c8a99ea3",
@@ -129,6 +249,30 @@
       "writtenOn": "2025-06-13T13:41:41Z",
       "side": 1,
       "message": "It might simplify this logic to just always assign `finalRenderPassDesc \u003d originalRenderPassDesc` and then if `compatibleOnly` we modify the attachment load ops (but can remove the extra statements to initialize the attachments and remove the ternary to choose which RPDesc to use).",
+      "range": {
+        "startLine": 433,
+        "startChar": 0,
+        "endLine": 433,
+        "endChar": 44
+      },
+      "revId": "7ac66d8af71e8552c2bf15593e351b2493bdc469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b01136a4_c849cf93",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 433,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T18:44:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b53efcd6_c8a99ea3",
       "range": {
         "startLine": 433,
         "startChar": 0,
