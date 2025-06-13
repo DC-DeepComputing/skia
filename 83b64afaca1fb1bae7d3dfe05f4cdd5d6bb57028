@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b05eec08_1f6396d7",
+        "filename": "src/core/SkPathRaw.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "just use float",
+      "range": {
+        "startLine": 32,
+        "startChar": 4,
+        "endLine": 32,
+        "endChar": 12
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11c0c7c_d91aec6f",
+        "filename": "src/core/SkPathRaw.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "remove and add later if needed?",
+      "range": {
+        "startLine": 58,
+        "startChar": 0,
+        "endLine": 93,
+        "endChar": 6
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "149aa0d1_a54e9570",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "nit: Skia style puts this below the public section in a private: section.\n\nAlso applies to ContourIter",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 45
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be863a7a_e97bfa26",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "nit: two tabs over for the `:` and no `{` on a new line.",
+      "range": {
+        "startLine": 52,
+        "startChar": 8,
+        "endLine": 53,
+        "endChar": 9
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aaab1d30_fc7ac7cd",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "Is this API still compatible with doing a for-each loop, e.g.\n\n    for (auto [pts, w, vrb] : path.iter()) {\n    \n    }",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 38
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "659fa50d_9d59ace1",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T14:04:55Z",
+      "side": 1,
+      "message": "nit: new line between the ctor",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 84,
+        "endChar": 41
+      },
+      "revId": "83b64afaca1fb1bae7d3dfe05f4cdd5d6bb57028",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
