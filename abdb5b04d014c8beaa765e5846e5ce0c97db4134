@@ -20,6 +20,23 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "13bf653a_f489b32f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-06-13T14:11:41Z",
+      "side": 1,
+      "message": "lgtm2",
+      "revId": "abdb5b04d014c8beaa765e5846e5ce0c97db4134",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e4cd4672_9fea10fd",
         "filename": "tests/CodecTest.cpp",
         "patchSetId": 12
