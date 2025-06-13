@@ -442,6 +442,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ea122bb_46fd5048",
+        "filename": "include/gpu/vk/VulkanBackendContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 239,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-13T14:28:25Z",
+      "side": 1,
+      "message": "Had to take the \"called addFeaturesToEnable\" assert out, because the application may give up after querying the features, as happened in a protected-memory test. Warning is still there though.",
+      "parentUuid": "0f45c4b2_f2327636",
+      "range": {
+        "startLine": 239,
+        "startChar": 0,
+        "endLine": 239,
+        "endChar": 2
+      },
+      "revId": "584223d30cc74a27b2779b6f1ef53402d69ca031",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b6466a91_b871aaa0",
