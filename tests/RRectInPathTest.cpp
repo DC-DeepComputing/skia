@@ -28,8 +28,7 @@ static SkRRect path_contains_rrect(skiatest::Reporter* reporter, const SkPath& p
                                    SkPathDirection* dir, unsigned* start) {
     SkRRect out;
     REPORTER_ASSERT(reporter, SkPathPriv::IsRRect(path, &out, dir, start));
-    SkPath recreatedPath;
-    recreatedPath.addRRect(out, *dir, *start);
+    SkPath recreatedPath = SkPath::RRect(out, *dir, *start);
     REPORTER_ASSERT(reporter, path == recreatedPath);
     // Test that rotations/mirrors of the rrect path are still rrect paths and the returned
     // parameters for the transformed paths are correct.
@@ -40,14 +39,12 @@ static SkRRect path_contains_rrect(skiatest::Reporter* reporter, const SkPath& p
         SkMatrix::Scale(-1, -1),
     };
     for (auto& m : kMatrices) {
-        SkPath xformed;
-        path.transform(m, &xformed);
+        SkPath xformed = path.makeTransform(m);
         SkRRect xrr = SkRRect::MakeRect(SkRect::MakeEmpty());
         SkPathDirection xd = SkPathDirection::kCCW;
         unsigned xs = ~0U;
         REPORTER_ASSERT(reporter, SkPathPriv::IsRRect(xformed, &xrr, &xd, &xs));
-        recreatedPath.reset();
-        recreatedPath.addRRect(xrr, xd, xs);
+        recreatedPath = SkPath::RRect(xrr, xd, xs);
         REPORTER_ASSERT(reporter, recreatedPath == xformed);
     }
     return out;
@@ -63,8 +60,7 @@ static SkRRect inner_path_contains_rrect(skiatest::Reporter* reporter, const SkR
         default:
             break;
     }
-    SkPath path;
-    path.addRRect(in, dir, start);
+    SkPath path = SkPath::RRect(in, dir, start);
     SkPathDirection outDir;
     unsigned outStart;
     SkRRect rrect = path_contains_rrect(reporter, path, &outDir, &outStart);
@@ -116,62 +112,65 @@ static void test_undetected_paths(skiatest::Reporter* reporter) {
     // We first get the exact conic weight used by SkPath for a circular arc. This
     // allows our local, hand-crafted, artisanal round rect paths below to exactly match the
     // factory made corporate paths produced by SkPath.
-    SkPath exactPath;
-    exactPath.addCircle(0, 0, 10);
+    SkPath exactPath = SkPath::Circle(0, 0, 10);
     REPORTER_ASSERT(reporter, SkPath::kMove_Verb == SkPathPriv::VerbData(exactPath)[0]);
     REPORTER_ASSERT(reporter, SkPath::kConic_Verb == SkPathPriv::VerbData(exactPath)[1]);
     const SkScalar weight = SkPathPriv::ConicWeightData(exactPath)[0];
 
-    SkPath path;
-    path.moveTo(0, 62.5f);
-    path.lineTo(0, 3.5f);
-    path.conicTo(0, 0, 3.5f, 0, weight);
-    path.lineTo(196.5f, 0);
-    path.conicTo(200, 0, 200, 3.5f, weight);
-    path.lineTo(200, 62.5f);
-    path.conicTo(200, 66, 196.5f, 66, weight);
-    path.lineTo(3.5f, 66);
-    path.conicTo(0, 66, 0, 62.5, weight);
-    path.close();
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 62.5f)
+        .lineTo(0, 3.5f)
+        .conicTo(0, 0, 3.5f, 0, weight)
+        .lineTo(196.5f, 0)
+        .conicTo(200, 0, 200, 3.5f, weight)
+        .lineTo(200, 62.5f)
+        .conicTo(200, 66, 196.5f, 66, weight)
+        .lineTo(3.5f, 66)
+        .conicTo(0, 66, 0, 62.5, weight)
+        .close()
+        .detach();
     force_path_contains_rrect(reporter, path, SkPathDirection::kCW, 6);
 
-    path.reset();
-    path.moveTo(0, 81.5f);
-    path.lineTo(0, 3.5f);
-    path.conicTo(0, 0, 3.5f, 0, weight);
-    path.lineTo(149.5, 0);
-    path.conicTo(153, 0, 153, 3.5f, weight);
-    path.lineTo(153, 81.5f);
-    path.conicTo(153, 85, 149.5f, 85, weight);
-    path.lineTo(3.5f, 85);
-    path.conicTo(0, 85, 0, 81.5f, weight);
-    path.close();
+    path = SkPathBuilder()
+        .moveTo(0, 81.5f)
+        .lineTo(0, 3.5f)
+        .conicTo(0, 0, 3.5f, 0, weight)
+        .lineTo(149.5, 0)
+        .conicTo(153, 0, 153, 3.5f, weight)
+        .lineTo(153, 81.5f)
+        .conicTo(153, 85, 149.5f, 85, weight)
+        .lineTo(3.5f, 85)
+        .conicTo(0, 85, 0, 81.5f, weight)
+        .close()
+        .detach();
     force_path_contains_rrect(reporter, path, SkPathDirection::kCW, 6);
 
-    path.reset();
-    path.moveTo(14, 1189);
-    path.lineTo(14, 21);
-    path.conicTo(14, 14, 21, 14, weight);
-    path.lineTo(1363, 14);
-    path.conicTo(1370, 14, 1370, 21, weight);
-    path.lineTo(1370, 1189);
-    path.conicTo(1370, 1196, 1363, 1196, weight);
-    path.lineTo(21, 1196);
-    path.conicTo(14, 1196, 14, 1189, weight);
-    path.close();
+    path = SkPathBuilder()
+        .moveTo(14, 1189)
+        .lineTo(14, 21)
+        .conicTo(14, 14, 21, 14, weight)
+        .lineTo(1363, 14)
+        .conicTo(1370, 14, 1370, 21, weight)
+        .lineTo(1370, 1189)
+        .conicTo(1370, 1196, 1363, 1196, weight)
+        .lineTo(21, 1196)
+        .conicTo(14, 1196, 14, 1189, weight)
+        .close()
+        .detach();
     force_path_contains_rrect(reporter, path, SkPathDirection::kCW, 6);
 
-    path.reset();
-    path.moveTo(14, 1743);
-    path.lineTo(14, 21);
-    path.conicTo(14, 14, 21, 14, weight);
-    path.lineTo(1363, 14);
-    path.conicTo(1370, 14, 1370, 21, weight);
-    path.lineTo(1370, 1743);
-    path.conicTo(1370, 1750, 1363, 1750, weight);
-    path.lineTo(21, 1750);
-    path.conicTo(14, 1750, 14, 1743, weight);
-    path.close();
+    path = SkPathBuilder()
+        .moveTo(14, 1743)
+        .lineTo(14, 21)
+        .conicTo(14, 14, 21, 14, weight)
+        .lineTo(1363, 14)
+        .conicTo(1370, 14, 1370, 21, weight)
+        .lineTo(1370, 1743)
+        .conicTo(1370, 1750, 1363, 1750, weight)
+        .lineTo(21, 1750)
+        .conicTo(14, 1750, 14, 1743, weight)
+        .close()
+        .detach();
     force_path_contains_rrect(reporter, path, SkPathDirection::kCW, 6);
 }
 

@@ -7,20 +7,20 @@
 #include "src/core/SkStrokerPriv.h"
 
 #include "include/core/SkMatrix.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/private/base/SkAssert.h"
 #include "src/core/SkGeometry.h"
 #include "src/core/SkPointPriv.h"
 
 #include <utility>
 
-static void ButtCapper(SkPath* path, const SkPoint& pivot, const SkVector& normal,
-                       const SkPoint& stop, SkPath*) {
+static void ButtCapper(SkPathBuilder* path, const SkPoint& pivot, const SkVector& normal,
+                       const SkPoint& stop, SkPathBuilder*) {
     path->lineTo(stop.fX, stop.fY);
 }
 
-static void RoundCapper(SkPath* path, const SkPoint& pivot, const SkVector& normal,
-                        const SkPoint& stop, SkPath*) {
+static void RoundCapper(SkPathBuilder* path, const SkPoint& pivot, const SkVector& normal,
+                        const SkPoint& stop, SkPathBuilder*) {
     SkVector parallel;
     SkPointPriv::RotateCW(normal, &parallel);
 
@@ -30,8 +30,8 @@ static void RoundCapper(SkPath* path, const SkPoint& pivot, const SkVector& norm
     path->conicTo(projectedCenter - normal, stop, SK_ScalarRoot2Over2);
 }
 
-static void SquareCapper(SkPath* path, const SkPoint& pivot, const SkVector& normal,
-                         const SkPoint& stop, SkPath* otherPath) {
+static void SquareCapper(SkPathBuilder* path, const SkPoint& pivot, const SkVector& normal,
+                         const SkPoint& stop, SkPathBuilder* otherPath) {
     SkVector parallel;
     SkPointPriv::RotateCW(normal, &parallel);
 
@@ -69,7 +69,7 @@ static AngleType Dot2AngleType(SkScalar dot) {
     }
 }
 
-static void HandleInnerJoin(SkPath* inner, const SkPoint& pivot, const SkVector& after) {
+static void HandleInnerJoin(SkPathBuilder* inner, const SkPoint& pivot, const SkVector& after) {
 #if 1
     /*  In the degenerate case that the stroke radius is larger than our segments
         just connecting the two inner segments may "show through" as a funny
@@ -83,9 +83,10 @@ static void HandleInnerJoin(SkPath* inner, const SkPoint& pivot, const SkVector&
     inner->lineTo(pivot.fX - after.fX, pivot.fY - after.fY);
 }
 
-static void BluntJoiner(SkPath* outer, SkPath* inner, const SkVector& beforeUnitNormal,
-                        const SkPoint& pivot, const SkVector& afterUnitNormal,
-                        SkScalar radius, SkScalar invMiterLimit, bool, bool) {
+static void BluntJoiner(SkPathBuilder* outer, SkPathBuilder* inner,
+                        const SkVector& beforeUnitNormal, const SkPoint& pivot,
+                        const SkVector& afterUnitNormal, SkScalar radius, SkScalar invMiterLimit,
+                        bool, bool) {
     SkVector    after;
     afterUnitNormal.scale(radius, &after);
 
@@ -99,9 +100,10 @@ static void BluntJoiner(SkPath* outer, SkPath* inner, const SkVector& beforeUnit
     HandleInnerJoin(inner, pivot, after);
 }
 
-static void RoundJoiner(SkPath* outer, SkPath* inner, const SkVector& beforeUnitNormal,
-                        const SkPoint& pivot, const SkVector& afterUnitNormal,
-                        SkScalar radius, SkScalar invMiterLimit, bool, bool) {
+static void RoundJoiner(SkPathBuilder* outer, SkPathBuilder* inner,
+                        const SkVector& beforeUnitNormal, const SkPoint& pivot,
+                        const SkVector& afterUnitNormal, SkScalar radius, SkScalar invMiterLimit,
+                        bool, bool) {
     SkScalar    dotProd = SkPoint::DotProduct(beforeUnitNormal, afterUnitNormal);
     AngleType   angleType = Dot2AngleType(dotProd);
 
@@ -136,9 +138,9 @@ static void RoundJoiner(SkPath* outer, SkPath* inner, const SkVector& beforeUnit
 
 #define kOneOverSqrt2   (0.707106781f)
 
-static void MiterJoiner(SkPath* outer, SkPath* inner, const SkVector& beforeUnitNormal,
-                        const SkPoint& pivot, const SkVector& afterUnitNormal,
-                        SkScalar radius, SkScalar invMiterLimit,
+static void MiterJoiner(SkPathBuilder* outer, SkPathBuilder* inner,
+                        const SkVector& beforeUnitNormal, const SkPoint& pivot,
+                        const SkVector& afterUnitNormal, SkScalar radius, SkScalar invMiterLimit,
                         bool prevIsLine, bool currIsLine) {
     // negate the dot since we're using normals instead of tangents
     SkScalar    dotProd = SkPoint::DotProduct(beforeUnitNormal, afterUnitNormal);

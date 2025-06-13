@@ -50,7 +50,7 @@ DEF_SIMPLE_GM(getpostextpath, canvas, 480, 780) {
     canvas->drawSimpleText(text, len, SkTextEncoding::kUTF8, 0, 0, font, paint);
     ToolUtils::get_text_path(font, text, len, SkTextEncoding::kUTF8, &path, nullptr);
     strokePath(canvas, path);
-    path.reset();
+    path = SkPath();
 
     SkAutoToGlyphs atg(font, text, len, SkTextEncoding::kUTF8);
     const size_t count = atg.count();

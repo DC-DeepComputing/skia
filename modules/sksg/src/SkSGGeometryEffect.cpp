@@ -11,6 +11,7 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
@@ -96,8 +97,9 @@ SkPath GeometryTransform::onRevalidateEffect(const sk_sp<GeometryNode>& child, c
     fTransform->revalidate(nullptr, SkMatrix::I());
     const auto m = TransformPriv::As<SkMatrix>(fTransform);
 
-    SkPath path = child->asPath();
-    path.transform(m);
+    SkPath path = SkPathBuilder(child->asPath())
+        .transform(m)
+        .detach();
 
     return path;
 }

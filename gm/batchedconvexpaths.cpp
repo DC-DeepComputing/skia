@@ -9,7 +9,7 @@
 
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/gpu/ganesh/GrContextOptions.h"
 
 namespace skiagm {
@@ -30,7 +30,7 @@ private:
             SkAutoCanvasRestore acr(canvas, true);
 
             int numPoints = (i + 3) * 3;
-            SkPath path;
+            SkPathBuilder path;
             path.moveTo(1, 0);
             for (float j = 1; j < numPoints; j += 3) {
                 constexpr float k2PI = SK_ScalarPI * 2;
@@ -48,7 +48,7 @@ private:
             paint.setAlphaf(0.3f);
             paint.setAntiAlias(true);
 
-            canvas->drawPath(path, paint);
+            canvas->drawPath(path.detach(), paint);
         }
         return DrawResult::kOk;
     }

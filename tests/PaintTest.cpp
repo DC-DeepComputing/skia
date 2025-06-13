@@ -14,6 +14,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -71,14 +72,16 @@ DEF_TEST(Paint_regression_cubic, reporter) {
     SkPath path, stroke;
     SkPaint paint;
 
-    path.moveTo(460.2881309415525f,
-                303.250847066498f);
-    path.cubicTo(463.36378422175284f,
+    path = SkPathBuilder()
+        .moveTo(460.2881309415525f,
+                303.250847066498f)
+        .cubicTo(463.36378422175284f,
                  302.1169735073363f,
                  456.32239330810046f,
                  304.720354932878f,
                  453.15255460013304f,
-                 305.788586869862f);
+                 305.788586869862f)
+        .detach();
 
     SkRect fillR, strokeR;
     fillR = path.getBounds();

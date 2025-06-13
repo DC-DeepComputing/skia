@@ -8,7 +8,9 @@
 #include "src/gpu/ganesh/GrStyle.h"
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkSpan.h"
+
 #include "src/utils/SkDashPathPriv.h"
 
 #include <cstring>
@@ -157,7 +159,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
     } else if (!fPathEffect->filterPath(dst, src, strokeRec, nullptr)) {
         return false;
     }
-    dst->setIsVolatile(true);
+    *dst = dst->makeIsVolatile(true);
     return true;
 }
 
@@ -189,7 +191,7 @@ bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPa
         if (!strokeRec.applyToPath(dst, *pathForStrokeRec)) {
             return false;
         }
-        dst->setIsVolatile(true);
+        *dst = SkPathBuilder(*dst).setIsVolatile(true).detach();
         *style = SkStrokeRec::kFill_InitStyle;
     } else if (!fPathEffect) {
         // Nothing to do for path effect or stroke, fail.

@@ -5,8 +5,9 @@ REG_FIDDLE(Conic_Weight_a, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
     const char* verbNames[] = { "move", "line", "quad", "conic", "cubic", "close", "done" };
     const int pointCount[]  = {     1 ,     2 ,     3 ,      3 ,      4 ,      1 ,     0  };
-    SkPath path;
-    path.conicTo(20, 30, 50, 60, 1);
+    SkPath path = SkPathBuilder()
+        .conicTo(20, 30, 50, 60, 1)
+        .detach();
     SkPath::Iter iter(path, false);
     SkPath::Verb verb;
     do {

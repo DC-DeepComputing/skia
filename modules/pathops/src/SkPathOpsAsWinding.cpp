@@ -400,8 +400,7 @@ private:
 };
 
 static bool set_result_path(SkPath* result, const SkPath& path, SkPathFillType fillType) {
-    *result = path;
-    result->setFillType(fillType);
+    *result = SkPathBuilder(path).setFillType(fillType).detach();
     return true;
 }
 

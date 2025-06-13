@@ -10,6 +10,7 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -18,7 +19,7 @@
 
 class CircularClipsGM : public skiagm::GM {
     SkScalar fX1, fX2, fY, fR;
-    SkPath   fCircle1, fCircle2;
+    SkPathBuilder fCircle1, fCircle2;
 
 protected:
     void onOnceBeforeDraw() override {
@@ -27,8 +28,8 @@ protected:
         fY = 50;
         fR = 40;
 
-        fCircle1 = SkPath::Circle(fX1, fY, fR, SkPathDirection::kCW);
-        fCircle2 = SkPath::Circle(fX2, fY, fR, SkPathDirection::kCW);
+        fCircle1.addCircle(fX1, fY, fR, SkPathDirection::kCW);
+        fCircle2.addCircle(fX2, fY, fR, SkPathDirection::kCW);
     }
 
 
@@ -53,8 +54,8 @@ protected:
         canvas->save();
         canvas->scale(10, 10);
         canvas->translate(-((fX1 + fX2)/2 - fR), -(fY - 2*fR/3));
-        canvas->clipPath(fCircle1, true);
-        canvas->clipPath(fCircle2, true);
+        canvas->clipPath(fCircle1.snapshot(), true);
+        canvas->clipPath(fCircle2.snapshot(), true);
 
         canvas->drawRect(rect, fillPaint);
 
@@ -72,8 +73,8 @@ protected:
             for (size_t op = 0; op < std::size(ops); op++) {
                 canvas->save();
 
-                canvas->clipPath(fCircle1);
-                canvas->clipPath(fCircle2, ops[op]);
+                canvas->clipPath(fCircle1.snapshot());
+                canvas->clipPath(fCircle2.snapshot(), ops[op]);
 
                 canvas->drawRect(rect, fillPaint);
 

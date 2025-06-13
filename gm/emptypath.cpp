@@ -34,8 +34,7 @@ class EmptyPathGM : public GM {
                     const SkRect& clip,
                     SkPaint::Style style,
                     SkPathFillType fill) {
-        SkPath path;
-        path.setFillType(fill);
+        SkPath path = SkPathBuilder().setFillType(fill).detach();
         SkPaint paint;
         paint.setColor(color);
         paint.setStyle(style);
