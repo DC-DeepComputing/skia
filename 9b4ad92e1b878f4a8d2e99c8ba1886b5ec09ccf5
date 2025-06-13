@@ -16,6 +16,52 @@
       "message": "Fix comments PTAL",
       "revId": "9b4ad92e1b878f4a8d2e99c8ba1886b5ec09ccf5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d25ed6b_e380144b",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T13:20:14Z",
+      "side": 1,
+      "message": "There is a shortcut helper for this: `fImageInfo.makeWH(...)`",
+      "range": {
+        "startLine": 326,
+        "startChar": 45,
+        "endLine": 330,
+        "endChar": 90
+      },
+      "revId": "9b4ad92e1b878f4a8d2e99c8ba1886b5ec09ccf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a745b230_213326b2",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 350,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-13T13:20:14Z",
+      "side": 1,
+      "message": "I think we need to add a call to `drawnImage-\u003enotifyInUse(this)` so that the image\u0027s draw tasks are also added to the current DrawContext\u0027s task list. This will ensure the lifetime of the scratch texture lives long enough to be sampled here.",
+      "range": {
+        "startLine": 350,
+        "startChar": 0,
+        "endLine": 350,
+        "endChar": 68
+      },
+      "revId": "9b4ad92e1b878f4a8d2e99c8ba1886b5ec09ccf5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
