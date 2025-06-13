@@ -107,6 +107,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc07f38d_2e8209df",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-13T15:25:22Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "426a38d4_c8aeee3d",
+      "range": {
+        "startLine": 30,
+        "startChar": 4,
+        "endLine": 30,
+        "endChar": 8
+      },
+      "revId": "bc14f219d875b3ce33809809a5bac2bf9ddebb89",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ca1d15d_3ce1afc8",
