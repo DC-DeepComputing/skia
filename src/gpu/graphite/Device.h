@@ -15,6 +15,7 @@
 #include "src/base/SkEnumBitMask.h"
 #include "src/core/SkDevice.h"
 #include "src/gpu/graphite/ClipStack.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/geom/Rect.h"
@@ -31,7 +32,6 @@ class PathAtlas;
 class BoundsManager;
 class Clip;
 class Context;
-class DrawContext;
 class Geometry;
 class Image;
 enum class LoadOp : uint8_t;
@@ -199,6 +199,8 @@ public:
                           const SkSamplingOptions&, const SkPaint&) override;
 
     bool drawBlurredRRect(const SkRRect&, const SkPaint&, float deviceSigma) override;
+
+    sk_sp<DrawContext> getDrawContext() { return fDC; }
 
 private:
     class IntersectionTreeSet;

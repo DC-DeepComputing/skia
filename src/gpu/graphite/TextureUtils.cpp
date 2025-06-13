@@ -38,6 +38,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -349,6 +350,7 @@ size_t ComputeSize(SkISize dimensions, const TextureInfo& info) {
 }
 
 sk_sp<Image> CopyAsDraw(Recorder* recorder,
+                        sk_sp<DrawContext> drawContext,
                         const SkImage* image,
                         const SkIRect& subset,
                         const SkColorInfo& dstColorInfo,
@@ -382,6 +384,71 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
     // And the image draw into `surface` is flushed when it goes out of scope
     return surface->asImage();
 }
+
+// sk_sp<Image> CopyAsDraw(Recorder* recorder,
+//                         sk_sp<DrawContext> drawContext,
+//                         const SkImage* image,
+//                         const SkIRect& subset,
+//                         const SkColorInfo& dstColorInfo,
+//                         Budgeted budgeted,
+//                         Mipmapped mipmapped,
+//                         SkBackingFit backingFit,
+//                         std::string_view label) {
+//     SkColorType ct = recorder->priv().caps()->getRenderableColorType(dstColorInfo.colorType());
+//     if (ct == kUnknown_SkColorType) {
+//         return nullptr;
+//     }
+//     SkImageInfo dstInfo = SkImageInfo::Make(subset.size(),
+//                                             dstColorInfo.makeColorType(ct)
+//                                                         .makeAlphaType(kPremul_SkAlphaType));
+
+//     // Create a standard, budgeted surface. This is correct for BOTH the nested and standalone
+//     // paths because in both cases, the underlying texture is returned inside an Image,
+//     // extending its lifetime beyond this local scope.
+//     auto surface = skgpu::graphite::Surface::Make(recorder,
+//                                                   dstInfo,
+//                                                   std::move(label),
+//                                                   budgeted,
+//                                                   mipmapped,
+//                                                   backingFit);
+//     if (!surface) {
+//         return nullptr;
+//     }
+
+//     // This draw operation is common to both paths.
+//     SkPaint paint;
+//     paint.setBlendMode(SkBlendMode::kSrc);
+//     surface->getCanvas()->drawImage(image, -subset.left(), -subset.top(),
+//                                     SkFilterMode::kNearest, &paint);
+
+//     if (drawContext) {
+//         // NESTED PATH: We are inside another flush, so we must manually snap the task.
+//         sk_sp<TextureProxy> dstProxy = sk_ref_sp(surface->backingTextureProxy());
+//         if (!dstProxy) {
+//             return nullptr;
+//         }
+
+//         sk_sp<Device> dstDevice = surface->fDevice;
+//         sk_sp<DrawContext> dstDrawContext = dstDevice->getDrawContext();
+
+//         sk_sp<Task> copyTask = dstDrawContext->snapDrawTask(recorder);
+//         if (!copyTask) {
+//             SKGPU_LOG_W("CopyAsDraw failed to snap task");
+//             return nullptr;
+//         }
+
+//         drawContext->recordDependency(std::move(copyTask));
+
+//         const Caps* caps = recorder->priv().caps();
+//         Swizzle swizzle = caps->getReadSwizzle(dstColorInfo.colorType(), dstProxy->textureInfo());
+//         return sk_sp<Image>(new Image({std::move(dstProxy), swizzle}, dstColorInfo));
+
+//     } else {
+//         // STANDALONE PATH: No recursion danger. Simply get the image.
+//         // This is safe because we used `Surface::Make`, not `Surface::MakeScratch`.
+//         return surface->asImage();
+//     }
+// }
 
 sk_sp<SkImage> RescaleImage(Recorder* recorder,
                             const SkImage* srcImage,
@@ -514,6 +581,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 }
 
 bool GenerateMipmaps(Recorder* recorder,
+                     sk_sp<DrawContext> drawContext,
                      sk_sp<TextureProxy> texture,
                      const SkColorInfo& colorInfo) {
     constexpr SkSamplingOptions kSamplingOptions = SkSamplingOptions(SkFilterMode::kLinear);
@@ -576,7 +644,12 @@ bool GenerateMipmaps(Recorder* recorder,
         if (!copyTask) {
             return false;
         }
-        recorder->priv().add(std::move(copyTask));
+
+        if (drawContext) {
+            drawContext->recordDependency(std::move(copyTask));
+        } else {
+            recorder->priv().add(std::move(copyTask));
+        }
 
         scratchImg = scratchSurface->asImage();
         srcSize = dstSize;

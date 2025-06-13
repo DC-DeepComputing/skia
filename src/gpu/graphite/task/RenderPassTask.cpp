@@ -170,7 +170,9 @@ Task::Status RenderPassTask::addCommands(Context* context,
 
     // Instantiate the target
     SkASSERT(fTarget && fTarget->isInstantiated());
-    SkASSERT(!fDstCopy || fDstCopy->isInstantiated());
+    //SkASSERT(!fDstCopy || fDstCopy->isInstantiated());
+    SkASSERT(!fDstCopy);
+    SkASSERT(fDstCopy->isInstantiated());
 
     // Assuming one draw pass per renderpasstask for now
     SkASSERT(fDrawPasses.size() == 1);

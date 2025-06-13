@@ -13,6 +13,7 @@
 
 #include "include/gpu/GpuTypes.h"
 #include "src/gpu/SkBackingFit.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 #include "src/gpu/graphite/TextureProxyView.h"
 
@@ -107,6 +108,11 @@ private:
     sk_sp<Image>  fImageView; // the image object returned by asImage()
 
     friend void Flush(SkSurface*);
+
+    // Needs to be to able to get device from the surface
+    friend sk_sp<Image> CopyAsDraw(Recorder*, sk_sp<DrawContext>, const SkImage*,
+                                   const SkIRect&, const SkColorInfo&, Budgeted,
+                                   Mipmapped, SkBackingFit, std::string_view);
 };
 
 // TODO: The long-term for the public API around surfaces and flushing/submitting will likely

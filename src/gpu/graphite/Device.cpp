@@ -581,7 +581,7 @@ sk_sp<Image> Device::makeImageCopy(const SkIRect& subset,
         label += "_DeviceCopy";
     }
 
-    return Image::Copy(fRecorder, srcView, colorInfo, subset, budgeted, mipmapped, backingFit,
+    return Image::Copy(fRecorder, fDC, srcView, colorInfo, subset, budgeted, mipmapped, backingFit,
                        label);
 }
 
@@ -1821,7 +1821,7 @@ void Device::flushPendingWorkToRecorder() {
         // This could be wasteful if we draw to a target multiple times before reading from it with
         // downscaling.
         if (fDC->target()->mipmapped() == Mipmapped::kYes) {
-            if (!GenerateMipmaps(fRecorder, fDC->refTarget(), fDC->colorInfo())) {
+            if (!GenerateMipmaps(fRecorder, fDC, fDC->refTarget(), fDC->colorInfo())) {
                 SKGPU_LOG_W("Device::flushPendingWorkToRecorder: Failed to generate mipmaps");
             }
         }

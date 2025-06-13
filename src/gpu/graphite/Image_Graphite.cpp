@@ -17,6 +17,7 @@
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -54,6 +55,7 @@ sk_sp<Image> Image::WrapDevice(sk_sp<Device> device) {
 }
 
 sk_sp<Image> Image::Copy(Recorder* recorder,
+                         sk_sp<DrawContext> drawContext,
                          const TextureProxyView& srcView,
                          const SkColorInfo& srcColorInfo,
                          const SkIRect& subset,
@@ -69,17 +71,18 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
     SkASSERT(srcView.proxy()->isFullyLazy() ||
              SkIRect::MakeSize(srcView.proxy()->dimensions()).contains(subset));
 
+    if (drawContext) { budgeted = Budgeted::kYes; }
     if (!recorder->priv().caps()->supportsReadPixels(srcView.proxy()->textureInfo())) {
         if (!recorder->priv().caps()->isTexturable(srcView.proxy()->textureInfo())) {
             // The texture is not blittable nor texturable so copying cannot be done.
             return nullptr;
         }
+        printf("whatevs\n");
         // Copy-as-draw
         sk_sp<Image> srcImage(new Image(srcView, srcColorInfo));
-        return CopyAsDraw(recorder, srcImage.get(), subset, srcColorInfo,
+        return CopyAsDraw(recorder, drawContext, srcImage.get(), subset, srcColorInfo,
                           budgeted, mipmapped, backingFit, std::move(label));
     }
-
 
     skgpu::graphite::TextureInfo textureInfo =
             recorder->priv().caps()->getTextureInfoForSampledCopy(srcView.proxy()->textureInfo(),
@@ -101,13 +104,21 @@ sk_sp<Image> Image::Copy(Recorder* recorder,
         return nullptr;
     }
 
-    recorder->priv().add(std::move(copyTask));
+    if (drawContext) {
+        drawContext->recordDependency(std::move(copyTask));
+    } else {
+        recorder->priv().add(std::move(copyTask));
+    }
 
     if (mipmapped == Mipmapped::kYes) {
-        if (!GenerateMipmaps(recorder, dst, srcColorInfo)) {
+        if (!GenerateMipmaps(recorder, drawContext, dst, srcColorInfo)) {
             SKGPU_LOG_W("Image::Copy failed to generate mipmaps");
             return nullptr;
         }
+    }
+
+    if (drawContext) {
+        drawContext->snapDrawTask(recorder);
     }
 
     return sk_sp<Image>(new Image({std::move(dst), srcView.swizzle()}, srcColorInfo));
@@ -132,7 +143,8 @@ sk_sp<Image> Image::copyImage(Recorder* recorder,
                               SkBackingFit backingFit,
                               std::string_view label) const {
     this->notifyInUse(recorder, /*drawContext=*/nullptr);
-    return Image::Copy(recorder, fTextureProxyView, this->imageInfo().colorInfo(),
+    return Image::Copy(recorder,
+                       /*drawContext=*/nullptr, fTextureProxyView, this->imageInfo().colorInfo(),
                        subset, budgeted, mipmapped, backingFit, std::move(label));
 }
 
