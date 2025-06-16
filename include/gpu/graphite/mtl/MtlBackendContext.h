@@ -12,6 +12,8 @@
 #include "include/private/base/SkAPI.h"
 
 #import <CoreFoundation/CoreFoundation.h>
+#include <memory>
+#include "include/gpu/graphite/Context.h"
 
 namespace skgpu::graphite {
 

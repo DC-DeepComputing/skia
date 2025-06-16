@@ -100,6 +100,7 @@ public:
 
     Type type() const override { return SkRecorder::Type::kGraphite; }
     skcpu::Recorder* cpuRecorder() override;
+    SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) override;
 
     std::unique_ptr<Recording> snap();
 
