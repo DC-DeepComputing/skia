@@ -36,6 +36,7 @@
 #include "src/core/SkDevice.h"
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkSpecialImage.h"
+#include "src/core/SkSwizzlePriv.h"
 
 #include <algorithm>
 #include <array>
@@ -148,9 +149,106 @@ private:
     const int fWindow;
 };
 
+// Implement a scanline processor for a true 1D Gaussian kernel.
+class GaussianPass final : public Pass {
+public:
+    static constexpr float kMaxSigma = 2.f;
+
+    static PassMaker* MakeMaker(float sigma, SkArenaAlloc* alloc) {
+        if (sigma >= kMaxSigma) { return nullptr; }
+
+        class Maker : public PassMaker {
+        public:
+            explicit Maker(float sigma)
+                    : PassMaker{2 * SkBlurEngine::SigmaToRadius(sigma) + 1}
+                    , fSigma(sigma) {}
+            Pass* makePass(void* buffer, SkArenaAlloc* alloc) const override {
+                return GaussianPass::Make(fSigma, buffer, alloc);
+            }
+
+            size_t bufferSizeBytes() const override {
+                // Data is skvx::float4[window] + float[window]
+                return this->window() * sizeof(float) * 5;
+            }
+        private:
+            float fSigma;
+        };
+
+        return alloc->make<Maker>(sigma);
+    }
+
+    static GaussianPass* Make(float sigma, void* buffers, SkArenaAlloc* alloc) {
+        int radius = SkBlurEngine::SigmaToRadius(sigma);
+        int kernelWidth = 2*radius + 1;
+
+        skvx::float4* srcBuffer = static_cast<skvx::float4*>(buffers);
+
+        float* kernelValues = static_cast<float*>(buffers) + kernelWidth*4; // skip over srcBuffer
+        SkShaderBlurAlgorithm::Compute1DBlurKernel(sigma, radius, {kernelValues, kernelWidth});
+
+        return alloc->make<GaussianPass>(radius, kernelValues, srcBuffer);
+    }
+
+    GaussianPass(int radius, float* kernel, skvx::float4* srcBuffer)
+            : Pass(radius), fWindow(2*radius + 1), fKernel(kernel), fSrcBuffer(srcBuffer) {}
+
+private:
+    void startBlur() override {
+        // Do nothing
+    }
+
+    void blurSegment(int n, const uint32_t* src, int srcStride, uint32_t* dst, int dstStride) override {
+        if (!dst) {
+            // Nothing to be done for tracking
+            return;
+        }
+        if (!src) {
+            // Everything from "src" would be 0, so the convolution is also 0.
+            while (n --> 0) {
+                *dst = 0;
+                dst += dstStride;
+            }
+            return;
+        }
+
+        // If we have both src and dst, the controlling Pass logic has assured that 'src' is offset
+        // relative to 'dst' by -radius and that src has at least +radius more elements after 'n'.
+        // This means we can load the initial src window directly starting at 'src'.
+        for (int i = 0; i < fWindow - 1; ++i) {
+            fSrcBuffer[i] = Sk4f_fromL32(*src);
+            src += srcStride;
+        }
+
+        auto convolve = [this](int srcBase) {
+            skvx::float4 sum = 0.f;
+            for (int i = 0; i < fWindow; ++i) {
+                int s = (i + srcBase) % fWindow;
+                sum += fSrcBuffer[s] * fKernel[i];
+            }
+            return Sk4f_toL32(sum);
+        };
+
+        int base = 0;
+        while(n --> 0) {
+            // Load in next src pixel into the ring buffer
+            fSrcBuffer[(base + fWindow - 1) % fWindow] = Sk4f_fromL32(*src);
+            *dst = convolve(base);
+            // Slide window to next pixel
+            dst += dstStride;
+            src += srcStride;
+            base = (base + 1) % fWindow;
+//            SkDebugf("%d\n", n);
+        }
+    }
+
+    const int fWindow;
+    float* fKernel;
+    skvx::float4* fSrcBuffer;
+};
+
 // Implement a scanline processor that uses a three-box filter to approximate a Gaussian blur.
 // The GaussPass is limit to processing sigmas < 135.
-class GaussPass final : public Pass {
+class ThreeBoxApproxPass final : public Pass {
 public:
     // NB 136 is the largest sigma that will not cause a buffer full of 255 mask values to overflow
     // using the Gauss filter. It also limits the size of buffers used hold intermediate values.
@@ -175,7 +273,7 @@ public:
         public:
             explicit Maker(int window) : PassMaker{window} {}
             Pass* makePass(void* buffer, SkArenaAlloc* alloc) const override {
-                return GaussPass::Make(this->window(), buffer, alloc);
+                return ThreeBoxApproxPass::Make(this->window(), buffer, alloc);
             }
 
             size_t bufferSizeBytes() const override {
@@ -196,7 +294,7 @@ public:
         return alloc->make<Maker>(window);
     }
 
-    static GaussPass* Make(int window, void* buffers, SkArenaAlloc* alloc) {
+    static ThreeBoxApproxPass* Make(int window, void* buffers, SkArenaAlloc* alloc) {
         // We don't need to store the trailing edge pixel in the buffer;
         int passSize = window - 1;
         skvx::Vec<4, uint32_t>* buffer0 = static_cast<skvx::Vec<4, uint32_t>*>(buffers);
@@ -256,15 +354,16 @@ public:
         int window2 = window * window;
         int window3 = window2 * window;
         int divisor = (window & 1) == 1 ? window3 : window3 + window2;
-        return alloc->make<GaussPass>(buffer0, buffer1, buffer2, buffersEnd, border, divisor);
+        return alloc->make<ThreeBoxApproxPass>(buffer0, buffer1, buffer2, buffersEnd,
+                                               border, divisor);
     }
 
-    GaussPass(skvx::Vec<4, uint32_t>* buffer0,
-              skvx::Vec<4, uint32_t>* buffer1,
-              skvx::Vec<4, uint32_t>* buffer2,
-              skvx::Vec<4, uint32_t>* buffersEnd,
-              int border,
-              int divisor)
+    ThreeBoxApproxPass(skvx::Vec<4, uint32_t>* buffer0,
+                       skvx::Vec<4, uint32_t>* buffer1,
+                       skvx::Vec<4, uint32_t>* buffer2,
+                       skvx::Vec<4, uint32_t>* buffersEnd,
+                       int border,
+                       int divisor)
         : Pass{border}
         , fBuffer0{buffer0}
         , fBuffer1{buffer1}
@@ -758,7 +857,10 @@ public:
         SkSTArenaAlloc<1024> alloc;
         auto makeMaker = [&](float sigma) -> PassMaker* {
             SkASSERT(0 <= sigma && sigma <= 2183); // should be guaranteed after map_sigma
-            if (PassMaker* maker = GaussPass::MakeMaker(sigma, &alloc)) {
+            if (PassMaker* maker = GaussianPass::MakeMaker(sigma, &alloc)) {
+                return maker;
+            }
+            if (PassMaker* maker = ThreeBoxApproxPass::MakeMaker(sigma, &alloc)) {
                 return maker;
             }
             if (PassMaker* maker = TentPass::MakeMaker(sigma, &alloc)) {
@@ -879,11 +981,11 @@ public:
 class RasterBlurEngine : public SkBlurEngine {
 public:
     const Algorithm* findAlgorithm(SkSize sigma,  SkColorType colorType) const override {
-        static constexpr float kBoxBlurMinSigma = 2.f;
+        static constexpr float kBoxBlurMinSigma = 0.f;
 
         // If the sigma is larger than kBoxBlurMinSigma, we should assume that we won't encounter
         // an identity window assertion later on.
-        SkASSERT(SkBlurEngine::BoxBlurWindow(kBoxBlurMinSigma) > 1);
+        //SkASSERT(SkBlurEngine::BoxBlurWindow(kBoxBlurMinSigma) > 1);
 
         // Using the shader-based blur for small blur sigmas only happens if both axes require a
         // small blur. It's assumed that any inaccuracy along one axis is hidden by the large enough
