@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9adfbdd3_aa046969",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T18:21:35Z",
+      "side": 1,
+      "message": "Drive-by, without changing logic here, switching to the kDst primitive blend mode in the draw-shadow code won\u0027t help collapse the pipeline as much as we could. We were seeing a hard-coded kModulate before because it\u0027s not a Porter-duff coefficient blend. kDst is, so we\u0027d end up with a fairly general purpose pipeline being compiled.\n\nHowever, what would be ideal is that if we see that it\u0027s kDst and `fSkipColorXform` is true, we treat it as a fixed kDst and skip even calling `this-\u003eaddPaintColorToKey()` because the blend mode would erase anything that branch computed.",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "3dc10135a1156d8e0621c5f7adeb829775e07cf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "436b507f_0c38de01",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T18:21:35Z",
+      "side": 1,
+      "message": "Drive-by, but I think we should restrict the adding of `KeyGenFlags::kEnableIdentityColorSpaceXform` to this specific call when `fSkipColorXform` is false so that it only influences the primitive color transform and not other aspects of the pipeline.",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 93
+      },
+      "revId": "3dc10135a1156d8e0621c5f7adeb829775e07cf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
