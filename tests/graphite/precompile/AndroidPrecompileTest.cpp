@@ -246,6 +246,18 @@ const PrecompileSettings kPrecompileCases[] = {
            kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,
            kRGBA_1_D_SRGB },
 
+//--------------------------------------------------
+
+// 50% (1/2) handles 60
+/* 51 */ { {}, // ignored
+           DrawTypeFlags::kDropShadows,
+           kRGBA_1_D_SRGB },
+
+// 50% (2/4) handles 82 85
+/* 52 */ { {}, // ignored
+           DrawTypeFlags::kDropShadows,
+           kRGBA_4_DS },
+
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 238 block ----------------
 
@@ -644,9 +656,6 @@ static const PipelineLabel kCases[] = {
 };
 
 bool skip(const char* str) {
-    if (strstr(str, "AnalyticBlurRenderStep")) { // currently internal only
-        return true;
-    }
 #if !defined(SK_VULKAN)
     if (strstr(str, "HardwareImage(3:")) {
         return true;

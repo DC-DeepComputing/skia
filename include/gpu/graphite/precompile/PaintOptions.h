@@ -160,6 +160,7 @@ private:
     }
 
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders);
+    void setBlenderMode(SkBlendMode bm) { fBlenderMode = bm; }
 
     int numShaderCombinations() const;
     int numColorFilterCombinations() const;
@@ -200,6 +201,7 @@ private:
     skia_private::TArray<sk_sp<PrecompileImageFilter>> fImageFilterOptions;
     skia_private::TArray<sk_sp<PrecompileMaskFilter>> fMaskFilterOptions;
 
+    SkBlendMode fBlenderMode = SkBlendMode::kSrcOver;
     bool fDither = false;
     bool fPaintColorIsOpaque = true;
 };
