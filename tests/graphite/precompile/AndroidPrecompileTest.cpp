@@ -200,7 +200,7 @@ const PrecompileSettings kPrecompileCases[] = {
            DrawTypeFlags::kAnalyticRRect,
            kRGBA_1_D_SRGB },
 
-// 59% (13/22) handles 75 76 80 81 83 84 (94 95 96 97 98 99 100)
+// 59% (13/22) handles 75 76 80 81 83 84 (96 97 98 99 100 101 102)
 /* 42 */ { SolidSrcover(), DrawTypeFlags::kNonSimpleShape, kRGBA_4_DS },
 
 // AnalyticClip block - all the PrecompileOptions here are just clones of earlier ones
@@ -221,10 +221,17 @@ const PrecompileSettings kPrecompileCases[] = {
            kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,
            kRGBA_1_D_SRGB },
 
-// 50% (1/2) handles 58
-/* 46 */ { SolidSrcSrcover(),
+// 100% (1/1) handles 95
+/* 46 */ { TransparentPaintImagePremulHWOnlySrcover(),
            DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
            kRGBA_1_D },
+
+// 50% (2/4) handles 58 94
+/* 47 */ { SolidSrcSrcover(),
+           kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,
+           kRGBA_1_D },
+
+// renumber from here!
 
 // 50% (2/4) handles 89 92
 /* 47 */ { SolidSrcSrcover(),
@@ -606,26 +613,34 @@ static const PipelineLabel kCases[] = {
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
 
+/*  94 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "SolidColor Src AnalyticClip" },
+
+/*  95 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver AnalyticClip" },
+
                 // Synthetic placeholders for non-convex draw helpers
-/*  94 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
-                "MiddleOutFanRenderStep[Winding] + "
-                "(empty)" },
-/*  95 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
-                "MiddleOutFanRenderStep[Winding] + "
-                "(empty)" },
 /*  96 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
-                "TessellateCurvesRenderStep[Winding] + "
+                "MiddleOutFanRenderStep[Winding] + "
                 "(empty)" },
 /*  97 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
-                "TessellateCurvesRenderStep[Winding] + "
+                "MiddleOutFanRenderStep[Winding] + "
                 "(empty)" },
 /*  98 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
-                "TessellateWedgesRenderStep[Winding] + "
+                "TessellateCurvesRenderStep[Winding] + "
                 "(empty)" },
 /*  99 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "TessellateCurvesRenderStep[Winding] + "
+                "(empty)" },
+/* 100 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "TessellateWedgesRenderStep[Winding] + "
                 "(empty)" },
-/* 100 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/* 101 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+                "TessellateWedgesRenderStep[Winding] + "
+                "(empty)" },
+/* 102 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "TessellateWedgesRenderStep[EvenOdd] + "
                 "(empty)" },
 };
