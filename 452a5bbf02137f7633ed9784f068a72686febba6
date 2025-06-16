@@ -16,6 +16,24 @@
       "message": "Per our discussion today, I\u0027m fairly confident you\u0027d never need something like Metadata in the future. Especially with dynamic rendering, such a multi-pass view is never needed (FYI, render pass objects are marked deprecated, new Vulkan features won\u0027t necessarily work with them)",
       "revId": "452a5bbf02137f7633ed9784f068a72686febba6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff7cabc2_67334a6c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "I agree and am therefore fine to simplify this! Thank you, Shahbaz!",
+      "parentUuid": "688100c1_55dcbf33",
+      "revId": "452a5bbf02137f7633ed9784f068a72686febba6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

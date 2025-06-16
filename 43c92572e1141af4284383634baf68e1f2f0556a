@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ee56482_0e95d60f",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "Unless I\u0027m misinterpreting, it looks like we call this for every render pass description (`VulkanRenderPass::GetRenderPassKey()`), so that would include descriptions that have a color attachment with a sample count of 1 (and lead to failing the second assertion). \n\nEven if so, I think explicitly defaulting to return false in all cases until implicit loading is actually available is more clear. I\u0027d restructure this method to instead read:\n\n```\n// TODO: This is currently not possible, but will be with an upcoming change adding support for\n// VK_EXT_multisampled_render_to_single_sampled. For now, simply return false.\nreturn false;\n```\n(you could optionally have the assertions included but commented out).",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 92
+      },
+      "revId": "43c92572e1141af4284383634baf68e1f2f0556a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d7bf28a_a57f7752",
+        "filename": "src/gpu/graphite/vk/VulkanGraphiteUtils.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "Maybe add brief comment doc above each as to why these are different (loading MSAA is done implicitly when VK_EXT_multisampled_render_to_single_sampled can be utilized, but otherwise must be handled manually via subpasses)",
+      "range": {
+        "startLine": 80,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 80
+      },
+      "revId": "43c92572e1141af4284383634baf68e1f2f0556a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3a51e1d3_0be422cf",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 214,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "nit: `See`",
+      "range": {
+        "startLine": 214,
+        "startChar": 13,
+        "endLine": 214,
+        "endChar": 14
+      },
+      "revId": "43c92572e1141af4284383634baf68e1f2f0556a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82a9cc61_154cfa38",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "nit: would this all fit on one line now?",
+      "range": {
+        "startLine": 232,
+        "startChar": 0,
+        "endLine": 233,
+        "endChar": 54
+      },
+      "revId": "43c92572e1141af4284383634baf68e1f2f0556a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49ddf6f6_c450a2de",
+        "filename": "src/gpu/graphite/vk/VulkanRenderPass.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-16T18:43:09Z",
+      "side": 1,
+      "message": "nit: can this also be one line?",
+      "range": {
+        "startLine": 251,
+        "startChar": 0,
+        "endLine": 253,
+        "endChar": 58
+      },
+      "revId": "43c92572e1141af4284383634baf68e1f2f0556a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
