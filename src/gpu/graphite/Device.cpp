@@ -1607,6 +1607,8 @@ std::pair<const Renderer*, PathAtlas*> Device::chooseRenderer(const Transform& l
         }
     } else if (geometry.isAnalyticBlur()) {
         return {renderers->analyticBlur(), nullptr};
+    } else if (geometry.isAnalyticBlur2()) {
+        return {renderers->analyticBlur2(), nullptr};
     } else if (!geometry.isShape()) {
         // We must account for new Geometry types with specific Renderers
         return {nullptr, nullptr};
@@ -2039,7 +2041,7 @@ bool Device::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float 
         return true;
     }
 
-    std::optional<AnalyticBlurMask> analyticBlur = AnalyticBlurMask::Make(
+    std::optional<AnalyticBlurMask2> analyticBlur = AnalyticBlurMask2::Make(
             this->recorder(), this->localToDeviceTransform(), deviceSigma, rrect);
     if (!analyticBlur) {
         return false;

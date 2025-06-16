@@ -32,7 +32,7 @@ namespace skgpu::graphite {
 class Geometry {
 public:
     enum class Type : uint8_t {
-        kEmpty, kShape, kVertices, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur
+        kEmpty, kShape, kVertices, kSubRun, kEdgeAAQuad, kCoverageMaskShape, kAnalyticBlur, kAnalyticBlur2
     };
 
     Geometry() {}
@@ -45,6 +45,7 @@ public:
     explicit Geometry(const EdgeAAQuad& edgeAAQuad) { this->setEdgeAAQuad(edgeAAQuad); }
     explicit Geometry(const CoverageMaskShape& mask) { this->setCoverageMaskShape(mask); }
     explicit Geometry(const AnalyticBlurMask& blur) { this->setAnalyticBlur(blur); }
+    explicit Geometry(const AnalyticBlurMask2& blur) { this->setAnalyticBlur(blur); }
 
     ~Geometry() { this->setType(Type::kEmpty); }
 
@@ -78,6 +79,10 @@ public:
                     this->setAnalyticBlur(geom.analyticBlurMask());
                     geom.setType(Type::kEmpty);
                     break;
+                case Type::kAnalyticBlur2:
+                    this->setAnalyticBlur(geom.analyticBlurMask2());
+                    geom.setType(Type::kEmpty);
+                    break;
             }
         }
         return *this;
@@ -92,6 +97,7 @@ public:
             case Type::kCoverageMaskShape:
                     this->setCoverageMaskShape(geom.coverageMaskShape()); break;
             case Type::kAnalyticBlur: this->setAnalyticBlur(geom.analyticBlurMask()); break;
+            case Type::kAnalyticBlur2: this->setAnalyticBlur(geom.analyticBlurMask2()); break;
             default: break;
         }
         return *this;
@@ -105,6 +111,7 @@ public:
     bool isEdgeAAQuad() const { return fType == Type::kEdgeAAQuad; }
     bool isCoverageMaskShape() const { return fType == Type::kCoverageMaskShape; }
     bool isAnalyticBlur() const { return fType == Type::kAnalyticBlur; }
+    bool isAnalyticBlur2() const { return fType == Type::kAnalyticBlur2; }
     bool isEmpty() const {
         return fType == (Type::kEmpty) || (this->isShape() &&
                                            this->shape().isEmpty() &&
@@ -119,6 +126,9 @@ public:
     }
     const AnalyticBlurMask& analyticBlurMask() const {
         SkASSERT(this->isAnalyticBlur()); return fAnalyticBlurMask;
+    }
+    const AnalyticBlurMask2& analyticBlurMask2() const {
+        SkASSERT(this->isAnalyticBlur2()); return fAnalyticBlurMask2;
     }
     const SkVertices* vertices() const { SkASSERT(this->isVertices()); return fVertices.get(); }
     sk_sp<SkVertices> refVertices() const {
@@ -177,6 +187,14 @@ public:
             new (&fAnalyticBlurMask) AnalyticBlurMask(blur);
         }
     }
+    void setAnalyticBlur(const AnalyticBlurMask2& blur) {
+        if (fType == Type::kAnalyticBlur2) {
+            fAnalyticBlurMask2 = blur;
+        } else {
+            this->setType(Type::kAnalyticBlur2);
+            new (&fAnalyticBlurMask) AnalyticBlurMask2(blur);
+        }
+    }
 
     Rect bounds() const {
         switch (fType) {
@@ -187,6 +205,7 @@ public:
             case Type::kEdgeAAQuad: return fEdgeAAQuad.bounds();
             case Type::kCoverageMaskShape: return fCoverageMaskShape.bounds();
             case Type::kAnalyticBlur: return fAnalyticBlurMask.drawBounds();
+            case Type::kAnalyticBlur2: return fAnalyticBlurMask2.fDrawBounds;
         }
         SkUNREACHABLE;
     }
@@ -204,6 +223,8 @@ private:
             fCoverageMaskShape.~CoverageMaskShape();
         } else if (this->isAnalyticBlur() && type != Type::kAnalyticBlur) {
             fAnalyticBlurMask.~AnalyticBlurMask();
+        }else if (this->isAnalyticBlur2() && type != Type::kAnalyticBlur2) {
+            fAnalyticBlurMask2.~AnalyticBlurMask2();
         }
         fType = type;
     }
@@ -216,6 +237,7 @@ private:
         EdgeAAQuad fEdgeAAQuad;
         CoverageMaskShape fCoverageMaskShape;
         AnalyticBlurMask fAnalyticBlurMask;
+        AnalyticBlurMask2 fAnalyticBlurMask2;
     };
 };
 

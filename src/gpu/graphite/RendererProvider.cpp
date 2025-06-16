@@ -115,7 +115,9 @@ RendererProvider::RendererProvider(const Caps* caps, StaticBufferManager* buffer
     initFromStep(&fAnalyticBlur,
                  std::make_unique<AnalyticBlurRenderStep>(),
                  static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kAnalyticBlur));
-
+    initFromStep(&fAnalyticBlur2,
+                 std::make_unique<AnalyticBlur2RenderStep>(),
+                 static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kAnalyticBlur));
     // vertices
     for (PrimitiveType primType : {PrimitiveType::kTriangles, PrimitiveType::kTriangleStrip}) {
         for (bool color : {false, true}) {

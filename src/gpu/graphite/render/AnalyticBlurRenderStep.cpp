@@ -97,10 +97,81 @@ void AnalyticBlurRenderStep::writeUniformsAndTextures(const DrawParams& params,
     gatherer->write(static_cast<int>(blur.shapeType()));
     gatherer->write(params.order().depthAsFloat());
 
-    SkSamplingOptions samplingOptions = blur.shapeType() == AnalyticBlurMask::ShapeType::kRect
-                                                ? SkFilterMode::kLinear
-                                                : SkFilterMode::kNearest;
-    gatherer->add(blur.refProxy(), {samplingOptions, SkTileMode::kClamp});
+    gatherer->add(blur.refProxy(), {SkFilterMode::kLinear, SkTileMode::kClamp});
+}
+
+///////
+
+AnalyticBlur2RenderStep::AnalyticBlur2RenderStep()
+        : RenderStep(RenderStepID::kAnalyticBlur2,
+                     Flags::kPerformsShading /*| Flags::kHasTextures*/ | Flags::kEmitsCoverage |
+                     Flags::kAppendInstances,
+                     /*uniforms=*/ {},
+                     PrimitiveType::kTriangleStrip,
+                     kDirectDepthGreaterPass,
+                     /*staticAttrs=*/ {},
+                     /*appendAttrs=*/
+                     {{"localShape", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"cornerRadii", VertexAttribType::kFloat4, SkSLType::kFloat4},
+                      {"localSigma", VertexAttribType::kFloat2, SkSLType::kFloat2},
+                      {"ssboIndices", VertexAttribType::kUInt2, SkSLType::kUInt2},
+                      {"mat0", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"mat1", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"mat2", VertexAttribType::kFloat3, SkSLType::kFloat3},
+                      {"depth", VertexAttribType::kFloat, SkSLType::kFloat}},
+                     /*varyings=*/
+                     {{"shapeCoord", SkSLType::kFloat2}, // FIXME use localCoords, or optimize per patch area
+                      {"sigma", SkSLType::kFloat2},
+                      {"baseShape", SkSLType::kFloat4}, // does not include blurring
+                      {"corners", SkSLType::kFloat4}}) {}
+
+std::string AnalyticBlur2RenderStep::vertexSkSL() const {
+    return
+        "float4 outerBounds = localShape + localSigma.xyxy * float4(-3,-3,3,3);\n"
+        "float4 devPosition = cover_bounds_vertex_fn("
+                "float2(sk_VertexID / 2, sk_VertexID % 2), "
+                "outerBounds, depth, float3x3(mat0, mat1, mat2), "
+                "stepLocalCoords);\n"
+        "shapeCoord = stepLocalCoords;\n"
+        // Pass through to fragment shader
+        "sigma = localSigma;\n"
+        "baseShape = localShape;\n"
+        "corners = cornerRadii;\n";
+}
+
+std::string AnalyticBlur2RenderStep::texturesAndSamplersSkSL(
+        const ResourceBindingRequirements& bindingReqs, int* nextBindingIndex) const {
+    SkASSERT(false); // shouldn't be called yet
+    return EmitSamplerLayout(bindingReqs, nextBindingIndex) + " sampler2D s;";
+}
+
+const char* AnalyticBlur2RenderStep::fragmentCoverageSkSL() const {
+    return "outputCoverage = blur_coverage2_fn(shapeCoord, "
+                                              "baseShape, "
+                                              "corners, "
+                                              "sigma);";
+}
+
+void AnalyticBlur2RenderStep::writeVertices(DrawWriter* writer,
+                                           const DrawParams& params,
+                                           skvx::uint2 ssboIndices) const {
+    const AnalyticBlurMask2& m = params.geometry().analyticBlurMask2();
+    const SkM44& t = params.transform().matrix();
+    DrawWriter::Instances instances{*writer, {}, {}, 4};
+    instances.append(1) << m.fLocalShape.ltrb()
+                        << m.fLocalCornerRadii
+                        << m.fLocalSigma
+                        << ssboIndices
+                        << t.rc(0,0) << t.rc(1,0) << t.rc(3,0)
+                        << t.rc(0,1) << t.rc(1,1) << t.rc(3,1)
+                        << t.rc(0,3) << t.rc(1,3) << t.rc(3,3)
+                        << params.order().depthAsFloat();
+}
+
+void AnalyticBlur2RenderStep::writeUniformsAndTextures(const DrawParams& params,
+                                                      PipelineDataGatherer* gatherer) const {
+    // Nothing yet
+    // FIXME add texture lookup table
 }
 
 }  // namespace skgpu::graphite

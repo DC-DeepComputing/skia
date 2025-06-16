@@ -257,4 +257,15 @@ static constexpr char SKSL_MINIFIED_sksl_graphite_frag[] =
 "c.xx;half2 i=(2.*c).xx;half2 j=h/i;return sample(d,float2(j)).xxxx;}$pure half4"
 " blur_coverage_fn(float2 a,float4 b,half2 c,int d,sampler2D e){switch(d){case"
 " 0:{return $L(a,b,c.x,c.y,e);}case 2:{return $M(a,b,e);}case 1:{return $N(a"
-",b,c.x,e);}}return half4(0.);}";
+",b,c.x,e);}}return half4(0.);}$pure half4 blur_coverage2_fn(float2 a,float4"
+" b,float4 e,float2 f){float2 g=3.*f;float h=max(0.,max((b.x+g.x)-a.x,(a.x-b"
+".z)+g.x));float i=max(0.,max((b.y+g.y)-a.y,(a.y-b.w)+g.y));float j=0.;if(a."
+"x<b.x+e.x&&a.y<b.y+e.x){float2 k=float2(b.x+e.x,b.y+e.x);j=(length(a-k)-e.x"
+")+g.x;}else if(a.x>b.z-e.y&&a.y<b.y+e.y){float2 k=float2(b.z-e.y,b.y+e.y);j"
+"=(length(a-k)-e.y)+g.x;}else if(a.x>b.z-e.z&&a.y>b.w-e.z){float2 k=float2(b"
+".z-e.z,b.w-e.z);j=(length(a-k)-e.z)+g.x;}else if(a.x<b.x+e.w&&a.y>b.w-e.w){"
+"float2 k=float2(b.x+e.w,b.w-e.w);j=(length(a-k)-e.w)+g.x;}float3 k=float3(h"
+",i,j)-g.xyx;int l=128;float m=g.x/float(l);float n=-.5/(f.x*f.x);float o=0."
+";float3 p=0..xxx;for(int q=-l;q<=l;++q){float r=m*float(q);float s=exp((n*r"
+")*r);o=o+s;p=p+s*mix(0..xxx,1..xxx,greaterThan(r.xxx,k));}p=p/o;float q=min"
+"(p.x*p.y,p.z);return half(q).xxxx;}";

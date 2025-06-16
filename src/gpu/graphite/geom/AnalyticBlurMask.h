@@ -25,6 +25,20 @@ namespace skgpu::graphite {
 class Recorder;
 class Transform;
 
+class AnalyticBlurMask2 {
+public:
+    static std::optional<AnalyticBlurMask2> Make(Recorder*,
+                                                 const Transform& localToDevice,
+                                                 float deviceSigma,
+                                                 const SkRRect& srcRRect);
+
+    Rect fDrawBounds; // Includes blur radius outset
+    Rect fLocalShape; // Rect, RRect w/ circular corners, or a circle
+    SkV4 fLocalCornerRadii; // UL, UR, BR, BL order
+    SkV2 fLocalSigma;
+    sk_sp<TextureProxy> fBlurTable;
+};
+
 /**
  * AnalyticBlurMask holds the shader inputs used to do an analytic blur over rects, rrects, or
  * circles.

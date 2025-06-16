@@ -1836,3 +1836,114 @@ $pure half4 blur_coverage_fn(float2 coords,
     }
     return half4(0);
 }
+
+$pure half4 blur_coverage2_fn(float2 coords,
+                              float4 shape,
+                              float4 corners,
+                              float2 sigma) {
+    // There are X regions of interest that `coords` might fall into:
+    // 1. Entirely inside shape.inset(corners).inset(3*sigma): the unblurred, unrounded interior
+    // 2. Inside shape.inset(corners).inset(3*sigma) on one axis: a blurred straight edge
+    // 3. Outside of shape.inset(3*sigma): a blurred corner that doesn't overlap a straight edge
+    // 4. Otherwise, a blurred corner that overlaps with a straight edge
+    float2 blurRadius = 3 * sigma;
+    float dx = max(0, max(shape.L + blurRadius.x - coords.x,
+                          coords.x - shape.R + blurRadius.x)); // L|R edges
+    // if (coords.x < shape.L + sigma.x) {
+    //     // Left edge
+    //     dx = shape.L + sigma.x - coords.x;
+    // }
+    // if (coords.x > shape.R - sigma.x) {
+    //     // Right edge
+    //     dx = coords.x - shape.R + sigma.x;
+    // }
+
+    float dy = max(0, max(shape.T + blurRadius.y - coords.y,
+                          coords.y - shape.B + blurRadius.y)); // T|B
+    // if (coords.y < shape.T + sigma.y) {
+    //     // Top edge
+    //     dy = shape.T + sigma.y - coords.y;
+    // } else if (coords.y > shape.B - sigma.y) {
+    //     // Bottom edge
+    //     dy = coords.y - shape.B + sigma.y;
+    // }
+
+    float dc = 0;
+    if (coords.x < shape.L + corners[0] &&
+        coords.y < shape.T + corners[0]) {
+        // UL corner
+        float2 anchor = float2(shape.L + corners[0], shape.T + corners[0]);
+        dc = length(coords - anchor) - corners[0] + blurRadius.x; // FIXME needs non-uniform handling
+    } else if (coords.x > shape.R - corners[1] &&
+               coords.y < shape.T + corners[1]) {
+        // UR corner
+        float2 anchor = float2(shape.R - corners[1], shape.T + corners[1]);
+        dc = length(coords - anchor) - corners[1] + blurRadius.x;
+    } else if (coords.x > shape.R - corners[2] &&
+               coords.y > shape.B - corners[2]) {
+        // LR corner
+        float2 anchor = float2(shape.R - corners[2], shape.B - corners[2]);
+        dc = length(coords - anchor) - corners[2] + blurRadius.x;
+    } else if (coords.x < shape.L + corners[3] &&
+               coords.y > shape.B - corners[3]) {
+        // LL corner
+        float2 anchor = float2(shape.L + corners[3], shape.B - corners[3]);
+        dc = length(coords - anchor) - corners[3] + blurRadius.x;
+    }
+
+    // 0 is one blurRadius inset into the shape, we integrate the Gaussian centered on d'=blurRadius
+    // (e.g. the original shape edge). Shift to be centered on the edge as well.
+    // float d = max(dx, max(dy, dc)) - blurRadius.x;
+    float3 d = float3(dx, dy, dc) - blurRadius.xyx;
+    // float c = d / blurRadius.x;
+
+    int kernelRadius = 128;
+    float scale = blurRadius.x / float(kernelRadius);
+
+    float invDenom = -0.5 / (sigma.x * sigma.x);
+    float weight = 0;
+    float3 sum = float3(0);
+    for (int i = -kernelRadius; i <= kernelRadius; ++i) {
+        float dx = scale*float(i);
+        float w = exp(invDenom * dx * dx);
+        weight = weight + w;
+        sum = sum + w * mix(float3(0.0), float3(1.0), greaterThan(float3(dx), d));
+
+        //(dx > d ? 1.0 : 0.0);
+    }
+    sum = sum / weight;
+    float c = min(sum.x * sum.y, sum.z);
+
+    // if (coords.x < shape.L + corners[0] + sigma.x &&
+    //     coords.y < shape.T + corners[0] + sigma.y) {
+    //     // UL corner
+    //     float2 anchor = float2(shape.L + corners[0], shape.T + corners[0]);
+    //     float2 circCoord = min(coords, anchor);
+    //     dc = length(circCoord - anchor) - corners[0] + sigma.x; // FIXME needs non-uniform handling
+    // } else if (coords.x > shape.R - corners[1] - sigma.x &&
+    //            coords.y < shape.T + corners[1] + sigma.y) {
+    //     // UR corner
+    //     float2 anchor = float2(shape.R - corners[1], shape.T + corners[1]);
+    //     float2 circCoord = float2(max(coords.x, anchor.x), min(coords.y, anchor.y));
+    //     dc = length(circCoord - anchor) - corners[1] + sigma.x;
+    // } else if (coords.x > shape.R - corners[2] - sigma.x &&
+    //            coords.y > shape.B - corners[2] - sigma.y) {
+    //     // LR corner
+    //     float2 anchor = float2(shape.R - corners[2], shape.B - corners[2]);
+    //     float2 circCoord = max(coords, anchor);
+    //     dc = length(circCoord - anchor) - corners[2] + sigma.x;
+    // } else if (coords.x < shape.L + corners[3] + sigma.x &&
+    //            coords.y > shape.B - corners[3] - sigma.y) {
+    //     // LL corner
+    //     float2 anchor = float2(shape.L + corners[3], shape.B - corners[3]);
+    //     float2 circCoord = float2(min(coords.x, anchor.x), max(coords.y, anchor.y));
+    //     dc = length(circCoord - anchor) - corners[3] + sigma.x;
+    // }
+
+    // dx ranges from [0, 2*sigma.x], dy ranges from [0, 2*sigma.y]
+    // dc does not have lower/upper bounds but is roughly 0 at radius-sigma and 2*sigma at radius+sigma
+    // float3 d = 1 - saturate(float3(dx, dy, dc) / (2 * sigma.xyx)); // FIXME handle non-uniform sigma
+    // float c = min(d.x, min(d.y, d.z));
+
+    return half4(c);
+}
