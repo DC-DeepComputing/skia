@@ -46,6 +46,30 @@
       },
       "revId": "cf83746d4f8976eade06e32a627d1755855b0398",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a27bb84d_837d274b",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T16:08:50Z",
+      "side": 1,
+      "message": "That makes sense, but it also felt like a subtlety that could be lost to history and wondering what the different compatible load/store op code blocks were for.",
+      "parentUuid": "063d29d1_aa519cef",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 81
+      },
+      "revId": "cf83746d4f8976eade06e32a627d1755855b0398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
