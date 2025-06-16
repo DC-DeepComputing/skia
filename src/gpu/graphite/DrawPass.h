@@ -27,7 +27,6 @@ namespace skgpu::graphite {
 
 class BoundsManager;
 class CommandBuffer;
-class DrawList;
 class GraphicsPipeline;
 class Recorder;
 struct RenderPassDesc;
@@ -54,25 +53,12 @@ class DrawPass {
 public:
     ~DrawPass();
 
-    // Create a DrawPass that renders the DrawList into `target` with the given load/store ops and
-    // clear color.
-    static std::unique_ptr<DrawPass> Make(Recorder*,
-                                          std::unique_ptr<DrawList>,
-                                          sk_sp<TextureProxy> target,
-                                          const SkImageInfo& targetInfo,
-                                          std::pair<LoadOp, StoreOp>,
-                                          std::array<float, 4> clearColor,
-                                          const DstReadStrategy dstReadStrategy);
-
     // Defined relative to the top-left corner of the surface the DrawPass renders to, and is
     // contained within its dimensions.
-    const SkIRect&      bounds() const { return fBounds;       }
-    TextureProxy* target() const { return fTarget.get(); }
-    std::pair<LoadOp, StoreOp> ops() const { return fOps; }
-    std::array<float, 4> clearColor() const { return fClearColor; }
-
-    size_t vertexBufferSize()  const { return 0; }
-    size_t uniformBufferSize() const { return 0; }
+    const SkIRect&             bounds()     const { return fBounds;       }
+    TextureProxy*              target()     const { return fTarget.get(); }
+    std::pair<LoadOp, StoreOp> ops()        const { return fOps;          }
+    std::array<float, 4>       clearColor() const { return fClearColor;   }
 
     // Instantiate and prepare any resources used by the DrawPass that require the Recorder's
     // ResourceProvider. This includes things likes GraphicsPipelines, sampled Textures, Samplers,
@@ -85,18 +71,19 @@ public:
         return fCommandList.commands();
     }
 
-    const GraphicsPipeline* getPipeline(size_t index) const {
+    const GraphicsPipeline* getPipeline(int index) const {
         return fFullPipelines[index].get();
     }
+
     const Texture* getTexture(size_t index) const;
     const Sampler* getSampler(size_t index) const;
 
-    skia_private::TArray<sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
+    SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
 
     void addResourceRefs(CommandBuffer*) const;
 
 private:
-    class SortKey;
+    friend class DrawList; // for constructor
 
     DrawPass(sk_sp<TextureProxy> target,
              std::pair<LoadOp, StoreOp> ops,

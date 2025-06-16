@@ -119,8 +119,7 @@ private:
     const SkShader*   fShader;
 };
 
-// Encapsulates all geometric state for a single high-level draw call. RenderSteps are responsible
-// for transforming this state into actual rendering; shading from PaintParams is handled separately
+// TODO now mixing geometry and paint . . .
 class DrawParams {
 public:
     DrawParams(const Transform& transform,

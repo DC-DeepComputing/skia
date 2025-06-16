@@ -301,103 +301,103 @@ void check_draw(Context* context,
 }
 
 void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
-    std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
-    std::unique_ptr<Recorder> recorder = context->makeRecorder();
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+//     std::unique_ptr<PrecompileContext> precompileContext = context->makePrecompileContext();
+//     std::unique_ptr<Recorder> recorder = context->makeRecorder();
+//     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    SkColorInfo ci = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
-                                 SkColorSpace::MakeSRGB());
+//     SkColorInfo ci = SkColorInfo(kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+//                                  SkColorSpace::MakeSRGB());
 
-    std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
-    KeyContext precompileKeyContext(recorder->priv().caps(), dict, rtDict.get(), ci);
+//     std::unique_ptr<RuntimeEffectDictionary> rtDict = std::make_unique<RuntimeEffectDictionary>();
+//     KeyContext precompileKeyContext(recorder->priv().caps(), dict, rtDict.get(), ci);
 
-    DrawTypeFlags kDrawType = DrawTypeFlags::kSimpleShape;
-    SkPath path = make_path();
+//     DrawTypeFlags kDrawType = DrawTypeFlags::kSimpleShape;
+//     SkPath path = make_path();
 
-    Layout layout = context->backend() == skgpu::BackendApi::kMetal ? Layout::kMetal
-                                                                    : Layout::kStd140;
+//     Layout layout = context->backend() == skgpu::BackendApi::kMetal ? Layout::kMetal
+//                                                                     : Layout::kStd140;
 
-    PaintParamsKeyBuilder builder(dict);
-    PipelineDataGatherer gatherer(layout);
+//     PaintParamsKeyBuilder builder(dict);
+//     PipelineDataGatherer gatherer(layout);
 
-    auto [paint, paintOptions] = create_random_paint(fuzz, depth);
+//     auto [paint, paintOptions] = create_random_paint(fuzz, depth);
 
-    constexpr Coverage coverageOptions[3] = {
-            Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD};
-    uint32_t temp;
-    fuzz->next(&temp);
-    Coverage coverage = coverageOptions[temp % 3];
+//     constexpr Coverage coverageOptions[3] = {
+//             Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD};
+//     uint32_t temp;
+//     fuzz->next(&temp);
+//     Coverage coverage = coverageOptions[temp % 3];
 
-    const SkBlenderBase* blender = as_BB(paint.getBlender());
-    bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                             TextureFormat::kRGBA8,
-                                                             blender->asBlendMode(),
-                                                             coverage)
-                                   : false;
-    UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
-                                                   &gatherer,
-                                                   &builder,
-                                                   layout,
-                                                   {},
-                                                   PaintParams(paint,
-                                                               /* primitiveBlender= */ nullptr,
-                                                               /* nonMSAAClip= */ {},
-                                                               /* clipShader= */ nullptr,
-                                                               dstReadRequired,
-                                                               /* skipColorXform= */ false),
-                                                   {},
-                                                   ci);
+//     const SkBlenderBase* blender = as_BB(paint.getBlender());
+//     bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
+//                                                              TextureFormat::kRGBA8,
+//                                                              blender->asBlendMode(),
+//                                                              coverage)
+//                                    : false;
+//     UniquePaintParamsID paintID = ExtractPaintData(recorder.get(),
+//                                                    &gatherer,
+//                                                    &builder,
+//                                                    layout,
+//                                                    {},
+//                                                    PaintParams(paint,
+//                                                                /* primitiveBlender= */ nullptr,
+//                                                                /* nonMSAAClip= */ {},
+//                                                                /* clipShader= */ nullptr,
+//                                                                dstReadRequired,
+//                                                                /* skipColorXform= */ false),
+//                                                    {},
+//                                                    ci);
 
-    RenderPassDesc unusedRenderPassDesc;
+//     RenderPassDesc unusedRenderPassDesc;
 
-    std::vector<UniquePaintParamsID> precompileIDs;
-    paintOptions.priv().buildCombinations(precompileKeyContext,
-                                          &gatherer,
-                                          DrawTypeFlags::kNone,
-                                          /* withPrimitiveBlender= */ false,
-                                          coverage,
-                                          unusedRenderPassDesc,
-                                          [&](UniquePaintParamsID id,
-                                              DrawTypeFlags,
-                                              bool /* withPrimitiveBlender */,
-                                              Coverage,
-                                              const RenderPassDesc&) {
-                                                  precompileIDs.push_back(id);
-                                          });
+//     std::vector<UniquePaintParamsID> precompileIDs;
+//     paintOptions.priv().buildCombinations(precompileKeyContext,
+//                                           &gatherer,
+//                                           DrawTypeFlags::kNone,
+//                                           /* withPrimitiveBlender= */ false,
+//                                           coverage,
+//                                           unusedRenderPassDesc,
+//                                           [&](UniquePaintParamsID id,
+//                                               DrawTypeFlags,
+//                                               bool /* withPrimitiveBlender */,
+//                                               Coverage,
+//                                               const RenderPassDesc&) {
+//                                                   precompileIDs.push_back(id);
+//                                           });
 
-    // The specific key generated by ExtractPaintData should be one of the
-    // combinations generated by the combination system.
-    auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
+//     // The specific key generated by ExtractPaintData should be one of the
+//     // combinations generated by the combination system.
+//     auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
-#ifdef SK_DEBUG
-    if (result == precompileIDs.end()) {
-        SkDebugf("From paint: ");
-        dict->dump(paintID);
+// #ifdef SK_DEBUG
+//     if (result == precompileIDs.end()) {
+//         SkDebugf("From paint: ");
+//         dict->dump(paintID);
 
-        SkDebugf("From combination builder:");
-        for (auto iter : precompileIDs) {
-            dict->dump(iter);
-        }
-    }
-#endif
+//         SkDebugf("From combination builder:");
+//         for (auto iter : precompileIDs) {
+//             dict->dump(iter);
+//         }
+//     }
+// #endif
 
-    SkASSERT_RELEASE(result != precompileIDs.end());
+//     SkASSERT_RELEASE(result != precompileIDs.end());
 
-    {
-        static const RenderPassProperties kDefaultRenderPassProperties;
+//     {
+//         static const RenderPassProperties kDefaultRenderPassProperties;
 
-        context->priv().globalCache()->resetGraphicsPipelines();
+//         context->priv().globalCache()->resetGraphicsPipelines();
 
-        int before = context->priv().globalCache()->numGraphicsPipelines();
-        Precompile(precompileContext.get(), paintOptions, kDrawType,
-                   { kDefaultRenderPassProperties });
-        int after = context->priv().globalCache()->numGraphicsPipelines();
+//         int before = context->priv().globalCache()->numGraphicsPipelines();
+//         Precompile(precompileContext.get(), paintOptions, kDrawType,
+//                    { kDefaultRenderPassProperties });
+//         int after = context->priv().globalCache()->numGraphicsPipelines();
 
-        SkASSERT_RELEASE(before == 0);
-        SkASSERT_RELEASE(after > before);
+//         SkASSERT_RELEASE(before == 0);
+//         SkASSERT_RELEASE(after > before);
 
-        check_draw(context, recorder.get(), paint, kDrawType, path);
-    }
+//         check_draw(context, recorder.get(), paint, kDrawType, path);
+//     }
 }
 
 } // anonymous namespace

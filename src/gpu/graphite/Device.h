@@ -36,6 +36,8 @@ class Geometry;
 class Image;
 enum class LoadOp : uint8_t;
 class PaintParams;
+class PaintParamsKeyBuilder;
+class PipelineDataGatherer;
 class Renderer;
 class Shape;
 class StrokeStyle;
@@ -303,6 +305,12 @@ private:
     sk_sp<Task> fLastTask;
 
     ClipStack fClip;
+
+    // INCLUDES where?
+    // These are reused to record every draw and reach a high-water allocation. To avoid holding
+    // on to too large of keys or data blocks, these are reset with each snap.
+    std::unique_ptr<PaintParamsKeyBuilder> fKeyBuilder;
+    std::unique_ptr<PipelineDataGatherer> fDataGatherer;
 
     // Tracks accumulated intersections for ordering dependent use of the color and depth attachment
     // (i.e. depth-based clipping, and transparent blending)
