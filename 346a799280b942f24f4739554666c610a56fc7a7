@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ce12941_f867227c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-16T20:52:47Z",
+      "side": 1,
+      "message": "Right, since we control what the kDropShadows flag maps to internally, we can just change that on our side. We will need to update the pipeline label in the AndroidPrecompileTest but shouldn\u0027t need to copy any new PaintOptions over.",
+      "parentUuid": "091d951a_d3fb64ac",
+      "revId": "346a799280b942f24f4739554666c610a56fc7a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7384256a_3be79f1e",
@@ -55,6 +73,30 @@
       "side": 1,
       "message": "Right, just going with kVertices would over-generate a lot and almost all of the over-generated Pipelines would never be used for drop shadows.",
       "parentUuid": "7384256a_3be79f1e",
+      "range": {
+        "startLine": 124,
+        "startChar": 1,
+        "endLine": 127,
+        "endChar": 17
+      },
+      "revId": "346a799280b942f24f4739554666c610a56fc7a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5502e4a9_62004495",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-16T20:52:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "3b7316b8_5b0589b4",
       "range": {
         "startLine": 124,
         "startChar": 1,
