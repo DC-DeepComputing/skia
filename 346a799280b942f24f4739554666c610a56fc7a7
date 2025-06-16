@@ -39,6 +39,30 @@
       },
       "revId": "346a799280b942f24f4739554666c610a56fc7a7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3b7316b8_5b0589b4",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-16T20:47:35Z",
+      "side": 1,
+      "message": "Right, just going with kVertices would over-generate a lot and almost all of the over-generated Pipelines would never be used for drop shadows.",
+      "parentUuid": "7384256a_3be79f1e",
+      "range": {
+        "startLine": 124,
+        "startChar": 1,
+        "endLine": 127,
+        "endChar": 17
+      },
+      "revId": "346a799280b942f24f4739554666c610a56fc7a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
