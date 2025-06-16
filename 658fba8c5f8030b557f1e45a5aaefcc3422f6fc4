@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4bc87d2e_96a38418",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-16T16:00:02Z",
+      "side": 1,
+      "message": "PTAL again, minus the open comment (to be done at the last minute), any other comments?",
+      "revId": "658fba8c5f8030b557f1e45a5aaefcc3422f6fc4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
