@@ -28,6 +28,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
                          const std::pair<sk_sp<PrecompileShader>, int>& shader,
                          const std::pair<sk_sp<PrecompileColorFilter>, int>& colorFilter,
                          bool hasPrimitiveBlender,
+                         SkBlendMode blenderMode,
                          const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
                          bool dstReadRequired,
                          bool dither,
@@ -36,6 +37,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
         , fFinalBlender(finalBlender)
         , fShader(shader)
         , fColorFilter(colorFilter)
+        , fBlenderMode(blenderMode)
         , fHasPrimitiveBlender(hasPrimitiveBlender)
         , fClipShader(clipShader)
         , fDstReadRequired(dstReadRequired)
@@ -96,7 +98,7 @@ void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                   // TODO: Support runtime blenders for primitive blending in the precompile API.
                   // In the meantime, assume for now that we're using kSrcOver here.
                   AddToKey(keyContext, keyBuilder, gatherer,
-                           SkBlender::Mode(SkBlendMode::kSrcOver).get());
+                           SkBlender::Mode(fBlenderMode).get());
               },
               /* addSrcToKey= */ [&]() -> void {
                   this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
