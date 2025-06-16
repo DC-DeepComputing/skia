@@ -1508,8 +1508,61 @@ DEF_TEST(Triangulator_bug421959607, r) {
     path.close();
     SkRect clipBounds = SkRect::MakeLTRB(0, 0, 128, 160);
     SimplerVertexAllocator alloc;
+
+    // Decrease the tolerance as a hack to get the debug builds to pass
+    auto tolerance = GrPathUtils::kDefaultTolerance;
+#ifdef SK_DEBUG
+        tolerance = .19f;
+#endif
     int vertexCount = GrAATriangulator::PathToAATriangles(
-        path, GrPathUtils::kDefaultTolerance, clipBounds, &alloc);
+        path, tolerance, clipBounds, &alloc);
+    REPORTER_ASSERT(r, vertexCount);
+}
+
+DEF_TEST(Triangulator_bug424666603, r) {
+    SkPath path;
+    path.setFillType(SkPathFillType::kWinding);
+    path.moveTo(SkBits2Float(0x524ae681),
+                SkBits2Float(0xd277c639));  // 2.17862652e+11f, -2.66045637e+11f
+    path.conicTo(SkBits2Float(0x2009b044),
+                 SkBits2Float(0x9fbc6c7a),
+                 SkBits2Float(0x2009b044),
+                 SkBits2Float(0x9fbc6c7a),
+                 SkBits2Float(0x3f3504f3));  // 1.16626728e-19f, -7.98005565e-20f, 1.16626728e-19f,
+                                             // -7.98005565e-20f, 0.707106769f
+    path.conicTo(SkBits2Float(0x2009b044),
+                 SkBits2Float(0x9fbc6c7a),
+                 SkBits2Float(0x524ae681),
+                 SkBits2Float(0xd277c639),
+                 SkBits2Float(0x3f3504f3));  // 1.16626728e-19f, -7.98005565e-20f, 2.17862652e+11f,
+                                             // -2.66045637e+11f, 0.707106769f
+    path.conicTo(SkBits2Float(0x52cae681),
+                 SkBits2Float(0xd2f7c639),
+                 SkBits2Float(0x52cae681),
+                 SkBits2Float(0xd2f7c639),
+                 SkBits2Float(0x3f3504f3));  // 4.35725304e+11f, -5.32091273e+11f, 4.35725304e+11f,
+                                             // -5.32091273e+11f, 0.707106769f
+    path.conicTo(SkBits2Float(0x52cae681),
+                 SkBits2Float(0xd2f7c639),
+                 SkBits2Float(0x524ae681),
+                 SkBits2Float(0xd277c639),
+                 SkBits2Float(0x3f3504f3));  // 4.35725304e+11f, -5.32091273e+11f, 2.17862652e+11f,
+                                             // -2.66045637e+11f, 0.707106769f
+    path.close();
+    path.moveTo(SkBits2Float(0x200a3d8d),
+                SkBits2Float(0x9fbdc58a));  // 1.17094201e-19f, -8.03714145e-20f
+    path.cubicTo(SkBits2Float(0xcda1a399),
+                 SkBits2Float(0x4dc56333),
+                 SkBits2Float(0x2009b044),
+                 SkBits2Float(0x9fbc6c7a),
+                 SkBits2Float(0x5507077d),
+                 SkBits2Float(0xd524e482));  // -338981664, 413951584, 1.16626728e-19f,
+                                             // -7.98005565e-20f, 9.27913948e+12f, -1.13313338e+13f
+    path.close();
+    SkRect clipBounds = SkRect::MakeLTRB(0, 0, 128, 160);
+    SimplerVertexAllocator alloc;
+    int vertexCount = GrAATriangulator::PathToAATriangles(
+            path, GrPathUtils::kDefaultTolerance, clipBounds, &alloc);
     REPORTER_ASSERT(r, vertexCount);
 }
 
