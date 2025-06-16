@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "be2cb702_8d97b391",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T14:17:04Z",
+      "side": 1,
+      "message": "This is similar to the load/store op resetting that\u0027s done for compatibleForPipelineKey, but obviously we need the modified RenderPassDesc to actually create the RP here.\n\nWDYT about adding a utility function to create a compatible RenderPassDesc that can be called here, or called before getting the key bits for a pipeline RPDesc?\n\nI think that still achieves pipeline compatibility but also brings back using a RPDesc that\u0027s more likely to be used for real rendering as well.",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 81
+      },
+      "revId": "cf83746d4f8976eade06e32a627d1755855b0398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
