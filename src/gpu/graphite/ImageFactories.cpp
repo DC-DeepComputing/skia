@@ -23,6 +23,7 @@
 #include "src/core/SkImageFilter_Base.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Base_Graphite.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Image_YUVA_Graphite.h"
@@ -112,7 +113,7 @@ sk_sp<SkImage> WrapTexture(Recorder* recorder,
                         "nonmipmapped texture");
             return nullptr;
         }
-        if (!GenerateMipmaps(recorder, view.refProxy(), info)) {
+        if (!GenerateMipmaps(recorder, /*drawContext=*/ nullptr, view.refProxy(), info)) {
             SKGPU_LOG_W("Failed SkImage::WrapTexture. Could not generate mipmaps.");
             return nullptr;
         }
