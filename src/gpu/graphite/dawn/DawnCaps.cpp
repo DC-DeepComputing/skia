@@ -522,6 +522,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 #if defined(__EMSCRIPTEN__)
     // For wasm, we use async map.
     fBufferMapsAreAsync = true;
+    const bool supportDawnLoadResolveTexture = false;
 #else
     // For Dawn native, we use direct mapping.
     fBufferMapsAreAsync = false;
@@ -534,6 +535,9 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::TransientAttachments)) {
         fSupportedTransientAttachmentUsage = wgpu::TextureUsage::TransientAttachment;
     }
+
+    const bool supportDawnLoadResolveTexture =
+            backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture);
 #endif
 
     if (fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
@@ -542,15 +546,13 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
         // reuse MSAA textures better to reduce memory usage.
         // TODO(b/399640773): Avoid this when Dawn implements the partial resolve feature
         // that can support mismatched sized MSAA & resolve attachments.
-        fEmulateLoadStoreResolve = true;
+        fEmulateLoadStoreResolve = !supportDawnLoadResolveTexture;
         fDifferentResolveAttachmentSizeSupport = true;
     }
 
 #if !defined(__EMSCRIPTEN__)
-    if (!fEmulateLoadStoreResolve) {
-        if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
-            fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
-        }
+    if (supportDawnLoadResolveTexture) {
+        fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
         fSupportsPartialLoadResolve =
                 backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
     }
