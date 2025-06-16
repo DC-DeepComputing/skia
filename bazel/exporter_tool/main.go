@@ -210,7 +210,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_fontmgr_android_sources",
 			Rules: []string{
-				"//src/ports:fontmgr_android_freetype",
+				"//src/ports:fontmgr_android",
 			}},
 		{Var: "skia_ports_fontmgr_android_ndk_public",
 			Rules: []string{
@@ -218,7 +218,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_fontmgr_android_ndk_sources",
 			Rules: []string{
-				"//src/ports:fontmgr_android_ndk_freetype",
+				"//src/ports:fontmgr_android_ndk",
 			}},
 		{Var: "skia_ports_fontmgr_custom_sources",
 			Rules: []string{
@@ -265,8 +265,7 @@ var gniExportDescs = []exporter.GNIExportDesc{
 			}},
 		{Var: "skia_ports_fontmgr_fontconfig_sources",
 			Rules: []string{
-				"//src/ports:fontconfig_support",
-				"//src/ports:fontmgr_fontconfig_freetype",
+				"//src/ports:fontmgr_fontconfig",
 			}},
 		{Var: "skia_ports_fontmgr_fontations_public",
 			Rules: []string{

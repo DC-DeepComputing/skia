@@ -487,10 +487,6 @@ static char const * const gSystemFontUseStrings[] = {
 
 }  // namespace
 
-sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom) {
-    return SkFontMgr_New_Android(custom, SkFontScanner_Make_FreeType());
-}
-
 sk_sp<SkFontMgr> SkFontMgr_New_Android(const SkFontMgr_Android_CustomFonts* custom, std::unique_ptr<SkFontScanner> scanner) {
     if (custom) {
         SkASSERT(0 <= custom->fSystemFontUse);
