@@ -22,6 +22,30 @@
       },
       "revId": "cf83746d4f8976eade06e32a627d1755855b0398",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "063d29d1_aa519cef",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 21
+      },
+      "lineNbr": 450,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-16T15:10:43Z",
+      "side": 1,
+      "message": "Done. FWIW, the RP bits in the pipeline key is not used to ever create an RP which is why I originally let that logic be simpler.",
+      "parentUuid": "be2cb702_8d97b391",
+      "range": {
+        "startLine": 437,
+        "startChar": 0,
+        "endLine": 450,
+        "endChar": 81
+      },
+      "revId": "cf83746d4f8976eade06e32a627d1755855b0398",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
