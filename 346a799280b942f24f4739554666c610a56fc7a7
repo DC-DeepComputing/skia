@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "091d951a_d3fb64ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T19:07:57Z",
+      "side": 1,
+      "message": "Once this lands, Android can be updated even if Nicolette\u0027s changes that impact the specific DrawShadow pipeline aren\u0027t in yet, we\u0027ll just have to keep the precompile in sync.",
+      "revId": "346a799280b942f24f4739554666c610a56fc7a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7384256a_3be79f1e",
+        "filename": "src/gpu/graphite/RendererProvider.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 127,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-16T19:07:57Z",
+      "side": 1,
+      "message": "We are doing it this way instead of having precompile activate kVertices for the geometric variant because we want to avoid the cross product, right?",
+      "range": {
+        "startLine": 124,
+        "startChar": 1,
+        "endLine": 127,
+        "endChar": 17
+      },
+      "revId": "346a799280b942f24f4739554666c610a56fc7a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
