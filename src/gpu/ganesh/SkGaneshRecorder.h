@@ -28,6 +28,8 @@ public:
         return skcpu::Recorder::TODO();
     }
 
+    SkCaptureCanvas* makeCaptureCanvas(SkCanvas*) override { return nullptr; }
+
 private:
     GrRecordingContext* fGaneshCtx;
 };
