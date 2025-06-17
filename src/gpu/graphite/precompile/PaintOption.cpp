@@ -92,23 +92,42 @@ void PaintOption::addPaintColorToKey(const KeyContext& keyContext,
 void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                                        PaintParamsKeyBuilder* keyBuilder,
                                        PipelineDataGatherer* gatherer) const {
-    if (fHasPrimitiveBlender) {
-        Blend(keyContext, keyBuilder, gatherer,
-              /* addBlendToKey= */ [&] () -> void {
-                  // TODO: Allow clients to provide precompile SkBlender options for primitive
-                  // blending. For now we have a back door to internally specify an SkBlendMode.
-                  AddToKey(keyContext, keyBuilder, gatherer,
-                           SkBlender::Mode(fPrimitiveBlendMode).get());
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  AddPrimitiveColor(keyContext, keyBuilder, gatherer, sk_srgb_singleton());
-              });
-    } else {
+    if (!fHasPrimitiveBlender) {
         this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
     }
+
+    /**
+     * For precompilation, assume we cannot skip the color transform (which is generally the
+     * case).
+    */
+    KeyContextForPrimitiveColor childContext(keyContext, /*skipColorXform=*/false);
+    Blend(keyContext, keyBuilder, gatherer,
+            /* addBlendToKey= */ [&] () -> void {
+                /**
+                 * TODO: Allow clients to provide precompile SkBlender options for primitive
+                 * blending. For now we have a back door to internally specify an SkBlendMode.
+                 *
+                 * Simplify to use fixed dst blending when possible.
+                 */
+                if (fPrimitiveBlendMode == SkBlendMode::kDst) {
+                    AddFixedBlendMode(keyContext, keyBuilder, gatherer, SkBlendMode::kDst);
+                } else {
+                    AddToKey(keyContext,
+                             keyBuilder,
+                             gatherer,
+                             SkBlender::Mode(fPrimitiveBlendMode).get());
+                }
+            },
+            /* addSrcToKey= */ [&]() -> void {
+                 if (fPrimitiveBlendMode != SkBlendMode::kDst) {
+                    this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+                 } else {
+                    keyBuilder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
+                 }
+            },
+            /* addDstToKey= */ [&]() -> void {
+                AddPrimitiveColor(childContext, keyBuilder, gatherer, /*skipColorXform=*/false);
+            });
 }
 
 void PaintOption::handlePaintAlpha(const KeyContext& keyContext,

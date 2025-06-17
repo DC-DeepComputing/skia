@@ -1199,7 +1199,8 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
                                         PaintParamsKeyBuilder* builder,
                                         PipelineDataGatherer* gatherer,
                                         const ColorSpaceTransformData& data) {
-    const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize || data.fSteps.fFlags.encode ||
+    const bool xformNeedsGamutOrXferFn = data.fSteps.fFlags.linearize ||
+                                         data.fSteps.fFlags.encode ||
                                          data.fSteps.fFlags.gamut_transform;
     const bool swizzleNeedsGamutTransform = !(data.fReadSwizzle == ReadSwizzle::kRGBA ||
                                               data.fReadSwizzle == ReadSwizzle::kRGB1);
@@ -1295,11 +1296,24 @@ void NonMSAAClipBlock::AddBlock(const KeyContext& keyContext,
 void AddPrimitiveColor(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
-                       const SkColorSpace* primitiveColorSpace) {
-    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(primitiveColorSpace,
-                                                            kPremul_SkAlphaType,
-                                                            keyContext.dstColorInfo().colorSpace(),
-                                                            keyContext.dstColorInfo().alphaType());
+                       bool skipColorXform) {
+    /**
+     * When skipColorXform is true, we assume the primitive color is already in the dst color space.
+    */
+    if (skipColorXform) {
+         builder->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
+         return;
+    }
+
+    /**
+     * If skipColorXform is false (most cases), the primitive color is assumed to be in sRGB.
+    */
+    ColorSpaceTransformBlock::ColorSpaceTransformData toDst(
+            sk_srgb_singleton(),
+            kPremul_SkAlphaType,
+            keyContext.dstColorInfo().colorSpace(),
+            keyContext.dstColorInfo().alphaType());
+
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
                 builder->addBlock(BuiltInCodeSnippetID::kPrimitiveColor);
