@@ -94,6 +94,30 @@
       },
       "revId": "c3d9637567d66a13f42fdbcb0e6f2e9f5fc95c92",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5dcefc5_961e9819",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-17T20:10:40Z",
+      "side": 1,
+      "message": "Originally validate() was public, but there was a request to make it private ... but once its private, its not very useful (since client\u0027s can\u0027t call it), so now its removed entirely.",
+      "parentUuid": "b0f2621a_fc5d72c1",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 6
+      },
+      "revId": "c3d9637567d66a13f42fdbcb0e6f2e9f5fc95c92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
