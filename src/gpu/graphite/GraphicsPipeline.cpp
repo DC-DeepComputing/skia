@@ -53,6 +53,7 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
     fSkSLVertexShader = SkShaderUtils::PrettyPrint(shaderInfo.vertexSkSL());
     fSkSLFragmentShader = SkShaderUtils::PrettyPrint(shaderInfo.fragmentSkSL());
     fLabel = shaderInfo.fsLabel();
+    SkDebugf("%s\n", fLabel.c_str());
 #endif
 }
 

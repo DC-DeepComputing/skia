@@ -42,6 +42,19 @@ KeyContext::KeyContext(const KeyContext& other)
         , fKeyGenFlags(other.fKeyGenFlags)
         , fCaps(other.fCaps) {}
 
+KeyContextForPrimitiveColor::KeyContextForPrimitiveColor(const KeyContext& other,
+                                                         bool skipColorXform)
+        : KeyContext(other) {
+    /**
+     * If skipColorXform is false, enable identity color space transformations. This allows
+     * pipelines to simplify + collapse to be shareable between when we *can* skip the color
+     * transformation and when we cannot but the resultant conversion is an identity conversion.
+    */
+    if (!skipColorXform) {
+        fKeyGenFlags |= KeyGenFlags::kEnableIdentityColorSpaceXform;
+    }
+}
+
 KeyContextForRuntimeEffect::KeyContextForRuntimeEffect(const KeyContext& other,
                                                        const SkRuntimeEffect* effect,
                                                        int child)

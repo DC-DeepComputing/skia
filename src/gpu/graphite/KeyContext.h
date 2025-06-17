@@ -139,6 +139,15 @@ private:
     KeyContextWithColorInfo& operator=(const KeyContextWithColorInfo&) = delete;
 };
 
+class KeyContextForPrimitiveColor : public KeyContext {
+public:
+    KeyContextForPrimitiveColor(const KeyContext& other, bool skipColorXform);
+
+private:
+    KeyContextForPrimitiveColor(const KeyContextForPrimitiveColor&) = delete;
+    KeyContextForPrimitiveColor& operator=(const KeyContextForPrimitiveColor&) = delete;
+};
+
 // The key generation flags vary in the scope of a SkRuntimeEffect per child based on how the RE's
 // SkSL invokes each child.
 class KeyContextForRuntimeEffect : public KeyContext {
