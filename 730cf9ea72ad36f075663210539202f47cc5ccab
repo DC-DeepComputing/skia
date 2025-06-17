@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "023d0299_7315a868",
+        "filename": "src/gpu/graphite/KeyContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T14:37:30Z",
+      "side": 1,
+      "message": "This is not quite correct. If we would have an identity color space conversion based on the dst target space being sRGB (since primitive colors are defined in sRGB by default), but `skipColorXform \u003d false`, then we would use a ColorSpaceXformPremul block with uniform values that cause it to evaluate as if it were an identity function.  If `skipColorXform \u003d true`, then in this case we\u0027d optimize all the way down to `Passthrough` and truly do no extra work (which is what we want in the hard-coded drawShadows case).\n\nThis means that when `skipColorXform \u003d true` (and since we always have an identity CS function), it will never be shareable with another pipeline with `skipColorXform\u003d false`.",
+      "range": {
+        "startLine": 49,
+        "startChar": 80,
+        "endLine": 51,
+        "endChar": 96
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28e05b7e_8a0e5ce7",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T14:37:30Z",
+      "side": 1,
+      "message": "If we have this (which I like because it generates a very straight forward key pattern), we can actually get rid of `KeyContextForPrimitiveColor` because we never reach any code that would try create a `ColorSpaceTransformBlock` that might need to be simplified down to the identity.",
+      "range": {
+        "startLine": 1303,
+        "startChar": 0,
+        "endLine": 1306,
+        "endChar": 5
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aa4f1fa2_089dce57",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T14:37:30Z",
+      "side": 1,
+      "message": "I think we either only want to hard code this dstBlendMode when `skipColorXform \u003d true` (to detect the drawShadow special case, and not impact any regular drawVertices pipelines that a user might trigger), *or* we should allow all primitive color blend modes to optimize to `AddFixedBlendMode` (matching how the finalBlendMode is handled.  This would create more specific pipelines for drawVertices but it\u0027s likely that the user knows how they want to combine their vertex colors anyways.\n\nFor now I\u0027m leaning towards including `skipColorXform` so we don\u0027t impact precompilation that heavily and we can expand drawVertices to use more hard-coded blend functions as follow up if we want to.",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 83
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03368246_6b702cdb",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T14:37:30Z",
+      "side": 1,
+      "message": "This is equivalent to:\n\n```\nif (dstBlendMode) {\n    // The src branch doesn\u0027t matter at all, so don\u0027t even traverse it\n    AddPrimitiveColor(childCOntext, keyBuilder, gatherer, fSkipColorXform);\n} else {\n    Blend(childContext, keyBuilder, gatherer,\n        /* addBlendToKey\u003d */ [\u0026] () -\u003e void {\n            AddToKey(keyContext, keyBuilder, gatherer, fPrimitiveBlender.get());\n        },\n        /* addSrcToKey\u003d */ [\u0026] () -\u003e void {\n            this-\u003eaddPaintColorToKey(keyContext, keyBuilder, gatherer);\n        },\n        /* addDstToKey\u003d */ [\u0026] () -\u003e void {\n            AddPrimitiveColor(...);\n        });\n}\n```\n\nThis would produce the tighter key of just `PrimitiveColor` vs. `Blend [ Passthrough PrimitiveColor Dst ]`, but you\u0027re right that SkSL inlining should mean that everything works out to the same instructions.  And since we switch to Passthrough for the `addSrcToKey`, we aren\u0027t including the unnecessary src elements in the key that would create new pipelines.\n\nUp to you which you think is more readable, but if you keep the original structure, I would flip the condition and if/else cases in the `addSrcToKey` around so both src and dst have `if (dstBlendMode)` and add a comment in the src\u0027s passthrough case saying it doesn\u0027t matter what the src would be so just use prior output.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 7
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e18140c_7c8c9156",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T14:37:30Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 102
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
