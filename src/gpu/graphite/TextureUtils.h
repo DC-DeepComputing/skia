@@ -32,6 +32,7 @@ namespace skgpu::graphite {
 
 class Caps;
 class Context;
+class DrawContext;
 class Image;
 class Recorder;
 class TextureProxyView;
@@ -67,6 +68,7 @@ sk_sp<SkImage> MakeFromBitmap(Recorder*,
 size_t ComputeSize(SkISize dimensions, const TextureInfo&);
 
 sk_sp<Image> CopyAsDraw(Recorder*,
+                        sk_sp<DrawContext> drawContext,
                         const SkImage* image,
                         const SkIRect& subset,
                         const SkColorInfo& dstColorInfo,

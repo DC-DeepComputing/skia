@@ -38,6 +38,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -349,6 +350,7 @@ size_t ComputeSize(SkISize dimensions, const TextureInfo& info) {
 }
 
 sk_sp<Image> CopyAsDraw(Recorder* recorder,
+                        sk_sp<DrawContext> drawContext,
                         const SkImage* image,
                         const SkIRect& subset,
                         const SkColorInfo& dstColorInfo,
@@ -576,6 +578,7 @@ bool GenerateMipmaps(Recorder* recorder,
         if (!copyTask) {
             return false;
         }
+
         recorder->priv().add(std::move(copyTask));
 
         scratchImg = scratchSurface->asImage();
