@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ee7769aa_8a5482f7",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 13
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-17T16:49:02Z",
+      "side": 1,
+      "message": "I was thinking these don\u0027t have to be in the header at all, all fields are public so they could be standalone functions in the cpp file?",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 96,
+        "endChar": 6
+      },
+      "revId": "c3d9637567d66a13f42fdbcb0e6f2e9f5fc95c92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
