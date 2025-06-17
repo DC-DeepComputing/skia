@@ -16,6 +16,46 @@
       "message": "Not sure who would be best for a second review, I\u0027ll let you choose Michael",
       "revId": "ba471e9f34a73590a7a9b4554f861d5394486ec1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39623f1d_5af58091",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T13:59:52Z",
+      "side": 1,
+      "message": "Broadly looks good to me, but noticed that we should use spans in a number of places when passing containers down into functions.",
+      "revId": "ba471e9f34a73590a7a9b4554f861d5394486ec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "548d7eed_60150e56",
+        "filename": "src/sksl/codegen/SkSLSPIRVValidator.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T13:59:52Z",
+      "side": 1,
+      "message": "For all the function signatures that are just reading the list of instructions, we should pass in an SkSpan\u003cconst uint32_t\u003e instead of a `const std::vector\u0026`.",
+      "range": {
+        "startLine": 20,
+        "startChar": 35,
+        "endLine": 20,
+        "endChar": 63
+      },
+      "revId": "ba471e9f34a73590a7a9b4554f861d5394486ec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
