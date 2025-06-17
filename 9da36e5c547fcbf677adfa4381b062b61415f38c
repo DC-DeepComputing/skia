@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276c568d_7e00f5a9",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1476,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-17T16:58:12Z",
+      "side": 1,
+      "message": "terminate ?",
+      "range": {
+        "startLine": 1476,
+        "startChar": 52,
+        "endLine": 1476,
+        "endChar": 62
+      },
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a273cf3e_61038157",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-17T16:58:12Z",
+      "side": 1,
+      "message": "make this clickable or remove",
+      "range": {
+        "startLine": 1479,
+        "startChar": 74,
+        "endLine": 1479,
+        "endChar": 81
+      },
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a31a955c_55cd1c72",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1482,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-17T16:58:12Z",
+      "side": 1,
+      "message": "I would put these around the test so it totally disappears",
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
