@@ -56,6 +56,30 @@
       },
       "revId": "ba471e9f34a73590a7a9b4554f861d5394486ec1",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2455c49e_0280f0f2",
+        "filename": "src/sksl/codegen/SkSLSPIRVValidator.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-17T21:12:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "548d7eed_60150e56",
+      "range": {
+        "startLine": 20,
+        "startChar": 35,
+        "endLine": 20,
+        "endChar": 63
+      },
+      "revId": "ba471e9f34a73590a7a9b4554f861d5394486ec1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
