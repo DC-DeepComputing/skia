@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3743e0c0_f5def1e0",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T02:17:18Z",
+      "side": 1,
+      "message": "Ah yes, I see what you\u0027re saying.\nNow the new flow for `handlePrimitiveColor(...)` is:\n* If `fSkipColorXform` is false, then we enable identity CS transformations for key generation. This enables the final pipeline to be shared between those that skip the color xform and those that do not but end up using an identity xform.\n\n* If the primitive blend mode is `kDst`, then use a fixed blend block. Use `kPriorOutput` rather than adding the paint color to the key as a form of passthrough. (fixed blend mode block, even when kDst, expects a block for the source still. This is a potential improvement area I think).\n\n* `AddPrimitiveColor` now accepts a bool for skipping a colorspace xform rather than a `SkColorSpace`. We only ever expect the CS to be the same as the dst or SRGB. Now, we skip the addition of a color transform block entirely when `fSkipColorXform` is true. I think this makes more sense for readability, but LMKWYT. The new key context for primitive color handling will still enable identity CS conversions when we are not told explicitly that we can skip the xform so the PPKs *should* look the same (`Compose [ BlendCompose [ Passthrough PrimitiveColor Dst ] Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver `).\n\nLMKWYT - it could be further simplified to simply add the primitive color block when we can skip the xform AND using kDst blending (i.e. `Compose [ PrimitiveColor Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver`), but the precompile key would then look slightly different (since we do not assume we can skip the xform). However, given how SkSL boils things down, perhaps that doesn\u0027t actually matter.",
+      "parentUuid": "9adfbdd3_aa046969",
+      "range": {
+        "startLine": 188,
+        "startChar": 0,
+        "endLine": 188,
+        "endChar": 51
+      },
+      "revId": "3dc10135a1156d8e0621c5f7adeb829775e07cf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "436b507f_0c38de01",
         "filename": "src/gpu/graphite/PaintParams.cpp",
         "patchSetId": 11
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-16T18:21:35Z",
       "side": 1,
       "message": "Drive-by, but I think we should restrict the adding of `KeyGenFlags::kEnableIdentityColorSpaceXform` to this specific call when `fSkipColorXform` is false so that it only influences the primitive color transform and not other aspects of the pipeline.",
+      "range": {
+        "startLine": 197,
+        "startChar": 0,
+        "endLine": 197,
+        "endChar": 93
+      },
+      "revId": "3dc10135a1156d8e0621c5f7adeb829775e07cf8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8975eabb_868ec7b3",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 197,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T02:17:18Z",
+      "side": 1,
+      "message": "ISWYM re: not impacting other parts of the pipeline. As discussed offline, I added a `KeyContextForPrimitiveColor` which can toggle on the key gen flag for enabling identity color space conversions when we cannot skip the color conversion.",
+      "parentUuid": "436b507f_0c38de01",
       "range": {
         "startLine": 197,
         "startChar": 0,

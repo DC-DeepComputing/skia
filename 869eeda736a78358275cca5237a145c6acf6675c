@@ -16,6 +16,24 @@
       "message": "It seems like PaintOption::handlePrimitiveColor would also need to be updated",
       "revId": "869eeda736a78358275cca5237a145c6acf6675c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aab683ce_2b45fe82",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T02:17:18Z",
+      "side": 0,
+      "message": "Done - will update more as review feedback changes the structure of handling primitive colors for PaintParams.",
+      "parentUuid": "fde25f20_ccf6f731",
+      "revId": "869eeda736a78358275cca5237a145c6acf6675c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
