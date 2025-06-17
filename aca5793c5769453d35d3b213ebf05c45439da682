@@ -16,6 +16,24 @@
       "message": "ptal -- do the canary failures mean anything?",
       "revId": "aca5793c5769453d35d3b213ebf05c45439da682",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3b6b22d_4a3de62d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-17T16:45:45Z",
+      "side": 1,
+      "message": "They all seem unrelated, AFAICT this can land.",
+      "parentUuid": "609c916d_307c505d",
+      "revId": "aca5793c5769453d35d3b213ebf05c45439da682",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
