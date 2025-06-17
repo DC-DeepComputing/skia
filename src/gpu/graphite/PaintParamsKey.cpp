@@ -319,7 +319,7 @@ SkString PaintParamsKey::toString(const ShaderCodeDictionary* dict) const {
     return str.isEmpty() ? SkString("(empty)") : str;
 }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
 
 void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID id) const {
     const int keySize = SkTo<int>(fData.size());
@@ -340,7 +340,7 @@ void PaintParamsKey::dump(const ShaderCodeDictionary* dict, UniquePaintParamsID 
     }
 }
 
-#endif // SK_DEBUG
+//#endif // SK_DEBUG
 
 namespace {
 

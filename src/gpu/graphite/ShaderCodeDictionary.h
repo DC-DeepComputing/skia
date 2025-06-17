@@ -263,11 +263,11 @@ public:
 
     SkString idToString(UniquePaintParamsID id) const { return this->lookup(id).toString(this); }
 
-#if defined(SK_DEBUG)
+//#if defined(SK_DEBUG)
     bool isValidID(int snippetID) const SK_EXCLUDES(fSpinLock);
 
     void dump(UniquePaintParamsID) const;
-#endif
+//#endif
 
     // This method can return nullptr
     const ShaderSnippet* getEntry(int codeSnippetID) const SK_EXCLUDES(fSpinLock);

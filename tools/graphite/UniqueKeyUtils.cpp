@@ -32,7 +32,7 @@ void FetchUniqueKeys(PrecompileContext* precompileContext,
                                          });
 }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
 void DumpDescs(PrecompileContext* precompileContext,
                const GraphicsPipelineDesc& pipelineDesc,
                const RenderPassDesc& rpd) {
@@ -60,7 +60,7 @@ void DumpDescs(PrecompileContext* precompileContext,
              rpd.fSampleCount);
 
 }
-#endif // SK_DEBUG
+//#endif // SK_DEBUG
 
 bool ExtractKeyDescs(PrecompileContext* precompileContext,
                      const UniqueKey& origKey,
