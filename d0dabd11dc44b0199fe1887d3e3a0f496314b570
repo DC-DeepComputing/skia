@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2ad31d2b_3fa16808",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T17:56:54Z",
+      "side": 1,
+      "message": "We would want to pass `drawContext` down to `GenerateMipmaps` so that the draw tasks used to modify dst\u0027s lower levels are also added in the same scope.\n\nAs-is, if we don\u0027t use the `CopyAsDraw` approach, we will skip generating the mipmap content (just the 1st layer will be initialized from the main copy task), so sampling things that would access lower layers will be undefined.",
+      "range": {
+        "startLine": 113,
+        "startChar": 13,
+        "endLine": 113,
+        "endChar": 28
+      },
+      "revId": "d0dabd11dc44b0199fe1887d3e3a0f496314b570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2d4294b1_8db0d2cd",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T17:56:54Z",
+      "side": 1,
+      "message": "This logic would need to be updated to move the `scratchSurface`\u0027s task to the drawContext as well as the copy task. (this would be `surface-\u003easImage()-\u003enotifyInUse(...)` instead of Flush I believe).",
+      "range": {
+        "startLine": 570,
+        "startChar": 0,
+        "endLine": 582,
+        "endChar": 50
+      },
+      "revId": "d0dabd11dc44b0199fe1887d3e3a0f496314b570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
