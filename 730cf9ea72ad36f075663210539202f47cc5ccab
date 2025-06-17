@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "329a4576_a4a5e915",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1306,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-17T20:58:36Z",
+      "side": 1,
+      "message": "`skipColorXform` is not exposed to users in the SkCanvas API, so drawShadow is currently the only thing that can set it to true.",
+      "parentUuid": "6e3f6ad1_f7f38d4c",
+      "range": {
+        "startLine": 1303,
+        "startChar": 0,
+        "endLine": 1306,
+        "endChar": 5
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "aa4f1fa2_089dce57",
         "filename": "src/gpu/graphite/PaintParams.cpp",
         "patchSetId": 14
