@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "48fbfdf7_6cd50372",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-17T16:30:05Z",
+      "side": 1,
+      "message": "I\u0027m kinda wary of encouraging external clients to treat SkData as anything other than an opaque data blob (possibly violating SAR in the process).  Can we restrict this to internal clients somehow (SkDataPriv?) and/or punt to a separate CL?",
+      "range": {
+        "startLine": 43,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 5
+      },
+      "revId": "fab1ba0e84608bfa9ac2514be0fcd94e2118599b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cbd6d6d_375ab9bd",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-17T16:30:05Z",
+      "side": 1,
+      "message": "At this point I think we might as well drop the assert from `writable_data`, and leave disciplining users to the stern docs.",
+      "revId": "fab1ba0e84608bfa9ac2514be0fcd94e2118599b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
