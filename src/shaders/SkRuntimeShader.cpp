@@ -21,6 +21,7 @@
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkPicturePriv.h"
+#include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkWriteBuffer.h"
@@ -59,6 +60,64 @@ SkRuntimeShader::SkRuntimeShader(sk_sp<SkRuntimeEffect> effect,
         , fDebugTrace(std::move(debugTrace))
         , fUniformsCallback(std::move(uniformsCallback))
         , fChildren(children.begin(), children.end()) {}
+
+
+SkPMColor4f foo(SkRuntimeEffect* effect, const SkPMColor4f& inputColor) {
+#if 0
+    SkPMColor4f color = (fInputChildIndex >= 0)
+                        ? ConstantOutputForConstantInput(this->childProcessor(fInputChildIndex), inputColor)
+                        : inputColor;
+#else
+    SkPMColor4f color = inputColor;
+#endif
+
+    class ConstantOutputForConstantInput_SkRPCallbacks : public SkSL::RP::Callbacks {
+    public:
+        bool appendShader(int index) override {
+            SkDEBUGFAIL("constant-output-for-constant-input unsupported when child shaders present");
+            return false;
+        }
+        bool appendColorFilter(int index) override {
+            SkDEBUGFAIL("constant-output-for-constant-input unsupported when child shaders present");
+            return false;
+        }
+        bool appendBlender(int index) override {
+            SkDEBUGFAIL("constant-output-for-constant-input unsupported when child shaders present");
+            return false;
+        }
+        void toLinearSrgb(const void* color) override { /* identity color conversion */ }
+        void fromLinearSrgb(const void* color) override { /* identity color conversion */ }
+    };
+
+    if (const SkSL::RP::Program* program = effect->getRPProgram(/*debugTrace=*/nullptr)) {
+        // No color conversion is happening here, so we can use untransformed uniforms.
+        SkSpan<const float> uniforms{reinterpret_cast<const float*>(this->uniformData()),
+                                     effect->uniformSize() / sizeof(float)};
+        SkSTArenaAlloc<2048> alloc;  // sufficient for a tiny SkSL program
+        SkRasterPipeline pipeline(&alloc);
+        pipeline.appendConstantColor(&alloc, color.vec());
+        ConstantOutputForConstantInput_SkRPCallbacks callbacks;
+        if (program->appendStages(&pipeline, &alloc, &callbacks, uniforms)) {
+            SkPMColor4f outputColor;
+            SkRasterPipelineContexts::MemoryCtx outputCtx = {&outputColor, 0};
+            pipeline.append(SkRasterPipelineOp::store_f32, &outputCtx);
+            pipeline.run(0, 0, 1, 1);
+            return outputColor;
+        }
+    }
+
+    // We weren't able to run the Raster Pipeline program.
+    return color;
+}
+
+bool SkRuntimeShader::hasConstantOutputForConstantInput() const {
+    return SkRuntimeEffectPriv::SupportsConstantOutputForConstantInput(fEffect.get());
+}
+
+SkPMColor4f SkRuntimeShader::constantOutputForConstantInput(const SkPMColor4f& inputColor) const {
+    SkASSERT(this->hasConstantOutputForConstantInput());
+    return foo(fEffect.get(), inputColor);
+}
 
 static sk_sp<SkSL::DebugTracePriv> make_debug_trace(SkRuntimeEffect* effect,
                                                     const SkIPoint& coord) {

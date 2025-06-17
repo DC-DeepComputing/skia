@@ -34,14 +34,14 @@ public:
 
     void flatten(SkWriteBuffer& buffer) const override;
 
-    SkRuntimeEffect* asRuntimeEffect() const override;
+    SkRuntimeEffect* asRuntimeEffect1() const override;
 
     SkColorFilterBase::Type type() const override { return SkColorFilterBase::Type::kRuntime; }
 
     SK_FLATTENABLE_HOOKS(SkRuntimeColorFilter)
 
-    sk_sp<SkRuntimeEffect> effect() const { return fEffect; }
-    sk_sp<const SkData> uniforms() const { return fUniforms; }
+    sk_sp<SkRuntimeEffect> effect1() const { return fEffect; }
+    sk_sp<const SkData> uniforms1() const { return fUniforms; }
     SkSpan<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
 
 private:

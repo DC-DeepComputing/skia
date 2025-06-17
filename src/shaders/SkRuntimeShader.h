@@ -13,6 +13,7 @@
 #include "include/core/SkSpan.h"
 #include "include/effects/SkRuntimeEffect.h"
 #include "include/private/base/SkDebug.h"
+#include "src/core/SkColorData.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/shaders/SkShaderBase.h"
 #include "src/sksl/tracing/SkSLDebugTracePriv.h"
@@ -42,6 +43,9 @@ public:
     SkRuntimeEffect::TracedShader makeTracedClone(const SkIPoint& coord);
 
     bool isOpaque() const override { return fEffect->alwaysOpaque(); }
+
+    bool hasConstantOutputForConstantInput() const override;
+    SkPMColor4f constantOutputForConstantInput(const SkPMColor4f& input) const override;
 
     ShaderType type() const override { return ShaderType::kRuntime; }
 

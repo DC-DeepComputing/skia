@@ -56,7 +56,7 @@ public:
                SkColors::kTransparent;
     }
 
-    virtual SkRuntimeEffect* asRuntimeEffect() const { return nullptr; }
+    virtual SkRuntimeEffect* asRuntimeEffect1() const { return nullptr; }
 
     static SkFlattenable::Type GetFlattenableType() {
         return kSkColorFilter_Type;

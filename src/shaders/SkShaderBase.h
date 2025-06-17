@@ -18,6 +18,7 @@
 #include "include/core/SkSurfaceProps.h"
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkNoncopyable.h"
+#include "src/core/SkColorData.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -195,6 +196,12 @@ public:
      *  Subclasses can override this to allow loop-hoisting optimization.
      */
     virtual bool isConstant(SkColor4f* color = nullptr) const { return false; }
+
+    virtual bool hasConstantOutputForConstantInput() const { return false; }
+    virtual SkPMColor4f constantOutputForConstantInput(const SkPMColor4f& inputColor) const {
+        SkASSERT(0);
+        return SK_PMColor4fTRANSPARENT;
+    }
 
     enum class ShaderType {
 #define M(type) k##type,

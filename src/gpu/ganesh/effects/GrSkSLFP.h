@@ -118,7 +118,7 @@ public:
      * for all of the 'uniform' variables in the SkSL source. The layout of the uniforms blob is
      * dictated by the SkRuntimeEffect.
      */
-    static std::unique_ptr<GrSkSLFP> MakeWithData(
+    static std::unique_ptr<GrSkSLFP> MakeWithData1(
             sk_sp<SkRuntimeEffect> effect,
             const char* name,
             sk_sp<SkColorSpace> dstColorSpace,
@@ -156,7 +156,7 @@ public:
      * uniform data is directly copied into the footer allocated after the FP.
      */
     template <typename... Args>
-    static std::unique_ptr<GrSkSLFP> Make(const SkRuntimeEffect* effect,
+    static std::unique_ptr<GrSkSLFP> Make1(const SkRuntimeEffect* effect,
                                           const char* name,
                                           std::unique_ptr<GrFragmentProcessor> inputFP,
                                           OptFlags optFlags,
@@ -178,7 +178,7 @@ public:
                                                                        name, optFlags));
         fp->appendArgs(fp->uniformData(), fp->specialized(), std::forward<Args>(args)...); // NOLINT
         if (inputFP) {
-            fp->setInput(std::move(inputFP));
+            fp->setInput1(std::move(inputFP));
         }
         return fp;
     }
@@ -195,7 +195,7 @@ private:
     static OptimizationFlags DetermineOptimizationFlags(OptFlags of, SkRuntimeEffect* effect);
 
     void addChild(std::unique_ptr<GrFragmentProcessor> child, bool mergeOptFlags);
-    void setInput(std::unique_ptr<GrFragmentProcessor> input);
+    void setInput1(std::unique_ptr<GrFragmentProcessor> input);
     void setDestColorFP(std::unique_ptr<GrFragmentProcessor> destColorFP);
     void addColorTransformChildren(SkColorSpace* dstColorSpace);
 

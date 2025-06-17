@@ -84,7 +84,7 @@ void SkRuntimeColorFilter::flatten(SkWriteBuffer& buffer) const {
     SkRuntimeEffectPriv::WriteChildEffects(buffer, fChildren);
 }
 
-SkRuntimeEffect* SkRuntimeColorFilter::asRuntimeEffect() const { return fEffect.get(); }
+SkRuntimeEffect* SkRuntimeColorFilter::asRuntimeEffect1() const { return fEffect.get(); }
 
 sk_sp<SkFlattenable> SkRuntimeColorFilter::CreateProc(SkReadBuffer& buffer) {
     if (!buffer.validate(buffer.allowSkSL())) {

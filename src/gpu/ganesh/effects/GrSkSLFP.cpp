@@ -286,7 +286,7 @@ private:
     std::vector<UniformHandle> fUniformHandles;
 };
 
-std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
+std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData1(
         sk_sp<SkRuntimeEffect> effect,
         const char* name,
         sk_sp<SkColorSpace> dstColorSpace,
@@ -306,7 +306,7 @@ std::unique_ptr<GrSkSLFP> GrSkSLFP::MakeWithData(
         fp->addChild(std::move(childFP), /*mergeOptFlags=*/true);
     }
     if (inputFP) {
-        fp->setInput(std::move(inputFP));
+        fp->setInput1(std::move(inputFP));
     }
     if (destColorFP) {
         fp->setDestColorFP(std::move(destColorFP));
@@ -365,7 +365,7 @@ void GrSkSLFP::addChild(std::unique_ptr<GrFragmentProcessor> child, bool mergeOp
     this->registerChild(std::move(child), fEffect->fSampleUsages[childIndex]);
 }
 
-void GrSkSLFP::setInput(std::unique_ptr<GrFragmentProcessor> input) {
+void GrSkSLFP::setInput1(std::unique_ptr<GrFragmentProcessor> input) {
     SkASSERTF(fInputChildIndex == -1, "setInput should not be called more than once");
     fInputChildIndex = this->numChildProcessors();
     SkASSERT((size_t)fInputChildIndex >= fEffect->fSampleUsages.size());
