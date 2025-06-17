@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8d98d3c_253dbf92",
+        "filename": "src/gpu/graphite/KeyContext.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T20:32:58Z",
+      "side": 1,
+      "message": "Removed per discussion in other comment",
+      "parentUuid": "023d0299_7315a868",
+      "range": {
+        "startLine": 49,
+        "startChar": 80,
+        "endLine": 51,
+        "endChar": 96
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28e05b7e_8a0e5ce7",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-17T14:37:30Z",
       "side": 1,
       "message": "If we have this (which I like because it generates a very straight forward key pattern), we can actually get rid of `KeyContextForPrimitiveColor` because we never reach any code that would try create a `ColorSpaceTransformBlock` that might need to be simplified down to the identity.",
+      "range": {
+        "startLine": 1303,
+        "startChar": 0,
+        "endLine": 1306,
+        "endChar": 5
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e3f6ad1_f7f38d4c",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1306,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T20:32:58Z",
+      "side": 1,
+      "message": "Yeah, I agree! My bigger concern was for `PaintOption` where we assume we cannot skip the xform, but this should be solved w/ the parent change to add that member attribute to PaintOption.\n\nI do like this sensible structure, but this will, however, impact all primitive color additions that have `skipColorXform \u003d true`, not necessarily *just* drawShadow calls. Do you foresee this being an issue? We currently only set skipColorXform to true for precompilation specifically for drawShadows...",
+      "parentUuid": "28e05b7e_8a0e5ce7",
       "range": {
         "startLine": 1303,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a3824337_4d8acd0f",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T20:32:58Z",
+      "side": 1,
+      "message": "I can understand only making this simplification when we are explicitly told we can skip the color conversion.\n\nAdded upstream change to add `fSkipColorXform` to `PaintOption`, so now the precompilation key should match the PaintParamsKey.",
+      "parentUuid": "aa4f1fa2_089dce57",
+      "range": {
+        "startLine": 198,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 83
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03368246_6b702cdb",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0baadbf_63eb88da",
+        "filename": "src/gpu/graphite/PaintParams.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T20:32:58Z",
+      "side": 1,
+      "message": "Yes, I agree they are equivalent. I made the change you suggested - my concern was for precompilation paint keys matching (e.g. will it be recognized that `Blend [ Passthrough PrimitiveColor Dst ]` is equivalent to `PrimitiveColor`). Now PaintOption can match the simplified version cia adding skipColorXform as an attribute.",
+      "parentUuid": "03368246_6b702cdb",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 219,
+        "endChar": 7
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2e18140c_7c8c9156",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-06-17T14:37:30Z",
       "side": 1,
       "message": "nit: line length",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 76,
+        "endChar": 102
+      },
+      "revId": "730cf9ea72ad36f075663210539202f47cc5ccab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e34dfbd3_c0eb5a2d",
+        "filename": "src/gpu/graphite/PaintParams.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-17T20:32:58Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2e18140c_7c8c9156",
       "range": {
         "startLine": 76,
         "startChar": 0,
