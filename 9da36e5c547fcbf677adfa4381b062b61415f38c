@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0187a4be_d425fbeb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-17T19:07:08Z",
+      "side": 1,
+      "message": "Comments done PTAL!",
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "276c568d_7e00f5a9",
@@ -14,6 +31,30 @@
       "writtenOn": "2025-06-17T16:58:12Z",
       "side": 1,
       "message": "terminate ?",
+      "range": {
+        "startLine": 1476,
+        "startChar": 52,
+        "endLine": 1476,
+        "endChar": 62
+      },
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7fc1d8aa_98e3fc56",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1476,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-17T19:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "276c568d_7e00f5a9",
       "range": {
         "startLine": 1476,
         "startChar": 52,
@@ -47,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c97643be_214338d8",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1479,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-17T19:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a273cf3e_61038157",
+      "range": {
+        "startLine": 1479,
+        "startChar": 74,
+        "endLine": 1479,
+        "endChar": 81
+      },
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a31a955c_55cd1c72",
@@ -60,6 +125,24 @@
       "writtenOn": "2025-06-17T16:58:12Z",
       "side": 1,
       "message": "I would put these around the test so it totally disappears",
+      "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "867df4f4_cac9446c",
+        "filename": "tests/TriangulatingPathRendererTests.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1482,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-17T19:07:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a31a955c_55cd1c72",
       "revId": "9da36e5c547fcbf677adfa4381b062b61415f38c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
