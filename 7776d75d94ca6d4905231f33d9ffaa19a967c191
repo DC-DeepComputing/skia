@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a59ba12_baa640c8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-06-17T14:00:10Z",
+      "side": 1,
+      "message": "Awesome, this looks great and is a big help! Thank you!",
+      "revId": "7776d75d94ca6d4905231f33d9ffaa19a967c191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc7ff8a5_ec0019ab",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-06-17T14:00:10Z",
+      "side": 1,
+      "message": "👍 Thanks!",
+      "revId": "7776d75d94ca6d4905231f33d9ffaa19a967c191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
