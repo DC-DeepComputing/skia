@@ -129,7 +129,7 @@ protected:
         return &fKey[kMetaDataCnt];
     }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
     void dump() const {
         if (!this->isValid()) {
             SkDebugf("Invalid Key\n");
@@ -144,7 +144,7 @@ protected:
             SkDebugf("\n");
         }
     }
-#endif
+//#endif
 
 private:
     enum MetaDataIdx {
@@ -267,7 +267,7 @@ public:
 
     const uint32_t* data() const { return this->ResourceKey::data(); }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
     uint32_t domain() const { return this->ResourceKey::domain(); }
     size_t dataSize() const { return this->ResourceKey::dataSize(); }
 
@@ -275,7 +275,7 @@ public:
         SkDebugf("%s tag: %s\n", label, fTag ? fTag : "None");
         this->ResourceKey::dump();
     }
-#endif
+//#endif
 
     class Builder : public ResourceKey::Builder {
     public:

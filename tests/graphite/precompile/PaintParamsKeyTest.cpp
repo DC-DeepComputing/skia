@@ -1726,7 +1726,7 @@ void non_simple_draws(SkCanvas* canvas, const SkPaint& paint, const DrawData& dr
     }
 }
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
 void dump_keys(PrecompileContext* precompileContext,
                const std::vector<skgpu::UniqueKey>& needleKeys,
                const std::vector<skgpu::UniqueKey>& hayStackKeys,
@@ -1754,7 +1754,7 @@ void dump_keys(PrecompileContext* precompileContext,
                                   originalRenderPassDesc);
     }
 }
-#endif
+//#endif
 
 void check_draw(skiatest::Reporter* reporter,
                 Context* context,
@@ -1901,12 +1901,12 @@ void check_draw(skiatest::Reporter* reporter,
     REPORTER_ASSERT(reporter, missingPipelines == 0,
                     "precompile pipelines: %zu draw pipelines: %zu - %d missing from precompile",
                     precompileKeys.size(), drawKeys.size(), missingPipelines);
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
     if (missingPipelines) {
         dump_keys(precompileContext, drawKeys, precompileKeys, "draw", "precompile");
         dump_keys(precompileContext, precompileKeys, drawKeys, "precompile", "draw");
     }
-#endif // SK_DEBUG
+//#endif // SK_DEBUG
 
 }
 

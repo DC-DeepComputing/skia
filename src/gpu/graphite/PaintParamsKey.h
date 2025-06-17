@@ -104,9 +104,9 @@ public:
     // purposes.
     SkString toString(const ShaderCodeDictionary* dict) const;
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
     void dump(const ShaderCodeDictionary*, UniquePaintParamsID) const;
-#endif
+//#endif
 
     bool operator==(const PaintParamsKey& that) const {
         return fData.size() == that.fData.size() &&

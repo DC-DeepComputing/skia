@@ -31,11 +31,11 @@ namespace UniqueKeyUtils {
 void FetchUniqueKeys(skgpu::graphite::PrecompileContext*,
                      std::vector<skgpu::UniqueKey>* keys);
 
-#ifdef SK_DEBUG
+//#ifdef SK_DEBUG
 void DumpDescs(skgpu::graphite::PrecompileContext*,
                const skgpu::graphite::GraphicsPipelineDesc&,
                const skgpu::graphite::RenderPassDesc&);
-#endif
+//#endif
 
 // This helper breaks a UniqueKey down into its GraphicsPipelineDesc
 // and a RenderPassDesc and checks that the reassembled pieces match the
