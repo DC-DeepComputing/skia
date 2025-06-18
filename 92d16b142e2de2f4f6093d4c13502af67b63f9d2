@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6a093988_4b493487",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T04:00:02Z",
+      "side": 1,
+      "message": "Is the new coolness empty() or isEmpty() ?",
+      "revId": "92d16b142e2de2f4f6093d4c13502af67b63f9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
