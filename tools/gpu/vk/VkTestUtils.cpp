@@ -499,6 +499,11 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc,
 
     // Add any features that are needed by tests before calling skiaFeatures->addFeaturesToQuery.
 
+    printf("Available Extensions:\n");
+    for (const VkExtensionProperties& ext: deviceExtensions) {
+        printf(" - %s\n", ext.extensionName);
+    }
+
     void** tailPNext = &testVkFeatures.deviceFeatures.pNext;
 
     // If |isProtected| is given, attach that first
@@ -515,6 +520,16 @@ static bool setup_features(const skgpu::VulkanGetProc& getProc,
 
     ACQUIRE_VK_PROC_LOCAL(GetPhysicalDeviceFeatures2, inst, VK_NULL_HANDLE);
     grVkGetPhysicalDeviceFeatures2(physDev, &testVkFeatures.deviceFeatures);
+
+    printf("Queried features:\n");
+    {
+        const VkBaseInStructure* p = (const VkBaseInStructure*)(testVkFeatures.deviceFeatures.pNext);
+        while (p != nullptr) {
+            printf(" - %d (first bool: %d)\n",
+                    p->sType, ((const VkPhysicalDeviceSynchronization2Features*)p)->synchronization2);
+            p = p->pNext;
+        }
+    }
 
     // Robustness has adverse effect on performance on a few GPUs, and besides we can't depend on it
     // on all platforms.
@@ -818,6 +833,20 @@ bool CreateVkBackendContext(PFN_vkGetInstanceProcAddr getInstProc,
     // skiaFeatures itself.
     testVkFeatures->skiaFeatures.addFeaturesToEnable(deviceExtensionNames,
                                                      testVkFeatures->deviceFeatures);
+
+    printf("Enabled Extensions:\n");
+    for (const char* ext: deviceExtensionNames) {
+        printf(" - %s\n", ext);
+    }
+    printf("Enabled features:\n");
+    {
+        const VkBaseInStructure* p = (const VkBaseInStructure*)(testVkFeatures->deviceFeatures.pNext);
+        while (p != nullptr) {
+            printf(" - %d (first bool: %d)\n",
+                    p->sType, ((const VkPhysicalDeviceSynchronization2Features*)p)->synchronization2);
+            p = p->pNext;
+        }
+    }
 
     extensions->init(getProc,
                      inst,
