@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "11fda93a_8391af57",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "With dereferences of advance given that it\u0027s a ptr, yes. Done!",
+      "parentUuid": "9b6cea62_7fa25559",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1730ce68_c0292b4b",
@@ -48,6 +66,24 @@
       "writtenOn": "2025-06-18T17:06:32Z",
       "side": 1,
       "message": "return xps_point(matrix.mapPoint(point));",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f8a5574_81d9d412",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1730ce68_c0292b4b",
       "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -69,6 +105,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a1fb0b4_71a19b43",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "Whoops yes this was silly; thank you!",
+      "parentUuid": "6ba4b8e5_62ed308c",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "901f8926_96f9d4ae",
@@ -82,6 +136,24 @@
       "writtenOn": "2025-06-18T17:06:32Z",
       "side": 1,
       "message": "ditto: just pass stop?",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "aea49154_907de5ae",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "901f8926_96f9d4ae",
       "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -103,6 +175,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d02d31c2_49d911f0",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d4d6e70a_a1ae88dc",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f914df90_9b1591a8",
@@ -116,6 +206,24 @@
       "writtenOn": "2025-06-18T17:06:32Z",
       "side": 1,
       "message": "as above, you can rely on the compiler, and just pass points.",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d4784643_5dfdc12d",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-18T17:54:51Z",
+      "side": 1,
+      "message": "I had had issues in the past where the potential usage of nullptr had the compiler complain about ambiguous calls, so I think I got into the habit of being extra explicit. You\u0027re right; done!",
+      "parentUuid": "f914df90_9b1591a8",
       "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
