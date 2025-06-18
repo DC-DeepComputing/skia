@@ -29,12 +29,15 @@
 #include "include/private/base/SkFeatures.h"
 #include "include/private/base/SkMalloc.h"
 #include "include/private/base/SkMath.h"
+#include "include/private/base/SkTemplates.h"
 #include "include/private/base/SkTo.h"
 #include "src/base/SkArenaAlloc.h"
 #include "src/base/SkVx.h"
 #include "src/core/SkBitmapDevice.h"
 #include "src/core/SkDevice.h"
+#include "src/core/SkGaussFilter.h"
 #include "src/core/SkKnownRuntimeEffects.h"
+#include "src/core/SkMaskBlurFilter.h"
 #include "src/core/SkSpecialImage.h"
 
 #include <algorithm>
@@ -42,6 +45,7 @@
 #include <cmath>
 #include <cstdint>
 #include <cstring>
+#include <limits>
 #include <utility>
 
 
@@ -64,9 +68,10 @@ public:
     explicit Pass(int border) : fBorder(border) {}
     virtual ~Pass() = default;
 
+    template <typename T>
     void blur(int srcLeft, int srcRight, int dstRight,
-              const uint32_t* src, int srcStride,
-              uint32_t* dst, int dstStride) {
+              const T* src, int srcStride,
+              T* dst, int dstStride) {
         this->startBlur();
 
         auto srcStart = srcLeft - fBorder,
@@ -75,8 +80,8 @@ public:
                 srcIdx   = srcStart,
                 dstIdx   = 0;
 
-        const uint32_t* srcCursor = src;
-        uint32_t* dstCursor = dst;
+        const T* srcCursor = src;
+        T* dstCursor = dst;
 
         if (dstIdx < srcIdx) {
             // The destination pixels are not effected by the src pixels,
@@ -130,7 +135,7 @@ public:
 protected:
     virtual void startBlur() = 0;
     virtual void blurSegment(
-            int n, const uint32_t* src, int srcStride, uint32_t* dst, int dstStride) = 0;
+            int n, const void* src, int srcStride, void* dst, int dstStride) = 0;
 
 private:
     const int fBorder;
@@ -138,15 +143,115 @@ private:
 
 class PassMaker {
 public:
-    explicit PassMaker(int window) : fWindow{window} {}
+    explicit PassMaker(int window, float sigma) : fWindow{window},
+                                                  fSigma{sigma} {}
     virtual ~PassMaker() = default;
     virtual Pass* makePass(void* buffer, SkArenaAlloc* alloc) const = 0;
     virtual size_t bufferSizeBytes() const = 0;
     int window() const {return fWindow;}
+    float sigma() const {return fSigma;}
 
 private:
     const int fWindow;
+    const float fSigma;
 };
+
+template <typename T>
+static sk_sp<SkSpecialImage> make_blurred_special(PassMaker* makerX, PassMaker* makerY,
+                                                  SkBitmap src, const SkIRect& originalSrcBounds,
+                                                  const SkIRect& originalDstBounds,
+                                                  SkArenaAlloc* alloc) {
+    SkIRect srcBounds = originalSrcBounds;
+    SkIRect dstBounds = originalDstBounds;
+    if (makerX->window() > 1) {
+        // Inflate the dst by the window required for the Y pass so that the X pass can prepare
+        // it. The Y pass will be offset to only write to the original rows in dstBounds, but
+        // its window will access these extra rows calculated by the X pass. The SpecialImage
+        // factory will then subset the bitmap so it appears to match 'originalDstBounds'
+        // tightly. We make one slightly larger image to hold this extra data instead of two
+        // separate images sized exactly to each pass because the CPU blur can write in place.
+        dstBounds.outset(0, SkBlurEngine::SigmaToRadius(makerY->sigma()));
+    }
+
+    SkBitmap dst;
+    const SkIPoint dstOrigin = dstBounds.topLeft();
+    if (!dst.tryAllocPixels(src.info().makeWH(dstBounds.width(), dstBounds.height()))) {
+        return nullptr;
+    }
+    dst.eraseColor(SK_ColorTRANSPARENT);
+
+    auto buffer = alloc->makeBytesAlignedTo(std::max(makerX->bufferSizeBytes(),
+                                            makerY->bufferSizeBytes()),
+                                            alignof(skvx::Vec<4, uint32_t>));
+
+    // Basic Plan: The three cases to handle
+    // * Horizontal and Vertical - blur horizontally while copying values from the source to
+    //     the destination. Then, do an in-place vertical blur.
+    // * Horizontal only - blur horizontally copying values from the source to the destination.
+    // * Vertical only - blur vertically copying values from the source to the destination.
+
+    // Initialize these assuming the Y-only case
+    int loopStart  = std::max(srcBounds.left(),  dstBounds.left());
+    int loopEnd    = std::min(srcBounds.right(), dstBounds.right());
+    int dstYOffset = 0;
+
+    if (makerX->window() > 1) {
+        // First an X-only blur from src into dst, including the extra rows that will become
+        // input for the second Y pass, which will then be performed in place.
+        loopStart = std::max(srcBounds.top(),    dstBounds.top());
+        loopEnd   = std::min(srcBounds.bottom(), dstBounds.bottom());
+
+        //TODO: change this and below to be specific to the input
+        auto srcAddr = reinterpret_cast<T*>(src.getAddr(0, loopStart - srcBounds.top()));
+        auto dstAddr = reinterpret_cast<T*>(dst.getAddr(0, loopStart - dstBounds.top()));
+
+        // Iterate over each row to calculate 1D blur along X.
+        Pass* pass = makerX->makePass(buffer, alloc);
+        for (int y = loopStart; y < loopEnd; ++y) {
+            pass->blur<T>(srcBounds.left()  - dstBounds.left(),
+            srcBounds.right() - dstBounds.left(),
+            dstBounds.width(),
+            srcAddr, 1,
+            dstAddr, 1);
+            srcAddr += src.rowBytesAsPixels();
+            dstAddr += dst.rowBytesAsPixels();
+        }
+
+        // Set up the Y pass to blur from the full dst into the non-outset portion of dst
+        src = dst;
+        loopStart = originalDstBounds.left();
+        loopEnd   = originalDstBounds.right();
+        // The new 'dst' is equal to dst.extractSubset(originalDstBounds.offset(-dstOrigin)),
+        // but by construction only the Y offset has an interesting value so this is a little
+        // more efficient.
+        dstYOffset = originalDstBounds.top() - dstBounds.top();
+
+        srcBounds = dstBounds;
+        dstBounds = originalDstBounds;
+    }
+
+    // Iterate over each column to calculate 1D blur along Y. This is either blurring from src
+    // into dst for a 1D blur; or it's blurring from dst into dst for the second pass of a 2D
+    // blur.
+    if (makerY->window() > 1) {
+        auto srcAddr = reinterpret_cast<T*>(src.getAddr(loopStart - srcBounds.left(), 0));
+        auto dstAddr = reinterpret_cast<T*>(dst.getAddr(loopStart - dstBounds.left(), dstYOffset));
+
+        Pass* pass = makerY->makePass(buffer, alloc);
+        for (int x = loopStart; x < loopEnd; ++x) {
+            pass->blur<T>(srcBounds.top()    - dstBounds.top(),
+            srcBounds.bottom() - dstBounds.top(),
+            dstBounds.height(),
+            srcAddr, src.rowBytesAsPixels(),
+            dstAddr, dst.rowBytesAsPixels());
+            srcAddr += 1;
+            dstAddr += 1;
+        }
+    }
+
+    dstBounds = originalDstBounds.makeOffset(-dstOrigin); // Make relative to dst's pixels
+    return SkSpecialImages::MakeFromRaster(dstBounds, dst, SkSurfaceProps{});
+}
 
 // Implement a scanline processor that uses a three-box filter to approximate a Gaussian blur.
 // The GaussPass is limit to processing sigmas < 135.
@@ -173,7 +278,7 @@ public:
 
         class Maker : public PassMaker {
         public:
-            explicit Maker(int window) : PassMaker{window} {}
+            explicit Maker(int window, float sigma) : PassMaker{window, sigma} {}
             Pass* makePass(void* buffer, SkArenaAlloc* alloc) const override {
                 return GaussPass::Make(this->window(), buffer, alloc);
             }
@@ -193,7 +298,7 @@ public:
             }
         };
 
-        return alloc->make<Maker>(window);
+        return alloc->make<Maker>(window, sigma);
     }
 
     static GaussPass* Make(int window, void* buffers, SkArenaAlloc* alloc) {
@@ -325,7 +430,9 @@ private:
     //    sum0_n+2 = sum0_n+1 - buffer0[i];
     //    buffer0[i] = leading edge
     void blurSegment(
-            int n, const uint32_t* src, int srcStride, uint32_t* dst, int dstStride) override {
+            int n, const void* src, int srcStride, void* dst, int dstStride) override {
+        const uint32_t* src32 = reinterpret_cast<const uint32_t*>(src);
+        uint32_t* dst32 = reinterpret_cast<uint32_t*>(dst);
 #if SK_CPU_LSX_LEVEL >= SK_CPU_LSX_LEVEL_LSX
         skvx::Vec<4, uint32_t>* buffer0Cursor = fBuffer0Cursor;
         skvx::Vec<4, uint32_t>* buffer1Cursor = fBuffer1Cursor;
@@ -361,33 +468,33 @@ private:
         };
 
         v4u32 zero = __lsx_vldi(0x0);
-        if (!src && !dst) {
+        if (!src32 && !dst32) {
             while (n --> 0) {
                 (void)processValue(zero);
             }
-        } else if (src && !dst) {
+        } else if (src32 && !dst32) {
             while (n --> 0) {
-                v4u32 edge = __lsx_vinsgr2vr_w(zero, *src, 0);
+                v4u32 edge = __lsx_vinsgr2vr_w(zero, *src32, 0);
                 edge = __lsx_vilvl_b(zero, edge);
                 edge = __lsx_vilvl_h(zero, edge);
                 (void)processValue(edge);
-                src += srcStride;
+                src32 += srcStride;
             }
-        } else if (!src && dst) {
+        } else if (!src32 && dst32) {
             while (n --> 0) {
                 v4u32 ret = processValue(zero);
-                __lsx_vstelm_w(ret, dst, 0, 0); // 3rd is offset, 4th is idx.
-                dst += dstStride;
+                __lsx_vstelm_w(ret, dst32, 0, 0); // 3rd is offset, 4th is idx.
+                dst32 += dstStride;
             }
-        } else if (src && dst) {
+        } else if (src32 && dst32) {
             while (n --> 0) {
-                v4u32 edge = __lsx_vinsgr2vr_w(zero, *src, 0);
+                v4u32 edge = __lsx_vinsgr2vr_w(zero, *src32, 0);
                 edge = __lsx_vilvl_b(zero, edge);
                 edge = __lsx_vilvl_h(zero, edge);
                 v4u32 ret = processValue(edge);
-                __lsx_vstelm_w(ret, dst, 0, 0);
-                src += srcStride;
-                dst += dstStride;
+                __lsx_vstelm_w(ret, dst32, 0, 0);
+                src32 += srcStride;
+                dst32 += dstStride;
             }
         }
 
@@ -432,25 +539,25 @@ private:
             return skvx::cast<uint32_t>(skvx::Vec<4, uint8_t>::Load(srcCursor));
         };
 
-        if (!src && !dst) {
+        if (!src32 && !dst32) {
             while (n --> 0) {
                 (void)processValue(0);
             }
-        } else if (src && !dst) {
+        } else if (src32 && !dst32) {
             while (n --> 0) {
-                (void)processValue(loadEdge(src));
-                src += srcStride;
+                (void)processValue(loadEdge(src32));
+                src32 += srcStride;
             }
-        } else if (!src && dst) {
+        } else if (!src32 && dst32) {
             while (n --> 0) {
-                processValue(0u).store(dst);
-                dst += dstStride;
+                processValue(0u).store(dst32);
+                dst32 += dstStride;
             }
-        } else if (src && dst) {
+        } else if (src32 && dst32) {
             while (n --> 0) {
-                processValue(loadEdge(src)).store(dst);
-                src += srcStride;
-                dst += dstStride;
+                processValue(loadEdge(src32)).store(dst32);
+                src32 += srcStride;
+                dst32 += dstStride;
             }
         }
 
@@ -510,7 +617,7 @@ public:
 
         class Maker : public PassMaker {
         public:
-            explicit Maker(int window) : PassMaker{window} {}
+            explicit Maker(int window, float sigma) : PassMaker{window, sigma} {}
             Pass* makePass(void* buffer, SkArenaAlloc* alloc) const override {
                 return TentPass::Make(this->window(), buffer, alloc);
             }
@@ -528,7 +635,7 @@ public:
             }
         };
 
-        return alloc->make<Maker>(tentWindow);
+        return alloc->make<Maker>(tentWindow, sigma);
     }
 
     static TentPass* Make(int window, void* buffers, SkArenaAlloc* alloc) {
@@ -644,7 +751,9 @@ private:
     //    sum0_n+2 = sum0_n+1 - buffer0[i];
     //    buffer0[i] = leading edge
     void blurSegment(
-            int n, const uint32_t* src, int srcStride, uint32_t* dst, int dstStride) override {
+            int n, const void* src, int srcStride, void* dst, int dstStride) override {
+        const uint32_t* src32 = reinterpret_cast<const uint32_t*>(src);
+        uint32_t* dst32 = reinterpret_cast<uint32_t*>(dst);
         skvx::Vec<4, uint32_t>* buffer0Cursor = fBuffer0Cursor;
         skvx::Vec<4, uint32_t>* buffer1Cursor = fBuffer1Cursor;
         skvx::Vec<4, uint32_t> sum0 = skvx::Vec<4, uint32_t>::Load(fSum0);
@@ -671,25 +780,25 @@ private:
             return skvx::cast<uint32_t>(skvx::Vec<4, uint8_t>::Load(srcCursor));
         };
 
-        if (!src && !dst) {
+        if (!src32 && !dst32) {
             while (n --> 0) {
                 (void)processValue(0);
             }
-        } else if (src && !dst) {
+        } else if (src32 && !dst32) {
             while (n --> 0) {
-                (void)processValue(loadEdge(src));
-                src += srcStride;
+                (void)processValue(loadEdge(src32));
+                src32 += srcStride;
             }
-        } else if (!src && dst) {
+        } else if (!src32 && dst32) {
             while (n --> 0) {
-                processValue(0u).store(dst);
-                dst += dstStride;
+                processValue(0u).store(dst32);
+                dst32 += dstStride;
             }
-        } else if (src && dst) {
+        } else if (src32 && dst32) {
             while (n --> 0) {
-                processValue(loadEdge(src)).store(dst);
-                src += srcStride;
-                dst += dstStride;
+                processValue(loadEdge(src32)).store(dst32);
+                src32 += srcStride;
+                dst32 += dstStride;
             }
         }
 
@@ -711,6 +820,394 @@ private:
     skvx::Vec<4, uint32_t>* fBuffer0Cursor;
     skvx::Vec<4, uint32_t>* fBuffer1Cursor;
 };
+
+class A8Pass final : public Pass {
+public:
+    static PassMaker* MakeMaker(float sigma, SkArenaAlloc* alloc) {
+        SkASSERT(0 <= sigma);
+        int possibleWindow = static_cast<int>(floor(sigma * 3 * sqrt(2 * SK_DoublePI) / 4 + 0.5));
+        int window = std::max(1, possibleWindow);
+
+        class Maker : public PassMaker {
+        public:
+            explicit Maker(int window, float sigma) : PassMaker{window, sigma} {}
+            Pass* makePass(void* buffer, SkArenaAlloc* alloc) const override {
+                return A8Pass::Make(this->window(), buffer, alloc);
+            }
+
+            size_t bufferSizeBytes() const override {
+                int window = this->window();
+                size_t pass0Size = window - 1;
+                size_t pass1Size = window - 1;
+                size_t pass2Size = (window & 1) == 1 ? window - 1 : window;
+                return (pass0Size + pass1Size + pass2Size) * sizeof(uint32_t);
+            }
+        };
+
+        return alloc->make<Maker>(window, sigma);
+    }
+
+    static A8Pass* Make(int window, void* buffers, SkArenaAlloc* alloc) {
+        size_t pass0Size = window - 1;
+        size_t pass1Size = window - 1;
+        size_t pass2Size = (window & 1) == 1 ? window - 1 : window;
+        uint32_t* buffer0, *buffer0End, *buffer1, *buffer1End, *buffer2, *buffer2End;
+        buffer0 = static_cast<uint32_t*>(buffers);
+        buffer0End = buffer1 = buffer0 + pass0Size;
+        buffer1End = buffer2 = buffer1 + pass1Size;
+        buffer2End = buffer2 + pass2Size;
+
+        // Calculating the border is tricky. The border is the distance in pixels between the first
+        // dst pixel and the first src pixel (or the last src pixel and the last dst pixel).
+        // I will go through the odd case which is simpler, and then through the even case. Given a
+        // stack of filters seven wide for the odd case of three passes.
+        //
+        //        S
+        //     aaaAaaa
+        //     bbbBbbb
+        //     cccCccc
+        //        D
+        //
+        // The furthest changed pixel is when the filters are in the following configuration.
+        //
+        //                 S
+        //           aaaAaaa
+        //        bbbBbbb
+        //     cccCccc
+        //        D
+        //
+        // The A pixel is calculated using the value S, the B uses A, and the C uses B, and
+        // finally D is C. So, with a window size of seven the border is nine. In the odd case, the
+        // border is 3*((window - 1)/2).
+        //
+        // For even cases the filter stack is more complicated. The spec specifies two passes
+        // of even filters and a final pass of odd filters. A stack for a width of six looks like
+        // this.
+        //
+        //       S
+        //    aaaAaa
+        //     bbBbbb
+        //    cccCccc
+        //       D
+        //
+        // The furthest pixel looks like this.
+        //
+        //               S
+        //          aaaAaa
+        //        bbBbbb
+        //    cccCccc
+        //       D
+        //
+        // For a window of six, the border value is eight. In the even case the border is 3 *
+        // (window/2) - 1.
+        int border = (window & 1) == 1 ? 3 * ((window - 1) / 2) : 3 * (window / 2) - 1;
+
+        // If the window is odd then the divisor is just window ^ 3 otherwise,
+        // it is window * window * (window + 1) = window ^ 2 + window ^ 3;
+        auto window2 = window * window;
+        auto window3 = window2 * window;
+        auto divisor = (window & 1) == 1 ? window3 : window3 + window2;
+
+        uint64_t weight = static_cast<uint64_t>(round(1.0 / divisor * (1ull << 32)));
+
+        return alloc->make<A8Pass>(weight, buffer0, buffer0End, buffer1, buffer1End,
+                                   buffer2, buffer2End, border);
+    }
+
+    A8Pass(uint64_t weight,
+           uint32_t* buffer0, uint32_t* buffer0End,
+           uint32_t* buffer1, uint32_t* buffer1End,
+           uint32_t* buffer2, uint32_t* buffer2End,
+           int border)
+        : Pass{border}
+        , fWeight(weight)
+        , fBuffer0{buffer0}
+        , fBuffer0End{buffer0End}
+        , fBuffer1{buffer1}
+        , fBuffer1End{buffer1End}
+        , fBuffer2{buffer2}
+        , fBuffer2End{buffer2End} {}
+
+private:
+    void startBlur() override {
+        fSum0 = 0;
+        fSum1 = 0;
+        fSum2 = 0;
+
+        std::memset(fBuffer0, 0x00, (fBuffer2End - fBuffer0) * sizeof(*fBuffer0));
+
+        fBuffer0Cursor = fBuffer0;
+        fBuffer1Cursor = fBuffer1;
+        fBuffer2Cursor = fBuffer2;
+    }
+
+    void blurSegment(
+      int n, const void* src, int srcStride, void* dst, int dstStride) override {
+      const uint8_t* src8 = reinterpret_cast<const uint8_t*>(src);
+      uint8_t* dst8 = reinterpret_cast<uint8_t*>(dst);
+      // If n is zero or negative, there's nothing to do.
+      if (n <= 0) {
+          return;
+      }
+
+      auto buffer0Cursor = fBuffer0Cursor;
+      auto buffer1Cursor = fBuffer1Cursor;
+      auto buffer2Cursor = fBuffer2Cursor;
+      uint32_t sum0 = fSum0;
+      uint32_t sum1 = fSum1;
+      uint32_t sum2 = fSum2;
+
+      auto processValue = [&](const uint32_t leadingEdge) {
+          sum0 += leadingEdge; sum1 += sum0; sum2 += sum1;
+
+          const uint8_t blurred = this->finalScale(sum2);
+
+          sum2 -= *buffer2Cursor; *buffer2Cursor = sum1;
+          buffer2Cursor = (buffer2Cursor + 1) < fBuffer2End ? buffer2Cursor + 1 : fBuffer2;
+          sum1 -= *buffer1Cursor; *buffer1Cursor = sum0;
+          buffer1Cursor = (buffer1Cursor + 1) < fBuffer1End ? buffer1Cursor + 1 : fBuffer1;
+          sum0 -= *buffer0Cursor; *buffer0Cursor = leadingEdge;
+          buffer0Cursor = (buffer0Cursor + 1) < fBuffer0End ? buffer0Cursor + 1 : fBuffer0;
+
+          return blurred;
+      };
+
+      if (!src8 && !dst8) {
+        while (n --> 0) {
+            (void)processValue(0);
+        }
+      } else if (src8 && !dst8) {
+          while (n --> 0) {
+              (void)processValue(*src8);
+              src8 += srcStride;
+          }
+      } else if (!src8 && dst8) {
+          while (n --> 0) {
+              *dst8 = processValue(0);
+              dst8 += dstStride;
+          }
+      } else if (src8 && dst8) {
+          while (n --> 0) {
+              *dst8 = processValue(*src8);
+              src8 += srcStride;
+              dst8 += dstStride;
+          }
+      }
+
+      // Store the updated state back into member variables for the next call.
+      fBuffer0Cursor = buffer0Cursor;
+      fBuffer1Cursor = buffer1Cursor;
+      fBuffer2Cursor = buffer2Cursor;
+      fSum0 = sum0;
+      fSum1 = sum1;
+      fSum2 = sum2;
+  }
+
+    inline static constexpr uint64_t kHalf = static_cast<uint64_t>(1) << 31;
+
+    uint8_t finalScale(uint32_t sum) const {
+        return SkTo<uint8_t>((fWeight * sum + kHalf) >> 32);
+    }
+
+    uint64_t  fWeight;
+    uint32_t* fBuffer0;
+    uint32_t* fBuffer0End;
+    uint32_t* fBuffer1;
+    uint32_t* fBuffer1End;
+    uint32_t* fBuffer2;
+    uint32_t* fBuffer2End;
+
+    uint32_t* fBuffer0Cursor;
+    uint32_t* fBuffer1Cursor;
+    uint32_t* fBuffer2Cursor;
+    uint32_t fSum0;
+    uint32_t fSum1;
+    uint32_t fSum2;
+};
+
+class RasterSmallA8BlurAlgorithm : public SkBlurEngine::Algorithm {
+public:
+    float maxSigma() const override {
+        static constexpr float kBoxBlurMinSigma = 2.f;
+        return kBoxBlurMinSigma;
+    }
+
+    // TODO: Implement CPU backend for different fTileMode. This is still worth doing inline with
+    // the blur; at the moment the tiling is applied via the CropImageFilter and carried as metadata
+    // on the FilterResult. This is forcefully applied in FilterResult::Builder::blur() when
+    // supportsOnlyDecalTiling() returns true.
+    bool supportsOnlyDecalTiling() const override { return true; }
+
+    sk_sp<SkSpecialImage> blur(SkSize sigma,
+                               sk_sp<SkSpecialImage> input,
+                               const SkIRect& originalSrcBounds,
+                               SkTileMode tileMode,
+                               const SkIRect& originalDstBounds) const override {
+        SkASSERT(0.01 <= sigma.width() && sigma.width() < 2);
+        SkASSERT(0.01 <= sigma.height() && sigma.height() < 2);
+
+        SkBitmap src;
+        if (!SkSpecialImages::AsBitmap(input.get(), &src)) {
+            return nullptr; // Should only have been called by CPU-backed images
+        }
+        // The blur engine should not have picked this algorithm for a non-8-bit color type.
+        SkASSERT(src.colorType() == kAlpha_8_SkColorType);
+
+        SkGaussFilter filterX{sigma.width()},
+        filterY{sigma.height()};
+
+        int radiusX = filterX.radius(),
+        radiusY = filterY.radius();
+
+        SkASSERT(radiusX <= 4 && radiusY <= 4);
+        auto prepareGauss = [](const SkGaussFilter& filter, uint16_t* factors) {
+            int i = 0;
+            for (double d : filter) {
+                factors[i++] = static_cast<uint16_t>(round(d * (1 << 16)));
+            }
+        };
+
+        uint16_t gaussFactorsX[SkGaussFilter::kGaussArrayMax],
+        gaussFactorsY[SkGaussFilter::kGaussArrayMax];
+
+        prepareGauss(filterX, gaussFactorsX);
+        prepareGauss(filterY, gaussFactorsY);
+
+        PlanGauss planW(sigma.fWidth);
+        PlanGauss planH(sigma.fHeight);
+
+        SkBitmap srcSubset;
+        SkIRect srcBounds = originalSrcBounds;
+        if (!src.extractSubset(&srcSubset, srcBounds)) {
+            return nullptr;
+        }
+        SkImageInfo srcSubsetInfo = src.info();
+        srcSubsetInfo.makeWH(srcBounds.width(), srcBounds.height());
+
+        // In order to implement this algorithm, we blur the entire source rect (clipped
+        // by originalSrcBounds) and then take the dstRect subset of that.
+        SkBitmap tmpDst;
+        SkIRect tmpDstBounds = srcBounds.makeOutset(radiusX, radiusY);
+        SkImageInfo tmpdstInfo = src.info().makeWH(tmpDstBounds.width(), tmpDstBounds.height());
+        if (!tmpDst.tryAllocPixels(tmpdstInfo)) {
+            return nullptr;
+        }
+        tmpDst.eraseColor(SK_ColorTRANSPARENT);
+
+        int srcW = srcBounds.width(),
+        srcH = srcBounds.height(),
+        dstW = tmpdstInfo.width(),
+        dstH = tmpdstInfo.height();
+
+        size_t srcRB = srcSubset.rowBytes(),
+               dstRB = tmpDst.rowBytes();
+
+        // Blur vertically and copy to destination.
+        SkMaskBlurFilter::DirectBlurY(nullptr, 8,
+                                      radiusY, gaussFactorsY,
+                                      srcSubset.getAddr8(0, 0), srcRB, srcW, srcH,
+                                      tmpDst.getAddr8(0, 0) + radiusX, dstRB);
+
+        // Blur horizontally in place.
+        SkMaskBlurFilter::DirectBlurX(radiusX, gaussFactorsX,
+                                      tmpDst.getAddr8(0, 0) + radiusX,  dstRB, srcW,
+                                      tmpDst.getAddr8(0, 0),            dstRB, dstW, dstH);
+
+        // Allocate dst memory.
+        SkBitmap dst;
+        SkImageInfo dstInfo = src.info().makeWH(originalDstBounds.width(),
+                                                originalDstBounds.height());
+        if (!dst.tryAllocPixels(dstInfo)) {
+            return nullptr;
+        }
+        dst.eraseColor(SK_ColorTRANSPARENT);
+
+        // Create a dstRect which is the pixels from our blurred source that are
+        // inside the dst bounds.
+        SkIRect dstRect;
+        if (!dstRect.intersect(tmpDstBounds, originalDstBounds)) {
+            // Nothing to draw. Make relative to dst's pixels.
+            SkIRect dstBounds = originalDstBounds.makeOffset(-originalDstBounds.topLeft());
+            return SkSpecialImages::MakeFromRaster(dstBounds, dst, SkSurfaceProps{});
+        }
+        const int readX = dstRect.fLeft - tmpDstBounds.fLeft;
+        const int readY = dstRect.fTop - tmpDstBounds.fTop;
+
+        SkIRect tmpDstSubsetBounds = SkIRect::MakeXYWH(readX, readY,
+                                                       dstRect.width(), dstRect.height());
+        SkBitmap tmpDstSubset;
+        if (!tmpDst.extractSubset(&tmpDstSubset, tmpDstSubsetBounds)) {
+            // This shouldn't fail, if it does the calculated bounds are wrong.
+            return nullptr;
+        }
+
+        // Write the dstRect pixels from our tmpDst bitmap into the corresponding pixels for dst.
+        const int writeX = dstRect.fLeft - originalDstBounds.fLeft;
+        const int writeY = dstRect.fTop - originalDstBounds.fTop;
+        dst.writePixels(tmpDstSubset.pixmap(), writeX, writeY);
+
+        // Make relative to dst's pixels.
+        SkIRect dstBounds = originalDstBounds.makeOffset(-originalDstBounds.topLeft());
+        return SkSpecialImages::MakeFromRaster(dstBounds, dst, SkSurfaceProps{});
+    }
+};
+
+class RasterA8BlurAlgorithm : public SkBlurEngine::Algorithm {
+public:
+    // See analysis in description of GaussPass for the max supported sigma.
+    float maxSigma() const override {
+        static constexpr float kMaxSigma = 135.f;
+        SkASSERT(SkBlurEngine::BoxBlurWindow(kMaxSigma) <= 255);
+        return kMaxSigma;
+    }
+
+    // TODO: Implement CPU backend for different fTileMode. This is still worth doing inline with
+    // the blur; at the moment the tiling is applied via the CropImageFilter and carried as metadata
+    // on the FilterResult. This is forcefully applied in FilterResult::Builder::blur() when
+    // supportsOnlyDecalTiling() returns true.
+    bool supportsOnlyDecalTiling() const override { return true; }
+
+    sk_sp<SkSpecialImage> blur(SkSize sigma,
+                               sk_sp<SkSpecialImage> input,
+                               const SkIRect& originalSrcBounds,
+                               SkTileMode tileMode,
+                               const SkIRect& originalDstBounds) const override {
+        SkASSERT(tileMode == SkTileMode::kDecal);
+        SkASSERT(SkIRect::MakeSize(input->dimensions()).contains(originalSrcBounds));
+
+        SkBitmap src;
+        if (!SkSpecialImages::AsBitmap(input.get(), &src)) {
+            return nullptr; // Should only have been called by CPU-backed images
+        }
+        // The blur engine should not have picked this algorithm for a non-8-bit color type.
+        SkASSERT(src.colorType() == kAlpha_8_SkColorType);
+
+        // 1024 is a place holder guess until more analysis can be done.
+        SkSTArenaAlloc<1024> alloc;
+        SkASSERT(2 < sigma.width() && 2 < sigma.height());
+
+        PassMaker* makerX = A8Pass::MakeMaker(sigma.width(), &alloc);
+        PassMaker* makerY = A8Pass::MakeMaker(sigma.height(), &alloc);
+
+        return make_blurred_special<uint8_t>(makerX, makerY, src, originalSrcBounds,
+                                    originalDstBounds, &alloc);
+    }
+
+private:
+      struct AlphaIter {
+          AlphaIter(const uint8_t* ptr) : fPtr(ptr) {}
+          AlphaIter(const AlphaIter& that) : fPtr(that.fPtr) {}
+          AlphaIter& operator++() { ++fPtr; return *this; }
+          AlphaIter& operator--() { --fPtr; return *this; }
+          AlphaIter& operator>>=(uint32_t rb) {
+              fPtr = SkTAddOffset<const uint8_t>(fPtr, rb);
+              return *this;
+          }
+          uint8_t operator*() const { return *fPtr; }
+          bool operator<(const AlphaIter& that) const { return fPtr < that.fPtr; }
+          const uint8_t* fPtr;
+      };
+};\
 
 class Raster8888BlurAlgorithm : public SkBlurEngine::Algorithm {
 public:
@@ -770,110 +1267,8 @@ public:
         PassMaker* makerX = makeMaker(sigma.width());
         PassMaker* makerY = makeMaker(sigma.height());
 
-#if !defined(SK_AVOID_SLOW_RASTER_PIPELINE_BLURS)
-        // A blur with a sigma smaller than the successive box-blurs accuracy should have been
-        // routed to the shader-based algorithm.
-        SkASSERT(makerX->window() > 1 || makerY->window() > 1);
-#endif
-
-        SkIRect srcBounds = originalSrcBounds;
-        SkIRect dstBounds = originalDstBounds;
-        if (makerX->window() > 1) {
-            // Inflate the dst by the window required for the Y pass so that the X pass can prepare
-            // it. The Y pass will be offset to only write to the original rows in dstBounds, but
-            // its window will access these extra rows calculated by the X pass. The SpecialImage
-            // factory will then subset the bitmap so it appears to match 'originalDstBounds'
-            // tightly. We make one slightly larger image to hold this extra data instead of two
-            // separate images sized exactly to each pass because the CPU blur can write in place.
-            dstBounds.outset(0, SkBlurEngine::SigmaToRadius(sigma.height()));
-        }
-
-        SkBitmap dst;
-        const SkIPoint dstOrigin = dstBounds.topLeft();
-        if (!dst.tryAllocPixels(src.info().makeWH(dstBounds.width(), dstBounds.height()))) {
-            return nullptr;
-        }
-        dst.eraseColor(SK_ColorTRANSPARENT);
-
-        auto buffer = alloc.makeBytesAlignedTo(std::max(makerX->bufferSizeBytes(),
-                                                        makerY->bufferSizeBytes()),
-                                            alignof(skvx::Vec<4, uint32_t>));
-
-        // Basic Plan: The three cases to handle
-        // * Horizontal and Vertical - blur horizontally while copying values from the source to
-        //     the destination. Then, do an in-place vertical blur.
-        // * Horizontal only - blur horizontally copying values from the source to the destination.
-        // * Vertical only - blur vertically copying values from the source to the destination.
-
-        // Initialize these assuming the Y-only case
-        int loopStart  = std::max(srcBounds.left(),  dstBounds.left());
-        int loopEnd    = std::min(srcBounds.right(), dstBounds.right());
-        int dstYOffset = 0;
-
-        if (makerX->window() > 1) {
-            // First an X-only blur from src into dst, including the extra rows that will become
-            // input for the second Y pass, which will then be performed in place.
-            loopStart = std::max(srcBounds.top(),    dstBounds.top());
-            loopEnd   = std::min(srcBounds.bottom(), dstBounds.bottom());
-
-            auto srcAddr = src.getAddr32(0, loopStart - srcBounds.top());
-            auto dstAddr = dst.getAddr32(0, loopStart - dstBounds.top());
-
-            // Iterate over each row to calculate 1D blur along X.
-            Pass* pass = makerX->makePass(buffer, &alloc);
-            for (int y = loopStart; y < loopEnd; ++y) {
-                pass->blur(srcBounds.left()  - dstBounds.left(),
-                           srcBounds.right() - dstBounds.left(),
-                           dstBounds.width(),
-                           srcAddr, 1,
-                           dstAddr, 1);
-                srcAddr += src.rowBytesAsPixels();
-                dstAddr += dst.rowBytesAsPixels();
-            }
-
-            // Set up the Y pass to blur from the full dst into the non-outset portion of dst
-            src = dst;
-            loopStart = originalDstBounds.left();
-            loopEnd   = originalDstBounds.right();
-            // The new 'dst' is equal to dst.extractSubset(originalDstBounds.offset(-dstOrigin)),
-            // but by construction only the Y offset has an interesting value so this is a little
-            // more efficient.
-            dstYOffset = originalDstBounds.top() - dstBounds.top();
-
-            srcBounds = dstBounds;
-            dstBounds = originalDstBounds;
-        }
-
-        // Iterate over each column to calculate 1D blur along Y. This is either blurring from src
-        // into dst for a 1D blur; or it's blurring from dst into dst for the second pass of a 2D
-        // blur.
-        if (makerY->window() > 1) {
-            auto srcAddr = src.getAddr32(loopStart - srcBounds.left(), 0);
-            auto dstAddr = dst.getAddr32(loopStart - dstBounds.left(), dstYOffset);
-
-            Pass* pass = makerY->makePass(buffer, &alloc);
-            for (int x = loopStart; x < loopEnd; ++x) {
-                pass->blur(srcBounds.top()    - dstBounds.top(),
-                           srcBounds.bottom() - dstBounds.top(),
-                           dstBounds.height(),
-                           srcAddr, src.rowBytesAsPixels(),
-                           dstAddr, dst.rowBytesAsPixels());
-                srcAddr += 1;
-                dstAddr += 1;
-            }
-        }
-
-#if defined(SK_AVOID_SLOW_RASTER_PIPELINE_BLURS)
-        // When avoiding the shader-based algorithm, handle the box identity case.
-        if (makerX->window() == 1 && makerY->window() == 1) {
-            dst.writePixels(src.pixmap(),
-                            srcBounds.left() - dstBounds.left(),
-                            srcBounds.top()  - dstBounds.top());
-        }
-#endif
-
-        dstBounds = originalDstBounds.makeOffset(-dstOrigin); // Make relative to dst's pixels
-        return SkSpecialImages::MakeFromRaster(dstBounds, dst, SkSurfaceProps{});
+        return make_blurred_special<uint32_t>(makerX, makerY, src, originalSrcBounds,
+                                    originalDstBounds, &alloc);
     }
 
 };
@@ -911,8 +1306,14 @@ public:
         // The box blur doesn't actually care about channel order as long as it's 4 8-bit channels.
         const bool rgba8Blur = colorType == kRGBA_8888_SkColorType ||
                                colorType == kBGRA_8888_SkColorType;
-        // TODO: Specialize A8 color types as well by reusing the mask filter blur impl
-        if (smallBlur || !rgba8Blur) {
+        const bool a8Blur = colorType == kAlpha_8_SkColorType;
+
+        if (a8Blur) {
+            if (smallBlur) {
+                return &fSmallA8BlurAlgorithm;
+            }
+            return &fA8BlurAlgorithm;
+        } else if (smallBlur || !rgba8Blur) {
             return &fShaderBlurAlgorithm;
         } else {
             return &fRGBA8BlurAlgorithm;
@@ -920,10 +1321,14 @@ public:
     }
 
 private:
-    // For small sigmas and non-8888 or A8 color types, use the shader algorithm
+    // For small sigmas and non-8888, use the shader algorithm
     RasterShaderBlurAlgorithm fShaderBlurAlgorithm;
     // For large blurs with RGBA8 or BGRA8, use consecutive box blurs
     Raster8888BlurAlgorithm fRGBA8BlurAlgorithm;
+    // For any large blurs with A8, use consecutive box blurs
+    RasterA8BlurAlgorithm fA8BlurAlgorithm;
+    // For any small blurs with A8, use direct blur
+    RasterSmallA8BlurAlgorithm fSmallA8BlurAlgorithm;
 };
 
 } // anonymous namespace
