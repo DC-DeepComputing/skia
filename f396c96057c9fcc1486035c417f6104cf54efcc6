@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "776c4c84_1bae3ead",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-18T18:55:02Z",
+      "side": 1,
+      "message": "canary failures seem unrelated, so proceeding to land.",
+      "revId": "f396c96057c9fcc1486035c417f6104cf54efcc6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
