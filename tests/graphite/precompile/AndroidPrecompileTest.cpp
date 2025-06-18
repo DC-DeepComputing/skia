@@ -21,6 +21,8 @@ using namespace skgpu::graphite;
 using namespace PrecompileTestUtils;
 
 namespace {
+constexpr bool kWithAnalyticClip = true;
+
 // For non-Vulkan configs, these settings cover 92 of the 160 cases in 'kCases'.
 // They create 123 Pipelines so only modestly over-generate (31 extra Pipelines - 25%).
 //
@@ -33,16 +35,16 @@ namespace {
 const PrecompileSettings kPrecompileCases[] = {
 // 100% (1/1) handles: 0
 /*  0 */ { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
-// 100% (2/2) handles: 22 42
-/*  1 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_1_D },
+// 100% (4/4) handles: 22 23 42 43
+/*  1 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_1_D, kWithAnalyticClip },
 
 // 50% (2/4) handles: 63 72 - due to the w/o msaa load variants not being used
 /*  2 */ { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_4_DS },
 
 // 100% (1/1) handles: 1
 /*  3 */ { ImageHWOnlySRGBSrcover(),           DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D_SRGB },
-// 100% (2/2) handles: 24 44
-/*  4 */ { ImageHWOnlySRGBSrcover(),           kRRectAndNonAARect,              kRGBA_1_D_SRGB },
+// 100% (4/4) handles: 24 44 45 110
+/*  4 */ { ImageHWOnlySRGBSrcover(),           kRRectAndNonAARect,              kRGBA_1_D_SRGB, kWithAnalyticClip },
 
 // 100% (2/2) handles: 9 28
 /*  5 */ { TransparentPaintImagePremulHWOnlySrcover(), kRRectAndNonAARect,      kRGBA_1_D },
@@ -206,20 +208,11 @@ const PrecompileSettings kPrecompileCases[] = {
 // AnalyticClip block - all the PrecompileOptions here are just clones of earlier ones
 // with an additional kAnalyticClip flag
 
-// 100% (2/2) handles: 23 43
-/* 43 */ { ImagePremulHWOnlySrcover(),
-           kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,
-           kRGBA_1_D },
-
+// Note: this didn't get folded into #2 since the RRect draw isn't appearing w/ a clip
 // 50% (1/2) handles: 91
-/* 44 */ { ImagePremulHWOnlySrcover(),
+/* 43 */ { ImagePremulHWOnlySrcover(),
            DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
            kRGBA_4_DS },
-
-// 100% (2/2) handles: 45 110
-/* 45 */ { ImageHWOnlySRGBSrcover(),
-           kRRectAndNonAARect | DrawTypeFlags::kAnalyticClip,
-           kRGBA_1_D_SRGB },
 
 // 100% (1/1) handles 95
 /* 46 */ { TransparentPaintImagePremulHWOnlySrcover(),
@@ -272,6 +265,8 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 55 */ { TransparentPaintEdgeExtensionPremulSrcover(),
            DrawTypeFlags::kNonAAFillRect,
            kRGBA_1_D },
+
+           /**/
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 238 block ----------------
