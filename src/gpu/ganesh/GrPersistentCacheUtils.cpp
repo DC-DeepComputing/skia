@@ -105,8 +105,7 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
             if (areShadersBinary) {
                 const uint32_t* words = static_cast<const uint32_t*>(shaderBuf);
                 SkASSERT(shaderLen % 4 == 0);
-                shaders[i].fBinary.insert(
-                        shaders[i].fBinary.end(), words, words + shaderLen / sizeof(uint32_t));
+                shaders[i].fBinary.push_back_n(static_cast<int>(shaderLen / sizeof(uint32_t)), words);
             } else {
                 shaders[i].fText.assign(static_cast<const char*>(shaderBuf), shaderLen);
             }

@@ -22,6 +22,8 @@
 #include <memory>
 #include <type_traits>
 
+using namespace skia_private;
+
 namespace SkSL {
 
 bool ToHLSL(Program& program,
@@ -41,7 +43,7 @@ bool ToHLSL(Program& program,
             const ShaderCaps* caps,
             std::string* out,
             ValidateSPIRVProc validateSPIRV) {
-    std::vector<uint32_t> spirv;
+    TArray<uint32_t> spirv;
     if (!ToSPIRV(program, caps, &spirv, validateSPIRV)) {
         return false;
     }

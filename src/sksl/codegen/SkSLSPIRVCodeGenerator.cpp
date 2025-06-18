@@ -157,10 +157,10 @@ static SpvStorageClass get_storage_class_spv_id(StorageClass storageClass) {
     SkUNREACHABLE;
 }
 
-using SPIRVBlob = std::vector<uint32_t>;
+using SPIRVBlob = TArray<uint32_t>;
 
-static void append_blob(const SPIRVBlob& src, SPIRVBlob& dst) {
-    dst.insert(dst.end(), src.begin(), src.end());
+static void append_blob(SPIRVBlob& src, SPIRVBlob& dst) {
+    dst.move_back(src);
 }
 
 class SPIRVCodeGenerator : public CodeGenerator {
@@ -693,7 +693,7 @@ private:
     THashMap<const Variable*, SpvId> fVariableMap;
     THashMap<const Type*, SpvId> fStructMap;
 
-    // SPIR-V is defined in 32-bit words, so this generator directly uses std::vector<uint32_t>
+    // SPIR-V is defined in 32-bit words, so this generator directly uses TArray<uint32_t>
     // instead of an OutputStream.
     SPIRVBlob* fOutBuffer;
     SPIRVBlob fGlobalInitializersBuffer;
@@ -1160,9 +1160,10 @@ void SPIRVCodeGenerator::writeInstruction(SpvOp_ opCode, int32_t word1, SPIRVBlo
 
 void SPIRVCodeGenerator::writeString(std::string_view s, SPIRVBlob& out) {
     size_t offset = out.size();
-    // Add storage for the string + space for the nul character. Memory is zero-initialized so
-    // nul-termination is not needed later.
-    out.resize(offset + s.size() / 4 + 1, 0);
+    // Add storage for the string + space for the nul character.
+    out.resize(offset + s.size() / 4 + 1);
+    // Zero-initialize the last element so nul-termination is not needed later.
+    out.back() = 0;
     memcpy(out.data() + offset, s.data(), s.size());
 }
 
@@ -5602,7 +5603,7 @@ bool ToSPIRV(Program& program,
              const ShaderCaps* caps,
              OutputStream& out,
              ValidateSPIRVProc validateSPIRV) {
-    std::vector<uint32_t> buffer;
+    TArray<uint32_t> buffer;
     if (!ToSPIRV(program, caps, &buffer, validateSPIRV)) {
         return false;
     }
@@ -5612,7 +5613,7 @@ bool ToSPIRV(Program& program,
 
 bool ToSPIRV(Program& program,
              const ShaderCaps* caps,
-             std::vector<uint32_t>* out,
+             TArray<uint32_t>* out,
              ValidateSPIRVProc validateSPIRV) {
     TRACE_EVENT0("skia.shaders", "SkSL::ToSPIRV");
     SkASSERT(caps != nullptr);

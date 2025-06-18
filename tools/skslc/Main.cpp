@@ -649,7 +649,7 @@ static ResultCode process_command(SkSpan<std::string> args) {
                    SkSL::Program& program,
                    SkSL::OutputStream& out) {
                     // Compile program to SPIR-V assembly
-                    std::vector<uint32_t> spirv;
+                    TArray<uint32_t> spirv;
                     if (!SkSL::ToSPIRV(program,
                                        shaderCaps,
                                        &spirv,

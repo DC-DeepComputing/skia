@@ -9,10 +9,10 @@
 #define SKSL_SPIRVCODEGENERATOR
 
 #include "include/core/SkSpan.h"
+#include "include/private/base/SkTArray.h"
 #include "src/sksl/codegen/SkSLNativeShader.h"
 
 #include <cstdint>
-#include <vector>
 
 namespace SkSL {
 
@@ -24,13 +24,13 @@ struct ShaderCaps;
 using ValidateSPIRVProc = bool (*)(ErrorReporter&, SkSpan<const uint32_t>);
 
 /**
- * Converts a Program into a SPIR-V binary. Prefer the std::vector<uint32_t> variant bacause the
+ * Converts a Program into a SPIR-V binary. Prefer the TArray<uint32_t> variant bacause the
  * OutputStream variant incurs an additional copy.
  */
 bool ToSPIRV(Program& program, const ShaderCaps* caps, OutputStream& out, ValidateSPIRVProc = nullptr);
 bool ToSPIRV(Program& program,
              const ShaderCaps* caps,
-             std::vector<uint32_t>* out,
+             skia_private::TArray<uint32_t>* out,
              ValidateSPIRVProc = nullptr);
 
 // This explicit overload is used by SkSLToBackend.

@@ -8,9 +8,10 @@
 #ifndef SKSL_NATIVESHADER
 #define SKSL_NATIVESHADER
 
+#include "include/private/base/SkTArray.h"
+
 #include <cstdint>
 #include <string>
-#include <vector>
 
 namespace SkSL {
 
@@ -18,7 +19,7 @@ namespace SkSL {
 // SPIR-V is in binary form.
 struct NativeShader {
     std::string fText;
-    std::vector<uint32_t> fBinary;
+    skia_private::TArray<uint32_t> fBinary;
 
     bool isBinary() const { return !fBinary.empty(); }
 };
