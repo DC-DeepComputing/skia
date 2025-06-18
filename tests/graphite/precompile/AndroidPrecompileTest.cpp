@@ -273,7 +273,7 @@ const PrecompileSettings kPrecompileCases[] = {
            DrawTypeFlags::kNonAAFillRect,
            kRGBA_1_D },
 
-           /**/
+           /****/
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 238 block ----------------
