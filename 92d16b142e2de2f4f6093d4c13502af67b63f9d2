@@ -16,6 +16,24 @@
       "message": "Is the new coolness empty() or isEmpty() ?",
       "revId": "92d16b142e2de2f4f6093d4c13502af67b63f9d2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ced41846_ad73d266",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-18T12:21:24Z",
+      "side": 1,
+      "message": "All the `std` types use `empty`. I have become old and no longer know what is the new coolness (though I suspect I might be able to ask an AI about what used to be the new coolness).",
+      "parentUuid": "6a093988_4b493487",
+      "revId": "92d16b142e2de2f4f6093d4c13502af67b63f9d2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

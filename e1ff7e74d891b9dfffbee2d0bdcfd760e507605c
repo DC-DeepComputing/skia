@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c20b1a32_6e0e67cb",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-18T12:21:24Z",
+      "side": 1,
+      "message": "are not?",
+      "range": {
+        "startLine": 53,
+        "startChar": 46,
+        "endLine": 53,
+        "endChar": 50
+      },
+      "revId": "e1ff7e74d891b9dfffbee2d0bdcfd760e507605c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
