@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b2c186bd_39483f14",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-18T17:15:06Z",
+      "side": 1,
+      "message": "Interesting, I agree lets keep std::vector for now.  There could be a difference in allocation policy that is impacting things. Assuming TArray is inferring the `MEM_MOVE\u003dtrue` parameter correctly for a uint32_t, it should be using memcpy for growing the storage and for the `move_back` calls.  It does use placement new for a single push_back, so maybe that is not getting quite as simple of an instruction as memcpy\u0027ing the int directly to the storage.\n\nThanks for testing. I\u0027ll keep this in mind when we do a push to remove STL collections more thoroughly.",
+      "parentUuid": "8262d6d6_f2e64e2a",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 21
+      },
+      "revId": "0165338b427c3f9a2e348410fef47a84befc233e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "16ce422e_d6d741eb",
