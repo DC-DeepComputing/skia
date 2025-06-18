@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18569af3_8adfe0d5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-18T15:10:18Z",
+      "side": 1,
+      "message": "lgtm, I did post a comment on the next CL where we could use TArray\u003cuint32_t\u003e.  Perhaps it makes sense to have a type alias like `using NativeOps \u003d ...\u003cuint32_t\u003e;`  in NativeShader so other declarations are less tied to the specific type, but I wouldn\u0027t consider it a blocker.\n\nsrc/sksl is not consistent with its choice on std::vector vs TArray (although I tend to have a preference for new code to use TArray).",
+      "revId": "82327020d963b3a9b367e8d8756138677edaf68d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
