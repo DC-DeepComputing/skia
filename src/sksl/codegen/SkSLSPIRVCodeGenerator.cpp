@@ -96,6 +96,13 @@
 #include <utility>
 #include <vector>
 
+#include <time.h>
+uint64_t get_time_ns() {
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return ts.tv_sec * 1'000'000'000lu + ts.tv_nsec;
+}
+
 using namespace skia_private;
 
 #define kLast_Capability SpvCapabilityMultiViewport
@@ -5621,8 +5628,15 @@ bool ToSPIRV(Program& program,
             result = validateSPIRV(*program.fContext->fErrors, *out);
         }
     } else {
+        uint64_t start = get_time_ns();
         SPIRVCodeGenerator cg(program.fContext.get(), caps, &program, out);
         result = cg.generateCode();
+        uint64_t diff = get_time_ns() - start;
+        static int count = 0;
+        static uint64_t total = 0;
+        ++count;
+        total += diff;
+        fprintf(stderr, "========= Shader #%d: %luns, total: %luns\n", count, diff, total);
     }
     program.fContext->fErrors->setSource(std::string_view());
 
