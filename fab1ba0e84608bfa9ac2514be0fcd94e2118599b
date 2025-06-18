@@ -39,6 +39,24 @@
       "message": "At this point I think we might as well drop the assert from `writable_data`, and leave disciplining users to the stern docs.",
       "revId": "fab1ba0e84608bfa9ac2514be0fcd94e2118599b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "991fb3cf_00a8ae6c",
+        "filename": "include/core/SkData.h",
+        "patchSetId": 11
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T03:55:56Z",
+      "side": 1,
+      "message": "Gotcha -- switching to simpler CL\n\nhttps://skia-review.googlesource.com/c/skia/+/1009416",
+      "parentUuid": "8cbd6d6d_375ab9bd",
+      "revId": "fab1ba0e84608bfa9ac2514be0fcd94e2118599b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
