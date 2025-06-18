@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b6cea62_7fa25559",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1526,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "this might also work -- just a question of readability\n\n*advance \u003d fSkXform.mapVector(*advance);",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1730ce68_c0292b4b",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 461,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "return xps_point(matrix.mapPoint(point));",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6ba4b8e5_62ed308c",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "same as above, can you just pass start and end?",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "901f8926_96f9d4ae",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 502,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "ditto: just pass stop?",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4d6e70a_a1ae88dc",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 922,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "I think you can just pass vec -- the compiler will create the appropriate span",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f914df90_9b1591a8",
+        "filename": "src/xps/SkXPSDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1222,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-18T17:06:32Z",
+      "side": 1,
+      "message": "as above, you can rely on the compiler, and just pass points.",
+      "revId": "a3e0ea053bcab3065cb58064c9a7d14df6932154",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
