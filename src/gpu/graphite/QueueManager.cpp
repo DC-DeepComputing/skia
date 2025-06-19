@@ -82,8 +82,16 @@ bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider, Protec
     return true;
 }
 
+<<<<<<< PATCH SET (10ae12 [graphite] Add SK_TRACE_GRAPHITE_PIPELINE_USE build variant,)
+bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
+    TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
+||||||| BASE
+bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+=======
 InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+>>>>>>> BASE      (5b4a6c [graphite] Context::insertRecording returns more status info)
 
     // Configure the callback before validation so that failures are propagated to the finish
     // procs that were registered on `info` as well.
@@ -277,7 +285,7 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
 }
 
 bool QueueManager::submitToGpu() {
-    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 
     if (!fCurrentCommandBuffer) {
         // We warn because this probably representative of a bad client state, where they don't
