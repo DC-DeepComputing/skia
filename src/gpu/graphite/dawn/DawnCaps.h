@@ -27,10 +27,6 @@ public:
     bool useAsyncPipelineCreation() const { return fUseAsyncPipelineCreation; }
     bool allowScopedErrorChecks() const { return fAllowScopedErrorChecks; }
 
-    // If this has no value then loading the resolve texture via a LoadOp is not supported.
-    std::optional<wgpu::LoadOp> resolveTextureLoadOp() const {
-        return fSupportedResolveTextureLoadOp;
-    }
     bool supportsPartialLoadResolve() const { return fSupportsPartialLoadResolve; }
 
     bool isSampleCountSupported(TextureFormat, uint8_t requestedSampleCount) const override;

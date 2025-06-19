@@ -308,7 +308,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     // Set up color attachment.
 #if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
-    wgpu::RenderPassDescriptorExpandResolveRect wgpuPartialRect = {};
+    wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
 #endif
 
 #if WGPU_TIMESTAMP_WRITES_DEFINED
@@ -375,25 +375,25 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 // TODO(b/399640773): Remove this once Dawn natively supports the partial resolve
                 // feature with different resolve & color offsets.
                 emulateLoadStoreResolveTexture = true;
-            } else if (resolveInfo.fLoadOp == LoadOp::kLoad) {
-                std::optional<wgpu::LoadOp> resolveLoadOp =
-                        fSharedContext->dawnCaps()->resolveTextureLoadOp();
-                if (resolveLoadOp.has_value()) {
-                    wgpuColorAttachment.loadOp = *resolveLoadOp;
-#if !defined(__EMSCRIPTEN__)
-                    if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
-                        SkASSERT(resolveOffset.isZero());
-                        wgpuPartialRect.x = renderPassBounds.x();
-                        wgpuPartialRect.y = renderPassBounds.y();
-                        wgpuPartialRect.width = renderPassBounds.width();
-                        wgpuPartialRect.height = renderPassBounds.height();
-                        wgpuRenderPass.nextInChain = &wgpuPartialRect;
-                    }
-#endif
+            } else if (resolveInfo.fLoadOp != LoadOp::kDiscard &&
+                fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
+                if (resolveInfo.fLoadOp == LoadOp::kClear) {
+                    wgpuColorAttachment.loadOp = wgpu::LoadOp::Clear;
                 } else {
-                    // No Dawn built-in support, we need to manually load the resolve texture.
-                    emulateLoadStoreResolveTexture = true;
+                    wgpuColorAttachment.loadOp = wgpu::LoadOp::ExpandResolveTexture;
                 }
+#if !defined(__EMSCRIPTEN__)
+                wgpuPartialRect.colorOffsetX = renderPassBounds.x();
+                wgpuPartialRect.colorOffsetY = renderPassBounds.y();
+                wgpuPartialRect.resolveOffsetX = resolveOffset.x();
+                wgpuPartialRect.resolveOffsetY = resolveOffset.y();
+                wgpuPartialRect.width = renderPassBounds.width();
+                wgpuPartialRect.height = renderPassBounds.height();
+                wgpuRenderPass.nextInChain = &wgpuPartialRect;
+#endif
+            } else {
+                // No Dawn built-in support, we need to manually load the resolve texture.
+                emulateLoadStoreResolveTexture = true;
             }
             // TODO: If the color resolve texture is read-only we can use a private (vs. memoryless)
             // msaa attachment that's coupled to the framebuffer and the StoreAndMultisampleResolve
