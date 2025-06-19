@@ -308,7 +308,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     // Set up color attachment.
 #if !defined(__EMSCRIPTEN__)
     wgpu::DawnRenderPassColorAttachmentRenderToSingleSampled mssaRenderToSingleSampledDesc;
-    wgpu::RenderPassDescriptorExpandResolveRect wgpuPartialRect = {};
+    wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
 #endif
 
 #if WGPU_TIMESTAMP_WRITES_DEFINED
@@ -375,16 +375,21 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
                 // TODO(b/399640773): Remove this once Dawn natively supports the partial resolve
                 // feature with different resolve & color offsets.
                 emulateLoadStoreResolveTexture = true;
-            } else if (resolveInfo.fLoadOp == LoadOp::kLoad) {
+            } else if (resolveInfo.fLoadOp != LoadOp::kDiscard) {
                 std::optional<wgpu::LoadOp> resolveLoadOp =
                         fSharedContext->dawnCaps()->resolveTextureLoadOp();
                 if (resolveLoadOp.has_value()) {
-                    wgpuColorAttachment.loadOp = *resolveLoadOp;
+                    if (resolveInfo.fLoadOp == LoadOp::kClear) {
+                        wgpuColorAttachment.loadOp = wgpu::LoadOp::Clear;
+                    } else if (resolveLoadOp.has_value()) {
+                        wgpuColorAttachment.loadOp = *resolveLoadOp;
+                    }
 #if !defined(__EMSCRIPTEN__)
                     if (fSharedContext->dawnCaps()->supportsPartialLoadResolve()) {
-                        SkASSERT(resolveOffset.isZero());
-                        wgpuPartialRect.x = renderPassBounds.x();
-                        wgpuPartialRect.y = renderPassBounds.y();
+                        wgpuPartialRect.colorOffsetX = renderPassBounds.x();
+                        wgpuPartialRect.colorOffsetY = renderPassBounds.y();
+                        wgpuPartialRect.resolveOffsetX = resolveOffset.x();
+                        wgpuPartialRect.resolveOffsetY = resolveOffset.y();
                         wgpuPartialRect.width = renderPassBounds.width();
                         wgpuPartialRect.height = renderPassBounds.height();
                         wgpuRenderPass.nextInChain = &wgpuPartialRect;
