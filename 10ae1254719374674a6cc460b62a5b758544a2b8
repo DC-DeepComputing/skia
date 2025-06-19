@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1872036_70bf024a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-19T14:08:12Z",
+      "side": 1,
+      "message": "Could you try patching this in to a local RE build and add the #define SK_TRACE_GRAPHITE_PIPELINES_USED to see if we get the right useful info in the RE drawLayers traces?",
+      "revId": "10ae1254719374674a6cc460b62a5b758544a2b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
