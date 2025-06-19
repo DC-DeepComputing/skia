@@ -22,6 +22,7 @@
 #include "src/gpu/graphite/Surface_Graphite.h"
 #include "src/gpu/graphite/UploadBufferManager.h"
 #include "src/gpu/graphite/task/Task.h"
+#include "src/gpu/graphite/task/TaskList.h"
 
 namespace skgpu::graphite {
 
@@ -204,13 +205,41 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
                                              replayTarget,
                                              info.fTargetTranslation,
                                              info.fTargetClip)) {
+        // If the commands failed, iterate over all the used pipelines to see if their async
+        // compilation was the reason for failure. Clients that manage pipeline disk caches may
+        // want to handle the failure differently than when any other GPU command failed.
+        const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+                [](const GraphicsPipeline* pipeline) {
+                    return !pipeline->didAsyncCompilationFail();
+                });
+
         if (callback) {
             callback->setFailureResult();
         }
         info.fRecording->priv().setFailureResultForFinishedProcs();
         info.fRecording->priv().deinstantiateVolatileLazyProxies();
+<<<<<<< HEAD   (cb4ee9d86204b42a8e097319e1c9d26717906c59 [M139] [rust png] Explicitly ignore text chunks.)
+        SKGPU_LOG_E("Adding Recording commands to the CommandBuffer has failed");
+<<<<<<< PATCH SET (59eef3ecbae17e055d55e4426f6acf621596525f [graphite] Differentiate async compile failures from other c)
+        return false;
+||||||| BASE
         SKGPU_LOG_E("Adding Recording commands to the CommandBuffer has failed");
         return InsertStatus::kAddCommandsFailed;
+=======
+
+        if (validPipelines) {
+            SKGPU_LOG_E("Adding Recording commands to the CommandBuffer has failed");
+            return InsertStatus::kAddCommandsFailed;
+        } else {
+            SKGPU_LOG_E("Async pipeline compiles failed, unable to add Recording commands");
+            return InsertStatus::kAsyncShaderCompilesFailed;
+        }
+>>>>>>> CHANGE (398915b7d48d69a3d83bdcc01eda34181f9daadd [graphite] Differentiate async compile failures from other c)
+||||||| BASE
+        return false;
+=======
+        return InsertStatus::kAddCommandsFailed;
+>>>>>>> BASE      (4890c81f0d8fc6523a20fc9b9bd9169c6d311a1b Reland "[graphite] Context::insertRecording returns more sta)
     }
     fCurrentCommandBuffer->addSignalSemaphores(info.fNumSignalSemaphores, info.fSignalSemaphores);
     if (info.fTargetTextureState) {

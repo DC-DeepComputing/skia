@@ -90,6 +90,9 @@ struct InsertRecordingInfo {
     GpuFinishedWithStatsProc fFinishedWithStatsProc = nullptr;
 };
 
+<<<<<<< PATCH SET (59eef3ecbae17e055d55e4426f6acf621596525f [graphite] Differentiate async compile failures from other c)
+<<<<<<< HEAD   (cb4ee9d86204b42a8e097319e1c9d26717906c59 [M139] [rust png] Explicitly ignore text chunks.)
+||||||| BASE
 // NOTE: This can be converted to just an `enum class InsertStatus {}` once clients are migrated
 // off of assuming `Context::insertRecording()` returns a boolean.
 class InsertStatus {
@@ -128,6 +131,90 @@ private:
     V fValue;
 };
 
+=======
+// NOTE: This can be converted to just an `enum class InsertStatus {}` once clients are migrated
+// off of assuming `Context::insertRecording()` returns a boolean.
+class InsertStatus {
+public:
+    // Do not refer to V directly; use these constants as if InsertStatus were a class enum, e.g.
+    // InsertStatus::kSuccess.
+    enum V {
+        // Everything successfully added to underlying CommandBuffer
+        kSuccess,
+        // Recording or InsertRecordingInfo invalid, no CB changes
+        kInvalidRecording,
+        // Promise image instantiation failed, no CB changes
+        kPromiseImageInstantiationFailed,
+        // Internal failure, CB partially modified, state unrecoverable or unknown (e.g. dependent
+        // texture uploads for future Recordings may or may not get executed)
+        kAddCommandsFailed,
+        // Internal failure, shader pipeline compilation failed (driver issue, or disk corruption),
+        // state unrecoverable.
+        kAsyncShaderCompilesFailed
+    };
+
+    constexpr InsertStatus() : fValue(kSuccess) {}
+    /*implicit*/ constexpr InsertStatus(V v) : fValue(v) {}
+
+    operator InsertStatus::V() const {
+        return fValue;
+    }
+
+    // Assist migration from old bool return value of insertRecording; kSuccess is true,
+    // all other error statuses are false.
+    // NOTE: This is intentionally not explicit so that InsertStatus can be assigned correctly to
+    // a bool or returned as a bool, since these are not boolean contexts that automatically apply
+    // explicit bool operators (e.g. inside an if condition).
+    operator bool() const {
+        return fValue == kSuccess;
+    }
+
+private:
+    V fValue;
+};
+
+>>>>>>> CHANGE (398915b7d48d69a3d83bdcc01eda34181f9daadd [graphite] Differentiate async compile failures from other c)
+||||||| BASE
+=======
+// NOTE: This can be converted to just an `enum class InsertStatus {}` once clients are migrated
+// off of assuming `Context::insertRecording()` returns a boolean.
+class InsertStatus {
+public:
+    // Do not refer to V directly; use these constants as if InsertStatus were a class enum, e.g.
+    // InsertStatus::kSuccess.
+    enum V {
+        // Everything successfully added to underlying CommandBuffer
+        kSuccess,
+        // Recording or InsertRecordingInfo invalid, no CB changes
+        kInvalidRecording,
+        // Promise image instantiation failed, no CB changes
+        kPromiseImageInstantiationFailed,
+        // Internal failure, CB partially modified, state unrecoverable or unknown (e.g. dependent
+        // texture uploads for future Recordings may or may not get executed)
+        kAddCommandsFailed,
+    };
+
+    constexpr InsertStatus() : fValue(kSuccess) {}
+    /*implicit*/ constexpr InsertStatus(V v) : fValue(v) {}
+
+    operator InsertStatus::V() const {
+        return fValue;
+    }
+
+    // Assist migration from old bool return value of insertRecording; kSuccess is true,
+    // all other error statuses are false.
+    // NOTE: This is intentionally not explicit so that InsertStatus can be assigned correctly to
+    // a bool or returned as a bool, since these are not boolean contexts that automatically apply
+    // explicit bool operators (e.g. inside an if condition).
+    operator bool() const {
+        return fValue == kSuccess;
+    }
+
+private:
+    V fValue;
+};
+
+>>>>>>> BASE      (4890c81f0d8fc6523a20fc9b9bd9169c6d311a1b Reland "[graphite] Context::insertRecording returns more sta)
 /**
  * The fFinishedProc is called when the Recording has been submitted and finished on the GPU, or
  * when there is a failure that caused it not to be submitted. The callback will always be called
