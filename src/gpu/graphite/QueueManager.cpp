@@ -82,8 +82,16 @@ bool QueueManager::setupCommandBuffer(ResourceProvider* resourceProvider, Protec
     return true;
 }
 
+<<<<<<< PATCH SET (729b26 [graphite] Add SK_TRACE_GRAPHITE_PIPELINE_USE build variant,)
+InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
+    TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
+||||||| BASE
+InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
+    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+=======
 bool QueueManager::addRecording(const InsertRecordingInfo& info, Context* context) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+>>>>>>> BASE      (bc30e6 Roll vulkan-deps from 317a1e4780ef to 31127c60fb32 (1 revisi)
 
     bool addTimerQuery = false;
     sk_sp<RefCntedCallback> callback;
@@ -273,7 +281,7 @@ bool QueueManager::addFinishInfo(const InsertFinishInfo& info,
 }
 
 bool QueueManager::submitToGpu() {
-    TRACE_EVENT0("skia.gpu", TRACE_FUNC);
+    TRACE_EVENT0_ALWAYS("skia.gpu", TRACE_FUNC);
 
     if (!fCurrentCommandBuffer) {
         // We warn because this probably representative of a bad client state, where they don't

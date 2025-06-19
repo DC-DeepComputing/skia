@@ -52,6 +52,8 @@
 #define SK_G32_SHIFT 8
 #define SK_A32_SHIFT 24
 
+#define SK_TRACE_GRAPHITE_PIPELINE_USE
+
 /**
  * SK_PMCOLOR_BYTE_ORDER can be used to query the byte order of SkPMColor at compile time.
  */
