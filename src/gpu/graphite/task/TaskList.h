@@ -42,6 +42,8 @@ public:
                                   const RuntimeEffectDictionary*);
     Task::Status addCommands(Context*, CommandBuffer*, Task::ReplayTargetData);
 
+    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor);
+
 private:
     template <typename Fn> // (Task*)->Status
     Task::Status visitTasks(Fn);

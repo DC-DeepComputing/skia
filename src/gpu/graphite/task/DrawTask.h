@@ -39,6 +39,10 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override {
+        return fChildTasks.visitPipelines(visitor);
+    }
+
 private:
     friend class DrawContext; // for "addTask"
 

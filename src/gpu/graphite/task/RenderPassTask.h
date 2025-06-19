@@ -55,6 +55,8 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override;
+
 private:
     RenderPassTask(DrawPassList,
                    const RenderPassDesc&,
