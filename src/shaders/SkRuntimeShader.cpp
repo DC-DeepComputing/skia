@@ -18,9 +18,11 @@
 #include "include/private/base/SkTArray.h"
 #include "include/sksl/SkSLDebugTrace.h"
 #include "src/base/SkTLazy.h"
+#include "src/core/SkColorSpacePriv.h"
 #include "src/core/SkEffectPriv.h"
 #include "src/core/SkKnownRuntimeEffects.h"
 #include "src/core/SkPicturePriv.h"
+#include "src/core/SkRasterPipeline.h"
 #include "src/core/SkReadBuffer.h"
 #include "src/core/SkRuntimeEffectPriv.h"
 #include "src/core/SkWriteBuffer.h"
@@ -75,6 +77,93 @@ SkRuntimeEffect::TracedShader SkRuntimeShader::makeTracedClone(const SkIPoint& c
             unoptimized, debugTrace, this->uniformData(nullptr), SkSpan(fChildren));
 
     return SkRuntimeEffect::TracedShader{std::move(debugShader), std::move(debugTrace)};
+}
+
+bool SkRuntimeShader::isConstant(SkColor4f* color) const {
+    // NOTE: We don't use SupportsConstantOutputForConstantInput because that is for SkColorFilters
+    // that have a color input. A runtime effect shader will evaluate to a constant color if:
+    //   1. This effect doesn't use the input coords except to pass through to children
+    //   2. Every child is a shader type and reports that it's a constant color.
+    //
+    // In this case, all child values are constant and the varying input is ignored, so the result
+    // must be constant and can be evaluated with raster pipeline.
+    if (fEffect->usesSampleCoords()) {
+        // Hypothetically the sample coord usage could just be explicit sampling of children that
+        // are constants, but the analysis doesn't differentiate.
+        return false;
+    }
+
+    // Collect all child inputs (if they are constants, otherwise exit early).
+    skia_private::STArray<2, SkPMColor4f> inputColors;
+    inputColors.reserve(this->children().size());
+    for (auto&& child : this->children()) {
+        SkColor4f c;
+        if (child.type() != SkRuntimeEffect::ChildType::kShader ||
+            !as_SB(child.shader())->isConstant(&c)) {
+            return false;
+        }
+
+        inputColors.push_back(c.premul());
+    }
+
+    class ConstantChildShaders_SkRPCallbacks : public SkSL::RP::Callbacks {
+    public:
+        ConstantChildShaders_SkRPCallbacks(SkRasterPipeline* pipeline,
+                                           SkArenaAlloc* alloc,
+                                           SkSpan<const SkPMColor4f> inputColors)
+                : fPipeline(pipeline)
+                , fAlloc(alloc)
+                , fInputColors(inputColors) {}
+
+        bool appendShader(int index) override {
+            // Instead of appending the child's raster pipeline (as a regular CPU runtime effect
+            // program would produce), just append the constant color corresponding to `index`.
+            fPipeline->appendConstantColor(fAlloc, fInputColors[index].vec());
+            return true;
+        }
+        bool appendColorFilter(int index) override {
+           SkDEBUGFAIL("constant-child-shaders unsupported when color filters present");
+           return false;
+        }
+        bool appendBlender(int index) override {
+           SkDEBUGFAIL("constant-child-shaders unsupported when blenders present");
+           return false;
+        }
+        void toLinearSrgb(const void* color) override { /* identity color conversion */ }
+        void fromLinearSrgb(const void* color) override { /* identity color conversion */ }
+
+    private:
+        SkRasterPipeline* fPipeline;
+        SkArenaAlloc* fAlloc;
+        SkSpan<const SkPMColor4f> fInputColors;
+    };
+
+    if (const SkSL::RP::Program* program = fEffect->getRPProgram(/*debugTrace=*/nullptr)) {
+        // We want to return the unpremul color in sRGB, so color uniforms should be in sRGB.
+        sk_sp<const SkData> uniformData = this->uniformData(sk_srgb_singleton());
+        SkSpan<const float> uniforms{reinterpret_cast<const float*>(uniformData->data()),
+                                     uniformData->size() / sizeof(float)};
+        SkSTArenaAlloc<2048> alloc;  // sufficient for a tiny SkSL program
+        SkRasterPipeline pipeline(&alloc);
+        ConstantChildShaders_SkRPCallbacks callbacks{&pipeline, &alloc, inputColors};
+        if (program->appendStages(&pipeline, &alloc, &callbacks, uniforms)) {
+            SkPMColor4f outputColor;
+            SkRasterPipelineContexts::MemoryCtx outputCtx = {&outputColor, 0};
+            pipeline.append(SkRasterPipelineOp::store_f32, &outputCtx);
+            pipeline.run(0, 0, 1, 1);
+
+            if (color) {
+                // Convert to unpremul. Note that we don't check for `color` being null earlier and
+                // skip evaluating the raster pipeline. This could lead to cases where
+                // `isConstant()` return true while `isConstant(color)` would not.
+                *color = outputColor.unpremul();
+            }
+            return true;
+        }
+    }
+
+    // Otherwise we weren't able to execute the Raster Pipeline program
+    return false;
 }
 
 bool SkRuntimeShader::appendStages(const SkStageRec& rec, const SkShaders::MatrixRec& mRec) const {

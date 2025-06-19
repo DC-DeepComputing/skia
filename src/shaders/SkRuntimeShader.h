@@ -51,6 +51,8 @@ public:
 
     SkRuntimeEffect* asRuntimeEffect() const override { return fEffect.get(); }
 
+    bool isConstant(SkColor4f* color = nullptr) const override;
+
     sk_sp<SkRuntimeEffect> effect() const { return fEffect; }
     SkSpan<const SkRuntimeEffect::ChildPtr> children() const { return fChildren; }
 
