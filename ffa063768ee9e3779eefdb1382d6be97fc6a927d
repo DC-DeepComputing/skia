@@ -86,6 +86,30 @@
       },
       "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dffc70f8_eb0288a8",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-20T20:02:22Z",
+      "side": 1,
+      "message": "Just to explaining a bit on the `emulateLoadStoreResolveTexture` in skia:\n- The emulation simply breaks a render pass into 2-3 internal render passes:\n  - 1st render pass (optional if `resolveInfo.fLoadOp \u003d\u003d LoadOp::kLoad`):\n    - copy the resolve texture to the MSAA texture\n    - store the MSAA texture into memory.\n  - 2nd render pass:\n    - draw onto the MSAA texture.\n    - store the MSAA texture into memory.\n  - 3rd render pass:\n    - copy the MSAA texture to the resolve texture.\n\nThe emulation is intended to be used when neither memoryless textures nor `DawnPartialLoadResolveTexture` feature is supported.\n    \n Ideally we shouldn\u0027t use emulations if the target device already supports memoryless MSAA textures (such as Mac M1). Because storing a memoryless MSAA texture is undefined. When the target device already supports memoryless textures, we don\u0027t need partial resolves either. Partial resolves are for saving memory but memoryless textures cost zero memory so it\u0027s pointless.\n\nThe logic to decide whether to emulate or not here might be simplified, if you have any idea pls feel free to do so. Probably we can use `ASSERT` instead of if checks.",
+      "parentUuid": "c153412c_537258bc",
+      "range": {
+        "startLine": 387,
+        "startChar": 14,
+        "endLine": 390,
+        "endChar": 13
+      },
+      "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
