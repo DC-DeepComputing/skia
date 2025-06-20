@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09d601a2_90f8a831",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-20T17:23:52Z",
+      "side": 1,
+      "message": "This bit should have been removed. One is supposed to set `SkPDF::Metadata::jpegDecoder` and `SkPDF::Metadata::jpegEncoder`. Really need to clean that up before mucking with this more.",
+      "range": {
+        "startLine": 1261,
+        "startChar": 48,
+        "endLine": 1262,
+        "endChar": 41
+      },
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4088fef_3ca24c12",
         "filename": "BUILD.gn",
         "patchSetId": 3
