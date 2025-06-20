@@ -8,6 +8,7 @@
 #ifndef SkPathRaw_DEFINED
 #define SkPathRaw_DEFINED
 
+#include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
@@ -17,9 +18,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <optional>
-
-enum class SkPathFillType;
-enum class SkPathVerb;
 
 struct SkPathRaw {
     SkSpan<const SkPoint>  fPoints;
