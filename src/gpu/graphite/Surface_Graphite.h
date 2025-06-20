@@ -20,6 +20,7 @@ namespace skgpu::graphite {
 
 class Context;
 class Device;
+class DrawContext;
 class Image;
 class Recorder;
 class TextureProxy;
@@ -107,6 +108,7 @@ private:
     sk_sp<Image>  fImageView; // the image object returned by asImage()
 
     friend void Flush(SkSurface*);
+    friend void FlushToDrawContext(SkSurface*, DrawContext*);
 };
 
 // TODO: The long-term for the public API around surfaces and flushing/submitting will likely
@@ -119,6 +121,7 @@ private:
 // work when looping in a benchmark, as the controlling code expects.
 void Flush(sk_sp<SkSurface> surface);
 void Flush(SkSurface* surface);
+void FlushToDrawContext(SkSurface*, DrawContext*);
 
 } // namespace skgpu::graphite
 
