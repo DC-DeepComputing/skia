@@ -16,6 +16,29 @@
       "message": "Hm.. instead of templating both N and T (N being the number of bytes/color channels and T being the type) maybe only need to pass in T and compute sizeof(T)/8 to derive N at runtime?",
       "revId": "063dfd0228baad37ab2e3ee8796e28dec117d500",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "365447de_ad87308d",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 27
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-20T18:11:57Z",
+      "side": 1,
+      "message": "add assert here",
+      "range": {
+        "startLine": 160,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 43
+      },
+      "revId": "063dfd0228baad37ab2e3ee8796e28dec117d500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
