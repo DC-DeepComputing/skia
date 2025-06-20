@@ -899,6 +899,13 @@ public:
     }
 #endif
 
+    SkSpan<const SkPoint> points() const {
+        return fPts;
+    }
+    SkSpan<const uint8_t> verbs() const {
+        return fVerbs;
+    }
+
 private:
     SkPathRef::PointsArray fPts;
     SkPathRef::VerbsArray fVerbs;
