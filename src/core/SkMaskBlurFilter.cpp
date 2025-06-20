@@ -94,9 +94,9 @@ public:
     class Scan {
     public:
         Scan(uint64_t weight, int noChangeCount,
-             uint32_t* buffer0, uint32_t* buffer0End,
-             uint32_t* buffer1, uint32_t* buffer1End,
-             uint32_t* buffer2, uint32_t* buffer2End)
+            uint32_t* buffer0, uint32_t* buffer0End,
+            uint32_t* buffer1, uint32_t* buffer1End,
+            uint32_t* buffer2, uint32_t* buffer2End)
             : fWeight{weight}
             , fNoChangeCount{noChangeCount}
             , fBuffer0{buffer0}
@@ -281,7 +281,7 @@ static void bw_to_a8(uint8_t* a8, const uint8_t* from, int width) {
     uint8_t masks = *from;
     for (int i = 0; i < width; ++i) {
         a8[i] = (masks >> (7 - i)) & 1 ? 0xFF
-                                       : 0x00;
+                                      : 0x00;
     }
 }
 static void lcd_to_a8(uint8_t* a8, const uint8_t* from, int width) {
@@ -289,9 +289,9 @@ static void lcd_to_a8(uint8_t* a8, const uint8_t* from, int width) {
 
     for (int i = 0; i < width; ++i) {
         unsigned rgb = reinterpret_cast<const uint16_t*>(from)[i],
-                   r = SkPacked16ToR32(rgb),
-                   g = SkPacked16ToG32(rgb),
-                   b = SkPacked16ToB32(rgb);
+                  r = SkPacked16ToR32(rgb),
+                  g = SkPacked16ToG32(rgb),
+                  b = SkPacked16ToB32(rgb);
         a8[i] = (r + g + b) / 3;
     }
 }
@@ -605,10 +605,10 @@ static void blur_x_rect(BlurX blur,
                         uint8_t* dst, size_t dstStride, int dstW, int dstH) {
 
     fp88 g0(gauss[0]),
-         g1(gauss[1]),
-         g2(gauss[2]),
-         g3(gauss[3]),
-         g4(gauss[4]);
+        g1(gauss[1]),
+        g2(gauss[2]),
+        g3(gauss[3]),
+        g4(gauss[4]);
 
     // Blur *ALL* the rows.
     for (int y = 0; y < dstH; y++) {
@@ -702,8 +702,8 @@ static fp88 blur_y_radius_1(
     auto v1 = mulhi(s0, g1);
 
     fp88 answer = *d01 + v1;
-           *d01 = *d12 + v0;
-           *d12 =        v1 + kHalf;
+          *d01 = *d12 + v0;
+          *d12 =        v1 + kHalf;
 
     return answer;
 }
@@ -717,10 +717,10 @@ static fp88 blur_y_radius_2(
     auto v2 = mulhi(s0, g2);
 
     fp88 answer = *d01 + v2;
-           *d01 = *d12 + v1;
-           *d12 = *d23 + v0;
-           *d23 = *d34 + v1;
-           *d34 =        v2 + kHalf;
+          *d01 = *d12 + v1;
+          *d12 = *d23 + v0;
+          *d23 = *d34 + v1;
+          *d34 =        v2 + kHalf;
 
     return answer;
 }
@@ -735,12 +735,12 @@ static fp88 blur_y_radius_3(
     auto v3 = mulhi(s0, g3);
 
     fp88 answer = *d01 + v3;
-           *d01 = *d12 + v2;
-           *d12 = *d23 + v1;
-           *d23 = *d34 + v0;
-           *d34 = *d45 + v1;
-           *d45 = *d56 + v2;
-           *d56 =        v3 + kHalf;
+          *d01 = *d12 + v2;
+          *d12 = *d23 + v1;
+          *d23 = *d34 + v0;
+          *d34 = *d45 + v1;
+          *d45 = *d56 + v2;
+          *d56 =        v3 + kHalf;
 
     return answer;
 }
@@ -756,14 +756,14 @@ static fp88 blur_y_radius_4(
     auto v4 = mulhi(s0, g4);
 
     fp88 answer = *d01 + v4;
-           *d01 = *d12 + v3;
-           *d12 = *d23 + v2;
-           *d23 = *d34 + v1;
-           *d34 = *d45 + v0;
-           *d45 = *d56 + v1;
-           *d56 = *d67 + v2;
-           *d67 = *d78 + v3;
-           *d78 =        v4 + kHalf;
+          *d01 = *d12 + v3;
+          *d12 = *d23 + v2;
+          *d23 = *d34 + v1;
+          *d34 = *d45 + v0;
+          *d45 = *d56 + v1;
+          *d56 = *d67 + v2;
+          *d67 = *d78 + v3;
+          *d78 =        v4 + kHalf;
 
     return answer;
 }
@@ -778,7 +778,7 @@ static void blur_column(
         const uint8_t* src, size_t srcRB, int srcH,
         uint8_t* dst, size_t dstRB) {
     fp88 d01(kHalf), d12(kHalf), d23(kHalf), d34(kHalf),
-         d45(kHalf), d56(kHalf), d67(kHalf), d78(kHalf);
+        d45(kHalf), d56(kHalf), d67(kHalf), d78(kHalf);
 
     auto flush = [&](uint8_t* to, const fp88& v0, const fp88& v1) {
         store(to, v0, width);
@@ -818,10 +818,10 @@ static void blur_y_rect(ToA8 toA8, const int strideOf8,
                         uint8_t *dst, size_t dstRB) {
 
     fp88 g0(gauss[0]),
-         g1(gauss[1]),
-         g2(gauss[2]),
-         g3(gauss[3]),
-         g4(gauss[4]);
+        g1(gauss[1]),
+        g2(gauss[2]),
+        g3(gauss[3]),
+        g4(gauss[4]);
 
     int x = 0;
     for (; x <= srcW - 8; x += 8) {
@@ -898,7 +898,7 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
     };
 
     uint16_t gaussFactorsX[SkGaussFilter::kGaussArrayMax],
-             gaussFactorsY[SkGaussFilter::kGaussArrayMax];
+            gaussFactorsY[SkGaussFilter::kGaussArrayMax];
 
     prepareGauss(filterX, gaussFactorsX);
     prepareGauss(filterY, gaussFactorsY);
@@ -919,7 +919,7 @@ static SkIPoint small_blur(double sigmaX, double sigmaY, const SkMask& src, SkMa
         dstH = dst->fBounds.height();
 
     size_t srcRB = src.fRowBytes,
-           dstRB = dst->fRowBytes;
+          dstRB = dst->fRowBytes;
 
     //TODO: handle bluring in only one direction.
 
@@ -1057,7 +1057,7 @@ SkIPoint SkMaskBlurFilter::blur(const SkMask& src, SkMaskBuilder* dst) const {
         auto dstStart = &dst->image()[y];
 
         scanH.blur(tmpStart, tmpStart + tmpW,
-                   dstStart, dst->fRowBytes, dstStart + dst->fRowBytes * dstH);
+                  dstStart, dst->fRowBytes, dstStart + dst->fRowBytes * dstH);
     }
 
     return {SkTo<int32_t>(borderW), SkTo<int32_t>(borderH)};
