@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "94947f8d_6b6bca24",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1978,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-20T19:12:30Z",
+      "side": 1,
+      "message": "`\u0026sink` :)",
+      "range": {
+        "startLine": 1978,
+        "startChar": 78,
+        "endLine": 1978,
+        "endChar": 85
+      },
+      "revId": "fc9bee737f974610b912ca4c4ffc287d6fa3703b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
