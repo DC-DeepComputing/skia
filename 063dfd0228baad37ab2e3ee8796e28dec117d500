@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "349ecc8a_b58a26c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 27
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-20T18:07:45Z",
+      "side": 1,
+      "message": "Hm.. instead of templating both N and T (N being the number of bytes/color channels and T being the type) maybe only need to pass in T and compute sizeof(T)/8 to derive N at runtime?",
+      "revId": "063dfd0228baad37ab2e3ee8796e28dec117d500",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
