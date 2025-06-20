@@ -39,6 +39,23 @@
       "message": "Eck... we just went through a lot of work to get these out of here.",
       "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3288ecf5_db4d1dfb",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-20T17:33:24Z",
+      "side": 1,
+      "message": "This one still depends on pathops? Looks like SkClipStackUtils.cpp needs to be split out and or put somewhere else?",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
