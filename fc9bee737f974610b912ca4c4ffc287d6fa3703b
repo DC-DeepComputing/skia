@@ -46,6 +46,30 @@
       },
       "revId": "fc9bee737f974610b912ca4c4ffc287d6fa3703b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c282749_bf7d47c2",
+        "filename": "src/ports/SkFontHost_FreeType_common.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1978,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-20T20:14:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f74ff8e4_085919bc",
+      "range": {
+        "startLine": 1978,
+        "startChar": 78,
+        "endLine": 1978,
+        "endChar": 85
+      },
+      "revId": "fc9bee737f974610b912ca4c4ffc287d6fa3703b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
