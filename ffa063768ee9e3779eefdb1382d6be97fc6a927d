@@ -62,6 +62,30 @@
       },
       "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c153412c_537258bc",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-20T19:33:57Z",
+      "side": 1,
+      "message": "I think this is a bug. When you use emulation on mac m1, it forces the MSAA texture to store into memory. However on Mac M1, the MSAA texture is memoryless, hence the store operation is undefined, leading to wrong renderings as seen on Gold.\n\nI don\u0027t think we should force an emulation for non-load operations. It\u0027s not necessary to do so. If you did that, the if block below would be skipped, and essentially `wgpuPartialRect` would only be used when load op\u003dkLoad. What we really want is that `wgpuPartialRect` should always be used (when supported) regardless of the load op.",
+      "parentUuid": "2c442b9b_e642e084",
+      "range": {
+        "startLine": 387,
+        "startChar": 14,
+        "endLine": 390,
+        "endChar": 13
+      },
+      "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
