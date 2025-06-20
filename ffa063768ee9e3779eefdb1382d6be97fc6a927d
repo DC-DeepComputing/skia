@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d511c61_b9ebf728",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-20T19:15:16Z",
+      "side": 1,
+      "message": "There are 46 wrong images produced by Graphite/Dawn/Metal on Gold. It seems this CL caused some problems with the Metal backend.",
+      "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b53e67b4_c9f1e603",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 560,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-20T19:15:16Z",
+      "side": 1,
+      "message": "I would invert the order of if blocks to be like this:\n```suggestion\n#if !defined(__EMSCRIPTEN__)\n    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {\n        fSupportedResolveTextureLoadOp \u003d wgpu::LoadOp::ExpandResolveTexture;\n        fSupportsPartialLoadResolve \u003d\n                backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);\n        fDifferentResolveAttachmentSizeSupport \u003d fSupportsPartialLoadResolve;\n    }\n#endif\n\n    if (!fSupportsPartialLoadResolve \u0026\u0026 fSupportedTransientAttachmentUsage \u003d\u003d wgpu::TextureUsage::None) {\n        // If the device doesn\u0027t support partial resolve nor transient attachments, we will emulate load/resolve using separate render\n        // passes. This helps\n        // reuse MSAA textures better to reduce memory usage.\n        fEmulateLoadStoreResolve \u003d true;\n        fDifferentResolveAttachmentSizeSupport \u003d true;\n    }\n```",
+      "range": {
+        "startLine": 539,
+        "startChar": 4,
+        "endLine": 560,
+        "endChar": 6
+      },
+      "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c442b9b_e642e084",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 390,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-20T19:15:16Z",
+      "side": 1,
+      "message": "Why do we need to emulate for non-load operations?",
+      "range": {
+        "startLine": 387,
+        "startChar": 14,
+        "endLine": 390,
+        "endChar": 13
+      },
+      "revId": "ffa063768ee9e3779eefdb1382d6be97fc6a927d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
