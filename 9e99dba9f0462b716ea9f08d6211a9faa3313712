@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52e6be20_456077d5",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-20T18:23:56Z",
+      "side": 1,
+      "message": "Does that matter for our test tools when built with gn?  I guess it does if we\u0027re testing various configs based on the `enabled` preconditions...\n\nI don\u0027t mind keeping it separate, I just couldn\u0027t tell which apps need it since it has no specific defines and was all being rolled into `:skia`.  You offered some clues in the other comment, thanks.",
+      "parentUuid": "d4088fef_3ca24c12",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3288ecf5_db4d1dfb",
         "filename": "BUILD.gn",
         "patchSetId": 3
@@ -54,6 +72,24 @@
       "writtenOn": "2025-06-20T17:33:24Z",
       "side": 1,
       "message": "This one still depends on pathops? Looks like SkClipStackUtils.cpp needs to be split out and or put somewhere else?",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6729cb6e_138ff267",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-20T18:23:56Z",
+      "side": 1,
+      "message": "Ah, good catch.  Interestingly, this CL still works as a fix for CMake after pathops modularization - it just needs to see a \":pdf\" -\u003e \":pathops\" dep to satisfy the linker.\n\nBut yeah, looks like we still have an undeclared \":skia\" -\u003e \":pathops\" dep here, it just so happens that nobody else is using clipstackutils.\n\nMakes sense to split out, though I\u0027m not looking forward to all the related client staging, sigh.",
+      "parentUuid": "3288ecf5_db4d1dfb",
       "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
