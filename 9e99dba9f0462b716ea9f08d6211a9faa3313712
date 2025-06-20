@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d4088fef_3ca24c12",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-20T17:11:08Z",
+      "side": 1,
+      "message": "Eck... we just went through a lot of work to get these out of here.",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
