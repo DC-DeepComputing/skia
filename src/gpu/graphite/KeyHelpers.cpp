@@ -1247,9 +1247,11 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
     }
 
     // Use a specialized shader if we're transferring to and from sRGB-ish color spaces.
-    if (data.fSteps.fFlags.linearize && data.fSteps.fFlags.encode &&
-        skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF) &&
-        skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv)) {
+    // We take this path even if linearize/encode are false since we can set coefficients
+    // in the sRGB transfer functions to represent identity, and that is better than using the
+    // most general colorspace option.
+    if ((!data.fSteps.fFlags.linearize || skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF)) &&
+        (!data.fSteps.fFlags.encode || skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv))) {
         add_color_space_xform_srgb_uniform_data(keyContext.dict(), data, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformSRGB);
         return;
