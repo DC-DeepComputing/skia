@@ -536,25 +536,22 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     }
 #endif
 
-    if (fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
-        // Without transient attachments, we currently emulate load/resolve using separate render
-        // passes, so that mismatched MSAA & resolve attachments' sizes can work. This helps
-        // reuse MSAA textures better to reduce memory usage.
-        // TODO(b/399640773): Avoid this when Dawn implements the partial resolve feature
-        // that can support mismatched sized MSAA & resolve attachments.
+#if !defined(__EMSCRIPTEN__)
+    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
+        fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
+        fSupportsPartialLoadResolve =
+                backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
+        fDifferentResolveAttachmentSizeSupport = fSupportsPartialLoadResolve;
+    }
+#endif
+
+    if (!fSupportsPartialLoadResolve && fSupportedTransientAttachmentUsage == wgpu::TextureUsage::None) {
+        // If the device doesn't support partial resolve nor transient attachments, we will emulate
+        // load/resolve using separate render passes. This helps reuse MSAA textures better to
+        // reduce memory usage.
         fEmulateLoadStoreResolve = true;
         fDifferentResolveAttachmentSizeSupport = true;
     }
-
-#if !defined(__EMSCRIPTEN__)
-    if (!fEmulateLoadStoreResolve) {
-        if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
-            fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
-        }
-        fSupportsPartialLoadResolve =
-                backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnPartialLoadResolveTexture);
-    }
-#endif
 
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::TimestampQuery)) {
         // Native Dawn has an API for writing timestamps on command buffers. WebGPU only supports
