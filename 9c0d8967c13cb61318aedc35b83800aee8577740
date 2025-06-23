@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d14c46_c30ba325",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-23T03:58:15Z",
+      "side": 1,
+      "message": "Other than the shader files needing regeneration, this change is ready for review. It may seem odd that the transformer is split in two, we can chat about the design a bit. TL;DR is it\u0027s purely experience from similar code in ANGLE, it was annoying in the past to detangle the multiple transforms ANGLE does, I ported the detangled version here... that is assuming eventually you end up doing other transforms.",
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
