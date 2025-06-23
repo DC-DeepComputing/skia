@@ -16,6 +16,29 @@
       "message": "ptal",
       "revId": "772a3b14727ab21c7a2ed3ab400d19a09ed6e203",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f023365_5a99282f",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T14:48:18Z",
+      "side": 1,
+      "message": "(Depending on commit order) This could be SkPathVerb and omit cast below",
+      "range": {
+        "startLine": 906,
+        "startChar": 17,
+        "endLine": 906,
+        "endChar": 24
+      },
+      "revId": "772a3b14727ab21c7a2ed3ab400d19a09ed6e203",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
