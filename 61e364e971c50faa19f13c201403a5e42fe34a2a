@@ -34,6 +34,24 @@
       "parentUuid": "460a72d2_3c844baf",
       "revId": "61e364e971c50faa19f13c201403a5e42fe34a2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7a5507a6_b68d2f06",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-23T16:13:40Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "7a934ca9_aa9b2577",
+      "revId": "61e364e971c50faa19f13c201403a5e42fe34a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
