@@ -54,6 +54,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "62756736_6723a9e3",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T18:31:58Z",
+      "side": 1,
+      "message": "Oops, that was to test that it all compiled. This should be added to Android\u0027s SkUserConfigManual.h",
+      "parentUuid": "4adc668b_acb3b0b2",
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "82e7a5e4_ede41503",
         "filename": "src/core/SkTraceEventCommon.h",
         "patchSetId": 7
@@ -82,6 +100,30 @@
       "writtenOn": "2025-06-23T18:16:10Z",
       "side": 1,
       "message": "I believe this should be wrapped in `TRACE_STR_COPY(...)`\n\n1. [SkTraceEvent.h](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkTraceEvent.h;l\u003d35-53;drc\u003d465ee1112e118c6a0688399dc2ca9e63827aa78b)\n2. https://perfetto.dev/docs/instrumentation/track-events#dynamic-event-names",
+      "range": {
+        "startLine": 774,
+        "startChar": 40,
+        "endLine": 774,
+        "endChar": 91
+      },
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e785a7fe_00781fa8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T18:31:58Z",
+      "side": 1,
+      "message": "Good catch, these are long lived strings but not quite process lifetime :/ If a pipeline was purged while collecting a trace we\u0027d be in trouble.",
+      "parentUuid": "9f7fe038_f16a8d5b",
       "range": {
         "startLine": 774,
         "startChar": 40,
