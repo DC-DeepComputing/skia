@@ -16,6 +16,23 @@
       "message": "This consolidates https://skia-review.googlesource.com/c/skia/+/999760 and https://skia-review.googlesource.com/c/skia/+/1007696.  They were initially reverted due to some chrome-internal bot failures, which should be addressed now (https://chrome-internal-review.googlesource.com/c/chrome/components/optimization_guide/+/8355982).",
       "revId": "26248fe8db9a6311e67b71034ce921e123f1622c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "121bc516_a85e12c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-23T18:06:14Z",
+      "side": 1,
+      "message": "lgtm",
+      "revId": "26248fe8db9a6311e67b71034ce921e123f1622c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
