@@ -39,6 +39,30 @@
       },
       "revId": "772a3b14727ab21c7a2ed3ab400d19a09ed6e203",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e75694b_dffabb19",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 906,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-23T15:03:12Z",
+      "side": 1,
+      "message": "good point! -- I\u0027ll try to land this one 2nd.",
+      "parentUuid": "2f023365_5a99282f",
+      "range": {
+        "startLine": 906,
+        "startChar": 17,
+        "endLine": 906,
+        "endChar": 24
+      },
+      "revId": "772a3b14727ab21c7a2ed3ab400d19a09ed6e203",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
