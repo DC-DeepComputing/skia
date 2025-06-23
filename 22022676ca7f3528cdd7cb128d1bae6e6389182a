@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "52be6d42_911f880f",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-23T10:41:10Z",
+      "side": 1,
+      "message": "edit: typo\n```suggestion\n        fDifferentResolveAttachmentSizeSupport \u003d true;\n        \n        // On hardware that doesn\u0027t support transient attachments or partial\n        // resolve, we force-disable the ExpandResolveTexture loadOp.\n        // This is done because, under emulation, ExpandResolveTexture isn\u0027t\n        // used, and fully disabling it prevents the precompilation API from\n        // generating duplicate pipeline permutations (one for load resolve\n        // texture, one for others).\n        fSupportedResolveTextureLoadOp \u003d std::nullopt;\n```",
+      "parentUuid": "a5ad36a3_91d3d2bf",
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c177e2ba_c0e5015b",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 11
