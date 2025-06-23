@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5a8a106_c72e20ed",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 7811
+      },
+      "writtenOn": "2025-06-23T12:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52be6d42_911f880f",
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c177e2ba_c0e5015b",
@@ -66,6 +84,30 @@
       "writtenOn": "2025-06-23T10:39:49Z",
       "side": 1,
       "message": "nit: you could avoid duplicated else blocks by moving it out of #if #endif\n```suggestion\n            if (!emulateLoadStoreResolveTexture) {\n#if !defined(__EMSCRIPTEN__)\n                if (fSharedContext-\u003edawnCaps()-\u003esupportsPartialLoadResolve()) {\n                    SkIRect msaaArea \u003d renderPassBounds;\n                    msaaArea.intersect(SkIRect::MakeSize(colorTexture-\u003edimensions()));\n                    wgpuPartialRect.colorOffsetX \u003d msaaArea.x();\n                    wgpuPartialRect.colorOffsetY \u003d msaaArea.y();\n                    SkIRect resolveArea \u003d renderPassBounds;\n                    resolveArea.offset(resolveOffset);\n                    resolveArea.intersect(SkIRect::MakeSize(resolveTexture-\u003edimensions()));\n                    wgpuPartialRect.resolveOffsetX \u003d resolveArea.x();\n                    wgpuPartialRect.resolveOffsetY \u003d resolveArea.y();\n                    wgpuPartialRect.width \u003d resolveArea.width();\n                    wgpuPartialRect.height \u003d resolveArea.height();\n                    wgpuRenderPass.nextInChain \u003d \u0026wgpuPartialRect;\n                } else\n#endif\n                {\n                    SkASSERT(resolveOffset.isZero());\n                }\n            }\n```",
+      "range": {
+        "startLine": 389,
+        "startChar": 12,
+        "endLine": 413,
+        "endChar": 6
+      },
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bb749b5_4f5bad08",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 7811
+      },
+      "writtenOn": "2025-06-23T12:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c177e2ba_c0e5015b",
       "range": {
         "startLine": 389,
         "startChar": 12,

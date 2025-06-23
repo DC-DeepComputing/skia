@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "50a099ee_06791e42",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 7811
+      },
+      "writtenOn": "2025-06-23T12:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7ba4065e_60d119dd",
+      "range": {
+        "startLine": 9,
+        "startChar": 94,
+        "endLine": 9,
+        "endChar": 125
+      },
+      "revId": "8f11e2b4192a768b2523ee5f50c9aa37241969d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "c9c56832_bcec9724",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 6
@@ -54,6 +78,30 @@
       "writtenOn": "2025-06-20T19:15:16Z",
       "side": 1,
       "message": "nit: We should add an `else` condition here so that it can ensure that:\n- when \"partial load resolve\" is not supported.\n  - `resolveOffset` should be zero.\n- It\u0027s impossible to handle non-zero `resolveOffset` when neither `emulateLoadStoreResolveTexture` nor `supportsPartialLoadResolve()` is true.\n\nThe `#else` preprocessor is not enough here. It\u0027s only meant for helping compilation in emscripten/wasm mode. In wasm mode, `RenderPassDescriptorResolveRect` is not defined, hence we have to use `#if` to omit it.\n```suggestion\n                }\n                else\n#else\n                {\n\t            SkASSERT(resolveOffset.isZero());\n                }\n#endif\n```",
+      "range": {
+        "startLine": 401,
+        "startChar": 16,
+        "endLine": 404,
+        "endChar": 6
+      },
+      "revId": "8f11e2b4192a768b2523ee5f50c9aa37241969d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fbfd261_d1db1069",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 7811
+      },
+      "writtenOn": "2025-06-23T12:11:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6422aa14_4edf7a15",
       "range": {
         "startLine": 401,
         "startChar": 16,
