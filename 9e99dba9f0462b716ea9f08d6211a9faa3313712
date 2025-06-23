@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c7efa46_94db5c79",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1262,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-23T17:41:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09d601a2_90f8a831",
+      "range": {
+        "startLine": 1261,
+        "startChar": 48,
+        "endLine": 1262,
+        "endChar": 41
+      },
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d4088fef_3ca24c12",
@@ -59,6 +83,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4745505a_8b7488a4",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1267,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-23T17:41:05Z",
+      "side": 1,
+      "message": "Still can\u0027t tell where it is needed as a dep, so added everywhere `:pdf` is used.",
+      "parentUuid": "52e6be20_456077d5",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3288ecf5_db4d1dfb",
@@ -90,6 +132,24 @@
       "side": 1,
       "message": "Ah, good catch.  Interestingly, this CL still works as a fix for CMake after pathops modularization - it just needs to see a \":pdf\" -\u003e \":pathops\" dep to satisfy the linker.\n\nBut yeah, looks like we still have an undeclared \":skia\" -\u003e \":pathops\" dep here, it just so happens that nobody else is using clipstackutils.\n\nMakes sense to split out, though I\u0027m not looking forward to all the related client staging, sigh.",
       "parentUuid": "3288ecf5_db4d1dfb",
+      "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bdfd5dc1_722e3fb4",
+        "filename": "BUILD.gn",
+        "patchSetId": 3
+      },
+      "lineNbr": 1695,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-23T17:41:05Z",
+      "side": 1,
+      "message": "I\u0027ve added `clipstack_utils`\u0026`skia_clipstack_utils_sources`.   For now `skia_utils_private` still includes the clip stack utils sources to allow client migration.",
+      "parentUuid": "6729cb6e_138ff267",
       "revId": "9e99dba9f0462b716ea9f08d6211a9faa3313712",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
