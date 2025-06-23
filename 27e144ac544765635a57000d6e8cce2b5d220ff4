@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "27677b6c_facfb9e2",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T19:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76e19f33_fe994a71",
+      "range": {
+        "startLine": 272,
+        "startChar": 28,
+        "endLine": 272,
+        "endChar": 39
+      },
+      "revId": "27e144ac544765635a57000d6e8cce2b5d220ff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "03995d62_127bcce8",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-06-23T18:57:20Z",
       "side": 1,
       "message": "See note above, but this can be a `static_assert`",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 32
+      },
+      "revId": "27e144ac544765635a57000d6e8cce2b5d220ff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b86fe58a_181850fe",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T19:16:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "03995d62_127bcce8",
       "range": {
         "startLine": 277,
         "startChar": 0,
