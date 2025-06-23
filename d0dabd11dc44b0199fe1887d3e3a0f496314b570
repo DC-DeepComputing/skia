@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2144e2e_9741412f",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-23T18:13:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2ad31d2b_3fa16808",
+      "range": {
+        "startLine": 113,
+        "startChar": 13,
+        "endLine": 113,
+        "endChar": 28
+      },
+      "revId": "d0dabd11dc44b0199fe1887d3e3a0f496314b570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2d4294b1_8db0d2cd",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-17T17:56:54Z",
       "side": 1,
       "message": "This logic would need to be updated to move the `scratchSurface`\u0027s task to the drawContext as well as the copy task. (this would be `surface-\u003easImage()-\u003enotifyInUse(...)` instead of Flush I believe).",
+      "range": {
+        "startLine": 570,
+        "startChar": 0,
+        "endLine": 582,
+        "endChar": 50
+      },
+      "revId": "d0dabd11dc44b0199fe1887d3e3a0f496314b570",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d039f75c_04af12fe",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-23T18:13:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2d4294b1_8db0d2cd",
       "range": {
         "startLine": 570,
         "startChar": 0,
