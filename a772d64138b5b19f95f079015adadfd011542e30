@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "746b07d4_03dede1f",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9df645c3_5f304259",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 153,
+        "endChar": 23
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44d911bb_2d314fc0",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-06-23T14:57:08Z",
       "side": 1,
       "message": "maybe naming this like `eval_blur_passes` would be clearer? I\u0027m not sure `_special` is needed since it\u0027s already the return type (and long term, SkSpecialImage will hopefully go away in favor of just using SkImage directly).",
+      "range": {
+        "startLine": 161,
+        "startChar": 29,
+        "endLine": 161,
+        "endChar": 49
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "299acac8_3c86903b",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "44d911bb_2d314fc0",
       "range": {
         "startLine": 161,
         "startChar": 29,
@@ -81,6 +129,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "08371b5b_8101c536",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "94a7d98a_3f740580",
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "58f7dddf_8b927f7c",
@@ -94,6 +160,30 @@
       "writtenOn": "2025-06-23T14:57:08Z",
       "side": 1,
       "message": "for consistency with the other passes, can we use `sk_bzero` here?",
+      "range": {
+        "startLine": 1048,
+        "startChar": 0,
+        "endLine": 1048,
+        "endChar": 82
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fa4f83ba_02278699",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1048,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "58f7dddf_8b927f7c",
       "range": {
         "startLine": 1048,
         "startChar": 0,
@@ -127,6 +217,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e1bba32e_d75bb5b9",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1133,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73de7d3b_cb21c559",
+      "range": {
+        "startLine": 1124,
+        "startChar": 0,
+        "endLine": 1133,
+        "endChar": 29
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a21f29be_dec1dadf",
@@ -140,6 +254,30 @@
       "writtenOn": "2025-06-23T14:57:08Z",
       "side": 1,
       "message": "This should be 135 since we aren\u0027t using the TentPass (and don\u0027t want to, so it can be deleted in follow-up work)",
+      "range": {
+        "startLine": 1172,
+        "startChar": 44,
+        "endLine": 1172,
+        "endChar": 48
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8611ab12_745731a8",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1172,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a21f29be_dec1dadf",
       "range": {
         "startLine": 1172,
         "startChar": 44,
@@ -173,6 +311,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ab74d64_132a42cc",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1180,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f79d0cb_5b42240b",
+      "range": {
+        "startLine": 1180,
+        "startChar": 6,
+        "endLine": 1180,
+        "endChar": 8
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "32ded2fa_0193c9cc",
@@ -186,6 +348,30 @@
       "writtenOn": "2025-06-23T14:57:08Z",
       "side": 1,
       "message": "To minimize impact on Chrome, can we keep this guarded by `!defined(SK_AVOID_SLOW_RASTER_PIPELINE_BLURS)` so that we can remove the build flag explicitly chrome to opt in to taking the new GaussianPass for small blurs?\n\nAssuming `make_blurred_special` still does the identity copy, this should preserve the current behavior in Chrome.",
+      "range": {
+        "startLine": 1236,
+        "startChar": 0,
+        "endLine": 1238,
+        "endChar": 13
+      },
+      "revId": "a772d64138b5b19f95f079015adadfd011542e30",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9c8b793_a1fead9e",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 31
+      },
+      "lineNbr": 1238,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-23T15:31:29Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "32ded2fa_0193c9cc",
       "range": {
         "startLine": 1236,
         "startChar": 0,
