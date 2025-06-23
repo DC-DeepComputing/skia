@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad17e299_42faa438",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-23T03:43:59Z",
+      "side": 1,
+      "message": "PTAL. This change should make the double-subpass scenario practically never trigger.",
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
