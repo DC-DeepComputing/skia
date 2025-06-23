@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c0683619_8c7ff13a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-23T19:45:44Z",
+      "side": 1,
+      "message": "LGTM from testing, with the caveat that some trace names could be shortened by avoiding `TRACE_FUNC`, if desired.",
+      "revId": "fd22db13700ae87bd28f9442527e4852258a75d1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
