@@ -16,6 +16,259 @@
       "message": "PTAL at the FlushToDrawContext",
       "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1301d4fc_691ff754",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 586,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "I don\u0027t think we can use this Device\u0027s DrawContext as the container for the copy tasks. The container needs to be the consumer of the copy, whereas this is the source of the copy.",
+      "range": {
+        "startLine": 584,
+        "startChar": 0,
+        "endLine": 586,
+        "endChar": 33
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd00c52_3885caf3",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1774,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "That seems reasonable.  We could just have it named `flushPendingWork(DrawContext*)` and if the DC is null, then we add `drawTask` to the root task list.\n\nI think we also want to be clear about the assignment to `fLastTask` being skipped if we provide a non-null DrawContext. If we don\u0027t assign `fLastTask`, then the surfaces created for CopyAsDraw will not go through the pending-read ref counting that lets us reuse short-lived textures. Lets work through what that looks like in the CopyAsDraw and the GenerateMipmaps case to make sure we aren\u0027t regressing the texture reuse.\n\nAlthough in the future, I think there\u0027s potential to simplify this where a Surface could be created with a parent DrawContext instead of a Recorder.  In that case even if it were a \"scratch\" surface, we\u0027d go through the code flow in notifyInUse() that flushes the task to its \"root\" and then we would probably be able to get rid of all internal explicit flushes.",
+      "range": {
+        "startLine": 1774,
+        "startChar": 0,
+        "endLine": 1774,
+        "endChar": 47
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5b43512e_120b1420",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 1848,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "I think this should have been part of `internalFlush()`",
+      "range": {
+        "startLine": 1847,
+        "startChar": 0,
+        "endLine": 1848,
+        "endChar": 63
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b35c1efb_053b743e",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "In addition to this, can we include the details from `flushPendingWorkToRecorder`\u0027s comment?",
+      "range": {
+        "startLine": 83,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 32
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2fc7c65_69787625",
+        "filename": "src/gpu/graphite/DrawContext.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "I don\u0027t think we assert `imageCopy` is non-null, too many things could fail here. Instead we should log and drop.",
+      "range": {
+        "startLine": 300,
+        "startChar": 0,
+        "endLine": 300,
+        "endChar": 32
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2540d807_f39fde22",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "For now, I think this should be nullptr, but since this is a Graphite-internal API I wouldn\u0027t be surprised if it becomes useful to allow `copyImage()` to put the copy tasks into a DrawContext.",
+      "range": {
+        "startLine": 142,
+        "startChar": 0,
+        "endLine": 142,
+        "endChar": 31
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f143ae94_06dde6f5",
+        "filename": "src/gpu/graphite/Image_Graphite.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "It looks like everything is in place to have this support `drawContext` passed in, and then we can relax the assert above?",
+      "range": {
+        "startLine": 113,
+        "startChar": 39,
+        "endLine": 113,
+        "endChar": 46
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5127d339_b5d90c6f",
+        "filename": "src/gpu/graphite/Image_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "We should add a comment that the resulting tasks will be added as a dependency to `drawContext` if it\u0027s not null, otherwise it will be added to the recorder\u0027s root task list.",
+      "range": {
+        "startLine": 35,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 76
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ed841bc_3308fab3",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 12
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "See other note, but let\u0027s just have this be a function on Surface. Everywhere that is using this explicit flush control should be creating `Surface` directly and not SkSurface.",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 124,
+        "endChar": 50
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5812dbd_b2556b73",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 375,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "nit: line up again",
+      "range": {
+        "startLine": 371,
+        "startChar": 40,
+        "endLine": 375,
+        "endChar": 52
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "623e546c_89478356",
+        "filename": "src/gpu/graphite/TextureUtils.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 388,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T20:55:33Z",
+      "side": 1,
+      "message": "Since we we have a concrete Graphite `Surface`, we can just have `flushToDrawContext()` be a member function on Surface.",
+      "range": {
+        "startLine": 388,
+        "startChar": 0,
+        "endLine": 388,
+        "endChar": 55
+      },
+      "revId": "90d6c136819eb8116b51debfe303f48bf84ce771",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
