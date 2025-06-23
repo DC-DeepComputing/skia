@@ -166,6 +166,18 @@ void Flush(SkSurface* surface) {
     gs->fDevice->flushPendingWorkToRecorder();
 }
 
+void FlushToDrawContext(SkSurface* surface, DrawContext* drawContext) {
+    if (!surface) {
+        return;
+    }
+    auto sb = asSB(surface);
+    if (!sb->isGraphiteBacked()) {
+        return;
+    }
+    auto gs = static_cast<Surface*>(surface);
+    gs->fDevice->flushToDrawContext(drawContext);
+}
+
 } // namespace skgpu::graphite
 
 using namespace skgpu::graphite;

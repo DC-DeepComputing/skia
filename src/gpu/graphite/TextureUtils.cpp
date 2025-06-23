@@ -38,6 +38,7 @@
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/Device.h"
+#include "src/gpu/graphite/DrawContext.h"
 #include "src/gpu/graphite/Image_Graphite.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecorderPriv.h"
@@ -349,6 +350,7 @@ size_t ComputeSize(SkISize dimensions, const TextureInfo& info) {
 }
 
 sk_sp<Image> CopyAsDraw(Recorder* recorder,
+                        DrawContext* drawContext,
                         const SkImage* image,
                         const SkIRect& subset,
                         const SkColorInfo& dstColorInfo,
@@ -365,7 +367,7 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
                                                         .makeAlphaType(kPremul_SkAlphaType));
     // The surface goes out of scope when we return, so it can be scratch, but it may or may
     // not be budgeted depending on how the copied image is used (or returned to the client).
-    auto surface = Surface::MakeScratch(recorder,
+    sk_sp<Surface> surface = Surface::MakeScratch(recorder,
                                         dstInfo,
                                         std::move(label),
                                         budgeted,
@@ -379,7 +381,12 @@ sk_sp<Image> CopyAsDraw(Recorder* recorder,
     paint.setBlendMode(SkBlendMode::kSrc);
     surface->getCanvas()->drawImage(image, -subset.left(), -subset.top(),
                                     SkFilterMode::kNearest, &paint);
-    // And the image draw into `surface` is flushed when it goes out of scope
+
+    // If we have a drawcontext add the draw to the drawContext's task list, otherwise, the draw
+    // into `surface` is flushed when it goes out of scope
+    if (drawContext) {
+        FlushToDrawContext(surface.get(), drawContext);
+    }
     return surface->asImage();
 }
 
@@ -514,6 +521,7 @@ sk_sp<SkImage> RescaleImage(Recorder* recorder,
 }
 
 bool GenerateMipmaps(Recorder* recorder,
+                     DrawContext* drawContext,
                      sk_sp<TextureProxy> texture,
                      const SkColorInfo& colorInfo) {
     constexpr SkSamplingOptions kSamplingOptions = SkSamplingOptions(SkFilterMode::kLinear);
@@ -565,7 +573,11 @@ bool GenerateMipmaps(Recorder* recorder,
                                                    SkCanvas::kStrict_SrcRectConstraint);
 
         // Make sure the rescaling draw finishes before copying the results.
-        Flush(scratchSurface);
+        if (drawContext) {
+            FlushToDrawContext(scratchSurface, drawContext);
+        } else {
+            Flush(scratchSurface);
+        }
 
         sk_sp<CopyTextureToTextureTask> copyTask = CopyTextureToTextureTask::Make(
                 static_cast<const Surface*>(scratchSurface)->readSurfaceView().refProxy(),
@@ -576,7 +588,12 @@ bool GenerateMipmaps(Recorder* recorder,
         if (!copyTask) {
             return false;
         }
-        recorder->priv().add(std::move(copyTask));
+
+        if (drawContext) {
+            drawContext->recordDependency(std::move(copyTask));
+        } else {
+            recorder->priv().add(std::move(copyTask));
+        }
 
         scratchImg = scratchSurface->asImage();
         srcSize = dstSize;
