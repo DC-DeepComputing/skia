@@ -16,6 +16,24 @@
       "message": "Can we make fVerbs store SkPathVerb instead of uint8_t?",
       "revId": "61e364e971c50faa19f13c201403a5e42fe34a2a",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a934ca9_aa9b2577",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 315,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-23T15:04:16Z",
+      "side": 1,
+      "message": "... yes! (same for pathbuilder of course) -- and I think that will have a big ripple, so I was considering doing it as an after-cl... I\u0027ll try it locally, and see how big/bad it looks.",
+      "parentUuid": "460a72d2_3c844baf",
+      "revId": "61e364e971c50faa19f13c201403a5e42fe34a2a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
