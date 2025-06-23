@@ -81,6 +81,10 @@ public:
     // from the DrawContext as a RenderPassTask and records it in the Device's recorder.
     void flushPendingWorkToRecorder();
 
+    // This function allows tasks to be added directly to a draw context, enabling task grouping
+    // at the drawContext level.
+    void flushToDrawContext(DrawContext*);
+
     const Transform& localToDeviceTransform();
 
     // Flushes any pending work to the recorder and then deregisters and abandons the recorder.
