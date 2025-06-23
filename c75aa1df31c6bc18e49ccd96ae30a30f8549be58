@@ -68,6 +68,29 @@
       },
       "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3045365a_bdb95990",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T19:35:09Z",
+      "side": 1,
+      "message": "I\u0027m not sure if this CL will actually change what we encounter in RE, since if they were using PQ or HLG destination spaces, then to/fromLinearSrgb would still be fully generalizable.\n\nBut since the colorspace is included in the precompile paint options, this shouldn\u0027t impact overgeneration, it\u0027ll just have RE use what it\u0027s actually able to use.",
+      "range": {
+        "startLine": 343,
+        "startChar": 161,
+        "endLine": 343,
+        "endChar": 208
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
