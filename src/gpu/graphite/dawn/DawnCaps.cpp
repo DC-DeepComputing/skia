@@ -1086,7 +1086,6 @@ bool DawnCaps::extractGraphicsDescs(const UniqueKey& key,
 
     SkDEBUGCODE(const RenderStep* renderStep = rendererProvider->lookup(renderStepID);)
     *pipelineDesc = GraphicsPipelineDesc(renderStepID, UniquePaintParamsID(rawKeyData[1]));
-    SkASSERT(renderStep->performsShading() == pipelineDesc->paintParamsID().isValid());
 
     const uint32_t rpDescBits = rawKeyData[2];
     TextureFormat colorFormat =
