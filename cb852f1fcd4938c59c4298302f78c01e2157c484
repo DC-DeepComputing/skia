@@ -16,6 +16,80 @@
       "message": "Noelle, can you test this locally on Android with the build flag before we land to make sure everything seems reasonable?",
       "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f378dd87_526f4b98",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-23T18:16:10Z",
+      "side": 1,
+      "message": "Overall LGTM modulo needing `TRACE_STR_COPY` -- getting set up to test.",
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4adc668b_acb3b0b2",
+        "filename": "include/core/SkTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-23T18:16:10Z",
+      "side": 1,
+      "message": "Is this intentionally enabled everywhere, or just while testing?",
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e7a5e4_ede41503",
+        "filename": "src/core/SkTraceEventCommon.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 538,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-23T18:16:10Z",
+      "side": 1,
+      "message": "LGTM!",
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f7fe038_f16a8d5b",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 774,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-23T18:16:10Z",
+      "side": 1,
+      "message": "I believe this should be wrapped in `TRACE_STR_COPY(...)`\n\n1. [SkTraceEvent.h](https://source.chromium.org/chromium/chromium/src/+/main:third_party/skia/src/core/SkTraceEvent.h;l\u003d35-53;drc\u003d465ee1112e118c6a0688399dc2ca9e63827aa78b)\n2. https://perfetto.dev/docs/instrumentation/track-events#dynamic-event-names",
+      "range": {
+        "startLine": 774,
+        "startChar": 40,
+        "endLine": 774,
+        "endChar": 91
+      },
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
