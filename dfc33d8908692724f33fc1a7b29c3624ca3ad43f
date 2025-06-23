@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b597ac0_33a607a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 32
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T14:59:05Z",
+      "side": 1,
+      "message": "Oops, I didn\u0027t meant to rebase this CL",
+      "revId": "dfc33d8908692724f33fc1a7b29c3624ca3ad43f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
