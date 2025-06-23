@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2db6b3d4_36c24bfd",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T19:33:28Z",
+      "side": 1,
+      "message": "This is what lets this function replace `add_color_space_xform_premul_uniform_data`.",
+      "range": {
+        "startLine": 1095,
+        "startChar": 0,
+        "endLine": 1105,
+        "endChar": 5
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e7ae9eec_a390f0c0",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T19:33:28Z",
+      "side": 1,
+      "message": "This is the new functionality added to `add_colorspace_uniforms` to support the identity linear/encode step in the ColorSpaceXformSRGB \"fast\" path.",
+      "range": {
+        "startLine": 1150,
+        "startChar": 5,
+        "endLine": 1155,
+        "endChar": 12
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc7d7373_70287fac",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T19:33:28Z",
+      "side": 1,
+      "message": "This replaces the need to pass in the `has_ootf_uniforms`  directly.",
+      "range": {
+        "startLine": 1178,
+        "startChar": 0,
+        "endLine": 1178,
+        "endChar": 89
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
