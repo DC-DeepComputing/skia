@@ -16,6 +16,52 @@
       "message": "@michaelludwig@google.com ptal",
       "revId": "27e144ac544765635a57000d6e8cce2b5d220ff4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "76e19f33_fe994a71",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T18:57:20Z",
+      "side": 1,
+      "message": "You can do `sizeof(T) / sizeof(uint8_t)` and a static assert that `N*sizeof(uint8_t) \u003d\u003d sizeof(T)`",
+      "range": {
+        "startLine": 272,
+        "startChar": 28,
+        "endLine": 272,
+        "endChar": 39
+      },
+      "revId": "27e144ac544765635a57000d6e8cce2b5d220ff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03995d62_127bcce8",
+        "filename": "src/core/SkBlurEngine.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T18:57:20Z",
+      "side": 1,
+      "message": "See note above, but this can be a `static_assert`",
+      "range": {
+        "startLine": 277,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 32
+      },
+      "revId": "27e144ac544765635a57000d6e8cce2b5d220ff4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
