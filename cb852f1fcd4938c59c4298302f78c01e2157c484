@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f46550b8_89b6c9d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-23T14:17:08Z",
+      "side": 1,
+      "message": "Noelle, can you test this locally on Android with the build flag before we land to make sure everything seems reasonable?",
+      "revId": "cb852f1fcd4938c59c4298302f78c01e2157c484",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
