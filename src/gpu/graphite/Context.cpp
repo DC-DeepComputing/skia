@@ -216,7 +216,7 @@ std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
     return std::unique_ptr<Recorder>(new Recorder(fSharedContext, {}, this));
 }
 
-bool Context::insertRecording(const InsertRecordingInfo& info) {
+InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
     ASSERT_SINGLE_OWNER
 
     return fQueueManager->addRecording(info, this);
@@ -633,6 +633,7 @@ void Context::finalizeAsyncReadPixels(std::unique_ptr<Recorder> recorder,
         }
         InsertRecordingInfo recordingInfo;
         recordingInfo.fRecording = recording.get();
+        SkDebugf("calling insertRecording for readback\n");
         if (!this->insertRecording(recordingInfo)) {
             callback(callbackContext, nullptr);
             return;
