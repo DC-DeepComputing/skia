@@ -63,17 +63,30 @@ void compile(const RendererProvider* rendererProvider,
 
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
                                                                : UniquePaintParamsID::Invalid();
-            GraphicsPipelineDesc pipelineDesc(s->renderStepID(), paintID);
 
             sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
                     keyContext.rtEffectDict(),
-                    pipelineDesc,
+                    { s->renderStepID(), paintID },
                     renderPassDesc,
                     PipelineCreationFlags::kForPrecompilation);
             if (!pipeline) {
                 SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
                 return;
             }
+
+            if (s->renderStepID() == RenderStep::RenderStepID::kCoverBounds_InverseCover) {
+                pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                        keyContext.rtEffectDict(),
+                        { s->renderStepID(), UniquePaintParamsID::Invalid() },
+                        renderPassDesc,
+                        PipelineCreationFlags::kForPrecompilation);
+                if (!pipeline) {
+                    SKGPU_LOG_W("Failed to create \"CoverBoundsRenderStep[InverseCover] + (empty)\""
+                                " precompile Pipeline!");
+                    return;
+                }
+            }
+
         }
     }
 }
