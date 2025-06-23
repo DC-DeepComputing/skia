@@ -752,6 +752,11 @@ static bool rewind(EdgeList* activeEdges, Vertex** current, Vertex* dst, const C
     Vertex* v = *current;
     TESS_LOG("rewinding active edges from vertex %g to vertex %g\n", v->fID, dst->fID);
     while (v != dst) {
+        // We've hit the beginning of the mesh without finding dst.
+        // This is an unrecoverable state. Signal failure.
+        if (!v->fPrev) {
+            return false;
+        }
         v = v->fPrev;
         for (Edge* e = v->fFirstEdgeBelow; e; e = e->fNextEdgeBelow) {
             if (!activeEdges->remove(e)) {
@@ -1482,12 +1487,12 @@ static void validate_edge_list(EdgeList* edges, const Comparator& c) {
 // Stage 4: Simplify the mesh by inserting new vertices at intersecting edges.
 
 GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
-                                                        const Comparator& c) {
+                                                          const Comparator& c) {
     TESS_LOG("simplifying complex polygons\n");
 
     int initialNumEdges = fNumEdges;
     int initialNumVertices = 0;
-    for (Vertex* v = mesh->fHead; v != nullptr; v = v->fNext) {
+    for (Vertex* vert = mesh->fHead; vert != nullptr; vert = vert->fNext) {
         ++initialNumVertices;
     }
     int numSelfIntersections = 0;
@@ -1495,9 +1500,14 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
     EdgeList activeEdges;
     auto result = SimplifyResult::kAlreadySimple;
     int numVisitedVertices = 0;
-    for (Vertex* v = mesh->fHead; v != nullptr; v = v->fNext) {
+
+    Vertex* v = mesh->fHead;
+    while (v != nullptr) {
+        Vertex* nextVertex = v->fNext;
+
         ++numVisitedVertices;
         if (!v->isConnected()) {
+            v = nextVertex;
             continue;
         }
 
@@ -1512,13 +1522,19 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
             return SimplifyResult::kFailed;
         }
 
-        Edge* leftEnclosingEdge;
-        Edge* rightEnclosingEdge;
+        Edge* leftEnclosingEdge = nullptr;
+        Edge* rightEnclosingEdge = nullptr;
         bool restartChecks;
         do {
+            restartChecks = false;
+
+            // Check if 'v' is nullified by a rewind
+            if (!v) {
+                continue;
+            }
+
             TESS_LOG("\nvertex %g: (%g,%g), alpha %d\n",
                      v->fID, v->fPoint.fX, v->fPoint.fY, v->fAlpha);
-            restartChecks = false;
             FindEnclosingEdges(*v, activeEdges, &leftEnclosingEdge, &rightEnclosingEdge);
             v->fLeftEnclosingEdge = leftEnclosingEdge;
             v->fRightEnclosingEdge = rightEnclosingEdge;
@@ -1569,16 +1585,22 @@ GrTriangulator::SimplifyResult GrTriangulator::simplify(VertexList* mesh,
 #ifdef SK_DEBUG
         validate_edge_list(&activeEdges, c);
 #endif
-        for (Edge* e = v->fFirstEdgeAbove; e; e = e->fNextEdgeAbove) {
-            if (!activeEdges.remove(e)) {
-                return SimplifyResult::kFailed;
+        // This check is necessary because 'v' could have been nullified by the do-while loop.
+        if (v) {
+            for (Edge* e = v->fFirstEdgeAbove; e; e = e->fNextEdgeAbove) {
+                if (!activeEdges.remove(e)) {
+                    return SimplifyResult::kFailed;
+                }
+            }
+            Edge* leftEdge = leftEnclosingEdge;
+            for (Edge* e = v->fFirstEdgeBelow; e; e = e->fNextEdgeBelow) {
+                activeEdges.insert(e, leftEdge);
+                leftEdge = e;
             }
         }
-        Edge* leftEdge = leftEnclosingEdge;
-        for (Edge* e = v->fFirstEdgeBelow; e; e = e->fNextEdgeBelow) {
-            activeEdges.insert(e, leftEdge);
-            leftEdge = e;
-        }
+
+        // Advance the loop pointer using the cached pointer.
+        v = nextVertex;
     }
     SkASSERT(!activeEdges.fHead && !activeEdges.fTail);
     return result;
