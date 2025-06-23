@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1217384f_2afb7aab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-23T03:18:43Z",
+      "side": 1,
+      "message": "That\u0027s great, and the change looks nicer IMO.\n\nI\u0027m going to put this to WIP though, right now renderdoc frame captures are empty with the latest patchset, I haven\u0027t looked into that yet.",
+      "parentUuid": "17f91225_74807af0",
+      "revId": "5e1dce972d668648f529af8a48f6b0ee7ed32505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8094c0cd_e6cb11a0",
@@ -58,6 +76,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6073fcb5_d77b4e79",
+        "filename": "dm/DM.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-23T03:18:43Z",
+      "side": 1,
+      "message": "No longer applicable",
+      "parentUuid": "8094c0cd_e6cb11a0",
+      "range": {
+        "startLine": 1178,
+        "startChar": 0,
+        "endLine": 1178,
+        "endChar": 9
+      },
+      "revId": "5e1dce972d668648f529af8a48f6b0ee7ed32505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "76cad77e_8a861235",
@@ -71,6 +113,30 @@
       "writtenOn": "2025-06-05T13:40:10Z",
       "side": 1,
       "message": "Skia style usually has `Auto` as a prefix for this RAII type objects, so maybe `AutoRenderDocCapture` or `AutoRenderDocFrame`?",
+      "range": {
+        "startLine": 25,
+        "startChar": 20,
+        "endLine": 25,
+        "endChar": 36
+      },
+      "revId": "5e1dce972d668648f529af8a48f6b0ee7ed32505",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fe26f37_ccf842ea",
+        "filename": "tools/renderdoc/RenderDoc.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-06-23T03:18:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "76cad77e_8a861235",
       "range": {
         "startLine": 25,
         "startChar": 20,
