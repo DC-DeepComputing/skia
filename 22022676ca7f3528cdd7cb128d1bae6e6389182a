@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b550e52_995b64c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-23T10:39:49Z",
+      "side": 1,
+      "message": "Hi @michaelludwig@google.com, could it be possible to grant @xing.xu permissions to CQ and gold images viewing?\nHe already has CQ permission in Dawn and chromium afaik.",
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a5ad36a3_91d3d2bf",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-23T10:39:49Z",
+      "side": 1,
+      "message": "nit: we should disable `ExpandResolveTexture` when emulation is enabled. This is for optimizing the precompilations. This could also be done in the following up CL if you want anw.\n```suggestion\n        fDifferentResolveAttachmentSizeSupport \u003d true;\n        \n        // On hardware that doesn\u0027t support transient attachments or partial\n        // resolve, we force-disable the ExpandResolveTexture loadOp.\n        // This is done because, under emulation, ExpandResolveTexture isn\u0027t\n        // used, and fully disabling it prevents the precompilation API from\n        // generating duplicate pipeline permutations (one for load resolve\n        // texture, one for others).\n        fSupportedResolveTextureLoadOp \u003d false;\n```",
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c177e2ba_c0e5015b",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-23T10:39:49Z",
+      "side": 1,
+      "message": "nit: you could avoid duplicated else blocks by moving it out of #if #endif\n```suggestion\n            if (!emulateLoadStoreResolveTexture) {\n#if !defined(__EMSCRIPTEN__)\n                if (fSharedContext-\u003edawnCaps()-\u003esupportsPartialLoadResolve()) {\n                    SkIRect msaaArea \u003d renderPassBounds;\n                    msaaArea.intersect(SkIRect::MakeSize(colorTexture-\u003edimensions()));\n                    wgpuPartialRect.colorOffsetX \u003d msaaArea.x();\n                    wgpuPartialRect.colorOffsetY \u003d msaaArea.y();\n                    SkIRect resolveArea \u003d renderPassBounds;\n                    resolveArea.offset(resolveOffset);\n                    resolveArea.intersect(SkIRect::MakeSize(resolveTexture-\u003edimensions()));\n                    wgpuPartialRect.resolveOffsetX \u003d resolveArea.x();\n                    wgpuPartialRect.resolveOffsetY \u003d resolveArea.y();\n                    wgpuPartialRect.width \u003d resolveArea.width();\n                    wgpuPartialRect.height \u003d resolveArea.height();\n                    wgpuRenderPass.nextInChain \u003d \u0026wgpuPartialRect;\n                } else\n#endif\n                {\n                    SkASSERT(resolveOffset.isZero());\n                }\n            }\n```",
+      "range": {
+        "startLine": 389,
+        "startChar": 12,
+        "endLine": 413,
+        "endChar": 6
+      },
+      "revId": "22022676ca7f3528cdd7cb128d1bae6e6389182a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
