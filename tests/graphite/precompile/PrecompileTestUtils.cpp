@@ -334,6 +334,18 @@ PaintOptions ImageAlphaNoCubicSrc() {
     return paintOptions;
 }
 
+PaintOptions ImageAlphaClampNoCubicSrc() {
+    SkColorInfo ci { kAlpha_8_SkColorType, kUnpremul_SkAlphaType, nullptr };
+    SkTileMode tm = SkTileMode::kClamp;
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                       { &ci, 1 },
+                                                       { &tm, 1 }) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
 PaintOptions ImagePremulHWOnlyPorterDuffCFSrcover() {
     PaintOptions paintOptions;
 
@@ -352,6 +364,22 @@ PaintOptions ImagePremulHWOnlyMatrixCFSrcover() {
     PaintOptions paintOptions;
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    paintOptions.setShaders({ PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                       { &ci, 1 },
+                                                       {}) });
+    paintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
+
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+PaintOptions ImageSRGBHWOnlyMatrixCFSrcover() {
+    PaintOptions paintOptions;
+
+    SkColorInfo ci { kRGBA_8888_SkColorType,
+                     kPremul_SkAlphaType,
+                     SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB) };
+
     paintOptions.setShaders({ PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                        { &ci, 1 },
                                                        {}) });
@@ -681,6 +709,23 @@ const EdgeExtension& EdgeExtensionSingleton() {
 
 } // anonymous namespace
 
+skgpu::graphite::PaintOptions EdgeExtensionPassthroughSrcover() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> edgeEffect = PrecompileRuntimeEffects::MakePrecompileShader(
+            EdgeExtensionSingleton().edgeExtensionEffect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(edgeEffect) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
 skgpu::graphite::PaintOptions EdgeExtensionPremulSrcover() {
     // This usage of kUnpremul is non-obvious. It acts to short circuit the identity-colorspace
     // optimization for runtime effects. In this case, the Pipeline requires a
@@ -989,7 +1034,7 @@ skgpu::graphite::PaintOptions LinearEffect(const char* parameterStr,
 
 namespace {
 
-#if defined(SK_DEBUG)
+#if 0
 // This helper maps from the RenderPass string in the Pipeline label to the
 // RenderPassProperties needed by the Precompile system
 // TODO(robertphillips): converting this to a more piecemeal approach might better illuminate
@@ -1123,6 +1168,7 @@ std::string rm_whitespace(const std::string& s) {
 
 } // anonymous namespace
 
+#if 0
 bool PrecompileSettings::isSubsetOf(const PrecompileSettings& superSet) const {
     SkASSERT(SkPopCount(fDrawTypeFlags.value()) == 1);
 
@@ -1131,6 +1177,7 @@ bool PrecompileSettings::isSubsetOf(const PrecompileSettings& superSet) const {
     return (fDrawTypeFlags & superSet.fDrawTypeFlags) &&
             fRenderPassProps == superSet.fRenderPassProps;
 }
+#endif
 
 PipelineLabelInfoCollector::PipelineLabelInfoCollector(SkSpan<const PipelineLabel> cases,
                                                        SkipFunc skip) {
@@ -1235,7 +1282,7 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
     Precompile(precompileContext,
                settings.fPaintOptions,
                static_cast<DrawTypeFlags>(settings.fDrawTypeFlags.value()),
-               { &settings.fRenderPassProps, 1 });
+               settings.fRenderPassProps);
 
     if (settings.fAnalyticClipping) {
         SkASSERT(!(settings.fDrawTypeFlags & DrawTypeFlags::kAnalyticClip));
@@ -1246,7 +1293,7 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
         Precompile(precompileContext,
                    settings.fPaintOptions,
                    static_cast<DrawTypeFlags>(newFlags.value()),
-                   { &settings.fRenderPassProps, 1 });
+                   settings.fRenderPassProps);
     }
 
     std::set<std::string> generatedLabels;
@@ -1281,7 +1328,7 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
         if (matchInCases >= 0) {
             matchesInCases.push_back(matchInCases);
 
-#if defined(SK_DEBUG)
+#if 0
             {
                 PrecompileSettings expectedSettings;
 
