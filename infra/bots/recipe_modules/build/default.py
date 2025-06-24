@@ -279,6 +279,8 @@ def get_compile_flags(api, checkout_root, out_dir, workdir):
 
   if 'Shared' in extra_tokens:
     args['is_component_build'] = 'true'
+    args['skia_enable_pdf'] = 'false'
+    args['skia_use_xps'] = 'false'
   if 'Vulkan' in extra_tokens and not 'Android' in extra_tokens and not 'Dawn' in extra_tokens:
     args['skia_use_vulkan'] = 'true'
     args['skia_enable_vulkan_debug_layers'] = 'true'
