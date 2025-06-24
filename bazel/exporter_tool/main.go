@@ -118,13 +118,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/text:text_hdrs",
 				"//src/text:text_srcs",
 			}},
-		{Var: "skia_legacy_pathops_public",
-			Rules: []string{"//include/pathops:public_hdrs"}},
-		{Var: "skia_legacy_pathops_sources",
-			Rules: []string{
-				"//src/pathops:_pathops_hdrs",
-				"//src/pathops:_pathops_srcs",
-			}},
 		{Var: "skia_encode_public",
 			Rules: []string{"//include/encode:encode_hdrs"}},
 		{Var: "skia_encode_srcs",
@@ -199,6 +192,17 @@ var gniExportDescs = []exporter.GNIExportDesc{
 		{Var: "skia_effects_imagefilter_sources",
 			Rules: []string{
 				"//src/effects/imagefilters:srcs",
+			}}},
+	},
+	{GNI: "gn/pathops.gni", Vars: []exporter.GNIFileListExportDesc{
+		{Var: "skia_pathops_public",
+			Rules: []string{
+				"//include/pathops:public_hdrs",
+			}},
+		{Var: "skia_pathops_sources",
+			Rules: []string{
+				"//src/pathops:_pathops_hdrs",
+				"//src/pathops:_pathops_srcs",
 			}}},
 	},
 	{GNI: "gn/ports.gni", Vars: []exporter.GNIFileListExportDesc{

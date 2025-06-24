@@ -1257,12 +1257,20 @@ optional("graphite") {
   }
 }
 
+skia_static_library("pathops") {
+  public = skia_pathops_public
+  sources = skia_pathops_sources
+  deps = [ ":skia" ]
+}
+
 optional("pdf") {
-  enabled = skia_use_zlib && skia_enable_pdf && skia_use_libjpeg_turbo_decode &&
-            skia_use_libjpeg_turbo_encode
+  enabled = skia_use_zlib && skia_enable_pdf
   public_defines = [ "SK_SUPPORT_PDF" ]
 
-  deps = [ "//third_party/zlib" ]
+  deps = [
+    ":pathops",
+    "//third_party/zlib",
+  ]
   public = skia_pdf_public
   sources = skia_pdf_sources
   sources_when_disabled = [ "src/pdf/SkDocument_PDF_None.cpp" ]
@@ -1286,6 +1294,7 @@ optional("pdf_jpeg_helpers") {
 optional("xps") {
   enabled = skia_use_xps && is_win
   public_defines = [ "SK_SUPPORT_XPS" ]
+  deps = [ ":pathops" ]
   public = skia_xps_public
   sources = skia_xps_sources
 }
@@ -1661,11 +1670,8 @@ skia_component("skia") {
     ":gpu",
     ":graphite",
     ":jpeg_encode",
-    ":pdf",
-    ":pdf_jpeg_helpers",
     ":png_encode_libpng",
     ":webp_encode",
-    ":xps",
   ]
 
   deps = [
@@ -1858,10 +1864,7 @@ skia_static_library("pathkit") {
 
   deps = [ ":hsw" ]
 
-  sources = []
-  sources += skia_legacy_pathops_sources
-  sources += skia_legacy_pathops_public
-  sources += [
+  sources = [
     "src/base/SkArenaAlloc.cpp",
     "src/base/SkBezierCurves.cpp",
     "src/base/SkContainers.cpp",
@@ -2001,6 +2004,8 @@ if (skia_enable_tools) {
       deps = [
         ":flags",
         ":gpu_tool_utils",
+        ":pdf",
+        ":pdf_jpeg_helpers",
         ":skia",
         ":skia.h",
         "modules/skottie",
@@ -2604,6 +2609,8 @@ if (skia_enable_tools) {
       ":flags",
       ":gm",
       ":gpu_tool_utils",
+      ":pdf",
+      ":pdf_jpeg_helpers",
       ":skia",
       ":tool_utils",
       "modules/skparagraph:bench",
@@ -2676,10 +2683,13 @@ if (skia_enable_tools) {
         ":gm",
         ":gpu_tool_utils",
         ":hash_and_encode",
+        ":pdf",
+        ":pdf_jpeg_helpers",
         ":skia",
         ":tests",
         ":tool_utils",
         ":trace",
+        ":xps",
         "modules/skottie",
         "modules/skottie:utils",
         "modules/skshaper",
@@ -2791,6 +2801,8 @@ if (skia_enable_tools) {
     test_app("sktexttopdf") {
       sources = [ "tools/using_skia_and_harfbuzz.cpp" ]
       deps = [
+        ":pdf",
+        ":pdf_jpeg_helpers",
         ":skia",
         "modules/skshaper",
       ]
@@ -2890,6 +2902,8 @@ if (skia_enable_tools) {
     deps = [
       ":flags",
       ":gpu_tool_utils",
+      ":pdf",
+      ":pdf_jpeg_helpers",
       ":skia",
       "modules/jsonreader",
       "modules/skottie:fuzz",
@@ -2938,6 +2952,8 @@ if (skia_enable_tools) {
       ]
       deps = [
         ":gm",
+        ":pdf",
+        ":pdf_jpeg_helpers",
         ":skia",
         ":tests",
         ":tool_utils",
@@ -3117,6 +3133,8 @@ if (skia_enable_tools) {
         ]
       }
       deps = [
+        ":pdf",
+        ":pdf_jpeg_helpers",
         ":skia",
         ":skia.h",
         "modules/skottie",
@@ -3337,6 +3355,8 @@ if (skia_enable_tools) {
         deps += [
           ":flags",
           ":gpu_tool_utils",
+          ":pdf",
+          ":pdf_jpeg_helpers",
           ":skia",
           ":tool_utils",
         ]
