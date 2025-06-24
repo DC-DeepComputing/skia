@@ -17,4 +17,5 @@ skia_component("pathops") {
   sources = skia_pathops_sources
   configs = [ "../../:skia_private" ]
   deps = [ "../..:skia" ]
+  defines = [ "SKIA_IMPLEMENTATION=1" ]
 }
