@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8698a99_da73aa70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-24T15:55:31Z",
+      "side": 1,
+      "message": "Great one minor nit, but lgtm!",
+      "revId": "351e3f63f89d7e1aef65c7d2f6953f5e06038205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "601c6a31_30ff6811",
+        "filename": "src/gpu/graphite/precompile/PaintOption.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-24T15:55:31Z",
+      "side": 1,
+      "message": "`fSkipColorXform` just in case fPrimitiveBlendMode was ever not kDst",
+      "range": {
+        "startLine": 122,
+        "startChar": 69,
+        "endLine": 122,
+        "endChar": 92
+      },
+      "revId": "351e3f63f89d7e1aef65c7d2f6953f5e06038205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
