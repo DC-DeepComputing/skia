@@ -22,6 +22,30 @@
       },
       "revId": "fc234daf1dcba23378ff1aa5218ae762ce73671d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1a8c133_997be6b4",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-24T16:12:30Z",
+      "side": 1,
+      "message": "In that case, it was correct because we wanted `localToOther` and other \u003d\u003d device for that branch. However, going through the other cases, I realized that the `else` branch was flipped (it was written to produce a `otherToLocal` mapping).\n\nI think they are all set now, and I expanded comments and added rationale for why `localToOther` is the better choice.",
+      "parentUuid": "a88bdbb1_abdf6054",
+      "range": {
+        "startLine": 142,
+        "startChar": 37,
+        "endLine": 142,
+        "endChar": 44
+      },
+      "revId": "fc234daf1dcba23378ff1aa5218ae762ce73671d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
