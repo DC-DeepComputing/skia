@@ -34,6 +34,24 @@
       "parentUuid": "6c7f70d8_018c0af7",
       "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8880b51a_a8cef01a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-24T14:30:08Z",
+      "side": 1,
+      "message": "What even is the point of \"modules\" at this point? As far as I can tell it\u0027s just a setup which makes it impossible to make a useful shared build. There will never be an effort to make them only depend only on SK_API or even SK_SPI, so they\u0027re all just part of the big ball of mud anyway. What is gained with all of this over just having a `//:pathops` (which depends on `//:skia`) target that `//:skia` doesn\u0027t directly depend on, but `//:pdf` and `//:xps` do depend on only when enabled?\n\nIf the idea is to be able to build core Skia with an external \"libpathops\" then the first thing that needs to be done is write an interface. Then `//:pdf` and `//:xps` could be updated to use that interface and then the build of such a thing (internal or external) can be handled separately (push the \"linking\" to runtime). The alternative to doing this is to actually do the work of making these actually modules (only depend on SK_API or SK_SPI) so that one can create a bunch of shared objects. \"Pretending\" like this is only going to lead to lots of issues.\n\nSo no, this doesn\u0027t seem all that reasonable.",
+      "parentUuid": "ac98378d_23626932",
+      "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
