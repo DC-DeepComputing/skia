@@ -52,6 +52,24 @@
       "parentUuid": "ac98378d_23626932",
       "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fea0f7b_814683ed",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-24T19:04:15Z",
+      "side": 1,
+      "message": "The immediate goal is to remove pathops from core, with a stretch goal of externalizing at some point (separate repo).\n\n(Offering an abstract interface for plugging external pathops libs kinda fell out of scope because there are no alternatives at the moment - we\u0027d just be linking pathops with extra steps.  It wouldn\u0027t help with the pathops-\u003eprivate core skia dependency issue anyway.)\n\nYou are correct that it\u0027s possible to achieve the minimal result without relocating sources, it\u0027s certainly an option.\n\nRelocating to modules is an extra step that mostly improves encapsulation (having all the headers, sources, tests, gnis, etc in a common place instead of embedded throughout skia), and may help when the time comes for further fissioning.  The shared lib friction does make me reconsider whether it\u0027s worth it.  Some thoughts/questions:\n\n  * What is the point of our shared lib builds?  Our main clients handle their own componentization and don\u0027t use our .gn files at all.  Also, what is the plan for migrating shared builds to Bazel?  Bazel is even more module-happy, AFAIK everything is a lib and there\u0027s no way something like `skia_pdf.so` will link against `skia.so` without major surgery, right?\n\n  * The main issue is not the location, but the GN construct which forces pathops into its own .so (`component`).  Would switching to whatever the other top level targets are using (`skia_source_set`? `optional`?) avoid the visibility problem?  I guess that goes back to the question of what we want out of modules, but it\u0027s not like they have ever observed symbol visibility nor supported component builds.\n\n  * Updating PathOps to use SK_SPIs (or only public APIs if possible) is a good idea in general, and especially so if we\u0027re going to split repos.  Not sure how entangled they are, Mike may have some idea.  Sounds like this would be the preferred approach?",
+      "parentUuid": "8880b51a_a8cef01a",
+      "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
