@@ -34,6 +34,24 @@
       "parentUuid": "7c5e8ae8_362745d2",
       "revId": "3f34cf7c2d940a9ed84bf131d6c33b7380e180a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f0a66d5_198db526",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-24T13:50:13Z",
+      "side": 1,
+      "message": "This change (not the revert) also broke `Build-Ubuntu24.04-EMCC-wasm-Release-WasmGMTests`.",
+      "parentUuid": "e007cd72_70f2fb0d",
+      "revId": "3f34cf7c2d940a9ed84bf131d6c33b7380e180a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
