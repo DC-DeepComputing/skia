@@ -16,6 +16,23 @@
       "message": "PTAL!",
       "revId": "4f625c4971464772df9f45ad3eb8ba1eb8f712da",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "296dee3d_3e4af117",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-24T02:22:13Z",
+      "side": 1,
+      "message": "I think you will also need to update GraphiteDawnWindowContext.cpp as that also uses `timedWaitAnyEnable`.",
+      "revId": "4f625c4971464772df9f45ad3eb8ba1eb8f712da",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
