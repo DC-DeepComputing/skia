@@ -16,6 +16,24 @@
       "message": "This is braking `Build-Win-MSVC-x86_64-Release-Shared`",
       "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac98378d_23626932",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-24T13:56:01Z",
+      "side": 1,
+      "message": "Thanks, I saw that.\n\nAfter peeling some layers, I got to the point [1] where I think we just need to disable pathops (and pdf, etc depenents) in `Shared` builds: like all other modules, pathops uses private core skia symbols which are not being exported - so we can\u0027t build it in component mode.\n\nDoes that sound reasonable?\n\n[1] https://logs.chromium.org/logs/skia/71bab20317ebd211/+/steps/ninja/0/stdout",
+      "parentUuid": "6c7f70d8_018c0af7",
+      "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
