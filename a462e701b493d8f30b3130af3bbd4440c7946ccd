@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42d5cfa3_27f23c32",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-06-24T18:13:04Z",
+      "side": 1,
+      "message": "@nona@chromium.org Seigo, could you roll Fontations in Android to migrate from field access to method?",
+      "revId": "a462e701b493d8f30b3130af3bbd4440c7946ccd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
