@@ -29,6 +29,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
                          const std::pair<sk_sp<PrecompileColorFilter>, int>& colorFilter,
                          bool hasPrimitiveBlender,
                          SkBlendMode primitiveBlendMode,
+                         bool skipColorXform,
                          const std::pair<sk_sp<PrecompileShader>, int>& clipShader,
                          bool dstReadRequired,
                          bool dither,
@@ -38,6 +39,7 @@ PaintOption::PaintOption(bool opaquePaintColor,
         , fShader(shader)
         , fColorFilter(colorFilter)
         , fPrimitiveBlendMode(primitiveBlendMode)
+        , fSkipColorXform(skipColorXform)
         , fHasPrimitiveBlender(hasPrimitiveBlender)
         , fClipShader(clipShader)
         , fDstReadRequired(dstReadRequired)
@@ -92,27 +94,33 @@ void PaintOption::addPaintColorToKey(const KeyContext& keyContext,
 void PaintOption::handlePrimitiveColor(const KeyContext& keyContext,
                                        PaintParamsKeyBuilder* keyBuilder,
                                        PipelineDataGatherer* gatherer) const {
-    // TODO: Check whether we can skip the colorspace transformation. For now, silence unused
-    // variable compiler warnings.
-    (void)fSkipColorXform;
-
-    if (fHasPrimitiveBlender) {
-        Blend(keyContext, keyBuilder, gatherer,
-              /* addBlendToKey= */ [&] () -> void {
-                  // TODO: Allow clients to provide precompile SkBlender options for primitive
-                  // blending. For now we have a back door to internally specify an SkBlendMode.
-                  AddToKey(keyContext, keyBuilder, gatherer,
-                           SkBlender::Mode(fPrimitiveBlendMode).get());
-              },
-              /* addSrcToKey= */ [&]() -> void {
-                  this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
-              },
-              /* addDstToKey= */ [&]() -> void {
-                  AddPrimitiveColor(keyContext, keyBuilder, gatherer, sk_srgb_singleton());
-              });
-    } else {
+    if (!fHasPrimitiveBlender) {
         this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+        return;
     }
+
+    if (fSkipColorXform && fPrimitiveBlendMode == SkBlendMode::kDst) {
+        AddPrimitiveColor(keyContext, keyBuilder, gatherer, /*skipColorXform=*/true);
+        return;
+    }
+
+    Blend(keyContext, keyBuilder, gatherer,
+            /* addBlendToKey= */ [&] () -> void {
+                /**
+                 * TODO: Allow clients to provide precompile SkBlender options for primitive
+                 * blending. For now we have a back door to internally specify an SkBlendMode.
+                 */
+                AddToKey(keyContext,
+                         keyBuilder,
+                         gatherer,
+                         SkBlender::Mode(fPrimitiveBlendMode).get());
+            },
+            /* addSrcToKey= */ [&]() -> void {
+                this->addPaintColorToKey(keyContext, keyBuilder, gatherer);
+            },
+            /* addDstToKey= */ [&]() -> void {
+                AddPrimitiveColor(keyContext, keyBuilder, gatherer, /*skipColorXform=*/false);
+            });
 }
 
 void PaintOption::handlePaintAlpha(const KeyContext& keyContext,
