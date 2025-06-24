@@ -16,6 +16,24 @@
       "message": "This appears to be breaking the android roll, but not sure how you want to deal with it given the coupled reland for pathops modulization",
       "revId": "3f34cf7c2d940a9ed84bf131d6c33b7380e180a0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e007cd72_70f2fb0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-24T02:10:06Z",
+      "side": 1,
+      "message": "Thanks, reverted just this one for now.  There\u0027s a risk it\u0027ll break our CMake bot, but I think we can live with that for a bit while we land forward fixes.",
+      "parentUuid": "7c5e8ae8_362745d2",
+      "revId": "3f34cf7c2d940a9ed84bf131d6c33b7380e180a0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
