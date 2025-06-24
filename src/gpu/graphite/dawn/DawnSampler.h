@@ -25,14 +25,19 @@ public:
 
     ~DawnSampler() override {}
 
+    // FIXME would be better for DawnGraphicsPipeline to just have an indexable list of
+    // immutable samplers like in Vulkan backend.
+    SamplerDesc samplerDesc() const { return fSamplerDesc; }
+
     const wgpu::Sampler& dawnSampler() const { return fSampler; }
 
 private:
-    DawnSampler(const DawnSharedContext* sharedContext, wgpu::Sampler sampler);
+    DawnSampler(const DawnSharedContext*, SamplerDesc, wgpu::Sampler);
 
     void freeGpuData() override;
 
     wgpu::Sampler fSampler;
+    SamplerDesc fSamplerDesc;
 };
 
 } // namepsace skgpu::graphite

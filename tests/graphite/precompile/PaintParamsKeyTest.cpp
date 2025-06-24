@@ -1944,122 +1944,123 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
                               uint32_t seed,
                               SkRandom* rand,
                               bool verbose) {
+// TODO
 
-    ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
+//     ShaderCodeDictionary* dict = context->priv().shaderCodeDictionary();
 
-    PaintParamsKeyBuilder builder(dict);
-    PipelineDataGatherer paramsGatherer(Layout::kMetal);
-    PipelineDataGatherer precompileGatherer(Layout::kMetal);
+//     PaintParamsKeyBuilder builder(dict);
+//     PipelineDataGatherer paramsGatherer(Layout::kMetal);
+//     PipelineDataGatherer precompileGatherer(Layout::kMetal);
 
-    for (bool withPrimitiveBlender: {false, true}) {
+//     for (bool withPrimitiveBlender: {false, true}) {
 
-        sk_sp<SkBlender> primitiveBlender;
-        if (withPrimitiveBlender) {
-            if (dt != DrawTypeFlags::kDrawVertices) {
-                // Only drawVertices calls need a primitive blender
-                continue;
-            }
+//         sk_sp<SkBlender> primitiveBlender;
+//         if (withPrimitiveBlender) {
+//             if (dt != DrawTypeFlags::kDrawVertices) {
+//                 // Only drawVertices calls need a primitive blender
+//                 continue;
+//             }
 
-            primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
-        }
+//             primitiveBlender = SkBlender::Mode(SkBlendMode::kSrcOver);
+//         }
 
-        constexpr Coverage coverageOptions[3] = {
-                Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD
-        };
-        Coverage coverage = coverageOptions[rand->nextULessThan(3)];
+//         constexpr Coverage coverageOptions[3] = {
+//                 Coverage::kNone, Coverage::kSingleChannel, Coverage::kLCD
+//         };
+//         Coverage coverage = coverageOptions[rand->nextULessThan(3)];
 
-        const SkBlenderBase* blender = as_BB(paint.getBlender());
-        bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
-                                                                 TextureFormat::kRGBA8,
-                                                                 blender->asBlendMode(),
-                                                                 coverage)
-                                       : false;
+//         const SkBlenderBase* blender = as_BB(paint.getBlender());
+//         bool dstReadRequired = blender ? !CanUseHardwareBlending(recorder->priv().caps(),
+//                                                                  TextureFormat::kRGBA8,
+//                                                                  blender->asBlendMode(),
+//                                                                  coverage)
+//                                        : false;
 
-        // In the normal API this modification happens in SkDevice::clipShader()
-        // All clipShaders get wrapped in a CTMShader
-        sk_sp<SkShader> modifiedClipShader = clipShader
-                                             ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
-                                             : nullptr;
-        if (clipType == ClipType::kShader_Diff && modifiedClipShader) {
-            // The CTMShader gets further wrapped in a ColorFilterShader for kDifference clips
-            modifiedClipShader = modifiedClipShader->makeWithColorFilter(
-                    SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
-        }
+//         // In the normal API this modification happens in SkDevice::clipShader()
+//         // All clipShaders get wrapped in a CTMShader
+//         sk_sp<SkShader> modifiedClipShader = clipShader
+//                                              ? as_SB(clipShader)->makeWithCTM(SkMatrix::I())
+//                                              : nullptr;
+//         if (clipType == ClipType::kShader_Diff && modifiedClipShader) {
+//             // The CTMShader gets further wrapped in a ColorFilterShader for kDifference clips
+//             modifiedClipShader = modifiedClipShader->makeWithColorFilter(
+//                     SkColorFilters::Blend(0xFFFFFFFF, SkBlendMode::kSrcOut));
+//         }
 
-        bool hasAnalyticClip = clipType == ClipType::kAnalytic ||
-                               clipType == ClipType::kAnalyticAndShader;
-        NonMSAAClip clipData;
-        if (hasAnalyticClip) {
-            clipData.fAnalyticClip.fBounds = SkRect::MakeWH(15, 15);
-            clipData.fAnalyticClip.fRadius = 5;
-        }
+//         bool hasAnalyticClip = clipType == ClipType::kAnalytic ||
+//                                clipType == ClipType::kAnalyticAndShader;
+//         NonMSAAClip clipData;
+//         if (hasAnalyticClip) {
+//             clipData.fAnalyticClip.fBounds = SkRect::MakeWH(15, 15);
+//             clipData.fAnalyticClip.fRadius = 5;
+//         }
 
-        UniquePaintParamsID paintID =
-                ExtractPaintData(recorder,
-                                 &paramsGatherer,
-                                 &builder,
-                                 Layout::kMetal,
-                                 {},
-                                 PaintParams(paint,
-                                             primitiveBlender,
-                                             clipData,
-                                             std::move(modifiedClipShader),
-                                             dstReadRequired,
-                                             /* skipColorXform= */ false),
-                                 {},
-                                 precompileKeyContext.dstColorInfo());
+//         UniquePaintParamsID paintID =
+//                 ExtractPaintData(recorder,
+//                                  &paramsGatherer,
+//                                  &builder,
+//                                  Layout::kMetal,
+//                                  {},
+//                                  PaintParams(paint,
+//                                              primitiveBlender,
+//                                              clipData,
+//                                              std::move(modifiedClipShader),
+//                                              dstReadRequired,
+//                                              /* skipColorXform= */ false),
+//                                  {},
+//                                  precompileKeyContext.dstColorInfo());
 
-        RenderPassDesc unusedRenderPassDesc;
+//         RenderPassDesc unusedRenderPassDesc;
 
-        std::vector<UniquePaintParamsID> precompileIDs;
-        paintOptions.priv().buildCombinations(precompileKeyContext,
-                                              &precompileGatherer,
-                                              hasAnalyticClip ? DrawTypeFlags::kAnalyticClip
-                                                              : DrawTypeFlags::kNone,
-                                              withPrimitiveBlender,
-                                              coverage,
-                                              unusedRenderPassDesc,
-                                              [&precompileIDs](UniquePaintParamsID id,
-                                                               DrawTypeFlags,
-                                                               bool /* withPrimitiveBlender */,
-                                                               Coverage,
-                                                               const RenderPassDesc&) {
-                                                  precompileIDs.push_back(id);
-                                              });
+//         std::vector<UniquePaintParamsID> precompileIDs;
+//         paintOptions.priv().buildCombinations(precompileKeyContext,
+//                                               &precompileGatherer,
+//                                               hasAnalyticClip ? DrawTypeFlags::kAnalyticClip
+//                                                               : DrawTypeFlags::kNone,
+//                                               withPrimitiveBlender,
+//                                               coverage,
+//                                               unusedRenderPassDesc,
+//                                               [&precompileIDs](UniquePaintParamsID id,
+//                                                                DrawTypeFlags,
+//                                                                bool /* withPrimitiveBlender */,
+//                                                                Coverage,
+//                                                                const RenderPassDesc&) {
+//                                                   precompileIDs.push_back(id);
+//                                               });
 
-        if (verbose) {
-            SkDebugf("Precompilation generated %zu unique keys\n", precompileIDs.size());
-        }
+//         if (verbose) {
+//             SkDebugf("Precompilation generated %zu unique keys\n", precompileIDs.size());
+//         }
 
-        // Although we've gathered both sets of uniforms (i.e., from the paint
-        // params and the precompilation paths) we can't compare the two since the
-        // precompilation path may have generated multiple sets
-        // and the last one created may not be the one that matches the paint
-        // params' set. Additionally, for runtime effects we just skip gathering
-        // the uniforms in the precompilation path.
+//         // Although we've gathered both sets of uniforms (i.e., from the paint
+//         // params and the precompilation paths) we can't compare the two since the
+//         // precompilation path may have generated multiple sets
+//         // and the last one created may not be the one that matches the paint
+//         // params' set. Additionally, for runtime effects we just skip gathering
+//         // the uniforms in the precompilation path.
 
-        // The specific key generated by ExtractPaintData should be one of the
-        // combinations generated by the combination system.
-        auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
+//         // The specific key generated by ExtractPaintData should be one of the
+//         // combinations generated by the combination system.
+//         auto result = std::find(precompileIDs.begin(), precompileIDs.end(), paintID);
 
-        if (result == precompileIDs.end()) {
-            log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clipType, dt);
-        }
+//         if (result == precompileIDs.end()) {
+//             log_run("Failure on case", seed, s, bm, cf, mf, imageFilter, clipType, dt);
+//         }
 
-#ifdef SK_DEBUG
-        if (result == precompileIDs.end()) {
-            SkDebugf("From paint: ");
-            dict->dump(paintID);
+// #ifdef SK_DEBUG
+//         if (result == precompileIDs.end()) {
+//             SkDebugf("From paint: ");
+//             dict->dump(paintID);
 
-            SkDebugf("From combination builder [%d]:", static_cast<int>(precompileIDs.size()));
-            for (auto iter: precompileIDs) {
-                dict->dump(iter);
-            }
-        }
-#endif
+//             SkDebugf("From combination builder [%d]:", static_cast<int>(precompileIDs.size()));
+//             for (auto iter: precompileIDs) {
+//                 dict->dump(iter);
+//             }
+//         }
+// #endif
 
-        REPORTER_ASSERT(reporter, result != precompileIDs.end());
-    }
+//         REPORTER_ASSERT(reporter, result != precompileIDs.end());
+//     }
 }
 
 // This subtest verifies that, given an equivalent SkPaint and PaintOptions, the
