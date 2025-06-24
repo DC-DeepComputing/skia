@@ -39,6 +39,30 @@
       },
       "revId": "351e3f63f89d7e1aef65c7d2f6953f5e06038205",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c705c6e_f57f25dd",
+        "filename": "src/gpu/graphite/precompile/PaintOption.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-06-24T18:02:24Z",
+      "side": 1,
+      "message": "Done; used variable rather than static values in other areas as well (trivial change but seemed more consistent at least)",
+      "parentUuid": "601c6a31_30ff6811",
+      "range": {
+        "startLine": 122,
+        "startChar": 69,
+        "endLine": 122,
+        "endChar": 92
+      },
+      "revId": "351e3f63f89d7e1aef65c7d2f6953f5e06038205",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
