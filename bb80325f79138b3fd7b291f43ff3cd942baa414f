@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6003ab86_b6dd321d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-24T14:52:54Z",
+      "side": 1,
+      "message": "A victim of success. Android now uses the Skia Fontations code, so when Fontations makes any breaking changes like this it needs to be handled with care in both Chromium and Android.",
+      "revId": "bb80325f79138b3fd7b291f43ff3cd942baa414f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
