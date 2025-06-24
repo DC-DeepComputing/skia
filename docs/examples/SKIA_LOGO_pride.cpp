@@ -3,7 +3,7 @@ void draw(SkCanvas* canvas) {
     constexpr SkColor background = SK_ColorWHITE;
     constexpr SkColor lettering = 0xFF292929;
     constexpr SkColor lineColors[2] = {0x30565656, 0xFF565656};
-    
+
     // Colors from https://www.flagcolorcodes.com/progress-pride and https://www.flagcolorcodes.com/intersex
     constexpr SkColor rainbow[] =  {0xFFE40303, 0xFFFF8C00, 0xFFFFED00, 0xFF008026, 0xFF004CFF, 0xFF732982};
     constexpr SkColor progress[] = {0xFFFFD800, 0xFFFFFFFF, 0xFFFFAFC8, 0xFF74D7EE, 0xFF613915, 0xFF000000};
@@ -19,15 +19,15 @@ void draw(SkCanvas* canvas) {
     float leftX = 310.f;
     constexpr float kIWidth = 50.f;
     constexpr float deltaWidth = kIWidth / std::size(rainbow);
-  
+
     for (size_t i = 0; i < std::size(rainbow); ++i) {
         p.setColor(rainbow[i]);
         canvas->drawRect({leftX, 82.25f, leftX + deltaWidth, 249.2}, p);
         leftX += deltaWidth;
     }
-  
+
     float triHeight = deltaWidth * (std::size(progress) + 1);
-    
+
     canvas->save();
     canvas->clipRect({310.f, 82.25, 360.f, 249.2f}, SkClipOp::kIntersect, false);
     for (int i = std::size(progress)-1; i >= 0; --i) {
@@ -49,7 +49,7 @@ void draw(SkCanvas* canvas) {
   
       canvas->drawCircle({335.f, 88.5f}, deltaWidth * 0.6f, c);
     }
-  
+
     canvas->restore();
 
     p.setColor(lettering);
