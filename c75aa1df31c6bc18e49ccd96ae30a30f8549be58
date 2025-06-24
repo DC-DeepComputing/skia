@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7381ab6c_4e562d45",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1105,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-24T12:02:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "2db6b3d4_36c24bfd",
+      "range": {
+        "startLine": 1095,
+        "startChar": 0,
+        "endLine": 1105,
+        "endChar": 5
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e7ae9eec_a390f0c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-23T19:33:28Z",
       "side": 1,
       "message": "This is the new functionality added to `add_colorspace_uniforms` to support the identity linear/encode step in the ColorSpaceXformSRGB \"fast\" path.",
+      "range": {
+        "startLine": 1150,
+        "startChar": 5,
+        "endLine": 1155,
+        "endChar": 12
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cce14e4_2b2cbdb9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1155,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-24T12:02:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e7ae9eec_a390f0c0",
       "range": {
         "startLine": 1150,
         "startChar": 5,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "90aa4088_17137668",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1178,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-24T12:02:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "bc7d7373_70287fac",
+      "range": {
+        "startLine": 1178,
+        "startChar": 0,
+        "endLine": 1178,
+        "endChar": 89
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3045365a_bdb95990",
@@ -93,6 +165,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c6e9085_a4321fe7",
+        "filename": "tests/graphite/precompile/AndroidPrecompileTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-24T12:02:02Z",
+      "side": 1,
+      "message": "Ack. As we discussed before, it would be cool if Android were able to more directly give us feedback on used/un-used Pipelines.",
+      "parentUuid": "3045365a_bdb95990",
+      "range": {
+        "startLine": 343,
+        "startChar": 161,
+        "endLine": 343,
+        "endChar": 208
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09db899b_5025c614",
@@ -106,6 +202,30 @@
       "writtenOn": "2025-06-23T19:35:29Z",
       "side": 1,
       "message": "This was pretty brittle, but I don\u0027t have a great alternative.",
+      "range": {
+        "startLine": 1092,
+        "startChar": 0,
+        "endLine": 1097,
+        "endChar": 5
+      },
+      "revId": "c75aa1df31c6bc18e49ccd96ae30a30f8549be58",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7397911_7185afbd",
+        "filename": "tests/graphite/precompile/PrecompileTestUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1097,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-24T12:02:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "09db899b_5025c614",
       "range": {
         "startLine": 1092,
         "startChar": 0,
