@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c7f70d8_018c0af7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-24T13:48:15Z",
+      "side": 1,
+      "message": "This is braking `Build-Win-MSVC-x86_64-Release-Shared`",
+      "revId": "0132370defcf0351a20c79892710fc55dc52a11d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
