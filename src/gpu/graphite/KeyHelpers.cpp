@@ -506,33 +506,19 @@ void LocalMatrixShaderBlock::BeginBlock(const KeyContext& keyContext,
 
 namespace {
 
-void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
-                              bool has_ootf_uniforms,
+
+// There are three variations of color space transforms with increasing complexity, but they are
+// built on the same techniques for managing variations w/o adding branches in the shader.
+void add_color_space_uniforms(BuiltInCodeSnippetID id,
+                              const ShaderCodeDictionary* dict,
+                              const SkColorSpaceXformSteps& steps,
                               ReadSwizzle readSwizzle,
                               PipelineDataGatherer* gatherer) {
-    SkMatrix gamutTransform;
-    const float identity[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
-    // TODO: it seems odd to copy this into an SkMatrix just to write it to the gatherer
-    // fSrcToDstMatrix is column-major, SkMatrix is row-major.
-    const float* m = steps.fFlags.gamut_transform ? steps.fSrcToDstMatrix : identity;
-    if (readSwizzle == ReadSwizzle::kRRR1) {
-        gamutTransform.setAll(m[0] + m[3] + m[6], 0, 0,
-                              m[1] + m[4] + m[7], 0, 0,
-                              m[2] + m[5] + m[8], 0, 0);
-    } else if (readSwizzle == ReadSwizzle::kBGRA) {
-        gamutTransform.setAll(m[6], m[3], m[0],
-                              m[7], m[4], m[1],
-                              m[8], m[5], m[2]);
-    } else if (readSwizzle == ReadSwizzle::k000R) {
-        gamutTransform.setAll(0, 0, 0,
-                              0, 0, 0,
-                              0, 0, 0);
-    } else if (steps.fFlags.gamut_transform) {
-        gamutTransform.setAll(m[0], m[3], m[6],
-                              m[1], m[4], m[7],
-                              m[2], m[5], m[8]);
-    }
-    gatherer->writeHalf(gamutTransform);
+    SkASSERT(id == BuiltInCodeSnippetID::kColorSpaceXformPremul ||     // premul/unpremul/opaque
+             id == BuiltInCodeSnippetID::kColorSpaceXformSRGB ||       // + sRGB [d]encode/gamut
+             id == BuiltInCodeSnippetID::kColorSpaceXformColorFilter); // + everything else
+
+    BEGIN_WRITE_UNIFORMS(gatherer, dict, id)
 
     // To encode whether to do premul/unpremul or make the output opaque, we use
     // srcDEF_args.w and dstDEF_args.w:
@@ -556,11 +542,53 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
                                                           0.f;
     const float dstW = (premul || alphaSwizzleR) ? 0.f : 1.f;
 
+    if (id == BuiltInCodeSnippetID::kColorSpaceXformPremul) {
+        // If either of these asserts would fail, we can't correctly use this specialized shader for
+        // the given transform.
+        SkASSERT(readSwizzle == ReadSwizzle::kRGBA || readSwizzle == ReadSwizzle::kRGB1);
+        // If these are both true, that implies there's a color space transfer or gamut transform.
+        SkASSERT(!(steps.fFlags.unpremul && steps.fFlags.premul));
+        // And given these assertions, the 6 cases encoded in srcW and dstW are reduced to:
+        //    identity, do unpremul, do premul, and make opaque (alpha swizzle 1)
+        gatherer->writeHalf(SkV2{srcW, dstW});
+        return;
+    }
+
+    // srcW and dstW will be used later with the other transfer function values, but for the
+    // more complex shaders, we put the gamut matrix first for alignment.
+
+    SkMatrix gamutTransform;
+    const float identity[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+    // TODO: it seems odd to copy this into an SkMatrix just to write it to the gatherer
+    // fSrcToDstMatrix is column-major, SkMatrix is row-major.
+    const float* m = steps.fFlags.gamut_transform ? steps.fSrcToDstMatrix : identity;
+    if (readSwizzle == ReadSwizzle::kRRR1) {
+        gamutTransform.setAll(m[0] + m[3] + m[6], 0, 0,
+                            m[1] + m[4] + m[7], 0, 0,
+                            m[2] + m[5] + m[8], 0, 0);
+    } else if (readSwizzle == ReadSwizzle::kBGRA) {
+        gamutTransform.setAll(m[6], m[3], m[0],
+                            m[7], m[4], m[1],
+                            m[8], m[5], m[2]);
+    } else if (readSwizzle == ReadSwizzle::k000R) {
+        gamutTransform.setAll(0, 0, 0,
+                            0, 0, 0,
+                            0, 0, 0);
+    } else if (steps.fFlags.gamut_transform) {
+        gamutTransform.setAll(m[0], m[3], m[6],
+                            m[1], m[4], m[7],
+                            m[2], m[5], m[8]);
+    }
+    gatherer->writeHalf(gamutTransform);
+
     // To encode which transfer function to apply, we use the src and dst gamma values:
     // - identity: 0
     // - sRGB: g > 0
     // - PQ: -2
     // - HLG: -1
+    // For the sRGB shader, we allow linear sRGB but that shader has no branches on TF type, so
+    // we have to replace the values with an actual identity sRGB-ish function.
+    const bool treatLinearAsSRGB = id == BuiltInCodeSnippetID::kColorSpaceXformSRGB;
     if (steps.fFlags.linearize) {
         const skcms_TFType type = skcms_TransferFunction_getType(&steps.fSrcTF);
         const float srcG = type == skcms_TFType_sRGBish ? steps.fSrcTF.g :
@@ -569,7 +597,13 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
                                                          0.f;
         gatherer->write(SkV4{srcG, steps.fSrcTF.a, steps.fSrcTF.b, steps.fSrcTF.c});
         gatherer->write(SkV4{steps.fSrcTF.d, steps.fSrcTF.e, steps.fSrcTF.f, srcW});
+    } else if (treatLinearAsSRGB) {
+        // Branchless identity function with g=1 (sRGB-ish)
+        static constexpr skcms_TransferFunction kI = SkNamedTransferFn::kLinear;
+        gatherer->write(SkV4{kI.g, kI.a, kI.b, kI.c});
+        gatherer->write(SkV4{kI.d, kI.e, kI.f, srcW});
     } else {
+        // Branched identity that actually skips all operations
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, srcW});
     }
@@ -582,12 +616,17 @@ void add_color_space_uniforms(const SkColorSpaceXformSteps& steps,
                                                             0.f;
         gatherer->write(SkV4{dstG, steps.fDstTFInv.a, steps.fDstTFInv.b, steps.fDstTFInv.c});
         gatherer->write(SkV4{steps.fDstTFInv.d, steps.fDstTFInv.e, steps.fDstTFInv.f, dstW});
+    } else if (treatLinearAsSRGB) {
+        static constexpr skcms_TransferFunction kI = SkNamedTransferFn::kLinear;
+        gatherer->write(SkV4{kI.g, kI.a, kI.b, kI.c});
+        gatherer->write(SkV4{kI.d, kI.e, kI.f, dstW});
     } else {
         gatherer->write(SkV4{0.f, 0.f, 0.f, 0.f});
         gatherer->write(SkV4{0.f, 0.f, 0.f, dstW});
     }
 
-    if (has_ootf_uniforms) {
+    const bool hasOOTFUniforms = id == BuiltInCodeSnippetID::kColorSpaceXformColorFilter;
+    if (hasOOTFUniforms) {
         SkV4 src_ootf = {0.f, 0.f, 0.f, 0.f};
         SkV4 dst_ootf = {0.f, 0.f, 0.f, 0.f};
 
@@ -1170,47 +1209,6 @@ void TableColorFilterBlock::AddBlock(const KeyContext& keyContext,
 //--------------------------------------------------------------------------------------------------
 namespace {
 
-void add_color_space_xform_uniform_data(
-        const ShaderCodeDictionary* dict,
-        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
-        PipelineDataGatherer* gatherer) {
-    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformColorFilter)
-    add_color_space_uniforms(data.fSteps, /*has_ootf_uniforms=*/true, data.fReadSwizzle, gatherer);
-}
-
-void add_color_space_xform_premul_uniform_data(
-        const ShaderCodeDictionary* dict,
-        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
-        PipelineDataGatherer* gatherer) {
-    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformPremul)
-
-    // If either of these asserts would fail, we can't correctly use this specialized shader for
-    // the given transform.
-    SkASSERT(data.fReadSwizzle == ReadSwizzle::kRGBA || data.fReadSwizzle == ReadSwizzle::kRGB1);
-    // If these are both true, that implies there's a color space transfer or gamut transform.
-    SkASSERT(!(data.fSteps.fFlags.unpremul && data.fSteps.fFlags.premul));
-
-    // This shader can either do nothing, or perform one of three actions. These four possibilities
-    // are encoded in a half2 argument as:
-    // - identity: {0, 1}
-    // - do unpremul: {-1, 1}
-    // - do premul: {0, 0}
-    // - make opaque: {1, 1}
-    const bool opaque = data.fReadSwizzle == ReadSwizzle::kRGB1;
-    const float x = data.fSteps.fFlags.unpremul ? -1.f :
-                    opaque ? 1.f
-                           : 0.f;
-    const float y = data.fSteps.fFlags.premul ? 0.f : 1.f;
-    gatherer->writeHalf(SkV2{x, y});
-}
-
-void add_color_space_xform_srgb_uniform_data(
-        const ShaderCodeDictionary* dict,
-        const ColorSpaceTransformBlock::ColorSpaceTransformData& data,
-        PipelineDataGatherer* gatherer) {
-    BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kColorSpaceXformSRGB)
-    add_color_space_uniforms(data.fSteps, /*has_ootf_uniforms=*/false, data.fReadSwizzle, gatherer);
-}
 
 }  // anonymous namespace
 
@@ -1241,22 +1239,27 @@ void ColorSpaceTransformBlock::AddBlock(const KeyContext& keyContext,
             return;
         }
 
-        add_color_space_xform_premul_uniform_data(keyContext.dict(), data, gatherer);
+        add_color_space_uniforms(BuiltInCodeSnippetID::kColorSpaceXformPremul,
+                                 keyContext.dict(), data.fSteps, data.fReadSwizzle, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformPremul);
         return;
     }
 
     // Use a specialized shader if we're transferring to and from sRGB-ish color spaces.
-    if (data.fSteps.fFlags.linearize && data.fSteps.fFlags.encode &&
-        skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF) &&
-        skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv)) {
-        add_color_space_xform_srgb_uniform_data(keyContext.dict(), data, gatherer);
+    // We take this path even if linearize/encode are false since we can set coefficients
+    // in the sRGB transfer functions to represent identity, and that is better than using the
+    // most general colorspace option.
+    if ((!data.fSteps.fFlags.linearize || skcms_TransferFunction_isSRGBish(&data.fSteps.fSrcTF)) &&
+        (!data.fSteps.fFlags.encode || skcms_TransferFunction_isSRGBish(&data.fSteps.fDstTFInv))) {
+        add_color_space_uniforms(BuiltInCodeSnippetID::kColorSpaceXformSRGB,
+                                 keyContext.dict(), data.fSteps, data.fReadSwizzle, gatherer);
         builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformSRGB);
         return;
     }
 
     // Use the most general color space transform shader if no specializations can be used.
-    add_color_space_xform_uniform_data(keyContext.dict(), data, gatherer);
+    add_color_space_uniforms(BuiltInCodeSnippetID::kColorSpaceXformColorFilter,
+                             keyContext.dict(), data.fSteps, data.fReadSwizzle, gatherer);
     builder->addBlock(BuiltInCodeSnippetID::kColorSpaceXformColorFilter);
 }
 
