@@ -16,6 +16,24 @@
       "message": "Wdyt about just using the current nine patch code (instead of rewriting it all) since its only implemented with blurs and we don\u0027t have any other special optimizations in the raster code for blurred round rects? Potentially when cleaning up code later some of this stuff can be renamed.",
       "revId": "8aaacee2ba965476182b9a5d88474da5def42298",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a528bbd3_b643deec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-25T13:13:15Z",
+      "side": 1,
+      "message": "(renamed to be made more blur specific)",
+      "parentUuid": "c2fd7bda_6a0d6714",
+      "revId": "8aaacee2ba965476182b9a5d88474da5def42298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
