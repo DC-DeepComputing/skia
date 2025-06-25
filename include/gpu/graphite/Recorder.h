@@ -65,9 +65,6 @@ class UploadList;
 
 struct RecorderOptionsPriv;
 
-template<typename T> class PipelineDataCache;
-using TextureDataCache = PipelineDataCache<TextureDataBlock>;
-
 struct SK_API RecorderOptions final {
     RecorderOptions();
     RecorderOptions(const RecorderOptions&);
