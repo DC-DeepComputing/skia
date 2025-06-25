@@ -133,8 +133,12 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 23 */ { MouriMapBlur(),                     DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
 // 100% (1/1) handles 55
 /* 24 */ { MouriMapToneMap(),                  DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D_SRGB },
+
 // 100% (1/1) handles 7
-/* 25 */ { MouriMapCrosstalkAndChunk16x16(),   DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D_SRGB },
+/* 25 */ { MouriMapCrosstalkAndChunk16x16Passthrough(),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA16F_1_D_SRGB },
+
 // 100% (1/1) handles 6
 /* 26 */ { MouriMapChunk8x8Effect(),           DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
 // 100% (2/2) handles 52 53
@@ -270,6 +274,26 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 48 */ { ImageSRGBHWOnlyMatrixCFSrcover(),
            kRRectAndNonAARect,
            kRGBA_1_D_SRGB },
+
+// 100% (1/1) handles 104
+/* 49 */ { MouriMapCrosstalkAndChunk16x16Premul(),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA16F_1_D_SRGB },
+
+// 67% (2/3) handles 107 146
+/* 50 */ { ImagePremulHWOnlyPlusColorSrcover(),
+           DrawTypeFlags::kAnalyticRRect,
+           kRGBA_1D_4DS },
+
+// 100% (1/1) handles 122
+/* 51 */ { ImagePremulHWOnlyPlusColorSrcover(),
+           DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
+           kRGBA_1_D },
+
+// 100% (1/1) handles 117
+/* 52 */ { TransparentPaintImagePremulHWOnlyPlusColorSrcover(),
+           DrawTypeFlags::kNonAAFillRect,
+           kRGBA_1_D },
 
 #if defined(SK_VULKAN) && defined(SK_BUILD_FOR_ANDROID)
 // 238 (kHoAAO4AAAAAAAAA) block ----------------
@@ -671,16 +695,16 @@ static const PipelineLabel kCases[] = {
 /*     */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_V0_SRGB__V0_SRGB__true__UNKNOWN__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] SrcOver" },
-/*     */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+/* 104 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
-                "RE_MouriMap_CrossTalkAndChunk16x16 [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] Src" },
+                "RE_MouriMap_CrossTalkAndChunk16x16Effect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] Src" },
 /*     */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RuntimeEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] Src" },
 /* 106 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver AnalyticClip" },
-/*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/* 107 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ SolidColor LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Plus ] SrcOver" },
 /*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -711,7 +735,7 @@ static const PipelineLabel kCases[] = {
 /*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "RuntimeEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ] Src" },
-/*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/* 117 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "BlendCompose [ BlendCompose [ SolidColor LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Plus ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
 /*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -727,7 +751,7 @@ static const PipelineLabel kCases[] = {
 /*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "BlendCompose [ RuntimeEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] Passthrough ] ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
-/*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/* 122  */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "BlendCompose [ SolidColor LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Plus ] SrcOver AnalyticClip" },
 /* 123 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
@@ -802,7 +826,7 @@ static const PipelineLabel kCases[] = {
 /* 145 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "VerticesRenderStep[TrisColor] + "
                 "Compose [ BlendCompose [ RGBPaintColor Compose [ PrimitiveColor ColorSpaceTransformPremul ] Modulate ] Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver" },
-/*     */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+/* 146 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ SolidColor LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Plus ] SrcOver" },
 /*     */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
@@ -829,28 +853,69 @@ static const PipelineLabel kCases[] = {
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ RE_MouriMap_TonemapEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] Passthrough ] ] ColorSpaceTransform ColorSpaceTransform ] ColorSpaceTransform ColorSpaceTransform ] SrcOver" },
 
-                // Synthetic placeholders for non-convex draw helpers
-/* 154 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                // Synthetic placeholders for non-convex draw helpers. These labels are generated
+                // for the kNonSimpleShape DrawTypeFlags but don't appear in the naturally
+                // generated corpus. W/o them here the utilization check would fail.
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "MiddleOutFanRenderStep[Winding] + "
                 "(empty)" },
-/* 155 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "MiddleOutFanRenderStep[Winding] + "
                 "(empty)" },
-/* 156 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "TessellateCurvesRenderStep[Winding] + "
                 "(empty)" },
-/* 157 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "TessellateCurvesRenderStep[Winding] + "
                 "(empty)" },
-/* 158 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "TessellateWedgesRenderStep[Winding] + "
                 "(empty)" },
-/* 159 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "TessellateWedgesRenderStep[Winding] + "
                 "(empty)" },
-/* 160 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
+/* N/A */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "TessellateWedgesRenderStep[EvenOdd] + "
                 "(empty)" },
+
+                // Synthetic placeholders to manage the unpredictability of the "w/ msaa load"
+                // string. On a device that doesn't generate labels with the "w/msaa load" string,
+                // kPrecompileCases which only handle such labels will run afoul of the minimum
+                // utilization check.
+#if 0
+//$$
+/*  5* */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "RE_MouriMap_BlurEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] Passthrough ] ] ] Src" },
+#endif
+
+/* 61* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "AnalyticRRectRenderStep + "
+                "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
+/* 63* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "AnalyticRRectRenderStep + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver" },
+/* 66* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
+/* 67* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
+/* 68* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "Compose [ Compose [ BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] MatrixColorFilter ] Dither ] SrcOver" },
+/* 69* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "Compose [ Compose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] MatrixColorFilter ] Dither ] SrcOver" },
+/* 71* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Src" },
+/* 72* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver" },
+/* 74* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "SolidColor SrcOver" },
 };
 
 bool skip(const char* str) {
@@ -929,20 +994,15 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
         return;
     }
 #endif
-    std::set<int> MSAALoadOnlyCases = { 2, 6, 9, 13, 15, 22, 23, 55 };
+
+//  Indices in kPrecompileCases
+//  std::set<int> MSAALoadOnlyCases = { 2, 6, 9, 13, 15, 22, 23, 55 };
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
     static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
         if (kChosenCase != -1 && kChosenCase != i) {
-            continue;
-        }
-
-        if (!caps->loadOpAffectsMSAAPipelines() &&
-            MSAALoadOnlyCases.find(i) != MSAALoadOnlyCases.end()) {
-            // If "w/ msaa load" strings aren't being generated, cases that only handle Pipeline
-            // labels with that sub-string will never be matched.
             continue;
         }
 
