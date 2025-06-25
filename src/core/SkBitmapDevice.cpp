@@ -33,6 +33,7 @@
 #include "src/core/SkCPURecorderImpl.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkImagePriv.h"
+#include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkMatrixPriv.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkSpecialImage.h"
@@ -615,6 +616,20 @@ void SkBitmapDevice::drawCoverageMask(const SkSpecialImage* mask,
     draw.fRC = &fRCStack.rc();
     draw.fCTM = &maskToDevice;
     draw.drawBitmapAsMask(maskBM, sampling, paint, &this->localToDevice());
+}
+
+// Try to filter as nine patch as a fast path.
+bool SkBitmapDevice::drawBlurredRRect(const SkRRect& rrect, const SkPaint& paint, float) {
+    SkASSERT(paint.getMaskFilter()
+             && as_MFB(paint.getMaskFilter())->type() == SkMaskFilterBase::Type::kBlur);
+
+    bool success = false;
+    SkDrawTiler tiler(this, Bounder(rrect.getBounds(), paint));
+    while (const SkDraw* draw = tiler.next()) {
+        success |= draw->drawRRectNinePatch(rrect, paint);
+    }
+
+    return success;
 }
 
 sk_sp<SkSpecialImage> SkBitmapDevice::snapSpecial(const SkIRect& bounds, bool forceCopy) {
