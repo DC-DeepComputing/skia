@@ -3,6 +3,52 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bc7a00fb_054944be",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "See note in graphite\u0027s Recorder, but same applies here.",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 75
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f91d0a0e_47777445",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "`SkSurface_Base::onNewCanvas()` returning a bare `SkCanvas*` is a problematic legacy API that we should not propagate. This should accept a `std::unique_ptr\u003cSkCanvas*\u003e` and return a `std::unique_ptr\u003cSkCanvas\u003e`.\n\nIt doesn\u0027t need to return an explicit `SkCaptureCanvas*`, nothing depends on it being fully typed out.  This could also make it so the default implementation just returns the input canvas w/o wrapping if it doesn\u0027t support capturing or capturing isn\u0027t enabled (unless we later on are relying on this returning null to test whether or not capturing is enabled).\n\n\n*edit* I wrote this before outlining the fOwnedCanvas in SkSurface_Base, so the input type doesn\u0027t necessarily need to be `std::unique_ptr\u003cSkCanvas\u003e` if SkCaptureCanvas isn\u0027t owning the base canvas.",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 62
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0cc5d367_36556de0",
         "filename": "include/gpu/graphite/Context.h",
         "patchSetId": 5
@@ -14,6 +60,208 @@
       "writtenOn": "2025-06-17T19:10:18Z",
       "side": 1,
       "message": "Re: README.md\nFor these API calls, should I guard these, leave a comment that these are experimental, or do I only submit when the followup CLs are written to fully release the feature?",
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7794bc8f_e9ac416d",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "I think documenting that they are experimental is acceptable, or adding a define guard that can be removed but keeps them out of regular use until you\u0027re ready (but you keep defining locally while implementing everything).\n\nI wouldn\u0027t change their function names (e.g. experimental_startCapture()) since that will just add more work later on.",
+      "parentUuid": "0cc5d367_36556de0",
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56750d71_8ea0e92b",
+        "filename": "include/gpu/graphite/ContextOptions.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "I would flip these sentences around, since this is enabling the functionality but nothing is actually captured until `startCapture` is called.",
+      "range": {
+        "startLine": 176,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 56
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93312204_c2b160fe",
+        "filename": "include/gpu/graphite/Recorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be made public, SkSurface_Base is calling the virtual on SkRecorder, it\u0027ll still hit the private virtual override of the Graphite recorder or the CPU recorder.",
+      "range": {
+        "startLine": 103,
+        "startChar": 0,
+        "endLine": 103,
+        "endChar": 59
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "342d6ebb_9c669e6b",
+        "filename": "src/capture/SkCaptureManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "This is going to leak and run into double free issues for a couple of reasons:\n1. Nothing in SkCaptureCanvas keeps the `canvas` alive after it wraps it. This could be addressed by SkCaptureCanvas taking ownership with its `fBaseCanvas` field changing to `std::unique_ptr\u003cSkCanvas\u003e`.  Right now, when SkSurface_Base calls makeCaptureCanvas, `baseCanvas will be deleted as soon as getCachedCanvas() returns.\n\n2. The returned SkCaptureCanvas object is being wrapped in a unique pointer twice, once here to be stored in `fTrackedCanvasses`, but again inside `getCachedCanvas()`.  If the surface is deleted, it\u0027ll delete the SkCaptureCanvas and then the capture manager will be accessing a dead pointer.\n\nIt\u0027s pretty straightforward to work out the ownership for the base canvas going into the SkCaptureCanvas.  I also think that it makes sense for the capture manager to be the owner of the SkCaptureCanvases (and not the SkSurface, although this gets tricky).  \n\nWe can have SkSurface_Base split its fCachedCanvas into a bare pointer, which is always set to either the base canvas or the captured canvas, and a separate fOwnedCanvas that is either the base canvas (for non-capture) or null (for when the SkCaptureCanvas owns the base canvas and the capture manager owns the capture canvas).\n\nInstead of having SkCaptureCanvas own its base canvas, we could keep it holding a bare canvas, and then have SkSurface_Base\u0027s fOwnedCanvas always keep the base canvas alive even if fCachedCanvas is a capture canvas.  However, we then need to be able to signal back to the capture manager when the surface is deleted so that the capture canvas can be unlinked from the now-deleted base canvas (and also this is probably a good event to be tracking in the SkCapture anyways).",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 56
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60d221d1_2a4922a1",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "This should take the canvas as std::unique_ptr. See comment below about what the return type could be.\n\nEven if we store the tracked canvases as SkCaptureCanvas so that the capture manager can inspect the contents, we only need to expose SkCanvas to callers.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 57
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6cb7b205_f92dd42d",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "This needs to be thread safe so should probably be `std:atomic\u003cbool\u003e`.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 34,
+        "endChar": 39
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fec54070_37abcfe4",
+        "filename": "src/capture/SkCaptureManager.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "Prefer skia_private::TArray",
+      "range": {
+        "startLine": 35,
+        "startChar": 9,
+        "endLine": 35,
+        "endChar": 15
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ff44a17_2eb41974",
+        "filename": "src/gpu/ganesh/SkGaneshRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "same, doesn\u0027t need to be public",
+      "range": {
+        "startLine": 31,
+        "startChar": 0,
+        "endLine": 31,
+        "endChar": 78
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9c987125_22c76f32",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:17:27Z",
+      "side": 1,
+      "message": "Shouldn\u0027t be needed",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
       "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
