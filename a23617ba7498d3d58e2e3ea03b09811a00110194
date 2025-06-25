@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "75d1385f_bf05ac4e",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-25T17:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dd4489dc_6c15be4f",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 47
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a7ba3b84_b892ca06",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "486a426c_946960db",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-25T17:59:18Z",
+      "side": 1,
+      "message": "Done, I think I meant to write that but \u0027specialized\u0027 makes more sense",
+      "parentUuid": "a7ba3b84_b892ca06",
+      "range": {
+        "startLine": 53,
+        "startChar": 7,
+        "endLine": 53,
+        "endChar": 16
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d165cc1d_376e3b81",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-06-25T17:24:32Z",
       "side": 1,
       "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 270,
+        "startChar": 16,
+        "endLine": 270,
+        "endChar": 27
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7c4e3dfd_06ee7746",
+        "filename": "src/core/SkMaskFilterBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-06-25T17:59:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d165cc1d_376e3b81",
       "range": {
         "startLine": 270,
         "startChar": 16,
