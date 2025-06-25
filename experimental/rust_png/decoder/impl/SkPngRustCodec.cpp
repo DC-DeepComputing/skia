@@ -580,6 +580,10 @@ SkCodec::Result SkPngRustCodec::startDecoding(const SkImageInfo& dstInfo,
         return result;
     }
 
+    // Sanitation that checks for valid frame width and protects against overflow.
+    if (0 >= frame->width() || frame->width() >= 0xFFFFFF) {
+        return Result::kErrorInInput;
+    }
     result = this->initializeXforms(dstInfo, options, frame->width());
     if (result != kSuccess) {
         return result;
