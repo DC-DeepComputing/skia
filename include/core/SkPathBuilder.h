@@ -21,6 +21,9 @@
 #include "include/private/base/SkTArray.h"
 
 #include <cstdint>
+
+#include "include/core/SkPathSink.h"
+
 #include <optional>
 #include <tuple>
 

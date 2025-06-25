@@ -482,6 +482,7 @@ skia_core_sources = [
   "$_src/core/SkPathRaw.cpp",
   "$_src/core/SkPathRaw.h",
   "$_src/core/SkPathRef.cpp",
+  "$_src/core/SkPathSink.cpp",
   "$_src/core/SkPathUtils.cpp",
   "$_src/core/SkPath_serial.cpp",
   "$_src/core/SkPicture.cpp",

@@ -370,6 +370,7 @@ skia_filegroup(
         "SkPathMeasure.cpp",
         "SkPathRaw.cpp",
         "SkPathRef.cpp",
+        "SkPathSink.cpp",
         "SkPathUtils.cpp",
         "SkPath_serial.cpp",
         "SkPicture.cpp",

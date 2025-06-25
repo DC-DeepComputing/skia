@@ -832,6 +832,11 @@ struct SK_API SkRect {
         return !(a == b);
     }
 
+    constexpr SkPoint TL() const { return {fLeft,  fTop}; }
+    constexpr SkPoint TR() const { return {fRight, fTop}; }
+    constexpr SkPoint BR() const { return {fRight, fBottom}; }
+    constexpr SkPoint BL() const { return {fLeft,  fBottom}; }
+
     /** Returns four points in quad that enclose SkRect ordered as: top-left, top-right,
         bottom-right, bottom-left.
 
