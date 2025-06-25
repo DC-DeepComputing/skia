@@ -207,19 +207,20 @@ std::unique_ptr<Recording> Recorder::snap() {
     // data cache so that they can be instantiated easily when the Recording is inserted.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](TextureDataBlock block) {
-        for (int j = 0; j < block.numTextures(); ++j) {
-            const TextureDataBlock::SampledTexture& tex = block.texture(j);
+    // What to do about this?
+    // fTextureDataCache->foreach([&](TextureDataBlock block) {
+    //     for (int j = 0; j < block.numTextures(); ++j) {
+    //         const TextureDataBlock::SampledTexture& tex = block.texture(j);
 
-            if (tex.first->isLazy()) {
-                if (tex.first->isVolatile()) {
-                    volatileLazyProxies.insert(tex.first);
-                } else {
-                    nonVolatileLazyProxies.insert(tex.first);
-                }
-            }
-        }
-    });
+    //         if (tex.first->isLazy()) {
+    //             if (tex.first->isVolatile()) {
+    //                 volatileLazyProxies.insert(tex.first);
+    //             } else {
+    //                 nonVolatileLazyProxies.insert(tex.first);
+    //             }
+    //         }
+    //     }
+    // });
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
