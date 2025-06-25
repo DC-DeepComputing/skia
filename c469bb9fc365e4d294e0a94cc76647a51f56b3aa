@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6503a692_427138b8",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "You could also double check that the pairs of textures+samplers we think we\u0027re recording here match what we get in the CommandBuffer when we try and look up the textures and samplers",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 9
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bba50541_ffd5ff36",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "Text isn\u0027t working here because it relies on `stepTextures`.  With the new PipelineDataGatherer functions, want the gatherer to be reset with the new layout in the outer loop to collect the paint uniforms and the paint textures, and then we use the new reset function inside the step loop to rewind the uniform storage (so we have the separate geomUniformIndex), but then when done, we\u0027ll get just a single TextureDataBlock that is the concatenation of the paint and step textures to put into the texture data cache.",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 56
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c33de5aa_81f1f0ef",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "Assuming it\u0027s not being nulled on creation, this case should set the fDynamicSamplers index to null.",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 29
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "80d0df31_2ee12546",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "Technically we could make this skip the lock since they should be immutable after initialization. But it\u0027s good to have this to begin with while we work out what\u0027s going on.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 45
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb7b3f82_02092a42",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "I thought that std::array would default to zero\u0027ing/nulling its elements but perhaps it\u0027s not.  We can confirm that with some prints in the ctor.",
+      "range": {
+        "startLine": 188,
+        "startChar": 3,
+        "endLine": 188,
+        "endChar": 11
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "14114016_53b895b3",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "I would add printf debugging here to make sure we are adding refs correctly on each texture, and that when we call TextureDataBlock::Make(), everything matches the input textures object.",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 61
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a1d9568_55da00fa",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T20:56:48Z",
+      "side": 1,
+      "message": "This should be replaced with a visitTextures() function on Task and TaskList similar to the visitPipelines one I added the other day.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 10
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
