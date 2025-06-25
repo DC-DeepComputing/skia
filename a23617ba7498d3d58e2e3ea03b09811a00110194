@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dd4489dc_6c15be4f",
+        "filename": "src/core/SkBitmapDevice.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 628,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:24:32Z",
+      "side": 1,
+      "message": "Can we query if the tiler will only need one iteration (the common case I believe)? Things could get weird if we called drawRRectNinePatch for each tile and only some of the succeeded.  I don\u0027t think that would likely happen (I think they\u0027d all fail or all succeed), but in that scenario I don\u0027t think we\u0027d get any complaints to just return false here and fall back to the more general mask filter path.",
+      "range": {
+        "startLine": 628,
+        "startChar": 0,
+        "endLine": 628,
+        "endChar": 47
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7ba3b84_b892ca06",
+        "filename": "src/core/SkDrawBase.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:24:32Z",
+      "side": 1,
+      "message": "Specialized?",
+      "range": {
+        "startLine": 53,
+        "startChar": 7,
+        "endLine": 53,
+        "endChar": 16
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d165cc1d_376e3b81",
+        "filename": "src/core/SkMaskFilterBase.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 270,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-25T17:24:32Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 270,
+        "startChar": 16,
+        "endLine": 270,
+        "endChar": 27
+      },
+      "revId": "a23617ba7498d3d58e2e3ea03b09811a00110194",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
