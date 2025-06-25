@@ -44,13 +44,102 @@ using ::skgpu::graphite::RenderPassProperties;
 
 namespace PrecompileTestUtils {
 
+class Builder {
+public:
+    Builder() {}
+
+    enum ImgOptions {
+        kNone  = 0x0,
+        kClamp = 0x1
+    };
+
+    // Shaders
+    Builder& hwImg(ImgOptions options = kNone) {
+        static const SkColorInfo kCI { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+        static const SkTileMode kClampTM = SkTileMode::kClamp;
+
+        SkSpan<const SkTileMode> tmSpan;
+        if (options & kClamp) {
+            tmSpan = { &kClampTM, 1 };
+        }
+        sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                               { &kCI, 1 },
+                                                               tmSpan);
+        fPaintOptions.setShaders({ std::move(img) });
+        return *this;
+    }
+
+    Builder& linearGradSm() {
+        fPaintOptions.setShaders({ PrecompileShaders::LinearGradient(GradientShaderFlags::kSmall) });
+        return *this;
+    }
+
+    // ColorFilters
+    Builder& matrixCF() {
+        fPaintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
+        return *this;
+    }
+
+    // Blendmodes/Blenders
+    Builder& src()     { return this->setBlendMode(SkBlendMode::kSrc);     }
+    Builder& srcOver() { return this->setBlendMode(SkBlendMode::kSrcOver); }
+
+    // Misc settings
+    Builder& transparent() { fPaintOptions.setPaintColorIsOpaque(false); return *this; }
+
+    operator PaintOptions() const { return fPaintOptions; }
+
+private:
+    PaintOptions fPaintOptions;
+
+    Builder& setBlendMode(SkBlendMode bm) {
+        fPaintOptions.setBlendModes({ bm });
+        return *this;
+    }
+};
+
+PaintOptions ImagePremulHWOnlyPlusColorSrcover() {
+    PaintOptions paintOptions;
+
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+    SkBlendMode kBlendModes = SkBlendMode::kPlus;
+    paintOptions.setShaders({ PrecompileShaders::Blend({ &kBlendModes, 1 },
+                                                       { std::move(img) },
+                                                       { PrecompileShaders::Color() }) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+PaintOptions TransparentPaintImagePremulHWOnlyPlusColorSrcover() {
+    PaintOptions paintOptions;
+
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+    SkBlendMode kBlendModes = SkBlendMode::kPlus;
+    paintOptions.setShaders({ PrecompileShaders::Blend({ &kBlendModes, 1 },
+                                                       { std::move(img) },
+                                                       { PrecompileShaders::Color() }) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    paintOptions.setPaintColorIsOpaque(false);
+    return paintOptions;
+}
+
 PaintOptions SolidSrcover() {
+    PaintOptions po = Builder().srcOver();
+
     PaintOptions paintOptions;
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
 }
 
 PaintOptions LinearGradSmSrcover() {
+    PaintOptions po = Builder().linearGradSm().srcOver();
+
     PaintOptions paintOptions;
     paintOptions.setShaders({ PrecompileShaders::LinearGradient(GradientShaderFlags::kSmall) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
@@ -72,6 +161,8 @@ PaintOptions LinearGradSRGBSmMedDitherSrcover() {
 }
 
 PaintOptions TransparentPaintImagePremulHWAndClampSrcover() {
+    PaintOptions po = Builder().hwImg(Builder::kClamp).srcOver().transparent();
+
     PaintOptions paintOptions;
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
@@ -85,6 +176,8 @@ PaintOptions TransparentPaintImagePremulHWAndClampSrcover() {
 }
 
 PaintOptions TransparentPaintImagePremulHWOnlyMatrixCFSrcover() {
+    PaintOptions po = Builder().transparent().hwImg().matrixCF().srcOver();
+
     PaintOptions paintOptions;
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
@@ -243,7 +336,7 @@ PaintOptions YUVImageSRGBNoCubicSrcover() {
     return paintOptions;
 }
 
-PaintOptions YUVImageSRGBSrcover2() {
+PaintOptions YUVImageSRGBSrcover() {
     SkColorInfo ci { kRGBA_8888_SkColorType,
                      kPremul_SkAlphaType,
                      SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB) };
@@ -522,8 +615,27 @@ const MouriMap& MouriMap() {
 
 } // anonymous namespace
 
-skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16() {
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Passthrough() {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
+            MouriMap().crosstalkAndChunk16x16Effect(),
+            { { std::move(img) } });
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({ std::move(crosstalk) });
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul() {
+    // This usage of kUnpremul is non-obvious. It acts to short circuit the identity-colorspace
+    // optimization for runtime effects. In this case, the Pipeline requires a
+    // ColorSpaceTransformPremul instead of the (optimized) Passthrough.
+    SkColorInfo ci { kRGBA_8888_SkColorType, kUnpremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                            { &ci, 1 },
                                                            {});
