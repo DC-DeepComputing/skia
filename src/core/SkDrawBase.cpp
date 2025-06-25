@@ -307,15 +307,8 @@ void SkDrawBase::drawRRect(const SkRRect& rrect, const SkPaint& paint) const {
     }
 
     if (paint.getMaskFilter()) {
-        // Transform the rrect into device space.
-        SkRRect devRRect;
-        if (rrect.transform(*fCTM, &devRRect)) {
-            SkAutoBlitterChoose blitter(*this, nullptr, paint);
-            SkResourceCache* cache = nullptr;  // TODO(kjlubick) get this from fCtx
-            if (as_MFB(paint.getMaskFilter())
-                        ->filterRRect(devRRect, *fCTM, *fRC, blitter.get(), cache)) {
-                return;  // filterRRect() called the blitter, so we're done
-            }
+        if (this->drawRRectNinePatch(rrect, paint)) {
+            return;
         }
     }
 
@@ -325,6 +318,38 @@ DRAW_PATH:
     path.addRRect(rrect);
     this->drawPath(path, paint, nullptr, true);
 }
+
+bool SkDrawBase::drawRRectNinePatch(const SkRRect& rrect, const SkPaint& paint) const {
+    SkASSERT(paint.getMaskFilter());
+
+    if (rrect.getType() == SkRRect::kRect_Type) {
+        // Transform the rrect into device space.
+        SkRRect devRRect;
+        if (rrect.transform(*fCTM, &devRRect)) {
+            SkRect devRect = devRRect.rect();
+            SkAutoBlitterChoose blitter(*this, nullptr, paint);
+            SkResourceCache* cache = nullptr;  // TODO(kjlubick) get this from fCtx
+            if (as_MFB(paint.getMaskFilter())
+                          ->filterRects(SkSpan(&devRect, 1), *fCTM, *fRC, blitter.get(), cache)
+                    == SkMaskFilterBase::FilterReturn::kTrue) {
+                return true;
+            }
+        }
+    } else {
+        // Transform the rrect into device space
+        SkRRect devRRect;
+        if (rrect.transform(*fCTM, &devRRect)) {
+            SkAutoBlitterChoose blitter(*this, nullptr, paint);
+            SkResourceCache* cache = nullptr;  // TODO(kjlubick) get this from fCtx
+            if (as_MFB(paint.getMaskFilter())
+                        ->filterRRect(devRRect, *fCTM, *fRC, blitter.get(), cache)) {
+                return true;  // filterRRect() called the blitter, so we're done
+            }
+        }
+    }
+    return false;
+}
+
 
 void SkDrawBase::drawDevPath(const SkPath& devPath,
                              const SkPaint& paint,
