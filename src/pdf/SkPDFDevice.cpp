@@ -25,6 +25,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
@@ -589,13 +590,16 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
                                              const SkPath& origPath,
                                              const SkPaint& origPaint) {
     SkASSERT(origPaint.getMaskFilter());
-    SkPath path(origPath);
+    SkPathBuilder builder;
     SkTCopyOnFirstWrite<SkPaint> paint(origPaint);
 
-    SkStrokeRec::InitStyle initStyle = skpathutils::FillPathWithPaint(path, *paint, &path)
-                                     ? SkStrokeRec::kFill_InitStyle
-                                     : SkStrokeRec::kHairline_InitStyle;
-    path.transform(ctm, &path);
+    SkStrokeRec::InitStyle initStyle = SkStrokeRec::kFill_InitStyle;
+    if (!skpathutils::FillPathWithPaint(origPath, *paint, &builder, nullptr, SkMatrix::I())) {
+        initStyle = SkStrokeRec::kHairline_InitStyle;
+        builder = origPath;
+    }
+    builder.transform(ctm);
+    SkPath path = builder.detach();
 
     SkIRect bounds = clipStack.bounds(this->bounds()).roundOut();
     SkMaskBuilder sourceMask;

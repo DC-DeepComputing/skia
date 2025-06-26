@@ -10,12 +10,14 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkMatrixPriv.h"
 
 namespace skpathutils {
 
+#ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
 bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst) {
     return skpathutils::FillPathWithPaint(src, paint, dst, nullptr, 1);
 }
@@ -28,8 +30,18 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
 
 bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
                        const SkRect* cullRect, const SkMatrix& ctm) {
+    SkPathBuilder builder;
+    if (FillPathWithPaint(src, paint, &builder, cullRect, ctm)) {
+        *dst = builder.detach();
+        return true;
+    }
+    return false;
+}
+#endif
+
+bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* builder,
+                       const SkRect* cullRect, const SkMatrix& ctm) {
     if (!src.isFinite()) {
-        dst->reset();
         return false;
     }
 
@@ -43,31 +55,21 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
     }
 #endif
 
+    bool builderWasUsed = false;
     const SkPath* srcPtr = &src;
     SkPath tmpPath;
 
     SkPathEffect* pe = paint.getPathEffect();
-    if (pe && pe->filterPath(&tmpPath, src, &rec, cullRect, ctm)) {
+    if (pe && pe->filterPath(builder, src, &rec, cullRect, ctm)) {
+        tmpPath = builder->detach();
         srcPtr = &tmpPath;
+        builderWasUsed = true;
+    }
+    if (rec.applyToPath(builder, *srcPtr)) {
+        builderWasUsed = true;
     }
 
-    if (!rec.applyToPath(dst, *srcPtr)) {
-        if (srcPtr == &tmpPath) {
-            // If path's were copy-on-write, this trick would not be needed.
-            // As it is, we want to save making a deep-copy from tmpPath -> dst
-            // since we know we're just going to delete tmpPath when we return,
-            // so the swap saves that copy.
-            dst->swap(tmpPath);
-        } else {
-            *dst = *srcPtr;
-        }
-    }
-
-    if (!dst->isFinite()) {
-        dst->reset();
-        return false;
-    }
-    return !rec.isHairlineStyle();
+    return !builderWasUsed || rec.isHairlineStyle() || !builder->isFinite();
 }
 
 } // namespace skpathutils
