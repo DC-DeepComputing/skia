@@ -26,6 +26,7 @@
 #include "src/gpu/graphite/dawn/DawnErrorChecker.h"
 #include "src/gpu/graphite/dawn/DawnGraphiteUtils.h"
 #include "src/gpu/graphite/dawn/DawnResourceProvider.h"
+#include "src/gpu/graphite/dawn/DawnSampler.h"
 #include "src/gpu/graphite/dawn/DawnSharedContext.h"
 #include "src/sksl/SkSLProgramSettings.h"
 #include "src/sksl/SkSLUtil.h"
@@ -823,6 +824,18 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
 #endif
 
     return fAsyncPipelineCreation->fRenderPipeline;
+}
+
+const DawnSampler* DawnGraphicsPipeline::findImmutableSampler(SamplerDesc desc) const {
+    SkASSERT(desc.isImmutable());
+
+    for (const sk_sp<DawnSampler>& sampler : fImmutableSamplers) {
+        if (sampler->samplerDesc() == desc) {
+            return sampler.get();
+        }
+    }
+
+    return nullptr;
 }
 
 } // namespace skgpu::graphite

@@ -41,8 +41,9 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
-    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override {
-        return fChildTasks.visitPipelines(visitor);
+    template<typename T>
+    bool visitChildren(const std::function<bool(const T*)>& visitor) {
+        return fChildTasks.visit<T>(visitor);
     }
 
 private:
