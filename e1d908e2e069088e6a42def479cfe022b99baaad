@@ -22,6 +22,30 @@
       },
       "revId": "e1d908e2e069088e6a42def479cfe022b99baaad",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e70ca4e_c3d384ed",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-26T21:05:10Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d4da11a_49081d8c",
+      "range": {
+        "startLine": 76,
+        "startChar": 45,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "e1d908e2e069088e6a42def479cfe022b99baaad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
