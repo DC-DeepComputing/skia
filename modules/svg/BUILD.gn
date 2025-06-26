@@ -11,7 +11,7 @@ if (skia_enable_svg && skia_use_expat) {
     include_dirs = [ "include" ]
   }
 
-  skia_component("svg") {
+  skia_static_library("svg") {
     check_includes = false
     import("svg.gni")
     public_configs = [ ":public_config" ]

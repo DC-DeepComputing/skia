@@ -12,7 +12,7 @@ if (skia_enable_bentleyottmann) {
     include_dirs = [ "include" ]
   }
 
-  skia_component("bentleyottmann") {
+  skia_static_library("bentleyottmann") {
     import("bentleyottmann.gni")
     public_configs = [ ":public_config" ]
     public = bentleyottmann_public
