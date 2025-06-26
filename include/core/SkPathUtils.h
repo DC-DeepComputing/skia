@@ -10,9 +10,12 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkTypes.h"
 
+#include <optional>
+
 class SkMatrix;
 class SkPaint;
 class SkPath;
+class SkPathBuilder;
 struct SkRect;
 
 namespace skpathutils {
@@ -29,6 +32,10 @@ namespace skpathutils {
     @return          true if the dst path was updated, false if it was not (e.g. if the path
                      represents hairline and cannot be filled).
 */
+SK_API bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* dst,
+                              const SkRect* cullRect, const SkMatrix& ctm);
+
+#ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
 SK_API bool FillPathWithPaint(const SkPath &src, const SkPaint &paint, SkPath *dst,
                               const SkRect *cullRect, SkScalar resScale = 1);
 
@@ -36,6 +43,7 @@ SK_API bool FillPathWithPaint(const SkPath &src, const SkPaint &paint, SkPath *d
                               const SkRect *cullRect, const SkMatrix &ctm);
 
 SK_API bool FillPathWithPaint(const SkPath &src, const SkPaint &paint, SkPath *dst);
+#endif
 
 }
 
