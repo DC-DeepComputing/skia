@@ -14,11 +14,11 @@
 #include "src/base/SkEnumBitMask.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
@@ -131,7 +131,7 @@ skgpu::graphite::PaintOptions ImagePremulHWOnlySrcover();
 skgpu::graphite::PaintOptions ImagePremulClampNoCubicDstin();
 skgpu::graphite::PaintOptions ImagePremulHWOnlyDstin();
 skgpu::graphite::PaintOptions YUVImageSRGBNoCubicSrcover();
-skgpu::graphite::PaintOptions YUVImageSRGBSrcover2();
+skgpu::graphite::PaintOptions YUVImageSRGBSrcover();
 skgpu::graphite::PaintOptions ImagePremulNoCubicSrcSrcover();
 skgpu::graphite::PaintOptions ImageSRGBNoCubicSrc();
 skgpu::graphite::PaintOptions ImageAlphaHWOnlySrcover();
