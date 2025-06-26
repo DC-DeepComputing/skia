@@ -456,7 +456,9 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
         if (this->computeConservativeLocalClipBounds(&cullRect)) {
             cullRectPtr = &cullRect;
         }
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, tmpPath, cullRectPtr, *fCTM);
+        SkPathBuilder builder;
+        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
+        *tmpPath = builder.detach();
         pathPtr = tmpPath;
     }
 

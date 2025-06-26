@@ -10,7 +10,6 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathTypes.h"
-#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTo.h"
@@ -40,7 +39,7 @@ SkScalar SkContourMeasure::Segment::getScalarT() const {
 }
 
 void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
-                            SkScalar startT, SkScalar stopT, SkPath* dst) {
+                            SkScalar startT, SkScalar stopT, SkPathBuilder* dst) {
     SkASSERT(startT >= 0 && startT <= SK_Scalar1);
     SkASSERT(stopT >= 0 && stopT <= SK_Scalar1);
     SkASSERT(startT <= stopT);
@@ -49,9 +48,9 @@ void SkContourMeasure_segTo(const SkPoint pts[], unsigned segType,
         if (!dst->isEmpty()) {
             /* if the dash as a zero-length on segment, add a corresponding zero-length line.
                The stroke code will add end caps to zero length lines as appropriate */
-            SkPoint lastPt;
-            SkAssertResult(dst->getLastPt(&lastPt));
-            dst->lineTo(lastPt);
+            auto lastPtOptional = dst->getLastPt();
+            SkAssertResult(lastPtOptional.has_value());
+            dst->lineTo(lastPtOptional.value());
         }
         return;
     }
@@ -653,7 +652,7 @@ bool SkContourMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlag
     return false;
 }
 
-bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst,
                                   bool startWithMoveTo) const {
     SkASSERT(dst);
 
@@ -730,3 +729,15 @@ SkContourMeasure::VerbMeasure SkContourMeasure::ForwardVerbIterator::operator*()
         SkSpan(fPts.data() + fSegments.front().fPtIndex, seg_pt_count[fSegments.front().fType]),
     };
 }
+
+#ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
+bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+                                  bool startWithMoveTo) const {
+    SkPathBuilder builder;
+    if (this->getSegment(startD, stopD, &builder, startWithMoveTo)) {
+        *dst = builder.detach();
+        return true;
+    }
+    return false;
+}
+#endif
