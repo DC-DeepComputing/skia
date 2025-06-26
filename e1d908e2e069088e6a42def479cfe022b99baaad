@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d4da11a_49081d8c",
+        "filename": "tests/graphite/precompile/ChromePrecompileTest.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-26T20:34:09Z",
+      "side": 1,
+      "message": "```suggestion\n/* 34 */ { YUVImageSRGBSrcover(),              DrawTypeFlags::kSimpleShape,      kBGRA_4_DS_SRGB },\n```",
+      "range": {
+        "startLine": 76,
+        "startChar": 45,
+        "endLine": 76,
+        "endChar": 46
+      },
+      "revId": "e1d908e2e069088e6a42def479cfe022b99baaad",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
