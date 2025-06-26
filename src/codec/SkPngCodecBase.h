@@ -36,6 +36,9 @@ public:
     static bool isCompatibleColorProfileAndType(const SkEncodedInfo::ICCProfile* profile,
                                                 SkEncodedInfo::Color color);
 protected:
+    // Protect against large PNGs. See http://bugzil.la/251381 for more details.
+    static constexpr uint32_t kMaxPNGSize = 1000000;
+
     SkPngCodecBase(SkEncodedInfo&&, std::unique_ptr<SkStream>, SkEncodedOrigin origin);
 
     // Initialize most fields needed by `applyXformRow`.
