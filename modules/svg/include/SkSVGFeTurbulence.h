@@ -9,7 +9,6 @@
 #define SkSVGFeTurbulence_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -20,7 +19,7 @@ class SkImageFilter;
 class SkSVGFilterContext;
 class SkSVGRenderContext;
 
-class SK_API SkSVGFeTurbulence : public SkSVGFe {
+class SKSVG_API SkSVGFeTurbulence : public SkSVGFe {
 public:
     static sk_sp<SkSVGFeTurbulence> Make() {
         return sk_sp<SkSVGFeTurbulence>(new SkSVGFeTurbulence());

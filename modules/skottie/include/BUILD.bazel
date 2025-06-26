@@ -11,6 +11,7 @@ skia_filegroup(
     srcs = [
         "ExternalLayer.h",
         "Skottie.h",
+        "SkottieAPI.h",
         "SkottieProperty.h",
         "SlotManager.h",
         "TextShaper.h",

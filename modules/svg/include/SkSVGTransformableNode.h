@@ -8,9 +8,7 @@
 #ifndef SkSVGTransformableNode_DEFINED
 #define SkSVGTransformableNode_DEFINED
 
-#include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 #include "modules/svg/include/SkSVGValue.h"
@@ -19,7 +17,7 @@ class SkSVGRenderContext;
 enum class SkSVGAttribute;
 struct SkRect;
 
-class SK_API SkSVGTransformableNode : public SkSVGNode {
+class SKSVG_API SkSVGTransformableNode : public SkSVGNode {
 public:
     void setTransform(const SkSVGTransformType& t) { fTransform = t; }
 

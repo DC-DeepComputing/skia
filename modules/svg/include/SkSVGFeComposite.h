@@ -9,7 +9,6 @@
 #define SkSVGFeComposite_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -21,7 +20,7 @@ class SkSVGFilterContext;
 class SkSVGRenderContext;
 enum class SkBlendMode;
 
-class SK_API SkSVGFeComposite final : public SkSVGFe {
+class SKSVG_API SkSVGFeComposite final : public SkSVGFe {
 public:
     static sk_sp<SkSVGFeComposite> Make() {
         return sk_sp<SkSVGFeComposite>(new SkSVGFeComposite());

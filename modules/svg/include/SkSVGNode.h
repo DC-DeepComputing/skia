@@ -10,7 +10,6 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGAttribute.h"
 #include "modules/svg/include/SkSVGAttributeParser.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -103,7 +102,7 @@ public:                                                                      \
         }                                                                    \
     }
 
-class SK_API SkSVGNode : public SkRefCnt {
+class SKSVG_API SkSVGNode : public SkRefCnt {
 public:
     ~SkSVGNode() override;
 

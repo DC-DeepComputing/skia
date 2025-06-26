@@ -10,7 +10,6 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -21,7 +20,7 @@ class SkImageFilter;
 class SkSVGFilterContext;
 class SkSVGRenderContext;
 
-class SK_API SkSVGFeFlood : public SkSVGFe {
+class SKSVG_API SkSVGFeFlood : public SkSVGFe {
 public:
     static sk_sp<SkSVGFeFlood> Make() { return sk_sp<SkSVGFeFlood>(new SkSVGFeFlood()); }
 

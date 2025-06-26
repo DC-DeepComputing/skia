@@ -11,7 +11,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGGradient.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -21,7 +20,7 @@ class SkSVGRenderContext;
 class SkShader;
 enum class SkTileMode;
 
-class SK_API SkSVGLinearGradient final : public SkSVGGradient {
+class SKSVG_API SkSVGLinearGradient final : public SkSVGGradient {
 public:
     static sk_sp<SkSVGLinearGradient> Make() {
         return sk_sp<SkSVGLinearGradient>(new SkSVGLinearGradient());
