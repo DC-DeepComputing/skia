@@ -1086,6 +1086,15 @@ SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspecti
     return *this;
 }
 
+bool SkPathBuilder::isFinite() const {
+    for (auto p : fPts) {
+        if (!p.isFinite()) {
+            return false;
+        }
+    }
+    return true;
+}
+
 bool SkPathBuilder::isZeroLengthSincePoint(int startPtIndex) const {
     int count = fPts.size() - startPtIndex;
     if (count < 2) {

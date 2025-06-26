@@ -81,6 +81,10 @@
     #define SK_ALLOW_STATIC_GLOBAL_INITIALIZERS 0
 #endif
 
+#ifndef SK_SUPPORT_MUTABLE_PATHEFFECT
+    #define SK_SUPPORT_MUTABLE_PATHEFFECT
+#endif
+
 #if !defined(SK_GAMMA_EXPONENT)
     #define SK_GAMMA_EXPONENT (0.0f)  // SRGB
 #endif
