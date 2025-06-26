@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40429b10_a23ad9ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 13
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T20:52:50Z",
+      "side": 1,
+      "message": "PTAL; I used profile captures on GM_bitmapcopy, and there is no regression in texture usage. (Maybe there is a better GM to verify this?)",
+      "revId": "0e359744560cb41f4e411d8e01e23bca9108eb53",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
