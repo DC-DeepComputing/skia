@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec5a496_9bd037f5",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6503a692_427138b8",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 193,
+        "endChar": 9
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bba50541_ffd5ff36",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-25T20:56:48Z",
       "side": 1,
       "message": "Text isn\u0027t working here because it relies on `stepTextures`.  With the new PipelineDataGatherer functions, want the gatherer to be reset with the new layout in the outer loop to collect the paint uniforms and the paint textures, and then we use the new reset function inside the step loop to rewind the uniform storage (so we have the separate geomUniformIndex), but then when done, we\u0027ll get just a single TextureDataBlock that is the concatenation of the paint and step textures to put into the texture data cache.",
+      "range": {
+        "startLine": 467,
+        "startChar": 0,
+        "endLine": 473,
+        "endChar": 56
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d1c87c6_732e88c6",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bba50541_ffd5ff36",
       "range": {
         "startLine": 467,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2da2617a_b1032da1",
+        "filename": "src/gpu/graphite/GlobalCache.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c33de5aa_81f1f0ef",
+      "range": {
+        "startLine": 167,
+        "startChar": 0,
+        "endLine": 167,
+        "endChar": 29
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "80d0df31_2ee12546",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-06-25T20:56:48Z",
       "side": 1,
       "message": "Technically we could make this skip the lock since they should be immutable after initialization. But it\u0027s good to have this to begin with while we work out what\u0027s going on.",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 132,
+        "endChar": 45
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a764cad6_22483c69",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "80d0df31_2ee12546",
       "range": {
         "startLine": 130,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fae4996b_bd4d2eb8",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "eb7b3f82_02092a42",
+      "range": {
+        "startLine": 188,
+        "startChar": 3,
+        "endLine": 188,
+        "endChar": 11
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "14114016_53b895b3",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e177bee_2a6b25af",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14114016_53b895b3",
+      "range": {
+        "startLine": 283,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 61
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0a1d9568_55da00fa",
@@ -152,6 +296,30 @@
       "writtenOn": "2025-06-25T20:56:48Z",
       "side": 1,
       "message": "This should be replaced with a visitTextures() function on Task and TaskList similar to the visitPipelines one I added the other day.",
+      "range": {
+        "startLine": 210,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 10
+      },
+      "revId": "c469bb9fc365e4d294e0a94cc76647a51f56b3aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "484dc2ae_30ea5ca4",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-06-26T18:47:50Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0a1d9568_55da00fa",
       "range": {
         "startLine": 210,
         "startChar": 0,
