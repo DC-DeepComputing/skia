@@ -266,17 +266,4 @@ Task::Status RenderPassTask::addCommands(Context* context,
     }
 }
 
-bool RenderPassTask::visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
-    for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
-        for (const sk_sp<GraphicsPipeline>& pipeline : pass->pipelines()) {
-            if (!visitor(pipeline.get())) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
-
 } // namespace skgpu::graphite
