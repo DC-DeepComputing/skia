@@ -12,6 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPathUtils.h"
@@ -367,9 +368,9 @@ static void test_crbug_165432(skiatest::Reporter* reporter) {
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setPathEffect(dash);
 
-    SkPath filteredPath;
+    SkPathBuilder filteredPath;
     SkStrokeRec rec(paint);
-    REPORTER_ASSERT(reporter, !dash->filterPath(&filteredPath, path, &rec, nullptr));
+    REPORTER_ASSERT(reporter, !dash->filterPath(&filteredPath, path, &rec));
     REPORTER_ASSERT(reporter, filteredPath.isEmpty());
 }
 

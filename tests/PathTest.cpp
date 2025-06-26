@@ -293,7 +293,9 @@ static void test_path_crbugskia2820(skiatest::Reporter* reporter) {
 
     SkStrokeRec stroke(SkStrokeRec::kFill_InitStyle);
     stroke.setStrokeStyle(2 * SK_Scalar1);
-    stroke.applyToPath(&path, path);
+
+    SkPathBuilder bulider;
+    stroke.applyToPath(&bulider, path);
 }
 
 static void test_path_crbugskia5995() {
@@ -1495,9 +1497,11 @@ static void test_convexity2(skiatest::Reporter* reporter) {
     }
     SkStrokeRec stroke(SkStrokeRec::kFill_InitStyle);
     stroke.setStrokeStyle(2 * SK_Scalar1);
-    stroke.applyToPath(&strokedSin, strokedSin);
-    check_convexity(reporter, strokedSin, false);
-    check_direction(reporter, strokedSin, kDontCheckDir);
+    SkPathBuilder builder;
+    stroke.applyToPath(&builder, strokedSin);
+    SkPath newpath = builder.detach();
+    check_convexity(reporter, newpath, false);
+    check_direction(reporter, newpath, kDontCheckDir);
 
     // http://crbug.com/412640
     SkPath degenerateConcave;
