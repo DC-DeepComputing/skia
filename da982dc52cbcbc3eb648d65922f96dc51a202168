@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dadfc23_27d10bba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8986
+      },
+      "writtenOn": "2025-06-26T17:58:44Z",
+      "side": 1,
+      "message": "@Michael, PTAL. Once this merges, I\u0027ll merge [Reland \"Reland \"Improve DX compiler library loading](https://dawn-review.googlesource.com/c/dawn/+/234919) to avoid test breaks.",
+      "revId": "da982dc52cbcbc3eb648d65922f96dc51a202168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
