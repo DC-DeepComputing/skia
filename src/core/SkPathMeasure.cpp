@@ -45,7 +45,8 @@ bool SkPathMeasure::getMatrix(SkScalar distance, SkMatrix* matrix, MatrixFlags f
     return fContour && fContour->getMatrix(distance, matrix, (SkContourMeasure::MatrixFlags)flags);
 }
 
-bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst, bool startWithMoveTo) {
+bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder* dst,
+                               bool startWithMoveTo) {
     return fContour && fContour->getSegment(startD, stopD, dst, startWithMoveTo);
 }
 
@@ -57,6 +58,18 @@ bool SkPathMeasure::nextContour() {
     fContour = fIter.next();
     return !!fContour;
 }
+
+#ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
+bool SkPathMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPath* dst,
+                               bool startWithMoveTo) {
+    SkPathBuilder builder;
+    if (this->getSegment(startD, stopD, &builder, startWithMoveTo)) {
+        *dst = builder.detach();
+        return true;
+    }
+    return false;
+}
+#endif
 
 #ifdef SK_DEBUG
 void SkPathMeasure::dump() {}
