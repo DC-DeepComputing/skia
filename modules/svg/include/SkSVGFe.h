@@ -10,7 +10,6 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -22,7 +21,7 @@ class SkImageFilter;
 class SkSVGFilterContext;
 class SkSVGRenderContext;
 
-class SK_API SkSVGFe : public SkSVGHiddenContainer {
+class SKSVG_API SkSVGFe : public SkSVGHiddenContainer {
 public:
     static bool IsFilterEffect(const sk_sp<SkSVGNode>& node) {
         switch (node->tag()) {

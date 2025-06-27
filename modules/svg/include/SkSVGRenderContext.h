@@ -36,7 +36,7 @@ class SkPaint;
 class SkString;
 namespace skresources { class ResourceProvider; }
 
-class SK_API SkSVGLengthContext {
+class SKSVG_API SkSVGLengthContext {
 public:
     SkSVGLengthContext(const SkSize& viewport, SkScalar dpi = 90)
         : fViewport(viewport), fDPI(dpi) {}
@@ -59,7 +59,7 @@ private:
     SkScalar fDPI;
 };
 
-struct SK_API SkSVGPresentationContext {
+struct SKSVG_API SkSVGPresentationContext {
     SkSVGPresentationContext();
     SkSVGPresentationContext(const SkSVGPresentationContext&)            = default;
     SkSVGPresentationContext& operator=(const SkSVGPresentationContext&) = default;
@@ -70,7 +70,7 @@ struct SK_API SkSVGPresentationContext {
     SkSVGPresentationAttributes fInherited;
 };
 
-class SK_API SkSVGRenderContext {
+class SKSVG_API SkSVGRenderContext {
 public:
     // Captures data required for object bounding box resolution.
     struct OBBScope {

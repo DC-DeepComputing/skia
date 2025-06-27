@@ -58,25 +58,25 @@ bool TransformPropertyValue::operator!=(const TransformPropertyValue& other) con
     return !(*this == other);
 }
 
-// The SK_API attributes are important here due o them being declared as a template.
+// The SKOTTIE_API attributes are important here due o them being declared as a template.
 
-template <> SK_API
+template <> SKOTTIE_API
 ColorPropertyHandle::PropertyHandle(sk_sp<sksg::Color> node)
     : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 ColorPropertyHandle::PropertyHandle(const ColorPropertyHandle& other)
     : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 ColorPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
+template <> SKOTTIE_API
 ColorPropertyValue ColorPropertyHandle::get() const {
     return fNode->getColor();
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 void ColorPropertyHandle::set(const ColorPropertyValue& c) {
     fNode->setColor(c);
 
@@ -85,23 +85,23 @@ void ColorPropertyHandle::set(const ColorPropertyValue& c) {
     }
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 OpacityPropertyHandle::PropertyHandle(sk_sp<sksg::OpacityEffect> node)
     : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 OpacityPropertyHandle::PropertyHandle(const OpacityPropertyHandle& other)
     : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 OpacityPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
+template <> SKOTTIE_API
 OpacityPropertyValue OpacityPropertyHandle::get() const {
     return fNode->getOpacity() * 100;
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 void OpacityPropertyHandle::set(const OpacityPropertyValue& o) {
     fNode->setOpacity(o / 100);
 
@@ -110,23 +110,23 @@ void OpacityPropertyHandle::set(const OpacityPropertyValue& o) {
     }
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 TextPropertyHandle::PropertyHandle(sk_sp<internal::TextAdapter> node)
     : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TextPropertyHandle::PropertyHandle(const TextPropertyHandle& other)
     : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TextPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TextPropertyValue TextPropertyHandle::get() const {
     return fNode->getText();
 }
 
-template<> SK_API
+template<> SKOTTIE_API
 void TextPropertyHandle::set(const TextPropertyValue& t) {
     fNode->setText(t);
 
@@ -135,18 +135,18 @@ void TextPropertyHandle::set(const TextPropertyValue& t) {
     }
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 TransformPropertyHandle::PropertyHandle(sk_sp<internal::TransformAdapter2D> node)
     : fNode(std::move(node)), fRevalidator(nullptr) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TransformPropertyHandle::PropertyHandle(const TransformPropertyHandle& other)
     : fNode(other.fNode), fRevalidator(other.fRevalidator) {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TransformPropertyHandle::~PropertyHandle() {}
 
-template <> SK_API
+template <> SKOTTIE_API
 TransformPropertyValue TransformPropertyHandle::get() const {
     return {
         fNode->getAnchorPoint(),
@@ -158,7 +158,7 @@ TransformPropertyValue TransformPropertyHandle::get() const {
     };
 }
 
-template <> SK_API
+template <> SKOTTIE_API
 void TransformPropertyHandle::set(const TransformPropertyValue& t) {
     fNode->setAnchorPoint(t.fAnchorPoint);
     fNode->setPosition(t.fPosition);

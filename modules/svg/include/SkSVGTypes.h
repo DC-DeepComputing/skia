@@ -22,6 +22,34 @@
 #include <optional>
 #include <vector>
 
+#if !defined(SKSVG_IMPLEMENTATION)
+    #if defined(SKIA_IMPLEMENTATION)
+        #define SKSVG_IMPLEMENTATION SKIA_IMPLEMENTATION
+    #else
+        #define SKSVG_IMPLEMENTATION 0
+    #endif
+#endif
+
+#if !defined(SKSVG_DLL) && defined(SKIA_DLL)
+    #define SKSVG_DLL
+#endif
+
+#if !defined(SKSVG_API)
+    #if defined(SKSVG_DLL)
+        #if defined(_MSC_VER)
+            #if SKSVG_IMPLEMENTATION
+                #define SKSVG_API __declspec(dllexport)
+            #else
+                #define SKSVG_API __declspec(dllimport)
+            #endif
+        #else
+            #define SKSVG_API __attribute__((visibility("default")))
+        #endif
+    #else
+        #define SKSVG_API
+    #endif
+#endif
+
 using SkSVGColorType     = SkColor;
 using SkSVGIntegerType   = int;
 using SkSVGNumberType    = SkScalar;
@@ -113,7 +141,7 @@ private:
     std::optional<T>   fValue;
 };
 
-class SK_API SkSVGLength {
+class SKSVG_API SkSVGLength {
 public:
     enum class Unit {
         kUnknown,
@@ -149,7 +177,7 @@ private:
 };
 
 // https://www.w3.org/TR/SVG11/linking.html#IRIReference
-class SK_API SkSVGIRI {
+class SKSVG_API SkSVGIRI {
 public:
     enum class Type {
         kLocal,
@@ -174,7 +202,7 @@ private:
 };
 
 // https://www.w3.org/TR/SVG11/types.html#InterfaceSVGColor
-class SK_API SkSVGColor {
+class SKSVG_API SkSVGColor {
 public:
     enum class Type {
         kCurrentColor,
@@ -221,7 +249,7 @@ private:
     sk_sp<RefCntVars> fVars;
 };
 
-class SK_API SkSVGPaint {
+class SKSVG_API SkSVGPaint {
 public:
     enum class Type {
         kNone,
@@ -261,7 +289,7 @@ private:
 };
 
 // <funciri> | none (used for clip/mask/filter properties)
-class SK_API SkSVGFuncIRI {
+class SKSVG_API SkSVGFuncIRI {
 public:
     enum class Type {
         kNone,
@@ -291,7 +319,7 @@ enum class SkSVGLineCap {
     kSquare,
 };
 
-class SK_API SkSVGLineJoin {
+class SKSVG_API SkSVGLineJoin {
 public:
     enum class Type {
         kMiter,
@@ -315,7 +343,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGSpreadMethod {
+class SKSVG_API SkSVGSpreadMethod {
 public:
     // These values must match Skia's SkShader::TileMode enum.
     enum class Type {
@@ -339,7 +367,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGFillRule {
+class SKSVG_API SkSVGFillRule {
 public:
     enum class Type {
         kNonZero,
@@ -367,7 +395,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGVisibility {
+class SKSVG_API SkSVGVisibility {
 public:
     enum class Type {
         kVisible,
@@ -391,7 +419,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGDashArray {
+class SKSVG_API SkSVGDashArray {
 public:
     enum class Type {
         kNone,
@@ -422,7 +450,7 @@ private:
     std::vector<SkSVGLength> fDashArray;
 };
 
-class SK_API SkSVGStopColor {
+class SKSVG_API SkSVGStopColor {
 public:
     enum class Type {
         kColor,
@@ -451,7 +479,7 @@ private:
     SkSVGColorType fColor;
 };
 
-class SK_API SkSVGObjectBoundingBoxUnits {
+class SKSVG_API SkSVGObjectBoundingBoxUnits {
 public:
     enum class Type {
         kUserSpaceOnUse,
@@ -474,7 +502,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGFontFamily {
+class SKSVG_API SkSVGFontFamily {
 public:
     enum class Type {
         kFamily,
@@ -500,7 +528,7 @@ private:
     SkString fFamily;
 };
 
-class SK_API SkSVGFontStyle {
+class SKSVG_API SkSVGFontStyle {
 public:
     enum class Type {
         kNormal,
@@ -523,7 +551,7 @@ private:
     Type fType;
 };
 
-class SK_API SkSVGFontSize {
+class SKSVG_API SkSVGFontSize {
 public:
     enum class Type {
         kLength,
@@ -549,7 +577,7 @@ private:
     SkSVGLength fSize;
 };
 
-class SK_API SkSVGFontWeight {
+class SKSVG_API SkSVGFontWeight {
 public:
     enum class Type {
         k100,
@@ -582,7 +610,7 @@ private:
     Type fType;
 };
 
-struct SK_API SkSVGPreserveAspectRatio {
+struct SKSVG_API SkSVGPreserveAspectRatio {
     enum Align : uint8_t {
         // These values are chosen such that bits [0,1] encode X alignment, and
         // bits [2,3] encode Y alignment.
@@ -608,7 +636,7 @@ struct SK_API SkSVGPreserveAspectRatio {
     Scale fScale = kMeet;
 };
 
-class SK_API SkSVGTextAnchor {
+class SKSVG_API SkSVGTextAnchor {
 public:
     enum class Type {
         kStart,
@@ -632,7 +660,7 @@ private:
 };
 
 // https://www.w3.org/TR/SVG11/filters.html#FilterPrimitiveInAttribute
-class SK_API SkSVGFeInputType {
+class SKSVG_API SkSVGFeInputType {
 public:
     enum class Type {
         kSourceGraphic,
@@ -685,7 +713,7 @@ enum class SkSVGFeCompositeOperator {
     kArithmetic,
 };
 
-class SK_API SkSVGFeTurbulenceBaseFrequency {
+class SKSVG_API SkSVGFeTurbulenceBaseFrequency {
 public:
     SkSVGFeTurbulenceBaseFrequency() : fFreqX(0), fFreqY(0) {}
     SkSVGFeTurbulenceBaseFrequency(SkSVGNumberType freqX, SkSVGNumberType freqY)
@@ -699,7 +727,7 @@ private:
     SkSVGNumberType fFreqY;
 };
 
-struct SK_API SkSVGFeTurbulenceType {
+struct SKSVG_API SkSVGFeTurbulenceType {
     enum Type {
         kFractalNoise,
         kTurbulence,

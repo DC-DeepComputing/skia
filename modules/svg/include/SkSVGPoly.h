@@ -11,7 +11,6 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGShape.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -23,7 +22,7 @@ class SkSVGRenderContext;
 enum class SkPathFillType;
 
 // Handles <polygon> and <polyline> elements.
-class SK_API SkSVGPoly final : public SkSVGShape {
+class SKSVG_API SkSVGPoly final : public SkSVGShape {
 public:
     static sk_sp<SkSVGPoly> MakePolygon() {
         return sk_sp<SkSVGPoly>(new SkSVGPoly(SkSVGTag::kPolygon));

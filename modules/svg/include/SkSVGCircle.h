@@ -12,7 +12,6 @@
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGShape.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -26,7 +25,7 @@ class SkSVGRenderContext;
 enum class SkPathFillType;
 struct SkPoint;
 
-class SK_API SkSVGCircle final : public SkSVGShape {
+class SKSVG_API SkSVGCircle final : public SkSVGShape {
 public:
     static sk_sp<SkSVGCircle> Make() { return sk_sp<SkSVGCircle>(new SkSVGCircle()); }
 

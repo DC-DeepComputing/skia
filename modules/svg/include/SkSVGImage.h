@@ -12,7 +12,6 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "include/private/base/SkDebug.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTransformableNode.h"
@@ -24,7 +23,7 @@ namespace skresources {
 class ResourceProvider;
 }
 
-class SK_API SkSVGImage final : public SkSVGTransformableNode {
+class SKSVG_API SkSVGImage final : public SkSVGTransformableNode {
 public:
     static sk_sp<SkSVGImage> Make() {
         return sk_sp<SkSVGImage>(new SkSVGImage());

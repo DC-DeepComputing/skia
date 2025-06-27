@@ -7,14 +7,17 @@ import("../../gn/skia.gni")
 
 if (skia_enable_skottie) {
   config("public_config") {
+    include_dirs = [ "include" ]
     defines = [
       "SK_ENABLE_SKOTTIE",
       "SK_ENABLE_SKOTTIE_SKSLEFFECT",
     ]
-    include_dirs = [ "include" ]
+    if (is_component_build) {
+      defines += [ "SKOTTIE_DLL" ]
+    }
   }
 
-  skia_component("skottie") {
+  skia_static_library("skottie") {
     check_includes = false
     import("skottie.gni")
     public_configs = [ ":public_config" ]
@@ -29,6 +32,7 @@ if (skia_enable_skottie) {
       "../skshaper",
       "../skunicode",
     ]
+    defines = [ "SKOTTIE_IMPLEMENTATION=1" ]
   }
 
   if (defined(is_skia_standalone)) {

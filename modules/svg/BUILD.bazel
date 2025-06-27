@@ -15,6 +15,7 @@ skia_cc_library(
     hdrs = ["//modules/svg/include:public_hdrs"],
     defines = ["SK_ENABLE_SVG"],
     features = ["layering_check"],
+    local_defines = ["SKSVG_IMPLEMENTATION"],
     visibility = ["//:__subpackages__"],
     deps = [
         "//:core",

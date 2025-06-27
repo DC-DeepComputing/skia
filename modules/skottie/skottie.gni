@@ -18,6 +18,7 @@ _modules = get_path_info("../../modules", "abspath")
 skia_skottie_public = [
   "$_modules/skottie/include/ExternalLayer.h",
   "$_modules/skottie/include/Skottie.h",
+  "$_modules/skottie/include/SkottieAPI.h",
   "$_modules/skottie/include/SkottieProperty.h",
   "$_modules/skottie/include/SlotManager.h",
   "$_modules/skottie/include/TextShaper.h",
