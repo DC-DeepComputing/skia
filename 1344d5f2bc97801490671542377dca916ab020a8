@@ -1,0 +1,76 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "645e781f_f68f29f6",
+        "filename": "modules/skparagraph/bench/ParagraphBench.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-27T14:11:52Z",
+      "side": 1,
+      "message": "Let\u0027s delete the commented code.",
+      "revId": "1344d5f2bc97801490671542377dca916ab020a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e026899_b141fefa",
+        "filename": "modules/skparagraph/src/ParagraphImpl.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 1390,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-27T14:11:52Z",
+      "side": 1,
+      "message": "Would `SkSTArray\u003cN, SkRect\u003e` + `resize_back` work just as well?",
+      "fixSuggestions": [
+        {
+          "fixId": "4de3bb17_71b57191",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "modules/skparagraph/src/ParagraphImpl.cpp",
+              "range": {
+                "startLine": 1390,
+                "startChar": 0,
+                "endLine": 1417,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "modules/skparagraph/src/ParagraphImpl.cpp",
+              "range": {
+                "startLine": 1419,
+                "startChar": 0,
+                "endLine": 1420,
+                "endChar": 0
+              },
+              "replacement": "    SkSTArray\u003c128, SkRect\u003e scratchGlyphBounds;\n"
+            },
+            {
+              "path": "modules/skparagraph/src/ParagraphImpl.cpp",
+              "range": {
+                "startLine": 1442,
+                "startChar": 0,
+                "endLine": 1443,
+                "endChar": 0
+              },
+              "replacement": "                    scratchGlyphBounds.resize_back(SkToInt(run-\u003esize()));\n"
+            }
+          ]
+        }
+      ],
+      "revId": "1344d5f2bc97801490671542377dca916ab020a8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
