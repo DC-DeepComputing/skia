@@ -16,6 +16,23 @@
       "message": "Noticed these while looking into ways to clean up the build. Making these changes makes any future changes a bit easier.",
       "revId": "d1d87ccad10b43ed30925f63569748eda77dcbf7",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ddf4a3e_ba501274",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T20:19:48Z",
+      "side": 1,
+      "message": "Oh, fun, doing this means fixing all the warnings as error that Skia uses.",
+      "revId": "d1d87ccad10b43ed30925f63569748eda77dcbf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
