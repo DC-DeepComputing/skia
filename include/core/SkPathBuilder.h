@@ -948,6 +948,7 @@ private:
     std::tuple<SkPoint*, SkScalar*> growForVerbsInPath(const SkPathRef& path);
 
     friend class SkPathPriv;
+    friend class SkStroke;
 };
 
 #endif

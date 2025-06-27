@@ -20,6 +20,8 @@
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStrokerPriv.h"
 
+#include "include/core/SkRRect.h"
+
 #include <algorithm>
 #include <array>
 
@@ -181,9 +183,10 @@ public:
     void cubicTo(const SkPoint&, const SkPoint&, const SkPoint&);
     void close(bool isLine) { this->finishContour(true, isLine); }
 
-    void done(SkPath* dst, bool isLine) {
+    void done(SkPathBuilder* dst, bool isLine) {
         this->finishContour(false, isLine);
-        dst->swap(fOuter);
+        *dst = fOuter;
+//        dst->swap(fOuter);
     }
 
     SkScalar getResScale() const { return fResScale; }
@@ -1430,6 +1433,7 @@ public:
 
     ~AutoTmpPath() {
         if (fSwapWithSrc) {
+            SkASSERT(false);
             fTmpDst.swap(*const_cast<SkPath*>(&fSrc));
         }
     }
@@ -1440,12 +1444,14 @@ private:
     bool            fSwapWithSrc;
 };
 
-void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
-    SkASSERT(dst);
+void SkStroke::strokePath(const SkPath& src, SkPath* dstPath) const {
+    SkPathBuilder builder;
+    SkPathBuilder* dst = &builder;
+    //    SkASSERT(dst);
 
     SkScalar radius = SkScalarHalf(fWidth);
 
-    AutoTmpPath tmp(src, &dst);
+ //   AutoTmpPath tmp(src, &dst);
 
     if (radius <= 0) {
         return;
@@ -1463,6 +1469,7 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
                 SkASSERT(!dst->isInverseFillType());
                 dst->toggleInverseFillType();
             }
+            *dstPath = builder.detach();
             return;
         }
     }
@@ -1470,7 +1477,7 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
     // We can always ignore centers for stroke and fill convex line-only paths
     // TODO: remove the line-only restriction
     bool ignoreCenter = fDoFill && (src.getSegmentMasks() == SkPath::kLine_SegmentMask) &&
-                        src.isLastContourClosed() && src.isConvex();
+    src.isLastContourClosed() && src.isConvex();
 
     SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
                             fResScale, ignoreCenter);
@@ -1502,17 +1509,17 @@ void SkStroke::strokePath(const SkPath& src, SkPath* dst) const {
             case SkPath::kClose_Verb:
                 if (SkPaint::kButt_Cap != this->getCap()) {
                     /* If the stroke consists of a moveTo followed by a close, treat it
-                       as if it were followed by a zero-length line. Lines without length
-                       can have square and round end caps. */
+                     as if it were followed by a zero-length line. Lines without length
+                     can have square and round end caps. */
                     if (stroker.hasOnlyMoveTo()) {
                         stroker.lineTo(stroker.moveToPt());
                         goto ZERO_LENGTH;
                     }
                     /* If the stroke consists of a moveTo followed by one or more zero-length
-                       verbs, then followed by a close, treat is as if it were followed by a
-                       zero-length line. Lines without length can have square & round end caps. */
+                     verbs, then followed by a close, treat is as if it were followed by a
+                     zero-length line. Lines without length can have square & round end caps. */
                     if (stroker.isCurrentContourEmpty()) {
-                ZERO_LENGTH:
+                    ZERO_LENGTH:
                         lastSegment = SkPath::kLine_Verb;
                         break;
                     }
@@ -1528,7 +1535,7 @@ DONE:
 
     if (fDoFill && !ignoreCenter) {
         if (SkPathPriv::ComputeFirstDirection(src) == SkPathFirstDirection::kCCW) {
-            dst->reverseAddPath(src);
+            dst->privateReverseAddPath(src);
         } else {
             dst->addPath(src);
         }
@@ -1559,6 +1566,8 @@ DONE:
         SkASSERT(!dst->isInverseFillType());
         dst->toggleInverseFillType();
     }
+
+    *dstPath = builder.detach();
 }
 
 static SkPathDirection reverse_direction(SkPathDirection dir) {
@@ -1566,7 +1575,7 @@ static SkPathDirection reverse_direction(SkPathDirection dir) {
     return gOpposite[(int)dir];
 }
 
-static void addBevel(SkPath* path, const SkRect& r, const SkRect& outer, SkPathDirection dir) {
+static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer, SkPathDirection dir) {
     SkPoint pts[8];
 
     if (SkPathDirection::kCW == dir) {
@@ -1588,10 +1597,10 @@ static void addBevel(SkPath* path, const SkRect& r, const SkRect& outer, SkPathD
         pts[1].set(outer.fLeft, r.fBottom);
         pts[0].set(outer.fLeft, r.fTop);
     }
-    path->addPoly(pts, true);
+    path->addPolygon(pts, true);
 }
 
-void SkStroke::strokeRect(const SkRect& origRect, SkPath* dst,
+void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
                           SkPathDirection dir) const {
     SkASSERT(dst != nullptr);
     dst->reset();
@@ -1627,9 +1636,11 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPath* dst,
         case SkPaint::kBevel_Join:
             addBevel(dst, rect, r, dir);
             break;
-        case SkPaint::kRound_Join:
-            dst->addRoundRect(r, radius, radius, dir);
-            break;
+        case SkPaint::kRound_Join: {
+            SkRRect rrect;
+            rrect.setRectXY(r, radius, radius);
+            dst->addRRect(rrect, dir);
+        } break;
         default:
             break;
     }
