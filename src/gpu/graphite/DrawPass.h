@@ -20,6 +20,8 @@
 #include "src/gpu/graphite/TextureProxy.h"
 
 #include <memory>
+#include <functional>
+#include <type_traits>
 
 struct SkImageInfo;
 
@@ -95,6 +97,34 @@ public:
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
     // Not valid until after prepareResources() is called
     SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
+
+    template<typename T>
+    bool visitChildren(const std::function<bool(const T*)>& visitor) const {
+        if constexpr (std::is_same_v<T, GraphicsPipeline>) {
+            for (const sk_sp<GraphicsPipeline>& pipeline : fFullPipelines) {
+                if (!visitor(pipeline.get())) {
+                    return false;
+                }
+            }
+        } else if constexpr (std::is_same_v<T, TextureProxy>) {
+            if (fTarget && !visitor(fTarget.get())) {
+                return false;
+            }
+            for (const sk_sp<TextureProxy>& texture : fSampledTextures) {
+                if (!visitor(texture.get())) {
+                    return false;
+                }
+            }
+        } else if constexpr (std::is_same_v<T, Sampler>) {
+            for (const sk_sp<Sampler>& sampler : fSamplers) {
+                if (!visitor(sampler.get())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 
     void addResourceRefs(CommandBuffer*) const;
 
