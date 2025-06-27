@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ba5c971_f06072da",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 548,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "nit: line length at 100",
+      "range": {
+        "startLine": 548,
+        "startChar": 0,
+        "endLine": 548,
+        "endChar": 105
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91aa800f_398fbff8",
+        "filename": "src/gpu/graphite/dawn/DawnCaps.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 553,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "Is that already handled below?",
+      "range": {
+        "startLine": 552,
+        "startChar": 8,
+        "endLine": 553,
+        "endChar": 37
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54549705_df9ebbd4",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 376,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "Update this comment to reflect that we only have this emulation for WASM/webgpu now, right?",
+      "range": {
+        "startLine": 375,
+        "startChar": 16,
+        "endLine": 376,
+        "endChar": 66
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ff72788_e08c7af0",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 393,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "Wrap in `SkAssertResult`",
+      "range": {
+        "startLine": 393,
+        "startChar": 0,
+        "endLine": 393,
+        "endChar": 86
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d988147b_95cfe5ee",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 396,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "Can we do a new line here to help readability",
+      "range": {
+        "startLine": 396,
+        "startChar": 0,
+        "endLine": 396,
+        "endChar": 59
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44166d4b_839a7011",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 398,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-27T12:55:26Z",
+      "side": 1,
+      "message": "Wrap in `SkAssertResult`",
+      "range": {
+        "startLine": 398,
+        "startChar": 0,
+        "endLine": 398,
+        "endChar": 91
+      },
+      "revId": "937b75a5c7410c2be652c26bfcaacd2ea7f21576",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
