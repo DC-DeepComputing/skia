@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a11fe41d_38e3e286",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T19:10:44Z",
+      "side": 1,
+      "message": "What I\u0027m really proposing here is that we should have a `//:core` gn target (much like the Bazel target) and have pathops depend on that, the have the `//:skia` target depend on all the things.",
+      "parentUuid": "66d0908c_0fad2623",
+      "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d04680f7_81b6c3a5",
         "filename": "BUILD.gn",
         "patchSetId": 10
