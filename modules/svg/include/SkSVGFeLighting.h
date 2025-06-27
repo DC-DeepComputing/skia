@@ -11,7 +11,6 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPoint3.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
@@ -26,7 +25,7 @@ class SkSVGFeSpotLight;
 class SkSVGFilterContext;
 class SkSVGRenderContext;
 
-class SK_API SkSVGFeLighting : public SkSVGFe {
+class SKSVG_API SkSVGFeLighting : public SkSVGFe {
 public:
     struct KernelUnitLength {
         SkSVGNumberType fDx;

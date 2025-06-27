@@ -9,12 +9,11 @@
 #define SkSVGStop_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
 #include "modules/svg/include/SkSVGTypes.h"
 
-class SK_API SkSVGStop : public SkSVGHiddenContainer {
+class SKSVG_API SkSVGStop : public SkSVGHiddenContainer {
 public:
     static constexpr SkSVGTag tag = SkSVGTag::kStop;
 

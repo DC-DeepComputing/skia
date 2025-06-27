@@ -10,8 +10,8 @@
 
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGTransformableNode.h"
+#include "modules/svg/include/SkSVGTypes.h"
 
 class SkCanvas;
 class SkPaint;
@@ -21,7 +21,7 @@ class SkSVGRenderContext;
 enum class SkPathFillType;
 enum class SkSVGTag;
 
-class SK_API SkSVGShape : public SkSVGTransformableNode {
+class SKSVG_API SkSVGShape : public SkSVGTransformableNode {
 public:
     void appendChild(sk_sp<SkSVGNode>) override;
 
