@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "66d0908c_0fad2623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-27T19:08:07Z",
+      "side": 1,
+      "message": "The ideal solution would be to wean pathops from skia, and break that dependency edge.  There is an unknown amount of work to do that though, Mike is trying to evaluate.",
+      "parentUuid": "1d4a95b2_21914df8",
+      "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d04680f7_81b6c3a5",
         "filename": "BUILD.gn",
         "patchSetId": 10
