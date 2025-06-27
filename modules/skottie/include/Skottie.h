@@ -12,12 +12,12 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkString.h"
-#include "include/core/SkTypes.h"
 #include "modules/skresources/include/SkResources.h"
 
 // TODO(kjlubick) update clients and then remove the following:
 #include "include/core/SkFontMgr.h"  // IWYU pragma: keep
 #include "modules/skottie/include/ExternalLayer.h"  // IWYU pragma: keep
+#include "modules/skottie/include/SkottieAPI.h"
 #include "modules/skottie/include/SkottieProperty.h"  // IWYU pragma: keep
 #include "modules/skottie/include/SlotManager.h"  // IWYU pragma: keep
 
@@ -48,7 +48,7 @@ using ResourceProvider = skresources::ResourceProvider;
 /**
  * A Logger subclass can be used to receive Animation::Builder parsing errors and warnings.
  */
-class SK_API Logger : public SkRefCnt {
+class SKOTTIE_API Logger : public SkRefCnt {
 public:
     enum class Level {
         kWarning,
@@ -60,7 +60,7 @@ public:
 
 // Evaluates AE expressions.
 template <class T>
-class SK_API ExpressionEvaluator : public SkRefCnt {
+class SKOTTIE_API ExpressionEvaluator : public SkRefCnt {
 public:
     // Evaluate the expression at the current time.
     virtual T evaluate(float t) = 0;
@@ -69,7 +69,7 @@ public:
 /**
  * Creates ExpressionEvaluators to evaluate AE expressions and return the results.
  */
-class SK_API ExpressionManager : public SkRefCnt {
+class SKOTTIE_API ExpressionManager : public SkRefCnt {
 public:
     virtual sk_sp<ExpressionEvaluator<float>> createNumberExpressionEvaluator(
         const char expression[]) = 0;
@@ -84,15 +84,15 @@ public:
 /**
  * Interface for receiving AE composition markers at Animation build time.
  */
-class SK_API MarkerObserver : public SkRefCnt {
+class SKOTTIE_API MarkerObserver : public SkRefCnt {
 public:
     // t0,t1 are in the Animation::seek() domain.
     virtual void onMarker(const char name[], float t0, float t1) = 0;
 };
 
-class SK_API Animation : public SkNVRefCnt<Animation> {
+class SKOTTIE_API Animation : public SkNVRefCnt<Animation> {
 public:
-    class SK_API Builder final {
+    class SKOTTIE_API Builder final {
     public:
         enum Flags : uint32_t {
             kDeferImageLoading   = 0x01, // Normally, all static image frames are resolved at

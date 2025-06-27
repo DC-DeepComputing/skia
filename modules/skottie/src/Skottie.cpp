@@ -13,6 +13,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkStream.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkFloatingPoint.h"
 #include "include/private/base/SkTPin.h"

@@ -18,8 +18,8 @@
 #include "include/core/SkSpan.h"
 #include "include/core/SkString.h"
 #include "include/core/SkTypeface.h"
-#include "include/private/base/SkAPI.h"
 #include "include/utils/SkTextUtils.h"
+#include "modules/skottie/include/SkottieAPI.h"
 #include "modules/skottie/include/TextShaper.h"
 
 #include <cstddef>
@@ -124,7 +124,7 @@ namespace internal { class SceneGraphRevalidator; }
  * and the internal scene-graph representation.
  */
 template <typename ValueT, typename NodeT>
-class SK_API PropertyHandle final {
+class SKOTTIE_API PropertyHandle final {
 public:
     explicit PropertyHandle(sk_sp<NodeT>);
     PropertyHandle(sk_sp<NodeT> node, sk_sp<internal::SceneGraphRevalidator> revalidator)
@@ -166,7 +166,7 @@ using TransformPropertyHandle = PropertyHandle<TransformPropertyValue,
  * various properties of layer and shape nodes.  The |node_name| argument corresponds to the
  * name ("nm") node property.
  */
-class SK_API PropertyObserver : public SkRefCnt {
+class SKOTTIE_API PropertyObserver : public SkRefCnt {
 public:
     enum class NodeType {COMPOSITION, LAYER, EFFECT, OTHER};
 

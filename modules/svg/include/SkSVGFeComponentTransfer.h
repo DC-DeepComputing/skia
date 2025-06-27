@@ -9,7 +9,6 @@
 #define SkSVGFeComponentTransfer_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
@@ -59,7 +58,7 @@ private:
     using INHERITED = SkSVGHiddenContainer;
 };
 
-class SK_API SkSVGFeComponentTransfer final : public SkSVGFe {
+class SKSVG_API SkSVGFeComponentTransfer final : public SkSVGFe {
 public:
     static constexpr SkSVGTag tag = SkSVGTag::kFeComponentTransfer;
 

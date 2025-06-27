@@ -9,7 +9,6 @@
 #define SkSVGFeMerge_DEFINED
 
 #include "include/core/SkRefCnt.h"
-#include "include/private/base/SkAPI.h"
 #include "modules/svg/include/SkSVGFe.h"
 #include "modules/svg/include/SkSVGHiddenContainer.h"
 #include "modules/svg/include/SkSVGNode.h"
@@ -22,7 +21,7 @@ class SkSVGFilterContext;
 class SkSVGRenderContext;
 
 // https://www.w3.org/TR/SVG11/filters.html#feMergeNodeElement
-class SK_API SkSVGFeMergeNode : public SkSVGHiddenContainer {
+class SKSVG_API SkSVGFeMergeNode : public SkSVGHiddenContainer {
 public:
     static constexpr SkSVGTag tag = SkSVGTag::kFeMergeNode;
 
@@ -42,7 +41,7 @@ private:
 };
 
 // https://www.w3.org/TR/SVG11/filters.html#feMergeElement
-class SK_API SkSVGFeMerge : public SkSVGFe {
+class SKSVG_API SkSVGFeMerge : public SkSVGFe {
 public:
     static constexpr SkSVGTag tag = SkSVGTag::kFeMerge;
 
