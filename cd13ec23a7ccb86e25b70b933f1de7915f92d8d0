@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "13413c91_3895f40d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T15:44:39Z",
+      "side": 1,
+      "message": "I\u0027m going to more strongly object to this entire approach, as I have in the past. The code in pdf/ and xps/ logically cannot exist outside of libskia. These work by implementing SkDevice and (must) use a ridiculous number of internal types which will never (or at least should never) be public. The pdf/ and xps/ code, if used, must be in the skia target. For example this CL passes the \"Shared\" builds simply by making it impossible to create an official (or any) shared build of pdf/ and xps/ at all (either in libskia.so or on their own). In fact it seems this change makes it impossible (especially for outside users of Skia) to build pdf/ and xps/ in the GN build unless statically linking Skia. Linkers do not enforce any visibility on static objects. (The Bazel build also has this problem. Looking more closely it looks like the Bazel build of Skia is extremely antagonistic to producing any form of shared objects.)\n\nThe proper way to do any of this is to make an interface for pathops and make it plug-able. Even if there is only ever one implementation this is still what needs to be done. Either that or we need to remove the use of pathops from pdf/ and xps/.\n\nOr we publicly state that Skia\u0027s build will no longer support building shared objects (which would be compatible with the Bazel build), that the Skia build will produce only static libraries, and then the user (and maybe a Skia side helper) can gather up all these static libraries into a libskia shared library? This is essentially just acknowledging the \"big ball of mud\". Internally everything can have full visibility into everything else (because the linker does not enforce visibility on static libraries), but can still be separate targets. This is essentially what the Bazel build is doing (Bazel enforces through its own \"visibility\", not linker visibility), except we could make it useful by then having a \"skia library\" target which pulls in a bunch of static libraries and builds a shared library out of them (at which point the linker will finally export the visibility information). This is more or less what the GN //:skia component is, except assembled from source_set instead of static_library. Doing something like this would allow a change like this to land without breaking users who want pdf/ in a libskia.so, and would also allow Skia to stuff the \"modules\" in there as well (since none of them are actually independent) and would allow the \"modules\" to end up in the final shared Skia library.",
+      "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d04680f7_81b6c3a5",
+        "filename": "BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 1261,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T15:44:39Z",
+      "side": 1,
+      "message": "Is there a specific reason not to use `skia_component` here (and below)? Based on the blog post I wrote above, is the solution to convert everything to a `skia_static_library` and then let the linker produce a shared library by linking together a bunch of static libraries instead of using `source_sets` and using GN to do that? (Basically, should we describe the linking in GN as we currently do or let the linker do it.)",
+      "range": {
+        "startLine": 1261,
+        "startChar": 0,
+        "endLine": 1261,
+        "endChar": 19
+      },
+      "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
