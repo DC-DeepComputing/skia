@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3648cabc_12744e5a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T19:50:36Z",
+      "side": 1,
+      "message": "Noticed these while looking into ways to clean up the build. Making these changes makes any future changes a bit easier.",
+      "revId": "d1d87ccad10b43ed30925f63569748eda77dcbf7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
