@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "245b199e_288eff14",
+        "filename": "modules/pathops/pathops.gni",
+        "patchSetId": 8
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-27T13:21:16Z",
+      "side": 0,
+      "message": "We\u0027ve set clients up to include this gni for migration, but the source sets are now pulled via `shared_sources.gni`, which pretty much everyone includes.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 25
+      },
+      "revId": "f5be51ccf1b1454800400da710056cf5246ad2aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

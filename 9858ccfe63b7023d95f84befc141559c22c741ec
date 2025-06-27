@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b1e4fd1_b70fa137",
+        "filename": "gn/gn_to_bp.py",
+        "patchSetId": 8
+      },
+      "lineNbr": 665,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-27T13:21:16Z",
+      "side": 1,
+      "message": "This all looks pretty fragile, wonder if there\u0027s a better way to handle it.  Maybe look into setting up some Android-specific pseudo-targets and just query those instead of recreating the dependency graph in Python?",
+      "range": {
+        "startLine": 652,
+        "startChar": 0,
+        "endLine": 665,
+        "endChar": 96
+      },
+      "revId": "9858ccfe63b7023d95f84befc141559c22c741ec",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
