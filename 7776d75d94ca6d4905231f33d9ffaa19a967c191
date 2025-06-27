@@ -33,6 +33,24 @@
       "message": "👍 Thanks!",
       "revId": "7776d75d94ca6d4905231f33d9ffaa19a967c191",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8b9d1e5_41737b91",
+        "filename": "src/ports/SkFontMgr_FontConfigInterface.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T18:40:27Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "cc7ff8a5_ec0019ab",
+      "revId": "7776d75d94ca6d4905231f33d9ffaa19a967c191",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
