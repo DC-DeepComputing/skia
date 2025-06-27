@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8bdf8029_b47f52fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-06-27T14:22:10Z",
+      "side": 1,
+      "message": "Hmm... Without the resetting the cache this bench does not make any sense. Initially, we tried to measure the time of actual work, not retrieving the info from the cache.",
+      "revId": "13939e52305077359e58410a995ec08da82d8146",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
