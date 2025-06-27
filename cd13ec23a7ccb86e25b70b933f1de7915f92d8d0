@@ -117,6 +117,30 @@
       },
       "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "454cdde2_ffe8050c",
+        "filename": "BUILD.gn",
+        "patchSetId": 10
+      },
+      "lineNbr": 1261,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-27T20:17:54Z",
+      "side": 1,
+      "message": "After thinking about this more, and especially looking at the limitations of the Bazel build, it would make sense to move the GN build toward building lots of little `skia_static_libraries` that all depend on each other, then have a single `skia_component` for libskia. This would fix the issues with not being able to include most of the modules in libskia. For the time being, just depending on the new `//:core` target might be enough.",
+      "parentUuid": "2aaac6a6_87f5082a",
+      "range": {
+        "startLine": 1261,
+        "startChar": 0,
+        "endLine": 1261,
+        "endChar": 19
+      },
+      "revId": "cd13ec23a7ccb86e25b70b933f1de7915f92d8d0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
