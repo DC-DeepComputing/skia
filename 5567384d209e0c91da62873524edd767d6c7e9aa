@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c7c6d3a0_05a6a2e9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-28T19:59:53Z",
+      "side": 1,
+      "message": "How so? Sure looks like it does... https://skia.googlesource.com/skia/+/023fe18347856ca8ddcae4cdda9919165f662d2e/modules/skshaper/src/SkShaper_harfbuzz.cpp#114 . Looking at Blink code it looks like maybe they\u0027re not using Skia here, but looking at the code points out that they\u0027re only setting `hb_font_funcs_set_nominal_glyph_func` and never setting `hb_font_funcs_set_nominal_glyphs_func` which would probably speed things up a bit.",
+      "range": {
+        "startLine": 10,
+        "startChar": 54,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "5567384d209e0c91da62873524edd767d6c7e9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db59468e_b920dcb3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-28T19:59:53Z",
+      "side": 1,
+      "message": "I do remember this being added because of a measurable reason, so we should have a good reason to remove this.\n\nI believe the issue with FreeType is that internally it does a linear search of the cmap tables for each lookup (doesn\u0027t cache itself), which DirectWrite and CoreText internally already have a cache like this anyway. I\u0027m not sure about Fontations.",
+      "revId": "5567384d209e0c91da62873524edd767d6c7e9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
