@@ -447,7 +447,6 @@ var gniExportDescs = []exporter.GNIExportDesc{
 				"//src/utils/win:core_srcs",
 				"//src/utils:core_priv_hdrs",
 				"//src/utils:core_srcs",
-				"//src/utils:char_to_glyphcache",
 				"//src/utils:canvas_state_utils",
 				"//src/utils:multi_picture_document",
 				"//src/utils:clip_stack_utils",
