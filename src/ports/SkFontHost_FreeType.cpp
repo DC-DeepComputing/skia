@@ -1741,34 +1741,8 @@ SkTypeface_FreeType::~SkTypeface_FreeType() {
     }
 }
 
-// Just made up, so we don't end up storing 1000s of entries
-constexpr int kMaxC2GCacheCount = 512;
-
 void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
                                           SkGlyphID glyphs[]) const {
-    // Try the cache first, *before* accessing freetype lib/face, as that
-    // can be very slow. If we do need to compute a new glyphID, then
-    // access those freetype objects and continue the loop.
-
-    int i;
-    {
-        // Optimistically use a shared lock.
-        SkAutoSharedMutexShared ama(fC2GCacheMutex);
-        for (i = 0; i < count; ++i) {
-            int index = fC2GCache.findGlyphIndex(uni[i]);
-            if (index < 0) {
-                break;
-            }
-            glyphs[i] = SkTo<SkGlyphID>(index);
-        }
-        if (i == count) {
-            // we're done, no need to access the freetype objects
-            return;
-        }
-    }
-
-    // Need to add more so grab an exclusive lock.
-    SkAutoSharedMutexExclusive ama(fC2GCacheMutex);
     AutoFTAccess fta(this);
     FT_Face face = fta.face();
     if (!face) {
@@ -1776,19 +1750,8 @@ void SkTypeface_FreeType::onCharsToGlyphs(const SkUnichar uni[], int count,
         return;
     }
 
-    for (; i < count; ++i) {
-        SkUnichar c = uni[i];
-        int index = fC2GCache.findGlyphIndex(c);
-        if (index >= 0) {
-            glyphs[i] = SkTo<SkGlyphID>(index);
-        } else {
-            glyphs[i] = SkTo<SkGlyphID>(FT_Get_Char_Index(face, c));
-            fC2GCache.insertCharAndGlyph(~index, c, glyphs[i]);
-        }
-    }
-
-    if (fC2GCache.count() > kMaxC2GCacheCount) {
-        fC2GCache.reset();
+    for (int i = 0; i < count; ++i) {
+        glyphs[i] = SkTo<SkGlyphID>(FT_Get_Char_Index(face, uni[i]));
     }
 }
 
