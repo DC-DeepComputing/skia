@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3963b8a8_10279be8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-28T22:55:03Z",
+      "side": 1,
+      "message": "Ah, I presumed harfbuzz would be used for this, and not our routines. My bad.",
+      "parentUuid": "c7c6d3a0_05a6a2e9",
+      "range": {
+        "startLine": 10,
+        "startChar": 54,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "5567384d209e0c91da62873524edd767d6c7e9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db59468e_b920dcb3",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 5
@@ -37,6 +61,24 @@
       "writtenOn": "2025-06-28T19:59:53Z",
       "side": 1,
       "message": "I do remember this being added because of a measurable reason, so we should have a good reason to remove this.\n\nI believe the issue with FreeType is that internally it does a linear search of the cmap tables for each lookup (doesn\u0027t cache itself), which DirectWrite and CoreText internally already have a cache like this anyway. I\u0027m not sure about Fontations.",
+      "revId": "5567384d209e0c91da62873524edd767d6c7e9aa",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f06bd3e5_f32a1938",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-28T22:55:03Z",
+      "side": 1,
+      "message": "My timings of CoreText and FreeType is that they are about equal performance, so by my measure, if we want to maintain the complexity of this code, we might apply it on CoreText as well. I haven\u0027t timed DirectWrite.",
+      "parentUuid": "db59468e_b920dcb3",
       "revId": "5567384d209e0c91da62873524edd767d6c7e9aa",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
