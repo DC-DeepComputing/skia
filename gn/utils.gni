@@ -45,7 +45,6 @@ skia_utils_chromium = [ "$_include/docs/SkMultiPictureDocument.h" ]
 #  //src/utils/win:core_srcs
 #  //src/utils:core_priv_hdrs
 #  //src/utils:core_srcs
-#  //src/utils:char_to_glyphcache
 #  //src/utils:canvas_state_utils
 #  //src/utils:multi_picture_document
 #  //src/utils:clip_stack_utils
@@ -59,8 +58,6 @@ skia_utils_private = [
   "$_src/utils/SkCanvasStack.cpp",
   "$_src/utils/SkCanvasStack.h",
   "$_src/utils/SkCanvasStateUtils.cpp",
-  "$_src/utils/SkCharToGlyphCache.cpp",
-  "$_src/utils/SkCharToGlyphCache.h",
   "$_src/utils/SkClipStackUtils.cpp",
   "$_src/utils/SkClipStackUtils.h",
   "$_src/utils/SkCustomTypeface.cpp",
