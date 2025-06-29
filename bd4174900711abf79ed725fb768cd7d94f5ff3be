@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "39e0a0b0_247b3948",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-29T01:07:43Z",
+      "side": 1,
+      "message": "well, I thought I could repro the image diffs locally, but I couldn\u0027t. We may need to convo on this",
+      "revId": "bd4174900711abf79ed725fb768cd7d94f5ff3be",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
