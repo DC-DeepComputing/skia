@@ -14,16 +14,22 @@
 #include "src/core/SkLRUCache.h"
 #include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
-
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/ResourceTypes.h"
 
 #include <functional>
 
 namespace skgpu::graphite {
 
+class Caps;
 class ComputePipeline;
 class GraphicsPipeline;
 class Resource;
+class ResourceProvider;
+class Sampler;
 class ShaderCodeDictionary;
+
+struct SamplerDesc;
 
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement
@@ -115,6 +121,30 @@ public:
                                 const GraphicsPipelineDesc&,
                                 const RenderPassDesc&);
 
+    // Returns a cached Sampler matching the sampler description, assuming that `desc` is a dynamic
+    // sampler and does not have any immutable sampler information. The number of dynamic samplers
+    // is small enough that they are created once during context initialization and then shared.
+    //
+    // The returned Sampler is kept alive by the GlobalCache's static resource collection for the
+    // lifetime of the GlobalCache.
+    const Sampler* getDynamicSampler(SamplerDesc desc) const SK_EXCLUDES(fSpinLock) {
+        SkAutoSpinlock lock{fSpinLock};
+        SkASSERT(!desc.isImmutable() && desc.asSpan().size() == 1);
+        if (!fDynamicSamplers[desc.desc()]) {
+            SKGPU_LOG_W("Dynamic sampler not found in global cache, substituting!");
+            for (uint32_t i = 0; i < kNumDynamicSamplers; ++i) {
+                if (fDynamicSamplers[i]) {
+                    return fDynamicSamplers[i];
+                }
+            }
+            // Trip the assert if not found AND no substitute could be found.
+            SkASSERT(fDynamicSamplers[desc.desc()]);
+        }
+        return fDynamicSamplers[desc.desc()];
+    }
+
+    bool initializeDynamicSamplers(ResourceProvider*, const Caps*) SK_EXCLUDES(fSpinLock);
+
 #if defined(GPU_TEST_UTILS)
     struct StaticVertexCopyRanges {
         uint32_t fOffset;
@@ -127,7 +157,10 @@ public:
     SkSpan<const StaticVertexCopyRanges> getStaticVertexCopyRanges() const SK_EXCLUDES(fSpinLock);
     sk_sp<Buffer> getStaticVertexBuffer() SK_EXCLUDES(fSpinLock);
 #endif
+
 private:
+    static constexpr int kNumDynamicSamplers = 1 << SamplerDesc::kImmutableSamplerInfoShift;
+
     struct KeyHash {
         uint32_t operator()(const UniqueKey& key) const { return key.hash(); }
     };
@@ -162,6 +195,8 @@ private:
     // Every Pipeline will be marked with the epoch in which it was created and then updated
     // for each epoch in which it was used.
     uint16_t fEpochCounter SK_GUARDED_BY(fSpinLock) = 1;
+
+    std::array<const Sampler*, kNumDynamicSamplers> fDynamicSamplers SK_GUARDED_BY(fSpinLock);
 
 #if defined(GPU_TEST_UTILS)
     skia_private::TArray<StaticVertexCopyRanges> fStaticVertexInfo SK_GUARDED_BY(fSpinLock);

@@ -53,6 +53,7 @@
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #include <atomic>
+//#include <functional> Readd when uncomment block below
 #include <string_view>
 #include <unordered_set>
 #include <utility>
@@ -207,19 +208,32 @@ std::unique_ptr<Recording> Recorder::snap() {
     // data cache so that they can be instantiated easily when the Recording is inserted.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](TextureDataBlock block) {
-        for (int j = 0; j < block.numTextures(); ++j) {
-            const TextureDataBlock::SampledTexture& tex = block.texture(j);
 
-            if (tex.first->isLazy()) {
-                if (tex.first->isVolatile()) {
-                    volatileLazyProxies.insert(tex.first);
+    // Inserting lazy proxies through the root task lists fails on mutable image test!
+    // fRootTaskList->visit<TextureProxy>([&](const TextureProxy* proxy) {
+    //     if (proxy->isLazy()) {
+    //         if (proxy->isVolatile()) {
+    //             volatileLazyProxies.insert(sk_ref_sp(proxy));
+    //         } else {
+    //             nonVolatileLazyProxies.insert(sk_ref_sp(proxy));
+    //         }
+    //     }
+    //     return true;
+    // });
+
+    for (const TextureDataBlock& block : fTextureDataCache->getBindings()) {
+        for (int i = 0; i < block.numTextures(); ++i) {
+            const sk_sp<TextureProxy>& proxy = block.texture(i).first;
+
+            if (proxy->isLazy()) {
+                if (proxy->isVolatile()) {
+                    volatileLazyProxies.insert(proxy);
                 } else {
-                    nonVolatileLazyProxies.insert(tex.first);
+                    nonVolatileLazyProxies.insert(proxy);
                 }
             }
         }
-    });
+    }
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
