@@ -16,6 +16,23 @@
       "message": "@Michael, PTAL. Once this merges, I\u0027ll merge [Reland \"Reland \"Improve DX compiler library loading](https://dawn-review.googlesource.com/c/dawn/+/234919) to avoid test breaks.",
       "revId": "da982dc52cbcbc3eb648d65922f96dc51a202168",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dcfaf053_45157724",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8986
+      },
+      "writtenOn": "2025-06-30T16:48:02Z",
+      "side": 1,
+      "message": "@michaelludwig@google.com, I do not have any TryBot or commit permissions to Skia. I just made the CL \"Auto Submit\". Do I need to do anything else to get the change to go through?",
+      "revId": "da982dc52cbcbc3eb648d65922f96dc51a202168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
