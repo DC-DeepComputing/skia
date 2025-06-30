@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "252ed475_db94cb51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-30T06:27:36Z",
+      "side": 1,
+      "message": "Not sure if moving these to core is ideal, but it should fix the NativeFonts serialization failures for now:\n\nhttps://logs.chromium.org/logs/skia/71d7a298d19c7211/+/steps/dm/0/stdout",
+      "revId": "31ccd25fa9a67247fe5717e82832def6c54bea6d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
