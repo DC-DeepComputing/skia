@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "613ba321_430a8fe4",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-30T16:39:30Z",
+      "side": 1,
+      "message": "Good idea!",
+      "parentUuid": "7b711e02_2d6c542f",
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "534fbb24_e57af3f9",
         "filename": "src/ports/SkTypeface_fontations.cpp",
         "patchSetId": 8
@@ -31,6 +49,30 @@
       "writtenOn": "2025-06-30T13:22:05Z",
       "side": 1,
       "message": "Seems like a good place to use `toSlice`?",
+      "range": {
+        "startLine": 980,
+        "startChar": 53,
+        "endLine": 980,
+        "endChar": 54
+      },
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9a24705d_8b471153",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-06-30T16:39:30Z",
+      "side": 1,
+      "message": "Will do.",
+      "parentUuid": "534fbb24_e57af3f9",
       "range": {
         "startLine": 980,
         "startChar": 53,
