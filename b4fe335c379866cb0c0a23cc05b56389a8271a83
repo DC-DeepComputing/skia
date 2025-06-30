@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b711e02_2d6c542f",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-30T13:22:05Z",
+      "side": 1,
+      "message": "Since it is known that there exist external implementations, we should put something in `relnotes/`. Users will notice anyway, but it would be good to give a heads up.",
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "534fbb24_e57af3f9",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-06-30T13:22:05Z",
+      "side": 1,
+      "message": "Seems like a good place to use `toSlice`?",
+      "range": {
+        "startLine": 980,
+        "startChar": 53,
+        "endLine": 980,
+        "endChar": 54
+      },
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
