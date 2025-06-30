@@ -59,6 +59,7 @@ struct SkMaskBuilder;
 class SK_API SkBitmap {
 public:
     class SK_API Allocator;
+    class SK_API HeapAllocator;
 
     /** Creates an empty SkBitmap without pixels, with kUnknown_SkColorType,
         kUnknown_SkAlphaType, and with a width and height of zero. SkPixelRef origin is
