@@ -1660,14 +1660,7 @@ skia_source_set("core") {
   configs = skia_library_configs
   public = skia_core_public
   sources = skia_core_sources
-}
-
-skia_component("skia") {
-  public_configs = [ ":skia_public" ]
-  configs = skia_library_configs
-
   public_deps = [
-    ":core",
     ":fontmgr_FontConfigInterface",
     ":fontmgr_android",
     ":fontmgr_android_ndk",
@@ -1680,6 +1673,16 @@ skia_component("skia") {
     ":fontmgr_mac_ct",
     ":fontmgr_win",
     ":fontmgr_win_gdi",
+  ]
+  deps = [ ":typeface_fontations" ]
+}
+
+skia_component("skia") {
+  public_configs = [ ":skia_public" ]
+  configs = skia_library_configs
+
+  public_deps = [
+    ":core",
     ":gpu",
     ":graphite",
     ":jpeg_encode",
