@@ -9,7 +9,6 @@
 
 #include "include/core/SkPoint.h"
 #include "include/core/SkSize.h"
-#include "include/core/SkSpan.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/TextureInfo.h"
 #include "include/private/base/SkAssert.h"
@@ -30,8 +29,6 @@
 #include <utility>
 
 namespace skgpu::graphite {
-
-class GraphicsPipeline;
 
 namespace {
 
@@ -265,18 +262,5 @@ Task::Status RenderPassTask::addCommands(Context* context,
         return Status::kFail;
     }
 }
-
-bool RenderPassTask::visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
-    for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
-        for (const sk_sp<GraphicsPipeline>& pipeline : pass->pipelines()) {
-            if (!visitor(pipeline.get())) {
-                return false;
-            }
-        }
-    }
-
-    return true;
-}
-
 
 } // namespace skgpu::graphite
