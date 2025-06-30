@@ -47,6 +47,7 @@ protected:
     bool onGetFrameInfo(int, FrameInfo*) const override;
     int onGetRepetitionCount() override;
     IsAnimated onIsAnimated() override;
+    bool attemptRewind() override;
 
     const SkFrameHolder* getFrameHolder() const override {
         return &fFrameHolder;
