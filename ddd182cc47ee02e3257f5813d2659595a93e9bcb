@@ -69,6 +69,24 @@
       "parentUuid": "bd6478d0_04fd6b39",
       "revId": "ddd182cc47ee02e3257f5813d2659595a93e9bcb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4e5d444_5328feb7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6225
+      },
+      "writtenOn": "2025-06-30T09:24:44Z",
+      "side": 1,
+      "message": "Thanks. Looks like I need to wait for https://chromium-review.googlesource.com/c/chromium/src/+/6687186 to land before I can land this.",
+      "parentUuid": "ed80beca_7051c740",
+      "revId": "ddd182cc47ee02e3257f5813d2659595a93e9bcb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
