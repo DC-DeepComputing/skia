@@ -180,6 +180,7 @@ bool SkImage_Lazy::onReadPixels(GrDirectContext* dContext,
 
 sk_sp<SkData> SkImage_Lazy::onRefEncoded() const {
     // check that we aren't a subset or colortype/etc modification of the original
+    // TODO: allow subsets but return a clip?
     if (fSharedGenerator->fGenerator->uniqueID() == this->uniqueID()) {
         ScopedGenerator generator(fSharedGenerator);
         return generator->refEncodedData();
