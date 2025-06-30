@@ -33,6 +33,23 @@
       "message": "@michaelludwig@google.com, I do not have any TryBot or commit permissions to Skia. I just made the CL \"Auto Submit\". Do I need to do anything else to get the change to go through?",
       "revId": "da982dc52cbcbc3eb648d65922f96dc51a202168",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d77436c_fb11b4b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T19:11:35Z",
+      "side": 1,
+      "message": "Needs extra googler +1",
+      "revId": "da982dc52cbcbc3eb648d65922f96dc51a202168",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
