@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73978e98_6eb9b4b1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T15:59:07Z",
+      "side": 1,
+      "message": "lgtm, just some nits",
+      "revId": "e7348ee84e34d82866d9691e59c9e8d50e0a4b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "230fc494_65a73cfe",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T15:59:07Z",
+      "side": 1,
+      "message": "nit: these comments need re-wrapping after the tab over",
+      "range": {
+        "startLine": 1806,
+        "startChar": 0,
+        "endLine": 1818,
+        "endChar": 47
+      },
+      "revId": "e7348ee84e34d82866d9691e59c9e8d50e0a4b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55642f75_9b2ec934",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T15:59:07Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this include.",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 41
+      },
+      "revId": "e7348ee84e34d82866d9691e59c9e8d50e0a4b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "736e0c5b_abc85a2d",
+        "filename": "src/gpu/graphite/ImageFactories.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T15:59:07Z",
+      "side": 1,
+      "message": "nit: `/*drawContext\u003d*/nullptr`",
+      "range": {
+        "startLine": 116,
+        "startChar": 39,
+        "endLine": 116,
+        "endChar": 46
+      },
+      "revId": "e7348ee84e34d82866d9691e59c9e8d50e0a4b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d515b8c3_15e8e706",
+        "filename": "src/gpu/graphite/Surface_Graphite.h",
+        "patchSetId": 14
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-06-30T15:59:07Z",
+      "side": 1,
+      "message": "Clean up here and below",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 113,
+        "endChar": 38
+      },
+      "revId": "e7348ee84e34d82866d9691e59c9e8d50e0a4b56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
