@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f98b6900_d1fab141",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-30T14:15:30Z",
+      "side": 1,
+      "message": "I want to take another pass over this",
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feb1372f_c55729ad",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1397,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-30T14:15:30Z",
+      "side": 1,
+      "message": "it\u0027s",
+      "range": {
+        "startLine": 1397,
+        "startChar": 48,
+        "endLine": 1397,
+        "endChar": 51
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bac035ee_280458f6",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-30T14:15:30Z",
+      "side": 1,
+      "message": "Maybe kClipsOut ? kClipsOutDraw ?",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 16
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63606524_723caa4e",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-30T14:15:30Z",
+      "side": 1,
+      "message": "kSubsumesDraw ? kOverridesDraw ?",
+      "range": {
+        "startLine": 152,
+        "startChar": 8,
+        "endLine": 152,
+        "endChar": 17
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c4bcec9_9669e798",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-06-30T14:15:30Z",
+      "side": 1,
+      "message": "kComplexIntersection, kComplexInteraction ?",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
