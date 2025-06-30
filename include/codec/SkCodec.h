@@ -908,9 +908,7 @@ protected:
      *
      *  Subclasses should do any set up needed after a rewind.
      */
-    virtual bool onRewind() {
-        return true;
-    }
+    virtual bool onRewind();
 
     /**
      * Get method for the input stream
