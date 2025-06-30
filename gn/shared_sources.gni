@@ -4,6 +4,7 @@
 # found in the LICENSE file.
 
 # This is a list of all gni files have file lists which Skia exports for use.
+import("base.gni")
 import("codec.gni")
 import("core.gni")
 import("effects.gni")
@@ -12,6 +13,7 @@ import("fuzz.gni")
 import("gpu.gni")
 import("graphite.gni")
 import("opts.gni")
+import("pathops.gni")
 import("pdf.gni")
 import("ports.gni")
 import("sksl.gni")
