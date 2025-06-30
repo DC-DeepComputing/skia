@@ -16,6 +16,46 @@
       "message": "Quyen, could you take another look to make sure this is all in line with what you\u0027d expect?",
       "revId": "018c77b9aa78083b68894cbe5bd8771a3a9084d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "480e299d_ebc8522c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-30T18:07:13Z",
+      "side": 1,
+      "message": "lgtm % nits.\n\nI don\u0027t have +1 permission though.",
+      "revId": "018c77b9aa78083b68894cbe5bd8771a3a9084d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e27a20c_85f866ca",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-06-30T18:07:13Z",
+      "side": 1,
+      "message": "I think we can remove the TODO here. It\u0027s working as intended now.\nThe comment would be simplified to:\n```suggestion\n                // Use emulation if Dawn\u0027s partial resolve feature is not available. This usually happens in WASM where the feature is not yet exposed.\n```",
+      "range": {
+        "startLine": 375,
+        "startChar": 16,
+        "endLine": 377,
+        "endChar": 36
+      },
+      "revId": "018c77b9aa78083b68894cbe5bd8771a3a9084d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
