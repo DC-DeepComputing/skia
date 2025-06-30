@@ -312,6 +312,15 @@ bool SkCodec::conversionSupported(const SkImageInfo& dst, bool srcIsOpaque, bool
     }
 }
 
+bool SkCodec::attemptRewind() {
+    // Some codecs do not have a stream.  They may hold onto their own data or another codec.
+    // They must handle rewinding themselves.
+    if (fStream && !fStream->rewind()) {
+        return false;
+    }
+    return true;
+}
+
 bool SkCodec::rewindIfNeeded() {
     // Store the value of fNeedsRewind so we can update it. Next read will
     // require a rewind.
@@ -326,13 +335,11 @@ bool SkCodec::rewindIfNeeded() {
     // startIncrementalDecode will need to be called before incrementalDecode.
     fStartedIncrementalDecode = false;
 
-    // Some codecs do not have a stream.  They may hold onto their own data or another codec.
-    // They must handle rewinding themselves.
-    if (fStream && !fStream->rewind()) {
-        return false;
+    if (this->attemptRewind()) {
+        return this->onRewind();
     }
 
-    return this->onRewind();
+    return false;
 }
 
 static SkIRect frame_rect_on_screen(SkIRect frameRect,
