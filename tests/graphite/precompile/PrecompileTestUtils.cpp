@@ -19,6 +19,7 @@
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/precompile/PaintOptionsPriv.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 #include "tools/graphite/UniqueKeyUtils.h"
 
@@ -671,6 +672,13 @@ skgpu::graphite::PaintOptions BlurFilterMix() {
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(mix) });
     paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+skgpu::graphite::PaintOptions DropShadow() {
+    PaintOptions paintOptions;
+    paintOptions.priv().setSkipColorXform(true);
+    paintOptions.priv().setPrimitiveBlendMode(SkBlendMode::kDst);
     return paintOptions;
 }
 

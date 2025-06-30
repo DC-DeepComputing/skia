@@ -232,12 +232,12 @@ const PrecompileSettings kPrecompileCases[] = {
     //--------------------------------------------------
 
     // 50% (1/2) handles 60
-    { {}, // ignored
+    { DropShadow(), // ignored
       DrawTypeFlags::kDropShadows,
       kRGBA_1_D },
 
     // 75% (3/4) handles 82 85 145
-    { {}, // ignored
+    { DropShadow(), // ignored
       DrawTypeFlags::kDropShadows,
       kRGBA_4_DS },
 
@@ -534,7 +534,7 @@ static const PipelineLabel kCases[] = {
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] Src" },
 /*  60 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "VerticesRenderStep[TrisColor] + "
-                "Compose [ BlendCompose [ RGBPaintColor Compose [ PrimitiveColor ColorSpaceTransformPremul ] Modulate ] Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver" },
+                "Compose [ PrimitiveColor Compose [ GaussianColorFilter BlendCompose [ SolidColor Passthrough Modulate ] ] ] SrcOver" },
 /*  61 */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba w/ msaa load) + "
                 "AnalyticRRectRenderStep + "
                 "BlendCompose [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] AlphaOnlyPaintColor SrcIn ] SrcOver" },
