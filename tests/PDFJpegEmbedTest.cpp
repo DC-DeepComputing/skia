@@ -13,6 +13,7 @@
 #include "include/core/SkDocument.h"
 #include "include/core/SkImage.h"
 #include "include/core/SkRefCnt.h"
+#include "include/core/SkSamplingOptions.h"
 #include "include/core/SkSize.h"
 #include "include/core/SkStream.h"
 #include "include/core/SkTypes.h"
@@ -76,6 +77,7 @@ DEF_TEST(SkPDF_JpegEmbedTest, r) {
     SkCanvas* canvas = document->beginPage(642, 2048);
 
     canvas->clear(SK_ColorLTGRAY);
+    canvas->clipIRect(SkIRect::MakeLTRB(0, 0, 642, 2048));
 
     sk_sp<SkImage> im1(SkImages::DeferredFromEncodedData(mandrillData));
     canvas->drawImage(im1, 65.0, 0.0);
@@ -87,7 +89,11 @@ DEF_TEST(SkPDF_JpegEmbedTest, r) {
     bluePaint.setColor(SkColorSetARGB(255, 0, 59, 103));
     canvas->drawRect(SkRect::MakeXYWH(0, 1000, 642, 24), bluePaint);
     sk_sp<SkImage> im3(SkImages::DeferredFromEncodedData(yuvICCData));
-    canvas->drawImage(im3, 0.0, 1024.0);
+    canvas->drawImageRect(
+        im3,
+        SkRect::MakeXYWH(0, 0, 1024, 800),
+        SkRect::MakeXYWH(0, 1024, 1024, 800),
+        SkSamplingOptions(), nullptr, SkCanvas::kFast_SrcRectConstraint);
 
     sk_sp<SkImage> im4(SkImages::DeferredFromEncodedData(cmykICCData));
     canvas->drawImage(im4, 0.0, 1536.0);
@@ -101,7 +107,11 @@ DEF_TEST(SkPDF_JpegEmbedTest, r) {
     // embedded into the PDF directly.
     REPORTER_ASSERT(r, !is_subset_of(cmykData.get(), pdfData.get()));
 
-    if ((false)) {
+    // Part of this JPEG was draw with drawImageRect.
+    // However, the original data is smaller than the subset data so the original should be present.
+    REPORTER_ASSERT(r, is_subset_of(yuvICCData.get(), pdfData.get()));
+
+    if ((true)) {
         SkFILEWStream s("/tmp/jpegembed.pdf");
         REPORTER_ASSERT(r, s.write(pdfData->data(), pdfData->size()));
         s.flush();
