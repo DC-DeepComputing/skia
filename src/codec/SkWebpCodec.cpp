@@ -419,6 +419,12 @@ SkCodec::IsAnimated SkWebpCodec::onIsAnimated() {
     return (flags & ANIMATION_FLAG) != 0 ? IsAnimated::kYes : IsAnimated::kNo;
 }
 
+bool SkWebpCodec::canAttemptRewind() {
+    // We may have a stream, but we never want to rewind it because we hold our own
+    // SkData and handles rewinding itself.
+    return true;
+}
+
 int SkWebpCodec::onGetFrameCount() {
     auto flags = WebPDemuxGetI(fDemux.get(), WEBP_FF_FORMAT_FLAGS);
     if (!(flags & ANIMATION_FLAG)) {

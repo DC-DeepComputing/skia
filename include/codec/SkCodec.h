@@ -904,6 +904,14 @@ protected:
     [[nodiscard]] bool rewindIfNeeded();
 
     /**
+     *  Called by rewindIfNeeded, to see if we should call onRewind().
+     *
+     *  Subclasses (e.g. SkWebpCodec) that handle rewinding themselves but still may
+     *  own an fStream should override to true.
+     */
+    virtual bool canAttemptRewind();
+
+    /**
      *  Called by rewindIfNeeded, if the stream needed to be rewound.
      *
      *  Subclasses should do any set up needed after a rewind.
