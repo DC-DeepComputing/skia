@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c87f37b2_2b942563",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-06-30T12:59:13Z",
+      "side": 1,
+      "message": "ASAN bot still failing with no useful output, going to revert.",
+      "revId": "b8af6d16382ec86d7b20eca0d26e0fecc4b37955",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
