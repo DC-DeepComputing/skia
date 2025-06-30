@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ce8baaaf_c76d1776",
+        "filename": "docs/examples/SKIA_LOGO_pride.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-06-30T21:14:00Z",
+      "side": 1,
+      "message": "```suggestion\nREG_FIDDLE(SKIA_LOGO_pride, 816, 464, false, 0) {\n```",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 20
+      },
+      "revId": "cd872f1cb1e7b3be64e3cc73c3a7d499be0a40f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
