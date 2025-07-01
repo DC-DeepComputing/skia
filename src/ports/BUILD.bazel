@@ -143,9 +143,6 @@ skia_cc_library(
         "//include/ports:typeface_fontations_hdrs",
     ],
     defines = ["SK_TYPEFACE_FACTORY_FONTATIONS"],
-    implementation_deps = [
-        "//src/ports/fontations:deps",
-    ],
     visibility = [
         "//tests:__pkg__",
         "//tools/fonts:__pkg__",
@@ -153,6 +150,7 @@ skia_cc_library(
     deps = [
         "//:core",
         "//src/codec:any_decoder",
+        "//src/ports/fontations:deps",
         "//src/utils:char_to_glyphcache",
     ],
 )
