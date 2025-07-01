@@ -2,6 +2,12 @@ Skia Graphics Release Notes
 
 This file includes a list of high level updates for each milestone release.
 
+Milestone 148
+-------------
+  * Virtuals in SkTypeface subclasses (5 of them) now changed to take SkSpan instead of ptr/count.
+
+* * *
+
 Milestone 139
 -------------
   * A new `kAnalyticClip` value has been added to the `DrawTypeFlags` enum.
