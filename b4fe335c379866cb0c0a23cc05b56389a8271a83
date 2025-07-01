@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "737e511c_f30576a9",
+        "filename": "include/core/SkTypeface.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 413,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-01T14:30:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "613ba321_430a8fe4",
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "534fbb24_e57af3f9",
@@ -73,6 +91,30 @@
       "side": 1,
       "message": "Will do.",
       "parentUuid": "534fbb24_e57af3f9",
+      "range": {
+        "startLine": 980,
+        "startChar": 53,
+        "endLine": 980,
+        "endChar": 54
+      },
+      "revId": "b4fe335c379866cb0c0a23cc05b56389a8271a83",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "694af3cb_085b74d4",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-01T14:30:14Z",
+      "side": 1,
+      "message": "oops, unique_ptr([]) doesn\u0027t know its size, and even if I change to AutoTArray or std::vector, those don\u0027t auto convert when passed to toSlice, so leaving as is.",
+      "parentUuid": "9a24705d_8b471153",
       "range": {
         "startLine": 980,
         "startChar": 53,
