@@ -67,6 +67,30 @@
       ],
       "revId": "d343c0c0fae3d503ee28ca018f1e4e6f8d4cf5c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb057e56_2d0b8672",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-01T17:52:01Z",
+      "side": 1,
+      "message": "Ugh.  Thanks for catching this.  Done.",
+      "parentUuid": "642218b4_bde23ac9",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 21
+      },
+      "revId": "d343c0c0fae3d503ee28ca018f1e4e6f8d4cf5c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
