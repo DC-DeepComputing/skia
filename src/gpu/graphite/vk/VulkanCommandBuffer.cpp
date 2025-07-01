@@ -1036,12 +1036,12 @@ void VulkanCommandBuffer::bindGraphicsPipeline(const GraphicsPipeline* graphicsP
             fSharedContext, fPrimaryCommandBuffer, previousGraphicsPipeline);
 }
 
-void VulkanCommandBuffer::setBlendConstants(float* blendConstants) {
+void VulkanCommandBuffer::setBlendConstants(std::array<float, 4> blendConstants) {
     SkASSERT(fActive);
-    if (0 != memcmp(blendConstants, fCachedBlendConstant, 4 * sizeof(float))) {
+    if (fCachedBlendConstant != blendConstants) {
         VULKAN_CALL(fSharedContext->interface(),
-                    CmdSetBlendConstants(fPrimaryCommandBuffer, blendConstants));
-        memcpy(fCachedBlendConstant, blendConstants, 4 * sizeof(float));
+                    CmdSetBlendConstants(fPrimaryCommandBuffer, blendConstants.data()));
+        fCachedBlendConstant = blendConstants;
     }
 }
 
@@ -1252,11 +1252,13 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             singleSampler = static_cast<const VulkanSampler*>(fDstCopy.second);
         } else {
             SkASSERT(command);
-            singleTexture = static_cast<const VulkanTexture*>(
-                    drawPass->getTexture(command->fTextureIndices[0]));
-            singleSampler = drawPass->getSampler(command->fSamplerIndices[0]);
+            singleTexture = static_cast<const VulkanTexture*>(command->fTextures[0]->texture());
+            singleSampler =
+                    fResourceProvider->findOrCreateCompatibleSampler(command->fSamplers[0]).get();
         }
         SkASSERT(singleTexture && singleSampler);
+        // Track the single sampler resource to manage its lifetime.
+        this->trackResource(sk_ref_sp(singleSampler));
         set = singleTexture->getCachedSingleTextureDescriptorSet(singleSampler);
     }
 
@@ -1265,11 +1267,10 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         TArray<DescriptorData> descriptors(numTexSamplers);
         if (command) {
             for (int i = 0; i < command->fNumTexSamplers; i++) {
-                auto sampler = static_cast<const VulkanSampler*>(
-                        drawPass->getSampler(command->fSamplerIndices[i]));
+                // Embed immutable samplers into the descriptor set directly.
+                const Sampler* immutableSampler = fActiveGraphicsPipeline->immutableSampler(i);
+                SkASSERT(SkToBool(immutableSampler) == command->fSamplers[i].isImmutable());
 
-                const Sampler* immutableSampler = (sampler && sampler->ycbcrConversion()) ? sampler
-                                                                                          : nullptr;
                 descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                        /*count=*/1,
                                        /*bindingIdx=*/i,
@@ -1277,11 +1278,10 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
                                        immutableSampler});
             }
         }
-        // If required the dst copy texture+sampler is the last one in the descriptor set
         if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
             descriptors.push_back({DescriptorType::kCombinedTextureSampler,
                                    /*count=*/1,
-                                   /*bindingIdx=*/numTexSamplers-1,
+                                   /*bindingIdx=*/numTexSamplers - 1,
                                    PipelineStageFlags::kFragmentShader,
                                    /*immutableSampler=*/nullptr});
         }
@@ -1296,25 +1296,29 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
             fBindTextureSamplers = false;
             return;
         }
+
         // Populate the descriptor set with texture/sampler descriptors
         TArray<VkWriteDescriptorSet> writeDescriptorSets(numTexSamplers);
         TArray<VkDescriptorImageInfo> descriptorImageInfos(numTexSamplers);
         auto appendTextureSampler = [&](const VulkanTexture* texture,
-                                        const VulkanSampler* sampler) {
-            if (!texture || !sampler) {
-                // TODO(b/294198324): Investigate the root cause for null texture or samplers on
-                // Ubuntu QuadP400 GPU
-                SKGPU_LOG_E("Texture and sampler must not be null");
+                                        const VulkanSampler* sampler,
+                                        bool isImmutable) {
+            // Guard against null texture, and null samplers that are NOT immutable.
+            if (!texture || (!sampler && !isImmutable)) {
+                SKGPU_LOG_E("Texture must not be null. Sampler can only be null for immutable samplers.");
                 fNumTextureSamplers = 0;
                 fTextureSamplerDescSetToBind = VK_NULL_HANDLE;
                 fBindTextureSamplers = false;
                 return false;
             }
 
+            if (sampler) {
+                SkASSERT(!sampler->ycbcrConversion());
+            }
+
             VkDescriptorImageInfo& textureInfo = descriptorImageInfos.push_back();
             textureInfo = {};
-            textureInfo.sampler = sampler->ycbcrConversion() ? VK_NULL_HANDLE
-                                                             : sampler->vkSampler();
+            textureInfo.sampler = sampler ? sampler->vkSampler() : VK_NULL_HANDLE;
             textureInfo.imageView =
                     texture->getImageView(VulkanImageView::Usage::kShaderInput)->imageView();
             textureInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
@@ -1334,11 +1338,25 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
 
         if (command) {
             for (int i = 0; i < command->fNumTexSamplers; ++i) {
-                auto texture = static_cast<const VulkanTexture*>(
-                        drawPass->getTexture(command->fTextureIndices[i]));
-                auto sampler = static_cast<const VulkanSampler*>(
-                        drawPass->getSampler(command->fSamplerIndices[i]));
-                if (!appendTextureSampler(texture, sampler)) {
+                auto texture = static_cast<const VulkanTexture*>(command->fTextures[i]->texture());
+                const auto& samplerDesc = command->fSamplers[i];
+                bool isImmutable = samplerDesc.isImmutable();
+
+                const VulkanSampler* sampler;
+                if (isImmutable) {
+                    sampler = static_cast<const VulkanSampler*>(
+                            fActiveGraphicsPipeline->immutableSampler(i));
+                } else {
+                    sampler = static_cast<const VulkanSampler*>(
+                            fSharedContext->globalCache()->getDynamicSampler(samplerDesc));
+                }
+
+                // Track the resource regardless of type to manage its lifetime.
+                this->trackResource(sk_ref_sp(sampler));
+
+                // Only write dynamic samplers to the descriptor set.
+                const VulkanSampler* samplerToWrite = isImmutable ? nullptr : sampler;
+                if (!appendTextureSampler(texture, samplerToWrite, isImmutable)) {
                     return;
                 }
             }
@@ -1346,7 +1364,11 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         if (fActiveGraphicsPipeline->dstReadStrategy() == DstReadStrategy::kTextureCopy) {
             auto texture = static_cast<const VulkanTexture*>(fDstCopy.first);
             auto sampler = static_cast<const VulkanSampler*>(fDstCopy.second);
-            if (!appendTextureSampler(texture, sampler)) {
+
+            // Also track the destination copy sampler.
+            this->trackResource(sk_ref_sp(sampler));
+
+            if (!appendTextureSampler(texture, sampler, /*isImmutable=*/false)) {
                 return;
             }
         }
@@ -1366,9 +1388,7 @@ void VulkanCommandBuffer::recordTextureAndSamplerDescSet(
         }
     }
 
-    // Store the updated descriptor set to be actually bound later on. This avoids binding and
-    // potentially having to re-bind in cases where earlier descriptor sets change while going
-    // through drawpass commands.
+    // Store the updated descriptor set to be actually bound later on.
     fTextureSamplerDescSetToBind = *set->descriptorSet();
     fBindTextureSamplers = true;
     fNumTextureSamplers = numTexSamplers;
