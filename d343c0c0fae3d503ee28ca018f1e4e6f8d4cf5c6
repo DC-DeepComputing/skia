@@ -16,6 +16,57 @@
       "message": "@fmalita, can you PTAL?\n\nThis is not an actual fix, but 1) this follows the current Chromium guidance on DCHECK-vs-CHECK and 2) with this in place, all recent Rust PNG fuzzing issues could clearly be classified as no security impact (stability impact, but no security impact).\n\nSo, I think we should land this at ToT, and then we can discuss what to do for M139:\n\n* Merge this CL into M139?\n* Disable Rust PNG on M139 branch (postponing launch until M140)?\n* Something else?\n\nPS. I am aware of other fuzzing bugs opened in the last day or two (https://crbug.com/428754691 and https://crbug.com/428754578).  I\u0027ll try to do an initial investigation later today.",
       "revId": "d343c0c0fae3d503ee28ca018f1e4e6f8d4cf5c6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "642218b4_bde23ac9",
+        "filename": "src/codec/SkPngCodecBase.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-01T16:28:34Z",
+      "side": 1,
+      "message": "We need to unguard this also.",
+      "range": {
+        "startLine": 110,
+        "startChar": 0,
+        "endLine": 110,
+        "endChar": 21
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "77544c62_24179ef8",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/codec/SkPngCodecBase.cpp",
+              "range": {
+                "startLine": 110,
+                "startChar": 0,
+                "endLine": 111,
+                "endChar": 0
+              },
+              "replacement": ""
+            },
+            {
+              "path": "src/codec/SkPngCodecBase.cpp",
+              "range": {
+                "startLine": 113,
+                "startChar": 0,
+                "endLine": 114,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "d343c0c0fae3d503ee28ca018f1e4e6f8d4cf5c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
