@@ -116,6 +116,9 @@ public:
                            combinations.
     */
     void setBlendModes(SkSpan<const SkBlendMode> blendModes);
+    void addBlendMode(SkBlendMode bm) {
+        fBlendModeOptions.push_back(bm);
+    }
     SkSpan<const SkBlendMode> getBlendModes() const {
         return SkSpan<const SkBlendMode>(fBlendModeOptions.data(), fBlendModeOptions.size());
     }
@@ -155,9 +158,6 @@ private:
     friend class PrecompileMaskFilter;  // for ProcessCombination access
 
     void addColorFilter(sk_sp<PrecompileColorFilter> cf);
-    void addBlendMode(SkBlendMode bm) {
-        fBlendModeOptions.push_back(bm);
-    }
 
     void setClipShaders(SkSpan<const sk_sp<PrecompileShader>> clipShaders);
 
