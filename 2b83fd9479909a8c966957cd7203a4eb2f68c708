@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0a00626_9d2d72fb",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-01T20:07:50Z",
+      "side": 1,
+      "message": "It doesn\u0027t really make any logical sense to register these here. I suppose the hope is that this will get called before any deserialization stuff, but that\u0027s just a race. Registering typeface factories is a thing one does just around calls to `SkGraphics::Init`.",
+      "revId": "2b83fd9479909a8c966957cd7203a4eb2f68c708",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
