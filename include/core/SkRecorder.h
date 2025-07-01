@@ -12,6 +12,9 @@
 namespace skcpu {
 class Recorder;
 }
+class SkCanvas;
+class SkCaptureCanvas;
+class SkSurface_Base;
 
 class SK_API SkRecorder {
 public:
@@ -30,6 +33,11 @@ public:
     virtual Type type() const = 0;
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
+
+private:
+    virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+
+    friend SkSurface_Base;
 };
 
 #endif

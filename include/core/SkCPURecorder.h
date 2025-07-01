@@ -12,6 +12,7 @@
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkAPI.h"
 
+class SkCanvas;
 class SkSurface;
 class SkSurfaceProps;
 struct SkImageInfo;
@@ -52,6 +53,9 @@ public:
                                        const SkSurfaceProps* surfaceProps);
     sk_sp<SkSurface> makeBitmapSurface(const SkImageInfo& imageInfo,
                                        const SkSurfaceProps* surfaceProps = nullptr);
+
+private:
+    SkCanvas* makeCaptureCanvas(SkCanvas*) final { return nullptr; }
 };
 
 inline Recorder* AsRecorder(SkRecorder* recorder) {

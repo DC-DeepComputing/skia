@@ -304,3 +304,7 @@ void SkCaptureCanvas::onDrawEdgeAAImageSet2(const ImageSetEntry set[],
     this->SkNWayCanvas::onDrawEdgeAAImageSet2(
             set, count, dstClips, preViewMatrices, sampling, paint, constraint);
 }
+
+void SkCaptureCanvas::onSurfaceDelete() {
+    // TODO: signal to the capture manager that this canvas's surface has been deleted, do cleanup
+}
