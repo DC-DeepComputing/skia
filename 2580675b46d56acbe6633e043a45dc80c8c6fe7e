@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "134309c7_f25bcbfd",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-01T15:38:23Z",
+      "side": 0,
+      "message": "It looks like there are issues with the user using older versions of the Vulkan headers?",
+      "range": {
+        "startLine": 2003,
+        "startChar": 4,
+        "endLine": 2003,
+        "endChar": 20
+      },
+      "revId": "2580675b46d56acbe6633e043a45dc80c8c6fe7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
