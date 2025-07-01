@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8cb3d23d_b53e8c1b",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-01T15:44:09Z",
+      "side": 1,
+      "message": "Instead of a new virtual, can we make this a protected `rewindStream` helper, then update all `onRewind` implementations (except webp) to call it?\n\n```\n  if (!this-\u003erewindStream()) {\n      return false;\n  }\n  ....\n```\n\nI find the current responsibility split where the derived `onRewind` impls are called after the actual stream rewind somewhat confusing, wdyt?",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 1
+      },
+      "revId": "00d9e9fcf87396dc85fed651c4f0f4849effdd03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
