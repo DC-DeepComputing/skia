@@ -15,6 +15,10 @@
 #include "src/sksl/SkSLUtil.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
+#include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
+#include "include/gpu/graphite/precompile/PrecompileShader.h"
+
 using namespace skgpu::graphite;
 using namespace PrecompileTestUtils;
 
@@ -24,6 +28,86 @@ constexpr bool kWithAnalyticClip = true;
 const RenderPassProperties kCombo_RGBA_1D_4DS[2] = { kRGBA_1_D, kRGBA_4_DS };
 const RenderPassProperties kCombo_RGBA_1D_4DS_SRGB[2] = { kRGBA_1_D_SRGB, kRGBA_4_DS_SRGB };
 const RenderPassProperties kCombo_RGBA_1D_SRGB_w16F[2] = { kRGBA_1_D_SRGB, kRGBA16F_1_D_SRGB };
+
+using PrecompileShaders::GradientShaderFlags;
+using PrecompileShaders::ImageShaderFlags;
+using PrecompileShaders::YUVImageShaderFlags;
+
+skgpu::graphite::PaintOptions AlphaImageSrcOver() {
+    SkColorInfo ci { kAlpha_8_SkColorType,
+                     kUnpremul_SkAlphaType,
+                     SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
+                                           SkNamedGamut::kRec2020) };
+
+    PaintOptions paintOptions;
+
+    paintOptions.setShaders({ PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                       { &ci, 1 },
+                                                       {}) });
+
+    paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    return paintOptions;
+}
+
+skgpu::graphite::PaintOptions Blur16SrcClamp() {
+    auto  blurEffect = sk_ref_sp(
+            SkKnownRuntimeEffects::GetKnownRuntimeEffect(SkKnownRuntimeEffects::StableKey::k1DBlur16));
+
+    SkColorInfo ci{kRGBA_8888_SkColorType, kPremul_SkAlphaType,
+                   SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
+                                         SkNamedGamut::kRec2020) };
+    SkTileMode tileModes[] = {SkTileMode::kClamp};
+    sk_sp<PrecompileShader> imgShader =
+            PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic, {&ci, 1}, {tileModes, 1});
+
+    sk_sp<PrecompileShader> blurShader =
+            PrecompileRuntimeEffects::MakePrecompileShader(std::move(blurEffect), {{std::move(imgShader)}});
+
+    PaintOptions paintOptions;
+    paintOptions.setShaders({std::move(blurShader)});
+    paintOptions.setBlendModes({SkBlendMode::kSrc});
+    return paintOptions;
+}
+
+PaintOptions TransparentImageClampSrc() {
+    SkColorInfo ci { kAlpha_8_SkColorType,
+                     kUnpremul_SkAlphaType,
+                     SkColorSpace::MakeRGB(SkNamedTransferFn::kPQ,
+                                           SkNamedGamut::kRec2020) };
+    SkTileMode tileModes[] = {SkTileMode::kClamp};
+
+    PaintOptions paintOptions;
+
+    paintOptions.setShaders({ PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                       { &ci, 1 },
+                                                       {tileModes, 1}) });
+
+    paintOptions.setBlendModes({ SkBlendMode::kSrc });
+    return paintOptions;
+}
+
+
+const skgpu::graphite::RenderPassProperties kA8_1_D {
+    skgpu::graphite::DepthStencilFlags::kDepth,
+    kAlpha_8_SkColorType,
+    /* fDstCS= */ nullptr,
+    /* fRequiresMSAA= */ false
+};
+
+const skgpu::graphite::RenderPassProperties kA8_1_D_SRGB {
+        skgpu::graphite::DepthStencilFlags::kDepth,
+        kAlpha_8_SkColorType,
+        SkColorSpace::MakeSRGB(),
+        /* fRequiresMSAA= */ false
+};
+
+const skgpu::graphite::RenderPassProperties kA8_1_D_Adobe {
+        skgpu::graphite::DepthStencilFlags::kDepth,
+        kAlpha_8_SkColorType,
+        SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB,
+                              SkNamedGamut::kAdobeRGB),
+        /* fRequiresMSAA= */ false
+};
 
 // For non-Vulkan configs, these settings cover 125 of the 170 cases in 'kCases'.
 // They create 152 Pipelines so only modestly over-generate (27 extra Pipelines - 18%).
@@ -35,6 +119,19 @@ const RenderPassProperties kCombo_RGBA_1D_SRGB_w16F[2] = { kRGBA_1_D_SRGB, kRGBA
 // then Render Pass Properties.
 // This helps observe DrawTypeFlags distributions.
 const PrecompileSettings kPrecompileCases[] = {
+
+    // 0: 100% (1/1) handles: 0
+    { SolidSrcover(), DrawTypeFlags::kNonAAFillRect, kA8_1_D },
+    // 1: 100% (1/1) handles: 1
+    { SolidSrcover(), DrawTypeFlags::kAnalyticRRect, kA8_1_D },
+    // 2: 100% (2/2) handles: 3 4
+    { Blur16SrcClamp(), DrawTypeFlags::kNonAAFillRect, kA8_1_D_SRGB },
+    // 3: 100% (1/1) handles: 5
+    { AlphaImageSrcOver(), DrawTypeFlags::kPerEdgeAAQuad, kA8_1_D_SRGB },
+    // 4: 100% (2/2) handles: 2 6
+    { TransparentImageClampSrc(), DrawTypeFlags::kNonAAFillRect, kA8_1_D_SRGB },
+
+#if 0
     // 100% (1/1) handles: 0
     { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
     // 100% (4/4) handles: 22 23 42 43
@@ -431,6 +528,7 @@ const PrecompileSettings kPrecompileCases[] = {
       DrawTypeFlags::kNonAAFillRect,
       kRGBA_4_DS_SRGB },
 #endif
+#endif
 };
 
 // These Pipelines are candidates for inclusion in Android's precompile. They were generated
@@ -442,6 +540,15 @@ const PrecompileSettings kPrecompileCases[] = {
 //   an X     - skipped (c.f. skip())
 //   blank    - not yet investigated
 static const PipelineLabel kCases[] = {
+/* 0 */ { -1, "RP((R8+D16 x1).a000) + CoverBoundsRenderStep[NonAAFill] + SolidColor SrcOver" },
+/* 1 */ { -1, "RP((R8+D16 x1).a000) + AnalyticRRectRenderStep + SolidColor SrcOver" },
+/* 2 */ { -1, "RP((R8+D16 x1).a000) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ BlendCompose [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransform ] RGBPaintColor DstIn ] ] Src" },
+/* 3 */ { -1, "RP((R8+D16 x1).a000) + CoverBoundsRenderStep[NonAAFill] + KnownRuntimeEffect_1DBlur16 [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransform ] ] ] Src" },
+/* 4 */ { -1, "RP((R8+D16 x1).a000) + CoverBoundsRenderStep[NonAAFill] + KnownRuntimeEffect_1DBlur16 [ LocalMatrix [ Compose [ ImageShaderClamp(0) ColorSpaceTransform ] ] ] Src" },
+/* 5 */ { -1, "RP((R8+D16 x1).a000) + PerEdgeAAQuadRenderStep + LocalMatrix [ BlendCompose [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransform ] RGBPaintColor DstIn ] ] SrcOver" },
+/* 6 */ { -1, "RP((R8+D16 x1).a000) + CoverBoundsRenderStep[NonAAFill] + LocalMatrix [ BlendCompose [ Compose [ ImageShaderClamp(0) ColorSpaceTransform ] RGBPaintColor DstIn ] ] Src" },
+
+#if 0
 /*   0 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] SrcOver" },
@@ -976,6 +1083,7 @@ static const PipelineLabel kCases[] = {
 /* 74* */ { -1, "RP((RGBA8+D24_S8 x4->1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "SolidColor SrcOver" },
+#endif
 };
 
 bool skip(const char* str) {
@@ -1057,9 +1165,10 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
 
     PipelineLabelInfoCollector collector({ kCases }, skip);
 
-    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
+//    static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
     for (size_t i = 0; i < std::size(kPrecompileCases); ++i) {
-        if (kChosenCase != -1 && kChosenCase != i) {
+//        if (kChosenCase != -1 && kChosenCase != i) {
+        if (i > 6) {
             continue;
         }
 
