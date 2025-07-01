@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f4b41a_231d192a",
+        "filename": "include/core/SkPathEffect.h",
+        "patchSetId": 15
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-01T15:51:22Z",
+      "side": 1,
+      "message": "Would it be useful to have a helper that returns an `std::optional\u003cSkPath\u003e`?  I\u0027m guessing there are call sites that just want the final filter result, but maybe not.",
+      "revId": "63d93fda07876183d8b4b78dbdaa678c2b8585ac",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
