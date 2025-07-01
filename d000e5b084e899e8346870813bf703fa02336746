@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "135031e7_b92ba31d",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-01T16:10:59Z",
+      "side": 1,
+      "message": "I made a new callback here for the signal we were talking about. It does nothing on the base canvas, it will get overwritten in SkCaptureCanvas. I didn\u0027t implement it yet in case this wasn\u0027t the place to put it, let me know what you think.",
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
