@@ -145,7 +145,6 @@ skia_cc_library(
     defines = ["SK_TYPEFACE_FACTORY_FONTATIONS"],
     implementation_deps = [
         "//:pathops",
-        "//src/ports/fontations:deps",
     ],
     visibility = [
         "//tests:__pkg__",
@@ -154,6 +153,7 @@ skia_cc_library(
     deps = [
         "//:core",
         "//src/codec:any_decoder",
+        "//src/ports/fontations:deps",
         "//src/utils:char_to_glyphcache",
     ],
 )
