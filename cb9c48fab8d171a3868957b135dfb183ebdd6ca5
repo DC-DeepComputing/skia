@@ -16,6 +16,24 @@
       "message": "@fmalita, can you PTAL?\n\nI\u0027ve decided to add test coverage on Chromium-side of things: https://crrev.com/c/6697933.  This way we can ensure that the same behavior happens in the legacy and the new Blink decoder (`SkPngCodec` doesn\u0027t have APNG support).",
       "revId": "cb9c48fab8d171a3868957b135dfb183ebdd6ca5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "878427c2_7bb43edf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-01T23:59:25Z",
+      "side": 1,
+      "message": "\u003e I\u0027ve decided to add test coverage on Chromium-side of things: https://crrev.com/c/6697933.  This way we can ensure that the same behavior happens in the legacy and the new Blink decoder (`SkPngCodec` doesn\u0027t have APNG support).\n\nOh, one other thing I wanted to point out is that the new `Ihdr50ActlIdatFctl30Fdat` test from the Chromium CL would pass with and without this Skia CL.  I am adding this test to reassure myself that we **don\u0027t** enforce size requirements for the first `fcTL` chunk when it applies to an `fdAT` rather than to an `IDAT` image.",
+      "parentUuid": "e438b978_3e3a0d63",
+      "revId": "cb9c48fab8d171a3868957b135dfb183ebdd6ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
