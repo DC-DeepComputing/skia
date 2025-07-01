@@ -22,6 +22,30 @@
       },
       "revId": "00d9e9fcf87396dc85fed651c4f0f4849effdd03",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "10313b72_6983986e",
+        "filename": "src/codec/SkCodec.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 322,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-07-01T17:17:53Z",
+      "side": 1,
+      "message": "Makes more sense this way to me too, done.",
+      "parentUuid": "8cb3d23d_b53e8c1b",
+      "range": {
+        "startLine": 315,
+        "startChar": 0,
+        "endLine": 322,
+        "endChar": 1
+      },
+      "revId": "00d9e9fcf87396dc85fed651c4f0f4849effdd03",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
