@@ -56,6 +56,30 @@
       },
       "revId": "018c77b9aa78083b68894cbe5bd8771a3a9084d6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f26d35f6_fd3c3d39",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 377,
+      "author": {
+        "id": 7811
+      },
+      "writtenOn": "2025-07-01T01:03:34Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0e27a20c_85f866ca",
+      "range": {
+        "startLine": 375,
+        "startChar": 16,
+        "endLine": 377,
+        "endChar": 36
+      },
+      "revId": "018c77b9aa78083b68894cbe5bd8771a3a9084d6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
