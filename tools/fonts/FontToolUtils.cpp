@@ -19,6 +19,7 @@
 #include "include/core/SkPixelRef.h"  // IWYU pragma: keep
 #include "include/core/SkStream.h"
 #include "include/core/SkTypeface.h"
+#include "include/private/base/SkOnce.h"
 #if defined(SK_TYPEFACE_FACTORY_FONTATIONS)
 #include "include/ports/SkFontScanner_Fontations.h"
 #endif
@@ -68,6 +69,22 @@
 
 #if defined(SK_FONTMGR_FREETYPE_EMPTY_AVAILABLE)
 #include "include/ports/SkFontMgr_empty.h"
+#endif
+
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+#include "src/ports/SkTypeface_FreeType.h"
+#endif
+
+#ifdef SK_TYPEFACE_FACTORY_CORETEXT
+#include "src/ports/SkTypeface_mac_ct.h"
+#endif
+
+#ifdef SK_TYPEFACE_FACTORY_DIRECTWRITE
+#include "src/ports/SkTypeface_win_dw.h"
+#endif
+
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+#include "src/ports/SkTypeface_fontations_priv.h"
 #endif
 
 namespace ToolUtils {
@@ -316,6 +333,26 @@ sk_sp<SkFontMgr> TestFontMgr() {
 #else
             mgr = SkFontMgr::RefEmpty();
 #endif
+
+            // Ensure that the corresponding typeface deserialization handler is registered.
+            static SkOnce once;
+            once([] {
+#ifdef SK_TYPEFACE_FACTORY_CORETEXT
+                SkTypeface::Register(SkTypeface_Mac::FactoryId, SkTypeface_Mac::MakeFromStream);
+#endif
+#ifdef SK_TYPEFACE_FACTORY_DIRECTWRITE
+                SkTypeface::Register(DWriteFontTypeface::FactoryId,
+                                     DWriteFontTypeface::MakeFromStream);
+#endif
+#ifdef SK_TYPEFACE_FACTORY_FREETYPE
+                SkTypeface::Register(SkTypeface_FreeType::FactoryId,
+                                     SkTypeface_FreeType::MakeFromStream);
+#endif
+#ifdef SK_TYPEFACE_FACTORY_FONTATIONS
+                SkTypeface::Register(SkTypeface_Fontations::FactoryId,
+                                     SkTypeface_Fontations::MakeFromStream);
+#endif
+            });
         }
         SkASSERT_RELEASE(mgr);
     });
