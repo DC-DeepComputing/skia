@@ -43,35 +43,50 @@ wgpu::MipmapFilterMode mipmap_mode_to_dawn_filter_mode(SkMipmapMode mode) {
 }
 
 DawnSampler::DawnSampler(const DawnSharedContext* sharedContext,
+                         SamplerDesc samplerDesc,
                          wgpu::Sampler sampler)
         : Sampler(sharedContext)
-        , fSampler(std::move(sampler)) {}
+        , fSampler(std::move(sampler))
+        , fSamplerDesc(samplerDesc) {}
 
-static inline wgpu::AddressMode tile_mode_to_dawn_address_mode(SkTileMode tileMode) {
-    switch (tileMode) {
-        case SkTileMode::kClamp:
-            return wgpu::AddressMode::ClampToEdge;
-        case SkTileMode::kRepeat:
-            return wgpu::AddressMode::Repeat;
-        case SkTileMode::kMirror:
-            return wgpu::AddressMode::MirrorRepeat;
-        case SkTileMode::kDecal:
-            // Dawn doesn't support this mode.
-            return wgpu::AddressMode::ClampToEdge;
-    }
-    SkUNREACHABLE;
+static inline std::pair<wgpu::AddressMode, wgpu::AddressMode>
+tile_modes_to_dawn_address_modes(SamplerDesc& samplerDesc) {
+    auto to_dawn_mode = [](SkTileMode tm) {
+        switch (tm) {
+            case SkTileMode::kClamp:
+                return wgpu::AddressMode::ClampToEdge;
+            case SkTileMode::kRepeat:
+                return wgpu::AddressMode::Repeat;
+            case SkTileMode::kMirror:
+                return wgpu::AddressMode::MirrorRepeat;
+            case SkTileMode::kDecal:
+                // Dawn doesn't support decal, so substitute with ClampToEdge.
+                return wgpu::AddressMode::ClampToEdge;
+        }
+        SkUNREACHABLE;
+    };
+
+    // Correct the original SamplerDesc if Decal was used, so the cache key will be correct.
+    samplerDesc =
+            SamplerDesc(samplerDesc.samplingOptions(),
+                        {samplerDesc.tileModeX() == SkTileMode::kDecal ? SkTileMode::kClamp
+                                                                       : samplerDesc.tileModeX(),
+                         samplerDesc.tileModeY() == SkTileMode::kDecal ? SkTileMode::kClamp
+                                                                       : samplerDesc.tileModeY()});
+
+    return {to_dawn_mode(samplerDesc.tileModeX()),
+            to_dawn_mode(samplerDesc.tileModeY())};
 }
 
 sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
-                                     const SamplerDesc& samplerDesc) {
+                                     SamplerDesc samplerDesc) {
     wgpu::SamplerDescriptor desc;
     const SkSamplingOptions& samplingOptions = samplerDesc.samplingOptions();
-    desc.addressModeU = tile_mode_to_dawn_address_mode(samplerDesc.tileModeX());
-    desc.addressModeV = tile_mode_to_dawn_address_mode(samplerDesc.tileModeY());
-    desc.magFilter     = filter_mode_to_dawn_filter_mode(samplingOptions.filter);
-    desc.minFilter     = desc.magFilter;
-    desc.mipmapFilter  = mipmap_mode_to_dawn_filter_mode(samplingOptions.mipmap);
-    desc.lodMinClamp   = 0.0f;
+    std::tie(desc.addressModeU, desc.addressModeV) = tile_modes_to_dawn_address_modes(samplerDesc);
+    desc.magFilter    = filter_mode_to_dawn_filter_mode(samplingOptions.filter);
+    desc.minFilter    = desc.magFilter;
+    desc.mipmapFilter = mipmap_mode_to_dawn_filter_mode(samplingOptions.mipmap);
+    desc.lodMinClamp  = 0.0f;
     if (samplingOptions.mipmap == SkMipmapMode::kNone) {
         // Disabling mipmap by clamping max lod to first level only.
         desc.lodMaxClamp = 0.0f;
@@ -139,7 +154,7 @@ sk_sp<DawnSampler> DawnSampler::Make(const DawnSharedContext* sharedContext,
     if (!sampler) {
         return {};
     }
-    return sk_sp<DawnSampler>(new DawnSampler(sharedContext, std::move(sampler)));
+    return sk_sp<DawnSampler>(new DawnSampler(sharedContext, samplerDesc, std::move(sampler)));
 }
 
 void DawnSampler::freeGpuData() {
