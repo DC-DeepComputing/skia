@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e438b978_3e3a0d63",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-01T23:38:53Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\nI\u0027ve decided to add test coverage on Chromium-side of things: https://crrev.com/c/6697933.  This way we can ensure that the same behavior happens in the legacy and the new Blink decoder (`SkPngCodec` doesn\u0027t have APNG support).",
+      "revId": "cb9c48fab8d171a3868957b135dfb183ebdd6ca5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
