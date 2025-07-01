@@ -153,6 +153,7 @@ skia_cc_library(
     deps = [
         "//:core",
         "//src/codec:any_decoder",
+        "//src/ports/fontations:deps",
         "//src/utils:char_to_glyphcache",
     ],
 )
