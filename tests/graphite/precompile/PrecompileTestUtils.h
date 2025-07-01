@@ -158,6 +158,7 @@ skgpu::graphite::PaintOptions BlurFilterMix();
 skgpu::graphite::PaintOptions ImagePremulHWOnlyPlusColorSrcover();
 skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlyPlusColorSrcover();
 
+skgpu::graphite::PaintOptions DropShadow();
 skgpu::graphite::PaintOptions EdgeExtensionPassthroughSrcover();
 skgpu::graphite::PaintOptions EdgeExtensionPremulSrcover();
 skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughSrcover();
