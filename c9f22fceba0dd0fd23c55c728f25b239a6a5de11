@@ -16,6 +16,24 @@
       "message": "You want to put this text into a new file in `relnotes/` (there is currently example in there, though you can see the past ones in the history of that directory). There is a script that picks those up and merges them all in there when a release is made.",
       "revId": "c9f22fceba0dd0fd23c55c728f25b239a6a5de11",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d92eb20e_2e8871da",
+        "filename": "RELEASE_NOTES.md",
+        "patchSetId": 9
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-01T15:32:13Z",
+      "side": 1,
+      "message": "Doh -- that\u0027s what you said the first time, but it didn\u0027t register.\n\nDone.",
+      "parentUuid": "efb63195_082cbc73",
+      "revId": "c9f22fceba0dd0fd23c55c728f25b239a6a5de11",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
