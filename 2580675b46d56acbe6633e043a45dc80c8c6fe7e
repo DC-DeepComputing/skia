@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f1d7a57_466812dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-01T15:12:42Z",
+      "side": 1,
+      "message": "And... the `NoGPU` don\u0027t like this because there are examples that use GPU stuff. Will need to fix that. And `NoDEPS` didn\u0027t like this because there are PDF, JPEG, and PNG examples.",
+      "revId": "2580675b46d56acbe6633e043a45dc80c8c6fe7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26490a5f_57815969",
+        "filename": "BUILD.gn",
+        "patchSetId": 6
+      },
+      "lineNbr": 2003,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-01T15:12:42Z",
+      "side": 1,
+      "message": "Fixing this predicate in https://skia-review.googlesource.com/c/skia/+/1013976 .",
+      "revId": "2580675b46d56acbe6633e043a45dc80c8c6fe7e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
