@@ -22,6 +22,30 @@
       },
       "revId": "cd872f1cb1e7b3be64e3cc73c3a7d499be0a40f8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecdefb13_7e1924cd",
+        "filename": "docs/examples/SKIA_LOGO_pride.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 4176715
+      },
+      "writtenOn": "2025-07-01T12:40:41Z",
+      "side": 1,
+      "message": "Fix applied. Thanks!",
+      "parentUuid": "ce8baaaf_c76d1776",
+      "range": {
+        "startLine": 4,
+        "startChar": 11,
+        "endLine": 4,
+        "endChar": 20
+      },
+      "revId": "cd872f1cb1e7b3be64e3cc73c3a7d499be0a40f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
