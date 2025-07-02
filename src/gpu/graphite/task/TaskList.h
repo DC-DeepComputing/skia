@@ -19,7 +19,6 @@ namespace skgpu::graphite {
 
 class CommandBuffer;
 class Context;
-class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
 class ScratchResourceManager;
@@ -44,11 +43,36 @@ public:
                                   const RuntimeEffectDictionary*);
     Task::Status addCommands(Context*, CommandBuffer*, Task::ReplayTargetData);
 
-    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor);
+    template<typename T>
+    bool visit(const std::function<bool(const T*)>& visitor) {
+        Task::Status status = this->visitTasks([&](Task* task) {
+            return task->visitChildren<T>(visitor) ? Task::Status::kSuccess : Task::Status::kFail;
+        });
+        return status != Task::Status::kFail;
+    }
 
 private:
-    template <typename Fn> // (Task*)->Status
-    Task::Status visitTasks(Fn);
+    // Needs to be in the header due to templating on visit
+    template <typename Fn>
+    Task::Status visitTasks(Fn fn) {
+        int discardCount = 0;
+        for (sk_sp<Task>& task: fTasks) {
+            if (!task) {
+                discardCount++;
+                continue; // Skip over discarded tasks
+            }
+
+            Task::Status status = fn(task.get());
+            if (status == Task::Status::kFail) {
+                return Task::Status::kFail;
+            } else if (status == Task::Status::kDiscard) {
+                task.reset();
+                discardCount++;
+            }
+        }
+
+        return discardCount == fTasks.size() ? Task::Status::kDiscard : Task::Status::kSuccess;
+    }
 
     skia_private::TArray<sk_sp<Task>> fTasks;
 };

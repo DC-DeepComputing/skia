@@ -21,7 +21,6 @@ namespace skgpu::graphite {
 class TextureProxy;
 class CommandBuffer;
 class Context;
-class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
 
@@ -41,8 +40,9 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
-    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override {
-        return fChildTasks.visitPipelines(visitor);
+    template<typename T>
+    bool visitChildren(const std::function<bool(const T*)>& visitor) {
+        return fChildTasks.visit<T>(visitor);
     }
 
 private:
