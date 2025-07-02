@@ -3,6 +3,121 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5080c4ca_b2d7a09a",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-02T18:24:53Z",
+      "side": 1,
+      "message": "Is this a placeholder? I presume eventually, we\u0027d want CPU canvases to be able to record things too, yeah?",
+      "range": {
+        "startLine": 58,
+        "startChar": 58,
+        "endLine": 58,
+        "endChar": 65
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d3f7f70_78fb5474",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-02T18:24:53Z",
+      "side": 1,
+      "message": "nit: put these forward declarations before the first namespace\u0027d forward declaration (my brain initially thought these were *inside* the namespace and I got confused)",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "37c9d3c1_76f6a75a",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-02T18:24:53Z",
+      "side": 1,
+      "message": "nit: `friend class SkSurface_Base;` (and then I think you can remove the forward declaration above).",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30ce6291_bf83f452",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-02T18:24:53Z",
+      "side": 1,
+      "message": "nit: TODO(b/12345)",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 30
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7b290a44_bc5d3fa6",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-02T18:24:53Z",
+      "side": 1,
+      "message": "nit: TODO(b/1234)",
+      "range": {
+        "startLine": 309,
+        "startChar": 7,
+        "endLine": 309,
+        "endChar": 11
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "135031e7_b92ba31d",
         "filename": "src/image/SkSurface_Base.cpp",
         "patchSetId": 6
