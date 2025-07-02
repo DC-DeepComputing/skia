@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f456200_9c0fba93",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-02T19:48:58Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\nThe merge has **not** yet been approved - I won\u0027t land this CL until this happens (keeping this comment unresolved as an honour-based way to prevent accidental mistakes).  Nevertheless the CL to be merged is very simple and I expect it to be auto-approved once the change has baked for 24h on trunk.",
+      "revId": "d815fef9498835f3e41c7be9c261db750143d218",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
