@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd9115be_7a7d01b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-02T16:15:34Z",
+      "side": 1,
+      "message": "New Android.bp vs. previously-working Android.bp (drops pathops + clipstackutils from renderengine, and clipstackutils from skqp):\n\n\n```\n--- Android.bp.old\t2025-07-02 11:32:23.770952133 -0400\n+++ Android.bp\t2025-07-02 12:01:31.569579302 -0400\n@@ -884,38 +884,6 @@\n         \"src/image/SkSurface_Raster.cpp\",\n         \"src/image/SkTiledImageUtils.cpp\",\n         \"src/lazy/SkDiscardableMemoryPool.cpp\",\n-        \"src/pathops/SkAddIntersections.cpp\",\n-        \"src/pathops/SkDConicLineIntersection.cpp\",\n-        \"src/pathops/SkDCubicLineIntersection.cpp\",\n-        \"src/pathops/SkDCubicToQuads.cpp\",\n-        \"src/pathops/SkDLineIntersection.cpp\",\n-        \"src/pathops/SkDQuadLineIntersection.cpp\",\n-        \"src/pathops/SkIntersections.cpp\",\n-        \"src/pathops/SkOpAngle.cpp\",\n-        \"src/pathops/SkOpBuilder.cpp\",\n-        \"src/pathops/SkOpCoincidence.cpp\",\n-        \"src/pathops/SkOpContour.cpp\",\n-        \"src/pathops/SkOpCubicHull.cpp\",\n-        \"src/pathops/SkOpEdgeBuilder.cpp\",\n-        \"src/pathops/SkOpSegment.cpp\",\n-        \"src/pathops/SkOpSpan.cpp\",\n-        \"src/pathops/SkPathOpsAsWinding.cpp\",\n-        \"src/pathops/SkPathOpsCommon.cpp\",\n-        \"src/pathops/SkPathOpsConic.cpp\",\n-        \"src/pathops/SkPathOpsCubic.cpp\",\n-        \"src/pathops/SkPathOpsCurve.cpp\",\n-        \"src/pathops/SkPathOpsDebug.cpp\",\n-        \"src/pathops/SkPathOpsLine.cpp\",\n-        \"src/pathops/SkPathOpsOp.cpp\",\n-        \"src/pathops/SkPathOpsQuad.cpp\",\n-        \"src/pathops/SkPathOpsRect.cpp\",\n-        \"src/pathops/SkPathOpsSimplify.cpp\",\n-        \"src/pathops/SkPathOpsTSect.cpp\",\n-        \"src/pathops/SkPathOpsTightBounds.cpp\",\n-        \"src/pathops/SkPathOpsTypes.cpp\",\n-        \"src/pathops/SkPathOpsWinding.cpp\",\n-        \"src/pathops/SkPathWriter.cpp\",\n-        \"src/pathops/SkReduceOrder.cpp\",\n         \"src/pdf/SkDocument_PDF_None.cpp\",\n         \"src/ports/SkDebug_android.cpp\",\n         \"src/ports/SkDiscardableMemory_none.cpp\",\n@@ -1078,7 +1046,6 @@\n         \"src/utils/SkCanvasStack.cpp\",\n         \"src/utils/SkCanvasStateUtils.cpp\",\n         \"src/utils/SkCharToGlyphCache.cpp\",\n-        \"src/utils/SkClipStackUtils.cpp\",\n         \"src/utils/SkCustomTypeface.cpp\",\n         \"src/utils/SkDashPath.cpp\",\n         \"src/utils/SkEventTracer.cpp\",\n@@ -4917,7 +4884,6 @@\n         \"src/utils/SkCanvasStack.cpp\",\n         \"src/utils/SkCanvasStateUtils.cpp\",\n         \"src/utils/SkCharToGlyphCache.cpp\",\n-        \"src/utils/SkClipStackUtils.cpp\",\n         \"src/utils/SkCustomTypeface.cpp\",\n         \"src/utils/SkDashPath.cpp\",\n         \"src/utils/SkEventTracer.cpp\",\n```",
+      "revId": "cce86388796b470ee71d850bbd64091b363303e1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
