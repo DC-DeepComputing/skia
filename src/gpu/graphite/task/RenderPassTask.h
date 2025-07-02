@@ -57,7 +57,24 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
-    bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) override;
+    template<typename T>
+    bool visitChildren(const std::function<bool(const T*)>& visitor) {
+        if constexpr (std::is_same_v<T, GraphicsPipeline>) {
+            for (const std::unique_ptr<DrawPass>& pass : fDrawPasses) {
+                if (!pass->visitChildren<GraphicsPipeline>(visitor)) {
+                    return false;
+                }
+            }
+        } else if constexpr (std::is_same_v<T, TextureProxy>) {
+            if (fTarget && !visitor(fTarget.get())) {
+                return false;
+            }
+            if (fDstCopy && !visitor(fDstCopy.get())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 private:
     RenderPassTask(DrawPassList,

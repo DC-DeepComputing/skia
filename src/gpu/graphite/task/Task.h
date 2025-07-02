@@ -59,9 +59,13 @@ public:
     // Returns true on success; false on failure.
     virtual Status addCommands(Context*, CommandBuffer*, ReplayTargetData) = 0;
 
-    // Visit all pipelines until `visitor` returns false to end early.
-    virtual bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
-        // By default assume the task uses no GraphicsPipelines
+    // Visits all children of a specific type T held by this Task. By default, a Task is assumed to
+    // have no children of any given type. Returning true signifies that the visitation should
+    // continue.
+    //
+    // Concrete Task subclasses should implement this template to handle the types they own.
+    template<typename T>
+    bool visitChildren(const std::function<bool(const T*)>& visitor) {
         return true;
     }
 };
