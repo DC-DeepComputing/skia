@@ -16,27 +16,6 @@ namespace skgpu::graphite {
 
 using Status = Task::Status;
 
-template <typename Fn>
-Status TaskList::visitTasks(Fn fn) {
-    int discardCount = 0;
-    for (sk_sp<Task>& task: fTasks) {
-        if (!task) {
-            discardCount++;
-            continue; // Skip over discarded tasks
-        }
-
-        Status status = fn(task.get());
-        if (status == Status::kFail) {
-            return Status::kFail;
-        } else if (status == Status::kDiscard) {
-            task.reset();
-            discardCount++;
-        }
-    }
-
-    return discardCount == fTasks.size() ? Status::kDiscard : Status::kSuccess;
-}
-
 Status TaskList::prepareResources(ResourceProvider* resourceProvider,
                                   ScratchResourceManager* scratchManager,
                                   const RuntimeEffectDictionary* runtimeDict) {
@@ -56,15 +35,6 @@ Status TaskList::addCommands(Context* context,
     return this->visitTasks([&](Task* task) {
         return task->addCommands(context, commandBuffer, replayData);
     });
-}
-
-bool TaskList::visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor) {
-    Status status = this->visitTasks([&](Task* task) {
-        return task->visitPipelines(visitor) ? Status::kSuccess : Status::kFail;
-    });
-    // Map back to simple bool (treat kDiscard as true too, no pipelines to visit means all
-    // pipelines were visited).
-    return status != Status::kFail;
 }
 
 } // namespace skgpu::graphite

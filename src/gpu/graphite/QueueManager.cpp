@@ -208,7 +208,7 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
         // If the commands failed, iterate over all the used pipelines to see if their async
         // compilation was the reason for failure. Clients that manage pipeline disk caches may
         // want to handle the failure differently than when any other GPU command failed.
-        const bool validPipelines = info.fRecording->priv().taskList()->visitPipelines(
+        const bool validPipelines = info.fRecording->priv().taskList()->visit<GraphicsPipeline>(
                 [](const GraphicsPipeline* pipeline) {
                     return !pipeline->didAsyncCompilationFail();
                 });
