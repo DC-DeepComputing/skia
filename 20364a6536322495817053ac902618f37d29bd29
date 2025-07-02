@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0079176d_e3eb8e19",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-02T19:45:07Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL and stamp this M139 merge?\n\nThe merge has been approved in https://crbug.com/429161958.\n\nThe merge is mostly clean, except a minor conflict with the new `SkASSERT` from https://skia-review.googlesource.com/c/skia/+/1012937/5/experimental/rust_png/decoder/impl/SkPngRustCodec.cpp which doesn\u0027t yet exist in M139.  I resolved the conflict in favor of keeping the M139 code.",
+      "revId": "20364a6536322495817053ac902618f37d29bd29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
