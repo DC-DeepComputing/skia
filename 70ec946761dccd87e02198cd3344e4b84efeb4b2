@@ -46,6 +46,30 @@
       },
       "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5c24ddb_ec692e34",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-02T15:51:59Z",
+      "side": 1,
+      "message": "**you are busy do not bother reading this unless you really care about formatting mumbo jumbo**\n\nOther variations of the current approach that I don\u0027t see as adding much benefit but that I\u0027ve already typed out so here you go:\n\n1) Have `PipelineInfo` take in `SkString` rather than the `RenderPassDesc` reference. This means we would need to conditionally include the RPDesc header file in `DrawPass.cpp` (currently we just fwd declare and all backend pipeline classes already include it anyways). This isn\u0027t that much cleaner, though.\n\n2) Pass in RPDesc for all builds (since it\u0027s relatively low overhead to do so), only using that reference when tracing/caring about labels. Compilers will likely complain about an unused parameter, so we may need to circumvent that.\n\n3) Have `PipelineInfo` take in a string for all builds that can just be empty, or populated via RPDesc on builds where we care about labels.\n\n4) We could utilize `GetPipelineLabel` in `ContextUtils`, but then we run into the same problem of performing this concatenation for every trace event.",
+      "parentUuid": "7dd0d86d_98fe9b5f",
+      "range": {
+        "startLine": 780,
+        "startChar": 35,
+        "endLine": 780,
+        "endChar": 61
+      },
+      "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
