@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46b005e1_9421e32f",
+        "filename": "src/gpu/graphite/Image_Base_Graphite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-02T16:25:36Z",
+      "side": 1,
+      "message": "nit: remove extra \u0027in\u0027",
+      "range": {
+        "startLine": 91,
+        "startChar": 33,
+        "endLine": 91,
+        "endChar": 35
+      },
+      "revId": "6b61aeb2b7cf9f08183317b16fa3f31c2f0dab57",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
