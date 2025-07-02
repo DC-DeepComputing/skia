@@ -76,16 +76,21 @@ void Image_Base::notifyInUse(Recorder* recorder, DrawContext* drawContext) const
                             recorder->priv().add(std::move(deviceDrawTask));
                         }
                     } else {
-                        // If there's no draw task yet, the device is being drawn into a child
-                        // scratch device (backdrop filter or init-from-prev layer), and the child
-                        // will later on be drawn back into the device's `drawContext`. In this case
-                        // `device` should already have performed an internal flush and have no
-                        // pending work, and not yet be marked immutable. The correct action at this
-                        // point in time is to do nothing: the final task order in the device's
-                        // DrawTask will be pre-notified tasks into the device's target, then the
-                        // child's DrawTask when it's drawn back into `device`, and then any post
-                        // tasks that further modify the `device`'s target.
-                        SkASSERT(device->recorder() && device->recorder() == recorder);
+                        // If there's no draw task yet, there are two possible scenarios:
+                        //
+                        // 1) the device is being drawn into a child scratch device (backdrop filter
+                        //    or init-from-prev layer), and the child will later on be drawn back
+                        //    into the device's `drawContext`. In this case `device` should already
+                        //    have performed an internal flush and have no pending work, and not yet
+                        //    be marked immutable. The correct action at this point in time is to do
+                        //    nothing: the final task order in the device's DrawTask will be
+                        //    pre-notified tasks into the device's target, then the child's DrawTask
+                        //    when it's drawn back into `device`, and then any post tasks that
+                        //    further modify the `device`'s target.
+                        // 2) the device was flushed to a drawContext's local task list, resulting
+                        //    in in no lastTask. If that is the case, it is also possible that the
+                        //    device was not registered with the recorder.
+                        SkASSERT(!device->recorder() || device->recorder() == recorder);
                     }
 
                     // Scratch devices are often already marked immutable, but they are also the
