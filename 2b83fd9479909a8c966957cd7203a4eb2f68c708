@@ -34,6 +34,24 @@
       "parentUuid": "a0a00626_9d2d72fb",
       "revId": "2b83fd9479909a8c966957cd7203a4eb2f68c708",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b72b74b_c94f8338",
+        "filename": "tools/fonts/FontToolUtils.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-02T12:19:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6092f10_0c5de04c",
+      "revId": "2b83fd9479909a8c966957cd7203a4eb2f68c708",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
