@@ -731,8 +731,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         log_pipeline_creation(asyncCreation.get());
     }
 
-    PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+    PipelineInfo pipelineInfo{ *shaderInfo,
+                               pipelineCreationFlags,
+                               pipelineKey.hash(),
+                               compilationID
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+                               , renderPassDesc
+#endif
+
+                             };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsCode.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsCode.fText);

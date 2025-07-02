@@ -16,6 +16,10 @@
 #include "src/gpu/graphite/ShaderInfo.h"
 #include "src/utils/SkShaderUtils.h"
 
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+#include "src/gpu/graphite/RenderPassDesc.h"
+#endif
+
 namespace skgpu::graphite {
 
 GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
@@ -40,7 +44,11 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
             const ShaderInfo& shaderInfo,
             SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
             uint32_t uniqueKeyHash,
-            uint32_t compilationID)
+            uint32_t compilationID
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+            , const RenderPassDesc& rpDesc
+#endif
+        )
         : fDstReadStrategy(shaderInfo.dstReadStrategy())
         , fNumFragTexturesAndSamplers(shaderInfo.numFragmentTexturesAndSamplers())
         , fHasPaintUniforms(shaderInfo.hasPaintUniforms())
@@ -55,7 +63,9 @@ GraphicsPipeline::PipelineInfo::PipelineInfo(
 #endif
 
 #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
-    fLabel = shaderInfo.fsLabel();
+    fLabel = rpDesc.toPipelineLabel().c_str();
+    fLabel += " + ";
+    fLabel += shaderInfo.fsLabel();
 #endif
 }
 

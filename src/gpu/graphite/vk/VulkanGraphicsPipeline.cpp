@@ -942,8 +942,15 @@ sk_sp<VulkanGraphicsPipeline> VulkanGraphicsPipeline::Make(
 
     sk_sp<VulkanGraphicsPipeline> pipeline;
     if (vkPipeline) {
-        PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                                    pipelineKey.hash(), compilationID };
+        PipelineInfo pipelineInfo{ *shaderInfo,
+                                   pipelineCreationFlags,
+                                   pipelineKey.hash(),
+                                   compilationID
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+                                   , renderPassDesc
+#endif
+
+                                 };
 #if defined(GPU_TEST_UTILS)
         pipelineInfo.fNativeVertexShader = SkShaderUtils::SpirvAsHexStream(vsSPIRV.fBinary);
         pipelineInfo.fNativeFragmentShader = SkShaderUtils::SpirvAsHexStream(fsSPIRV.fBinary);

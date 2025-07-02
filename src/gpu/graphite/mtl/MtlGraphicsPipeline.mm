@@ -333,8 +333,15 @@ sk_sp<MtlGraphicsPipeline> MtlGraphicsPipeline::Make(
     sk_cfp<id<MTLDepthStencilState>> dss =
             resourceProvider->findOrCreateCompatibleDepthStencilState(step->depthStencilSettings());
 
-    PipelineInfo pipelineInfo{ *shaderInfo, pipelineCreationFlags,
-                               pipelineKey.hash(), compilationID };
+    PipelineInfo pipelineInfo{ *shaderInfo,
+                               pipelineCreationFlags,
+                               pipelineKey.hash(),
+                               compilationID
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE) || defined(GPU_TEST_UTILS)
+                               , renderPassDesc
+#endif
+
+                             };
 #if defined(GPU_TEST_UTILS)
     pipelineInfo.fNativeVertexShader = std::move(vsMSL.fText);
     pipelineInfo.fNativeFragmentShader = std::move(fsMSL.fText);
