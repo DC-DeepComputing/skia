@@ -1092,6 +1092,26 @@ DEF_TEST(Matrix_LookAt, r) {
     REPORTER_ASSERT(r, m == SkM44());
 }
 
+DEF_TEST(Matrix_Affine, r) {
+    auto is_affine = [](const SkMatrix& m) -> bool {
+        return (m.getType() & SkMatrix::TypeMask::kAffine_Mask) != 0;
+    };
+
+    // third row is nearly affine, except for floating point precision
+    const auto m = SkMatrix::MakeAll(
+            1.2887144f,  0.33863622f, -776.0461f,
+           -0.33863622f, 1.28871440f, -297.80093f,
+                   0.0f,        0.0f, 0.99999994f);
+    m.dump();
+    REPORTER_ASSERT(r, !is_affine(m));
+
+    SkMatrix inverted;
+    REPORTER_ASSERT(r, m.invert(&inverted));
+
+    inverted.dump();
+    REPORTER_ASSERT(r, is_affine(inverted));
+}
+
 DEF_TEST(Matrix_SetRotateSnap, r) {
     SkMatrix m;
 
