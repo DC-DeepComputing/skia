@@ -208,7 +208,8 @@ void populate_attachment_refs(const RenderPassDesc& renderPassDesc,
                               VkAttachmentReference& colorRef,
                               VkAttachmentReference& resolveRef,
                               VkAttachmentReference& resolveLoadInputRef,
-                              VkAttachmentReference& depthStencilRef) {
+                              VkAttachmentReference& depthStencilRef,
+                              VkImageLayout* colorInitialLayout) {
     static constexpr VkAttachmentReference kUnused{VK_ATTACHMENT_UNUSED, VK_IMAGE_LAYOUT_UNDEFINED};
 
     // Note: See assumptions regarding RenderPassDesc structure in AddToKey().
@@ -217,18 +218,20 @@ void populate_attachment_refs(const RenderPassDesc& renderPassDesc,
     const AttachmentDesc depthStencil = renderPassDesc.fDepthStencilAttachment;
     SkASSERT(color.fFormat != TextureFormat::kUnsupported);
 
-    // If reading from the dst as an input attachment, we must use VK_IMAGE_LAYOUT_GENERAL
-    // for the color attachment description. Use a general image layout for all renderpasses to
-    // support this.
-    //
-    // As long as the initial/final layouts are VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL, the
-    // choice of the VK_IMAGE_LAYOUT_GENERAL for the subpass layout is efficient; the few GPUs
-    // that treat VK_IMAGE_LAYOUT_GENERAL differently recognize this pattern and keep the
-    // internal layout optimal.
+    VkImageLayout initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    if (color.fLoadOp == LoadOp::kLoad) {
+        // If loading, we must preserve contents and start in a defined layout.
+        initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+    } else {
+        // If clearing or discarding, UNDEFINED is most efficient.
+        SkASSERT(color.fLoadOp == LoadOp::kClear || color.fLoadOp == LoadOp::kDiscard);
+        initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    }
     colorRef.layout = VK_IMAGE_LAYOUT_GENERAL;
     colorRef.attachment = descs.size();
     VkAttachmentDescription& vkColorAttachDesc = descs.push_back();
     setup_vk_attachment_description(&vkColorAttachDesc, color, /*isColor=*/true);
+    vkColorAttachDesc.initialLayout = initialLayout;
 
     if (resolve.fFormat != TextureFormat::kUnsupported) {
         resolveRef.attachment = descs.size();
@@ -260,6 +263,9 @@ void populate_attachment_refs(const RenderPassDesc& renderPassDesc,
     } else {
         depthStencilRef = kUnused;
     }
+
+    // Return the determined layout to the caller.
+    *colorInitialLayout = initialLayout;
 }
 
 void populate_subpass_dependencies(const VulkanSharedContext* context,
@@ -339,9 +345,8 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
                                                const RenderPassDesc& renderPassDesc) {
     const bool needLoadMSAAFromResolveSubpass =
             RenderPassDescWillLoadMSAAFromResolve(renderPassDesc);
-
-    // Set up attachment descriptions + references. Declare them before having a helper populate
-    // their values so we can reference them later during RP creation.
+    // Set up attachment descriptions + references.
+    VkImageLayout colorInitialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
     skia_private::TArray<VkAttachmentDescription> attachmentDescs;
     VkAttachmentReference colorRef;
     VkAttachmentReference resolveRef;
@@ -353,11 +358,10 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
                              colorRef,
                              resolveRef,
                              resolveLoadInputRef,
-                             depthStencilRef);
+                             depthStencilRef,
+                             &colorInitialLayout);
 
-    // Assemble subpass information before creating the renderpass. Each renderpass has at least one
-    // subpass dependency (self-dependency for reading the dst texture). If loading MSAA from
-    // resolve, that adds another subpass and an additional dependency.
+    // Assemble subpass information.
     skia_private::STArray<2, VkSubpassDescription> subpassDescs;
     populate_subpass_descs(context->vulkanCaps(),
                            subpassDescs,
@@ -386,22 +390,28 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
     if (result != VK_SUCCESS) {
         return nullptr;
     }
+
     VkExtent2D granularity;
     VULKAN_CALL(context->interface(), GetRenderAreaGranularity(context->device(),
                                                                renderPass,
                                                                &granularity));
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity));
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context,
+                                                        renderPass,
+                                                        granularity,
+                                                        colorInitialLayout));
 }
 
 VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkRenderPass renderPass,
-                                   VkExtent2D granularity)
+                                   VkExtent2D granularity,
+                                   VkImageLayout colorLayout)
         : Resource(context,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0)
         , fSharedContext(context)
         , fRenderPass(renderPass)
-        , fGranularity(granularity) {}
+        , fGranularity(granularity)
+        , fColorAttachmentInitialLayout(colorLayout) {}
 
 void VulkanRenderPass::freeGpuData() {
     VULKAN_CALL(fSharedContext->interface(),
