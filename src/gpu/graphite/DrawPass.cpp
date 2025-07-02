@@ -7,6 +7,7 @@
 
 #include "src/gpu/graphite/DrawPass.h"
 
+#include "include/core/SkString.h"
 #include "include/gpu/graphite/GraphiteTypes.h"
 #include "include/gpu/graphite/Recorder.h"
 #include "include/private/base/SkAlign.h"
@@ -26,12 +27,18 @@
 #include "src/gpu/graphite/PaintParamsKey.h"
 #include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
 #include "src/gpu/graphite/Renderer.h"
 #include "src/gpu/graphite/ResourceProvider.h"
 #include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/Texture.h"
 #include "src/gpu/graphite/UniformManager.h"
 #include "src/gpu/graphite/geom/BoundsManager.h"
+
+#if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
+#include "include/core/SkString.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+#endif
 
 #include "src/base/SkMathPriv.h"
 #include "src/base/SkTBlockList.h"
@@ -718,14 +725,14 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
 bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RuntimeEffectDictionary* runtimeDict,
-                                const RenderPassDesc& renderPassDesc) {
+                                const RenderPassDesc& rpDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
     fFullPipelines.reserve(fPipelineDescs.size());
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
-                                                                       renderPassDesc);
+                                                                       rpDesc);
         if (!pipeline) {
             SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
             return false;
@@ -772,7 +779,8 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         for (int i = 0 ; i < fFullPipelines.size(); ++i) {
             TRACE_EVENT_INSTANT1_ALWAYS(
                     "skia.shaders",
-                    TRACE_STR_COPY(fFullPipelines[i]->getPipelineInfo().fLabel.c_str()),
+                    TRACE_STR_COPY((static_cast<std::string>(rpDesc.toPipelineLabel().c_str()) +
+                                   " + " + fFullPipelines[i]->getPipelineInfo().fLabel).c_str()),
                     TRACE_EVENT_SCOPE_THREAD,
                     "area", sk_float_saturate2int(fPipelineDrawAreas[i]));
         }
