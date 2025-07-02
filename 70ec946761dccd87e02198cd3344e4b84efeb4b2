@@ -22,6 +22,30 @@
       },
       "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dd0d86d_98fe9b5f",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-02T15:51:31Z",
+      "side": 1,
+      "message": "Yeah, I played around with your first suggestion and it turned into more lines than I wanted (SkString + std::string + static char arr concatenation typing issues). Nothing was particularly pleasing, but you\u0027re right re: overhead. I took your second suggestion, TY for your thoughts there~\n\nIt can be a bit clunky (given that we only want to pass in the desc on builds where we are performing this tracing / care about labels; otherwise it is unused entirely). There are ofc other options, but here\u0027s one I may actually propose:\n\n* We could have a separate trace event that prints the RpDesc label. e.g.\n```\n    {\n        TRACE_EVENT0_ALWAYS(\"skia.shaders\", \"GraphitePipelineUse\");\n        \n        // Add trace event for RPDesc here\n        \n        for (int i \u003d 0 ; i \u003c fFullPipelines.size(); ++i) {\n            // print each pipeline label here as usual\n        }\n    }\n```\n\nLMKWYT!",
+      "parentUuid": "f3a00e6c_772ca61d",
+      "range": {
+        "startLine": 780,
+        "startChar": 35,
+        "endLine": 780,
+        "endChar": 61
+      },
+      "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
