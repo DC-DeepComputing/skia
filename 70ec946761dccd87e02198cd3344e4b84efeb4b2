@@ -94,6 +94,30 @@
       },
       "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4d7eeec6_288e9f8d",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 780,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-02T17:14:21Z",
+      "side": 1,
+      "message": "Neat! I made it such that we keep the current `GraphitePipelineUse` (good for quick Ctrl+f sanity check IMO; LMKWYT), and beneath that we print full RP Desc info, and contained in that is each pipeline associated with that RP. \n\nSee https://screenshot.googleplex.com/5XG4fPJZRz2PfVe for example of how it will look.",
+      "parentUuid": "c00b5eb1_99224ff7",
+      "range": {
+        "startLine": 780,
+        "startChar": 35,
+        "endLine": 780,
+        "endChar": 61
+      },
+      "revId": "70ec946761dccd87e02198cd3344e4b84efeb4b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
