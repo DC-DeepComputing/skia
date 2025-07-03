@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0068f0e_da853b3f",
+        "filename": "src/gpu/graphite/task/RenderPassTask.h",
+        "patchSetId": 16
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-03T12:45:54Z",
+      "side": 1,
+      "message": "We would also need to visit the texture proxies that are in every draw pass too.\n\nSo the first loop that\u0027s currently guarded by GraphicsPipeline could be generic, and then we visit target and dst copy if it the type is texture proxy as well.",
+      "range": {
+        "startLine": 69,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 13
+      },
+      "revId": "6974d8dd0d3aba56c0fb3759843e1edea86fd5c2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
