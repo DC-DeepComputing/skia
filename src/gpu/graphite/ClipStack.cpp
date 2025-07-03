@@ -1084,7 +1084,8 @@ void ClipStack::SaveRecord::replaceWithElement(RawElement&& toAdd,
 class ClipStack::DrawShape {
 public:
     DrawShape(const Transform& localToDevice, const Geometry& geometry)
-            : fLocalToDevice(&localToDevice) {
+            : fLocalToDevice(&localToDevice)
+            , fShapeWasModified(false) {
         if (geometry.isShape()) {
             fShape = geometry.shape();
             fShapeMatchesGeometry = true;
@@ -1098,6 +1099,10 @@ public:
             // If geometry is not a shape, it is not inverted.
             SkASSERT(!fShape.inverted());
         }
+
+        fShapeCompatibleWithIntersectShape = fShape.isFloodFill() ||
+                                            (!fShape.inverted() && (fShape.isRect() ||
+                                                                    fShape.isRRect()));
     }
 
     operator TransformedShape() const {
@@ -1109,14 +1114,23 @@ public:
         // would cause path rendering draws to potentially change in hard to predict ways.
         SkClipOp op = fShape.inverted() ? SkClipOp::kDifference : SkClipOp::kIntersect;
         return TransformedShape{*fLocalToDevice, fShape, fOuterBounds, fInnerBounds, op,
-                                /*containsChecksOnlyBounds=*/!fShapeMatchesGeometry};
+                                /*containsChecksOnlyBounds=*/!this->shapeCanBeModified()};
+    }
+
+    bool shapeCanBeModified() const {
+        return fShapeCompatibleWithIntersectShape && fShapeMatchesGeometry;
     }
 
     bool applyStyle(const SkStrokeRec& style, const Rect& deviceBounds);
     void applyScissor(const Rect& scissor);
 
-    // Return a Clip object encapsulating the tracked bounds of the now-clipped draw.
-    Clip toClip(const Rect& scissor, const NonMSAAClip& analyticClip, const SkShader* clipShader);
+    void resetToFloodFill();
+    bool intersectClipElement(const RawElement& clip);
+
+    // Sync any modifications back to `geometry` and return a Clip object encapsulating the
+    // tracked bounds of the now-clipped draw.
+    Clip toClip(Geometry* geometry, const Rect& scissor,
+                const NonMSAAClip& analyticClip, const SkShader* clipShader);
 
 private:
     const Transform* fLocalToDevice;
@@ -1141,6 +1155,9 @@ private:
 
     // Whether or not the shape matches the original geometry to draw (with style)
     bool fShapeMatchesGeometry;
+    // Whether or not the clip stack can modify this shape in place (and if it has already done so).
+    bool fShapeCompatibleWithIntersectShape;
+    bool fShapeWasModified;
 };
 
 bool ClipStack::DrawShape::applyStyle(const SkStrokeRec& style, const Rect& deviceBounds) {
@@ -1212,7 +1229,7 @@ void ClipStack::DrawShape::applyScissor(const Rect& scissor) {
     // the SaveRecord::testForDraw() case to detect no clip influence if only the scissor is
     // needed.
     fOuterBounds = fTransformedShapeBounds.makeIntersect(scissor);
-    if (fShapeMatchesGeometry && fLocalToDevice->type() <= Transform::Type::kRectStaysRect) {
+    if (this->shapeCanBeModified() && fLocalToDevice->type() <= Transform::Type::kRectStaysRect) {
         if (fShape.isRect()) {
             // For a rect-stays-rect transform, this should be equivalent to
             // fLocalToDevice.mapRect(fShape.rect()).makeIntersect(scissor)
@@ -1229,13 +1246,66 @@ void ClipStack::DrawShape::applyScissor(const Rect& scissor) {
     // for a non-axis-aligned transform
 }
 
-Clip ClipStack::DrawShape::toClip(const Rect& scissor,
+Clip ClipStack::DrawShape::toClip(Geometry* geometry,
+                                  const Rect& scissor,
                                   const NonMSAAClip& analyticClip,
                                   const SkShader* clipShader) {
+    if (fShapeWasModified) {
+        // Sync back to the geometry that will be drawn
+        SkASSERT(this->shapeCanBeModified());
+        if (geometry->isEdgeAAQuad() && fShape.isRect()) {
+            // Since all clip edges are anti-aliased, any modified edges to fShape are assumed to
+            // be anti-aliased. We could try and track which non-AA quad edges get clipped and
+            // make them anti-aliased instead but that is hard to reason about when they are
+            // coincident with the clip edge.
+            SkASSERT(geometry->edgeAAQuad().isRect() &&
+                     geometry->edgeAAQuad().edgeFlags() == EdgeAAQuad::Flags::kAll);
+            // Preserve the EdgeAAQuad geometry type
+            geometry->setEdgeAAQuad(EdgeAAQuad(fShape.rect(), EdgeAAQuad::Flags::kAll));
+        } else {
+            geometry->setShape(fShape);
+        }
+        // Reconstruct new transformedShapeBounds and outer bounds
+        fTransformedShapeBounds = fLocalToDevice->mapRect(fShape.bounds());
+        fOuterBounds = fTransformedShapeBounds.makeIntersect(scissor);
+    }
+
     Rect drawBounds = fShape.inverted() ? scissor : fOuterBounds;
     SkASSERT(scissor.contains(drawBounds));
     return Clip(drawBounds, fTransformedShapeBounds,
                 scissor.asSkIRect(), analyticClip, clipShader);
+}
+
+void ClipStack::DrawShape::resetToFloodFill() {
+    if (this->shapeCanBeModified() && !fShape.isFloodFill()) {
+        fShape.reset();
+        fShape.setInverted(true);
+        fOuterBounds = fInnerBounds = Rect::InfiniteInverted();
+        fShapeWasModified = true;
+    }
+}
+
+bool ClipStack::DrawShape::intersectClipElement(const RawElement& clip) {
+    SkASSERT(clip.op() == SkClipOp::kIntersect);
+    if (this->shapeCanBeModified() &&
+        intersect_shape(clip.localToDevice(), clip.shape(), *fLocalToDevice, &fShape)) {
+        SkASSERT(!fShape.inverted());
+        if (fOuterBounds.isEmptyNegativeOrNaN()) {
+            // Changing from a flood fill to the clip's shape
+            fOuterBounds = clip.outerBounds();
+            fInnerBounds = clip.innerBounds();
+        } else {
+            // Restricting the shape's geometry by the clip
+            fOuterBounds.intersect(clip.outerBounds());
+            fInnerBounds.intersect(clip.innerBounds());
+            SkASSERT(!fOuterBounds.isEmptyNegativeOrNaN()); // Should have been caught earlier
+        }
+
+        fShapeWasModified = true;
+        return true;
+    }
+
+    return false;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1462,7 +1532,7 @@ AnalyticClip can_apply_analytic_clip(const Shape& shape,
 }  // anonymous namespace
 
 Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
-                                      const Geometry& geometry,
+                                      Geometry* geometry,
                                       const SkStrokeRec& style,
                                       bool msaaSupported,
                                       ClipStack::ElementList* outEffectiveElements) const {
@@ -1479,7 +1549,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     // the clip stack is known to be wide-open.
     const Rect deviceBounds = this->deviceBounds();
 
-    DrawShape draw{localToDevice, geometry};
+    DrawShape draw{localToDevice, *geometry};
     if (!draw.applyStyle(style, deviceBounds)) {
         return kClippedOut;
     }
@@ -1509,11 +1579,12 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
         case DrawInfluence::kNone:
             // The draw is unaffected by the clip stack (except possibly `scissor`), and there's no
             // need to visit each clip element.
-            return draw.toClip(scissor, {}, cs.shader());
+            return draw.toClip(geometry, scissor, {}, cs.shader());
 
         case DrawInfluence::kClipOnly:
-            // The draw covers the clip entirely. We could replace the geometry being drawn with
-            // something similar, but for now fall through to per-element clipping like kIntersect
+            // The draw covers the clip entirely. Replace the shape with a flood fill, which can
+            // intersect with shapes efficiently.
+            draw.resetToFloodFill();
             [[fallthrough]];
 
         case DrawInfluence::kIntersect:
@@ -1544,12 +1615,21 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                 continue;
 
             case DrawInfluence::kClipOnly:
-                // This element is covered entirely by the draw so we could replace the draw with
-                // the clip's geometry. For now, fall through and treat as if it were kIntersect
+                // This element is covered entirely by the draw, so the draw's geometry can be
+                // replaced assuming the coordinate spaces are compatible. To facilitate this, we
+                // switch the drawn geometry to a flood fill and then fall through to intersection.
+                // Even if the coordinate spaces aren't in alignment, this eliminates the draw's
+                // source of analytic coverage.
+                draw.resetToFloodFill();
+
                 [[fallthrough]];
 
             case DrawInfluence::kIntersect:
-                // First try to handle the clip analytically, otherwise add to outEffectiveElements
+                // First try to handle the clip geometrically
+                if (e.op() == SkClipOp::kIntersect && draw.intersectClipElement(e)) {
+                    continue;
+                }
+                // Second try to handle the clip analytically in the shader
                 if (nonMSAAClip.fAnalyticClip.isEmpty()) {
                     nonMSAAClip.fAnalyticClip = can_apply_analytic_clip(e.shape(),
                                                                         e.localToDevice());
@@ -1557,6 +1637,8 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
                         continue;
                     }
                 }
+                // Third, remember the element for later, either to be a depth-only draw or to be
+                // flattened into a clip mask.
                 outEffectiveElements->push_back(&e);
                 break;
         }
@@ -1588,7 +1670,7 @@ Clip ClipStack::visitClipStackForDraw(const Transform& localToDevice,
     }
 #endif
 
-    return draw.toClip(scissor, nonMSAAClip, cs.shader());
+    return draw.toClip(geometry, scissor, nonMSAAClip, cs.shader());
 }
 
 CompressedPaintersOrder ClipStack::updateClipStateForDraw(const Clip& clip,
