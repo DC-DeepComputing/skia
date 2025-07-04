@@ -48,6 +48,9 @@ struct ContextOptions;
 struct RenderPassDesc;
 
 struct ResourceBindingRequirements {
+    /* The API of the backend currently in use. */
+    BackendApi fBackendApi = BackendApi::kUnsupported;
+
     /* The required data layout rules for the contents of a uniform buffer. */
     Layout fUniformBufferLayout = Layout::kInvalid;
 
@@ -62,10 +65,10 @@ struct ResourceBindingRequirements {
     bool fSeparateTextureAndSamplerBinding = false;
 
     /**
-     * Whether intrinsic constant information is stored as push constants (rather than normal UBO).
-     * Currently only relevant or possibly true for Vulkan.
+     * Whether Dawn intrinsic constant information is stored as push constants (rather than normal
+     * UBO). Currently only relevant or possibly true for Dawn or Vulkan.
      */
-    bool fUseVulkanPushConstantsForIntrinsicConstants = false;
+    bool fUsePushConstantsForIntrinsicConstants  = false;
 
     /**
      * Whether compute shader textures use separate index ranges from other resources (i.e. buffers)
