@@ -193,8 +193,14 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
     std::string result;
     auto offsetter = UniformOffsetCalculator::ForTopLevel(bindingReqs.fUniformBufferLayout);
 
-    if (bindingReqs.fUseVulkanPushConstantsForIntrinsicConstants) {
-        result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+    if (bindingReqs.fUsePushConstantsForIntrinsicConstants) {
+        if (bindingReqs.fBackendApi == BackendApi::kVulkan) {
+            result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+        } else if (bindingReqs.fBackendApi == BackendApi::kDawn) {
+            result = "layout (webgpu, push_constant) uniform IntrinsicUniforms {\n";
+        } else {
+            SkUNREACHABLE;
+        }
     } else {
         result = get_uniform_header(bindingReqs.fUniformsSetIdx,
                                     bindingReqs.fIntrinsicBufferBinding,
@@ -202,7 +208,7 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
     }
     result += get_uniforms(&offsetter, kIntrinsicUniforms, -1, /* wrotePaintColor= */ nullptr);
     result.append("};\n\n");
-    SkASSERTF(bindingReqs.fUseVulkanPushConstantsForIntrinsicConstants ||
+    SkASSERTF(bindingReqs.fUsePushConstantsForIntrinsicConstants ||
               result.find('[') == std::string::npos,
               "Arrays are not supported in intrinsic uniforms");
     return result;
