@@ -483,6 +483,12 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
 
+#if !defined(__EMSCRIPTEN__)
+    // We need 32 bytes push constant for 2 vectors worth of intrinsic data.
+    fResourceBindingReqs.fUseDawnPushConstantsForIntrinsicConstants =
+            limits.maxImmediateSize >= DawnGraphicsPipeline::kIntrinsicUniformSize;
+#endif
+
     fResourceBindingReqs.fUniformsSetIdx = DawnGraphicsPipeline::kUniformBufferBindGroupIndex;
     fResourceBindingReqs.fTextureSamplerSetIdx = DawnGraphicsPipeline::kTextureBindGroupIndex;
 

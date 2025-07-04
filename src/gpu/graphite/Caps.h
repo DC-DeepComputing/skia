@@ -71,6 +71,12 @@ struct ResourceBindingRequirements {
     bool fUseVulkanPushConstantsForIntrinsicConstants = false;
 
     /**
+     * Whether Dawn intrinsic constant information is stored as push constants (rather than normal
+     * UBO). Currently only relevant or possibly true for Dawn.
+     */
+    bool fUseDawnPushConstantsForIntrinsicConstants = false;
+
+    /**
      * Whether compute shader textures use separate index ranges from other resources (i.e. buffers)
      */
     bool fComputeUsesDistinctIdxRangesForTextures = false;
