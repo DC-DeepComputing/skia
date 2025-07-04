@@ -195,6 +195,8 @@ std::string emit_intrinsic_constants(const ResourceBindingRequirements& bindingR
 
     if (bindingReqs.fUseVulkanPushConstantsForIntrinsicConstants) {
         result = "layout (vulkan, push_constant) uniform IntrinsicUniforms {\n";
+    } else if (bindingReqs.fUseDawnPushConstantsForIntrinsicConstants) {
+        result = "layout (webgpu, push_constant) uniform IntrinsicUniforms {\n";
     } else {
         result = get_uniform_header(bindingReqs.fUniformsSetIdx,
                                     bindingReqs.fIntrinsicBufferBinding,
