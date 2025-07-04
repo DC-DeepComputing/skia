@@ -206,6 +206,11 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     wgpu::DeviceDescriptor deviceDescriptor;
     deviceDescriptor.requiredFeatures = features.data();
     deviceDescriptor.requiredFeatureCount = features.size();
+
+    wgpu::Limits supportedLimits = {};
+    adapter.GetLimits(&supportedLimits);
+    deviceDescriptor.requiredLimits = &supportedLimits;
+
     deviceDescriptor.nextInChain = &togglesDesc;
     deviceDescriptor.SetDeviceLostCallback(
             wgpu::CallbackMode::AllowSpontaneous,
