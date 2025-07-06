@@ -71,7 +71,7 @@ int UniformOffsetCalculator::advanceStruct(const UniformOffsetCalculator& substr
 void UniformManager::resetWithNewLayout(Layout layout) {
     fStorage.clear();
     fLayout = layout;
-    fReqAlignment = 0;
+    fReqAlignment = 1;      //CHECK THIS!
     fStructBaseAlignment = 0;
     fWrotePaintColor = false;
 
