@@ -204,6 +204,7 @@ void setup_vk_attachment_description(VkAttachmentDescription* outAttachment,
 
 void populate_attachment_refs(const RenderPassDesc& renderPassDesc,
                               bool needLoadMSAAFromResolveSubpass,
+                              VkImageLayout colorInitialLayout,
                               skia_private::TArray<VkAttachmentDescription>& descs,
                               VkAttachmentReference& colorRef,
                               VkAttachmentReference& resolveRef,
@@ -340,6 +341,25 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
     const bool needLoadMSAAFromResolveSubpass =
             RenderPassDescWillLoadMSAAFromResolve(renderPassDesc);
 
+    // 1. Determine the correct default initialLayout for the color attachment based on its
+    //    loadOp. We don't have the live texture here, so we create the RenderPass object
+    //    with a sensible default assumption.
+    VkImageLayout colorInitialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+    const auto& colorAtt = renderPassDesc.fColorAttachment;
+    if (colorAtt.fFormat != TextureFormat::kUnsupported) {
+        if (colorAtt.fLoadOp == LoadOp::kLoad) {
+            // If we are loading existing data, the layout must be preserved.
+            // The standard layout for a color attachment is this. The command buffer
+            // will be responsible for ensuring the live texture matches.
+            colorInitialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+        } else {
+            // If clearing or discarding, we don't care about the prior contents,
+            // so UNDEFINED is the most efficient choice.
+            SkASSERT(colorAtt.fLoadOp == LoadOp::kClear || colorAtt.fLoadOp == LoadOp::kDiscard);
+            colorInitialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+        }
+    }
+
     // Set up attachment descriptions + references. Declare them before having a helper populate
     // their values so we can reference them later during RP creation.
     skia_private::TArray<VkAttachmentDescription> attachmentDescs;
@@ -349,6 +369,7 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
     VkAttachmentReference depthStencilRef;
     populate_attachment_refs(renderPassDesc,
                              needLoadMSAAFromResolveSubpass,
+                             colorInitialLayout,
                              attachmentDescs,
                              colorRef,
                              resolveRef,
@@ -390,18 +411,23 @@ sk_sp<VulkanRenderPass> VulkanRenderPass::Make(const VulkanSharedContext* contex
     VULKAN_CALL(context->interface(), GetRenderAreaGranularity(context->device(),
                                                                renderPass,
                                                                &granularity));
-    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context, renderPass, granularity));
+    return sk_sp<VulkanRenderPass>(new VulkanRenderPass(context,
+                                                        renderPass,
+                                                        granularity,
+                                                        colorInitialLayout));
 }
 
 VulkanRenderPass::VulkanRenderPass(const VulkanSharedContext* context,
                                    VkRenderPass renderPass,
-                                   VkExtent2D granularity)
+                                   VkExtent2D granularity,
+                                   VkImageLayout colorLayout)
         : Resource(context,
                    Ownership::kOwned,
                    /*gpuMemorySize=*/0)
         , fSharedContext(context)
         , fRenderPass(renderPass)
-        , fGranularity(granularity) {}
+        , fGranularity(granularity)
+        , fColorAttachmentInitialLayout(colorLayout) {}
 
 void VulkanRenderPass::freeGpuData() {
     VULKAN_CALL(fSharedContext->interface(),

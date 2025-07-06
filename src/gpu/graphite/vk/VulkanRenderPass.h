@@ -31,6 +31,8 @@ public:
 
     VkExtent2D granularity() { return fGranularity; }
 
+    VkImageLayout colorAttachmentInitialLayout() const { return fColorAttachmentInitialLayout; }
+
     const char* getResourceType() const override { return "Vulkan RenderPass"; }
 
     // The relevant information in RenderPassDesc to identify a VkRenderPass fits in one uint32. If
@@ -51,11 +53,13 @@ public:
 private:
     void freeGpuData() override;
 
-    VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity);
+    VulkanRenderPass(const VulkanSharedContext*, VkRenderPass, VkExtent2D granularity,
+                     VkImageLayout colorLayout);
 
     const VulkanSharedContext* fSharedContext;
     VkRenderPass fRenderPass;
     VkExtent2D fGranularity;
+    VkImageLayout fColorAttachmentInitialLayout;
 };
 } // namespace skgpu::graphite
 
