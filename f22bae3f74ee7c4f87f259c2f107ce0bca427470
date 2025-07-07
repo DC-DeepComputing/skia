@@ -65,6 +65,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b48d68e_029e3d85",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1397,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T19:11:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "feb1372f_c55729ad",
+      "range": {
+        "startLine": 1397,
+        "startChar": 48,
+        "endLine": 1397,
+        "endChar": 51
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bac035ee_280458f6",
@@ -101,6 +125,30 @@
       "writtenOn": "2025-07-07T19:08:13Z",
       "side": 1,
       "message": "Acknowledged",
+      "parentUuid": "bac035ee_280458f6",
+      "range": {
+        "startLine": 151,
+        "startChar": 8,
+        "endLine": 151,
+        "endChar": 16
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7599794_ee68c49d",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T19:11:56Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "bac035ee_280458f6",
       "range": {
         "startLine": 151,
@@ -195,6 +243,30 @@
       "writtenOn": "2025-07-07T19:08:13Z",
       "side": 1,
       "message": "Acknowledged",
+      "parentUuid": "2c4bcec9_9669e798",
+      "range": {
+        "startLine": 154,
+        "startChar": 8,
+        "endLine": 154,
+        "endChar": 18
+      },
+      "revId": "f22bae3f74ee7c4f87f259c2f107ce0bca427470",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94a9ec3c_05525e2f",
+        "filename": "src/gpu/graphite/ClipStack.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T19:11:56Z",
+      "side": 1,
+      "message": "Done",
       "parentUuid": "2c4bcec9_9669e798",
       "range": {
         "startLine": 154,
