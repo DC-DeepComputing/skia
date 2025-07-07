@@ -14,15 +14,15 @@
 #include "src/base/SkEnumBitMask.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
-//#define PRINT_GENERATED_LABELS
+#define PRINT_GENERATED_LABELS
 
 namespace PrecompileTestUtils {
 
@@ -160,15 +160,20 @@ skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlyPlusColorSrcover(
 
 skgpu::graphite::PaintOptions EdgeExtensionPassthroughSrcover();
 skgpu::graphite::PaintOptions EdgeExtensionPremulSrcover();
+skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughMatrixCFDitherSrcover();
 skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughSrcover();
 skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPremulSrcover();
 
+skgpu::graphite::PaintOptions Foo();
+
 // Specifies the child shader to be created for a RE_LinearEffect
 enum class ChildType {
+    kFoo,
     kSolidColor,
     kHWTexture,
 #if defined(SK_VULKAN)
     kHWTextureYCbCr247,
+    kFoo2,
 #endif
 };
 
@@ -180,7 +185,7 @@ skgpu::graphite::PaintOptions LinearEffect(const char* parameterStr,
                                            bool dither = false);
 
 #if defined(SK_VULKAN)
-skgpu::graphite::PaintOptions ImagePremulYCbCr238Srcover();
+skgpu::graphite::PaintOptions ImagePremulYCbCr238Srcover(bool narrow);
 skgpu::graphite::PaintOptions TransparentPaintImagePremulYCbCr238Srcover();
 skgpu::graphite::PaintOptions ImagePremulYCbCr240Srcover();
 skgpu::graphite::PaintOptions TransparentPaintImagePremulYCbCr240Srcover();
@@ -318,6 +323,20 @@ const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_SRGB {
         skgpu::graphite::DepthStencilFlags::kDepth,
         kRGBA_F16_SkColorType,
         SkColorSpace::MakeSRGB(),
+        /* fRequiresMSAA= */ false
+};
+
+const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_PQ {
+        skgpu::graphite::DepthStencilFlags::kDepth,
+        kRGBA_F16_SkColorType,
+        SkColorSpace::MakeRGB(SkNamedTransferFn::k2Dot2, SkNamedGamut::kRec2020),
+        /* fRequiresMSAA= */ false
+};
+
+const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_Adobe {
+        skgpu::graphite::DepthStencilFlags::kDepth,
+        kRGBA_F16_SkColorType,
+        SkColorSpace::MakeRGB(SkNamedTransferFn::kSRGB, SkNamedGamut::kAdobeRGB),
         /* fRequiresMSAA= */ false
 };
 
