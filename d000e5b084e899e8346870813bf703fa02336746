@@ -49,6 +49,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3b81a051_e585e446",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:14:52Z",
+      "side": 1,
+      "message": "SkCaptureCanvas doesn\u0027t need to be forward declared anymore either",
+      "parentUuid": "8d3f7f70_78fb5474",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "37c9d3c1_76f6a75a",
         "filename": "include/core/SkRecorder.h",
         "patchSetId": 6
@@ -129,6 +153,47 @@
       "writtenOn": "2025-07-01T16:10:59Z",
       "side": 1,
       "message": "I made a new callback here for the signal we were talking about. It does nothing on the base canvas, it will get overwritten in SkCaptureCanvas. I didn\u0027t implement it yet in case this wasn\u0027t the place to put it, let me know what you think.",
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "36b2ab5f_a019f09d",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:14:52Z",
+      "side": 1,
+      "message": "I think that\u0027s reasonable. There\u0027s no virtualization for setSurfaceBase and nothing else jumped out at me that we could adopt for this purpose.",
+      "parentUuid": "135031e7_b92ba31d",
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fc8fa7a_945cea90",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:14:52Z",
+      "side": 1,
+      "message": "I would just have this be `fOwnedBaseCanvas.reset(this-\u003eonNewCanvas());` or `fOwnedBaseCanvas \u003d std::unique_ptr\u003cSkCanvas\u003e(this-\u003eonNewCanvas());` and remove the assignment lower down.  \n\nThen we can just pass in `fOwnedBaseCanvas.get(0` to `makeCaptureCanvas` and `fCachedCanvas`",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 46
+      },
       "revId": "d000e5b084e899e8346870813bf703fa02336746",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

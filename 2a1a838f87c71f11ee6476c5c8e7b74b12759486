@@ -97,6 +97,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "14771e93_fe0f6b54",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:14:52Z",
+      "side": 1,
+      "message": "Yes, if the capture canvas is going to be owned by the CaptureManager, then it\u0027ll be returned as a bare pointer (and the capture manager itself returns the new canvases as bare pointers since it\u0027s not relinquishing ownership).  It\u0027s never okay to double wrap a bare pointer in a unique_ptr.\n\nAnd for posterity, with the other ownership plan we\u0027ve worked out, the first comment\u0027s suggestion to accept a `std::unique_ptr\u003cSkCanvas\u003e` is not correct. Having `makeCaptureCanvas` take in a bare pointer and return a bare pointer is the right API.",
+      "parentUuid": "7c5356f2_a692b571",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 62
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0cc5d367_36556de0",
         "filename": "include/gpu/graphite/Context.h",
         "patchSetId": 5
@@ -514,6 +538,30 @@
       "side": 1,
       "message": "I think we do since the compiler needs to know that SkCaptureCanvas is a subclass of SkCanvas. Later on when we try `fCachedCanvas \u003d std::unique_ptr\u003cSkCanvas\u003e(captureCanvas);` the compiler errors because it doesn\u0027t know the canvases\u0027 relationship.",
       "parentUuid": "9c987125_22c76f32",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47ffacc3_0c6f801f",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:14:52Z",
+      "side": 1,
+      "message": "But if `makeCaptureCanvas` returns `SkCanvas*` that problem goes away",
+      "parentUuid": "22be0fdd_1b71d1dc",
       "range": {
         "startLine": 19,
         "startChar": 0,
