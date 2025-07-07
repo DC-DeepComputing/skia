@@ -20,6 +20,29 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e8644fcd_3f964b3c",
+        "filename": "src/core/SkStroke.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 366,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-07T20:37:00Z",
+      "side": 1,
+      "message": "I was wondering if we should use `std::move(fInner)` here... doesn\u0027t look like we have a move constructor yet, so I guess we can do that later.",
+      "range": {
+        "startLine": 366,
+        "startChar": 29,
+        "endLine": 366,
+        "endChar": 35
+      },
+      "revId": "4357c672494b8133e9337683577acdc260fb26e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "d1346568_da6107a0",
         "filename": "src/core/SkStroke.cpp",
         "patchSetId": 4
