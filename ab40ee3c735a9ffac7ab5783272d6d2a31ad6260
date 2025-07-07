@@ -62,6 +62,30 @@
       },
       "revId": "ab40ee3c735a9ffac7ab5783272d6d2a31ad6260",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3715dde_e09f3abb",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-07T17:07:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "35217d37_15e7aef8",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 438,
+        "endChar": 104
+      },
+      "revId": "ab40ee3c735a9ffac7ab5783272d6d2a31ad6260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
