@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e3452d4_d27e1f71",
+        "filename": "src/core/SkClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-07T15:40:10Z",
+      "side": 0,
+      "message": "I guess the idea is that we\u0027re never drawing these to a backend that cares about volatility, so it\u0027s fine to drop it?",
+      "revId": "d9e7ce70cad5b1c5e99bff98885ad82f3b0d0190",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
