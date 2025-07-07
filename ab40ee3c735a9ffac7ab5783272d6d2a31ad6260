@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b27d5e9_fe12b85f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:02:45Z",
+      "side": 1,
+      "message": "lgtm, nice to see the cleanups in our GMs from this work",
+      "revId": "ab40ee3c735a9ffac7ab5783272d6d2a31ad6260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93eadad5_4580c0c5",
+        "filename": "gm/wacky_yuv_formats.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1226,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:02:45Z",
+      "side": 1,
+      "message": "I suppose there\u0027s no point in making a SubsetTextureFrom that takes an SkRecorder since it\u0027s a GPU operation.  And while we could have a GPURecorder shared class above Graphite and Ganesh, there\u0027s not a lot of incentive to support holding both being used in the same code.  So while it looks like this should go the route of other recorder refactorings, I think it\u0027s fine as-is.",
+      "range": {
+        "startLine": 1218,
+        "startChar": 0,
+        "endLine": 1226,
+        "endChar": 21
+      },
+      "revId": "ab40ee3c735a9ffac7ab5783272d6d2a31ad6260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35217d37_15e7aef8",
+        "filename": "src/gpu/TiledTextureUtils.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 438,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-07T16:02:45Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 438,
+        "endChar": 104
+      },
+      "revId": "ab40ee3c735a9ffac7ab5783272d6d2a31ad6260",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
