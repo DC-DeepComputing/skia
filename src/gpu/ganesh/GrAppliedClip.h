@@ -9,9 +9,9 @@
 #define GrAppliedClip_DEFINED
 
 #include "include/core/SkRect.h"
+#include "include/core/SkTypes.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
-#include "src/core/SkClipStack.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/GrScissorState.h"
 #include "src/gpu/ganesh/GrWindowRectsState.h"
@@ -49,7 +49,7 @@ public:
     const GrScissorState& scissorState() const { return fScissorState; }
     const GrWindowRectsState& windowRectsState() const { return fWindowRectsState; }
     uint32_t stencilStackID() const { return fStencilStackID; }
-    bool hasStencilClip() const { return SkClipStack::kInvalidGenID != fStencilStackID; }
+    bool hasStencilClip() const { return SK_InvalidGenID != fStencilStackID; }
 
     /**
      * Intersects the applied clip with the provided rect. Returns false if the draw became empty.
@@ -75,7 +75,7 @@ public:
     }
 
     void addStencilClip(uint32_t stencilStackID) {
-        SkASSERT(SkClipStack::kInvalidGenID == fStencilStackID);
+        SkASSERT(SK_InvalidGenID == fStencilStackID);
         fStencilStackID = stencilStackID;
     }
 
@@ -93,7 +93,7 @@ public:
 private:
     GrScissorState             fScissorState;
     GrWindowRectsState         fWindowRectsState;
-    uint32_t                   fStencilStackID = SkClipStack::kInvalidGenID;
+    uint32_t                   fStencilStackID = SK_InvalidGenID;
 };
 
 /**
