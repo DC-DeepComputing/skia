@@ -789,10 +789,25 @@ skgpu::graphite::PaintOptions EdgeExtensionPremulSrcover() {
     sk_sp<PrecompileShader> edgeEffect = PrecompileRuntimeEffects::MakePrecompileShader(
             EdgeExtensionSingleton().edgeExtensionEffect(),
             { { std::move(img) } });
+}
+
+skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughMatrixCFDitherSrcover() {
+    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           { &ci, 1 },
+                                                           {});
+
+    sk_sp<PrecompileShader> edgeEffect = PrecompileRuntimeEffects::MakePrecompileShader(
+            EdgeExtensionSingleton().edgeExtensionEffect(),
+            { { std::move(img) } });
 
     PaintOptions paintOptions;
     paintOptions.setShaders({ std::move(edgeEffect) });
+    paintOptions.setColorFilters({ PrecompileColorFilters::Matrix() });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
+    paintOptions.setPaintColorIsOpaque(false);
+    paintOptions.setDither(true);
+
     return paintOptions;
 }
 
@@ -867,13 +882,14 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
 
 } // anonymous namespace
 
-PaintOptions ImagePremulYCbCr238Srcover() {
+PaintOptions ImagePremulYCbCr238Srcover(bool narrow) {
     PaintOptions paintOptions;
 
     // HardwareImage(3: kHoAAO4AAAAAAAAA)
     paintOptions.setShaders({ vulkan_ycbcr_image_shader(238,
                                                         VK_SAMPLER_YCBCR_MODEL_CONVERSION_YCBCR_709,
-                                                        VK_SAMPLER_YCBCR_RANGE_ITU_NARROW,
+                                                        narrow ? VK_SAMPLER_YCBCR_RANGE_ITU_NARROW
+                                                               : VK_SAMPLER_YCBCR_RANGE_ITU_FULL,
                                                         VK_CHROMA_LOCATION_MIDPOINT) });
     paintOptions.setBlendModes({ SkBlendMode::kSrcOver });
     return paintOptions;
@@ -1049,6 +1065,7 @@ sk_sp<PrecompileShader> create_child_shader(ChildType childType) {
                                              VK_CHROMA_LOCATION_COSITED_EVEN,
                                              /* pqCS= */ true);
 #endif
+
     }
 
     return nullptr;
