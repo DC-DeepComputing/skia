@@ -16,6 +16,29 @@
       "message": "ptal",
       "revId": "4357c672494b8133e9337683577acdc260fb26e9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1346568_da6107a0",
+        "filename": "src/core/SkStroke.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1168,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-07-07T18:37:00Z",
+      "side": 1,
+      "message": "explicit type could be nice for clarity here",
+      "range": {
+        "startLine": 1168,
+        "startChar": 4,
+        "endLine": 1168,
+        "endChar": 8
+      },
+      "revId": "4357c672494b8133e9337683577acdc260fb26e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
