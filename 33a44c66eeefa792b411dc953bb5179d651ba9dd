@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "52d8bc5c_c2021b0e",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-07T19:23:42Z",
+      "side": 1,
+      "message": "dyt it would be too opaque to add an \u0027isFloodFill\u0027 predicate ?",
+      "range": {
+        "startLine": 121,
+        "startChar": 31,
+        "endLine": 121,
+        "endChar": 68
+      },
+      "revId": "33a44c66eeefa792b411dc953bb5179d651ba9dd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
