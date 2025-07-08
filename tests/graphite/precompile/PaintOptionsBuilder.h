@@ -36,6 +36,11 @@ enum LinearGradientOptions {
     kComplex,  // idiosyncratic case - c.f. Builder::linearGrad
 };
 
+enum EdgeExtCSOption {
+    kPremulCS,
+    kPassthroughCS,
+};
+
 // This is a minimal builder object that allows for compact construction of the most common
 // PaintOptions combinations - eliminating a lot of boilerplate.
 class Builder {
@@ -47,6 +52,8 @@ public:
     Builder& yuv(YUVSamplingOptions options);
     Builder& linearGrad(LinearGradientOptions options);
     Builder& blend();
+
+    Builder& edgeExt(EdgeExtCSOption);
 
     // ColorFilters
     Builder& matrixCF();

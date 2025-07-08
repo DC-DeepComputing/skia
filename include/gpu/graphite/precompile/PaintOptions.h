@@ -116,11 +116,11 @@ public:
                            combinations.
     */
     void setBlendModes(SkSpan<const SkBlendMode> blendModes);
-    SkSpan<const SkBlendMode> getBlendModes() const {
-        return SkSpan<const SkBlendMode>(fBlendModeOptions.data(), fBlendModeOptions.size());
-    }
     void addBlendMode(SkBlendMode bm) {
         fBlendModeOptions.push_back(bm);
+    }
+    SkSpan<const SkBlendMode> getBlendModes() const {
+        return SkSpan<const SkBlendMode>(fBlendModeOptions.data(), fBlendModeOptions.size());
     }
 
     /** Sets the blender options used when generating precompilation combinations.
