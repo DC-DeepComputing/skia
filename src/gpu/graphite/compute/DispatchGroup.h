@@ -10,9 +10,11 @@
 
 #include "include/core/SkRefCnt.h"
 #include "include/private/base/SkTArray.h"
+#include "src/gpu/graphite/ComputePipeline.h"
 #include "src/gpu/graphite/ComputePipelineDesc.h"
 #include "src/gpu/graphite/ComputeTypes.h"
 #include "src/gpu/graphite/ResourceTypes.h"
+#include "src/gpu/graphite/Sampler.h"
 #include "src/gpu/graphite/compute/ComputeStep.h"
 
 #include <cstddef>
