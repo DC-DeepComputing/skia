@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c84d5ac_9cb01105",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-08T14:45:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "eb6cca4b_4a9ea4e5",
+      "range": {
+        "startLine": 175,
+        "startChar": 18,
+        "endLine": 175,
+        "endChar": 26
+      },
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8b7af30d_f082ab73",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-07-08T12:51:55Z",
       "side": 1,
       "message": "plotWidthHeight ?",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5a73b05_01390195",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-08T14:45:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "8b7af30d_f082ab73",
       "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
@@ -58,6 +100,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24a47e97_39f1fc16",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-08T14:45:53Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c49a2a7b_cdf0c880",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "091cc32c_7638f420",
@@ -71,6 +131,24 @@
       "writtenOn": "2025-07-08T12:51:55Z",
       "side": 1,
       "message": "Do you want an SkASSERT(totalPlots \u003d\u003d 16) here?",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1383754_129cabfc",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-08T14:45:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "091cc32c_7638f420",
       "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
