@@ -280,12 +280,12 @@ void VulkanTexture::setImageLayoutAndQueueIndex(VulkanCommandBuffer* cmdBuffer,
 
     // If the old and new layout are the same and the layout is a read only layout, there is no need
     // to put in a barrier unless we also need to switch queues.
-    if (newLayout == currentLayout && currentQueueIndex == newQueueFamilyIndex &&
-        (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == currentLayout ||
-         VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == currentLayout ||
-         VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == currentLayout)) {
-        return;
-    }
+    // if (newLayout == currentLayout && currentQueueIndex == newQueueFamilyIndex &&
+    //     (VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL == currentLayout ||
+    //      VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL == currentLayout ||
+    //      VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL == currentLayout)) {
+    //     return;
+    // }
 
     VkAccessFlags srcAccessMask = VulkanTexture::LayoutToSrcAccessMask(currentLayout);
     VkPipelineStageFlags srcStageMask = VulkanTexture::LayoutToPipelineSrcStageFlags(currentLayout);
