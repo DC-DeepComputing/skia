@@ -58,15 +58,12 @@ class ResourceProvider;
 class RuntimeEffectDictionary;
 class SharedContext;
 class TaskList;
-class TextureDataBlock;
+class TextureDataCache;
 class TextureInfo;
 class UploadBufferManager;
 class UploadList;
 
 struct RecorderOptionsPriv;
-
-template<typename T> class PipelineDataCache;
-using TextureDataCache = PipelineDataCache<TextureDataBlock>;
 
 struct SK_API RecorderOptions final {
     RecorderOptions();
