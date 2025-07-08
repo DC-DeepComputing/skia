@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1573c91c_927d2568",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-08T16:48:36Z",
+      "side": 1,
+      "message": "Add Skia build argument for enabling trace events for pipeline + RP labels\nHelpful when debugging to be able to (dis- / en-)able this flag without having to add a #define somewhere or otherwise introduce a temporary unnecessary code change.",
+      "revId": "eb831e91e5c0c1a545c0de317b8324d3f35de4b3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
