@@ -104,6 +104,8 @@ public:
     Task::Status addCommand(Context*, CommandBuffer*, Task::ReplayTargetData) const;
 
 private:
+    friend class UploadTask;
+
     UploadInstance();
     // Copy data is appended directly after the object is created
     UploadInstance(const Buffer*,
@@ -163,6 +165,10 @@ public:
                             const RuntimeEffectDictionary*) override;
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
+
+    bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) override {
+        return visitor(fInstances[0].fTextureProxy.get());
+    }
 
 private:
     UploadTask(skia_private::TArray<UploadInstance>&&);
