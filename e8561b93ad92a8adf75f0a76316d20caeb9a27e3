@@ -1,0 +1,78 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eb6cca4b_4a9ea4e5",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-08T12:51:55Z",
+      "side": 1,
+      "message": "numPlotsPerSide ?",
+      "range": {
+        "startLine": 175,
+        "startChar": 18,
+        "endLine": 175,
+        "endChar": 26
+      },
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b7af30d_f082ab73",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 176,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-08T12:51:55Z",
+      "side": 1,
+      "message": "plotWidthHeight ?",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c49a2a7b_cdf0c880",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-08T12:51:55Z",
+      "side": 1,
+      "message": "atlasWidthHeight ?",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "091cc32c_7638f420",
+        "filename": "tests/graphite/DrawAtlasTest.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-08T12:51:55Z",
+      "side": 1,
+      "message": "Do you want an SkASSERT(totalPlots \u003d\u003d 16) here?",
+      "revId": "e8561b93ad92a8adf75f0a76316d20caeb9a27e3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
