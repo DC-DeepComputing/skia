@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33350198_927a5e38",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-08T13:59:00Z",
+      "side": 1,
+      "message": "This also fixes a slight bug from https://skia-review.googlesource.com/c/skia/+/1009256 where Simplify() that processes inner/outer bounds assumes that the bounds are based on the regular-filled geometry.\n\nSo for inverse fills (kDifference), outer bounds should not be the device bounds but the actual shape (and for a flood-fill are actually \"empty\").",
+      "revId": "5d2ac49d594749ab30928e334e7d5827d28f07bb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
