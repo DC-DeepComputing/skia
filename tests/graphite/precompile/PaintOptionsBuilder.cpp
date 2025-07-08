@@ -11,7 +11,9 @@
 
 #include "tests/graphite/precompile/PaintOptionsBuilder.h"
 
+#include "include/effects/SkRuntimeEffect.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
+#include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
 #include "include/gpu/graphite/precompile/PrecompileShader.h"
 
 namespace PaintOptionsUtils {
@@ -97,14 +99,90 @@ Builder& Builder::linearGrad(LinearGradientOptions options) {
 }
 
 Builder& Builder::blend() {
-    SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
+    static const SkColorInfo kCI { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
-                                                           { &ci, 1 },
+                                                           { &kCI, 1 },
                                                            {});
     SkBlendMode kBlendModes = SkBlendMode::kPlus;
     fPaintOptions.setShaders({ PrecompileShaders::Blend({ &kBlendModes, 1 },
                                                         { std::move(img) },
                                                         { PrecompileShaders::Color() }) });
+    return *this;
+}
+
+namespace {
+
+// Note: passing in a name to 'makeEffect' is a difference from Android's factory functions.
+sk_sp<SkRuntimeEffect> makeEffect(const SkString& sksl, const char* name) {
+    SkRuntimeEffect::Options options;
+    options.fName = name;
+
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(sksl, options);
+    if (!effect) {
+        SkDebugf("%s\n", error.c_str());
+    }
+    return effect;
+}
+
+class EdgeExtension {
+public:
+    EdgeExtension() {
+        // The following code block is just a stub for the Android code. For Skia's testing
+        // purposes it only needs to have the same name and number of children as the real code.
+        // When the following PaintOptions are used in Android the real SkSL must be supplied.
+        static const SkString kEdgeExtensionCode(R"(
+            uniform shader img;
+
+            vec4 main(vec2 xy) {
+                float3 sample = img.eval(0.115 * xy).rgb;
+                return float4(sample, 1.0);
+            }
+        )");
+
+        fEdgeExtensionEffect = makeEffect(kEdgeExtensionCode, "RE_EdgeExtensionEffect");
+        SkASSERT(fEdgeExtensionEffect);
+    }
+
+    sk_sp<SkRuntimeEffect> edgeExtensionEffect() const { return fEdgeExtensionEffect; }
+
+private:
+    sk_sp<SkRuntimeEffect> fEdgeExtensionEffect;
+};
+
+const EdgeExtension& EdgeExtensionSingleton() {
+    static class EdgeExtension sEdgeExtension;
+
+    return sEdgeExtension;
+}
+
+} // anonymous namespace
+
+Builder& Builder::edgeExt(EdgeExtCSOption csOption) {
+    static const SkColorInfo kPassthroughInfo { kRGBA_8888_SkColorType,
+                                                kPremul_SkAlphaType,
+                                                nullptr };
+    // This usage of kUnpremul is non-obvious. It acts to short circuit the identity-colorspace
+    // optimization for runtime effects. In this case, the Pipeline requires a
+    // ColorSpaceTransformPremul instead of the (optimized) Passthrough.
+    static const SkColorInfo kPremulInfo { kRGBA_8888_SkColorType,
+                                           kUnpremul_SkAlphaType,
+                                           nullptr };
+
+    SkSpan<const SkColorInfo> ciSpan;
+    switch (csOption) {
+        case kPremulCS:      ciSpan = { &kPremulInfo, 1 };      break;
+        case kPassthroughCS: ciSpan = { &kPassthroughInfo, 1 }; break;
+    }
+
+    sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
+                                                           ciSpan,
+                                                           {});
+
+    sk_sp<PrecompileShader> edgeEffect = PrecompileRuntimeEffects::MakePrecompileShader(
+            EdgeExtensionSingleton().edgeExtensionEffect(),
+            { { std::move(img) } });
+
+    fPaintOptions.setShaders({ std::move(edgeEffect) });
     return *this;
 }
 

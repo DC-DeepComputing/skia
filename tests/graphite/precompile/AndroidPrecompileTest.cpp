@@ -35,6 +35,14 @@ const RenderPassProperties kCombo_RGBA_1D_SRGB_w16F[2] = { kRGBA_1_D_SRGB, kRGBA
 // then Render Pass Properties.
 // This helps observe DrawTypeFlags distributions.
 const PrecompileSettings kPrecompileCases[] = {
+
+#if 0
+/*   ? */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+                "CoverBoundsRenderStep[NonAAFill] + "
+                "Compose [ Compose [ LocalMatrix [ BlendCompose [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] RGBPaintColor DstIn ] ] MatrixColorFilter ] Dither ] SrcOver" },
+#endif
+            { Foo(), DrawTypeFlags::kNonAAFillRect,   kRGBA_1_D },
+
     // 100% (1/1) handles: 0
     { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
     // 100% (4/4) handles: 22 23 42 43
@@ -467,7 +475,7 @@ static const PipelineLabel kCases[] = {
 /*   2 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] SrcOver" },
-/*   ? */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
+/*     */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "RE_LinearEffect_UNKNOWN__SRGB__false__UNKNOWN__Shader [ RE_MouriMap_TonemapEffect [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: kEwAAPcAAAAAAAAA) ] ColorSpaceTransform ] ] LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformPremul ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] SrcOver" },
 /*   4 */ { -1, "RP((RGBA16F+D16 x1).rgba) + "
@@ -865,10 +873,10 @@ static const PipelineLabel kCases[] = {
 /* 131  */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "Compose [ RE_LinearEffect_0x188a0000__DISPLAY_P3__false__0x90a0000__Shader [ LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(0) ] ColorSpaceTransformSRGB ] ] ColorSpaceTransformSRGB ColorSpaceTransformSRGB ] MatrixColorFilter ] SrcOver AnalyticClip" },
-/*      */ { -1, "RP((RGBA8+D16 x1).rgba) + "
-                "CoverBoundsRenderStep[NonAAFill] + "
-                "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: gHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
-/*      */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+/*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
+                 "CoverBoundsRenderStep[NonAAFill] + "
+                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: gHIAAPAAAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
+/*     */ { -1, "RP((RGBA8+D16 x1).rgba) + "
                 "CoverBoundsRenderStep[NonAAFill] + "
                 "LocalMatrix [ Compose [ CoordNormalize [ HardwareImage(3: gHoAAO4AAAAAAAAA) ] ColorSpaceTransformPremul ] ] SrcOver" },
 /* 134 */ { -1, "RP((RGBA8+D16 x1).rgba) + "
