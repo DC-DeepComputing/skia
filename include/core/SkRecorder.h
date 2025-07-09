@@ -9,6 +9,8 @@
 
 #include "include/private/base/SkAPI.h"
 
+class SkCanvas;
+
 namespace skcpu {
 class Recorder;
 }
@@ -30,6 +32,11 @@ public:
     virtual Type type() const = 0;
 
     virtual skcpu::Recorder* cpuRecorder() = 0;
+
+private:
+    virtual SkCanvas* makeCaptureCanvas(SkCanvas*) = 0;
+
+    friend class SkSurface_Base;
 };
 
 #endif

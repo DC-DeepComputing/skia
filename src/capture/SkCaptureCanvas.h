@@ -109,6 +109,8 @@ private:
     void attachRecordingCanvas();
     void detachRecordingCanvas();
 
+    void onSurfaceDelete() override;
+
     bool fCapturing = false;
     std::unique_ptr<SkPictureRecorder> fRecorder;
     SkCanvas* fBaseCanvas = nullptr;
