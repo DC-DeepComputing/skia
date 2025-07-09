@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9dce8a46_02c0630d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 34
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T14:27:52Z",
+      "side": 1,
+      "message": "For more debugging, you could enable the VULKAN_LOG macro in `src/gpu/graphite/vk/VulkanGraphiteUtils.h` and capture the command stream for the surfaceprops_df GM with and w/o this change to see if there\u0027s something different.",
+      "revId": "abdb6e8c061dd13afaf02a404037820c77a9a1d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5125d6ee_6e45511d",
+        "filename": "src/gpu/graphite/task/UploadTask.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T14:27:52Z",
+      "side": 1,
+      "message": "For UploadInstances, they can be set to null proxies if the conditional upload context says they are one-and-done, so this should check fInstances[i].isValid() before calling the visitor.",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 62
+      },
+      "revId": "abdb6e8c061dd13afaf02a404037820c77a9a1d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ef11a48c_587ddf92",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 1258,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T14:27:52Z",
+      "side": 1,
+      "message": "These samplers should be able to be from the GlobalCache in most cases. VulkanCommandBuffer can probably be made similar to the DawnCommandBuffer getSampler() function that switches between the global cache and checking the graphics pipeline for immutable samplers.",
+      "range": {
+        "startLine": 1251,
+        "startChar": 0,
+        "endLine": 1258,
+        "endChar": 92
+      },
+      "revId": "abdb6e8c061dd13afaf02a404037820c77a9a1d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
