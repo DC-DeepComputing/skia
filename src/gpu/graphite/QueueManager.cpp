@@ -101,13 +101,20 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
         callback = RefCntedCallback::Make(info.fFinishedProc, info.fFinishedContext);
     }
 
-    SkASSERT(info.fRecording);
-    if (!info.fRecording) {
+    auto fail = [&](InsertStatus status, const char* message) {
         if (callback) {
             callback->setFailureResult();
         }
-        SKGPU_LOG_E("No valid Recording passed into addRecording call");
-        return InsertStatus::kInvalidRecording;
+        info.fRecording->priv().setFailureResultForFinishedProcs();
+        info.fRecording->priv().deinstantiateVolatileLazyProxies();
+        SKGPU_LOG_E("%s", message);
+        return status;
+    };
+
+    SkASSERT(info.fRecording);
+    if (!info.fRecording) {
+        return fail(InsertStatus::kInvalidRecording,
+                    "No valid Recording passed into addRecording call");
     }
 
     // Recordings from a Recorder that requires ordered recordings will have a valid recorder ID.
@@ -116,11 +123,8 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
     if (recorderID != SK_InvalidGenID) {
         uint32_t* recordingID = fLastAddedRecordingIDs.find(recorderID);
         if (recordingID && info.fRecording->priv().uniqueID() != *recordingID + 1) {
-            if (callback) {
-                callback->setFailureResult();
-            }
-            SKGPU_LOG_E("Recordings are expected to be replayed in order");
-            return InsertStatus::kInvalidRecording;
+            return fail(InsertStatus::kInvalidRecording,
+                        "Recordings are expected to be replayed in order");
         }
 
         // Note the new Recording ID.
@@ -129,24 +133,21 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
 
     if (info.fTargetSurface &&
         !static_cast<const SkSurface_Base*>(info.fTargetSurface)->isGraphiteBacked()) {
-        if (callback) {
-            callback->setFailureResult();
-        }
-        info.fRecording->priv().setFailureResultForFinishedProcs();
-        SKGPU_LOG_E("Target surface passed into addRecording call is not Graphite-backed");
-        return InsertStatus::kInvalidRecording;
+        return fail(InsertStatus::kInvalidRecording,
+                    "Target surface passed into addRecording call is not Graphite-backed");
+    }
+
+    if (info.fSimulatedStatus == InsertStatus::kInvalidRecording) {
+        return fail(InsertStatus::kInvalidRecording,
+                    "Simulating 'kInvalidRecording' error status");
     }
 
     auto resourceProvider = context->priv().resourceProvider();
     if (!this->setupCommandBuffer(resourceProvider, fSharedContext->isProtected())) {
-        if (callback) {
-            callback->setFailureResult();
-        }
-        info.fRecording->priv().setFailureResultForFinishedProcs();
-        SKGPU_LOG_E("CommandBuffer creation failed");
         // Technically no commands have been added yet, but if this fails, things are in a bad state
         // so signal the unrecoverable status.
-        return InsertStatus::kAddCommandsFailed;
+        return fail(InsertStatus::kAddCommandsFailed,
+                    "CommandBuffer creation failed");
     }
 
     // This must happen before instantiating the lazy proxies, because the target for draws in this
@@ -164,36 +165,32 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
                 info.fTargetTranslation,
                 info.fTargetClip);
         if (!replayTarget) {
-            SKGPU_LOG_E("Failed to set up deferred replay target");
-            return InsertStatus::kPromiseImageInstantiationFailed;
+            return fail(InsertStatus::kPromiseImageInstantiationFailed,
+                        "Failed to set up deferred replay target");
         }
 
     } else if (deferredTargetProxy && !info.fTargetSurface) {
-        SKGPU_LOG_E("No surface provided to instantiate deferred replay target.");
-        return InsertStatus::kPromiseImageInstantiationFailed;
+        return fail(InsertStatus::kPromiseImageInstantiationFailed,
+                    "No surface provided to instantiate deferred replay target.");
     }
 
     if (info.fRecording->priv().hasNonVolatileLazyProxies()) {
         if (!info.fRecording->priv().instantiateNonVolatileLazyProxies(resourceProvider)) {
-            if (callback) {
-                callback->setFailureResult();
-            }
-            info.fRecording->priv().setFailureResultForFinishedProcs();
-            SKGPU_LOG_E("Non-volatile PromiseImage instantiation has failed");
-            return InsertStatus::kPromiseImageInstantiationFailed;
+            return fail(InsertStatus::kPromiseImageInstantiationFailed,
+                        "Non-volatile PromiseImage instantiation has failed");
         }
     }
 
     if (info.fRecording->priv().hasVolatileLazyProxies()) {
         if (!info.fRecording->priv().instantiateVolatileLazyProxies(resourceProvider)) {
-            if (callback) {
-                callback->setFailureResult();
-            }
-            info.fRecording->priv().setFailureResultForFinishedProcs();
-            info.fRecording->priv().deinstantiateVolatileLazyProxies();
-            SKGPU_LOG_E("Volatile PromiseImage instantiation has failed");
-            return InsertStatus::kPromiseImageInstantiationFailed;
+            return fail(InsertStatus::kPromiseImageInstantiationFailed,
+                        "Volitile PromiseImage instantiation has failed");
         }
+    }
+
+    if (info.fSimulatedStatus == InsertStatus::kPromiseImageInstantiationFailed) {
+        return fail(InsertStatus::kPromiseImageInstantiationFailed,
+                    "Simulating 'kPromiseImageInstantiationFailed' status");
     }
 
     if (addTimerQuery) {
@@ -204,7 +201,8 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
                                              fCurrentCommandBuffer.get(),
                                              replayTarget,
                                              info.fTargetTranslation,
-                                             info.fTargetClip)) {
+                                             info.fTargetClip) ||
+        info.fSimulatedStatus != InsertStatus::kSuccess) {
         // If the commands failed, iterate over all the used pipelines to see if their async
         // compilation was the reason for failure. Clients that manage pipeline disk caches may
         // want to handle the failure differently than when any other GPU command failed.
@@ -213,20 +211,15 @@ InsertStatus QueueManager::addRecording(const InsertRecordingInfo& info, Context
                     return !pipeline->didAsyncCompilationFail();
                 });
 
-        if (callback) {
-            callback->setFailureResult();
-        }
-        info.fRecording->priv().setFailureResultForFinishedProcs();
-        info.fRecording->priv().deinstantiateVolatileLazyProxies();
-
-        if (validPipelines) {
-            SKGPU_LOG_E("Adding Recording commands to the CommandBuffer has failed");
-            return InsertStatus::kAddCommandsFailed;
+        if (validPipelines && info.fSimulatedStatus != InsertStatus::kAsyncShaderCompilesFailed) {
+            return fail(InsertStatus::kAddCommandsFailed,
+                        "Adding Recording commands to the CommandBuffer has failed");
         } else {
-            SKGPU_LOG_E("Async pipeline compiles failed, unable to add Recording commands");
-            return InsertStatus::kAsyncShaderCompilesFailed;
+            return fail(InsertStatus::kAsyncShaderCompilesFailed,
+                        "Async pipeline compiles failed, unable to add Recording commands");
         }
     }
+
     fCurrentCommandBuffer->addSignalSemaphores(info.fNumSignalSemaphores, info.fSignalSemaphores);
     if (info.fTargetTextureState) {
         fCurrentCommandBuffer->prepareSurfaceForStateUpdate(info.fTargetSurface,
