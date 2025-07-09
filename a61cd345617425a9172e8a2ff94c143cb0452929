@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d790e610_ac2f333c",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-09T19:10:03Z",
+      "side": 1,
+      "message": "This is super generous. wdyt about \"1 \u003c\u003c 10\"? That\u0027s 1024 contours!",
+      "revId": "a61cd345617425a9172e8a2ff94c143cb0452929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
