@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb8959b_aa46808e",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1347,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T19:22:57Z",
+      "side": 0,
+      "message": "This is now the constructor for DrawShape",
+      "range": {
+        "startLine": 1333,
+        "startChar": 4,
+        "endLine": 1347,
+        "endChar": 5
+      },
+      "revId": "0315510c7a3facc4a5b1490aaf58add7e37c0393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fcd1aa28_1f7e8cb6",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1412,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T19:22:57Z",
+      "side": 0,
+      "message": "This is now applyStyle",
+      "range": {
+        "startLine": 1349,
+        "startChar": 4,
+        "endLine": 1412,
+        "endChar": 5
+      },
+      "revId": "0315510c7a3facc4a5b1490aaf58add7e37c0393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "982b71b1_b83d4230",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1460,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T19:22:57Z",
+      "side": 0,
+      "message": "This is now applyScissor. The one more substantial change here is that DrawShape only tracks inner bounds and outer bounds and not draw bounds. It handles the inverse fill rules for drawBounds in the new toClip() function.",
+      "range": {
+        "startLine": 1414,
+        "startChar": 4,
+        "endLine": 1460,
+        "endChar": 69
+      },
+      "revId": "0315510c7a3facc4a5b1490aaf58add7e37c0393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "264e8482_90f4281b",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1468,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-09T19:22:57Z",
+      "side": 0,
+      "message": "Now the TransformedShape operator in DrawShape",
+      "range": {
+        "startLine": 1462,
+        "startChar": 4,
+        "endLine": 1468,
+        "endChar": 61
+      },
+      "revId": "0315510c7a3facc4a5b1490aaf58add7e37c0393",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
