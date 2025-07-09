@@ -14,15 +14,15 @@
 #include "src/base/SkEnumBitMask.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
-//#define PRINT_GENERATED_LABELS
+#define PRINT_GENERATED_LABELS
 
 namespace PrecompileTestUtils {
 
@@ -319,6 +319,14 @@ const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_SRGB {
         skgpu::graphite::DepthStencilFlags::kDepth,
         kRGBA_F16_SkColorType,
         SkColorSpace::MakeSRGB(),
+        /* fRequiresMSAA= */ false
+};
+
+// The same as kRGBA16F_1_D but w/ a linear SRGB colorSpace
+const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_Linear {
+        skgpu::graphite::DepthStencilFlags::kDepth,
+        kRGBA_F16_SkColorType,
+        SkColorSpace::MakeSRGBLinear(),
         /* fRequiresMSAA= */ false
 };
 
