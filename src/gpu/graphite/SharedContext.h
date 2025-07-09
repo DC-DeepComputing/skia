@@ -13,6 +13,7 @@
 #include "include/core/SkSize.h"
 
 #include "include/gpu/graphite/GraphiteTypes.h"
+#include "src/capture/SkCaptureManager.h"
 #include "src/gpu/graphite/GlobalCache.h"
 #include "src/gpu/graphite/ShaderCodeDictionary.h"
 
@@ -60,6 +61,9 @@ public:
 
     virtual void deviceTick(Context*) {}
 
+    void initCaptureManager() { fCaptureManager = sk_make_sp<SkCaptureManager>(); }
+    sk_sp<SkCaptureManager> captureManager() { return fCaptureManager; }
+
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
@@ -77,6 +81,7 @@ private:
     GlobalCache fGlobalCache;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
+    sk_sp<SkCaptureManager> fCaptureManager;
 };
 
 } // namespace skgpu::graphite
