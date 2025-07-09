@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "443c5f38_cf130f73",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-09T15:42:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a6e45011_100b018b",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 41
+      },
+      "revId": "e8336b375ba648ff15e2451f0bd700e5150cc873",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c67026d6_7f2eff14",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-07-09T15:31:11Z",
       "side": 1,
       "message": "Thanks! Do we want to preserve either of the downstream TODOs here (`TODO(b/426601394): Update this to take an SkColorInfo ...` or `TODO(b/426601394): Group these paint option settings ...`), or let those be clobbered on future updates?",
+      "revId": "e8336b375ba648ff15e2451f0bd700e5150cc873",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5a323e0_d134c140",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-09T15:42:24Z",
+      "side": 1,
+      "message": "Done - preserved.",
+      "parentUuid": "c67026d6_7f2eff14",
       "revId": "e8336b375ba648ff15e2451f0bd700e5150cc873",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
