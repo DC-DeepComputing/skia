@@ -99,6 +99,8 @@ bool SkSurface_Base::aboutToDraw(ContentChangeMode mode) {
     SkASSERT(!fCachedCanvas || fCachedCanvas->getSurfaceBase() == this);
 
     if (fCachedImage) {
+        printf("cached image\n");
+
         // the surface may need to fork its backend, if its sharing it with
         // the cached image. Note: we only call if there is an outstanding owner
         // on the image (besides us).
