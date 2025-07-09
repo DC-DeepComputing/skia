@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1042eb8a_59c1847f",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1808,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-09T22:31:33Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "54153546_070cea00",
+      "revId": "a61cd345617425a9172e8a2ff94c143cb0452929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d790e610_ac2f333c",
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-09T19:10:03Z",
       "side": 1,
       "message": "This is super generous. wdyt about \"1 \u003c\u003c 10\"? That\u0027s 1024 contours!",
+      "revId": "a61cd345617425a9172e8a2ff94c143cb0452929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a0f1e0d6_6302098e",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-09T22:31:33Z",
+      "side": 1,
+      "message": "You are the more experienced triangle sommelier.",
+      "parentUuid": "d790e610_ac2f333c",
       "revId": "a61cd345617425a9172e8a2ff94c143cb0452929",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
