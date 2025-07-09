@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "54153546_070cea00",
+        "filename": "src/gpu/ganesh/geometry/GrTriangulator.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1808,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-09T19:12:56Z",
+      "side": 1,
+      "message": "Should we be updating TriangulatingPathRenderer::onCanDrawPath too?",
+      "revId": "a61cd345617425a9172e8a2ff94c143cb0452929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d790e610_ac2f333c",
         "filename": "src/gpu/ganesh/geometry/GrTriangulator.h",
         "patchSetId": 2
