@@ -2196,7 +2196,7 @@ Result GraphiteSink::draw(const Src& src,
         if (!result.isOk()) {
             return result;
         }
-
+        printf("drawDoneReadPixels\n");
         SkPixmap pm;
         if (!dst->peekPixels(&pm) ||
             !surface->readPixels(pm, 0, 0)) {
