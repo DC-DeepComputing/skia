@@ -81,16 +81,32 @@ SkPathBuilder& SkPathBuilder::operator=(const SkPath& src) {
     this->reset().setFillType(src.getFillType());
     this->setIsVolatile(src.isVolatile());
 
-    for (auto [verb, pts, w] : SkPathPriv::Iterate(src)) {
-        switch (verb) {
-            case SkPathVerb::kMove:  this->moveTo(pts[0]); break;
-            case SkPathVerb::kLine:  this->lineTo(pts[1]); break;
-            case SkPathVerb::kQuad:  this->quadTo(pts[1], pts[2]); break;
-            case SkPathVerb::kConic: this->conicTo(pts[1], pts[2], w[0]); break;
-            case SkPathVerb::kCubic: this->cubicTo(pts[1], pts[2], pts[3]); break;
-            case SkPathVerb::kClose: this->close(); break;
+    auto is_a = [](const sk_sp<SkPathRef>& p) -> IsA {
+        if (!p->countVerbs()) {
+            return IsA::kIsA_JustMoves;
         }
-    }
+        switch (p->fType) {
+            case SkPathRef::PathType::kGeneral:
+                return IsA::kIsA_MoreThanMoves;
+            case SkPathRef::PathType::kOval:
+                return IsA::kIsA_Oval;
+            case SkPathRef::PathType::kRRect:
+                return IsA::kIsA_RRect;
+            case SkPathRef::PathType::kArc:
+                // TODO: we need an arc type
+                return IsA::kIsA_MoreThanMoves;
+        }
+    };
+
+    const sk_sp<SkPathRef>& ref = src.fPathRef;
+    fIsA      = is_a(ref);
+    fIsAStart = ref->fRRectOrOvalStartIdx;
+    fIsACCW   = ref->fRRectOrOvalIsCCW;
+
+    fVerbs.reset(SkPathPriv::VerbData(src), src.countVerbs());
+    fPts.reset(SkPathPriv::PointData(src), src.countPoints());
+    fConicWeights.reset(SkPathPriv::ConicWeightData(src), SkPathPriv::ConicWeightCnt(src));
+
     return *this;
 }
 
