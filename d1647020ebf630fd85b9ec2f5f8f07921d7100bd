@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47228615_42c52a7d",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 21754
+      },
+      "writtenOn": "2025-07-09T19:59:11Z",
+      "side": 1,
+      "message": "nit: the way this is written doesn\u0027t emit the \"Simulating ... status\" message, maybe something like this might work better:\n\n```suggestion\n        if (validPipelines) {\n            return fail(InsertStatus::kAddCommandsFailed,\n                        \"Adding Recording commands to the CommandBuffer has failed\");\n        } else {\n            return fail(InsertStatus::kAsyncShaderCompilesFailed,\n                        \"Async pipeline compiles failed, unable to add Recording commands\");\n        }\n        if (status \u003d\u003d InsertStatus::kAddCommandsFailed) {\n          return fail(InsertStatus::kAddCommandsFailed,\n                      \"Simulating \u0027kAddCommandsFailed\u0027 status\");\n        } else {\n          return fail(InsertStatus::kAsyncShaderCompilesFailed,\n                      \"Simulating \u0027kAsyncShaderCompilesFailed\u0027 status\");\n        }\n```\n\nsome macro magic might help reduce boiler plate too?",
+      "range": {
+        "startLine": 214,
+        "startChar": 0,
+        "endLine": 220,
+        "endChar": 9
+      },
+      "revId": "d1647020ebf630fd85b9ec2f5f8f07921d7100bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
