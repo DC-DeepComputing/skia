@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab2ac00_21011b45",
+        "filename": "include/core/SkCPURecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Yes, I can add a TODO here. Done.",
+      "parentUuid": "5080c4ca_b2d7a09a",
+      "range": {
+        "startLine": 58,
+        "startChar": 58,
+        "endLine": 58,
+        "endChar": 65
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d3f7f70_78fb5474",
@@ -71,6 +95,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e532c63c_6ac4b74c",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3b81a051_e585e446",
+      "range": {
+        "startLine": 15,
+        "startChar": 6,
+        "endLine": 15,
+        "endChar": 14
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "37c9d3c1_76f6a75a",
@@ -84,6 +132,30 @@
       "writtenOn": "2025-07-02T18:24:53Z",
       "side": 1,
       "message": "nit: `friend class SkSurface_Base;` (and then I think you can remove the forward declaration above).",
+      "range": {
+        "startLine": 40,
+        "startChar": 11,
+        "endLine": 40,
+        "endChar": 25
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "de44c8d0_11abdb4a",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "37c9d3c1_76f6a75a",
       "range": {
         "startLine": 40,
         "startChar": 11,
@@ -117,6 +189,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35454359_c3eb16cb",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "30ce6291_bf83f452",
+      "range": {
+        "startLine": 288,
+        "startChar": 26,
+        "endLine": 288,
+        "endChar": 30
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7b290a44_bc5d3fa6",
@@ -130,6 +226,30 @@
       "writtenOn": "2025-07-02T18:24:53Z",
       "side": 1,
       "message": "nit: TODO(b/1234)",
+      "range": {
+        "startLine": 309,
+        "startChar": 7,
+        "endLine": 309,
+        "endChar": 11
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fb0bb4c_5405e217",
+        "filename": "src/capture/SkCaptureCanvas.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7b290a44_bc5d3fa6",
       "range": {
         "startLine": 309,
         "startChar": 7,
@@ -175,6 +295,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7964a912_c91f0618",
+        "filename": "src/image/SkSurface_Base.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "36b2ab5f_a019f09d",
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2fc8fa7a_945cea90",
@@ -188,6 +326,30 @@
       "writtenOn": "2025-07-07T16:14:52Z",
       "side": 1,
       "message": "I would just have this be `fOwnedBaseCanvas.reset(this-\u003eonNewCanvas());` or `fOwnedBaseCanvas \u003d std::unique_ptr\u003cSkCanvas\u003e(this-\u003eonNewCanvas());` and remove the assignment lower down.  \n\nThen we can just pass in `fOwnedBaseCanvas.get(0` to `makeCaptureCanvas` and `fCachedCanvas`",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 46
+      },
+      "revId": "d000e5b084e899e8346870813bf703fa02336746",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7e2216dd_467fe01b",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2fc8fa7a_945cea90",
       "range": {
         "startLine": 203,
         "startChar": 0,

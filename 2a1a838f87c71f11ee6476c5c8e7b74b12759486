@@ -119,6 +119,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "749a545f_c4580510",
+        "filename": "include/core/SkRecorder.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "14771e93_fe0f6b54",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 62
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0cc5d367_36556de0",
@@ -562,6 +586,30 @@
       "side": 1,
       "message": "But if `makeCaptureCanvas` returns `SkCanvas*` that problem goes away",
       "parentUuid": "22be0fdd_1b71d1dc",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "2a1a838f87c71f11ee6476c5c8e7b74b12759486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "84f20e18_b6a4f609",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-09T14:41:11Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "47ffacc3_0c6f801f",
       "range": {
         "startLine": 19,
         "startChar": 0,
