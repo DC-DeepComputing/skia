@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0c32cc3e_9e01e94c",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-10T16:45:27Z",
+      "side": 1,
+      "message": "Maybe bug # for this? Or should it be fairly immediate?",
+      "range": {
+        "startLine": 37,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 7
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "9916fbdf_329884c2",
         "filename": "include/gpu/graphite/GraphiteTypes.h",
         "patchSetId": 2
@@ -14,6 +37,75 @@
       "writtenOn": "2025-07-10T16:28:12Z",
       "side": 1,
       "message": "Do we want to guard this with:\n   #if defined(GPU_TEST_UTILS)",
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "423062fa_efbe18f3",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-10T16:45:27Z",
+      "side": 1,
+      "message": "nit: Can this fit on one line?",
+      "range": {
+        "startLine": 149,
+        "startChar": 20,
+        "endLine": 150,
+        "endChar": 53
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c37ac7c7_87c178f6",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-10T16:45:27Z",
+      "side": 1,
+      "message": "nit: \n```\nif (info.fRecording-\u003epriv().hasVolatileLazyProxies() \u0026\u0026 \n    !info.fRecording-\u003epriv().instantiateVolatileLazyProxies(resourceProvider)) {\n```\nrather than nested `if`s?",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85743591_8c9e0355",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-10T16:45:27Z",
+      "side": 1,
+      "message": "nit: one line?",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 62
+      },
       "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
