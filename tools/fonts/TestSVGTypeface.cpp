@@ -1364,12 +1364,11 @@ public:
 
         // Apply the path effect.
         if (paint.getPathEffect() || paint.getStyle() != SkPaint::kFill_Style) {
-            SkPathBuilder builder;
-            bool fill = skpathutils::FillPathWithPaint(path, paint, &builder);
-            path = builder.detach();
+            bool doFill;
+            path = skpathutils::FillPathWithPaint(path, paint, &doFill);
 
             paint.setPathEffect(nullptr);
-            if (fill) {
+            if (doFill) {
                 paint.setStyle(SkPaint::kFill_Style);
             } else {
                 paint.setStyle(SkPaint::kStroke_Style);

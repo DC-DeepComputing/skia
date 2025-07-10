@@ -32,17 +32,19 @@ bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
 bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPath* dst,
                        const SkRect* cullRect, const SkMatrix& ctm) {
     SkPathBuilder builder;
-    bool isFilled = FillPathWithPaint(src, paint, &builder, cullRect, ctm);
-    *dst = builder.detach();
-    return isFilled;
+    auto result = FillPathWithPaint(src, paint, &builder, cullRect, ctm);
+    if (result.useDst) {
+        *dst = builder.detach();
+    }
+    return result.doFill;
 }
 #endif
 
-bool FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilder* builder,
-                       const SkRect* cullRect, const SkMatrix& ctm) {
+FillResult FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilder* builder,
+                             const SkRect* cullRect, const SkMatrix& ctm) {
     builder->reset();
     if (!origSrc.isFinite()) {
-        return false;
+        return {false, false};
     }
 
     const SkScalar resScale = SkMatrixPriv::ComputeResScaleForStroking(ctm);
@@ -51,7 +53,7 @@ bool FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilde
 #if defined(SK_BUILD_FOR_FUZZER)
     // Prevent lines with small widths from timing out.
     if (rec.getStyle() == SkStrokeRec::Style::kStroke_Style && rec.getWidth() < 0.001) {
-        return false;
+        return {false, false};
     }
 #endif
 
@@ -62,27 +64,31 @@ bool FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilde
         pathStorage = builder->detach();
         srcPtr = &pathStorage;
     }
+
+    const bool doFill = !rec.isHairlineStyle();
+
     if (!rec.applyToPath(builder, *srcPtr)) {
-        *builder = *srcPtr;
+        return {false, doFill};
     }
 
     if (!builder->isFinite()) {
         builder->reset();
     }
-    return !rec.isHairlineStyle();
+    return {true, doFill};
 }
 
-bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* dst) {
+FillResult FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* dst) {
     return FillPathWithPaint(src, paint, dst, nullptr, SkMatrix::I());
 }
 
 SkPath FillPathWithPaint(const SkPath& src, const SkPaint& paint, bool* isFillPtr) {
     SkPathBuilder builder;
-    bool isFill = FillPathWithPaint(src, paint, &builder);
+    auto result = FillPathWithPaint(src, paint, &builder);
+
     if (isFillPtr) {
-        *isFillPtr = isFill;
+        *isFillPtr = result.doFill;
     }
-    return builder.detach();
+    return result.useDst ? builder.detach() : src;
 }
 
 

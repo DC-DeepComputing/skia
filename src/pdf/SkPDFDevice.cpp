@@ -593,7 +593,11 @@ void SkPDFDevice::internalDrawPathWithFilter(const SkClipStack& clipStack,
     SkPathBuilder builder;
     SkTCopyOnFirstWrite<SkPaint> paint(origPaint);
 
-    SkStrokeRec::InitStyle initStyle = skpathutils::FillPathWithPaint(origPath, *paint, &builder)
+    auto result = skpathutils::FillPathWithPaint(origPath, *paint, &builder);
+    if (!result.useDst) {
+        builder = origPath; // so we can transform it below
+    }
+    SkStrokeRec::InitStyle initStyle = result.doFill
                                      ? SkStrokeRec::kFill_InitStyle
                                      : SkStrokeRec::kHairline_InitStyle;
     builder.transform(ctm);
@@ -674,8 +678,15 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
         if (clipStack.isEmpty(this->bounds())) {
             return;
         }
+
         SkPathBuilder builder;
-        if (skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder)) {
+        auto result = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder);
+        if (result.useDst) {
+            modifiedPath = builder.detach();
+        } else {
+            modifiedPath = *pathPtr;
+        }
+        if (result.doFill) {
             set_style(&paint, SkPaint::kFill_Style);
         } else {
             set_style(&paint, SkPaint::kStroke_Style);
@@ -683,7 +694,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
                 paint.writable()->setStrokeWidth(0);
             }
         }
-        modifiedPath = builder.detach();
+
         pathPtr = &modifiedPath;
         pathIsMutable = true;
         paint.writable()->setPathEffect(nullptr);
@@ -1207,12 +1218,17 @@ bool SkPDFDevice::handleInversePath(const SkPath& origPath,
     // Merge stroking operations into final path.
     if (SkPaint::kStroke_Style == paint.getStyle() ||
         SkPaint::kStrokeAndFill_Style == paint.getStyle()) {
+
         SkPathBuilder builder;
-        bool doFillPath = skpathutils::FillPathWithPaint(origPath, paint, &builder);
-        modifiedPath = builder.detach();
+        auto result = skpathutils::FillPathWithPaint(origPath, paint, &builder);
+        if (result.useDst) {
+            modifiedPath = builder.detach();
+        } else {
+            modifiedPath = origPath;
+        }
         pathPtr = &modifiedPath;
 
-        if (doFillPath) {
+        if (result.doFill) {
             noInversePaint.setStyle(SkPaint::kFill_Style);
             noInversePaint.setStrokeWidth(0);
         } else {

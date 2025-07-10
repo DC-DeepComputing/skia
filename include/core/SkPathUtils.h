@@ -18,6 +18,11 @@ struct SkRect;
 
 namespace skpathutils {
 
+struct FillResult {
+    bool useDst;    // false means use src path as is
+    bool doFill;    // false means stroke in hairline
+};
+
 /* Returns the filled equivalent of the stroked path.
  *
  *  @param src       SkPath read to create a filled version
@@ -27,10 +32,10 @@ namespace skpathutils {
  *  @param ctm       matrix to take into acount for increased precision (if it scales up).
  *  @return          true if the result can be filled, or false if it is a hairline (to be stroked).
  */
-SK_API bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* dst,
-                              const SkRect* cullRect, const SkMatrix& ctm);
+SK_API FillResult FillPathWithPaint(const SkPath& src, const SkPaint&, SkPathBuilder* dst,
+                                    const SkRect* cullRect, const SkMatrix& ctm);
 
-SK_API bool FillPathWithPaint(const SkPath& src, const SkPaint& paint, SkPathBuilder* dst);
+SK_API FillResult FillPathWithPaint(const SkPath& src, const SkPaint&, SkPathBuilder* dst);
 
 SK_API SkPath FillPathWithPaint(const SkPath& src, const SkPaint& paint, bool* isFill = nullptr);
 

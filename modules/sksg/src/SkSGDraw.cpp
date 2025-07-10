@@ -58,13 +58,16 @@ const RenderNode* Draw::onNodeAt(const SkPoint& p) const {
         return this;
     }
 
-    SkPathBuilder stroke_path;
-    if (!skpathutils::FillPathWithPaint(fGeometry->asPath(), paint, &stroke_path)) {
+    const SkPath src = fGeometry->asPath();
+    SkPathBuilder builder;
+    auto result = skpathutils::FillPathWithPaint(src, paint, &builder);
+    if (!result.doFill) {
         return nullptr;
     }
 
+    SkPath stroke_path = result.useDst ? builder.detach() : src;
     // todo: can we shared code (via SkPathRaw) for the impl of contains() in builder?
-    return stroke_path.detach().contains(p.x(), p.y()) ? this : nullptr;
+    return stroke_path.contains(p.x(), p.y()) ? this : nullptr;
 }
 
 SkRect Draw::onRevalidate(InvalidationController* ic, const SkMatrix& ctm) {

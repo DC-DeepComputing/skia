@@ -473,10 +473,14 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
         if (this->computeConservativeLocalClipBounds(&cullRect)) {
             cullRectPtr = &cullRect;
         }
-        SkPathBuilder builder;
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
-        *tmpPath = builder.detach();
-        pathPtr = tmpPath;
+
+        SkPathBuilder bu;
+        auto result = skpathutils::FillPathWithPaint(*pathPtr, *paint, &bu, cullRectPtr, *fCTM);
+        doFill = result.doFill;
+        if (result.useDst) {
+            *tmpPath = bu.detach();
+            pathPtr = tmpPath;
+        }
     }
 
     // avoid possibly allocating a new path in transform if we can

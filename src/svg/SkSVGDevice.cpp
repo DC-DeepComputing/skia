@@ -989,10 +989,13 @@ void SkSVGDevice::drawPath(const SkPath& path, const SkPaint& paint, bool pathIs
     // Apply path effect from paint to path.
     if (path_paint->getPathEffect()) {
       SkPathBuilder builder;
-      bool fill = skpathutils::FillPathWithPaint(path, *path_paint, &builder);
-      pathStorage = builder.detach();
-      pathPtr = &pathStorage;
-      if (fill) {
+      auto result = skpathutils::FillPathWithPaint(path, *path_paint, &builder);
+      if (result.useDst) {
+        pathStorage = builder.detach();
+      } else {
+        pathStorage = path;
+      }
+      if (result.doFill) {
         // Path should be filled.
         path_paint.writable()->setStyle(SkPaint::kFill_Style);
       } else {
