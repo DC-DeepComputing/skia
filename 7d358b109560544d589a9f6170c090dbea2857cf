@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "092a1322_cafffccd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-10T13:11:26Z",
+      "side": 1,
+      "message": "lgtm\n\nI hate the complexity, but that is the state of our current path/builders (very stateful)",
+      "revId": "7d358b109560544d589a9f6170c090dbea2857cf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
