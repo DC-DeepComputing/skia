@@ -1145,6 +1145,7 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
                              sk_sp<SkRefCnt> subRunStorage,
                              sktext::gpu::RendererData rendererData) {
     ASSERT_SINGLE_OWNER
+    printf("AtlasSubrun\n");
 
     const int subRunEnd = subRun->glyphCount();
     auto regenerateDelegate = [&](sktext::gpu::GlyphVector* glyphs,

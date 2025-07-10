@@ -32,7 +32,7 @@ namespace skgpu::graphite {
 #if defined(DUMP_ATLAS_DATA)
 static const constexpr bool kDumpAtlasData = true;
 #else
-static const constexpr bool kDumpAtlasData = false;
+static const constexpr bool kDumpAtlasData = true;
 #endif
 
 #ifdef SK_DEBUG
