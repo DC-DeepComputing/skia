@@ -14,15 +14,15 @@
 #include "src/base/SkEnumBitMask.h"
 
 // Print out a final report that includes missed cases in 'kCases'
-//#define FINAL_REPORT
+#define FINAL_REPORT
 
 // Print out the cases (in 'kCases') that are covered by each 'kPrecompileCases' case
 // Also lists the utilization of each 'kPrecompileCases' case
-//#define PRINT_COVERAGE
+#define PRINT_COVERAGE
 
 // Print out all the generated labels and whether they were found in 'kCases'.
 // This is usually used along with the 'kChosenCase' variable.
-//#define PRINT_GENERATED_LABELS
+#define PRINT_GENERATED_LABELS
 
 namespace PrecompileTestUtils {
 
@@ -112,7 +112,6 @@ void RunTest(skgpu::graphite::PrecompileContext* precompileContext,
              SkSpan<const PipelineLabel> cases,
              PipelineLabelInfoCollector* collector);
 
-skgpu::graphite::PaintOptions SolidSrcover();
 skgpu::graphite::PaintOptions SolidMatrixCFSrcover();
 skgpu::graphite::PaintOptions LinearGradSmSrcover();
 skgpu::graphite::PaintOptions LinearGradSRGBSmMedDitherSrcover();
@@ -154,9 +153,6 @@ skgpu::graphite::PaintOptions MouriMapToneMap();
 skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver();
 skgpu::graphite::PaintOptions KawaseBlurHighSrc();
 skgpu::graphite::PaintOptions BlurFilterMix();
-
-skgpu::graphite::PaintOptions ImagePremulHWOnlyPlusColorSrcover();
-skgpu::graphite::PaintOptions TransparentPaintImagePremulHWOnlyPlusColorSrcover();
 
 skgpu::graphite::PaintOptions EdgeExtensionPassthroughSrcover();
 skgpu::graphite::PaintOptions EdgeExtensionPremulSrcover();

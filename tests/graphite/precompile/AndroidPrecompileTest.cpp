@@ -13,9 +13,11 @@
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
 #include "src/sksl/SkSLUtil.h"
+#include "tests/graphite/precompile/PaintOptionsBuilder.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
 using namespace skgpu::graphite;
+using namespace PaintOptionsUtils;
 using namespace PrecompileTestUtils;
 
 namespace {
@@ -36,7 +38,10 @@ const RenderPassProperties kCombo_RGBA_1D_SRGB_w16F[2] = { kRGBA_1_D_SRGB, kRGBA
 // This helps observe DrawTypeFlags distributions.
 const PrecompileSettings kPrecompileCases[] = {
     // 100% (1/1) handles: 0
-    { ImagePremulHWOnlySrcover(),         DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D },
+    { ImagePremulHWOnlySrcover(),
+      DrawTypeFlags::kNonAAFillRect,
+      kRGBA16F_1_D },
+
     // 100% (4/4) handles: 22 23 42 43
     { ImagePremulHWOnlySrcover(),
       kRRectAndNonAARect,
@@ -44,10 +49,15 @@ const PrecompileSettings kPrecompileCases[] = {
       kWithAnalyticClip },
 
     // 100% (4/4) handles: 63 72 (+2 matching synthetic)
-    { ImagePremulHWOnlySrcover(),         kRRectAndNonAARect,              kRGBA_4_DS },
+    { ImagePremulHWOnlySrcover(),
+      kRRectAndNonAARect,
+      kRGBA_4_DS },
 
     // 100% (1/1) handles: 1
-    { ImageHWOnlySRGBSrcover(),           DrawTypeFlags::kNonAAFillRect,   kRGBA16F_1_D_SRGB },
+    { ImageHWOnlySRGBSrcover(),
+      DrawTypeFlags::kNonAAFillRect,
+      kRGBA16F_1_D_SRGB },
+
     // 100% (4/4) handles: 24 44 45 110
     { ImageHWOnlySRGBSrcover(),
       kRRectAndNonAARect,
@@ -59,11 +69,16 @@ const PrecompileSettings kPrecompileCases[] = {
       kRRectAndNonAARect,
       kRGBA_1_D,
       kWithAnalyticClip },
+
     // 100% (4/4) handles 61 66 (+2 matching synthetic)
-    { TransparentPaintImagePremulHWOnlySrcover(), kRRectAndNonAARect,      kRGBA_4_DS },
+    { TransparentPaintImagePremulHWOnlySrcover(),
+      kRRectAndNonAARect,
+      kRGBA_4_DS },
 
     // 100% (2/2) handles 10 29
-    { TransparentPaintImageSRGBHWOnlySrcover(), kRRectAndNonAARect,        kRGBA_1_D_SRGB },
+    { TransparentPaintImageSRGBHWOnlySrcover(),
+      kRRectAndNonAARect,
+      kRGBA_1_D_SRGB },
 
     // 63% (5/8) handles 27 56 57 58 94
     { SolidSrcSrcover(),
@@ -72,7 +87,9 @@ const PrecompileSettings kPrecompileCases[] = {
       kWithAnalyticClip },
 
     // 75% (3/4) handles 74 86 (+1 matching synthetic)
-    { SolidSrcover(),                     kRRectAndNonAARect,              kRGBA_4_DS },
+    { Builder().srcOver(),
+      kRRectAndNonAARect,
+      kRGBA_4_DS },
 
     // 10: 75% (3/4) handles 19 38 128
     { ImagePremulHWOnlyMatrixCFSrcover(),
@@ -103,7 +120,9 @@ const PrecompileSettings kPrecompileCases[] = {
       kWithAnalyticClip },
 
     // 100% (2/2) handles 69 (+1 matching synthetic)
-    { ImagePremulHWOnlyMatrixCFDitherSrcover(), DrawTypeFlags::kNonAAFillRect, kRGBA_4_DS },
+    { ImagePremulHWOnlyMatrixCFDitherSrcover(),
+      DrawTypeFlags::kNonAAFillRect,
+      kRGBA_4_DS },
 
     // 100% (2/2) handles 15 31
     { TransparentPaintImageSRGBHWOnlyMatrixCFDitherSrcover(),
@@ -117,7 +136,9 @@ const PrecompileSettings kPrecompileCases[] = {
       kWithAnalyticClip },
 
     // 50% (1/2) handles 77 - due to the w/o msaa load variants not being used
-    { ImageSRGBHWOnlyMatrixCFDitherSrcover(), DrawTypeFlags::kAnalyticRRect, kRGBA_4_DS_SRGB },
+    { ImageSRGBHWOnlyMatrixCFDitherSrcover(),
+      DrawTypeFlags::kAnalyticRRect,
+      kRGBA_4_DS_SRGB },
 
     // 67% (2/3) handles 37 70 - due to the w/o msaa load variants not being used
     { ImageAlphaSRGBHWOnlyMatrixCFSrcover(),
@@ -290,7 +311,9 @@ const PrecompileSettings kPrecompileCases[] = {
       kRGBA_1_D_SRGB },
 
     // 62% (15/24) handles 65 75 76 78 80 81 83 84 (+7 synthetic for non-convex draws)
-    { SolidSrcover(), DrawTypeFlags::kNonSimpleShape, kRGBA_4_DS },
+    { Builder().srcOver(),
+      DrawTypeFlags::kNonSimpleShape,
+      kRGBA_4_DS },
 
     // Note: this didn't get folded into #2 since the RRect draw isn't appearing w/ a clip
     // 50% (1/2) handles: 91
@@ -356,17 +379,17 @@ const PrecompileSettings kPrecompileCases[] = {
       kRGBA16F_1_D_SRGB },
 
     // 67% (2/3) handles 107 146
-    { ImagePremulHWOnlyPlusColorSrcover(),
+    { Builder().blend().srcOver(),
       DrawTypeFlags::kAnalyticRRect,
       kCombo_RGBA_1D_4DS },
 
     // 100% (1/1) handles 122
-    { ImagePremulHWOnlyPlusColorSrcover(),
+    { Builder().blend().srcOver(),
       DrawTypeFlags::kNonAAFillRect | DrawTypeFlags::kAnalyticClip,
       kRGBA_1_D },
 
     // 60: 100% (1/1) handles 117
-    { TransparentPaintImagePremulHWOnlyPlusColorSrcover(),
+    { Builder().transparent().blend().srcOver(),
       DrawTypeFlags::kNonAAFillRect,
       kRGBA_1_D },
 

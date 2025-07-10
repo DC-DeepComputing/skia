@@ -43,18 +43,6 @@ using ::skgpu::graphite::RenderPassProperties;
 
 namespace PrecompileTestUtils {
 
-PaintOptions ImagePremulHWOnlyPlusColorSrcover() {
-    return Builder().blend().srcOver();
-}
-
-PaintOptions TransparentPaintImagePremulHWOnlyPlusColorSrcover() {
-    return Builder().transparent().blend().srcOver();
-}
-
-PaintOptions SolidSrcover() {
-    return Builder().srcOver();
-}
-
 PaintOptions LinearGradSmSrcover() {
     return Builder().linearGrad(kSmall).srcOver();
 }

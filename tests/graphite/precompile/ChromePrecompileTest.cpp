@@ -12,9 +12,11 @@
 #include "include/gpu/graphite/PrecompileContext.h"
 #include "src/gpu/graphite/PrecompileContextPriv.h"
 #include "src/gpu/graphite/TextureInfoPriv.h"
+#include "tests/graphite/precompile/PaintOptionsBuilder.h"
 #include "tests/graphite/precompile/PrecompileTestUtils.h"
 
 using namespace skgpu::graphite;
+using namespace PaintOptionsUtils;
 using namespace PrecompileTestUtils;
 
 namespace {
@@ -28,21 +30,33 @@ namespace {
 // the name of the PaintOptions creation function.
 const PrecompileSettings kPrecompileCases[] = {
 //-----------------
-/*  0 */ { SolidSrcover(),                     DrawTypeFlags::kBitmapText_Mask,  kBGRA_1_D },
+/*  0 */ { Builder().srcOver(),
+           DrawTypeFlags::kBitmapText_Mask,
+           kBGRA_1_D },
 //-----------------
-/*  1 */ { SolidSrcover(),                     DrawTypeFlags::kBitmapText_Mask,  kBGRA_4_D },
+/*  1 */ { Builder().srcOver(),
+           DrawTypeFlags::kBitmapText_Mask,
+           kBGRA_4_D },
 //-----------------
-/*  2 */ { SolidSrcover(),                     DrawTypeFlags::kBitmapText_Mask,  kBGRA_4_DS },
+/*  2 */ { Builder().srcOver(),
+           DrawTypeFlags::kBitmapText_Mask,
+           kBGRA_4_DS },
 /*  3 */ { LinearGradSmSrcover(),              DrawTypeFlags::kBitmapText_Mask,  kBGRA_4_DS },
 
 //-----------------
 /*  4 */ { TransparentPaintSrcover(),          DrawTypeFlags::kBitmapText_Color, kBGRA_1_D },
-/*  5 */ { SolidSrcover(),                     DrawTypeFlags::kBitmapText_Color, kBGRA_1_D_Adobe },
+/*  5 */ { Builder().srcOver(),
+           DrawTypeFlags::kBitmapText_Color,
+           kBGRA_1_D_Adobe },
 //-----------------
-/*  6 */ { SolidSrcover(),                     DrawTypeFlags::kBitmapText_Color, kBGRA_4_DS_Adobe },
+/*  6 */ { Builder().srcOver(),
+           DrawTypeFlags::kBitmapText_Color,
+           kBGRA_4_DS_Adobe },
 
 //-----------------
-/*  7 */ { SolidSrcover(),                     kRRectAndNonAARect,               kR_1_D },
+/*  7 */ { Builder().srcOver(),
+           kRRectAndNonAARect,
+           kR_1_D },
 /*  8 */ { ImageAlphaHWOnlySrcover(),          DrawTypeFlags::kPerEdgeAAQuad,    kR_1_D },
 /*  9 */ { ImageAlphaNoCubicSrc(),             DrawTypeFlags::kNonAAFillRect,    kR_1_D },
 
@@ -68,8 +82,12 @@ const PrecompileSettings kPrecompileCases[] = {
 /* 26 */ { ImagePremulHWOnlyMatrixCFSrcover(), DrawTypeFlags::kNonAAFillRect,    kBGRA_4_DS },
 /* 27 */ { ImagePremulHWOnlyAndClampSrcover(), kQuadAndNonAARect,                kBGRA_4_DS },
 /* 28 */ { SolidClearSrcSrcover(),             DrawTypeFlags::kNonAAFillRect,    kBGRA_4_DS },
-/* 29 */ { SolidSrcover(),                     DrawTypeFlags::kNonSimpleShape,   kBGRA_4_DS },
-/* 30 */ { SolidSrcover(),                     DrawTypeFlags::kAnalyticRRect,    kBGRA_4_DS },
+/* 29 */ { Builder().srcOver(),
+           DrawTypeFlags::kNonSimpleShape,
+           kBGRA_4_DS },
+/* 30 */ { Builder().srcOver(),
+           DrawTypeFlags::kAnalyticRRect,
+           kBGRA_4_DS },
 /* 31 */ { TransparentPaintImagePremulHWOnlySrcover(), DrawTypeFlags::kPerEdgeAAQuad, kBGRA_4_DS },
 /* 32 */ { LinearGradSRGBSmMedDitherSrcover(), kRRectAndNonAARect,               kBGRA_4_DS_Adobe },
 /* 33 */ { ImageHWOnlySRGBSrcover(),           DrawTypeFlags::kAnalyticRRect,    kBGRA_4_DS_SRGB },
