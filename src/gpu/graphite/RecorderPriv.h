@@ -34,6 +34,10 @@ class TextBlobRedrawCoordinator;
 
 namespace skgpu::graphite {
 
+class ShaderCodeDictionary;
+class TextureProxy;
+class TextureDataCache;
+class UploadList;
 class AtlasProvider;
 class Caps;
 class Context;

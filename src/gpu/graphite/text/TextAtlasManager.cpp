@@ -302,6 +302,7 @@ void TextAtlasManager::setAtlasDimensionsToMinimum_ForTesting() {
 }
 
 bool TextAtlasManager::initAtlas(MaskFormat format) {
+    printf("InitAtlas\n");
     int index = MaskFormatToAtlasIndex(format);
     if (fAtlases[index] == nullptr) {
         SkColorType colorType = MaskFormatToColorType(format);
