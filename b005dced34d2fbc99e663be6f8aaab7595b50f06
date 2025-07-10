@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "57b8c619_01d5e6e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-10T06:44:20Z",
+      "side": 1,
+      "message": "This CL\u0027s tryjobs have been stuck for more than 12hrs",
+      "revId": "b005dced34d2fbc99e663be6f8aaab7595b50f06",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
