@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9916fbdf_329884c2",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-10T16:28:12Z",
+      "side": 1,
+      "message": "Do we want to guard this with:\n   #if defined(GPU_TEST_UTILS)",
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
