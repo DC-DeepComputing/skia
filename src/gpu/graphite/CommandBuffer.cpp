@@ -225,6 +225,7 @@ bool CommandBuffer::copyBufferToTexture(const Buffer* buffer,
                                         sk_sp<Texture> texture,
                                         const BufferTextureCopyData* copyData,
                                         int count) {
+    //printf("CopyBufferToTexture: %s\n", texture->getLabel().c_str());
     SkASSERT(buffer);
     SkASSERT(texture);
     SkASSERT(count > 0 && copyData);

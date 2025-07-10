@@ -149,6 +149,7 @@ void SDFTextLCDRenderStep::writeUniformsAndTextures(const DrawParams& params,
             recorder->priv().atlasProvider()->textAtlasManager()->getProxies(
                     subRunData.subRun()->maskFormat(), &numProxies);
     SkASSERT(proxies && numProxies > 0);
+    printf("SDFLCD proxies returned %u\n", numProxies);
 
     // write uniforms
     gatherer->write(params.transform().matrix());  // subRunDeviceMatrix
