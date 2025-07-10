@@ -118,7 +118,6 @@ private:
     // These resources all get instantiated during prepareResources.
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
-    skia_private::TArray<sk_sp<Sampler>> fSamplers;
 
 #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
     skia_private::TArray<float> fPipelineDrawAreas;

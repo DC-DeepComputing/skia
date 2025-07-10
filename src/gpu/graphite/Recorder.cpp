@@ -53,6 +53,7 @@
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
 #include <atomic>
+#include <functional>
 #include <string_view>
 #include <unordered_set>
 #include <utility>
@@ -111,7 +112,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
-        , fTextureDataCache(new TextureDataCache)
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fRequireOrderedRecordings(options.fRequireOrderedRecordings.has_value()
@@ -207,18 +207,16 @@ std::unique_ptr<Recording> Recorder::snap() {
     // data cache so that they can be instantiated easily when the Recording is inserted.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](TextureDataBlock block) {
-        for (int j = 0; j < block.numTextures(); ++j) {
-            const TextureDataBlock::SampledTexture& tex = block.texture(j);
 
-            if (tex.first->isLazy()) {
-                if (tex.first->isVolatile()) {
-                    volatileLazyProxies.insert(tex.first);
-                } else {
-                    nonVolatileLazyProxies.insert(tex.first);
-                }
+    fRootTaskList->visitProxies([&](const TextureProxy* proxy) {
+        if (proxy->isLazy()) {
+            if (proxy->isVolatile()) {
+                volatileLazyProxies.insert(sk_ref_sp(proxy));
+            } else {
+                nonVolatileLazyProxies.insert(sk_ref_sp(proxy));
             }
         }
+        return true;
     });
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
@@ -263,7 +261,6 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
-    fTextureDataCache = std::make_unique<TextureDataCache>();
     if (!fRequireOrderedRecordings) {
         fAtlasProvider->invalidateAtlases();
     }
@@ -488,10 +485,9 @@ void Recorder::addFinishInfo(const InsertFinishInfo& info) {
 void Recorder::freeGpuResources() {
     ASSERT_SINGLE_OWNER
 
-    // We don't want to free the Uniform/TextureDataCaches or the Draw/UploadBufferManagers since
-    // all their resources need to be held on to until a Recording is snapped. And once snapped, all
-    // their held resources are released. The StrikeCache and TextBlobCache don't hold onto any Gpu
-    // resources.
+    // We don't want to free the Uniform or the Draw/UploadBufferManagers sinceall their resources
+    // need to be held on to until a Recording is snapped. And once snapped, all their held
+    // resources are released. The StrikeCache and TextBlobCache don't hold onto any Gpu resources.
 
     // Notify the atlas and resource provider to free any resources it can (does not include
     // resources that are locked due to pending work).
