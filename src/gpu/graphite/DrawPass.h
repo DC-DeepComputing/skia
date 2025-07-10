@@ -31,8 +31,6 @@ class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
 class RuntimeEffectDictionary;
-class Sampler;
-class Texture;
 class TextureProxy;
 
 /**
@@ -85,8 +83,6 @@ public:
     const GraphicsPipeline* getPipeline(size_t index) const {
         return fFullPipelines[index].get();
     }
-    const Texture* getTexture(size_t index) const;
-    const Sampler* getSampler(size_t index) const;
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
@@ -113,12 +109,10 @@ private:
     // The pipelines are referenced by index in BindGraphicsPipeline, but that will index into a
     // an array of actual GraphicsPipelines.
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
-    skia_private::TArray<SamplerDesc> fSamplerDescs;
 
     // These resources all get instantiated during prepareResources.
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
-    skia_private::TArray<sk_sp<Sampler>> fSamplers;
 
 #if defined(SK_TRACE_GRAPHITE_PIPELINE_USE)
     skia_private::TArray<float> fPipelineDrawAreas;
