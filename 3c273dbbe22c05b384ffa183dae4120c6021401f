@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7f4be484_278dfc31",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-10T16:14:09Z",
+      "side": 1,
+      "message": "This definitely needs a generous comment",
+      "revId": "3c273dbbe22c05b384ffa183dae4120c6021401f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
