@@ -22,6 +22,52 @@
       },
       "revId": "a334b294f434cacf2dbd4b136df16e2c666ad281",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a919ff4_213628ea",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1324,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-11T19:41:10Z",
+      "side": 1,
+      "message": "To clear up some space within this method, how do you feel about making this instead a static helper defined above this method using an anonymous namespace? Up to you.",
+      "range": {
+        "startLine": 1306,
+        "startChar": 0,
+        "endLine": 1324,
+        "endChar": 48
+      },
+      "revId": "a334b294f434cacf2dbd4b136df16e2c666ad281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07fb53d1_4e3bf020",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1360,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-11T19:41:10Z",
+      "side": 1,
+      "message": "`resetTextureAndSamplerState`?",
+      "range": {
+        "startLine": 1358,
+        "startChar": 0,
+        "endLine": 1360,
+        "endChar": 45
+      },
+      "revId": "a334b294f434cacf2dbd4b136df16e2c666ad281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

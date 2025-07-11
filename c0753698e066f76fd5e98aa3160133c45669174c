@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "461e0906_c2d29267",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1279,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-11T19:41:10Z",
+      "side": 0,
+      "message": "We assert above that we have \u003e1 tex/sampler, so we don\u0027t need to worry about 0 here - but we still only `SkASSERT(hasDstCopy || command)`, so we should still make sure `command` isn\u0027t nullptr.",
+      "range": {
+        "startLine": 1279,
+        "startChar": 8,
+        "endLine": 1279,
+        "endChar": 22
+      },
+      "revId": "c0753698e066f76fd5e98aa3160133c45669174c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
