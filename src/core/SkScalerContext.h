@@ -435,7 +435,7 @@ protected:
      *  Does not apply subpixel positioning to the path.
      *  @return false if this glyph does not have any path.
      */
-    [[nodiscard]] virtual bool generatePath(const SkGlyph&, SkPath*, bool* modified) = 0;
+    [[nodiscard]] virtual std::optional<SkPath> generatePath(const SkGlyph&, bool* modified) = 0;
 
     /** Returns the drawable for the glyph (if any).
      *
