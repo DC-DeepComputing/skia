@@ -12,7 +12,7 @@
 #include "include/core/SkFourByteTag.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkScalar.h"
@@ -385,7 +385,7 @@ protected:
     const SkScalerContextRec fRec;
 
     struct GeneratedPath {
-        SkPath path;
+        SkPathBuilder builder;
         bool modified;
     };
     struct GlyphMetrics {
@@ -430,12 +430,12 @@ protected:
         bool doBGR, bool verticalLCD, bool a8FromLCD, bool hairline);
     void generateImageFromPath(const SkGlyph& glyph, void* imageBuffer);
 
-    /** Sets the passed path to the glyph outline.
-     *  If this cannot be done the path is set to empty;
+    /** Sets the passed pathbuilder to the glyph outline.
+     *  If this cannot be done the pathbuilder is set to empty;
      *  Does not apply subpixel positioning to the path.
      *  @return false if this glyph does not have any path.
      */
-    [[nodiscard]] virtual bool generatePath(const SkGlyph&, SkPath*, bool* modified) = 0;
+    [[nodiscard]] virtual bool generatePath(const SkGlyph&, SkPathBuilder*, bool* modified) = 0;
 
     /** Returns the drawable for the glyph (if any).
      *

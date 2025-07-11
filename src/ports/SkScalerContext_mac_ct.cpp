@@ -547,14 +547,14 @@ void SkScalerContext_Mac::generateImage(const SkGlyph& glyph, void* imageBuffer)
 
 namespace {
 class SkCTPathGeometrySink {
-    SkPathBuilder fBuilder;
+    SkPathBuilder* fBuilder;
     bool fStarted;
     CGPoint fCurrent;
 
     void goingTo(const CGPoint pt) {
         if (!fStarted) {
             fStarted = true;
-            fBuilder.moveTo(fCurrent.x, -fCurrent.y);
+            fBuilder->moveTo(fCurrent.x, -fCurrent.y);
         }
         fCurrent = pt;
     }
@@ -564,9 +564,7 @@ class SkCTPathGeometrySink {
     }
 
 public:
-    SkCTPathGeometrySink() : fStarted{false}, fCurrent{0,0} {}
-
-    SkPath detach() { return fBuilder.detach(); }
+    SkCTPathGeometrySink(SkPathBuilder* bu) : fBuilder(bu), fStarted{false}, fCurrent{0,0} {}
 
     static void ApplyElement(void *ctx, const CGPathElement *element) {
         SkCTPathGeometrySink& self = *(SkCTPathGeometrySink*)ctx;
@@ -581,15 +579,15 @@ public:
             case kCGPathElementAddLineToPoint:
                 if (self.currentIsNot(points[0])) {
                     self.goingTo(points[0]);
-                    self.fBuilder.lineTo(points[0].x, -points[0].y);
+                    self.fBuilder->lineTo(points[0].x, -points[0].y);
                 }
                 break;
 
             case kCGPathElementAddQuadCurveToPoint:
                 if (self.currentIsNot(points[0]) || self.currentIsNot(points[1])) {
                     self.goingTo(points[1]);
-                    self.fBuilder.quadTo(points[0].x, -points[0].y,
-                                         points[1].x, -points[1].y);
+                    self.fBuilder->quadTo(points[0].x, -points[0].y,
+                                          points[1].x, -points[1].y);
                 }
                 break;
 
@@ -599,15 +597,15 @@ public:
                     self.currentIsNot(points[2]))
                 {
                     self.goingTo(points[2]);
-                    self.fBuilder.cubicTo(points[0].x, -points[0].y,
-                                          points[1].x, -points[1].y,
-                                          points[2].x, -points[2].y);
+                    self.fBuilder->cubicTo(points[0].x, -points[0].y,
+                                           points[1].x, -points[1].y,
+                                           points[2].x, -points[2].y);
                 }
                 break;
 
             case kCGPathElementCloseSubpath:
                 if (self.fStarted) {
-                    self.fBuilder.close();
+                    self.fBuilder->close();
                 }
                 break;
 
@@ -626,7 +624,8 @@ public:
  */
 #define kScaleForSubPixelPositionHinting (4.0f)
 
-bool SkScalerContext_Mac::generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) {
+bool SkScalerContext_Mac::generatePath(const SkGlyph& glyph, SkPathBuilder* builder,
+                                       bool* modified) {
     SkScalar scaleX = SK_Scalar1;
     SkScalar scaleY = SK_Scalar1;
 
@@ -663,18 +662,17 @@ bool SkScalerContext_Mac::generatePath(const SkGlyph& glyph, SkPath* path, bool*
     CGGlyph cgGlyph = SkTo<CGGlyph>(glyph.getGlyphID());
     SkUniqueCFRef<CGPathRef> cgPath(CTFontCreatePathForGlyph(fCTFont.get(), cgGlyph, &xform));
 
-    path->reset();
+    builder->reset();
     if (!cgPath) {
         return false;
     }
 
-    SkCTPathGeometrySink sink;
+    SkCTPathGeometrySink sink(builder);
     CGPathApply(cgPath.get(), &sink, SkCTPathGeometrySink::ApplyElement);
-    *path = sink.detach();
     if (fDoSubPosition) {
         SkMatrix m;
         m.setScale(SkScalarInvert(scaleX), SkScalarInvert(scaleY));
-        path->transform(m);
+        builder->transform(m);
     }
     return true;
 }

@@ -46,7 +46,7 @@ public:
 protected:
     GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override;
     void generateImage(const SkGlyph&, void*) override;
-    bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override;
+    bool generatePath(const SkGlyph& glyph, SkPathBuilder*, bool* modified) override;
     void generateFontMetrics(SkFontMetrics*) override;
 
 private:

@@ -808,6 +808,9 @@ public:
     SkPathBuilder& addPath(const SkPath& src, const SkMatrix& matrix,
                            SkPath::AddPathMode mode = SkPath::AddPathMode::kAppend_AddPathMode);
 
+    SkPathBuilder& addPointsAndVerbs(SkSpan<const SkPoint>, SkSpan<const SkPathVerb>,
+                                     SkSpan<const float> conics, SkPathFillType);
+
     // Performance hint, to reserve extra storage for subsequent calls to lineTo, quadTo, etc.
 
     /** Grows SkPathBuilder verb array and SkPoint array to contain additional space.

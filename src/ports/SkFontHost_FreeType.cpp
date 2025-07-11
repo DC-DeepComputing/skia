@@ -476,7 +476,7 @@ public:
 protected:
     GlyphMetrics generateMetrics(const SkGlyph&, SkArenaAlloc*) override;
     void generateImage(const SkGlyph&, void*) override;
-    bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override;
+    bool generatePath(const SkGlyph& glyph, SkPathBuilder*, bool* modified) override;
     sk_sp<SkDrawable> generateDrawable(const SkGlyph&) override;
     void generateFontMetrics(SkFontMetrics*) override;
 
@@ -1505,15 +1505,14 @@ sk_sp<SkDrawable> SkScalerContext_FreeType::generateDrawable(const SkGlyph& glyp
     return nullptr;
 }
 
-bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) {
-    SkASSERT(path);
-
+bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPathBuilder* builder,
+                                            bool* modified) {
     SkAutoMutexExclusive  ac(f_t_mutex());
 
     SkGlyphID glyphID = glyph.getGlyphID();
     // FT_IS_SCALABLE is documented to mean the face contains outline glyphs.
     if (!FT_IS_SCALABLE(fFace) || this->setupSize()) {
-        path->reset();
+        builder->reset();
         return false;
     }
 
@@ -1523,13 +1522,12 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, 
 
     FT_Error err = FT_Load_Glyph(fFace, glyphID, flags);
     if (err != 0 || fFace->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
-        path->reset();
+        builder->reset();
         return false;
     }
     *modified |= emboldenIfNeeded(fFace, fFace->glyph, glyphID);
 
-    SkPathBuilder builder;
-    if (!fUtils.generateGlyphPath(fFace, &builder)) {
+    if (!fUtils.generateGlyphPath(fFace, builder)) {
         return false;
     }
 
@@ -1540,10 +1538,9 @@ bool SkScalerContext_FreeType::generatePath(const SkGlyph& glyph, SkPath* path, 
         vector.x = fFace->glyph->metrics.vertBearingX - fFace->glyph->metrics.horiBearingX;
         vector.y = -fFace->glyph->metrics.vertBearingY - fFace->glyph->metrics.horiBearingY;
         FT_Vector_Transform(&vector, &fMatrix22);
-        builder.offset(SkFDot6ToScalar(vector.x), -SkFDot6ToScalar(vector.y));
+        builder->offset(SkFDot6ToScalar(vector.x), -SkFDot6ToScalar(vector.y));
         *modified = true;
     }
-    *path = builder.detach();
     return true;
 }
 
