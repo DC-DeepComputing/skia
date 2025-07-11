@@ -1,0 +1,45 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e9139539_c343e5b3",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-11T17:17:20Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we put volatile, would it help prevent the compiler from optimizing out some of the assignments and reads?",
+      "range": {
+        "startLine": 109,
+        "startChar": 8,
+        "endLine": 109,
+        "endChar": 29
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "f922d314_eef3fe1d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/QueueManager.h",
+              "range": {
+                "startLine": 109,
+                "startChar": 0,
+                "endLine": 110,
+                "endChar": 0
+              },
+              "replacement": "    volatile int fAddedRecordingsCount \u003d 0;\n"
+            }
+          ]
+        }
+      ],
+      "revId": "056fb40c09a365eafa854d49d5a04ea34e03bf7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
