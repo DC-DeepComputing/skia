@@ -16,8 +16,10 @@
 #include "src/gpu/SkBackingFit.h"
 #include "src/gpu/ganesh/GrDeferredProxyUploader.h"
 #include "src/gpu/ganesh/GrDirectContextPriv.h"
+#include "src/gpu/ganesh/GrGpu.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 #include "src/gpu/ganesh/GrProxyProvider.h"
+#include "src/gpu/ganesh/GrResourceCache.h"
 #include "src/gpu/ganesh/GrSurface.h"
 #include "src/gpu/ganesh/GrSurfaceProxyPriv.h"
 #include "src/gpu/ganesh/GrTexture.h"
@@ -107,7 +109,12 @@ GrTextureProxy::GrTextureProxy(sk_sp<GrSurface> surf,
 GrTextureProxy::~GrTextureProxy() {
     // Due to the order of cleanup the GrSurface this proxy may have wrapped may have gone away
     // at this point. Zero out the pointer so the cache invalidation code doesn't try to use it.
-    fTarget = nullptr;
+    if (fTarget && fTarget->getGpu()->getContext()->backend() == GrBackendApi::kOpenGL && fTarget->unique() &&
+            !fTarget->getGpu()->getContext()->priv().getResourceCache()->isOnGLThread()) {
+        GrResourceCache::ReturnResourceFromThread(std::move(fTarget), fTarget->getContext()->directContextID());
+    } else {
+        fTarget = nullptr;
+    }
 
     // In DDL-mode, uniquely keyed proxies keep their key even after their originating
     // proxy provider has gone away. In that case there is noone to send the invalid key

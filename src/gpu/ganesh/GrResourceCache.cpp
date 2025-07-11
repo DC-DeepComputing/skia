@@ -58,6 +58,8 @@ GrResourceCache::GrResourceCache(skgpu::SingleOwner* singleOwner,
         , fOwningContextID(owningContextID)
         , fContextUniqueID(familyID)
         , fSingleOwner(singleOwner) {
+    fHasGLThreadID = true;
+    fGLThreadID = SkGetThreadID();
     SkASSERT(owningContextID.isValid());
     SkASSERT(familyID != SK_InvalidUniqueID);
 }

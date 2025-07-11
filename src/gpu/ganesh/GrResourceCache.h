@@ -147,6 +147,16 @@ public:
      */
     GrGpuResource* findAndRefScratchResource(const skgpu::ScratchKey& scratchKey);
 
+    /**
+     *  test whether we are in correct thread
+     */
+    bool isOnGLThread() const {
+        if (!fHasGLThreadID) {
+            return true;
+        }
+        return SkGetThreadID() == fGLThreadID;
+    }
+
 #ifdef SK_DEBUG
     // This is not particularly fast and only used for validation, so debug only.
     int countScratchEntriesForKey(const skgpu::ScratchKey& scratchKey) const {
@@ -403,6 +413,8 @@ private:
     uint32_t                            fContextUniqueID = SK_InvalidUniqueID;
     skgpu::SingleOwner*                 fSingleOwner = nullptr;
 
+    SkThreadID                          fGLThreadID = kIllegalThreadID;
+    bool                                fHasGLThreadID = false;
     // This resource is allowed to be in the nonpurgeable array for the sake of validate() because
     // we're in the midst of converting it to purgeable status.
     SkDEBUGCODE(GrGpuResource*          fNewlyPurgeableResourceForValidation = nullptr;)
@@ -472,6 +484,8 @@ private:
      * Called by GrGpuResources when they change from budgeted to unbudgeted or vice versa.
      */
     void didChangeBudgetStatus(GrGpuResource* resource) { fCache->didChangeBudgetStatus(resource); }
+
+    bool isOnGLThread() {return fCache->isOnGLThread();};
 
     // No taking addresses of this type.
     const ResourceAccess* operator&() const;
