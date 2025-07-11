@@ -14,6 +14,7 @@ bazel_dep(name = "rules_license", version = "1.0.0")
 bazel_dep(name = "rules_python", version = "1.3.0")
 bazel_dep(name = "rules_rust", version = "0.60.0")
 bazel_dep(name = "rules_shell", version = "0.4.1")
+bazel_dep(name = "rules_pkg", version = "1.1.0")
 
 bazel_dep(name = "rules_webtesting", version = "0.4.0", dev_dependency = True)
 bazel_dep(name = "emsdk", version = EMSDK_VERSION, dev_dependency = True)
@@ -293,4 +294,35 @@ use_repo(
     "gn_linux_amd64",
     "gn_mac_amd64",
     "gn_mac_arm64",
+)
+
+rules_docker = use_extension("//bazel:rules_docker.bzl", "rules_docker")
+use_repo(
+    rules_docker,
+    "io_bazel_rules_docker",
+)
+bazel_dep(name = "io_bazel_rules_go_name_hack")
+local_path_override(
+    module_name = "io_bazel_rules_go_name_hack",
+    path = "bazel/legacy_bazel_name_hack",
+)
+
+register_toolchains(
+    # Register the default docker toolchain that expects the 'docker'
+    # executable to be in the PATH
+    "@io_bazel_rules_docker//toolchains/docker:default_linux_toolchain",
+    "@io_bazel_rules_docker//toolchains/docker:default_windows_toolchain",
+    "@io_bazel_rules_docker//toolchains/docker:default_osx_toolchain",
+)
+
+docker_toolchain_configure = use_repo_rule("@io_bazel_rules_docker//toolchains/docker:toolchain.bzl", "toolchain_configure")
+docker_toolchain_configure(name="docker_config")
+
+container_pull = use_repo_rule("@io_bazel_rules_docker//container:container.bzl", "container_pull")
+
+container_pull(
+    name = "skottie-base",
+    digest = "sha256:6f141efaf8cbca6206e5e879f72217a9c7c2eb277a78946511ccf936c40369ed",
+    registry = "gcr.io",
+    repository = "skia-public/skottie-base",
 )
