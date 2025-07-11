@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1d43afd_44c82c80",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1254,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-11T18:43:55Z",
+      "side": 1,
+      "message": "nit: I forget but I think one of the compilers may complain about an implicit cast here. Just FYI / forewarning",
+      "range": {
+        "startLine": 1254,
+        "startChar": 68,
+        "endLine": 1254,
+        "endChar": 78
+      },
+      "revId": "a334b294f434cacf2dbd4b136df16e2c666ad281",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
