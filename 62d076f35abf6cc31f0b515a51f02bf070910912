@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34851181_dc25653e",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "Since we already have a TODO in the endCapture() definition, can we move this TODO to be above startCapture() and have it say something like \"Do not use startCapture() or endCapture() as the feature is still under development\"?",
+      "range": {
+        "startLine": 288,
+        "startChar": 23,
+        "endLine": 288,
+        "endChar": 76
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ed1f26e_24f7ad4f",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "Can we add a bug number and be more specific about what we plan to return here.",
+      "range": {
+        "startLine": 904,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 29
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d7dcfe37_ccd01ccb",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "nit: unnecessary",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 40
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "276e7076_6cbd2434",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "You should be able to forward declare `SkCaptureManager` instead of including it since SharedContext\u0027s destructor isn\u0027t in the header.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 41
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3e28a2b8_a0b12e18",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "This should not be public as initialization should only happen once in a controlled manner.  Whether or not to instantiate the capture manager could be a constructor argument to SharedContext (or it could take the sk_sp/std::unique_ptr\u003cSkCaptureManager\u003e directly so that the Context factory can create it however it wants to).  This would unfortunately require updating all of the subclasses of SharedContext to pass it through.\n\nSince there is already an out-of-band initialization step for SharedContext (setRendererProvider), I\u0027d vote to remove `initCaptureManager()` and have a private `setCaptureManager()` that is called in `Context()`, as it\u0027s already a friend.",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 83
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f3872dbd_cf6777cb",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "Skia naming convention is that `captureManager()` would return `SkCaptureManager*` and `refCaptureManager()` would return `sk_sp\u003cSkCaptureManager\u003e`.\n\nIn this case, the SharedContext owns the SkCaptureManager so it technically never has to let other people ref it (the SharedContext in graphite is the last object to be deleted on teardown).  It should just return `SkCaptureManager*`.\n\nGiven that, SkCaptureManager doesn\u0027t necessarily have to extend SkRefCnt, we could always have the context owners use `std::unique_ptr\u003cSkCaptureManager\u003e` instead, but that might not be possible with Ganesh or the CPU context\u0027s life times so sk_sp is also fine for now.",
+      "range": {
+        "startLine": 65,
+        "startChar": 3,
+        "endLine": 65,
+        "endChar": 27
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "acd5ed92_5a56f666",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:22:52Z",
+      "side": 1,
+      "message": "This comment is somewhat redundant with the variable name, so maybe something like `SkSurface_Base` must own the base canvas while the SkCaptureManager owns any wrapping capture canvas that `fCachedCanvas` may point to.?",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
