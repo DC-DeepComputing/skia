@@ -16,6 +16,52 @@
       "message": "PTAL",
       "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e41f05f3_d4389479",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-11T15:39:47Z",
+      "side": 1,
+      "message": "TODO align",
+      "range": {
+        "startLine": 465,
+        "startChar": 38,
+        "endLine": 468,
+        "endChar": 47
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c618bb8f_6587c3b5",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 793,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-11T15:39:47Z",
+      "side": 1,
+      "message": "TODO remove",
+      "range": {
+        "startLine": 793,
+        "startChar": 4,
+        "endLine": 793,
+        "endChar": 32
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
