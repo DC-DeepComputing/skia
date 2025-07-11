@@ -16,6 +16,24 @@
       "message": "This definitely needs a generous comment",
       "revId": "3c273dbbe22c05b384ffa183dae4120c6021401f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bc3f40e4_5f263889",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1084,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T16:26:48Z",
+      "side": 1,
+      "message": "I added some comments, let me know if there are more details you\u0027d find useful. Some of its utility won\u0027t be apparent until https://skia-review.googlesource.com/c/skia/+/1015997",
+      "parentUuid": "7f4be484_278dfc31",
+      "revId": "3c273dbbe22c05b384ffa183dae4120c6021401f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
