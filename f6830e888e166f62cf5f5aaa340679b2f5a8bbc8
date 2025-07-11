@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44da786a_51872a1a",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-11T18:39:54Z",
+      "side": 1,
+      "message": "preventing",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 34,
+        "endChar": 14
+      },
+      "revId": "f6830e888e166f62cf5f5aaa340679b2f5a8bbc8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
