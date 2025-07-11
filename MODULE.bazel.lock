@@ -72,6 +72,7 @@
     "https://bcr.bazel.build/modules/protobuf/21.7/MODULE.bazel": "a5a29bb89544f9b97edce05642fac225a808b5b7be74038ea3640fae2f8e66a7",
     "https://bcr.bazel.build/modules/protobuf/27.0/MODULE.bazel": "7873b60be88844a0a1d8f80b9d5d20cfbd8495a689b8763e76c6372998d3f64c",
     "https://bcr.bazel.build/modules/protobuf/27.1/MODULE.bazel": "703a7b614728bb06647f965264967a8ef1c39e09e8f167b3ca0bb1fd80449c0d",
+    "https://bcr.bazel.build/modules/protobuf/29.0-rc2.bcr.1/MODULE.bazel": "52f4126f63a2f0bbf36b99c2a87648f08467a4eaf92ba726bc7d6a500bbf770c",
     "https://bcr.bazel.build/modules/protobuf/29.0-rc2/MODULE.bazel": "6241d35983510143049943fc0d57937937122baf1b287862f9dc8590fc4c37df",
     "https://bcr.bazel.build/modules/protobuf/29.0-rc3/MODULE.bazel": "33c2dfa286578573afc55a7acaea3cada4122b9631007c594bf0729f41c8de92",
     "https://bcr.bazel.build/modules/protobuf/29.0/MODULE.bazel": "319dc8bf4c679ff87e71b1ccfb5a6e90a6dbc4693501d471f48662ac46d04e4e",
@@ -110,6 +111,8 @@
     "https://bcr.bazel.build/modules/rules_go/0.51.0-rc1/MODULE.bazel": "4547e768b0cd24b3e6387f824b4c2842f6f5fdf29962ec8d5b67da758409b496",
     "https://bcr.bazel.build/modules/rules_go/0.54.0/MODULE.bazel": "ebec39ed510d0d4122b60764623dda92ca7f175479b511bf7cd5de7f38e86747",
     "https://bcr.bazel.build/modules/rules_go/0.54.0/source.json": "6eb9b4f4fc27ab5be79d84dcfcf971beea6caa91a1b02088a9ee314c88915cf3",
+    "https://bcr.bazel.build/modules/rules_go/0.55.0/MODULE.bazel": "973186eb8ad1b0aaa8afd93d57229500be42ab489a9d3a7b14873975769938e4",
+    "https://bcr.bazel.build/modules/rules_go/0.55.0/source.json": "6ed92543c54bc256f732b20df25ff3336e81a90fb21b4233239bab61d1b5668b",
     "https://bcr.bazel.build/modules/rules_java/4.0.0/MODULE.bazel": "5a78a7ae82cd1a33cef56dc578c7d2a46ed0dca12643ee45edbb8417899e6f74",
     "https://bcr.bazel.build/modules/rules_java/5.3.5/MODULE.bazel": "a4ec4f2db570171e3e5eb753276ee4b389bae16b96207e9d3230895c99644b86",
     "https://bcr.bazel.build/modules/rules_java/6.0.0/MODULE.bazel": "8a43b7df601a7ec1af61d79345c17b31ea1fedc6711fd4abfd013ea612978e39",
@@ -145,7 +148,8 @@
     "https://bcr.bazel.build/modules/rules_nodejs/6.3.2/source.json": "80e0a68eb81772f1631f8b69014884eebc2474b3b3025fd19a5240ae4f76f9c9",
     "https://bcr.bazel.build/modules/rules_pkg/0.7.0/MODULE.bazel": "df99f03fc7934a4737122518bb87e667e62d780b610910f0447665a7e2be62dc",
     "https://bcr.bazel.build/modules/rules_pkg/1.0.1/MODULE.bazel": "5b1df97dbc29623bccdf2b0dcd0f5cb08e2f2c9050aab1092fd39a41e82686ff",
-    "https://bcr.bazel.build/modules/rules_pkg/1.0.1/source.json": "bd82e5d7b9ce2d31e380dd9f50c111d678c3bdaca190cb76b0e1c71b05e1ba8a",
+    "https://bcr.bazel.build/modules/rules_pkg/1.1.0/MODULE.bazel": "9db8031e71b6ef32d1846106e10dd0ee2deac042bd9a2de22b4761b0c3036453",
+    "https://bcr.bazel.build/modules/rules_pkg/1.1.0/source.json": "fef768df13a92ce6067e1cd0cdc47560dace01354f1d921cfb1d632511f7d608",
     "https://bcr.bazel.build/modules/rules_proto/4.0.0/MODULE.bazel": "a7a7b6ce9bee418c1a760b3d84f83a299ad6952f9903c67f19e4edd964894e06",
     "https://bcr.bazel.build/modules/rules_proto/5.3.0-21.7/MODULE.bazel": "e8dff86b0971688790ae75528fe1813f71809b5afd57facb44dad9e8eca631b7",
     "https://bcr.bazel.build/modules/rules_proto/6.0.0/MODULE.bazel": "b531d7f09f58dce456cd61b4579ce8c86b38544da75184eadaf0a7cb7966453f",
@@ -252,6 +256,124 @@
                 "bin/git config --system user.email \"bazel-test-user@example.com\""
               ],
               "patch_cmds_win": []
+            }
+          }
+        },
+        "recordedRepoMappingEntries": [
+          [
+            "",
+            "bazel_tools",
+            "bazel_tools"
+          ]
+        ]
+      }
+    },
+    "//bazel:rules_docker.bzl%rules_docker": {
+      "general": {
+        "bzlTransitiveDigest": "P8quYgO0UrTUpELvjKHe/Z8XWD18KhVk7Ba9uuo6s/k=",
+        "usagesDigest": "lmknID7H3n8lGxvmrY4ftJalpTpvJIOeWZpmaa+e4jk=",
+        "recordedFileInputs": {},
+        "recordedDirentsInputs": {},
+        "envVariables": {},
+        "generatedRepoSpecs": {
+          "io_bazel_rules_docker": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
+            "attributes": {
+              "sha256": "b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf",
+              "urls": [
+                "https://storage.googleapis.com/skia-world-readable/bazel/b1e80761a8a8243d03ebca8845e9cc1ba6c82ce7c5179ce2b295cd36f7e394bf.tar.gz",
+                "https://github.com/bazelbuild/rules_docker/releases/download/v0.25.0/rules_docker-v0.25.0.tar.gz"
+              ]
+            }
+          },
+          "go_puller_linux_amd64": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "08b8963cce9234f57055bafc7cadd1624cdce3c5990048cea1df453d7d288bc6",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/puller-linux-amd64"
+              ]
+            }
+          },
+          "go_puller_linux_arm64": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "912ee7c469b3e4bf15ba5d1f0ee500e7ec6724518862703fa8b09e4d58ce3ee6",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/puller-linux-arm64"
+              ]
+            }
+          },
+          "go_puller_linux_s390x": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "a5527b7b3b4a266e4680a4ad8939429665d4173f26b35d5d317385134369e438",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/puller-linux-s390x"
+              ]
+            }
+          },
+          "go_puller_darwin": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "4855c4f5927f8fb0f885510ab3e2a166d5fa7cde765fbe9aec97dc6b2761bb22",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/puller-darwin-amd64"
+              ]
+            }
+          },
+          "loader_linux_amd64": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "5e5ada66beff07f9188bdc1f99c3fa37c407fc0048cd78b9c2047e9c5516f20b",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/loader-linux-amd64"
+              ]
+            }
+          },
+          "loader_linux_arm64": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "a80966d17b25dbc9313e9fc1cae74ded5916fa64dba0d33438c8adad338b44d3",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/loader-linux-arm64"
+              ]
+            }
+          },
+          "loader_linux_s390x": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "0c0ebc3e0a502542547a38b51f4686a049897eeb4cbc0e2f07fc25276c57866f",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/loader-linux-s390x"
+              ]
+            }
+          },
+          "loader_darwin": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_file",
+            "attributes": {
+              "executable": true,
+              "sha256": "8c9986b2b506febbff737090d9ec485cec1376c52789747573521a85194341c1",
+              "urls": [
+                "https://storage.googleapis.com/rules_docker/aad94363e63d31d574cf701df484b3e8b868a96a/loader-darwin-amd64"
+              ]
+            }
+          },
+          "containerregistry": {
+            "repoRuleId": "@@bazel_tools//tools/build_defs/repo:http.bzl%http_archive",
+            "attributes": {
+              "sha256": "a0c01fcc11db848212f8b11d89df168361f99a31eb7373ff60ce50c5d05cd74b",
+              "strip_prefix": "containerregistry-0.0.38",
+              "urls": [
+                "https://github.com/google/containerregistry/archive/v0.0.38.tar.gz"
+              ]
             }
           }
         },

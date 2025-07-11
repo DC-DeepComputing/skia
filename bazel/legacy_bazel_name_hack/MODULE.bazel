@@ -1,0 +1,3 @@
+module(
+    name = "io_bazel_rules_go_name_hack",
+)
