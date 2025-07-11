@@ -20,6 +20,236 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0b5bf0f9_6f7c8959",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "This should just be `SkDEBUGCODE(gatherer-\u003echeckReset());`",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1956c370_cd2a03ee",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "Lets move `textureBindingTracker` to here since it\u0027s only used in the loop over the sort keys",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 60
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a1885b6d_b02beafa",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "This is a large enough function that I\u0027d start by having the definition inside GlobalCache.cpp",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 85
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f5399d9c_b46c746a",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be something we support. First valid sampler could be quite surprising, and if we are hitting an unallocated dynamic sampler, I think it means there is an outstanding bug around handling of SkTileMode::kDecal at a higher level.\n\nI suspect what is happening is that KeyHelpers checks for `clampToBorder()` support and switches to shader tiling, but is still using the original `SamplerDesc` when it adds the texture+sampler to the pipeline data gatherer.\n\nInstead of hacking DawnSampler to adjust its keys and having GlobalCache fall back to something else, lets have KeyHelpers switch the SamplerDesc to use SkTileMode::kClamp when it uses shader tiling.  Then we should assert at lower levels that if clamp-to-border is not supported that we aren\u0027t trying to even create a Sampler that would use clamp-to-border.",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d959873d_3bb0c33c",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "Can we add a comment that these are indexed directly by the SamplerDesc bits that defined them, and that they are owned by fStaticResources.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 201,
+        "endChar": 94
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f1bc6849_242feae3",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "What assert was firing when you saw the assert about 0?",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 41
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "043b917d_a4ded00b",
+        "filename": "src/gpu/graphite/precompile/PaintOptions.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "This should be fine, or we move it to be inside `createKey()` so that it can use both resetForDraw and rewindForStep",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 37
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47957a6e_294ea8a1",
+        "filename": "src/gpu/graphite/task/CopyTask.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "Can be simplified to `return visitor(fSrcProxy.get()) \u0026\u0026 visitor(fDstProxy.get());`",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 20
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6276211a_e9872433",
+        "filename": "src/gpu/graphite/task/UploadTask.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "We shouldn\u0027t stop visiting the other instances when we encounter an invalid one, that just means that slot in the list is done now and isn\u0027t part of any task re-execution.\n\nIt should be `(fInstances[i].isValid() \u0026\u0026 !visitor(...))`",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 90
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44371d14_02afc094",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "DawnCommandBuffer hasn\u0027t been updated to the better immutable sampler handling quite yet, but VulkanGraphicsPipeline should be storing its array of immutable samplers in a list that can be directly indexed by the sampler index we have when building the descriptor set entries.\n\nIf we pass in both the samplerDesc and the index, we can remove `findImmutableSampler` and use `getImmutableSampler(i)` instead for the immutable case (and assert that the returned sample is not null and has a desc matching `desc`).",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 66
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e41f05f3_d4389479",
         "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
         "patchSetId": 53
@@ -107,6 +337,52 @@
         "startChar": 4,
         "endLine": 793,
         "endChar": 32
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fda79ff8_94de7ace",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 1323,
+        "startChar": 0,
+        "endLine": 1323,
+        "endChar": 103
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "956c3cf2_6e54ea38",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T18:25:54Z",
+      "side": 1,
+      "message": "Nice updates to this test, thank you!",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 76
       },
       "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
