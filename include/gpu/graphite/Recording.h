@@ -76,6 +76,8 @@ private:
     bool addCommands(CommandBuffer*, ResourceProvider*);
     void addResourceRef(sk_sp<Resource>);
 
+    static int LiveCount();
+
     // Used to verify ordering if recorder ID is not SK_InvalidGenID
     uint32_t fUniqueID;
     uint32_t fRecorderID;

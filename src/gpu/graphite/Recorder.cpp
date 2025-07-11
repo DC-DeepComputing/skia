@@ -137,27 +137,24 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         fResourceProvider = fOwnedResourceProvider.get();
     }
     fUploadBufferManager = std::make_unique<UploadBufferManager>(fResourceProvider,
-                                                                 fSharedContext->caps());
-
-#if defined(GPU_TEST_UTILS)
-    if (options.fRecorderOptionsPriv) {
-        if (options.fRecorderOptionsPriv->fDbmOptions.has_value()) {
-            fDrawBufferManager = std::make_unique<DrawBufferManager>(
-                    fResourceProvider,
-                    fSharedContext->caps(),
-                    fUploadBufferManager.get(),
-                    options.fRecorderOptionsPriv->fDbmOptions.value());
-        }
-    } else {
-        fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
                                                                  fSharedContext->caps(),
-                                                                 fUploadBufferManager.get());
+                                                                 &fMaxReusedUploadBufferCount,
+                                                                 &fMaxUsedUploadBufferCount);
+
+    DrawBufferManager::DrawBufferManagerOptions dbmOpts = {};
+#if defined(GPU_TEST_UTILS)
+    if (options.fRecorderOptionsPriv && options.fRecorderOptionsPriv->fDbmOptions.has_value()) {
+        dbmOpts = *options.fRecorderOptionsPriv->fDbmOptions;
     }
-#else
+#endif
+
     fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
                                                              fSharedContext->caps(),
-                                                             fUploadBufferManager.get());
-#endif
+                                                             fUploadBufferManager.get(),
+                                                             &fMaxUsedDrawBufferCount,
+                                                             &fMaxUsedUniformBytes,
+                                                             &fMaxUsedVertexBytes,
+                                                             dbmOpts);
 
     SkASSERT(fResourceProvider);
 }
@@ -207,7 +204,9 @@ std::unique_ptr<Recording> Recorder::snap() {
     // data cache so that they can be instantiated easily when the Recording is inserted.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
+    int numTextures = 0;
     fTextureDataCache->foreach([&](TextureDataBlock block) {
+        numTextures += block.numTextures(); // Doesn't remove duplicates
         for (int j = 0; j < block.numTextures(); ++j) {
             const TextureDataBlock::SampledTexture& tex = block.texture(j);
 
@@ -220,6 +219,11 @@ std::unique_ptr<Recording> Recorder::snap() {
             }
         }
     });
+
+    fMaxTexturesPerRecording = std::max(fMaxTexturesPerRecording, numTextures);
+    fMaxRootTaskListSize = std::max(fMaxRootTaskListSize, fRootTaskList->size());
+    fMaxRootUploadListSize = std::max(fMaxRootUploadListSize, fRootUploads->size());
+    fMaxAliveRecordings = std::max(fMaxAliveRecordings, Recording::LiveCount() + 1);
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.

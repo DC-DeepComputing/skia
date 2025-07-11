@@ -37,6 +37,36 @@ using namespace skia_private;
 
 namespace skgpu::graphite {
 
+namespace {
+
+// TODO(b/407062399): Can be removed post debugging
+class LiveRecordingTracker {
+public:
+    static LiveRecordingTracker& Get() {
+        static LiveRecordingTracker gTracker{};
+        return gTracker;
+    }
+
+    void incrementLiveCount() {
+        fLiveCount.fetch_add(1, std::memory_order_relaxed);
+    }
+
+    void decrementLiveCount() {
+        fLiveCount.fetch_sub(1, std::memory_order_relaxed);
+    }
+
+    int getLiveCount() const {
+        return fLiveCount.load(std::memory_order_acquire);
+    }
+
+private:
+    LiveRecordingTracker() = default;
+
+    std::atomic<int> fLiveCount{0};
+};
+
+}
+
 Recording::Recording(uint32_t uniqueID,
                      uint32_t recorderID,
                      std::unordered_set<sk_sp<TextureProxy>, ProxyHash>&& nonVolatileLazyProxies,
@@ -49,11 +79,18 @@ Recording::Recording(uint32_t uniqueID,
         , fNonVolatileLazyProxies(std::move(nonVolatileLazyProxies))
         , fVolatileLazyProxies(std::move(volatileLazyProxies))
         , fTargetProxyData(std::move(targetProxyData))
-        , fFinishedProcs(std::move(finishedProcs)) {}
+        , fFinishedProcs(std::move(finishedProcs)) {
+    LiveRecordingTracker::Get().incrementLiveCount();
+}
 
 Recording::~Recording() {
     // Any finished procs that haven't been passed to a CommandBuffer fail
     this->priv().setFailureResultForFinishedProcs();
+    LiveRecordingTracker::Get().decrementLiveCount();
+}
+
+int Recording::LiveCount() {
+    return LiveRecordingTracker::Get().getLiveCount();
 }
 
 std::size_t Recording::ProxyHash::operator()(const sk_sp<TextureProxy> &proxy) const {
