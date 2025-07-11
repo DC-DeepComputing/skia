@@ -26,4 +26,12 @@ import (
 	_ "go.chromium.org/luci"
 
 	_ "github.com/vektra/mockery/v2"
+
+	// Used by rules_docker
+	//_ "github.com/google/go-containerregistry/pkg/v1"
+	_ "github.com/google/go-containerregistry/pkg/v1/tarball"
+	_ "github.com/pkg/errors"
+	_ "gopkg.in/yaml.v2"
+	_ "github.com/kylelemons/godebug/pretty"
+	_ "github.com/ghodss/yaml"
 )

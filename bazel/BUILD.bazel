@@ -27,3 +27,26 @@ buildifier(
     ],
     visibility = ["//visibility:public"],
 )
+
+# toolchain(
+#     name = "clang_linux_x64_toolchain",
+#     # Where should we run this toolchain?
+#     exec_compatible_with = [
+#         "@platforms//os:linux",
+#         "@platforms//cpu:x86_64",
+#         # We do not want an extra constraint here related to the hermetic toolchain because
+#         # we want the toolchain to run on any Linux x64 machine (and it certainly can).
+#     ],
+#     # What can this toolchain build?
+#     target_compatible_with = [
+#         "@platforms//os:linux",
+#         "@platforms//cpu:x86_64",
+#         # We want to be able to explicitly tell Bazel to use this toolchain, and not the
+#         # default one on a user's machine or on the RBE worker. Thus we need an extra constraint
+#         # that we can use to differentiate the "stock" C++ toolchain from our hermetic one and
+#         # force that use by specifying the target platform.
+#         "//bazel/platform:use_hermetic_toolchain",
+#     ],
+#     toolchain = "",
+#     toolchain_type = "@io_bazel_rules_go//go:toolchain",
+# )

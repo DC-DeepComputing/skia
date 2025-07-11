@@ -14,10 +14,24 @@ bazel_dep(name = "rules_license", version = "1.0.0")
 bazel_dep(name = "rules_python", version = "1.3.0")
 bazel_dep(name = "rules_rust", version = "0.60.0")
 bazel_dep(name = "rules_shell", version = "0.4.1")
+bazel_dep(name = "rules_pkg", version = "1.1.0")
 
 bazel_dep(name = "rules_webtesting", version = "0.4.0", dev_dependency = True)
 bazel_dep(name = "emsdk", version = EMSDK_VERSION, dev_dependency = True)
 bazel_dep(name = "rules_go", version = "0.54.0", dev_dependency = True)
+bazel_dep(
+    name = "rules_go",
+    version = "0.55.0",
+    dev_dependency = True,
+    repo_name = "io_bazel_rules_go",
+)
+multiple_version_override(
+    module_name = "rules_go",
+    versions = [
+        "0.55.0",
+        "0.54.0",
+    ],
+)
 
 # C++ deps
 bazel_dep(name = "skia_user_config")  # local
@@ -52,14 +66,19 @@ go_deps.gazelle_override(
 use_repo(
     go_deps,
     "com_github_flynn_json5",
+    "com_github_ghodss_yaml",
     "com_github_golang_glog",
+    "com_github_google_go_containerregistry",
     "com_github_google_uuid",
+    "com_github_kylelemons_godebug",
+    "com_github_pkg_errors",
     "com_github_shirou_gopsutil",
     "com_github_stretchr_testify",
     "com_github_trietmn_go_wiki",
     "com_github_vektra_mockery_v2",
     "com_google_cloud_go_pubsub",
     "com_google_cloud_go_storage",
+    "in_gopkg_yaml_v2",
     "org_chromium_go_luci",
     "org_golang_google_api",
     "org_golang_google_protobuf",
@@ -293,4 +312,38 @@ use_repo(
     "gn_linux_amd64",
     "gn_mac_amd64",
     "gn_mac_arm64",
+)
+
+rules_docker = use_extension("//bazel:rules_docker.bzl", "rules_docker")
+use_repo(
+    rules_docker,
+    "io_bazel_rules_docker",
+)
+
+bazel_dep(name = "io_bazel_rules_go_name_hack")
+local_path_override(
+    module_name = "io_bazel_rules_go_name_hack",
+    path = "bazel/legacy_bazel_name_hack",
+)
+
+register_toolchains(
+    # Register the default docker toolchain that expects the 'docker'
+    # executable to be in the PATH
+    "@io_bazel_rules_docker//toolchains/docker:default_linux_toolchain",
+    "@io_bazel_rules_docker//toolchains/docker:default_windows_toolchain",
+    "@io_bazel_rules_docker//toolchains/docker:default_osx_toolchain",
+    #"//bazel:legacy_go_toolchain",
+)
+
+docker_toolchain_configure = use_repo_rule("@io_bazel_rules_docker//toolchains/docker:toolchain.bzl", "toolchain_configure")
+
+docker_toolchain_configure(name = "docker_config")
+
+container_pull = use_repo_rule("@io_bazel_rules_docker//container:container.bzl", "container_pull")
+
+container_pull(
+    name = "skottie-base",
+    digest = "sha256:6f141efaf8cbca6206e5e879f72217a9c7c2eb277a78946511ccf936c40369ed",
+    registry = "gcr.io",
+    repository = "skia-public/skottie-base",
 )
