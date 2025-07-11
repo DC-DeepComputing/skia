@@ -40,6 +40,30 @@
       ],
       "revId": "056fb40c09a365eafa854d49d5a04ea34e03bf7d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8854ca69_1ebb59d7",
+        "filename": "src/gpu/graphite/QueueManager.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:50:04Z",
+      "side": 1,
+      "message": "I don\u0027t think I saw this causing a problem with the first set of values that also didn\u0027t have volatile. The main issue was that the more pointer indirection I had to follow through the cloud dumps, the less was available.",
+      "parentUuid": "e9139539_c343e5b3",
+      "range": {
+        "startLine": 109,
+        "startChar": 8,
+        "endLine": 109,
+        "endChar": 29
+      },
+      "revId": "056fb40c09a365eafa854d49d5a04ea34e03bf7d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
