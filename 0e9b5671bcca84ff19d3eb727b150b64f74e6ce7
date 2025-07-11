@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dbdf5a57_5b7b760b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:35:45Z",
+      "side": 1,
+      "message": "Very exciting!",
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d10ec776_feb2205e",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:35:45Z",
+      "side": 1,
+      "message": "Can we just rename this to `fUsePushConstantsForIntrinsicConstants` and say it\u0027s only possibly true on Vulkan and Dawn?",
+      "range": {
+        "startLine": 71,
+        "startChar": 9,
+        "endLine": 71,
+        "endChar": 53
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "588404aa_55e2c210",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:35:45Z",
+      "side": 1,
+      "message": "We should be able to query the Caps for its backend type to choose between \"vulkan\" and \"webgpu\" here.",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 80
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ec732e6a_4cac3baa",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:35:45Z",
+      "side": 1,
+      "message": "nit: shift left 1 tab",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 257,
+        "endChar": 9
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51870d87_04cf6f18",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T17:35:45Z",
+      "side": 1,
+      "message": "Can we change this to\n```\n    return true;\n#else\n    SkASSERT(false); // No push constant support in WASM yet\n    return false;\n#endif\n```",
+      "range": {
+        "startLine": 979,
+        "startChar": 0,
+        "endLine": 980,
+        "endChar": 16
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
