@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "353deee3_82a173af",
+        "filename": "src/gpu/graphite/task/UploadTask.h",
+        "patchSetId": 34
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-11T15:37:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5125d6ee_6e45511d",
+      "range": {
+        "startLine": 171,
+        "startChar": 0,
+        "endLine": 171,
+        "endChar": 62
+      },
+      "revId": "abdb6e8c061dd13afaf02a404037820c77a9a1d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ef11a48c_587ddf92",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-07-09T14:27:52Z",
       "side": 1,
       "message": "These samplers should be able to be from the GlobalCache in most cases. VulkanCommandBuffer can probably be made similar to the DawnCommandBuffer getSampler() function that switches between the global cache and checking the graphics pipeline for immutable samplers.",
+      "range": {
+        "startLine": 1251,
+        "startChar": 0,
+        "endLine": 1258,
+        "endChar": 92
+      },
+      "revId": "abdb6e8c061dd13afaf02a404037820c77a9a1d9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9141850_0f4a498d",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 34
+      },
+      "lineNbr": 1258,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-11T15:37:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef11a48c_587ddf92",
       "range": {
         "startLine": 1251,
         "startChar": 0,
