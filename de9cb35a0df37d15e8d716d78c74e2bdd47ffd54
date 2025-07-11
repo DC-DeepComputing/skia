@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47975037_3822dd30",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "PTAL again, I wrestled with syntax a bit trying to get rid of or consolidate a lot of the nested ifs in the validation logic.",
+      "revId": "de9cb35a0df37d15e8d716d78c74e2bdd47ffd54",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

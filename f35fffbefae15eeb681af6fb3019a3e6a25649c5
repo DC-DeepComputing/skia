@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "24044ea4_653e310d",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "It should be fairly immediate.",
+      "parentUuid": "0c32cc3e_9e01e94c",
+      "range": {
+        "startLine": 37,
+        "startChar": 3,
+        "endLine": 37,
+        "endChar": 7
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9916fbdf_329884c2",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ddecd1b_4d6b8eed",
+        "filename": "include/gpu/graphite/GraphiteTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "I\u0027d considered that initially, but this field is also meant to help clients write their own unit tests for how they deal with internal failures of insertRecording so I decided to always have it present.",
+      "parentUuid": "9916fbdf_329884c2",
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "423062fa_efbe18f3",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-07-10T16:45:27Z",
       "side": 1,
       "message": "nit: Can this fit on one line?",
+      "range": {
+        "startLine": 149,
+        "startChar": 20,
+        "endLine": 150,
+        "endChar": 53
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6a3cf55_67f5d3ec",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "It did, but now with the new macro it needs a line.",
+      "parentUuid": "423062fa_efbe18f3",
       "range": {
         "startLine": 149,
         "startChar": 20,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "099bf9f4_cc860095",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "Done, but this inspired me to switch to just a macro for handling the error check and return + logging (plus then a macro to make the simulated failure a 1 line marker).",
+      "parentUuid": "c37ac7c7_87c178f6",
+      "range": {
+        "startLine": 184,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 5
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "85743591_8c9e0355",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-07-10T16:45:27Z",
       "side": 1,
       "message": "nit: one line?",
+      "range": {
+        "startLine": 221,
+        "startChar": 0,
+        "endLine": 222,
+        "endChar": 62
+      },
+      "revId": "f35fffbefae15eeb681af6fb3019a3e6a25649c5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd2d22bd_5020a5c1",
+        "filename": "src/gpu/graphite/QueueManager.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-11T01:53:40Z",
+      "side": 1,
+      "message": "Hidden inside a macro, so it is 1 line now ;)",
+      "parentUuid": "85743591_8c9e0355",
       "range": {
         "startLine": 221,
         "startChar": 0,
