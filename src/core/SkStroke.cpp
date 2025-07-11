@@ -187,8 +187,7 @@ class SkPathStroker {
 public:
     SkPathStroker(const SkPath& src,
                   SkScalar radius, SkScalar miterLimit, SkPaint::Cap,
-                  SkPaint::Join, SkScalar resScale,
-                  bool canIgnoreCenter);
+                  SkPaint::Join, SkScalar resScale);
 
     bool hasOnlyMoveTo() const { return 0 == fSegmentCount; }
     SkPoint moveToPt() const { return fFirstPt; }
@@ -226,7 +225,6 @@ private:
     int         fFirstOuterPtIndexInContour;
     int         fSegmentCount;
     bool        fPrevIsLine;
-    bool        fCanIgnoreCenter;
 
     SkStrokerPriv::CapProc  fCapper;
     SkStrokerPriv::JoinProc fJoiner;
@@ -359,19 +357,11 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
                     fPrevIsLine, currIsLine);
             fOuter.close();
 
-            if (fCanIgnoreCenter) {
-                // If we can ignore the center just make sure the larger of the two paths
-                // is preserved and don't add the smaller one.
-                if (fInner.computeBounds().contains(fOuter.computeBounds())) {
-                    fOuter = fInner;
-                }
-            } else {
-                // now add fInner as its own contour
-                if (auto pt = fInner.getLastPt()) {
-                    fOuter.moveTo(*pt);
-                    fOuter.privateReversePathTo(fInner.detach()); // todo: take builder or raw
-                    fOuter.close();
-                }
+            // now add fInner as its own contour
+            if (auto pt = fInner.getLastPt()) {
+                fOuter.moveTo(*pt);
+                fOuter.privateReversePathTo(fInner.detach()); // todo: take builder or raw
+                fOuter.close();
             }
         } else {    // add caps to start and end
             // cap the end
@@ -396,11 +386,9 @@ void SkPathStroker::finishContour(bool close, bool currIsLine) {
 
 SkPathStroker::SkPathStroker(const SkPath& src,
                              SkScalar radius, SkScalar miterLimit,
-                             SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale,
-                             bool canIgnoreCenter)
+                             SkPaint::Cap cap, SkPaint::Join join, SkScalar resScale)
         : fRadius(radius)
-        , fResScale(resScale)
-        , fCanIgnoreCenter(canIgnoreCenter) {
+        , fResScale(resScale) {
 
     /*  This is only used when join is miter_join, but we initialize it here
         so that it is always defined, to fis valgrind warnings.
@@ -1454,13 +1442,7 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
         }
     }
 
-    // We can always ignore centers for stroke and fill convex line-only paths
-    // TODO: remove the line-only restriction
-    bool ignoreCenter = fDoFill && (src.getSegmentMasks() == SkPath::kLine_SegmentMask) &&
-                        src.isLastContourClosed() && src.isConvex();
-
-    SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(),
-                            fResScale, ignoreCenter);
+    SkPathStroker   stroker(src, radius, fMiterLimit, this->getCap(), this->getJoin(), fResScale);
     SkPath::Iter    iter(src, false);
     SkPath::Verb    lastSegment = SkPath::kMove_Verb;
 
@@ -1513,7 +1495,7 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
 DONE:
     stroker.done(dst, lastSegment == SkPath::kLine_Verb);
 
-    if (fDoFill && !ignoreCenter) {
+    if (fDoFill) {
         if (SkPathPriv::ComputeFirstDirection(src) == SkPathFirstDirection::kCCW) {
             dst->privateReverseAddPath(src);
         } else {
