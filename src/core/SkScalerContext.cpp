@@ -792,9 +792,13 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
     if (generatedPath) {
         path = std::move(generatedPath->path);
         pathModified = std::move(generatedPath->modified);
-    } else if (!generatePath(glyph, &path, &pathModified)) {
-        glyph.setPath(alloc, (SkPath*)nullptr, hairline, pathModified);
-        return;
+    } else {
+        if (auto maybepath = generatePath(glyph, &pathModified)) {
+            path = *maybepath;
+        } else {
+            glyph.setPath(alloc, (SkPath*)nullptr, hairline, pathModified);
+            return;
+        }
     }
 
     if (fRec.fFlags & SkScalerContext::kSubpixelPositioning_Flag) {
@@ -1322,9 +1326,8 @@ std::unique_ptr<SkScalerContext> SkScalerContext::MakeEmpty(
             return {glyph.maskFormat()};
         }
         void generateImage(const SkGlyph&, void*) override {}
-        bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override {
-            path->reset();
-            return false;
+        std::optional<SkPath> generatePath(const SkGlyph& glyph, bool* modified) override {
+            return {};
         }
         void generateFontMetrics(SkFontMetrics* metrics) override {
             if (metrics) {
