@@ -70,6 +70,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "af3e4ef7_e252663d",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:49:22Z",
+      "side": 1,
+      "message": "Yep, that\u0027s what I meant. There\u0027s one remaining issue to set the DawnGraphicsPipeline data up to work with the indexable function you wrote.",
+      "parentUuid": "bb5b75b6_f981482f",
+      "range": {
+        "startLine": 550,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 28
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cb694d94_c4e66b93",
