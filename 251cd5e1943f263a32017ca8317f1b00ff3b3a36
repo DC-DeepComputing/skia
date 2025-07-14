@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57759e9d_7bcc52a3",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "checkReset() to ensure reset was called externally but not here",
+      "range": {
+        "startLine": 53,
+        "startChar": 26,
+        "endLine": 53,
+        "endChar": 38
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a37d447_068dad23",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "nit: cleanup comment?",
+      "range": {
+        "startLine": 74,
+        "startChar": 28,
+        "endLine": 74,
+        "endChar": 41
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bb5b75b6_f981482f",
+        "filename": "src/gpu/graphite/dawn/DawnGraphicsPipeline.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 550,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "In order for the Dawn immutable samplers to be directly indexable, we need to push back a null sampler for any index that isn\u0027t immutable. (or fill with null and then assign directly like the logic in VulkanGraphicsPipeline::Make does)",
+      "range": {
+        "startLine": 550,
+        "startChar": 0,
+        "endLine": 550,
+        "endChar": 28
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cb694d94_c4e66b93",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 1272,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 1272,
+        "startChar": 47,
+        "endLine": 1272,
+        "endChar": 57
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b1d84e5_06ebbefb",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 1359,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "nit: this-\u003e",
+      "range": {
+        "startLine": 1359,
+        "startChar": 65,
+        "endLine": 1359,
+        "endChar": 75
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d60e3aec_38e6c3f7",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.h",
+        "patchSetId": 56
+      },
+      "lineNbr": 147,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "technically this isn\u0027t needed, TArray already has index access checks",
+      "range": {
+        "startLine": 147,
+        "startChar": 0,
+        "endLine": 147,
+        "endChar": 48
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

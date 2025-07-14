@@ -208,6 +208,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fbade59f_7c603bbe",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T18:48:42Z",
+      "side": 1,
+      "message": "No, we should definitely assert and DawnSampler shouldn\u0027t need to be modified. This and DawnSampler are hiding a logic issue that\u0027s existed in higher up code; if decal isn\u0027t supported, the higher level Graphite logic shouldn\u0027t request it.",
+      "parentUuid": "f274c695_245eb296",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d959873d_3bb0c33c",
         "filename": "src/gpu/graphite/GlobalCache.h",
         "patchSetId": 53
