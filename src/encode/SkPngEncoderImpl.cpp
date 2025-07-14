@@ -191,6 +191,7 @@ bool SkPngEncoderMgr::setHeader(const SkEncodedInfo& dstInfo,
             sigBit.alpha = 8;
             break;
         case kRGBA_1010102_SkColorType:
+        case kBGRA_1010102_SkColorType:
             sigBit.red = 10;
             sigBit.green = 10;
             sigBit.blue = 10;
