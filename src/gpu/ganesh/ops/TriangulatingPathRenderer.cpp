@@ -619,8 +619,8 @@ TriangulatingPathRenderer::TriangulatingPathRenderer()
     : fMaxVerbCount(GR_AA_TESSELLATOR_MAX_VERB_COUNT) {
 }
 
-PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
-        const CanDrawPathArgs& args) const {
+PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(const CanDrawPathArgs& args,
+                                                                   const int32_t verbCount) const {
 
     // Don't use this path renderer with dynamic MSAA. DMSAA tries to not rely on caching.
     if (args.fSurfaceProps->flags() & SkSurfaceProps::kDynamicMSAA_Flag) {
@@ -646,9 +646,7 @@ PathRenderer::CanDrawPath TriangulatingPathRenderer::onCanDrawPath(
         case GrAAType::kCoverage:
             // Use analytic AA if we don't have MSAA. In this case, we do not cache, so we accept
             // paths without keys.
-            SkPath path;
-            args.fShape->asPath(&path);
-            if (path.countVerbs() > fMaxVerbCount) {
+            if (verbCount > fMaxVerbCount) {
                 return CanDrawPath::kNo;
             }
             break;

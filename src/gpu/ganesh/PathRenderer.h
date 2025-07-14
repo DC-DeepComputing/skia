@@ -40,6 +40,7 @@ class SurfaceDrawContext;
  */
 class PathRenderer : public SkRefCnt {
 public:
+    static constexpr uint32_t kMaxPathVerbs = 10240;
     PathRenderer() = default;
 
     virtual const char* name() const = 0;
@@ -115,10 +116,7 @@ public:
      * kAsBackup allows the caller to keep searching for a better path renderer. This function is
      * called when searching for the best path renderer to draw a path.
      */
-    CanDrawPath canDrawPath(const CanDrawPathArgs& args) const {
-        SkDEBUGCODE(args.validate();)
-        return this->onCanDrawPath(args);
-    }
+    CanDrawPath canDrawPath(const CanDrawPathArgs& args) const;
 
     struct DrawPathArgs {
         GrRecordingContext*          fContext;
@@ -198,8 +196,14 @@ private:
 
     /**
      * Subclass implementation of canDrawPath()
+     * Overload exists so we can pass the verbCount calculated in canDrawPass() guard to the
+     * triangulatingPathRenderer::onCanDrawPath.
      */
     virtual CanDrawPath onCanDrawPath(const CanDrawPathArgs& args) const = 0;
+
+    virtual CanDrawPath onCanDrawPath(const CanDrawPathArgs& args, const int32_t verbCount) const {
+        return onCanDrawPath(args);
+    }
 
     /**
      * Subclass implementation of stencilPath(). Subclass must override iff it ever returns
