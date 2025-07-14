@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b2534fc_defa984c",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0b5bf0f9_6f7c8959",
+      "range": {
+        "startLine": 54,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 29
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1956c370_cd2a03ee",
@@ -64,6 +88,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aee7f068_c5a17d22",
+        "filename": "src/gpu/graphite/DrawPass.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 518,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1956c370_cd2a03ee",
+      "range": {
+        "startLine": 518,
+        "startChar": 0,
+        "endLine": 518,
+        "endChar": 60
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a1885b6d_b02beafa",
@@ -77,6 +125,30 @@
       "writtenOn": "2025-07-11T18:25:54Z",
       "side": 1,
       "message": "This is a large enough function that I\u0027d start by having the definition inside GlobalCache.cpp",
+      "range": {
+        "startLine": 130,
+        "startChar": 0,
+        "endLine": 130,
+        "endChar": 85
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c9381c3c_62f81954",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "a1885b6d_b02beafa",
       "range": {
         "startLine": 130,
         "startChar": 0,
@@ -112,6 +184,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f274c695_245eb296",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Currently, we are never hitting this substitution, I left it in as an alternative to segfaulting. The DawnSampler trick seems to cover all the issues, but I can still change to KeyHelpers if that\u0027s the better direction for this change.",
+      "parentUuid": "f5399d9c_b46c746a",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d959873d_3bb0c33c",
         "filename": "src/gpu/graphite/GlobalCache.h",
         "patchSetId": 53
@@ -123,6 +219,30 @@
       "writtenOn": "2025-07-11T18:25:54Z",
       "side": 1,
       "message": "Can we add a comment that these are indexed directly by the SamplerDesc bits that defined them, and that they are owned by fStaticResources.",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 201,
+        "endChar": 94
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1056e26_ad1932ad",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d959873d_3bb0c33c",
       "range": {
         "startLine": 201,
         "startChar": 0,
@@ -156,6 +276,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "215f14c0_e6cbe01a",
+        "filename": "src/gpu/graphite/UniformManager.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Resolved in direct message. Skip aligning if we create an empty span.",
+      "parentUuid": "f1bc6849_242feae3",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 41
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "043b917d_a4ded00b",
@@ -169,6 +313,30 @@
       "writtenOn": "2025-07-11T18:25:54Z",
       "side": 1,
       "message": "This should be fine, or we move it to be inside `createKey()` so that it can use both resetForDraw and rewindForStep",
+      "range": {
+        "startLine": 321,
+        "startChar": 0,
+        "endLine": 321,
+        "endChar": 37
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "73799ae0_61421a44",
+        "filename": "src/gpu/graphite/precompile/PaintOptions.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "043b917d_a4ded00b",
       "range": {
         "startLine": 321,
         "startChar": 0,
@@ -202,6 +370,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "52dac941_575a786e",
+        "filename": "src/gpu/graphite/task/CopyTask.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "47957a6e_294ea8a1",
+      "range": {
+        "startLine": 113,
+        "startChar": 0,
+        "endLine": 119,
+        "endChar": 20
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6276211a_e9872433",
@@ -225,6 +417,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f17725b4_2c729371",
+        "filename": "src/gpu/graphite/task/UploadTask.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6276211a_e9872433",
+      "range": {
+        "startLine": 173,
+        "startChar": 0,
+        "endLine": 173,
+        "endChar": 90
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "44371d14_02afc094",
@@ -238,6 +454,30 @@
       "writtenOn": "2025-07-11T18:25:54Z",
       "side": 1,
       "message": "DawnCommandBuffer hasn\u0027t been updated to the better immutable sampler handling quite yet, but VulkanGraphicsPipeline should be storing its array of immutable samplers in a list that can be directly indexed by the sampler index we have when building the descriptor set entries.\n\nIf we pass in both the samplerDesc and the index, we can remove `findImmutableSampler` and use `getImmutableSampler(i)` instead for the immutable case (and assert that the returned sample is not null and has a desc matching `desc`).",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 66
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "91f18567_1d1da852",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "I\u0027ve made it so that we directly index into the fImmutableSamplers for both dawn and Vulkan. Is that what you had in mind for \"better sampling\" ?",
+      "parentUuid": "44371d14_02afc094",
       "range": {
         "startLine": 278,
         "startChar": 0,
@@ -365,6 +605,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "155c59d2_9cfba838",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 1323,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fda79ff8_94de7ace",
+      "range": {
+        "startLine": 1323,
+        "startChar": 0,
+        "endLine": 1323,
+        "endChar": 103
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "956c3cf2_6e54ea38",
@@ -378,6 +642,30 @@
       "writtenOn": "2025-07-11T18:25:54Z",
       "side": 1,
       "message": "Nice updates to this test, thank you!",
+      "range": {
+        "startLine": 19,
+        "startChar": 0,
+        "endLine": 19,
+        "endChar": 76
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dda6fca0_10092a4a",
+        "filename": "tests/graphite/PipelineDataCacheTest.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-14T17:12:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "956c3cf2_6e54ea38",
       "range": {
         "startLine": 19,
         "startChar": 0,
