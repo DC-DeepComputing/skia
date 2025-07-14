@@ -13,6 +13,8 @@
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "src/base/SkEnumBitMask.h"
 
+#include <map>
+
 // Print out a final report that includes missed cases in 'kCases'
 //#define FINAL_REPORT
 
@@ -24,9 +26,13 @@
 // This is usually used along with the 'kChosenCase' variable.
 //#define PRINT_GENERATED_LABELS
 
+namespace skiatest {
+    class Reporter;
+}
+
 namespace PrecompileTestUtils {
 
-SK_MAKE_BITMASK_OPS(skgpu::graphite::DrawTypeFlags);
+//SK_MAKE_BITMASK_OPS(skgpu::graphite::DrawTypeFlags);
 
 struct PrecompileSettings {
     PrecompileSettings(const skgpu::graphite::PaintOptions& paintOptions,
@@ -155,13 +161,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16YCbCr247();
 void Base642YCbCr(const char*);
 #endif // SK_VULKAN
 
-// Single sampled R w/ just depth
-const skgpu::graphite::RenderPassProperties kR_1_D {
-    skgpu::graphite::DepthStencilFlags::kDepth,
-    kAlpha_8_SkColorType,
-    /* fDstCS= */ nullptr,
-    /* fRequiresMSAA= */ false
-};
+
 
 // MSAA R w/ depth and stencil
 const skgpu::graphite::RenderPassProperties kR_4_DS {
@@ -175,14 +175,6 @@ const skgpu::graphite::RenderPassProperties kR_4_DS {
 const skgpu::graphite::RenderPassProperties kBGRA_1_D {
     skgpu::graphite::DepthStencilFlags::kDepth,
     kBGRA_8888_SkColorType,
-    /* fDstCS= */ nullptr,
-    /* fRequiresMSAA= */ false
-};
-
-// RGBA version of the above
-const skgpu::graphite::RenderPassProperties kRGBA_1_D {
-    skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_8888_SkColorType,
     /* fDstCS= */ nullptr,
     /* fRequiresMSAA= */ false
 };
@@ -211,26 +203,10 @@ const skgpu::graphite::RenderPassProperties kBGRA_4_DS {
     /* fRequiresMSAA= */ true
 };
 
-// RGBA version of the above
-const skgpu::graphite::RenderPassProperties kRGBA_4_DS {
-    skgpu::graphite::DepthStencilFlags::kDepthStencil,
-    kRGBA_8888_SkColorType,
-    /* fDstCS= */ nullptr,
-    /* fRequiresMSAA= */ true
-};
-
 // The same as kBGRA_1_D but w/ an SRGB colorSpace
 const skgpu::graphite::RenderPassProperties kBGRA_1_D_SRGB {
     skgpu::graphite::DepthStencilFlags::kDepth,
     kBGRA_8888_SkColorType,
-    SkColorSpace::MakeSRGB(),
-    /* fRequiresMSAA= */ false
-};
-
-// RGBA version of the above
-const skgpu::graphite::RenderPassProperties kRGBA_1_D_SRGB {
-    skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_8888_SkColorType,
     SkColorSpace::MakeSRGB(),
     /* fRequiresMSAA= */ false
 };
@@ -252,14 +228,6 @@ const skgpu::graphite::RenderPassProperties kBGRA_4_DS_SRGB {
     /* fRequiresMSAA= */ true
 };
 
-// RGBA version of the above
-const skgpu::graphite::RenderPassProperties kRGBA_4_DS_SRGB {
-    skgpu::graphite::DepthStencilFlags::kDepthStencil,
-    kRGBA_8888_SkColorType,
-    SkColorSpace::MakeSRGB(),
-    /* fRequiresMSAA= */ true
-};
-
 // The same as kBGRA_4_DS but w/ an Adobe RGB colorSpace
 const skgpu::graphite::RenderPassProperties kBGRA_4_DS_Adobe {
     skgpu::graphite::DepthStencilFlags::kDepthStencil,
@@ -269,36 +237,16 @@ const skgpu::graphite::RenderPassProperties kBGRA_4_DS_Adobe {
     /* fRequiresMSAA= */ true
 };
 
-// Single sampled RGBA16F w/ just depth
-const skgpu::graphite::RenderPassProperties kRGBA16F_1_D {
-    skgpu::graphite::DepthStencilFlags::kDepth,
-    kRGBA_F16_SkColorType,
-    /* fDstCS= */ nullptr,
-    /* fRequiresMSAA= */ false
-};
 
-// The same as kRGBA16F_1_D but w/ an SRGB colorSpace
-const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_SRGB {
-        skgpu::graphite::DepthStencilFlags::kDepth,
-        kRGBA_F16_SkColorType,
-        SkColorSpace::MakeSRGB(),
-        /* fRequiresMSAA= */ false
-};
 
-// The same as kRGBA16F_1_D but w/ a linear SRGB colorSpace
-const skgpu::graphite::RenderPassProperties kRGBA16F_1_D_Linear {
-        skgpu::graphite::DepthStencilFlags::kDepth,
-        kRGBA_F16_SkColorType,
-        SkColorSpace::MakeSRGBLinear(),
-        /* fRequiresMSAA= */ false
-};
-
+#if 0
 constexpr SkEnumBitMask<skgpu::graphite::DrawTypeFlags> kRRectAndNonAARect =
         skgpu::graphite::DrawTypeFlags::kAnalyticRRect |
         skgpu::graphite::DrawTypeFlags::kNonAAFillRect;
 constexpr SkEnumBitMask<skgpu::graphite::DrawTypeFlags> kQuadAndNonAARect =
         skgpu::graphite::DrawTypeFlags::kPerEdgeAAQuad |
         skgpu::graphite::DrawTypeFlags::kNonAAFillRect;
+#endif
 
 } // namespace PrecompileTestUtils
 
