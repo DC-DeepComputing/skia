@@ -76,6 +76,8 @@ private:
         return PathRenderer::kNoSupport_StencilSupport;
     }
 
+    bool isSoftwarePathRenderer() const override { return true; }
+
     CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override;
 
     bool onDrawPath(const DrawPathArgs&) override;

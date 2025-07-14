@@ -32,7 +32,12 @@ public:
     const char* name() const override { return "Triangulating"; }
 
 private:
-    CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override;
+    // Stub for the pure virtual
+    CanDrawPath onCanDrawPath(const CanDrawPathArgs&) const override {
+        SkASSERT(false);
+        return CanDrawPath::kNo;
+    }
+    CanDrawPath onCanDrawPath(const CanDrawPathArgs&, const int verbCount) const override;
 
     StencilSupport onGetStencilSupport(const GrStyledShape&) const override {
         return kNoSupport_StencilSupport;
