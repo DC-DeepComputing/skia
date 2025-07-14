@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee3ab3c2_3c70b157",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-14T19:27:29Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?\n\nI have considered whether/how to add a regression test, but:\n\n* Adding a test as `SkPngRustCodec` level doesn\u0027t seem that useful\n* We can\u0027t yet cover `SkPngRustCodec` as part of general Skia tests\n* I gave up on my attempt to add a test at Blink level - to repro we would have to pass `IsCleared` check (*) in `SkiaImageDecoderBase::DecodeFrameCount` (comparing last-read-position to current-stream-length) while still failing a similar (but comparing last-stream-size to current-strema-length) check in `SkPngRustCodec`.  Given this, my naive attempt to just call `ImageDecoder::SetData` with an empty buffer didn\u0027t repro the bug, because of short-circuiting in `SkiaImageDecoderBase::DecodeFrameCount`.\n\n(*) https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/platform/image-decoders/skia/skia_image_decoder_base.cc;l\u003d234;drc\u003dccc8beb1ea677e20beba83462d6e03b5e97bc7c0",
+      "revId": "3c6ad2cb160c1c4ed7532057fdaa1d077cafe5f4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
