@@ -275,9 +275,8 @@ protected:
         this->generateImageFromPath(glyph, imageBuffer);
     }
 
-    bool generatePath(const SkGlyph& glyph, SkPath* path, bool* modified) override {
-        *path = this->getTestTypeface()->getPath(glyph.getGlyphID()).makeTransform(fMatrix);
-        return true;
+    std::optional<SkPath> generatePath(const SkGlyph& glyph, bool* modified) override {
+        return this->getTestTypeface()->getPath(glyph.getGlyphID()).makeTransform(fMatrix);
     }
 
     void generateFontMetrics(SkFontMetrics* metrics) override {
