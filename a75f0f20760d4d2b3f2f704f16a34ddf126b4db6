@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82ec2304_c33d949b",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-14T13:43:15Z",
+      "side": 1,
+      "message": "wicked cool",
+      "revId": "a75f0f20760d4d2b3f2f704f16a34ddf126b4db6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
