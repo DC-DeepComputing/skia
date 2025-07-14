@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 
+#include <cstdint>
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
@@ -218,4 +219,25 @@ DEF_TEST(pathraw_iter, reporter) {
     raw = SkPathPriv::Raw(path);
 
     check_iter(reporter, raw, p, verbs, cns);
+}
+
+DEF_TEST(pathraw_stack, reporter) {
+    static constexpr auto static_straw = SkSTPathRaw(
+        MoveTo({0, 0}),
+        LineTo({10, 20}),
+        QuadTo({30, 40}, {50, 60}),
+        Close());
+    static constexpr SkPathRaw static_raw = static_straw;
+    // printf("*** %p %p\n", &static_straw, static_raw.fPoints.data());
+
+    // const auto raw2 = SkSTPathRaw(
+    //     MoveTo({0, 0}),
+    //     LineTo({10, 20}),
+    //     QuadTo({30, 40}, {50, 60}),
+    //     Close());
+
+    // constexpr SkPathRaw raw = static_raw;
+    for (const auto& pt : static_raw.fPoints) {
+      printf("*** {%f %f}\n", pt.x(), pt.y());
+    }
 }
