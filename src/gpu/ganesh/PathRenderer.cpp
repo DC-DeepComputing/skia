@@ -47,6 +47,20 @@ PathRenderer::StencilSupport PathRenderer::getStencilSupport(const GrStyledShape
     return this->onGetStencilSupport(shape);
 }
 
+PathRenderer::CanDrawPath PathRenderer::canDrawPath(const CanDrawPathArgs& args) const {
+    SkDEBUGCODE(args.validate();)
+    int verbCount = 0;
+    if (!this->isSoftwarePathRenderer()) {
+        SkPath path;
+        args.fShape->asPath(&path);
+        verbCount = path.countVerbs();
+        if (verbCount > kMaxPathVerbs) {
+            return CanDrawPath::kNo;
+        }
+    }
+    return this->onCanDrawPath(args, verbCount);
+}
+
 bool PathRenderer::drawPath(const DrawPathArgs& args) {
 #ifdef SK_DEBUG
     args.validate();
