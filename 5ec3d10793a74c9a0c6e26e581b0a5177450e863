@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f181d6c_d596f8dc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-14T19:29:41Z",
+      "side": 1,
+      "message": "Clean cherry pick to m139, is approved",
+      "revId": "5ec3d10793a74c9a0c6e26e581b0a5177450e863",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
