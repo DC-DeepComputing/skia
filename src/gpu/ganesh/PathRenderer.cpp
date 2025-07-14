@@ -18,6 +18,7 @@
 #include "src/gpu/ganesh/GrUserStencilSettings.h"
 #include "src/gpu/ganesh/SurfaceDrawContext.h"
 #include "src/gpu/ganesh/geometry/GrStyledShape.h"
+#include "src/gpu/ganesh/ops/SoftwarePathRenderer.h"
 
 #include <utility>
 
@@ -45,6 +46,20 @@ PathRenderer::StencilSupport PathRenderer::getStencilSupport(const GrStyledShape
     SkASSERT(shape.style().isSimpleFill());
     SkASSERT(!path.isInverseFillType());
     return this->onGetStencilSupport(shape);
+}
+
+PathRenderer::CanDrawPath PathRenderer::canDrawPath(const CanDrawPathArgs& args) const {
+    SkDEBUGCODE(args.validate();)
+    uint32_t verbCount = 0;
+    if (!this->isSoftwarePathRenderer()) {
+        SkPath path;
+        args.fShape->asPath(&path);
+        verbCount = path.countVerbs();
+        if (verbCount > kMaxPathVerbs) {
+            return CanDrawPath::kNo;
+        }
+    }
+    return this->onCanDrawPath(args, verbCount);
 }
 
 bool PathRenderer::drawPath(const DrawPathArgs& args) {
