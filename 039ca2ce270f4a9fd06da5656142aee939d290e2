@@ -16,6 +16,29 @@
       "message": "-- some bots still froze, but PTAL anyway",
       "revId": "039ca2ce270f4a9fd06da5656142aee939d290e2",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86e5d5a1_ce11b95f",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 796,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-15T14:15:21Z",
+      "side": 1,
+      "message": "If `generatePath` returned `std::optional\u003cGeneratedPath\u003e` (which it logically already does) then this code would be much simpler, as above there would be a\n\n```\nif (!generatedPath) {\n    generatedPath \u003d generatePath(glyph);\n}\nif (!generatedPath) {\n    glyph.setPath(alloc, (SkPath*)nullptr, hairline, pathModified);\n    return;\n}\n```\nand since this is changing `generatePath` anyway, seems like a good time to do this.",
+      "range": {
+        "startLine": 796,
+        "startChar": 29,
+        "endLine": 796,
+        "endChar": 41
+      },
+      "revId": "039ca2ce270f4a9fd06da5656142aee939d290e2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
