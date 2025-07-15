@@ -134,6 +134,11 @@
 #include "tools/viewer/SvgSlide.h"
 #endif
 
+#if defined(SK_ENABLE_VGX)
+#include "experimental/vgx/SkVGX.h"
+#include "tools/viewer/VGXSlide.h"
+#endif
+
 #ifdef SK_CODEC_DECODES_AVIF
 #include "include/codec/SkAvifDecoder.h"
 #endif
@@ -274,6 +279,7 @@ static DEFINE_string(lotties, PATH_PREFIX "lotties", "Directory to read (Bodymov
 #undef PATH_PREFIX
 
 static DEFINE_string(svgs, "", "Directory to read SVGs from, or a single SVG file.");
+static DEFINE_string(vgxs, "", "Directory to read VGXs from, or a single VGX file.");
 
 static DEFINE_int_2(threads, j, -1,
                "Run threadsafe tests on a threadpool with this many extra threads, "
@@ -1051,6 +1057,14 @@ void Viewer::initSlides() {
          [](const SkString& name, const SkString& path) -> sk_sp<Slide> {
              return sk_make_sp<SvgSlide>(name, path);
          }},
+#endif
+#if defined(SK_ENABLE_VGX)
+        {".vgx",
+            "vgx-dir",
+            FLAGS_vgxs,
+            [](const SkString& name, const SkString& path) -> sk_sp<Slide> {
+                return sk_make_sp<VGXSlide>(name, path);
+            }},
 #endif
     };
 

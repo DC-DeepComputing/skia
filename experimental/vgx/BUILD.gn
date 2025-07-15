@@ -1,0 +1,23 @@
+# Copyright 2025 Google Inc.
+#
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("../../gn/skia.gni")
+
+if (skia_enable_vgx) {
+  config("public_config") {
+    defines = [ "SK_ENABLE_VGX" ]
+  }
+
+  skia_component("skvgx") {
+    check_includes = false
+    public_configs = [ ":public_config" ]
+    public = [ "SkVGX.h" ]
+    sources = [
+      "SkVGX.cpp",
+      "SkVGX.h",
+    ]
+    deps = [ "../..:skia" ]
+  }
+}
