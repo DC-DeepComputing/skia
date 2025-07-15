@@ -608,8 +608,10 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     } else if (imgData.fSampling.useCubic) {
         add_cubic_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);
-    } else if (imgData.fTileModes.first == SkTileMode::kClamp &&
-               imgData.fTileModes.second == SkTileMode::kClamp) {
+    } else if ((imgData.fTileModes.first == SkTileMode::kClamp &&
+               imgData.fTileModes.second == SkTileMode::kClamp) ||
+               (!caps->clampToBorderSupport() && (imgData.fTileModes.first == SkTileMode::kDecal ||
+                                          imgData.fTileModes.second == SkTileMode::kDecal))) {
         add_clamp_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kImageShaderClamp);
     } else {
