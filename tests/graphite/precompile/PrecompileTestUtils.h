@@ -129,15 +129,6 @@ skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughMatrixCFDi
 skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPassthroughSrcover();
 skgpu::graphite::PaintOptions TransparentPaintEdgeExtensionPremulSrcover();
 
-// Specifies the child shader to be created for a RE_LinearEffect
-enum class ChildType {
-    kSolidColor,
-    kHWTexture,
-#if defined(SK_VULKAN)
-    kHWTextureYCbCr247,
-#endif
-};
-
 skgpu::graphite::PaintOptions LinearEffect(const char* parameterStr,
                                            ChildType childType,
                                            SkBlendMode blendMode,
