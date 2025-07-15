@@ -89,6 +89,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1501f3d0_80cb7ec7",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-15T18:04:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cf64766c_8dec970a",
+      "range": {
+        "startLine": 71,
+        "startChar": 9,
+        "endLine": 71,
+        "endChar": 53
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "588404aa_55e2c210",
@@ -160,6 +184,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2889fb7a_575877dd",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-15T18:04:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ab44c3e_229fa214",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 80
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ec732e6a_4cac3baa",
@@ -183,6 +231,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cd37bd5_b856c7c3",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-15T18:04:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ec732e6a_4cac3baa",
+      "range": {
+        "startLine": 256,
+        "startChar": 12,
+        "endLine": 257,
+        "endChar": 9
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "51870d87_04cf6f18",
@@ -196,6 +268,30 @@
       "writtenOn": "2025-07-11T17:35:45Z",
       "side": 1,
       "message": "Can we change this to\n```\n    return true;\n#else\n    SkASSERT(false); // No push constant support in WASM yet\n    return false;\n#endif\n```",
+      "range": {
+        "startLine": 979,
+        "startChar": 0,
+        "endLine": 980,
+        "endChar": 16
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "002aa9a5_4a359e95",
+        "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 980,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-15T18:04:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51870d87_04cf6f18",
       "range": {
         "startLine": 979,
         "startChar": 0,
