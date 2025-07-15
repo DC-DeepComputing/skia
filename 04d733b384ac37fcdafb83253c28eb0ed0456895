@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d62f7b58_6c7903bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3759093
+      },
+      "writtenOn": "2025-07-15T02:19:29Z",
+      "side": 1,
+      "message": "Hello, I have uploaded a patch to try to solve a gl-resource issue. I am not sure if the idea I came up with is right. I would be very thankful if you could review the uploaded code in your spare time.",
+      "revId": "04d733b384ac37fcdafb83253c28eb0ed0456895",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
