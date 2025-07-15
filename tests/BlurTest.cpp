@@ -15,6 +15,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
@@ -74,15 +75,15 @@ static void drawBG(SkCanvas* canvas) {
 
 
 struct BlurTest {
-    void (*addPath)(SkPath*);
+    void (*addPath)(SkPathBuilder*);
     int viewLen;
     SkIRect views[9];
 };
 
 //Path Draw Procs
 //Beware that paths themselves my draw differently depending on the clip.
-static void draw50x50Rect(SkPath* path) {
-    path->addRect(0, 0, SkIntToScalar(50), SkIntToScalar(50));
+static void draw50x50Rect(SkPathBuilder* path) {
+    path->addRect({0, 0, SkIntToScalar(50), SkIntToScalar(50)});
 }
 
 //Tests
@@ -320,8 +321,7 @@ DEF_TEST(BlurSigmaRange, reporter) {
 
     // The geometry is offset a smidge to trigger:
     // https://code.google.com/p/chromium/issues/detail?id=282418
-    SkPath rectPath;
-    rectPath.addRect(0.3f, 0.3f, 100.3f, 100.3f);
+    SkPath rectPath = SkPath::Rect({0.3f, 0.3f, 100.3f, 100.3f});
 
     SkPoint polyPts[] = {
         { 0.3f, 0.3f },

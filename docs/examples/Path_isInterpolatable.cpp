@@ -3,13 +3,14 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_isInterpolatable, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
-    SkPath path, path2;
-    path.moveTo(20, 20);
-    path.lineTo(40, 40);
-    path.lineTo(20, 20);
-    path.lineTo(40, 40);
-    path.close();
-    path2.addRect({20, 20, 40, 40});
+    SkPath path = SkPathBuilder()
+        .moveTo(20, 20)
+        .lineTo(40, 40)
+        .lineTo(20, 20)
+        .lineTo(40, 40)
+        .close()
+        .detach();
+    SkPath path2 = SkPath::Rect({20, 20, 40, 40});
     SkDebugf("paths are " "%s" "interpolatable", path.isInterpolatable(path2) ? "" : "not ");
 }
 }  // END FIDDLE

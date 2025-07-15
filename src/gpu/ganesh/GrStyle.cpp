@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkSpan.h"
+
 #include "src/utils/SkDashPathPriv.h"
 
 #include <cstring>
@@ -162,7 +163,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
         return false;
     }
     *dst = builder.detach();
-    dst->setIsVolatile(true);
+    *dst = dst->makeIsVolatile(true);
     return true;
 }
 
@@ -197,7 +198,7 @@ bool GrStyle::applyToPath(SkPath* dst, SkStrokeRec::InitStyle* style, const SkPa
             return false;
         }
         *dst = builder.detach();
-        dst->setIsVolatile(true);
+        *dst = dst->makeIsVolatile(true);
         *style = SkStrokeRec::kFill_InitStyle;
     } else if (!fPathEffect) {
         // Nothing to do for path effect or stroke, fail.

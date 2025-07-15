@@ -44,6 +44,7 @@
 #include <cstdint>
 #include <cstring>
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -178,7 +179,7 @@ void SkCustomTypefaceBuilder::setGlyph(SkGlyphID index, float advance,
     rec.fAdvance  = advance;
     rec.fDrawable = std::move(drawable);
     rec.fBounds   = bounds;
-    rec.fPath.reset();
+    rec.fPath = SkPath();
 }
 
 sk_sp<SkTypeface> SkCustomTypefaceBuilder::detach() {
@@ -317,7 +318,7 @@ protected:
 
         SkASSERT(!rec.isDrawable());
 
-        rec.fPath.transform(fMatrix, path);
+        *path = rec.fPath.makeTransform(fMatrix);
 
         return true;
     }
@@ -509,12 +510,13 @@ sk_sp<SkTypeface> SkCustomTypefaceBuilder::Deserialize(SkStream* stream) {
             builder.setGlyph(i, advance, std::move(drawable), bounds);
         } break;
         case GlyphType::kPath: {
-            SkPath path;
-            if (path.readFromMemory(data->data(), data->size()) != data->size()) {
+            size_t size;
+            std::optional<SkPath> path = SkPath::ReadFromMemory(data->data(), data->size(), &size);
+            if(!path || size != data->size()) {
                 return nullptr;
             }
 
-            builder.setGlyph(i, advance, path);
+            builder.setGlyph(i, advance, path.value());
         } break;
         default:
             return nullptr;

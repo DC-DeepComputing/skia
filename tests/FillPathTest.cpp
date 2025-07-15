@@ -7,6 +7,7 @@
 
 #include "include/core/SkColor.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
@@ -38,16 +39,17 @@ struct FakeBlitter : public SkBlitter {
 DEF_TEST(FillPathInverse, reporter) {
     FakeBlitter blitter;
     SkIRect clip;
-    SkPath path;
     int height = 100;
     int width  = 200;
     int expected_lines = 5;
     clip.setLTRB(0, height - expected_lines, width, height);
-    path.moveTo(0.0f, 0.0f)
+    SkPath path = SkPathBuilder()
+        .moveTo(0.0f, 0.0f)
         .quadTo(SkIntToScalar(width/2), SkIntToScalar(height),
               SkIntToScalar(width), 0.0f)
         .close()
-        .setFillType(SkPathFillType::kInverseWinding);
+        .setFillType(SkPathFillType::kInverseWinding)
+        .detach();
     SkRegion rgn(clip);
     SkScan::FillPath(path, rgn, &blitter);
 

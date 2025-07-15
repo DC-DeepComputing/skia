@@ -14,6 +14,7 @@
 #include "include/core/SkImage.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkRRect.h"
@@ -42,6 +43,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 
 SkDevice::SkDevice(const SkImageInfo& info, const SkSurfaceProps& surfaceProps)
@@ -121,7 +123,7 @@ void SkDevice::drawRegion(const SkRegion& region, const SkPaint& paint) {
                                              !is_int(localToDevice.getTranslateY()));
     if (isNonTranslate || complexPaint || antiAlias) {
         SkPath path = region.getBoundaryPath();
-        path.setIsVolatile(true);
+        path = path.makeIsVolatile(true);
         return this->drawPath(path, paint, true);
     }
 
@@ -141,13 +143,13 @@ void SkDevice::drawArc(const SkArc& arc, const SkPaint& paint) {
 
 void SkDevice::drawDRRect(const SkRRect& outer,
                           const SkRRect& inner, const SkPaint& paint) {
-    SkPath path;
+    SkPathBuilder path;
     path.addRRect(outer);
     path.addRRect(inner);
     path.setFillType(SkPathFillType::kEvenOdd);
     path.setIsVolatile(true);
 
-    this->drawPath(path, paint, true);
+    this->drawPath(path.snapshot(), paint, true);
 }
 
 void SkDevice::drawPatch(const SkPoint cubics[12], const SkColor colors[4],
@@ -243,7 +245,8 @@ void SkDevice::drawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], SkCanvas::
 
     if (clip) {
         // Draw the clip directly as a quad since it's a filled color with no local coords
-        this->drawPath(SkPath::Polygon({clip, 4}, true), paint, true);
+        SkPath clipPath = SkPath::Polygon({clip, 4}, true);
+        this->drawPath(clipPath, paint, true);
     } else {
         this->drawRect(r, paint);
     }
@@ -276,8 +279,9 @@ void SkDevice::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry images[], int co
         if (images[i].fHasClip) {
             // Since drawImageRect requires a srcRect, the dst clip is implemented as a true clip
             this->pushClipStack();
-            SkPath clipPath = SkPath::Polygon({dstClips + clipIndex, 4}, true);
-            this->clipPath(clipPath, SkClipOp::kIntersect, entryPaint.isAntiAlias());
+            SkPathBuilder clipPath;
+            clipPath.addPolygon({dstClips + clipIndex, 4}, true);
+            this->clipPath(clipPath.detach(), SkClipOp::kIntersect, entryPaint.isAntiAlias());
             clipIndex += 4;
         }
         this->drawImageRect(images[i].fImage.get(), &images[i].fSrcRect, images[i].fDstRect,

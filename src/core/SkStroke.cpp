@@ -1444,12 +1444,13 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
         bool isClosed = false;
         SkPathDirection dir;
         if (src.isRect(&rect, &isClosed, &dir) && isClosed) {
-            this->strokeRect(rect, dst, dir);
+            this->strokeRect(rect, &builder, dir);
             // our answer should preserve the inverseness of the src
             if (src.isInverseFillType()) {
-                SkASSERT(!dst->isInverseFillType());
-                dst->toggleInverseFillType();
+                SkASSERT(!builder.isInverseFillType());
+                builder.toggleInverseFillType();
             }
+            *dst = builder.detach();
             return;
         }
     }
@@ -1511,13 +1512,13 @@ void SkStroke::strokePath(const SkPath& src, SkPathBuilder* dst) const {
         }
     }
 DONE:
-    stroker.done(dst, lastSegment == SkPath::kLine_Verb);
+    stroker.done(&builder, lastSegment == SkPath::kLine_Verb);
 
     if (fDoFill && !ignoreCenter) {
         if (SkPathPriv::ComputeFirstDirection(src) == SkPathFirstDirection::kCCW) {
             dst->privateReverseAddPath(src);
         } else {
-            dst->addPath(src);
+            builder.addPath(src);
         }
     } else {
         //  Seems like we can assume that a 2-point src would always result in
@@ -1543,9 +1544,11 @@ DONE:
 
     // our answer should preserve the inverseness of the src
     if (src.isInverseFillType()) {
-        SkASSERT(!dst->isInverseFillType());
-        dst->toggleInverseFillType();
+        // TODO(borenet)
+        SkASSERT(!builder.isInverseFillType());
+        builder.toggleInverseFillType();
     }
+    *dst = builder.detach();
 }
 
 static SkPathDirection reverse_direction(SkPathDirection dir) {
@@ -1582,8 +1585,13 @@ static void addBevel(SkPathBuilder* path, const SkRect& r, const SkRect& outer,
 void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
                           SkPathDirection dir) const {
     SkASSERT(dst != nullptr);
-    dst->reset();
+    SkPathBuilder pb;
+    this->strokeRect(origRect, &pb, dir);
+    *dst = pb.detach();
+}
 
+void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
+                          SkPathDirection dir) const {
     SkScalar radius = SkScalarHalf(fWidth);
     if (radius <= 0) {
         return;
@@ -1608,12 +1616,13 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
         join = SkPaint::kBevel_Join;
     }
 
+    SkPathBuilder builder;
     switch (join) {
         case SkPaint::kMiter_Join:
-            dst->addRect(r, dir);
+            builder.addRect(r, dir);
             break;
         case SkPaint::kBevel_Join:
-            addBevel(dst, rect, r, dir);
+            addBevel(&builder, rect, r, dir);
             break;
         case SkPaint::kRound_Join:
             dst->addRRect(SkRRect::MakeRectXY(r, radius, radius), dir);
@@ -1625,6 +1634,7 @@ void SkStroke::strokeRect(const SkRect& origRect, SkPathBuilder* dst,
     if (fWidth < std::min(rw, rh) && !fDoFill) {
         r = rect;
         r.inset(radius, radius);
-        dst->addRect(r, reverse_direction(dir));
+        builder.addRect(r, reverse_direction(dir));
     }
+    *dst = builder.detach();
 }

@@ -8,6 +8,7 @@
 
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/private/base/SkAssert.h"
@@ -741,8 +742,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
     dfMatrix.postTranslate(SK_DistanceFieldPad, SK_DistanceFieldPad);
 
 #ifdef SK_DEBUG
-    SkPath xformPath;
-    path.transform(dfMatrix, &xformPath);
+    SkPath xformPath = path.makeTransform(dfMatrix);
     SkIRect pathBounds = xformPath.getBounds().roundOut();
     SkIRect expectPathBounds = SkIRect::MakeWH(width, height);
 #endif
@@ -768,7 +768,7 @@ bool GrGenerateDistanceFieldFromPath(unsigned char* distanceField,
 
     // transform to device space + SDF offset
     // TODO: remove degenerate segments while doing this?
-    workingPath.transform(dfMatrix);
+    workingPath = SkPathBuilder(workingPath).transform(dfMatrix).detach();
 
     SkDEBUGCODE(pathBounds = workingPath.getBounds().roundOut());
     SkASSERT(expectPathBounds.isEmpty() ||

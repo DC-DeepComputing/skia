@@ -12,6 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkSamplingOptions.h"
 #include "include/core/SkScalar.h"
@@ -205,9 +206,10 @@ static void test_nan_antihair() {
 
     SkCanvas canvas(bm);
 
-    SkPath path;
-    path.moveTo(0, 0);
-    path.lineTo(10, SK_ScalarNaN);
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 0)
+        .lineTo(10, SK_ScalarNaN)
+        .detach();
 
     SkPaint paint;
     paint.setAntiAlias(true);

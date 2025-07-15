@@ -12,6 +12,7 @@
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkString.h"
+#include "src/core/SkPathPriv.h"
 
 /* The hiragino_maru_goth_pro_e path was generated with Mac-specific code:
  *
@@ -63,8 +64,9 @@ static void test_path(SkCanvas* canvas, const SkPath& path) {
 static void test_rev(SkCanvas* canvas, const SkPath& path) {
     test_path(canvas, path);
 
-    SkPath rev;
-    rev.reverseAddPath(path);
+    SkPathBuilder b;
+    SkPathPriv::ReverseAddPath(&b, path);
+    SkPath rev = b.detach();
     canvas->save();
     canvas->translate(150, 0);
     test_path(canvas, rev);
@@ -75,13 +77,13 @@ DEF_SIMPLE_GM_BG_NAME(pathreverse, canvas, 640, 480, SK_ColorWHITE,
                       SkString("path-reverse")) {
         SkRect r = { 10, 10, 100, 60 };
 
-        SkPath path;
+        SkPathBuilder path;
 
-        path.addRect(r); test_rev(canvas, path);
+        path.addRect(r); test_rev(canvas, path.snapshot());
 
         canvas->translate(0, 100);
         path.offset(20, 20);
-        path.addRect(r); test_rev(canvas, path);
+        path.addRect(r); test_rev(canvas, path.snapshot());
 
         canvas->translate(0, 100);
         path.reset();
@@ -89,9 +91,9 @@ DEF_SIMPLE_GM_BG_NAME(pathreverse, canvas, 640, 480, SK_ColorWHITE,
         path.addOval(r);
         r.offset(50, 20);
         path.addOval(r);
-        test_rev(canvas, path);
+        test_rev(canvas, path.snapshot());
 
         path = hiragino_maru_goth_pro_e();
         canvas->translate(0, 100);
-        test_rev(canvas, path);
+        test_rev(canvas, path.snapshot());
 }

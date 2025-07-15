@@ -44,16 +44,16 @@ protected:
     SkISize getISize() override { return SkISize::Make(400, 950); }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPath clipSimple = SkPath::Circle(70, 50, 20);
+        SkPathBuilder clipSimple = SkPathBuilder().addCircle(70, 50, 20);
 
         SkRect r1 = { 10, 20, 70, 80 };
-        SkPath clipComplex = SkPathBuilder().moveTo(40,  50)
-                                            .arcTo(r1, 30, 300, false)
-                                            .close()
-                                            .detach();
+        SkPathBuilder clipComplex = SkPathBuilder()
+            .moveTo(40,  50)
+            .arcTo(r1, 30, 300, false)
+            .close();
 
-        SkPath* firstClip = &clipSimple;
-        SkPath* secondClip = &clipComplex;
+        SkPathBuilder* firstClip = &clipSimple;
+        SkPathBuilder* secondClip = &clipComplex;
         if (!fDoSimpleClipFirst) {
             std::swap(firstClip, secondClip);
         }
@@ -93,8 +93,8 @@ protected:
                                                SkPathFillType::kEvenOdd);
                         secondClip->setFillType(doInvB ? SkPathFillType::kInverseEvenOdd :
                                                 SkPathFillType::kEvenOdd);
-                        canvas->clipPath(*firstClip, doAAA);
-                        canvas->clipPath(*secondClip, gOps[op].fOp, doAAB);
+                        canvas->clipPath(firstClip->snapshot(), doAAA);
+                        canvas->clipPath(secondClip->snapshot(), gOps[op].fOp, doAAB);
 
                         // draw rect clipped
                         SkRect r = { 0, 0, 100, 100 };

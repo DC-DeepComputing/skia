@@ -152,6 +152,10 @@ public:
         }
     }
 
+    void setFillType(SkPathFillType ft) {
+        fPath.setFillType(ft);
+    }
+
 private:
     const float fTessellationPrecision;
     const CullTest fCullTest;

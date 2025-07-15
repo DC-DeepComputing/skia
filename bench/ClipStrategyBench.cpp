@@ -8,6 +8,7 @@
 #include "bench/Benchmark.h"
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 
 class ClipStrategyBench : public Benchmark {
 public:
@@ -21,11 +22,13 @@ public:
         , fCount(count)
         , fName("clip_strategy_"){
 
+        SkPathBuilder clipPathBuilder;
         if (fMode == Mode::kClipPath) {
             fName.append("path_");
             this->forEachClipCircle([&](float x, float y, float r) {
-                fClipPath.addCircle(x, y, r);
+                clipPathBuilder.addCircle(x, y, r);
             });
+            fClipPath = clipPathBuilder.detach();
         } else {
             fName.append("mask_");
         }
