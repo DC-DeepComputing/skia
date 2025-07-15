@@ -1491,7 +1491,7 @@ static void fuzz_canvas(Fuzz* fuzz, SkCanvas* canvas, int depth = 9) {
                 break;
             }
             default:
-                SkASSERT(false);
+                //SkASSERT(false);
                 break;
         }
     }

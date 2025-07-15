@@ -40,6 +40,7 @@ class SurfaceDrawContext;
  */
 class PathRenderer : public SkRefCnt {
 public:
+    static constexpr int kMaxPathVerbs = 10240;
     PathRenderer() = default;
 
     virtual const char* name() const = 0;
