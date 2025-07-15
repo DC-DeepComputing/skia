@@ -16,6 +16,24 @@
       "message": "We can still use breakglass to run this script for uploading, right?",
       "revId": "c7fe562e5cfbf46630c37d2e00150437a096e1a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f47faf5_38c0d484",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-15T15:57:00Z",
+      "side": 1,
+      "message": "Yes, write ACLs aren\u0027t changing.",
+      "parentUuid": "d98eb126_4fa8bb21",
+      "revId": "c7fe562e5cfbf46630c37d2e00150437a096e1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
