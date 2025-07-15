@@ -138,6 +138,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3ab44c3e_229fa214",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-15T16:05:57Z",
+      "side": 1,
+      "message": "Oops you\u0027re right, I\u0027d been thinking of `ContextType` but that\u0027s just in our tools and not in the actual source library.\n\nIt might be generally useful to add a backend label tag to BindingRequirements as there are a few other places throughout Graphite\u0027s SkSL codegen that inserts a `metal`, `vulkan`, or `webgpu` tag into the layout based on some other heuristic.",
+      "parentUuid": "bfe04c30_4595777a",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 80
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec732e6a_4cac3baa",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 7
