@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b60f489_5d19196b",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 2416,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-15T19:25:21Z",
+      "side": 1,
+      "message": "Using the `std::nullopt` constructor of `std::optional` (by using `HRNM` is also good.",
+      "parentUuid": "0722b9c8_e3d159e2",
+      "range": {
+        "startLine": 2416,
+        "startChar": 4,
+        "endLine": 2416,
+        "endChar": 8
+      },
+      "revId": "7e65eac71d9bd2347ed2a63af9ca5093fbdc62b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "17ff25c8_9fea96e4",
