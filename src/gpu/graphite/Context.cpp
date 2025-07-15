@@ -208,12 +208,17 @@ std::unique_ptr<PrecompileContext> Context::makePrecompileContext() {
 std::unique_ptr<Recorder> Context::makeInternalRecorder() const {
     ASSERT_SINGLE_OWNER
 
-    // Unlike makeRecorder(), this Recorder is meant to be short-lived and go
-    // away before a Context public API function returns to the caller. As such
-    // it shares the Context's resource provider (no separate budget) and does
-    // not get tracked. The internal drawing performed with an internal recorder
-    // should not require a client image provider.
-    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, {}, this));
+    // Unlike makeRecorder(), this Recorder is meant to be short-lived and go away before a Context
+    // public API function returns to the caller. As such it shares the Context's resource provider
+    // (no separate budget) and does not get tracked. The internal drawing performed with an
+    // internal recorder should not require a client image provider.
+    //
+    // Explicitly overrides fRequiresOrderedRecordings to false so that these Recorders do not
+    // inherit any global policy from the ContextOptions. Since they will only produce one Recording
+    // there's no need to require subsequent recordings be ordered.
+    RecorderOptions options = {};
+    options.fRequireOrderedRecordings = false;
+    return std::unique_ptr<Recorder>(new Recorder(fSharedContext, options, this));
 }
 
 InsertStatus Context::insertRecording(const InsertRecordingInfo& info) {
