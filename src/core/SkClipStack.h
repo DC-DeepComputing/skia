@@ -11,6 +11,7 @@
 #include "include/core/SkClipOp.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -18,7 +19,6 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkDeque.h"
-#include "src/base/SkTLazy.h"
 
 #include <cstddef>
 #include <cstdint>
@@ -105,9 +105,9 @@ public:
         int getSaveCount() const { return fSaveCount; }
 
         //!< Call if getDeviceSpaceType() is kPath to get the path.
-        const SkPath& getDeviceSpacePath() const {
+        SkPath getDeviceSpacePath() const {
             SkASSERT(DeviceSpaceType::kPath == fDeviceSpaceType);
-            return *fDeviceSpacePath;
+            return fDeviceSpacePath.snapshot();
         }
 
         //!< Call if getDeviceSpaceType() is kRRect to get the round-rect.
@@ -161,7 +161,7 @@ public:
          * Gets the bounds of the clip element, either the rect or path bounds. (Whether the shape
          * is inverse filled is not considered.)
          */
-        const SkRect& getBounds() const;
+        SkRect getBounds() const;
 
         /**
          * Conservatively checks whether the clip shape contains the rect/rrect. (Whether the shape
@@ -175,7 +175,7 @@ public:
          */
         bool isInverseFilled() const {
             return DeviceSpaceType::kPath == fDeviceSpaceType &&
-                   fDeviceSpacePath->isInverseFillType();
+                   fDeviceSpacePath.isInverseFillType();
         }
 
 #ifdef SK_DEBUG
@@ -189,7 +189,7 @@ public:
     private:
         friend class SkClipStack;
 
-        SkTLazy<SkPath> fDeviceSpacePath;
+        SkPathBuilder fDeviceSpacePath;
         SkRRect fDeviceSpaceRRect;
         sk_sp<SkShader> fShader;
         int fSaveCount;  // save count of stack when this element was added.
