@@ -114,6 +114,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bfe04c30_4595777a",
+        "filename": "src/gpu/graphite/ShaderInfo.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 19434
+      },
+      "writtenOn": "2025-07-15T15:39:18Z",
+      "side": 1,
+      "message": "Do you mean the Caps already has a function to query the backend or we should add one? I couldn\u0027t find the existing one.",
+      "parentUuid": "588404aa_55e2c210",
+      "range": {
+        "startLine": 196,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 80
+      },
+      "revId": "0e9b5671bcca84ff19d3eb727b150b64f74e6ce7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ec732e6a_4cac3baa",
         "filename": "src/gpu/graphite/dawn/DawnCommandBuffer.cpp",
         "patchSetId": 7
