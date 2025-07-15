@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d98eb126_4fa8bb21",
+        "filename": "bazel/gcs_mirror/gcs_mirror.go",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-15T15:55:25Z",
+      "side": 1,
+      "message": "We can still use breakglass to run this script for uploading, right?",
+      "revId": "c7fe562e5cfbf46630c37d2e00150437a096e1a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
