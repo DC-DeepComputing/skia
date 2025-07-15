@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cb5b685_a7cbfa4e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-15T20:20:48Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?",
+      "revId": "900257d4ac282779a0d0de08e973de9114b65547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56de311a_66c97084",
+        "filename": "experimental/rust_png/decoder/impl/SkPngRustCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 812,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-15T20:20:48Z",
+      "side": 1,
+      "message": "I have incorrectly used `\u003c\u003d` in the previous CL... :-(  (for more details see the CL description of the revert CL at https://review.skia.org/1020456)",
+      "range": {
+        "startLine": 812,
+        "startChar": 30,
+        "endLine": 812,
+        "endChar": 32
+      },
+      "revId": "900257d4ac282779a0d0de08e973de9114b65547",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
