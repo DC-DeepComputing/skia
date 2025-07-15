@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09aa3556_09abbb7a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-15T20:18:37Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "92df8a46_38398e5d",
+      "revId": "368874b6a5abb885a713326fc859023b1a595d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5bcf55ad_661d0294",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-07-15T19:22:26Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 2423,
+        "startChar": 8,
+        "endLine": 2423,
+        "endChar": 12
+      },
+      "revId": "368874b6a5abb885a713326fc859023b1a595d15",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cde43610_1912d692",
+        "filename": "src/ports/SkScalerContext_win_dw.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 2423,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-15T20:18:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5bcf55ad_661d0294",
       "range": {
         "startLine": 2423,
         "startChar": 8,
