@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d0cb5f2c_c4ca533a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-15T14:37:17Z",
+      "side": 1,
+      "message": "Talked w/ Michael - he confirmed that if a device does not support Vulkan 1.1 that we do not plan to support it, so failing to meet min version requirements should be fine to become enforced.",
+      "revId": "f91025e342b459697044d90ca0339c72f2bd0743",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
