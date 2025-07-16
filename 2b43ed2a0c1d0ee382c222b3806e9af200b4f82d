@@ -22,6 +22,30 @@
       },
       "revId": "2b43ed2a0c1d0ee382c222b3806e9af200b4f82d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b85b4b50_b05bb7b3",
+        "filename": "tests/graphite/precompile/AndroidPaintOptions.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T18:10:18Z",
+      "side": 1,
+      "message": "Nope - those two SkImageShaders just have the same properties.",
+      "parentUuid": "beddec28_187988d4",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 34
+      },
+      "revId": "2b43ed2a0c1d0ee382c222b3806e9af200b4f82d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
