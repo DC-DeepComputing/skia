@@ -5,12 +5,17 @@
  * found in the LICENSE file.
  */
 
+#include <array>
+#include <cstdint>
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 
+#include "include/private/base/SkPoint_impl.h"
+#include "include/private/base/SkSpan_impl.h"
+#include "src/base/SkRandom.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkPathRaw.h"
 
@@ -218,4 +223,89 @@ DEF_TEST(pathraw_iter, reporter) {
     raw = SkPathPriv::Raw(path);
 
     check_iter(reporter, raw, p, verbs, cns);
+}
+
+DEF_TEST(pathraw_stack, reporter) {
+    auto check = [&reporter](const SkPathRaw& path,
+                             SkPathFillType expected_filltype,
+                             SkSpan<const SkPathVerb> expected_verbs,
+                             SkSpan<const SkPoint> expected_points,
+                             SkSpan<const float> expected_weights) {
+        REPORTER_ASSERT(reporter, path.fFillType == expected_filltype);
+        REPORTER_ASSERT(reporter, path.fVerbs.size() == expected_verbs.size());
+        for (size_t i = 0; i < path.fVerbs.size(); ++i) {
+            REPORTER_ASSERT(reporter, path.fVerbs[i] == expected_verbs[i]);
+        }
+        REPORTER_ASSERT(reporter, path.fPoints.size() == expected_points.size());
+        for (size_t i = 0; i < path.fPoints.size(); ++i) {
+            REPORTER_ASSERT(reporter, path.fPoints[i] == expected_points[i]);
+        }
+        REPORTER_ASSERT(reporter, path.fConics.size() == expected_weights.size());
+        for (size_t i = 0; i < path.fConics.size(); ++i) {
+            REPORTER_ASSERT(reporter, path.fConics[i] == expected_weights[i]);
+        }
+
+        SkRect expected_bounds;
+        expected_bounds.setBoundsCheck(expected_points);
+        REPORTER_ASSERT(reporter, path.fBounds == expected_bounds);
+    };
+
+    {
+        static constexpr auto path = SkSTPath(
+            SkPathFillType::kEvenOdd,
+            MoveTo({1, 2}),
+            LineTo({3, 4}),
+            QuadTo({5, 6}, {7, 8}),
+            CubicTo({9, 10}, {11, 12}, {13, 14}),
+            ConicTo({15, 16}, {17, 18}, 1.2f),
+            Close());
+
+        static_assert(static_cast<SkPathRaw>(path).fVerbs.size()  == 6);
+        static_assert(static_cast<SkPathRaw>(path).fPoints.size() == 9);
+        static_assert(static_cast<SkPathRaw>(path).fConics.size() == 1);
+
+        check(path,
+              SkPathFillType::kEvenOdd,
+              {
+                SkPathVerb::kMove,
+                SkPathVerb::kLine,
+                SkPathVerb::kQuad,
+                SkPathVerb::kCubic,
+                SkPathVerb::kConic,
+                SkPathVerb::kClose
+              },
+              { {1, 2}, {3, 4}, {5, 6}, {7, 8}, {9, 10}, {11, 12}, {13, 14}, {15, 16}, {17, 18} },
+              { 1.2f }
+        );
+    }
+
+    {
+        SkRandom rand;
+        std::array<SkPoint, 9> pts;
+        for (auto& pt : pts) { pt = {rand.nextF(), rand.nextF()}; }
+
+        const SkSTPath path(
+            SkPathFillType::kEvenOdd,
+            MoveTo(pts[0]),
+            LineTo(pts[1]),
+            QuadTo(pts[2], pts[3]),
+            CubicTo(pts[4], pts[5], pts[6]),
+            ConicTo(pts[7], pts[8], 1.4f),
+            Close()
+        );
+
+        check(path,
+              SkPathFillType::kEvenOdd,
+              {
+                SkPathVerb::kMove,
+                SkPathVerb::kLine,
+                SkPathVerb::kQuad,
+                SkPathVerb::kCubic,
+                SkPathVerb::kConic,
+                SkPathVerb::kClose
+              },
+              pts,
+              { 1.4f }
+        );
+    }
 }
