@@ -1168,10 +1168,10 @@ bool SkMatrix::mapRect(SkRect* dst, const SkRect& src, SkApplyPerspectiveClip pc
         this->mapRectScaleTranslate(dst, src);
         return true;
     } else if (pc == SkApplyPerspectiveClip::kYes && this->hasPerspective()) {
-        SkPath path;
-        path.addRect(src);
-        path.transform(*this);
-        *dst = path.getBounds();
+        SkPoint quad[4];
+        src.toQuad(quad);
+        this->mapPoints(quad);
+        *dst = SkRect::BoundsOrEmpty(quad);
         return false;
     } else {
         SkPoint quad[4];
