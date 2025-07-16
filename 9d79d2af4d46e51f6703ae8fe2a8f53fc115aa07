@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ede2928_3211efd8",
+        "filename": "src/core/SkClipStack.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-16T16:38:56Z",
+      "side": 1,
+      "message": "Eventually we could add something like SkPath::makeVolatile:\n\n  `fDeviceSpacePath.set(path.makeTransform(m).makeVolatile(true));`\n\nI guess it doesn\u0027t matter here because we\u0027re copying the data for transform anyway.",
+      "range": {
+        "startLine": 203,
+        "startChar": 0,
+        "endLine": 204,
+        "endChar": 32
+      },
+      "revId": "9d79d2af4d46e51f6703ae8fe2a8f53fc115aa07",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
