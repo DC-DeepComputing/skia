@@ -43,6 +43,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8305a18b_1ae866d8",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-16T15:59:33Z",
+      "side": 1,
+      "message": "Well, nearly every call site doesn\u0027t care about the distinction, as they treat empty and not representable as the same thing. Hence the helper to simplify so many callers.\n\nThat said, I had forgotton about value_or() as a pattern for the existing callsites. I will switch to that.\n\nWhile were on this topic, given the desire to make it clear that \u0027getPath\u0027 may fail, we\u0027re in a position to give it a different name if you like?\n- asPath(), glyphAsPath(), getIfPath(), etc.\n\nDo you have any preferred name, or should I use getPath() for the optional one?",
+      "parentUuid": "4fd4ae44_75176ee3",
+      "revId": "4e437bc3dac3a63086d4a79d84ddd67566988a42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "988ff821_d5198142",
         "filename": "src/core/SkFont.cpp",
         "patchSetId": 4
