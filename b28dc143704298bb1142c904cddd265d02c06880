@@ -22,6 +22,30 @@
       },
       "revId": "b28dc143704298bb1142c904cddd265d02c06880",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17ffc587_0fd659e4",
+        "filename": "infra/docker/make_image_tag.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-16T20:41:20Z",
+      "side": 1,
+      "message": "I\u0027m following exactly what we do for skia-buildbot. We need *some* kind of tag I think.",
+      "parentUuid": "00a54fc3_b494a110",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "b28dc143704298bb1142c904cddd265d02c06880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
