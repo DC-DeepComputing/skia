@@ -51,6 +51,24 @@
       "message": "nit: `SkAutoCanvasRestore acr(\u0026this-\u003ecs(), false);`?",
       "revId": "4c29f9c82df2da395640898e0a38d1f31aef338f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "32e447b6_78fade20",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T20:18:36Z",
+      "side": 1,
+      "message": "`this-\u003ecs()` is an `SkClipStack`, not an `SkCanvas`. There is `SkClipStack::AutoRestore` and this can be like the one other user which is `SkSVGDevice::drawImageRect`. (This has only been possible since https://skia-review.googlesource.com/9532 , which wasn\u0027t that long ago :-)",
+      "parentUuid": "97122c43_958effb4",
+      "revId": "4c29f9c82df2da395640898e0a38d1f31aef338f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
