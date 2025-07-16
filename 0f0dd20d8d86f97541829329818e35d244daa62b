@@ -16,6 +16,23 @@
       "message": "Florin, we need another code reviewer and you are the usual one, I think",
       "revId": "0f0dd20d8d86f97541829329818e35d244daa62b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "998d0c18_fcc590ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-07-16T17:55:05Z",
+      "side": 1,
+      "message": "Need a second code reviewer",
+      "revId": "0f0dd20d8d86f97541829329818e35d244daa62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
