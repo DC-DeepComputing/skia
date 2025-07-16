@@ -16,6 +16,24 @@
       "message": "Something about this change appears to be breaking `Fontations_SyntheticXHeight` and `Fontations_SyntheticCapHeight` tests (see `Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Debug-All-NativeFonts_Fontations`).",
       "revId": "af3b642ee0d986c8df5ae36680252cc51c484963",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38ff11bb_e22f6168",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-16T17:58:28Z",
+      "side": 1,
+      "message": "Fixed here: https://skia-review.googlesource.com/c/skia/+/1021416",
+      "parentUuid": "9c27d4a6_f2b39093",
+      "revId": "af3b642ee0d986c8df5ae36680252cc51c484963",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
