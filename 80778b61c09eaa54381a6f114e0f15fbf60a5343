@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33af4318_3776de15",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-16T17:45:28Z",
+      "side": 1,
+      "message": "LGTM assuming the try jobs are happy",
+      "revId": "80778b61c09eaa54381a6f114e0f15fbf60a5343",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
