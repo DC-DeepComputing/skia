@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b313014_4cfcf1e2",
+        "filename": "src/gpu/ganesh/PathRenderer.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T14:00:46Z",
+      "side": 1,
+      "message": "Maybe kMaxGPUPathRendererVerbs?",
+      "range": {
+        "startLine": 45,
+        "startChar": 25,
+        "endLine": 45,
+        "endChar": 38
+      },
+      "revId": "22a9650b97a5de8018ea96fba3ce5eed3c4a474b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
