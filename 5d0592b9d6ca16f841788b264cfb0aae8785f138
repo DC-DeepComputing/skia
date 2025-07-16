@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "676f1cf6_e38ba97e",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 9
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-16T17:00:26Z",
+      "side": 0,
+      "message": "Did we intend to remove these jobs entirely?",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 53
+      },
+      "revId": "5d0592b9d6ca16f841788b264cfb0aae8785f138",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

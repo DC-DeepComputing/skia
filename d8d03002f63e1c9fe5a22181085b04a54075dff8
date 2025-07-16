@@ -16,6 +16,29 @@
       "message": "Adding Eric since I removed few bots from commit queue",
       "revId": "d8d03002f63e1c9fe5a22181085b04a54075dff8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeb0189a_5231bd7d",
+        "filename": "infra/bots/assets/clang_linux/create.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-16T17:00:26Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be necessary and is potentially dangerous",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 15
+      },
+      "revId": "d8d03002f63e1c9fe5a22181085b04a54075dff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
