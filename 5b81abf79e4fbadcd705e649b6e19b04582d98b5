@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "383f2177_41d3f348",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "While addressing the comments I accidentally squashed some additional changes I was working on in the same PS.\nNote the changes to SkCaptureCanvas that now accepts a pointer to the CaptureManager.",
+      "revId": "5b81abf79e4fbadcd705e649b6e19b04582d98b5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

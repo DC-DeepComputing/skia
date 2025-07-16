@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d30df8e2_056054cd",
+        "filename": "include/gpu/graphite/Context.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34851181_dc25653e",
+      "range": {
+        "startLine": 288,
+        "startChar": 23,
+        "endLine": 288,
+        "endChar": 76
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ed1f26e_24f7ad4f",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-11T17:22:52Z",
       "side": 1,
       "message": "Can we add a bug number and be more specific about what we plan to return here.",
+      "range": {
+        "startLine": 904,
+        "startChar": 0,
+        "endLine": 904,
+        "endChar": 29
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1159514e_16f235d7",
+        "filename": "src/gpu/graphite/Context.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 904,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ed1f26e_24f7ad4f",
       "range": {
         "startLine": 904,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "87e5734f_78ad38d9",
+        "filename": "src/gpu/graphite/Recorder.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d7dcfe37_ccd01ccb",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 40
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "276e7076_6cbd2434",
@@ -83,6 +155,30 @@
       "writtenOn": "2025-07-11T17:22:52Z",
       "side": 1,
       "message": "You should be able to forward declare `SkCaptureManager` instead of including it since SharedContext\u0027s destructor isn\u0027t in the header.",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 41
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "779cb10c_1fd06246",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "276e7076_6cbd2434",
       "range": {
         "startLine": 16,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6d86c27_5621f53a",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done. Since there was no need to create it out of band, I kept the new private `setCaptureManager` call in the constructor.",
+      "parentUuid": "3e28a2b8_a0b12e18",
+      "range": {
+        "startLine": 64,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 83
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f3872dbd_cf6777cb",
@@ -139,6 +259,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6093f66b_b8df7eca",
+        "filename": "src/gpu/graphite/SharedContext.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3872dbd_cf6777cb",
+      "range": {
+        "startLine": 65,
+        "startChar": 3,
+        "endLine": 65,
+        "endChar": 27
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "acd5ed92_5a56f666",
@@ -152,6 +296,30 @@
       "writtenOn": "2025-07-11T17:22:52Z",
       "side": 1,
       "message": "This comment is somewhat redundant with the variable name, so maybe something like `SkSurface_Base` must own the base canvas while the SkCaptureManager owns any wrapping capture canvas that `fCachedCanvas` may point to.?",
+      "range": {
+        "startLine": 186,
+        "startChar": 7,
+        "endLine": 186,
+        "endChar": 78
+      },
+      "revId": "62d076f35abf6cc31f0b515a51f02bf070910912",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5ea44f59_3e1e45f8",
+        "filename": "src/image/SkSurface_Base.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 11964
+      },
+      "writtenOn": "2025-07-16T15:25:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acd5ed92_5a56f666",
       "range": {
         "startLine": 186,
         "startChar": 7,
