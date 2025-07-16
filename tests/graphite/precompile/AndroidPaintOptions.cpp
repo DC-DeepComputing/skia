@@ -8,7 +8,11 @@
 #include "include/core/SkTypes.h"
 
 #if defined(SK_GRAPHITE)
+#include "include/core/SkRefCnt.h"
 #include "include/effects/SkRuntimeEffect.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "include/gpu/graphite/precompile/PaintOptions.h"
 #include "include/gpu/graphite/precompile/Precompile.h"
 #include "include/gpu/graphite/precompile/PrecompileColorFilter.h"
 #include "include/gpu/graphite/precompile/PrecompileRuntimeEffect.h"
@@ -21,6 +25,8 @@
 #include "include/gpu/graphite/vk/precompile/VulkanPrecompileShader.h"
 #include "include/gpu/vk/VulkanTypes.h"
 #endif // SK_VULKAN
+
+#include "tests/graphite/precompile/AndroidRuntimeEffectManager.h"
 
 using namespace skgpu::graphite;
 using PrecompileShaders::ImageShaderFlags;
@@ -66,7 +72,7 @@ sk_sp<PrecompileShader> vulkan_ycbcr_image_shader(uint64_t format,
 } // anonymous namespace
 #endif // SK_VULKAN
 
-// Specifies the child shader to be created for a RE_LinearEffect
+// Specifies the child shader to be created for a LinearEffect
 enum class ChildType {
     kSolidColor,
     kHWTexture,
@@ -189,92 +195,18 @@ skgpu::graphite::PaintOptions LinearEffect(const char* parameterStr,
 // NOTE: keep in sync with upstream external/skia/tests/graphite/precompile/PrecompileTestUtils.cpp
 // clang-format off
 
-namespace {
-
-class MouriMap {
-public:
-    MouriMap() {
-        // The following code blocks are just stubs for the Android code. For Skia's testing
-        // purposes they only need to have the same name and number of children as the real code.
-        // When the following PaintOptions are used in Android the real SkSL must be supplied.
-        static const SkString kCrosstalkAndChunk16x16Code(R"(
-            uniform shader img;
-            vec4 main(vec2 xy) {
-                float3 linear = img.eval(0.25 * xy).rgb;
-                return float4(linear, 1.0);
-            }
-        )");
-
-        fCrosstalkAndChunk16x16Effect = makeEffect(kCrosstalkAndChunk16x16Code,
-                                                   "RE_MouriMap_CrossTalkAndChunk16x16Effect");
-
-        static const SkString kChunk8x8Code(R"(
-            uniform shader img;
-            vec4 main(vec2 xy) {
-                return float4(img.eval(0.33 * xy).rgb, 1.0);
-            }
-        )");
-
-        fChunk8x8Effect = makeEffect(kChunk8x8Code, "RE_MouriMap_Chunk8x8Effect");
-
-
-        static const SkString kBlurCode(R"(
-            uniform shader img;
-            vec4 main(vec2 xy) {
-                return float4(img.eval(0.4 * xy).rgb, 0.0);
-            }
-        )");
-
-        fBlurEffect = makeEffect(kBlurCode, "RE_MouriMap_BlurEffect");
-
-        static const SkString kTonemapCode(R"(
-            uniform shader image;
-            uniform shader lux;
-            vec4 main(vec2 xy) {
-                float localMax = lux.eval(xy * 0.4).r;
-                float4 rgba = image.eval(0.5 * xy);
-                float3 linear = rgba.rgb * 0.7;
-
-                return float4(linear, rgba.a);
-            }
-        )");
-
-        fToneMapEffect = makeEffect(kTonemapCode, "RE_MouriMap_TonemapEffect");
-    }
-
-    sk_sp<SkRuntimeEffect> crosstalkAndChunk16x16Effect() const {
-        return fCrosstalkAndChunk16x16Effect;
-    }
-    sk_sp<SkRuntimeEffect> chunk8x8Effect() const { return fChunk8x8Effect; }
-    sk_sp<SkRuntimeEffect> blurEffect() const { return fBlurEffect; }
-    sk_sp<SkRuntimeEffect> toneMapEffect() const { return fToneMapEffect; }
-
-private:
-    sk_sp<SkRuntimeEffect> fCrosstalkAndChunk16x16Effect;
-    sk_sp<SkRuntimeEffect> fChunk8x8Effect;
-    sk_sp<SkRuntimeEffect> fBlurEffect;
-    sk_sp<SkRuntimeEffect> fToneMapEffect;
-};
-
-const MouriMap& MouriMap() {
-    static class MouriMap MouriMap;
-
-    return MouriMap;
-}
-
-} // anonymous namespace
-
 // TODO(b/426601394): Update this to take an SkColorInfo for the input image.
 // The other MouriMap* precompile paint options should use a linear SkColorInfo
 // derived from this same input image.
-skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Passthrough() {
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Passthrough(RuntimeEffectManager& effectManager) {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                            { &ci, 1 },
                                                            {});
 
     sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
-            MouriMap().crosstalkAndChunk16x16Effect(),
+            effectManager.getKnownRuntimeEffect(
+                    RuntimeEffectManager::KnownId::kMouriMap_CrossTalkAndChunk16x16Effect),
             { { std::move(img) } });
 
     PaintOptions paintOptions;
@@ -283,7 +215,7 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Passthrough() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul() {
+skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul(RuntimeEffectManager& effectManager) {
     // This usage of kUnpremul is non-obvious. It acts to short circuit the identity-colorspace
     // optimization for runtime effects. In this case, the Pipeline requires a
     // ColorSpaceTransformPremul instead of the (optimized) Passthrough.
@@ -293,7 +225,8 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul() {
                                                            {});
 
     sk_sp<PrecompileShader> crosstalk = PrecompileRuntimeEffects::MakePrecompileShader(
-            MouriMap().crosstalkAndChunk16x16Effect(),
+            effectManager.getKnownRuntimeEffect(
+                    RuntimeEffectManager::KnownId::kMouriMap_CrossTalkAndChunk16x16Effect),
             { { std::move(img) } });
 
     PaintOptions paintOptions;
@@ -302,14 +235,15 @@ skgpu::graphite::PaintOptions MouriMapCrosstalkAndChunk16x16Premul() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions MouriMapChunk8x8Effect() {
+skgpu::graphite::PaintOptions MouriMapChunk8x8Effect(RuntimeEffectManager& effectManager) {
     SkColorInfo ci { kRGBA_F16_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGBLinear() };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                            { &ci, 1 },
                                                            {});
 
     sk_sp<PrecompileShader> chunk8x8 = PrecompileRuntimeEffects::MakePrecompileShader(
-            MouriMap().chunk8x8Effect(),
+            effectManager.getKnownRuntimeEffect(
+                    RuntimeEffectManager::KnownId::kMouriMap_Chunk8x8Effect),
             { { std::move(img) } });
 
     PaintOptions paintOptions;
@@ -318,14 +252,15 @@ skgpu::graphite::PaintOptions MouriMapChunk8x8Effect() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions MouriMapBlur() {
+skgpu::graphite::PaintOptions MouriMapBlur(RuntimeEffectManager& effectManager) {
     SkColorInfo ci { kRGBA_F16_SkColorType, kPremul_SkAlphaType, SkColorSpace::MakeSRGBLinear() };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                            { &ci, 1 },
                                                            {});
 
     sk_sp<PrecompileShader> blur = PrecompileRuntimeEffects::MakePrecompileShader(
-            MouriMap().blurEffect(),
+            effectManager.getKnownRuntimeEffect(
+                    RuntimeEffectManager::KnownId::kMouriMap_BlurEffect),
             { { std::move(img) } });
 
     PaintOptions paintOptions;
@@ -334,7 +269,7 @@ skgpu::graphite::PaintOptions MouriMapBlur() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions MouriMapToneMap() {
+skgpu::graphite::PaintOptions MouriMapToneMap(RuntimeEffectManager& effectManager) {
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> input = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
                                                              { &ci, 1 },
@@ -348,7 +283,8 @@ skgpu::graphite::PaintOptions MouriMapToneMap() {
                                                             {});
 
     sk_sp<PrecompileShader> toneMap = PrecompileRuntimeEffects::MakePrecompileShader(
-            MouriMap().toneMapEffect(),
+            effectManager.getKnownRuntimeEffect(
+                    RuntimeEffectManager::KnownId::kMouriMap_TonemapEffect),
             { { std::move(input) }, { std::move(lux) } });
     sk_sp<PrecompileShader> inLinear =
             toneMap->makeWithWorkingColorSpace(luxCI.refColorSpace());
@@ -360,19 +296,9 @@ skgpu::graphite::PaintOptions MouriMapToneMap() {
 }
 
 
-skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver() {
-    static const SkString kLowSampleBlurCode(R"(
-        uniform shader img;
-
-        half4 main(float2 xy) {
-            half3 c = img.eval(0.55 * xy).rgb;
-            return half4(c, 1.0);
-        }
-    )");
-
-    sk_sp<SkRuntimeEffect> lowSampleBlurEffect = makeEffect(
-            kLowSampleBlurCode,
-            "RE_KawaseBlurDualFilter_LowSampleBlurEffect");
+skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver(RuntimeEffectManager& effectManager) {
+    sk_sp<SkRuntimeEffect> lowSampleBlurEffect = effectManager.getKnownRuntimeEffect(
+            RuntimeEffectManager::KnownId::kKawaseBlurDualFilter_LowSampleBlurEffect);
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
@@ -389,19 +315,9 @@ skgpu::graphite::PaintOptions KawaseBlurLowSrcSrcOver() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions KawaseBlurHighSrc() {
-    SkString kHighSampleBlurCode(R"(
-        uniform shader img;
-
-        half4 main(float2 xy) {
-            half3 c = img.eval(0.6 * xy).rgb;
-            return half4(c * 0.5, 1.0);
-        }
-    )");
-
-    sk_sp<SkRuntimeEffect> highSampleBlurEffect = makeEffect(
-            kHighSampleBlurCode,
-            "RE_KawaseBlurDualFilter_HighSampleBlurEffect");
+skgpu::graphite::PaintOptions KawaseBlurHighSrc(RuntimeEffectManager& effectManager) {
+    sk_sp<SkRuntimeEffect> highSampleBlurEffect = effectManager.getKnownRuntimeEffect(
+            RuntimeEffectManager::KnownId::kKawaseBlurDualFilter_HighSampleBlurEffect);
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
@@ -418,17 +334,9 @@ skgpu::graphite::PaintOptions KawaseBlurHighSrc() {
     return paintOptions;
 }
 
-skgpu::graphite::PaintOptions BlurFilterMix() {
-    static const SkString kMixCode(R"(
-        uniform shader img1;
-        uniform shader img2;
-
-        half4 main(float2 xy) {
-            return half4(mix(img1.eval(xy), img2.eval(xy), 0.5)).rgb1;
-        }
-    )");
-
-    sk_sp<SkRuntimeEffect> mixEffect = makeEffect(kMixCode, "RE_BlurFilter_MixEffect");
+skgpu::graphite::PaintOptions BlurFilterMix(RuntimeEffectManager& effectManager) {
+    sk_sp<SkRuntimeEffect> mixEffect = effectManager.getKnownRuntimeEffect(
+            RuntimeEffectManager::KnownId::kBlurFilter_MixEffect);
 
     SkColorInfo ci { kRGBA_8888_SkColorType, kPremul_SkAlphaType, nullptr };
     sk_sp<PrecompileShader> img = PrecompileShaders::Image(ImageShaderFlags::kExcludeCubic,
@@ -749,6 +657,7 @@ constexpr DrawTypeFlags kRRectAndNonAARect =
 // clang-format on
 
 void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileContext,
+                             RuntimeEffectManager& effectManager,
                              const std::function<void(skgpu::graphite::PrecompileContext*,
                                                       const PrecompileSettings&,
                                                       int index)>& func) {
@@ -889,37 +798,37 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
         // TODO(b/426601394): Group these paint option settings into a function that accepts an
         // input image color space so that the intermediate linear color spaces adapt correctly.
         // 100% (1/1) handles 5
-        { MouriMapBlur(),
+        { MouriMapBlur(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
         // 100% (1/1) handles 55
-        { MouriMapToneMap(),
+        { MouriMapToneMap(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D_SRGB },
 
         // 100% (1/1) handles 7
-        { MouriMapCrosstalkAndChunk16x16Passthrough(),
+        { MouriMapCrosstalkAndChunk16x16Passthrough(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
         // 100% (1/1) handles 6
-        { MouriMapChunk8x8Effect(),
+        { MouriMapChunk8x8Effect(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_Linear },
 
         // 100% (2/2) handles 52 53
-        { KawaseBlurLowSrcSrcOver(),
+        { KawaseBlurLowSrcSrcOver(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D },
 
         // 100% (1/1) handles 51
-        { KawaseBlurHighSrc(),
+        { KawaseBlurHighSrc(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA_1_D },
 
         // 100% (2/2) handles 49 99
-        { BlurFilterMix(),
+        { BlurFilterMix(effectManager),
           kRRectAndNonAARect,
           kRGBA_1_D },
 
@@ -1120,7 +1029,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
           kRGBA_1_D_SRGB },
 
         // 100% (1/1) handles 104
-        { MouriMapCrosstalkAndChunk16x16Premul(),
+        { MouriMapCrosstalkAndChunk16x16Premul(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_SRGB },
 
@@ -1200,7 +1109,7 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
         // 247 (kEwAAPcAAAAAAAAA) block ----------------
 
         // 70: 100% (1/1) handles 8
-        { MouriMapCrosstalkAndChunk16x16YCbCr247(),
+        { MouriMapCrosstalkAndChunk16x16YCbCr247(effectManager),
           DrawTypeFlags::kNonAAFillRect,
           kRGBA16F_1_D_SRGB },
 
