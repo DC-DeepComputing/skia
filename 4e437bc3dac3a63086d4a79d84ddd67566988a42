@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11c7c03a_ef983cb9",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 439,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T15:22:44Z",
+      "side": 1,
+      "message": "Let\u0027s just call this `getPath` and not introduce the other `getPath`.",
+      "range": {
+        "startLine": 439,
+        "startChar": 26,
+        "endLine": 439,
+        "endChar": 35
+      },
+      "revId": "4e437bc3dac3a63086d4a79d84ddd67566988a42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fd4ae44_75176ee3",
+        "filename": "include/core/SkFont.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 445,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T15:22:44Z",
+      "side": 1,
+      "message": "Why is this being introduced? It is almost always incorrect to call this since it is information destroying. The user can `font-\u003egetPath(gid).value_or(SkPath())` if they really want this behavior.",
+      "revId": "4e437bc3dac3a63086d4a79d84ddd67566988a42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "988ff821_d5198142",
+        "filename": "src/core/SkFont.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T15:22:44Z",
+      "side": 1,
+      "message": "I don\u0027t think we want this `getPath` method at all, but if we did the body would be written like `this-\u003egetIfPath(glyphID)).value_or(SkPath())`. Unfortunately, `std::optional::or_else` is C++23 so one still needs to rely on the compiler to optimize things, but no non-trivial (aka test) user should be doing this.",
+      "revId": "4e437bc3dac3a63086d4a79d84ddd67566988a42",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
