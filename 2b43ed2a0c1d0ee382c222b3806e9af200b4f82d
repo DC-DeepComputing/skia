@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "beddec28_187988d4",
+        "filename": "tests/graphite/precompile/AndroidPaintOptions.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 440,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T17:27:39Z",
+      "side": 1,
+      "message": "Does this mix with itself?",
+      "range": {
+        "startLine": 438,
+        "startChar": 0,
+        "endLine": 440,
+        "endChar": 34
+      },
+      "revId": "2b43ed2a0c1d0ee382c222b3806e9af200b4f82d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
