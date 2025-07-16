@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97122c43_958effb4",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1815,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-16T19:02:57Z",
+      "side": 1,
+      "message": "nit: `SkAutoCanvasRestore acr(\u0026this-\u003ecs(), false);`?",
+      "revId": "4c29f9c82df2da395640898e0a38d1f31aef338f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
