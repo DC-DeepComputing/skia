@@ -608,17 +608,14 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     } else if (imgData.fSampling.useCubic) {
         add_cubic_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kCubicImageShader);
-    } else if (imgData.fTileModes.first == SkTileMode::kClamp &&
-               imgData.fTileModes.second == SkTileMode::kClamp) {
+    } else if ((imgData.fTileModes.first == SkTileMode::kClamp &&
+               imgData.fTileModes.second == SkTileMode::kClamp)) {
         add_clamp_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kImageShaderClamp);
     } else {
         add_image_uniform_data(keyContext.dict(), imgData, gatherer);
         builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
     }
-
-    static constexpr std::pair<SkTileMode, SkTileMode> kDefaultTileModes =
-            {SkTileMode::kClamp, SkTileMode::kClamp};
 
     // Image shaders must append immutable sampler data (or '0' in the more common case where
     // regular samplers are used).
@@ -627,9 +624,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     ImmutableSamplerInfo info = imgData.fTextureProxy
             ? caps->getImmutableSamplerInfo(imgData.fTextureProxy->textureInfo())
             : imgData.fImmutableSamplerInfo;
-    SamplerDesc samplerDesc {imgData.fSampling,
-                             doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
-                             info};
+    SamplerDesc samplerDesc {imgData.fSampling, imgData.fTileModes, info};
     gatherer->add(imgData.fTextureProxy, samplerDesc);
     add_sampler_data_to_key(builder, samplerDesc);
 
