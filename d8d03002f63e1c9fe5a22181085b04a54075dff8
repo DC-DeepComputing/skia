@@ -39,6 +39,30 @@
       },
       "revId": "d8d03002f63e1c9fe5a22181085b04a54075dff8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cd9fdff_a5ebbe09",
+        "filename": "infra/bots/assets/clang_linux/create.py",
+        "patchSetId": 9
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 8956
+      },
+      "writtenOn": "2025-07-16T17:13:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aeb0189a_5231bd7d",
+      "range": {
+        "startLine": 20,
+        "startChar": 11,
+        "endLine": 20,
+        "endChar": 15
+      },
+      "revId": "d8d03002f63e1c9fe5a22181085b04a54075dff8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
