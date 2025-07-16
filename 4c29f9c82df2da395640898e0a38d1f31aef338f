@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "cea45250_8156a4ae",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-16T19:16:19Z",
+      "side": 1,
+      "message": "NVM, we\u0027re only serializing the data, not the image here.",
+      "parentUuid": "290954a4_3ca8fa52",
+      "revId": "4c29f9c82df2da395640898e0a38d1f31aef338f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "97122c43_958effb4",
