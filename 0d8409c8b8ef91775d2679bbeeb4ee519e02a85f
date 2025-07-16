@@ -256,6 +256,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "afe87374_ea8d99d1",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-16T14:02:27Z",
+      "side": 1,
+      "message": "I see the removal of the fallback for looking up the dynamic sampler, but the GlobalCache isn\u0027t checking Caps and DawnSampler is still quietly switching to clamp-to-edge.  But MtlSampler has the same requirement to check for clamp-to-border support and a design goal in Graphite is to make the backends as low-logic as possible, so they shouldn\u0027t be required to paper over these feature gaps.",
+      "parentUuid": "a2db6353_97ba6f4a",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d959873d_3bb0c33c",
         "filename": "src/gpu/graphite/GlobalCache.h",
         "patchSetId": 53

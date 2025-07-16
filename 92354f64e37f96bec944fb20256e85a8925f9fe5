@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "860bfbb3_952d85cb",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 62
+      },
+      "lineNbr": 632,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-16T14:02:27Z",
+      "side": 0,
+      "message": "Now I\u0027m confused at what was happening before, since it looks like the old code in KeyHelpers was replacing kDecal tiling with kClamp when it couldn\u0027t use HW tiling, whereas after these changes we pass in the original samplerDesc and are relying on the backend to fall back to clamping for decal (but we actually want to always switch to clamp when there\u0027s shader tiling because we might be shader tiling a repeat or mirror mode and that shouldn\u0027t also be pushed into the HW tiling in that case).",
+      "range": {
+        "startLine": 630,
+        "startChar": 0,
+        "endLine": 632,
+        "endChar": 35
+      },
+      "revId": "92354f64e37f96bec944fb20256e85a8925f9fe5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
