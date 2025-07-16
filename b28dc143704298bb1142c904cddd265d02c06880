@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "00a54fc3_b494a110",
+        "filename": "infra/docker/make_image_tag.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-16T20:23:04Z",
+      "side": 1,
+      "message": "Is this necessary?  We should only need the `latest` tag which IIRC is applied automatically.",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 1,
+        "endChar": 11
+      },
+      "revId": "b28dc143704298bb1142c904cddd265d02c06880",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
