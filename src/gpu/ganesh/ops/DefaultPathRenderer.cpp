@@ -809,6 +809,14 @@ DefaultPathRenderer::onGetStencilSupport(const GrStyledShape& shape) const {
 }
 
 PathRenderer::CanDrawPath DefaultPathRenderer::onCanDrawPath(const CanDrawPathArgs& args) const {
+    SkPath path;
+    args.fShape->asPath(&path);
+    int verbCount = path.countVerbs();
+    // Don't use this path renderer if we exceed the max verb count;
+    if (verbCount > kMaxPathVerbs) {
+        return CanDrawPath::kNo;
+    }
+
     bool isHairline = GrIsStrokeHairlineOrEquivalent(
             args.fShape->style(), *args.fViewMatrix, nullptr);
     // If we aren't a single_pass_shape or hairline, we require stencil buffers.
