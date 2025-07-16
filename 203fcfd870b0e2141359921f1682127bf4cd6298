@@ -145,6 +145,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "a8c37096_c310374e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T17:00:38Z",
+      "side": 1,
+      "message": "Since iwyu isn\u0027t being worked on we will need to stop using it. It may be possible to use include-cleaner in the future instead.",
+      "parentUuid": "a10b2448_7dd5e69e",
+      "revId": "203fcfd870b0e2141359921f1682127bf4cd6298",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e71baba0_7ba76b4c",
         "filename": "toolchain/linux_trampolines/IWYU_mapping.imp",
         "patchSetId": 6
