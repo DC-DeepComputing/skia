@@ -41,6 +41,48 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d17ce666_fef501ad",
+        "filename": "src/gpu/ganesh/PathRenderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "82fbf14a_b428c4b6",
+      "revId": "21dc76b93002d2c30974c7750f2e43df1838c3b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "48ca89af_6bfe3d8f",
+        "filename": "src/gpu/ganesh/PathRenderer.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:56:23Z",
+      "side": 1,
+      "message": "Arbitrary number I got from printing out the verb count for the pathological input. Yes, it can be upped to 2^14.",
+      "parentUuid": "c2b9bef2_521dc47b",
+      "range": {
+        "startLine": 43,
+        "startChar": 41,
+        "endLine": 43,
+        "endChar": 46
+      },
+      "revId": "21dc76b93002d2c30974c7750f2e43df1838c3b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3ffc2f2c_c9804eb5",
@@ -64,6 +106,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b77d24a_c04c17b1",
+        "filename": "src/gpu/ganesh/ops/DefaultPathRenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 818,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3ffc2f2c_c9804eb5",
+      "range": {
+        "startLine": 812,
+        "startChar": 0,
+        "endLine": 818,
+        "endChar": 5
+      },
+      "revId": "21dc76b93002d2c30974c7750f2e43df1838c3b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ae805d01_bc4fa54a",
@@ -77,6 +143,24 @@
       "writtenOn": "2025-07-16T11:51:56Z",
       "side": 1,
       "message": "Move down to line 643 ?",
+      "revId": "21dc76b93002d2c30974c7750f2e43df1838c3b8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0aa00e4c_1f26d86e",
+        "filename": "src/gpu/ganesh/ops/TriangulatingPathRenderer.cpp",
+        "patchSetId": 8
+      },
+      "lineNbr": 624,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:56:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae805d01_bc4fa54a",
       "revId": "21dc76b93002d2c30974c7750f2e43df1838c3b8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
