@@ -1644,9 +1644,12 @@ void NotifyImagesInUse(Recorder* recorder, DrawContext* drawContext, const SkBle
 
 //--------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------
-static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace* dst) {
+static SkPMColor4f map_color(const SkColor4f& c,
+                             SkColorSpace* src,
+                             SkColorSpace* dst,
+                             SkAlphaType dstAlphaType) {
     SkPMColor4f color = {c.fR, c.fG, c.fB, c.fA};
-    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, kPremul_SkAlphaType).apply(color.vec());
+    SkColorSpaceXformSteps(src, kUnpremul_SkAlphaType, dst, dstAlphaType).apply(color.vec());
     return color;
 }
 static void add_to_key(const KeyContext& keyContext,
@@ -1656,7 +1659,8 @@ static void add_to_key(const KeyContext& keyContext,
     SkASSERT(filter);
 
     SkPMColor4f color = map_color(filter->color(), sk_srgb_singleton(),
-                                  keyContext.dstColorInfo().colorSpace());
+                                  keyContext.dstColorInfo().colorSpace(),
+                                  keyContext.dstColorInfo().alphaType());
 
     AddBlendModeColorFilter(keyContext, builder, gatherer, filter->mode(), color);
 }
@@ -1912,7 +1916,8 @@ static void add_to_key(const KeyContext& keyContext,
     SkASSERT(shader);
 
     SkPMColor4f color = map_color(shader->color(), sk_srgb_singleton(),
-                                  keyContext.dstColorInfo().colorSpace());
+                                  keyContext.dstColorInfo().colorSpace(),
+                                  keyContext.dstColorInfo().alphaType());
 
     SolidColorShaderBlock::AddBlock(keyContext, builder, gatherer, color);
 }
@@ -2520,18 +2525,20 @@ static void add_to_key(const KeyContext& keyContext,
         dstCS = SkColorSpace::MakeSRGB();
     }
 
-    sk_sp<SkColorSpace> workingCS = shader->workingSpace();
-    SkColorInfo workingInfo(dstInfo.colorType(), dstAT, workingCS);
+    auto [inputCS, outputCS, workingAT] = shader->workingSpace(dstCS, dstAT);
+
+    SkColorInfo workingInfo(dstInfo.colorType(), workingAT, inputCS);
     KeyContextWithColorInfo workingContext(keyContext, workingInfo);
 
-    // Compose the inner shader (in the working space) with a (working->dst) transform:
+    // Compose the inner shader (in the input space) with a (output->dst) transform, under the
+    // assumption that the child shader handles conversion between input and output CS/alpha types.
     Compose(keyContext, builder, gatherer,
         /* addInnerToKey= */ [&]() -> void {
             AddToKey(workingContext, builder, gatherer, shader->shader().get());
         },
         /* addOuterToKey= */ [&]() -> void {
             ColorSpaceTransformBlock::ColorSpaceTransformData data(
-                    workingCS.get(), dstAT, dstCS.get(), dstAT);
+                    outputCS.get(), workingAT, dstCS.get(), dstAT);
             ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
         });
 }
