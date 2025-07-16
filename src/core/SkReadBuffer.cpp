@@ -264,15 +264,17 @@ void SkReadBuffer::readRegion(SkRegion* region) {
     (void)this->skip(size);
 }
 
-void SkReadBuffer::readPath(SkPath* path) {
+std::optional<SkPath> SkReadBuffer::readPath() {
+    std::optional<SkPath> path;
     size_t size = 0;
     if (!fError) {
-        size = path->readFromMemory(fCurr, this->available());
+        path = SkPath::ReadFromMemory(fCurr, this->available(), &size);
         if (!this->validate((SkAlign4(size) == size) && (0 != size))) {
-            path->reset();
+            path = {};
         }
     }
     (void)this->skip(size);
+    return path;
 }
 
 bool SkReadBuffer::readArray(void* value, size_t size, size_t elementSize) {

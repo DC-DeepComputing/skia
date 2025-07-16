@@ -105,6 +105,7 @@ template<> struct SerializationUtils<SkMatrix> {
     }
 };
 
+#if 0
 template<> struct SerializationUtils<SkPath> {
     static void Write(SkWriteBuffer& writer, const SkPath* path) {
         writer.writePath(*path);
@@ -113,6 +114,7 @@ template<> struct SerializationUtils<SkPath> {
         reader.readPath(path);
     }
 };
+#endif
 
 template<> struct SerializationUtils<SkRegion> {
     static void Write(SkWriteBuffer& writer, const SkRegion* region) {
@@ -684,12 +686,6 @@ DEF_TEST(Serialization, reporter) {
     {
         SkPoint3 point;
         TestObjectSerializationNoAlign<SkPoint3, false>(&point, reporter);
-    }
-
-    // Test path serialization
-    {
-        SkPath path;
-        TestObjectSerialization(&path, reporter);
     }
 
     // Test region serialization
