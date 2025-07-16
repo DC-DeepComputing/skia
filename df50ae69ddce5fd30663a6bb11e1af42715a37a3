@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2127b418_06a4bbde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-16T19:44:28Z",
+      "side": 1,
+      "message": "This fixes the bad gold results seen https://gold.skia.org/diff?grouping\u003dname%3Dmixedtextblobs%26source_type%3Dgm\u0026left\u003ddcbd519249bdf92e7fceebd9df4df525\u0026right\u003dd7c40cf81acccaead610cf61970dcf81 that were caused by https://skia-review.googlesource.com/c/skia/+/1015960",
+      "revId": "df50ae69ddce5fd30663a6bb11e1af42715a37a3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
