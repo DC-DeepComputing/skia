@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f970417_6d731b38",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-16T16:00:41Z",
+      "side": 1,
+      "message": "AFAICT we\u0027re not editing this path, and I don\u0027t see it interacting with builder-only APIs either.  What\u0027s the benefit of switching to a builder?",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 21
+      },
+      "revId": "941354d31b4977e8fa7e449b860cef902495074b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
