@@ -9,7 +9,7 @@
 
 #include "include/core/SkBitmap.h"
 #include "include/core/SkCanvas.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPixmap.h"
 #include "include/gpu/graphite/Context.h"
 #include "include/gpu/graphite/Recorder.h"
@@ -43,7 +43,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
     paint.setColor(SkColors::kBlue);
     paint.setStyle(SkPaint::Style::kStroke_Style);
 
-    SkPath path;
+    SkPathBuilder path;
     constexpr int kPathPoints[][2] = {
         {9, 8},
         {9, 12},
@@ -56,7 +56,7 @@ DEF_GRAPHITE_TEST_FOR_ALL_CONTEXTS(MultisampleRetainTest, reporter, context,
         path.lineTo(kPathPoints[i][0], kPathPoints[i][1]);
     }
 
-    surfaceCanvas->drawPath(path, paint);
+    surfaceCanvas->drawPath(path.detach(), paint);
 
     std::unique_ptr<Recording> surfaceRecording2 = surfaceRecorder->snap();
     // Play back recording.

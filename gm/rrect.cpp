@@ -208,8 +208,7 @@ protected:
         canvas->drawRRect(left, rrectPaint);
 
         const SkRRect right = rr.makeOffset(2 * kCellSize + paddingX, paddingY + cellY);
-        SkPath rightPath;
-        rightPath.addRRect(right);
+        SkPath rightPath = SkPath::RRect(right);
         canvas->drawPath(rightPath, rrectPaint);
 
         // In an ideal world, there would be no diffs at all between the two drawing

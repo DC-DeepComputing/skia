@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkString.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkFloatBits.h"
@@ -21,7 +22,7 @@
 #define TEST(name) { name, #name }
 
 static void tiger8(skiatest::Reporter* reporter, const char* filename) {
-    SkPath path;
+    SkPathBuilder path;
     path.moveTo(SkBits2Float(0x43f639c5), SkBits2Float(0x4361375a));  // 492.451f, 225.216f
 path.quadTo(SkBits2Float(0x43f58ce4), SkBits2Float(0x435d2a04), SkBits2Float(0x43f71bd9), SkBits2Float(0x435ac7d8));  // 491.101f, 221.164f, 494.218f, 218.781f
 path.quadTo(SkBits2Float(0x43f7d69d), SkBits2Float(0x4359aa35), SkBits2Float(0x43f8b3b3), SkBits2Float(0x435951c5));  // 495.677f, 217.665f, 497.404f, 217.319f
@@ -97,12 +98,12 @@ path.lineTo(SkBits2Float(0x43f8e5e7), SkBits2Float(0x435b47d3));  // 497.796f, 2
 path.quadTo(SkBits2Float(0x43f84300), SkBits2Float(0x435b88fd), SkBits2Float(0x43f7b75b), SkBits2Float(0x435c5e8e));  // 496.523f, 219.535f, 495.432f, 220.369f
 path.quadTo(SkBits2Float(0x43f6b984), SkBits2Float(0x435de2c4), SkBits2Float(0x43f72ca1), SkBits2Float(0x43609572));  // 493.449f, 221.886f, 494.349f, 224.584f
 path.close();
-testSimplify(reporter, path, filename);
+testSimplify(reporter, path.detach(), filename);
 }
 
 // fails to include a line of edges, probably mis-sorting
 static void tiger8a(skiatest::Reporter* reporter, const char* filename) {
-    SkPath path;
+    SkPathBuilder path;
     path.moveTo(SkBits2Float(0x43f639c5), SkBits2Float(0x4361375a));  // 492.451f, 225.216f
 path.quadTo(SkBits2Float(0x43f58ce4), SkBits2Float(0x435d2a04), SkBits2Float(0x43f71bd9), SkBits2Float(0x435ac7d8));  // 491.101f, 221.164f, 494.218f, 218.781f
 path.quadTo(SkBits2Float(0x43f7d69d), SkBits2Float(0x4359aa35), SkBits2Float(0x43f8b3b3), SkBits2Float(0x435951c5));  // 495.677f, 217.665f, 497.404f, 217.319f
@@ -140,13 +141,13 @@ path.lineTo(SkBits2Float(0x43f63638), SkBits2Float(0x43611daf));  // 492.424f, 2
 path.lineTo(SkBits2Float(0x43f6b333), SkBits2Float(0x4360e666));  // 493.4f, 224.9f
 path.lineTo(SkBits2Float(0x43f639c5), SkBits2Float(0x4361375a));  // 492.451f, 225.216f
 path.close();
-testSimplify(reporter, path, filename);
+testSimplify(reporter, path.detach(), filename);
 }
 
 static std::atomic<int> gTigerTests{0};
 
 static void tiger8a_x(skiatest::Reporter* reporter, uint64_t testlines) {
-    SkPath path;
+    SkPathBuilder path;
 uint64_t i = 0;
 if (testlines & (1LL << i++)) path.moveTo(SkBits2Float(0x43f639c5), SkBits2Float(0x4361375a));  // 492.451f, 225.216f
 if (testlines & (1LL << i++)) path.quadTo(SkBits2Float(0x43f58ce4), SkBits2Float(0x435d2a04), SkBits2Float(0x43f71bd9), SkBits2Float(0x435ac7d8));  // 491.101f, 221.164f, 494.218f, 218.781f
@@ -187,7 +188,7 @@ if (testlines & (1LL << i++)) path.lineTo(SkBits2Float(0x43f639c5), SkBits2Float
 if (testlines & (1LL << i++)) path.close();
 SkString testName;
 testName.printf("tiger8a_x%d", ++gTigerTests);
-testSimplify(reporter, path, testName.c_str());
+testSimplify(reporter, path.detach(), testName.c_str());
 }
 
 static void tiger8a_h_1(skiatest::Reporter* reporter, const char* ) {
@@ -196,7 +197,7 @@ static void tiger8a_h_1(skiatest::Reporter* reporter, const char* ) {
 }
 
 static void tiger8b_x(skiatest::Reporter* reporter, uint64_t testlines) {
-    SkPath path;
+    SkPathBuilder path;
 uint64_t i = 0;
 if (testlines & (1LL << i++)) path.moveTo(SkBits2Float(0x43f72ca1), SkBits2Float(0x43609572));  // 494.349f, 224.584f
 if (testlines & (1LL << i++)) path.conicTo(SkBits2Float(0x43f72ebd), SkBits2Float(0x4360a219), SkBits2Float(0x43f7302e), SkBits2Float(0x4360af1f), SkBits2Float(0x3f7fa741));  // 494.365f, 224.633f, 494.376f, 224.684f, 0.998646f
@@ -238,7 +239,7 @@ if (testlines & (1LL << i++)) path.quadTo(SkBits2Float(0x43f6b984), SkBits2Float
 if (testlines & (1LL << i++)) path.close();
 SkString testName;
 testName.printf("tiger8b_x%d", ++gTigerTests);
-testSimplify(reporter, path, testName.c_str());
+testSimplify(reporter, path.detach(), testName.c_str());
 }
 
 static void testTiger(PathOpsThreadState* data) {
@@ -284,7 +285,7 @@ static void tiger8b_h_1(skiatest::Reporter* reporter, const char* filename) {
 
 // tries to add same edge twice
 static void tiger8b(skiatest::Reporter* reporter, const char* filename) {
-    SkPath path;
+    SkPathBuilder path;
 path.moveTo(SkBits2Float(0x43f72ca1), SkBits2Float(0x43609572));  // 494.349f, 224.584f
 path.conicTo(SkBits2Float(0x43f72ebd), SkBits2Float(0x4360a219), SkBits2Float(0x43f7302e), SkBits2Float(0x4360af1f), SkBits2Float(0x3f7fa741));  // 494.365f, 224.633f, 494.376f, 224.684f, 0.998646f
 path.lineTo(SkBits2Float(0x43f63333), SkBits2Float(0x4360e667));  // 492.4f, 224.9f
@@ -323,7 +324,7 @@ path.lineTo(SkBits2Float(0x43f8e5e7), SkBits2Float(0x435b47d3));  // 497.796f, 2
 path.quadTo(SkBits2Float(0x43f84300), SkBits2Float(0x435b88fd), SkBits2Float(0x43f7b75b), SkBits2Float(0x435c5e8e));  // 496.523f, 219.535f, 495.432f, 220.369f
 path.quadTo(SkBits2Float(0x43f6b984), SkBits2Float(0x435de2c4), SkBits2Float(0x43f72ca1), SkBits2Float(0x43609572));  // 493.449f, 221.886f, 494.349f, 224.584f
 path.close();
-testSimplify(reporter, path, filename);
+testSimplify(reporter, path.detach(), filename);
 }
 
 

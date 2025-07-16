@@ -46,7 +46,7 @@ protected:
         canvas->translate(SkIntToScalar(x), SkIntToScalar(y));
         canvas->clipRect(r);
         canvas->drawColor(SK_ColorWHITE);
-        fPath.setFillType(ft);
+        fPath = fPath.makeFillType(ft);
         canvas->translate(r.centerX(), r.centerY());
         canvas->scale(scale, scale);
         canvas->translate(-r.centerX(), -r.centerY());

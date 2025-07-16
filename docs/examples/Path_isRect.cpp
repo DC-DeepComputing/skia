@@ -13,17 +13,17 @@ void draw(SkCanvas* canvas) {
                          SkPathDirection::kCW == direction ? "CW" : "CCW") :
                 SkDebugf("%s is not rect\n", prefix);
     };
-    SkPath path;
-    debugster("empty", path);
+    SkPathBuilder path;
+    debugster("empty", path.snapshot());
     path.addRect({10, 20, 30, 40});
-    debugster("addRect", path);
+    debugster("addRect", path.snapshot());
     path.moveTo(60, 70);
-    debugster("moveTo", path);
+    debugster("moveTo", path.snapshot());
     path.lineTo(60, 70);
-    debugster("lineTo", path);
+    debugster("lineTo", path.snapshot());
     path.reset();
     const SkPoint pts[] = { {0, 0}, {0, 80}, {80, 80}, {80, 0}, {40, 0}, {20, 0} };
-    path.addPoly(pts, false);
-    debugster("addPoly", path);
+    path.addPolygon(pts, false);
+    debugster("addPoly", path.snapshot());
 }
 }  // END FIDDLE

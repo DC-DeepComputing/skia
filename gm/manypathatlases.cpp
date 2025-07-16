@@ -57,22 +57,27 @@ private:
             dContext->flush();
         }
 
-        SkPath clip = SkPath().moveTo(-50, 20)
-                              .cubicTo(-50, -20, 50, -20, 50, 40)
-                              .cubicTo(20, 0, -20, 0, -50, 20);
-        clip.transform(SkMatrix::Translate(64, 70));
+        SkPath clip = SkPathBuilder()
+            .moveTo(-50, 20)
+            .cubicTo(-50, -20, 50, -20, 50, 40)
+            .cubicTo(20, 0, -20, 0, -50, 20)
+            .transform(SkMatrix::Translate(64, 70))
+            .detach();
         for (int i = 0; i < 4; ++i) {
-            SkPath rotatedClip = clip;
-            rotatedClip.transform(SkMatrix::RotateDeg(30 * i + 128, {64, 70}));
-            rotatedClip.setIsVolatile(true);
+            SkPath rotatedClip = SkPathBuilder()
+                .transform(SkMatrix::RotateDeg(30 * i + 128, {64, 70}))
+                .setIsVolatile(true)
+                .detach();
             canvas->clipPath(rotatedClip, SkClipOp::kDifference, true);
         }
-        SkPath path = SkPath().moveTo(20, 0)
-                              .lineTo(108, 0).cubicTo(108, 20, 108, 20, 128, 20)
-                              .lineTo(128, 108).cubicTo(108, 108, 108, 108, 108, 128)
-                              .lineTo(20, 128).cubicTo(20, 108, 20, 108, 0, 108)
-                              .lineTo(0, 20).cubicTo(20, 20, 20, 20, 20, 0);
-        path.setIsVolatile(true);
+        SkPath path = SkPathBuilder()
+            .moveTo(20, 0)
+            .lineTo(108, 0).cubicTo(108, 20, 108, 20, 128, 20)
+            .lineTo(128, 108).cubicTo(108, 108, 108, 108, 108, 128)
+            .lineTo(20, 128).cubicTo(20, 108, 20, 108, 0, 108)
+            .lineTo(0, 20).cubicTo(20, 20, 20, 20, 20, 0)
+            .setIsVolatile(true)
+            .detach();
         SkPaint teal;
         teal.setColor4f({.03f, .91f, .87f, 1});
         teal.setAntiAlias(true);

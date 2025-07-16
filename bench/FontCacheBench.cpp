@@ -186,7 +186,8 @@ protected:
                 fFont.getPaths(fGlyphs,
                                [](const SkPath* src, const SkMatrix& mx, void* ctx) {
                                    if (src) {
-                                       src->transform(mx, static_cast<SkPath*>(ctx));
+                                       SkPath* dst = static_cast<SkPath*>(ctx);
+                                       *dst = src->makeTransform(mx);
                                    }
                                }, &path);
             }
