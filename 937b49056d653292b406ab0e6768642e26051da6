@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6ca5258_f39106bf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T13:51:17Z",
+      "side": 1,
+      "message": "Maybe add a brief blurb about this specific CL ?",
+      "revId": "937b49056d653292b406ab0e6768642e26051da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e41dfaed_50181fd2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T13:51:17Z",
+      "side": 1,
+      "message": "lg but I want to make a second pass",
+      "revId": "937b49056d653292b406ab0e6768642e26051da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6ef2f25_6a121c1f",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T13:51:17Z",
+      "side": 1,
+      "message": "Quantizing ? Snapping ?",
+      "range": {
+        "startLine": 287,
+        "startChar": 7,
+        "endLine": 287,
+        "endChar": 15
+      },
+      "revId": "937b49056d653292b406ab0e6768642e26051da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ae2177c_644f21e4",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-16T13:51:17Z",
+      "side": 1,
+      "message": "snapped ?",
+      "range": {
+        "startLine": 767,
+        "startChar": 21,
+        "endLine": 767,
+        "endChar": 28
+      },
+      "revId": "937b49056d653292b406ab0e6768642e26051da6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
