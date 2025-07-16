@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "290954a4_3ca8fa52",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1803,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-16T19:15:03Z",
+      "side": 1,
+      "message": "Another thought: I\u0027m assuming the optimization only makes sense if the original is backed by encoded data (if we\u0027re dealing with a raster image, then the subset should always encode to a smaller size).  If that\u0027s the case, can we check for the presence of encoded data (`originalImage.image()-\u003erefEncodedData()`) to avoid serializing the original unnecessarily if that\u0027s missing?",
+      "revId": "4c29f9c82df2da395640898e0a38d1f31aef338f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "97122c43_958effb4",
         "filename": "src/pdf/SkPDFDevice.cpp",
         "patchSetId": 4
