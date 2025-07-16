@@ -16,6 +16,24 @@
       "message": "Sorry I haven\u0027t gotten around to looking at the dawn-\u003eskia roll yet this week.\n\n`error C2065: \u0027D3D12_FEATURE_DATA_D3D12_OPTIONS18\u0027: undeclared identifier`\n\nSeems like Dawn\u0027s D3D12 SDK is ahead of Skia\u0027s. Probably need to make this conditional in Dawn. Will file a bug.",
       "revId": "bdbe143df9a026358851c45b6aa8d0a3b224c102",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "040630d2_404151e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-16T23:59:08Z",
+      "side": 1,
+      "message": "Didn\u0027t bother to file a bug, I figured out what to revert. https://dawn-review.googlesource.com/c/dawn/+/253218",
+      "parentUuid": "3e299edc_060372a3",
+      "revId": "bdbe143df9a026358851c45b6aa8d0a3b224c102",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
