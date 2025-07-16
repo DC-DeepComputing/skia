@@ -22,6 +22,30 @@
       },
       "revId": "941354d31b4977e8fa7e449b860cef902495074b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "41bec4d7_14605699",
+        "filename": "src/core/SkClipStack.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-16T17:43:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0f970417_6d731b38",
+      "range": {
+        "startLine": 192,
+        "startChar": 8,
+        "endLine": 192,
+        "endChar": 21
+      },
+      "revId": "941354d31b4977e8fa7e449b860cef902495074b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
