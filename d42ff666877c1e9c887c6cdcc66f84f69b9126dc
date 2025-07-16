@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57f34dbb_86fa2e2f",
+        "filename": "include/OWNERS",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-16T18:22:21Z",
+      "side": 0,
+      "message": "This was redundant with the global permission that bungeman has above right?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 40
+      },
+      "revId": "d42ff666877c1e9c887c6cdcc66f84f69b9126dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
