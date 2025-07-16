@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "79f96ad7_5c5c3da8",
+        "filename": "src/gpu/graphite/ContextUtils.cpp",
+        "patchSetId": 56
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:58:32Z",
+      "side": 1,
+      "message": "Stale comment, `checkRewind()` got pulled into a downstream CL.",
+      "parentUuid": "710ddc85_1c2cdaba",
+      "range": {
+        "startLine": 53,
+        "startChar": 26,
+        "endLine": 53,
+        "endChar": 38
+      },
+      "revId": "251cd5e1943f263a32017ca8317f1b00ff3b3a36",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8a37d447_068dad23",
