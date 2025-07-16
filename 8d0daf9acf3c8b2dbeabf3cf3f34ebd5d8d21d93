@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "883510d6_7ee26973",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-16T20:19:04Z",
+      "side": 1,
+      "message": "I believe I have updated all clients. Android Canary seems to be a flake.",
+      "revId": "8d0daf9acf3c8b2dbeabf3cf3f34ebd5d8d21d93",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
