@@ -230,6 +230,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a2db6353_97ba6f4a",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:21:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fbade59f_7c603bbe",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d959873d_3bb0c33c",
@@ -502,6 +526,30 @@
       "side": 1,
       "message": "I\u0027ve made it so that we directly index into the fImmutableSamplers for both dawn and Vulkan. Is that what you had in mind for \"better sampling\" ?",
       "parentUuid": "44371d14_02afc094",
+      "range": {
+        "startLine": 278,
+        "startChar": 0,
+        "endLine": 278,
+        "endChar": 66
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a69bd4d3_27ac7c8e",
+        "filename": "src/gpu/graphite/vk/VulkanCommandBuffer.cpp",
+        "patchSetId": 53
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-16T13:21:09Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "91f18567_1d1da852",
       "range": {
         "startLine": 278,
         "startChar": 0,
