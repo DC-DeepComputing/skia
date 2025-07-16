@@ -33,6 +33,29 @@
       "message": "Need a second code reviewer",
       "revId": "0f0dd20d8d86f97541829329818e35d244daa62b",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b6b236b_cdc1f4b4",
+        "filename": "src/ports/SkTypeface_fontations.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 459,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-16T18:05:08Z",
+      "side": 1,
+      "message": "I know this works, but just from a readability perspective I think it might be nicer to use `std::nullopt` to be explicit. (So the reader doesn\u0027t need to remember the rules that make this construct an empty `std::optional` and not a `std::optional` with a default constructed `T`.) Don\u0027t need to do that now, just an observation.",
+      "range": {
+        "startLine": 459,
+        "startChar": 19,
+        "endLine": 459,
+        "endChar": 21
+      },
+      "revId": "0f0dd20d8d86f97541829329818e35d244daa62b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
