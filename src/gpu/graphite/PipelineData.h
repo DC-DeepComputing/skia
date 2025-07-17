@@ -184,6 +184,8 @@ public:
         return *index;
     }
 
+    size_t size() const { return fIndexToData.size(); }
+
     const V& lookup(Index index) const { return fIndexToData[index]; }
 
     V& lookup(Index index) { return fIndexToData[index]; }
