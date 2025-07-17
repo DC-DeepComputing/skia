@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "22201c57_3cf7549e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-17T19:30:46Z",
+      "side": 1,
+      "message": "nit: make a note here that the latest version didn\u0027t work because of a missing file in the GN build.",
+      "revId": "fcda39faea1a0385c2ae80fb82aaf837dfb72e56",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "19011f17_397ea9c6",
