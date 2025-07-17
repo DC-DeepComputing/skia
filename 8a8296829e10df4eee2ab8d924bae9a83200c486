@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc4af9b_ea20ccd7",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-17T14:49:39Z",
+      "side": 1,
+      "message": "I think we want to use kClamp for the recorded samplerDesc of the texture when not using HW tiling, regardless of whether or not it was shader tiling because of decal support.\n\nIf we are repeat/mirror tiled on a subrect, that will be the value in `imgData.fTileModes` but we will want the HW sampler to be kClamp.",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 636,
+        "endChar": 79
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7408e2e5_468fb642",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-17T14:49:39Z",
+      "side": 1,
+      "message": "Like the regular image path, it should be `doTilingInHw ? imgData.fTileModes : kClampTileModes`",
+      "range": {
+        "startLine": 821,
+        "startChar": 0,
+        "endLine": 821,
+        "endChar": 83
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dafecd6f_45b8a720",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-17T14:49:39Z",
+      "side": 1,
+      "message": "This function isn\u0027t modifying `samplerDesc` anymore, so we can either make it const\u0026 or switch back to the non-pair version (if we do that, we should keep the assert you added for kDecal).",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
