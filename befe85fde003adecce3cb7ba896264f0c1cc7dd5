@@ -16,6 +16,24 @@
       "message": "Without digging in, this seems potentially redundant with `count()` below. Perhaps we should just update the usage of `size()` to call `count()` instead? Xrefs in Android seem to indicate it\u0027s only called in the one location reported by the build failure.",
       "revId": "befe85fde003adecce3cb7ba896264f0c1cc7dd5",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c6de5c9_17f9157e",
+        "filename": "src/gpu/graphite/PipelineData.h",
+        "patchSetId": 3
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-17T22:06:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33126c88_4cbad8dc",
+      "revId": "befe85fde003adecce3cb7ba896264f0c1cc7dd5",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
