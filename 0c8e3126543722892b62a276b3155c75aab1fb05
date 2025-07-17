@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "47e8e971_f7f27bc9",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 65
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-17T18:28:24Z",
+      "side": 1,
+      "message": "I have a slight preference to put these back in the `can_do_foo_tiling()` function, but we could add a helper that both variants call like `should_substitute_decal(tilemodeX, tilemodeY)`.  If not, can you make the `shouldSubstituteDecal locals `const` here and in the image case?",
+      "range": {
+        "startLine": 801,
+        "startChar": 0,
+        "endLine": 803,
+        "endChar": 83
+      },
+      "revId": "0c8e3126543722892b62a276b3155c75aab1fb05",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
