@@ -16,6 +16,41 @@
       "message": "ptal",
       "revId": "482eb725c192ffb822049aa0bb2accdb7bd80c29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe4de6c1_607fbf30",
+        "filename": "tests/SerializationTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-17T20:16:18Z",
+      "side": 1,
+      "message": "Should we just remove this?",
+      "fixSuggestions": [
+        {
+          "fixId": "92aa1d31_26f0a3b9",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "tests/SerializationTest.cpp",
+              "range": {
+                "startLine": 108,
+                "startChar": 0,
+                "endLine": 119,
+                "endChar": 0
+              },
+              "replacement": ""
+            }
+          ]
+        }
+      ],
+      "revId": "482eb725c192ffb822049aa0bb2accdb7bd80c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
