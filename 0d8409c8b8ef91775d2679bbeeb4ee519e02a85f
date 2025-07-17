@@ -278,6 +278,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "968f3761_fc322daf",
+        "filename": "src/gpu/graphite/GlobalCache.h",
+        "patchSetId": 53
+      },
+      "lineNbr": 144,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-17T13:44:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "afe87374_ea8d99d1",
+      "range": {
+        "startLine": 133,
+        "startChar": 8,
+        "endLine": 144,
+        "endChar": 9
+      },
+      "revId": "0d8409c8b8ef91775d2679bbeeb4ee519e02a85f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d959873d_3bb0c33c",
