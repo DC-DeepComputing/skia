@@ -45,7 +45,7 @@ struct SkPathVerbAnalysis {
     bool     valid;
 };
 
-class SkPathPriv {
+class SK_API SkPathPriv {
 public:
     static SkPathVerbAnalysis AnalyzeVerbs(SkSpan<const uint8_t> verbs);
 

@@ -7,13 +7,15 @@
 #ifndef SkCubics_DEFINED
 #define SkCubics_DEFINED
 
+#include "include/private/base/SkAPI.h"
+
 #include <cmath>
 
 /**
  * Utilities for dealing with cubic formulas with one variable:
  *   f(t) = A*t^3 + B*t^2 + C*t + d
  */
-class SkCubics {
+class SK_API SkCubics {
 public:
     /**
      * Puts up to 3 real solutions to the equation

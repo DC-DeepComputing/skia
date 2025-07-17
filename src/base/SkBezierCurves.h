@@ -24,7 +24,7 @@ struct SkPoint;
  * the even indices are the X coordinates, and the odd indices are the Y
  * coordinates.
  */
-class SkBezierCubic {
+class SK_API SkBezierCubic {
 public:
 
     /**
