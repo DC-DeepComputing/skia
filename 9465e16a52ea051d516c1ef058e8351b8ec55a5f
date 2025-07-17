@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a9f5781_0421fb44",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T14:59:40Z",
+      "side": 1,
+      "message": "ah, totally agree.\n\nAnd yes, I wonder if I can fix read to *not* lie about how many bytes were read.",
+      "parentUuid": "0cbe8574_c0b9f2c2",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d669b0fc_d162d895",
         "filename": "src/core/SkReadBuffer.cpp",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2025-07-17T14:30:31Z",
       "side": 1,
       "message": "nit: `path.reset()` reads a little better to me (or `std::nullopt`)",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "38c9d610_752b59c0",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T14:59:40Z",
+      "side": 1,
+      "message": "... unless you think path\u0027s are immutable 😊\n\nI can restore the reset()",
+      "parentUuid": "d669b0fc_d162d895",
       "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
