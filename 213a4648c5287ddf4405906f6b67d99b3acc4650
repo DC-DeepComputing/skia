@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "5673a946_4d6a4dcf",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 3512152
+      },
+      "writtenOn": "2025-07-17T20:01:50Z",
+      "side": 1,
+      "message": "ah, I wanted this to be authored by `Luke Wilde \u003cluke@ladybird.org\u003e`, as it\u0027s his patch. I suppose that can\u0027t happen if I upload it myself using git cl upload?",
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3bb3241e_bde183d2",
