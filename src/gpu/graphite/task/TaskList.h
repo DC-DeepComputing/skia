@@ -23,7 +23,6 @@ class GraphicsPipeline;
 class ResourceProvider;
 class RuntimeEffectDictionary;
 class ScratchResourceManager;
-class TextureProxy;
 
 class TaskList {
 public:
@@ -46,8 +45,6 @@ public:
     Task::Status addCommands(Context*, CommandBuffer*, Task::ReplayTargetData);
 
     bool visitPipelines(const std::function<bool(const GraphicsPipeline*)>& visitor);
-
-    bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor);
 
 private:
     template <typename Fn> // (Task*)->Status

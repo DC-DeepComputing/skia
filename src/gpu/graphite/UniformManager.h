@@ -222,12 +222,8 @@ public:
     UniformManager(Layout layout) { this->resetWithNewLayout(layout); }
 
     SkSpan<const char> finish() {
-        if (fStorage.empty()) {
-            return SkSpan<const char>();
-        } else {
-            this->alignTo(fReqAlignment);
-            return SkSpan(fStorage);
-        }
+        this->alignTo(fReqAlignment);
+        return SkSpan(fStorage);
     }
 
     size_t size() const { return fStorage.size(); }

@@ -78,11 +78,6 @@ public:
     using BindGroupLayouts = std::array<wgpu::BindGroupLayout, kBindGroupCount>;
     const BindGroupLayouts& dawnGroupLayouts() const { return fGroupLayouts; }
 
-    // Returns null if the ith sampler is not an immutable sampler.
-    const DawnSampler* immutableSampler(int32_t index) const {
-        return fImmutableSamplers[index].get();
-    }
-
 private:
     struct AsyncPipelineCreation;
 

@@ -21,21 +21,18 @@ class DawnSharedContext;
 
 class DawnSampler : public Sampler {
 public:
-    static sk_sp<DawnSampler> Make(const DawnSharedContext*, SamplerDesc);
+    static sk_sp<DawnSampler> Make(const DawnSharedContext*, const SamplerDesc&);
 
     ~DawnSampler() override {}
-
-    SamplerDesc samplerDesc() const { return fSamplerDesc; }
 
     const wgpu::Sampler& dawnSampler() const { return fSampler; }
 
 private:
-    DawnSampler(const DawnSharedContext*, SamplerDesc, wgpu::Sampler);
+    DawnSampler(const DawnSharedContext* sharedContext, wgpu::Sampler sampler);
 
     void freeGpuData() override;
 
     wgpu::Sampler fSampler;
-    SamplerDesc fSamplerDesc;
 };
 
 } // namepsace skgpu::graphite

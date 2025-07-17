@@ -555,15 +555,12 @@ void add_cubic_image_uniform_data(const ShaderCodeDictionary* dict,
     gatherer->writeHalf(SkImageShader::CubicResamplerMatrix(cubic.B, cubic.C));
 }
 
-// If clampToBorderSupport is unavailable, kDecal will be substituted to clamp in most cases.
-bool should_substitute_decal(const std::pair<SkTileMode, SkTileMode>& tileMode, const Caps* caps) {
-    return !caps->clampToBorderSupport() && (tileMode.first == SkTileMode::kDecal ||
-                                             tileMode.second == SkTileMode::kDecal);
-}
-
-bool can_do_tiling_in_hw(const ImageShaderBlock::ImageData& imgData, const Caps* caps) {
-    return !should_substitute_decal(imgData.fTileModes, caps) &&
-            imgData.fSubset.contains(SkRect::Make(imgData.fImgSize));
+bool can_do_tiling_in_hw(const Caps* caps, const ImageShaderBlock::ImageData& imgData) {
+    if (!caps->clampToBorderSupport() && (imgData.fTileModes.first == SkTileMode::kDecal ||
+                                          imgData.fTileModes.second == SkTileMode::kDecal)) {
+        return false;
+    }
+    return imgData.fSubset.contains(SkRect::Make(imgData.fImgSize));
 }
 
 void add_sampler_data_to_key(PaintParamsKeyBuilder* builder, const SamplerDesc& samplerDesc) {
@@ -602,7 +599,7 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     }
 
     const Caps* caps = keyContext.caps();
-    const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_tiling_in_hw(imgData, caps);
+    const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_tiling_in_hw(caps, imgData);
 
     if (doTilingInHw) {
         CoordNormalizeShaderBlock::CoordNormalizeData data(SkSize::Make(imgData.fImgSize));
@@ -620,6 +617,9 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
         builder->beginBlock(BuiltInCodeSnippetID::kImageShader);
     }
 
+    static constexpr std::pair<SkTileMode, SkTileMode> kDefaultTileModes =
+            {SkTileMode::kClamp, SkTileMode::kClamp};
+
     // Image shaders must append immutable sampler data (or '0' in the more common case where
     // regular samplers are used).
     // TODO(b/392623124): In precompile mode (fTextureProxy == null), we still have a need for
@@ -627,9 +627,9 @@ void ImageShaderBlock::AddBlock(const KeyContext& keyContext,
     ImmutableSamplerInfo info = imgData.fTextureProxy
             ? caps->getImmutableSamplerInfo(imgData.fTextureProxy->textureInfo())
             : imgData.fImmutableSamplerInfo;
-    auto tileModeWithSubstitution = doTilingInHw ? imgData.fTileModes :
-                                    std::make_pair(SkTileMode::kClamp, SkTileMode::kClamp);
-    SamplerDesc samplerDesc{imgData.fSampling, tileModeWithSubstitution, info};
+    SamplerDesc samplerDesc {imgData.fSampling,
+                             doTilingInHw ? imgData.fTileModes : kDefaultTileModes,
+                             info};
     gatherer->add(imgData.fTextureProxy, samplerDesc);
     add_sampler_data_to_key(builder, samplerDesc);
 
@@ -769,9 +769,10 @@ YUVImageShaderBlock::ImageData::ImageData(const SkSamplingOptions& sampling,
         , fSubset(subset) {
 }
 
-static bool can_do_yuv_tiling_in_hw(const YUVImageShaderBlock::ImageData& imgData,
-                                    const Caps* caps) {
-    if (should_substitute_decal(imgData.fTileModes, caps)) {
+static bool can_do_yuv_tiling_in_hw(const Caps* caps,
+                                    const YUVImageShaderBlock::ImageData& imgData) {
+    if (!caps->clampToBorderSupport() && (imgData.fTileModes.first == SkTileMode::kDecal ||
+                                          imgData.fTileModes.second == SkTileMode::kDecal)) {
         return false;
     }
     // Use the HW tiling shader variant if we're drawing the full rect with matched Y and UV plane
@@ -806,20 +807,17 @@ void YUVImageShaderBlock::AddBlock(const KeyContext& keyContext,
     }
 
     const Caps* caps = keyContext.caps();
-    const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_yuv_tiling_in_hw(imgData, caps);
+    const bool doTilingInHw = !imgData.fSampling.useCubic && can_do_yuv_tiling_in_hw(caps, imgData);
     const bool noYUVSwizzle = no_yuv_swizzle(imgData);
 
-    // uvs are never SkTileMode::kDecal
     auto uvTileModes = std::make_pair(imgData.fTileModes.first == SkTileMode::kDecal
                                             ? SkTileMode::kClamp : imgData.fTileModes.first,
                                       imgData.fTileModes.second == SkTileMode::kDecal
                                             ? SkTileMode::kClamp : imgData.fTileModes.second);
-    auto yAlphaTileModes = doTilingInHw ? imgData.fTileModes :
-                           std::make_pair(SkTileMode::kClamp, SkTileMode::kClamp);
-    gatherer->add(imgData.fTextureProxies[0], {imgData.fSampling, yAlphaTileModes});
+    gatherer->add(imgData.fTextureProxies[0], {imgData.fSampling, imgData.fTileModes});
     gatherer->add(imgData.fTextureProxies[1], {imgData.fSamplingUV, uvTileModes});
     gatherer->add(imgData.fTextureProxies[2], {imgData.fSamplingUV, uvTileModes});
-    gatherer->add(imgData.fTextureProxies[3], {imgData.fSampling, yAlphaTileModes});
+    gatherer->add(imgData.fTextureProxies[3], {imgData.fSampling, imgData.fTileModes});
 
     if (doTilingInHw && noYUVSwizzle) {
         add_hw_yuv_no_swizzle_image_uniform_data(keyContext.dict(), imgData, gatherer);
@@ -1985,7 +1983,6 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
     // We would want to add a translation to the local matrix to handle other sitings.
     SkASSERT(yuvaInfo.sitingX() == SkYUVAInfo::Siting::kCentered);
     SkASSERT(yuvaInfo.sitingY() == SkYUVAInfo::Siting::kCentered);
-
     YUVImageShaderBlock::ImageData imgData(sampling,
                                            origShader->tileModeX(),
                                            origShader->tileModeY(),

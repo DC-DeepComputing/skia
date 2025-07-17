@@ -50,7 +50,8 @@ UniquePaintParamsID ExtractPaintData(Recorder* recorder,
                                      const Geometry& geometry,
                                      const SkColorInfo& targetColorInfo) {
     SkDEBUGCODE(builder->checkReset());
-    SkDEBUGCODE(gatherer->checkReset());
+
+    gatherer->resetWithNewLayout(layout);
 
     KeyContext keyContext(recorder,
                           local2Dev,
