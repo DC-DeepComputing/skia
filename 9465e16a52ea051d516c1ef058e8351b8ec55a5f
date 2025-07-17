@@ -36,6 +36,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f5d5f43d_e879ebfd",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T20:54:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7a9f5781_0421fb44",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d669b0fc_d162d895",
@@ -139,6 +157,24 @@
       "side": 1,
       "message": "restored 4-byte alignment check",
       "parentUuid": "a3be0273_2b6205e1",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b974dfe4_63c9065a",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T20:54:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c079fd95_534bf9e8",
       "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }

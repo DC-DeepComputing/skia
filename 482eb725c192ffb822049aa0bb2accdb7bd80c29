@@ -51,6 +51,24 @@
       ],
       "revId": "482eb725c192ffb822049aa0bb2accdb7bd80c29",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "49d0c82c_08560115",
+        "filename": "tests/SerializationTest.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T20:54:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fe4de6c1_607fbf30",
+      "revId": "482eb725c192ffb822049aa0bb2accdb7bd80c29",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
