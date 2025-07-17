@@ -87,6 +87,24 @@
       "parentUuid": "38c9d610_752b59c0",
       "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab154ebb_6fe162d0",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-17T15:03:46Z",
+      "side": 1,
+      "message": "std::optional also has a .reset() method, I was thinking of that.",
+      "parentUuid": "9b87bf43_b47afd73",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
