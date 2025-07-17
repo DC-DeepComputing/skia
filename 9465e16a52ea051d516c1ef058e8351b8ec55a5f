@@ -69,6 +69,24 @@
       "parentUuid": "d669b0fc_d162d895",
       "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b87bf43_b47afd73",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T15:01:31Z",
+      "side": 1,
+      "message": "Wait ... \"path\" is an optional_path -- so I think {} might be clearer... should we discuss?",
+      "parentUuid": "38c9d610_752b59c0",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
