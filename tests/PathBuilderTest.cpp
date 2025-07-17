@@ -146,8 +146,7 @@ DEF_TEST(pathbuilder_addRect, reporter) {
             REPORTER_ASSERT(reporter, closed);
             REPORTER_ASSERT(reporter, dir == dir2);
 
-            SkPath p;
-            p.addRect(r, dir, i);
+            SkPath p = SkPath::Rect(r, dir, i);
             REPORTER_ASSERT(reporter, p == bp);
         }
     }
@@ -202,13 +201,11 @@ DEF_TEST(pathbuilder_addOval, reporter) {
     for (auto dir : {SkPathDirection::kCW, SkPathDirection::kCCW}) {
         for (int i = 0; i < 4; ++i) {
             auto bp = SkPathBuilder().addOval(r, dir, i).detach();
-            SkPath p;
-            p.addOval(r, dir, i);
+            SkPath p = SkPath::Oval(r, dir, i);
             REPORTER_ASSERT(reporter, is_eq(p, bp));
         }
         auto bp = SkPathBuilder().addOval(r, dir).detach();
-        SkPath p;
-        p.addOval(r, dir);
+        SkPath p = SkPath::Oval(r, dir);
         REPORTER_ASSERT(reporter, is_eq(p, bp));
 
         // test negative case -- can't have any other segments
@@ -228,13 +225,11 @@ DEF_TEST(pathbuilder_addRRect, reporter) {
             b.addRRect(rr, dir, i);
             auto bp = b.detach();
 
-            SkPath p;
-            p.addRRect(rr, dir, i);
+            SkPath p = SkPath::RRect(rr, dir, i);
             REPORTER_ASSERT(reporter, is_eq(p, bp));
         }
         auto bp = SkPathBuilder().addRRect(rr, dir).detach();
-        SkPath p;
-        p.addRRect(rr, dir);
+        SkPath p = SkPath::RRect(rr, dir);
         REPORTER_ASSERT(reporter, is_eq(p, bp));
 
         // test negative case -- can't have any other segments
@@ -459,14 +454,15 @@ static void test_addPath_and_injected_moveTo(skiatest::Reporter* reporter) {
 }
 
 DEF_TEST(pathbuilder_addPath, reporter) {
-    const auto p = SkPath()
+    const auto p = SkPathBuilder()
         .moveTo(10, 10)
         .lineTo(100, 10)
         .quadTo(200, 100, 100, 200)
         .close()
         .moveTo(200, 200)
         .cubicTo(210, 200, 210, 300, 200, 300)
-        .conicTo(150, 250, 100, 200, 1.4f);
+        .conicTo(150, 250, 100, 200, 1.4f)
+        .detach();
 
     REPORTER_ASSERT(reporter, p == SkPathBuilder().addPath(p).detach());
 
@@ -509,6 +505,7 @@ DEF_TEST(pathbuilder_addpath_crbug_1153516, r) {
     REPORTER_ASSERT(r, actualLineTo.value() == lineEnd);
 }
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 /*
  *  If paths were immutable, we would not have to track this, but until that day, we need
  *  to ensure that paths are built correctly/consistently with this field, regardless of
@@ -543,6 +540,7 @@ DEF_TEST(pathbuilder_lastmoveindex, reporter) {
         }
     }
 }
+#endif
 
 static void assertIsMoveTo(skiatest::Reporter* reporter, SkPathPriv::RangeIter* iter,
                            SkScalar x0, SkScalar y0) {

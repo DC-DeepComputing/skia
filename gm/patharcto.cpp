@@ -57,6 +57,7 @@ DEF_SIMPLE_GM(arcto_skbug_9272, canvas, 150, 150) {
     canvas->drawPath(path2, paint);
 }
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
 static SkPath old_school_polygon(SkSpan<const SkPoint> pts, bool isClosed) {
     SkPath path;
     path.addPoly(pts, isClosed);
@@ -99,29 +100,33 @@ DEF_SIMPLE_GM(path_append_extend, canvas, 400, 400) {
 
             canvas->translate(80, 0);
             {
-                SkPath path = path0;
-                path.addPath(path1, SkPath::kAppend_AddPathMode);
+                SkPath path = SkPathBuilder(path0)
+                    .addPath(path1, SkPath::kAppend_AddPathMode)
+                    .detach();
                 canvas->drawPath(path, paint);
             }
 
             canvas->translate(80, 0);
             {
-                SkPath path = path0;
-                path.addPath(path1, perspective, SkPath::kAppend_AddPathMode);
+                SkPath path = SkPathBuilder(path0)
+                    .addPath(path1, perspective, SkPath::kAppend_AddPathMode)
+                    .detach();
                 canvas->drawPath(path, paint);
             }
 
             canvas->translate(80, 0);
             {
-                SkPath path = path0;
-                path.addPath(path1, SkPath::kExtend_AddPathMode);
+                SkPath path = SkPathBuilder(path0)
+                    .addPath(path1, SkPath::kExtend_AddPathMode)
+                    .detach();
                 canvas->drawPath(path, paint);
             }
 
             canvas->translate(80, 0);
             {
-                SkPath path = path0;
-                path.addPath(path1, perspective, SkPath::kExtend_AddPathMode);
+                SkPath path = SkPathBuilder(path0)
+                    .addPath(path1, perspective, SkPath::kExtend_AddPathMode)
+                    .detach();
                 canvas->drawPath(path, paint);
             }
 
@@ -131,3 +136,4 @@ DEF_SIMPLE_GM(path_append_extend, canvas, 400, 400) {
     }
 
 }
+#endif  // SK_HIDE_PATH_EDIT_METHODS

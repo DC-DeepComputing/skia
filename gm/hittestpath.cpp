@@ -63,13 +63,11 @@ DEF_SIMPLE_GM_CAN_FAIL(hittestpath, canvas, errorMsg, 700, 460) {
     b.setFillType(SkPathFillType::kEvenOdd);
     b.offset(SkIntToScalar(20), SkIntToScalar(20));
 
-    SkPath path = b.detach();
-
-    test_hittest(canvas, path);
+    test_hittest(canvas, b.snapshot());
 
     canvas->translate(SkIntToScalar(scale), 0);
-    path.setFillType(SkPathFillType::kWinding);
+    b.setFillType(SkPathFillType::kWinding);
 
-    test_hittest(canvas, path);
+    test_hittest(canvas, b.snapshot());
     return skiagm::DrawResult::kOk;
 }
