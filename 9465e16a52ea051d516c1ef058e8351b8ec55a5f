@@ -123,6 +123,24 @@
       "parentUuid": "ab154ebb_6fe162d0",
       "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c079fd95_534bf9e8",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-17T15:48:59Z",
+      "side": 1,
+      "message": "restored 4-byte alignment check",
+      "parentUuid": "a3be0273_2b6205e1",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
