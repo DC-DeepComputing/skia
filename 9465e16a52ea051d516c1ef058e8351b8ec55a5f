@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0cbe8574_c0b9f2c2",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-17T14:30:31Z",
+      "side": 1,
+      "message": "Thinking about the nullopt path case... This should work, because ReadFromMemory would never return a nullopt with a size \u003e 0.  But that seems unnecessarily indirect, and not immediately obvious (in some cases ReadFromMemory does return nullopt after reading some bytes, it just lies about the number of bytes read).  Would it make more sense to validate on `path.has_value()` instead of size?",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d669b0fc_d162d895",
+        "filename": "src/core/SkReadBuffer.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 273,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-17T14:30:31Z",
+      "side": 1,
+      "message": "nit: `path.reset()` reads a little better to me (or `std::nullopt`)",
+      "revId": "9465e16a52ea051d516c1ef058e8351b8ec55a5f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
