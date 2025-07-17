@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bb3241e_bde183d2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19629
+      },
+      "writtenOn": "2025-07-17T19:56:33Z",
+      "side": 1,
+      "message": "I will excuse myself from this review. I have not worked on this code.",
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
