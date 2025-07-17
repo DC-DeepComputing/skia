@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "97105786_4e99cd59",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 636,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-17T17:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5cc4af9b_ea20ccd7",
+      "range": {
+        "startLine": 627,
+        "startChar": 0,
+        "endLine": 636,
+        "endChar": 79
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7408e2e5_468fb642",
@@ -47,6 +71,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d414b9f_7a232a91",
+        "filename": "src/gpu/graphite/KeyHelpers.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 821,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-17T17:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7408e2e5_468fb642",
+      "range": {
+        "startLine": 821,
+        "startChar": 0,
+        "endLine": 821,
+        "endChar": 83
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dafecd6f_45b8a720",
@@ -60,6 +108,30 @@
       "writtenOn": "2025-07-17T14:49:39Z",
       "side": 1,
       "message": "This function isn\u0027t modifying `samplerDesc` anymore, so we can either make it const\u0026 or switch back to the non-pair version (if we do that, we should keep the assert you added for kDecal).",
+      "range": {
+        "startLine": 53,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 60
+      },
+      "revId": "8a8296829e10df4eee2ab8d924bae9a83200c486",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bec65af_b146cd7c",
+        "filename": "src/gpu/graphite/dawn/DawnSampler.cpp",
+        "patchSetId": 63
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 3948337
+      },
+      "writtenOn": "2025-07-17T17:28:05Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dafecd6f_45b8a720",
       "range": {
         "startLine": 53,
         "startChar": 0,
