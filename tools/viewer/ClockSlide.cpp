@@ -6,6 +6,7 @@
  */
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRRect.h"
 #include "include/private/base/SkAssert.h"
 #include "src/base/SkRandom.h"
@@ -26,7 +27,7 @@ public:
     void draw(SkCanvas* canvas) override {
         SkPaint paintFill;
         SkPaint paintStroke;
-        SkPath  path;
+        SkPathBuilder path;
 
         canvas->save();
         canvas->translate(150, 150);
@@ -56,7 +57,7 @@ public:
             path.reset();
             path.moveTo(200,0);
             path.lineTo(240,0);
-            canvas->drawPath(path, paintStroke);
+            canvas->drawPath(path.snapshot(), paintStroke);
 #else
             canvas->drawRRect(rrect, paintFill);
 #endif
@@ -84,7 +85,7 @@ public:
             path.reset();
             path.moveTo(234,0);
             path.lineTo(240,0);
-            canvas->drawPath(path, paintStroke);
+            canvas->drawPath(path.snapshot(), paintStroke);
 #else
             canvas->drawRRect(rrect, paintFill);
 #endif
@@ -107,7 +108,7 @@ public:
         path.reset();
         path.moveTo(-20,0);
         path.lineTo(80,0);
-        canvas->drawPath(path, paintStroke);
+        canvas->drawPath(path.snapshot(), paintStroke);
 #else
         rect = SkRect::MakeLTRB(-20-7, -7, 80+7, 7);
         radii[0] = SkPoint::Make(7,7);
@@ -128,7 +129,7 @@ public:
         path.reset();
         path.moveTo(-56,0);
         path.lineTo(224,0);
-        canvas->drawPath(path, paintStroke);
+        canvas->drawPath(path.snapshot(), paintStroke);
 #else
         rect = SkRect::MakeLTRB(-56-5, -5, 224+5, 5);
         radii[0] = SkPoint::Make(5,5);
@@ -150,7 +151,7 @@ public:
         path.reset();
         path.moveTo(-60,0);
         path.lineTo(166,0);
-        canvas->drawPath(path, paintStroke);
+        canvas->drawPath(path.snapshot(), paintStroke);
 #else
         rect = SkRect::MakeLTRB(-60-3, -3, 166+3, 3);
         radii[0] = SkPoint::Make(3,3);
@@ -166,7 +167,7 @@ public:
         path.arcTo(rect, 0, 0, false);
         path.addOval(rect, SkPathDirection::kCCW);
         path.arcTo(rect, 360, 0, true);
-        canvas->drawPath(path, paintFill);
+        canvas->drawPath(path.snapshot(), paintFill);
 #else
         canvas->drawOval(rect, paintFill);
 #endif
@@ -176,7 +177,7 @@ public:
         path.arcTo(rect, 0, 0, false);
         path.addOval(rect, SkPathDirection::kCCW);
         path.arcTo(rect, 360, 0, true);
-        canvas->drawPath(path, paintStroke);
+        canvas->drawPath(path.snapshot(), paintStroke);
 #else
         canvas->drawOval(rect, paintStroke);
 #endif
@@ -186,7 +187,7 @@ public:
         path.arcTo(rect, 0, 0, false);
         path.addOval(rect, SkPathDirection::kCCW);
         path.arcTo(rect, 360, 0, true);
-        canvas->drawPath(path, paintFill);
+        canvas->drawPath(path.snapshot(), paintFill);
 #else
         canvas->drawOval(rect, paintFill);
         rect = SkRect::MakeLTRB(-6, -6, 6, 6);
@@ -202,7 +203,7 @@ public:
         path.arcTo(rect, 0, 0, false);
         path.addOval(rect, SkPathDirection::kCCW);
         path.arcTo(rect, 360, 0, true);
-        canvas->drawPath(path, paintStroke);
+        canvas->drawPath(path.snapshot(), paintStroke);
 #else
         canvas->drawOval(rect, paintStroke);
 #endif

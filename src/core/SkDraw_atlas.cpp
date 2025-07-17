@@ -10,7 +10,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPixmap.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"

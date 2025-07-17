@@ -699,7 +699,6 @@ bool SkContourMeasure::getSegment(SkScalar startD, SkScalar stopD, SkPathBuilder
         } while (seg->fPtIndex < stopSeg->fPtIndex);
         SkContourMeasure_segTo(&fPts[seg->fPtIndex], seg->fType, 0, stopT, dst);
     }
-
     return true;
 }
 

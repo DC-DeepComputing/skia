@@ -95,6 +95,7 @@
 
 #include <algorithm>
 #include <map>
+#include <optional>
 #include <string>
 
 struct GrShaderCaps;
@@ -1333,7 +1334,7 @@ void SurfaceDrawContext::drawRegion(const GrClip* clip,
     bool complexStyle = !style.isSimpleFill();
     if (complexStyle || GrAA::kYes == aa) {
         SkPath path = region.getBoundaryPath();
-        path.setIsVolatile(true);
+        path = path.makeIsVolatile(true);
 
         return this->drawPath(clip, std::move(paint), aa, viewMatrix, path, style);
     }

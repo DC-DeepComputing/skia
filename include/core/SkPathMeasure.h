@@ -15,6 +15,8 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkDebug.h"
 
+#include <optional>
+
 class SkMatrix;
 class SkPath;
 class SkPathBuilder;

@@ -54,7 +54,7 @@ DEF_TEST(SkPath_RangeIter, r) {
     }
 
     // Build the path.
-    SkPath path;
+    SkPathBuilder path;
     for (Verb verb : verbs) {
         switch (verb) {
             case Verb::kImplicitMove:
@@ -91,7 +91,7 @@ DEF_TEST(SkPath_RangeIter, r) {
     }
 
     // Verify sure the RangeIter works as expected.
-    SkPathPriv::Iterate iterate(path);
+    SkPathPriv::Iterate iterate(path.detach());
     auto iter = iterate.begin();
     SkPoint startPt = {0,0};
     SkPoint lastPt = {0,0};

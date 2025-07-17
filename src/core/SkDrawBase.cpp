@@ -413,23 +413,14 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
         return;
     }
 
-    SkPath*         pathPtr = const_cast<SkPath*>(&origSrcPath);
+    SkPathBuilder builder(origSrcPath);
+    builder.setIsVolatile(true);
     bool            doFill = true;
-    SkPath          tmpPathStorage;
-    SkPath*         tmpPath = &tmpPathStorage;
     SkTCopyOnFirstWrite<SkMatrix> matrix(fCTM);
-    tmpPath->setIsVolatile(true);
 
     if (prePathMatrix) {
         if (origPaint.getPathEffect() || origPaint.getStyle() != SkPaint::kFill_Style) {
-            SkPath* result = pathPtr;
-
-            if (!pathIsMutable) {
-                result = tmpPath;
-                pathIsMutable = true;
-            }
-            pathPtr->transform(*prePathMatrix, result);
-            pathPtr = result;
+            builder.transform(*prePathMatrix);
         } else {
             matrix.writable()->preConcat(*prePathMatrix);
         }
@@ -467,17 +458,11 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
         if (this->computeConservativeLocalClipBounds(&cullRect)) {
             cullRectPtr = &cullRect;
         }
-        SkPathBuilder builder;
-        doFill = skpathutils::FillPathWithPaint(*pathPtr, *paint, &builder, cullRectPtr, *fCTM);
-        *tmpPath = builder.detach();
-        pathPtr = tmpPath;
+        doFill = skpathutils::FillPathWithPaint(builder.snapshot(), *paint, &builder, cullRectPtr, *fCTM);
     }
 
-    // avoid possibly allocating a new path in transform if we can
-    SkPath* devPathPtr = pathIsMutable ? pathPtr : tmpPath;
-
     // transform the path into device space
-    pathPtr->transform(*matrix, devPathPtr);
+    builder.transform(*matrix);
 
 #if defined(SK_BUILD_FOR_FUZZER)
     if (devPathPtr->countPoints() > 1000) {
@@ -485,7 +470,7 @@ void SkDrawBase::drawPath(const SkPath& origSrcPath,
     }
 #endif
 
-    this->drawDevPath(*devPathPtr, *paint, drawCoverage, customBlitter, doFill);
+    this->drawDevPath(builder.detach(), *paint, drawCoverage, customBlitter, doFill);
 }
 
 void SkDrawBase::paintMasks(SkZip<const SkGlyph*, SkPoint>, const SkPaint&) const {
@@ -702,17 +687,17 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, SkSpan<const SkPoint
 
                     if (!pointData.fFirst.isEmpty()) {
                         if (device) {
-                            device->drawPath(pointData.fFirst, newP, true);
+                            device->drawPath(pointData.fFirst.snapshot(), newP, true);
                         } else {
-                            this->drawPath(pointData.fFirst, newP, nullptr, true);
+                            this->drawPath(pointData.fFirst.snapshot(), newP, nullptr, true);
                         }
                     }
 
                     if (!pointData.fLast.isEmpty()) {
                         if (device) {
-                            device->drawPath(pointData.fLast, newP, true);
+                            device->drawPath(pointData.fLast.snapshot(), newP, true);
                         } else {
-                            this->drawPath(pointData.fLast, newP, nullptr, true);
+                            this->drawPath(pointData.fLast.snapshot(), newP, nullptr, true);
                         }
                     }
 
@@ -770,9 +755,9 @@ void SkDrawBase::drawDevicePoints(SkCanvas::PointMode mode, SkSpan<const SkPoint
             for (size_t i = 0; i < count; i += inc) {
                 auto path = SkPath::Line(points[i], points[i+1]);
                 if (device) {
-                    device->drawPath(path, p, true);
+                    device->drawPath(path.snapshot(), p, true);
                 } else {
-                    this->drawPath(path, p, nullptr, true);
+                    this->drawPath(path.snapshot(), p, nullptr, true);
                 }
             }
             break;

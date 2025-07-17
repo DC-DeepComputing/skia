@@ -21,7 +21,7 @@ DEF_TEST(BO_bruteForceCrossingsBasic, reporter) {
         segments.push_back(s0);
         segments.push_back(s1);
 
-        auto possibleCrossings = brute_force_crossings(segments);
+        const auto& possibleCrossings = brute_force_crossings(segments);
 
         REPORTER_ASSERT(reporter, possibleCrossings.has_value());
 
@@ -43,7 +43,7 @@ DEF_TEST(BO_bruteForceCrossingsBasic, reporter) {
                 s2 = {p2, p0};
 
         std::vector<Segment> segments{s0, s1, s2};
-        auto possibleCrossings = brute_force_crossings(segments);
+        const auto& possibleCrossings = brute_force_crossings(segments);
 
         REPORTER_ASSERT(reporter, possibleCrossings.has_value());
         if (possibleCrossings) {
@@ -60,7 +60,7 @@ DEF_TEST(BO_bruteForceCrossingsBasic, reporter) {
                 s2 = {p2, p0};
 
         std::vector<Segment> segments{s0, s1, s2};
-        auto possibleCrossings = brute_force_crossings(segments);
+        const auto& possibleCrossings = brute_force_crossings(segments);
 
         REPORTER_ASSERT(reporter, possibleCrossings.has_value());
         if (possibleCrossings) {

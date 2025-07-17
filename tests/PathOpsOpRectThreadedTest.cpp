@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
@@ -42,18 +43,18 @@ static void testPathOpsRectsMain(PathOpsThreadState* data)
                 for (int d = c + 1 ; d < 7; ++d) {
                     for (auto e : fts) {
     for (auto f : fts)   {
-        SkPath pathA, pathB;
+        SkPathBuilder pathA, pathB;
         pathA.setFillType((SkPathFillType) e);
-        pathA.addRect(SkIntToScalar(state.fA), SkIntToScalar(state.fA), SkIntToScalar(state.fB),
-                SkIntToScalar(state.fB), SkPathDirection::kCW);
-        pathA.addRect(SkIntToScalar(state.fC), SkIntToScalar(state.fC), SkIntToScalar(state.fD),
-                SkIntToScalar(state.fD), SkPathDirection::kCW);
+        pathA.addRect({SkIntToScalar(state.fA), SkIntToScalar(state.fA), SkIntToScalar(state.fB),
+                SkIntToScalar(state.fB)}, SkPathDirection::kCW);
+        pathA.addRect({SkIntToScalar(state.fC), SkIntToScalar(state.fC), SkIntToScalar(state.fD),
+                SkIntToScalar(state.fD)}, SkPathDirection::kCW);
         pathA.close();
         pathB.setFillType((SkPathFillType) f);
-        pathB.addRect(SkIntToScalar(a), SkIntToScalar(a), SkIntToScalar(b),
-                SkIntToScalar(b), SkPathDirection::kCW);
-        pathB.addRect(SkIntToScalar(c), SkIntToScalar(c), SkIntToScalar(d),
-                SkIntToScalar(d), SkPathDirection::kCW);
+        pathB.addRect({SkIntToScalar(a), SkIntToScalar(a), SkIntToScalar(b),
+                SkIntToScalar(b)}, SkPathDirection::kCW);
+        pathB.addRect({SkIntToScalar(c), SkIntToScalar(c), SkIntToScalar(d),
+                SkIntToScalar(d)}, SkPathDirection::kCW);
         pathB.close();
         for (int op = 0 ; op <= kXOR_SkPathOp; ++op)    {
             if (state.fReporter->verbose()) {
@@ -82,7 +83,7 @@ static void testPathOpsRectsMain(PathOpsThreadState* data)
             }
             SkString testName;
             testName.printf("thread_rects%d", ++gRectsTestNo);
-            if (!testPathOp(state.fReporter, pathA, pathB, (SkPathOp) op, testName.c_str())) {
+            if (!testPathOp(state.fReporter, pathA.detach(), pathB.detach(), (SkPathOp) op, testName.c_str())) {
                 if (state.fReporter->verbose()) {
                     ++loopNo;
                     goto skipToNext;
@@ -135,17 +136,17 @@ static void testPathOpsFastMain(PathOpsThreadState* data)
                 for (int d = 0; d < 6; d += step) {
         for (auto e : fts) {
             for (auto f : fts) {
-        SkPath pathA, pathB;
+        SkPathBuilder pathA, pathB;
         pathA.setFillType(e);
         if (a) {
-        pathA.addRect(SkIntToScalar(state.fA), SkIntToScalar(state.fA), SkIntToScalar(state.fB) + c,
-                SkIntToScalar(state.fB), SkPathDirection::kCW);
+        pathA.addRect({SkIntToScalar(state.fA), SkIntToScalar(state.fA), SkIntToScalar(state.fB) + c,
+                SkIntToScalar(state.fB)}, SkPathDirection::kCW);
         }
         pathA.close();
         pathB.setFillType(f);
         if (b) {
-        pathB.addRect(SkIntToScalar(state.fC), SkIntToScalar(state.fC), SkIntToScalar(state.fD) + d,
-                SkIntToScalar(state.fD), SkPathDirection::kCW);
+        pathB.addRect({SkIntToScalar(state.fC), SkIntToScalar(state.fC), SkIntToScalar(state.fD) + d,
+                SkIntToScalar(state.fD)}, SkPathDirection::kCW);
         }
         pathB.close();
         const char* fillTypeStr[] = { "Winding", "EvenOdd", "InverseWinding", "InverseEvenOdd" };
@@ -172,7 +173,7 @@ static void testPathOpsFastMain(PathOpsThreadState* data)
             }
             SkString testName;
             testName.printf("fast%d", ++gFastTestNo);
-            if (!testPathOp(state.fReporter, pathA, pathB, (SkPathOp) op, testName.c_str())) {
+            if (!testPathOp(state.fReporter, pathA.snapshot(), pathB.snapshot(), (SkPathOp) op, testName.c_str())) {
                 if (state.fReporter->verbose()) {
                     ++loopNo;
                     goto skipToNext;
