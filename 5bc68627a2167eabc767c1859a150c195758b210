@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef67a631_55c9f2bb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-18T21:56:04Z",
+      "side": 1,
+      "message": "@fmalita, can you PTAL?  A CL with corresponding test coverage can be found here: https://crrev.com/c/6771365",
+      "revId": "5bc68627a2167eabc767c1859a150c195758b210",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
