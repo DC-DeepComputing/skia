@@ -34,6 +34,24 @@
       "parentUuid": "3ed7965c_f8048729",
       "revId": "5f937f609c8343ed90197627f0d4aba600a3be1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73a04dc5_3096e70d",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-18T17:53:29Z",
+      "side": 1,
+      "message": "Good catch.\n\nI think this speaks to the questionable value of our pre/pose \u0027helpers\u0027. I honestly thought postConcat(a) meant this * a, and had to read the docs (again).\n\nI find just writing the * operator clearest, but I\u0027ll use your suggested code.",
+      "parentUuid": "3ed7965c_f8048729",
+      "revId": "5f937f609c8343ed90197627f0d4aba600a3be1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
