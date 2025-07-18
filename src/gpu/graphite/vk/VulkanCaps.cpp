@@ -173,13 +173,13 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     }
 
 #ifdef SK_BUILD_FOR_UNIX
-    if (skgpu::kNvidia_VkVendor == vendorID) {
+    if (skgpu::kNvidia_Vendor == vendorID) {
         // On NVIDIA linux we see a big perf regression when not using dedicated image allocations.
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
 #endif
 
-    if (vendorID == skgpu::kNvidia_VkVendor || vendorID == skgpu::kAMD_VkVendor) {
+    if (vendorID == skgpu::kNvidia_Vendor || vendorID == skgpu::kAMD_Vendor) {
         // On discrete GPUs, it can be faster to read gpu-only memory compared to memory that is
         // also mappable on the host.
         fGpuOnlyBuffersMorePerformant = true;
@@ -194,7 +194,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     // AMD advertises support for MAX_UINT vertex attributes but in reality only supports 32.
     fMaxVertexAttributes =
-            vendorID == skgpu::kAMD_VkVendor ? 32 : deviceLimits.maxVertexInputAttributes;
+            vendorID == skgpu::kAMD_Vendor ? 32 : deviceLimits.maxVertexInputAttributes;
     fMaxUniformBufferRange = deviceLimits.maxUniformBufferRange;
     fMaxStorageBufferRange = deviceLimits.maxStorageBufferRange;
 
@@ -227,7 +227,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     fSupportsRasterizationOrderColorAttachmentAccess =
             enabledFeatures.fRasterizationOrderColorAttachmentAccess;
     fIsInputAttachmentReadCoherent = fSupportsRasterizationOrderColorAttachmentAccess ||
-                                     vendorID == kARM_VkVendor || vendorID == kImagination_VkVendor;
+                                     vendorID == kARM_Vendor || vendorID == kImagination_Vendor;
 
     // TODO(skbug.com/40045541): We must force std430 array stride when using SSBOs since SPIR-V generation
     // cannot handle mixed array strides being passed into functions.
@@ -236,7 +236,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
 
     // Avoid RelaxedPrecision with OpImageSampleImplicitLod due to driver bug with YCbCr sampling.
     // (skbug.com/421927604)
-    fShaderCaps->fCannotUseRelaxedPrecisionOnImageSample = vendorID == kNvidia_VkVendor;
+    fShaderCaps->fCannotUseRelaxedPrecisionOnImageSample = vendorID == kNvidia_Vendor;
 
     fShaderCaps->fDualSourceBlendingSupport = enabledFeatures.fDualSrcBlend;
 
@@ -257,7 +257,7 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // fast.
     fUsePipelineLibraries =
             enabledFeatures.fGraphicsPipelineLibrary &&
-            (deviceProperties.fGpl.graphicsPipelineLibraryFastLinking || vendorID == kARM_VkVendor);
+            (deviceProperties.fGpl.graphicsPipelineLibraryFastLinking || vendorID == kARM_Vendor);
 
     // Note: Do not add extension/feature checks after this; driver workarounds should be done last.
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
@@ -401,38 +401,38 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
     // be used by Graphite either way.
     if (props->fDriver.driverID == 0) {
         switch (props->fBase.properties.vendorID) {
-            case kAMD_VkVendor:
+            case kAMD_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_AMD_PROPRIETARY;
                 break;
-            case kARM_VkVendor:
+            case kARM_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_ARM_PROPRIETARY;
                 break;
-            case kBroadcom_VkVendor:
+            case kBroadcom_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_BROADCOM_PROPRIETARY;
                 break;
-            case kGoogle_VkVendor:
+            case kGoogle_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_GOOGLE_SWIFTSHADER;
                 break;
-            case kImagination_VkVendor:
+            case kImagination_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_IMAGINATION_PROPRIETARY;
                 break;
-            case kIntel_VkVendor:
+            case kIntel_Vendor:
 #ifdef SK_BUILD_FOR_WIN
                 props->fDriver.driverID = VK_DRIVER_ID_INTEL_PROPRIETARY_WINDOWS;
 #else
                 props->fDriver.driverID = VK_DRIVER_ID_INTEL_OPEN_SOURCE_MESA;
 #endif
                 break;
-            case kNvidia_VkVendor:
+            case kNvidia_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_NVIDIA_PROPRIETARY;
                 break;
-            case kQualcomm_VkVendor:
+            case kQualcomm_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_QUALCOMM_PROPRIETARY;
                 break;
-            case kSamsung_VkVendor:
+            case kSamsung_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_SAMSUNG_PROPRIETARY;
                 break;
-            case kVeriSilicon_VkVendor:
+            case kVeriSilicon_Vendor:
                 props->fDriver.driverID = VK_DRIVER_ID_VERISILICON_PROPRIETARY;
                 break;
             default:
@@ -460,9 +460,9 @@ void VulkanCaps::applyDriverCorrectnessWorkarounds(const PhysicalDevicePropertie
     const skgpu::DriverVersion driverVersion =
             skgpu::ParseVulkanDriverVersion(driverID, properties.fBase.properties.driverVersion);
 
-    const bool isARM = skgpu::kARM_VkVendor == vendorID;
-    const bool isIntel = skgpu::kIntel_VkVendor == vendorID;
-    const bool isQualcomm = skgpu::kQualcomm_VkVendor == vendorID;
+    const bool isARM = skgpu::kARM_Vendor == vendorID;
+    const bool isIntel = skgpu::kIntel_Vendor == vendorID;
+    const bool isQualcomm = skgpu::kQualcomm_Vendor == vendorID;
 
     const bool isARMProprietary = isARM && VK_DRIVER_ID_ARM_PROPRIETARY == driverID;
     const bool isIntelWindowsProprietary =
@@ -1333,7 +1333,7 @@ void VulkanCaps::initDepthStencilFormatTable(const skgpu::VulkanInterface* inter
         // D16_UNORM in a protected context. Using D32_SFLOAT succeeds, so clearly it's not actually
         // out of memory. D16_UNORM appears to function correctly in unprotected contexts.
         const bool disableD16InProtected =
-                this->protectedSupport() && skgpu::kQualcomm_VkVendor == properties.vendorID;
+                this->protectedSupport() && skgpu::kQualcomm_Vendor == properties.vendorID;
         if (!disableD16InProtected) {
             constexpr VkFormat format = VK_FORMAT_D16_UNORM;
             auto& info = this->getDepthStencilFormatInfo(format);
@@ -1411,7 +1411,7 @@ void VulkanCaps::SupportedSampleCounts::initSampleCounts(const skgpu::VulkanInte
                     (VK_SAMPLE_COUNT_1_BIT | VK_SAMPLE_COUNT_2_BIT | VK_SAMPLE_COUNT_4_BIT |
                      VK_SAMPLE_COUNT_8_BIT | VK_SAMPLE_COUNT_16_BIT);
 
-    if (skgpu::kIntel_VkVendor == physProps.vendorID) {
+    if (skgpu::kIntel_Vendor == physProps.vendorID) {
         // MSAA doesn't work well on Intel GPUs crbug.com/40434119, crbug.com/41470715
         fSampleCounts &= VK_SAMPLE_COUNT_1_BIT;
     }
