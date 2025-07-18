@@ -33,6 +33,23 @@
       "message": "I will excuse myself from this review. I have not worked on this code.",
       "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "447b27a3_548a14a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-18T02:18:16Z",
+      "side": 1,
+      "message": "Nothing here should be marked as `SK_API`. At most it would be `SK_SPI`, but even that is a stretch. Part of the issue is that there isn\u0027t really a component build of anything other than core Skia at the moment, and path ops was moved out of that so doesn\u0027t have a component build anymore.\n\nAfter talking about this a discussing things, the right solution to all of this is to make almost everything that is currently marked `skia_component` should be `skia_static_library` and then the top level `skia` target be the one `skia_component` which depends on everything else. The end result being that there would be only one `libskia.so` and not be a bunch of not working other shared objects.",
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
