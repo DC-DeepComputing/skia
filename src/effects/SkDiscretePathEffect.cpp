@@ -101,6 +101,7 @@ public:
         SkPoint     p;
         SkVector    v;
 
+        SkPathBuilder builder(*dst);
         do {
             SkScalar    length = meas.getLength();
     #if defined(SK_BUILD_FOR_FUZZER)
@@ -110,7 +111,7 @@ public:
     #endif
 
             if (fSegLength * (2 + doFill) > length) {
-                meas.getSegment(0, length, dst, true);  // to short for us to mangle
+                meas.getSegment(0, length, &builder, true);  // to short for us to mangle
             } else {
                 int         n = SkScalarRoundToInt(length / fSegLength);
                 constexpr int kMaxReasonableIterations = 100000;
@@ -125,20 +126,21 @@ public:
 
                 if (meas.getPosTan(distance, &p, &v)) {
                     Perterb(&p, v, rand.nextSScalar1() * scale);
-                    dst->moveTo(p);
+                    builder.moveTo(p);
                 }
                 while (--n >= 0) {
                     distance += delta;
                     if (meas.getPosTan(distance, &p, &v)) {
                         Perterb(&p, v, rand.nextSScalar1() * scale);
-                        dst->lineTo(p);
+                        builder.lineTo(p);
                     }
                 }
                 if (meas.isClosed()) {
-                    dst->close();
+                    builder.close();
                 }
             }
         } while (meas.nextContour());
+        *dst = builder.detach();
         return true;
     }
 

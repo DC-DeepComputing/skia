@@ -30,6 +30,7 @@
 #include <cstdint>
 #include <cstring>
 #include <iterator>
+#include <optional>
 
 // The rgnbuilder caller *seems* to pass short counts, possible often seens early failure, so
 // we may not want to promote this to a "std" routine just yet.

@@ -3,6 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_reverseAddPath, 256, 200, false, 0) {
 void draw(SkCanvas* canvas) {
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     SkPath path;
     path.moveTo(20, 20);
     path.lineTo(20, 40);
@@ -24,5 +25,6 @@ void draw(SkCanvas* canvas) {
         canvas->translate(-200, 100);
         path.close();
     }
+#endif
 }
 }  // END FIDDLE

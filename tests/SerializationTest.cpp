@@ -686,11 +686,13 @@ DEF_TEST(Serialization, reporter) {
         TestObjectSerializationNoAlign<SkPoint3, false>(&point, reporter);
     }
 
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     // Test path serialization
     {
         SkPath path;
         TestObjectSerialization(&path, reporter);
     }
+#endif
 
     // Test region serialization
     {

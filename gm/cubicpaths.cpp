@@ -12,6 +12,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
@@ -32,9 +33,10 @@ class ClippedCubicGM : public skiagm::GM {
     SkISize getISize() override { return {1240, 390}; }
 
     void onDraw(SkCanvas* canvas) override {
-        SkPath path;
-        path.moveTo(0, 0);
-        path.cubicTo(140, 150, 40, 10, 170, 150);
+        SkPath path = SkPathBuilder()
+            .moveTo(0, 0)
+            .cubicTo(140, 150, 40, 10, 170, 150)
+            .detach();
 
         SkPaint paint;
         SkRect bounds = path.getBounds();
@@ -97,20 +99,21 @@ class ClippedCubic2GM : public skiagm::GM {
     }
 
     void onOnceBeforeDraw() override {
-        fPath.moveTo(69.7030518991886f, 0);
-        fPath.cubicTo( 69.7030518991886f, 21.831149999999997f,
-                58.08369508178456f, 43.66448333333333f, 34.8449814469765f, 65.5f);
-        fPath.cubicTo( 11.608591683531916f, 87.33115f, -0.010765133872116195f, 109.16448333333332f,
-                -0.013089005235602302f, 131);
-        fPath.close();
-        fFlipped = fPath;
+        fPath = SkPathBuilder()
+            .moveTo(69.7030518991886f, 0)
+            .cubicTo( 69.7030518991886f, 21.831149999999997f,
+                      58.08369508178456f, 43.66448333333333f, 34.8449814469765f, 65.5f)
+            .cubicTo( 11.608591683531916f, 87.33115f, -0.010765133872116195f, 109.16448333333332f,
+                      -0.013089005235602302f, 131)
+            .close()
+            .detach();
         SkMatrix matrix;
         matrix.reset();
         matrix.setScaleX(0);
         matrix.setScaleY(0);
         matrix.setSkewX(1);
         matrix.setSkewY(1);
-        fFlipped.transform(matrix);
+        fFlipped = fPath.makeTransform(matrix);
     }
 
     SkPath fPath;
@@ -128,7 +131,7 @@ class CubicPathGM : public skiagm::GM {
                   const SkRect& clip,SkPaint::Cap cap, SkPaint::Join join,
                   SkPaint::Style style, SkPathFillType fill,
                   SkScalar strokeWidth) {
-        path.setFillType(fill);
+        path = path.makeFillType(fill);
         SkPaint paint;
         paint.setStrokeCap(cap);
         paint.setStrokeWidth(strokeWidth);
@@ -176,10 +179,12 @@ class CubicPathGM : public skiagm::GM {
             const char* fName;
         };
         PathAndName path;
-        path.fPath.moveTo(25*SK_Scalar1, 10*SK_Scalar1);
-        path.fPath.cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
-                           60*SK_Scalar1, 20*SK_Scalar1,
-                           75*SK_Scalar1, 10*SK_Scalar1);
+        path.fPath = SkPathBuilder()
+            .moveTo(25*SK_Scalar1, 10*SK_Scalar1)
+            .cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
+                     60*SK_Scalar1, 20*SK_Scalar1,
+                     75*SK_Scalar1, 10*SK_Scalar1)
+            .detach();
         path.fName = "moveTo-cubic";
 
         SkPaint titlePaint;
@@ -247,7 +252,7 @@ class CubicClosePathGM : public skiagm::GM {
                   const SkRect& clip,SkPaint::Cap cap, SkPaint::Join join,
                   SkPaint::Style style, SkPathFillType fill,
                   SkScalar strokeWidth) {
-        path.setFillType(fill);
+        path = path.makeFillType(fill);
         SkPaint paint;
         paint.setStrokeCap(cap);
         paint.setStrokeWidth(strokeWidth);
@@ -295,11 +300,13 @@ class CubicClosePathGM : public skiagm::GM {
             const char* fName;
         };
         PathAndName path;
-        path.fPath.moveTo(25*SK_Scalar1, 10*SK_Scalar1);
-        path.fPath.cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
-                           60*SK_Scalar1, 20*SK_Scalar1,
-                           75*SK_Scalar1, 10*SK_Scalar1);
-        path.fPath.close();
+        path.fPath = SkPathBuilder()
+            .moveTo(25*SK_Scalar1, 10*SK_Scalar1)
+            .cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
+                     60*SK_Scalar1, 20*SK_Scalar1,
+                     75*SK_Scalar1, 10*SK_Scalar1)
+            .close()
+            .detach();
         path.fName = "moveTo-cubic-close";
 
         SkPaint titlePaint;
@@ -373,7 +380,7 @@ class CubicPathShaderGM : public skiagm::GM {
         const SkScalar    kPos[] = { 0, SK_Scalar1/2, SK_Scalar1 };
         const SkColor  kColors[] = {0x80F00080, 0xF0F08000, 0x800080F0 };
 
-        path.setFillType(fill);
+        path = path.makeFillType(fill);
 
         SkPaint paint;
         paint.setStrokeCap(cap);
@@ -423,10 +430,12 @@ class CubicPathShaderGM : public skiagm::GM {
             const char* fName;
         };
         PathAndName path;
-        path.fPath.moveTo(25*SK_Scalar1, 10*SK_Scalar1);
-        path.fPath.cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
-                           60*SK_Scalar1, 20*SK_Scalar1,
-                           75*SK_Scalar1, 10*SK_Scalar1);
+        path.fPath = SkPathBuilder()
+            .moveTo(25*SK_Scalar1, 10*SK_Scalar1)
+            .cubicTo(40*SK_Scalar1, 20*SK_Scalar1,
+                     60*SK_Scalar1, 20*SK_Scalar1,
+                     75*SK_Scalar1, 10*SK_Scalar1)
+            .detach();
         path.fName = "moveTo-cubic";
 
         SkPaint titlePaint;
@@ -492,9 +501,10 @@ DEF_SIMPLE_GM(bug5099, canvas, 50, 50) {
     p.setStyle(SkPaint::kStroke_Style);
     p.setStrokeWidth(10);
 
-    SkPath path;
-    path.moveTo(6, 27);
-    path.cubicTo(31.5f, 1.5f, 3.5f, 4.5f, 29, 29);
+    SkPath path = SkPathBuilder()
+        .moveTo(6, 27)
+        .cubicTo(31.5f, 1.5f, 3.5f, 4.5f, 29, 29)
+        .detach();
     canvas->drawPath(path, p);
 }
 
@@ -505,20 +515,22 @@ DEF_SIMPLE_GM(bug6083, canvas, 100, 50) {
     p.setStyle(SkPaint::kStroke_Style);
     p.setStrokeWidth(15);
     canvas->translate(-500, -130);
-    SkPath path;
-    path.moveTo(500.988f, 155.200f);
-    path.lineTo(526.109f, 155.200f);
     SkPoint p1 = { 526.109f, 155.200f };
     SkPoint p2 = { 525.968f, 212.968f };
     SkPoint p3 = { 526.109f, 241.840f };
-    path.cubicTo(p1, p2, p3);
+    SkPath path = SkPathBuilder()
+        .moveTo(500.988f, 155.200f)
+        .lineTo(526.109f, 155.200f)
+        .cubicTo(p1, p2, p3)
+        .detach();
     canvas->drawPath(path, p);
     canvas->translate(50, 0);
-    path.reset();
     p2.set(525.968f, 213.172f);
-    path.moveTo(500.988f, 155.200f);
-    path.lineTo(526.109f, 155.200f);
-    path.cubicTo(p1, p2, p3);
+    path = SkPathBuilder()
+        .moveTo(500.988f, 155.200f)
+        .lineTo(526.109f, 155.200f)
+        .cubicTo(p1, p2, p3)
+        .detach();
     canvas->drawPath(path, p);
 }
 
