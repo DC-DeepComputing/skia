@@ -387,3 +387,60 @@ public:
 };
 DEF_BENCH( return new MapRectMatrixBench("maprect", false); )
 DEF_BENCH( return new MapRectMatrixBench("maprectscaletrans", true); )
+
+namespace {
+enum ConcatStyle {
+    kInitConcat,
+    kSetConcat,
+    kNewSetConcat,
+    kAssignConcat,
+};
+
+class MatrixConcatBench : public MatrixBench {
+    SkMatrix fA, fB, fDst;
+    const ConcatStyle fStyle;
+
+    enum { MEGA_LOOP = 1000 * 1000 };
+
+public:
+    MatrixConcatBench(const char name[], ConcatStyle style)
+        : MatrixBench(name), fStyle(style)
+    {
+        fA = SkMatrix::Scale(1, 1.0001f);
+        fB = SkMatrix::RotateDeg(0.0001f);
+    }
+
+    void performTest() override {
+        SkMatrix dst;
+
+        switch (fStyle) {
+            case ConcatStyle::kInitConcat:
+                for (int i = 0; i < MEGA_LOOP; ++i) {
+                    SkMatrix a(fA, fB);
+                }
+                break;
+            case ConcatStyle::kSetConcat:
+                for (int i = 0; i < MEGA_LOOP; ++i) {
+                    dst.setConcat(fA, fB);
+                }
+                break;
+            case ConcatStyle::kNewSetConcat:
+                for (int i = 0; i < MEGA_LOOP; ++i) {
+                    SkMatrix a;
+                    a.setConcat(fA, fB);
+                }
+                break;
+            case ConcatStyle::kAssignConcat:
+                for (int i = 0; i < MEGA_LOOP; ++i) {
+                    dst = fA * fB;
+                }
+                break;
+        }
+    }
+};
+
+}
+DEF_BENCH( return new MatrixConcatBench("matrix_concat_assign", ConcatStyle::kAssignConcat); )
+DEF_BENCH( return new MatrixConcatBench("matrix_concat_newset",  ConcatStyle::kNewSetConcat); )
+DEF_BENCH( return new MatrixConcatBench("matrix_concat_set",  ConcatStyle::kSetConcat); )
+DEF_BENCH( return new MatrixConcatBench("matrix_concat_init",  ConcatStyle::kInitConcat); )
