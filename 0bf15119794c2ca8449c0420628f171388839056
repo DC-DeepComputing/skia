@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38cba505_62e44f44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4231318
+      },
+      "writtenOn": "2025-07-18T04:11:06Z",
+      "side": 1,
+      "message": "JSFiddle showing Problem: https://jsfiddle.net/vxqornfp/",
+      "revId": "0bf15119794c2ca8449c0420628f171388839056",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
