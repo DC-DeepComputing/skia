@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f310e7ef_993b82be",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-07-18T18:55:59Z",
+      "side": 1,
+      "message": "Re-proxying LGTMs from jzern and ccameron, and CQ+2 intent from vigneshv",
+      "revId": "03523190173fe552e35049ae3d541a4cb18a9d92",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
