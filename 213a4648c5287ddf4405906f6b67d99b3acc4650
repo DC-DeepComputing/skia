@@ -18,6 +18,47 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "25f839d1_958fefd5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-18T15:19:46Z",
+      "side": 1,
+      "message": "Probably related to Skia Gerrit auth, did you use your gmail for that?  You can add more emails at https://skia-review.googlesource.com/settings#EmailAddresses, then as long as you commit locally with @ladybird (`git config user.email`) I think it should work.",
+      "parentUuid": "5673a946_4d6a4dcf",
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d30e98ce_2fab4c0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-18T15:19:46Z",
+      "side": 1,
+      "message": "Which Skia target is failing with component builds?  Currently `:pathops` is just a source set, to be included as needed in other components, but it should not be built as a separate .so.\n\nI\u0027m guessing some of the pathops users under `modules/` would fail to link, but then again those never worked with component builds before AFAIK (skottie, sksg, svg).  As Ben mentioned, the fix is to turn them into static libs and link into a single `libskia.so`.\n\nIf you\u0027re using custom build files (which is probably a good idea), you should group all Skia related components into a single shared lib to avoid internal symbols visibility issues.  You can look at what Chromium is doing: https://source.chromium.org/chromium/chromium/src/+/main:skia/BUILD.gn;l\u003d239.",
+      "range": {
+        "startLine": 9,
+        "startChar": 48,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3bb3241e_bde183d2",
