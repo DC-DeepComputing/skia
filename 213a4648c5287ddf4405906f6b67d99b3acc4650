@@ -139,6 +139,24 @@
       "message": "Nothing here should be marked as `SK_API`. At most it would be `SK_SPI`, but even that is a stretch. Part of the issue is that there isn\u0027t really a component build of anything other than core Skia at the moment, and path ops was moved out of that so doesn\u0027t have a component build anymore.\n\nAfter talking about this a discussing things, the right solution to all of this is to make almost everything that is currently marked `skia_component` should be `skia_static_library` and then the top level `skia` target be the one `skia_component` which depends on everything else. The end result being that there would be only one `libskia.so` and not be a bunch of not working other shared objects.",
       "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6309f62_1557ae8b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3512152
+      },
+      "writtenOn": "2025-07-18T19:02:41Z",
+      "side": 1,
+      "message": "I\u0027ll happily abandon this patch if that\u0027s the way the wind is blowing. Everything about these classes screams \"private\", so the patch itself feels quite hacky.\n\nI\u0027m not quite sure how the modules/ are supposed to interact with that build model, but if they\u0027re truly just \u0027optional things to build into libskia.so\u0027, then that would make things easier. Then it\u0027s just a matter of munging my project\u0027s modifications to vcpkg\u0027s ... unique take on building skia to fit that model.",
+      "parentUuid": "447b27a3_548a14a0",
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
