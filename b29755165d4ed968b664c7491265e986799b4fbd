@@ -16,6 +16,23 @@
       "message": "lgtm",
       "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56621482_208dff03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-07-18T17:02:48Z",
+      "side": 1,
+      "message": "Proxying LGTM from jzern@, but not auto-submitting just in case you\u0027d like review from ccameron@ first.",
+      "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
