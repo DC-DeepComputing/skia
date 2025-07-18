@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac9414e_b3d5414d",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-18T14:15:35Z",
+      "side": 1,
+      "message": "typo: return",
+      "range": {
+        "startLine": 1201,
+        "startChar": 37,
+        "endLine": 1201,
+        "endChar": 43
+      },
+      "revId": "fa678ccfff6af7a356aa7864e6028bdabeadd467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2c88d52_2af215d7",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-18T14:15:35Z",
+      "side": 1,
+      "message": "We can still reach this when inverse \u003d\u003d nullopt.  To keep the old behavior maybe `makeTransform(inverse.value_or(SkMatrix::I()))`?",
+      "revId": "fa678ccfff6af7a356aa7864e6028bdabeadd467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
