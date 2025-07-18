@@ -27,6 +27,9 @@ public:
     bool useAsyncPipelineCreation() const { return fUseAsyncPipelineCreation; }
     bool allowScopedErrorChecks() const { return fAllowScopedErrorChecks; }
 
+    wgpu::LoadOp discardLoadOp() const { return fDiscardLoadOp; }
+    wgpu::StoreOp discardStoreOp() const { return fDiscardStoreOp; }
+
     // If this has no value then loading the resolve texture via a LoadOp is not supported.
     std::optional<wgpu::LoadOp> resolveTextureLoadOp() const {
         return fSupportedResolveTextureLoadOp;
@@ -147,6 +150,11 @@ private:
 
     wgpu::TextureFormat fColorTypeToFormatTable[kSkColorTypeCnt];
     void setColorType(SkColorType, std::initializer_list<wgpu::TextureFormat> formats);
+
+    // Dawn load/store Op to simulate graphite's Discard load/store.
+    // Dawn doesn't have equivalent Discard loadOp so by default Clear will be used.
+    wgpu::LoadOp fDiscardLoadOp = wgpu::LoadOp::Clear;
+    wgpu::StoreOp fDiscardStoreOp = wgpu::StoreOp::Discard;
 
     // When supported, this value will hold the TransientAttachment usage symbol that is only
     // defined in Dawn native builds and not EMSCRIPTEN but this avoids having to #define guard it.

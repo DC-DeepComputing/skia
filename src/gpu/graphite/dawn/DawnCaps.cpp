@@ -83,6 +83,14 @@ bool IsMultiplanarFormat(wgpu::TextureFormat format) {
             return false;
     }
 }
+
+bool IsTileBasedRenderer(uint32_t vendorId) {
+    return vendorId == skgpu::kARM_Vendor || vendorId == skgpu::kImagination_Vendor ||
+           vendorId == skgpu::kQualcomm_Vendor || vendorId == skgpu::kQualcommWin_Vendor ||
+           vendorId == skgpu::kBroadcom_Vendor || vendorId == skgpu::kApple_Vendor ||
+           vendorId == skgpu::kHuawei_Vendor;
+}
+
 #endif
 }  // anonymous namespace
 
@@ -535,6 +543,19 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 #endif
 
 #if !defined(__EMSCRIPTEN__)
+    if (IsTileBasedRenderer(info.vendorID)) {
+        fDiscardLoadOp = wgpu::LoadOp::Clear;
+        fDiscardStoreOp = wgpu::StoreOp::Discard;
+    } else {
+        // For immediate mode GPUs, Load should be faster than Clear. Immediate mode GPUs don't
+        // actually load the texture to any tile cache. Clear will be just an extra write overhead.
+        fDiscardLoadOp = wgpu::LoadOp::Load;
+        // Lilewise Store should be faster than Discard. In Dawn, there is a mechanism that
+        // automatically clears the texture if Discard is used. So we better use Store to avoid
+        // unnecessary clear overhead.
+        fDiscardStoreOp = wgpu::StoreOp::Store;
+    }
+
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnLoadResolveTexture)) {
         fSupportedResolveTextureLoadOp = wgpu::LoadOp::ExpandResolveTexture;
         fSupportsPartialLoadResolve =
