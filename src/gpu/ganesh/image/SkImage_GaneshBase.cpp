@@ -139,7 +139,12 @@ bool SkImage_GaneshBase::getROPixels(GrDirectContext* dContext,
             return false;
         }
     } else {
-        if (!dst->tryAllocPixels(this->imageInfo()) || !dst->peekPixels(&pmap)) {
+        if (!dst->tryAllocPixels(this->imageInfo())) {
+            return false;
+        }
+        if (auto pm = dst->peekPixmap()) {
+            pmap = *pm;
+        } else {
             return false;
         }
     }

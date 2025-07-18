@@ -302,7 +302,12 @@ const SkMipmap* SkMipmapCache::AddAndRef(const SkImage_Base* image, SkResourceCa
         return nullptr;
     }
 
-    SkMipmap* mipmap = SkMipmap::Build(src, get_fact(localCache));
+    auto srcPM = src.peekPixmap();
+    if (!srcPM) {
+        return nullptr;
+    }
+
+    SkMipmap* mipmap = SkMipmap::Build(*srcPM, get_fact(localCache));
     if (mipmap) {
         MipMapRec* rec = new MipMapRec(SkBitmapCacheDesc::Make(image), mipmap);
         CHECK_LOCAL(localCache, add, Add, rec);

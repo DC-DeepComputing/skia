@@ -63,21 +63,21 @@ static void make(SkBitmap* bitmap, SkColorType colorType, SkAlphaType alphaType,
 }
 
 static sk_sp<SkData> encode_data(const SkBitmap& bitmap, SkEncodedImageFormat format) {
-    SkPixmap src;
-    if (!bitmap.peekPixels(&src)) {
+    auto src = bitmap.peekPixmap();
+    if (!src) {
         return nullptr;
     }
     SkDynamicMemoryWStream buf;
 
     switch (format) {
         case SkEncodedImageFormat::kPNG:
-            SkAssertResult(SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options()));
+            SkAssertResult(SkPngEncoder::Encode(&buf, *src, SkPngEncoder::Options()));
             break;
         case SkEncodedImageFormat::kWEBP:
-            SkAssertResult(SkWebpEncoder::Encode(&buf, src, SkWebpEncoder::Options()));
+            SkAssertResult(SkWebpEncoder::Encode(&buf, *src, SkWebpEncoder::Options()));
             break;
         case SkEncodedImageFormat::kJPEG:
-            SkAssertResult(SkJpegEncoder::Encode(&buf, src, SkJpegEncoder::Options()));
+            SkAssertResult(SkJpegEncoder::Encode(&buf, *src, SkJpegEncoder::Options()));
             break;
         default:
             SK_ABORT("Unsupported format %d", (int)format);

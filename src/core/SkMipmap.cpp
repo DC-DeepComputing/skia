@@ -263,6 +263,7 @@ bool SkMipmap::validForRootLevel(const SkImageInfo& root) const {
     return true;
 }
 
+#if 0
 // Helper which extracts a pixmap from the src bitmap
 //
 SkMipmap* SkMipmap::Build(const SkBitmap& src, SkDiscardableFactoryProc fact) {
@@ -272,6 +273,7 @@ SkMipmap* SkMipmap::Build(const SkBitmap& src, SkDiscardableFactoryProc fact) {
     }
     return Build(srcPixmap, fact);
 }
+#endif
 
 int SkMipmap::countLevels() const {
     return fCount;

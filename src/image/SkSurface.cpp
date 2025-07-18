@@ -136,8 +136,8 @@ bool SkSurface::readPixels(const SkImageInfo& dstInfo, void* dstPixels, size_t d
 }
 
 bool SkSurface::readPixels(const SkBitmap& bitmap, int srcX, int srcY) {
-    SkPixmap pm;
-    return bitmap.peekPixels(&pm) && this->readPixels(pm, srcX, srcY);
+    auto pm = bitmap.peekPixmap();
+    return pm.has_value() && this->readPixels(*pm, srcX, srcY);
 }
 
 void SkSurface::asyncRescaleAndReadPixels(const SkImageInfo& info,
@@ -223,9 +223,8 @@ void SkSurface::writePixels(const SkPixmap& pmap, int x, int y) {
 }
 
 void SkSurface::writePixels(const SkBitmap& src, int x, int y) {
-    SkPixmap pm;
-    if (src.peekPixels(&pm)) {
-        this->writePixels(pm, x, y);
+    if (auto pm = src.peekPixmap()) {
+        this->writePixels(*pm, x, y);
     }
 }
 

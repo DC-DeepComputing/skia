@@ -16,7 +16,6 @@
 #include "src/shaders/SkShaderBase.h"
 #include <memory>
 
-class SkBitmap;
 class SkData;
 class SkDiscardableMemory;
 class SkMipmapBuilder;
@@ -43,8 +42,6 @@ public:
     // and compute the sizes/rowbytes, but leave the pixel-data uninitialized.
     static SkMipmap* Build(const SkPixmap& src, SkDiscardableFactoryProc,
                            bool computeContents = true);
-
-    static SkMipmap* Build(const SkBitmap& src, SkDiscardableFactoryProc);
 
     // Determines how many levels a SkMipmap will have without creating that mipmap.
     // This does not include the base mipmap level that the user provided when

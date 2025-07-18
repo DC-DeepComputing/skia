@@ -1182,7 +1182,17 @@ public:
 
         example: https://fiddle.skia.org/c/@Bitmap_peekPixels
     */
-    bool peekPixels(SkPixmap* pixmap) const;
+    std::optional<SkPixmap> peekPixmap() const;
+
+    bool peekPixels(SkPixmap* pixmap) const {
+        if (auto pm = this->peekPixmap()) {
+            if (pixmap) {
+                *pixmap = *pm;
+            }
+            return true;
+        }
+        return false;
+    }
 
     /**
      *  Make a shader with the specified tiling, matrix and sampling.

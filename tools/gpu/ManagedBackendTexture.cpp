@@ -90,12 +90,10 @@ sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromBitmap(GrDirectConte
                                                                    Mipmapped mipmapped,
                                                                    Renderable renderable,
                                                                    Protected isProtected) {
-    SkPixmap srcPixmap;
-    if (!src.peekPixels(&srcPixmap)) {
-        return nullptr;
+    if (auto srcPixmap = src.peekPixmap()) {
+        return MakeFromPixmap(dContext, *srcPixmap, mipmapped, renderable, isProtected);
     }
-
-    return MakeFromPixmap(dContext, srcPixmap, mipmapped, renderable, isProtected);
+    return nullptr;
 }
 
 sk_sp<ManagedBackendTexture> ManagedBackendTexture::MakeFromPixmap(GrDirectContext* dContext,

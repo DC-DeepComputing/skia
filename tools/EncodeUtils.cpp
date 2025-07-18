@@ -23,8 +23,8 @@
 namespace ToolUtils {
 
 bool BitmapToBase64DataURI(const SkBitmap& bitmap, SkString* dst) {
-    SkPixmap pm;
-    if (!bitmap.peekPixels(&pm)) {
+    auto pm = bitmap.peekPixmap();
+    if (!pm) {
         dst->set("peekPixels failed");
         return false;
     }
@@ -35,7 +35,7 @@ bool BitmapToBase64DataURI(const SkBitmap& bitmap, SkString* dst) {
     options.fZLibLevel = 9;
 
     SkDynamicMemoryWStream wStream;
-    if (!SkPngEncoder::Encode(&wStream, pm, options)) {
+    if (!SkPngEncoder::Encode(&wStream, *pm, options)) {
         dst->set("SkPngEncoder::Encode failed");
         return false;
     }

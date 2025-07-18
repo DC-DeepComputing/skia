@@ -39,9 +39,8 @@ DEF_SIMPLE_GPU_GM_CAN_FAIL(cross_context_image, rContext, canvas, errorMsg,
     images[0] = SkImages::DeferredFromEncodedData(encodedData);
 
     SkBitmap bmp;
-    SkPixmap pixmap;
-    SkAssertResult(images[0]->asLegacyBitmap(&bmp) &&
-                   bmp.peekPixels(&pixmap));
+    SkAssertResult(images[0]->asLegacyBitmap(&bmp));
+    SkPixmap pixmap = bmp.peekPixmap().value();
 
     images[1] = SkImages::CrossContextTextureFromPixmap(dContext, pixmap, false);
     images[2] = SkImages::CrossContextTextureFromPixmap(dContext, pixmap, true);

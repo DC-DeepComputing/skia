@@ -31,25 +31,22 @@
 static void test_peekpixels(skiatest::Reporter* reporter) {
     const SkImageInfo info = SkImageInfo::MakeN32Premul(10, 10);
 
-    SkPixmap pmap;
     SkBitmap bm;
 
     // empty should return false
-    REPORTER_ASSERT(reporter, !bm.peekPixels(nullptr));
-    REPORTER_ASSERT(reporter, !bm.peekPixels(&pmap));
+    REPORTER_ASSERT(reporter, !bm.peekPixmap());
 
     // no pixels should return false
     bm.setInfo(SkImageInfo::MakeN32Premul(10, 10));
-    REPORTER_ASSERT(reporter, !bm.peekPixels(nullptr));
-    REPORTER_ASSERT(reporter, !bm.peekPixels(&pmap));
+    REPORTER_ASSERT(reporter, !bm.peekPixmap());
 
     // real pixels should return true
     bm.allocPixels(info);
-    REPORTER_ASSERT(reporter, bm.peekPixels(nullptr));
-    REPORTER_ASSERT(reporter, bm.peekPixels(&pmap));
-    REPORTER_ASSERT(reporter, pmap.info() == bm.info());
-    REPORTER_ASSERT(reporter, pmap.addr() == bm.getPixels());
-    REPORTER_ASSERT(reporter, pmap.rowBytes() == bm.rowBytes());
+    auto pmap = bm.peekPixmap();
+    REPORTER_ASSERT(reporter, pmap.has_value());
+    REPORTER_ASSERT(reporter, pmap->info() == bm.info());
+    REPORTER_ASSERT(reporter, pmap->addr() == bm.getPixels());
+    REPORTER_ASSERT(reporter, pmap->rowBytes() == bm.rowBytes());
 }
 
 // https://code.google.com/p/chromium/issues/detail?id=446164
@@ -282,21 +279,21 @@ DEF_TEST(Bitmap_compute_is_opaque, r) {
 // Test that erase+getColor round trips with RGBA_F16 pixels.
 DEF_TEST(Bitmap_erase_f16_erase_getColor, r) {
     SkRandom random;
-    SkPixmap pm;
     SkBitmap bm;
     bm.allocPixels(SkImageInfo::Make(1, 1, kRGBA_F16_SkColorType, kPremul_SkAlphaType));
-    REPORTER_ASSERT(r, bm.peekPixels(&pm));
+    auto pm = bm.peekPixmap();
+    REPORTER_ASSERT(r, pm.has_value());
     for (unsigned i = 0; i < 0x100; ++i) {
         // Test all possible values of blue component.
         SkColor color1 = (SkColor)((random.nextU() & 0xFFFFFF00) | i);
         // Test all possible values of alpha component.
         SkColor color2 = (SkColor)((random.nextU() & 0x00FFFFFF) | (i << 24));
         for (SkColor color : {color1, color2}) {
-            pm.erase(color);
+            pm->erase(color);
             if (SkColorGetA(color) != 0) {
-                REPORTER_ASSERT(r, color == pm.getColor(0, 0));
+                REPORTER_ASSERT(r, color == pm->getColor(0, 0));
             } else {
-                REPORTER_ASSERT(r, 0 == SkColorGetA(pm.getColor(0, 0)));
+                REPORTER_ASSERT(r, 0 == SkColorGetA(pm->getColor(0, 0)));
             }
         }
     }

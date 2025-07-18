@@ -647,8 +647,7 @@ void DrawCommand::flatten(const SkFlattenable* flattenable,
 }
 
 void DrawCommand::WritePNG(const SkBitmap& bitmap, SkWStream& out) {
-    SkPixmap pm;
-    SkAssertResult(bitmap.peekPixels(&pm));
+    SkPixmap pm = bitmap.peekPixmap().value();
 
     SkPngEncoder::Options options;
     options.fZLibLevel   = 1;

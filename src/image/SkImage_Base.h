@@ -17,6 +17,7 @@
 #include <atomic>
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 class GrDirectContext;
 class GrImageContext;
@@ -47,7 +48,7 @@ public:
     size_t textureSize() const override { return 0; }
 
     // Methods that we want to use elsewhere in Skia, but not be a part of the public API.
-    virtual bool onPeekPixels(SkPixmap*) const { return false; }
+    virtual std::optional<SkPixmap> onPeekPixmap() const { return {}; }
 
     virtual const SkBitmap* onPeekBitmap() const { return nullptr; }
 

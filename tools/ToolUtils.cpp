@@ -389,13 +389,13 @@ void create_tetra_normal_map(SkBitmap* bm, const SkIRect& dst) {
 }
 
 bool copy_to(SkBitmap* dst, SkColorType dstColorType, const SkBitmap& src) {
-    SkPixmap srcPM;
-    if (!src.peekPixels(&srcPM)) {
+    auto srcPM = src.peekPixmap();
+    if (!srcPM) {
         return false;
     }
 
     SkBitmap    tmpDst;
-    SkImageInfo dstInfo = srcPM.info().makeColorType(dstColorType);
+    SkImageInfo dstInfo = srcPM->info().makeColorType(dstColorType);
     if (!tmpDst.setInfo(dstInfo)) {
         return false;
     }
@@ -404,12 +404,12 @@ bool copy_to(SkBitmap* dst, SkColorType dstColorType, const SkBitmap& src) {
         return false;
     }
 
-    SkPixmap dstPM;
-    if (!tmpDst.peekPixels(&dstPM)) {
+    auto dstPM = tmpDst.peekPixmap();
+    if (!dstPM) {
         return false;
     }
 
-    if (!srcPM.readPixels(dstPM)) {
+    if (!srcPM->readPixels(*dstPM)) {
         return false;
     }
 
@@ -475,16 +475,17 @@ bool equal_pixels(const SkPixmap& a, const SkPixmap& b) {
 }
 
 bool equal_pixels(const SkBitmap& bm0, const SkBitmap& bm1) {
-    SkPixmap pm0, pm1;
-    if (!bm0.peekPixels(&pm0)) {
+    auto pm0 = bm0.peekPixmap();
+    if (!pm0) {
         SkDebugf("Could not read pixels from A\n");
         return false;
     }
-    if (!bm1.peekPixels(&pm1)) {
+    auto pm1 = bm1.peekPixmap();
+    if (!pm1) {
         SkDebugf("Could not read pixels from B\n");
         return false;
     }
-    return equal_pixels(pm0, pm1);
+    return equal_pixels(*pm0, *pm1);
 }
 
 bool equal_pixels(const SkImage* a, const SkImage* b) {

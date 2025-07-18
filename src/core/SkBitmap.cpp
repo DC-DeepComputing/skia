@@ -425,13 +425,10 @@ void SkBitmap::erase(SkColor4f c, const SkIRect& area) const {
         return; // can't erase. Should we bzero so the memory is not uninitialized?
     }
 
-    SkPixmap result;
-    if (!this->peekPixels(&result)) {
-        return;
-    }
-
-    if (result.erase(c, &area)) {
-        this->notifyPixelsChanged();
+    if (auto result = this->peekPixmap()) {
+        if (result->erase(c, &area)) {
+            this->notifyPixelsChanged();
+        }
     }
 }
 
@@ -487,11 +484,10 @@ bool SkBitmap::extractSubset(SkBitmap* result, const SkIRect& subset) const {
 
 bool SkBitmap::readPixels(const SkImageInfo& requestedDstInfo, void* dstPixels, size_t dstRB,
                           int x, int y) const {
-    SkPixmap src;
-    if (!this->peekPixels(&src)) {
-        return false;
+    if (auto src = this->peekPixmap()) {
+        return src->readPixels(requestedDstInfo, dstPixels, dstRB, x, y);
     }
-    return src.readPixels(requestedDstInfo, dstPixels, dstRB, x, y);
+    return false;
 }
 
 bool SkBitmap::readPixels(const SkPixmap& dst, int srcX, int srcY) const {
@@ -524,16 +520,16 @@ static bool GetBitmapAlpha(const SkBitmap& src, uint8_t* SK_RESTRICT alpha, int 
     SkASSERT(alpha != nullptr);
     SkASSERT(alphaRowBytes >= src.width());
 
-    SkPixmap pmap;
-    if (!src.peekPixels(&pmap)) {
+    auto pmap = src.peekPixmap();
+    if (!pmap) {
         for (int y = 0; y < src.height(); ++y) {
             memset(alpha, 0, src.width());
             alpha += alphaRowBytes;
         }
         return false;
     }
-    return SkConvertPixels(SkImageInfo::MakeA8(pmap.width(), pmap.height()), alpha, alphaRowBytes,
-                           pmap.info(), pmap.addr(), pmap.rowBytes());
+    return SkConvertPixels(SkImageInfo::MakeA8(pmap->width(), pmap->height()), alpha, alphaRowBytes,
+                           pmap->info(), pmap->addr(), pmap->rowBytes());
 }
 
 bool SkBitmap::extractAlpha(SkBitmap* dst, const SkPaint* paint,
@@ -632,14 +628,11 @@ void SkBitmap::validate() const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool SkBitmap::peekPixels(SkPixmap* pmap) const {
+std::optional<SkPixmap> SkBitmap::peekPixmap() const {
     if (this->getPixels()) {
-        if (pmap) {
-            *pmap = fPixmap;
-        }
-        return true;
+        return fPixmap;
     }
-    return false;
+    return {};
 }
 
 sk_sp<SkImage> SkBitmap::asImage() const { return SkImages::RasterFromBitmap(*this); }

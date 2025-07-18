@@ -37,11 +37,13 @@ SkImage::SkImage(const SkImageInfo& info, uint32_t uniqueID)
 }
 
 bool SkImage::peekPixels(SkPixmap* pm) const {
-    SkPixmap tmp;
-    if (!pm) {
-        pm = &tmp;
+    if (auto tmp = as_IB(this)->onPeekPixmap()) {
+        if (pm) {
+            *pm = *tmp;
+        }
+        return true;
     }
-    return as_IB(this)->onPeekPixels(pm);
+    return false;
 }
 
 bool SkImage::readPixels(GrDirectContext* dContext, const SkImageInfo& dstInfo, void* dstPixels,
@@ -169,12 +171,12 @@ bool SkImage::scalePixels(const SkPixmap& dst, const SkSamplingOptions& sampling
     //
     SkBitmap bm;
     if (as_IB(this)->getROPixels(dContext, &bm, chint)) {
-        SkPixmap pmap;
+        auto pmap = bm.peekPixmap();
         // Note: By calling the pixmap scaler, we never cache the final result, so the chint
         //       is (currently) only being applied to the getROPixels. If we get a request to
         //       also attempt to cache the final (scaled) result, we would add that logic here.
         //
-        return bm.peekPixels(&pmap) && pmap.scalePixels(dst, sampling);
+        return pmap.has_value() && pmap->scalePixels(dst, sampling);
     }
     return false;
 }

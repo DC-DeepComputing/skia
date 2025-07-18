@@ -88,30 +88,29 @@ static void test_encode(skiatest::Reporter* r, SkEncodedImageFormat format) {
         return;
     }
 
-    SkPixmap src;
-    success = bitmap.peekPixels(&src);
-    REPORTER_ASSERT(r, success);
-    if (!success) {
+    auto src = bitmap.peekPixmap();
+    REPORTER_ASSERT(r, src.has_value());
+    if (!src) {
         return;
     }
 
     SkDynamicMemoryWStream dst0, dst1, dst2, dst3;
-    success = encode(format, &dst0, src);
+    success = encode(format, &dst0, *src);
     REPORTER_ASSERT(r, success);
 
-    auto encoder1 = make(format, &dst1, src);
-    for (int i = 0; i < src.height(); i++) {
+    auto encoder1 = make(format, &dst1, *src);
+    for (int i = 0; i < src->height(); i++) {
         success = encoder1->encodeRows(1);
         REPORTER_ASSERT(r, success);
     }
 
-    auto encoder2 = make(format, &dst2, src);
-    for (int i = 0; i < src.height(); i+=3) {
+    auto encoder2 = make(format, &dst2, *src);
+    for (int i = 0; i < src->height(); i+=3) {
         success = encoder2->encodeRows(3);
         REPORTER_ASSERT(r, success);
     }
 
-    auto encoder3 = make(format, &dst3, src);
+    auto encoder3 = make(format, &dst3, *src);
     success = encoder3->encodeRows(200);
     REPORTER_ASSERT(r, success);
 
@@ -224,17 +223,16 @@ void test_png_encoding_roundtrip_from_specific_source_format(skiatest::Reporter*
     // Encode `originalBitmap` into `encodedPng`.
     sk_sp<SkData> encodedPng;
     {
-        SkPixmap src;
-        bool success = originalBitmap.peekPixels(&src);
-        REPORTER_ASSERT(r, success);
-        if (!success) {
+        auto src = originalBitmap.peekPixmap();
+        REPORTER_ASSERT(r, src.has_value());
+        if (!src) {
             return;
         }
         SkDynamicMemoryWStream buf;
 #if defined(SK_CODEC_ENCODES_PNG_WITH_RUST)
-        success = SkPngRustEncoder::Encode(&buf, src, SkPngRustEncoder::Options());
+        bool success = SkPngRustEncoder::Encode(&buf, *src, SkPngRustEncoder::Options());
 #else
-        success = SkPngEncoder::Encode(&buf, src, SkPngEncoder::Options());
+        bool success = SkPngEncoder::Encode(&buf, *src, SkPngEncoder::Options());
 #endif
         REPORTER_ASSERT(r, success);
         if (!success) {
@@ -366,24 +364,23 @@ DEF_TEST(Encode_JpegDownsample, r) {
         return;
     }
 
-    SkPixmap src;
-    success = bitmap.peekPixels(&src);
-    REPORTER_ASSERT(r, success);
-    if (!success) {
+    auto src = bitmap.peekPixmap();
+    REPORTER_ASSERT(r, src.has_value());
+    if (!src) {
         return;
     }
 
     SkDynamicMemoryWStream dst0, dst1, dst2;
     SkJpegEncoder::Options options;
-    success = SkJpegEncoder::Encode(&dst0, src, options);
+    success = SkJpegEncoder::Encode(&dst0, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fDownsample = SkJpegEncoder::Downsample::k422;
-    success = SkJpegEncoder::Encode(&dst1, src, options);
+    success = SkJpegEncoder::Encode(&dst1, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fDownsample = SkJpegEncoder::Downsample::k444;
-    success = SkJpegEncoder::Encode(&dst2, src, options);
+    success = SkJpegEncoder::Encode(&dst2, *src, options);
     REPORTER_ASSERT(r, success);
 
     sk_sp<SkData> data0 = dst0.detachAsData();
@@ -478,27 +475,26 @@ DEF_TEST(Encode_PngOptions, r) {
         return;
     }
 
-    SkPixmap src;
-    success = bitmap.peekPixels(&src);
-    REPORTER_ASSERT(r, success);
-    if (!success) {
+    auto src = bitmap.peekPixmap();
+    REPORTER_ASSERT(r, src.has_value());
+    if (!src) {
         return;
     }
 
     SkDynamicMemoryWStream dst0, dst1, dst2;
     SkPngEncoder::Options options;
-    success = SkPngEncoder::Encode(&dst0, src, options);
+    success = SkPngEncoder::Encode(&dst0, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fFilterFlags = SkPngEncoder::FilterFlag::kUp;
-    success = SkPngEncoder::Encode(&dst1, src, options);
+    success = SkPngEncoder::Encode(&dst1, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fZLibLevel = 3;
-    success = SkPngEncoder::Encode(&dst2, src, options);
+    success = SkPngEncoder::Encode(&dst2, *src, options);
     REPORTER_ASSERT(r, success);
 
-    testPngComments(src, options, r);
+    testPngComments(*src, options, r);
 
     sk_sp<SkData> data0 = dst0.detachAsData();
     sk_sp<SkData> data1 = dst1.detachAsData();
@@ -578,10 +574,9 @@ DEF_TEST(Encode_WebpOptions, r) {
         return;
     }
 
-    SkPixmap src;
-    success = bitmap.peekPixels(&src);
-    REPORTER_ASSERT(r, success);
-    if (!success) {
+    auto src = bitmap.peekPixmap();
+    REPORTER_ASSERT(r, src.has_value());
+    if (!src) {
         return;
     }
 
@@ -589,21 +584,21 @@ DEF_TEST(Encode_WebpOptions, r) {
     SkWebpEncoder::Options options;
     options.fCompression = SkWebpEncoder::Compression::kLossless;
     options.fQuality = 0.0f;
-    success = SkWebpEncoder::Encode(&dst0, src, options);
+    success = SkWebpEncoder::Encode(&dst0, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fQuality = 100.0f;
-    success = SkWebpEncoder::Encode(&dst1, src, options);
+    success = SkWebpEncoder::Encode(&dst1, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fCompression = SkWebpEncoder::Compression::kLossy;
     options.fQuality = 100.0f;
-    success = SkWebpEncoder::Encode(&dst2, src, options);
+    success = SkWebpEncoder::Encode(&dst2, *src, options);
     REPORTER_ASSERT(r, success);
 
     options.fCompression = SkWebpEncoder::Compression::kLossy;
     options.fQuality = 50.0f;
-    success = SkWebpEncoder::Encode(&dst3, src, options);
+    success = SkWebpEncoder::Encode(&dst3, *src, options);
     REPORTER_ASSERT(r, success);
 
     sk_sp<SkData> data0 = dst0.detachAsData();

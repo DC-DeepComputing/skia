@@ -361,19 +361,19 @@ void SkDraw::drawBitmap(const SkBitmap& bitmap, const SkMatrix& prematrix,
         // It is safe to call lock pixels now, since we know the matrix is
         // (more or less) identity.
         //
-        SkPixmap pmap;
-        if (!bitmap.peekPixels(&pmap)) {
+        auto pmap = bitmap.peekPixmap();
+        if (!pmap) {
             return;
         }
         int ix = SkScalarRoundToInt(matrix.getTranslateX());
         int iy = SkScalarRoundToInt(matrix.getTranslateY());
-        if (clipHandlesSprite(*fRC, ix, iy, pmap)) {
+        if (clipHandlesSprite(*fRC, ix, iy, *pmap)) {
             SkSTArenaAlloc<kSkBlitterContextSize> allocator;
             // blitter will be owned by the allocator.
-            SkBlitter* blitter = SkBlitter::ChooseSprite(fDst, *paint, pmap, ix, iy, &allocator,
+            SkBlitter* blitter = SkBlitter::ChooseSprite(fDst, *paint, *pmap, ix, iy, &allocator,
                                                          fRC->clipShader());
             if (blitter) {
-                SkScan::FillIRect(SkIRect::MakeXYWH(ix, iy, pmap.width(), pmap.height()),
+                SkScan::FillIRect(SkIRect::MakeXYWH(ix, iy, pmap->width(), pmap->height()),
                                   *fRC, blitter);
                 return;
             }
@@ -424,15 +424,15 @@ void SkDraw::drawSprite(const SkBitmap& bitmap, int x, int y, const SkPaint& ori
     SkPaint paint(origPaint);
     paint.setStyle(SkPaint::kFill_Style);
 
-    SkPixmap pmap;
-    if (!bitmap.peekPixels(&pmap)) {
+    auto pmap = bitmap.peekPixmap();
+    if (!pmap) {
         return;
     }
 
-    if (nullptr == paint.getColorFilter() && clipHandlesSprite(*fRC, x, y, pmap)) {
+    if (nullptr == paint.getColorFilter() && clipHandlesSprite(*fRC, x, y, *pmap)) {
         // blitter will be owned by the allocator.
         SkSTArenaAlloc<kSkBlitterContextSize> allocator;
-        SkBlitter* blitter = SkBlitter::ChooseSprite(fDst, paint, pmap, x, y, &allocator,
+        SkBlitter* blitter = SkBlitter::ChooseSprite(fDst, paint, *pmap, x, y, &allocator,
                                                      fRC->clipShader());
         if (blitter) {
             SkScan::FillIRect(bounds, *fRC, blitter);
@@ -500,13 +500,13 @@ void SkDraw::drawBitmapAsMask(const SkBitmap& bitmap, const SkSamplingOptions& s
         int ix = SkScalarRoundToInt(fCTM->getTranslateX());
         int iy = SkScalarRoundToInt(fCTM->getTranslateY());
 
-        SkPixmap pmap;
-        if (!bitmap.peekPixels(&pmap)) {
+        auto pmap = bitmap.peekPixmap();
+        if (!pmap) {
             return;
         }
-        SkMask mask(pmap.addr8(0, 0),
-                    SkIRect::MakeXYWH(ix, iy, pmap.width(), pmap.height()),
-                    SkToU32(pmap.rowBytes()),
+        SkMask mask(pmap->addr8(0, 0),
+                    SkIRect::MakeXYWH(ix, iy, pmap->width(), pmap->height()),
+                    SkToU32(pmap->rowBytes()),
                     SkMask::kA8_Format);
 
         this->drawDevMask(mask, paint, paintMatrix);

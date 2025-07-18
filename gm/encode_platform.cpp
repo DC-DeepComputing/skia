@@ -42,26 +42,26 @@ static const struct {
 } // anonymous namespace
 
 static sk_sp<SkData> encode_data(SkEncodedImageFormat type, const SkBitmap& bitmap, int quality) {
-    SkPixmap src;
-    if (!bitmap.peekPixels(&src)) {
+    auto src = bitmap.peekPixmap();
+    if (!src) {
         return nullptr;
     }
     SkDynamicMemoryWStream buf;
     switch (type) {
         case SkEncodedImageFormat::kPNG: {
-            bool success = SkPngEncoder::Encode(&buf, src, {});
+            bool success = SkPngEncoder::Encode(&buf, *src, {});
             return success ? buf.detachAsData() : nullptr;
         }
         case SkEncodedImageFormat::kJPEG: {
             SkJpegEncoder::Options opts;
             opts.fQuality = quality;
-            bool success = SkJpegEncoder::Encode(&buf, src, opts);
+            bool success = SkJpegEncoder::Encode(&buf, *src, opts);
             return success ? buf.detachAsData() : nullptr;
         }
         case SkEncodedImageFormat::kWEBP: {
             SkWebpEncoder::Options opts;
             opts.fQuality = quality;
-            bool success = SkWebpEncoder::Encode(&buf, src, opts);
+            bool success = SkWebpEncoder::Encode(&buf, *src, opts);
             return success ? buf.detachAsData() : nullptr;
         }
         default:

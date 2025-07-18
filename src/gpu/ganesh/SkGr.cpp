@@ -191,7 +191,7 @@ std::tuple<GrSurfaceProxyView, GrColorType> GrMakeCachedBitmapProxyView(
         const SkBitmap& bitmap,
         std::string_view label,
         skgpu::Mipmapped mipmapped) {
-    if (!bitmap.peekPixels(nullptr)) {
+    if (!bitmap.peekPixmap()) {
         return {};
     }
 

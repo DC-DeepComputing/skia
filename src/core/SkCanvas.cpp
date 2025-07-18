@@ -385,16 +385,14 @@ bool SkCanvas::readPixels(const SkImageInfo& dstInfo, void* dstP, size_t rowByte
 }
 
 bool SkCanvas::readPixels(const SkBitmap& bm, int x, int y) {
-    SkPixmap pm;
-    return bm.peekPixels(&pm) && this->readPixels(pm, x, y);
+    auto pm = bm.peekPixmap();
+    return pm.has_value() && this->readPixels(*pm, x, y);
 }
 
 bool SkCanvas::writePixels(const SkBitmap& bitmap, int x, int y) {
-    SkPixmap pm;
-    if (bitmap.peekPixels(&pm)) {
-        return this->writePixels(pm.info(), pm.addr(), pm.rowBytes(), x, y);
-    }
-    return false;
+    const auto pm = bitmap.peekPixmap();
+    return pm.has_value() &&
+           this->writePixels(pm->info(), pm->addr(), pm->rowBytes(), x, y);
 }
 
 bool SkCanvas::writePixels(const SkImageInfo& srcInfo, const void* pixels, size_t rowBytes,

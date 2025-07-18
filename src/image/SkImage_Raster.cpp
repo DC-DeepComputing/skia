@@ -74,8 +74,8 @@ bool SkImage_Raster::onReadPixels(GrDirectContext*,
     return shallowCopy.readPixels(dstInfo, dstPixels, dstRowBytes, srcX, srcY);
 }
 
-bool SkImage_Raster::onPeekPixels(SkPixmap* pm) const {
-    return fBitmap.peekPixels(pm);
+std::optional<SkPixmap> SkImage_Raster::onPeekPixmap() const {
+    return fBitmap.peekPixmap();
 }
 
 bool SkImage_Raster::getROPixels(GrDirectContext*, SkBitmap* dst, CachingHint) const {
@@ -174,9 +174,8 @@ sk_sp<SkImage> SkImage_Raster::onMakeSubset(SkRecorder*,
 sk_sp<SkImage> SkMakeImageFromRasterBitmapPriv(const SkBitmap& bm, SkCopyPixelsMode cpm,
                                                uint32_t idForCopy) {
     if (kAlways_SkCopyPixelsMode == cpm || (!bm.isImmutable() && kNever_SkCopyPixelsMode != cpm)) {
-        SkPixmap pmap;
-        if (bm.peekPixels(&pmap)) {
-            return MakeRasterCopyPriv(pmap, idForCopy);
+        if (auto pmap = bm.peekPixmap()) {
+            return MakeRasterCopyPriv(*pmap, idForCopy);
         } else {
             return sk_sp<SkImage>();
         }
@@ -216,8 +215,7 @@ sk_sp<SkImage> SkImage_Raster::makeColorTypeAndColorSpace(SkRecorder*,
                                                           SkColorType targetColorType,
                                                           sk_sp<SkColorSpace> targetColorSpace,
                                                           RequiredProperties) const {
-    SkPixmap src;
-    SkAssertResult(fBitmap.peekPixels(&src));
+    SkPixmap src = fBitmap.peekPixmap().value();
 
     SkBitmap dst;
     if (!dst.tryAllocPixels(
