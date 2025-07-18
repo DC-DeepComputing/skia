@@ -310,6 +310,7 @@ skia_core_sources = [
   "$_src/core/SkBlurMaskFilterImpl.cpp",
   "$_src/core/SkBlurMaskFilterImpl.h",
   "$_src/core/SkCPUContext.cpp",
+  "$_src/core/SkCPUContextImpl.cpp",
   "$_src/core/SkCPUContextImpl.h",
   "$_src/core/SkCPURecorder.cpp",
   "$_src/core/SkCPURecorderImpl.h",

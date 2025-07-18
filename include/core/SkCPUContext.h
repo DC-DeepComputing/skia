@@ -11,12 +11,21 @@
 
 #include <memory>
 
+class SkDiscardableMemory;
+
 namespace skcpu {
 class Recorder;
 
+using DiscardableFactory = SkDiscardableMemory* (*)(size_t bytes);
+
 class SK_API Context {
 public:
-    struct Options {};
+    struct Options {
+        // One of these two options may be set to configure caching
+        // inside of Skia.
+        size_t fResourceCacheByteLimit = 0;
+        DiscardableFactory fResourceCacheFactory = nullptr;
+    };
 
     std::unique_ptr<Recorder> makeRecorder() const;
 

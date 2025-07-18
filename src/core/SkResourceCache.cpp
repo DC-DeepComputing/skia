@@ -536,6 +536,8 @@ void SkResourceCache::PostPurgeSharedID(uint64_t sharedID) {
     }
 }
 
+SkResourceCache* SkSynchronizedResourceCache::Global() { return get_cache(); }
+
 ///////////////////////////////////////////////////////////////////////////////
 
 static void dump_visitor(const SkResourceCache::Rec& rec, void*) {

@@ -279,6 +279,7 @@ skia_filegroup(
         "SkBlurMask.cpp",
         "SkBlurMaskFilterImpl.cpp",
         "SkCPUContext.cpp",
+        "SkCPUContextImpl.cpp",
         "SkCPURecorder.cpp",
         "SkCachedData.cpp",
         "SkCanvas.cpp",

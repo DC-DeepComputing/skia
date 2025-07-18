@@ -9,11 +9,26 @@
 #include "include/core/SkTypes.h"
 #include "src/core/SkCPUContextImpl.h"
 #include "src/core/SkCPURecorderImpl.h"
+#include "src/core/SkSynchronizedResourceCache.h"
+
+#include <memory>
 
 namespace skcpu {
 
 std::unique_ptr<const Context> Context::Make(const Context::Options& opts) {
-    return std::make_unique<ContextImpl>();
+    std::unique_ptr<SkResourceCache> cache = nullptr;
+    SkResourceCache* cachePtr = nullptr;
+    if (opts.fResourceCacheByteLimit || opts.fResourceCacheFactory) {
+        if (opts.fResourceCacheFactory) {
+            cache = std::make_unique<SkSynchronizedResourceCache>(opts.fResourceCacheFactory);
+        } else {
+            cache = std::make_unique<SkSynchronizedResourceCache>(opts.fResourceCacheByteLimit);
+        }
+        cachePtr = cache.get();
+    } else {
+        cachePtr = SkSynchronizedResourceCache::Global();
+    }
+    return std::make_unique<ContextImpl>(std::move(cache), cachePtr);
 }
 
 std::unique_ptr<const Context> Context::Make() {
