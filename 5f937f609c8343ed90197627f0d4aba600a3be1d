@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ed7965c_f8048729",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-18T17:29:02Z",
+      "side": 1,
+      "message": "Is this the right way around? This looks like a preConcat when we were doing a postConcat?\n\nDirectly refactoring to `return this-\u003egetLocalMatrix().postConcat(this-\u003egetMatrixFrom2x2());` would be possibly more efficient, since it doesn\u0027t require making another intermediate matrix. This would be more or less the same as adding an `SkMatrix::operator*\u003d` I think (if done the right way around).",
+      "revId": "5f937f609c8343ed90197627f0d4aba600a3be1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
