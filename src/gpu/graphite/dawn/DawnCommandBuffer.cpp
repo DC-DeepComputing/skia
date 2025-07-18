@@ -318,18 +318,18 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     SkASSERT(!fActiveRenderPassEncoder);
     SkASSERT(!fActiveComputePassEncoder);
 
-    constexpr static wgpu::LoadOp wgpuLoadActionMap[]{
+    const wgpu::LoadOp wgpuLoadActionMap[]{
             wgpu::LoadOp::Load,
             wgpu::LoadOp::Clear,
-            wgpu::LoadOp::Clear  // Don't care
+            fSharedContext->dawnCaps()->discardLoadOp()
     };
     static_assert((int)LoadOp::kLoad == 0);
     static_assert((int)LoadOp::kClear == 1);
     static_assert((int)LoadOp::kDiscard == 2);
     static_assert(std::size(wgpuLoadActionMap) == kLoadOpCount);
 
-    constexpr static wgpu::StoreOp wgpuStoreActionMap[]{wgpu::StoreOp::Store,
-                                                        wgpu::StoreOp::Discard};
+    const wgpu::StoreOp wgpuStoreActionMap[]{wgpu::StoreOp::Store,
+                                             fSharedContext->dawnCaps()->discardStoreOp()};
     static_assert((int)StoreOp::kStore == 0);
     static_assert((int)StoreOp::kDiscard == 1);
     static_assert(std::size(wgpuStoreActionMap) == kStoreOpCount);
@@ -401,7 +401,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
 
             // Inclusion of a resolve texture implies the client wants to finish the
             // renderpass with a resolve.
-            SkASSERT(wgpuColorAttachment.storeOp == wgpu::StoreOp::Discard);
+            SkASSERT(colorInfo.fStoreOp == StoreOp::kDiscard);
             // But it also means we might have to load the resolve texture into the MSAA color attachment
 
             if (fSharedContext->dawnCaps()->emulateLoadStoreResolve()) {

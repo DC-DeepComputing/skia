@@ -18,6 +18,25 @@
 
 namespace skgpu {
 
+enum VendorId {
+    kAMD_Vendor = 0x1002,
+    kApple_Vendor = 0x106b,
+    kARM_Vendor = 0x13B5,
+    kBroadcom_Vendor = 0x14E4,
+    kGoogle_Vendor = 0x1AE0,
+    kHuawei_Vendor = 0x19e5,
+    kImagination_Vendor = 0x1010,
+    kIntel_Vendor = 0x8086,
+    kKazan_Vendor = 0x10003,
+    kMesa_Vendor = 0x10005,
+    kNvidia_Vendor = 0x10DE,
+    kQualcomm_Vendor = 0x5143,
+    kQualcommWin_Vendor = 0x4D4F4351,
+    kSamsung_Vendor = 0x144D,
+    kVeriSilicon_Vendor = 0x10002,
+    kVivante_Vendor = 0x10001,
+};
+
 enum class ThreadSafe : bool {
     kNo = false,
     kYes = true,

@@ -46,22 +46,6 @@ struct VulkanInterface;
 struct VulkanBackendContext;
 class VulkanExtensions;
 
-enum VkVendor {
-    kAMD_VkVendor = 0x1002,
-    kARM_VkVendor = 0x13B5,
-    kBroadcom_VkVendor = 0x14E4,
-    kGoogle_VkVendor = 0x1AE0,
-    kImagination_VkVendor = 0x1010,
-    kIntel_VkVendor = 0x8086,
-    kKazan_VkVendor = 0x10003,
-    kMesa_VkVendor = 0x10005,
-    kNvidia_VkVendor = 0x10DE,
-    kQualcomm_VkVendor = 0x5143,
-    kSamsung_VkVendor = 0x144D,
-    kVeriSilicon_VkVendor = 0x10002,
-    kVivante_VkVendor = 0x10001,
-};
-
 // GPU driver version, used for driver bug workarounds.
 struct DriverVersion {
     constexpr DriverVersion() {}
