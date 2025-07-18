@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6307a760_cc525d51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-18T16:23:54Z",
+      "side": 1,
+      "message": "I clarified early exits in SkScalerContext.cpp -- ptal",
+      "revId": "5542f6ded8eee144a7bdb9453d3b88256f105eda",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
