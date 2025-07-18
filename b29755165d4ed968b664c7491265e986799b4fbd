@@ -33,6 +33,57 @@
       "message": "Proxying LGTM from jzern@, but not auto-submitting just in case you\u0027d like review from ccameron@ first.",
       "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9554e659_42154ef0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-07-18T18:15:35Z",
+      "side": 1,
+      "message": "lgtm with a suggestion",
+      "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f570643d_6fbed347",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-07-18T18:15:35Z",
+      "side": 1,
+      "message": "```suggestion\n        // TODO(https://issues.skia.org/issues/432721733): Create a version of\n        // SkEncodedInfo::ICCProfile::Make that directly takes CICP primaries\n        // and transfer.\n        skcms_ICCProfile skcmsProfile;\n```",
+      "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f8441598_34adb4f2",
+        "filename": "src/codec/SkCrabbyAvifCodec.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 255,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-07-18T18:15:35Z",
+      "side": 1,
+      "message": "I\u0027d go a step further and suggest that we should do this regardless of the transfer characteristics.\n\nFor example, if an AVIF image indicates (P3 primaries and sRGB transfer) in CICP but not ICC profile, we\u0027d want that preserved, too.\n\nIn fact it would be nice to have something to the effect of:\n```\n  SkEncodedInfo::ICCProfile::Make(int primaries, int transfer)\n```\nand have that populate the matrix and TRC tags and everything else, in addition to the CICP.\n\nSo I\u0027ve turned this into a whole project 😞 I filed [this issue](https://issues.skia.org/issues/432721733) on that project. Just add a TODO pointing to that, and land this as-is.\n\n(Also, it\u0027s really unfortunate that ICC profiles included the matrix and range parameters, since they\u0027re historically separate).",
+      "revId": "b29755165d4ed968b664c7491265e986799b4fbd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
