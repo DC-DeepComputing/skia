@@ -604,6 +604,74 @@ static bool only_scale_and_translate(unsigned mask) {
     return 0 == (mask & (SkMatrix::kAffine_Mask | SkMatrix::kPerspective_Mask));
 }
 
+SkMatrix::SkMatrix(const SkMatrix& a, const SkMatrix& b) {
+    TypeMask aType = a.getType();
+    TypeMask bType = b.getType();
+
+    if (a.isTriviallyIdentity()) {
+        *this = b;
+    } else if (b.isTriviallyIdentity()) {
+        *this = a;
+    } else if (only_scale_and_translate(aType | bType)) {
+        this->setScaleTranslate(a.fMat[kMScaleX] * b.fMat[kMScaleX],
+                                a.fMat[kMScaleY] * b.fMat[kMScaleY],
+                                a.fMat[kMScaleX] * b.fMat[kMTransX] + a.fMat[kMTransX],
+                                a.fMat[kMScaleY] * b.fMat[kMTransY] + a.fMat[kMTransY]);
+    } else {
+        if ((aType | bType) & kPerspective_Mask) {
+            fMat[kMScaleX] = rowcol3(&a.fMat[0], &b.fMat[0]);
+            fMat[kMSkewX]  = rowcol3(&a.fMat[0], &b.fMat[1]);
+            fMat[kMTransX] = rowcol3(&a.fMat[0], &b.fMat[2]);
+            fMat[kMSkewY]  = rowcol3(&a.fMat[3], &b.fMat[0]);
+            fMat[kMScaleY] = rowcol3(&a.fMat[3], &b.fMat[1]);
+            fMat[kMTransY] = rowcol3(&a.fMat[3], &b.fMat[2]);
+            fMat[kMPersp0] = rowcol3(&a.fMat[6], &b.fMat[0]);
+            fMat[kMPersp1] = rowcol3(&a.fMat[6], &b.fMat[1]);
+            fMat[kMPersp2] = rowcol3(&a.fMat[6], &b.fMat[2]);
+
+            this->setTypeMask(kUnknown_Mask);
+        } else {
+            fMat[kMScaleX] = muladdmul(a.fMat[kMScaleX],
+                                       b.fMat[kMScaleX],
+                                       a.fMat[kMSkewX],
+                                       b.fMat[kMSkewY]);
+
+            fMat[kMSkewX]  = muladdmul(a.fMat[kMScaleX],
+                                       b.fMat[kMSkewX],
+                                       a.fMat[kMSkewX],
+                                       b.fMat[kMScaleY]);
+
+            fMat[kMTransX] = muladdmul(a.fMat[kMScaleX],
+                                       b.fMat[kMTransX],
+                                       a.fMat[kMSkewX],
+                                       b.fMat[kMTransY]) + a.fMat[kMTransX];
+
+            fMat[kMSkewY]  = muladdmul(a.fMat[kMSkewY],
+                                       b.fMat[kMScaleX],
+                                       a.fMat[kMScaleY],
+                                       b.fMat[kMSkewY]);
+
+            fMat[kMScaleY] = muladdmul(a.fMat[kMSkewY],
+                                       b.fMat[kMSkewX],
+                                       a.fMat[kMScaleY],
+                                       b.fMat[kMScaleY]);
+
+            fMat[kMTransY] = muladdmul(a.fMat[kMSkewY],
+                                       b.fMat[kMTransX],
+                                       a.fMat[kMScaleY],
+                                       b.fMat[kMTransY]) + a.fMat[kMTransY];
+
+            fMat[kMPersp0] = 0;
+            fMat[kMPersp1] = 0;
+            fMat[kMPersp2] = 1;
+            //SkDebugf("Concat mat non-persp type: %d\n", tmp.getType());
+            //SkASSERT(!(tmp.getType() & kPerspective_Mask));
+            this->setTypeMask(kUnknown_Mask | kOnlyPerspectiveValid_Mask);
+        }
+    }
+}
+
+
 SkMatrix& SkMatrix::setConcat(const SkMatrix& a, const SkMatrix& b) {
     TypeMask aType = a.getType();
     TypeMask bType = b.getType();
