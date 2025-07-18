@@ -14,9 +14,13 @@
 namespace skcpu {
 class ContextImpl final : public Context {
 public:
-    ContextImpl() = default;
+    ContextImpl(std::unique_ptr<SkResourceCache>, SkResourceCache*);
 
     static const ContextImpl* TODO();
+
+private:
+    std::unique_ptr<SkResourceCache> fCache;
+    SkResourceCache* fCachePtr;
 };
 }  // namespace skcpu
 

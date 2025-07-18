@@ -43,6 +43,8 @@ public:
     explicit SkSynchronizedResourceCache(size_t byteLimit);
     ~SkSynchronizedResourceCache() override;
 
+    static SkResourceCache* Global();
+
 private:
     mutable SkMutex fMutex;
 };
