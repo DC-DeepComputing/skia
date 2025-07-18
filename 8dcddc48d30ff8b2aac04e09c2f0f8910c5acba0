@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68f6bc5b_1d8108ec",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-18T21:45:44Z",
+      "side": 1,
+      "message": "sorry about this -- had to manually rebase (see rev 5-\u003e6)\nPTAL",
+      "revId": "8dcddc48d30ff8b2aac04e09c2f0f8910c5acba0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
