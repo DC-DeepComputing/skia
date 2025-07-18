@@ -83,6 +83,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9645669_876b7ae2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 3512152
+      },
+      "writtenOn": "2025-07-18T18:53:00Z",
+      "side": 1,
+      "message": "\u003e  Did this come up because of updating to 139?\n\nYes. I did a bit more digging on what exactly is going on with our Skia build. We\u0027re upgrading ourselves from m129 to m139.\n\nWe\u0027re using vcpkg at the moment, which does some... interesting transformations to create a CMake build let\u0027s say. But we\u0027re also building up a flatpak build that builds skia using some hand-crafted gn args.\n\nIt looks like the main culprit may be skparagraph. As part of vcpkg\u0027s update to m134, they added a patch to make skparagraph work better in a component build. https://github.com/microsoft/vcpkg/pull/43913/files. Looking back at my discussions with Luke, I think the issue is that some component that uses these base headers gets built into a separate shlib in a component build. The more I look at it the more confused I get though. iirc the vcpkg build ends up creating a separate lib for skcms rather than bundling it into the main skia component .so, which has caused us a bunch of grief as well.",
+      "parentUuid": "9fff6c1e_75b6b1de",
+      "range": {
+        "startLine": 9,
+        "startChar": 48,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3bb3241e_bde183d2",
