@@ -63,6 +63,10 @@ public:
     */
     constexpr SkMatrix() : SkMatrix(1,0,0, 0,1,0, 0,0,1, kIdentity_Mask | kRectStaysRect_Mask) {}
 
+    SkMatrix(const SkMatrix& lhs, const SkMatrix& rhs) {
+        this->setConcat(lhs, rhs);
+    }
+
     /** Sets SkMatrix to scale by (sx, sy). Returned matrix is:
 
             | sx  0  0 |
@@ -1741,13 +1745,11 @@ public:
         @return   SkMatrix computed from a times b
     */
     static SkMatrix Concat(const SkMatrix& a, const SkMatrix& b) {
-        SkMatrix result;
-        result.setConcat(a, b);
-        return result;
+        return SkMatrix(a, b);
     }
 
     friend SkMatrix operator*(const SkMatrix& a, const SkMatrix& b) {
-        return Concat(a, b);
+        return SkMatrix(a, b);
     }
 
     /** Sets internal cache to unknown state. Use to force update after repeated
