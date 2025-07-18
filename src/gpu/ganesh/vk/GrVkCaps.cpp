@@ -394,7 +394,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
     // we do expect this to be a big win on tilers.
     //
     // On ARM devices we are seeing an average perf win of around 50%-60% across the board.
-    if (skgpu::kARM_VkVendor == properties.vendorID) {
+    if (skgpu::kARM_Vendor == properties.vendorID) {
         // We currently don't see any Vulkan devices that expose a memory type that supports
         // both lazy allocated and protected memory. So for simplicity we just disable the
         // use of memoryless attachments when using protected memory. In the future, if we ever
@@ -407,7 +407,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
     this->initGrCaps(vkInterface, physDev, properties, memoryProperties, features, extensions);
     this->initShaderCaps(properties, features);
 
-    if (skgpu::kQualcomm_VkVendor == properties.vendorID) {
+    if (skgpu::kQualcomm_Vendor == properties.vendorID) {
         // A "clear" load for atlases runs faster on QC than a "discard" load followed by a
         // scissored clear.
         // On NVIDIA and Intel, the discard load followed by clear is faster.
@@ -415,8 +415,8 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fPreferFullscreenClears = true;
     }
 
-    if (properties.vendorID == skgpu::kNvidia_VkVendor ||
-        properties.vendorID == skgpu::kAMD_VkVendor) {
+    if (properties.vendorID == skgpu::kNvidia_Vendor ||
+        properties.vendorID == skgpu::kAMD_Vendor) {
         // On discrete GPUs it can be faster to read gpu only memory compared to memory that is also
         // mappable on the host.
         fGpuOnlyBuffersMorePerformant = true;
@@ -429,14 +429,14 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
         fShouldPersistentlyMapCpuToGpuBuffers = false;
     }
 
-    if (skgpu::kQualcomm_VkVendor == properties.vendorID) {
+    if (skgpu::kQualcomm_Vendor == properties.vendorID) {
         // On Qualcomm it looks like using vkCmdUpdateBuffer is slower than using a transfer buffer
         // even for small sizes.
         fAvoidUpdateBuffers = true;
     }
 
     fNativeDrawIndirectSupport = features.features.drawIndirectFirstInstance;
-    if (properties.vendorID == skgpu::kQualcomm_VkVendor) {
+    if (properties.vendorID == skgpu::kQualcomm_Vendor) {
         // Indirect draws seem slow on QC. Disable until we can investigate. skbug.com/40042512
         fNativeDrawIndirectSupport = false;
     }
@@ -447,7 +447,7 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
     }
 
 #ifdef SK_BUILD_FOR_UNIX
-    if (skgpu::kNvidia_VkVendor == properties.vendorID) {
+    if (skgpu::kNvidia_Vendor == properties.vendorID) {
         // On nvidia linux we see a big perf regression when not using dedicated image allocations.
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
@@ -470,12 +470,12 @@ void GrVkCaps::init(const GrContextOptions& contextOptions,
 
 void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDeviceProperties& properties) {
 #if defined(SK_BUILD_FOR_WIN)
-    if (skgpu::kNvidia_VkVendor == properties.vendorID ||
-        skgpu::kIntel_VkVendor == properties.vendorID) {
+    if (skgpu::kNvidia_Vendor == properties.vendorID ||
+        skgpu::kIntel_Vendor == properties.vendorID) {
         fMustSyncCommandBuffersWithQueue = true;
     }
 #elif defined(SK_BUILD_FOR_ANDROID)
-    if (skgpu::kImagination_VkVendor == properties.vendorID) {
+    if (skgpu::kImagination_Vendor == properties.vendorID) {
         fMustSyncCommandBuffersWithQueue = true;
     }
 #endif
@@ -493,20 +493,20 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
 #endif
 
     // Protected memory features have problems in Android P and earlier.
-    if (fSupportsProtectedContent && (skgpu::kQualcomm_VkVendor == properties.vendorID)) {
+    if (fSupportsProtectedContent && (skgpu::kQualcomm_Vendor == properties.vendorID)) {
         if (androidAPIVersion <= 28) {
             fSupportsProtectedContent = false;
         }
     }
 
     // On Mali galaxy s7 we see lots of rendering issues when we suballocate VkImages.
-    if (skgpu::kARM_VkVendor == properties.vendorID && androidAPIVersion <= 28) {
+    if (skgpu::kARM_Vendor == properties.vendorID && androidAPIVersion <= 28) {
         fShouldAlwaysUseDedicatedImageMemory = true;
     }
 
     // On Mali galaxy s7 and s9 we see lots of rendering issues with image filters dropping out when
     // using only primary command buffers. We also see issues on the P30 running android 28.
-    if (skgpu::kARM_VkVendor == properties.vendorID && androidAPIVersion <= 28) {
+    if (skgpu::kARM_Vendor == properties.vendorID && androidAPIVersion <= 28) {
         fPreferPrimaryOverSecondaryCommandBuffers = false;
         // If we are using secondary command buffers our code isn't setup to insert barriers into
         // the secondary cb so we need to disable support for them.
@@ -517,22 +517,22 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // We've seen numerous driver bugs on qualcomm devices running on android P (api 28) or earlier
     // when trying to using discardable msaa attachments and loading from resolve. So we disable the
     // feature for those devices.
-    if (properties.vendorID == skgpu::kQualcomm_VkVendor && androidAPIVersion <= 28) {
+    if (properties.vendorID == skgpu::kQualcomm_Vendor && androidAPIVersion <= 28) {
         fPreferDiscardableMSAAAttachment = false;
         fSupportsDiscardableMSAAForDMSAA = false;
     }
 
     // On the Mali G76 and T880, the Perlin noise code needs to aggressively snap to multiples
     // of 1/255 to avoid artifacts in the double table lookup.
-    if (skgpu::kARM_VkVendor == properties.vendorID) {
+    if (skgpu::kARM_Vendor == properties.vendorID) {
         fShaderCaps->fPerlinNoiseRoundingFix = true;
     }
 
     // On various devices, when calling vkCmdClearAttachments on a primary command buffer, it
     // corrupts the bound buffers on the command buffer. As a workaround we invalidate our knowledge
     // of bound buffers so that we will rebind them on the next draw.
-    if (skgpu::kQualcomm_VkVendor == properties.vendorID ||
-        skgpu::kAMD_VkVendor == properties.vendorID) {
+    if (skgpu::kQualcomm_Vendor == properties.vendorID ||
+        skgpu::kAMD_Vendor == properties.vendorID) {
         fMustInvalidatePrimaryCmdBufferStateAfterClearAttachments = true;
     }
 
@@ -540,9 +540,9 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // discardable msaa attachments. This causes the resolve to resolve uninitialized data from the
     // msaa image into the resolve image.
     // This also occurs on swiftshader: b/303705884
-    if (properties.vendorID == skgpu::kQualcomm_VkVendor ||
-        properties.vendorID == skgpu::kARM_VkVendor ||
-        (properties.vendorID == skgpu::kGoogle_VkVendor &&
+    if (properties.vendorID == skgpu::kQualcomm_Vendor ||
+        properties.vendorID == skgpu::kARM_Vendor ||
+        (properties.vendorID == skgpu::kGoogle_Vendor &&
          properties.deviceID == kSwiftshader_DeviceID)) {
         fMustLoadFullImageWithDiscardableMSAA = true;
     }
@@ -552,7 +552,7 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // (https://ci.chromium.org/ui/p/chromium/builders/try/linux-rel/1585128/overview).
     // Since swiftshader is only really used for testing, to try and make things more stable we
     // disable the reuse of buffers.
-    if (properties.vendorID == skgpu::kGoogle_VkVendor &&
+    if (properties.vendorID == skgpu::kGoogle_Vendor &&
         properties.deviceID == kSwiftshader_DeviceID) {
         fReuseScratchBuffers = false;
     }
@@ -561,18 +561,18 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // GrCaps workarounds
     ////////////////////////////////////////////////////////////////////////////
 
-    if (skgpu::kARM_VkVendor == properties.vendorID) {
+    if (skgpu::kARM_Vendor == properties.vendorID) {
         fAvoidWritePixelsFastPath = true; // bugs.skia.org/8064
     }
 
     // AMD advertises support for MAX_UINT vertex input attributes, but in reality only supports 32.
-    if (skgpu::kAMD_VkVendor == properties.vendorID) {
+    if (skgpu::kAMD_Vendor == properties.vendorID) {
         fMaxVertexAttributes = std::min(fMaxVertexAttributes, 32);
     }
 
     // Adreno devices fail when trying to read the dest using an input attachment and texture
     // barriers.
-    if (skgpu::kQualcomm_VkVendor == properties.vendorID) {
+    if (skgpu::kQualcomm_Vendor == properties.vendorID) {
         fTextureBarrierSupport = false;
     }
 
@@ -587,7 +587,7 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // https://www.intel.com/content/www/us/en/download/762755/intel-6th-10th-gen-processor-graphics-windows.html.
     // This is likely due to bugs in the driver. As a temporary workaround, we disable texture
     // barrier support in Skylake and newer generations (i.e. 9th gen or newer).
-    if (skgpu::kIntel_VkVendor == properties.vendorID &&
+    if (skgpu::kIntel_Vendor == properties.vendorID &&
         GetIntelGen(GetIntelGPUType(properties.deviceID)) >= 9) {
         fTextureBarrierSupport = false;
     }
@@ -595,7 +595,7 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
 
     // On ARM indirect draws are broken on Android 9 and earlier. This was tested on a P30 and
     // Mate 20x running android 9.
-    if (properties.vendorID == skgpu::kARM_VkVendor && androidAPIVersion <= 28) {
+    if (properties.vendorID == skgpu::kARM_Vendor && androidAPIVersion <= 28) {
         fNativeDrawIndirectSupport = false;
     }
 
@@ -603,19 +603,19 @@ void GrVkCaps::applyDriverCorrectnessWorkarounds(const VkPhysicalDevicePropertie
     // GrShaderCaps workarounds
     ////////////////////////////////////////////////////////////////////////////
 
-    if (skgpu::kImagination_VkVendor == properties.vendorID) {
+    if (skgpu::kImagination_Vendor == properties.vendorID) {
         fShaderCaps->fAtan2ImplementedAsAtanYOverX = true;
     }
 
     // ARM GPUs calculate `matrix * vector` in SPIR-V at full precision, even when the inputs are
     // RelaxedPrecision. Rewriting the multiply as a sum of vector*scalar fixes this. (skbug.com/40042841)
-    if (skgpu::kARM_VkVendor == properties.vendorID) {
+    if (skgpu::kARM_Vendor == properties.vendorID) {
         fShaderCaps->fRewriteMatrixVectorMultiply = true;
     }
 
     // Avoid RelaxedPrecision with OpImageSampleImplicitLod due to driver bug with YCbCr sampling.
     // (skbug.com/421927604)
-    if (skgpu::kNvidia_VkVendor == properties.vendorID) {
+    if (skgpu::kNvidia_Vendor == properties.vendorID) {
         fShaderCaps->fCannotUseRelaxedPrecisionOnImageSample = true;
     }
 }
@@ -693,7 +693,7 @@ void GrVkCaps::initGrCaps(const skgpu::VulkanInterface* vkInterface,
         }
     }
 
-    if (skgpu::kARM_VkVendor == properties.vendorID) {
+    if (skgpu::kARM_Vendor == properties.vendorID) {
         fShouldCollapseSrcOverToSrcWhenAble = true;
     }
 }
@@ -711,7 +711,7 @@ void GrVkCaps::initShaderCaps(const VkPhysicalDeviceProperties& properties,
     shaderCaps->fFlatInterpolationSupport = true;
     // Flat interpolation appears to be slow on Qualcomm GPUs. This was tested in GL and is assumed
     // to be true with Vulkan as well.
-    shaderCaps->fPreferFlatInterpolation = skgpu::kQualcomm_VkVendor != properties.vendorID;
+    shaderCaps->fPreferFlatInterpolation = skgpu::kQualcomm_Vendor != properties.vendorID;
 
     shaderCaps->fSampleMaskSupport = true;
 
@@ -1477,11 +1477,11 @@ void GrVkCaps::FormatInfo::initSampleCounts(const GrContextOptions& contextOptio
     if (flags & VK_SAMPLE_COUNT_1_BIT) {
         fColorSampleCounts.push_back(1);
     }
-    if (skgpu::kImagination_VkVendor == physProps.vendorID) {
+    if (skgpu::kImagination_Vendor == physProps.vendorID) {
         // MSAA does not work on imagination
         return;
     }
-    if (skgpu::kIntel_VkVendor == physProps.vendorID) {
+    if (skgpu::kIntel_Vendor == physProps.vendorID) {
         if (GetIntelGen(GetIntelGPUType(physProps.deviceID)) < 12 ||
             !contextOptions.fAllowMSAAOnNewIntel) {
             // MSAA doesn't work well on Intel GPUs chromium:527565, chromium:983926
