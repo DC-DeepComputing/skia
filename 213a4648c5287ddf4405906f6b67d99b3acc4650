@@ -59,6 +59,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fff6c1e_75b6b1de",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-18T18:17:47Z",
+      "side": 1,
+      "message": "Part of the issue here may be that the shared build of Skia wasn\u0027t working at all when branch 139 was cut (since been worked around). Did this come up because of updating to 139?",
+      "parentUuid": "d30e98ce_2fab4c0f",
+      "range": {
+        "startLine": 9,
+        "startChar": 48,
+        "endLine": 10,
+        "endChar": 50
+      },
+      "revId": "213a4648c5287ddf4405906f6b67d99b3acc4650",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3bb3241e_bde183d2",
