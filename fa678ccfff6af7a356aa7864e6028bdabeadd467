@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "613e305b_c011ff0c",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 1201,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-18T16:22:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "cac9414e_b3d5414d",
+      "range": {
+        "startLine": 1201,
+        "startChar": 37,
+        "endLine": 1201,
+        "endChar": 43
+      },
+      "revId": "fa678ccfff6af7a356aa7864e6028bdabeadd467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e2c88d52_2af215d7",
@@ -37,6 +61,24 @@
       "writtenOn": "2025-07-18T14:15:35Z",
       "side": 1,
       "message": "We can still reach this when inverse \u003d\u003d nullopt.  To keep the old behavior maybe `makeTransform(inverse.value_or(SkMatrix::I()))`?",
+      "revId": "fa678ccfff6af7a356aa7864e6028bdabeadd467",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40e378cd_fad1ad9f",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-18T16:22:01Z",
+      "side": 1,
+      "message": "Good catch. I\u0027ve rearranged the code to make the early returns clearer.",
+      "parentUuid": "e2c88d52_2af215d7",
       "revId": "fa678ccfff6af7a356aa7864e6028bdabeadd467",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
