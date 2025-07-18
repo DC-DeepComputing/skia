@@ -16,6 +16,24 @@
       "message": "Is this the right way around? This looks like a preConcat when we were doing a postConcat?\n\nDirectly refactoring to `return this-\u003egetLocalMatrix().postConcat(this-\u003egetMatrixFrom2x2());` would be possibly more efficient, since it doesn\u0027t require making another intermediate matrix. This would be more or less the same as adding an `SkMatrix::operator*\u003d` I think (if done the right way around).",
       "revId": "5f937f609c8343ed90197627f0d4aba600a3be1d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b4306165_20fa56f0",
+        "filename": "src/core/SkScalerContext.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-18T17:52:38Z",
+      "side": 1,
+      "message": "Yeah, this is backward, though it looks like we don\u0027t have any gms that by default have a rotation (or skew) and a SkFont::setSkew. For instance, the gm `text_scale_skew` goes all wonky when rotated in viewer with this change. We should probably use this opportunity to make that the `text_scale_skew` gm be rotated a bit (10 deg around the center is more than enough to catch this).",
+      "parentUuid": "3ed7965c_f8048729",
+      "revId": "5f937f609c8343ed90197627f0d4aba600a3be1d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
