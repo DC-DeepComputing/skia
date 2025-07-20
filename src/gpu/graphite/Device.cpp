@@ -1017,6 +1017,41 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
             this->drawRect(rect, paint);
             return;
         }
+
+        // Two nested rect contours can be analytically evaluated and might be equivalent to a
+        // filled rectangle (depending on what's subtracted or the fill type + contour directions),
+        // or to a stroked rect if the inset is symmetric on all four sides.
+        SkRect rects[2];
+        SkPathDirection dirs[2];
+        if (paint.getStyle() == SkPaint::kFill_Style &&
+            !path.isInverseFillType() &&
+            SkPathPriv::IsNestedFillRects(path, rects, dirs)) {
+            if (path.getFillType() == SkPathFillType::kWinding && dirs[0] == dirs[1]) {
+                // Only the outer rectangle will be visible
+                this->drawRect(rects[0], paint);
+                return;
+            } // even-odd and winding in opposite directions cuts out the inner rectangle
+
+            Rect outer{rects[0]};
+            Rect inner{rects[1]};
+            skvx::float4 gap = inner.vals() - outer.vals();
+
+            SkRect sub;
+            // To be equivalent to a stroke, the gap has to be the same all the way around.
+            const float strokeWidth = gap[0];
+            if (strokeWidth == gap[1] && strokeWidth == gap[2] && strokeWidth == gap[3]) {
+                Rect strokeRect = outer.inset(strokeWidth / 2.f);
+                SkPaint strokePaint = paint;
+                strokePaint.setStrokeWidth(strokeWidth);
+                strokePaint.setStrokeJoin(SkPaint::kMiter_Join);
+                strokePaint.setStrokeMiter(4.f);
+                this->drawRect(strokeRect.asSkRect(), strokePaint);
+                return;
+            } else if (SkRectPriv::Subtract(rects[0], rects[1], &sub)) {
+                this->drawRect(sub, paint);
+                return;
+            }
+        }
     }
     this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(path)),
                        paint, SkStrokeRec(paint));
