@@ -423,7 +423,12 @@ bool ApplyStroke(SkPath& path, StrokeOpts opts) {
     if (opts.res_scale <= 0) {
         opts.res_scale = 1.0;
     }
-    return skpathutils::FillPathWithPaint(path, p, &path, nullptr, opts.res_scale);
+
+    SkPathBuilder builder;
+    bool doFill = skpathutils::FillPathWithPaint(path, p, &builder, nullptr,
+                                                 SkMatrix::Scale(opts.res_scale, opts.res_scale));
+    path = builder.detach();
+    return doFill;
 }
 
 //========================================================================================

@@ -26,6 +26,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkPathUtils.h"
@@ -806,7 +807,11 @@ bool ApplyStroke(SkPath& path, StrokeOpts opts) {
     p.setStrokeWidth(opts.width);
     p.setStrokeMiter(opts.miter_limit);
 
-    return skpathutils::FillPathWithPaint(path, p, &path, nullptr, opts.precision);
+    SkPathBuilder builder;
+    bool doFill = skpathutils::FillPathWithPaint(path, p, &builder, nullptr,
+                                                 SkMatrix::Scale(opts.precision, opts.precision));
+    path = builder.detach();
+    return doFill;
 }
 
 // This function is private, we call it in interface.js
