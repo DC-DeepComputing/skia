@@ -48,7 +48,9 @@
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
+#include "src/core/SkRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTraceEvent.h"
@@ -986,6 +988,94 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     }
 
     this->drawGeometry(this->localToDeviceTransform(), Geometry(rrectToDraw), paint, style);
+}
+
+void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) {
+    SkASSERT(!outer.isEmpty() && !inner.isEmpty()); // SkCanvas should handle this already
+    // Alternatively we could move this analysis to SkCanvas. We try to detect cases where the
+    // outer/inner pair produces the equivalent of a stroked shape or a filled rectangle.
+    Rect outerRect = outer.rect();
+    Rect innerRect = inner.rect();
+    SkASSERT(outerRect.contains(innerRect)); // Also handled by SkCanvas
+    skvx::float4 gap = innerRect.vals() - outerRect.vals();
+    // To be equivalent to a stroke, the gap has to be the same all the way around.
+    const float strokeWidth = gap[0];
+    if (!paint.getPathEffect() && paint.getStyle() == SkPaint::kFill_Style
+        && all(strokeWidth == gap)) {
+        // If `outer` has rounded corners, they must be circular and be at least `strokeWidth/2`.
+        // An outer corner can have a 0 radius if we assume a miter join style, but if an outer
+        // corner is exactly the stroke radius then we have to use a round join style.
+        // The matching corners of `inner` must also be rounded, and be exactly strokeWidth less,
+        // or they must be 0 if the difference would otherwise be negative.
+        const float strokeRadius = 0.5f * strokeWidth;
+        int validCorners = 0;
+        int rectCorners = 0;
+        SkVector strokeCorners[4];
+        std::optional<SkPaint::Join> requiredJoinStyle;
+        for (int i = 0; i < 4; ++i) {
+            SkVector outerCornerRadii = outer.radii((SkRRect::Corner) i);
+            SkVector innerCornerRadii = inner.radii((SkRRect::Corner) i);
+
+            float strokeCorner;
+            if (outerCornerRadii.fX != outerCornerRadii.fY ||
+                outerCornerRadii.fX < 0.5f  * strokeRadius) {
+                break;
+            } else if (outerCornerRadii.fX == 0.f) {
+                if (requiredJoinStyle.has_value() && *requiredJoinStyle != SkPaint::kMiter_Join) {
+                    break;
+                }
+                requiredJoinStyle = SkPaint::kMiter_Join;
+                strokeCorner = 0.f;
+                rectCorners++;
+            } else {
+                strokeCorner = outerCornerRadii.fX - strokeRadius;
+                if (strokeCorner == 0.f) {
+                    if (requiredJoinStyle.has_value() &&
+                        *requiredJoinStyle != SkPaint::kRound_Join) {
+                        break;
+                    }
+                    requiredJoinStyle = SkPaint::kRound_Join;
+                    rectCorners++;
+                }
+            }
+
+            float expectedInnerRadius = std::max(0.f, strokeCorner - strokeRadius);
+            if (innerCornerRadii.fX != expectedInnerRadius &&
+                innerCornerRadii.fY != expectedInnerRadius) {
+                break;
+            }
+
+            strokeCorners[i] = {strokeCorner, strokeCorner};
+            validCorners++;
+        }
+
+        if (validCorners == 4) {
+            SkStrokeRec strokeStyle = DefaultFillStyle();
+            strokeStyle.setStrokeStyle(strokeWidth);
+            strokeStyle.setStrokeParams(SkPaint::kButt_Cap, requiredJoinStyle.has_value() ? *requiredJoinStyle : SkPaint::kRound_Join, 4.f);
+            Rect strokeRect = outerRect.inset(strokeRadius);
+            if (rectCorners == 4) {
+                this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(strokeRect)), paint, strokeStyle);
+            } else {
+                SkRRect strokeRRect;
+                strokeRRect.setRectRadii(strokeRect.asSkRect(), strokeCorners);
+                this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(strokeRRect)), paint, strokeStyle);
+            }
+            return;
+        }
+
+        // The last thing we can check for is if the inner and outer rrects are rectangular and
+        // if the inner subtracts away 3 sides.
+        if (outer.isRect() && inner.isRect()) {
+            SkRect sub;
+            if (SkRectPriv::Subtract(outer.rect(), inner.rect(), &sub)) {
+                this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(sub)), paint, DefaultFillStyle());
+                return;
+            }
+        }
+    }
+
+    this->SkDevice::drawDRRect(outer, inner, paint);
 }
 
 void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
