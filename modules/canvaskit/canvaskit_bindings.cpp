@@ -26,6 +26,7 @@
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPathMeasure.h"
 #include "include/core/SkPathUtils.h"
@@ -764,8 +765,10 @@ bool ApplyDash(SkPath& path, SkScalar on, SkScalar off, SkScalar phase) {
         SkDebugf("Invalid args to dash()\n");
         return false;
     }
+    SkPathBuilder builder;
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
+    if (pe->filterPath(&builder, path, &rec)) {
+        path = builder.detach();
         return true;
     }
     SkDebugf("Could not make dashed path\n");
@@ -779,8 +782,10 @@ bool ApplyTrim(SkPath& path, SkScalar startT, SkScalar stopT, bool isComplement)
         SkDebugf("Invalid args to trim(): startT and stopT must be in [0,1]\n");
         return false;
     }
+    SkPathBuilder builder;
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
+    if (pe->filterPath(&builder, path, &rec)) {
+        path = builder.detach();
         return true;
     }
     SkDebugf("Could not trim path\n");
@@ -806,7 +811,11 @@ bool ApplyStroke(SkPath& path, StrokeOpts opts) {
     p.setStrokeWidth(opts.width);
     p.setStrokeMiter(opts.miter_limit);
 
-    return skpathutils::FillPathWithPaint(path, p, &path, nullptr, opts.precision);
+    SkPathBuilder builder;
+    bool doFill = skpathutils::FillPathWithPaint(path, p, &builder, nullptr,
+                                                 SkMatrix::Scale(opts.precision, opts.precision));
+    path = builder.detach();
+    return doFill;
 }
 
 // This function is private, we call it in interface.js
@@ -1528,10 +1537,9 @@ EMSCRIPTEN_BINDINGS(Skia) {
         }))
         .function("getSegment", optional_override([](SkContourMeasure& self, SkScalar startD,
                                                      SkScalar stopD, bool startWithMoveTo) -> SkPath {
-            SkPath p;
-            bool ok = self.getSegment(startD, stopD, &p, startWithMoveTo);
-            if (ok) {
-                return p;
+            SkPathBuilder builder;
+            if (self.getSegment(startD, stopD, &builder, startWithMoveTo)) {
+                return builder.detach();
             }
             return SkPath();
         }))
