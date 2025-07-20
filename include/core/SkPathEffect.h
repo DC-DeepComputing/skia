@@ -54,6 +54,7 @@ public:
         return kSkPathEffect_Type;
     }
 
+#ifdef SK_EXPOSE_PATHEFFECT_METHODS
     /**
      *  Given a src path (input) and a stroke-rec (input and output), apply
      *  this effect to the src path, returning the new path in dst, and return
@@ -85,6 +86,8 @@ public:
     /** Version of filterPath that can be called when the CTM is known. */
     bool filterPath(SkPath* dst, const SkPath& src, SkStrokeRec*, const SkRect* cullR,
                     const SkMatrix& ctm) const;
+#endif
+
 #endif
 
 private:

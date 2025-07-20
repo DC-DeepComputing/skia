@@ -48,6 +48,7 @@
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkStrikeCache.h"
@@ -1220,9 +1221,10 @@ void Device::drawGeometry(const Transform& localToDevice,
         return;
     }
 
+    auto pe = paint.getPathEffect();
     // Heavy weight paint options like path effects, mask filters, and stroke-and-fill style are
     // applied on the CPU by generating a new shape and recursing on drawGeometry with updated flags
-    if (!(flags & DrawFlags::kIgnorePathEffect) && paint.getPathEffect()) {
+    if (!(flags & DrawFlags::kIgnorePathEffect) && pe) {
         // Apply the path effect before anything else, which if we are applying here, means that we
         // are dealing with a Shape. drawVertices (and a SkVertices geometry) should pass in
         // kIgnorePathEffect per SkCanvas spec. Text geometry also should pass in kIgnorePathEffect
@@ -1243,8 +1245,8 @@ void Device::drawGeometry(const Transform& localToDevice,
         }
         newStyle.setResScale(maxScaleFactor);
         SkPathBuilder builder;
-        if (paint.getPathEffect()->filterPath(&builder, geometry.shape().asPath(), &newStyle,
-                                              nullptr, localToDevice)) {
+        if (as_PEB(pe)->onFilterPath(&builder, geometry.shape().asPath(), &newStyle,
+                                     nullptr, localToDevice)) {
             SkPath dst = builder.detach();
             dst.setIsVolatile(true);
             // Recurse using the path and new style, while disabling downstream path effect handling

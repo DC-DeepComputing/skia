@@ -25,6 +25,7 @@
 #include "include/core/SkSurface.h"
 #include "include/core/SkTypes.h"
 #include "include/effects/SkDashPathEffect.h"
+#include "src/core/SkPathEffectBase.h"
 #include "tests/Test.h"
 
 #include <cstdint>
@@ -369,7 +370,8 @@ static void test_crbug_165432(skiatest::Reporter* reporter) {
 
     SkPathBuilder filteredPath;
     SkStrokeRec rec(paint);
-    REPORTER_ASSERT(reporter, !dash->filterPath(&filteredPath, path, &rec));
+    REPORTER_ASSERT(reporter, !as_PEB(dash)->onFilterPath(&filteredPath, path, &rec,
+                                                          nullptr, SkMatrix::I()));
     REPORTER_ASSERT(reporter, filteredPath.isEmpty());
 }
 

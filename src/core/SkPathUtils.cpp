@@ -15,6 +15,7 @@
 #include "include/core/SkScalar.h"
 #include "include/core/SkStrokeRec.h"
 #include "src/core/SkMatrixPriv.h"
+#include "src/core/SkPathEffectBase.h"
 
 namespace skpathutils {
 
@@ -57,8 +58,8 @@ bool FillPathWithPaint(const SkPath& origSrc, const SkPaint& paint, SkPathBuilde
 
     const SkPath* srcPtr = &origSrc;
     SkPath pathStorage;
-    SkPathEffect* pe = paint.getPathEffect();
-    if (pe && pe->filterPath(builder, origSrc, &rec, cullRect, ctm)) {
+    auto pe = as_PEB(paint.getPathEffect());
+    if (pe && pe->onFilterPath(builder, origSrc, &rec, cullRect, ctm)) {
         pathStorage = builder->detach();
         srcPtr = &pathStorage;
     }

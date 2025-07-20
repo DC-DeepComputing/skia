@@ -16,6 +16,7 @@
 #include "include/effects/SkDashPathEffect.h"
 #include "include/private/base/SkTDArray.h"
 #include "src/base/SkRandom.h"
+#include "src/core/SkPathEffectBase.h"
 
 /*
  *  Cases to consider:
@@ -196,7 +197,7 @@ protected:
         for (int i = 0; i < loops; ++i) {
             SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
 
-            fPE->filterPath(&dst, fPath, &rec);
+            as_PEB(fPE)->onFilterPath(&dst, fPath, &rec, nullptr, SkMatrix::I());
             dst.reset();
         }
     }
