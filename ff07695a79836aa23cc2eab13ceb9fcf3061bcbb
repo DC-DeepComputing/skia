@@ -22,6 +22,48 @@
       },
       "revId": "ff07695a79836aa23cc2eab13ceb9fcf3061bcbb",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0dec2f14_9bb7c8b4",
+        "filename": "src/gpu/graphite/Device.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T17:26:12Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "e68f26f0_31879fc8",
+      "range": {
+        "startLine": 185,
+        "startChar": 62,
+        "endLine": 185,
+        "endChar": 70
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "2da59135_5659617c",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/Device.cpp",
+              "range": {
+                "startLine": 185,
+                "startChar": 0,
+                "endLine": 186,
+                "endChar": 0
+              },
+              "replacement": "    // Since we don\u0027t depend on the dst, a dst-out blend mode implies source is\n"
+            }
+          ]
+        }
+      ],
+      "revId": "ff07695a79836aa23cc2eab13ceb9fcf3061bcbb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
