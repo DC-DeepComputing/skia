@@ -22,6 +22,48 @@
       },
       "revId": "d62a6697fdaba747b646246a7fdaccdbac847009",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba5138db_1fb8cabb",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T16:49:06Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "04fc4579_95f53468",
+      "range": {
+        "startLine": 486,
+        "startChar": 54,
+        "endLine": 486,
+        "endChar": 60
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "49f7c8ae_89ea2b66",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipStack.cpp",
+              "range": {
+                "startLine": 486,
+                "startChar": 0,
+                "endLine": 487,
+                "endChar": 0
+              },
+              "replacement": "    // unclipped, since that\u0027s simpler than replacing it with the draw\u0027s geometry.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "d62a6697fdaba747b646246a7fdaccdbac847009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
