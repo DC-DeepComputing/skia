@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3e34e93_54a845b8",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1282,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-21T17:27:52Z",
+      "side": 1,
+      "message": "SkStrokeRec::GetInflationRadius ?",
+      "revId": "a76998e9c78cec9ae91905ebc5832e8881f32929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
