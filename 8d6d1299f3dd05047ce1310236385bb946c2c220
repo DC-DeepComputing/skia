@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e54fd8c0_be071396",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-21T13:49:34Z",
+      "side": 1,
+      "message": "I can see a case for keeping filterPath: if the client knows they are going to draw the result multiple times, it can be useful to cache the result instead of applying on the fly.\n\n(that\u0027s effectively what SkSG does, except it now relies on private APIs)",
+      "revId": "8d6d1299f3dd05047ce1310236385bb946c2c220",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45526651_b77624dd",
+        "filename": "src/core/SkPathEffect.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-21T13:49:34Z",
+      "side": 1,
+      "message": "nit: since you\u0027re in this code, `std::move` outer/inner.",
+      "range": {
+        "startLine": 112,
+        "startChar": 59,
+        "endLine": 112,
+        "endChar": 71
+      },
+      "revId": "8d6d1299f3dd05047ce1310236385bb946c2c220",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
