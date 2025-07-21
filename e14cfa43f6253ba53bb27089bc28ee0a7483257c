@@ -46,6 +46,30 @@
       },
       "revId": "e14cfa43f6253ba53bb27089bc28ee0a7483257c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3db4f04_4106da98",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-21T19:29:59Z",
+      "side": 0,
+      "message": "Well, then I guess we have some code to tear out from our Bazel build to remove that part.",
+      "parentUuid": "ffddf1dc_2cdbe386",
+      "range": {
+        "startLine": 17,
+        "startChar": 24,
+        "endLine": 17,
+        "endChar": 36
+      },
+      "revId": "e14cfa43f6253ba53bb27089bc28ee0a7483257c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
