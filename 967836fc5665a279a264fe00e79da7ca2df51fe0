@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d8fcb301_2e162bcc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-21T15:07:33Z",
+      "side": 1,
+      "message": "Cherry-picking not so much for Chrome but for other users I know are trying to update Skia and don\u0027t want to produce broken PDFs.",
+      "revId": "967836fc5665a279a264fe00e79da7ca2df51fe0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
