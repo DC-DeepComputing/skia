@@ -16,6 +16,42 @@
       "message": "SkStrokeRec::GetInflationRadius ?",
       "revId": "a76998e9c78cec9ae91905ebc5832e8881f32929",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30f06843_d6f56c8c",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1282,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T18:51:30Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "b3e34e93_54a845b8",
+      "fixSuggestions": [
+        {
+          "fixId": "0b262794_2e23eb62",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipStack.cpp",
+              "range": {
+                "startLine": 1282,
+                "startChar": 0,
+                "endLine": 1283,
+                "endChar": 0
+              },
+              "replacement": "        // SkStrokeRec::GetInflationRadius() returns a device-space inflation for hairlines.\n"
+            }
+          ]
+        }
+      ],
+      "revId": "a76998e9c78cec9ae91905ebc5832e8881f32929",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
