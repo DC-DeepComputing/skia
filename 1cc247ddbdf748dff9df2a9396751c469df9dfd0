@@ -16,6 +16,24 @@
       "message": "Appears to be some bad GM\u0027s on Quadro p400 and M1?",
       "revId": "1cc247ddbdf748dff9df2a9396751c469df9dfd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0bfae441_971ba3f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T18:55:17Z",
+      "side": 1,
+      "message": "Good catch! this is caused by a bug in the clear/discard CL that didn\u0027t exposed until this one was rebased on top of it.  So fixing that first here: https://skia-review.googlesource.com/c/skia/+/1023897 and will confirm that the bad images go away on this CL.",
+      "parentUuid": "dcb8e838_bf09df6f",
+      "revId": "1cc247ddbdf748dff9df2a9396751c469df9dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
