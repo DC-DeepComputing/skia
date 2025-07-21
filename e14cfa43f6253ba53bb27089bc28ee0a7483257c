@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "640f3d97_3e21d5ea",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-21T19:02:32Z",
+      "side": 0,
+      "message": "We should probably add these back in so IWYU runs on the CI, yeah?",
+      "range": {
+        "startLine": 17,
+        "startChar": 24,
+        "endLine": 17,
+        "endChar": 36
+      },
+      "revId": "e14cfa43f6253ba53bb27089bc28ee0a7483257c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
