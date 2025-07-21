@@ -63,6 +63,7 @@
 #include "include/utils/SkParsePath.h"
 #include "include/utils/SkShadowUtils.h"
 #include "src/base/SkFloatBits.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkPathPriv.h"
 #include "src/core/SkResourceCache.h"
 #include "src/image/SkImage_Base.h"
@@ -764,8 +765,10 @@ bool ApplyDash(SkPath& path, SkScalar on, SkScalar off, SkScalar phase) {
         SkDebugf("Invalid args to dash()\n");
         return false;
     }
+    SkPathBuilder builder;
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
+    if (as_PEB(pe)->onFilterPath(&builder, path, &rec, nullptr, SkMatrix::I())) {
+        path = builder.detach();
         return true;
     }
     SkDebugf("Could not make dashed path\n");
@@ -779,8 +782,10 @@ bool ApplyTrim(SkPath& path, SkScalar startT, SkScalar stopT, bool isComplement)
         SkDebugf("Invalid args to trim(): startT and stopT must be in [0,1]\n");
         return false;
     }
+    SkPathBuilder builder;
     SkStrokeRec rec(SkStrokeRec::InitStyle::kHairline_InitStyle);
-    if (pe->filterPath(&path, path, &rec, nullptr)) {
+    if (as_PEB(pe)->onFilterPath(&builder, path, &rec, nullptr, SkMatrix::I())) {
+        path = builder.detach();
         return true;
     }
     SkDebugf("Could not trim path\n");

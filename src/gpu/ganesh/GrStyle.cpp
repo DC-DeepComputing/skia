@@ -11,6 +11,7 @@
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkSpan.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/utils/SkDashPathPriv.h"
 
 #include <cstring>
@@ -137,7 +138,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
     }
 
     // TODO: [skbug.com/40043046] Plumb CTM callers and pass it to filterPath().
-    SkASSERT(!fPathEffect->needsCTM());
+    SkASSERT(!as_PEB(fPathEffect)->onNeedsCTM());
 
     SkPathBuilder builder;  // todo: change our api to take builder
 
@@ -145,7 +146,7 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
         // We apply the dash ourselves here rather than using the path effect. This is so that
         // we can control whether the dasher applies the strokeRec for special cases. Our keying
         // depends on the strokeRec being applied separately.
-        SkASSERT(!fPathEffect->needsCTM());  // Make sure specified PE doesn't need CTM
+        SkASSERT(!as_PEB(fPathEffect)->onNeedsCTM());  // Make sure specified PE doesn't need CTM
         SkScalar phase = fDashInfo.fPhase;
         SkScalar initialLength;
         size_t initialIndex;
@@ -158,7 +159,8 @@ bool GrStyle::applyPathEffect(SkPath* dst, SkStrokeRec* strokeRec, const SkPath&
                                         SkDashPath::StrokeRecApplication::kDisallow)) {
             return false;
         }
-    } else if (!fPathEffect->filterPath(&builder, src, strokeRec, nullptr, SkMatrix::I())) {
+    } else if (!as_PEB(fPathEffect)->onFilterPath(&builder, src, strokeRec,
+                                                  nullptr, SkMatrix::I())) {
         return false;
     }
     *dst = builder.detach();

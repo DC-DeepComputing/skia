@@ -23,6 +23,7 @@
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTArray.h"
 #include "modules/sksg/src/SkSGTransformPriv.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkPathPriv.h"
 
 #include <algorithm>
@@ -70,15 +71,19 @@ SkRect GeometryEffect::onRevalidate(InvalidationController* ic, const SkMatrix& 
     return fPath.computeTightBounds();
 }
 
+static SkPath apply_hairline_stroke(sk_sp<SkPathEffect> pe, const SkPath& src) {
+    SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
+    SkASSERT(!as_PEB(pe)->onNeedsCTM());
+    SkPathBuilder builder;
+    SkAssertResult(as_PEB(pe)->onFilterPath(&builder, src, &rec, nullptr, SkMatrix::I()));
+    return builder.detach();
+}
+
 SkPath TrimEffect::onRevalidateEffect(const sk_sp<GeometryNode>& child, const SkMatrix&) {
     SkPath path = child->asPath();
 
     if (const auto trim = SkTrimPathEffect::Make(fStart, fStop, fMode)) {
-        SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
-        SkASSERT(!trim->needsCTM());
-        SkPathBuilder builder;
-        SkAssertResult(trim->filterPath(&builder, path, &rec, nullptr, SkMatrix::I()));
-        return builder.detach();
+        return apply_hairline_stroke(trim, path);
     }
 
     return path;
@@ -134,11 +139,7 @@ SkPath DashEffect::onRevalidateEffect(const sk_sp<GeometryNode>& child, const Sk
     SkPath path = child->asPath();
 
     if (const auto dash_patheffect = make_dash(fIntervals, fPhase)) {
-        SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
-        SkASSERT(!dash_patheffect->needsCTM());
-        SkPathBuilder builder;
-        dash_patheffect->filterPath(&builder, path, &rec);
-        return builder.detach();
+        return apply_hairline_stroke(dash_patheffect, path);
     }
 
     return path;
@@ -148,11 +149,7 @@ SkPath RoundEffect::onRevalidateEffect(const sk_sp<GeometryNode>& child, const S
     SkPath path = child->asPath();
 
     if (const auto round = SkCornerPathEffect::Make(fRadius)) {
-        SkStrokeRec rec(SkStrokeRec::kHairline_InitStyle);
-        SkASSERT(!round->needsCTM());
-        SkPathBuilder builder;
-        SkAssertResult(round->filterPath(&builder, path, &rec));
-        return builder.detach();
+        return apply_hairline_stroke(round, path);
     }
 
     return path;

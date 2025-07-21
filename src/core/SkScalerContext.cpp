@@ -37,6 +37,7 @@
 #include "src/core/SkGlyph.h"
 #include "src/core/SkMaskFilterBase.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathEffectBase.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkTextFormatParams.h"
 #include "src/core/SkWriteBuffer.h"
@@ -837,7 +838,7 @@ void SkScalerContext::internalGetPath(SkGlyph& glyph, SkArenaAlloc* alloc,
 
     if (fPathEffect) {
         SkPathBuilder builder;
-        if (fPathEffect->filterPath(&builder, localPath, &rec, nullptr, matrix)) {
+        if (as_PEB(fPathEffect)->onFilterPath(&builder, localPath, &rec, nullptr, matrix)) {
             localPath = builder.detach();
         }
     }

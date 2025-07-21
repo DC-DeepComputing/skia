@@ -24,6 +24,8 @@ struct SkRect;
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef SK_EXPOSE_PATHEFFECT_METHODS
+
 #ifdef SK_SUPPORT_MUTABLE_PATHEFFECT
 bool SkPathEffect::filterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec,
                               const SkRect* bounds) const {
@@ -41,6 +43,7 @@ bool SkPathEffect::filterPath(SkPath* dst, const SkPath& src, SkStrokeRec* rec, 
 }
 #endif
 
+
 bool SkPathEffect::filterPath(SkPathBuilder* dst, const SkPath& src, SkStrokeRec* rec) const {
     return this->filterPath(dst, src, rec, nullptr, SkMatrix::I());
 }
@@ -50,13 +53,14 @@ bool SkPathEffect::filterPath(SkPathBuilder* dst, const SkPath& src, SkStrokeRec
     return as_PEB(this)->onFilterPath(dst, src, rec, bounds, ctm);
 }
 
+bool SkPathEffect::needsCTM() const {
+    return as_PEB(this)->onNeedsCTM();
+}
+#endif
+
 bool SkPathEffectBase::asPoints(PointData* results, const SkPath& src,
                     const SkStrokeRec& rec, const SkMatrix& mx, const SkRect* rect) const {
     return this->onAsPoints(results, src, rec, mx, rect);
-}
-
-bool SkPathEffect::needsCTM() const {
-    return as_PEB(this)->onNeedsCTM();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -115,12 +119,14 @@ public:
                        const SkRect* cullRect, const SkMatrix& ctm) const override {
         SkPath          tmp;
         const SkPath*   ptr = &src;
+        auto pe1 = as_PEB(fPE1),
+             pe0 = as_PEB(fPE0);
 
-        if (fPE1->filterPath(builder, src, rec, cullRect, ctm)) {
+        if (pe1->onFilterPath(builder, src, rec, cullRect, ctm)) {
             tmp = builder->detach();
             ptr = &tmp;
         }
-        return fPE0->filterPath(builder, *ptr, rec, cullRect, ctm);
+        return pe0->onFilterPath(builder, *ptr, rec, cullRect, ctm);
     }
 
     SK_FLATTENABLE_HOOKS(SkComposePathEffect)
@@ -176,8 +182,8 @@ public:
     bool onFilterPath(SkPathBuilder* builder, const SkPath& src, SkStrokeRec* rec,
                       const SkRect* cullRect, const SkMatrix& ctm) const override {
         // always call both, even if the first one succeeds
-        bool filteredFirst = fPE0->filterPath(builder, src, rec, cullRect, ctm);
-        bool filteredSecond = fPE1->filterPath(builder, src, rec, cullRect, ctm);
+        bool filteredFirst = as_PEB(fPE0)->onFilterPath(builder, src, rec, cullRect, ctm);
+        bool filteredSecond = as_PEB(fPE1)->onFilterPath(builder, src, rec, cullRect, ctm);
         return filteredFirst || filteredSecond;
     }
 
@@ -220,9 +226,11 @@ void SkPathEffectBase::RegisterFlattenables() {
     SK_REGISTER_FLATTENABLE(SkSumPathEffect);
 }
 
+#ifdef SK_EXPOSE_PATHEFFECT_METHODS
 sk_sp<SkPathEffect> SkPathEffect::Deserialize(const void* data, size_t size,
                                               const SkDeserialProcs* procs) {
     return sk_sp<SkPathEffect>(static_cast<SkPathEffect*>(
                                SkFlattenable::Deserialize(
                                kSkPathEffect_Type, data, size, procs).release()));
 }
+#endif
