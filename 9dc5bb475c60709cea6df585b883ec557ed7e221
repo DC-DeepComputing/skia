@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4af46705_32df9df0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T20:04:28Z",
+      "side": 1,
+      "message": "Actually, while I personally think a lot of the gold images look better, it appears that the old behavior was the required behavior for SVG, CSS and PDF compositing operations.  The Quadro P400 is also failing its unit tests because it actually has the advanced blends in hardware, and is showing that the nvidia driver matches the SVG spec\u0027s equation (not this new way).\n\nReading the spec: https://developer.download.nvidia.com/opengl/specs/GL_NV_blend_equation_advanced.txt, this has come up before:\n\n```\nThere is some disagreement in different published specifications about\n      how these two blend equations should be handled.  At the time this\n      extension was initially developed, all specifications we found that\n      specified blending equations mathematically (see issue 28) were written\n      the same way.  Since then, we discovered that newer working drafts of\n      the W3C Compositing and Blending Level 1 specification (for CSS and SVG)\n      express \"color-burn\" as follows (translated to our nomenclature):\n\n        if (Cd \u003d\u003d 1)            // their Cb (backdrop) is our Cd (destination)\n          f(Cs,Cd) \u003d 1          // their B() is our f()\n        else if (Cs \u003d\u003d 0)\n          f(Cs,Cd) \u003d 0\n        else\n          f(Cs,Cd) \u003d 1 - min(1, (1-Cd)/Cs)\n\n      http://www.w3.org/TR/2013/WD-compositing-1-20131010/\n        #blendingcolorburn\n\n      Earlier versions of the same W3C specification, an older SVG compositing\n      draft specification, the Adobe PDF specification (and the ISO 32000-1\n      standard), and the KHR_advanced_blending extension to OpenVG all specify\n      the following equation without the initial special case:\n\n        if (Cs \u003d\u003d 0)\n          f(Cs,Cd) \u003d 0\n        else\n          f(Cs,Cd) \u003d 1 - min(1, (1-Cd)/Cs)\n\n        http://www.w3.org/TR/2012/WD-compositing-20120816/\n          #blendingcolorburn\n        http://www.w3.org/TR/2011/WD-SVGCompositing-20110315/\n        http://www.adobe.com/content/dam/Adobe/en/devnet/acrobat/\n          pdfs/pdf_reference_1-7.pdf\n        http://www.khronos.org/registry/vg/extensions/KHR/\n          advanced_blending.txt\n\n      For the Adobe PDF specification, the corrected blend equations are\n      published in an Adobe supplement to ISO 32000-1 and are expected to be\n      accepted in a future version of the standard:\n\n        http://wwwimages.adobe.com/www.adobe.com/content/dam/Adobe/en/\n          devnet/pdf/pdfs/adobe_supplement_iso32000_1.pdf\n\n      The author\u0027s understanding is that multiple shipping implementations of\n      these blending modes implement the special case for \"Cd\u003d\u003d1\" above,\n      including various Adobe products and the open-source Ghostscript\n      project.\n\n      We believe that the extra special case in this specification is\n      consistent with the physical model of color burning.  Burning is\n      described in\n\n        http://en.wikipedia.org/wiki/Dodging_and_burning\n\n      as making a print with normal exposure, and then adding additional\n      exposure to darken the overall image.\n```",
+      "revId": "9dc5bb475c60709cea6df585b883ec557ed7e221",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
