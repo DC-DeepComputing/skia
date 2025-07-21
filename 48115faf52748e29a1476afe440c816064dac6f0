@@ -22,6 +22,48 @@
       },
       "revId": "48115faf52748e29a1476afe440c816064dac6f0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f414d51f_69801d1e",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 1289,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-21T17:10:40Z",
+      "side": 1,
+      "message": "Fix applied.",
+      "parentUuid": "9cb0291a_aecc4d4b",
+      "range": {
+        "startLine": 1289,
+        "startChar": 64,
+        "endLine": 1289,
+        "endChar": 70
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "ff4a3750_ff78d88b",
+          "description": "GET_AI_FIX_FOR_COMMENT prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/gpu/graphite/ClipStack.cpp",
+              "range": {
+                "startLine": 1289,
+                "startChar": 0,
+                "endLine": 1290,
+                "endChar": 0
+              },
+              "replacement": "            // draw bounds (if we could efficiently know a path was a closed contour, it could\n"
+            }
+          ]
+        }
+      ],
+      "revId": "48115faf52748e29a1476afe440c816064dac6f0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
