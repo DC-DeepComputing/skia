@@ -178,6 +178,71 @@ void GrVkPipelineStateBuilder::storeShadersInCache(const SkSL::NativeShader shad
     this->gpu()->getContext()->priv().getPersistentCache()->store(*key, *data, description);
 }
 
+bool GrVkPipelineStateBuilder::findOrCreateShaderStageInfo(GrShaderType type,
+        VkShaderModule* shaderModules,
+        VkPipelineShaderStageCreateInfo* shaderStageInfo,
+        const SkSL::ProgramSettings& settings,
+        const GrGLSLShaderBuilder& shaderBuilder,
+        VkShaderStageFlagBits stage) {
+    std::string sksl = shaderBuilder.fCompilerString;
+    auto persistentCache = fGpu->getContext()->priv().getPersistentCache();
+    sk_sp<SkData> key = SkData::MakeWithCString(sksl.c_str());
+    sk_sp<SkData> data = persistentCache->load(*key);
+    SkSL::NativeShader shaders[1];
+    SkSL::Program::Interface interfaces[1];
+
+    bool success = false;
+    if (data) {
+        SkReadBuffer reader(data->data(), data->size());
+        SkFourByteTag shaderType = GrPersistentCacheUtils::GetType(&reader);
+        if (shaderType == kSPIRV_Tag && GrPersistentCacheUtils::UnpackCachedShaders(
+                &reader, shaders, /*areShadersBinary=*/true, interfaces, 1, nullptr, 1)) {
+            success = this->installVkShaderModule(stage,
+                                    shaderBuilder,
+                                    &shaderModules[type],
+                                    &shaderStageInfo[type],
+                                    shaders[0],
+                                    interfaces[0]);
+        }
+
+        SkSL::NativeShader cached_sksl[1];
+        if (kSKSL_Tag == shaderType && GrPersistentCacheUtils::UnpackCachedShaders(
+                &reader, cached_sksl, /*areShadersBinary=*/false, interfaces, 1, nullptr, 1)) {
+            sksl = cached_sksl[0].fText;
+        }
+    }
+
+    if (!success) {
+        success = this->createVkShaderModule(stage,
+                                            sksl,
+                                            &shaderModules[type],
+                                            &shaderStageInfo[type],
+                                            settings,
+                                            &shaders[0],
+                                            &interfaces[0]);
+
+        if (!success) {
+            return false;
+        }
+
+        if (persistentCache && !data) {
+            bool isSkSL = false;
+            if (fGpu->getContext()->priv().options().fShaderCacheStrategy ==
+                    GrContextOptions::ShaderCacheStrategy::kSkSL) {
+                shaders[0].fText = SkShaderUtils::PrettyPrint(sksl);
+                isSkSL = true;
+            }
+            sk_sp<SkData> packData = GrPersistentCacheUtils::PackCachedShaders(
+                                                                isSkSL ? kSKSL_Tag : kSPIRV_Tag,
+                                                                shaders,
+                                                                interfaces, 1, nullptr, 1);
+            persistentCache->store(*key, *packData, SkString("findOrCreateShaderStageInfoStore"));
+        }
+    }
+
+    return true;
+}
+
 GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
                                                       VkRenderPass compatibleRenderPass,
                                                       bool overrideSubpassForResolveLoad) {
@@ -215,90 +280,22 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
     }
     SkASSERT(!this->fragColorIsInOut());
 
-    sk_sp<SkData> cached;
-    SkReadBuffer reader;
-    SkFourByteTag shaderType = 0;
-    auto persistentCache = fGpu->getContext()->priv().getPersistentCache();
-    if (persistentCache) {
-        // Here we shear off the Vk-specific portion of the Desc in order to create the
-        // persistent key. This is bc Vk only caches the SPIRV code, not the fully compiled
-        // program, and that only depends on the base GrProgramDesc data.
-        // The +4 is to include the kShader_PersistentCacheKeyType code the Vulkan backend adds
-        // to the key right after the base key.
-        sk_sp<SkData> key = SkData::MakeWithoutCopy(desc.asKey(), desc.initialKeyLength()+4);
-        cached = persistentCache->load(*key);
-        if (cached) {
-            reader.setMemory(cached->data(), cached->size());
-            shaderType = GrPersistentCacheUtils::GetType(&reader);
-        }
-    }
-
-    int numShaderStages = 0;
-    if (kSPIRV_Tag == shaderType) {
-        numShaderStages = this->loadShadersFromCache(&reader, shaderModules, shaderStageInfo);
-    }
-
-    // Proceed from sources if we didn't get a SPIRV cache (or the cache was invalid)
-    if (!numShaderStages) {
-        numShaderStages = 2; // We always have at least vertex and fragment stages.
-        SkSL::NativeShader shaders[kGrShaderTypeCount];
-        SkSL::Program::Interface interfaces[kGrShaderTypeCount];
-
-        std::string* sksl[kGrShaderTypeCount] = {
-            &fVS.fCompilerString,
-            &fFS.fCompilerString,
-        };
-        SkSL::NativeShader cached_sksl[kGrShaderTypeCount];
-        if (kSKSL_Tag == shaderType) {
-            if (GrPersistentCacheUtils::UnpackCachedShaders(&reader,
-                                                            cached_sksl,
-                                                            /*areShadersBinary=*/false,
-                                                            interfaces,
-                                                            kGrShaderTypeCount)) {
-                for (int i = 0; i < kGrShaderTypeCount; ++i) {
-                    sksl[i] = &cached_sksl[i].fText;
-                }
+    if (!findOrCreateShaderStageInfo(
+                        kVertex_GrShaderType, shaderModules,
+                        shaderStageInfo, settings, fVS,
+                        VK_SHADER_STAGE_VERTEX_BIT)
+            || !findOrCreateShaderStageInfo(
+                        kFragment_GrShaderType,
+                        shaderModules, shaderStageInfo,
+                        settings, fFS,
+                        VK_SHADER_STAGE_FRAGMENT_BIT)) {
+        for (int i = 0; i < kGrShaderTypeCount; ++i) {
+            if (shaderModules[i]) {
+                GR_VK_CALL(fGpu->vkInterface(), DestroyShaderModule(fGpu->device(),
+                                                                    shaderModules[i], nullptr));
             }
         }
-
-        bool success = this->createVkShaderModule(VK_SHADER_STAGE_VERTEX_BIT,
-                                                  *sksl[kVertex_GrShaderType],
-                                                  &shaderModules[kVertex_GrShaderType],
-                                                  &shaderStageInfo[0],
-                                                  settings,
-                                                  &shaders[kVertex_GrShaderType],
-                                                  &interfaces[kVertex_GrShaderType]);
-
-        success = success && this->createVkShaderModule(VK_SHADER_STAGE_FRAGMENT_BIT,
-                                                        *sksl[kFragment_GrShaderType],
-                                                        &shaderModules[kFragment_GrShaderType],
-                                                        &shaderStageInfo[1],
-                                                        settings,
-                                                        &shaders[kFragment_GrShaderType],
-                                                        &interfaces[kFragment_GrShaderType]);
-
-        if (!success) {
-            for (int i = 0; i < kGrShaderTypeCount; ++i) {
-                if (shaderModules[i]) {
-                    GR_VK_CALL(fGpu->vkInterface(), DestroyShaderModule(fGpu->device(),
-                                                                        shaderModules[i], nullptr));
-                }
-            }
-            return nullptr;
-        }
-
-        if (persistentCache && !cached) {
-            if (fGpu->getContext()->priv().options().fShaderCacheStrategy ==
-                    GrContextOptions::ShaderCacheStrategy::kSkSL) {
-                SkSL::NativeShader prettySkSL[kGrShaderTypeCount];
-                for (int i = 0; i < kGrShaderTypeCount; ++i) {
-                    prettySkSL[i].fText = SkShaderUtils::PrettyPrint(*sksl[i]);
-                }
-                this->storeShadersInCache(prettySkSL, interfaces);
-            } else {
-                this->storeShadersInCache(shaders, interfaces);
-            }
-        }
+        return nullptr;
     }
 
     // The vulkan spec says that if a subpass has an input attachment, then the input attachment
@@ -348,8 +345,8 @@ GrVkPipelineState* GrVkPipelineStateBuilder::finalize(const GrProgramDesc& desc,
         subpass = 1;
     }
     sk_sp<const GrVkPipeline> pipeline = resourceProvider.makePipeline(
-            fProgramInfo, shaderStageInfo, numShaderStages, compatibleRenderPass, pipelineLayout,
-            subpass);
+            fProgramInfo, shaderStageInfo, 2 /** numShaderStages */, compatibleRenderPass,
+            pipelineLayout, subpass);
 
     for (int i = 0; i < kGrShaderTypeCount; ++i) {
         // This if check should not be needed since calling destroy on a VK_NULL_HANDLE is allowed.
