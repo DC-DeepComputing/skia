@@ -80,6 +80,13 @@ private:
                                const SkSL::NativeShader& spirv,
                                SkSL::Program::Interface);
 
+    bool findOrCreateShaderStageInfo(GrShaderType type,
+                               VkShaderModule* shaderModules,
+                               VkPipelineShaderStageCreateInfo* shaderStageInfo,
+                               const SkSL::ProgramSettings& settings,
+                               const GrGLSLShaderBuilder& shaderBuilder,
+                               VkShaderStageFlagBits stage);
+
     GrGLSLUniformHandler* uniformHandler() override { return &fUniformHandler; }
     const GrGLSLUniformHandler* uniformHandler() const override { return &fUniformHandler; }
     GrGLSLVaryingHandler* varyingHandler() override { return &fVaryingHandler; }

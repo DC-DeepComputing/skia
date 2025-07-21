@@ -14,6 +14,7 @@
 #include "include/core/SkTypes.h"
 #include "include/private/base/SkTArray.h"
 #include "src/sksl/ir/SkSLProgram.h"
+#include "include/private/gpu/ganesh/GrTypesPriv.h"
 
 #include <string>
 
@@ -41,7 +42,8 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
                                 const SkSL::NativeShader shaders[],
                                 const SkSL::Program::Interface[],
                                 int numInterfaces,
-                                const ShaderMetadata* meta = nullptr);
+                                const ShaderMetadata* meta = nullptr,
+                                int shaderCount = kGrShaderTypeCount);
 
 SkFourByteTag GetType(SkReadBuffer* reader);
 
@@ -50,7 +52,8 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
                          bool areShadersBinary,
                          SkSL::Program::Interface[],
                          int numInterfaces,
-                         ShaderMetadata* meta = nullptr);
+                         ShaderMetadata* meta = nullptr,
+                         int shaderCount = kGrShaderTypeCount);
 
 }  // namespace GrPersistentCacheUtils
 

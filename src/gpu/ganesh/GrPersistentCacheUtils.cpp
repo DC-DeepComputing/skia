@@ -42,15 +42,16 @@ sk_sp<SkData> PackCachedShaders(SkFourByteTag shaderType,
                                 const SkSL::NativeShader shaders[],
                                 const SkSL::Program::Interface interfaces[],
                                 int numInterfaces,
-                                const ShaderMetadata* meta) {
+                                const ShaderMetadata* meta,
+                                int shaderCount) {
     // For consistency (so tools can blindly pack and unpack cached shaders), we always write
-    // kGrShaderTypeCount interfaces. If the backend gives us fewer, we just replicate the last one.
-    SkASSERT(numInterfaces >= 1 && numInterfaces <= kGrShaderTypeCount);
+    // shaderCount interfaces. If the backend gives us fewer, we just replicate the last one.
+    SkASSERT(numInterfaces >= 1 && numInterfaces <= shaderCount);
 
     SkBinaryWriteBuffer writer({});
     writer.writeInt(kCurrentVersion);
     writer.writeUInt(shaderType);
-    for (int i = 0; i < kGrShaderTypeCount; ++i) {
+    for (int i = 0; i < shaderCount; ++i) {
         if (shaders[i].isBinary()) {
             writer.writeByteArray(shaders[i].fBinary.data(),
                                   shaders[i].fBinary.size() * sizeof(uint32_t));
@@ -97,8 +98,9 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
                          bool areShadersBinary,
                          SkSL::Program::Interface interfaces[],
                          int numInterfaces,
-                         ShaderMetadata* meta) {
-    for (int i = 0; i < kGrShaderTypeCount; ++i) {
+                         ShaderMetadata* meta,
+                         int shaderCount) {
+    for (int i = 0; i < shaderCount; ++i) {
         size_t shaderLen = 0;
         const void* shaderBuf = reader->skipByteArray(&shaderLen);
         if (shaderBuf) {
@@ -144,7 +146,7 @@ bool UnpackCachedShaders(SkReadBuffer* reader,
     }
 
     if (!reader->isValid()) {
-        for (int i = 0; i < kGrShaderTypeCount; ++i) {
+        for (int i = 0; i < shaderCount; ++i) {
             shaders[i].fText.clear();
             shaders[i].fBinary.clear();
         }
