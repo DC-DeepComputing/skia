@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "04fc4579_95f53468",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 486,
+      "author": {
+        "id": 5230
+      },
+      "writtenOn": "2025-07-21T15:54:17Z",
+      "side": 1,
+      "message": "it *with* the ?",
+      "range": {
+        "startLine": 486,
+        "startChar": 54,
+        "endLine": 486,
+        "endChar": 60
+      },
+      "revId": "d62a6697fdaba747b646246a7fdaccdbac847009",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
