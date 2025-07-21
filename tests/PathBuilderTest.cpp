@@ -768,6 +768,31 @@ DEF_TEST(SkPathBuilder_path_roundtrip, reporter) {
         REPORTER_ASSERT(reporter, path == rpath);
         REPORTER_ASSERT(reporter, path.isConvex() == rpath.isConvex());
 
+        // convexity is tricky after a (complex) transform ...
+        {
+            SkMatrix mx = SkMatrix::RotateDeg(30);
+            SkPathBuilder bu(path);
+            bu.transform(mx);
+            auto bupath = bu.detach();
+            SkPath copy = path.makeTransform(mx);
+
+            SkRect r;
+            bool ovals[4] = {
+                path.isOval(&r),
+                rpath.isOval(&r),
+
+                copy.isOval(&r),
+                bupath.isOval(&r),
+            };
+
+            SkASSERT(ovals[0] == ovals[1]);
+            SkASSERT(ovals[2] == false);
+            SkASSERT(ovals[3] == false);
+
+            REPORTER_ASSERT(reporter, bupath.isConvex() == copy.isConvex());
+        }
+
+
         SkRect rect[2];
         SkRRect rrect[2];
         SkPathDirection dir[2];
