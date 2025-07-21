@@ -2241,13 +2241,13 @@ BLEND_MODE(difference) { return s + d - two(min(s*da, d*sa)); }
 BLEND_MODE(exclusion)  { return s + d - two(s*d); }
 
 BLEND_MODE(colorburn) {
-    return if_then_else(d == da,    d +    s*inv(da),
-           if_then_else(s ==  0, /* s + */ d*inv(sa),
+    return if_then_else(s ==  0, /* s + */ d*inv(sa),
+           if_then_else(d == da,    d +    s*inv(da),
                                 sa*(da - min(da, (da-d)*sa*rcp_fast(s))) + s*inv(da) + d*inv(sa)));
 }
 BLEND_MODE(colordodge) {
-    return if_then_else(d ==  0, /* d + */ s*inv(da),
-           if_then_else(s == sa,    s +    d*inv(sa),
+    return if_then_else(s == sa,    s +    d*inv(sa),
+           if_then_else(d ==  0, /* d + */ s*inv(da),
                                  sa*min(da, (d*sa)*rcp_fast(sa - s)) + s*inv(da) + d*inv(sa)));
 }
 BLEND_MODE(hardlight) {

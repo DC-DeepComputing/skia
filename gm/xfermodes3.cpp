@@ -28,6 +28,7 @@
 #include "include/core/SkTypes.h"
 #include "include/effects/SkGradientShader.h"
 #include "src/core/SkColorPriv.h"
+#include "tools/DecodeUtils.h"
 #include "tools/ToolUtils.h"
 #include "tools/fonts/FontToolUtils.h"
 
@@ -222,5 +223,85 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 
 DEF_GM(return new Xfermodes3GM;)
+
+// This GM tests the continuity of the burn/dodge functions when they have
+// src == 0 or 1, and when dst == 0 or 1, which cause certain denominators in
+// main equation to become 0.
+DEF_SIMPLE_GM(burn_dodge_continuity, canvas, 360, 219) {
+    // This image has pixels where a color component equals its alpha channel (1) and pixels that
+    // are very close to alpha = 1 causing them to take different branches based on d == da.
+    auto image = ToolUtils::GetResourceAsImage("images/burn_blend_background.jpg");
+
+    auto drawBlend = [&](SkBlendMode mode) {
+        canvas->save();
+            canvas->clipRect(SkRect::MakeLTRB(0, 0, image->width(), image->height() / 2));
+            canvas->drawImage(image, 0, 0);
+        canvas->restore();
+        // For dodge, we want the opposite situation, where d approaches 0, so draw an inverted
+        // image to produce colors that will be tricky for dodge.
+        canvas->save();
+            canvas->clipRect(SkRect::MakeLTRB(0, image->height()/2,
+                                              image->width(), image->height()));
+            canvas->scale(1.f, -1.f);
+            canvas->clear(SK_ColorWHITE);
+            SkPaint sub;
+            sub.setBlendMode(SkBlendMode::kExclusion);
+            canvas->drawImage(image, 0, -image->height(), {}, &sub);
+        canvas->restore();
+
+        SkRect imageRect = SkRect::Make(image->bounds());
+        SkRect blendRect = imageRect.makeInset(32.f, 32.f);
+
+        // Also draw a gradient from black to white to test the behavior of burn/dodge.
+        SkPoint pts[2] = {{0.f, 64.f}, {0.f, image->height() - 64.f}};
+        SkColor colors[2] = {SK_ColorBLACK, SK_ColorWHITE};
+        sk_sp<SkShader> gradient =
+                SkGradientShader::MakeLinear(pts, colors, nullptr, 2, SkTileMode::kClamp);
+        SkPaint srcGrad;
+        srcGrad.setBlendMode(SkBlendMode::kSrc);
+        srcGrad.setShader(gradient);
+        // srcGrad.setAlpha(0x75);
+        canvas->drawRect(SkRect::MakeLTRB(imageRect.centerX(),
+                                          imageRect.top(),
+                                          imageRect.right(),
+                                          imageRect.bottom()),
+                         srcGrad);
+
+        // Draw four alternating rectangles covering the image and the gradient, going
+        // black, white, black, white.  For burn, white is a no-op. For dodge, black is a no-op.
+        SkPaint p;
+        p.setColor(colors[0]);
+        p.setAlphaf(0.5f);
+        p.setBlendMode(mode);
+        canvas->drawRect(SkRect::MakeLTRB(blendRect.left(),
+                                          blendRect.top(),
+                                          0.5f * (blendRect.left() + blendRect.centerX()),
+                                          blendRect.bottom()), p);
+        canvas->drawRect(SkRect::MakeLTRB(blendRect.centerX(),
+                                          blendRect.top(),
+                                          0.5f * (blendRect.centerX() + blendRect.right()),
+                                          blendRect.bottom()), p);
+
+        p.setColor(colors[1]);
+        canvas->drawRect(SkRect::MakeLTRB(0.5f * (blendRect.left() + blendRect.centerX()),
+                                          blendRect.top(),
+                                          blendRect.centerX(),
+                                          blendRect.bottom()), p);
+        canvas->drawRect(SkRect::MakeLTRB(0.5f * (blendRect.centerX() + blendRect.right()),
+                                          blendRect.top(),
+                                          blendRect.right(),
+                                          blendRect.bottom()), p);
+
+        SkPaint line;
+        line.setColor(SK_ColorRED);
+        line.setStyle(SkPaint::kStroke_Style);
+        canvas->drawRect(blendRect, line);
+    };
+
+    canvas->scale(0.25f, 0.25f);
+    drawBlend(SkBlendMode::kColorBurn);
+    canvas->translate(image->width(), 0.f);
+    drawBlend(SkBlendMode::kColorDodge);
+}
 
 }  // namespace skiagm
