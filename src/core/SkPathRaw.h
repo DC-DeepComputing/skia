@@ -26,6 +26,13 @@ struct SkPathRaw {
     bool                     fIsConvex;
 
     bool empty() const { return fVerbs.empty(); }
+    SkRect bounds() const { return fBounds; }
+    SkPathFillType fillType() const { return fFillType; }
+    bool isConvex() const { return fIsConvex; }
+
+    bool isInverseFillType() const { return SkPathFillType_IsInverse(fFillType); }
+
+    uint32_t getSegmentMasks() const { return 0; }  // TODO
 
     struct IterRec {
         SkSpan<const SkPoint> pts;
