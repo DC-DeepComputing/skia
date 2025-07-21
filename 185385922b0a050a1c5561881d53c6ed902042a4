@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b5ff3c7_9e0da444",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-21T21:49:12Z",
+      "side": 1,
+      "message": "Wow, I didn\u0027t realize there was this much involved in supporting IWYU for our Bazel build.",
+      "revId": "185385922b0a050a1c5561881d53c6ed902042a4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
