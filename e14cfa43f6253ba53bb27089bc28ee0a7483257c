@@ -22,6 +22,30 @@
       },
       "revId": "e14cfa43f6253ba53bb27089bc28ee0a7483257c",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffddf1dc_2cdbe386",
+        "filename": "infra/bots/jobs.json",
+        "patchSetId": 13
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-21T19:10:56Z",
+      "side": 0,
+      "message": "No, the `include-what-you-use` project is dead. No one is working on upstream issues and the code of `include-what-you-use` is heavily tied to the version of clang (so we cannot use the old logic). The version of iwyu that goes with this clang-18 cannot see into the use of any tuple in modern libc++ or libstdc++ and so misses a huge number of uses (tuple, pair, unique_ptr, destructuring, etc). There are also other issues that are real show stoppers. It would be a net negative to attempt to use it. If someone really wanted to resurrect the project and fix the known issues we could turn these back on again after updating to current more or less tip of tree clang, but that would be a huge amount of work.\n\nAs noted above, we can enable `include-cleaner` which is something of an \"include-what-you-use lite\".",
+      "parentUuid": "640f3d97_3e21d5ea",
+      "range": {
+        "startLine": 17,
+        "startChar": 24,
+        "endLine": 17,
+        "endChar": 36
+      },
+      "revId": "e14cfa43f6253ba53bb27089bc28ee0a7483257c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
