@@ -92,12 +92,12 @@ SkTextureCompressionType DawnFormatToCompressionType(wgpu::TextureFormat format)
         M(TextureFormat::kD32F,           wgpu::TextureFormat::Depth32Float)                \
         M(TextureFormat::kD24_S8,         wgpu::TextureFormat::Depth24PlusStencil8)         \
         M(TextureFormat::kD32F_S8,        wgpu::TextureFormat::Depth32FloatStencil8)        \
-
-#if !defined(__EMSCRIPTEN__)
-#define DAWN_FORMAT_MAPPING_NATIVE_ONLY(M) \
         M(TextureFormat::kR16,            wgpu::TextureFormat::R16Unorm)                    \
         M(TextureFormat::kRG16,           wgpu::TextureFormat::RG16Unorm)                   \
         M(TextureFormat::kRGBA16,         wgpu::TextureFormat::RGBA16Unorm)                 \
+
+#if !defined(__EMSCRIPTEN__)
+#define DAWN_FORMAT_MAPPING_NATIVE_ONLY(M) \
         M(TextureFormat::kYUV8_P2_420,    wgpu::TextureFormat::R8BG8Biplanar420Unorm)       \
         M(TextureFormat::kYUV10x6_P2_420, wgpu::TextureFormat::R10X6BG10X6Biplanar420Unorm) \
         M(TextureFormat::kExternal,       wgpu::TextureFormat::External)
@@ -128,13 +128,6 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
                                 wgpu::ShaderModule* module,
                                 const char* shaderText,
                                 ShaderErrorHandler* errorHandler) {
-    // Prior to emsdk 3.1.51 wgpu::ShaderModule::GetCompilationInfo is unimplemented.
-#if defined(__EMSCRIPTEN__)                                      &&  \
-        ((__EMSCRIPTEN_major__ <  3                               || \
-         (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ <  1) || \
-         (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ < 51)))
-    return true;
-#else
     struct Handler {
         static void Fn(WGPUCompilationInfoRequestStatus status,
                        const WGPUCompilationInfo* info,
@@ -174,10 +167,7 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
     Handler handler;
     handler.fShaderText = shaderText;
     handler.fErrorHandler = errorHandler;
-#if defined(__EMSCRIPTEN__)
-    // Deprecated function.
-    module->GetCompilationInfo(&Handler::Fn, &handler);
-#else
+
     // New API.
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = module->GetCompilationInfo(
@@ -190,16 +180,11 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
             });
 
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext)
-                                   ->device()
-                                   .GetAdapter()
-                                   .GetInstance();
+                                   ->instance();
     [[maybe_unused]] auto status =
             instance.WaitAny(1, &waitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
     SkASSERT(status == wgpu::WaitStatus::Success);
-#endif  // defined(__EMSCRIPTEN__)
-
     return handler.fSuccess;
-#endif
 }
 
 bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
@@ -207,11 +192,7 @@ bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,
                                  const SkSL::NativeShader& wgsl,
                                  wgpu::ShaderModule* module,
                                  ShaderErrorHandler* errorHandler) {
-#if defined(__EMSCRIPTEN__)
-    wgpu::ShaderModuleWGSLDescriptor wgslDesc;
-#else
     wgpu::ShaderSourceWGSL wgslDesc;
-#endif
     wgslDesc.code = wgsl.fText.c_str();
 
     wgpu::ShaderModuleDescriptor desc;

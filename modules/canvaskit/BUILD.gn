@@ -196,11 +196,8 @@ skia_wasm_lib("canvaskit") {
       "--pre-js",
       rebase_path("webgpu.js"),
       "-sUSE_WEBGL2=0",
-      "-sUSE_WEBGPU=1",
+      "-sUSE_WEBGPU=0",  # We use Dawn's Emscripten bindings fork instead.
       "-sASYNCIFY",
-
-      # Modules from html5_webgpu for JS<->WASM interop
-      "-sEXPORTED_RUNTIME_METHODS=WebGPU,JsValStore",
 
       # TODO(skbug.com/40044518): The closure compiler doesn't play well with optimized builds and ASYNCIFY.
       "--closure=0",
@@ -224,7 +221,7 @@ skia_wasm_lib("canvaskit") {
   }
 
   ldflags += [
-    "-std=c++17",
+    "-std=c++20",
     "--bind",
     "--no-entry",
     "--pre-js",
