@@ -4,74 +4,108 @@
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
-
 #include "src/gpu/graphite/Device.h"
 
-#include "include/gpu/graphite/Recorder.h"
-#include "include/gpu/graphite/Recording.h"
-#include "include/gpu/graphite/Surface.h"
-#include "src/gpu/AtlasTypes.h"
-#include "src/gpu/BlurUtils.h"
-#include "src/gpu/SkBackingFit.h"
-#include "src/gpu/graphite/AtlasProvider.h"
-#include "src/gpu/graphite/Buffer.h"
-#include "src/gpu/graphite/Caps.h"
-#include "src/gpu/graphite/CommandBuffer.h"
-#include "src/gpu/graphite/ContextOptionsPriv.h"
-#include "src/gpu/graphite/ContextPriv.h"
-#include "src/gpu/graphite/ContextUtils.h"
-#include "src/gpu/graphite/DrawContext.h"
-#include "src/gpu/graphite/DrawList.h"
-#include "src/gpu/graphite/DrawParams.h"
-#include "src/gpu/graphite/Image_Graphite.h"
-#include "src/gpu/graphite/Log.h"
-#include "src/gpu/graphite/PathAtlas.h"
-#include "src/gpu/graphite/RasterPathAtlas.h"
-#include "src/gpu/graphite/RecorderPriv.h"
-#include "src/gpu/graphite/Renderer.h"
-#include "src/gpu/graphite/RendererProvider.h"
-#include "src/gpu/graphite/SharedContext.h"
-#include "src/gpu/graphite/SpecialImage_Graphite.h"
-#include "src/gpu/graphite/Surface_Graphite.h"
-#include "src/gpu/graphite/TextureInfoPriv.h"
-#include "src/gpu/graphite/TextureProxy.h"
-#include "src/gpu/graphite/TextureUtils.h"
-#include "src/gpu/graphite/geom/BoundsManager.h"
-#include "src/gpu/graphite/geom/Geometry.h"
-#include "src/gpu/graphite/geom/IntersectionTree.h"
-#include "src/gpu/graphite/geom/Shape.h"
-#include "src/gpu/graphite/geom/Transform.h"
-#include "src/gpu/graphite/text/TextAtlasManager.h"
-
+#include "include/core/SkAlphaType.h"
+#include "include/core/SkArc.h"
+#include "include/core/SkBlendMode.h"
+#include "include/core/SkClipOp.h"
+#include "include/core/SkColorFilter.h"
 #include "include/core/SkColorSpace.h"
+#include "include/core/SkColorType.h"
+#include "include/core/SkImage.h"
+#include "include/core/SkImageInfo.h"
+#include "include/core/SkM44.h"
+#include "include/core/SkMatrix.h"
+#include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
 #include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
+#include "include/core/SkPixmap.h"
+#include "include/core/SkPoint.h"
+#include "include/core/SkRRect.h"
+#include "include/core/SkRegion.h"
+#include "include/core/SkScalar.h"
+#include "include/core/SkShader.h"
+#include "include/core/SkSize.h"
 #include "include/core/SkStrokeRec.h"
-
+#include "include/core/SkSurfaceProps.h"
+#include "include/core/SkVertices.h"
+#include "include/gpu/GpuTypes.h"
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/GraphiteTypes.h"
+#include "include/gpu/graphite/Image.h"
+#include "include/gpu/graphite/Recorder.h"
+#include "include/gpu/graphite/Surface.h"
+#include "include/gpu/graphite/TextureInfo.h"
+#include "include/private/base/SingleOwner.h"
+#include "include/private/base/SkAssert.h"
+#include "include/private/base/SkFloatingPoint.h"
+#include "include/private/base/SkTo.h"
+#include "src/base/SkArenaAlloc.h"
+#include "src/base/SkVx.h"
 #include "src/core/SkBlenderBase.h"
-#include "src/core/SkBlurMaskFilterImpl.h"
-#include "src/core/SkColorSpacePriv.h"
-#include "src/core/SkConvertPixels.h"
-#include "src/core/SkImageFilterTypes.h"
-#include "src/core/SkImageInfoPriv.h"
+#include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkImagePriv.h"
-#include "src/core/SkMatrixPriv.h"
 #include "src/core/SkPaintPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkStrikeCache.h"
 #include "src/core/SkTraceEvent.h"
 #include "src/core/SkVerticesPriv.h"
+#include "src/gpu/AtlasTypes.h"
+#include "src/gpu/BlurUtils.h"
+#include "src/gpu/SkBackingFit.h"
+#include "src/gpu/Swizzle.h"
 #include "src/gpu/TiledTextureUtils.h"
-#include "src/text/GlyphRun.h"
+#include "src/gpu/graphite/AtlasProvider.h"
+#include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/ContextOptionsPriv.h"
+#include "src/gpu/graphite/ContextPriv.h"
+#include "src/gpu/graphite/ContextUtils.h"
+#include "src/gpu/graphite/DrawContext.h"
+#include "src/gpu/graphite/DrawList.h"
+#include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/DrawTypes.h"
+#include "src/gpu/graphite/Image_Base_Graphite.h"
+#include "src/gpu/graphite/Image_Graphite.h"
+#include "src/gpu/graphite/Log.h"
+#include "src/gpu/graphite/PaintParams.h"
+#include "src/gpu/graphite/PathAtlas.h"
+#include "src/gpu/graphite/RasterPathAtlas.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+#include "src/gpu/graphite/Renderer.h"
+#include "src/gpu/graphite/RendererProvider.h"
+#include "src/gpu/graphite/SpecialImage_Graphite.h"
+#include "src/gpu/graphite/TextureInfoPriv.h"
+#include "src/gpu/graphite/TextureProxy.h"
+#include "src/gpu/graphite/TextureProxyView.h"
+#include "src/gpu/graphite/TextureUtils.h"
+#include "src/gpu/graphite/geom/AnalyticBlurMask.h"
+#include "src/gpu/graphite/geom/BoundsManager.h"
+#include "src/gpu/graphite/geom/CoverageMaskShape.h"
+#include "src/gpu/graphite/geom/EdgeAAQuad.h"
+#include "src/gpu/graphite/geom/Geometry.h"
+#include "src/gpu/graphite/geom/IntersectionTree.h"
+#include "src/gpu/graphite/geom/NonMSAAClip.h"
+#include "src/gpu/graphite/geom/Shape.h"
+#include "src/gpu/graphite/geom/SubRunData.h"
+#include "src/gpu/graphite/geom/Transform.h"
+#include "src/gpu/graphite/task/Task.h"
+#include "src/gpu/graphite/task/UploadTask.h"
+#include "src/image/SkImage_Base.h"
 #include "src/text/gpu/GlyphVector.h"
 #include "src/text/gpu/SlugImpl.h"
 #include "src/text/gpu/SubRunContainer.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 #include "src/text/gpu/VertexFiller.h"
 
+#include <algorithm>
+#include <atomic>
+#include <cstddef>
 #include <functional>
+#include <optional>
+#include <string>
 #include <tuple>
 #include <unordered_map>
 #include <vector>
@@ -92,6 +126,9 @@ std::atomic<int> gNumTilesDrawnGraphite{0};
 
 namespace skgpu::graphite {
 
+class Recording;
+enum class TextureFormat : uint8_t;
+
 #define ASSERT_SINGLE_OWNER SkASSERT(fRecorder); SKGPU_ASSERT_SINGLE_OWNER(fRecorder->singleOwner())
 
 namespace {
@@ -101,71 +138,65 @@ const SkStrokeRec& DefaultFillStyle() {
     return kFillStyle;
 }
 
-bool blender_depends_on_dst(const SkBlender* blender, bool srcIsTransparent) {
-    std::optional<SkBlendMode> bm = blender ? as_BB(blender)->asBlendMode() : SkBlendMode::kSrcOver;
-    if (!bm.has_value()) {
-        return true;
-    }
-    if (bm.value() == SkBlendMode::kSrc || bm.value() == SkBlendMode::kClear) {
-        // src and clear blending never depends on dst
-        return false;
-    }
-    if (bm.value() == SkBlendMode::kSrcOver) {
-        // src-over depends on dst if src is transparent (a != 1)
-        return srcIsTransparent;
-    }
-    // TODO: Are their other modes that don't depend on dst that can be trivially detected?
-    return true;
-}
-
-bool paint_depends_on_dst(SkColor4f color,
-                          const SkShader* shader,
-                          const SkColorFilter* colorFilter,
-                          const SkBlender* finalBlender,
-                          const SkBlender* primitiveBlender) {
-    const bool srcIsTransparent = !color.isOpaque() || (shader && !shader->isOpaque()) ||
-                                  (colorFilter && !colorFilter->isAlphaUnchanged());
-
-    if (primitiveBlender && blender_depends_on_dst(primitiveBlender, srcIsTransparent)) {
-        return true;
-    }
-
-    return blender_depends_on_dst(finalBlender, srcIsTransparent);
-}
-
 bool paint_depends_on_dst(const PaintParams& paintParams) {
-    return paint_depends_on_dst(paintParams.color(),
-                                paintParams.shader(),
-                                paintParams.colorFilter(),
-                                paintParams.finalBlender(),
-                                paintParams.primitiveBlender());
-}
+    std::optional<SkBlendMode> bm = paintParams.asFinalBlendMode();
+    if (!bm.has_value()) {
+        return true; // Runtime blenders always depend on the dst
+    }
 
-bool paint_depends_on_dst(const SkPaint& paint) {
-    // CAUTION: getMaskFilter is intentionally ignored here.
-    SkASSERT(!paint.getImageFilter());  // no paints in SkDevice should have an image filter
-    return paint_depends_on_dst(paint.getColor4f(),
-                                paint.getShader(),
-                                paint.getColorFilter(),
-                                paint.getBlender(),
-                                /*primitiveBlender=*/nullptr);
+    if (bm == SkBlendMode::kClear || bm == SkBlendMode::kSrc) {
+        // src and clear blending never depend on dst
+        return false;
+    } else if (bm != SkBlendMode::kSrcOver && bm != SkBlendMode::kDstOut) {
+        // any other blend mode besides src-over and dst-out use dst in some way
+        return true;
+    }
+
+    // At this point, we depend on the dst if source alpha != 1, so analyze the paint to
+    // see if it's opaque.
+    bool srcIsTransparent = !paintParams.color().isOpaque() ||
+                                  (paintParams.shader() && !paintParams.shader()->isOpaque()) ||
+                                  (paintParams.colorFilter() &&
+                                        !paintParams.colorFilter()->isAlphaUnchanged());
+
+    if (paintParams.primitiveBlender()) {
+        std::optional<SkBlendMode> primBlend = as_BB(paintParams.primitiveBlender())->asBlendMode();
+        // The primitive blender does not blend against the dst color, but it might change whether
+        // or not the src is transparent.
+        if (primBlend && !srcIsTransparent) {
+            // Since dst might be transparent, we can only preserve opacity for cases where the
+            // src coefficient is one and the dst coefficient is zero (when src alpha = 1).
+            srcIsTransparent = primBlend != SkBlendMode::kSrcOver && primBlend != SkBlendMode::kSrc;
+        } else {
+            // Runtime blender or complex blend modifies the final src color so assume it has alpha
+            srcIsTransparent = true;
+        }
+    }
+
+    return srcIsTransparent;
 }
 
 /** If the paint can be reduced to a solid flood-fill, determine the correct color to fill with. */
-std::optional<SkColor4f> extract_paint_color(const SkPaint& paint,
+std::optional<SkColor4f> extract_paint_color(const PaintParams& paint,
                                              const SkColorInfo& dstColorInfo) {
     SkASSERT(!paint_depends_on_dst(paint));
-    if (paint.getShader()) {
+
+    std::optional<SkBlendMode> bm = paint.asFinalBlendMode();
+    // Since we don't depend on the dst, a dst-out blend mode implies source is
+    // opaque, which causes dst-out to behave like clear.
+    if (bm == SkBlendMode::kClear || bm == SkBlendMode::kDstOut) {
+        return SkColors::kTransparent;
+    }
+
+    // PaintParams has already consolidated constant shaders and applied color filters to constant
+    // input colors. If the paint still has any of those fields, then we can't extract it.
+    if (paint.shader() || paint.colorFilter()) {
         return std::nullopt;
     }
 
-    SkColor4f dstPaintColor = PaintParams::Color4fPrepForDst(paint.getColor4f(), dstColorInfo);
-
-    if (SkColorFilter* filter = paint.getColorFilter()) {
-        SkColorSpace* dstCS = dstColorInfo.colorSpace();
-        return filter->filterColor4f(dstPaintColor, dstCS, dstCS);
-    }
-    return dstPaintColor;
+    // However, PaintParams converted the color in sRGB and we need to return this in the
+    // destination color space.
+    return PaintParams::Color4fPrepForDst(paint.color(), dstColorInfo);
 }
 
 // Returns a local rect that has been adjusted such that when it's rasterized with `localToDevice`
@@ -266,7 +297,7 @@ Rect get_inner_bounds(const Geometry& geometry, const Transform& localToDevice) 
         rect.inset(aaInset);
         // Only add a second draw if it will have a reasonable number of covered pixels; otherwise
         // we are just adding draws to sort and pipelines to switch around.
-        static constexpr float kInnerFillArea = 64*64;
+        static constexpr float kInnerFillArea = 256*256;
         // Approximate the device-space area based on the minimum scale factor of the transform.
         float scaleFactor = sk_ieee_float_divide(1.f, aaInset);
         return scaleFactor*rect.area() >= kInnerFillArea ? rect : Rect::InfiniteInverted();
@@ -310,7 +341,7 @@ bool is_simple_shape(const Shape& shape, SkStrokeRec::Style type) {
     // Per-edge AA quadrilaterals also use the same Renderer but those are not "Shapes".
     // These shapes and quads may also be combined with a second non-AA inner fill. This fill step
     // is also directly used for flooding the clip
-    return (shape.isEmpty() && shape.inverted()) ||
+    return shape.isFloodFill() ||
            (!shape.inverted() && type != SkStrokeRec::kStrokeAndFill_Style &&
             (shape.isRect() ||
              (shape.isLine() && type != SkStrokeRec::kFill_Style) ||
@@ -777,27 +808,11 @@ void Device::replaceClip(const SkIRect& rect) {
 
 void Device::drawPaint(const SkPaint& paint) {
     ASSERT_SINGLE_OWNER
-    // We never want to do a fullscreen clear on a fully-lazy render target, because the device size
-    // may be smaller than the final surface we draw to, in which case we don't want to fill the
-    // entire final surface.
-    if (this->isClipWideOpen() && !fDC->target()->isFullyLazy()) {
-        if (!paint_depends_on_dst(paint)) {
-            if (std::optional<SkColor4f> color = extract_paint_color(paint, fDC->colorInfo())) {
-                // do fullscreen clear
-                fDC->clear(*color);
-                return;
-            } else {
-                // This paint does not depend on the destination and covers the entire surface, so
-                // discard everything previously recorded and proceed with the draw.
-                fDC->discard();
-            }
-        }
-    }
 
     Shape inverseFill; // defaults to empty
     inverseFill.setInverted(true);
     // An empty shape with an inverse fill completely floods the clip
-    SkASSERT(inverseFill.isEmpty() && inverseFill.inverted());
+    SkASSERT(inverseFill.isFloodFill());
 
     this->drawGeometry(this->localToDeviceTransform(),
                        Geometry(inverseFill),
@@ -1205,7 +1220,7 @@ void Device::drawAtlasSubRun(const sktext::gpu::AtlasSubRun* subRun,
 }
 
 void Device::drawGeometry(const Transform& localToDevice,
-                          const Geometry& geometry,
+                          Geometry&& geometry,
                           const SkPaint& paint,
                           const SkStrokeRec& style,
                           SkEnumBitMask<DrawFlags> flags,
@@ -1253,7 +1268,7 @@ void Device::drawGeometry(const Transform& localToDevice,
             return;
         } else {
             SKGPU_LOG_W("Path effect failed to apply, drawing original path.");
-            this->drawGeometry(localToDevice, geometry, paint, style,
+            this->drawGeometry(localToDevice, std::move(geometry), paint, style,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
                                skipColorXform);
             return;
@@ -1286,7 +1301,7 @@ void Device::drawGeometry(const Transform& localToDevice,
     // draw without updating the clip stack.
     ClipStack::ElementList clipElements;
     Clip clip = fClip.visitClipStackForDraw(localToDevice,
-                                            geometry,
+                                            &geometry,
                                             style,
                                             fMSAASupported,
                                             &clipElements);
@@ -1353,6 +1368,30 @@ void Device::drawGeometry(const Transform& localToDevice,
                         skipColorXform};
     const bool dependsOnDst = paint_depends_on_dst(shading) ||
                               clip.shader() || !clip.nonMSAAClip().isEmpty();
+
+    // If we are unclipped, do not depend on the dst, and cover the target, then we can adjust
+    // load ops of the renderpass to more optimally handle the draw (and avoid redundant clears).
+    // NOTE: We skip this for fully-lazy render targets because the load ops may impact a larger
+    // area than the Device's theoretical bounds.
+    const bool overwritesAllPixels = !dependsOnDst &&
+                                     geometry.isShape() &&
+                                     geometry.shape().isFloodFill() &&
+                                     !fDC->target()->isFullyLazy() &&
+                                     clipElements.empty() &&
+                                     clip.scissor().contains(this->bounds());
+    if (overwritesAllPixels) {
+        if (std::optional<SkColor4f> color = extract_paint_color(shading, fDC->colorInfo())) {
+            // Fullscreen clear, so nothing has to be rendered at all
+            fDC->clear(*color);
+            return;
+        } else {
+            // This paint does not depend on the destination and covers the entire surface, so
+            // discard everything previously recorded and proceed with the draw.
+            fDC->discard();
+
+            // But then continue to render the flood fill with shading
+        }
+    }
 
     // Some shapes and styles combine multiple draws so the total render step count is split between
     // the main renderer and possibly a secondaryRenderer.

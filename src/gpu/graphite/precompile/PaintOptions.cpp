@@ -204,6 +204,7 @@ void PaintOptions::createKey(const KeyContext& keyContext,
                                                     desiredColorFilterCombination),
                        addPrimitiveBlender,
                        fPrimitiveBlendMode,
+                       fSkipColorXform,
                        clipShader,
                        /*dstReadRequired=*/!CanUseHardwareBlending(keyContext.caps(),
                                                                    targetFormat,
@@ -314,7 +315,8 @@ void PaintOptions::buildCombinations(
         for (int i = 0; i < numCombinations; ++i) {
             // Since the precompilation path's uniforms aren't used and don't change the key,
             // the exact layout doesn't matter
-            gatherer->resetWithNewLayout(Layout::kMetal);
+
+            gatherer->resetForDraw();
 
             this->createKey(keyContext, renderPassDesc.fColorAttachment.fFormat,
                             &builder, gatherer, i, withPrimitiveBlender,

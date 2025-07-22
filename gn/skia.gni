@@ -72,6 +72,7 @@ declare_args() {
   skia_use_metal = false
   skia_use_ndk_images = is_android && defined(ndk_api) && ndk_api >= 30
   skia_use_perfetto = is_linux || is_mac || is_android
+  skia_enable_pipeline_label_tracing = false
 
   # Currently only supported in Android framework
   skia_android_framework_use_perfetto = false
@@ -89,8 +90,7 @@ declare_args() {
   # See: https://libcxx.llvm.org/UsingLibcxx.html#enabling-the-safe-libc-mode
   skia_use_safe_libcxx = false
 
-  # deprecated, we will eventually use just skia_enable_ganesh
-  skia_enable_gpu = true
+  skia_enable_ganesh = true
   skia_enable_graphite = false
   skia_use_zlib = true
 
@@ -103,15 +103,6 @@ declare_args() {
   }
 
   skia_build_rust_targets = false
-}
-
-declare_args() {
-  skia_enable_ganesh = skia_enable_gpu
-}
-
-declare_args() {
-  # This is now a no-op. TODO(kjlubick) remove after Flutter stops using this.
-  skia_enable_sksl_tracing = false
 }
 
 declare_args() {

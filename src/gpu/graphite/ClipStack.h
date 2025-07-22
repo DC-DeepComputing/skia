@@ -8,16 +8,21 @@
 #ifndef skgpu_graphite_ClipStack_DEFINED
 #define skgpu_graphite_ClipStack_DEFINED
 
-#include "include/core/SkClipOp.h"
+#include "include/core/SkRefCnt.h"
+#include "include/core/SkShader.h"
+#include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTArray.h"
 #include "src/base/SkTBlockList.h"
 #include "src/gpu/graphite/DrawOrder.h"
 #include "src/gpu/graphite/DrawParams.h"
+#include "src/gpu/graphite/geom/Rect.h"
 #include "src/gpu/graphite/geom/Shape.h"
 #include "src/gpu/graphite/geom/Transform.h"
 
-class SkShader;
+#include <cstdint>
+
 class SkStrokeRec;
+enum class SkClipOp;
 
 namespace skgpu::graphite {
 
@@ -84,17 +89,17 @@ public:
     //    the above scissor.
     //  - The Clip also stores the draw's fill-style invariant clipped bounds which is used in atlas
     //    draws and may differ from the draw bounds.
+    //  - The Clip may contain an analytic clip (geometry or texture mask) that must be included in
+    //    the draw's PaintParams.
+    //  - The draw's Geometry may be intersected geometrically with clip elements, potentially
+    //    impacting the final choice of Renderer.
     //
-    // All clip elements that affect the draw will be returned in `outEffectiveElements` alongside
-    // the bounds. This method does not have any side-effects and the per-clip element state has to
-    // be explicitly updated by calling `updateClipStateForDraw()` which prepares the clip stack for
-    // later rendering.
-    //
-    // The returned clip element list will be empty if the shape is clipped out or if the draw is
-    // unaffected by any of the clip elements.
+    // All remaining clip elements that affect the draw will be returned in `outEffectiveElements`.
+    // The per-clip element state has to be explicitly updated by calling `updateClipStateForDraw()`
+    // which prepares the clip stack for later rendering.
     using ElementList = skia_private::STArray<4, const Element*>;
     Clip visitClipStackForDraw(const Transform&,
-                               const Geometry&,
+                               Geometry*,
                                const SkStrokeRec&,
                                bool msaaSupported,
                                ElementList* outEffectiveElements) const;
@@ -136,8 +141,11 @@ private:
     // TransformedShape is a lightweight wrapper that can convert these different types into a
     // common type that Simplify() can reason about.
     struct TransformedShape;
+    class DrawShape;
+
     // This captures which of the two elements in (A op B) would be required when they are combined,
-    // where op is intersect or difference.
+    // where op is intersect or difference. If A and B are identical, kAOnly is returned over kBOnly
+    // even though both are technically correct.
     enum class SimplifyResult {
         kEmpty,
         kAOnly,
@@ -149,8 +157,8 @@ private:
     // Returns how this element affects the draw after more detailed analysis.
     enum class DrawInfluence {
         kClipsOutDraw,       // The element causes the draw shape to be entirely clipped out
-        kReplacesDraw,       // The element is fully covered, so the draw's shape can be ignored
         kNone,               // The element does not affect the draw
+        kReplacesDraw,       // The element is fully covered, so the draw's shape can be ignored
         kComplexInteraction, // The element affects the draw shape in a complex way
     };
     static DrawInfluence SimplifyForDraw(const TransformedShape& clip,

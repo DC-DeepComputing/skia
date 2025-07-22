@@ -440,21 +440,12 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     SkASSERT(limitsSucceeded);
     wgpu::Limits& limits = supportedLimits.limits;
 #else
-#    ifdef WGPU_BREAKING_CHANGE_COMPATIBILITY_MODE_LIMITS
     wgpu::CompatibilityModeLimits compatLimits;
     wgpu::Limits limits{.nextInChain = &compatLimits};
     wgpu::DawnTexelCopyBufferRowAlignmentLimits alignmentLimits{};
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment)) {
         compatLimits.nextInChain = &alignmentLimits;
     }
-#    else
-    wgpu::Limits limits;
-    const wgpu::Limits& compatLimits = limits; // Temporary alias to avoid more ifdefs later
-    wgpu::DawnTexelCopyBufferRowAlignmentLimits alignmentLimits{};
-    if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment)) {
-        limits.nextInChain = &alignmentLimits;
-    }
-#    endif
     [[maybe_unused]] wgpu::Status status = backendContext.fDevice.GetLimits(&limits);
     SkASSERT(status == wgpu::Status::Success);
 #endif  // defined(__EMSCRIPTEN__)
@@ -477,11 +468,18 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     }
 #endif
 
+    fResourceBindingReqs.fBackendApi = BackendApi::kDawn;
     fResourceBindingReqs.fUniformBufferLayout = Layout::kStd140;
     // The WGSL generator assumes tightly packed std430 layout for SSBOs which is also the default
     // for all types outside the uniform address space in WGSL.
     fResourceBindingReqs.fStorageBufferLayout = Layout::kStd430;
     fResourceBindingReqs.fSeparateTextureAndSamplerBinding = true;
+
+#if !defined(__EMSCRIPTEN__)
+    // We need 32 bytes push constant for 2 vectors worth of intrinsic data.
+    fResourceBindingReqs.fUsePushConstantsForIntrinsicConstants =
+            limits.maxImmediateSize >= DawnGraphicsPipeline::kIntrinsicUniformSize;
+#endif
 
     fResourceBindingReqs.fUniformsSetIdx = DawnGraphicsPipeline::kUniformBufferBindGroupIndex;
     fResourceBindingReqs.fTextureSamplerSetIdx = DawnGraphicsPipeline::kTextureBindGroupIndex;

@@ -59,13 +59,9 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
         dawnProcSetProcs(&backendProcs);
         wgpu::InstanceDescriptor desc{};
         // need for WaitAny with timeout > 0
-#ifdef WGPU_BREAKING_CHANGE_INSTANCE_FEATURES_LIMITS
         static const auto kTimedWaitAny = wgpu::InstanceFeatureName::TimedWaitAny;
         desc.requiredFeatureCount = 1;
         desc.requiredFeatures = &kTimedWaitAny;
-#else
-        desc.capabilities.timedWaitAnyEnable = true;
-#endif
         sInstance = std::make_unique<dawn::native::Instance>(&desc);
     });
 
@@ -165,6 +161,11 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
     desc.requiredFeatureCount  = features.size();
     desc.requiredFeatures      = features.data();
     desc.nextInChain           = &togglesDesc;
+
+    wgpu::Limits limits = {};
+    adapter.GetLimits(&limits);
+    desc.requiredLimits = &limits;
+
     desc.SetDeviceLostCallback(
             wgpu::CallbackMode::AllowSpontaneous,
             [](const wgpu::Device&, wgpu::DeviceLostReason reason, wgpu::StringView message) {
@@ -177,7 +178,7 @@ std::unique_ptr<GraphiteTestContext> DawnTestContext::Make(wgpu::BackendType bac
         SkDebugf("Device error: %.*s\n", static_cast<int>(message.length), message.data);
     });
 
-    wgpu::Device device = wgpu::Device::Acquire(matchedAdaptor.CreateDevice(&desc));
+    wgpu::Device device = adapter.CreateDevice(&desc);
     SkASSERT(device);
 
     skgpu::graphite::DawnBackendContext backendContext;

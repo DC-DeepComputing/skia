@@ -30,11 +30,12 @@
 #include "src/gpu/graphite/AtlasProvider.h"
 #include "src/gpu/graphite/BufferManager.h"
 #include "src/gpu/graphite/Caps.h"
+#include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/Device.h"
 #include "src/gpu/graphite/Log.h"
-#include "src/gpu/graphite/PipelineData.h"
 #include "src/gpu/graphite/ProxyCache.h"
+#include "src/gpu/graphite/QueueManager.h"
 #include "src/gpu/graphite/RecorderPriv.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/ResourceProvider.h"
@@ -52,7 +53,9 @@
 #include "src/text/gpu/StrikeCache.h"
 #include "src/text/gpu/TextBlobRedrawCoordinator.h"
 
+#include <algorithm>
 #include <atomic>
+#include <functional>
 #include <string_view>
 #include <unordered_set>
 #include <utility>
@@ -111,7 +114,6 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         , fRuntimeEffectDict(std::make_unique<RuntimeEffectDictionary>())
         , fRootTaskList(new TaskList)
         , fRootUploads(new UploadList)
-        , fTextureDataCache(new TextureDataCache)
         , fProxyReadCounts(new ProxyReadCountMap)
         , fUniqueID(next_id())
         , fRequireOrderedRecordings(options.fRequireOrderedRecordings.has_value()
@@ -137,27 +139,24 @@ Recorder::Recorder(sk_sp<SharedContext> sharedContext,
         fResourceProvider = fOwnedResourceProvider.get();
     }
     fUploadBufferManager = std::make_unique<UploadBufferManager>(fResourceProvider,
-                                                                 fSharedContext->caps());
-
-#if defined(GPU_TEST_UTILS)
-    if (options.fRecorderOptionsPriv) {
-        if (options.fRecorderOptionsPriv->fDbmOptions.has_value()) {
-            fDrawBufferManager = std::make_unique<DrawBufferManager>(
-                    fResourceProvider,
-                    fSharedContext->caps(),
-                    fUploadBufferManager.get(),
-                    options.fRecorderOptionsPriv->fDbmOptions.value());
-        }
-    } else {
-        fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
                                                                  fSharedContext->caps(),
-                                                                 fUploadBufferManager.get());
+                                                                 &fMaxReusedUploadBufferCount,
+                                                                 &fMaxUsedUploadBufferCount);
+
+    DrawBufferManager::DrawBufferManagerOptions dbmOpts = {};
+#if defined(GPU_TEST_UTILS)
+    if (options.fRecorderOptionsPriv && options.fRecorderOptionsPriv->fDbmOptions.has_value()) {
+        dbmOpts = *options.fRecorderOptionsPriv->fDbmOptions;
     }
-#else
+#endif
+
     fDrawBufferManager = std::make_unique<DrawBufferManager>(fResourceProvider,
                                                              fSharedContext->caps(),
-                                                             fUploadBufferManager.get());
-#endif
+                                                             fUploadBufferManager.get(),
+                                                             &fMaxUsedDrawBufferCount,
+                                                             &fMaxUsedUniformBytes,
+                                                             &fMaxUsedVertexBytes,
+                                                             dbmOpts);
 
     SkASSERT(fResourceProvider);
 }
@@ -203,23 +202,37 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Collect all pending tasks on the deferred recording canvas and any other tracked device.
     this->priv().flushTrackedDevices();
 
-    // Now that all devices have been flushed, extract all lazy proxies from the texture
-    // data cache so that they can be instantiated easily when the Recording is inserted.
+    // Now that all devices have been flushed, extract lazy proxies by traversing tasks on the root
+    // task list.
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> nonVolatileLazyProxies;
     std::unordered_set<sk_sp<TextureProxy>, Recording::ProxyHash> volatileLazyProxies;
-    fTextureDataCache->foreach([&](TextureDataBlock block) {
-        for (int j = 0; j < block.numTextures(); ++j) {
-            const TextureDataBlock::SampledTexture& tex = block.texture(j);
-
-            if (tex.first->isLazy()) {
-                if (tex.first->isVolatile()) {
-                    volatileLazyProxies.insert(tex.first);
-                } else {
-                    nonVolatileLazyProxies.insert(tex.first);
-                }
+    int numTextures = 0;
+    fRootTaskList->visitProxies([&](const TextureProxy* proxy) {
+        numTextures++;
+        if (proxy->isLazy()) {
+            if (proxy->isVolatile()) {
+                volatileLazyProxies.insert(sk_ref_sp(proxy));
+            } else {
+                nonVolatileLazyProxies.insert(sk_ref_sp(proxy));
             }
         }
+        return true;
     });
+
+    fMaxTexturesPerRecording = std::max(fMaxTexturesPerRecording, numTextures);
+    fMaxRootTaskListSize = std::max(fMaxRootTaskListSize, fRootTaskList->size());
+    fMaxRootUploadListSize = std::max(fMaxRootUploadListSize, fRootUploads->size());
+    fMaxAliveRecordings = std::max(fMaxAliveRecordings, QueueManager::ActiveRecordingCount() + 1);
+    fMaxCommandBufferResources = std::max(fMaxCommandBufferResources,
+                                          CommandBuffer::MaxTrackedResources());
+    fMaxRecordingsPerCommandBuffer = std::max(fMaxRecordingsPerCommandBuffer,
+                                              QueueManager::MaxRecordings());
+    fMaxVizRecordingsPerCommandBuffer = std::max(fMaxVizRecordingsPerCommandBuffer,
+                                                 QueueManager::MaxVizRecordings());
+    fMaxMainRecordingsPerCommandBuffer = std::max(fMaxMainRecordingsPerCommandBuffer,
+                                                  QueueManager::MaxMainRecordings());
+    fMaxAsyncReadRecordingsPerCommandBuffer = std::max(fMaxAsyncReadRecordingsPerCommandBuffer,
+                                                       QueueManager::MaxAsyncReadRecordings());
 
     // The scratch resources only need to be tracked until prepareResources() is finished, so
     // Recorder doesn't hold a persistent manager and it can be deleted when snap() returns.
@@ -263,7 +276,6 @@ std::unique_ptr<Recording> Recorder::snap() {
     // Remaining cleanup that must always happen regardless of success or failure
     fRuntimeEffectDict->reset();
     fProxyReadCounts = std::make_unique<ProxyReadCountMap>();
-    fTextureDataCache = std::make_unique<TextureDataCache>();
     if (!fRequireOrderedRecordings) {
         fAtlasProvider->invalidateAtlases();
     }
@@ -488,10 +500,9 @@ void Recorder::addFinishInfo(const InsertFinishInfo& info) {
 void Recorder::freeGpuResources() {
     ASSERT_SINGLE_OWNER
 
-    // We don't want to free the Uniform/TextureDataCaches or the Draw/UploadBufferManagers since
-    // all their resources need to be held on to until a Recording is snapped. And once snapped, all
-    // their held resources are released. The StrikeCache and TextBlobCache don't hold onto any Gpu
-    // resources.
+    // We don't want to free the Uniform or the Draw/UploadBufferManagers sinceall their resources
+    // need to be held on to until a Recording is snapped. And once snapped, all their held
+    // resources are released. The StrikeCache and TextBlobCache don't hold onto any Gpu resources.
 
     // Notify the atlas and resource provider to free any resources it can (does not include
     // resources that are locked due to pending work).

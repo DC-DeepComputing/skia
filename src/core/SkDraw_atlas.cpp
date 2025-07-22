@@ -47,7 +47,7 @@ enum class SkBlendMode;
 struct SkRSXform;
 
 static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
-                      const SkRect& r, SkBlitter* blitter, SkPath* scratchPath) {
+                      const SkRect& r, SkBlitter* blitter) {
     if (ctm.rectStaysRect()) {
         SkRect dr;
         ctm.mapRect(&dr, r);
@@ -56,10 +56,8 @@ static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
         SkPoint pts[4];
         r.toQuad(pts);
         ctm.mapPoints(pts);
-
-        scratchPath->rewind();
-        scratchPath->addPoly(pts, true);
-        SkScan::FillPath(*scratchPath, rc, blitter);
+        // todo: great place for SkPathRaw
+        SkScan::FillPath(SkPath::Polygon(pts, true), rc, blitter);
     }
 }
 
@@ -132,7 +130,6 @@ void SkDraw::drawAtlas(SkSpan<const SkRSXform> xform,
     if (!blitter) {
         return;
     }
-    SkPath scratchPath;
 
     for (size_t i = 0; i < xform.size(); ++i) {
         if (!colors.empty()) {
@@ -145,12 +142,12 @@ void SkDraw::drawAtlas(SkSpan<const SkRSXform> xform,
         mx.setRSXform(xform[i]);
         mx.preTranslate(-textures[i].fLeft, -textures[i].fTop);
         mx.postConcat(*fCTM);
-        SkMatrix inv;
-        if (!mx.invert(&inv)) {
-            return;
-        }
-        if (transformShader->update(inv)) {
-            fill_rect(mx, *fRC, textures[i], blitter, &scratchPath);
+        if (auto inv = mx.invert()) {
+            if (transformShader->update(*inv)) {
+                fill_rect(mx, *fRC, textures[i], blitter);
+            }
+        } else {
+            return; // non-invertible
         }
     }
 }

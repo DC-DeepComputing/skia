@@ -32,13 +32,9 @@ GraphiteDawnWindowContext::GraphiteDawnWindowContext(std::unique_ptr<const Displ
         : WindowContext(std::move(params)), fSurfaceFormat(surfaceFormat) {
     wgpu::InstanceDescriptor desc{};
     // need for WaitAny with timeout > 0
-#ifdef WGPU_BREAKING_CHANGE_INSTANCE_FEATURES_LIMITS
     static const auto kTimedWaitAny = wgpu::InstanceFeatureName::TimedWaitAny;
     desc.requiredFeatureCount = 1;
     desc.requiredFeatures = &kTimedWaitAny;
-#else
-    desc.capabilities.timedWaitAnyEnable = true;
-#endif
     fInstance = std::make_unique<dawn::native::Instance>(&desc);
 }
 
@@ -206,6 +202,11 @@ wgpu::Device GraphiteDawnWindowContext::createDevice(wgpu::BackendType type) {
     wgpu::DeviceDescriptor deviceDescriptor;
     deviceDescriptor.requiredFeatures = features.data();
     deviceDescriptor.requiredFeatureCount = features.size();
+
+    wgpu::Limits limits = {};
+    adapter.GetLimits(&limits);
+    deviceDescriptor.requiredLimits = &limits;
+
     deviceDescriptor.nextInChain = &togglesDesc;
     deviceDescriptor.SetDeviceLostCallback(
             wgpu::CallbackMode::AllowSpontaneous,
