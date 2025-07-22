@@ -16,6 +16,24 @@
       "message": "Addressed comments but also had to make a change to add a public method to VkCaps to check for format support. I didn\u0027t want to expose the entire `FormatInfo` struct, go so far as to overload equality operators for non-trivial attributes, iterate over the format list \u003eonce, etc.; so I just ended up adding a method that calls VulkanCaps\u0027s getFormatInfo and verifies the format info has a nonzero color type info count + valid ptr to the info. LMKWYT.",
       "revId": "bc45f51ce682d4e91035e629082cb90b85130741",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f13f1cc5_6aaa5026",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-22T18:22:13Z",
+      "side": 1,
+      "message": "Yes, I like this approach more",
+      "parentUuid": "566a0a9d_fbd91f8c",
+      "revId": "bc45f51ce682d4e91035e629082cb90b85130741",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

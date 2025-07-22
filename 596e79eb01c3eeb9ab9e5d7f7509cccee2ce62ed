@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6a08015_dc963536",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-22T18:22:13Z",
+      "side": 1,
+      "message": "nit: line length",
+      "range": {
+        "startLine": 719,
+        "startChar": 100,
+        "endLine": 719,
+        "endChar": 101
+      },
+      "revId": "596e79eb01c3eeb9ab9e5d7f7509cccee2ce62ed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
