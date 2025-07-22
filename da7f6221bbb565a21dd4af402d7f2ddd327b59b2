@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "045a3537_cb8845f1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 11
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-22T15:43:39Z",
+      "side": 1,
+      "message": "Thank you for your patience and for the bump. I have taken a look - I kicked off our CQ tasks to verify this doesn\u0027t cause any issues. If not, your implementation of making these casts explicit LGTM and I will +1.\n\nI\u0027ve reached out to 2 of the other listed reviewers to have them take a look as well (since you\u0027ll need 2 approvals).",
+      "revId": "da7f6221bbb565a21dd4af402d7f2ddd327b59b2",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
