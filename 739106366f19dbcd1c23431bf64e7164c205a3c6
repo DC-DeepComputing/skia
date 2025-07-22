@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1bcd18f8_594779a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-22T15:40:45Z",
+      "side": 1,
+      "message": "As a follow-up CL, can you handle `AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM` in `GetSkColorTypeFromBufferFormat` of AHardwareBufferUtils?",
+      "revId": "739106366f19dbcd1c23431bf64e7164c205a3c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07581258_5d22c77e",
+        "filename": "src/gpu/graphite/vk/VulkanResourceProvider.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-22T15:40:45Z",
+      "side": 1,
+      "message": "nit: renderable",
+      "range": {
+        "startLine": 719,
+        "startChar": 25,
+        "endLine": 719,
+        "endChar": 34
+      },
+      "revId": "739106366f19dbcd1c23431bf64e7164c205a3c6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
