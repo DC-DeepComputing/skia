@@ -16,6 +16,24 @@
       "message": "Should we have a comment here like: \n// If the transforms cause too much precision loss ...\n?",
       "revId": "535587083c11550e4cd1a8e22eb70dadaf703a45",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "36143227_be4ef483",
+        "filename": "src/gpu/graphite/ClipStack.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-22T14:07:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8eddf9e5_d3381e2f",
+      "revId": "535587083c11550e4cd1a8e22eb70dadaf703a45",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
