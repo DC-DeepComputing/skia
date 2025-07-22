@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e52fd78_99b2345d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-22T15:35:42Z",
+      "side": 1,
+      "message": "Tiny CL that checks for unsupported VkFormat when deciding whether or not to import an AHardwareBuffer using the VkFormat or the external format.",
+      "revId": "b135de43277b5531106ce6af931b6b6645acc900",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
