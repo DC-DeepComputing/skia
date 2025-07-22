@@ -34,6 +34,23 @@
       "parentUuid": "8aeb7299_855ecd28",
       "revId": "1fe1e72c53ae929695925186a21ecbcf14fcfb0e",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fb80028_72eb6658",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-22T15:48:42Z",
+      "side": 1,
+      "message": "OK, looks like I was able to submit - CQ seems to be running now. Cross your fingers. Thank you for your patience + work here.",
+      "revId": "1fe1e72c53ae929695925186a21ecbcf14fcfb0e",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
