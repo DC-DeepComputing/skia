@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cb8a1513_cf636e55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-22T19:58:41Z",
+      "side": 1,
+      "message": "PTAL. I disabled the failing BuildStats because I don\u0027t want to have to update bloaty right now and fixed the generated files issue",
+      "revId": "3bd8460cf7c086614380621f09c17958d3315b72",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
