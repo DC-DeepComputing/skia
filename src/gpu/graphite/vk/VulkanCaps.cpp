@@ -1556,13 +1556,19 @@ VkFormat VulkanCaps::getFormatFromColorType(SkColorType colorType) const {
 VulkanCaps::FormatInfo& VulkanCaps::getFormatInfo(VkFormat format) {
     static_assert(std::size(kVkFormats) == VulkanCaps::kNumVkFormats,
                   "Size of VkFormats array must match static value in header");
+
+    static FormatInfo kInvalidFormat;
+    if (format == VK_FORMAT_UNDEFINED) {
+        return kInvalidFormat;
+    }
+
     for (size_t i = 0; i < std::size(kVkFormats); ++i) {
         if (kVkFormats[i] == format) {
             return fFormatTable[i];
         }
     }
-    static FormatInfo kInvalidFormat;
-    return kInvalidFormat;
+
+   return kInvalidFormat;
 }
 
 const VulkanCaps::FormatInfo& VulkanCaps::getFormatInfo(VkFormat format) const {
