@@ -102,7 +102,8 @@
 #endif // CK_ENABLE_WEBGL
 
 #ifdef CK_ENABLE_WEBGPU
-#include <emscripten/html5_webgpu.h>
+#include "include/gpu/graphite/dawn/DawnBackendContext.h"
+
 #include <webgpu/webgpu.h>
 #include <webgpu/webgpu_cpp.h>
 #endif // CK_ENABLE_WEBGPU
@@ -350,69 +351,69 @@ sk_sp<SkSurface> MakeRenderTarget(sk_sp<GrDirectContext> dContext, SimpleImageIn
 
 #ifdef CK_ENABLE_WEBGPU
 
-sk_sp<GrDirectContext> MakeGrContext() {
-    GrContextOptions options;
-    wgpu::Device device = wgpu::Device::Acquire(emscripten_webgpu_get_device());
-    return GrDirectContext::MakeDawn(device, options);
-}
+// sk_sp<GrDirectContext> MakeGrContext() {
+//     GrContextOptions options;
+//     wgpu::Device device = wgpu::Device::Acquire(emscripten_webgpu_get_device());
+//     return GrDirectContext::MakeDawn(device, options);
+// }
 
-sk_sp<SkSurface> MakeGPUTextureSurface(sk_sp<GrDirectContext> dContext,
-                                       uint32_t textureHandle, uint32_t textureFormat,
-                                       int width, int height, sk_sp<SkColorSpace> colorSpace) {
-    if (!colorSpace) {
-      colorSpace = SkColorSpace::MakeSRGB();
-    }
+// sk_sp<SkSurface> MakeGPUTextureSurface(sk_sp<GrDirectContext> dContext,
+//                                        uint32_t textureHandle, uint32_t textureFormat,
+//                                        int width, int height, sk_sp<SkColorSpace> colorSpace) {
+//     if (!colorSpace) {
+//       colorSpace = SkColorSpace::MakeSRGB();
+//     }
 
-    wgpu::TextureFormat format = static_cast<wgpu::TextureFormat>(textureFormat);
-    wgpu::Texture texture(emscripten_webgpu_import_texture(textureHandle));
-    emscripten_webgpu_release_js_handle(textureHandle);
+//     wgpu::TextureFormat format = static_cast<wgpu::TextureFormat>(textureFormat);
+//     wgpu::Texture texture(emscripten_webgpu_import_texture(textureHandle));
+//     emscripten_webgpu_release_js_handle(textureHandle);
 
-    // GrDawnRenderTargetInfo currently only supports a 1-mip TextureView.
-    constexpr uint32_t mipLevelCount = 1;
-    constexpr uint32_t sampleCount = 1;
+//     // GrDawnRenderTargetInfo currently only supports a 1-mip TextureView.
+//     constexpr uint32_t mipLevelCount = 1;
+//     constexpr uint32_t sampleCount = 1;
 
-    GrDawnTextureInfo info;
-    info.fTexture = texture;
-    info.fFormat = format;
-    info.fLevelCount = mipLevelCount;
+//     GrDawnTextureInfo info;
+//     info.fTexture = texture;
+//     info.fFormat = format;
+//     info.fLevelCount = mipLevelCount;
 
-    GrBackendTexture target(width, height, info);
-    return SkSurfaces::WrapBackendTexture(
-            dContext.get(),
-            target,
-            kTopLeft_GrSurfaceOrigin,
-            sampleCount,
-            colorSpace->isSRGB() ? kRGBA_8888_SkColorType : kRGBA_F16_SkColorType,
-            colorSpace,
-            nullptr);
-}
+//     GrBackendTexture target(width, height, info);
+//     return SkSurfaces::WrapBackendTexture(
+//             dContext.get(),
+//             target,
+//             kTopLeft_GrSurfaceOrigin,
+//             sampleCount,
+//             colorSpace->isSRGB() ? kRGBA_8888_SkColorType : kRGBA_F16_SkColorType,
+//             colorSpace,
+//             nullptr);
+// }
 
-bool ReplaceBackendTexture(SkSurface& surface, uint32_t textureHandle, uint32_t textureFormat,
-                           int width, int height) {
-    wgpu::TextureFormat format = static_cast<wgpu::TextureFormat>(textureFormat);
-    wgpu::Texture texture(emscripten_webgpu_import_texture(textureHandle));
-    emscripten_webgpu_release_js_handle(textureHandle);
+// bool ReplaceBackendTexture(SkSurface& surface, uint32_t textureHandle, uint32_t textureFormat,
+//                            int width, int height) {
+//     wgpu::TextureFormat format = static_cast<wgpu::TextureFormat>(textureFormat);
+//     wgpu::Texture texture(emscripten_webgpu_import_texture(textureHandle));
+//     emscripten_webgpu_release_js_handle(textureHandle);
 
-    GrDawnTextureInfo info;
-    info.fTexture = texture;
-    info.fFormat = format;
-    info.fLevelCount = 1;
+//     GrDawnTextureInfo info;
+//     info.fTexture = texture;
+//     info.fFormat = format;
+//     info.fLevelCount = 1;
 
-    // Use kDiscard_ContentChangeMode to discard the contents of the old backing texture. This not
-    // only avoids an unnecessary blit, we also don't support copying the contents of a swapchain
-    // texture due to the default GPUCanvasConfiguration usage bits we used when configuring the
-    // GPUCanvasContext in JS.
-    //
-    // The default usage bits only contain GPUTextureUsage.RENDER_ATTACHMENT. To support a copy we
-    // would need to also set GPUTextureUsage.TEXTURE_BINDING (to sample it in a shader) or
-    // GPUTextureUsage.COPY_SRC (for a copy command).
-    //
-    // See https://www.w3.org/TR/webgpu/#namespacedef-gputextureusage and
-    // https://www.w3.org/TR/webgpu/#dictdef-gpucanvasconfiguration.
-    GrBackendTexture target(width, height, info);
-    return surface.replaceBackendTexture(target, kTopLeft_GrSurfaceOrigin,
-                                         SkSurface::kDiscard_ContentChangeMode);
-}
+//     // Use kDiscard_ContentChangeMode to discard the contents of the old backing texture. This not
+//     // only avoids an unnecessary blit, we also don't support copying the contents of a swapchain
+//     // texture due to the default GPUCanvasConfiguration usage bits we used when configuring the
+//     // GPUCanvasContext in JS.
+//     //
+//     // The default usage bits only contain GPUTextureUsage.RENDER_ATTACHMENT. To support a copy we
+//     // would need to also set GPUTextureUsage.TEXTURE_BINDING (to sample it in a shader) or
+//     // GPUTextureUsage.COPY_SRC (for a copy command).
+//     //
+//     // See https://www.w3.org/TR/webgpu/#namespacedef-gputextureusage and
+//     // https://www.w3.org/TR/webgpu/#dictdef-gpucanvasconfiguration.
+//     GrBackendTexture target(width, height, info);
+//     return surface.replaceBackendTexture(target, kTopLeft_GrSurfaceOrigin,
+//                                          SkSurface::kDiscard_ContentChangeMode);
+// }
 
 #endif // CK_ENABLE_WEBGPU
 
@@ -1050,7 +1051,7 @@ static Uint8Array encodeImage(GrDirectContext* dContext,
 EMSCRIPTEN_BINDINGS(Skia) {
 #ifdef ENABLE_GPU
     constant("gpu", true);
-    function("_MakeGrContext", &MakeGrContext);
+    // function("_MakeGrContext", &MakeGrContext);
 #endif // ENABLE_GPU
 
 #ifdef CK_ENABLE_WEBGL
@@ -1063,7 +1064,7 @@ EMSCRIPTEN_BINDINGS(Skia) {
 
 #ifdef CK_ENABLE_WEBGPU
     constant("webgpu", true);
-    function("_MakeGPUTextureSurface", &MakeGPUTextureSurface);
+    // function("_MakeGPUTextureSurface", &MakeGPUTextureSurface);
 #endif  // CK_ENABLE_WEBGPU
 
     function("getDecodeCacheLimitBytes", &SkResourceCache::GetTotalByteLimit);

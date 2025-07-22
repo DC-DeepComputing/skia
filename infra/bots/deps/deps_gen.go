@@ -102,6 +102,11 @@ var deps = deps_parser.DepsEntries{
 		Version: "df2e3581520f36776cd42b9fec3ec4a51ab878ef",
 		Path:    "third_party/externals/vulkan-utility-libraries",
 	},
+	"chromium.googlesource.com/external/github.com/emscripten-core/emsdk": {
+		Id:      "chromium.googlesource.com/external/github.com/emscripten-core/emsdk",
+		Version: "419021fa040428bc69ef1559b325addb8e10211f",
+		Path:    "third_party/externals/emsdk",
+	},
 	"chromium.googlesource.com/external/github.com/google/highway": {
 		Id:      "chromium.googlesource.com/external/github.com/google/highway",
 		Version: "424360251cdcfc314cfc528f53c872ecd63af0f0",
@@ -201,11 +206,6 @@ var deps = deps_parser.DepsEntries{
 		Id:      "skia.googlesource.com/external/github.com/KhronosGroup/SPIRV-Tools",
 		Version: "8cf1bf9bb922e33135e6e343a566764015da2dc6",
 		Path:    "third_party/externals/spirv-tools",
-	},
-	"skia.googlesource.com/external/github.com/emscripten-core/emsdk": {
-		Id:      "skia.googlesource.com/external/github.com/emscripten-core/emsdk",
-		Version: "c69d433d8509c5c64564c2f0d054bf102a5cf67e",
-		Path:    "third_party/externals/emsdk",
 	},
 	"skia.googlesource.com/external/github.com/google/brotli": {
 		Id:      "skia.googlesource.com/external/github.com/google/brotli",
