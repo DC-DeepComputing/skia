@@ -802,9 +802,10 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
 #else
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitBeginN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+    SkDebugf("%s %u %s %u: WaitBeginN\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+//                         TRACE_STR_STATIC("WaitBeginN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
                          "compilationID", this->getPipelineInfo().fCompilationID);
 #endif
@@ -822,9 +823,10 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     SkASSERT(waitInfo.completed);
 
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitEndN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+    SkDebugf("%s %u %s %u: WaitEndN\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+                         //TRACE_STR_STATIC("WaitEndN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
                          "compilationID", this->getPipelineInfo().fCompilationID);
 #endif

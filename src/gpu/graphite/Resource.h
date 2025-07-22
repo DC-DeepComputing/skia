@@ -676,6 +676,7 @@ private:
     uint32_t fLastUseToken;
     skgpu::StdSteadyClock::time_point fLastAccess;
 
+public:
     // String used to describe the current use of this Resource.
     std::string fLabel;
 };

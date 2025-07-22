@@ -88,17 +88,34 @@ sk_sp<GraphicsPipeline> ResourceProvider::findOrCreateGraphicsPipeline(
                 SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
 
         static const char* kNames[2] = { "BeginBuildN", "BeginBuildP" };
-        TRACE_EVENT_INSTANT2("skia.gpu",
-                             TRACE_STR_STATIC(kNames[forPrecompile]),
-                             TRACE_EVENT_SCOPE_THREAD,
+        SkDebugf("%s %u %s %u: %s\n",
+        //TRACE_EVENT_INSTANT2("skia.gpu",
+//                             TRACE_EVENT_SCOPE_THREAD,
                              "key", pipelineKey.hash(),
-                             "compilationID", compilationID);
+                             "compilationID", compilationID,
+                 TRACE_STR_STATIC(kNames[forPrecompile]));
+
+        SkDebugf("key %u compilationID %u: %s\n",
+                 pipelineKey.hash(),
+                 compilationID,
+                 to_str(fSharedContext, pipelineDesc, renderPassDesc).c_str());
 #endif
+
+        skgpu::StdSteadyClock::time_point compileStart = skgpu::StdSteadyClock::now();
 
         pipeline = this->createGraphicsPipeline(runtimeDict, pipelineKey,
                                                 pipelineDesc, renderPassDesc,
                                                 pipelineCreationFlags,
                                                 compilationID);
+
+        skgpu::StdSteadyClock::time_point compileEnd = skgpu::StdSteadyClock::now();
+        auto compileTime = compileEnd - compileStart;
+
+        SkDebugf("key %u compilationID %u: compile-time %lldms\n",
+                 pipelineKey.hash(),
+                 compilationID,
+                 std::chrono::duration_cast<std::chrono::milliseconds>(compileTime).count());
+
         if (pipeline) {
             globalCache->invokePipelineCallback(fSharedContext, pipelineDesc, renderPassDesc);
             // TODO: Should we store a null pipeline if we failed to create one so that subsequent

@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#define SK_PIPELINE_LIFETIME_LOGGING 1
+
 namespace skgpu::graphite {
 
 class ShaderInfo;
@@ -37,6 +39,10 @@ enum class PipelineCreationFlags : uint8_t {
 class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
+
+    skgpu::StdSteadyClock::time_point fLastAccess;
+    void updateAccessTime() { fLastAccess = skgpu::StdSteadyClock::now(); }
+    skgpu::StdSteadyClock::time_point lastAccessTime() const { return fLastAccess; }
 
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 

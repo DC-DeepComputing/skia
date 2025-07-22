@@ -19,6 +19,11 @@
 using namespace skgpu::graphite;
 using namespace PrecompileTestUtils;
 
+static constexpr DrawTypeFlags operator|(DrawTypeFlags a, DrawTypeFlags b) {
+    return static_cast<DrawTypeFlags>(static_cast<std::underlying_type<DrawTypeFlags>::type>(a) |
+                                      static_cast<std::underlying_type<DrawTypeFlags>::type>(b));
+}
+
 void VisitPrecompileSettings(skgpu::graphite::PrecompileContext*,
                              RuntimeEffectManager& effectManager,
                              const std::function<void(skgpu::graphite::PrecompileContext*,
@@ -656,8 +661,22 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
          precompileContext.get(),
          effectManager,
          [&](skgpu::graphite::PrecompileContext* precompileContext,
-             const PrecompileSettings& precompileCase,
+             const PrecompileSettings& settings,
              int index) {
+#if 1
+             Precompile(precompileContext,
+                        settings.fPaintOptions,
+                        settings.fDrawTypeFlags,
+                        settings.fRenderPassProps);
+
+             if (settings.fAnalyticClipping) {
+                 Precompile(precompileContext,
+                            settings.fPaintOptions,
+                            settings.fDrawTypeFlags | DrawTypeFlags::kAnalyticClip,
+                            settings.fRenderPassProps);
+             }
+         });
+#else
             const skgpu::graphite::Caps* caps = precompileContext->priv().caps();
 
             static const size_t kChosenCase = -1; // only test this entry in 'kPrecompileCases'
@@ -706,6 +725,7 @@ DEF_GRAPHITE_TEST_FOR_CONTEXTS(AndroidPrecompileTest, is_acceptable_context_type
     // were not covered by the PaintOptions.
 
     collector.finalReport();
+#endif
 #endif
 }
 

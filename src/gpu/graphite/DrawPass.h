@@ -22,6 +22,8 @@
 
 struct SkImageInfo;
 
+#define SK_TRACE_GRAPHITE_PIPELINE_USE 1
+
 namespace skgpu::graphite {
 
 class CommandBuffer;
