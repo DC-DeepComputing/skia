@@ -16,6 +16,24 @@
       "message": "nit: better title",
       "revId": "16cd9fc736e93bdc4bbe4381af5d826da7552aef",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "45d743d2_d5192ae1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-22T15:52:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ad1f0072_b45fe4b2",
+      "revId": "16cd9fc736e93bdc4bbe4381af5d826da7552aef",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
