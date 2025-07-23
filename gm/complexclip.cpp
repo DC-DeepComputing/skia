@@ -415,7 +415,11 @@ DEF_SIMPLE_GM(clip_shader_persp, canvas, 1370, 1030) {
                       {img->width() - 28.f, img->height() + 100.f},
                       {0.f, img->height() - 80.f}};
     SkMatrix persp;
-    SkAssertResult(persp.setPolyToPoly(src, dst, 4));
+    if (auto mx = SkMatrix::PolyToPoly(src, dst)) {
+        persp = *mx;
+    } else {
+        SkASSERT(false);
+    }
 
     SkMatrix perspScale = SkMatrix::Concat(persp, scale);
 

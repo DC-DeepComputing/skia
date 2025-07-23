@@ -128,8 +128,12 @@ private:
                           {kM * kTileW + 10.f, -5.f},
                           {kM * kTileW - 28.f, kN * kTileH + 40.f},
                           {45.f, kN * kTileH - 25.f}};
-        SkAssertResult(matrices[1].setPolyToPoly(src, dst, 4));
+
+        auto mx = SkMatrix::PolyToPoly(src, dst);
+        SkASSERT(mx);
+        matrices[1] = *mx;
         matrices[1].postTranslate(d, 50.f);
+
         // skew
         matrices[2].setRotate(-60.f);
         matrices[2].postSkew(0.5f, -1.15f);
@@ -140,7 +144,10 @@ private:
         dst[0] = {5.f / 4.f * kM * kTileW, 0};
         dst[3] = {2.f / 3.f * kM * kTileW, 1 / 2.f * kN * kTileH};
         dst[2] = {1.f / 3.f * kM * kTileW, 1 / 2.f * kN * kTileH - 0.1f * kTileH};
-        SkAssertResult(matrices[3].setPolyToPoly(src, dst, 4));
+
+        mx = SkMatrix::PolyToPoly(src, dst);
+        SkAssertResult(mx);
+        matrices[3] = *mx;
         matrices[3].postTranslate(100.f, d);
         for (auto fm : {SkFilterMode::kNearest, SkFilterMode::kLinear}) {
             SkPaint setPaint;

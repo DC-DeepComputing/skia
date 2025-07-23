@@ -537,7 +537,11 @@ private:
                           {kColCount * kTileWidth + 10.f, 15.f},
                           {kColCount * kTileWidth - 28.f, kRowCount * kTileHeight + 40.f},
                           {25.f, kRowCount * kTileHeight - 15.f}};
-        SkAssertResult(fMatrices[4].setPolyToPoly(src, dst, 4));
+
+        const auto mx = SkMatrix::PolyToPoly(src, dst);
+        SkASSERT(mx);
+        fMatrices[4] = mx.value_or(SkMatrix::I());
+
         fMatrices[4].preTranslate(0.f, 10.f);
         fMatrixNames.push_back(SkString("Perspective"));
 
