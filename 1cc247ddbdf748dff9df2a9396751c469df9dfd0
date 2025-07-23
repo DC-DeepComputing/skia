@@ -34,6 +34,24 @@
       "parentUuid": "dcb8e838_bf09df6f",
       "revId": "1cc247ddbdf748dff9df2a9396751c469df9dfd0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "79607688_6b5cd8a8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-23T16:54:49Z",
+      "side": 1,
+      "message": "Also fixed the other problematic gold diffs at this point, so should be good for re-review.",
+      "parentUuid": "0bfae441_971ba3f9",
+      "revId": "1cc247ddbdf748dff9df2a9396751c469df9dfd0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
