@@ -300,7 +300,7 @@ private:
         SkMatrix srcToDst = SkMatrix::RectToRect(entry.fSrcRect, entry.fDstRect);
 
         // Story entry's dstRect into dstQuad, and use contentRect and contentDst as its src and dst
-        entry.fDstRect.toQuad(dstQuad);
+        entry.fDstRect.toQuadx(dstQuad);
         entry.fSrcRect = contentRect;
         entry.fDstRect = srcToDst.mapRect(contentRect);
         entry.fHasClip = true;
