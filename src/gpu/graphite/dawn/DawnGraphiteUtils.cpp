@@ -128,6 +128,9 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
                                 wgpu::ShaderModule* module,
                                 const char* shaderText,
                                 ShaderErrorHandler* errorHandler) {
+#if defined(__EMSCRIPTEN__)
+    return true;
+#else
     struct Handler {
         static void Fn(WGPUCompilationInfoRequestStatus status,
                        const WGPUCompilationInfo* info,
@@ -185,6 +188,7 @@ static bool check_shader_module([[maybe_unused]] const DawnSharedContext* shared
             instance.WaitAny(1, &waitInfo, /*timeoutNS=*/std::numeric_limits<uint64_t>::max());
     SkASSERT(status == wgpu::WaitStatus::Success);
     return handler.fSuccess;
+#endif  // defined(__EMSCRIPTEN__)
 }
 
 bool DawnCompileWGSLShaderModule(const DawnSharedContext* sharedContext,

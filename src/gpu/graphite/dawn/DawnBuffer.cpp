@@ -143,66 +143,63 @@ DawnBuffer::DawnBuffer(const DawnSharedContext* sharedContext,
 
 #if defined(__EMSCRIPTEN__)
 
-bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
-    // This function is only useful for Emscripten where we have to pre-map the buffer
-    // once it is returned to the cache.
-    SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
+// bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
+//     // This function is only useful for Emscripten where we have to pre-map the buffer
+//     // once it is returned to the cache.
+//     SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
 
-    // This implementation is almost Dawn-agnostic. However, Buffer base class doesn't have any
-    // way of distinguishing a buffer that is mappable for writing from one mappable for reading.
-    // We only need to re-map the former.
-    if (!(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite)) {
-        return false;
-    }
-    // We cannot start an async map while the GPU is still using the buffer. We asked that
-    // our Resource not become reusable until it was purgeable (no outstanding CPU or GPU refs)
-    SkASSERT(this->isPurgeable());
-    // Note that the map state cannot change on another thread when we are here. We got here
-    // because there were no UsageRefs on the buffer but async mapping holds a UsageRef until it
-    // completes.
-    if (this->isMapped()) {
-        return false;
-    }
-    takeRef();
-    this->asyncMap([](void* ctx, skgpu::CallbackResult result) {
-                       sk_sp<DawnBuffer> buffer(static_cast<DawnBuffer*>(ctx));
-                       if (result != skgpu::CallbackResult::kSuccess) {
-                           buffer->setDeleteASAP();
-                       }
-                   },
-                   this);
-    return true;
-}
+//     // This implementation is almost Dawn-agnostic. However, Buffer base class doesn't have any
+//     // way of distinguishing a buffer that is mappable for writing from one mappable for reading.
+//     // We only need to re-map the former.
+//     if (!(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite)) {
+//         return false;
+//     }
+//     // Note that the map state cannot change on another thread when we are here. We got here
+//     // because there were no UsageRefs on the buffer but async mapping holds a UsageRef until it
+//     // completes.
+//     if (this->isMapped()) {
+//         return false;
+//     }
+//     takeRef();
+//     this->asyncMap([](void* ctx, skgpu::CallbackResult result) {
+//                        sk_sp<DawnBuffer> buffer(static_cast<DawnBuffer*>(ctx));
+//                        if (result != skgpu::CallbackResult::kSuccess) {
+//                            buffer->setDeleteASAP();
+//                        }
+//                    },
+//                    this);
+//     return true;
+// }
 
-void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
-    // This function is only useful for Emscripten where we have to use asyncMap().
-    SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
+// void DawnBuffer::onAsyncMap(GpuFinishedProc proc, GpuFinishedContext ctx) {
+//     // This function is only useful for Emscripten where we have to use asyncMap().
+//     SkASSERT(this->sharedContext()->caps()->bufferMapsAreAsync());
 
-    if (proc) {
-        SkAutoMutexExclusive ex(fAsyncMutex);
-        if (this->isMapped()) {
-            proc(ctx, CallbackResult::kSuccess);
-            return;
-        }
-        fAsyncMapCallbacks.push_back(RefCntedCallback::Make(proc, ctx));
-    }
-    if (this->isUnmappable()) {
-        return;
-    }
-    SkASSERT(fBuffer);
-    SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
-             (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
-    SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Unmapped);
-    bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
-    auto buffer = sk_ref_sp(this);
+//     if (proc) {
+//         SkAutoMutexExclusive ex(fAsyncMutex);
+//         if (this->isMapped()) {
+//             proc(ctx, CallbackResult::kSuccess);
+//             return;
+//         }
+//         fAsyncMapCallbacks.push_back(RefCntedCallback::Make(proc, ctx));
+//     }
+//     if (this->isUnmappable()) {
+//         return;
+//     }
+//     SkASSERT(fBuffer);
+//     SkASSERT((fBuffer.GetUsage() & wgpu::BufferUsage::MapRead) ||
+//              (fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite));
+//     SkASSERT(fBuffer.GetMapState() == wgpu::BufferMapState::Unmapped);
+//     bool isWrite = fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite;
+//     auto buffer = sk_ref_sp(this);
 
-    fBuffer.MapAsync(
-            isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read,
-            0,
-            fBuffer.GetSize(),
-            wgpu::CallbackMode::WaitAnyOnly,
-            [buffer = sk_ref_sp(this)](wgpu::MapAsyncStatus s, wgpu::StringView m) { buffer->mapCallback(s, m); });
-}
+//     fBuffer.MapAsync(
+//             isWrite ? wgpu::MapMode::Write : wgpu::MapMode::Read,
+//             0,
+//             fBuffer.GetSize(),
+//             wgpu::CallbackMode::WaitAnyOnly,
+//             [buffer = sk_ref_sp(this)](wgpu::MapAsyncStatus s, wgpu::StringView m) { buffer->mapCallback(s, m); });
+// }
 
 #endif  // defined(__EMSCRIPTEN__)
 

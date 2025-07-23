@@ -97,6 +97,12 @@ template("third_party") {
       } else {
         cflags += [ "-w" ]
       }
+
+      if (is_wasm) {
+        cflags += [
+          "-sSUPPORT_LONGJMP=wasm",
+        ]
+      }
     }
   }
 }

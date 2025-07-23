@@ -30,11 +30,13 @@ private:
 DawnWorkSubmissionWithFuture::DawnWorkSubmissionWithFuture(std::unique_ptr<CommandBuffer> cmdBuffer,
                                                            DawnQueueManager* queueManager)
         : GpuWorkSubmission(std::move(cmdBuffer), queueManager) {
-    fSubmittedWorkDoneFuture = queueManager->dawnQueue().OnSubmittedWorkDone(
-            wgpu::CallbackMode::WaitAnyOnly, [](wgpu::QueueWorkDoneStatus, wgpu::StringView) {});
+    // fSubmittedWorkDoneFuture = queueManager->dawnQueue().OnSubmittedWorkDone(
+    //         wgpu::CallbackMode::WaitAnyOnly, [](wgpu::QueueWorkDoneStatus, wgpu::StringView) {});
+    fSubmittedWorkDoneFuture = {};
 }
 
 bool DawnWorkSubmissionWithFuture::onIsFinished(const SharedContext* sharedContext) {
+    SkDebugf("onIsFinished called\n");
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fSubmittedWorkDoneFuture;
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext)
@@ -47,8 +49,10 @@ bool DawnWorkSubmissionWithFuture::onIsFinished(const SharedContext* sharedConte
 }
 
 void DawnWorkSubmissionWithFuture::onWaitUntilFinished(const SharedContext* sharedContext) {
+    SkDebugf("onWaitUntilFinished called\n");
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fSubmittedWorkDoneFuture;
+    // SkDebugf("waiting for submitted work done future: %llu\n", fSubmittedWorkDoneFuture.id);
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext)
                                    ->instance();
     [[maybe_unused]] auto status =
