@@ -451,6 +451,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         return nullptr;
     }
 
+    const bool clearAsDraw = recorder->priv().caps()->avoidClearLoadOps();
     sk_sp<DrawContext> dc = DrawContext::Make(recorder->priv().caps(),
                                               std::move(target),
                                               deviceSize,
@@ -458,7 +459,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
                                               props);
     if (!dc) {
         return nullptr;
-    } else if (initialLoadOp == LoadOp::kClear) {
+    } else if (initialLoadOp == LoadOp::kClear && !clearAsDraw) {
         dc->clear(SkColors::kTransparent);
     } else if (initialLoadOp == LoadOp::kDiscard) {
         dc->discard();
@@ -473,6 +474,13 @@ sk_sp<Device> Device::Make(Recorder* recorder,
         // from what is saved to fScopedRecordingID.
         SkDEBUGCODE(device->fScopedRecordingID = recorder->priv().nextRecordingID();)
     }
+
+    if (initialLoadOp == LoadOp::kClear && clearAsDraw) {
+        SkPaint clear;
+        clear.setBlendMode(SkBlendMode::kClear);
+        device->drawPaint(clear);
+    }
+
     return device;
 }
 
