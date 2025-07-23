@@ -177,6 +177,10 @@ public:
         return true;
     }
 
+    void dump() override {
+        SkDebugf("UploadTask: %d instances\n", fInstances.size());
+    }
+
 private:
     UploadTask(skia_private::TArray<UploadInstance>&&);
     UploadTask(UploadInstance);
