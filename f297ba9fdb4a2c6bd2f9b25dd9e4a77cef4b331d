@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49adc90f_cba513cc",
+        "filename": "src/core/SkPathRaw.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T20:43:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29c10c00_f1de849c",
+      "range": {
+        "startLine": 35,
+        "startChar": 55,
+        "endLine": 35,
+        "endChar": 59
+      },
+      "revId": "f297ba9fdb4a2c6bd2f9b25dd9e4a77cef4b331d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "53d36557_8356746a",
@@ -41,6 +65,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebeefbb6_9735324b",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T20:43:13Z",
+      "side": 1,
+      "message": "as per our chat, I still think const is sufficient.",
+      "parentUuid": "53d36557_8356746a",
+      "revId": "f297ba9fdb4a2c6bd2f9b25dd9e4a77cef4b331d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d1f57d4_d4862402",
@@ -54,6 +96,30 @@
       "writtenOn": "2025-07-22T01:21:07Z",
       "side": 1,
       "message": "Can\u0027t we use fStorage instead (to avoid const friction)?",
+      "range": {
+        "startLine": 32,
+        "startChar": 26,
+        "endLine": 32,
+        "endChar": 80
+      },
+      "revId": "f297ba9fdb4a2c6bd2f9b25dd9e4a77cef4b331d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "349bc602_9096c297",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T20:43:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8d1f57d4_d4862402",
       "range": {
         "startLine": 32,
         "startChar": 26,
@@ -87,6 +153,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3c27baba_1a3ac4e1",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T20:43:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "df273356_661bd316",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 68
+      },
+      "revId": "f297ba9fdb4a2c6bd2f9b25dd9e4a77cef4b331d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6791c24b_51332514",
@@ -100,6 +190,30 @@
       "writtenOn": "2025-07-22T01:21:07Z",
       "side": 1,
       "message": "name bikeshed: I think it would look better with a namespace separator instead of \u0027_\u0027.\n\nMaybe put these in `namespace SkPathRawShapes`?\n\nMaking them nested structs in SkPathRaw would also be an option (then it\u0027d be fine to keep in the same cpp too).",
+      "range": {
+        "startLine": 17,
+        "startChar": 7,
+        "endLine": 17,
+        "endChar": 26
+      },
+      "revId": "f297ba9fdb4a2c6bd2f9b25dd9e4a77cef4b331d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e4dada6_d7389fcb",
+        "filename": "src/core/SkPathRawShapes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T20:43:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6791c24b_51332514",
       "range": {
         "startLine": 17,
         "startChar": 7,
