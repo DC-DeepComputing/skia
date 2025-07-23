@@ -155,6 +155,12 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
     // TODO(b/353983969): Enable storage buffers once perf regressions are addressed.
     fStorageBufferSupport = false;
 
+    // nVidia, Intel, and Adreno perform better with a discard op followed by a draw.
+    // This was measured on Quadro P400, Intel Xe, and Adreno 620. Refine by device as needed.
+    fAvoidClearLoadOps = vendorID == skgpu::kNvidia_VkVendor ||
+                         vendorID == skgpu::kIntel_VkVendor ||
+                         vendorID == skgpu::kQualcomm_VkVendor;
+
     VkPhysicalDeviceMemoryProperties deviceMemoryProperties;
     VULKAN_CALL(vkInterface, GetPhysicalDeviceMemoryProperties(physDev, &deviceMemoryProperties));
     fSupportsMemorylessAttachments = false;
