@@ -876,18 +876,17 @@ optional("gpu_shared") {
   if (skia_use_dawn) {
     public_defines += [ "SK_DAWN" ]
 
-    # When building for WASM, the WebGPU headers are provided by Emscripten. For native builds we
-    # have to depend on Dawn directly.
-    if (!skia_use_webgpu) {
-      public_deps += [
-        "//third_party/externals/dawn/include/dawn:cpp_headers",
-        "//third_party/externals/dawn/src/dawn:cpp",
-        "//third_party/externals/dawn/src/dawn:proc",
-      ]
+    # Dawn provides different headers with this rule depending on whether we are building for WASM.
+    public_deps += [ "//third_party/externals/dawn/include/dawn:cpp_headers" ]
 
+    if (!skia_use_webgpu) {
       if (dawn_enable_d3d12 || dawn_enable_d3d11 || dawn_enable_desktop_gl ||
           dawn_enable_metal || dawn_enable_opengles || dawn_enable_vulkan) {
-        public_deps += [ "//third_party/externals/dawn/src/dawn/native" ]
+        # For Dawn native builds, we need to include the respective rules directly.
+        public_deps += [
+          "//third_party/externals/dawn/src/dawn:proc",
+          "//third_party/externals/dawn/src/dawn/native",
+        ]
       }
       if (dawn_enable_d3d12) {
         libs += [
@@ -1949,7 +1948,7 @@ skia_source_set("public_headers_warnings_check") {
   ]
 
   if (skia_use_dawn) {
-    deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
+    deps += [ "//third_party/externals/dawn/include/dawn:cpp_headers" ]
   }
 }
 
@@ -2218,7 +2217,7 @@ if (skia_enable_tools) {
       sources += [ "tools/gpu/d3d/D3DTestUtils.cpp" ]
     }
     if (skia_use_dawn) {
-      public_deps += [ "//third_party/externals/dawn/include/dawn:headers" ]
+      public_deps += [ "//third_party/externals/dawn/include/dawn:cpp_headers" ]
       if (is_clang) {
         cflags_cc = [ "-Wno-microsoft-cast" ]
       }

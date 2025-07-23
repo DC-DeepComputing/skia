@@ -90,6 +90,8 @@
       titles.forEach((title) => document.getElementById(title).innerText += " (using WebGPU)");
     }
     CanvasKit = CK;
+    console.log("Has graphite", CanvasKit.graphite);
+    console.log("Graphite+WebGPU test", CanvasKit.TestGraphite());
     PathExample(CanvasKit);
     InkExample(CanvasKit, gpu);
     PathPersonExample(CanvasKit, gpu);
