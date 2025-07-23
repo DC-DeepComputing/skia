@@ -22,6 +22,30 @@
       },
       "revId": "194cf2469b7a9fb74847b8a48e4ae57a5e660f60",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "435b46c7_4f208bb9",
+        "filename": "infra/docker/make_image_tag.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-23T13:22:29Z",
+      "side": 1,
+      "message": "Good to know - A script like this is in use on the infra side, so I presume it works here too. Will keep that other tag in mind too",
+      "parentUuid": "ddf557e9_1aa0b17f",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 9
+      },
+      "revId": "194cf2469b7a9fb74847b8a48e4ae57a5e660f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
