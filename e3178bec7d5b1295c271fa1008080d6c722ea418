@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ca9c72c8_adbc7cd2",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T14:22:12Z",
+      "side": 1,
+      "message": "I repeated the API in SkPath.h -- but happy to change to asOval() etc.",
+      "parentUuid": "0acf19fc_1c1ae737",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "926e3ca3_98fd9900",
         "filename": "src/core/SkPathData.h",
         "patchSetId": 5
@@ -60,6 +84,42 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c06cae4f_9584ff8e",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T14:22:12Z",
+      "side": 1,
+      "message": "... old API didn\u0027t return startIndex (see above discussion)",
+      "parentUuid": "cdbc3cdf_867f5ffa",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c4ae6b_2747576a",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T14:22:12Z",
+      "side": 1,
+      "message": "as per our discussion -- I\u0027ll first see who/why *anyone* wants start index",
+      "parentUuid": "926e3ca3_98fd9900",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b36ad596_42013ef3",
         "filename": "src/core/SkPathData.h",
         "patchSetId": 5
@@ -71,6 +131,30 @@
       "writtenOn": "2025-07-23T13:03:35Z",
       "side": 1,
       "message": "Skip for now/TODO?",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 66
+      },
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "72fdbe71_f29924e7",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T14:22:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b36ad596_42013ef3",
       "range": {
         "startLine": 151,
         "startChar": 0,
