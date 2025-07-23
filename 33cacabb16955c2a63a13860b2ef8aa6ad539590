@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "364d7124_b471448f",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1229,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-23T18:11:55Z",
+      "side": 1,
+      "message": "This one is quite similar and should probably also be fixed by mapping the `modifiedPath`, the `noInversePaint` shader, and the paint\u0027s stroke width, then passing an identity matrix.",
+      "revId": "33cacabb16955c2a63a13860b2ef8aa6ad539590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

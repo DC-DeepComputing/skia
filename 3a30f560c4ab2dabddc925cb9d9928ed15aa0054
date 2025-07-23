@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22b6c28_568f4e7c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-23T18:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "50307f8d_321a55bf",
+      "revId": "3a30f560c4ab2dabddc925cb9d9928ed15aa0054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4088581c_71d1f463",
@@ -31,6 +49,30 @@
       "writtenOn": "2025-07-23T16:50:01Z",
       "side": 1,
       "message": "This only works if the shader doesn\u0027t depend on the local/ctm coords for shading. You could add a local matrix to the paint\u0027s shader as part of it.",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 90
+      },
+      "revId": "3a30f560c4ab2dabddc925cb9d9928ed15aa0054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f812f11_e089827b",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-23T18:11:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4088581c_71d1f463",
       "range": {
         "startLine": 472,
         "startChar": 0,
