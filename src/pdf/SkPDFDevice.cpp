@@ -462,19 +462,17 @@ void SkPDFDevice::drawAnnotation(const SkRect& rect, const char key[], SkData* v
 }
 
 void SkPDFDevice::drawPaint(const SkPaint& srcPaint) {
-    auto inverse = this->localToDevice().invert();
-    if (!inverse) {
-        return;
-    }
     SkRect bbox = this->cs().bounds(this->bounds());
-    inverse->mapRect(&bbox);
     bbox.roundOut(&bbox);
     if (this->hasEmptyClip()) {
         return;
     }
     SkPaint newPaint = srcPaint;
     newPaint.setStyle(SkPaint::kFill_Style);
-    this->drawRect(bbox, newPaint);
+    if (newPaint.getShader()) {
+        newPaint.setShader(newPaint.getShader()->makeWithLocalMatrix(this->localToDevice()));
+    }
+    this->internalDrawPath(this->cs(), SkMatrix::I(), SkPath::Rect(bbox), newPaint, true);
 }
 
 void SkPDFDevice::drawPoints(SkCanvas::PointMode mode,
