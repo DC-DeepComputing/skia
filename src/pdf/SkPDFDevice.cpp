@@ -462,19 +462,18 @@ void SkPDFDevice::drawAnnotation(const SkRect& rect, const char key[], SkData* v
 }
 
 void SkPDFDevice::drawPaint(const SkPaint& srcPaint) {
-    auto inverse = this->localToDevice().invert();
-    if (!inverse) {
-        return;
-    }
-    SkRect bbox = this->cs().bounds(this->bounds());
-    inverse->mapRect(&bbox);
-    bbox.roundOut(&bbox);
     if (this->hasEmptyClip()) {
         return;
     }
+    // Clip is in device space. Transform shader into device space.
+    SkRect bbox = this->cs().bounds(this->bounds());
+    bbox.roundOut(&bbox);
     SkPaint newPaint = srcPaint;
     newPaint.setStyle(SkPaint::kFill_Style);
-    this->drawRect(bbox, newPaint);
+    if (newPaint.getShader()) {
+        newPaint.setShader(newPaint.getShader()->makeWithLocalMatrix(this->localToDevice()));
+    }
+    this->internalDrawPath(this->cs(), SkMatrix::I(), SkPath::Rect(bbox), newPaint, true);
 }
 
 void SkPDFDevice::drawPoints(SkCanvas::PointMode mode,
@@ -1194,6 +1193,9 @@ std::unique_ptr<SkStreamAsset> SkPDFDevice::content() {
 bool SkPDFDevice::handleInversePath(const SkPath& origPath,
                                     const SkPaint& paint,
                                     bool pathIsMutable) {
+    // Assume the caller has already applied the path effect.
+    SkASSERT(!paint.getPathEffect());
+
     if (!origPath.isInverseFillType()) {
         return false;
     }
@@ -1203,48 +1205,39 @@ bool SkPDFDevice::handleInversePath(const SkPath& origPath,
     }
 
     SkPath modifiedPath;
-    SkPath* pathPtr = const_cast<SkPath*>(&origPath);
-    SkPaint noInversePaint(paint);
+    const SkPath* pathPtr = &origPath;
+    SkPaint modifiedPaint(paint);
 
     // Merge stroking operations into final path.
     if (SkPaint::kStroke_Style == paint.getStyle() ||
-        SkPaint::kStrokeAndFill_Style == paint.getStyle()) {
+        SkPaint::kStrokeAndFill_Style == paint.getStyle())
+    {
         SkPathBuilder builder;
         bool doFillPath = skpathutils::FillPathWithPaint(origPath, paint, &builder);
         modifiedPath = builder.detach();
         pathPtr = &modifiedPath;
 
         if (doFillPath) {
-            noInversePaint.setStyle(SkPaint::kFill_Style);
-            noInversePaint.setStrokeWidth(0);
+            modifiedPaint.setStyle(SkPaint::kFill_Style);
+            modifiedPaint.setStrokeWidth(0);
         } else {
-            // To be consistent with the raster output, hairline strokes
-            // are rendered as non-inverted.
+            // Hairline strokes are rendered non-inverted.
             modifiedPath.toggleInverseFillType();
-            this->internalDrawPath(this->cs(), this->localToDevice(), modifiedPath, paint, true);
+            this->internalDrawPath(this->cs(), this->localToDevice(), modifiedPath, modifiedPaint, true);
             return true;
         }
     }
 
-    // Get bounds of clip in current transform space
-    // (clip bounds are given in device space).
-    auto transformInverse = this->localToDevice().invert();
-    if (!transformInverse) {
-        return false;
-    }
+    // Clip is in device space. Transform path and shader into device space.
     SkRect bounds = this->cs().bounds(this->bounds());
-    transformInverse->mapRect(&bounds);
-
-    // Extend the bounds by the line width (plus some padding)
-    // so the edge doesn't cause a visible stroke.
-    bounds.outset(paint.getStrokeWidth() + SK_Scalar1,
-                  paint.getStrokeWidth() + SK_Scalar1);
-
-    if (!calculate_inverse_path(bounds, *pathPtr, &modifiedPath)) {
+    pathPtr->transform(this->localToDevice(), &modifiedPath);
+    if (!calculate_inverse_path(bounds, modifiedPath, &modifiedPath)) {
         return false;
     }
-
-    this->internalDrawPath(this->cs(), this->localToDevice(), modifiedPath, noInversePaint, true);
+    if (modifiedPaint.getShader()) {
+        modifiedPaint.setShader(modifiedPaint.getShader()->makeWithLocalMatrix(this->localToDevice()));
+    }
+    this->internalDrawPath(this->cs(), SkMatrix::I(), modifiedPath, modifiedPaint, true);
     return true;
 }
 
