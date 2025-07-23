@@ -147,6 +147,8 @@ private:
         bool fVertexInputDynamicState = false;
         // From VkPhysicalDeviceGraphicsPipelineLibraryFeaturesEXT:
         bool fGraphicsPipelineLibrary = false;
+        // From VK_EXT_subgroup_size_control
+        bool fSubgroupSizeControl = false;
     };
     EnabledFeatures getEnabledFeatures(const VkPhysicalDeviceFeatures2* features,
                                        uint32_t physicalDeviceVersion);
@@ -155,6 +157,8 @@ private:
         VkPhysicalDeviceProperties2 fBase;
         VkPhysicalDeviceDriverProperties fDriver;
         VkPhysicalDeviceGraphicsPipelineLibraryPropertiesEXT fGpl;
+        VkPhysicalDeviceSubgroupProperties fSubgroup;
+        VkPhysicalDeviceSubgroupSizeControlPropertiesEXT fSubgroupSizeControl;
     };
     void getProperties(const skgpu::VulkanInterface* vkInterface,
                        VkPhysicalDevice physDev,

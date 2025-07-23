@@ -506,6 +506,8 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     fStorageBufferSupport = false;
 #endif
 
+    fSubgroupSupport = backendContext.fDevice.HasFeature(wgpu::FeatureName::Subgroups);
+
     fDrawBufferCanBeMapped = false;
 
     fComputeSupport = true;
@@ -616,6 +618,8 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
         shaderCaps->fFBFetchSupport = true;
     }
 #endif
+
+    shaderCaps->fSubgroupSupport = fSubgroupSupport;
 }
 
 void DawnCaps::initFormatTable(const wgpu::Device& device) {

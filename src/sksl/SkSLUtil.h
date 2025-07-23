@@ -161,6 +161,11 @@ struct ShaderCaps {
     // devices will break these intrinsics into individual scalar commands.
     bool fVectorClampMinMaxSupport = true;
 
+    // Not all devices support subgroups. Called "SimdGroup" in Metal, and "Wave" in D3D12.
+    bool fSubgroupSupport = false;
+    // Only really needed for VK with SPIR-V Version < 1.6, but keep for now.
+    uint32_t fSubgroupSize = 0;
+
     const char* fVersionDeclString = "";
 
     const char* fShaderDerivativeExtensionString = nullptr;
