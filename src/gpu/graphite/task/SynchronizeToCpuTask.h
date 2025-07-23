@@ -40,6 +40,10 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+   void dump() override {
+        SkDebugf("SynchronizeToCpuTask: %p\n", fBuffer.get());
+    }
+
 private:
     explicit SynchronizeToCpuTask(sk_sp<Buffer> buffer) : fBuffer(std::move(buffer)) {}
 

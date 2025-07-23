@@ -39,6 +39,10 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    void dump() override {
+        SkDebugf("ClearBuffersTask %d clears\n", fClearList.size());
+    }
+
 private:
     explicit ClearBuffersTask(skia_private::TArray<BindBufferInfo> clearList)
             : fClearList(std::move(clearList)) {}

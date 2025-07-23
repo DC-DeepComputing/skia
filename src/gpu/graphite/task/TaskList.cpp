@@ -43,7 +43,10 @@ Status TaskList::prepareResources(ResourceProvider* resourceProvider,
     TRACE_EVENT1("skia.gpu", TRACE_FUNC, "# tasks", fTasks.size());
     scratchManager->pushScope();
     Status status = this->visitTasks([&](Task* task) {
-        return task->prepareResources(resourceProvider, scratchManager, runtimeDict);
+        task->dump();
+        auto status = task->prepareResources(resourceProvider, scratchManager, runtimeDict);
+        SkDebugf("\t%d\n", status);
+        return status;
     });
     scratchManager->popScope();
     return status;

@@ -41,6 +41,10 @@ public:
                             const RuntimeEffectDictionary*) override;
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    void dump() override {
+        SkDebugf("ComputeTask %d children tasks\n", fChildTasks.size());
+    }
+
 private:
     explicit ComputeTask(DispatchGroupList dispatchGroups);
 

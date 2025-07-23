@@ -74,6 +74,8 @@ public:
     virtual bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) {
         return true;
     }
+
+    virtual void dump() = 0;
 };
 
 } // namespace skgpu::graphite

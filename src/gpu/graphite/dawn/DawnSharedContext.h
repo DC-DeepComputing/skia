@@ -30,6 +30,7 @@ public:
 
     const DawnCaps* dawnCaps() const { return static_cast<const DawnCaps*>(this->caps()); }
     const wgpu::Device& device() const { return fDevice; }
+    const wgpu::Instance& instance() const { return fInstance; }
     const wgpu::Queue& queue() const { return fQueue; }
     const wgpu::ShaderModule& noopFragment() const { return fNoopFragment; }
 
