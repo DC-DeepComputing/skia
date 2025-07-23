@@ -160,6 +160,8 @@ struct ShaderCaps {
     // Clamp, Min, Max, intrinsics all appear to be broken on Intel UHD630, so shaders for these
     // devices will break these intrinsics into individual scalar commands.
     bool fVectorClampMinMaxSupport = true;
+    // Not all devices support subgroups. Called "SimdGroup" in Metal, and "Wave" in D3D12.
+    bool fSubgroupSupport = false;
 
     const char* fVersionDeclString = "";
 

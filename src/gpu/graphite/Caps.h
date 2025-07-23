@@ -248,7 +248,6 @@ public:
             SkColorType srcColorType,
             const TextureInfo& srcTextureInfo,
             SkColorType dstColorType) const = 0;
-
     /**
      * Checks whether the passed color type is renderable. If so, the same color type is passed
      * back. If not, provides an alternative (perhaps lower bit depth and/or unorm instead of float)
@@ -353,6 +352,8 @@ public:
     bool supportsHardwareAdvancedBlending() const {
         return fBlendEqSupport > BlendEquationSupport::kBasic;
     }
+
+    bool subgroupSupport() const { return fSubgroupSupport; }
 
     /**
      * Returns the skgpu::Swizzle to use when sampling or reading back from a texture with the
@@ -527,6 +528,7 @@ protected:
 
     bool fComputeSupport = false;
     bool fSupportsAHardwareBufferImages = false;
+    bool fSubgroupSupport = false;
     BlendEquationSupport fBlendEqSupport = BlendEquationSupport::kBasic;
     bool fFullCompressedUploadSizeMustAlignToBlockDims = false;
 
