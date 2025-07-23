@@ -48,6 +48,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a65e1196_a73c6c6f",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T16:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca9c72c8_adbc7cd2",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "926e3ca3_98fd9900",
@@ -114,6 +138,42 @@
       "side": 1,
       "message": "as per our discussion -- I\u0027ll first see who/why *anyone* wants start index",
       "parentUuid": "926e3ca3_98fd9900",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87809b61_f9f16861",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T16:14:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c4ae6b_2747576a",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a7ec00ca_518983e5",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-23T16:14:57Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "c06cae4f_9584ff8e",
       "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
