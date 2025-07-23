@@ -259,6 +259,37 @@ void VulkanCaps::init(const ContextOptions& contextOptions,
             enabledFeatures.fGraphicsPipelineLibrary &&
             (deviceProperties.fGpl.graphicsPipelineLibraryFastLinking || vendorID == kARM_VkVendor);
 
+    // Mirror Dawn's VK subgroups request
+    // Requirements for subgroup support:
+    // 1. API version is >= 1.1 (Graphite's minimum is 1.1, so this is implicit).
+    // 2. Supported stages include Compute and Fragment.
+    // 3. Supported operations include basic arithmetic, vote, ballot, and shuffle.
+    // 4. Subgroup size control is available and enabled.
+    //
+    // TODO: Thomas, #4 could possibly disabled since our minimum vulkan version is 1.3, but make it
+    // required for now to match Dawn. (Dawn's min VK version for subgroups is 1.1)
+    const VkSubgroupFeatureFlags requiredOperations = VK_SUBGROUP_FEATURE_BASIC_BIT |
+                                                      VK_SUBGROUP_FEATURE_VOTE_BIT |
+                                                      VK_SUBGROUP_FEATURE_ARITHMETIC_BIT |
+                                                      VK_SUBGROUP_FEATURE_BALLOT_BIT |
+                                                      VK_SUBGROUP_FEATURE_SHUFFLE_BIT |
+                                                      VK_SUBGROUP_FEATURE_SHUFFLE_RELATIVE_BIT |
+                                                      VK_SUBGROUP_FEATURE_QUAD_BIT;
+
+    const bool stagesSupported =
+            (deviceProperties.fSubgroup.supportedStages & VK_SHADER_STAGE_COMPUTE_BIT) &&
+            (deviceProperties.fSubgroup.supportedStages & VK_SHADER_STAGE_FRAGMENT_BIT);
+
+    const bool opsSupported = (deviceProperties.fSubgroup.supportedOperations & requiredOperations)
+                               == requiredOperations;
+
+    if (stagesSupported && opsSupported && enabledFeatures.fSubgroupSizeControl) {
+        fShaderCaps->fSubgroupSupport = true;
+        fShaderCaps->fSubgroupSize = deviceProperties.fSubgroup.subgroupSize;
+    } else {
+        fShaderCaps->fSubgroupSupport = false;
+    }
+
     // Note: Do not add extension/feature checks after this; driver workarounds should be done last.
     if (!contextOptions.fDisableDriverCorrectnessWorkarounds) {
         this->applyDriverCorrectnessWorkarounds(deviceProperties);
@@ -351,6 +382,12 @@ VulkanCaps::EnabledFeatures VulkanCaps::getEnabledFeatures(
                     enabled.fGraphicsPipelineLibrary = feature->graphicsPipelineLibrary;
                     break;
                 }
+                case VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_FEATURES_EXT: {
+                    const auto* feature =
+                            reinterpret_cast<const VkPhysicalDeviceSubgroupSizeControlFeaturesEXT*>(pNext);
+                    enabled.fSubgroupSizeControl = feature->subgroupSizeControl;
+                    break;
+                }
                 default:
                     break;
             }
@@ -377,6 +414,13 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
     props->fGpl = {};
     props->fGpl.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_GRAPHICS_PIPELINE_LIBRARY_PROPERTIES_EXT;
 
+    props->fSubgroup = {};
+    props->fSubgroup.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_PROPERTIES;
+
+    props->fSubgroupSizeControl = {};
+    props->fSubgroupSizeControl.sType =
+            VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_SUBGROUP_SIZE_CONTROL_PROPERTIES_EXT;
+
     const bool hasDriverProperties =
             physicalDeviceVersion >= VK_API_VERSION_1_2 ||
             extensions->hasExtension(VK_KHR_DRIVER_PROPERTIES_EXTENSION_NAME, 1);
@@ -389,6 +433,11 @@ void VulkanCaps::getProperties(const skgpu::VulkanInterface* vkInterface,
 
     if (features.fGraphicsPipelineLibrary) {
         AddToPNextChain(&props->fBase, &props->fGpl);
+    }
+
+    AddToPNextChain(&props->fBase, &props->fSubgroup);
+    if (features.fSubgroupSizeControl) {
+        AddToPNextChain(&props->fBase, &props->fSubgroupSizeControl);
     }
 
     // Graphite requires Vulkan version 1.1 or later, so vkGetPhysicalDeviceProperties2 should

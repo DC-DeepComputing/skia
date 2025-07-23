@@ -194,13 +194,33 @@ void MtlCaps::initCaps(const id<MTLDevice> device) {
     // Init sample counts. All devices support 1 (i.e. 0 in skia).
     fColorSampleCounts.push_back(1);
     if (!this->isIntel()) {
-        if (@available(macOS 10.11, iOS 9.0, tvOS 9.0, *)) {
+        if (@available(macOS 10.15, iOS 13.0, tvOS 9.0, *)) {
             for (auto sampleCnt : {2, 4, 8}) {
                 if ([device supportsTextureSampleCount:sampleCnt]) {
                     fColorSampleCounts.push_back(sampleCnt);
                 }
             }
         }
+    }
+
+    // Mirror Dawn's request:
+    // SIMD-scoped permute operations is supported by GPU family Metal3, Apple6, Apple7, Apple8,
+    // and Mac2.
+    // https://developer.apple.com/metal/Metal-Feature-Set-Tables.pdf
+    // Metal3 family is a superset of Apple7 and Apple8, and introduced in macOS 13.0+ or
+    // iOS 16.0+. However when building with Chrome, mac_sdk_official_version in mac_sdk.gni
+    // explicitly use Xcode 13.3 and MacOS 12.3 version 21E226, so does not support
+    // MTLGPUFamilyMetal3.
+    // Note that supportsFamily: method requires macOS 10.15+ or iOS 13.0+
+
+    // (DAWN) TODO(380326541): Check that reduction operations are supported in Apple6. The support
+    // table says Apple7.
+    // TODO: Thomas, check this and polyfill with butterfly reduction if necessary
+    // (DAWN) The function subgroupBroadcast(f16) fails for some edge cases on intel gen-9 devices.
+    // See crbug.com/391680973
+    // TODO: Thomas, polyfill reinterpret cast to uint, shuffle and reinterpret cast to f16
+    if ((fFamilyGroup >= 6 && this->isApple()) || (fFamilyGroup >= 2 && this->isMac())) {
+        fSubgroupSupport = true;
     }
 }
 
@@ -230,6 +250,8 @@ void MtlCaps::initShaderCaps() {
     if (this->isIntel()) {
         shaderCaps->fVectorClampMinMaxSupport = false;
     }
+
+    shaderCaps->fSubgroupSupport = fSubgroupSupport;
 
     shaderCaps->fIntegerSupport = true;
     shaderCaps->fNonsquareMatrixSupport = true;
