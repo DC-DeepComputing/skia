@@ -16,6 +16,29 @@
       "message": "Of course, this works for solid colors like for `SkCanvas::clear` and `SkCanvas::drawColor` but doesn\u0027t work when the paint changes over space, since the CTM still needs to apply.",
       "revId": "3a30f560c4ab2dabddc925cb9d9928ed15aa0054",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4088581c_71d1f463",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 472,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-23T16:50:01Z",
+      "side": 1,
+      "message": "This only works if the shader doesn\u0027t depend on the local/ctm coords for shading. You could add a local matrix to the paint\u0027s shader as part of it.",
+      "range": {
+        "startLine": 472,
+        "startChar": 0,
+        "endLine": 472,
+        "endChar": 90
+      },
+      "revId": "3a30f560c4ab2dabddc925cb9d9928ed15aa0054",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
