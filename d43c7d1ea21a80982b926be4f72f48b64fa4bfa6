@@ -16,6 +16,24 @@
       "message": "something like these might still be necessary, they\u0027re used in `canvaskit/webgpu.js` (though presumably incorrectly)",
       "revId": "d43c7d1ea21a80982b926be4f72f48b64fa4bfa6",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9a20257f_7965999f",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 0,
+      "message": "I will add them when we need them.",
+      "parentUuid": "0de16d38_8d7ab4cd",
+      "revId": "d43c7d1ea21a80982b926be4f72f48b64fa4bfa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

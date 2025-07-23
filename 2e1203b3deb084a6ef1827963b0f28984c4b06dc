@@ -35,6 +35,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "342675e0_3e286bf5",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 1,
+      "message": "It\u0027s the right one cause it auto switches between the emscripten and the Dawn header depending on `is_wasm`. Added a comment.",
+      "parentUuid": "e03cfe49_e11d00ec",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68e427c9_ff2b2530",
@@ -48,6 +66,30 @@
       "writtenOn": "2025-07-23T03:32:34Z",
       "side": 1,
       "message": "update comment",
+      "range": {
+        "startLine": 880,
+        "startChar": 30,
+        "endLine": 880,
+        "endChar": 75
+      },
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f2b07e7_aa5d4823",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68e427c9_ff2b2530",
       "range": {
         "startLine": 880,
         "startChar": 30,
@@ -75,6 +117,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b86bf9d_30b27467",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "b58bd01b_17e24e04",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "552d7860_4af48d50",
@@ -92,6 +152,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd13fccf_a83b13a7",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2219,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "552d7860_4af48d50",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7da5a0d4_edea8c26",
@@ -105,6 +183,24 @@
       "writtenOn": "2025-07-23T03:32:34Z",
       "side": 1,
       "message": "nit: does `-std\u003d` actually do anything as a link flag?",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed98ed1e_35243edc",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 18679
+      },
+      "writtenOn": "2025-07-23T05:31:39Z",
+      "side": 1,
+      "message": "I actually needed them because we use `std::span` and that\u0027s only available c++20+.",
+      "parentUuid": "7da5a0d4_edea8c26",
       "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
