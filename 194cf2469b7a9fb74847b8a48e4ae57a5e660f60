@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ddf557e9_1aa0b17f",
+        "filename": "infra/docker/make_image_tag.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-23T13:18:39Z",
+      "side": 1,
+      "message": "I\u0027m not 100% sure that the louhi flow actually has access to git, but it does provide the `_LOUHI_REF_SHA` variable which we could substitute instead of calling this script if necessary.",
+      "range": {
+        "startLine": 10,
+        "startChar": 6,
+        "endLine": 10,
+        "endChar": 9
+      },
+      "revId": "194cf2469b7a9fb74847b8a48e4ae57a5e660f60",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
