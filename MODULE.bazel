@@ -3,7 +3,7 @@ module(
 )
 
 # Bazel and Toolchain deps
-EMSDK_VERSION = "4.0.7"
+EMSDK_VERSION = "4.0.10"
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "buildifier_prebuilt", version = "8.0.3")

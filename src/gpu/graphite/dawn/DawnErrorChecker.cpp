@@ -41,45 +41,6 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
         return DawnErrorType::kNoError;
     }
 
-#if defined(__EMSCRIPTEN__)
-    struct ErrorState {
-        SkEnumBitMask<DawnErrorType> fError;
-        int fScopeIdx;
-        DawnAsyncWait fWait;
-
-        ErrorState(const DawnSharedContext* sharedContext)
-                : fError(DawnErrorType::kNoError)
-                , fScopeIdx(kScopeCount - 1)
-                , fWait(sharedContext) {}
-    } errorState(fSharedContext);
-
-    wgpu::ErrorCallback errorCallback = [](WGPUErrorType status, const char* msg, void* userData) {
-        ErrorState* errorState = static_cast<ErrorState*>(userData);
-        if (status != WGPUErrorType_NoError) {
-            SkASSERT(errorState->fScopeIdx >= 0);
-            const char* errorScopeName = kErrorScopeNames[errorState->fScopeIdx];
-            SKGPU_LOG_E("Failed in error scope (%s): %s", errorScopeName, msg);
-            errorState->fError |= kErrorScopeTypes[errorState->fScopeIdx];
-        }
-        errorState->fScopeIdx--;
-        errorState->fWait.signal();
-    };
-
-    // Pop all three error scopes:
-    // Internal
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
-    errorState.fWait.reset();
-
-    // OutOfMemory
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
-    errorState.fWait.reset();
-
-    // Validation
-    fSharedContext->device().PopErrorScope(errorCallback, &errorState);
-    errorState.fWait.busyWait();
-#else
     struct ErrorState {
         SkEnumBitMask<DawnErrorType> fError = DawnErrorType::kNoError;
         int fScopeIdx = kScopeCount - 1;
@@ -111,7 +72,7 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
             wgpu::CallbackMode::WaitAnyOnly, errorCallback, &errorState);
 
     wgpu::WaitStatus status = wgpu::WaitStatus::Success;
-    wgpu::Instance instance = fSharedContext->device().GetAdapter().GetInstance();
+    wgpu::Instance instance = fSharedContext->instance();
 
     status = instance.WaitAny(internalFuture, /*timeout=*/std::numeric_limits<uint64_t>::max());
     if (status != wgpu::WaitStatus::Success) {
@@ -130,7 +91,6 @@ SkEnumBitMask<DawnErrorType> DawnErrorChecker::popErrorScopes() {
         SKGPU_LOG_E("Failed waiting for 'validation' error scope to pop.");
     }
     SkASSERT(status == wgpu::WaitStatus::Success);
-#endif  // defined(__EMSCRIPTEN__)
 
     fArmed = false;
     return errorState.fError;
