@@ -197,8 +197,9 @@ public:
     void drawArc(const SkArc& arc, const SkPaint& paint) override;
     void drawPoints(SkCanvas::PointMode, SkSpan<const SkPoint>, const SkPaint&) override;
     void drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable = false) override;
+    void drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) override;
 
-    // No need to specialize drawDRRect, drawRegion, drawPatch as the default impls all
+    // No need to specialize drawRegion, drawPatch as the default impls all
     // route to drawPath, drawRect, or drawVertices as desired.
 
     void drawEdgeAAQuad(const SkRect& rect, const SkPoint clip[4],
