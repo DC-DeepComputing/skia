@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7688492b_7c58ada1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:36:20Z",
+      "side": 1,
+      "message": "I avoided landing something like this before because I thought that CanvasKit WebGPU \"almost\" worked and I didn\u0027t want to break it more. But if it never worked, then this is a strict improvement and I think could just be landed even if it doesn\u0027t work yet!",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e03cfe49_e11d00ec",
