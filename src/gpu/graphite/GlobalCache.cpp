@@ -218,6 +218,12 @@ sk_sp<GraphicsPipeline> GlobalCache::findGraphicsPipeline(
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsCacheHits;
 #endif
+        if (!forPrecompile && (*entry)->fromPrecompile()) {
+            ++fStats.fNormalPreemptedByPrecompile;
+        }
+//        else if (forPrecompile && !(*entry)->fromPrecompile()) {
+//            ++fStats.fPrecompilePreemptedByNormal;
+//        }
 
         if ((*entry)->epoch() != fEpochCounter) {
             (*entry)->markEpoch(fEpochCounter);   // update epoch due to use in a new epoch
@@ -381,25 +387,45 @@ void GlobalCache::removeGraphicsPipeline(const GraphicsPipeline* pipeline) {
 void GlobalCache::purgePipelinesNotUsedSince(StdSteadyClock::time_point purgeTime) {
     SkAutoSpinlock lock{fSpinLock};
 
-    skia_private::TArray<skgpu::UniqueKey> toRemove;
+    skia_private::TArray<std::pair<skgpu::UniqueKey, GraphicsPipeline*>> toRemove;
 
     // This is probably fine for now but is looping from most-recently-used to least-recently-used.
     // It seems like a reverse loop with an early out could be more efficient.
     fGraphicsPipelineCache.foreach([&toRemove, purgeTime](const UniqueKey* key,
                                                           const sk_sp<GraphicsPipeline>* pipeline) {
         if ((*pipeline)->lastAccessTime() < purgeTime) {
-            toRemove.push_back(*key);
+            toRemove.push_back({ *key, pipeline->get() });
         }
     });
 
-    for (const skgpu::UniqueKey& k : toRemove) {
+    for (const auto& p : toRemove) {
 #if defined(GPU_TEST_UTILS)
         ++fStats.fGraphicsPurges;
 #endif
-        fGraphicsPipelineCache.remove(k);
+//        if (p.second->fromPrecompile() && !p.second->wasUsed()) {
+//            ++fStats.fUnusedPrecompiledPipelines;
+//        }
+        fGraphicsPipelineCache.remove(p.first);
     }
 
     // TODO: add purging of Compute Pipelines (b/389073204)
+
+    [[maybe_unused]] static constexpr int kMaxBucketValue = 200;
+    SK_HISTOGRAM_EXACT_LINEAR("Skia.Graphite.Precompile.NormalPreemptedByPrecompile",
+                              fStats.fNormalPreemptedByPrecompile,
+                              kMaxBucketValue);
+    SK_HISTOGRAM_EXACT_LINEAR("Skia.Graphite.Precompile.PrecompilePreemptedByNormal",
+                              fStats.fPrecompilePreemptedByNormal,
+                              kMaxBucketValue);
+    SK_HISTOGRAM_EXACT_LINEAR("Skia.Graphite.Precompile.UnpreemptedNormalPipelines",
+                              fStats.fUnpreemptedNormalPipelines,
+                              kMaxBucketValue);
+    SK_HISTOGRAM_EXACT_LINEAR("Skia.Graphite.Precompile.UnpreemptedPrecompilePipelines",
+                              fStats.fUnpreemptedPrecompilePipelines,
+                              kMaxBucketValue);
+    SK_HISTOGRAM_EXACT_LINEAR("Skia.Graphite.Precompile.UnusedPrecompiledPipelines",
+                              fStats.fUnusedPrecompiledPipelines,
+                              kMaxBucketValue);
 }
 
 void GlobalCache::reportPrecompileStats() {
@@ -479,6 +505,7 @@ void GlobalCache::forEachGraphicsPipeline(
         fn(*k, v->get());
     });
 }
+#endif // defined(GPU_TEST_UTILS)
 
 uint16_t GlobalCache::getEpoch() const {
     SkAutoSpinlock lock{fSpinLock};
@@ -513,8 +540,6 @@ sk_sp<Buffer> GlobalCache::getStaticVertexBuffer() {
 
     return sk_ref_sp(fStaticVertexBuffer);
 }
-
-#endif // defined(GPU_TEST_UTILS)
 
 GlobalCache::PipelineStats GlobalCache::getStats() const {
     SkAutoSpinlock lock{fSpinLock};
