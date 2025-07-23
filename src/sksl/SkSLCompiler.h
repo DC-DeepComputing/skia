@@ -40,6 +40,9 @@ constexpr int SK_WORKGROUPID_BUILTIN =            26;
 constexpr int SK_LOCALINVOCATIONID_BUILTIN =      27;
 constexpr int SK_GLOBALINVOCATIONID_BUILTIN =     28;
 constexpr int SK_LOCALINVOCATIONINDEX_BUILTIN =   29;
+constexpr int SK_SUBGROUPSIZE_BUILTIN =           30;
+constexpr int SK_SUBGROUPID_BUILTIN =             31;
+constexpr int SK_LANEID_BUILTIN =                 25;
 
 namespace SkSL {
 
