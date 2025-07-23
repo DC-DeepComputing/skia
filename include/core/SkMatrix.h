@@ -1180,22 +1180,27 @@ private:
 public:
 #endif
 
-    /** Sets SkMatrix to map src to dst. count must be zero or greater, and four or less.
+    /** Compute a matrix from two polygons, such that if the matrix was applied
+     *  to the src polygon, it would produce the dst polygon.
+     *
+     *  If the size of the two spans are not equal, or if they are > 4, return {}.
+     *  If the resulting matrix is non-invertible, return {}.
+     *
+     *  example: https://fiddle.skia.org/c/@Matrix_setPolyToPoly
+     */
+    static std::optional<SkMatrix> PolyToPoly(SkSpan<const SkPoint> src, SkSpan<const SkPoint> dst);
 
-        If count is zero, sets SkMatrix to identity and returns true.
-        If count is one, sets SkMatrix to translate and returns true.
-        If count is two or more, sets SkMatrix to map SkPoint if possible; returns false
-        if SkMatrix cannot be constructed. If count is four, SkMatrix may include
-        perspective.
-
-        @param src    SkPoint to map from
-        @param dst    SkPoint to map to
-        @param count  number of SkPoint in src and dst
-        @return       true if SkMatrix was constructed successfully
-
-        example: https://fiddle.skia.org/c/@Matrix_setPolyToPoly
-    */
-    bool setPolyToPoly(const SkPoint src[], const SkPoint dst[], int count);
+    /*
+     *  Calls PolyToPoly, and if it succeeds, set this matrix to the result and
+     *  return true. If it fails, this matrix is unmodified and returns false.
+     */
+    bool setPolyToPoly(const SkPoint src[], const SkPoint dst[], int count) {
+        if (auto mx = PolyToPoly({src, count}, {dst, count})) {
+            *this = mx.value();
+            return true;
+        }
+        return false;
+    }
 
     /*
      * If this matrix is invertible, return its inverse, else return {}.
