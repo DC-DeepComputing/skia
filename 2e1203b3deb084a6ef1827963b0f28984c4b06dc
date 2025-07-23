@@ -53,6 +53,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b99dba8d_09a8a85a",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T14:30:41Z",
+      "side": 1,
+      "message": "Ah sorry, I didn\u0027t realize that auto switch was in include/dawn.",
+      "parentUuid": "342675e0_3e286bf5",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "68e427c9_ff2b2530",
