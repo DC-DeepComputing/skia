@@ -48,6 +48,7 @@
 #include "src/core/SkImageFilterTypes.h"  // IWYU pragma: keep
 #include "src/core/SkImagePriv.h"
 #include "src/core/SkPaintPriv.h"
+#include "src/core/SkPathPriv.h"
 #include "src/core/SkRRectPriv.h"
 #include "src/core/SkSpecialImage.h"
 #include "src/core/SkStrikeCache.h"
@@ -486,7 +487,7 @@ sk_sp<Device> Device::Make(Recorder* recorder,
 // TODO: These could be exposed as context options or surface options, and we may want to have
 // different strategies in place for a base device vs. a layer's device.
 static constexpr int kGridCellSize = 16;
-static constexpr int kMaxBruteForceN = 64;
+static constexpr int kMaxBruteForceN = 512;
 static constexpr int kMaxGridSize = 32;
 
 Device::Device(Recorder* recorder, sk_sp<DrawContext> dc)
@@ -966,6 +967,29 @@ void Device::drawRRect(const SkRRect& rr, const SkPaint& paint) {
     this->drawGeometry(this->localToDeviceTransform(), Geometry(rrectToDraw), paint, style);
 }
 
+void Device::drawDRRect(const SkRRect& outer, const SkRRect& inner, const SkPaint& paint) {
+    // Treat DRRects as a drawRRect(outer) inside a clipRRect(inner, kDifference) scope when
+    // it's a regular fill.
+    if (!paint.getPathEffect() && paint.getStyle() == SkPaint::kFill_Style) {
+        fClip.save();
+        fClip.clipShape(this->localToDeviceTransform(),
+                        inner.isRect() ? Shape{inner.rect()} : Shape{inner},
+                        SkClipOp::kDifference,
+                        paint.isAntiAlias() ? ClipStack::PixelSnapping::kNo
+                                            : ClipStack::PixelSnapping::kYes);
+        if (outer.isRect()) {
+            this->drawRect(outer.rect(), paint);
+        } else {
+            this->drawRRect(outer, paint);
+        }
+        fClip.restore();
+        return;
+    }
+
+    // Otherwise fall back to path rendering
+    this->SkDevice::drawDRRect(outer, inner, paint);
+}
+
 void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutable) {
     // Alternatively, we could move this analysis to SkCanvas. Also, we could consider applying the
     // path effect, being careful about starting point and direction.
@@ -994,6 +1018,30 @@ void Device::drawPath(const SkPath& path, const SkPaint& paint, bool pathIsMutab
             (paint.getStyle() == SkPaint::kFill_Style || isClosed)) {
             this->drawRect(rect, paint);
             return;
+        }
+        // Detect filled nested rect contours
+        SkRect rects[2];
+        SkPathDirection dirs[2];
+        if (paint.getStyle() == SkPaint::kFill_Style &&
+            SkPathPriv::IsNestedFillRects(path, rects, dirs)) {
+            // For winding fills with contours going the same direction, there isn't any cutout
+            if (path.getFillType() == SkPathFillType::kWinding && dirs[0] == dirs[1]) {
+                this->drawRect(rects[0], paint);
+                return;
+            } else {
+                // The inner is cut out from the outer rect. Use a clip to cut out the interior to
+                // avoid path rendering (which is equivalent to calling drawDRRect() with SkRRects
+                // constructed from `rects` but with less overhead).
+                fClip.save();
+                fClip.clipShape(this->localToDeviceTransform(),
+                                Shape{rects[1]},
+                                SkClipOp::kDifference,
+                                paint.isAntiAlias() ? ClipStack::PixelSnapping::kNo
+                                                    : ClipStack::PixelSnapping::kYes);
+                this->drawRect(rects[0], paint);
+                fClip.restore();
+                return;
+            }
         }
     }
     this->drawGeometry(this->localToDeviceTransform(), Geometry(Shape(path)),
