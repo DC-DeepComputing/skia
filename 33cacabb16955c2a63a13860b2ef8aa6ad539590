@@ -51,6 +51,24 @@
       "message": "I don\u0027t think this logic was needed. By this point the `noInversePaint` must be `SkPaint::kFill_Style`, so this outer boundary path edge will never be stroked, so at the very least there should be no need to add the paint\u0027s stroke width. \n\nLikewise, any path effect has also been applied already, thought that was confusingly already done in `internalDrawPath`.",
       "revId": "33cacabb16955c2a63a13860b2ef8aa6ad539590",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9fc94eb6_adf59a0a",
+        "filename": "src/pdf/SkPDFDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 1239,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-23T22:01:00Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "618dd5e3_b17f1ce8",
+      "revId": "33cacabb16955c2a63a13860b2ef8aa6ad539590",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
