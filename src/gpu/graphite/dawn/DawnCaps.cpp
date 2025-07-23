@@ -505,7 +505,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
 
 #if defined(__EMSCRIPTEN__)
     // For wasm, we use async map.
-    fBufferMapsAreAsync = true;
+    fBufferMapsAreAsync = false;
 #else
     // For Dawn native, we use direct mapping.
     fBufferMapsAreAsync = false;
@@ -560,7 +560,11 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
     }
 
     if (!backendContext.fTick) {
+#if !defined(__EMSCRIPTEN__)
         fAllowCpuSync = false;
+#else
+        fAllowCpuSync = true;
+#endif
         // This seems paradoxical. However, if we use the async pipeline creation methods (e.g
         // Device::CreateRenderPipelineAsync) then we may have to synchronize before a submit that
         // uses the pipeline. If we use the methods that look synchronous (e.g.
@@ -1164,8 +1168,8 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
     int num32DataCnt = 2 + 1 + 1;
-    bool hasYcbcrInfo = false;
 #if !defined(__EMSCRIPTEN__)
+    bool hasYcbcrInfo = false;
     // If we are using ycbcr texture/sampling, more key information is needed.
     if ((hasYcbcrInfo = DawnDescriptorIsValid(dawnInfo.fYcbcrVkDescriptor))) {
         num32DataCnt += 3; // non-format flags and 64-bit format

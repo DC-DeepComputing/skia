@@ -49,6 +49,7 @@ bool DawnWorkSubmissionWithFuture::onIsFinished(const SharedContext* sharedConte
 void DawnWorkSubmissionWithFuture::onWaitUntilFinished(const SharedContext* sharedContext) {
     wgpu::FutureWaitInfo waitInfo{};
     waitInfo.future = fSubmittedWorkDoneFuture;
+    // SkDebugf("waiting for submitted work done future: %llu\n", fSubmittedWorkDoneFuture.id);
     const auto& instance = static_cast<const DawnSharedContext*>(sharedContext)
                                    ->instance();
     [[maybe_unused]] auto status =
