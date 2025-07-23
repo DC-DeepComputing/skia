@@ -66,8 +66,7 @@ protected:
                 break;
             case kConvexPath_ShapeType:
                 if (fConvexPath.isEmpty()) {
-                    SkPoint points[4];
-                    kRect.toQuad(points);
+                    const auto points = kRect.toQuad();
                     fConvexPath = SkPathBuilder().moveTo(points[0])
                                                  .quadTo(points[1], points[2])
                                                  .quadTo(points[3], points[0])
