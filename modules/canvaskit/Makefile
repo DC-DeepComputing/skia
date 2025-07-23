@@ -67,6 +67,9 @@ debug_webgpu:
 	mkdir build
 	cp ../../out/canvaskit_wasm_debug/canvaskit.js   ./build/
 	cp ../../out/canvaskit_wasm_debug/canvaskit.wasm ./build/
+	cp ../../out/canvaskit_wasm_debug/canvaskit.wasm.map ./build/
+	ln -s ../../src src
+	ln -s ../../third_party third_party
 
 debug_viewer:
 	# Does an incremental build where possible.

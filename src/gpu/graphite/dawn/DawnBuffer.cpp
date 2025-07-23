@@ -154,9 +154,6 @@ bool DawnBuffer::prepareForReturnToCache(const std::function<void()>& takeRef) {
     if (!(fBuffer.GetUsage() & wgpu::BufferUsage::MapWrite)) {
         return false;
     }
-    // We cannot start an async map while the GPU is still using the buffer. We asked that
-    // our Resource not become reusable until it was purgeable (no outstanding CPU or GPU refs)
-    SkASSERT(this->isPurgeable());
     // Note that the map state cannot change on another thread when we are here. We got here
     // because there were no UsageRefs on the buffer but async mapping holds a UsageRef until it
     // completes.

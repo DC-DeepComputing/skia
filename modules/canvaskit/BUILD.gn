@@ -156,6 +156,9 @@ skia_wasm_lib("canvaskit") {
       "$root_out_dir/modules/canvaskit/fonts/NotoMono-Regular.ttf.ninja.cpp",
     ]
   }
+  if (skia_enable_graphite) {
+    sources += [ "graphite_bindings.cpp" ]
+  }
   if (skia_canvaskit_enable_rt_shader) {
     sources += [ "../../tools/sksltrace/SkSLTraceUtils.cpp" ]
   }
@@ -164,12 +167,12 @@ skia_wasm_lib("canvaskit") {
   if (is_debug) {
     ldflags += [
       "-O0",
-      "-sDEMANGLE_SUPPORT=1",
       "-sASSERTIONS=1",
       "-sGL_ASSERTIONS=1",
       "-g3",
       "--pre-js",
       rebase_path("debug.js"),
+      "-gsource-map",
     ]
   } else {
     externs_path = rebase_path("externs.js")
@@ -201,6 +204,7 @@ skia_wasm_lib("canvaskit") {
 
       # TODO(skbug.com/40044518): The closure compiler doesn't play well with optimized builds and ASYNCIFY.
       "--closure=0",
+      "-O0",
     ]
   } else if (skia_canvaskit_enable_webgl) {
     ldflags += [
@@ -350,7 +354,7 @@ skia_wasm_lib("canvaskit") {
 
     # INCOMING_MODULE_JS_API is set to empty by default.
     # https://github.com/emscripten-core/emscripten/blob/8dc91db45bf96c174531006839472a3924d105aa/src/settings.js#L1204
-    "-sINCOMING_MODULE_JS_API=onRuntimeInitialized",
+    "-sINCOMING_MODULE_JS_API=onRuntimeInitialized,locateFile",
   ]
 
   defines = [

@@ -675,6 +675,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             SkToBool(pipelineCreationFlags & PipelineCreationFlags::kForPrecompilation);
     // For Dawn, we want Precompilation to happen synchronously
     const bool useAsync = caps.useAsyncPipelineCreation() && !forPrecompilation;
+    SkDebugf("useAsync %d\n", useAsync);
+
 
     auto asyncCreation = std::make_unique<AsyncPipelineCreation>(pipelineKey);
 #if SK_HISTOGRAMS_ENABLED

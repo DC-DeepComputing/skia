@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CanvasKit WebGPU Test Harness</title>
+    <style>
+        body { margin: 0; overflow: hidden; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #222; }
+        canvas { border: 1px solid #444; }
+    </style>
+</head>
+<body>
+    <canvas id="gpuCanvas" width="800" height="600"></canvas>
+    <script type="text/javascript" src="/build/canvaskit.js"></script>
+
+    <script type="module">
+
+        const ckLoaded = CanvasKitInit({locateFile: (file) => '/build/'+file});
+
+        async function setupWebGPUCanvas() {
+            const canvas = document.getElementById('gpuCanvas');
+            if (!canvas) {
+                console.error('Canvas element not found!');
+                return;
+            }
+
+            const context = canvas.getContext('webgpu');
+            if (!context) {
+                console.error('Failed to get WebGPU context.');
+                return;
+            }
+
+            // const presentationFormat = navigator.gpu.getPreferredCanvasFormat();
+
+            // context.configure({
+            //     device: device,
+            //     format: presentationFormat,
+            //     alphaMode: 'premultiplied' // Or 'opaque' depending on Skia's needs
+            // });
+
+            // console.log('WebGPU canvas configured successfully!');
+            // console.log('Device:', device);
+            // console.log('Context:', context);
+            // console.log('Presentation Format:', presentationFormat);
+
+            let CK = await ckLoaded;
+            console.log('CanvasKit loaded', CK.graphite);
+
+            // // For this test, we'll just draw a clear color directly using WebGPU
+            // // to confirm the canvas is active and configured correctly.
+            // // In the future, this clear would be handled by CanvasKit.
+            // const commandEncoder = device.createCommandEncoder();
+            // const textureView = context.getCurrentTexture().createView();
+
+            // const renderPassDescriptor = {
+            //     colorAttachments: [{
+            //         view: textureView,
+            //         clearValue: { r: 0.7, g: 0.1, b: 0.6, a: 1.0 },
+            //         loadOp: 'clear',
+            //         storeOp: 'store',
+            //     }],
+            // };
+
+            // const passEncoder = commandEncoder.beginRenderPass(renderPassDescriptor);
+            // passEncoder.end();
+            // device.queue.submit([commandEncoder.finish()]);
+
+
+            const thing = await CK.TestGraphite();
+            console.log('GPU thing', thing);
+
+        }
+
+        setupWebGPUCanvas().catch(error => {
+            console.error('Error setting up WebGPU:', error);
+        });
+    </script>
+</body>
+</html>
