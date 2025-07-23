@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0de16d38_8d7ab4cd",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 0,
+      "message": "something like these might still be necessary, they\u0027re used in `canvaskit/webgpu.js` (though presumably incorrectly)",
+      "revId": "d43c7d1ea21a80982b926be4f72f48b64fa4bfa6",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}

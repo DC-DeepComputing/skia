@@ -1,0 +1,95 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e03cfe49_e11d00ec",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 878,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 1,
+      "message": "I believe this is the wrong header include on wasm, you need the one that comes along with `emdawnwebgpu_config`",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e427c9_ff2b2530",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 880,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 1,
+      "message": "update comment",
+      "range": {
+        "startLine": 880,
+        "startChar": 30,
+        "endLine": 880,
+        "endChar": 75
+      },
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b58bd01b_17e24e04",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 1950,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 1,
+      "message": "same",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "552d7860_4af48d50",
+        "filename": "BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 2219,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 1,
+      "message": "same",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7da5a0d4_edea8c26",
+        "filename": "modules/canvaskit/BUILD.gn",
+        "patchSetId": 2
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 12954
+      },
+      "writtenOn": "2025-07-23T03:32:34Z",
+      "side": 1,
+      "message": "nit: does `-std\u003d` actually do anything as a link flag?",
+      "revId": "2e1203b3deb084a6ef1827963b0f28984c4b06dc",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
