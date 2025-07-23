@@ -16,6 +16,24 @@
       "message": "Comment for posterity. There were significant regressions from this CL because of its interaction with the logic that detected clear/discard load ops. When a drawRect was exactly filling the unclipped device, this CL went back to saying it was \"unclipped\" but no longer converted it to a flood-fill so it wasn\u0027t being optimized into a better load op.\n\nThere are however some improvements as well, which are perhaps related to the more general case that the CL comment was referring to. I will try to see if we can easily recover the clear/discard op case w/o having to undo this CL to get the best of both worlds, or I\u0027ll revert this and consider it a worthwhile tradeoff given the improvements with clear/discard ops.",
       "revId": "98e058e5d264b583facfaf55a76c026dfdd04826",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "156082ce_1b59c0f6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-23T16:42:35Z",
+      "side": 1,
+      "message": "Upon further investigation, the only systems that seemed to improve with this change (because they weren\u0027t using a clear load op) are the same systems that have an optimization in ganesh to disable using clear loads in favor of discard + draw.\n\nI will revert this CL and port the optimization/policy over to graphite as well.",
+      "parentUuid": "85500e65_64790d02",
+      "revId": "98e058e5d264b583facfaf55a76c026dfdd04826",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
