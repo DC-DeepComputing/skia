@@ -28,6 +28,7 @@
 #include "src/core/SkCoreBlitters.h"
 #include "src/core/SkDraw.h"
 #include "src/core/SkEffectPriv.h"
+#include "src/core/SkPathRawShapes.h"
 #include "src/core/SkRasterClip.h"
 #include "src/core/SkRasterPipeline.h"
 #include "src/core/SkRasterPipelineOpContexts.h"
@@ -53,11 +54,10 @@ static void fill_rect(const SkMatrix& ctm, const SkRasterClip& rc,
         ctm.mapRect(&dr, r);
         SkScan::FillRect(dr, rc, blitter);
     } else {
-        SkPoint pts[4];
-        r.toQuad(pts);
-        ctm.mapPoints(pts);
-        // todo: great place for SkPathRaw
-        SkScan::FillPath(SkPath::Polygon(pts, true), rc, blitter);
+        SkPathRawShapes::Rect raw(r);
+        ctm.mapPoints(raw.fStorage);
+        raw.fBounds = SkRect::Bounds(raw.fStorage).value();
+        SkScan::FillPathRaw(raw, rc, blitter);
     }
 }
 
