@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6299805f_3cc2d0b1",
+        "filename": "include/core/SkPathTypes.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-23T19:54:38Z",
+      "side": 1,
+      "message": "Le *sigh*. https://source.chromium.org/chromium/chromium/src/+/main:third_party/blink/renderer/modules/canvas/canvas2d/canvas_2d_recorder_context.h;l\u003d58;drc\u003dfadc961e5da1d6cb183185a49f958d79591e91d9 is causing the Chromium roll to fail because that\u0027s an `int`.",
+      "range": {
+        "startLine": 15,
+        "startChar": 26,
+        "endLine": 15,
+        "endChar": 35
+      },
+      "revId": "68fd5dafc7b53f246bda8fff70515ddfb01c3678",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
