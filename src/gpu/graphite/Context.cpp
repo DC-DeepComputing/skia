@@ -246,7 +246,7 @@ bool Context::submit(SyncToCpu syncToCpu) {
         syncToCpu = SyncToCpu::kNo;
     }
     bool success = fQueueManager->submitToGpu();
-    this->checkForFinishedWork(syncToCpu);
+    // this->checkForFinishedWork(syncToCpu);
     return success;
 }
 

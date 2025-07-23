@@ -212,6 +212,7 @@ echo "Compiling"
   werror=true \
   target_cpu=\"wasm\" \
   \
+  skia_use_cpp20=true \
   skia_use_angle=false \
   skia_use_dng_sdk=false \
   skia_use_dawn=${ENABLE_WEBGPU} \
