@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0acf19fc_1c1ae737",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-23T13:03:35Z",
+      "side": 1,
+      "message": "naming nit: in general I\u0027m used to \"is\" -\u003e bool, \"as\" -\u003e optional\u003cT\u003e.  `asOval` etc?",
+      "range": {
+        "startLine": 109,
+        "startChar": 26,
+        "endLine": 109,
+        "endChar": 32
+      },
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "926e3ca3_98fd9900",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-23T13:03:35Z",
+      "side": 1,
+      "message": "Oval and RRect also have a direction and start index, we\u0027ll prolly need Infos for those too.",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cdbc3cdf_867f5ffa",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-23T13:03:35Z",
+      "side": 1,
+      "message": "There is also a start index IIRC.",
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b36ad596_42013ef3",
+        "filename": "src/core/SkPathData.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-23T13:03:35Z",
+      "side": 1,
+      "message": "Skip for now/TODO?",
+      "range": {
+        "startLine": 151,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 66
+      },
+      "revId": "e3178bec7d5b1295c271fa1008080d6c722ea418",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
