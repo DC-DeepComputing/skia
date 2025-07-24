@@ -16,6 +16,115 @@
       "message": "PTAL. This change should make the double-subpass scenario practically never trigger.",
       "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ff6740d_1f0f8943",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 1,
+      "message": "Getting some small stuff out there. \n\nI have locally run GM on both this branch and the main branch to compare GMs to make sure MSAA output is correct if it was on main and no new issues crop up. Theoretically, Gold would catch this, but it\u0027s been iffy working with that tool lately. I will finish that analysis once I\u0027m back in office on Tuesday.",
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e1d0f7cd_35175de7",
+        "filename": "src/gpu/graphite/Caps.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 1,
+      "message": "nit: `this-\u003emsaaRenderToSingleSampledSupport()`",
+      "range": {
+        "startLine": 317,
+        "startChar": 15,
+        "endLine": 317,
+        "endChar": 47
+      },
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0362033d_28dd5a12",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 364,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 1,
+      "message": "nit: if this fits on 1 line, let\u0027s do that. May not though - hard to tell on gerrit.",
+      "range": {
+        "startLine": 364,
+        "startChar": 28,
+        "endLine": 364,
+        "endChar": 71
+      },
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b1a6ae2a_09213039",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 643,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 1,
+      "message": "Is it safe to assume that if the texture can be memoryless / is discardable that we will not want the `VK_IMAGE_CREATE_MULTISAMPLED_RENDER_TO_SINGLE_SAMPLED_BIT_EXT`? Or should this be its own `if` rather than an `else if`?",
+      "range": {
+        "startLine": 643,
+        "startChar": 6,
+        "endLine": 643,
+        "endChar": 11
+      },
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3ca746cb_0009a6f2",
+        "filename": "src/gpu/graphite/vk/VulkanCaps.h",
+        "patchSetId": 22
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 1,
+      "message": "nit: I am not sure we need this?",
+      "range": {
+        "startLine": 202,
+        "startChar": 4,
+        "endLine": 202,
+        "endChar": 49
+      },
+      "revId": "3eb92c325f0a896bf88d243e0e5f25f432b0c177",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }

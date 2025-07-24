@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39511225_41fb4562",
+        "filename": "src/gpu/graphite/vk/VulkanTexture.cpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-24T18:59:43Z",
+      "side": 0,
+      "message": "This is potentially redundant, but maybe instead of removing this entirely we can still assert in debug that if the texture is protected the caps + image creation flags support this?  \n```\nSkASSERT(info.isProtected() \u003d\u003d Protected::kNo ||\n\t     (caps.protectedSupport() \u0026\u0026 SkToBool(VK_IMAGE_CREATE_PROTECTED_BIT \u0026 createflags)));\n```",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 5
+      },
+      "revId": "aef4081157f0d5c0fd2cce580ef3f623e39dc672",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
