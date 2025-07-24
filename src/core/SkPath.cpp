@@ -3611,9 +3611,10 @@ SkPath SkPath::MakeInternal(const SkPathVerbAnalysis& analysis,
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currVerb,
-                               const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
-                               SkRect* rect) {
+// Returns # of points processed for the rect, or 0 if we're not a rect
+static size_t countRectContourPoints(SkSpan<const SkPoint> ptSpan, SkSpan<const SkPathVerb> vbSpan,
+                                     bool allowPartial, int* currVerb, bool* isClosed,
+                                     SkPathDirection* direction, SkRect* rect) {
     int corners = 0;
     SkPoint closeXY;  // used to determine if final line falls on a diagonal
     SkPoint lineStart;  // used to construct line from previous point
@@ -3621,27 +3622,27 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
     const SkPoint* lastPt = nullptr;  // last point in the rect (last of lines or first if closed)
     SkPoint firstCorner;
     SkPoint thirdCorner;
-    const SkPoint* pts = *ptsPtr;
+    const SkPoint* pts = ptSpan.data();
     const SkPoint* savePts = nullptr; // used to allow caller to iterate through a pair of rects
     lineStart.set(0, 0);
     signed char directions[] = {-1, -1, -1, -1, -1};  // -1 to 3; -1 is uninitialized
     bool closedOrMoved = false;
     bool autoClose = false;
     bool insertClose = false;
-    int verbCnt = path.fPathRef->countVerbs();
+    const int verbCnt = SkToInt(vbSpan.size());
     while (*currVerb < verbCnt && (!allowPartial || !autoClose)) {
-        uint8_t verb = insertClose ? (uint8_t) SkPath::kClose_Verb : path.fPathRef->atVerb(*currVerb);
+        SkPathVerb verb = insertClose ? SkPathVerb::kClose : vbSpan[*currVerb];
         switch (verb) {
-            case SkPath::kClose_Verb:
+            case SkPathVerb::kClose:
                 savePts = pts;
                 autoClose = true;
                 insertClose = false;
                 [[fallthrough]];
-            case SkPath::kLine_Verb: {
-                if (SkPath::kClose_Verb != verb) {
+            case SkPathVerb::kLine: {
+                if (SkPathVerb::kClose != verb) {
                     lastPt = pts;
                 }
-                SkPoint lineEnd = SkPath::kClose_Verb == verb ? *firstPt : *pts++;
+                SkPoint lineEnd = SkPathVerb::kClose == verb ? *firstPt : *pts++;
                 SkVector lineDelta = lineEnd - lineStart;
                 if (lineDelta.fX && lineDelta.fY) {
                     return false; // diagonal
@@ -3668,7 +3669,7 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
                 }
                 closedOrMoved = autoClose;
                 if (directions[corners - 1] == nextDirection) {
-                    if (3 == corners && SkPath::kLine_Verb == verb) {
+                    if (3 == corners && SkPathVerb::kLine == verb) {
                         thirdCorner = lineEnd;
                     }
                     lineStart = lineEnd;
@@ -3697,11 +3698,11 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
                 lineStart = lineEnd;
                 break;
             }
-            case SkPath::kQuad_Verb:
-            case SkPath::kConic_Verb:
-            case SkPath::kCubic_Verb:
+            case SkPathVerb::kQuad:
+            case SkPathVerb::kConic:
+            case SkPathVerb::kCubic:
                 return false; // quadratic, cubic not allowed
-            case SkPath::kMove_Verb:
+            case SkPathVerb::kMove:
                 if (allowPartial && !autoClose && directions[0] >= 0) {
                     insertClose = true;
                     *currVerb -= 1;  // try move again afterwards
@@ -3728,15 +3729,12 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
     }
     // Success if 4 corners and first point equals last
     if (corners < 3 || corners > 4) {
-        return false;
-    }
-    if (savePts) {
-        *ptsPtr = savePts;
+        return 0;
     }
     // check if close generates diagonal
     closeXY = *firstPt - *lastPt;
     if (closeXY.fX && closeXY.fY) {
-        return false;
+        return 0;
     }
     if (rect) {
         rect->set(firstCorner, thirdCorner);
@@ -3748,9 +3746,21 @@ bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currV
         *direction = directions[0] == ((directions[1] + 1) & 3) ?
                      SkPathDirection::kCW : SkPathDirection::kCCW;
     }
-    return true;
+    return savePts - ptSpan.data(); // how far we moved
 }
 
+bool SkPathPriv::IsRectContour(const SkPath& path, bool allowPartial, int* currVerb,
+                               const SkPoint** ptsPtr, bool* isClosed, SkPathDirection* direction,
+                               SkRect* rect) {
+    SkSpan<const SkPoint> pts = { *ptsPtr, path.fPathRef->countPoints() };
+    const size_t n = countRectContourPoints(pts, path.fPathRef->verbs(), allowPartial,
+                                            currVerb, isClosed, direction, rect);
+    if (n > 0) {
+        *ptsPtr = pts.data() + n;
+        return true;
+    }
+    return false;
+}
 
 bool SkPathPriv::IsNestedFillRects(const SkPath& path, SkRect rects[2], SkPathDirection dirs[2]) {
     SkDEBUGCODE(path.validate();)
