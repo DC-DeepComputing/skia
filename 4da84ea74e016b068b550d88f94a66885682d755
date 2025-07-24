@@ -22,6 +22,30 @@
       },
       "revId": "4da84ea74e016b068b550d88f94a66885682d755",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ae215224_88d1726d",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-24T17:12:51Z",
+      "side": 1,
+      "message": "LOL -- good catch.\nYea, time for a test.",
+      "parentUuid": "9d216d84_e41a7153",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "4da84ea74e016b068b550d88f94a66885682d755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
