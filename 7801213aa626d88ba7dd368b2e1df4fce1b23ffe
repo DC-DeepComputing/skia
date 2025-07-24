@@ -120,6 +120,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ffefcdf_59f4d7b4",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-24T17:26:12Z",
+      "side": 1,
+      "message": "ah, true, I could have passed tmp.data(). My bad.\n\nI still just don\u0027t know what to do about spans that are a required size. I hate forcing a specific storage rule, but asserts are only so-so (tho better than bare-pointers).",
+      "parentUuid": "e3d42e2b_00f8e6f8",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 31
+      },
+      "revId": "7801213aa626d88ba7dd368b2e1df4fce1b23ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bf81786_e5f2453a",
