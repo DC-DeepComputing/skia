@@ -41,6 +41,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49149275_bcc0da26",
+        "filename": "src/gpu/graphite/vk/VulkanGraphicsPipeline.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 889,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:53:13Z",
+      "side": 1,
+      "message": "That\u0027s clearer, thanks",
+      "parentUuid": "dd8a1995_326133ca",
+      "range": {
+        "startLine": 886,
+        "startChar": 0,
+        "endLine": 889,
+        "endChar": 79
+      },
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7537d0a0_7ff86630",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-07-23T18:08:55Z",
       "side": 1,
       "message": "Ah, maybe just move this to the header. Perhaps tweak \"The SPIR-V transformer is implemented as one main class, SpirvTransformer, and a nunber of logically separate transformations. Currently, there is only one transformation used (SpirvMultisampleTransformer), but more could be added in the future.\"",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 3
+      },
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd103d13_d62badae",
+        "filename": "src/gpu/graphite/vk/VulkanSpirvTransforms.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:53:13Z",
+      "side": 1,
+      "message": "Kept this as it gives the implementation overview, but added something to the header per the other comment.",
+      "parentUuid": "7537d0a0_7ff86630",
       "range": {
         "startLine": 21,
         "startChar": 0,
@@ -87,6 +135,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e91166_0597fc65",
+        "filename": "src/gpu/graphite/vk/VulkanSpirvTransforms.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 503,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:53:13Z",
+      "side": 1,
+      "message": "Thanks!",
+      "parentUuid": "d388aecc_1517dc81",
+      "range": {
+        "startLine": 502,
+        "startChar": 0,
+        "endLine": 503,
+        "endChar": 86
+      },
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "be62eb78_87aeb6c8",
@@ -110,6 +182,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1cac5194_3c7c915a",
+        "filename": "src/gpu/graphite/vk/VulkanSpirvTransforms.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:53:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "be62eb78_87aeb6c8",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 21,
+        "endChar": 72
+      },
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bc6ddf3a_9f650f36",
@@ -123,6 +219,30 @@
       "writtenOn": "2025-07-23T18:08:55Z",
       "side": 1,
       "message": "If this is not used for actual SkSL code generation (AFAICT it\u0027s only used for direct SPIR-V modifications), perhaps we can move this enum to `VulkanSpirvTransforms`? (This also means we could remove the inclusion of this file in the transforms file)\n\nI am currently working on adding SPIRV validation in a follow-up CL - not sure if that will require access to this enum (I figure not if validation is from SPIRV tools and not something handled by Skia directly), but wanted to go ahead and get feedback out to you.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 21
+      },
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8fc6d5c_840d34ec",
+        "filename": "src/sksl/codegen/SkSLCodeGenTypes.h",
+        "patchSetId": 7
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:53:13Z",
+      "side": 1,
+      "message": "It\u0027s used by both. There\u0027s synergy here: the SPIR-V producer uses predefined IDs for things that the SPIR-V transformer needs.\n\nThis saves the transformer from looking through the SPIR-V to discover these ids, using the knowledge that these SPIR-V shaders are produced by Skia itself.",
+      "parentUuid": "bc6ddf3a_9f650f36",
       "range": {
         "startLine": 18,
         "startChar": 0,
