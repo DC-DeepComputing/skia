@@ -373,7 +373,7 @@ public:
         SkMatrix mx;
         {
             const std::array<SkPoint, 4> src = fPath.getBounds().toQuad();
-            mx.setPolyToPoly(src.data(), fPts.data(), 4);
+            mx.setPolyToPoly(src, fPts);
         }
 
         SkPaint paint;
