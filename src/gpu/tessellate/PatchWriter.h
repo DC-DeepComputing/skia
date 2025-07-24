@@ -325,6 +325,12 @@ public:
         fDeferredPatch.reset();
     }
 
+    ENABLE_IF(kTrackJoinControlPoints) writeDeferredStrokePatch(SkStrokeRec::Cap cap) {
+        if (fDeferredPatch.hasPending()) {
+
+        }
+    }
+
     // Updates the stroke's join control point that will be written out with each patch. This is
     // automatically adjusted when appending various geometries (e.g. Conic/Cubic), but sometimes
     // must be set explicitly.

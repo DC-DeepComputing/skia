@@ -2168,7 +2168,12 @@ FilterResult FilterResult::Builder::blur(const LayerSpace<SkSize>& sigma) {
     // For identity scale factors, this rescale() is a no-op when possible, but otherwise it will
     // also handle resolving any color filters or transform similar to a resolve() except that it
     // can defer the tile mode.
-    FilterResult lowResImage = fInputs[0].fImage.rescale(
+    FilterResult resolved = fInputs[0].fImage.resolve(fContext, sampleBounds);
+    if (!resolved) {
+        return {};
+    }
+
+    FilterResult lowResImage = resolved.rescale(
             fContext.withNewDesiredOutput(sampleBounds),
             LayerSpace<SkSize>({sx, sy}),
             algorithm->supportsOnlyDecalTiling());

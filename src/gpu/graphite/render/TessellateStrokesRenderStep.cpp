@@ -158,6 +158,133 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
     stroke.setStrokeParams(params.strokeStyle().cap(),
                            params.strokeStyle().join(),
                            params.strokeStyle().miterLimit());
+
+    // FIXME: open questions:
+    // 1. Does PatchWriter already remove degenerate patches? -> no, but should it?
+    // 2. Is it easier for PatchWriter to handle empty move/close geometry or should that happen here?
+            // If this class is already tracking degeneracies and last control point, then it seems
+            // like it's in maybe the best position to handle it, although it would then need
+            // visibility into the deferred patch's control point.
+            // -> whereas if PatchWriter remembers the last control point, too, it'll be able to
+                 // reconstruct the last control point and last join vector, then read the deferred
+                 // patch to get the first control point and either connect or create the cap there
+
+            // But we also need to disambiguate between a close() that should be joined with the first
+            // and a manual close that ends up with the last and first control point matching, but
+            // need to be capped *not* joined.
+
+        // I *think* empty caps need to be oriented by the overall change of direction?
+        // The zero-length directionality spec is pretty poorly written.
+
+    // 3. Who handles the hairline cap change?
+            // Can we have a writeSquare variant of writeCircle to handle the hairline point caps?
+            // but otherwise just writeCircle for any non-degenerate hairline circle cap?
+    // 4. Is the circle curve type mapped to device space radius for hairlines already?
+            // Yes, it's basically a special patch but all the geometry is radially outset
+            // so will be mapped to device space for hairlines
+    // 5. For moveTo+degenerate lineTo w/o close, do we still need to produce caps? Like is it
+    //    moveTo + any verb gets a cap?
+
+    SkPoint contourStartPt;
+    for (auto [verb, pts, w] : SkPathPriv::Iterate(path)) {
+        switch (verb) {
+            case SkPathVerb::kMove:
+                // This does nothing if this is the beginning of the first contour.
+                // This automatically joins the last contour with the first contour (deferred) if
+                // the contour is closed. If the contour is not closed, it automatically adds
+                // additional patches for the end cap of the last patch and the beginning cap of
+                // the deferred patch.
+                writer.writeDeferredStrokePatch(params.strokeStyle().cap());
+                contourStartPt = pts[0];
+                break;
+                // if not first move, write ending cap of current
+                // if has deferred patch, write beginning cap + deferred patch
+
+            case SkPathVerb::kClose:
+                // Draw a line back to the starting point of the contour. Since the contour is
+                // closed, writing the deferred patch will not add any ending or starting caps, but
+                // this line will define the join tangent needed for the first patch.
+                writer.writeLine(pts[0], contourStartPt);
+                break;
+
+                // write line from current pos to first pos
+                // if has deferred patch, join and write deferred patch
+
+            case SkPathVerb::kLine:
+                writer.writeLine(pts[0], pts[1]);
+                break;
+
+            case SkPathVerb::kQuad:
+                if (ConicHasCusp(pts)) {
+                    // The cusp is always at the midtandent.
+                    SkPoint cusp = SkEvalQuadAt(p, SkFindQuadMidTangent(p));
+                    writer.writeCircle(cusp);
+                    // A quad can only have a cusp if it's flat with a 180-degree turnaround.
+                    writer.writeLine(pts[0], cusp);
+                    writer.writeLine(cusp, pts[2]);
+                } else {
+                    writer.writeQuadratic(pts);
+                }
+                break;
+
+            case SkPathVerb::kConic:
+                if (ConicHasCusp(p)) {
+                    // The cusp is always at the midtandent.
+                    SkConic conic(pts, w);
+                    SkPoint cusp = conic.evalAt(conic.findMidTangent());
+                    writer.writeCircle(cusp);
+                    // A conic can only have a cusp if it's flat with a 180-degree turnaround.
+                    writer.writeLine(tsp[0], cusp);
+                    writer.writeLine(cusp, pts[2]);
+                } else {
+                    writer.writeConic(pts, w);
+                }
+                break;
+
+            case SkPathVerb::kCubic:
+                SkPoint chops[10];
+                float T[2];
+                bool areCusps;
+                numChops = FindCubicConvex180Chops(pts, T, &areCusps);
+                if (numChops == 0) {
+                    writer.writeCubic(pts);
+                } else if (numChops == 1) {
+                    SkChopCubicAt(pts, chops, T[0]);
+                    if (areCusps) {
+                        writer.writeCircle(chops[3]);
+                        // In a perfect world, these 3 points would be be equal after chopping
+                        // on a cusp.
+                        chops[2] = chops[4] = chops[3];
+                    }
+                    writer.writeCubic(chops);
+                    writer.writeCubic(chops + 3);
+                } else {
+                    SkASSERT(numChops == 2);
+                    SkChopCubicAt(pts, chops, T[0], T[1]);
+                    if (areCusps) {
+                        writer.writeCircle(chops[3]);
+                        writer.writeCircle(chops[6]);
+                        // Two cusps are only possible if it's a flat line with two 180-degree
+                        // turnarounds.
+                        writer.writeLine(chops[0], chops[3]);
+                        writer.writeLine(chops[3], chops[6]);
+                        writer.writeLine(chops[6], chops[9]);
+                    } else {
+                        writer.writeCubic(chops);
+                        writer.writeCubic(chops + 3);
+                        writer.writeCubic(chops + 6);
+                    }
+                }
+                break;
+        }
+    }
+
+    // Finish the last contour
+    writer.writeDeferredStrokePatch(params.strokeStyle().cap());
+
+
+
+/*
     StrokeIterator strokeIter(path, &stroke, &shaderMatrix);
     while (strokeIter.next()) {
         using Verb = StrokeIterator::Verb;
@@ -245,6 +372,7 @@ void TessellateStrokesRenderStep::writeVertices(DrawWriter* dw,
                 break;
         }
     }
+    */
 }
 
 void TessellateStrokesRenderStep::writeUniformsAndTextures(const DrawParams& params,
