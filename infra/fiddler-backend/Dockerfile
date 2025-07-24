@@ -1,4 +1,4 @@
-FROM gcr.io/skia-public/fiddler-base@sha256:2a3344aba8371c7844e1c475c311b34f01c36d98e0f57c5c97a7e26d1c83fb32
+FROM gcr.io/skia-public/fiddler-base@sha256:560aec6f0be61072a4a637175c6e285a0a97940473628d61be8cd60bb4271595
 
 # https://stackoverflow.com/a/44766666
 # Copy the skia files that Louhi has cloned into the image. Louhi hasn't synced third party
