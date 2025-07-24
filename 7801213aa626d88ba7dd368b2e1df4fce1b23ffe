@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "408f3c78_12032e03",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-24T15:23:47Z",
+      "side": 1,
+      "message": "that will mean changing the call site to actually use that storage type.",
+      "parentUuid": "2aa8ee8c_ccb6ba79",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 31
+      },
+      "revId": "7801213aa626d88ba7dd368b2e1df4fce1b23ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0bf81786_e5f2453a",
         "filename": "src/core/SkDraw_atlas.cpp",
         "patchSetId": 2
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-24T13:59:08Z",
       "side": 1,
       "message": "nit: let\u0027s spell out the type in most of these cases (which I think is also the general style guide recommendation unless the type is obvious from the call).\n\nI do find auto harder to reason about when reading unfamiliar/isolated code.  E.g. is this an array, a span, or a struct?  If a span, should this code be asserting that it\u0027s the right size, etc.\n\nMaybe we could also add an `SkQuad` alias for `std::array\u003cSkPoint, 4\u003e` to make it less yucky.",
+      "range": {
+        "startLine": 56,
+        "startChar": 8,
+        "endLine": 56,
+        "endChar": 12
+      },
+      "revId": "7801213aa626d88ba7dd368b2e1df4fce1b23ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "05de4afa_a0f8be74",
+        "filename": "src/core/SkDraw_atlas.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-24T15:23:47Z",
+      "side": 1,
+      "message": "Hmmm, \"obvious from the call\" is a matter of opinion 😊\nWhen reading it -- does SkQuad make it any clearer? Is that an array or struct or span?\nWhen I pass it directly to a function, do we worry about knowing the type?\ne.g. foo(r.toQuad())\n\nAnyway, I\u0027ve changed all the sites to be explicit.",
+      "parentUuid": "0bf81786_e5f2453a",
       "range": {
         "startLine": 56,
         "startChar": 8,
