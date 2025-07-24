@@ -17,6 +17,7 @@
 #include "src/core/SkChecksum.h"
 #include "src/gpu/RefCntedCallback.h"
 #include "src/gpu/graphite/CommandBuffer.h"
+#include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/RecordingPriv.h"
 #include "src/gpu/graphite/Resource.h"
@@ -144,6 +145,24 @@ void RecordingPriv::setFailureResultForFinishedProcs() {
         fRecording->fFinishedProcs[i]->setFailureResult();
     }
     fRecording->fFinishedProcs.clear();
+}
+
+void Recording::whatwhat() {
+    std::vector<const GraphicsPipeline*> pipelines;
+
+    fRootTaskList->visitPipelines(
+        [&](const GraphicsPipeline* pipeline) {
+            pipelines.push_back(pipeline);
+            return true;
+        });
+
+    for (auto p : pipelines) {
+        p->foo();
+    }
+}
+
+void RecordingPriv::whatwhat() {
+    return fRecording->whatwhat();
 }
 
 TextureProxy* RecordingPriv::deferredTargetProxy() {

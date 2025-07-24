@@ -15,6 +15,11 @@
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+void foo(skgpu::graphite::PrecompileContext* precompileContext);
+
 namespace skiagm {
 
 // This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
@@ -22,16 +27,26 @@ namespace skiagm {
 // edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
 public:
-    ArcOfZorroGM() {
+    ArcOfZorroGM(bool withPrecompile) : fWithPrecompile(withPrecompile) {
         this->setBGColor(0xFFCCCCCC);
     }
 
 protected:
-    SkString getName() const override { return SkString("arcofzorro"); }
+    SkString getName() const override {
+        return fWithPrecompile ? SkString("arcofzorro-p") : SkString("arcofzorro-n");
+    }
 
     SkISize getISize() override { return SkISize::Make(1000, 1000); }
 
     void onDraw(SkCanvas* canvas) override {
+
+        if (fWithPrecompile) {
+            skgpu::graphite::Recorder* r = canvas->recorder();
+            skgpu::graphite::Context* context = r->priv().context();
+            std::unique_ptr<skgpu::graphite::PrecompileContext> precompileContext = context->makePrecompileContext();
+            foo(precompileContext.get());
+        }
+
         SkRandom rand;
 
         SkRect rect = SkRect::MakeXYWH(10, 10, 200, 200);
@@ -77,9 +92,11 @@ protected:
 
 private:
     using INHERITED = GM;
+    bool fWithPrecompile;
 };
 
 //////////////////////////////////////////////////////////////////////////////
 
-DEF_GM(return new ArcOfZorroGM;)
+DEF_GM(return new ArcOfZorroGM(false);)
+DEF_GM(return new ArcOfZorroGM(true);)
 }  // namespace skiagm
