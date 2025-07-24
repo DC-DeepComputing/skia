@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9d216d84_e41a7153",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-24T15:36:38Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this be `(a.fY + b.fY) * 0.5f`?  We should probably have tests for these.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 28
+      },
+      "revId": "4da84ea74e016b068b550d88f94a66885682d755",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
