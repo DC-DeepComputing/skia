@@ -16,6 +16,24 @@
       "message": "We just updated Chromium, you should be able to land this without workarounds: https://chromium-review.googlesource.com/c/chromium/src/+/6780373",
       "revId": "5288f392e780724835f1d6ca6425036e470f76c8",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40e57de5_e31ac803",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-24T17:15:00Z",
+      "side": 1,
+      "message": "Jinx\nhttps://chromium-review.googlesource.com/c/chromium/src/+/6783711",
+      "parentUuid": "71e73550_e08047f4",
+      "revId": "5288f392e780724835f1d6ca6425036e470f76c8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ],
   "submitRequirementResults": [
