@@ -1,5 +1,5 @@
 # Dockerfile for building an image with all the tools needed to checkout and build Skia.
-FROM launcher.gcr.io/google/debian11 AS build
+FROM launcher.gcr.io/google/debian12 AS build
 RUN apt update && apt dist-upgrade -y && apt install -y \
   git \
   clang \
@@ -19,5 +19,5 @@ RUN cd /tmp \
 
 ENV PATH=${PATH}:/tmp/depot_tools
 
-ADD --chown=skia:skia https://storage.googleapis.com/skia-swiftshader/libGLESv2.so /usr/local/lib/libGLESv2.so
-ADD --chown=skia:skia  https://storage.googleapis.com/skia-swiftshader/libEGL.so /usr/local/lib/libEGL.so
+ADD --chown=skia:skia https://cdn.skia.org/swiftshader/libGLESv2.so /usr/local/lib/libGLESv2.so
+ADD --chown=skia:skia https://cdn.skia.org/swiftshader/libEGL.so /usr/local/lib/libEGL.so

@@ -1,5 +1,5 @@
 # Dockerfile for building Skia in release mode, using 3rd party libs from DEPS, with SwiftShader.
-FROM gcr.io/skia-public/skia-build-tools:latest
+FROM gcr.io/skia-public/skia-build-tools@sha256:414cccce734d56058adabbb7526d1a7040c0a8d350337a04a384901bc81ebd33
 
 # Sometimes update_depot_tools fails (e.g. from a pre-goma-deletion commit).
 RUN cd /tmp/depot_tools && git pull && update_depot_tools
