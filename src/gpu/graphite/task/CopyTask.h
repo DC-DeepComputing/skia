@@ -45,6 +45,10 @@ public:
 
     Status addCommands(Context*, CommandBuffer*, ReplayTargetData) override;
 
+    void dump() override {
+        SkDebugf("CopyBufferToBufferTask %p -> %p\n", fSrcBuffer, fDstBuffer.get());
+    }
+
 private:
     CopyBufferToBufferTask(const Buffer* srcBuffer,
                            size_t srcOffset,
@@ -79,6 +83,10 @@ public:
         return visitor(fTextureProxy.get());
     }
 
+    void dump() override {
+        SkDebugf("CopyTextureToBufferTask %p -> %p\n", fTextureProxy.get(), fBuffer.get());
+    }
+
 private:
     CopyTextureToBufferTask(sk_sp<TextureProxy>,
                             SkIRect srcRect,
@@ -111,6 +119,10 @@ public:
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) override {
         return visitor(fSrcProxy.get()) && visitor(fDstProxy.get());
+    }
+
+    void dump() override {
+        SkDebugf("CopyTextureToTextureTask %p -> %p\n", fSrcProxy.get(), fDstProxy.get());
     }
 
 private:

@@ -49,6 +49,10 @@ public:
         return fChildTasks.visitProxies(visitor);
     }
 
+    void dump() override {
+        SkDebugf("DrawTask target %d tasks to target %p\n", fChildTasks.size(), fTarget.get());
+    }
+
 private:
     friend class DrawContext; // for "addTask"
 

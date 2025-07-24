@@ -48,6 +48,10 @@ if (is_mac && host_os == "mac" && xcode_sysroot == "") {
       exec_script("../find_xcode_sysroot.py", [ "macosx" ], "trim string")
 }
 
+if (is_wasm) {
+  skia_use_cpp20 = true
+}
+
 config("default") {
   asmflags = []
   cflags = []
@@ -537,6 +541,8 @@ config("warnings") {
       "-Wno-unused-macros",
       "-Wno-unused-member-function",
       "-Wno-non-c-typedef-for-linkage",  # Dawn, not Skia per se.
+      "-Wno-missing-include-dirs",
+      "-Wno-nrvo",
 
       # We would like to fix this, otherwise it could cause runtime issues
       # when compiled for WASM.

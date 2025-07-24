@@ -61,6 +61,10 @@ public:
 
     bool visitProxies(const std::function<bool(const TextureProxy*)>& visitor) override;
 
+   void dump() override {
+        SkDebugf("RenderPassTask: %p\n", fTarget.get());
+    }
+
 private:
     RenderPassTask(DrawPassList,
                    const RenderPassDesc&,

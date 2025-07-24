@@ -154,6 +154,7 @@ Task::Status RenderPassTask::prepareResources(ResourceProvider* resourceProvider
     SkASSERT(fDrawPasses.size() == 1);
     for (const auto& drawPass: fDrawPasses) {
         if (!drawPass->prepareResources(resourceProvider, runtimeDict, fRenderPassDesc)) {
+            SkDebugf("RenderPassTask::drawPass->prepareResources failed\n");
             return Status::kFail;
         }
     }

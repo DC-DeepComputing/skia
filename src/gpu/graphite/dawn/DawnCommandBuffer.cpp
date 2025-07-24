@@ -26,26 +26,9 @@
 
 #if defined(__EMSCRIPTEN__)
 #include <emscripten/version.h>
-
-namespace wgpu {
-using TexelCopyBufferInfo = ImageCopyBuffer;
-using TexelCopyTextureInfo = ImageCopyTexture;
-}  // namespace wgpu
 #endif
 
 namespace skgpu::graphite {
-
-// On emsdk before 3.1.48 the API for RenderPass and ComputePass timestamps was different
-// and does not map to current webgpu. We check this in DawnCaps but we also must avoid
-// naming the types from the new API because they aren't defined.
-#if defined(__EMSCRIPTEN__)                                                                  \
-        && ((__EMSCRIPTEN_major__ < 3)                                                       \
-         || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ < 1)                          \
-         || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ < 48))
-    #define WGPU_TIMESTAMP_WRITES_DEFINED 0
-#else
-    #define WGPU_TIMESTAMP_WRITES_DEFINED 1
-#endif
 
 // DawnCommandBuffer
 // ----------------------------------------------------------------------------
@@ -344,12 +327,7 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
     wgpu::RenderPassDescriptorResolveRect wgpuPartialRect = {};
 #endif
 
-#if WGPU_TIMESTAMP_WRITES_DEFINED
-#if defined(__EMSCRIPTEN__)
-    wgpu::RenderPassTimestampWrites wgpuTimestampWrites;
-#else
     wgpu::PassTimestampWrites wgpuTimestampWrites;
-#endif
     if (!fSharedContext->dawnCaps()->supportsCommandBufferTimestamps() && fTimestampQueryBuffer) {
         SkASSERT(fTimestampQuerySet);
         wgpuTimestampWrites.querySet = fTimestampQuerySet;
@@ -360,9 +338,6 @@ bool DawnCommandBuffer::beginRenderPass(const RenderPassDesc& renderPassDesc,
         wgpuTimestampWrites.endOfPassWriteIndex = 1;
         wgpuRenderPass.timestampWrites = &wgpuTimestampWrites;
     }
-#else
-    SkASSERT(!fTimestampQueryBuffer);
-#endif
 
     // Validate attachment descs and textures
     const auto& colorInfo = renderPassDesc.fColorAttachment;

@@ -4,3 +4,7 @@ coverage/*
 build/
 # Don't check in this copy. It's just for publishing to npm.
 npm_build/CHANGELOG.md
+
+# symlinks
+src
+third_party

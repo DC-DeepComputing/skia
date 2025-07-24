@@ -227,6 +227,7 @@ std::unique_ptr<Recording> Recorder::snap() {
                                                 &scratchManager,
                                                 fRuntimeEffectDict.get());
     if (!valid) {
+        SkDebugf("prepareResources failed\n");
         recording = nullptr;
         fAtlasProvider->invalidateAtlases();
     }

@@ -46,16 +46,12 @@ skgpu::UniqueKey::Domain get_pipeline_domain() {
 static constexpr wgpu::TextureFormat kFormats[] = {
         wgpu::TextureFormat::RGBA8Unorm,
         wgpu::TextureFormat::R8Unorm,
-#if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::R16Unorm,
-#endif
         wgpu::TextureFormat::BGRA8Unorm,
         wgpu::TextureFormat::RGBA16Float,
         wgpu::TextureFormat::R16Float,
         wgpu::TextureFormat::RG8Unorm,
-#if !defined(__EMSCRIPTEN__)
         wgpu::TextureFormat::RG16Unorm,
-#endif
         wgpu::TextureFormat::RGB10A2Unorm,
         wgpu::TextureFormat::RG16Float,
 
@@ -422,33 +418,23 @@ std::pair<SkColorType, bool /*isRGBFormat*/> DawnCaps::supportedReadPixelsColorT
 }
 
 void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextOptions& options) {
-    // GetAdapter() is not available in WASM and there's no way to get AdapterInfo off of
-    // the WGPUDevice directly.
-#if !defined(__EMSCRIPTEN__)
     wgpu::AdapterInfo info;
-    backendContext.fDevice.GetAdapter().GetInfo(&info);
-
+    backendContext.fDevice.GetAdapterInfo(&info);
 #if defined(GPU_TEST_UTILS)
     this->setDeviceName(std::string(info.device));
 #endif
-#endif // defined(__EMSCRIPTEN__)
 
-#if defined(__EMSCRIPTEN__)
-    wgpu::SupportedLimits supportedLimits;
-    // TODO(crbug.com/42241199): Update to use wgpu::Status when webgpu.h in Emscripten is updated.
-    [[maybe_unused]] bool limitsSucceeded = backendContext.fDevice.GetLimits(&supportedLimits);
-    SkASSERT(limitsSucceeded);
-    wgpu::Limits& limits = supportedLimits.limits;
-#else
+    wgpu::Limits limits;
+#if !defined(__EMSCRIPTEN__)
     wgpu::CompatibilityModeLimits compatLimits;
-    wgpu::Limits limits{.nextInChain = &compatLimits};
+    limits.nextInChain = &compatLimits;
     wgpu::DawnTexelCopyBufferRowAlignmentLimits alignmentLimits{};
     if (backendContext.fDevice.HasFeature(wgpu::FeatureName::DawnTexelCopyBufferRowAlignment)) {
         compatLimits.nextInChain = &alignmentLimits;
     }
+#endif  // !defined(__EMSCRIPTEN__)
     [[maybe_unused]] wgpu::Status status = backendContext.fDevice.GetLimits(&limits);
     SkASSERT(status == wgpu::Status::Success);
-#endif  // defined(__EMSCRIPTEN__)
 
     fMaxTextureSize = limits.maxTextureDimension2D;
 
@@ -570,16 +556,7 @@ void DawnCaps::initCaps(const DawnBackendContext& backendContext, const ContextO
         // the WebGPU API can hopefully be extended to capture blit passes.
         fSupportsCommandBufferTimestamps = info.backendType != wgpu::BackendType::Metal;
 #endif
-
-        // The emscripten C/C++ interface before 3.1.48 for timestamp query writes on render and
-        // compute passes is different than on current emsdk. The older API isn't correctly
-        // translated to the current JS WebGPU API in emsdk. So we require 3.1.48+.
-#if !defined(__EMSCRIPTEN__)                                                                   \
-        || (__EMSCRIPTEN_major__ > 3)                                                          \
-        || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ > 1)                             \
-        || (__EMSCRIPTEN_major__ == 3 && __EMSCRIPTEN_minor__ == 1 && __EMSCRIPTEN_tiny__ >= 48)
         fSupportedGpuStats |= GpuStatsFlags::kElapsedTime;
-#endif
     }
 
     if (!backendContext.fTick) {
@@ -608,10 +585,11 @@ void DawnCaps::initShaderCaps(const wgpu::Device& device) {
     // WGSL supports shader derivatives in the fragment shader
     shaderCaps->fShaderDerivativeSupport = true;
 
-#if !defined(__EMSCRIPTEN__)
     if (device.HasFeature(wgpu::FeatureName::DualSourceBlending)) {
         shaderCaps->fDualSourceBlendingSupport = true;
     }
+
+#if !defined(__EMSCRIPTEN__)
     if (device.HasFeature(wgpu::FeatureName::FramebufferFetch)) {
         shaderCaps->fFBFetchSupport = true;
     }
@@ -961,11 +939,8 @@ void DawnCaps::initFormatTable(const wgpu::Device& device) {
     this->setColorType(kRGBA_1010102_SkColorType,     { wgpu::TextureFormat::RGB10A2Unorm });
     this->setColorType(kRGB_101010x_SkColorType,      { wgpu::TextureFormat::RGB10A2Unorm });
     this->setColorType(kR16G16_float_SkColorType,     { wgpu::TextureFormat::RG16Float });
-
-#if !defined(__EMSCRIPTEN__)
     this->setColorType(kA16_unorm_SkColorType,        { wgpu::TextureFormat::R16Unorm });
     this->setColorType(kR16G16_unorm_SkColorType,     { wgpu::TextureFormat::RG16Unorm });
-#endif
 }
 
 // static
@@ -1189,8 +1164,8 @@ void DawnCaps::buildKeyForTexture(SkISize dimensions,
 
     // We need two uint32_ts for dimensions, 1 for format, and 1 for the rest of the key;
     int num32DataCnt = 2 + 1 + 1;
-    bool hasYcbcrInfo = false;
 #if !defined(__EMSCRIPTEN__)
+    bool hasYcbcrInfo = false;
     // If we are using ycbcr texture/sampling, more key information is needed.
     if ((hasYcbcrInfo = DawnDescriptorIsValid(dawnInfo.fYcbcrVkDescriptor))) {
         num32DataCnt += 3; // non-format flags and 64-bit format
