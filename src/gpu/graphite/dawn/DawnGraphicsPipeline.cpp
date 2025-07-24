@@ -382,10 +382,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                &fsCode,
                                &fsInterface,
                                errorHandler)) {
+            SkDebugf("alpha\n");
             return {};
         }
         if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->fsLabel().c_str(), fsCode,
                                          &fsModule, errorHandler)) {
+            SkDebugf("beta\n");
             return {};
         }
     }
@@ -398,10 +400,12 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                            &vsCode,
                            &vsInterface,
                            errorHandler)) {
+        SkDebugf("gamma\n");
         return {};
     }
     if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->vsLabel().c_str(), vsCode,
                                      &vsModule, errorHandler)) {
+        SkDebugf("delta\n");
         return {};
     }
 
@@ -493,6 +497,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         SkASSERT(resourceProvider);
         groupLayouts[0] = resourceProvider->getOrCreateUniformBuffersBindGroupLayout();
         if (!groupLayouts[0]) {
+            SkDebugf("epsilon\n");
             return {};
         }
 
@@ -573,6 +578,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                 groupLayouts[1] = device.CreateBindGroupLayout(&groupLayoutDesc);
             }
             if (!groupLayouts[1]) {
+                SkDebugf("zeta\n");
                 return {};
             }
         }
@@ -593,6 +599,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
 #endif
         auto layout = device.CreatePipelineLayout(&layoutDesc);
         if (!layout) {
+            SkDebugf("theta\n");
             return {};
         }
         descriptor.layout = std::move(layout);
@@ -614,11 +621,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = staticDataAttributes.data();
         } else {
             layout.arrayStride = 0;
-#if defined(__EMSCRIPTEN__)
-            layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
-#else
             layout.stepMode = wgpu::VertexStepMode::Undefined;
-#endif
             layout.attributeCount = 0;
             layout.attributes = nullptr;
         }
@@ -640,11 +643,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
             layout.attributes = appendDataAttributes.data();
         } else {
             layout.arrayStride = 0;
-#if defined(__EMSCRIPTEN__)
-            layout.stepMode = wgpu::VertexStepMode::VertexBufferNotUsed;
-#else
             layout.stepMode = wgpu::VertexStepMode::Undefined;
-#endif
             layout.attributeCount = 0;
             layout.attributes = nullptr;
         }
@@ -734,6 +733,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         // Fail ASAP for synchronous pipeline creation so it affects the Recording snap instead of
         // being detected later at insertRecording().
         if (!asyncCreation->fRenderPipeline) {
+            SkDebugf("iota\n");
             return nullptr;
         }
 

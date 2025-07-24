@@ -35,11 +35,7 @@ constexpr int kMaxNumberOfCachedBufferBindGroups = 1024;
 constexpr int kMaxNumberOfCachedTextureBindGroups = 4096;
 
 wgpu::ShaderModule create_shader_module(const wgpu::Device& device, const char* source) {
-#if defined(__EMSCRIPTEN__)
-    wgpu::ShaderModuleWGSLDescriptor wgslDesc;
-#else
     wgpu::ShaderSourceWGSL wgslDesc;
-#endif
     wgslDesc.code = source;
     wgpu::ShaderModuleDescriptor descriptor;
     descriptor.nextInChain = &wgslDesc;

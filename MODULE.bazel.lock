@@ -1175,7 +1175,7 @@
     "@@rules_nodejs+//nodejs:extensions.bzl%node": {
       "general": {
         "bzlTransitiveDigest": "rphcryfYrOY/P3emfTskC/GY5YuHcwMl2B2ncjaM8lY=",
-        "usagesDigest": "0OxbbhYU9J94ZFwZiA5E96Vpq4mSFV3V0HKn1Jumm4I=",
+        "usagesDigest": "IWF8KqH+iY0YHLdchDbnNTABzgtsbexKBDdhnP0ATv0=",
         "recordedFileInputs": {},
         "recordedDirentsInputs": {},
         "envVariables": {},

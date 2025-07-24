@@ -13,6 +13,8 @@
 // Ensure SkUserConfig.h is loaded, as clients may define SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY
 #include "include/core/SkTypes.h" // IWYU pragma: keep
 
+#define SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY skgpu::graphite::LogPriority::kDebug
+
 #if !defined(SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY)
 #ifdef SK_DEBUG
     #define SKGPU_GRAPHITE_LOWEST_ACTIVE_LOG_PRIORITY skgpu::graphite::LogPriority::kWarning

@@ -36,6 +36,14 @@ release_webgpu:
 	cp ../../out/canvaskit_wasm/canvaskit.js   ./build/
 	cp ../../out/canvaskit_wasm/canvaskit.wasm ./build/
 
+
+profile_webgpu:
+	./compile.sh use_webgpu profiling
+	- rm -rf build/
+	mkdir build
+	cp ../../out/canvaskit_wasm/canvaskit.js   ./build/
+	cp ../../out/canvaskit_wasm/canvaskit.wasm ./build/
+
 release_viewer:
 	# Does an incremental build where possible.
 	./compile.sh viewer
@@ -67,6 +75,9 @@ debug_webgpu:
 	mkdir build
 	cp ../../out/canvaskit_wasm_debug/canvaskit.js   ./build/
 	cp ../../out/canvaskit_wasm_debug/canvaskit.wasm ./build/
+	cp ../../out/canvaskit_wasm_debug/canvaskit.wasm.map ./build/
+	ln -s ../../src src
+	ln -s ../../third_party third_party
 
 debug_viewer:
 	# Does an incremental build where possible.
