@@ -96,6 +96,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3d42e2b_00f8e6f8",
+        "filename": "src/core/SkDevice.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-24T17:15:43Z",
+      "side": 1,
+      "message": "Your call, prolly not worth it if the change forces too many ripples.\n\nLooking at RSXForm, `toQuad` effectively takes a raw pointer (SkPoint quad[4]), so I thought you could just pass tmp.data() without having to update the signature.  If not, then I would not chase it any further in this CL (though it would be cool for it to get the SkRect treatment at some point).",
+      "parentUuid": "23524c7f_1ca89c90",
+      "range": {
+        "startLine": 195,
+        "startChar": 4,
+        "endLine": 195,
+        "endChar": 31
+      },
+      "revId": "7801213aa626d88ba7dd368b2e1df4fce1b23ffe",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0bf81786_e5f2453a",
