@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "26aaed92_ba525987",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T19:18:11Z",
+      "side": 1,
+      "message": "I went ahead and regenerated the shaders too",
+      "parentUuid": "51d14c46_c30ba325",
+      "revId": "9c0d8967c13cb61318aedc35b83800aee8577740",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "dd8a1995_326133ca",
