@@ -365,7 +365,7 @@ namespace {
     }
 
     if (entry->storesSamplerDescData()) {
-        if (*currentIndex + 1 >= SkTo<int>(keyData.size())) {
+        if (*currentIndex >= SkTo<int>(keyData.size())) {
             return false;
         }
 
