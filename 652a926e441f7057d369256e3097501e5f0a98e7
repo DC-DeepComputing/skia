@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6e9a68_ac358d4e",
+        "filename": "src/gpu/vk/VulkanPreferredFeatures.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 1195,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-07-24T18:26:01Z",
+      "side": 0,
+      "message": "This is the diff compared to the reverted change here: https://skia-review.googlesource.com/c/skia/+/1026096\n\nI had forgot about this old CL, somehow thought I had already landed this fix, and redid the rest of this CL again.\n\nI put the failing bot to run to make sure it\u0027s all good before landing.",
+      "range": {
+        "startLine": 1190,
+        "startChar": 0,
+        "endLine": 1195,
+        "endChar": 17
+      },
+      "revId": "652a926e441f7057d369256e3097501e5f0a98e7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
