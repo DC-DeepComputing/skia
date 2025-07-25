@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "442b8b4b_f29d90bd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-25T14:40:25Z",
+      "side": 1,
+      "message": "applied Florin\u0027s suggestion\n\nptal",
+      "revId": "2e2b215a06a682538b48c1ba76d939391cca4382",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
