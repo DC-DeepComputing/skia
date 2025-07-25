@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a4c7cc0_fef36afa",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-25T11:45:26Z",
+      "side": 1,
+      "message": "I think this could be `dst[0] - src[0]`.",
+      "range": {
+        "startLine": 1309,
+        "startChar": 43,
+        "endLine": 1309,
+        "endChar": 87
+      },
+      "revId": "bd020cdd9445c5dbf125bdd48ba88286177ad831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
