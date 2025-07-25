@@ -22,6 +22,30 @@
       },
       "revId": "6c231c8070a0fbf930c86160f90aeb3845904ee0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "721c12c9_e7a654dc",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-07-25T21:36:28Z",
+      "side": 1,
+      "message": "Oh I see, it is updated when the path is added",
+      "parentUuid": "b2cb6d9d_a282a651",
+      "range": {
+        "startLine": 770,
+        "startChar": 8,
+        "endLine": 770,
+        "endChar": 46
+      },
+      "revId": "6c231c8070a0fbf930c86160f90aeb3845904ee0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
