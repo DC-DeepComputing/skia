@@ -16,6 +16,24 @@
       "message": "I suspect it was this check that failed the Chromium roll.",
       "revId": "3bb0e5ff20dc768cd24b40a26dfe684ad1b1e822",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0a77d2f9_c6012f36",
+        "filename": "src/core/SkColorSpaceXformSteps.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 6035
+      },
+      "writtenOn": "2025-07-25T17:40:16Z",
+      "side": 1,
+      "message": ".",
+      "parentUuid": "a6fb9d4d_aa4d8993",
+      "revId": "3bb0e5ff20dc768cd24b40a26dfe684ad1b1e822",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
