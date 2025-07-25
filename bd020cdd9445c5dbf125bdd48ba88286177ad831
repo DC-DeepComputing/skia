@@ -22,6 +22,30 @@
       },
       "revId": "bd020cdd9445c5dbf125bdd48ba88286177ad831",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71ca3bc2_6547e6a6",
+        "filename": "src/core/SkMatrix.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 1309,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-25T13:53:34Z",
+      "side": 1,
+      "message": "True. I was mirroring the old code, but I like your form better.",
+      "parentUuid": "4a4c7cc0_fef36afa",
+      "range": {
+        "startLine": 1309,
+        "startChar": 43,
+        "endLine": 1309,
+        "endChar": 87
+      },
+      "revId": "bd020cdd9445c5dbf125bdd48ba88286177ad831",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
