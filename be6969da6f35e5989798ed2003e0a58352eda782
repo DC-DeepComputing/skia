@@ -57,6 +57,30 @@
       },
       "revId": "be6969da6f35e5989798ed2003e0a58352eda782",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd8d5560_bcef2384",
+        "filename": "gm/animatedimageblurs.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 199,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-25T14:48:47Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "948ac97d_d7677c48",
+      "range": {
+        "startLine": 199,
+        "startChar": 0,
+        "endLine": 199,
+        "endChar": 54
+      },
+      "revId": "be6969da6f35e5989798ed2003e0a58352eda782",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
