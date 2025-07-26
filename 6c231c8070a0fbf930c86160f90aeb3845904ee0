@@ -46,6 +46,30 @@
       },
       "revId": "6c231c8070a0fbf930c86160f90aeb3845904ee0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d02cb37f_38cb85c0",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 770,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-26T15:59:31Z",
+      "side": 1,
+      "message": "Agreed, the hope is that we can always rely on the \"leaf\" node methods like moveTo/lineTo to do their job (regarding more-than-moves) and we just have to bring in the \"extra\" knowledge (like convexity, and in the case of oval, ovalness)",
+      "parentUuid": "721c12c9_e7a654dc",
+      "range": {
+        "startLine": 770,
+        "startChar": 8,
+        "endLine": 770,
+        "endChar": 46
+      },
+      "revId": "6c231c8070a0fbf930c86160f90aeb3845904ee0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
