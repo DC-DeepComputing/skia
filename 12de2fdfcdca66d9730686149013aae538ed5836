@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2eb8e0d5_0282ec8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 6155
+      },
+      "writtenOn": "2025-07-28T13:57:46Z",
+      "side": 1,
+      "message": "PTAL Ben, as Kaylee has an ooo status.",
+      "revId": "12de2fdfcdca66d9730686149013aae538ed5836",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
