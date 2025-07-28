@@ -48,6 +48,8 @@ public:
     GlobalCache* globalCache() { return &fGlobalCache; }
     const GlobalCache* globalCache() const { return &fGlobalCache; }
 
+    ThreadedPipelineManager* threadedPipelineManager() { return &fThreadedPipelineManager; }
+
     const RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
 
     ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
@@ -82,6 +84,7 @@ private:
 
     BackendApi fBackend;
     GlobalCache fGlobalCache;
+    ThreadedPipelineManager fThreadedPipelineManager;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;

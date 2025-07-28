@@ -86,7 +86,7 @@ public:
                                                        UniformDataBlock intrinsicValues);
 
 private:
-    sk_sp<GraphicsPipeline> createGraphicsPipeline(const RuntimeEffectDictionary*,
+    sk_sp<GraphicsPipeline> createGraphicsPipeline1(const RuntimeEffectDictionary*,
                                                    const UniqueKey&,
                                                    const GraphicsPipelineDesc&,
                                                    const RenderPassDesc&,
