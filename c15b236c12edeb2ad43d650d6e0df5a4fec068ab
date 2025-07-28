@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "57a86fe8_b75662b0",
+        "filename": "tools/testrunners/common/surface_manager/SurfaceManager.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-28T14:59:16Z",
+      "side": 1,
+      "message": "Need to add a `.c_str()` like on line 89, or otherwise construct as or allow a copy into a `std::string`.",
+      "revId": "c15b236c12edeb2ad43d650d6e0df5a4fec068ab",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
