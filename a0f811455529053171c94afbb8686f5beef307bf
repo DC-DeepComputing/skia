@@ -42,6 +42,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "09060f1a_2239e24a",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-28T15:43:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dfe24b63_71e4c997",
+      "range": {
+        "startLine": 133,
+        "startChar": 15,
+        "endLine": 133,
+        "endChar": 18
+      },
+      "revId": "a0f811455529053171c94afbb8686f5beef307bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c24c16fc_6364581c",
@@ -55,6 +79,30 @@
       "writtenOn": "2025-07-28T13:48:38Z",
       "side": 1,
       "message": "Seems like we should be doing some bounds checking with ptIndex.",
+      "range": {
+        "startLine": 484,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 23
+      },
+      "revId": "a0f811455529053171c94afbb8686f5beef307bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f7b2a479_4e0219a9",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-28T15:43:00Z",
+      "side": 1,
+      "message": "Exactly! This version does in debugging, as SkSpan always asserts on bad indices. (the old code did none). That\u0027s why I switched for ptr++ to using an index.",
+      "parentUuid": "c24c16fc_6364581c",
       "range": {
         "startLine": 484,
         "startChar": 0,
