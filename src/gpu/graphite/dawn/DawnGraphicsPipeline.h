@@ -57,7 +57,7 @@ public:
     inline static constexpr unsigned int kAppendDataBufferIndex = 1;
     inline static constexpr unsigned int kNumVertexBuffers = 2;
 
-    static sk_sp<DawnGraphicsPipeline> Make(const DawnSharedContext* sharedContext,
+    static sk_sp<DawnGraphicsPipeline> Make1(const DawnSharedContext* sharedContext,
                                             DawnResourceProvider* resourceProvider,
                                             const RuntimeEffectDictionary* runtimeDict,
                                             const UniqueKey& pipelineKey,
@@ -69,6 +69,8 @@ public:
     ~DawnGraphicsPipeline() override;
 
     bool didAsyncCompilationFail() const override;
+
+    bool isReady() const override;
 
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
     PrimitiveType primitiveType() const { return fPrimitiveType; }
