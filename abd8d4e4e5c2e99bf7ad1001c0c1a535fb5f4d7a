@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eac37f6e_25ad39dc",
+        "filename": "src/core/SkPathRawShapes.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-28T19:25:17Z",
+      "side": 1,
+      "message": "This looks right to me, but some of it is kind of difficult to read as someone who hasn\u0027t lived in the C world in a long time, particularly the math involving bools and indexes.",
+      "range": {
+        "startLine": 109,
+        "startChar": 12,
+        "endLine": 109,
+        "endChar": 24
+      },
+      "revId": "abd8d4e4e5c2e99bf7ad1001c0c1a535fb5f4d7a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
