@@ -4411,7 +4411,7 @@ public:
         SkPathRef::Editor ed(&pathRef);
 
         {
-            ed.growForRepeatedVerb(SkPath::kMove_Verb, kRepeatCnt);
+            ed.growForRepeatedVerb(SkPathVerb::kMove, kRepeatCnt);
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countVerbs());
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countPoints());
             REPORTER_ASSERT(reporter, 0 == pathRef->getSegmentMasks());
@@ -4422,7 +4422,7 @@ public:
         }
 
         {
-            ed.growForRepeatedVerb(SkPath::kLine_Verb, kRepeatCnt);
+            ed.growForRepeatedVerb(SkPathVerb::kLine, kRepeatCnt);
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countVerbs());
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countPoints());
             REPORTER_ASSERT(reporter, SkPath::kLine_SegmentMask == pathRef->getSegmentMasks());
@@ -4433,7 +4433,7 @@ public:
         }
 
         {
-            ed.growForRepeatedVerb(SkPath::kQuad_Verb, kRepeatCnt);
+            ed.growForRepeatedVerb(SkPathVerb::kQuad, kRepeatCnt);
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countVerbs());
             REPORTER_ASSERT(reporter, 2*kRepeatCnt == pathRef->countPoints());
             REPORTER_ASSERT(reporter, SkPath::kQuad_SegmentMask == pathRef->getSegmentMasks());
@@ -4445,7 +4445,7 @@ public:
 
         {
             SkScalar* weights = nullptr;
-            ed.growForRepeatedVerb(SkPath::kConic_Verb, kRepeatCnt, &weights);
+            ed.growForRepeatedVerb(SkPathVerb::kConic, kRepeatCnt, &weights);
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countVerbs());
             REPORTER_ASSERT(reporter, 2*kRepeatCnt == pathRef->countPoints());
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countWeights());
@@ -4458,7 +4458,7 @@ public:
         }
 
         {
-            ed.growForRepeatedVerb(SkPath::kCubic_Verb, kRepeatCnt);
+            ed.growForRepeatedVerb(SkPathVerb::kCubic, kRepeatCnt);
             REPORTER_ASSERT(reporter, kRepeatCnt == pathRef->countVerbs());
             REPORTER_ASSERT(reporter, 3*kRepeatCnt == pathRef->countPoints());
             REPORTER_ASSERT(reporter, SkPath::kCubic_SegmentMask == pathRef->getSegmentMasks());

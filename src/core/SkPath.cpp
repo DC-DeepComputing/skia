@@ -669,7 +669,7 @@ SkPath& SkPath::moveTo(SkScalar x, SkScalar y) {
     // remember our index
     fLastMoveToIndex = fPathRef->countPoints();
 
-    ed.growForVerb(kMove_Verb)->set(x, y);
+    ed.growForVerb(SkPathVerb::kMove)->set(x, y);
 
     return this->dirtyAfterEdit();
 }
@@ -707,7 +707,7 @@ SkPath& SkPath::lineTo(SkScalar x, SkScalar y) {
     this->injectMoveToIfNeeded();
 
     SkPathRef::Editor ed(&fPathRef);
-    ed.growForVerb(kLine_Verb)->set(x, y);
+    ed.growForVerb(SkPathVerb::kLine)->set(x, y);
 
     return this->dirtyAfterEdit();
 }
@@ -725,7 +725,7 @@ SkPath& SkPath::quadTo(SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2) {
     this->injectMoveToIfNeeded();
 
     SkPathRef::Editor ed(&fPathRef);
-    SkPoint* pts = ed.growForVerb(kQuad_Verb);
+    SkPoint* pts = ed.growForVerb(SkPathVerb::kQuad);
     pts[0].set(x1, y1);
     pts[1].set(x2, y2);
 
@@ -755,7 +755,7 @@ SkPath& SkPath::conicTo(SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2,
         this->injectMoveToIfNeeded();
 
         SkPathRef::Editor ed(&fPathRef);
-        SkPoint* pts = ed.growForVerb(kConic_Verb, w);
+        SkPoint* pts = ed.growForVerb(SkPathVerb::kConic, w);
         pts[0].set(x1, y1);
         pts[1].set(x2, y2);
 
@@ -779,7 +779,7 @@ SkPath& SkPath::cubicTo(SkScalar x1, SkScalar y1, SkScalar x2, SkScalar y2,
     this->injectMoveToIfNeeded();
 
     SkPathRef::Editor ed(&fPathRef);
-    SkPoint* pts = ed.growForVerb(kCubic_Verb);
+    SkPoint* pts = ed.growForVerb(SkPathVerb::kCubic);
     pts[0].set(x1, y1);
     pts[1].set(x2, y2);
     pts[2].set(x3, y3);
@@ -808,7 +808,7 @@ SkPath& SkPath::close() {
             case kCubic_Verb:
             case kMove_Verb: {
                 SkPathRef::Editor ed(&fPathRef);
-                ed.growForVerb(kClose_Verb);
+                ed.growForVerb(SkPathVerb::kClose);
                 break;
             }
             case kClose_Verb:
@@ -852,10 +852,10 @@ SkPath& SkPath::addRect(const SkRect &rect, SkPathDirection dir, unsigned startI
     SkPath_RectPointIterator iter(rect, dir, startIndex);
     fLastMoveToIndex = fPathRef->countPoints();
 
-    *ed.growForVerb(kMove_Verb) = iter.current();
-    *ed.growForVerb(kLine_Verb) = iter.next();
-    *ed.growForVerb(kLine_Verb) = iter.next();
-    *ed.growForVerb(kLine_Verb) = iter.next();
+    *ed.growForVerb(SkPathVerb::kMove) = iter.current();
+    *ed.growForVerb(SkPathVerb::kLine) = iter.next();
+    *ed.growForVerb(SkPathVerb::kLine) = iter.next();
+    *ed.growForVerb(SkPathVerb::kLine) = iter.next();
     this->close();
     (void)this->dirtyAfterEdit();
 
@@ -872,17 +872,17 @@ SkPath& SkPath::addPoly(SkSpan<const SkPoint> pts, bool close) {
 
     fLastMoveToIndex = fPathRef->countPoints();
 
-    // +close makes room for the extra kClose_Verb
+    // +close makes room for the extra SkPathVerb::kClose
     SkPathRef::Editor ed(&fPathRef, count+close, count);
 
-    ed.growForVerb(kMove_Verb)->set(pts[0].fX, pts[0].fY);
+    ed.growForVerb(SkPathVerb::kMove)->set(pts[0].fX, pts[0].fY);
     if (count > 1) {
-        SkPoint* p = ed.growForRepeatedVerb(kLine_Verb, count - 1);
+        SkPoint* p = ed.growForRepeatedVerb(SkPathVerb::kLine, count - 1);
         memcpy(p, &pts[1], (count-1) * sizeof(SkPoint));
     }
 
     if (close) {
-        ed.growForVerb(kClose_Verb);
+        ed.growForVerb(SkPathVerb::kClose);
         fLastMoveToIndex ^= ~fLastMoveToIndex >> (8 * sizeof(fLastMoveToIndex) - 1);
     }
 

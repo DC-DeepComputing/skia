@@ -79,43 +79,47 @@ public:
      */
     static SkPathFirstDirection ComputeFirstDirection(const SkPath&);
 
-    static bool IsClosedSingleContour(const SkPath& path) {
-        int verbCount = path.countVerbs();
-        if (verbCount == 0)
+    static bool IsClosedSingleContour(SkSpan<const SkPathVerb> verbs) {
+        if (verbs.empty()) {
             return false;
+        }
+
         int moveCount = 0;
-        auto verbs = path.fPathRef->verbsBegin();
-        for (int i = 0; i < verbCount; i++) {
+        for (size_t i = 0; i < verbs.size(); ++i) {
             switch (verbs[i]) {
-                case SkPath::Verb::kMove_Verb:
-                    moveCount += 1;
-                    if (moveCount > 1) {
+                case SkPathVerb::kMove:
+                    if (++moveCount > 1) {
                         return false;
                     }
                     break;
-                case SkPath::Verb::kClose_Verb:
-                    if (i == verbCount - 1) {
-                        return true;
-                    }
-                    return false;
-                default: break;
+                case SkPathVerb::kClose:
+                    return (i + 1) == verbs.size();
+                default:
+                    break;
             }
         }
         return false;
     }
 
+    static bool IsClosedSingleContour(const SkPath& path) {
+        return IsClosedSingleContour(path.fPathRef->verbs());
+    }
+
     // In some scenarios (e.g. fill or convexity checking all but the last leading move to are
     // irrelevant to behavior). SkPath::injectMoveToIfNeeded should ensure that this is always at
     // least 1.
-    static int LeadingMoveToCount(const SkPath& path) {
-        int verbCount = path.countVerbs();
-        auto verbs = path.fPathRef->verbsBegin();
-        for (int i = 0; i < verbCount; i++) {
-            if (verbs[i] != SkPath::Verb::kMove_Verb) {
+    static int LeadingMoveToCount(SkSpan<const SkPathVerb> verbs) {
+        const int N = SkToInt(verbs.size());
+        for (int i = 0; i < N; i++) {
+            if (verbs[i] != SkPathVerb::kMove) {
                 return i;
             }
         }
-        return verbCount; // path is all move verbs
+        return N; // path is all move verbs
+    }
+
+    static int LeadingMoveToCount(const SkPath& path) {
+        return LeadingMoveToCount(path.fPathRef->verbs());
     }
 
     static void AddGenIDChangeListener(const SkPath& path, sk_sp<SkIDChangeListener> listener) {
@@ -153,30 +157,6 @@ public:
     static void ShrinkToFit(SkPath* path) {
         path->shrinkToFit();
     }
-
-    /**
-     * Returns a C++11-iterable object that traverses a path's verbs in order. e.g:
-     *
-     *   for (SkPath::Verb verb : SkPathPriv::Verbs(path)) {
-     *       ...
-     *   }
-     */
-    struct Verbs {
-    public:
-        Verbs(const SkPath& path) : fPathRef(path.fPathRef.get()) {}
-        struct Iter {
-            void operator++() { fVerb++; }
-            bool operator!=(const Iter& b) const { return fVerb != b.fVerb; }
-            SkPath::Verb operator*() { return static_cast<SkPath::Verb>(*fVerb); }
-            const uint8_t* fVerb;
-        };
-        Iter begin() { return Iter{fPathRef->verbsBegin()}; }
-        Iter end() { return Iter{fPathRef->verbsEnd()}; }
-    private:
-        Verbs(const Verbs&) = delete;
-        Verbs& operator=(const Verbs&) = delete;
-        SkPathRef* fPathRef;
-    };
 
     /**
       * Iterates through a raw range of path verbs, points, and conics. All values are returned

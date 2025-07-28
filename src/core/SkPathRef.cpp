@@ -335,41 +335,33 @@ std::tuple<SkPoint*, SkScalar*> SkPathRef::growForVerbsInPath(const SkPathRef& p
     return {pts, weights};
 }
 
-SkPoint* SkPathRef::growForRepeatedVerb(int /*SkPath::Verb*/ verb,
+SkPoint* SkPathRef::growForRepeatedVerb(SkPathVerb verb,
                                         int numVbs,
                                         SkScalar** weights) {
     SkDEBUGCODE(this->validate();)
-    int pCnt;
+    int pCnt = 0;
     switch (verb) {
-        case SkPath::kMove_Verb:
+        case SkPathVerb::kMove:
             pCnt = numVbs;
             break;
-        case SkPath::kLine_Verb:
+        case SkPathVerb::kLine:
             fSegmentMask |= SkPath::kLine_SegmentMask;
             pCnt = numVbs;
             break;
-        case SkPath::kQuad_Verb:
+        case SkPathVerb::kQuad:
             fSegmentMask |= SkPath::kQuad_SegmentMask;
             pCnt = 2 * numVbs;
             break;
-        case SkPath::kConic_Verb:
+        case SkPathVerb::kConic:
             fSegmentMask |= SkPath::kConic_SegmentMask;
             pCnt = 2 * numVbs;
             break;
-        case SkPath::kCubic_Verb:
+        case SkPathVerb::kCubic:
             fSegmentMask |= SkPath::kCubic_SegmentMask;
             pCnt = 3 * numVbs;
             break;
-        case SkPath::kClose_Verb:
+        case SkPathVerb::kClose:
             SkDEBUGFAIL("growForRepeatedVerb called for kClose_Verb");
-            pCnt = 0;
-            break;
-        case SkPath::kDone_Verb:
-            SkDEBUGFAIL("growForRepeatedVerb called for kDone");
-            pCnt = 0;
-            break;
-        default:
-            SkDEBUGFAIL("default should not be reached");
             pCnt = 0;
             break;
     }
@@ -377,8 +369,8 @@ SkPoint* SkPathRef::growForRepeatedVerb(int /*SkPath::Verb*/ verb,
     fBoundsIsDirty = true;  // this also invalidates fIsFinite
     fType = PathType::kGeneral;
 
-    memset(fVerbs.push_back_n(numVbs), verb, numVbs);
-    if (SkPath::kConic_Verb == verb) {
+    memset(fVerbs.push_back_n(numVbs), (uint8_t)verb, numVbs);
+    if (SkPathVerb::kConic == verb) {
         SkASSERT(weights);
         *weights = fConicWeights.push_back_n(numVbs);
     }
@@ -388,39 +380,31 @@ SkPoint* SkPathRef::growForRepeatedVerb(int /*SkPath::Verb*/ verb,
     return pts;
 }
 
-SkPoint* SkPathRef::growForVerb(int /* SkPath::Verb*/ verb, SkScalar weight) {
+SkPoint* SkPathRef::growForVerb(SkPathVerb verb, SkScalar weight) {
     SkDEBUGCODE(this->validate();)
-    int pCnt;
+    int pCnt = 0;
     unsigned mask = 0;
     switch (verb) {
-        case SkPath::kMove_Verb:
+        case SkPathVerb::kMove:
             pCnt = 1;
             break;
-        case SkPath::kLine_Verb:
+        case SkPathVerb::kLine:
             mask = SkPath::kLine_SegmentMask;
             pCnt = 1;
             break;
-        case SkPath::kQuad_Verb:
+        case SkPathVerb::kQuad:
             mask = SkPath::kQuad_SegmentMask;
             pCnt = 2;
             break;
-        case SkPath::kConic_Verb:
+        case SkPathVerb::kConic:
             mask = SkPath::kConic_SegmentMask;
             pCnt = 2;
             break;
-        case SkPath::kCubic_Verb:
+        case SkPathVerb::kCubic:
             mask = SkPath::kCubic_SegmentMask;
             pCnt = 3;
             break;
-        case SkPath::kClose_Verb:
-            pCnt = 0;
-            break;
-        case SkPath::kDone_Verb:
-            SkDEBUGFAIL("growForVerb called for kDone");
-            pCnt = 0;
-            break;
-        default:
-            SkDEBUGFAIL("default is not reached");
+        case SkPathVerb::kClose:
             pCnt = 0;
             break;
     }
@@ -429,8 +413,8 @@ SkPoint* SkPathRef::growForVerb(int /* SkPath::Verb*/ verb, SkScalar weight) {
     fBoundsIsDirty = true;  // this also invalidates fIsFinite
     fType = PathType::kGeneral;
 
-    fVerbs.push_back(verb);
-    if (SkPath::kConic_Verb == verb) {
+    fVerbs.push_back((uint8_t)verb);
+    if (SkPathVerb::kConic == verb) {
         fConicWeights.push_back(weight);
     }
     SkPoint* pts = fPoints.push_back_n(pCnt);

@@ -107,7 +107,7 @@ public:
          * return value is a pointer to where the points for the verb should be written.
          * 'weight' is only used if 'verb' is kConic_Verb
          */
-        SkPoint* growForVerb(int /*SkPath::Verb*/ verb, SkScalar weight = 0) {
+        SkPoint* growForVerb(SkPathVerb verb, SkScalar weight = 0) {
             SkDEBUGCODE(fPathRef->validate();)
             return fPathRef->growForVerb(verb, weight);
         }
@@ -119,7 +119,7 @@ public:
          * If 'verb' is kConic_Verb, 'weights' will return a pointer to the
          * space for the conic weights (indexed normally).
          */
-        SkPoint* growForRepeatedVerb(int /*SkPath::Verb*/ verb,
+        SkPoint* growForRepeatedVerb(SkPathVerb verb,
                                      int numVbs,
                                      SkScalar** weights = nullptr) {
             return fPathRef->growForRepeatedVerb(verb, numVbs, weights);
@@ -477,14 +477,14 @@ private:
      * verb. If 'verb' is kConic_Verb, 'weights' will return a pointer to the
      * uninitialized conic weights.
      */
-    SkPoint* growForRepeatedVerb(int /*SkPath::Verb*/ verb, int numVbs, SkScalar** weights);
+    SkPoint* growForRepeatedVerb(SkPathVerb, int numVbs, SkScalar** weights);
 
     /**
      * Increases the verb count 1, records the new verb, and creates room for the requisite number
      * of additional points. A pointer to the first point is returned. Any new points are
      * uninitialized.
      */
-    SkPoint* growForVerb(int /*SkPath::Verb*/ verb, SkScalar weight);
+    SkPoint* growForVerb(SkPathVerb, SkScalar weight);
 
     /**
      * Concatenates all verbs from 'path' onto our own verbs array. Increases the point count by the
