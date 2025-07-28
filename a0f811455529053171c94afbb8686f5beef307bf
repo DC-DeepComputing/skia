@@ -111,6 +111,30 @@
       },
       "revId": "a0f811455529053171c94afbb8686f5beef307bf",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8563b98e_3b10c810",
+        "filename": "src/core/SkPathRef.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 484,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-28T16:07:29Z",
+      "side": 1,
+      "message": "Got it!",
+      "parentUuid": "f7b2a479_4e0219a9",
+      "range": {
+        "startLine": 484,
+        "startChar": 0,
+        "endLine": 484,
+        "endChar": 23
+      },
+      "revId": "a0f811455529053171c94afbb8686f5beef307bf",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
