@@ -321,7 +321,7 @@ struct DawnGraphicsPipeline::AsyncPipelineCreation : public AsyncPipelineCreatio
 #endif
 
 // static
-sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
+sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make1(
         const DawnSharedContext* sharedContext,
         DawnResourceProvider* resourceProvider,
         const RuntimeEffectDictionary* runtimeDict,
@@ -330,6 +330,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
         const RenderPassDesc& renderPassDesc,
         SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags,
         uint32_t compilationID) {
+    skgpu::StdSteadyClock::time_point t1 = skgpu::StdSteadyClock::now();
+
     const DawnCaps& caps = *static_cast<const DawnCaps*>(sharedContext->caps());
     const auto& device = sharedContext->device();
 
@@ -373,6 +375,8 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     const BlendInfo& blendInfo = shaderInfo->blendInfo();
     const int numTexturesAndSamplers = shaderInfo->numFragmentTexturesAndSamplers();
 
+    skgpu::StdSteadyClock::time_point t2 = skgpu::StdSteadyClock::now();
+
     const bool hasFragmentSkSL = !fsSkSL.empty();
     if (hasFragmentSkSL) {
         if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
@@ -384,11 +388,18 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                errorHandler)) {
             return {};
         }
+    }
+
+    skgpu::StdSteadyClock::time_point t3 = skgpu::StdSteadyClock::now();
+
+    if (hasFragmentSkSL) {
         if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->fsLabel().c_str(), fsCode,
                                          &fsModule, errorHandler)) {
             return {};
         }
     }
+
+    skgpu::StdSteadyClock::time_point t4 = skgpu::StdSteadyClock::now();
 
     const std::string& vsSkSL = shaderInfo->vertexSkSL();
     if (!skgpu::SkSLToWGSL(caps.shaderCaps(),
@@ -400,10 +411,15 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                            errorHandler)) {
         return {};
     }
+
+    skgpu::StdSteadyClock::time_point t5 = skgpu::StdSteadyClock::now();
+
     if (!DawnCompileWGSLShaderModule(sharedContext, shaderInfo->vsLabel().c_str(), vsCode,
                                      &vsModule, errorHandler)) {
         return {};
     }
+
+    skgpu::StdSteadyClock::time_point t6 = skgpu::StdSteadyClock::now();
 
     std::string pipelineLabel =
             GetPipelineLabel(sharedContext->shaderCodeDictionary(), renderPassDesc, step, paintID);
@@ -747,7 +763,7 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
     pipelineInfo.fNativeFragmentShader = std::move(fsCode.fText);
 #endif
 
-    return sk_sp<DawnGraphicsPipeline>(
+    auto tmp = sk_sp<DawnGraphicsPipeline>(
             new DawnGraphicsPipeline(sharedContext,
                                      pipelineInfo,
                                      std::move(asyncCreation),
@@ -755,6 +771,25 @@ sk_sp<DawnGraphicsPipeline> DawnGraphicsPipeline::Make(
                                      step->primitiveType(),
                                      depthStencilSettings.fStencilReferenceValue,
                                      std::move(immutableSamplers)));
+
+    skgpu::StdSteadyClock::time_point t7 = skgpu::StdSteadyClock::now();
+
+    auto d1 = t2 - t1;
+    auto d2 = t3 - t2;
+    auto d3 = t4 - t3;
+    auto d4 = t5 - t4;
+    auto d5 = t6 - t5;
+    auto d6 = t7 - t6;
+
+    tmp->set1(
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d1).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d2).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d3).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d4).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d5).count()/1000000.0f,
+            std::chrono::duration_cast<std::chrono::nanoseconds>(d6).count()/1000000.0f);
+
+    return tmp;
 }
 
 DawnGraphicsPipeline::DawnGraphicsPipeline(
@@ -788,6 +823,17 @@ bool DawnGraphicsPipeline::didAsyncCompilationFail() const {
            !fAsyncPipelineCreation->fRenderPipeline;
 }
 
+bool DawnGraphicsPipeline::isReady() const {
+    if (!fAsyncPipelineCreation) {
+        return true;
+    }
+    if (fAsyncPipelineCreation->fFinished) {
+        return true;
+    }
+    // else, we're going to have to wait for this one
+    return false;
+}
+
 const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     if (!fAsyncPipelineCreation) {
         static const wgpu::RenderPipeline kNullPipeline = nullptr;
@@ -801,10 +847,13 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     SKGPU_LOG_F("CreateRenderPipelineAsync shouldn't be used in WASM");
 #else
 
+    skgpu::StdSteadyClock::time_point t1 = skgpu::StdSteadyClock::now();
+
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitBeginN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+    SkDebugf("%s %u %s %u: WaitBeginN\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+//                         TRACE_STR_STATIC("WaitBeginN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
                          "compilationID", this->getPipelineInfo().fCompilationID);
 #endif
@@ -821,12 +870,27 @@ const wgpu::RenderPipeline& DawnGraphicsPipeline::dawnRenderPipeline() const {
     SkASSERT(status == wgpu::WaitStatus::Success);
     SkASSERT(waitInfo.completed);
 
+    skgpu::StdSteadyClock::time_point t2 = skgpu::StdSteadyClock::now();
+
+    auto d1 = t2 - t1;
+    float foo = std::chrono::duration_cast<std::chrono::nanoseconds>(d1).count()/1000000.0f;
+
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC("WaitEndN"),
-                         TRACE_EVENT_SCOPE_THREAD,
+    SkDebugf("%s %u %s %u: WaitEndN, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f, %.1f\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+                         //TRACE_STR_STATIC("WaitEndN"),
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", fAsyncPipelineCreation->fKey.hash(),
-                         "compilationID", this->getPipelineInfo().fCompilationID);
+                         "compilationID", this->getPipelineInfo().fCompilationID,
+                         fD0,
+                         fD1,
+                         fD2,
+                         fD3,
+                         fD4,
+                         fD5,
+                         fD6,
+                         foo,
+                         fD0+foo);
 #endif
 
 #endif

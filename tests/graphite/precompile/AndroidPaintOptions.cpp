@@ -649,6 +649,10 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
     // then Render Pass Properties.
     // This helps observe DrawTypeFlags distributions.
     const PrecompileSettings precompileCases[] = {
+        { Builder().srcOver(),
+          DrawTypeFlags::kCircularArc,
+          kRGBA_1_D },
+
         // 100% (1/1) handles: 0
         { Builder().hwImg(kPremul).srcOver(),
           DrawTypeFlags::kNonAAFillRect,
@@ -1115,9 +1119,30 @@ void VisitPrecompileSettings(skgpu::graphite::PrecompileContext* precompileConte
 #endif
     };
 
-    for (size_t i = 0; i < std::size(precompileCases); ++i) {
+    for (size_t i = 0; i < 1 /*std::size(precompileCases)*/; ++i) {
         func(precompileContext, precompileCases[i], i);
     }
+}
+
+void PerformAndroidPrecompilation(PrecompileContext* precompileContext) {
+    RuntimeEffectManager effectManager;
+
+    VisitPrecompileSettings(
+            precompileContext,
+            effectManager,
+            [&](PrecompileContext* precompileContext,  const PrecompileSettings& settings, int i) {
+                Precompile(precompileContext,
+                           settings.fPaintOptions,
+                           settings.fDrawTypeFlags,
+                           settings.fRenderPassProps);
+
+                if (settings.fAnalyticClipping) {
+                    Precompile(precompileContext,
+                               settings.fPaintOptions,
+                               settings.fDrawTypeFlags | DrawTypeFlags::kAnalyticClip,
+                               settings.fRenderPassProps);
+                }
+            });
 }
 
 #endif // SK_GRAPHITE

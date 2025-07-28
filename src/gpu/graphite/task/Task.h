@@ -28,6 +28,10 @@ class TextureProxy;
 
 class Task : public SkRefCnt {
 public:
+    virtual void what(std::vector<void*>&) {
+
+    }
+
     // Holds a render target and translation to use in the task's work, if necessary.
     struct ReplayTargetData {
         const Texture* fTarget;
