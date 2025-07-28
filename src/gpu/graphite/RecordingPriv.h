@@ -32,6 +32,8 @@ class TextureProxy;
 
 class RecordingPriv {
 public:
+    void whatwhat();
+
     TextureProxy* deferredTargetProxy();
     const Texture* setupDeferredTarget(ResourceProvider*,
                                        Surface* targetSurface,

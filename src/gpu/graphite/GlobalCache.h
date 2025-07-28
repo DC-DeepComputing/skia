@@ -17,6 +17,10 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+
+
 #include <functional>
 
 namespace skgpu::graphite {
@@ -30,6 +34,47 @@ class Sampler;
 class ShaderCodeDictionary;
 
 struct SamplerDesc;
+
+class GraphicsPipelineHandle {
+public:
+    GraphicsPipelineHandle(uint32_t uniqueKeyHash,
+                           const GraphicsPipelineDesc& pipelineDesc,
+                           const RenderPassDesc& renderPassDesc,
+                           SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags)
+            : fUniqueKeyHash(uniqueKeyHash)
+            , fPipelineDesc(pipelineDesc)
+            , fRenderPassDesc(renderPassDesc)
+            , fPipelineCreationFlags(pipelineCreationFlags) {}
+
+    const uint32_t fUniqueKeyHash = 0;
+    const GraphicsPipelineDesc fPipelineDesc;
+    const RenderPassDesc fRenderPassDesc;
+    const SkEnumBitMask<PipelineCreationFlags> fPipelineCreationFlags;
+};
+
+class FlibbleFlabble {
+public:
+    FlibbleFlabble();
+    ~FlibbleFlabble();
+
+    GraphicsPipelineHandle* find(const UniqueKey& key) SK_EXCLUDES(fSpinLock);
+    GraphicsPipelineHandle* findOrCreate(uint32_t keyHash,
+                                         const GraphicsPipelineDesc&,
+                                         const RenderPassDesc&,
+                                         SkEnumBitMask<PipelineCreationFlags>) SK_EXCLUDES(fSpinLock);
+
+private:
+    struct KeyHash {
+        uint32_t operator()(uint32_t hash) const { return hash; }
+    };
+
+    using GraphicsPipelineHandleCache = SkLRUCache<uint32_t, GraphicsPipelineHandle*, KeyHash>;
+
+    mutable SkSpinlock fSpinLock;
+
+    GraphicsPipelineHandleCache fGraphicsPipelineHandleCache SK_GUARDED_BY(fSpinLock);
+    std::vector<GraphicsPipelineHandle*> fStuff SK_GUARDED_BY(fSpinLock);
+};
 
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement

@@ -32,6 +32,8 @@ class TextureProxy;
 */
 class DrawTask final : public Task, private ScratchResourceManager::PendingUseListener {
 public:
+    void what(std::vector<void*>&) override;
+
     explicit DrawTask(sk_sp<TextureProxy> target);
     ~DrawTask() override;
 
