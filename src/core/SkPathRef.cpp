@@ -515,19 +515,15 @@ SkRRect SkPathRef::getRRect() const {
     return rrect;
 }
 
-bool SkPathRef::isRRect(SkRRect* rrect, bool* isCCW, unsigned* start) const {
+std::optional<SkPathRRectInfo> SkPathRef::isRRect() const {
     if (fType == PathType::kRRect) {
-        if (rrect) {
-            *rrect = this->getRRect();
-        }
-        if (isCCW) {
-            *isCCW = SkToBool(fRRectOrOvalIsCCW);
-        }
-        if (start) {
-            *start = fRRectOrOvalStartIdx;
-        }
+        return {{
+            this->getRRect(),
+            fRRectOrOvalIsCCW ? SkPathDirection::kCCW : SkPathDirection::kCW,
+            fRRectOrOvalStartIdx,
+        }};
     }
-    return fType == PathType::kRRect;
+    return {};
 }
 
 ///////////////////////////////////////////////////////////////////////////////

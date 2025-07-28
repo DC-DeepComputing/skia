@@ -123,12 +123,11 @@ public:
     }
 
     /**
-     * This returns true for a rect that has a move followed by 3 or 4 lines and a close. If
+     * This returns the info for a rect that has a move followed by 3 or 4 lines and a close. If
      * 'isSimpleFill' is true, an uncloseed rect will also be accepted as long as it starts and
      * ends at the same corner. This does not permit degenerate line or point rectangles.
      */
-    static bool IsSimpleRect(const SkPath& path, bool isSimpleFill, SkRect* rect,
-                             SkPathDirection* direction, unsigned* start);
+    static std::optional<SkPathRectInfo> IsSimpleRect(const SkPath& path, bool isSimpleFill);
 
     /**
      * Creates a path from arc params using the semantics of SkCanvas::drawArc. This function
@@ -257,13 +256,8 @@ public:
      @param start  storage for start of oval; may be nullptr
      @return       true if SkPath was constructed by method that reduces to oval
      */
-    static bool IsOval(const SkPath& path, SkRect* rect, SkPathDirection* dir, unsigned* start) {
-        bool isCCW = false;
-        bool result = path.fPathRef->isOval(rect, &isCCW, start);
-        if (dir && result) {
-            *dir = isCCW ? SkPathDirection::kCCW : SkPathDirection::kCW;
-        }
-        return result;
+    static std::optional<SkPathOvalInfo> IsOval(const SkPath& path) {
+        return path.fPathRef->isOval();
     }
 
     /** Returns true if constructed by addRoundRect(), addRRect(); and if construction
@@ -284,14 +278,8 @@ public:
      @param start  storage for start of SkRRect; may be nullptr
      @return       true if SkPath contains only SkRRect
      */
-    static bool IsRRect(const SkPath& path, SkRRect* rrect, SkPathDirection* dir,
-                        unsigned* start) {
-        bool isCCW = false;
-        bool result = path.fPathRef->isRRect(rrect, &isCCW, start);
-        if (dir && result) {
-            *dir = isCCW ? SkPathDirection::kCCW : SkPathDirection::kCW;
-        }
-        return result;
+    static std::optional<SkPathRRectInfo> IsRRect(const SkPath& path) {
+        return path.fPathRef->isRRect();
     }
 
     /**
