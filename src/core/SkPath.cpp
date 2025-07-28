@@ -30,6 +30,7 @@
 #include "src/core/SkPathEnums.h"
 #include "src/core/SkPathMakers.h"
 #include "src/core/SkPathPriv.h"
+#include "src/core/SkPathRawShapes.h"
 #include "src/core/SkPointPriv.h"
 #include "src/core/SkStringUtils.h"
 
@@ -891,6 +892,22 @@ SkPath& SkPath::addPoly(SkSpan<const SkPoint> pts, bool close) {
     return *this;
 }
 
+void SkPath::addRaw(const SkPathRaw& raw) {
+    this->incReserve(raw.points().size(), raw.verbs().size());
+
+    for (auto iter = raw.iter(); auto rec = iter.next();) {
+        const auto pts = rec->pts;
+        switch (rec->vrb) {
+            case SkPathVerb::kMove:  this->moveTo( pts[0]); break;
+            case SkPathVerb::kLine:  this->lineTo( pts[1]); break;
+            case SkPathVerb::kQuad:  this->quadTo( pts[1], pts[2]); break;
+            case SkPathVerb::kConic: this->conicTo(pts[1], pts[2], rec->w); break;
+            case SkPathVerb::kCubic: this->cubicTo(pts[1], pts[2], pts[3]); break;
+            case SkPathVerb::kClose: this->close(); break;
+        }
+    }
+}
+
 static bool arc_is_lone_point(const SkRect& oval, SkScalar startAngle, SkScalar sweepAngle,
                               SkPoint* pt) {
     if (0 == sweepAngle && (0 == startAngle || SkIntToScalar(360) == startAngle)) {
@@ -999,52 +1016,13 @@ SkPath& SkPath::addRRect(const SkRRect &rrect, SkPathDirection dir, unsigned sta
         SkAutoPathBoundsUpdate apbu(this, bounds);
         SkAutoDisableDirectionCheck addc(this);
 
-        // we start with a conic on odd indices when moving CW vs. even indices when moving CCW
-        const bool startsWithConic = ((startIndex & 1) == (dir == SkPathDirection::kCW));
-        const SkScalar weight = SK_ScalarRoot2Over2;
-
-        SkDEBUGCODE(int initialVerbCount = fPathRef->countVerbs());
-        SkDEBUGCODE(int initialPointCount = fPathRef->countPoints());
-        SkDEBUGCODE(int initialWeightCount = fPathRef->countWeights());
-        const int kVerbs = startsWithConic
-            ? 9   // moveTo + 4x conicTo + 3x lineTo + close
-            : 10; // moveTo + 4x lineTo + 4x conicTo + close
-        const int kPoints = startsWithConic
-            ? 12  // moveTo (1) + 4x conicTo (2) + 3x lineTo (1) + close
-            : 13; // moveTo (1) + 4x lineTo (1) + 4x conicTo (2) + close
-        const int kWeights = 4; // 4x conicTo
-        this->incReserve(kPoints, kVerbs, kWeights);
-
-        SkPath_RRectPointIterator rrectIter(rrect, dir, startIndex);
-        // Corner iterator indices follow the collapsed radii model,
-        // adjusted such that the start pt is "behind" the radii start pt.
-        const unsigned rectStartIndex = startIndex / 2 + (dir == SkPathDirection::kCW ? 0 : 1);
-        SkPath_RectPointIterator rectIter(bounds, dir, rectStartIndex);
-
-        this->moveTo(rrectIter.current());
-        if (startsWithConic) {
-            for (unsigned i = 0; i < 3; ++i) {
-                this->conicTo(rectIter.next(), rrectIter.next(), weight);
-                this->lineTo(rrectIter.next());
-            }
-            this->conicTo(rectIter.next(), rrectIter.next(), weight);
-            // final lineTo handled by close().
-        } else {
-            for (unsigned i = 0; i < 4; ++i) {
-                this->lineTo(rrectIter.next());
-                this->conicTo(rectIter.next(), rrectIter.next(), weight);
-            }
-        }
-        this->close();
+        SkPathRawShapes::RRect raw(rrect, dir, startIndex);
+        this->addRaw(SkPathRawShapes::RRect(rrect, dir, startIndex));
 
         if (isRRect) {
             SkPathRef::Editor ed(&fPathRef);
             ed.setIsRRect(dir == SkPathDirection::kCCW, startIndex % 8);
         }
-
-        SkASSERT(fPathRef->countVerbs() == initialVerbCount + kVerbs);
-        SkASSERT(fPathRef->countPoints() == initialPointCount + kPoints);
-        SkASSERT(fPathRef->countWeights() == initialWeightCount + kWeights);
     }
 
     SkDEBUGCODE(fPathRef->validate();)
