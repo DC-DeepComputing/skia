@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "688212ce_4eea2107",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-28T14:24:21Z",
+      "side": 1,
+      "message": "nit: \"return empty\" or some such",
+      "range": {
+        "startLine": 243,
+        "startChar": 23,
+        "endLine": 243,
+        "endChar": 35
+      },
+      "revId": "2a5575a5d9689fcdfc847c07a72c657039ac9687",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
