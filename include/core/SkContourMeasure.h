@@ -18,6 +18,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <optional>
 
 class SkMatrix;
 class SkPath;

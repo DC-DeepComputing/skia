@@ -44,15 +44,17 @@ static void test_strokecubic(skiatest::Reporter* reporter) {
 
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setStrokeWidth(0.394537568f);
-    SkPath path;
-    path.moveTo(cubicVals[0]);
-    path.cubicTo(cubicVals[1], cubicVals[2], cubicVals[3]);
+    SkPath path = SkPathBuilder()
+        .moveTo(cubicVals[0])
+        .cubicTo(cubicVals[1], cubicVals[2], cubicVals[3])
+        .detach();
     skpathutils::FillPathWithPaint(path, paint);
-    path.reset();
-    path.moveTo(SkBits2Float(hexCubicVals[0]), SkBits2Float(hexCubicVals[1]));
-    path.cubicTo(SkBits2Float(hexCubicVals[2]), SkBits2Float(hexCubicVals[3]),
+    path = SkPathBuilder()
+        .moveTo(SkBits2Float(hexCubicVals[0]), SkBits2Float(hexCubicVals[1]))
+        .cubicTo(SkBits2Float(hexCubicVals[2]), SkBits2Float(hexCubicVals[3]),
             SkBits2Float(hexCubicVals[4]), SkBits2Float(hexCubicVals[5]),
-            SkBits2Float(hexCubicVals[6]), SkBits2Float(hexCubicVals[7]));
+            SkBits2Float(hexCubicVals[6]), SkBits2Float(hexCubicVals[7]))
+        .detach();
     skpathutils::FillPathWithPaint(path, paint);
 }
 
@@ -173,13 +175,14 @@ static void test_big_stroke(skiatest::Reporter* reporter) {
     paint.setStyle(SkPaint::kStrokeAndFill_Style);
     paint.setStrokeWidth(1.49679073e+10f);
 
-    SkPath path;
-    path.moveTo(SkBits2Float(0x46380000), SkBits2Float(0xc6380000));  // 11776, -11776
-    path.lineTo(SkBits2Float(0x46a00000), SkBits2Float(0xc6a00000));  // 20480, -20480
-    path.lineTo(SkBits2Float(0x468c0000), SkBits2Float(0xc68c0000));  // 17920, -17920
-    path.lineTo(SkBits2Float(0x46100000), SkBits2Float(0xc6100000));  // 9216, -9216
-    path.lineTo(SkBits2Float(0x46380000), SkBits2Float(0xc6380000));  // 11776, -11776
-    path.close();
+    SkPath path = SkPathBuilder()
+        .moveTo(SkBits2Float(0x46380000), SkBits2Float(0xc6380000))  // 11776, -1177
+        .lineTo(SkBits2Float(0x46a00000), SkBits2Float(0xc6a00000))  // 20480, -2048
+        .lineTo(SkBits2Float(0x468c0000), SkBits2Float(0xc68c0000))  // 17920, -1792
+        .lineTo(SkBits2Float(0x46100000), SkBits2Float(0xc6100000))  // 9216, -921
+        .lineTo(SkBits2Float(0x46380000), SkBits2Float(0xc6380000))  // 11776, -1177
+        .close()
+        .detach();
 
     (void)skpathutils::FillPathWithPaint(path, paint);
 }

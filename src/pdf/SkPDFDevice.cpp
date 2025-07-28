@@ -699,7 +699,7 @@ void SkPDFDevice::internalDrawPath(const SkClipStack& clipStack,
             pathPtr = &modifiedPath;
             pathIsMutable = true;
         }
-        pathPtr->transform(matrix);
+        *pathPtr = SkPathBuilder(*pathPtr).transform(matrix).detach();
         if (paint->getShader()) {
             transform_shader(paint.writable(), matrix);
         }
@@ -860,13 +860,12 @@ static bool contains(const SkRect& r, SkPoint p) {
 void SkPDFDevice::drawGlyphRunAsPath(
         const sktext::GlyphRun& glyphRun, SkPoint offset, const SkPaint& runPaint) {
     const SkFont& font = glyphRun.font();
-    SkPath path;
 
     struct Rec {
-        SkPath* fPath;
-        SkPoint fOffset;
+        SkPathBuilder  fPath;
+        SkPoint        fOffset;
         const SkPoint* fPos;
-    } rec = {&path, offset, glyphRun.positions().data()};
+    } rec = {SkPathBuilder(), offset, glyphRun.positions().data()};
 
     font.getPaths(glyphRun.glyphsIDs(),
                   [](const SkPath* path, const SkMatrix& mx, void* ctx) {
@@ -875,10 +874,12 @@ void SkPDFDevice::drawGlyphRunAsPath(
                           SkMatrix total = mx;
                           total.postTranslate(rec->fPos->fX + rec->fOffset.fX,
                                               rec->fPos->fY + rec->fOffset.fY);
-                          rec->fPath->addPath(*path, total);
+                          // TODO(borenet): This is inefficient.
+                          rec->fPath.addPath(SkPathBuilder(*path).transform(total).detach());
                       }
                       rec->fPos += 1; // move to the next glyph's position
                   }, &rec);
+    SkPath path = rec.fPath.detach();
     this->internalDrawPath(this->cs(), this->localToDevice(), path, runPaint, true);
 
     SkFont transparentFont = glyphRun.font();
@@ -1206,7 +1207,6 @@ bool SkPDFDevice::handleInversePath(const SkPath& origPath,
 
     SkTCopyOnFirstWrite<SkPaint> paint(srcPaint);
     SkPath modifiedPath;
-    const SkPath* pathPtr = &origPath;
 
     // Merge stroking operations into final path.
     if (SkPaint::kStroke_Style == paint->getStyle() ||
@@ -1214,24 +1214,23 @@ bool SkPDFDevice::handleInversePath(const SkPath& origPath,
     {
         SkPathBuilder builder;
         bool doFillPath = skpathutils::FillPathWithPaint(origPath, *paint, &builder);
-        modifiedPath = builder.detach();
-        pathPtr = &modifiedPath;
 
-        if (doFillPath) {
-            SkPaint* modifiedPaint = paint.writable();
-            modifiedPaint->setStyle(SkPaint::kFill_Style);
-            modifiedPaint->setStrokeWidth(0);
-        } else {
+        if (!doFillPath) {
             // Hairline strokes are rendered non-inverted.
-            modifiedPath.toggleInverseFillType();
+            builder.toggleInverseFillType();
+            modifiedPath = builder.detach();
             this->internalDrawPath(this->cs(), this->localToDevice(), modifiedPath, *paint, true);
             return true;
         }
+        SkPaint* modifiedPaint = paint.writable();
+        modifiedPaint->setStyle(SkPaint::kFill_Style);
+        modifiedPaint->setStrokeWidth(0);
+        modifiedPath = builder.detach();
     }
 
     // Clip is in device space. Transform path and shader into device space.
     SkRect bounds = this->cs().bounds(this->bounds());
-    pathPtr->transform(this->localToDevice(), &modifiedPath);
+    modifiedPath = modifiedPath.makeTransform(this->localToDevice());
     if (!calculate_inverse_path(bounds, modifiedPath, &modifiedPath)) {
         return false;
     }
@@ -1874,8 +1873,10 @@ void SkPDFDevice::drawDevice(SkDevice* device, const SkSamplingOptions& sampling
     if (!content) {
         return;
     }
-    SkPath shape = SkPath::Rect(SkRect::Make(device->imageInfo().dimensions()));
-    shape.transform(matrix);
+    SkPath shape = SkPathBuilder()
+        .addRect(SkRect::Make(device->imageInfo().dimensions()))
+        .transform(matrix)
+        .detach();
     if (content.needShape()) {
         content.setShape(shape);
     }

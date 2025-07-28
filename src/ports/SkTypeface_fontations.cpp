@@ -12,6 +12,7 @@
 #include "include/core/SkData.h"
 #include "include/core/SkFontMetrics.h"
 #include "include/core/SkImage.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPictureRecorder.h"
 #include "include/core/SkStream.h"
 #include "include/effects/SkGradientShader.h"
@@ -583,8 +584,10 @@ protected:
                         clipBox.x_min, -clipBox.y_max, clipBox.x_max, -clipBox.y_min);
 
                 if (!fRemainingMatrix.isIdentity()) {
-                    SkPath boundsPath = SkPath::Rect(boundsRect);
-                    boundsPath.transform(fRemainingMatrix);
+                    SkPath boundsPath = SkPathBuilder()
+                        .addRect(boundsRect)
+                        .transform(fRemainingMatrix)
+                        .detach();
                     boundsRect = boundsPath.getBounds();
                 }
 
@@ -1672,8 +1675,10 @@ void BoundsPainter::push_clip_glyph(uint16_t glyph_id) {
 
 void BoundsPainter::push_clip_rectangle(float x_min, float y_min, float x_max, float y_max) {
     SkRect clipRect = SkRect::MakeLTRB(x_min, -y_min, x_max, -y_max);
-    SkPath rectPath = SkPath::Rect(clipRect);
-    rectPath.transform(fMatrixStack.back());
+    SkPath rectPath = SkPathBuilder()
+        .addRect(clipRect)
+        .transform(fMatrixStack.back())
+        .detach();
     fBounds.join(rectPath.getBounds());
 }
 

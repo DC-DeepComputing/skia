@@ -61,40 +61,40 @@ static SkPoint rand_pt(SkRandom& rand) {
 }
 
 static SkPath line_path_maker() {
-    SkPath path;
+    SkPathBuilder path;
     SkRandom rand;
     path.moveTo(rand_pt(rand));
     for (int i = 0; i < N; ++i) {
         path.lineTo(rand_pt(rand));
     }
-    return path;
+    return path.detach();
 }
 static SkPath quad_path_maker() {
-    SkPath path;
+    SkPathBuilder path;
     SkRandom rand;
     path.moveTo(rand_pt(rand));
     for (int i = 0; i < N; ++i) {
         path.quadTo(rand_pt(rand), rand_pt(rand));
     }
-    return path;
+    return path.detach();
 }
 static SkPath conic_path_maker() {
-    SkPath path;
+    SkPathBuilder path;
     SkRandom rand;
     path.moveTo(rand_pt(rand));
     for (int i = 0; i < N; ++i) {
         path.conicTo(rand_pt(rand), rand_pt(rand), rand.nextUScalar1());
     }
-    return path;
+    return path.detach();
 }
 static SkPath cubic_path_maker() {
-    SkPath path;
+    SkPathBuilder path;
     SkRandom rand;
     path.moveTo(rand_pt(rand));
     for (int i = 0; i < N; ++i) {
         path.cubicTo(rand_pt(rand), rand_pt(rand), rand_pt(rand));
     }
-    return path;
+    return path.detach();
 }
 
 static SkPaint paint_maker() {

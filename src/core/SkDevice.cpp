@@ -43,6 +43,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <optional>
 
 
 SkDevice::SkDevice(const SkImageInfo& info, const SkSurfaceProps& surfaceProps)
@@ -246,7 +247,8 @@ void SkDevice::drawEdgeAAQuad(const SkRect& r, const SkPoint clip[4], SkCanvas::
 
     if (clip) {
         // Draw the clip directly as a quad since it's a filled color with no local coords
-        this->drawPath(SkPath::Polygon({clip, 4}, true), paint, true);
+        SkPath clipPath = SkPath::Polygon({clip, 4}, true);
+        this->drawPath(clipPath, paint, true);
     } else {
         this->drawRect(r, paint);
     }
@@ -279,8 +281,9 @@ void SkDevice::drawEdgeAAImageSet(const SkCanvas::ImageSetEntry images[], int co
         if (images[i].fHasClip) {
             // Since drawImageRect requires a srcRect, the dst clip is implemented as a true clip
             this->pushClipStack();
-            SkPath clipPath = SkPath::Polygon({dstClips + clipIndex, 4}, true);
-            this->clipPath(clipPath, SkClipOp::kIntersect, entryPaint.isAntiAlias());
+            SkPathBuilder clipPath;
+            clipPath.addPolygon({dstClips + clipIndex, 4}, true);
+            this->clipPath(clipPath.detach(), SkClipOp::kIntersect, entryPaint.isAntiAlias());
             clipIndex += 4;
         }
         this->drawImageRect(images[i].fImage.get(), &images[i].fSrcRect, images[i].fDstRect,

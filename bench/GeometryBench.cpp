@@ -290,7 +290,7 @@ public:
     void preparePath(SkPath* path) override {
         SkRRect rr;
         rr.setRectXY({0, 0, 100, 100}, 20, 30);
-        path->addRRect(rr);
+        *path = SkPathBuilder(*path).addRRect(rr).detach();
     }
 };
 DEF_BENCH( return new RRectConvexityBench; )

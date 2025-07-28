@@ -6,15 +6,15 @@ void draw(SkCanvas* canvas) {
     auto debugster = [](const char* prefix, const SkPath& path) -> void {
         SkDebugf("%s path is %s" "empty\n", prefix, path.isEmpty() ? "" : "not ");
     };
-    SkPath path;
-    debugster("initial", path);
+    SkPathBuilder path;
+    debugster("initial", path.snapshot());
     path.moveTo(0, 0);
-    debugster("after moveTo", path);
-    path.rewind();
-    debugster("after rewind", path);
-    path.lineTo(0, 0);
-    debugster("after lineTo", path);
+    debugster("after moveTo", path.snapshot());
     path.reset();
-    debugster("after reset", path);
+    debugster("after reset", path.snapshot());
+    path.lineTo(0, 0);
+    debugster("after lineTo", path.snapshot());
+    path.reset();
+    debugster("after reset", path.snapshot());
 }
 }  // END FIDDLE

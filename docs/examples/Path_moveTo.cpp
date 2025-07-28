@@ -4,12 +4,13 @@
 REG_FIDDLE(Path_moveTo, 140, 100, false, 0) {
 void draw(SkCanvas* canvas) {
     SkRect rect = { 20, 20, 120, 80 };
-    SkPath path;
-    path.addRect(rect);
-    path.moveTo(rect.fLeft, rect.fTop);
-    path.lineTo(rect.fRight, rect.fBottom);
-    path.moveTo(rect.fLeft, rect.fBottom);
-    path.lineTo(rect.fRight, rect.fTop);
+    SkPath path = SkPathBuilder()
+        .addRect(rect)
+        .moveTo(rect.fLeft, rect.fTop)
+        .lineTo(rect.fRight, rect.fBottom)
+        .moveTo(rect.fLeft, rect.fBottom)
+        .lineTo(rect.fRight, rect.fTop)
+        .detach();
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
     canvas->drawPath(path, paint);

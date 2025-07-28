@@ -78,10 +78,9 @@ protected:
             return false;
         }
 
-        SkPath  tmp;
+        SkPath  tmp = src.makeTransform(fInverse);
         SkIRect ir;
 
-        src.transform(fInverse, &tmp);
         tmp.getBounds().round(&ir);
         if (!ir.isEmpty()) {
             this->begin(ir, dst);
@@ -144,8 +143,10 @@ public:
             src[1].set(SkIntToScalar(u+ucount) + SK_ScalarHalf, SkIntToScalar(v) + SK_ScalarHalf);
             this->getMatrix().mapPoints(dstP, src);
 
-            dst->moveTo(dstP[0]);
-            dst->lineTo(dstP[1]);
+            *dst = SkPathBuilder(*dst)
+                .moveTo(dstP[0])
+                .lineTo(dstP[1])
+                .detach();
         }
     }
 

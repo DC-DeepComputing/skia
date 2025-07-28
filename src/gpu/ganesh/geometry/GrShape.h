@@ -22,6 +22,8 @@
 #include <new>
 #include <type_traits>
 
+class SkPathBuilder;
+
 // Represents a line segment between two points.
 struct GrLineSegment {
     SkPoint fP1;
@@ -119,7 +121,7 @@ public:
     void setInverted(bool inverted) {
         if (this->isPath()) {
             if (inverted != fPath.isInverseFillType()) {
-                fPath.toggleInverseFillType();
+                fPath = fPath.makeToggleInverseFillType();
             }
         } else {
             fInverted = inverted;
@@ -230,6 +232,7 @@ public:
 
     // Convert the shape into a path that describes the same geometry.
     void asPath(SkPath* out, bool simpleFill = true) const;
+    void asPath(SkPathBuilder* out, bool simpleFill = true) const;
 
     using sk_is_trivially_relocatable = std::true_type;
 

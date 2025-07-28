@@ -15,6 +15,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSpan.h"
@@ -41,6 +42,7 @@
 #include "modules/sksg/include/SkSGTransform.h"
 #include "modules/sksg/src/SkSGTransformPriv.h"
 #include "modules/skshaper/include/SkShaper_factory.h"
+#include "src/core/SkPathPriv.h"  // TODO(borenet)
 
 #include <algorithm>
 #include <cmath>
@@ -211,9 +213,9 @@ struct TextAdapter::PathInfo {
             // reinitialize cached contour data
             auto path = static_cast<SkPath>(fPath);
             if (reverse) {
-                SkPath reversed;
-                reversed.reverseAddPath(path);
-                path = reversed;
+                SkPathBuilder builder;
+                SkPathPriv::ReverseAddPath(&builder, path);
+                path = builder.detach();
             }
 
             SkContourMeasureIter iter(path, /*forceClosed = */false);

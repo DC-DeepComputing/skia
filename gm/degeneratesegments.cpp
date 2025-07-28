@@ -200,7 +200,7 @@ class DegenerateSegmentsGM : public GM {
                   const SkRect& clip, SkPaint::Cap cap, SkPaint::Join join,
                   SkPaint::Style style, SkPathFillType fill,
                   SkScalar strokeWidth) {
-        path.setFillType(fill);
+        path = path.makeFillType(fill);
         SkPaint paint;
         paint.setStrokeCap(cap);
         paint.setStrokeWidth(strokeWidth);

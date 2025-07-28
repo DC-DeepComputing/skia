@@ -7,7 +7,7 @@ void draw(SkCanvas* canvas) {
     strokePaint.setAntiAlias(true);
     strokePaint.setStyle(SkPaint::kStroke_Style);
     strokePaint.setStrokeWidth(.1f);
-    SkPath strokePath;
+    SkPathBuilder strokePath;
     strokePath.moveTo(.08f, .08f);
     strokePath.quadTo(.09f, .08f, .17f, .17f);
     SkPathBuilder fillPath;
@@ -24,6 +24,6 @@ void draw(SkCanvas* canvas) {
     }
     strokePath.transform(scale);
     strokePaint.setStrokeWidth(30);
-    canvas->drawPath(strokePath, strokePaint);
+    canvas->drawPath(strokePath.detach(), strokePaint);
 }
 }  // END FIDDLE
