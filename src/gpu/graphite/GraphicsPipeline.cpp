@@ -28,11 +28,12 @@ GraphicsPipeline::GraphicsPipeline(const SharedContext* sharedContext,
 GraphicsPipeline::~GraphicsPipeline() {
 #if defined(SK_PIPELINE_LIFETIME_LOGGING)
     static const char* kNames[2] = { "DeletionN", "DeletionP" };
-    TRACE_EVENT_INSTANT2("skia.gpu",
-                         TRACE_STR_STATIC(kNames[this->fromPrecompile()]),
-                         TRACE_EVENT_SCOPE_THREAD,
+    SkDebugf("%s %u %s %u: %s\n",
+    //TRACE_EVENT_INSTANT2("skia.gpu",
+//                         TRACE_EVENT_SCOPE_THREAD,
                          "key", this->getPipelineInfo().fUniqueKeyHash,
-                         "compilationID", this->getPipelineInfo().fCompilationID);
+                         "compilationID", this->getPipelineInfo().fCompilationID,
+             TRACE_STR_STATIC(kNames[this->fromPrecompile()]));
 #endif
 }
 

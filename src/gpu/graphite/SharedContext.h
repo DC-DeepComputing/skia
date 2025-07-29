@@ -48,6 +48,8 @@ public:
     GlobalCache* globalCache() { return &fGlobalCache; }
     const GlobalCache* globalCache() const { return &fGlobalCache; }
 
+    PipelineManager* pipelineManager() { return &fPipelineManager; }
+
     const RendererProvider* rendererProvider() const { return fRendererProvider.get(); }
 
     ShaderCodeDictionary* shaderCodeDictionary() { return &fShaderDictionary; }
@@ -68,6 +70,7 @@ public:
 protected:
     SharedContext(std::unique_ptr<const Caps>,
                   BackendApi,
+                  SkExecutor* executor,
                   SkSpan<sk_sp<SkRuntimeEffect>> userDefinedKnownRuntimeEffects);
 
 private:
@@ -82,6 +85,8 @@ private:
 
     BackendApi fBackend;
     GlobalCache fGlobalCache;
+    Compilinator fCompilinator;
+    PipelineManager fPipelineManager;
     std::unique_ptr<RendererProvider> fRendererProvider;
     ShaderCodeDictionary fShaderDictionary;
     sk_sp<SkCaptureManager> fCaptureManager;
