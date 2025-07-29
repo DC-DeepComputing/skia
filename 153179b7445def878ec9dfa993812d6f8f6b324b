@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7d11ca4_936eb506",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T21:07:45Z",
+      "side": 1,
+      "message": "Indeed -- I started on this, and it bloomed into a big change, so it will be in a follow-up CL.",
+      "parentUuid": "f93fe4ae_d65586dd",
+      "range": {
+        "startLine": 281,
+        "startChar": 10,
+        "endLine": 281,
+        "endChar": 17
+      },
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "134c20ea_55677fc3",
