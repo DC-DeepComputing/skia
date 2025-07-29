@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "70dbc9a1_2dca6faf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T14:58:36Z",
+      "side": 1,
+      "message": "We were getting the definition indirectly, but the headers graph must have changed at some point.",
+      "revId": "05a9a96eb040d7fd457f009a828ae3b01d3708e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
