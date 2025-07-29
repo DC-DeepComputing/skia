@@ -33,6 +33,24 @@
       "message": "I think this is a semi-flaky failure that\u0027s unrelated to this CL.  Kaylee is looking into it.",
       "revId": "c200be3118798705427ab0382fe9b551d1bc8a44",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46725c2a_1fccd4d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-29T13:26:39Z",
+      "side": 1,
+      "message": "https://crbug.com/skia/434797531 in fact. Also, we don\u0027t have bots, but this is a failing *task*",
+      "parentUuid": "59bf311a_4c1b4a32",
+      "revId": "c200be3118798705427ab0382fe9b551d1bc8a44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
