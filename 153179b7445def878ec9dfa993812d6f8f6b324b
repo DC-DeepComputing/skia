@@ -1,0 +1,101 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f93fe4ae_d65586dd",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T20:50:13Z",
+      "side": 1,
+      "message": "Doesn\u0027t have to be this CL, but it would make sense for these to also return PathVerbs.",
+      "range": {
+        "startLine": 281,
+        "startChar": 10,
+        "endLine": 281,
+        "endChar": 17
+      },
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "134c20ea_55677fc3",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T20:50:13Z",
+      "side": 1,
+      "message": "I think we could do away with the index if we compare against \u0026verbs.back().",
+      "range": {
+        "startLine": 96,
+        "startChar": 27,
+        "endLine": 96,
+        "endChar": 51
+      },
+      "fixSuggestions": [
+        {
+          "fixId": "8764d910_55d1971d",
+          "description": "prompt_to_edit API",
+          "replacements": [
+            {
+              "path": "src/core/SkPathPriv.h",
+              "range": {
+                "startLine": 88,
+                "startChar": 0,
+                "endLine": 90,
+                "endChar": 0
+              },
+              "replacement": "        for (const SkPathVerb\u0026 verb : verbs) {\n            switch (verb) {\n"
+            },
+            {
+              "path": "src/core/SkPathPriv.h",
+              "range": {
+                "startLine": 96,
+                "startChar": 0,
+                "endLine": 97,
+                "endChar": 0
+              },
+              "replacement": "                    return \u0026verb \u003d\u003d \u0026verbs.back();\n"
+            }
+          ]
+        }
+      ],
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0eb63636_36580d5e",
+        "filename": "src/core/SkPath_serial.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T20:50:13Z",
+      "side": 1,
+      "message": "`verbs` is already `const SkPathVerb*` - is this needed?",
+      "range": {
+        "startLine": 276,
+        "startChar": 8,
+        "endLine": 276,
+        "endChar": 43
+      },
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
