@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a6d9f20c_e036d02b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-29T15:42:03Z",
+      "side": 1,
+      "message": "Gold only shows 2 image diffs and they\u0027re both looking good (only a few color values differing very minimally), so I think given that and my review of the actual manual changes you\u0027ve made that this is good to go.",
+      "revId": "ef27480255e0f450a83a26895dbebeed4aa9a95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
