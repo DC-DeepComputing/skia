@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5553eb16_5ed534ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-29T14:56:21Z",
+      "side": 1,
+      "message": "Adding format per https://issuetracker.google.com/431290055#comment12.\n\nDigging still to make sure we do not need #if guards for a certain API level or not. Noelle and I notice it\u0027s defined in some frameworks but not in others, but she\u0027s confirmed it at least goes back to API level 28 (and we require 26 for AHardwareBufferUtils, so needing to verify the format exists in 26 and 27).",
+      "revId": "7e4484643f04acc3abe9e6e2305019109db1f26c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
