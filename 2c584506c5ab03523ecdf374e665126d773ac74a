@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "55ed874c_7f80c058",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 23
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-29T17:19:06Z",
+      "side": 1,
+      "message": "After reviewing, I ran dm to generate gm images on both this patch and, separately, the commit on main that parents this CL. I compared the output by running skdiff. It looks like this change maintains MSAA functionality and may have even fixed some (see PlusMergesAA, pathops_blend, aaxfermodes, and pictures GMs if interested). Great work!!!",
+      "revId": "2c584506c5ab03523ecdf374e665126d773ac74a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
