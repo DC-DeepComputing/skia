@@ -19,6 +19,7 @@
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRRect.h"
 #include "include/core/SkRect.h"
@@ -190,10 +191,8 @@ static GrSurfaceProxyView sw_create_filtered_mask(GrRecordingContext* rContext,
         // TODO: it seems like we could create an SkDraw here and set its fMatrix field rather
         // than explicitly transforming the path to device space.
         SkPath devPath;
-
         shape.asPath(&devPath);
-
-        devPath.transform(viewMatrix);
+        devPath = SkPathBuilder(devPath).transform(viewMatrix).detach();
 
         SkMaskBuilder srcM, dstM;
         if (!SkDraw::DrawToMask(devPath, clipBounds, filter, &viewMatrix, &srcM,

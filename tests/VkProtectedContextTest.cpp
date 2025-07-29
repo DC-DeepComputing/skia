@@ -22,7 +22,7 @@
 #include "include/core/SkImageInfo.h"
 #include "include/core/SkMaskFilter.h"
 #include "include/core/SkPaint.h"
-#include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
 #include "include/core/SkSurface.h"
@@ -544,7 +544,7 @@ void draw_thin_path(skiatest::Reporter* reporter, skiatest::TestType testType) {
     paint.setStyle(SkPaint::kStroke_Style);
     paint.setAntiAlias(true);
     paint.setStrokeWidth(.4f);
-    canvas->drawPath(SkPath().moveTo(4, 4).lineTo(6, 6), paint);
+    canvas->drawPath(SkPathBuilder().moveTo(4, 4).lineTo(6, 6).detach(), paint);
 }
 
 }  // anonymous namespace

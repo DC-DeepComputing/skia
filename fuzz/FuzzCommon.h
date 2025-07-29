@@ -20,9 +20,9 @@
 class SkData;
 
 // allows some float values for path points
-void FuzzNicePath(Fuzz* fuzz, SkPath* path, int maxOps);
+SkPath FuzzNicePath(Fuzz* fuzz, int maxOps);
 // allows all float values for path points
-void FuzzEvilPath(Fuzz* fuzz, SkPath* path, int last_verb);
+SkPath FuzzEvilPath(Fuzz* fuzz, int last_verb);
 
 void FuzzNiceRRect(Fuzz* fuzz, SkRRect* rr);
 

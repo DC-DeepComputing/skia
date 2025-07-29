@@ -57,7 +57,7 @@ private:
             if (glyph->path()) {
                 fGlyphs[i] = *glyph->path();
             }
-            fGlyphs[i].setIsVolatile(fUncached);
+            fGlyphs[i] = fGlyphs[i].makeIsVolatile(fUncached);
         }
 
         SkRandom rand;
@@ -85,7 +85,7 @@ private:
 
         if (fClipped) {
             fClipPath = ToolUtils::make_star(SkRect::MakeIWH(kScreenWidth, kScreenHeight), 11, 3);
-            fClipPath.setIsVolatile(fUncached);
+            fClipPath = fClipPath.makeIsVolatile(fUncached);
         }
     }
 

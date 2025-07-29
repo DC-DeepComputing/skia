@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
@@ -33,7 +34,7 @@ static void testOpCubicsMain(PathOpsThreadState* data) {
                 for (int d = c + 1 ; d < 7; ++d) {
                     for (auto e : fts) {
     for (auto f : fts) {
-        SkPath pathA, pathB;
+        SkPathBuilder pathA, pathB;
         pathA.setFillType((SkPathFillType) e);
         pathA.moveTo(SkIntToScalar(state.fA), SkIntToScalar(state.fB));
         pathA.cubicTo(SkIntToScalar(state.fC), SkIntToScalar(state.fD), SkIntToScalar(b),
@@ -70,7 +71,7 @@ static void testOpCubicsMain(PathOpsThreadState* data) {
             }
             SkString testName;
             testName.printf("thread_cubics%d", ++gCubicsTestNo);
-            if (!testPathOp(state.fReporter, pathA, pathB, (SkPathOp) op, testName.c_str())) {
+            if (!testPathOp(state.fReporter, pathA.snapshot(), pathB.snapshot(), (SkPathOp) op, testName.c_str())) {
                 if (state.fReporter->verbose()) {
                     ++loopNo;
                     goto skipToNext;

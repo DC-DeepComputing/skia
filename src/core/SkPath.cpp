@@ -1679,7 +1679,7 @@ static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
         subdivide_cubic_to(path, &tmp[0], level);
         subdivide_cubic_to(path, &tmp[3], level);
     } else {
-        path->cubicTo(pts[1], pts[2], pts[3]);
+        *path = SkPathBuilder(*path).cubicTo(pts[1], pts[2], pts[3]).detach();
     }
 }
 
@@ -1784,7 +1784,6 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveCl
                 dst->setFirstDirection(SkPathFirstDirection::kUnknown);
             }
         }
-
         SkDEBUGCODE(dst->validate();)
     }
 }
@@ -3353,6 +3352,7 @@ void SkPathPriv::CreateDrawArcPath(SkPath* path, const SkArc& arc, bool isFillNo
     auto firstDir =
             sweepAngle > 0 ? SkPathFirstDirection::kCW : SkPathFirstDirection::kCCW;
     bool convex = DrawArcIsConvex(sweepAngle, arc.fType, isFillNoPathEffect);
+
     // Arc to mods at 360 and drawArc is not supposed to.
     bool forceMoveTo = !arc.isWedge();
     while (sweepAngle <= -360.f) {
@@ -3875,8 +3875,7 @@ static SkPath clip(const SkPath& path, const SkHalfPlane& plane) {
         return SkPath();
     }
 
-    SkPath rotated;
-    path.transform(*inv, &rotated);
+    SkPath rotated = path.makeTransform(inv.value());
     if (!rotated.isFinite()) {
         return SkPath();
     }

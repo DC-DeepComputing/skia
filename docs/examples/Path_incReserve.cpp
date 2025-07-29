@@ -3,6 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_incReserve, 256, 192, false, 0) {
 void draw(SkCanvas* canvas) {
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     auto addPoly = [](int sides, SkScalar size, SkPath* path) -> void {
         path->moveTo(size, 0);
         for (int i = 1; i < sides; i++) {
@@ -22,5 +23,6 @@ void draw(SkCanvas* canvas) {
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
     canvas->drawPath(path, paint);
+#endif
 }
 }  // END FIDDLE

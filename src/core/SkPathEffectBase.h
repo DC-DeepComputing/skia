@@ -9,6 +9,7 @@
 #define SkPathEffectBase_DEFINED
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
@@ -60,8 +61,8 @@ public:
         SkRect             fClipRect;   // clip required to draw the points (if kUseClip is set)
         SkPath             fPath;       // 'stamp' to be used at each point (if kUsePath is set)
 
-        SkPath             fFirst;      // If not empty, contains geometry for first point
-        SkPath             fLast;       // If not empty, contains geometry for last point
+        SkPathBuilder      fFirst;      // If not empty, contains geometry for first point
+        SkPathBuilder      fLast;       // If not empty, contains geometry for last point
 
         SkSpan<SkPoint> points() { return {fPoints, fNumPoints}; }
     };

@@ -5,13 +5,13 @@ REG_FIDDLE(Path_setIsVolatile, 50, 50, false, 0) {
 void draw(SkCanvas* canvas) {
     SkPaint paint;
     paint.setStyle(SkPaint::kStroke_Style);
-    SkPath path;
+    SkPathBuilder path;
     path.setIsVolatile(true);
     path.lineTo(40, 40);
-    canvas->drawPath(path, paint);
-    path.rewind();
+    canvas->drawPath(path.snapshot(), paint);
+    path.reset();
     path.moveTo(0, 40);
     path.lineTo(40, 0);
-    canvas->drawPath(path, paint);
+    canvas->drawPath(path.snapshot(), paint);
 }
 }  // END FIDDLE

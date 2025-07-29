@@ -11,6 +11,7 @@
 #include "include/core/SkFont.h"
 #include "include/core/SkMatrix.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkTextBlob.h"
@@ -41,20 +42,22 @@ void SkTextUtils::GetPath(const void* text, size_t length, SkTextEncoding encodi
     AutoTArray<SkPoint> pos(ag.count());
     font.getPos(ag, pos, {x, y});
 
+    SkPathBuilder builder;
     struct Rec {
-        SkPath* fDst;
+        SkPathBuilder* fDst;
         const SkPoint* fPos;
-    } rec = { path, pos.get() };
+    } rec = { &builder, pos.get() };
 
-    path->reset();
     font.getPaths(ag, [](const SkPath* src, const SkMatrix& mx, void* ctx) {
         Rec* rec = (Rec*)ctx;
         if (src) {
             SkMatrix m(mx);
             m.postTranslate(rec->fPos->fX, rec->fPos->fY);
-            rec->fDst->addPath(*src, m);
+            SkPath transformedSrc = src->makeTransform(m);
+            rec->fDst->addPath(transformedSrc);
         }
         rec->fPos += 1;
     }, &rec);
+    *path = builder.detach();
 }
 

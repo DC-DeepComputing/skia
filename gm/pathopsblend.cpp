@@ -12,16 +12,17 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/pathops/SkPathOps.h"
 #include "src/core/SkStroke.h"
 #include "tools/ToolUtils.h"
 
 static SkPath cross() {
-    SkPath path;
-    path.addRect(15, 0, 35, 50);
-    path.addRect(0, 15, 50, 35);
-    return path;
+    return SkPathBuilder()
+        .addRect({15, 0, 35, 50})
+        .addRect({0, 15, 50, 35})
+        .detach();
 }
 
 static SkPath circle() { return SkPath::Circle(25, 25, 20); }
@@ -65,8 +66,7 @@ DEF_SIMPLE_GM(pathops_blend, canvas, 130, 60 * std::size(kOps) + 60 + 10) {
     SkPath p1 = cross();
     SkPath p2 = circle();
     // One path op (intersect) requires one path be drawn using inverse-fill:
-    SkPath p2inv = p2;
-    p2inv.toggleInverseFillType();
+    SkPath p2inv = p2.makeToggleInverseFillType();
 
     SkPaint paint;
     paint.setAntiAlias(true);

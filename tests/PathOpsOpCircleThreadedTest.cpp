@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkString.h"
@@ -34,13 +35,16 @@ static void testOpCirclesMain(PathOpsThreadState* data) {
                 for (int d = c + 1 ; d < 7; ++d) {
                     for (auto e : fts) {
     for (auto f : fts) {
-        SkPath pathA, pathB;
-        pathA.setFillType(e);
-        pathA.addCircle(SkIntToScalar(state.fA), SkIntToScalar(state.fB), SkIntToScalar(state.fC),
-                state.fD ? SkPathDirection::kCW : SkPathDirection::kCCW);
-        pathB.setFillType(f);
-        pathB.addCircle(SkIntToScalar(a), SkIntToScalar(b), SkIntToScalar(c),
-                d ? SkPathDirection::kCW : SkPathDirection::kCCW);
+        SkPath pathA = SkPathBuilder()
+            .setFillType(e)
+            .addCircle(SkIntToScalar(state.fA), SkIntToScalar(state.fB), SkIntToScalar(state.fC),
+                state.fD ? SkPathDirection::kCW : SkPathDirection::kCCW)
+            .detach();
+        SkPath pathB = SkPathBuilder()
+            .setFillType(f)
+            .addCircle(SkIntToScalar(a), SkIntToScalar(b), SkIntToScalar(c),
+                d ? SkPathDirection::kCW : SkPathDirection::kCCW)
+            .detach();
         for (int op = 0 ; op <= kXOR_SkPathOp; ++op)    {
             if (state.fReporter->verbose()) {
                 pathStr.printf("static void circlesOp%d(skiatest::Reporter* reporter,"

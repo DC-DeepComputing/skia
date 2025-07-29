@@ -3,11 +3,15 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_reset, 256, 256, true, 0) {
 void draw(SkCanvas* canvas) {
-    SkPath path1, path2;
-    path1.setFillType(SkPathFillType::kInverseWinding);
-    path1.addRect({10, 20, 30, 40});
+    SkPath path1 = SkPathBuilder()
+        .setFillType(SkPathFillType::kInverseWinding)
+        .addRect({10, 20, 30, 40})
+        .detach();
+    SkPath path2;
     SkDebugf("path1 %c= path2\n", path1 == path2 ? '=' : '!');
+#ifndef SK_HIDE_PATH_EDIT_METHODS
     path1.reset();
     SkDebugf("path1 %c= path2\n", path1 == path2 ? '=' : '!');
+#endif
 }
 }  // END FIDDLE

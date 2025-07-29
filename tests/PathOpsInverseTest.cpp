@@ -5,6 +5,7 @@
  * found in the LICENSE file.
  */
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkString.h"
 #include "include/pathops/SkPathOps.h"
@@ -17,22 +18,22 @@ DEF_TEST(PathOpsInverse, reporter) {
         SkPathFillType::kWinding,        SkPathFillType::kEvenOdd,
         SkPathFillType::kInverseWinding, SkPathFillType::kInverseEvenOdd
     };
-    SkPath one, two;
+    SkPathBuilder one, two;
     int testCount = 0;
     for (int op = kDifference_SkPathOp; op <= kReverseDifference_SkPathOp; ++op) {
         for (auto oneFill : fts) {
             for (auto oneDir : dirs) {
                 one.reset();
                 one.setFillType(oneFill);
-                one.addRect(0, 0, 6, 6, oneDir);
+                one.addRect({0, 0, 6, 6}, oneDir);
                 for (auto twoFill : fts) {
                     for (auto twoDir : dirs) {
                         two.reset();
                         two.setFillType(twoFill);
-                        two.addRect(3, 3, 9, 9, twoDir);
+                        two.addRect({3, 3, 9, 9}, twoDir);
                         SkString testName;
                         testName.printf("inverseTest%d", ++testCount);
-                        testPathOp(reporter, one, two, (SkPathOp) op, testName.c_str());
+                        testPathOp(reporter, one.snapshot(), two.snapshot(), (SkPathOp) op, testName.c_str());
                     }
                 }
             }

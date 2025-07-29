@@ -11,6 +11,7 @@
 #include "include/core/SkContourMeasure.h"
 #include "include/core/SkGraphics.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathEffect.h"
 #include "include/core/SkRegion.h"
 #include "include/core/SkShader.h"
@@ -363,7 +364,7 @@ static sk_sp<SkVertices> make_verts(const SkPath& path, SkScalar width) {
 
 class PseudoInkSlide : public ClickHandlerSlide {
     enum { N = 100 };
-    SkPath            fPath;
+    SkPathBuilder     fPath;
     sk_sp<SkVertices> fVertices[N];
     SkPaint           fSkeletonP, fStrokeP, fVertsP;
     bool              fDirty = true;
@@ -384,7 +385,7 @@ public:
     void draw(SkCanvas* canvas) override {
         if (fDirty) {
             for (int i = 0; i < N; ++i) {
-                fVertices[i] = make_verts(fPath, 30);
+                fVertices[i] = make_verts(fPath.snapshot(), 30);
             }
             fDirty = false;
         }

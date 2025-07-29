@@ -9,12 +9,13 @@ void draw(SkCanvas* canvas) {
     float startAngle = -0.5235985, endAngle = -2.439e-4, radius = 120;
 
     canvas->translate(radius, radius);
-    SkPath path;
-    path.moveTo(0, 0);
-    path.lineTo(radius * cos(startAngle), radius * sin(startAngle));
     SkRect oval = {-radius, -radius, radius, radius};
-    path.arcTo(oval, startAngle * 180 / 3.14159265359,
-               (endAngle - startAngle) * 180 / 3.14159265359, false);
+    SkPath path = SkPathBuilder()
+        .moveTo(0, 0)
+        .lineTo(radius * cos(startAngle), radius * sin(startAngle))
+        .arcTo(oval, startAngle * 180 / 3.14159265359,
+               (endAngle - startAngle) * 180 / 3.14159265359, false)
+        .detach();
     canvas->drawPath(path, p);
 
     p.setStyle(SkPaint::kStroke_Style);

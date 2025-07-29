@@ -6,6 +6,7 @@
  */
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
 #include "include/core/SkScalar.h"
@@ -17,6 +18,7 @@
 #include "src/core/SkGeometry.h"
 
 #include <cstdio>
+#include <optional>
 
 static inline bool is_between(int c, int min, int max) {
     return (unsigned)(c - min) <= (unsigned)(max - min);
@@ -106,7 +108,7 @@ static const char* find_flag(const char str[], bool* value) {
 bool SkParsePath::FromSVGString(const char data[], SkPath* result) {
     // We will write all data to this local path and only write it
     // to result if the whole parsing succeeds.
-    SkPath path;
+    SkPathBuilder path;
     SkPoint first = {0, 0};
     SkPoint c = {0, 0};
     SkPoint lastc = {0, 0};
@@ -218,9 +220,14 @@ bool SkParsePath::FromSVGString(const char data[], SkPath* result) {
                         && (data = find_flag(data, &sweep))
                         && (data = skip_sep(data))
                         && (data = find_points(data, &points[0], 1, relative, &c))) {
-                    path.arcTo(radii, angle, (SkPath::ArcSize) largeArc,
+                    path.arcTo(radii, angle, (SkPathBuilder::ArcSize) largeArc,
                             (SkPathDirection) !sweep, points[0]);
-                    path.getLastPt(&c);
+                    std::optional<SkPoint> lastPt = path.getLastPt();
+                    if (lastPt) {
+                        c = lastPt.value();
+                    } else {
+                        return false;
+                    }
                 }
                 } break;
             case 'Z':  // Close Path
@@ -236,7 +243,7 @@ bool SkParsePath::FromSVGString(const char data[], SkPath* result) {
         previousOp = op;
     }
     // we're good, go ahead and swap in the result
-    result->swap(path);
+    *result = path.detach();
     return true;
 }
 

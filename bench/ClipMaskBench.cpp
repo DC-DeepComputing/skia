@@ -15,6 +15,7 @@
 #include "tools/ToolUtils.h"
 
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkSurface.h"
 
 class RasterTileBench : public Benchmark {
@@ -27,8 +28,10 @@ public:
         int H = 20;
         fSurf = SkSurfaces::Raster(SkImageInfo::MakeN32Premul(W, H));
 
-        fPath.moveTo(0, 0);
-        fPath.cubicTo(20, 10, 10, 15, 30, 5);
+        fPath = SkPathBuilder()
+            .moveTo(0, 0)
+            .cubicTo(20, 10, 10, 15, 30, 5)
+            .detach();
     }
 
 protected:

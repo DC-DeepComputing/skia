@@ -183,7 +183,7 @@ public:
         Returns true if SkRegion is not empty; otherwise, returns false, and leaves path
         unmodified.
 
-        @param path  SkPath to append to
+        @param path  SkPathBuilder to append to
         @return      true if path changed
 
         example: https://fiddle.skia.org/c/@Region_getBoundaryPath

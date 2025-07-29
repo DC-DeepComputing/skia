@@ -3,7 +3,7 @@
 #include "tools/fiddle/examples.h"
 REG_FIDDLE(Path_FillType_a, 256, 100, false, 0) {
 void draw(SkCanvas* canvas) {
-   SkPath path;
+   SkPathBuilder path;
    path.addRect({10, 10, 30, 30}, SkPathDirection::kCW);
    path.addRect({20, 20, 40, 40}, SkPathDirection::kCW);
    path.addRect({10, 60, 30, 80}, SkPathDirection::kCW);
@@ -11,7 +11,7 @@ void draw(SkCanvas* canvas) {
    SkPaint strokePaint;
    strokePaint.setStyle(SkPaint::kStroke_Style);
    SkRect clipRect = {0, 0, 51, 100};
-   canvas->drawPath(path, strokePaint);
+   canvas->drawPath(path.snapshot(), strokePaint);
    SkPaint fillPaint;
    for (auto fillType : { SkPathFillType::kWinding, SkPathFillType::kEvenOdd,
                       SkPathFillType::kInverseWinding, SkPathFillType::kInverseEvenOdd } ) {
@@ -19,7 +19,7 @@ void draw(SkCanvas* canvas) {
         canvas->save();
         canvas->clipRect(clipRect);
         path.setFillType(fillType);
-        canvas->drawPath(path, fillPaint);
+        canvas->drawPath(path.snapshot(), fillPaint);
         canvas->restore();
     }
 }

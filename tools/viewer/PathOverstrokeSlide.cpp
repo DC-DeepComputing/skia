@@ -6,6 +6,7 @@
  */
 #include "include/core/SkCanvas.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkPathUtils.h"
 #include "tools/viewer/Slide.h"
 
@@ -59,10 +60,10 @@ public:
             return false;
     }
 
-    SkPath quadPath(SkPoint p1, SkPoint p2) {
+    SkPathBuilder quadPath(SkPoint p1, SkPoint p2) {
         SkASSERT(p1.y() == p2.y());
 
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(p1);
         path.lineTo(p2);
 
@@ -73,10 +74,10 @@ public:
         return path;
     }
 
-    SkPath cubicPath(SkPoint p1, SkPoint p2) {
+    SkPathBuilder cubicPath(SkPoint p1, SkPoint p2) {
         SkASSERT(p1.y() == p2.y());
 
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(p1);
 
         SkPoint p3 = SkPoint::Make((p1.x() + p2.x()) / 3.0f, p1.y() * 0.7f);
@@ -87,10 +88,10 @@ public:
         return path;
     }
 
-    SkPath linSemicirclePath(SkPoint p1, SkPoint p2) {
+    SkPathBuilder linSemicirclePath(SkPoint p1, SkPoint p2) {
         SkASSERT(p1.y() == p2.y());
 
-        SkPath path;
+        SkPathBuilder path;
         path.moveTo(p1);
         path.lineTo(p2);
 
@@ -108,12 +109,10 @@ public:
         return path;
     }
 
-    SkPath rectPath(SkPoint p1) {
+    SkPathBuilder rectPath(SkPoint p1) {
         SkRect r = SkRect::MakeXYWH(p1.fX, p1.fY, 20, 20);
-        SkPath path;
-        path.addRect(r);
-
-        return path;
+        SkPathBuilder path;
+        return path.addRect(r);
     }
 
     void draw(SkCanvas* canvas) override {
@@ -126,28 +125,29 @@ public:
         SkPoint p1 = SkPoint::Make(50, 50);
         SkPoint p2 = SkPoint::Make(80, 50);
 
-        SkPath path;
+        SkPathBuilder pb;
         switch (fPathType) {
             case 0:
-                path = quadPath(p1, p2);
+                pb = quadPath(p1, p2);
                 break;
             case 1:
-                path = cubicPath(p1, p2);
+                pb = cubicPath(p1, p2);
                 break;
             case 2:
-                path = rectPath(p1);
+                pb = rectPath(p1);
                 break;
             case 3:
-                path = linSemicirclePath(p1, p2);
+                pb = linSemicirclePath(p1, p2);
                 break;
             default:
-                path = quadPath(p1, p2);
+                pb = quadPath(p1, p2);
                 break;
         }
 
         if (fClosePath) {
-            path.close();
+            pb.close();
         }
+        SkPath path = pb.detach();
 
         SkPaint p;
         p.setColor(SK_ColorRED);

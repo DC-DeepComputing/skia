@@ -18,6 +18,9 @@
 
 #include <cstring>
 
+enum class SkPathConvexity;
+enum class SkPathFirstDirection;
+
 namespace {
 // Keys for paths may be extracted from the path data for small paths, to maximize matches
 // even when the genIDs may differ. The value is based on emperical experience, to trade off
@@ -49,8 +52,7 @@ bool Shape::conservativeContains(const Rect& rect) const {
         case Type::kRRect: return fRRect.contains(rect.asSkRect());
         case Type::kPath:  // We need to ensure the path is non-inverted.
                            if (this->inverted()) {
-                               SkPath nonInverted(fPath);
-                               nonInverted.toggleInverseFillType();
+                               SkPath nonInverted = fPath.makeToggleInverseFillType();
                                return nonInverted.conservativelyContainsRect(rect.asSkRect());
                            } else {
                                return fPath.conservativelyContainsRect(rect.asSkRect());
@@ -58,7 +60,7 @@ bool Shape::conservativeContains(const Rect& rect) const {
         case Type::kArc:   if (fArc.fType == SkArc::Type::kWedge) {
                                SkPath arc = this->asPath();
                                if (this->inverted()) {
-                                   arc.toggleInverseFillType();
+                                   arc = arc.makeToggleInverseFillType();
                                }
                                return arc.conservativelyContainsRect(rect.asSkRect());
                            } else {
@@ -76,8 +78,7 @@ bool Shape::conservativeContains(skvx::float2 point) const {
         case Type::kRRect: return SkRRectPriv::ContainsPoint(fRRect, {point.x(), point.y()});
         case Type::kPath:  // We need to ensure the path is non-inverted.
                            if (this->inverted()) {
-                               SkPath nonInverted(fPath);
-                               nonInverted.toggleInverseFillType();
+                               SkPath nonInverted = fPath.makeToggleInverseFillType();
                                return nonInverted.contains(point.x(), point.y());
                            } else {
                                return fPath.contains(point.x(), point.y());
@@ -123,7 +124,7 @@ SkPath Shape::asPath() const {
         // CreateDrawArcPath resets the output path and configures its fill
         // type, so we just have to ensure invertedness is correct.
         if (fInverted) {
-            out.toggleInverseFillType();
+            out = out.makeToggleInverseFillType();
         }
         return out;
     }

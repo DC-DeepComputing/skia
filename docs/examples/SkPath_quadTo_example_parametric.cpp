@@ -31,17 +31,19 @@ void draw(SkCanvas* canvas) {
     SkPoint b{200, 400};
     SkPoint c{300, 100};
 
-    SkPath twoSegments;
-    twoSegments.moveTo(a);
-    twoSegments.lineTo(b);
-    twoSegments.lineTo(c);
+    SkPath twoSegments = SkPathBuilder()
+        .moveTo(a)
+        .lineTo(b)
+        .lineTo(c)
+        .detach();
 
     canvas->drawPath(twoSegments, paint);
 
     paint.setColor(SkColorSetARGB(255, 0, 0, 255));
-    SkPath quadraticCurve;
-    quadraticCurve.moveTo(a);
-    quadraticCurve.quadTo(b, c);
+    SkPath quadraticCurve = SkPathBuilder()
+        .moveTo(a)
+        .quadTo(b, c)
+        .detach();
     canvas->drawPath(quadraticCurve, paint);
 
     SkFont font(fontMgr->matchFamilyStyle(nullptr, {}), 32);

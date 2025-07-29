@@ -739,7 +739,7 @@ void Device::android_utils_clipAsRgn(SkRegion* region) const {
             tmp.setRect(rect_to_pixelbounds(e.fShape.rect()));
         } else {
             SkPath tmpPath = e.fShape.asPath();
-            tmpPath.transform(e.fLocalToDevice);
+            tmpPath = tmpPath.makeTransform(e.fLocalToDevice);
             tmp.setPath(tmpPath, deviceBounds);
         }
 
@@ -1260,7 +1260,7 @@ void Device::drawGeometry(const Transform& localToDevice,
         if (paint.getPathEffect()->filterPath(&builder, geometry.shape().asPath(), &newStyle,
                                               nullptr, localToDevice)) {
             SkPath dst = builder.detach();
-            dst.setIsVolatile(true);
+            dst = dst.makeIsVolatile(true);
             // Recurse using the path and new style, while disabling downstream path effect handling
             this->drawGeometry(localToDevice, Geometry(Shape(dst)), paint, newStyle,
                                flags | DrawFlags::kIgnorePathEffect, std::move(primitiveBlender),
@@ -1280,9 +1280,10 @@ void Device::drawGeometry(const Transform& localToDevice,
     // issues).
     if (geometry.isShape() && localToDevice.type() == Transform::Type::kPerspective &&
         !is_simple_shape(geometry.shape(), style.getStyle())) {
-        SkPath devicePath = geometry.shape().asPath();
-        devicePath.transform(localToDevice.matrix().asM33());
-        devicePath.setIsVolatile(true);
+        SkPath devicePath = SkPathBuilder(geometry.shape().asPath())
+            .transform(localToDevice.matrix().asM33())
+            .setIsVolatile(true)
+            .detach();
         this->drawGeometry(Transform::Identity(), Geometry(Shape(devicePath)), paint, style, flags,
                            std::move(primitiveBlender), skipColorXform);
         return;
@@ -1606,7 +1607,7 @@ void Device::drawClipShape(const Transform& localToDevice,
     // TODO: Remove this CPU-transform once perspective is supported for all path renderers
     if (localToDevice.type() == Transform::Type::kPerspective) {
         SkPath devicePath = geometry.shape().asPath();
-        devicePath.transform(localToDevice.matrix().asM33());
+        devicePath = devicePath.makeTransform(localToDevice.matrix().asM33());
         fDC->recordDraw(renderer, Transform::Identity(), Geometry(Shape(devicePath)), clip, order,
                         nullptr, nullptr);
     } else {

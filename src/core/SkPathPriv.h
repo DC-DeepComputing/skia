@@ -457,6 +457,14 @@ public:
         return builder.fVerbs.size();
     }
 
+    static void ReversePathTo(SkPathBuilder* builder, const SkPath& path) {
+        builder->privateReversePathTo(path);
+    }
+
+    static bool IsZeroLengthSincePoint(const SkPathBuilder& builder, int startPtIndex) {
+        return builder.isZeroLengthSincePoint(startPtIndex);
+    }
+
     static SkPath MakePath(const SkPathVerbAnalysis& analysis,
                            const SkPoint points[],
                            const uint8_t verbs[],

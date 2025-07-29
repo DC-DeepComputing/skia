@@ -171,12 +171,15 @@ static bool clip_line(SkPoint pts[2], const SkRect& bounds, SkScalar intervalLen
 // otherwise dstPath may have been changed but you should ignore it.
 static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
                       const SkRect* cullRect, SkScalar intervalLength, SkPath* dstPath) {
+    SkPathBuilder builder(*dstPath);
     if (!cullRect) {
         SkPoint pts[2];
         if (srcPath.isLine(pts) && pts[0] == pts[1]) {
             adjust_zero_length_line(pts);
-            dstPath->moveTo(pts[0]);
-            dstPath->lineTo(pts[1]);
+            *dstPath = builder
+                .moveTo(pts[0])
+                .lineTo(pts[1])
+                .detach();
             return true;
         }
         return false;
@@ -190,8 +193,10 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
         SkPoint pts[2];
         if (srcPath.isLine(pts)) {
             if (clip_line(pts, bounds, intervalLength, 0)) {
-                dstPath->moveTo(pts[0]);
-                dstPath->lineTo(pts[1]);
+                *dstPath = builder
+                    .moveTo(pts[0])
+                    .lineTo(pts[1])
+                    .detach();
                 return true;
             }
             return false;
@@ -216,15 +221,16 @@ static bool cull_path(const SkPath& srcPath, const SkStrokeRec& rec,
                 // If that's not where we ended the previous lineTo(), we need to moveTo() there.
                 SkPoint last;
                 if (!dstPath->getLastPt(&last) || last != pts[0]) {
-                    dstPath->moveTo(pts[0]);
+                    builder.moveTo(pts[0]);
                 }
-                dstPath->lineTo(pts[1]);
+                builder.lineTo(pts[1]);
             }
 
             // We either just traveled v.fX horizontally or v.fY vertically.
             SkASSERT(v.fX == 0 || v.fY == 0);
             accum += SkScalarAbs(v.fX + v.fY);
         }
+        *dstPath = builder.detach();
         return !dstPath->isEmpty();
     }
 
@@ -363,20 +369,24 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
                 const SkScalar kTinyOffset = SK_ScalarNearlyZero;
                 // scale vector to make start of tiny right angle
                 v *= kTinyOffset;
-                cullPathStorage.moveTo(midPoint - v);
-                cullPathStorage.lineTo(midPoint);
+                SkPathBuilder builder(cullPathStorage);
+                builder.moveTo(midPoint - v);
+                builder.lineTo(midPoint);
                 v = midPoint - src.getPoint(next);
                 // scale vector to make end of tiny right angle
                 v *= kTinyOffset;
-                cullPathStorage.lineTo(midPoint - v);
+                builder.lineTo(midPoint - v);
+                cullPathStorage = builder.detach();
             }
         }
         srcPtr = &cullPathStorage;
     }
 
+    SkPathBuilder builder;
+
     SpecialLineRec lineRec;
     bool specialLine = (StrokeRecApplication::kAllow == strokeRecApplication) &&
-                       lineRec.init(*srcPtr, dst, rec, count >> 1, intervalLength);
+                       lineRec.init(*srcPtr, &builder, rec, count >> 1, intervalLength);
 
     SkPathMeasure   meas(*srcPtr, false, rec->getResScale());
 
@@ -396,7 +406,7 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
         // maximum dash memory overhead at roughly 17MB per path.
         dashCount += length * (count >> 1) / intervalLength;
         if (dashCount > kMaxDashCount) {
-            dst->reset();
+            *dst = SkPath();
             return false;
         }
 
@@ -414,11 +424,11 @@ bool SkDashPath::InternalFilter(SkPathBuilder* dst, const SkPath& src, SkStrokeR
                 if (specialLine) {
                     lineRec.addSegment(SkDoubleToScalar(distance),
                                        SkDoubleToScalar(distance + dlen),
-                                       dst);
+                                       &builder);
                 } else {
                     meas.getSegment(SkDoubleToScalar(distance),
                                     SkDoubleToScalar(distance + dlen),
-                                    dst, true);
+                                    &builder, true);
                 }
             }
             distance += dlen;

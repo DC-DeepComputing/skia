@@ -11,6 +11,7 @@
 #include "include/core/SkColor.h"
 #include "include/core/SkPaint.h"
 #include "include/core/SkPath.h"
+#include "include/core/SkPathBuilder.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkScalar.h"
 #include "include/core/SkSize.h"
@@ -70,12 +71,14 @@ protected:
             for (int twoFill = 0; twoFill <= 1; ++twoFill) {
                 SkPathFillType twoF = twoFill ? SkPathFillType::kInverseEvenOdd
                         : SkPathFillType::kEvenOdd;
-                one.reset();
-                one.setFillType(oneF);
-                one.addRect(10, 10, 70, 70);
-                two.reset();
-                two.setFillType(twoF);
-                two.addRect(40, 40, 100, 100);
+                one = SkPathBuilder()
+                    .setFillType(oneF)
+                    .addRect({10, 10, 70, 70})
+                    .detach();
+                two = SkPathBuilder()
+                    .setFillType(twoF)
+                    .addRect({40, 40, 100, 100})
+                    .detach();
                 canvas->save();
                 canvas->translate(0, SkIntToScalar(yPos));
                 canvas->clipRect(SkRect::MakeWH(110, 110), true);
