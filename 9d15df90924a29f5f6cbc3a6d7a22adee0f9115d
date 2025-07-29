@@ -39,6 +39,30 @@
       },
       "revId": "9d15df90924a29f5f6cbc3a6d7a22adee0f9115d",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ca436e4_17f2750f",
+        "filename": "include/private/SkPathRef.h",
+        "patchSetId": 4
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T19:34:51Z",
+      "side": 1,
+      "message": "incidental.\n\nIn general, Michael L. has agreed that we should move away from SkScalar entirely, and just use float (same with removing macros like SkIntToScalar).",
+      "parentUuid": "0d26429a_c4ce5571",
+      "range": {
+        "startLine": 71,
+        "startChar": 55,
+        "endLine": 71,
+        "endChar": 60
+      },
+      "revId": "9d15df90924a29f5f6cbc3a6d7a22adee0f9115d",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
