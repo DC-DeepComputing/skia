@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "13aeaea7_3815d75a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 32
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T14:40:30Z",
+      "side": 1,
+      "message": "wow, looks great!\n\nIn a few places, we could be using one of the special factories for Path...\n--- Line(a, b)\n--- Rect(r)\netc.\n\nNot critical, but in the future, those will definitely be more efficient (and more readable) than \"building\" the equivalent shape at the call-site.",
+      "revId": "8020f3e9cbc652df4b47e6f22d624b087af679e9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
