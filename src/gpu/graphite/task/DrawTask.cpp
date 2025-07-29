@@ -14,6 +14,10 @@
 
 namespace skgpu::graphite {
 
+void DrawTask::what(std::vector<void*>& r) {
+
+}
+
 DrawTask::DrawTask(sk_sp<TextureProxy> target) : fTarget(std::move(target)) {}
 
 DrawTask::~DrawTask() = default;

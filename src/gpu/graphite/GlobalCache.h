@@ -17,7 +17,13 @@
 #include "src/gpu/graphite/Log.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+#include "src/gpu/graphite/GraphicsPipelineDesc.h"
+#include "src/gpu/graphite/RenderPassDesc.h"
+
 #include <functional>
+
+class SkExecutor;
+class SkTaskGroup;
 
 namespace skgpu::graphite {
 
@@ -30,6 +36,80 @@ class Sampler;
 class ShaderCodeDictionary;
 
 struct SamplerDesc;
+
+class GraphicsPipelineHandle {
+public:
+    GraphicsPipelineHandle(uint32_t uniqueKeyHash,
+                           const GraphicsPipelineDesc& pipelineDesc,
+                           const RenderPassDesc& renderPassDesc,
+                           SkEnumBitMask<PipelineCreationFlags> pipelineCreationFlags)
+            : fUniqueKeyHash(uniqueKeyHash)
+            , fPipelineDesc(pipelineDesc)
+            , fRenderPassDesc(renderPassDesc)
+            , fPipelineCreationFlags(pipelineCreationFlags) {}
+
+    GraphicsPipelineHandle(sk_sp<GraphicsPipeline> pipeline)
+            : fUniqueKeyHash(pipeline->hash())
+            , fPipelineDesc({})
+            , fRenderPassDesc({})
+            , fPipelineCreationFlags(pipeline->fromPrecompile()
+                                      ? PipelineCreationFlags::kForPrecompilation
+                                      : PipelineCreationFlags::kNone)
+            , fIsReady(true)
+            , fPipeline(std::move(pipeline)) {}
+
+    bool isReady() const { return fIsReady; }
+
+    const uint32_t fUniqueKeyHash = 0;
+    const GraphicsPipelineDesc fPipelineDesc;
+    const RenderPassDesc fRenderPassDesc;
+    const SkEnumBitMask<PipelineCreationFlags> fPipelineCreationFlags;
+
+    bool fIsReady = false;
+    sk_sp<GraphicsPipeline> fPipeline;
+};
+
+class Compilinator {
+public:
+    Compilinator(SkExecutor*);
+    ~Compilinator();
+
+private:
+    // fTaskGroup must appear before anything that uses it (e.g. fGpu), so that it is destroyed
+    // after all of its users. Clients of fTaskGroup will generally want to ensure that they call
+    // wait() on it as they are being destroyed, to avoid the possibility of pending tasks being
+    // invoked after objects they depend upon have already been destroyed.
+    std::unique_ptr<SkTaskGroup> fTaskGroup;
+};
+
+class PipelineManager {
+public:
+    PipelineManager();
+    ~PipelineManager();
+
+    GraphicsPipelineHandle* findOrCreateHandle(
+            uint32_t keyHash,
+            const GraphicsPipelineDesc&,
+            const RenderPassDesc&,
+            SkEnumBitMask<PipelineCreationFlags>) SK_EXCLUDES(fSpinLock);
+
+    // Kick off the actual compilation of the provided handle
+    void kickOff(GraphicsPipelineHandle*);
+
+private:
+    struct KeyHash {
+        uint32_t operator()(uint32_t hash) const { return hash; }
+    };
+
+    using GraphicsPipelineHandleCache = SkLRUCache<uint32_t, GraphicsPipelineHandle*, KeyHash>;
+
+    mutable SkSpinlock fSpinLock;
+
+    GraphicsPipelineHandleCache fGraphicsPipelineHandleCache SK_GUARDED_BY(fSpinLock);
+
+    // TODO: replace this with a block allocated thing
+    std::vector<GraphicsPipelineHandle*> fMemoryToDeallocate SK_GUARDED_BY(fSpinLock);
+};
 
 /**
  * GlobalCache holds GPU resources that should be shared by every Recorder. The common requirement
