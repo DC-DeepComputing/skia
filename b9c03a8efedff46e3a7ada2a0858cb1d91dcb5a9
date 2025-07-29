@@ -34,6 +34,24 @@
       "parentUuid": "7f8d575f_d522d70d",
       "revId": "b9c03a8efedff46e3a7ada2a0858cb1d91dcb5a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89275cb2_b28b2d70",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-29T18:09:37Z",
+      "side": 1,
+      "message": "They should be online within 10-15 minutes: https://skia-review.googlesource.com/c/k8s-config/+/1028839 (assuming they don\u0027t need further fixes)",
+      "parentUuid": "4838ce2d_f52047e0",
+      "revId": "b9c03a8efedff46e3a7ada2a0858cb1d91dcb5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
