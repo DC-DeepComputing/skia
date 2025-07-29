@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4b8ce482_872fe3f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-29T20:16:17Z",
+      "side": 1,
+      "message": "While working on https://skia-review.googlesource.com/c/skia/+/1028699 there are a lot more family names to expose but this also exposes the same typefaces with many glyphs many times, which ate up the limit but didn\u0027t draw anything.",
+      "revId": "b4eae4c2e3d62023bfa5ad10a72b0f1a47934ec9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
