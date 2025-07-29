@@ -75,6 +75,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "fdae8797_43289b55",
+        "filename": "src/core/SkPathPriv.h",
+        "patchSetId": 5
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T20:58:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "134c20ea_55677fc3",
+      "range": {
+        "startLine": 96,
+        "startChar": 27,
+        "endLine": 96,
+        "endChar": 51
+      },
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0eb63636_36580d5e",
@@ -88,6 +112,30 @@
       "writtenOn": "2025-07-29T20:50:13Z",
       "side": 1,
       "message": "`verbs` is already `const SkPathVerb*` - is this needed?",
+      "range": {
+        "startLine": 276,
+        "startChar": 8,
+        "endLine": 276,
+        "endChar": 43
+      },
+      "revId": "153179b7445def878ec9dfa993812d6f8f6b324b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "781806c6_298083bd",
+        "filename": "src/core/SkPath_serial.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T20:58:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0eb63636_36580d5e",
       "range": {
         "startLine": 276,
         "startChar": 8,
