@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e4dac1cd_1f050abc",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 242,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-29T17:11:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "02c06d31_b9347763",
+      "range": {
+        "startLine": 242,
+        "startChar": 38,
+        "endLine": 242,
+        "endChar": 60
+      },
+      "revId": "ad7b68d2c092f4dd89dcf309932ff47f18382e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8d2e9d8f_565213ff",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-29T15:47:24Z",
       "side": 1,
       "message": "Unlike SkPath, I think for SkPathBuilder we always store a positive fLastMoveIndex plus an explicit fNeedsMoveVerb (which is really the sign bit in SkPath).\n\nSo I guess this should be something like\n\n```\n  if (!fNeedsMoveVerb) {\n      pt \u003d fPts[count - 1];\n  } else {\n      pt \u003d fPts[fLastMoveIndex];\n  }\n```\n\nLet\u0027s add something in PathBuilderTest to verify.",
+      "range": {
+        "startLine": 246,
+        "startChar": 12,
+        "endLine": 246,
+        "endChar": 31
+      },
+      "revId": "ad7b68d2c092f4dd89dcf309932ff47f18382e2b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46edf47b_b7969353",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-29T17:11:53Z",
+      "side": 1,
+      "message": "Done, copied and modified `test_rMoveTo` from PathTest.cpp.",
+      "parentUuid": "8d2e9d8f_565213ff",
       "range": {
         "startLine": 246,
         "startChar": 12,
