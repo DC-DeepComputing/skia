@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca390892_aaf03a11",
+        "filename": "MODULE.bazel",
+        "patchSetId": 2
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 8704
+      },
+      "writtenOn": "2025-07-29T18:28:30Z",
+      "side": 1,
+      "message": "I have tested that specifying an exact version requirement (with `\u003d` prefix) also helps, and this seems more straightforward than pinning to a git revision?  Sorry for not realizing earlier that this extra `\u003d` may be necessary - I hope that locking (in cargo?  in Bazel?) would be sufficient, but apparently I didn\u0027t think this through...\n\n```suggestion\n    version \u003d \"\u003d0.18.0-rc\",\n```\n\n(not sure if `MODULE.bazel.lock` will have to be updated too)",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 135,
+        "endChar": 53
+      },
+      "revId": "8fe5b40200c7bba2db9f993eb368fa6588156e7c",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
