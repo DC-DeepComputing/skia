@@ -35,6 +35,8 @@ SkColorType GetSkColorTypeFromBufferFormat(uint32_t bufferFormat) {
         case AHARDWAREBUFFER_FORMAT_R8_UNORM:
             return kAlpha_8_SkColorType;
 #endif
+        case AHARDWAREBUFFER_FORMAT_B8G8R8A8_UNORM:
+            return kBGRA_8888_SkColorType;
         default:
             // Given that we only use this texture as a source, colorType will not impact how Skia
             // uses the texture.  The only potential affect this is anticipated to have is that for
