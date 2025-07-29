@@ -239,6 +239,19 @@ SkPathBuilder& SkPathBuilder::close() {
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
+SkPathBuilder& SkPathBuilder::rMoveTo(SkPoint pt) {
+    SkPoint lastPt = {0,0};
+    int count = fPts.size();
+    if (count > 0) {
+        if (fLastMoveIndex >= 0) {
+            lastPt = fPts[count - 1];
+        } else {
+            lastPt = fPts[fLastMoveIndex];
+        }
+    }
+    return this->moveTo(lastPt.fX + pt.fX, lastPt.fY + pt.fY);
+}
+
 SkPathBuilder& SkPathBuilder::rLineTo(SkPoint p1) {
     this->ensureMove();
     return this->lineTo(fPts.back() + p1);
