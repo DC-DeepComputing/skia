@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72c7ac06_94c47c48",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-29T19:02:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b48fe573_9ed98146",
+      "range": {
+        "startLine": 200,
+        "startChar": 79,
+        "endLine": 200,
+        "endChar": 84
+      },
+      "revId": "aaadd67d0ed8b90a95a0fd4900bd9577374411a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "174968e0_994d23c0",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-29T17:08:14Z",
       "side": 1,
       "message": "nit: line length weirdness \n```\n    // No need to specialize drawRegion or drawPatch as the default impls all route to drawPath, \n    // drawRect, or drawVertices as desired.\n```",
+      "range": {
+        "startLine": 201,
+        "startChar": 0,
+        "endLine": 203,
+        "endChar": 63
+      },
+      "revId": "aaadd67d0ed8b90a95a0fd4900bd9577374411a7",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a05c0d6_2588e340",
+        "filename": "src/gpu/graphite/Device.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-07-29T19:02:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "174968e0_994d23c0",
       "range": {
         "startLine": 201,
         "startChar": 0,
