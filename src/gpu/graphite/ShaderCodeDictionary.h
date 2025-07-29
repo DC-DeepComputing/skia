@@ -96,6 +96,7 @@ struct ShaderSnippet {
         kNone,
         kLocalCoords,
         kPriorStageOutput,
+        kTextureSize,
     };
 
     ShaderSnippet() = default;

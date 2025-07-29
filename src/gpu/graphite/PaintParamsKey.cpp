@@ -117,6 +117,7 @@ ShaderNode* PaintParamsKey::createNode(const ShaderCodeDictionary* dict,
                                    dataSpan);
 }
 
+namespace {
 // Traverse a ShaderNode tree, attempting to lift any coordinate modification expressions.
 // Returns whether any of the given nodes need local coordinate inputs after lifting.
 bool lift_coord_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
@@ -193,6 +194,21 @@ void lift_color_expressions(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
 #endif
 }
 
+void lift_texture_size(SkSpan<ShaderNode*> nodes, int* availableVaryings) {
+#if !defined(SK_USE_LEGACY_UNIFORM_LIFTING_GRAPHITE)
+    for (ShaderNode* node : nodes) {
+        if (*availableVaryings > 0 &&
+            node->entry()->fLiftableExpressionType ==
+                    ShaderSnippet::LiftableExpressionType::kTextureSize) {
+            --*availableVaryings;
+            node->setLiftExpressionFlag();
+        }
+    }
+#endif
+}
+
+} // anonymous namespace
+
 SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
                                                        const ShaderCodeDictionary* dict,
                                                        SkArenaAlloc* arena,
@@ -223,6 +239,9 @@ SkSpan<const ShaderNode*> PaintParamsKey::getRootNodes(const Caps* caps,
     if (caps->storageBufferSupport()) {
         lift_color_expressions(liftableNodes, &availableVaryings);
     }
+
+    // TODO: If we can lift texture size, do that here.
+    lift_texture_size(liftableNodes, &availableVaryings);
 
     // Copy the accumulated roots into a span stored in the arena
     const ShaderNode** rootSpan = arena->makeArray<const ShaderNode*>(roots.size());

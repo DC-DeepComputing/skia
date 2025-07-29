@@ -424,6 +424,12 @@ std::string GenerateLocalMatrixExpression(const ShaderInfo& shaderInfo,
                                 translation.c_str());
 }
 
+std::string GenerateTextureSizeExpression(const ShaderInfo& shaderInfo,
+                                          const ShaderNode* node,
+                                          const ShaderSnippet::Args& args) {
+    // TODO populate
+}
+
 static constexpr int kNumCoordinateManipulateChildren = 1;
 
 std::string GenerateCoordNormalizeExpression(const ShaderInfo& shaderInfo,
@@ -1203,7 +1209,10 @@ ShaderCodeDictionary::ShaderCodeDictionary(
                            { "tilemodeX",             SkSLType::kInt },
                            { "tilemodeY",             SkSLType::kInt },
                            { "filterMode",            SkSLType::kInt } },
-            /*texturesAndSamplers=*/{"image"}
+            /*texturesAndSamplers=*/{"image"},
+            /*numChildren=*/0,
+            /*liftableExpression=*/GenerateTextureSizeExpression,
+            /*liftableExpressionType=*/ShaderSnippet::LiftableExpressionType::kTextureSize
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCubicImageShader] = {
             /*name=*/"CubicImage",
