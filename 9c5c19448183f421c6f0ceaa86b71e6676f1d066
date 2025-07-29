@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8f580d6_b1f82bc0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-29T16:04:39Z",
+      "side": 1,
+      "message": "Agreed.",
+      "parentUuid": "d21cf1fa_ec7d708b",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 33
+      },
+      "revId": "9c5c19448183f421c6f0ceaa86b71e6676f1d066",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e93a0a92_61b17610",
@@ -37,6 +61,30 @@
       "writtenOn": "2025-07-29T15:53:52Z",
       "side": 1,
       "message": "nit: we could also relocate them to the public section to avoid the ifdefs.",
+      "range": {
+        "startLine": 965,
+        "startChar": 0,
+        "endLine": 967,
+        "endChar": 6
+      },
+      "revId": "9c5c19448183f421c6f0ceaa86b71e6676f1d066",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eac0f5da_320c2651",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 1
+      },
+      "lineNbr": 967,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-29T16:04:39Z",
+      "side": 1,
+      "message": "There are currently a bunch of public/private sections. I\u0027ll write a follow-up CL that just moves things around without actually changing anything.",
+      "parentUuid": "e93a0a92_61b17610",
       "range": {
         "startLine": 965,
         "startChar": 0,
