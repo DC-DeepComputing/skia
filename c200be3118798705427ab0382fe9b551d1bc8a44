@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fccedd7_359fe2b3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-29T00:22:15Z",
+      "side": 1,
+      "message": "Looks like this CL was causing this bot? I\u0027m ok to revert and see if that helps.",
+      "revId": "c200be3118798705427ab0382fe9b551d1bc8a44",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
