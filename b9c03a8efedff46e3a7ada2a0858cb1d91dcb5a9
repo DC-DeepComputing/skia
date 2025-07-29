@@ -16,6 +16,24 @@
       "message": "Why don\u0027t we wait for the rollers to spin up so that we can see them work?",
       "revId": "b9c03a8efedff46e3a7ada2a0858cb1d91dcb5a9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4838ce2d_f52047e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-29T18:08:05Z",
+      "side": 1,
+      "message": "I suppose we could. I was going to start rolling out more of the auto-deleting rules and didn\u0027t want to break stuff in the meantime. WDYT?",
+      "parentUuid": "7f8d575f_d522d70d",
+      "revId": "b9c03a8efedff46e3a7ada2a0858cb1d91dcb5a9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
