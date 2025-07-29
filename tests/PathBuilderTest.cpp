@@ -348,12 +348,12 @@ static void test_addPathMode(skiatest::Reporter* reporter, bool explicitMoveTo, 
     }
     q.lineTo(2, 2);
     p.addPath(q.snapshot(), extend ? SkPath::kExtend_AddPathMode : SkPath::kAppend_AddPathMode);
-    SkSpan<const uint8_t> verbs = SkPathPriv::GetVerbs(p);
-    REPORTER_ASSERT(reporter, SkPathPriv::CountVerbs(p) == 4);
-    REPORTER_ASSERT(reporter, verbs[0] == SkPath::kMove_Verb);
-    REPORTER_ASSERT(reporter, verbs[1] == SkPath::kLine_Verb);
-    REPORTER_ASSERT(reporter, verbs[2] == (extend ? SkPath::kLine_Verb : SkPath::kMove_Verb));
-    REPORTER_ASSERT(reporter, verbs[3] == SkPath::kLine_Verb);
+    auto verbs = SkPathPriv::GetVerbs(p);
+    REPORTER_ASSERT(reporter, verbs.size() == 4);
+    REPORTER_ASSERT(reporter, verbs[0] == SkPathVerb::kMove);
+    REPORTER_ASSERT(reporter, verbs[1] == SkPathVerb::kLine);
+    REPORTER_ASSERT(reporter, verbs[2] == (extend ? SkPathVerb::kLine : SkPathVerb::kMove));
+    REPORTER_ASSERT(reporter, verbs[3] == SkPathVerb::kLine);
 }
 
 static void test_extendClosedPath(skiatest::Reporter* reporter) {
@@ -365,15 +365,15 @@ static void test_extendClosedPath(skiatest::Reporter* reporter) {
     q.moveTo(2, 1);
     q.lineTo(2, 3);
     p.addPath(q.detach(), SkPath::kExtend_AddPathMode);
-    SkSpan<const uint8_t> verbs = SkPathPriv::GetVerbs(p);
-    REPORTER_ASSERT(reporter, SkPathPriv::CountVerbs(p) == 7);
-    REPORTER_ASSERT(reporter, verbs[0] == SkPath::kMove_Verb);
-    REPORTER_ASSERT(reporter, verbs[1] == SkPath::kLine_Verb);
-    REPORTER_ASSERT(reporter, verbs[2] == SkPath::kLine_Verb);
-    REPORTER_ASSERT(reporter, verbs[3] == SkPath::kClose_Verb);
-    REPORTER_ASSERT(reporter, verbs[4] == SkPath::kMove_Verb);
-    REPORTER_ASSERT(reporter, verbs[5] == SkPath::kLine_Verb);
-    REPORTER_ASSERT(reporter, verbs[6] == SkPath::kLine_Verb);
+    auto verbs = SkPathPriv::GetVerbs(p);
+    REPORTER_ASSERT(reporter, verbs.size() == 7);
+    REPORTER_ASSERT(reporter, verbs[0] == SkPathVerb::kMove);
+    REPORTER_ASSERT(reporter, verbs[1] == SkPathVerb::kLine);
+    REPORTER_ASSERT(reporter, verbs[2] == SkPathVerb::kLine);
+    REPORTER_ASSERT(reporter, verbs[3] == SkPathVerb::kClose);
+    REPORTER_ASSERT(reporter, verbs[4] == SkPathVerb::kMove);
+    REPORTER_ASSERT(reporter, verbs[5] == SkPathVerb::kLine);
+    REPORTER_ASSERT(reporter, verbs[6] == SkPathVerb::kLine);
 
     std::optional<SkPoint> pt = p.getLastPt();
     REPORTER_ASSERT(reporter, pt.has_value());
@@ -768,8 +768,8 @@ DEF_TEST(SkPathBuilder_cleaning, reporter) {
 
     auto verbs = b.verbs();
     REPORTER_ASSERT(reporter, verbs.size() == 2);
-    REPORTER_ASSERT(reporter, verbs[0] == (uint8_t)SkPathVerb::kMove);
-    REPORTER_ASSERT(reporter, verbs[1] == (uint8_t)SkPathVerb::kClose);
+    REPORTER_ASSERT(reporter, verbs[0] == SkPathVerb::kMove);
+    REPORTER_ASSERT(reporter, verbs[1] == SkPathVerb::kClose);
 
     auto pts = b.points();
     REPORTER_ASSERT(reporter, pts.size() == 1);
