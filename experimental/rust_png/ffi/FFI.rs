@@ -645,7 +645,7 @@ impl Reader {
     }
 
     fn output_buffer_size(&self) -> usize {
-        self.reader.output_buffer_size()
+        self.reader.output_buffer_size().unwrap()
     }
 
     fn output_color_type(&self) -> ffi::ColorType {

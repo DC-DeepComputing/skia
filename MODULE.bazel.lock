@@ -4721,7 +4721,7 @@
     "@@rules_rust+//crate_universe:extensions.bzl%crate": {
       "general": {
         "bzlTransitiveDigest": "G9R7GwG0ammneY68evaZE29EMNl3X5GOuQs27VuhPJM=",
-        "usagesDigest": "bwr4iW1wwZdnBcYk2EQQod0BOWkfXPcj21sB2NRU1qk=",
+        "usagesDigest": "9VC9DJHNxlYEUm3ju8fjQB7XxnwJ/KC3dKuT+IzvX0Q=",
         "recordedFileInputs": {
           "@@//bazel/external/cxx/BUILD.bazel.skia": "39b51a9bd87483932d67ad5e0707ec339de993688df60ec69a76028e071c890a"
         },
