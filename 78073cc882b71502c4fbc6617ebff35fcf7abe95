@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b7a39b4_ab02dae9",
+        "filename": "src/core/SkPathBuilder.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T19:01:51Z",
+      "side": 1,
+      "message": "`!fNeedsMoveVerb`",
+      "range": {
+        "startLine": 246,
+        "startChar": 12,
+        "endLine": 246,
+        "endChar": 31
+      },
+      "revId": "78073cc882b71502c4fbc6617ebff35fcf7abe95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "130b7f25_06e4c1b1",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 873,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T19:01:51Z",
+      "side": 1,
+      "message": "Same scoping issue as below, but additionally this also ends up creating a different SkPath than the one being tested, so their iterators won\u0027t be comparable.",
+      "range": {
+        "startLine": 873,
+        "startChar": 59,
+        "endLine": 873,
+        "endChar": 72
+      },
+      "revId": "78073cc882b71502c4fbc6617ebff35fcf7abe95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a52f5e4_3207b32d",
+        "filename": "tests/PathBuilderTest.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 888,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-07-29T19:01:51Z",
+      "side": 1,
+      "message": "This could be part of the test issues: I think the snapshot skpath is going out of scope as soon as the iterator is constructed (since the iterator only stores raw pointers and doesn\u0027t capture the pathref), so the iterator ends up with dangling pointers to a destroyed path.  To make it work we could keep the snapshot skpath in variable in the parent scope.\n\nIt might be easier to refactor using SkPathRaw iterators though, since we can create raw paths directly from SkPathBuilder data, and avoid all snapshot/scoping issues.",
+      "range": {
+        "startLine": 888,
+        "startChar": 53,
+        "endLine": 888,
+        "endChar": 65
+      },
+      "revId": "78073cc882b71502c4fbc6617ebff35fcf7abe95",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
