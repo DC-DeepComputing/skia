@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c28232b0_0f98bb9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-30T13:32:09Z",
+      "side": 1,
+      "message": "just a thought\n\nOver time we\u0027ve migrated some enums and simple types out of nested-classes, and into SkPathTypes.h -- maybe some of these could go there as well? Maybe only if they\u0027re used outside of \"builders\"...",
+      "revId": "1e739bb9afbb91ab2915b2e2ad07e3fa224ec7bd",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
