@@ -84,9 +84,13 @@ SkPathRef* SkPathRef::CreateEmpty() {
     return SkRef(gEmpty);
 }
 
-static void transform_dir_and_start(const SkMatrix& matrix, bool isRRect, bool* isCCW,
-                                    unsigned* start) {
-    int inStart = *start;
+std::pair<SkPathDirection, unsigned> SkPathPriv::TransformDirStart(const SkMatrix& matrix,
+                                                                   bool isRRect,
+                                                                   SkPathDirection dir,
+                                                                   unsigned inStart) {
+    unsigned outStart;
+    bool isCCW = (dir == SkPathDirection::kCCW);
+
     int rm = 0;
     if (isRRect) {
         // Degenerate rrect indices to oval indices and remember the remainder.
@@ -122,21 +126,21 @@ static void transform_dir_and_start(const SkMatrix& matrix, bool isRRect, bool* 
     if (sameSign != antiDiag) {
         // This is a rotation (and maybe scale). The direction is unchanged.
         // Trust me on the start computation (or draw yourself some pictures)
-        *start = (inStart + 4 - (topNeg | antiDiag)) % 4;
-        SkASSERT(*start < 4);
-        if (isRRect) {
-            *start = 2 * *start + rm;
-        }
+        outStart = (inStart + 4 - (topNeg | antiDiag)) % 4;
+        SkASSERT(outStart < 4);
     } else {
         // This is a mirror (and maybe scale). The direction is reversed.
-        *isCCW = !*isCCW;
+        isCCW = !isCCW;
         // Trust me on the start computation (or draw yourself some pictures)
-        *start = (6 + (topNeg | antiDiag) - inStart) % 4;
-        SkASSERT(*start < 4);
-        if (isRRect) {
-            *start = 2 * *start + (rm ? 0 : 1);
-        }
+        outStart = (6 + (topNeg | antiDiag) - inStart) % 4;
+        SkASSERT(outStart < 4);
     }
+
+    if (isRRect) {
+        outStart = 2 * outStart + (rm ? 0 : 1);
+    }
+
+    return { isCCW ? SkPathDirection::kCCW : SkPathDirection::kCW, outStart };
 }
 
 void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
@@ -211,10 +215,11 @@ void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
             (rectStaysRect && src.fType != PathType::kArc) ? src.fType : PathType::kGeneral;
     (*dst)->fType = newType;
     if (newType == PathType::kOval || newType == PathType::kRRect) {
-        unsigned start = src.fRRectOrOvalStartIdx;
-        bool isCCW = SkToBool(src.fRRectOrOvalIsCCW);
-        transform_dir_and_start(matrix, newType == PathType::kRRect, &isCCW, &start);
-        (*dst)->fRRectOrOvalIsCCW = isCCW;
+        auto [dir, start] = SkPathPriv::TransformDirStart(matrix,
+                              newType == PathType::kRRect,
+                              src.fRRectOrOvalIsCCW ? SkPathDirection::kCCW : SkPathDirection::kCW,
+                              src.fRRectOrOvalStartIdx);
+        (*dst)->fRRectOrOvalIsCCW = (dir == SkPathDirection::kCCW);
         (*dst)->fRRectOrOvalStartIdx = start;
     }
 
