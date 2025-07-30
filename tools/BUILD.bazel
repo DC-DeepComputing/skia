@@ -307,6 +307,13 @@ genrule(
 skia_cc_library(
     name = "full_build",
     testonly = True,
+    srcs = [
+        "//include/core:headers_to_compile",
+        "//src/core:headers_to_compile",
+    ],
+    copts = [
+        "-Wno-error",
+    ],
     # This is not intended to be used for tests or anything, just for a smoke test build
     visibility = ["//visibility:private"],
     deps = [
