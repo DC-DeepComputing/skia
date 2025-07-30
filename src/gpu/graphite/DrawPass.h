@@ -22,11 +22,14 @@
 
 struct SkImageInfo;
 
+#define SK_TRACE_GRAPHITE_PIPELINE_USE 1
+
 namespace skgpu::graphite {
 
 class CommandBuffer;
 class DrawList;
 class GraphicsPipeline;
+class GraphicsPipelineHandle;
 class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
@@ -115,6 +118,7 @@ private:
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
 
     // These resources all get instantiated during prepareResources.
+    skia_private::TArray<GraphicsPipelineHandle*> fPipelineHandles;
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
 

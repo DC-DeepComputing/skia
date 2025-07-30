@@ -81,5 +81,5 @@ private:
 
 //////////////////////////////////////////////////////////////////////////////
 
-DEF_GM(return new ArcOfZorroGM;)
+DEF_GM(return new ArcOfZorroGM();)
 }  // namespace skiagm

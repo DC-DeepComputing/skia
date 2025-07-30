@@ -75,6 +75,13 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         return false;
     }
 
+#if 1
+    fResourceProvider->createGraphicsPipelineHandle(rtEffectDict.get(),
+                                                    pipelineDesc,
+                                                    renderPassDesc,
+                                                    PipelineCreationFlags::kForPrecompilation,
+                                                    /* autoDelete= */ true);
+#else
     sk_sp<GraphicsPipeline> pipeline = fResourceProvider->findOrCreateGraphicsPipeline(
             rtEffectDict.get(),
             pipelineDesc,
@@ -84,6 +91,7 @@ bool PrecompileContext::precompile(sk_sp<SkData> serializedPipelineKey) {
         SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
         return false;
     }
+#endif
 
     SkASSERT(rtEffectDict->empty());
 

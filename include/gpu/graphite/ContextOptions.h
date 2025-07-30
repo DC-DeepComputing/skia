@@ -17,6 +17,7 @@
 #include <optional>
 
 class SkData;
+class SkExecutor;
 class SkRuntimeEffect;
 namespace skgpu { class ShaderErrorHandler; }
 
@@ -171,6 +172,13 @@ struct SK_API ContextOptions {
      */
     SkSpan<sk_sp<SkRuntimeEffect>> fUserDefinedKnownRuntimeEffects;
 
+    /**
+     * Executor to handle threaded work within Graphite. If this is nullptr, then all work will be
+     * done serially on the main thread. To have worker threads assist with various tasks, set this
+     * to a valid SkExecutor instance. Currently, used for Pipeline compilation, but may be used
+     * for other tasks.
+     */
+    SkExecutor* fExecutor = nullptr;
 
     /**
      * An experimental flag in development. Behavior and performance is subject to change.

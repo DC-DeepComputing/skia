@@ -661,7 +661,28 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
                                 const RenderPassDesc& renderPassDesc) {
     TRACE_EVENT0("skia.gpu", TRACE_FUNC);
 
+    //$$ replace the 'fFullPipelines' vector with handles
+    fPipelineHandles.reserve(fPipelineDescs.size());
+    for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
+        GraphicsPipelineHandle* handle = resourceProvider->createGraphicsPipelineHandle(
+                runtimeDict,
+                pipelineDesc,
+                renderPassDesc,
+                PipelineCreationFlags::kNone,
+                /* autoDelete= */ false);
+        if (!handle) {
+            SKGPU_LOG_W("Failed to create GraphicsPipelineHandle for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fPipelineHandles.push_back(handle);
+    }
+
+    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
+    // once we've created pipelines, so we drop the storage for them here.
+    fPipelineDescs.clear();
+
     fFullPipelines.reserve(fPipelineDescs.size());
+#if 0
     for (const GraphicsPipelineDesc& pipelineDesc : fPipelineDescs) {
         auto pipeline = resourceProvider->findOrCreateGraphicsPipeline(runtimeDict,
                                                                        pipelineDesc,
@@ -672,9 +693,19 @@ bool DrawPass::prepareResources(ResourceProvider* resourceProvider,
         }
         fFullPipelines.push_back(std::move(pipeline));
     }
-    // The DrawPass may be long lived on a Recording and we no longer need the GraphicPipelineDescs
-    // once we've created pipelines, so we drop the storage for them here.
-    fPipelineDescs.clear();
+#else
+    // TODO: move this wait loop until later - where Dawn does its weight
+    for (auto handle : fPipelineHandles) {
+        auto pipeline = resourceProvider->wait(handle);
+        if (!pipeline) {
+            SKGPU_LOG_W("Failed to create GraphicsPipeline for draw in RenderPass. Dropping pass!");
+            return false;
+        }
+        fFullPipelines.push_back(std::move(pipeline));
+    }
+    fPipelineHandles.clear();
+#endif
+
 
     for (int i = 0; i < fSampledTextures.size(); ++i) {
         // It should not have been possible to draw an Image that has an invalid texture info
