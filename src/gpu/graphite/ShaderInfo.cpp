@@ -406,6 +406,8 @@ SkSLType sksl_type_for_lifted_expression(
         case ShaderSnippet::LiftableExpressionType::kNone:
             return SkSLType::kVoid;
         case ShaderSnippet::LiftableExpressionType::kLocalCoords:
+            [[fallthrough]];
+        case ShaderSnippet::LiftableExpressionType::kTextureSize:
             return SkSLType::kFloat2;
         case ShaderSnippet::LiftableExpressionType::kPriorStageOutput:
             return SkSLType::kHalf4;
@@ -417,7 +419,9 @@ std::string emit_varyings(const RenderStep* step,
                           const char* direction,
                           SkSpan<const LiftedExpression> liftedExpressions,
                           bool emitSsboIndicesVarying,
-                          bool emitLocalCoordsVarying) {
+                          bool emitLocalCoordsVarying
+                          // TODO: Need a bool for texture size?
+                          ) {
     std::string result;
     int location = 0;
 
@@ -443,6 +447,11 @@ std::string emit_varyings(const RenderStep* step,
     if (emitLocalCoordsVarying) {
         appendVarying({"localCoordsVar", SkSLType::kFloat2});
     }
+
+    // TODO: Needed?
+    // if (emitTextureSizeVarying) {
+    //     appendVarying({"invImageSizeVar", SkSLType::kFloat2});
+    // }
 
     for (const LiftedExpression& expr : liftedExpressions) {
         if (expr.fEmitVarying) {
@@ -639,6 +648,9 @@ void collect_lifted_expressions(SkSpan<const ShaderNode*> nodes,
                     break;
                 case ShaderSnippet::LiftableExpressionType::kPriorStageOutput:
                     childArgs.fPriorStageOutput = node->getExpressionVaryingName();
+                    break;
+                case ShaderSnippet::LiftableExpressionType::kTextureSize:
+                    childArgs.fInvImgSize = node->getExpressionVaryingName();
                     break;
                 default:
                     SkUNREACHABLE;
@@ -861,6 +873,8 @@ void ShaderInfo::generateFragmentSkSL(const Caps* caps,
     *rootNodes = key.getRootNodes(caps, dict, &shaderNodeAlloc, availableVaryings);
     fNeedsLocalCoords = !rootNodes->empty() && SkToBool((*rootNodes)[0]->requiredFlags() &
                                                         SnippetRequirementFlags::kLocalCoords);
+    // fNeedsInvImageSize = !rootNodes->empty() && SkToBool((*rootNodes)[0]->requiredFlags() &
+    //                                                      SnippetRequirementFlags::kNeeds);
 
     // TODO(b/366220690): aggregateSnippetData() goes away entirely once the VulkanGraphicsPipeline
     // is updated to use the extracted SamplerDescs directly.

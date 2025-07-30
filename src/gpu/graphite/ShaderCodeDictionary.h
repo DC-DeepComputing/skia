@@ -80,6 +80,7 @@ struct ShaderSnippet {
         std::string fPriorStageOutput;
         std::string fBlenderDstColor;
         std::string fFragCoord;
+        std::string fInvImgSize;
     };
 
     using GeneratePreambleForSnippetFn = std::string (*)(const ShaderInfo& shaderInfo,
@@ -96,6 +97,7 @@ struct ShaderSnippet {
         kNone,
         kLocalCoords,
         kPriorStageOutput,
+        kTextureSize,
     };
 
     ShaderSnippet() = default;
@@ -133,6 +135,9 @@ struct ShaderSnippet {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kPriorStageOutput);
     }
     bool needsBlenderDstColor() const {
+        return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
+    }
+    bool needsTextureSize() const {
         return SkToBool(fSnippetRequirementFlags & SnippetRequirementFlags::kBlenderDstColor);
     }
     bool storesSamplerDescData() const {
@@ -189,6 +194,8 @@ public:
         const bool isCompose = codeID == (int) BuiltInCodeSnippetID::kCompose ||
                                codeID == (int) BuiltInCodeSnippetID::kBlendCompose;
         for (const ShaderNode* child : children) {
+            // TODO(nicolettep): Where does need texture size flag belong?
+
             // Mask off flags to not propagate.
             SkEnumBitMask<SnippetRequirementFlags> mask =
                     SnippetRequirementFlags::kPassthroughLocalCoords |

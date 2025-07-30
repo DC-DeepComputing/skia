@@ -205,7 +205,10 @@ std::string emit_helper_declaration(const ShaderNode* node) {
 //--------------------------------------------------------------------------------------------------
 // ShaderSnippet
 
-const ShaderSnippet::Args ShaderSnippet::kDefaultArgs = {"inColor", "destColor", "pos"};
+const ShaderSnippet::Args ShaderSnippet::kDefaultArgs = {"inColor",
+                                                         "destColor",
+                                                         "pos",
+                                                         "invImgSize"};
 
 //--------------------------------------------------------------------------------------------------
 // ShaderNode
@@ -391,8 +394,7 @@ std::string GenerateSolidColorExpression(const ShaderInfo& shaderInfo,
     return SkSL::String::printf("half4(%s)", uniform.c_str());
 }
 
-std::string GenerateSolidColorPreamble(const ShaderInfo& shaderInfo,
-                                       const ShaderNode* node) {
+std::string GenerateSolidColorPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
     std::string code = emit_helper_declaration(node) + " {return ";
 
     if (node->requiredFlags() & SnippetRequirementFlags::kLiftExpression) {
@@ -423,6 +425,34 @@ std::string GenerateLocalMatrixExpression(const ShaderInfo& shaderInfo,
                                 args.fFragCoord.c_str(),
                                 translation.c_str());
 }
+
+//--------------------------------------------------------------------------------------------------
+
+std::string GenerateTextureSizeExpression(const ShaderInfo& shaderInfo,
+                                          const ShaderNode* node,
+                                          const ShaderSnippet::Args& args) {
+    std::string uniform =
+            get_mangled_uniform_name(shaderInfo, node->entry()->fUniforms[0], node->keyIndex());
+    return SkSL::String::printf("float2(%s)", uniform.c_str());
+}
+
+std::string GenerateTextureSizePreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
+    std::string preamble = emit_helper_declaration(node) + " {return ";
+
+    if (node->requiredFlags() & SnippetRequirementFlags::kLiftExpression) {
+        preamble += node->getExpressionVaryingName();
+    } else if (node->requiredFlags() & SnippetRequirementFlags::kOmitExpression) {
+        preamble += "float2(0)";
+        // TODO: Assert that the sksl type associated with texture size is float2?
+        // ShaderInfo's sksl_type_for_lifted_expression() is not public.
+    } else {
+        preamble += GenerateTextureSizeExpression(shaderInfo, node, ShaderSnippet::kDefaultArgs);
+    }
+
+    return preamble + ";}";
+}
+
+//--------------------------------------------------------------------------------------------------
 
 static constexpr int kNumCoordinateManipulateChildren = 1;
 
@@ -637,8 +667,7 @@ private:
     SkDEBUGCODE(const SkRuntimeEffect* fEffect;)
 };
 
-std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo,
-                                          const ShaderNode* node) {
+std::string GenerateRuntimeShaderPreamble(const ShaderInfo& shaderInfo, const ShaderNode* node) {
     // Find this runtime effect in the shader-code or runtime-effect dictionary.
     SkASSERT(node->codeSnippetId() >= kBuiltInCodeSnippetIDCount);
     const SkRuntimeEffect* effect;
@@ -1197,13 +1226,19 @@ ShaderCodeDictionary::ShaderCodeDictionary(
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kImageShader] = {
             /*name=*/"Image",
             /*staticFn=*/"sk_image_shader",
-            SnippetRequirementFlags::kLocalCoords | SnippetRequirementFlags::kStoresSamplerDescData,
+            SnippetRequirementFlags::kLocalCoords |
+            SnippetRequirementFlags::kStoresSamplerDescData,
             /*uniforms=*/{ { "invImgSize",            SkSLType::kFloat2 },
                            { "subset",                SkSLType::kFloat4 },
                            { "tilemodeX",             SkSLType::kInt },
                            { "tilemodeY",             SkSLType::kInt },
                            { "filterMode",            SkSLType::kInt } },
-            /*texturesAndSamplers=*/{"image"}
+            /*texturesAndSamplers=*/{"image"},
+            /*preambleGenerator=*/GenerateTextureSizePreamble,
+            /*numChildren=*/0,
+            /*liftableExpression=*/GenerateTextureSizeExpression,
+            /*liftableExpressionType=*/ShaderSnippet::LiftableExpressionType::kTextureSize
+            // TODO - interpolation perspective as default?
     };
     fBuiltInCodeSnippets[(int) BuiltInCodeSnippetID::kCubicImageShader] = {
             /*name=*/"CubicImage",

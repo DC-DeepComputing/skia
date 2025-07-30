@@ -512,7 +512,9 @@ void add_image_uniform_data(const ShaderCodeDictionary* dict,
     SkASSERT(!imgData.fSampling.useCubic);
     BEGIN_WRITE_UNIFORMS(gatherer, dict, BuiltInCodeSnippetID::kImageShader)
 
+    // TODO: Lift this information?
     gatherer->write(SkSize::Make(1.f/imgData.fImgSize.width(), 1.f/imgData.fImgSize.height()));
+
     gatherer->write(imgData.fSubset);
     gatherer->write(SkTo<int>(imgData.fTileModes.first));
     gatherer->write(SkTo<int>(imgData.fTileModes.second));
