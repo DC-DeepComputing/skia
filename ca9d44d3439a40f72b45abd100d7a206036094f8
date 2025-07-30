@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "849ac006_e1d21ecb",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-30T17:12:47Z",
+      "side": 1,
+      "message": "Nit: alignment",
+      "range": {
+        "startLine": 1615,
+        "startChar": 0,
+        "endLine": 1615,
+        "endChar": 40
+      },
+      "revId": "ca9d44d3439a40f72b45abd100d7a206036094f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4fbc9a10_3eacca06",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 5015
+      },
+      "writtenOn": "2025-07-30T17:12:47Z",
+      "side": 1,
+      "message": "I\u0027m not familiar with what happens with a const variable declaration inside of a static function, but I see similar usages in SkRegion_path.cpp which mark this as static const.  Should that be done here as well?",
+      "range": {
+        "startLine": 1855,
+        "startChar": 4,
+        "endLine": 1855,
+        "endChar": 9
+      },
+      "revId": "ca9d44d3439a40f72b45abd100d7a206036094f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
