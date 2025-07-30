@@ -449,8 +449,6 @@ void VulkanPreferredFeatures::addFeaturesToQuery(const VkExtensionProperties* de
     exts.fSynchronization2KHR = false;
     exts.fDynamicRenderingKHR = false;
     exts.fDynamicRenderingLocalReadKHR = false;
-    exts.fHostImageCopyEXT = false;
-    exts.fCopyCommands2KHR = false;
     exts.fShaderDrawParametersKHR = false;
     exts.fDrawIndirectCountKHR = false;
     exts.fSamplerMirrorClampToEdgeKHR = false;
