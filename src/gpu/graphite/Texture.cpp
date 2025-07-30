@@ -43,6 +43,12 @@ void Texture::invokeReleaseProc() {
     }
 }
 
+bool Texture::updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels) {
+    return false;
+}
+
+bool Texture::updateCompressedDataOnHost(const void*, size_t) { return false; }
+
 MutableTextureState* Texture::mutableState() const { return fMutableState.get(); }
 
 void Texture::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
