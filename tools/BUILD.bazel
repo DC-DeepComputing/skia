@@ -307,6 +307,16 @@ genrule(
 skia_cc_library(
     name = "full_build",
     testonly = True,
+    srcs = [
+        "//include/codec:headers_to_compile",
+        "//include/core:headers_to_compile",
+        "//src/codec:headers_to_compile",
+        "//src/core:headers_to_compile",
+    ],
+    copts = [
+        # We don't want errors like "unused symbol"
+        "-Wno-error",
+    ],
     # This is not intended to be used for tests or anything, just for a smoke test build
     visibility = ["//visibility:private"],
     deps = [
@@ -338,6 +348,7 @@ skia_cc_library(
         "//:webp_decode_codec",
         "//:webp_encode_codec",
         "//modules/jsonreader",
+        "//src/codec:android_codec",
         "//src/gpu/ganesh/gl:ganesh_gl_TEST_UTIL",
         "//src/gpu/ganesh/vk:ganesh_vulkan_TEST_UTIL",
         "//src/gpu/graphite:graphite_TEST_UTIL",
