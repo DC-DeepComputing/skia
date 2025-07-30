@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d0d807e_4779ec7c",
+        "filename": "src/core/SkPathRawShapes.h",
+        "patchSetId": 9
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-30T14:16:15Z",
+      "side": 1,
+      "message": "Need a `struct SkRRect;` forward declaration here.",
+      "revId": "4d0e32dec68e6b5682f1545d9d7c7178c1bc692a",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
