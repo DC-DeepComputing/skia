@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cd72f79_200571cf",
+        "filename": "bazel/generate_cpp_files_for_headers.bzl",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-30T14:33:19Z",
+      "side": 0,
+      "message": "It would be nice to keep this, since G3 is essentially doing this as well. Just ran into an issue with\n\nhttps://skia-review.googlesource.com/c/skia/+/1027596\nhttps://skia-review.googlesource.com/c/skia/+/1029297\n\nwhere the header doesn\u0027t build independently (and that breaks the G3 roll). It seems this was previously only enforced by the iwyu build so was removed here, but it would still be valuable to ensure all our headers build.",
+      "revId": "5a86ac6ad7dccb5deac64490fc26969720dacd6f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
