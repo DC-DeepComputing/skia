@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "160fc240_8c4b552a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-07-30T17:23:12Z",
+      "side": 1,
+      "message": "Overall seems good to me -- deferring to Michael for logic.",
+      "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "665db70a_00c2f568",
+        "filename": "src/gpu/android/AHardwareBufferUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-07-30T17:23:12Z",
+      "side": 1,
+      "message": "Heads up this additional check isn\u0027t needed when also checking for `SK_BUILD_FOR_ANDROID_FRAMEWORK`, since framework builds are effectively always built against the latest API level (or greater). The only time that wouldn\u0027t hold is when cherrypicking a Skia change back to an older release of Android, but API levels \u003c 28 are well outside of our potential cherrypick range.",
+      "range": {
+        "startLine": 44,
+        "startChar": 47,
+        "endLine": 44,
+        "endChar": 68
+      },
+      "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
