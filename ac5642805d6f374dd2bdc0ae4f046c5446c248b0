@@ -39,6 +39,30 @@
       },
       "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ebe6724_6441ec49",
+        "filename": "src/gpu/android/AHardwareBufferUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-30T17:41:40Z",
+      "side": 1,
+      "message": "Neat - I\u0027m going to let the Android Canary finish running and then push that change. Thank you!",
+      "parentUuid": "665db70a_00c2f568",
+      "range": {
+        "startLine": 44,
+        "startChar": 47,
+        "endLine": 44,
+        "endChar": 68
+      },
+      "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
