@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "generate_cpp_files_for_headers", "skia_filegroup")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -82,4 +82,25 @@ skia_filegroup(
     name = "webp_public_hdrs",
     srcs = ["SkWebpDecoder.h"],
     visibility = ["//src/codec:__pkg__"],
+)
+
+generate_cpp_files_for_headers(
+    name = "headers_to_compile",
+    headers = [
+        "SkAndroidCodec.h",
+        "SkCodec.h",
+        "SkCodecAnimation.h",
+        "SkEncodedImageFormat.h",
+        "SkEncodedOrigin.h",
+        "SkPixmapUtils.h",
+        "SkPngChunkReader.h",
+        "SkPngDecoder.h",
+        "SkBmpDecoder.h",
+        "SkGifDecoder.h",
+        "SkIcoDecoder.h",
+        "SkJpegDecoder.h",
+        "SkJpegxlDecoder.h",
+        "SkWbmpDecoder.h",
+        "SkWebpDecoder.h",
+    ],
 )
