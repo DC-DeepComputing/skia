@@ -43,6 +43,11 @@ void Texture::invokeReleaseProc() {
     }
 }
 
+bool Texture::uploadDataOnHost(const UploadSource& source) {
+    SkUNREACHABLE;
+    return false;
+}
+
 MutableTextureState* Texture::mutableState() const { return fMutableState.get(); }
 
 void Texture::onDumpMemoryStatistics(SkTraceMemoryDump* traceMemoryDump,
