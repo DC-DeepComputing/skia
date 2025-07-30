@@ -39,7 +39,7 @@ public:
     inline static constexpr unsigned int kAppendDataBufferIndex = 4;
     inline static constexpr unsigned int kGradientBufferIndex = 5;
 
-    static sk_sp<MtlGraphicsPipeline> Make(const MtlSharedContext*,
+    static sk_sp<MtlGraphicsPipeline> Make1(const MtlSharedContext*,
                                            MtlResourceProvider*,
                                            const RuntimeEffectDictionary*,
                                            const UniqueKey&,
@@ -52,6 +52,8 @@ public:
                                                            MtlResourceProvider*,
                                                            const RenderPassDesc&);
 
+    bool isReady() const override;
+
     ~MtlGraphicsPipeline() override {}
 
     id<MTLRenderPipelineState> mtlPipelineState() const { return fPipelineState.get(); }
@@ -59,6 +61,9 @@ public:
     uint32_t stencilReferenceValue() const { return fStencilReferenceValue; }
 
 private:
+    bool fAsync = false;
+    bool fAsyncFinished = false;
+
     MtlGraphicsPipeline(const skgpu::graphite::SharedContext* sharedContext,
                         const PipelineInfo& pipelineInfo,
                         sk_cfp<id<MTLRenderPipelineState>> pso,

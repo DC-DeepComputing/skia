@@ -41,6 +41,7 @@ void compile(const RendererProvider* rendererProvider,
              const RenderPassDesc& renderPassDesc,
              bool withPrimitiveBlender,
              Coverage coverage) {
+
     for (const Renderer* r : rendererProvider->renderers()) {
         if (!(r->drawTypes() & drawTypes)) {
             continue;
@@ -64,15 +65,13 @@ void compile(const RendererProvider* rendererProvider,
             UniquePaintParamsID paintID = s->performsShading() ? uniqueID
                                                                : UniquePaintParamsID::Invalid();
 
-            sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+
+            resourceProvider->createGraphicsPipelineHandle(
                     keyContext.rtEffectDict(),
                     { s->renderStepID(), paintID },
                     renderPassDesc,
-                    PipelineCreationFlags::kForPrecompilation);
-            if (!pipeline) {
-                SKGPU_LOG_W("Failed to create GraphicsPipeline in precompile!");
-                return;
-            }
+                    PipelineCreationFlags::kForPrecompilation,
+                    /* autoDelete= */ true);
         }
     }
 }
@@ -154,7 +153,7 @@ void Precompile(PrecompileContext* precompileContext,
                 // pipelines.
                 const RenderStep* renderStep =
                     rendererProvider->lookup(RenderStep::RenderStepID::kCoverBounds_InverseCover);
-                sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline(
+                sk_sp<GraphicsPipeline> pipeline = resourceProvider->findOrCreateGraphicsPipeline1(
                         keyContext.rtEffectDict(),
                         { renderStep->renderStepID(), UniquePaintParamsID::Invalid() },
                         renderPassDesc,

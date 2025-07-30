@@ -15,11 +15,12 @@
 #include "include/core/SkString.h"
 #include "src/base/SkRandom.h"
 
+#include "include/gpu/graphite/Context.h"
+#include "include/gpu/graphite/PrecompileContext.h"
+#include "src/gpu/graphite/RecorderPriv.h"
+
 namespace skiagm {
 
-// This GM draws a lot of arcs in a 'Z' shape. It particularly exercises
-// the 'drawArc' code near a singularly of its processing (i.e., near the
-// edge of one of its underlying quads).
 class ArcOfZorroGM : public GM {
 public:
     ArcOfZorroGM() {
@@ -27,7 +28,9 @@ public:
     }
 
 protected:
-    SkString getName() const override { return SkString("arcofzorro"); }
+    SkString getName() const override {
+        return SkString("arcofzorro");
+    }
 
     SkISize getISize() override { return SkISize::Make(1000, 1000); }
 
@@ -77,9 +80,10 @@ protected:
 
 private:
     using INHERITED = GM;
+    bool fWithPrecompile;
 };
 
 //////////////////////////////////////////////////////////////////////////////
 
-DEF_GM(return new ArcOfZorroGM;)
+DEF_GM(return new ArcOfZorroGM();)
 }  // namespace skiagm
