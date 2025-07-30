@@ -103,6 +103,9 @@ public:
                                                   const VulkanTexture* depthStencilTexture) const;
     void addCachedFramebuffer(sk_sp<VulkanFramebuffer>);
 
+    bool canUploadOnHost(const UploadSource&) const override;
+    bool uploadDataOnHost(const UploadSource& source) override;
+
 private:
     VulkanTexture(const VulkanSharedContext* sharedContext,
                   SkISize dimensions,
