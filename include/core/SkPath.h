@@ -593,19 +593,14 @@ public:
         return dst;
     }
 
-    /** Return a copy of SkPath with verb array, SkPoint array, and weight transformed
-        by matrix. makeTransform may change verbs and increase their number.
+    /** Apply the matrix to this path, and return the result as a new SkPath.
 
         @param matrix  SkMatrix to apply to SkPath
         @param pc      whether to apply perspective clipping
         @return        SkPath
     */
     SkPath makeTransform(const SkMatrix& m,
-                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const {
-        SkPath dst;
-        this->transform(m, &dst, pc);
-        return dst;
-    }
+                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
 
     SkPath makeScale(SkScalar sx, SkScalar sy) const {
         return this->makeTransform(SkMatrix::Scale(sx, sy), SkApplyPerspectiveClip::kNo);

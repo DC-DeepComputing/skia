@@ -1575,17 +1575,98 @@ void SkPath::offset(SkScalar dx, SkScalar dy, SkPath* dst) const {
     this->transform(matrix, dst);
 }
 
-static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
-                               int level = 2) {
+template <typename T> void subdivide_cubic_to(T* builder, const SkPoint pts[4],
+                                              int level = 2) {
     if (--level >= 0) {
         SkPoint tmp[7];
 
         SkChopCubicAtHalf(pts, tmp);
-        subdivide_cubic_to(path, &tmp[0], level);
-        subdivide_cubic_to(path, &tmp[3], level);
+        subdivide_cubic_to(builder, &tmp[0], level);
+        subdivide_cubic_to(builder, &tmp[3], level);
     } else {
-        path->cubicTo(pts[1], pts[2], pts[3]);
+        builder->cubicTo(pts[1], pts[2], pts[3]);
     }
+}
+
+SkPath SkPath::makeTransform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) const {
+    if (matrix.isIdentity()) {
+        return *this;
+    }
+
+    // Special cases for ovals/rrects ... not needed for correctness, but try to preserve
+    // the "IsA" signal if possible.
+
+    if (!this->isInverseFillType() && matrix.rectStaysRect()) {
+        if (auto oval = SkPathPriv::IsOval(*this)) {
+            auto r = matrix.mapRect(oval->fBounds);
+            auto [dir, start] = SkPathPriv::TransformDirStart(matrix, false,
+                                                              oval->fDirection,
+                                                              oval->fStartIndex);
+            return SkPath::Oval(r, dir, start);
+        }
+        if (auto rrect = SkPathPriv::IsRRect(*this)) {
+            SkRRect newrr;
+            if (rrect->fRRect.transform(matrix, &newrr)) {
+                auto [dir, start] = SkPathPriv::TransformDirStart(matrix, true,
+                                                                  rrect->fDirection,
+                                                                  rrect->fStartIndex);
+                return SkPath::RRect(newrr, dir, start);
+            }
+        }
+    }
+
+    // General case
+
+    SkPathBuilder tmp;
+
+    if (matrix.hasPerspective()) {
+        SkPath clippedStorage;
+        const SkPath* src = this;
+        if (pc == SkApplyPerspectiveClip::kYes &&
+            SkPathPriv::PerspectiveClip(*this, matrix, &clippedStorage))
+        {
+            src = &clippedStorage;
+        }
+
+        SkPath::Iter    iter(*src, false);
+        SkPoint         pts[4];
+        SkPath::Verb    verb;
+
+        while ((verb = iter.next(pts)) != kDone_Verb) {
+            switch (verb) {
+                case kMove_Verb:
+                    tmp.moveTo(pts[0]);
+                    break;
+                case kLine_Verb:
+                    tmp.lineTo(pts[1]);
+                    break;
+                case kQuad_Verb:
+                    // promote the quad to a conic
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts, SK_Scalar1, matrix));
+                    break;
+                case kConic_Verb:
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts, iter.conicWeight(), matrix));
+                    break;
+                case kCubic_Verb:
+                    subdivide_cubic_to(&tmp, pts);
+                    break;
+                case kClose_Verb:
+                    tmp.close();
+                    break;
+                default:
+                    SkDEBUGFAIL("unknown verb");
+                    break;
+            }
+        }
+        tmp.transform(matrix);
+    } else {
+        tmp.addPath(*this, matrix);
+    }
+
+    tmp.setFillType(this->getFillType());
+    return tmp.detach();
 }
 
 void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveClip pc) const {
