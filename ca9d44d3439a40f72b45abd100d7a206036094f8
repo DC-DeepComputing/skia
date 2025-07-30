@@ -24,6 +24,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b24be27_616d4360",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 10
+      },
+      "lineNbr": 1615,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-30T19:00:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "849ac006_e1d21ecb",
+      "range": {
+        "startLine": 1615,
+        "startChar": 0,
+        "endLine": 1615,
+        "endChar": 40
+      },
+      "revId": "ca9d44d3439a40f72b45abd100d7a206036094f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4fbc9a10_3eacca06",
@@ -61,6 +85,30 @@
       "side": 1,
       "message": "I was going to guess the compiler does the smart thing in both cases to avoid runtime initialization.  But that\u0027s likely dependent on optimization levels, and not guaranteed.  Gcc does get chatty up to O1: https://godbolt.org/z/8j6o4sT58\n\nSo yeah, I\u0027d go as far as `static constexpr` for clarity.",
       "parentUuid": "4fbc9a10_3eacca06",
+      "range": {
+        "startLine": 1855,
+        "startChar": 4,
+        "endLine": 1855,
+        "endChar": 9
+      },
+      "revId": "ca9d44d3439a40f72b45abd100d7a206036094f8",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f9a99c4_60712b6d",
+        "filename": "src/core/SkPath.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 1855,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-30T19:00:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acddbb1a_dc655443",
       "range": {
         "startLine": 1855,
         "startChar": 4,
