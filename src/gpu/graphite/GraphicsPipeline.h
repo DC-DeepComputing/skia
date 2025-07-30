@@ -12,6 +12,8 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/UniquePaintParamsID.h"
 
+#define SK_PIPELINE_LIFETIME_LOGGING 1
+
 namespace skgpu::graphite {
 
 class ShaderInfo;
@@ -37,6 +39,24 @@ enum class PipelineCreationFlags : uint8_t {
 class GraphicsPipeline : public Resource {
 public:
     ~GraphicsPipeline() override;
+
+    float fD0 = -1;
+    void set0(float d0) { fD0 = d0; }
+
+    float fD1 = -1, fD2 = -1, fD3 = -1, fD4 = -1, fD5 = -1, fD6 = -1;
+    void set1(float d1, float d2, float d3, float d4, float d5, float d6) {
+        fD1 = d1;
+        fD2 = d2;
+        fD3 = d3;
+        fD4 = d4;
+        fD5 = d5;
+        fD6 = d6;
+    }
+
+    uint32_t hash() const {
+        SkASSERT(fPipelineInfo.fUniqueKeyHash);
+        return fPipelineInfo.fUniqueKeyHash;
+    }
 
     const char* getResourceType() const override { return "Graphics Pipeline"; }
 
@@ -95,6 +115,8 @@ public:
     // asynchronously, we may create a GraphicsPipeline object that later "fails" and need to remove
     // it from the GlobalCache.
     virtual bool didAsyncCompilationFail() const { return false; }
+
+    virtual bool isReady() const = 0;
 
 protected:
     GraphicsPipeline(const SharedContext*, const PipelineInfo&);

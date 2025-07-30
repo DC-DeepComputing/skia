@@ -22,11 +22,14 @@
 
 struct SkImageInfo;
 
+#define SK_TRACE_GRAPHITE_PIPELINE_USE 1
+
 namespace skgpu::graphite {
 
 class CommandBuffer;
 class DrawList;
 class GraphicsPipeline;
+class GraphicsPipelineHandle;
 class Recorder;
 struct RenderPassDesc;
 class ResourceProvider;
@@ -84,14 +87,14 @@ public:
         return fCommandList.commands();
     }
 
-    const GraphicsPipeline* getPipeline(size_t index) const {
+    const GraphicsPipeline* getPipeline1(size_t index) const {
         return fFullPipelines[index].get();
     }
 
     // Proxies are always valid but may not be instantiated until after prepareResources() is called
     SkSpan<const sk_sp<TextureProxy>> sampledTextures() const { return fSampledTextures; }
     // Not valid until after prepareResources() is called
-    SkSpan<const sk_sp<GraphicsPipeline>> pipelines() const { return fFullPipelines; }
+    SkSpan<const sk_sp<GraphicsPipeline>> pipelines1() const { return fFullPipelines; }
 
     void addResourceRefs(CommandBuffer*) const;
 
@@ -114,7 +117,11 @@ private:
     // an array of actual GraphicsPipelines.
     skia_private::TArray<GraphicsPipelineDesc> fPipelineDescs;
 
+    // TODO: we should be able to remove fPipelineDescs and fFullPipelines in favor of just
+    // fFullPipelines
+
     // These resources all get instantiated during prepareResources.
+    skia_private::TArray<GraphicsPipelineHandle*> fPipelineHandles;
     skia_private::TArray<sk_sp<GraphicsPipeline>> fFullPipelines;
     skia_private::TArray<sk_sp<TextureProxy>> fSampledTextures;
 

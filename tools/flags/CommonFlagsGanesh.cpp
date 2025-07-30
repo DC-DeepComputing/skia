@@ -9,12 +9,8 @@
 #include "include/gpu/ganesh/GrContextOptions.h"
 #include "tools/flags/CommonFlagsGanesh.h"
 
-DEFINE_int(gpuThreads,
-             2,
-             "Create this many extra threads to assist with GPU work, "
-             "including software path rendering. Defaults to two.");
-
 // Defined in CommonFlagsConfig
+DECLARE_int(gpuThreads);
 DECLARE_int(internalSamples);
 
 namespace CommonFlags {
