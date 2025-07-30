@@ -373,8 +373,6 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
     }
     texture->setReleaseCallback(std::move(releaseHelper));
 
-    sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
-
     std::vector<MipLevel> mipLevels;
     mipLevels.resize(numLevels);
 
@@ -388,6 +386,14 @@ bool Recorder::updateBackendTexture(const BackendTexture& backendTex,
 
     // Src and dst colorInfo are the same
     const SkColorInfo& colorInfo = srcData[0].info().colorInfo();
+
+    // Attempt to update the texture directly on the host if possible.
+    if (texture->updateDataOnHost(colorInfo, mipLevels)) {
+        return true;
+    }
+
+    sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
+
     // Add UploadTask to Recorder
     UploadInstance upload = UploadInstance::Make(this,
                                                  std::move(proxy),
@@ -431,6 +437,11 @@ bool Recorder::updateCompressedBackendTexture(const BackendTexture& backendTex,
         return false;
     }
     texture->setReleaseCallback(std::move(releaseHelper));
+
+    // Attempt to update the texture directly on the host if possible.
+    if (texture->updateCompressedDataOnHost(data, dataSize)) {
+        return true;
+    }
 
     sk_sp<TextureProxy> proxy = TextureProxy::Wrap(std::move(texture));
 

@@ -13,6 +13,8 @@
 #include "src/gpu/graphite/Resource.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
+class SkColorInfo;
+
 namespace skgpu {
 class MutableTextureState;
 class RefCntedCallback;
@@ -20,6 +22,8 @@ enum class Budgeted : bool;
 };
 
 namespace skgpu::graphite {
+
+struct MipLevel;
 
 class Texture : public Resource {
 public:
@@ -36,6 +40,11 @@ public:
     const char* getResourceType() const override { return "Texture"; }
 
     const Texture* asTexture() const override { return this; }
+
+    // Called from Recorder::updateCompressedBackendTexture, attempts to write to the texture on the
+    // host directly. If that is possible and done, `true` is returned.
+    virtual bool updateDataOnHost(const SkColorInfo& colorInfo, SkSpan<const MipLevel> levels);
+    virtual bool updateCompressedDataOnHost(const void* data, size_t dataSize);
 
 protected:
     Texture(const SharedContext*,
