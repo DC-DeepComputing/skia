@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d54f63b_86e63293",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-07-30T14:42:40Z",
+      "side": 1,
+      "message": "https://skia.googlesource.com/skia.git/+show/6e3b5142ce94eaf3de72f1051206fcfc0b1e72d9 just landed",
+      "revId": "37e4e140e510f8758a8ad39f9c171660709e7dd3",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
