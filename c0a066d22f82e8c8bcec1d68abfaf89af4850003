@@ -16,6 +16,23 @@
       "message": "I tried playing with https://github.com/google/skia/blob/49e39cd3cf1847f5e0464b4652735d6f0091f93d/include/private/base/SkTemplates.h#L437-L442 by adding some `alignas(T)` in places but couldn\u0027t quite figure out how to get that type union to be properly aligned. Any suggestions for that approach?",
       "revId": "c0a066d22f82e8c8bcec1d68abfaf89af4850003",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a462ed76_5678bd0f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-31T21:12:43Z",
+      "side": 1,
+      "message": "One more note, this is causing crashes on `Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast` but no other configurations (not even ASAN)",
+      "revId": "c0a066d22f82e8c8bcec1d68abfaf89af4850003",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
