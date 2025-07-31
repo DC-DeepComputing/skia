@@ -54,11 +54,10 @@ static void test_empty_crbug_458524(skiatest::Reporter* reporter) {
     const SkScalar rad = 40;
     rr.setRectXY(bounds, rad, rad);
 
-    SkRRect other;
     SkMatrix matrix;
     matrix.setScale(0, 1);
-    rr.transform(matrix, &other);
-    REPORTER_ASSERT(reporter, SkRRect::kEmpty_Type == other.getType());
+    auto other = rr.transform(matrix);
+    REPORTER_ASSERT(reporter, other.has_value() && SkRRect::kEmpty_Type == other->getType());
 }
 
 // Test that all the SkRRect entry points correctly handle un-sorted and
