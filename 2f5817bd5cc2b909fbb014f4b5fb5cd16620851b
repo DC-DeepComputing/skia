@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d6a5ac0_4cd2043c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-31T19:36:13Z",
+      "side": 1,
+      "message": "... now with compile-time guard SK_SUPPORT_LEGACY_RRECT_TRANSFORM\n\nptal",
+      "revId": "2f5817bd5cc2b909fbb014f4b5fb5cd16620851b",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
