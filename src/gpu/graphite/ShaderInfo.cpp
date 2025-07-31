@@ -406,6 +406,8 @@ SkSLType sksl_type_for_lifted_expression(
         case ShaderSnippet::LiftableExpressionType::kNone:
             return SkSLType::kVoid;
         case ShaderSnippet::LiftableExpressionType::kLocalCoords:
+            [[fallthrough]];
+        case ShaderSnippet::LiftableExpressionType::kInvImgSize:
             return SkSLType::kFloat2;
         case ShaderSnippet::LiftableExpressionType::kPriorStageOutput:
             return SkSLType::kHalf4;

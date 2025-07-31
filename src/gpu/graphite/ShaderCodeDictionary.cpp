@@ -469,6 +469,7 @@ std::string GenerateCoordManipulationPreamble(const ShaderInfo& shaderInfo,
                 localArgs.fFragCoord =
                         GenerateCoordNormalizeExpression(shaderInfo, node, defaultArgs);
             }
+            // Here is where we need to add support
         } else {
             SkASSERT(node->codeSnippetId() == (int) BuiltInCodeSnippetID::kCoordClampShader);
             localArgs.fFragCoord = SkSL::String::printf("clamp(%s, %s.LT, %s.RB)",
