@@ -6656,15 +6656,24 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     __m128 val4 = __lsx_vfmadd_s((__m128)v_tmp2, _67, (__m128)v_tmp1);
     I32 qx = cast<I32>((join<F>(__lsx_vfrintrm_s(val1), __lsx_vfrintrm_s(val2)))) - 32768,
     qy = cast<I32>((join<F>(__lsx_vfrintrm_s(val3), __lsx_vfrintrm_s(val4)))) - 32768;
-#else
-    I32 qx = cast<I32>(floor_(65536.0f * x + 0.5f)) - 32768,
-        qy = cast<I32>(floor_(65536.0f * y + 0.5f)) - 32768;
-#endif
 
     // Calculate screen coordinates sx & sy by flooring qx and qy.
     I32 sx = qx >> 16,
         sy = qy >> 16;
+#else
+    I32 sx = (I32)floor_(x);
+    I32 sy = (I32)floor_(y);
+    F   fy = y - (F)sy; // Get the fractional part (always in [0, 1))
+    F   fx = x - (F)sx; // Get the fractional part (always in [0, 1))
 
+    // Scale the fractional part for high precision
+    I32 qy_frac = cast<I32>(floor_(65536.0f * fy + 0.5f));
+    I32 qx_frac = cast<I32>(floor_(65536.0f * fx + 0.5f));
+#endif
+
+// 3. Calculate the interpolation weight `ty`. The -32768 and ^0x8000 logic
+// was a combined way to get the weight, which can be simplified.
+// A more direct way to get ty in the Q15 format (representing 2*{y} - 1):
     // We are going to perform a change of parameters for qx on [0, 1) to tx on [-1, 1).
     // This will put tx in Q15 format for use with q_mult.
     // Calculate tx and ty on the interval of [-1, 1). Give {qx} and {qy} are on the interval
@@ -6688,8 +6697,8 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     I16 tx = __lsx_vpickev_h(qx_hi, qx_lo);
     I16 ty = __lsx_vpickev_h(qy_hi, qy_lo);
 #else
-    I16 tx = cast<I16>(qx ^ 0x8000),
-        ty = cast<I16>(qy ^ 0x8000);
+    I16 ty = cast<I16>((qy_frac << 1) - 32768);
+    I16 tx = cast<I16>((qx_frac << 1) - 32768);
 #endif
 
     // Substituting the {qx} by the equation for tx from above into the lerp equation where v is
