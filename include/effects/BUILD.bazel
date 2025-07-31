@@ -1,4 +1,4 @@
-load("//bazel:skia_rules.bzl", "skia_filegroup")
+load("//bazel:skia_rules.bzl", "generate_cpp_files_for_headers", "skia_filegroup")
 
 package(
     default_applicable_licenses = ["//:license"],
@@ -15,30 +15,37 @@ skia_filegroup(
     ],
 )
 
+PUBLIC_HEADERS = [
+    "Sk1DPathEffect.h",
+    "Sk2DPathEffect.h",
+    "SkBlenders.h",
+    "SkBlurMaskFilter.h",
+    "SkColorMatrix.h",
+    "SkColorMatrixFilter.h",
+    "SkCornerPathEffect.h",
+    "SkDashPathEffect.h",
+    "SkDiscretePathEffect.h",
+    "SkGradientShader.h",
+    "SkHighContrastFilter.h",
+    "SkImageFilters.h",
+    "SkLumaColorFilter.h",
+    "SkOverdrawColorFilter.h",
+    "SkPerlinNoiseShader.h",
+    "SkRuntimeEffect.h",
+    "SkShaderMaskFilter.h",
+    "SkTableMaskFilter.h",
+    "SkTrimPathEffect.h",
+]
+
 skia_filegroup(
     name = "core_hdrs",
-    srcs = [
-        "Sk1DPathEffect.h",
-        "Sk2DPathEffect.h",
-        "SkBlenders.h",
-        "SkBlurMaskFilter.h",
-        "SkColorMatrix.h",
-        "SkColorMatrixFilter.h",
-        "SkCornerPathEffect.h",
-        "SkDashPathEffect.h",
-        "SkDiscretePathEffect.h",
-        "SkGradientShader.h",
-        "SkHighContrastFilter.h",
-        "SkImageFilters.h",
-        "SkLumaColorFilter.h",
-        "SkOverdrawColorFilter.h",
-        "SkPerlinNoiseShader.h",
-        "SkRuntimeEffect.h",
-        "SkShaderMaskFilter.h",
-        "SkTableMaskFilter.h",
-        "SkTrimPathEffect.h",
-    ],
+    srcs = PUBLIC_HEADERS,
     visibility = [
         "//src/core:__pkg__",
     ],
+)
+
+generate_cpp_files_for_headers(
+    name = "headers_to_compile",
+    headers = PUBLIC_HEADERS,
 )
