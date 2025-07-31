@@ -16,6 +16,24 @@
       "message": "Hi Kaylee,\nI am getting a pre-submit error in [this CL](https://skia-review.googlesource.com/c/buildbot/+/1029481). I am not sure but it could be related to this CL. It can\u0027t find a docker image. The error is:\n\n```\nERROR: An error occurred during the fetch of repository \u0027pinned_debugger\u0027:\n   Traceback (most recent call last):\n\tFile \"/usr/local/google/home/faridzad/.cache/bazel/_bazel_faridzad/696ded89b67727cc78a1fa49495a398f/external/io_bazel_rules_docker/container/pull.bzl\", line 240, column 13, in _impl\n\t\tfail(\"Pull command failed: %s (%s)\" % (result.stderr, \" \".join([str(a) for a in args])))\nError in fail: Pull command failed: 2025/07/30 14:27:17 Running the Image Puller to pull images from a Docker Registry...\n2025/07/30 14:27:19 Image pull was unsuccessful: reading image \"gcr.io/skia-public/debugger-app-final@sha256:d63e5ee97f80701a7bf5c0f69da9858a9ca9a349c3f07de39e7d261527c7021d\": GET https://gcr.io/v2/skia-public/debugger-app-final/manifests/sha256:d63e5ee97f80701a7bf5c0f69da9858a9ca9a349c3f07de39e7d261527c7021d: MANIFEST_UNKNOWN: Requested entity was not found.\n```",
       "revId": "2087d0dccd158dfa4ee59085bd928d3adf239469",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5fe0c6cc_6ec899f9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-07-31T12:47:12Z",
+      "side": 1,
+      "message": "Working on fixes in https://skia-review.googlesource.com/c/buildbot/+/1029516",
+      "parentUuid": "790bcca5_60beb8a2",
+      "revId": "2087d0dccd158dfa4ee59085bd928d3adf239469",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
