@@ -63,6 +63,30 @@
       },
       "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf675c26_984dbde9",
+        "filename": "src/gpu/android/AHardwareBufferUtils.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 18914
+      },
+      "writtenOn": "2025-07-31T14:20:43Z",
+      "side": 1,
+      "message": "Canary failed due to infra failure and I\u0027m getting exceptions when trying to view the logs to see if any messaging appeared in relation to this change. I updated the CL to rm the API level check and will try Canary one more time. If that is unsuccessful, I may just land the CL again.",
+      "parentUuid": "1ebe6724_6441ec49",
+      "range": {
+        "startLine": 44,
+        "startChar": 47,
+        "endLine": 44,
+        "endChar": 68
+      },
+      "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
