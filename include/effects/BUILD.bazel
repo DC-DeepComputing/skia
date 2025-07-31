@@ -35,6 +35,7 @@ skia_filegroup(
         "SkPerlinNoiseShader.h",
         "SkRuntimeEffect.h",
         "SkShaderMaskFilter.h",
+        "SkStrokeAndFillPathEffect.h",
         "SkTableMaskFilter.h",
         "SkTrimPathEffect.h",
     ],

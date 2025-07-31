@@ -23,6 +23,7 @@ EFFECTS_FILES = [
     "SkHighContrastFilter.cpp",
     "SkShaderMaskFilterImpl.cpp",
     "SkShaderMaskFilterImpl.h",
+    "SkStrokeAndFillPathEffect.cpp",
     "SkTableMaskFilter.cpp",
     "SkTrimPE.h",
     "SkTrimPathEffect.cpp",
