@@ -40,7 +40,7 @@ public:
         bool hasGeometry = false;
         for (; fVerbsIdx < fNumRemainingVerbs; ++fVerbsIdx) {
             switch (fVerbs[fVerbsIdx]) {
-                case SkPathVerb::kMove:
+                case SkPath::kMove_Verb:
                     if (!hasGeometry) {
                         fMidpoint = {0,0};
                         fMidpointWeight = 0;
@@ -56,16 +56,16 @@ public:
                     return true;
                 default:
                     continue;
-                case SkPathVerb::kLine:
+                case SkPath::kLine_Verb:
                     ++fPtsIdx;
                     break;
-                case SkPathVerb::kConic:
+                case SkPath::kConic_Verb:
                     ++fWtsIdx;
                     [[fallthrough]];
-                case SkPathVerb::kQuad:
+                case SkPath::kQuad_Verb:
                     fPtsIdx += 2;
                     break;
-                case SkPathVerb::kCubic:
+                case SkPath::kCubic_Verb:
                     fPtsIdx += 3;
                     break;
             }
@@ -101,7 +101,7 @@ private:
 
     const SkPath& fPath;
 
-    const SkPathVerb* fVerbs;
+    const uint8_t* fVerbs;
     int fNumRemainingVerbs = 0;
     int fVerbsIdx = 0;
 
