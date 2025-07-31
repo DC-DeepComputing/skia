@@ -181,15 +181,15 @@ public:
                                              : path.fPathRef->verbsEnd(),
                           path.fPathRef->points(), path.fPathRef->conicWeights()) {
         }
-        Iterate(const uint8_t* verbsBegin, const uint8_t* verbsEnd, const SkPoint* points,
+        Iterate(const SkPathVerb* verbsBegin, const SkPathVerb* verbsEnd, const SkPoint* points,
                 const SkScalar* weights)
                 : fVerbsBegin(verbsBegin), fVerbsEnd(verbsEnd), fPoints(points), fWeights(weights) {
         }
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
     private:
-        const uint8_t* fVerbsBegin;
-        const uint8_t* fVerbsEnd;
+        const SkPathVerb* fVerbsBegin;
+        const SkPathVerb* fVerbsEnd;
         const SkPoint* fPoints;
         const SkScalar* fWeights;
     };
@@ -197,7 +197,7 @@ public:
     /**
      * Returns a pointer to the verb data.
      */
-    static const uint8_t* VerbData(const SkPath& path) {
+    static const SkPathVerb* VerbData(const SkPath& path) {
         return path.fPathRef->verbsBegin();
     }
 
