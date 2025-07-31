@@ -17,6 +17,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <optional>
 
 class SkMatrix;
 class SkString;
@@ -450,19 +451,21 @@ public:
     */
     size_t readFromMemory(const void* buffer, size_t length);
 
-    /** Transforms by SkRRect by matrix, storing result in dst.
-        Returns true if SkRRect transformed can be represented by another SkRRect.
-        Returns false if matrix contains transformations that are not axis aligned.
+    /** Transforms by SkRRect by matrix and return it if possible.
+     *  If the matrix does not preserve axis-alignment (e.g. rotates, skews, etc.)
+     *  then this returns {}.
+     */
+    std::optional<SkRRect> transform(const SkMatrix&) const;
 
-        Asserts in debug builds if SkRRect equals dst.
-
-        @param matrix  SkMatrix specifying the transform
-        @param dst     SkRRect to store the result
-        @return        true if transformation succeeded.
-
-        example: https://fiddle.skia.org/c/@RRect_transform
-    */
-    bool transform(const SkMatrix& matrix, SkRRect* dst) const;
+    bool transform(const SkMatrix& matrix, SkRRect* dst) const {
+        if (auto rr = this->transform(matrix)) {
+            if (dst) {
+                *dst = *rr;
+            }
+            return true;
+        }
+        return false;
+    }
 
     /** Writes text representation of SkRRect to standard output.
         Set asHex true to generate exact binary representations
