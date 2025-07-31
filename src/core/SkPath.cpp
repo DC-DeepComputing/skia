@@ -1475,32 +1475,35 @@ SkPath& SkPath::reversePathTo(const SkPath& path) {
         return *this;
     }
 
-    const SkPathVerb* verbs = path.fPathRef->verbsEnd();
-    const SkPathVerb* verbsBegin = path.fPathRef->verbsBegin();
-    SkASSERT(verbsBegin[0] == SkPathVerb::kMove);
+    const uint8_t* verbs = path.fPathRef->verbsEnd();
+    const uint8_t* verbsBegin = path.fPathRef->verbsBegin();
+    SkASSERT(verbsBegin[0] == kMove_Verb);
     const SkPoint*  pts = path.fPathRef->pointsEnd() - 1;
     const SkScalar* conicWeights = path.fPathRef->conicWeightsEnd();
 
     while (verbs > verbsBegin) {
-        SkPathVerb v = *--verbs;
+        uint8_t v = *--verbs;
         pts -= SkPathPriv::PtsInVerb(v);
         switch (v) {
-            case SkPathVerb::kMove:
+            case kMove_Verb:
                 // if the path has multiple contours, stop after reversing the last
                 return *this;
-            case SkPathVerb::kLine:
+            case kLine_Verb:
                 this->lineTo(pts[0]);
                 break;
-            case SkPathVerb::kQuad:
+            case kQuad_Verb:
                 this->quadTo(pts[1], pts[0]);
                 break;
-            case SkPathVerb::kConic:
+            case kConic_Verb:
                 this->conicTo(pts[1], pts[0], *--conicWeights);
                 break;
-            case SkPathVerb::kCubic:
+            case kCubic_Verb:
                 this->cubicTo(pts[2], pts[1], pts[0]);
                 break;
-            case SkPathVerb::kClose:
+            case kClose_Verb:
+                break;
+            default:
+                SkDEBUGFAIL("bad verb");
                 break;
         }
     }
@@ -1515,15 +1518,15 @@ SkPath& SkPath::reverseAddPath(const SkPath& srcPath) {
         src = tmp.set(srcPath);
     }
 
-    const SkPathVerb* verbsBegin = src->fPathRef->verbsBegin();
-    const SkPathVerb* verbs = src->fPathRef->verbsEnd();
+    const uint8_t* verbsBegin = src->fPathRef->verbsBegin();
+    const uint8_t* verbs = src->fPathRef->verbsEnd();
     const SkPoint* pts = src->fPathRef->pointsEnd();
     const SkScalar* conicWeights = src->fPathRef->conicWeightsEnd();
 
     bool needMove = true;
     bool needClose = false;
     while (verbs > verbsBegin) {
-        SkPathVerb v = *--verbs;
+        uint8_t v = *--verbs;
         int n = SkPathPriv::PtsInVerb(v);
 
         if (needMove) {
@@ -1533,7 +1536,7 @@ SkPath& SkPath::reverseAddPath(const SkPath& srcPath) {
         }
         pts -= n;
         switch (v) {
-            case SkPathVerb::kMove:
+            case kMove_Verb:
                 if (needClose) {
                     this->close();
                     needClose = false;
@@ -1541,21 +1544,23 @@ SkPath& SkPath::reverseAddPath(const SkPath& srcPath) {
                 needMove = true;
                 pts += 1;   // so we see the point in "if (needMove)" above
                 break;
-            case SkPathVerb::kLine:
+            case kLine_Verb:
                 this->lineTo(pts[0]);
                 break;
-            case SkPathVerb::kQuad:
+            case kQuad_Verb:
                 this->quadTo(pts[1], pts[0]);
                 break;
-            case SkPathVerb::kConic:
+            case kConic_Verb:
                 this->conicTo(pts[1], pts[0], *--conicWeights);
                 break;
-            case SkPathVerb::kCubic:
+            case kCubic_Verb:
                 this->cubicTo(pts[2], pts[1], pts[0]);
                 break;
-            case SkPathVerb::kClose:
+            case kClose_Verb:
                 needClose = true;
                 break;
+            default:
+                SkDEBUGFAIL("unexpected verb");
         }
     }
     return *this;
@@ -1726,27 +1731,27 @@ bool SkPath::Iter::isClosedContour() const {
         return true;
     }
 
-    const SkPathVerb* verbs = fVerbs;
-    const SkPathVerb* stop = fVerbStop;
+    const uint8_t* verbs = fVerbs;
+    const uint8_t* stop = fVerbStop;
 
-    if (SkPathVerb::kMove == *verbs) {
+    if (kMove_Verb == *verbs) {
         verbs += 1; // skip the initial moveto
     }
 
     while (verbs < stop) {
         // verbs points one beyond the current verb, decrement first.
-        SkPathVerb v = *verbs++;
-        if (SkPathVerb::kMove == v) {
+        unsigned v = *verbs++;
+        if (kMove_Verb == v) {
             break;
         }
-        if (SkPathVerb::kClose == v) {
+        if (kClose_Verb == v) {
             return true;
         }
     }
     return false;
 }
 
-SkPathVerb SkPath::Iter::autoClose(SkPoint pts[2]) {
+SkPath::Verb SkPath::Iter::autoClose(SkPoint pts[2]) {
     SkASSERT(pts);
     if (fLastPt != fMoveTo) {
         // A special case: if both points are NaN, SkPoint::operation== returns
@@ -1754,17 +1759,18 @@ SkPathVerb SkPath::Iter::autoClose(SkPoint pts[2]) {
         // (consider SkPoint is a 2-dimension float point).
         if (SkIsNaN(fLastPt.fX) || SkIsNaN(fLastPt.fY) ||
             SkIsNaN(fMoveTo.fX) || SkIsNaN(fMoveTo.fY)) {
-            return SkPathVerb::kClose;
+            return kClose_Verb;
         }
 
         pts[0] = fLastPt;
         pts[1] = fMoveTo;
         fLastPt = fMoveTo;
         fCloseLine = true;
-        return SkPathVerb::kLine;
+        return kLine_Verb;
+    } else {
+        pts[0] = fMoveTo;
+        return kClose_Verb;
     }
-    pts[0] = fMoveTo;
-    return SkPathVerb::kClose;
 }
 
 SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
@@ -1773,7 +1779,7 @@ SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
     if (fVerbs == fVerbStop) {
         // Close the curve if requested and if there is some curve to close
         if (fNeedClose) {
-            if (SkPathVerb::kLine == this->autoClose(ptsParam)) {
+            if (kLine_Verb == this->autoClose(ptsParam)) {
                 return kLine_Verb;
             }
             fNeedClose = false;
@@ -1782,16 +1788,16 @@ SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
         return kDone_Verb;
     }
 
-    SkPathVerb verb = *fVerbs++;
+    unsigned verb = *fVerbs++;
     const SkPoint* SK_RESTRICT srcPts = fPts;
     SkPoint* SK_RESTRICT       pts = ptsParam;
 
     switch (verb) {
-        case SkPathVerb::kMove:
+        case kMove_Verb:
             if (fNeedClose) {
                 fVerbs--; // move back one verb
                 verb = this->autoClose(pts);
-                if (verb == SkPathVerb::kClose) {
+                if (verb == kClose_Verb) {
                     fNeedClose = false;
                 }
                 return (Verb)verb;
@@ -1805,31 +1811,31 @@ SkPath::Verb SkPath::Iter::next(SkPoint ptsParam[4]) {
             fLastPt = fMoveTo;
             fNeedClose = fForceClose;
             break;
-        case SkPathVerb::kLine:
+        case kLine_Verb:
             pts[0] = fLastPt;
             pts[1] = srcPts[0];
             fLastPt = srcPts[0];
             fCloseLine = false;
             srcPts += 1;
             break;
-        case SkPathVerb::kConic:
+        case kConic_Verb:
             fConicWeights += 1;
             [[fallthrough]];
-        case SkPathVerb::kQuad:
+        case kQuad_Verb:
             pts[0] = fLastPt;
             memcpy(&pts[1], srcPts, 2 * sizeof(SkPoint));
             fLastPt = srcPts[1];
             srcPts += 2;
             break;
-        case SkPathVerb::kCubic:
+        case kCubic_Verb:
             pts[0] = fLastPt;
             memcpy(&pts[1], srcPts, 3 * sizeof(SkPoint));
             fLastPt = srcPts[2];
             srcPts += 3;
             break;
-        case SkPathVerb::kClose:
+        case kClose_Verb:
             verb = this->autoClose(pts);
-            if (verb == SkPathVerb::kLine) {
+            if (verb == kLine_Verb) {
                 fVerbs--; // move back one verb
             } else {
                 fNeedClose = false;
@@ -2024,7 +2030,7 @@ void SkPath::dumpArrays(SkWStream* wStream, bool dumpAsHex) const {
     };
     builder.append("const uint8_t path_verbs[] = {\n    ");
     for (auto v = fPathRef->verbsBegin(); v != fPathRef->verbsEnd(); ++v) {
-        builder.appendf("(uint8_t)SkPathVerb::k%s, ", gVerbStrs[(unsigned)*v]);
+        builder.appendf("(uint8_t)SkPathVerb::k%s, ", gVerbStrs[*v]);
     }
     builder.append("\n};\n");
 
@@ -2275,7 +2281,7 @@ SkPathConvexity SkPath::computeConvexity() const {
         if (fLastMoveToIndex == pointCount - 1) {
             // Find the last real verb that affects convexity
             auto verbs = fPathRef->verbsEnd() - 1;
-            while(verbs > fPathRef->verbsBegin() && *verbs == SkPathVerb::kMove) {
+            while(verbs > fPathRef->verbsBegin() && *verbs == Verb::kMove_Verb) {
                 verbs--;
                 pointCount--;
             }
@@ -2370,8 +2376,8 @@ public:
 private:
     int fCurrPtCount;
     const SkPoint* fCurrPt;
-    const SkPathVerb* fCurrVerb;
-    const SkPathVerb* fStopVerbs;
+    const uint8_t* fCurrVerb;
+    const uint8_t* fStopVerbs;
     const SkScalar* fCurrConicWeight;
     bool fDone;
     SkDEBUGCODE(int fContourCounter;)
@@ -2399,27 +2405,30 @@ void ContourIter::next() {
     // skip pts of prev contour
     fCurrPt += fCurrPtCount;
 
-    SkASSERT(SkPathVerb::kMove == fCurrVerb[0]);
+    SkASSERT(SkPath::kMove_Verb == fCurrVerb[0]);
     int ptCount = 1;    // moveTo
-    const SkPathVerb* verbs = fCurrVerb;
+    const uint8_t* verbs = fCurrVerb;
 
     for (verbs++; verbs < fStopVerbs; verbs++) {
         switch (*verbs) {
-            case SkPathVerb::kMove:
+            case SkPath::kMove_Verb:
                 goto CONTOUR_END;
-            case SkPathVerb::kLine:
+            case SkPath::kLine_Verb:
                 ptCount += 1;
                 break;
-            case SkPathVerb::kConic:
+            case SkPath::kConic_Verb:
                 fCurrConicWeight += 1;
                 [[fallthrough]];
-            case SkPathVerb::kQuad:
+            case SkPath::kQuad_Verb:
                 ptCount += 2;
                 break;
-            case SkPathVerb::kCubic:
+            case SkPath::kCubic_Verb:
                 ptCount += 3;
                 break;
-            case SkPathVerb::kClose:
+            case SkPath::kClose_Verb:
+                break;
+            default:
+                SkDEBUGFAIL("unexpected verb");
                 break;
         }
     }
@@ -3037,7 +3046,7 @@ bool SkPath::contains(SkScalar x, SkScalar y) const {
                 w += winding_quad(rec->fPoints, x, y, &onCurveCount);
                 break;
             case SkPathVerb::kConic:
-                w += winding_conic(rec->fPoints, x, y, rec->fConicWeight, &onCurveCount);
+                w += winding_conic(rec->fPoints, x, y, iter.conicWeight(), &onCurveCount);
                 break;
             case SkPathVerb::kCubic:
                 w += winding_cubic(rec->fPoints, x, y, &onCurveCount);
@@ -3075,7 +3084,7 @@ bool SkPath::contains(SkScalar x, SkScalar y) const {
                 tangent_quad(rec->fPoints, x, y, &tangents);
                 break;
             case SkPathVerb::kConic:
-                tangent_conic(rec->fPoints, x, y, rec->fConicWeight, &tangents);
+                tangent_conic(rec->fPoints, x, y, iter.conicWeight(), &tangents);
                 break;
             case SkPathVerb::kCubic:
                 tangent_cubic(rec->fPoints, x, y, &tangents);

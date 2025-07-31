@@ -1634,8 +1634,8 @@ public:
 
     private:
         const SkPoint*          fPts;
-        const SkPathVerb*       fVerbs;
-        const SkPathVerb*       fVerbStop;
+        const uint8_t*          fVerbs;
+        const uint8_t*          fVerbStop;
         const SkScalar*         fConicWeights;
         SkPoint                 fMoveTo;
         SkPoint                 fLastPt;
@@ -1644,7 +1644,7 @@ public:
         bool                    fNeedClose;
         bool                    fCloseLine;
 
-        SkPathVerb autoClose(SkPoint pts[2]);
+        Verb autoClose(SkPoint pts[2]);
     };
 
 private:
@@ -1657,7 +1657,7 @@ private:
     class RangeIter {
     public:
         RangeIter() = default;
-        RangeIter(const SkPathVerb* verbs, const SkPoint* points, const SkScalar* weights)
+        RangeIter(const uint8_t* verbs, const SkPoint* points, const SkScalar* weights)
                 : fVerb(verbs), fPoints(points), fWeights(weights) {
             SkDEBUGCODE(fInitialPoints = fPoints;)
         }
@@ -1668,7 +1668,7 @@ private:
             return fVerb == that.fVerb;
         }
         RangeIter& operator++() {
-            auto verb = *fVerb++;
+            auto verb = static_cast<SkPathVerb>(*fVerb++);
             fPoints += pts_advance_after_verb(verb);
             if (verb == SkPathVerb::kConic) {
                 ++fWeights;
@@ -1681,7 +1681,7 @@ private:
             return copy;
         }
         SkPathVerb peekVerb() const {
-            return *fVerb;
+            return static_cast<SkPathVerb>(*fVerb);
         }
         std::tuple<SkPathVerb, const SkPoint*, const SkScalar*> operator*() const {
             SkPathVerb verb = this->peekVerb();
@@ -1715,7 +1715,7 @@ private:
             }
             SkUNREACHABLE;
         }
-        const SkPathVerb* fVerb = nullptr;
+        const uint8_t* fVerb = nullptr;
         const SkPoint* fPoints = nullptr;
         const SkScalar* fWeights = nullptr;
         SkDEBUGCODE(const SkPoint* fInitialPoints = nullptr;)

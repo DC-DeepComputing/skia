@@ -80,15 +80,16 @@ private:
         };
 
         // Normalize all verbs to cubic representation.
+        SkPoint pts[4];
+        SkPath::Verb verb;
         SkPath::Iter iter(input, true);
-        while (auto rec = iter.next()) {
-            SkSpan<const SkPoint> pts = rec->fPoints;
-            switch (rec->fVerb) {
-                case SkPathVerb::kMove:
+        while ((verb = iter.next(pts)) != SkPath::kDone_Verb) {
+            switch (verb) {
+                case SkPath::kMove_Verb:
                     commit_contour();
                     contour_start = pts[0];
                     break;
-                case SkPathVerb::kLine: {
+                case SkPath::kLine_Verb: {
                     // Empirically, straight lines are treated as cubics with control points
                     // located length/100 away from extremities.
                     static constexpr float kCtrlPosFraction = 1.f / 100;
@@ -100,12 +101,11 @@ private:
                             line_end
                     });
                 } break;
-                case SkPathVerb::kQuad: {
-                    SkPoint quad[4];
-                    SkConvertQuadToCubic(pts.data(), quad);
-                    cubics.push_back({quad[1], quad[2], quad[3]});
-                } break;
-                case SkPathVerb::kConic: {
+                case SkPath::kQuad_Verb:
+                    SkConvertQuadToCubic(pts, pts);
+                    cubics.push_back({pts[1], pts[2], pts[3]});
+                    break;
+                case SkPath::kConic_Verb: {
                     // We should only ever encounter conics from circles/ellipses.
                     SkASSERT(SkScalarNearlyEqual(iter.conicWeight(), SK_ScalarRoot2Over2));
 
@@ -122,11 +122,13 @@ private:
                         conic_end
                     });
                 } break;
-                case SkPathVerb::kCubic:
+                case SkPath::kCubic_Verb:
                     cubics.push_back({pts[1], pts[2], pts[3]});
                     break;
-                case SkPathVerb::kClose:
+                case SkPath::kClose_Verb:
                     commit_contour();
+                    break;
+                default:
                     break;
             }
         }

@@ -181,15 +181,15 @@ public:
                                              : path.fPathRef->verbsEnd(),
                           path.fPathRef->points(), path.fPathRef->conicWeights()) {
         }
-        Iterate(const SkPathVerb* verbsBegin, const SkPathVerb* verbsEnd, const SkPoint* points,
+        Iterate(const uint8_t* verbsBegin, const uint8_t* verbsEnd, const SkPoint* points,
                 const SkScalar* weights)
                 : fVerbsBegin(verbsBegin), fVerbsEnd(verbsEnd), fPoints(points), fWeights(weights) {
         }
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
     private:
-        const SkPathVerb* fVerbsBegin;
-        const SkPathVerb* fVerbsEnd;
+        const uint8_t* fVerbsBegin;
+        const uint8_t* fVerbsEnd;
         const SkPoint* fPoints;
         const SkScalar* fWeights;
     };
@@ -197,7 +197,7 @@ public:
     /**
      * Returns a pointer to the verb data.
      */
-    static const SkPathVerb* VerbData(const SkPath& path) {
+    static const uint8_t* VerbData(const SkPath& path) {
         return path.fPathRef->verbsBegin();
     }
 
@@ -460,15 +460,15 @@ public:
     }
 
     enum class Edge {
-        kLine = (int)SkPathVerb::kLine,
-        kQuad = (int)SkPathVerb::kQuad,
-        kConic = (int)SkPathVerb::kConic,
-        kCubic = (int)SkPathVerb::kCubic,
+        kLine = SkPath::kLine_Verb,
+        kQuad = SkPath::kQuad_Verb,
+        kConic = SkPath::kConic_Verb,
+        kCubic = SkPath::kCubic_Verb,
         kInvalid = 99,
     };
 
-    static SkPathVerb EdgeToVerb(Edge e) {
-        return SkPathVerb(e);
+    static SkPath::Verb EdgeToVerb(Edge e) {
+        return SkPath::Verb(e);
     }
 
     struct Result {
@@ -522,7 +522,7 @@ public:
                     fPts           += pts_count;
                     fConicWeights  += cws_count;
 
-                    SkDEBUGCODE(fIsConic = (verb == SkPathVerb::kConic);)
+                    SkDEBUGCODE(fIsConic = (v == SkPath::kConic_Verb);)
                     SkASSERT(fIsConic == (cws_count > 0));
 
                     bool isNewContour = fNextIsNewContour;
