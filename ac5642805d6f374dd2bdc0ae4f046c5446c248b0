@@ -18,6 +18,24 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a508fb9_d53b1ddf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 19099
+      },
+      "writtenOn": "2025-07-31T17:10:42Z",
+      "side": 1,
+      "message": "Proxying Michael\u0027s +1 from https://skia-review.googlesource.com/c/skia/+/1028696 since this is the same logic but just with different build guards for the SDK vs. framework issue.",
+      "parentUuid": "160fc240_8c4b552a",
+      "revId": "ac5642805d6f374dd2bdc0ae4f046c5446c248b0",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "665db70a_00c2f568",
