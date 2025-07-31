@@ -22,6 +22,30 @@
       },
       "revId": "0b1d1dd2dcbec4d09bab3edd4e77c29a359ac24f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f055139_aa69eba1",
+        "filename": "tests/RoundRectTest.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-07-31T18:53:37Z",
+      "side": 1,
+      "message": "correct! -- the call to transform failed, but the old test didn\u0027t explicitly check for that.\n\nupdated.",
+      "parentUuid": "7f473585_5a4a9f3d",
+      "range": {
+        "startLine": 60,
+        "startChar": 30,
+        "endLine": 60,
+        "endChar": 47
+      },
+      "revId": "0b1d1dd2dcbec4d09bab3edd4e77c29a359ac24f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
