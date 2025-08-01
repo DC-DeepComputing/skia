@@ -46,6 +46,10 @@ enum class SkPathDirection : uint8_t {
     kDefault = kCW,
 };
 
+static inline SkPathDirection SkReversePathDirection(SkPathDirection dir) {
+    return (SkPathDirection)((unsigned)dir ^ 1);
+}
+
 enum SkPathSegmentMask {
     kLine_SkPathSegmentMask   = 1 << 0,
     kQuad_SkPathSegmentMask   = 1 << 1,
