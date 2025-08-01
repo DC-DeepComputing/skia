@@ -33,6 +33,24 @@
       "message": "One more note, this is causing crashes on `Test-Ubuntu24.04-Clang-GCE-CPU-AVX2-x86_64-Release-All-Fast` but no other configurations (not even ASAN)",
       "revId": "c0a066d22f82e8c8bcec1d68abfaf89af4850003",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bae8f662_f10b8f3f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-01T12:57:42Z",
+      "side": 1,
+      "message": "As we talked offline, the compiler can make different choices for alignment when something is aligned *above* the natural alignment.",
+      "parentUuid": "24f5e8a9_7dff96f2",
+      "revId": "c0a066d22f82e8c8bcec1d68abfaf89af4850003",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
