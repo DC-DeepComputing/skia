@@ -1584,10 +1584,21 @@ static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
 }
 
 void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveClip pc) const {
+    if (dst == nullptr) {
+        dst = const_cast<SkPath*>(this);
+    }
+
     if (matrix.isIdentity()) {
-        if (dst != nullptr && dst != this) {
+        if (dst != this) {
             *dst = *this;
         }
+        return;
+    }
+
+    if (false) {
+        SkPathBuilder bu(*this);
+        bu.transform(matrix, pc);
+        *dst = bu.detach();
         return;
     }
 
