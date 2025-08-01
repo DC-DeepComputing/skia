@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "106b8c33_090e47b8",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-01T20:03:37Z",
+      "side": 1,
+      "message": "These seem useful to keep on the immutable path version, even if under the hood they defer to pathbuilder for now.  We may find ways to make them more efficient (single path allocation instead of multiple allocs with a builder) in the future, and they don\u0027t violate immutability.",
+      "range": {
+        "startLine": 1443,
+        "startChar": 0,
+        "endLine": 1452,
+        "endChar": 5
+      },
+      "revId": "aa4858d543567629d6db6afcde454410b181deed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
