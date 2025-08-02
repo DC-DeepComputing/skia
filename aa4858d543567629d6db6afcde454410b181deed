@@ -22,6 +22,30 @@
       },
       "revId": "aa4858d543567629d6db6afcde454410b181deed",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0695e848_b41082e0",
+        "filename": "include/core/SkPath.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 1452,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-02T21:32:22Z",
+      "side": 1,
+      "message": "I\u0027ve removed the SkPath changes for now -- so this CL will only \"upgrade\" PathBuilder to (now) be compatible when transforming.",
+      "parentUuid": "106b8c33_090e47b8",
+      "range": {
+        "startLine": 1443,
+        "startChar": 0,
+        "endLine": 1452,
+        "endChar": 5
+      },
+      "revId": "aa4858d543567629d6db6afcde454410b181deed",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
