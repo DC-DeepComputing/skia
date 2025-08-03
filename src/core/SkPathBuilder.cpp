@@ -971,7 +971,7 @@ void SkPathBuilder::setLastPt(SkScalar x, SkScalar y) {
     }
 }
 
-SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) {
+SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix) {
     if (matrix.isIdentity()) {
         return *this;
     }
@@ -979,12 +979,9 @@ SkPathBuilder& SkPathBuilder::transform(const SkMatrix& matrix, SkApplyPerspecti
     if (matrix.hasPerspective()) {
         SkPath src = this->detach();
 
-        // Apply perspective clip if needed.
-        if (pc == SkApplyPerspectiveClip::kYes) {
-            SkPath clipped;
-            if (SkPathPriv::PerspectiveClip(src, matrix, &clipped)) {
-                src = std::move(clipped);
-            }
+        SkPath clipped;
+        if (SkPathPriv::PerspectiveClip(src, matrix, &clipped)) {
+            src = std::move(clipped);
         }
 
         // Convert to a format more amenable to perspective.
