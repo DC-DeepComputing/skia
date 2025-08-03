@@ -949,7 +949,7 @@ private:
     };
     IsA fIsA      = kIsA_JustMoves;
     int fIsAStart = -1;     // tracks direction iff fIsA is not unknown
-    bool fIsACCW  = false;  // tracks direction iff fIsA is not unknown
+    SkPathDirection fIsADirection;
 
     // called right before we add a (non-move) verb
     void ensureMove() {
