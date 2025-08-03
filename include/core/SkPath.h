@@ -582,33 +582,22 @@ public:
         kExtend_AddPathMode,
     };
 
-    /** Returns SkPath with SkPoint array offset by (dx, dy).
-
-        @param dx  offset added to SkPoint array x-axis coordinates
-        @param dy  offset added to SkPoint array y-axis coordinates
+    /** Apply the matrix to this path, and return the result, respecting the choice
+     *  to apply perspective-clipping or not.
+     *
+     *  @param matrix  SkMatrix to apply to SkPath
+     *  @param pc      whether to apply perspective clipping
+     *  @return        transformed path
     */
-    SkPath makeOffset(SkScalar dx, SkScalar dy) const {
-        SkPath dst;
-        this->offset(dx, dy, &dst);
-        return dst;
-    }
-
-    /** Return a copy of SkPath with verb array, SkPoint array, and weight transformed
-        by matrix. makeTransform may change verbs and increase their number.
-
-        @param matrix  SkMatrix to apply to SkPath
-        @param pc      whether to apply perspective clipping
-        @return        SkPath
-    */
-    SkPath makeTransform(const SkMatrix& m,
-                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const {
-        SkPath dst;
-        this->transform(m, &dst, pc);
-        return dst;
-    }
+    SkPath makeTransform(const SkMatrix& matrix,
+                         SkApplyPerspectiveClip pc = SkApplyPerspectiveClip::kYes) const;
 
     SkPath makeScale(SkScalar sx, SkScalar sy) const {
         return this->makeTransform(SkMatrix::Scale(sx, sy), SkApplyPerspectiveClip::kNo);
+    }
+
+    SkPath makeOffset(SkScalar dx, SkScalar dy) const {
+        return this->makeTransform(SkMatrix::Translate(dx, dy), SkApplyPerspectiveClip::kNo);
     }
 
     /** Returns last point on SkPath in lastPt. Returns false if SkPoint array is empty,
