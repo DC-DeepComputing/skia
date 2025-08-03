@@ -61,34 +61,22 @@ std::optional<SkRect> SkRect::Bounds(SkSpan<const SkPoint> points) {
         return SkRect::MakeEmpty();
     }
 
-    auto count = points.size();
-    auto pts = points.data();
+    float L = points[0].fX, T = points[0].fY, R = points[0].fX, B = points[0].fY;
+    float nx = 0, ny = 0;
+    for (auto p : points) {
+        L = fmin(p.fX, L);
+        T = fmin(p.fY, T);
+        R = fmax(p.fX, R);
+        B = fmax(p.fY, B);
 
-    skvx::float4 min, max;
-    if (count & 1) {
-        min = max = skvx::float2::Load(pts).xyxy();
-        pts   += 1;
-        count -= 1;
-    } else {
-        min = max = skvx::float4::Load(pts);
-        pts   += 2;
-        count -= 2;
+        // we do this to look for infinities or nans
+        nx *= p.fX;
+        ny *= p.fY;
     }
 
-    skvx::float4 accum = min * 0;
-    while (count) {
-        skvx::float4 xy = skvx::float4::Load(pts);
-        accum = accum * xy;
-        min = skvx::min(min, xy);
-        max = skvx::max(max, xy);
-        pts   += 2;
-        count -= 2;
-    }
-
-    const bool all_finite = all(accum * 0 == 0);
-    if (all_finite) {
-        return MakeLTRB(std::min(min[0], min[2]), std::min(min[1], min[3]),
-                        std::max(max[0], max[2]), std::max(max[1], max[3]));
+    // if this is true, all our values were finite
+    if (nx == 0 && ny == 0) {
+        return {{L, T, R, B}};
     }
     return {};
 }
