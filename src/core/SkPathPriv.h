@@ -158,11 +158,11 @@ public:
     }
 
     /**
-      * Iterates through a raw range of path verbs, points, and conics. All values are returned
-      * unaltered.
-      *
-      * NOTE: This class's definition will be moved into SkPathPriv once RangeIter is removed.
-    */
+     * Iterates through a raw range of path verbs, points, and conics. All values are returned
+     * unaltered.
+     *
+     * NOTE: This class's definition will be moved into SkPathPriv once RangeIter is removed.
+     */
     using RangeIter = SkPath::RangeIter;
 
     /**
@@ -175,15 +175,15 @@ public:
     struct Iterate {
     public:
         Iterate(const SkPath& path)
-                : Iterate(path.fPathRef->verbsBegin(),
-                          // Don't allow iteration through non-finite points.
-                          (!path.isFinite()) ? path.fPathRef->verbsBegin()
-                                             : path.fPathRef->verbsEnd(),
-                          path.fPathRef->points(), path.fPathRef->conicWeights()) {
+        : Iterate(path.fPathRef->verbsBegin(),
+                  // Don't allow iteration through non-finite points.
+                  (!path.isFinite()) ? path.fPathRef->verbsBegin()
+                  : path.fPathRef->verbsEnd(),
+                  path.fPathRef->points(), path.fPathRef->conicWeights()) {
         }
         Iterate(const SkPathVerb* verbsBegin, const SkPathVerb* verbsEnd, const SkPoint* points,
                 const SkScalar* weights)
-                : fVerbsBegin(verbsBegin), fVerbsEnd(verbsEnd), fPoints(points), fWeights(weights) {
+        : fVerbsBegin(verbsBegin), fVerbsEnd(verbsEnd), fPoints(points), fWeights(weights) {
         }
         SkPath::RangeIter begin() { return {fVerbsBegin, fPoints, fWeights}; }
         SkPath::RangeIter end() { return {fVerbsEnd, nullptr, nullptr}; }
@@ -316,7 +316,7 @@ public:
         bool            fIsClosed;
         SkPathDirection fDirection;
         size_t          fPointsConsumed,
-                        fVerbsConsumed;
+        fVerbsConsumed;
     };
     static std::optional<RectContour> IsRectContour(SkSpan<const SkPoint> ptSpan,
                                                     SkSpan<const SkPathVerb> vbSpan,
@@ -430,6 +430,18 @@ public:
             path.getFillType(),
             path.isConvex(),
             SkTo<uint8_t>(path.getSegmentMasks()),
+        };
+    }
+
+    static SkPathRaw Raw(const SkPathBuilder& builder) {
+        return {
+            builder.points(),
+            builder.verbs(),
+            builder.conicWeights(),
+            builder.computeBounds(),
+            builder.fillType(),
+            builder.fConvexity == SkPathConvexity::kConvex,
+            SkTo<uint8_t>(builder.fSegmentMask),
         };
     }
 };
