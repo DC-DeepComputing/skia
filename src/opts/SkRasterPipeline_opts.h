@@ -6657,8 +6657,15 @@ LOWP_STAGE_GP(bilerp_clamp_8888, const SkRasterPipelineContexts::GatherCtx* ctx)
     I32 qx = cast<I32>((join<F>(__lsx_vfrintrm_s(val1), __lsx_vfrintrm_s(val2)))) - 32768,
     qy = cast<I32>((join<F>(__lsx_vfrintrm_s(val3), __lsx_vfrintrm_s(val4)))) - 32768;
 #else
-    I32 qx = cast<I32>(floor_(65536.0f * x + 0.5f)) - 32768,
-        qy = cast<I32>(floor_(65536.0f * y + 0.5f)) - 32768;
+    F fx = floor_(65536.0f * x + 0.5f),
+      fy = floor_(65536.0f * y + 0.5f);
+
+    // Explicitly clamp values before cast.
+    fx = max(min(fx, std::numeric_limits<int32_t>::max()), std::numeric_limits<int32_t>::min());
+    fy = max(min(fy, std::numeric_limits<int32_t>::max()), std::numeric_limits<int32_t>::min());
+
+    I32 qx = cast<I32>(fx) - 32768,
+        qy = cast<I32>(fy) - 32768;
 #endif
 
     // Calculate screen coordinates sx & sy by flooring qx and qy.
