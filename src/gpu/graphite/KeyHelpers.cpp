@@ -315,8 +315,8 @@ static int write_color_and_offset_bufdata(int numStops,
                                            const SkPMColor4f* colors,
                                            const float* offsets,
                                            const SkGradientBaseShader* shader,
-                                           PipelineDataGatherer* gatherer) {
-    auto [dstData, bufferOffset] = gatherer->allocateGradientData(numStops, shader);
+                                           FloatStorageManager* floatStorageManager){
+    auto [dstData, bufferOffset] = floatStorageManager->allocateGradientData(numStops, shader);
     if (dstData) {
         // Data doesn't already exist so we need to write it.
         // Writes all offset data, then color data. This way when binary searching through the
@@ -410,6 +410,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
 void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
+                                    FloatStorageManager* floatStorageManager,
                                     const GradientData& gradData) {
     auto dict = keyContext.dict();
 
@@ -420,7 +421,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
                                                           gradData.fSrcColors,
                                                           gradData.fSrcOffsets,
                                                           gradData.fSrcShader,
-                                                          gatherer);
+                                                          floatStorageManager);
         } else {
             SkASSERT(gradData.fColorsAndOffsetsProxy);
             gatherer->add(gradData.fColorsAndOffsetsProxy,
@@ -2593,6 +2594,7 @@ static SkBitmap create_color_and_offset_bitmap(int numStops,
 static void make_interpolated_to_dst(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* builder,
                                      PipelineDataGatherer* gatherer,
+                                     FloatStorageManager* floatStorageManager,
                                      const GradientShaderBlocks::GradientData& gradData,
                                      const SkGradientShader::Interpolation& interp,
                                      SkColorSpace* intermediateCS) {
@@ -2630,7 +2632,8 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
     // one child.
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
+                GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, floatStorageManager,
+                                               gradData);
             },
             /* addOuterToKey= */ [&]() -> void {
                 ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
@@ -2640,6 +2643,7 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkGradientBaseShader* shader,
                                 SkPoint point0,
                                 SkPoint point1,
@@ -2696,6 +2700,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     make_interpolated_to_dst(keyContext,
                              builder,
                              gatherer,
+                             floatStorageManager,
                              data,
                              shader->getInterpolation(),
                              xformedColors.fIntermediateColorSpace.get());
@@ -2704,6 +2709,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkConicalGradient* shader) {
     SkScalar r0 = shader->getStartRadius();
     SkScalar r1 = shader->getEndRadius();
@@ -2721,6 +2727,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->getStartCenter(),
                         shader->getEndCenter(),
@@ -2733,10 +2740,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkLinearGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->start(),
                         shader->end(),
@@ -2749,10 +2758,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkRadialGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->center(),
                         { 0.0f, 0.0f },
@@ -2765,10 +2776,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkSweepGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->center(),
                         { 0.0f, 0.0f },
@@ -2781,6 +2794,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkGradientBaseShader* shader) {
     SkASSERT(shader);
     switch (shader->asGradient()) {
@@ -2789,6 +2803,7 @@ static void add_to_key(const KeyContext& keyContext,
         add_gradient_to_key(keyContext,                                       \
                             builder,                                          \
                             gatherer,                                         \
+                            floatStorageManager,                              \
                             static_cast<const Sk##type##Gradient*>(shader));  \
         return;
         SK_ALL_GRADIENTS(M)
@@ -2806,6 +2821,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkGradientBaseShader*) 
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkShader* shader) {
     if (!shader) {
         // Calling code assumes a block will be appended. Add a fixed block to preserve shader
@@ -2816,14 +2832,21 @@ void AddToKey(const KeyContext& keyContext,
         return;
     }
     switch (as_SB(shader)->type()) {
-#define M(type)                                                        \
-    case SkShaderBase::ShaderType::k##type:                            \
-        add_to_key(keyContext,                                         \
-                   builder,                                            \
-                   gatherer,                                           \
-                   static_cast<const Sk##type##Shader*>(shader)); \
-        return;
-        SK_ALL_SHADERS(M)
+        case SkShaderBase::ShaderType::kGradientBase:
+            add_to_key(keyContext,
+                       builder,
+                       gatherer,
+                       floatStorageManager,
+                       static_cast<const SkGradientBaseShader*>(shader));
+            return;
+#define M(type)                                                            \
+        case SkShaderBase::ShaderType::k##type:                            \
+            add_to_key(keyContext,                                         \
+                       builder,                                            \
+                       gatherer,                                           \
+                       static_cast<const Sk##type##Shader*>(shader));      \
+            return;
+        SK_ALL_SHADERS_EXCEPT_GRADIENT(M)
 #undef M
     }
     SkUNREACHABLE;
@@ -2835,15 +2858,23 @@ void NotifyImagesInUse(Recorder* recorder,
     if (!shader) {
         return;
     }
+
     switch (as_SB(shader)->type()) {
-#define M(type)                                                      \
-    case SkShaderBase::ShaderType::k##type:                          \
-        notify_in_use(recorder,                                      \
-                      drawContext,                                   \
-                      static_cast<const Sk##type##Shader*>(shader)); \
-        return;
-        SK_ALL_SHADERS(M)
-#undef M
+        case SkShaderBase::ShaderType::kGradientBase: {
+            notify_in_use(recorder,
+                          drawContext,
+                          static_cast<const SkGradientBaseShader*>(shader));
+            return;
+        }
+
+        #define M(type)                                                      \
+            case SkShaderBase::ShaderType::k##type:                          \
+                notify_in_use(recorder,                                      \
+                              drawContext,                                   \
+                              static_cast<const Sk##type##Shader*>(shader)); \
+                return;
+        SK_ALL_SHADERS_EXCEPT_GRADIENT(M)
+        #undef M
     }
     SkUNREACHABLE;
 }

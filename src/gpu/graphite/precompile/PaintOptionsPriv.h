@@ -12,6 +12,7 @@
 
 namespace skgpu::graphite {
 
+class FloatStorageManager;
 class ShaderCodeDictionary;
 
 /** Class that exposes methods in PaintOptions that are only intended for use internal to Skia.
@@ -42,14 +43,15 @@ public:
     void buildCombinations(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             DrawTypeFlags drawTypes,
             bool withPrimitiveBlender,
             Coverage coverage,
             const RenderPassDesc& renderPassDesc,
             const ProcessCombination& processCombination) const {
         fPaintOptions->buildCombinations(
-                keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
-                renderPassDesc, processCombination);
+                keyContext, gatherer, floatStorageManager, drawTypes, withPrimitiveBlender,
+                coverage, renderPassDesc, processCombination);
     }
 
 private:

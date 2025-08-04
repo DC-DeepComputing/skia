@@ -69,6 +69,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
 
         SkASSERT(desiredCombination == 0); // The empty shader only ever has one combination
@@ -92,6 +93,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
 
         SkASSERT(desiredCombination == 0); // The color shader only ever has one combination
@@ -139,6 +141,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -166,16 +169,17 @@ private:
                                            { sk_ref_sp(blendEffect) });
         }
 
-        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fSrcOptions,
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager, fSrcOptions,
                                    desiredSrcCombination);
-        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fDstOptions,
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager, fDstOptions,
                                    desiredDstCombination);
 
         if (blender->priv().asBlendMode()) {
             SkASSERT(blenderCombination == 0);
             AddBlendMode(keyContext, builder, gatherer, *blender->priv().asBlendMode());
         } else {
-            blender->priv().addToKey(keyContext, builder, gatherer, blenderCombination);
+            blender->priv().addToKey(keyContext, builder, gatherer, floatStorageManager,
+                                     blenderCombination);
         }
 
         builder->endBlock();  // BlendComposeBlock or RuntimeEffectBlock
@@ -222,6 +226,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumShaderCombos);
 
@@ -231,7 +236,8 @@ private:
         CoordClampShaderBlock::CoordClampData data(kIgnored);
 
         CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, data);
-            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fShaders, desiredCombination);
+            AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager, fShaders,
+                                       desiredCombination);
         builder->endBlock();
     }
 
@@ -276,6 +282,7 @@ int PrecompileImageShader::numIntrinsicCombinations() const {
 void PrecompileImageShader::addToKey(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* builder,
                                      PipelineDataGatherer* gatherer,
+                                     FloatStorageManager* floatStorageManger,
                                      int desiredCombination) const {
     SkASSERT(this->numChildCombinations() == 1);
     SkASSERT(desiredCombination < this->numIntrinsicCombinations());
@@ -450,6 +457,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numIntrinsicCombinations());
 
@@ -541,6 +549,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
 
         SkASSERT(desiredCombination == 0); // The Perlin noise shader only ever has one combination
@@ -618,6 +627,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(this->numChildCombinations() == 1);
         SkASSERT(desiredCombination < fNumStopVariants);
@@ -642,7 +652,8 @@ private:
 
         Compose(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
-                    GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
+                    GradientShaderBlocks::AddBlock(keyContext, builder, gatherer,
+                                                   floatStorageManager, gradData);
                 },
                 /* addOuterToKey= */  [&]() -> void {
                     ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, csData);
@@ -776,6 +787,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -800,7 +812,7 @@ private:
             LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, matrix);
         }
 
-        AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped,
+        AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager, fWrapped,
                                    desiredWrappedCombination);
 
         if (desiredLMCombination == kWithLocalMatrix) {
@@ -870,6 +882,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -879,11 +892,15 @@ private:
 
         Compose(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
-                    AddToKey<PrecompileShader>(keyContext, builder, gatherer, fShaders,
-                                               desiredShaderCombination);
+                    AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager,
+                                              fShaders, desiredShaderCombination);
                 },
                 /* addOuterToKey= */ [&]() -> void {
-                    AddToKey<PrecompileColorFilter>(keyContext, builder, gatherer, fColorFilters,
+                    AddToKey<PrecompileColorFilter>(keyContext,
+                                                    builder,
+                                                    gatherer,
+                                                    floatStorageManager,
+                                                    fColorFilters,
                                                     desiredColorFilterCombination);
                 });
     }
@@ -919,6 +936,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -939,7 +957,11 @@ private:
 
         Compose(keyContext, builder, gatherer,
                 /* addInnerToKey= */ [&]() -> void {
-                    AddToKey<PrecompileShader>(workingContext, builder, gatherer, fShaders,
+                    AddToKey<PrecompileShader>(workingContext,
+                                               builder,
+                                               gatherer,
+                                               floatStorageManager,
+                                               fShaders,
                                                desiredShaderCombination);
                 },
                 /* addOuterToKey= */ [&]() -> void {
@@ -991,6 +1013,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumWrappedCombos);
 
@@ -998,7 +1021,8 @@ private:
 
         LocalMatrixShaderBlock::BeginBlock(keyContext, builder, gatherer, kIgnoredLMShaderData);
 
-            AddToKey<PrecompileShader>(keyContext, builder, gatherer, fWrapped, desiredCombination);
+            AddToKey<PrecompileShader>(keyContext, builder, gatherer, floatStorageManager,
+                                       fWrapped, desiredCombination);
 
         builder->endBlock();
     }
@@ -1030,6 +1054,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -1053,7 +1078,8 @@ private:
         KeyContextForRuntimeEffect childContext(keyContext, effect, /*child=*/0);
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(effect) });
-            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredWrappedCombination);
+            fWrapped->priv().addToKey(childContext, builder, gatherer, floatStorageManager,
+                                      desiredWrappedCombination);
         builder->endBlock();
     }
 
@@ -1093,6 +1119,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
 
         int desiredTextureCombination = 0;
@@ -1120,12 +1147,13 @@ private:
         KeyContextForRuntimeEffect childContext(keyContext, effect, /*child=*/0);
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(effect) });
-            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredWrappedCombination);
+            fWrapped->priv().addToKey(childContext, builder, gatherer, floatStorageManager,
+                                      desiredWrappedCombination);
             if (stableKey != SkKnownRuntimeEffects::StableKey::kMatrixConvUniforms) {
                 SkASSERT(effect->children().size() == 2);
                 KeyContextForRuntimeEffect kernelContext(keyContext, effect, /*child=*/1);
                 fRawImageShader->priv().addToKey(kernelContext, builder, gatherer,
-                                                 desiredTextureCombination);
+                                                 floatStorageManager, desiredTextureCombination);
             } else {
                 SkASSERT(effect->children().size() == 1);
             }
@@ -1161,6 +1189,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumWrappedCombos);
 
@@ -1170,7 +1199,8 @@ private:
         KeyContextForRuntimeEffect childContext(keyContext, effect, /*child=*/0);
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(effect) });
-            fWrapped->priv().addToKey(childContext, builder, gatherer, desiredCombination);
+            fWrapped->priv().addToKey(childContext, builder, gatherer, floatStorageManager,
+                                      desiredCombination);
         builder->endBlock();
     }
 
@@ -1208,6 +1238,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numChildCombinations());
 
@@ -1223,9 +1254,9 @@ private:
         KeyContextForRuntimeEffect colorContext(keyContext, effect, /*child=*/1);
 
         RuntimeEffectBlock::BeginBlock(keyContext, builder, gatherer, { sk_ref_sp(effect) });
-            fDisplacement->priv().addToKey(displContext, builder, gatherer,
+            fDisplacement->priv().addToKey(displContext, builder, gatherer, floatStorageManager,
                                            desiredDisplacementCombination);
-            fColor->priv().addToKey(colorContext, builder, gatherer,
+            fColor->priv().addToKey(colorContext, builder, gatherer, floatStorageManager,
                                     desiredColorCombination);
         builder->endBlock();
     }
@@ -1256,6 +1287,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumWrappedCombos);
 
@@ -1273,7 +1305,8 @@ private:
                                        { sk_ref_sp(lightingEffect) });
             RuntimeEffectBlock::BeginBlock(lightingContext, builder, gatherer,
                                            { sk_ref_sp(normalEffect) });
-                fWrapped->priv().addToKey(normalContext, builder, gatherer, desiredCombination);
+                fWrapped->priv().addToKey(normalContext, builder, gatherer, floatStorageManager,
+                                          desiredCombination);
             builder->endBlock();
         builder->endBlock();
     }

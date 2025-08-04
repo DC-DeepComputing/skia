@@ -86,6 +86,7 @@ void CreateBlurImageFilterPipelines(
 
     blurPaintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              /*floatStorageManger=*/nullptr,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -125,6 +126,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              /*floatStorageManger=*/nullptr,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -227,6 +229,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              /*floatStorageManger=*/nullptr,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -281,6 +284,7 @@ private:
 
         displacement.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              /*floatStorageManger=*/nullptr,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -316,6 +320,7 @@ private:
 
         lighting.priv().buildCombinations(keyContext,
                                           gatherer,
+                                          /*floatStorageManger=*/nullptr,
                                           DrawTypeFlags::kSimpleShape,
                                           /* withPrimitiveBlender= */ false,
                                           Coverage::kSingleChannel,
@@ -354,6 +359,7 @@ private:
 
         matrixConv.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            /*floatStorageManger=*/nullptr,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
@@ -395,6 +401,7 @@ private:
 
             sparse.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            /*floatStorageManger=*/nullptr,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
@@ -411,6 +418,7 @@ private:
 
             linear.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            /*floatStorageManger=*/nullptr,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,

@@ -30,6 +30,7 @@ protected:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* FloatStorageManager,
                   int desiredCombination) const final {
         SkASSERT(desiredCombination == 0); // The blend mode blender only ever has one combination
 

@@ -2019,6 +2019,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
                                               &precompileGatherer,
+                                              /*floatStorageManager=*/ nullptr,
                                               hasAnalyticClip ? DrawTypeFlags::kAnalyticClip
                                                               : DrawTypeFlags::kNone,
                                               withPrimitiveBlender,

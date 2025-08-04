@@ -28,6 +28,7 @@ PrecompileMaskFilter::~PrecompileMaskFilter() = default;
 void PrecompileMaskFilter::addToKey(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
+                                    FloatStorageManager* floatStorageManager,
                                     int desiredCombination) const {
     SkASSERT(false);
 }
@@ -79,6 +80,7 @@ private:
             restoreOptions.priv().buildCombinations(
                     keyContext,
                     gatherer,
+                    /*floatStorageManager=*/nullptr,
                     static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kCoverageMask),
                     /* withPrimitiveBlender= */ false,
                     Coverage::kSingleChannel,
@@ -98,6 +100,7 @@ private:
             coverageOptions.priv().buildCombinations(
                     keyContext,
                     gatherer,
+                    /*floatStorageManager=*/nullptr,
                     DrawTypeFlags::kAnalyticRRect,
                     /* withPrimitiveBlender= */ false,
                     Coverage::kSingleChannel,

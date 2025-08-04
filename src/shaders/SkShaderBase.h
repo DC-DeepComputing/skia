@@ -159,22 +159,25 @@ private:
 
 }  // namespace SkShaders
 
-#define SK_ALL_SHADERS(M) \
-    M(Blend)              \
-    M(CTM)                \
-    M(Color)              \
-    M(ColorFilter)        \
-    M(CoordClamp)         \
-    M(Empty)              \
-    M(GradientBase)       \
-    M(Image)              \
-    M(LocalMatrix)        \
-    M(PerlinNoise)        \
-    M(Picture)            \
-    M(Runtime)            \
-    M(Transform)          \
-    M(TriColor)           \
+#define SK_ALL_SHADERS_EXCEPT_GRADIENT(M) \
+    M(Blend)                              \
+    M(CTM)                                \
+    M(Color)                              \
+    M(ColorFilter)                        \
+    M(CoordClamp)                         \
+    M(Empty)                              \
+    M(Image)                              \
+    M(LocalMatrix)                        \
+    M(PerlinNoise)                        \
+    M(Picture)                            \
+    M(Runtime)                            \
+    M(Transform)                          \
+    M(TriColor)                           \
     M(WorkingColorSpace)
+
+#define SK_ALL_SHADERS(M)                 \
+    SK_ALL_SHADERS_EXCEPT_GRADIENT(M)     \
+    M(GradientBase)
 
 #define SK_ALL_GRADIENTS(M) \
     M(Conical)              \
@@ -197,8 +200,9 @@ public:
     virtual bool isConstant(SkColor4f* color = nullptr) const { return false; }
 
     enum class ShaderType {
+        kGradientBase,
 #define M(type) k##type,
-        SK_ALL_SHADERS(M)
+        SK_ALL_SHADERS_EXCEPT_GRADIENT(M)
 #undef M
     };
 

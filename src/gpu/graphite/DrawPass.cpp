@@ -431,6 +431,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     // shading and geometry uniforms below.
     PipelineDataGatherer gatherer(uniformLayout);
 
+    // Track the grad buffers
+    FloatStorageManager fsm;
+
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
 
@@ -486,7 +489,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
     }
 
     GradientBufferTracker gradientBufferTracker;
-    if (!gradientBufferTracker.writeData(gatherer.gradientBufferData(), bufferMgr)) {
+    if (!gradientBufferTracker.writeData(fsm.data(), bufferMgr)) {
         // The necessary uniform data couldn't be written to the GPU, so the DrawPass is invalid.
         // Early out now since the next Recording snap will fail.
         return nullptr;

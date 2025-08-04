@@ -35,6 +35,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class DrawContext;
+class FloatStorageManager;
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
@@ -139,6 +140,7 @@ struct GradientShaderBlocks {
     static void AddBlock(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
+                         FloatStorageManager*,
                          const GradientData&);
 };
 

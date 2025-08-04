@@ -29,6 +29,7 @@ enum DrawTypeFlags : uint16_t;
 enum class PrecompileImageFilterFlags : uint32_t;
 enum class TextureFormat : uint8_t;
 
+class FloatStorageManager;
 class KeyContext;
 class PaintOptionsPriv;
 class PaintParamsKeyBuilder;
@@ -176,6 +177,7 @@ private:
                    TextureFormat,
                    PaintParamsKeyBuilder*,
                    PipelineDataGatherer*,
+                   FloatStorageManager*,
                    int desiredCombination,
                    bool addPrimitiveBlender,
                    bool addAnalyticClip,
@@ -189,6 +191,7 @@ private:
 
     void buildCombinations(const KeyContext&,
                            PipelineDataGatherer*,
+                           FloatStorageManager*,
                            DrawTypeFlags,
                            bool addPrimitiveBlender,
                            Coverage,

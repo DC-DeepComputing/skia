@@ -83,6 +83,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < this->numCombinations());
 
@@ -106,16 +107,20 @@ private:
             // A "passthrough" color filter returns the input color as-is.
             builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
         } else if (!inner) {
-            outer->priv().addToKey(keyContext, builder, gatherer, outerChildOptions);
+            outer->priv().addToKey(keyContext, builder, gatherer, floatStorageManager,
+                                   outerChildOptions);
         } else if (!outer) {
-            inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
+            inner->priv().addToKey(keyContext, builder, gatherer, floatStorageManager,
+                                   innerChildOptions);
         } else {
             Compose(keyContext, builder, gatherer,
                     /* addInnerToKey= */ [&]() -> void {
-                        inner->priv().addToKey(keyContext, builder, gatherer, innerChildOptions);
+                        inner->priv().addToKey(keyContext, builder, gatherer, floatStorageManager,
+                                               innerChildOptions);
                     },
                     /* addOuterToKey= */ [&]() -> void {
-                        outer->priv().addToKey(keyContext, builder, gatherer, outerChildOptions);
+                        outer->priv().addToKey(keyContext, builder, gatherer, floatStorageManager,
+                                               outerChildOptions);
                     });
         }
     }
@@ -151,6 +156,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         auto [blender, option ] = fBlendOptions.selectOption(desiredCombination);
         SkASSERT(option == 0 && blender->priv().asBlendMode().has_value());
@@ -203,6 +209,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
@@ -243,6 +250,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         const int srcCombination = desiredCombination % fSrc.size();
         const int dstCombination = desiredCombination / fSrc.size();
@@ -312,6 +320,7 @@ class PrecompileTableColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
@@ -370,6 +379,7 @@ class PrecompileGaussianColorFilter : public PrecompileColorFilter {
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination == 0);
 
@@ -402,6 +412,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
         SkASSERT(desiredCombination < fNumChildCombos);
 
@@ -430,8 +441,12 @@ private:
                             },
                             /* addOuterToKey= */ [&]() -> void {
                                 // Middle (outer of inner compose)
-                                AddToKey<PrecompileColorFilter>(workingContext, builder, gatherer,
-                                                                fChildOptions, desiredCombination);
+                                AddToKey<PrecompileColorFilter>(workingContext,
+                                                                builder,
+                                                                gatherer,
+                                                                floatStorageManager,
+                                                                fChildOptions,
+                                                                desiredCombination);
                             });
                 },
                 /* addOuterToKey= */ [&]() -> void {

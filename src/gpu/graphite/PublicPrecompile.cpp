@@ -278,6 +278,7 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
     options.priv().buildCombinations(
         keyContext,
         &gatherer,
+        /*floatStorageManager=*/nullptr,
         drawTypes,
         withPrimitiveBlender,
         coverage,

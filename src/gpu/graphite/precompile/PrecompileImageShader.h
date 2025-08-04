@@ -90,6 +90,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* FloatStorageManager,
                   int desiredCombination) const override;
 };
 
