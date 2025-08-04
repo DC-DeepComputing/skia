@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8061aff7_44bf1ba2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5140
+      },
+      "writtenOn": "2025-08-04T21:13:40Z",
+      "side": 1,
+      "message": "The `android-14-tablet-landscape-arm64-rel` should have one failure in `RenderTextTest.HarfBuzz_SplitRunsWithMissingGlyphSmallCaps` as this was kicked off before https://chromium-review.googlesource.com/c/chromium/src/+/6820156 landed. This is the test that is known to need to be updated.",
+      "revId": "ab8170a03f0d407aa2985d0c9d7a2227ae427e47",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
