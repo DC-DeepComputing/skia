@@ -280,13 +280,14 @@ private:
 class DrawPass::SortKey {
 public:
     SortKey(const DrawList::Draw* draw,
+            DisjointStencilIndex stencilIndex,
             int renderStep,
             GraphicsPipelineCache::Index pipelineIndex,
             UniformDataCache::Index geomUniformIndex,
             UniformDataCache::Index shadingUniformIndex,
             TextureDataCache::Index textureBindingIndex)
         : fPipelineKey(ColorDepthOrderField::set(draw->fDrawParams.order().paintOrder().bits()) |
-                       StencilIndexField::set(draw->fDrawParams.order().stencilIndex().bits())  |
+                       StencilIndexField::set(stencilIndex.bits())                              |
                        RenderStepField::set(static_cast<uint32_t>(renderStep))                  |
                        PipelineField::set(pipelineIndex))
         , fUniformKey(GeometryUniformField::set(geomUniformIndex)   |
@@ -433,6 +434,9 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
     std::vector<SortKey> keys;
     keys.reserve(draws->renderStepCount());
+    // Reversing too large a list hurts std::sort, but if we have lots of draws, count on the
+    // unstable sort to give us some overdraw elimination.
+    const bool enableFrontToBack = draws->renderStepCount() < 200;
 
     for (const DrawList::Draw& draw : draws->fDraws.items()) {
         gatherer.resetForDraw();
@@ -460,6 +464,15 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
 
         // Create a sort key for every render step in this draw, extracting out any
         // RenderStep-specific data.
+        DisjointStencilIndex stencilIndex = draw.fDrawParams.order().stencilIndex();
+        if (enableFrontToBack && stencilIndex == DrawOrder::kUnassigned) {
+            // If we don't use the stencil buffer, then the stencil index isn't used and our
+            // rendering won't impact any other renderer that does use the stencil buffer in the
+            // same compressed painter's order layer. Instead co-opt the bits to enforce F2B
+            // rendering by negating the draw's actual Z value.
+            SkASSERT(!SkToBool(draw.fRenderer->depthStencilFlags() & DepthStencilFlags::kStencil));
+            stencilIndex = draw.fDrawParams.order().depthAsStencilIndex();
+        }
         for (int stepIndex = 0; stepIndex < draw.fRenderer->numRenderSteps(); ++stepIndex) {
             gatherer.rewindForRenderStep();
 
@@ -478,7 +491,7 @@ std::unique_ptr<DrawPass> DrawPass::Make(Recorder* recorder,
             TextureDataCache::Index textureBindingIndex = combinedTextures ?
                     textureDataCache.insert(combinedTextures) : TextureDataCache::kInvalidIndex;
 
-            keys.push_back({&draw, stepIndex, pipelineIndex,
+            keys.push_back({&draw, stencilIndex, stepIndex, pipelineIndex,
                             geomUniformIndex, shadingUniformIndex, textureBindingIndex});
         }
 
