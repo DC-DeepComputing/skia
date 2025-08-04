@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fbccb73_5915ce50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-04T18:36:27Z",
+      "side": 1,
+      "message": "good news (at least on M1) for moving all transformations to builder",
+      "revId": "7ae34dd4ceb94b9699821e48a3049c9d35af5405",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
