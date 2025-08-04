@@ -212,9 +212,10 @@ void SkPathRef::CreateTransformedCopy(sk_sp<SkPathRef>* dst,
     (*dst)->fType = newType;
     if (newType == PathType::kOval || newType == PathType::kRRect) {
         unsigned start = src.fRRectOrOvalStartIdx;
-        bool isCCW = SkToBool(src.fRRectOrOvalIsCCW);
+        bool isCCW = src.fRRectOrOvalDirection == SkPathDirection::kCCW;
         transform_dir_and_start(matrix, newType == PathType::kRRect, &isCCW, &start);
-        (*dst)->fRRectOrOvalIsCCW = isCCW;
+
+        (*dst)->fRRectOrOvalDirection = isCCW ? SkPathDirection::kCCW : SkPathDirection::kCW;
         (*dst)->fRRectOrOvalStartIdx = start;
     }
 
@@ -290,7 +291,7 @@ void SkPathRef::copy(const SkPathRef& ref,
     }
     fSegmentMask = ref.fSegmentMask;
     fType = ref.fType;
-    fRRectOrOvalIsCCW = ref.fRRectOrOvalIsCCW;
+    fRRectOrOvalDirection = ref.fRRectOrOvalDirection;
     fRRectOrOvalStartIdx = ref.fRRectOrOvalStartIdx;
     fArcOval = ref.fArcOval;
     fArcStartAngle = ref.fArcStartAngle;
@@ -519,7 +520,7 @@ std::optional<SkPathRRectInfo> SkPathRef::isRRect() const {
             SkPathPriv::DeduceRRectFromContour(this->getBounds(),
                                                this->pointSpan(),
                                                this->verbs()),
-            fRRectOrOvalIsCCW ? SkPathDirection::kCCW : SkPathDirection::kCW,
+            fRRectOrOvalDirection,
             fRRectOrOvalStartIdx,
         }};
     }
