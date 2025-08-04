@@ -10,8 +10,8 @@
 
 #include "include/private/base/SkAssert.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/GpuTypesPriv.h"
-#include "src/gpu/ResourceKey.h"
 #include "src/gpu/ganesh/GrGpuResource.h"
 #include "src/gpu/ganesh/GrGpuResourcePriv.h"
 

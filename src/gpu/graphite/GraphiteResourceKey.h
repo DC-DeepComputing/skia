@@ -8,7 +8,7 @@
 #ifndef skgpu_graphite_GraphiteResourceKey_DEFINED
 #define skgpu_graphite_GraphiteResourceKey_DEFINED
 
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/graphite/ResourceTypes.h"
 
 namespace skgpu::graphite {

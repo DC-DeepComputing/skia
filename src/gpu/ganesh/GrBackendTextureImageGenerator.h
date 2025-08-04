@@ -12,7 +12,7 @@
 #include "include/gpu/ganesh/GrDirectContext.h"
 #include "include/private/base/SkMutex.h"
 #include "include/private/gpu/ganesh/GrTextureGenerator.h"
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/ganesh/GrSurfaceProxyView.h"
 
 #include <memory>
