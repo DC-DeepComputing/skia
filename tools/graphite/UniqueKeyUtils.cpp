@@ -7,7 +7,7 @@
 
 #include "tools/graphite/UniqueKeyUtils.h"
 
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/graphite/Caps.h"
 #include "src/gpu/graphite/ContextPriv.h"
 #include "src/gpu/graphite/GraphicsPipelineDesc.h"

@@ -10,7 +10,7 @@
 #include "include/private/base/SkAlign.h"
 #include "include/private/base/SkAssert.h"
 #include "include/private/base/SkTo.h"
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/ganesh/GrCaps.h"
 #include "src/gpu/ganesh/GrGpu.h"
 

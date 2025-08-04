@@ -16,7 +16,7 @@
 #include "include/private/base/SkDebug.h"
 #include "include/private/base/SkTypeTraits.h"
 #include "src/base/SkTBlockList.h"
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/ganesh/GrClip.h"
 #include "src/gpu/ganesh/GrFragmentProcessor.h"
 #include "src/gpu/ganesh/geometry/GrShape.h"

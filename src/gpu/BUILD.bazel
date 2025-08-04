@@ -32,8 +32,6 @@ SHARED_FILES = [
     "RectanizerSkyline.cpp",
     "RectanizerSkyline.h",
     "RefCntedCallback.h",
-    "ResourceKey.cpp",
-    "ResourceKey.h",
     "ShaderErrorHandler.cpp",
     "SkBackingFit.cpp",
     "SkBackingFit.h",

@@ -5,7 +5,7 @@
  * found in the LICENSE file.
  */
 
-#include "src/gpu/ResourceKey.h"
+#include "src/core/ResourceKey.h"
 
 #include "src/core/SkChecksum.h"
 
