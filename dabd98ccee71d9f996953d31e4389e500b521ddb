@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f3905dd_706b85b7",
+        "filename": "include/core/SkPathBuilder.h",
+        "patchSetId": 2
+      },
+      "lineNbr": 952,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T16:20:59Z",
+      "side": 1,
+      "message": "Maybe not strictly needed, but let\u0027s initialize for consistency.",
+      "range": {
+        "startLine": 952,
+        "startChar": 20,
+        "endLine": 952,
+        "endChar": 33
+      },
+      "revId": "dabd98ccee71d9f996953d31e4389e500b521ddb",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
