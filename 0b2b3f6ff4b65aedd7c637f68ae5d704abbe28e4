@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc4f4c8_cca90f3e",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-04T16:42:14Z",
+      "side": 1,
+      "message": "SK_SUPPORT_LEGACY_RRECT_TRANSFORM is defined in chromium now. Is that the only client that requires it? If so, may as well remove these lines now.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 45
+      },
+      "revId": "0b2b3f6ff4b65aedd7c637f68ae5d704abbe28e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
