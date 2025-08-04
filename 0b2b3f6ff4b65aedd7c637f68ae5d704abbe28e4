@@ -70,6 +70,30 @@
       },
       "revId": "0b2b3f6ff4b65aedd7c637f68ae5d704abbe28e4",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "970fb110_dc04e939",
+        "filename": "src/core/SkRRect.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-04T17:37:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "840e7be6_680c55a6",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 32,
+        "endChar": 45
+      },
+      "revId": "0b2b3f6ff4b65aedd7c637f68ae5d704abbe28e4",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
