@@ -35,6 +35,7 @@ class SkRuntimeEffect;
 namespace skgpu::graphite {
 
 class DrawContext;
+class FloatStorageManager;
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
@@ -139,6 +140,7 @@ struct GradientShaderBlocks {
     static void AddBlock(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
+                         FloatStorageManager*,
                          const GradientData&);
 };
 
@@ -469,6 +471,7 @@ struct RuntimeEffectBlock {
 void AddToKey(const KeyContext&,
               PaintParamsKeyBuilder*,
               PipelineDataGatherer*,
+              FloatStorageManager*,
               const SkBlender*);
 
 /**
@@ -483,6 +486,7 @@ void AddToKey(const KeyContext&,
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkColorFilter* filter);
 
 /**
@@ -497,6 +501,7 @@ void AddToKey(const KeyContext& keyContext,
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkShader* shader);
 
 // TODO(b/330864257) These visitation functions are redundant with AddToKey, except that they are

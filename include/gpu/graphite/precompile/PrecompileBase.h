@@ -14,6 +14,7 @@
 namespace skgpu::graphite {
 
 class KeyContext;
+class FloatStorageManager;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class PrecompileBasePriv;
@@ -54,6 +55,7 @@ protected:
     virtual void addToKey(const KeyContext&,
                           PaintParamsKeyBuilder*,
                           PipelineDataGatherer*,
+                          FloatStorageManager*,
                           int desiredCombination) const = 0;
 
     // This returns the desired option along with the child options.
@@ -67,6 +69,7 @@ protected:
     static void AddToKey(const KeyContext&,
                          PaintParamsKeyBuilder*,
                          PipelineDataGatherer*,
+                         FloatStorageManager*,
                          SkSpan<const sk_sp<T>> options,
                          int desiredOption);
 

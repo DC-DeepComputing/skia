@@ -1954,6 +1954,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
     PaintParamsKeyBuilder builder(dict);
     PipelineDataGatherer paramsGatherer(Layout::kMetal);
     PipelineDataGatherer precompileGatherer(Layout::kMetal);
+    FloatStorageManager fsm;
 
     for (bool withPrimitiveBlender: {false, true}) {
 
@@ -2019,6 +2020,7 @@ void extract_vs_build_subtest(skiatest::Reporter* reporter,
         std::vector<UniquePaintParamsID> precompileIDs;
         paintOptions.priv().buildCombinations(precompileKeyContext,
                                               &precompileGatherer,
+                                              &fsm,
                                               hasAnalyticClip ? DrawTypeFlags::kAnalyticClip
                                                               : DrawTypeFlags::kNone,
                                               withPrimitiveBlender,

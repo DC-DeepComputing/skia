@@ -315,8 +315,8 @@ static int write_color_and_offset_bufdata(int numStops,
                                            const SkPMColor4f* colors,
                                            const float* offsets,
                                            const SkGradientBaseShader* shader,
-                                           PipelineDataGatherer* gatherer) {
-    auto [dstData, bufferOffset] = gatherer->allocateGradientData(numStops, shader);
+                                           FloatStorageManager* floatStorageManager) {
+    auto [dstData, bufferOffset] = floatStorageManager->allocateGradientData(numStops, shader);
     if (dstData) {
         // Data doesn't already exist so we need to write it.
         // Writes all offset data, then color data. This way when binary searching through the
@@ -410,6 +410,7 @@ GradientShaderBlocks::GradientData::GradientData(SkShaderBase::GradientType type
 void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
+                                    FloatStorageManager* floatStorageManager,
                                     const GradientData& gradData) {
     auto dict = keyContext.dict();
 
@@ -420,7 +421,7 @@ void GradientShaderBlocks::AddBlock(const KeyContext& keyContext,
                                                           gradData.fSrcColors,
                                                           gradData.fSrcOffsets,
                                                           gradData.fSrcShader,
-                                                          gatherer);
+                                                          floatStorageManager);
         } else {
             SkASSERT(gradData.fColorsAndOffsetsProxy);
             gatherer->add(gradData.fColorsAndOffsetsProxy,
@@ -1508,6 +1509,7 @@ namespace {
 void add_to_key(const KeyContext& keyContext,
                 PaintParamsKeyBuilder* builder,
                 PipelineDataGatherer* gatherer,
+                FloatStorageManager* floatStorageManager,
                 const SkBlendModeBlender* blender) {
     SkASSERT(blender);
 
@@ -1518,6 +1520,7 @@ void add_to_key(const KeyContext& keyContext,
 void add_children_to_key(const KeyContext& keyContext,
                          PaintParamsKeyBuilder* builder,
                          PipelineDataGatherer* gatherer,
+                         FloatStorageManager* floatStorageManager,
                          SkSpan<const SkRuntimeEffect::ChildPtr> children,
                          const SkRuntimeEffect* effect) {
     SkSpan<const SkRuntimeEffect::Child> childInfo = effect->children();
@@ -1531,11 +1534,11 @@ void add_children_to_key(const KeyContext& keyContext,
 
         std::optional<ChildType> type = child.type();
         if (type == ChildType::kShader) {
-            AddToKey(childContext, builder, gatherer, child.shader());
+            AddToKey(childContext, builder, gatherer, floatStorageManager, child.shader());
         } else if (type == ChildType::kColorFilter) {
-            AddToKey(childContext, builder, gatherer, child.colorFilter());
+            AddToKey(childContext, builder, gatherer, floatStorageManager, child.colorFilter());
         } else if (type == ChildType::kBlender) {
-            AddToKey(childContext, builder, gatherer, child.blender());
+            AddToKey(childContext, builder, gatherer, floatStorageManager, child.blender());
         } else {
             // We don't have a child effect. Substitute in a no-op effect.
             switch (childInfo[index].type) {
@@ -1564,6 +1567,7 @@ void add_children_to_key(const KeyContext& keyContext,
 void add_to_key(const KeyContext& keyContext,
                 PaintParamsKeyBuilder* builder,
                 PipelineDataGatherer* gatherer,
+                FloatStorageManager* floatStorageManager,
                 const SkRuntimeBlender* blender) {
     SkASSERT(blender);
     sk_sp<SkRuntimeEffect> effect = blender->effect();
@@ -1580,7 +1584,7 @@ void add_to_key(const KeyContext& keyContext,
         return;
     }
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key(keyContext, builder, gatherer, floatStorageManager,
                         blender->children(), effect.get());
 
     builder->endBlock();
@@ -1611,6 +1615,7 @@ void notify_in_use(Recorder* recorder,
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkBlender* blender) {
     if (!blender) {
         // Calling code assumes a block will be appended. Add a fixed block to preserve shader
@@ -1626,6 +1631,7 @@ void AddToKey(const KeyContext& keyContext,
         add_to_key(keyContext,                                      \
                    builder,                                         \
                    gatherer,                                        \
+                   floatStorageManager,                             \
                    static_cast<const Sk##type##Blender*>(blender)); \
         return;
         SK_ALL_BLENDERS(M)
@@ -1654,6 +1660,7 @@ static SkPMColor4f map_color(const SkColor4f& c, SkColorSpace* src, SkColorSpace
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkBlendModeColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1666,6 +1673,7 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkColorSpaceXformColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1678,21 +1686,23 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* keyBuilder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkComposeColorFilter* filter) {
     SkASSERT(filter);
 
     Compose(keyContext, keyBuilder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                AddToKey(keyContext, keyBuilder, gatherer, filter->inner().get());
+                AddToKey(keyContext, keyBuilder, gatherer, floatStorageManager, filter->inner().get());
             },
             /* addOuterToKey= */ [&]() -> void {
-                AddToKey(keyContext, keyBuilder, gatherer, filter->outer().get());
+                AddToKey(keyContext, keyBuilder, gatherer, floatStorageManager, filter->outer().get());
             });
 }
 
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkGaussianColorFilter*) {
     builder->addBlock(BuiltInCodeSnippetID::kGaussianColorFilter);
 }
@@ -1700,6 +1710,7 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkMatrixColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1713,6 +1724,7 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkRuntimeColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1727,7 +1739,7 @@ static void add_to_key(const KeyContext& keyContext,
         return;
     }
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key(keyContext, builder, gatherer, floatStorageManager,
                         filter->children(), effect.get());
 
     builder->endBlock();
@@ -1736,6 +1748,7 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkTableColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1758,6 +1771,7 @@ static void add_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkWorkingFormatColorFilter* filter) {
     SkASSERT(filter);
 
@@ -1788,7 +1802,7 @@ static void add_to_key(const KeyContext& keyContext,
                         },
                         /* addOuterToKey= */ [&]() -> void {
                             // Middle (outer of inner compose)
-                            AddToKey(workingContext, builder, gatherer, filter->child().get());
+                            AddToKey(workingContext, builder, gatherer, floatStorageManager, filter->child().get());
                         });
             },
             /* addOuterToKey= */ [&]() -> void {
@@ -1802,6 +1816,7 @@ static void add_to_key(const KeyContext& keyContext,
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkColorFilter* filter) {
     if (!filter) {
         // Calling code assumes a block will be appended. Add a fixed block to preserve shader
@@ -1821,6 +1836,7 @@ void AddToKey(const KeyContext& keyContext,
         add_to_key(keyContext,                                         \
                    builder,                                            \
                    gatherer,                                           \
+                   floatStorageManager,                                \
                    static_cast<const Sk##type##ColorFilter*>(filter)); \
         return;
         SK_ALL_COLOR_FILTERS(M)
@@ -1854,6 +1870,7 @@ void NotifyImagesInUse(Recorder* recorder, DrawContext* drawContext, const SkCol
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkBlendShader* shader) {
     SkASSERT(shader);
 
@@ -1862,10 +1879,10 @@ static void add_to_key(const KeyContext& keyContext,
                 AddBlendMode(keyContext, builder, gatherer, shader->mode());
             },
             /* addSrcToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->src().get());
+                AddToKey(keyContext, builder, gatherer, floatStorageManager, shader->src().get());
             },
             /* addDstToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->dst().get());
+                AddToKey(keyContext, builder, gatherer, floatStorageManager, shader->dst().get());
             });
 }
 static void notify_in_use(Recorder* recorder,
@@ -1888,6 +1905,7 @@ static SkMatrix matrix_invert_or_identity(const SkMatrix& matrix) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkCTMShader* shader) {
     // CTM shaders are always given device coordinates, so we don't have to modify the CTM itself
     // with keyContext's local transform.
@@ -1899,7 +1917,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
 
-    AddToKey(newContext, builder, gatherer, shader->proxyShader().get());
+    AddToKey(newContext, builder, gatherer, floatStorageManager, shader->proxyShader().get());
 
     builder->endBlock();
 }
@@ -1910,6 +1928,7 @@ static void notify_in_use(Recorder* recorder, DrawContext* drawContext, const Sk
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkColorShader* shader) {
     SkASSERT(shader);
 
@@ -1925,15 +1944,16 @@ static void notify_in_use(Recorder*, DrawContext*, const SkColorShader*) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkColorFilterShader* shader) {
     SkASSERT(shader);
 
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->shader().get());
+                AddToKey(keyContext, builder, gatherer, floatStorageManager, shader->shader().get());
             },
             /* addOuterToKey= */ [&]() -> void {
-                AddToKey(keyContext, builder, gatherer, shader->filter().get());
+                AddToKey(keyContext, builder, gatherer, floatStorageManager, shader->filter().get());
             });
 }
 static void notify_in_use(Recorder* recorder,
@@ -1946,6 +1966,7 @@ static void notify_in_use(Recorder* recorder,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkCoordClampShader* shader) {
     SkASSERT(shader);
 
@@ -1953,7 +1974,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     KeyContextWithCoordClamp childContext(keyContext);
     CoordClampShaderBlock::BeginBlock(keyContext, builder, gatherer, data);
-    AddToKey(childContext, builder, gatherer, shader->shader().get());
+    AddToKey(childContext, builder, gatherer, floatStorageManager, shader->shader().get());
     builder->endBlock();
 }
 static void notify_in_use(Recorder* recorder,
@@ -1965,6 +1986,7 @@ static void notify_in_use(Recorder* recorder,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkEmptyShader*) {
     builder->addBlock(BuiltInCodeSnippetID::kPriorOutput);
 }
@@ -1975,6 +1997,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkEmptyShader*) {
 static void add_yuv_image_to_key(const KeyContext& keyContext,
                                  PaintParamsKeyBuilder* builder,
                                  PipelineDataGatherer* gatherer,
+                                 FloatStorageManager* floatStorageManager,
                                  const SkImageShader* origShader,
                                  sk_sp<const SkImage> imageToDraw,
                                  SkSamplingOptions sampling) {
@@ -2126,6 +2149,7 @@ static void add_yuv_image_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkImageShader* shader) {
     SkASSERT(shader);
 
@@ -2158,6 +2182,7 @@ static void add_to_key(const KeyContext& keyContext,
         return add_yuv_image_to_key(keyContext,
                                       builder,
                                       gatherer,
+                                      floatStorageManager,
                                       shader,
                                       std::move(imageToDraw),
                                       newSampling);
@@ -2256,6 +2281,7 @@ static void notify_in_use(Recorder* recorder,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkLocalMatrixShader* shader) {
     SkASSERT(shader);
     auto wrappedShader = shader->wrappedShader().get();
@@ -2324,7 +2350,7 @@ static void add_to_key(const KeyContext& keyContext,
 
     LocalMatrixShaderBlock::BeginBlock(newContext, builder, gatherer, lmShaderData);
 
-    AddToKey(newContext, builder, gatherer, wrappedShader);
+    AddToKey(newContext, builder, gatherer, floatStorageManager, wrappedShader);
 
     builder->endBlock();
 }
@@ -2344,6 +2370,7 @@ static_assert((int)SkPerlinNoiseShaderType::kTurbulence ==
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkPerlinNoiseShader* shader) {
     SkASSERT(shader);
     SkASSERT(shader->numOctaves());
@@ -2384,6 +2411,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkPerlinNoiseShader*) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkPictureShader* shader) {
     SkASSERT(shader);
 
@@ -2453,7 +2481,7 @@ static void add_to_key(const KeyContext& keyContext,
         return;
     }
 
-    AddToKey(keyContext, builder, gatherer, imgShader.get());
+    AddToKey(keyContext, builder, gatherer, floatStorageManager, imgShader.get());
 }
 static void notify_in_use(Recorder*, DrawContext*, const SkPictureShader*) {
     // While the SkPicture the shader points to, may have Graphite-backed shaders that need to be
@@ -2463,6 +2491,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkPictureShader*) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkRuntimeShader* shader) {
     SkASSERT(shader);
     sk_sp<SkRuntimeEffect> effect = shader->effect();
@@ -2478,7 +2507,7 @@ static void add_to_key(const KeyContext& keyContext,
         return;
     }
 
-    add_children_to_key(keyContext, builder, gatherer,
+    add_children_to_key(keyContext, builder, gatherer, floatStorageManager,
                         shader->children(), effect.get());
 
     builder->endBlock();
@@ -2492,6 +2521,7 @@ static void notify_in_use(Recorder* recorder,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkTransformShader* shader) {
     SKGPU_LOG_W("Raster-only SkShader (SkTransformShader) encountered");
     builder->addBlock(BuiltInCodeSnippetID::kError);
@@ -2503,6 +2533,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkTransformShader*) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkTriColorShader* shader) {
     SKGPU_LOG_W("Raster-only SkShader (SkTriColorShader) encountered");
     builder->addBlock(BuiltInCodeSnippetID::kError);
@@ -2514,6 +2545,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkTriColorShader*) {
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkWorkingColorSpaceShader* shader) {
     SkASSERT(shader);
 
@@ -2531,7 +2563,7 @@ static void add_to_key(const KeyContext& keyContext,
     // Compose the inner shader (in the working space) with a (working->dst) transform:
     Compose(keyContext, builder, gatherer,
         /* addInnerToKey= */ [&]() -> void {
-            AddToKey(workingContext, builder, gatherer, shader->shader().get());
+            AddToKey(workingContext, builder, gatherer, floatStorageManager, shader->shader().get());
         },
         /* addOuterToKey= */ [&]() -> void {
             ColorSpaceTransformBlock::ColorSpaceTransformData data(
@@ -2588,11 +2620,13 @@ static SkBitmap create_color_and_offset_bitmap(int numStops,
     return colorsAndOffsetsBitmap;
 }
 
+// TODO nullptr
 // Please see GrGradientShader.cpp::make_interpolated_to_dst for substantial comments
 // as to why this code is structured this way.
 static void make_interpolated_to_dst(const KeyContext& keyContext,
                                      PaintParamsKeyBuilder* builder,
                                      PipelineDataGatherer* gatherer,
+                                     FloatStorageManager* floatStorageManager,
                                      const GradientShaderBlocks::GradientData& gradData,
                                      const SkGradientShader::Interpolation& interp,
                                      SkColorSpace* intermediateCS) {
@@ -2630,7 +2664,8 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
     // one child.
     Compose(keyContext, builder, gatherer,
             /* addInnerToKey= */ [&]() -> void {
-                GradientShaderBlocks::AddBlock(keyContext, builder, gatherer, gradData);
+                GradientShaderBlocks::AddBlock(
+                        keyContext, builder, gatherer, floatStorageManager, gradData);
             },
             /* addOuterToKey= */ [&]() -> void {
                 ColorSpaceTransformBlock::AddBlock(keyContext, builder, gatherer, data);
@@ -2640,6 +2675,7 @@ static void make_interpolated_to_dst(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkGradientBaseShader* shader,
                                 SkPoint point0,
                                 SkPoint point1,
@@ -2696,6 +2732,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     make_interpolated_to_dst(keyContext,
                              builder,
                              gatherer,
+                             floatStorageManager,
                              data,
                              shader->getInterpolation(),
                              xformedColors.fIntermediateColorSpace.get());
@@ -2704,6 +2741,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkConicalGradient* shader) {
     SkScalar r0 = shader->getStartRadius();
     SkScalar r1 = shader->getEndRadius();
@@ -2721,6 +2759,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->getStartCenter(),
                         shader->getEndCenter(),
@@ -2733,10 +2772,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkLinearGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->start(),
                         shader->end(),
@@ -2749,10 +2790,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkRadialGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->center(),
                         { 0.0f, 0.0f },
@@ -2765,10 +2808,12 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_gradient_to_key(const KeyContext& keyContext,
                                 PaintParamsKeyBuilder* builder,
                                 PipelineDataGatherer* gatherer,
+                                FloatStorageManager* floatStorageManager,
                                 const SkSweepGradient* shader) {
     add_gradient_to_key(keyContext,
                         builder,
                         gatherer,
+                        floatStorageManager,
                         shader,
                         shader->center(),
                         { 0.0f, 0.0f },
@@ -2781,6 +2826,7 @@ static void add_gradient_to_key(const KeyContext& keyContext,
 static void add_to_key(const KeyContext& keyContext,
                        PaintParamsKeyBuilder* builder,
                        PipelineDataGatherer* gatherer,
+                       FloatStorageManager* floatStorageManager,
                        const SkGradientBaseShader* shader) {
     SkASSERT(shader);
     switch (shader->asGradient()) {
@@ -2789,6 +2835,7 @@ static void add_to_key(const KeyContext& keyContext,
         add_gradient_to_key(keyContext,                                       \
                             builder,                                          \
                             gatherer,                                         \
+                            floatStorageManager,                              \
                             static_cast<const Sk##type##Gradient*>(shader));  \
         return;
         SK_ALL_GRADIENTS(M)
@@ -2806,6 +2853,7 @@ static void notify_in_use(Recorder*, DrawContext*, const SkGradientBaseShader*) 
 void AddToKey(const KeyContext& keyContext,
               PaintParamsKeyBuilder* builder,
               PipelineDataGatherer* gatherer,
+              FloatStorageManager* floatStorageManager,
               const SkShader* shader) {
     if (!shader) {
         // Calling code assumes a block will be appended. Add a fixed block to preserve shader
@@ -2821,7 +2869,8 @@ void AddToKey(const KeyContext& keyContext,
         add_to_key(keyContext,                                         \
                    builder,                                            \
                    gatherer,                                           \
-                   static_cast<const Sk##type##Shader*>(shader)); \
+                   floatStorageManager,                                \
+                   static_cast<const Sk##type##Shader*>(shader));      \
         return;
         SK_ALL_SHADERS(M)
 #undef M

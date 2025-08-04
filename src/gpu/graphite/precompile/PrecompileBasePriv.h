@@ -28,8 +28,9 @@ public:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const {
-        fPrecompileBase->addToKey(keyContext, builder, gatherer, desiredCombination);
+        fPrecompileBase->addToKey(keyContext, builder, gatherer, floatStorageManager, desiredCombination);
     }
 
 private:

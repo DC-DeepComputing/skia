@@ -50,16 +50,17 @@ sk_sp<PrecompileColorFilter> PrecompileImageFilter::asAColorFilter() const {
 void PrecompileImageFilter::createPipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
+        FloatStorageManager* floatStorageManager,
         const RenderPassDesc& renderPassDesc,
         const PaintOptions::ProcessCombination& processCombination) {
     // TODO: we will want to mark already visited nodes to prevent loops and track
     // already created Pipelines so we don't over-generate too much (e.g., if a DAG
     // has multiple blurs we don't want to keep trying to create all the blur pipelines).
-    this->onCreatePipelines(keyContext, gatherer, renderPassDesc, processCombination);
+    this->onCreatePipelines(keyContext, gatherer, floatStorageManager, renderPassDesc, processCombination);
 
     for (const sk_sp<PrecompileImageFilter>& input : fInputs) {
         if (input) {
-            input->createPipelines(keyContext, gatherer, renderPassDesc, processCombination);
+            input->createPipelines(keyContext, gatherer, floatStorageManager, renderPassDesc, processCombination);
         }
     }
 }
@@ -70,6 +71,7 @@ namespace PrecompileImageFiltersPriv {
 void CreateBlurImageFilterPipelines(
         const KeyContext& keyContext,
         PipelineDataGatherer* gatherer,
+        FloatStorageManager* floatStorageManager,
         const RenderPassDesc& renderPassDesc,
         const PaintOptionsPriv::ProcessCombination& processCombination) {
 
@@ -86,6 +88,7 @@ void CreateBlurImageFilterPipelines(
 
     blurPaintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              floatStorageManager,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -108,6 +111,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
@@ -125,6 +129,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              floatStorageManager,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -182,10 +187,12 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
+                                                                   floatStorageManager,
                                                                    renderPassDesc,
                                                                    processCombination);
     }
@@ -213,6 +220,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
         PaintOptions paintOptions;
@@ -227,6 +235,7 @@ private:
 
         paintOptions.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              floatStorageManager,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -267,6 +276,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
@@ -281,6 +291,7 @@ private:
 
         displacement.priv().buildCombinations(keyContext,
                                               gatherer,
+                                              floatStorageManager,
                                               DrawTypeFlags::kSimpleShape,
                                               /* withPrimitiveBlender= */ false,
                                               Coverage::kSingleChannel,
@@ -305,6 +316,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
@@ -316,6 +328,7 @@ private:
 
         lighting.priv().buildCombinations(keyContext,
                                           gatherer,
+                                          floatStorageManager,
                                           DrawTypeFlags::kSimpleShape,
                                           /* withPrimitiveBlender= */ false,
                                           Coverage::kSingleChannel,
@@ -340,6 +353,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
@@ -354,6 +368,7 @@ private:
 
         matrixConv.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            floatStorageManager,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
@@ -378,6 +393,7 @@ private:
     void onCreatePipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const RenderPassDesc& renderPassDesc,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
 
@@ -395,6 +411,7 @@ private:
 
             sparse.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            floatStorageManager,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,
@@ -411,6 +428,7 @@ private:
 
             linear.priv().buildCombinations(keyContext,
                                             gatherer,
+                                            floatStorageManager,
                                             DrawTypeFlags::kSimpleShape,
                                             /* withPrimitiveBlender= */ false,
                                             Coverage::kSingleChannel,

@@ -28,6 +28,7 @@ PrecompileMaskFilter::~PrecompileMaskFilter() = default;
 void PrecompileMaskFilter::addToKey(const KeyContext& keyContext,
                                     PaintParamsKeyBuilder* builder,
                                     PipelineDataGatherer* gatherer,
+                                    FloatStorageManager* floatStorageManager,
                                     int desiredCombination) const {
     SkASSERT(false);
 }
@@ -43,6 +44,7 @@ private:
     void createPipelines(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             const PaintOptions& paintOptions,
             const RenderPassDesc& renderPassDescIn,
             const PaintOptionsPriv::ProcessCombination& processCombination) const override {
@@ -65,6 +67,7 @@ private:
                 caps->getDstReadStrategy());
 
         PrecompileImageFiltersPriv::CreateBlurImageFilterPipelines(keyContext, gatherer,
+                                                                   floatStorageManager,
                                                                    coverageRenderPassDesc,
                                                                    processCombination);
 
@@ -79,6 +82,7 @@ private:
             restoreOptions.priv().buildCombinations(
                     keyContext,
                     gatherer,
+                    floatStorageManager,
                     static_cast<DrawTypeFlags>(InternalDrawTypeFlags::kCoverageMask),
                     /* withPrimitiveBlender= */ false,
                     Coverage::kSingleChannel,
@@ -98,6 +102,7 @@ private:
             coverageOptions.priv().buildCombinations(
                     keyContext,
                     gatherer,
+                    floatStorageManager,
                     DrawTypeFlags::kAnalyticRRect,
                     /* withPrimitiveBlender= */ false,
                     Coverage::kSingleChannel,

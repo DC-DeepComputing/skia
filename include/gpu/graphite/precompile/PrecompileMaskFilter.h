@@ -27,10 +27,12 @@ protected:
     void addToKey(const KeyContext&,
                   PaintParamsKeyBuilder*,
                   PipelineDataGatherer*,
+                  FloatStorageManager*,
                   int desiredCombination) const final;
 
     virtual void createPipelines(const KeyContext&,
                                  PipelineDataGatherer*,
+                                 FloatStorageManager*,
                                  const PaintOptions&,
                                  const RenderPassDesc&,
                                  const PaintOptions::ProcessCombination&) const = 0;

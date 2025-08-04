@@ -274,10 +274,12 @@ void PrecompileCombinations(const RendererProvider* rendererProvider,
     // Since the precompilation path's uniforms aren't used and don't change the key,
     // the exact layout doesn't matter
     PipelineDataGatherer gatherer(Layout::kMetal);
+    FloatStorageManager fsm;
 
     options.priv().buildCombinations(
         keyContext,
         &gatherer,
+        &fsm,
         drawTypes,
         withPrimitiveBlender,
         coverage,

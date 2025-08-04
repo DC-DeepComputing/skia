@@ -116,6 +116,7 @@ private:
     void addToKey(const KeyContext& keyContext,
                   PaintParamsKeyBuilder* builder,
                   PipelineDataGatherer* gatherer,
+                  FloatStorageManager* floatStorageManager,
                   int desiredCombination) const override {
 
         SkASSERT(desiredCombination < this->numCombinations());
@@ -144,7 +145,7 @@ private:
 
             SkASSERT(precompilebase_is_valid_as_child(option.get()));
             if (option) {
-                option->priv().addToKey(childContext, builder, gatherer, childOptions);
+                option->priv().addToKey(childContext, builder, gatherer, floatStorageManager, childOptions);
             } else {
                 SkASSERT(childOptions == 0);
 

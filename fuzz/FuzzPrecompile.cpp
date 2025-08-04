@@ -350,9 +350,11 @@ void fuzz_graphite(Fuzz* fuzz, Context* context, int depth = 9) {
 
     RenderPassDesc unusedRenderPassDesc;
 
+    //TODO REPLACE NULLPTR IN FUTURE
     std::vector<UniquePaintParamsID> precompileIDs;
     paintOptions.priv().buildCombinations(precompileKeyContext,
                                           &gatherer,
+                                          nullptr,
                                           DrawTypeFlags::kNone,
                                           /* withPrimitiveBlender= */ false,
                                           coverage,

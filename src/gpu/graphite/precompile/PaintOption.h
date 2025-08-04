@@ -22,6 +22,7 @@ class PrecompileShader;
 class KeyContext;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
+class FloatStorageManager;
 
 class PaintOption {
 public:
@@ -39,18 +40,18 @@ public:
 
     const PrecompileBlender* finalBlender() const { return fFinalBlender.first.get(); }
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
 
 private:
-    void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
     void handlePrimitiveColor(const KeyContext&,
                               PaintParamsKeyBuilder*,
-                              PipelineDataGatherer*) const;
-    void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+                              PipelineDataGatherer*, FloatStorageManager*) const;
+    void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
+    void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
     bool shouldDither(SkColorType dstCT) const;
-    void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
+    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
 
     bool fOpaquePaintColor;
     std::pair<sk_sp<PrecompileBlender>, int> fFinalBlender;

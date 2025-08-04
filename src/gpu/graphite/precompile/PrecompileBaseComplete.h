@@ -31,11 +31,12 @@ template<typename T>
 void PrecompileBase::AddToKey(const KeyContext& keyContext,
                               PaintParamsKeyBuilder* builder,
                               PipelineDataGatherer* gatherer,
+                              FloatStorageManager* floatStorageManager,
                               SkSpan<const sk_sp<T>> options,
                               int desiredOption) {
     auto [option, childOptions] = SelectOption(options, desiredOption);
     if (option) {
-        option->priv().addToKey(keyContext, builder, gatherer, childOptions);
+        option->priv().addToKey(keyContext, builder, gatherer, floatStorageManager, childOptions);
     }
 }
 

@@ -42,13 +42,14 @@ public:
     void buildCombinations(
             const KeyContext& keyContext,
             PipelineDataGatherer* gatherer,
+            FloatStorageManager* floatStorageManager,
             DrawTypeFlags drawTypes,
             bool withPrimitiveBlender,
             Coverage coverage,
             const RenderPassDesc& renderPassDesc,
             const ProcessCombination& processCombination) const {
-        fPaintOptions->buildCombinations(
-                keyContext, gatherer, drawTypes, withPrimitiveBlender, coverage,
+        fPaintOptions->buildCombinations(keyContext, gatherer, floatStorageManager, drawTypes,
+                                         withPrimitiveBlender, coverage,
                 renderPassDesc, processCombination);
     }
 

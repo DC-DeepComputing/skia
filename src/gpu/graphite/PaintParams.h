@@ -20,6 +20,7 @@ namespace skgpu::graphite {
 
 class DrawContext;
 class KeyContext;
+class FloatStorageManager;
 class PaintParamsKeyBuilder;
 class PipelineDataGatherer;
 class Recorder;
@@ -67,19 +68,30 @@ public:
     /** Converts an SkColor4f to the destination color space. */
     static SkColor4f Color4fPrepForDst(SkColor4f srgb, const SkColorInfo& dstColorInfo);
 
-    void toKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void toKey(const KeyContext&,
+               PaintParamsKeyBuilder*,
+               PipelineDataGatherer*,
+               FloatStorageManager*) const;
 
     void notifyImagesInUse(Recorder*, DrawContext*) const;
 
 private:
-    void addPaintColorToKey(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handlePrimitiveColor(
-            const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handlePaintAlpha(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void addPaintColorToKey(const KeyContext&,
+                            PaintParamsKeyBuilder*,
+                            PipelineDataGatherer*,
+                            FloatStorageManager*) const;
+    void handlePrimitiveColor(const KeyContext&,
+                              PaintParamsKeyBuilder*,
+                              PipelineDataGatherer*,
+                              FloatStorageManager*) const;
+    void handlePaintAlpha(const KeyContext&,
+                          PaintParamsKeyBuilder*,
+                          PipelineDataGatherer*,
+                          FloatStorageManager*) const;
+    void handleColorFilter(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
+    void handleDithering(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
     void handleDstRead(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
-    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*) const;
+    void handleClipping(const KeyContext&, PaintParamsKeyBuilder*, PipelineDataGatherer*, FloatStorageManager*) const;
 
     SkColor4f            fColor;
     sk_sp<SkBlender>     fFinalBlender; // A nullptr here means SrcOver blending
