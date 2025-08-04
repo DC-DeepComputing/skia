@@ -70,6 +70,30 @@
       },
       "revId": "177dbd4bde1b3ce91e7df9af8997c55b30757794",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ae46a062_edce6e4c",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5648
+      },
+      "writtenOn": "2025-08-04T17:31:31Z",
+      "side": 1,
+      "message": "At least if this lands as is, the actual code doesn\u0027t have the enum any more, so it really is just an issue of cleaning up our header. Perhaps we can land it, and then (sooner or later) clean the headers?",
+      "parentUuid": "fe23c2e5_04afb239",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "177dbd4bde1b3ce91e7df9af8997c55b30757794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
