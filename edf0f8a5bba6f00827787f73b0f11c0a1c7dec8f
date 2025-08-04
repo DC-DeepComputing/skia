@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31fdc2fc_530a3f8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 4273628
+      },
+      "writtenOn": "2025-08-04T08:34:16Z",
+      "side": 1,
+      "message": "It seems like the original failure was due to https://chromium-review.googlesource.com/c/chromium/src/+/6810565 -- the Skia roll just fell victim to that one. Feel free to retry!",
+      "revId": "edf0f8a5bba6f00827787f73b0f11c0a1c7dec8f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
