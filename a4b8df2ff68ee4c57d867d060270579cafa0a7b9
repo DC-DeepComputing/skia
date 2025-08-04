@@ -38,6 +38,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec687f6d_27ad25c2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-04T18:27:24Z",
+      "side": 1,
+      "message": "Can we add a test case (e.g. similar example to the assigned bug) to prevent this from backsliding (and maybe catch it on other platforms?)",
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "93711f9c_e219deca",
         "filename": "src/opts/SkRasterPipeline_opts.h",
         "patchSetId": 8
