@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a24d6c2d_77b3f660",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5395
+      },
+      "writtenOn": "2025-08-04T16:28:10Z",
+      "side": 1,
+      "message": "So, the more naive implementation is faster than the one involving skvx? LGTM",
+      "revId": "0b9a8aaf76747e2360ed6ee08bb06e708bec7b37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
