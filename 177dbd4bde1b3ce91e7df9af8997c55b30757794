@@ -3,6 +3,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "eb57d779_9adc3d2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T17:37:50Z",
+      "side": 1,
+      "message": "We can prolly just skip this part.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 64
+      },
+      "revId": "177dbd4bde1b3ce91e7df9af8997c55b30757794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "ecc78eab_9589ae7d",
         "filename": "include/core/SkMatrix.h",
         "patchSetId": 6
@@ -86,6 +109,30 @@
       "side": 1,
       "message": "At least if this lands as is, the actual code doesn\u0027t have the enum any more, so it really is just an issue of cleaning up our header. Perhaps we can land it, and then (sooner or later) clean the headers?",
       "parentUuid": "fe23c2e5_04afb239",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "177dbd4bde1b3ce91e7df9af8997c55b30757794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0d120905_7fa54427",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T17:37:50Z",
+      "side": 1,
+      "message": "Makes sense.",
+      "parentUuid": "ae46a062_edce6e4c",
       "range": {
         "startLine": 31,
         "startChar": 8,
