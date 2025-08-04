@@ -16,6 +16,24 @@
       "message": "So, the more naive implementation is faster than the one involving skvx? LGTM",
       "revId": "0b9a8aaf76747e2360ed6ee08bb06e708bec7b37",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "773bef7e_a9697665",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T17:32:45Z",
+      "side": 1,
+      "message": "Except for x86_64, which shows a regression locally :)\n\nThe plan is to land and see the benchmark impact, then decide if it\u0027s worth keeping the old impl around.\n\n@reed maybe don\u0027t land right away, to give Perf a chance to establish a baseline?",
+      "parentUuid": "a24d6c2d_77b3f660",
+      "revId": "0b9a8aaf76747e2360ed6ee08bb06e708bec7b37",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
