@@ -1,0 +1,36 @@
+config("tint_api_config") {
+  # Add the path where the Tint API headers will be installed by CMake.
+  include_dirs = [
+    "../externals/dawn",
+    "../externals/dawn/include",
+  ]
+
+  defines = [
+    "TINT_BUILD_WGSL_READER=1",
+    "TINT_BUILD_WGSL_WRITER=1",
+  ]
+
+  # Add the path where the Tint API library files will be installed.
+  #  lib_dirs = [
+  #    "$target_out_dir/dawn_install/lib",
+  #  ]
+
+  # Specify the name of the Tint API library to link against.
+  # GN expects the library name without the 'lib' prefix (on Unix)
+  # or the file extension (.lib, .a).
+  # libs = [
+  #   "tint_api",
+  # ]
+}
+
+action("tint_cmake") {
+  script = "build_dawn.py"
+  sources = [ "//DEPS" ]
+  outputs = [ "$root_out_dir/libtint_api.a" ]
+}
+
+group("tint") {
+  deps = [ ":tint_cmake" ]
+
+  public_configs = [ ":tint_api_config" ]
+}
