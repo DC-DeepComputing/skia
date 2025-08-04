@@ -724,19 +724,20 @@ SkPathBuilder& SkPathBuilder::addOval(const SkRect& oval, SkPathDirection dir, u
 }
 
 SkPathBuilder& SkPathBuilder::addRRect(const SkRRect& rrect, SkPathDirection dir, unsigned index) {
-    const IsA prevIsA = fIsA;
-
     const SkRect& bounds = rrect.getBounds();
 
     if (rrect.isRect() || rrect.isEmpty()) {
         // degenerate(rect) => radii points are collapsing
-        this->addRect(bounds, dir, (index + 1) / 2);
-    } else if (rrect.isOval()) {
-        // degenerate(oval) => line points are collapsing
-        this->addOval(bounds, dir, index / 2);
-    } else {
-        this->addRaw(SkPathRawShapes::RRect(rrect, dir, index));
+        return this->addRect(bounds, dir, (index + 1) / 2);
     }
+    if (rrect.isOval()) {
+        // degenerate(oval) => line points are collapsing
+        return this->addOval(bounds, dir, index / 2);
+    }
+
+    const IsA prevIsA = fIsA;
+
+    this->addRaw(SkPathRawShapes::RRect(rrect, dir, index));
 
     if (prevIsA == kIsA_JustMoves) {
         fIsA      = kIsA_RRect;

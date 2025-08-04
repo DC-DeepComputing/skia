@@ -149,6 +149,14 @@ public:
     static SkRRect DeduceRRectFromContour(const SkRect& bounds,
                                           SkSpan<const SkPoint>, SkSpan<const SkPathVerb>);
 
+    // If we applied this matrix to an Oval or RRect, what would happen to its
+    // ... direction
+    // ... startIndex
+    // Only valid if matrix is "rectStaysRect".
+    //
+    static std::pair<SkPathDirection, unsigned>
+    TransformDirStart(const SkMatrix&, bool isRRect, SkPathDirection, unsigned startIndex);
+
     /**
      * Creates a path from arc params using the semantics of SkCanvas::drawArc. This function
      * assumes empty ovals and zero sweeps have already been filtered out.

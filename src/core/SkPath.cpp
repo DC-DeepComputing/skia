@@ -1570,20 +1570,114 @@ void SkPath::offset(SkScalar dx, SkScalar dy, SkPath* dst) const {
     this->transform(matrix, dst);
 }
 
-static void subdivide_cubic_to(SkPath* path, const SkPoint pts[4],
-                               int level = 2) {
+template <typename T> void subdivide_cubic_to(T* builder, const SkPoint pts[4],
+                                              int level = 2) {
     if (--level >= 0) {
         SkPoint tmp[7];
 
         SkChopCubicAtHalf(pts, tmp);
-        subdivide_cubic_to(path, &tmp[0], level);
-        subdivide_cubic_to(path, &tmp[3], level);
+        subdivide_cubic_to(builder, &tmp[0], level);
+        subdivide_cubic_to(builder, &tmp[3], level);
     } else {
-        path->cubicTo(pts[1], pts[2], pts[3]);
+        builder->cubicTo(pts[1], pts[2], pts[3]);
     }
 }
 
+SkPath SkPath::makeTransform(const SkMatrix& matrix, SkApplyPerspectiveClip pc) const {
+    if (matrix.isIdentity()) {
+        return *this;
+    }
+
+    {
+        SkPathBuilder bu;
+        bu.addPath(*this);
+        bu.transform(matrix, pc);
+        return bu.detach();
+    }
+
+    // Special cases for ovals/rrects ... not needed for correctness, but try to preserve
+    // the "IsA" signal if possible.
+
+    if (!this->isInverseFillType() && matrix.rectStaysRect()) {
+        if (auto oval = SkPathPriv::IsOval(*this)) {
+            auto r = matrix.mapRect(oval->fBounds);
+            auto [dir, start] = SkPathPriv::TransformDirStart(matrix, false,
+                                                              oval->fDirection,
+                                                              oval->fStartIndex);
+            return SkPath::Oval(r, dir, start);
+        }
+        if (auto rrect = SkPathPriv::IsRRect(*this)) {
+            SkRRect newrr;
+            if (rrect->fRRect.transform(matrix, &newrr)) {
+                auto [dir, start] = SkPathPriv::TransformDirStart(matrix, true,
+                                                                  rrect->fDirection,
+                                                                  rrect->fStartIndex);
+                return SkPath::RRect(newrr, dir, start);
+            }
+        }
+    }
+
+    // General case
+
+    SkPathBuilder tmp;
+
+    if (matrix.hasPerspective()) {
+        SkPath clipped;
+        const SkPath* src = this;
+        if (pc == SkApplyPerspectiveClip::kYes &&
+            SkPathPriv::PerspectiveClip(*this, matrix, &clipped))
+        {
+            src = &clipped;
+        }
+
+        SkPath::Iter iter(*src, false);
+        while (auto rec = iter.next()) {
+            const SkSpan<const SkPoint> pts = rec->fPoints;
+            switch (rec->fVerb) {
+                case SkPathVerb::kMove:
+                    tmp.moveTo(pts[0]);
+                    break;
+                case SkPathVerb::kLine:
+                    tmp.lineTo(pts[1]);
+                    break;
+                case SkPathVerb::kQuad:
+                    // promote the quad to a conic
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts.data(), SK_Scalar1, matrix));
+                    break;
+                case SkPathVerb::kConic:
+                    tmp.conicTo(pts[1], pts[2],
+                                SkConic::TransformW(pts.data(), rec->fConicWeight, matrix));
+                    break;
+                case SkPathVerb::kCubic:
+                    subdivide_cubic_to(&tmp, pts.data());
+                    break;
+                case SkPathVerb::kClose:
+                    tmp.close();
+                    break;
+            }
+        }
+
+        auto pts = tmp.points();
+        SkSpan<SkPoint> pts2 = {const_cast<SkPoint*>(pts.data()), pts.size()};
+        matrix.mapPoints(pts2);
+    } else {
+        tmp.addPath(*this, matrix);
+    }
+
+    tmp.setFillType(this->getFillType());
+    return tmp.detach();
+}
+
 void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveClip pc) const {
+#if 1
+    if (dst == nullptr) {
+        dst = const_cast<SkPath*>(this);
+    }
+    *dst = this->makeTransform(matrix, pc);
+    return;
+#endif
+
     if (matrix.isIdentity()) {
         if (dst != nullptr && dst != this) {
             *dst = *this;
@@ -1667,12 +1761,12 @@ void SkPath::transform(const SkMatrix& matrix, SkPath* dst, SkApplyPerspectiveCl
             dst->setFirstDirection(SkPathFirstDirection::kUnknown);
         } else {
             SkScalar det2x2 =
-                matrix.get(SkMatrix::kMScaleX) * matrix.get(SkMatrix::kMScaleY) -
-                matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
+            matrix.get(SkMatrix::kMScaleX) * matrix.get(SkMatrix::kMScaleY) -
+            matrix.get(SkMatrix::kMSkewX)  * matrix.get(SkMatrix::kMSkewY);
             if (det2x2 < 0) {
                 dst->setFirstDirection(
-                        SkPathPriv::OppositeFirstDirection(
-                            (SkPathFirstDirection)this->getFirstDirection()));
+                                       SkPathPriv::OppositeFirstDirection(
+                                                                          (SkPathFirstDirection)this->getFirstDirection()));
             } else if (det2x2 > 0) {
                 dst->setFirstDirection(this->getFirstDirection());
             } else {
