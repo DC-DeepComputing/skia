@@ -10,10 +10,10 @@
 
 #include "include/private/base/SkNoncopyable.h"
 #include "src/base/SkVx.h"
+#include "src/core/ResourceKey.h"
 #include "src/core/SkAutoPixmapStorage.h"
 #include "src/core/SkDrawBase.h"
 #include "src/core/SkRasterClip.h"
-#include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/ClipStack.h"
 
 namespace skgpu::graphite {

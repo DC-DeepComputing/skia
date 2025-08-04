@@ -13,8 +13,8 @@
 #include "include/private/base/SkNoncopyable.h"
 #include "include/private/base/SkTo.h"
 #include "include/private/gpu/ganesh/GrTypesPriv.h"
+#include "src/core/ResourceKey.h"
 #include "src/gpu/GpuTypesPriv.h"
-#include "src/gpu/ResourceKey.h"
 
 #include <atomic>
 #include <cstddef>
