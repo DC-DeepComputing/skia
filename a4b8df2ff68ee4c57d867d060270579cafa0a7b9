@@ -16,6 +16,47 @@
       "message": "The cast function wraps __builtin_convertvector which is \"a c-style cast\". The behavior is undefined so I\u0027ve explicitly clamped the values here. Running local bench I don\u0027t see regressions, will monitor perf if this lands.",
       "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d1d4177_4f9bf370",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T18:21:28Z",
+      "side": 1,
+      "message": "Reading the original bug report, it\u0027s not immediately obvious that overflowing sx/sy is critical since we do clamp in `ix_and_ptr`, just before gather.  But yeah, the undefined behavior part sounds problematic.\n\nI guess what we really want is `saturated_cast\u003c\u003e`, which could specialize to arch-specific instructions.  It\u0027s fine to punt that down the road if explicit clamping doesn\u0027t slow things down.",
+      "parentUuid": "0d0cb385_2d730392",
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93711f9c_e219deca",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 6671,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T18:21:28Z",
+      "side": 1,
+      "message": "Theoretically these can still underflow, though I\u0027m not sure if extreme negative values are reachable in practice.  Maybe we should adjust fInt32Min to be safe.",
+      "range": {
+        "startLine": 6669,
+        "startChar": 0,
+        "endLine": 6671,
+        "endChar": 0
+      },
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
