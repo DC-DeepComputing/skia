@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ecc78eab_9589ae7d",
+        "filename": "include/core/SkMatrix.h",
+        "patchSetId": 6
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 5642
+      },
+      "writtenOn": "2025-08-04T17:16:33Z",
+      "side": 1,
+      "message": "There is a single reference in Chromium, which we could drop preemptively (noop).  I don\u0027t see any other references in Android or G3, so maybe we could land this without guards?",
+      "range": {
+        "startLine": 31,
+        "startChar": 8,
+        "endLine": 31,
+        "endChar": 46
+      },
+      "revId": "177dbd4bde1b3ce91e7df9af8997c55b30757794",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
