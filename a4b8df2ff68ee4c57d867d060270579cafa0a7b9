@@ -53,6 +53,42 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bd275e1_7a295b3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-04T20:37:00Z",
+      "side": 1,
+      "message": "ACK. I didn\u0027t notice the clamp in `ix_and_ptr` before, but theoretically if one machine ends up with qy positive and one has qy negative, this could produce different results in `ix_and_ptr`. However I personally haven\u0027t seen this on the very small set of machines tested on.",
+      "parentUuid": "6d1d4177_4f9bf370",
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8fd39a7_5406349c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-04T20:37:00Z",
+      "side": 1,
+      "message": "Added a GM that draws a gradient image with height \u003e 32768 and scales it down.From compilers I\u0027ve seen, behavior for casting floats greater than INT_MAX to ints can result in INT_MAX or INT_MIN. I don\u0027t think this would have a noticeable difference in results because after the cast, we subtract 32768. For INT_MIN results, this underflows back to only be off by 1 of the INT_MAX case. But again, this behavior is undefined so this would catch other behaviors of the cast.",
+      "parentUuid": "ec687f6d_27ad25c2",
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f76d67b4_c8312c23",
@@ -76,6 +112,30 @@
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72fe2337_13452131",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 6664,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-04T20:37:00Z",
+      "side": 1,
+      "message": "Ah didn\u0027t even realize that before, makes sense",
+      "parentUuid": "f76d67b4_c8312c23",
+      "range": {
+        "startLine": 6664,
+        "startChar": 27,
+        "endLine": 6664,
+        "endChar": 36
+      },
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93711f9c_e219deca",
@@ -89,6 +149,30 @@
       "writtenOn": "2025-08-04T18:21:28Z",
       "side": 1,
       "message": "Theoretically these can still underflow, though I\u0027m not sure if extreme negative values are reachable in practice.  Maybe we should adjust fInt32Min to be safe.",
+      "range": {
+        "startLine": 6669,
+        "startChar": 0,
+        "endLine": 6671,
+        "endChar": 0
+      },
+      "revId": "a4b8df2ff68ee4c57d867d060270579cafa0a7b9",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bbb405fb_8953fb9c",
+        "filename": "src/opts/SkRasterPipeline_opts.h",
+        "patchSetId": 8
+      },
+      "lineNbr": 6671,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-04T20:37:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "93711f9c_e219deca",
       "range": {
         "startLine": 6669,
         "startChar": 0,
