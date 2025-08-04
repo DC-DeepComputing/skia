@@ -26,7 +26,7 @@ struct SkRSXform;
 struct SkSize;
 
 // Remove when clients are updated to live without this
-#define SK_SUPPORT_LEGACY_MATRIX_RECTTORECT
+//#define SK_SUPPORT_LEGACY_MATRIX_RECTTORECT
 
 /**
  *  When we transform points through a matrix containing perspective (the bottom row is something
