@@ -10,6 +10,7 @@
 
 #include "include/core/SkPathTypes.h"
 #include "include/core/SkPoint.h"
+#include "src/core/SkGeometry.h"
 #include "src/core/SkPathRaw.h"
 
 class SkRRect;
@@ -45,6 +46,17 @@ struct RRect : public SkPathRaw {
         : RRect(rr, dir, (dir == SkPathDirection::kCW ? 6 : 7)) {}
     RRect(const SkRRect& rr)
         : RRect(rr, SkPathDirection::kCW, 6) {}
+};
+
+struct Arc : public SkPathRaw {
+    SkPoint    fPtStorage[13];
+    float      fCnStorage[SkConic::kMaxConicsForArc];
+    SkPathVerb fVbStorage[13];
+    bool       fIsArc;
+
+    Arc(const SkRect& oval, float startAngle, float sweepAngle, bool forceMoveTo, bool isArc);
+
+    bool isArc() const { return fIsArc; }
 };
 
 } // namespace
