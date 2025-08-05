@@ -16,6 +16,24 @@
       "message": "any impact on performance with the extra math per sample?\n\nwondering if we could have two diff stages, one for \"normal\" sized image, and one for very large ones.",
       "revId": "260e9149ba3edfd05ec1cdd645542894d0530645",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ecea89d5_87c9afaa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 3568682
+      },
+      "writtenOn": "2025-08-05T15:50:05Z",
+      "side": 1,
+      "message": "Didn\u0027t see any locally, but am going to monitor perf in our full test suite. If there are, this is definitely preferable along with Florin\u0027s note of having arch-specific instructions too.",
+      "parentUuid": "6f7c95da_24c1a9a8",
+      "revId": "260e9149ba3edfd05ec1cdd645542894d0530645",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
