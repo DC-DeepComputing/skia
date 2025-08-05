@@ -10,8 +10,8 @@
 
 #include "include/core/SkSize.h"
 #include "include/core/SkTileMode.h"
+#include "src/core/ResourceKey.h"
 #include "src/core/SkLRUCache.h"
-#include "src/gpu/ResourceKey.h"
 #include "src/gpu/graphite/CommandBuffer.h"
 #include "src/gpu/graphite/GraphicsPipeline.h"
 #include "src/gpu/graphite/ResourceCache.h"

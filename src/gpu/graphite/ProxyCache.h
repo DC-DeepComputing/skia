@@ -9,10 +9,10 @@
 #define skgpu_graphite_ProxyCache_DEFINED
 
 #include "include/core/SkRefCnt.h"
+#include "src/core/ResourceKey.h"
 #include "src/core/SkMessageBus.h"
 #include "src/core/SkTHash.h"
 #include "src/gpu/GpuTypesPriv.h"
-#include "src/gpu/ResourceKey.h"
 
 class SkBitmap;
 class SkIDChangeListener;
