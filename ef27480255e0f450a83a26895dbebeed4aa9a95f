@@ -34,6 +34,24 @@
       "parentUuid": "a6d9f20c_e036d02b",
       "revId": "ef27480255e0f450a83a26895dbebeed4aa9a95f",
       "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "277f0591_c8aa09d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 8341
+      },
+      "writtenOn": "2025-08-05T15:30:15Z",
+      "side": 1,
+      "message": "I don\u0027t see any reported gold diffs anymore, so I suspect they were untriaged from ToT or were flaky",
+      "parentUuid": "16853aeb_1b879971",
+      "revId": "ef27480255e0f450a83a26895dbebeed4aa9a95f",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
     }
   ]
 }
