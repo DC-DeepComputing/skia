@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "480a09de_e5a86ee2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 20444
+      },
+      "writtenOn": "2025-08-05T17:58:18Z",
+      "side": 1,
+      "message": "HWUI and RE are using the new feature API now, let\u0027s start landing these, one every few days.",
+      "revId": "0db6324b26b6db499f8fa6dce5e46ea33d6d0df1",
+      "serverId": "5086850b-e599-37d2-8ec8-ff16aeccbf02"
+    }
+  ]
+}
